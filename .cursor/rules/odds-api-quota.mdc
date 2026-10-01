@@ -1,0 +1,28 @@
+---
+description: Protect The Odds API free-tier quota — prefer ESPN/cache; never burn credits on exploratory fetches
+alwaysApply: true
+---
+
+# Odds API quota (hard constraint)
+
+The Odds API free tier is small (~500 credits/month). **Treat every paid call as expensive.** Over-use has already exhausted a key in this project.
+
+## Before any Odds API call
+
+1. Prefer **no network**: `--from-snapshot`, existing `data/odds_*.csv`.
+2. Prefer **free sources**: FPL API, ESPN core (scorers, 1X2), football-data.co.uk for history.
+3. If Odds API is required, **estimate cost first**: roughly `markets × regions × events` (plus 1/region for `/markets` discovery).
+4. Default regions for soccer props: **`us` only** (not `uk,us` / `us,us2` unless necessary).
+5. Do not loop discovery (`/events/{id}/markets`) across every fixture — one probe or skip discovery.
+6. Abort or switch to `--espn-only` if remaining credits are low; leave a reserve for `odds_data.py` / meso work.
+7. Never print or commit the raw `ODDS_API_KEY`. Redact `apiKey=` in logs and snapshots.
+
+## Script defaults
+
+- `odds_data.py`: use `--no-event-markets` unless player props are needed; rebuild CSV with `--from-snapshot` when possible.
+
+## Do not
+
+- Re-fetch the same GW props repeatedly “to check”.
+- Request empty/unavailable market keys in bulk (they still cost credits).
+- Run calibrate/historical Odds API endpoints on the free key.

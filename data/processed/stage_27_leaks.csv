@@ -1,0 +1,2 @@
+total_points,hit_cost,cap_regret,myopic_hold_regret,n_blank_final_sum,n_autosubs_sum,n_hold_gws,n_transfer_gws,mean_tx,total_transfers,total_hits,mean_itb,final_squad_value
+1942.0,64.0,181.0,42.0,9.0,40.0,2.0,32.0,1.3714285714285714,48.0,16.0,0.6771428571428573,84.4

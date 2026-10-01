@@ -1,0 +1,18 @@
+{
+  "updated": "2026-10-01",
+  "milestone": "stage-34-follow",
+  "status": "complete",
+  "summary": "Minutes was +118 on the 2025/26 transfer climb and -116 on 2024/25. Starter was +63 on the screen and was not checked. No winner.",
+  "screen": [
+    {"method": "agree_min", "delta": -44},
+    {"method": "starter", "delta": 63},
+    {"method": "minutes", "delta": 118},
+    {"method": "upside", "delta": -8}
+  ],
+  "check": {"method": "minutes", "season": "2024-25", "delta": -116},
+  "artifacts": [
+    "src/models/stage_34_follow.py",
+    "reports/stage_34_follow.md",
+    "data/processed/stage_34_follow.csv"
+  ]
+}

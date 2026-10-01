@@ -1,0 +1,84 @@
+{
+  "screen_season": "2025-26",
+  "holdout_season": "2023-24",
+  "gw_start": 5,
+  "gw_end": 38,
+  "kill_gap": 100,
+  "pass_margin": 34,
+  "advance_n": 2,
+  "candidates": [
+    {
+      "id": "xp",
+      "family": "baseline",
+      "formula": "column",
+      "params_grid": [{"column": "score_xp"}]
+    },
+    {
+      "id": "exp_points",
+      "family": "player_score",
+      "formula": "column",
+      "params_grid": [{"column": "score_exp_points"}]
+    },
+    {
+      "id": "xmi",
+      "family": "player_score",
+      "formula": "column",
+      "params_grid": [{"column": "score_xmi"}]
+    },
+    {
+      "id": "price",
+      "family": "player_score",
+      "formula": "column",
+      "params_grid": [{"column": "score_price"}]
+    },
+    {
+      "id": "roll3",
+      "family": "player_score",
+      "formula": "column",
+      "params_grid": [{"column": "score_roll3_points"}]
+    },
+    {
+      "id": "team_prior",
+      "family": "player_score",
+      "formula": "column",
+      "params_grid": [{"column": "score_team_prior"}]
+    },
+    {
+      "id": "linear_risk",
+      "family": "player_score",
+      "formula": "linear_risk",
+      "params_grid": [{"lambda": 0.1}, {"lambda": 0.25}, {"lambda": 0.5}]
+    },
+    {
+      "id": "sharpe",
+      "family": "player_score",
+      "formula": "sharpe",
+      "params_grid": [{"eps": 0.5}, {"eps": 1.0}, {"eps": 2.0}]
+    },
+    {
+      "id": "ownership",
+      "family": "player_score",
+      "formula": "ownership",
+      "params_grid": [{"weight": 0.25}, {"weight": 0.5}, {"weight": 1.0}]
+    },
+    {
+      "id": "blend",
+      "family": "player_score",
+      "formula": "blend",
+      "params_grid": [{"alpha": 0.25}, {"alpha": 0.5}, {"alpha": 0.75}]
+    },
+    {
+      "id": "tail_risk",
+      "family": "player_score",
+      "formula": "tail_risk",
+      "params_grid": [{"lambda": 0.5}, {"lambda": 1.0}]
+    },
+    {
+      "id": "risk_inside_value",
+      "family": "transfer_value",
+      "formula": "linear_risk",
+      "params_grid": [{"lambda": 0.25}],
+      "note": "XI and captain stay on score_xp. Fast XI cannot see this, so tier 1 does not rank it."
+    }
+  ]
+}

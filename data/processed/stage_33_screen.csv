@@ -1,0 +1,14 @@
+candidate,xi_points,delta_vs_xp,killed
+agree_min,2104.0,21.0,False
+starter,2098.0,15.0,False
+minutes,2095.0,12.0,False
+upside,2092.0,9.0,False
+premium,2083.0,0.0,False
+xp,2083.0,0.0,False
+within_pos,2065.0,-18.0,False
+goals_tilt,1995.0,-88.0,False
+agree_max,1989.0,-94.0,False
+no_deduction,1980.0,-103.0,True
+attack,1963.0,-120.0,True
+split,1902.0,-181.0,True
+per_million,1787.0,-296.0,True

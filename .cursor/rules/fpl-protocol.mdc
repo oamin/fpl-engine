@@ -1,0 +1,28 @@
+---
+description: FPL-engine execution protocol from PROJECT_OUTLINE.md
+alwaysApply: true
+---
+
+# FPL-engine protocol
+
+`PROJECT_OUTLINE.md` is guidance: aims and the class of methods, not a turn-by-turn script. The PI has given Cursor and Gemini free rein to build the engine inside those aims. Do not stop to ask which objective to try next.
+
+## Roles
+
+- **PI (Ollie):** reads a batch report when a pre-registered set of methods has been run. Does not join the screen design. Approves only if a later step would break a published comparison or spend Odds API credits.
+- **Co-PI (Gemini):** mathematical design, edge cases, diagnostic review. Launch a subagent on Gemini 3.8 Flash (`gemini-3.8-flash-high`). Pass the decision, the constraints, and the file paths. Gemini does not see this chat unless the prompt includes it. Resume the same agent for the follow-up so the thread stays intact. Gemini proposes and reviews; Cursor writes the code and runs it.
+- **Cursor:** implement, test, and run. Before a new method or a change to `experiments/matrix.json` is coded, at least one Gemini exchange on the formula and the failure cases. After every search or climb result, one Gemini pass on the diagnostics before the result is called reviewed. Then write the PI mini-report. The two-tier search in `src/models/search_protocol.py` is not exempt.
+
+## Evaluation
+
+Optimising the evaluation is rewarded (`PROJECT_OUTLINE.md`). Screen a new player score on the fast XI climb first. Run the free-transfer climb only for a screen that does not clearly lose, or for a change to the transfer rule itself. Plan that split with Gemini. Do not ask the PI.
+
+## Milestone report
+
+A batch is several methods locked before any of their totals are read, then run and reported together, failures included. The report covers each method, what Gemini challenged, the screen result, the transfer-climb result where one was run, and the next step. The best of the batch is labelled as the best of that batch. Update `.cursor/context.md`, park rejected ideas in `.cursor/ideas.md`, and write `REPORT_STATE.json`.
+
+After a discrete sub-task, write `REPORT_STATE.json` at the repo root. If a script is still failing after 3 debug cycles, revert that attempt and append the error to `LOGS/error_state.md`.
+
+Solver, simulator, and backtest constraints come from `src/rules/fpl_2026.py` (2026/27 squad, transfers, chips, scoring). Do not copy those constants into a new module.
+
+Do not index `.venv/`, `data/raw/`, `__pycache__/`, or full-season CSV dumps. Odds API calls follow `.cursor/rules/odds-api-quota.mdc`.
