@@ -6,7 +6,7 @@ Updated: 2026-09-30. Stage history lives in root `CONTEXT.md`. This file is the 
 
 Predictive stack is stages 0–27 (`src/models/`, `reports/`). Primary evaluation gate remains `src.models.season_climb`: each gameweek, a position-legal XI by score, captain = top score, cumulative actual points versus baselines. Budgeted and free-transfer climbs (stages 18–19, 27) already enforce 2/5/5/3, £100.0m, ≤3 per club, and a free-transfer bank of 5 at −4 per extra transfer.
 
-Those constraints now come from `src/rules/fpl_2026.py`. `season_climb_budget` and `season_climb_ft` re-export them. Chip logic, 2026/27 BPS deltas, and official match awards live in that module and are unit-tested. They are not yet wired into a chip-aware season simulator.
+Those constraints now come from `src/rules/fpl_2026.py`. `season_climb_budget` and `season_climb_ft` re-export them. Chip logic, 2026/27 BPS deltas, and official match awards live in that module and are unit-tested. The free-transfer climb applies a caller-supplied chip map and does not choose the week. An empty map leaves the climb unchanged.
 
 ## 2026/27 rules encoded
 
@@ -19,7 +19,7 @@ Those constraints now come from `src/rules/fpl_2026.py`. `season_climb_budget` a
 
 - `src/models/xp_engine.py` scores a goalkeeper goal as 10. Official award is 6. Left in place so stage-13+ xP is reproducible.
 - `src/models/season_climb.py` `FORMATIONS` omits the legal 5-2-3. `OFFICIAL_FORMATIONS` in the rules module includes it. The climb list was not replaced, so published gates stay comparable.
-- FT climbs are explicitly no-chip. DefCon in the xP prior is gated on 60 minutes; the official award is not.
+- FT climbs play no chips unless a week map is passed. DefCon in the xP prior is gated on 60 minutes; the official award is not.
 - Historical climb targets are Vaastav `total_points` under that season's rules, not a 2026/27 rescore.
 
 ## Collaboration

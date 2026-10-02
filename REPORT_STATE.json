@@ -1,18 +1,12 @@
 {
-  "updated": "2026-10-01",
-  "milestone": "stage-34-follow",
-  "status": "complete",
-  "summary": "Minutes was +118 on the 2025/26 transfer climb and -116 on 2024/25. Starter was +63 on the screen and was not checked. No winner.",
-  "screen": [
-    {"method": "agree_min", "delta": -44},
-    {"method": "starter", "delta": 63},
-    {"method": "minutes", "delta": 118},
-    {"method": "upside", "delta": -8}
-  ],
-  "check": {"method": "minutes", "season": "2024-25", "delta": -116},
+  "updated": "2026-10-02",
+  "milestone": "chip-mechanics",
+  "status": "reviewed",
+  "summary": "The free-transfer climb can apply a caller-supplied chip map. An empty map plays nothing and does not choose the week. Wildcard and Free Hit spend bank plus sell prices. Free Hit reverts the squad. Bench Boost adds the players left out of the final XI. Triple Captain is ×3, including the vice-captain when the captain blanks. No chip-timing search.",
   "artifacts": [
-    "src/models/stage_34_follow.py",
-    "reports/stage_34_follow.md",
-    "data/processed/stage_34_follow.csv"
+    "src/rules/fpl_2026.py",
+    "src/models/season_climb_ft.py",
+    "tests/test_chip_mechanics.py",
+    "tests/test_fpl_2026_rules.py"
   ]
 }
