@@ -1,18 +1,12 @@
 {
-  "updated": "2026-10-01",
-  "milestone": "stage-34-follow",
-  "status": "complete",
-  "summary": "Minutes was +118 on the 2025/26 transfer climb and -116 on 2024/25. Starter was +63 on the screen and was not checked. No winner.",
-  "screen": [
-    {"method": "agree_min", "delta": -44},
-    {"method": "starter", "delta": 63},
-    {"method": "minutes", "delta": 118},
-    {"method": "upside", "delta": -8}
-  ],
-  "check": {"method": "minutes", "season": "2024-25", "delta": -116},
+  "updated": "2026-10-02",
+  "milestone": "understat-penalties",
+  "status": "reviewed",
+  "summary": "Understat penalty shots are on the 2022/23–2025/26 Vaastav sheets as penalties_taken, penalties_scored, and penalty_xg. Every shot joined to one matchday player. Misses on those rows match Vaastav penalties_missed in each season. score_xp was not changed. The columns are post-match facts, not a pre-deadline taker list.",
   "artifacts": [
-    "src/models/stage_34_follow.py",
-    "reports/stage_34_follow.md",
-    "data/processed/stage_34_follow.csv"
+    "src/ingest/understat_penalties.py",
+    "tests/test_understat_penalties.py",
+    "reports/penalty_sheets.md",
+    "data/processed/understat_penalty_shots.csv"
   ]
 }
