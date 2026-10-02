@@ -2,7 +2,7 @@
   "updated": "2026-10-02",
   "milestone": "understat-penalties",
   "status": "reviewed",
-  "summary": "Understat penalty shots are on the 2022/23–2025/26 Vaastav sheets as penalties_taken, penalties_scored, and penalty_xg. Every shot joined to one matchday player. Misses on those rows match Vaastav penalties_missed in each season. score_xp was not changed. The columns are post-match facts, not a pre-deadline taker list.",
+  "summary": "Understat penalty shots are on the 2022/23–2025/26 sheets. Gemini parked using them inside xp_goals: Vaastav xG already includes penalties, a second term double-counts, and the goal residual is conversion variance. No fast-XI screen. score_xp unchanged.",
   "artifacts": [
     "src/ingest/understat_penalties.py",
     "tests/test_understat_penalties.py",
