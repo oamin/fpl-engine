@@ -17,6 +17,10 @@ The gameweek sheets now carry Understat penalty shots (`penalties_taken`, `penal
 
 Gemini reviewed a split on 2026-10-02 ([penalty split](bc-721d1cc3-4c05-586a-a1e8-c24f0aecfff3)) and parked it. No fast-XI screen. `xp_goals` stays `share_xG × λ`. Vaastav `expected_goals` already includes penalty xG, so a second penalty term counts the same kick twice. Subtracting Understat `penalty_xg` (~0.76) from Opta xG is unsafe: in 2022/23, 37 of 97 taker rows have Opta xG below that penalty xG. A team awards about 0.11–0.14 penalties per match, and an established taker's kicks are already inside the rolling share. The 35% goal residual is conversion variance. A new taker is still unknown until after the first kick.
 
+## Last-season share versus the book
+
+Parked 2026-10-02 after Gemini reviewed it ([share versus book](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Do not shrink the 2025/26 shot share to close the Gameweek 1–5 gap against ojaminFC, and do not add a book term on top of `share × λ`. The team rate and the clean-sheet proxy already come from 1X2 and over/under. There is no player goal or clean-sheet price in that window, so the book cannot replace the share. A forced decay, only if later required, uses a fixed prior of 5 matches and replaces the share. It is not an extra term, and the weight is not fit on these five weeks. No fast XI screen: the player-prop score does not exist.
+
 ## Rules gaps
 
 - Full Opta BPS table (goals, assists, playing time, and the rest) is not in the 20 Jul 2026 change note. Only the 2026/27 deltas are coded.

@@ -7,7 +7,7 @@ import unittest
 import pandas as pd
 
 from src.live.benchmark import assign_prior_id, stamp_unmatched_priors
-from src.models.season_climb_ft import SquadState, choose_transfers
+from src.models.season_climb_ft import SquadState, choose_transfers, run_ft_season
 from src.models.xp_engine import add_player_priors
 from src.teams import norm_team
 
@@ -165,3 +165,40 @@ class BenchmarkPriorTest(unittest.TestCase):
         self.assertEqual(n_tx, 1)
         self.assertLessEqual(city, 3)
         self.assertIn(spare, new_state.ids())
+
+    def test_opening_squad_is_kept_for_the_first_week(self) -> None:
+        spec = (
+            [("GKP", "a"), ("GKP", "b")]
+            + [("DEF", club) for club in "cdefg"]
+            + [("MID", club) for club in "hijkl"]
+            + [("FWD", club) for club in "mno"]
+        )
+        rows = []
+        ids = []
+        for i, (pos, club) in enumerate(spec, start=1):
+            pid = f"p{i}"
+            ids.append(pid)
+            for gw in (1, 2):
+                rows.append(
+                    {
+                        "gw": gw,
+                        "player_id": pid,
+                        "player_name": pid,
+                        "position": pos,
+                        "team": club,
+                        "team_norm": club,
+                        "value": 50,
+                        "eligible": True,
+                        "score_xp": 5.0,
+                        "total_points": 2.0,
+                        "minutes": 90.0,
+                    }
+                )
+        frame = pd.DataFrame(rows)
+        opening = SquadState(purchase={pid: 50 for pid in ids}, bank=250, ft=0)
+        weekly = run_ft_season(
+            frame, {"xp": "score_xp"}, [1, 2], roster=frame, opening=opening
+        )
+        self.assertEqual(list(weekly["gw"]), [1, 2])
+        self.assertEqual(int(weekly.loc[weekly["gw"] == 1, "n_transfers"].iloc[0]), 0)
+        self.assertEqual(int(weekly.loc[weekly["gw"] == 2, "n_transfers"].iloc[0]), 0)

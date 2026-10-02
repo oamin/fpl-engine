@@ -1,14 +1,12 @@
 {
   "updated": "2026-10-02",
-  "milestone": "live-benchmark-2026",
+  "milestone": "live-benchmark-from-entry",
   "status": "reviewed",
-  "summary": "Published xp free-transfer climb for 2026/27 GW1–5 scored 263. ojaminFC scored 350. Residual −87. Haaland's Triple Captain added 2 points. Ndiaye's transfer to Manchester City is treated as a club change, and the climb sold O'Reilly to stay at three City players. No retune.",
+  "summary": "The published xp climb started from ojaminFC's Gameweek 1 fifteen scores 327 against their 350, residual −23. It is 5 ahead after Gameweek 2, then sells João Pedro and Cherki on a 4-point hit and finishes 23 behind. Shrinking last season's shot share, and adding a book term on top of share times λ, was rejected. No player-prop file exists. No retune.",
   "artifacts": [
-    "src/live/benchmark.py",
-    "src/live/entry.py",
     "reports/live_benchmark_2026.md",
-    "data/processed/live_benchmark_2026.csv",
-    "data/processed/live_benchmark_2026_picks.csv",
-    "data/entry/2632584.json"
+    "data/processed/live_benchmark_2026_from_entry.csv",
+    "src/live/benchmark.py",
+    "src/models/season_climb_ft.py"
   ]
 }

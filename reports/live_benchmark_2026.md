@@ -73,3 +73,29 @@ ojaminFC XI (Haaland captain, B.Fernandes vice): Lammens GKP MUN; Davis DEF IPS;
 Squad overlap: 3 of 15.
 
 The model bank into a later week is not ojaminFC's bank. ojaminFC rolls 1 free transfer and £1.5m into Gameweek 6, with Wildcard, Free Hit, and Bench Boost still available. This run did not pick Gameweek 6.
+
+## From ojaminFC's opening 15
+
+The same xp rule, started from their Gameweek 1 fifteen instead of a fresh squad. Purchase prices are the Gameweek 1 list prices (£100.0m) and the bank starts at £0.0m. Gameweek 1 makes no transfers. From Gameweek 2 the climb may transfer. The XI and the captain are still the highest xp inside that squad. Their Triple Captain is not copied.
+
+- This path: **327**
+- ojaminFC: **350**
+- Residual: **-23**
+
+| GW | Model | ojaminFC | Week gap | Running gap | Overlap | Hit | Model transfers |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| 1 | 66 | 62 | +4 | +4 | 15 | 0 | none |
+| 2 | 109 | 108 | +1 | +5 | 13 | 0 | in Mbeumo; out Gibbs-White |
+| 3 | 47 | 53 | -6 | -1 | 11 | 4 | in Thiago, Enzo; out João Pedro, Cherki |
+| 4 | 62 | 79 | -17 | -18 | 10 | 0 | in Khalaili; out Shaw |
+| 5 | 43 | 48 | -5 | -23 | 9 | 0 | in none; out none |
+
+The path is 5 ahead after Gameweek 2. Gameweek 3 spends a 4-point hit to sell João Pedro and Cherki. The running gap goes to −1 that week and to −18 in Gameweek 4, after João Pedro's 12 is no longer in the squad. Overlap falls from 15 to 9. The residual breaks away on those sales.
+
+GW1 captain B.Fernandes. XI: Martinez GKP Aston Villa; Calafiori DEF Arsenal; Davis DEF Ipswich Town; Guéhi DEF Man City; Shaw DEF Man Utd; B.Fernandes MID Man Utd (C); Gibbs-White MID Nott'm Forest; M.Sangaré MID Brentford; Ødegaard MID Arsenal; Haaland FWD Man City (V); João Pedro FWD Chelsea.
+GW2 captain B.Fernandes. XI: Martinez GKP Chelsea; Calafiori DEF Arsenal; Davis DEF Ipswich Town; Guéhi DEF Man City; Shaw DEF Man Utd; B.Fernandes MID Man Utd (C); M.Sangaré MID Brentford; Mbeumo MID Man Utd (V); Ødegaard MID Arsenal; Haaland FWD Man City; João Pedro FWD Chelsea.
+GW3 captain Haaland. XI: Martinez GKP Chelsea; Calafiori DEF Arsenal; Davis DEF Ipswich Town; Guéhi DEF Man City (V); Shaw DEF Man Utd; B.Fernandes MID Man Utd; Enzo MID Man City; M.Sangaré MID Brentford; Mbeumo MID Man Utd; Haaland FWD Man City (C); Thiago FWD Brentford.
+GW4 captain Khalaili. XI: Martinez GKP Chelsea; Calafiori DEF Arsenal; Davis DEF Ipswich Town; Guéhi DEF Man City; Khalaili DEF Crystal Palace (C); B.Fernandes MID Man Utd; Enzo MID Man City; M.Sangaré MID Brentford; Mbeumo MID Man Utd; Haaland FWD Man City (V); Thiago FWD Brentford.
+GW5 captain Haaland. XI: Martinez GKP Chelsea; Calafiori DEF Arsenal; Guéhi DEF Man City; Khalaili DEF Crystal Palace; B.Fernandes MID Man Utd (V); Enzo MID Man City; M.Sangaré MID Brentford; Mbeumo MID Man Utd; Ødegaard MID Arsenal; Haaland FWD Man City (C); Thiago FWD Brentford.
+
+Last season's shot share stays. The book is already the team goal rate and the clean-sheet proxy. There is no player goal or clean-sheet price in this window, so a book line cannot replace the share. Adding one on top of share times λ would count the team chance twice. Shrinking the 2025/26 share to chase this five-week gap was rejected: at Gameweek 1 that share is the only ranking among players, Haaland was already second in the pool and was left out on price, and Cherki was blocked by minutes rather than by his share. Gemini 3.8 Flash reviewed that formula.

@@ -24,7 +24,7 @@ from src.ingest.fpl_odds import (
 from src.live.entry import stamp_matchday_teams
 from src.live.fpl_snapshot import ELEMENT
 from src.models.ridge_multiseason import _attach_value_defcon
-from src.models.season_climb_ft import run_ft_season
+from src.models.season_climb_ft import SquadState, run_ft_season
 from src.models.xp_engine import (
     DEFCON_THRESH,
     MIN_HISTORY,
@@ -357,8 +357,49 @@ def run() -> dict[str, Any]:
         if club_n > 3:
             raise RuntimeError(f"GW{int(gw)} has {club_n} players from one club")
     summary = _summary(weekly, entry, roster, info)
-    _write(weekly, picks, summary, info)
+    opening = _opening_state(entry, roster)
+    evolved_trace: list[dict[str, Any]] = []
+    evolved = run_ft_season(
+        feat,
+        {"xp": "score_xp"},
+        list(GWS),
+        roster=roster,
+        trace=evolved_trace,
+        opening=opening,
+    )
+    if evolved.empty or set(evolved["gw"].astype(int)) != set(GWS):
+        raise RuntimeError(f"Opening-squad climb did not finish GW1–5 (rows={len(evolved)})")
+    evolved_picks = _pick_table(evolved_trace, roster, entry)
+    for gw, week in evolved_picks.loc[evolved_picks["side"] == "model"].groupby("gw"):
+        club_n = int(week.groupby("team").size().max())
+        if club_n > 3:
+            raise RuntimeError(f"Evolved GW{int(gw)} has {club_n} players from one club")
+    _write(
+        weekly,
+        picks,
+        summary,
+        info,
+        evolved=evolved,
+        evolved_picks=evolved_picks,
+        opening_cost=sum(opening.purchase.values()),
+    )
+    summary["from_entry"] = float(evolved["xi_points_cap"].sum()) if len(evolved) else None
     return summary
+
+
+def _opening_state(entry: dict[str, Any], roster: pd.DataFrame) -> SquadState:
+    """Their Gameweek 1 fifteen, bought at that week's price, with an empty bank."""
+    gw1 = roster.loc[roster["gw"] == 1].drop_duplicates("player_id", keep="first")
+    prices = dict(zip(gw1["player_id"].astype(str), gw1["value"].astype(int), strict=True))
+    purchase: dict[str, int] = {}
+    for player in entry["opening_squad"]:
+        pid = player_key(player["id"])
+        if pid not in prices:
+            raise RuntimeError(f"{player['name']} has no Gameweek 1 price")
+        purchase[pid] = int(prices[pid])
+    if len(purchase) != 15:
+        raise RuntimeError("opening squad is not 15 players")
+    return SquadState(purchase=purchase, bank=0, ft=0)
 
 
 def _pick_table(
@@ -456,6 +497,10 @@ def _write(
     picks: pd.DataFrame,
     summary: dict[str, Any],
     info: dict[str, Any],
+    *,
+    evolved: pd.DataFrame | None = None,
+    evolved_picks: pd.DataFrame | None = None,
+    opening_cost: int | None = None,
 ) -> None:
     PROCESSED.mkdir(parents=True, exist_ok=True)
     REPORTS.mkdir(parents=True, exist_ok=True)
@@ -592,7 +637,86 @@ def _write(
         "Free Hit, and Bench Boost still available. This run did not pick Gameweek 6.",
         "",
     ]
+    if evolved is not None and evolved_picks is not None:
+        lines += _evolution_lines(evolved, evolved_picks, entry, opening_cost)
     (REPORTS / "live_benchmark_2026.md").write_text("\n".join(lines), encoding="utf-8")
+
+
+def _evolution_lines(
+    weekly: pd.DataFrame,
+    picks: pd.DataFrame,
+    entry: dict[str, Any],
+    opening_cost: int | None,
+) -> list[str]:
+    """Path that starts on ojaminFC's Gameweek 1 fifteen and transfers after that."""
+    by_gw = {int(g["gw"]): g for g in entry["gameweeks"]}
+    model = picks.loc[picks["side"] == "model"]
+    total = float(weekly["xi_points_cap"].sum())
+    theirs = float(entry["points"])
+    cost = f"£{opening_cost / 10:.1f}m" if opening_cost is not None else "the Gameweek 1 prices"
+    lines = [
+        "## From ojaminFC's opening 15",
+        "",
+        "The same xp rule, started from their Gameweek 1 fifteen instead of a "
+        f"fresh squad. Purchase prices are the Gameweek 1 list prices ({cost}) "
+        "and the bank starts at £0.0m. Gameweek 1 makes no transfers. From "
+        "Gameweek 2 the climb may transfer. The XI and the captain are still "
+        "the highest xp inside that squad. Their Triple Captain is not copied.",
+        "",
+        f"- This path: **{total:.0f}**",
+        f"- ojaminFC: **{theirs:.0f}**",
+        f"- Residual: **{total - theirs:+.0f}**",
+        "",
+        "| GW | Model | ojaminFC | Week gap | Running gap | Overlap | Hit | Model transfers |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |",
+    ]
+    running = 0.0
+    previous: set[str] = set()
+    squad_notes: list[str] = []
+    for row in weekly.sort_values("gw").itertuples():
+        gw = int(row.gw)
+        week = model.loc[model["gw"] == gw]
+        owned = set(week["player_id"].astype(str))
+        their_ids = {
+            player_key(p["id"]) for p in by_gw[gw]["xi"] + by_gw[gw]["bench"]
+        }
+        bought = sorted(owned - previous) if previous else []
+        sold = sorted(previous - owned) if previous else []
+        gap = float(row.xi_points_cap) - float(by_gw[gw]["points"])
+        running += gap
+        move = "none" if not previous else f"in {_id_names(week, bought)}; out {_id_names(model.loc[model['gw'] == gw - 1], sold)}"
+        lines.append(
+            f"| {gw} | {row.xi_points_cap:.0f} | {by_gw[gw]['points']} | {gap:+.0f} | "
+            f"{running:+.0f} | {len(owned & their_ids)} | {int(row.hit_cost)} | {move} |"
+        )
+        captain = str(week.loc[week["is_captain"] == 1, "name"].iloc[0])
+        xi = week.loc[week["role"] == "xi"]
+        squad_notes.append(
+            f"GW{gw} captain {captain}. XI: " + "; ".join(_names(xi, str(week.loc[week['is_captain']==1, 'player_id'].iloc[0]), str(week.loc[week['is_vice']==1, 'player_id'].iloc[0]))) + "."
+        )
+        previous = owned
+    lines += [
+        "",
+        "The path is 5 ahead after Gameweek 2. Gameweek 3 spends a 4-point hit "
+        "to sell João Pedro and Cherki. The running gap goes to −1 that week and "
+        "to −18 in Gameweek 4, after João Pedro's 12 is no longer in the squad. "
+        "Overlap falls from 15 to 9. The residual breaks away on those sales.",
+        "",
+        *squad_notes,
+        "",
+    ]
+    lines += [
+        "Last season's shot share stays. The book is already the team goal rate "
+        "and the clean-sheet proxy. There is no player goal or clean-sheet price "
+        "in this window, so a book line cannot replace the share. Adding one on "
+        "top of share times λ would count the team chance twice. Shrinking the "
+        "2025/26 share to chase this five-week gap was rejected: at Gameweek 1 "
+        "that share is the only ranking among players, Haaland was already second "
+        "in the pool and was left out on price, and Cherki was blocked by minutes "
+        "rather than by his share. Gemini 3.8 Flash reviewed that formula.",
+        "",
+    ]
+    return lines
 
 
 def _id_names(week: pd.DataFrame, ids: list[str]) -> str:

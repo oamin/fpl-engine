@@ -784,12 +784,19 @@ def run_ft_season(
     value_col: str | None = None,
     switch_penalty: float | None = None,
     chips: dict[int, str] | None = None,
+    opening: SquadState | None = None,
 ) -> pd.DataFrame:
-    """``chips`` maps a gameweek to one chip name. None and {} play nothing."""
+    """``chips`` maps a gameweek to one chip name. None and {} play nothing.
+
+    ``opening`` is a 15-man squad already owned at the first gameweek.
+    That week is scored with no transfers. Later weeks use the normal rule.
+    """
     rows: list[dict[str, Any]] = []
     plan = validate_chip_map(chips)
     if roster is None:
         roster = load_vaastav_roster(EVAL_SEASON)
+    if opening is not None and len(opening.purchase) != 15:
+        raise RuntimeError("opening squad must contain 15 players")
 
     roster_by_gw: dict[int, set[str]] = {
         int(g): set(gdf["player_id"].astype(str))
@@ -797,7 +804,7 @@ def run_ft_season(
     }
 
     for method, col in score_cols.items():
-        state: SquadState | None = None
+        state: SquadState | None = deepcopy(opening) if opening is not None else None
         for i, gw in enumerate(gws):
             owned = state.ids() if state else set()
             pool = _gw_pool(feat, roster, gw, owned)
@@ -806,7 +813,10 @@ def run_ft_season(
 
             chip = plan.get(int(gw))
             restore: SquadState | None = None
-            if state is None:
+            if state is not None and i == 0 and opening is not None and chip not in FREE_TRANSFER_CHIPS:
+                n_tx, hits = 0, 0
+                ft_before = 0
+            elif state is None:
                 try:
                     state = initial_squad(pool, col)
                 except RuntimeError:

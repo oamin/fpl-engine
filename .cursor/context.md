@@ -44,7 +44,7 @@ Vaastav has `penalties_missed` and `penalties_saved`, not penalties scored. `src
 
 ## 2026/27 benchmark
 
-`python -m src.live.benchmark` runs the published xp free-transfer climb from Gameweek 1 through 5, with an empty chip map. Priors are 2025/26 rows linked by Opta code and stored before this season, then dropped. A later 2026/27 week is not used to fill a Gameweek 1 prior. The club on each row is the club they played for that week. A change of club is a transfer and counts toward the three-player cap. The model scored 263 and ojaminFC scored 350, residual −87. Haaland's Triple Captain added 2 points. See `reports/live_benchmark_2026.md`. The score was not retuned.
+`python -m src.live.benchmark` runs the published xp free-transfer climb from Gameweek 1 through 5, with an empty chip map. Priors are 2025/26 rows linked by Opta code and stored before this season, then dropped. A later 2026/27 week is not used to fill a Gameweek 1 prior. The club on each row is the club they played for that week. A change of club is a transfer and counts toward the three-player cap. The model scored 263 and ojaminFC scored 350, residual −87. Haaland's Triple Captain added 2 points. The same rule started from their Gameweek 1 fifteen scores 327, residual −23. It is 5 ahead after Gameweek 2, then sells João Pedro and Cherki on a hit in Gameweek 3 and finishes 23 behind. Last season's shot share was not shrunk, and no book term was added on top of share times λ. See `reports/live_benchmark_2026.md`. The score was not retuned.
 
 ## Odds
 
