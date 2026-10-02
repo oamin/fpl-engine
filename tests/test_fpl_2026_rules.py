@@ -10,6 +10,8 @@ from src.rules.fpl_2026 import (
     BUDGET_TENTHS,
     OFFICIAL_FORMATIONS,
     ChipWallet,
+    captain_extra_points,
+    validate_chip_map,
     bonus_points,
     cbi_bps,
     defcon_points,
@@ -65,8 +67,9 @@ class RulesTest(unittest.TestCase):
 
     def test_wildcard_keeps_bank(self) -> None:
         self.assertEqual(hit_cost(2, 8, chip="wildcard"), 0)
-        self.assertEqual(rules_advance_ft(3, 8, chip="wildcard"), 4)
-        self.assertEqual(rules_advance_ft(3, 8, chip="free_hit"), 4)
+        self.assertEqual(rules_advance_ft(3, 8, chip="wildcard"), 3)
+        self.assertEqual(rules_advance_ft(2, 0, chip="free_hit"), 2)
+        self.assertEqual(rules_advance_ft(2, 0), 3)
         self.assertEqual(hit_cost(2, 4), 8)
 
     def test_chip_halves_expire(self) -> None:
@@ -83,6 +86,58 @@ class RulesTest(unittest.TestCase):
             half_for_gw(0)
         with self.assertRaises(ValueError):
             ChipWallet().available(39)
+
+    def test_wildcard_and_free_hit_wait_until_gw2(self) -> None:
+        wallet = ChipWallet()
+        self.assertNotIn("wildcard", wallet.available(1))
+        self.assertNotIn("free_hit", wallet.available(1))
+        self.assertIn("bench_boost", wallet.available(1))
+        self.assertIn("triple_captain", wallet.available(1))
+        with self.assertRaises(ValueError):
+            wallet.play(1, "wildcard")
+
+    def test_free_hit_cannot_be_consecutive(self) -> None:
+        wallet = ChipWallet()
+        wallet.play(19, "free_hit")
+        self.assertNotIn("free_hit", wallet.available(20))
+        with self.assertRaises(ValueError):
+            wallet.play(20, "free_hit")
+        wallet.play(21, "free_hit")
+
+    def test_validate_chip_map_rejects_a_bad_plan(self) -> None:
+        self.assertEqual(validate_chip_map(None), {})
+        self.assertEqual(validate_chip_map({}), {})
+        self.assertEqual(validate_chip_map({12: "bench_boost"}), {12: "bench_boost"})
+        with self.assertRaises(ValueError):
+            validate_chip_map({6: "wildcard", 10: "wildcard"})
+        with self.assertRaises(ValueError):
+            validate_chip_map({19: "free_hit", 20: "free_hit"})
+        with self.assertRaises(ValueError):
+            validate_chip_map({4: "not_a_chip"})
+
+    def test_triple_captain_passes_to_the_vice(self) -> None:
+        self.assertEqual(
+            captain_extra_points(5, 4, captain_played=True, vice_played=True),
+            5,
+        )
+        self.assertEqual(
+            captain_extra_points(
+                5, 4, captain_played=True, vice_played=True, chip="triple_captain"
+            ),
+            10,
+        )
+        self.assertEqual(
+            captain_extra_points(
+                5, 4, captain_played=False, vice_played=True, chip="triple_captain"
+            ),
+            8,
+        )
+        self.assertEqual(
+            captain_extra_points(
+                5, 4, captain_played=False, vice_played=False, chip="triple_captain"
+            ),
+            0,
+        )
 
     def test_h1_chip_cannot_be_replayed_in_h1(self) -> None:
         wallet = ChipWallet()

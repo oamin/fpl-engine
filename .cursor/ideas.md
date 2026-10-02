@@ -14,5 +14,5 @@ Stage 34 is complete. agree_min −44 and upside −8 on the 2025/26 transfer cl
 ## Rules gaps
 
 - Full Opta BPS table (goals, assists, playing time, and the rest) is not in the 20 Jul 2026 change note. Only the 2026/27 deltas are coded.
-- Chip-aware backtest: Wildcard keeps banked transfers; Free Hit squad reverts; Bench Boost adds the bench; Triple Captain is ×3. No season runner calls `ChipWallet` yet.
+- Chip mechanics are wired. `run_ft_season(..., chips={gw: name})` plays that week. An empty map plays nothing and does not choose a week. Wildcard and Free Hit spend the bank plus sell prices, not a fresh £100.0m. A kept player's purchase price stays. Free Hit reverts the squad. Bench Boost adds players left out of the final XI after automatic substitutions. Triple Captain is ×3, and a blank captain passes that ×3 to the vice-captain. No chip-timing search.
 - Rescoring historical seasons under 2026/27 BPS needs CBI, save location, and big-chance saves. Do not overwrite Vaastav `total_points` until those fields exist.
