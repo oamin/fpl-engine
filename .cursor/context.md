@@ -34,6 +34,10 @@ Stage 32 put ownership weight 0.5 only inside transfer value. It scored 1840 aga
 
 Stage 34 climbed agree_min, starter, minutes, and upside. Minutes was +118 on 2025/26 and −116 on 2024/25 (1773 vs 1889), with hits 14 against 9. Starter also cleared the screen (+63) and was not the check arm. No winner. See `reports/stage_34_follow.md`.
 
+## Penalty shots
+
+Vaastav has `penalties_missed` and `penalties_saved`, not penalties scored. `src/ingest/understat_penalties.py` adds `penalties_taken`, `penalties_scored`, and `penalty_xg` to the cached gameweek sheets for 2022/23–2025/26. The source is Understat's post-match shot feed (`situation == Penalty`). A shot is written only when the matchday club has exactly one matching player. Misses on those taker rows match Vaastav `penalties_missed` in each of the four seasons. The columns are not a pre-deadline designated-taker list, and `score_xp` is unchanged. See `reports/penalty_sheets.md`.
+
 ## Odds
 
 Free-tier Odds API stays expensive. Prefer snapshots, FPL, and football-data.co.uk. See `.cursor/rules/odds-api-quota.mdc`.
