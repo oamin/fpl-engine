@@ -12,6 +12,7 @@ from src.rules.fpl_2026 import (
     SQUAD_QUOTA,
     ChipWallet,
     advance_ft,
+    captain_extra_points,
     bonus_points,
     cbi_bps,
     defcon_points,
@@ -21,6 +22,7 @@ from src.rules.fpl_2026 import (
     sell_price,
     squad_legal,
     tackled_bps,
+    validate_chip_map,
     xi_legal,
 )
 
@@ -36,6 +38,7 @@ __all__ = [
     "SQUAD_QUOTA",
     "ChipWallet",
     "advance_ft",
+    "captain_extra_points",
     "bonus_points",
     "cbi_bps",
     "defcon_points",
@@ -45,5 +48,6 @@ __all__ = [
     "sell_price",
     "squad_legal",
     "tackled_bps",
+    "validate_chip_map",
     "xi_legal",
 ]

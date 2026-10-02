@@ -1,6 +1,6 @@
 """Stage 19b — FT climb with XI-horizon transfer valuation.
 
-Rules modelled (no chips):
+Rules modelled (chips only when the caller passes a week → chip map):
   - GW1 of the climb: free 15-man build under £100.0m (wildcard-like)
   - Thereafter: 1 FT / GW, stack to 5; extras −4 each
   - Sell price = purchase + ⌊rise/2⌋; full fall to current
@@ -9,6 +9,7 @@ Rules modelled (no chips):
     with current scores carried forward (leakage-free) and blanks → 0.
   - Hold unless best V beats hold by HOLD_EPS (stops FT churn)
   - Scoring: FPL autosubs (0-min starters ← ordered bench) + captain/VC
+  - An empty chip map plays nothing. The map does not choose the week.
 
 Primary scorer: stage-17 ``ridge_global_starters``. Baselines: xp, exp_points.
 
@@ -20,6 +21,7 @@ Writes:
 
 from __future__ import annotations
 
+from copy import deepcopy
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -42,7 +44,15 @@ from src.models.season_climb_budget import (
     pick_squad,
     run_budgeted_season,
 )
-from src.rules.fpl_2026 import HIT_COST, MAX_FT, advance_ft, sell_price
+from src.rules.fpl_2026 import (
+    FREE_TRANSFER_CHIPS,
+    HIT_COST,
+    MAX_FT,
+    advance_ft,
+    captain_extra_points,
+    sell_price,
+    validate_chip_map,
+)
 
 ROOT = Path(__file__).resolve().parents[2]
 PROCESSED = ROOT / "data" / "processed"
@@ -599,8 +609,16 @@ def choose_transfers(
     hold_v = value_of(state, 0)
     if hold_v is None:
         return state, 0, 0
-
-    best_st, best_n, best_hits, best_v = state, 0, 0, hold_v
+    hold_legal = _squad_legal(
+        [str(by_id[pid].position) for pid in state.ids()],
+        [str(by_id[pid].team_norm) for pid in state.ids()],
+    )
+    # A legal hold is the baseline. An illegal hold (a player changed club and
+    # the squad is now over the cap) is not a baseline: any legal squad beats it.
+    if hold_legal:
+        best_st, best_n, best_hits, best_v = state, 0, 0, hold_v
+    else:
+        best_st, best_n, best_hits, best_v = None, 0, 0, -1e18
     max_tx = min(state.ft + MAX_HITS, 3)
 
     # Depth 1: evaluate top score-Δ swaps under full V
@@ -665,6 +683,10 @@ def choose_transfers(
                         val,
                     )
 
+    if not hold_legal:
+        if best_st is None:
+            return state, 0, 0
+        return best_st, best_n, best_hits
     if best_n > 0 and best_v < hold_v + eps:
         return state, 0, 0
     return best_st, best_n, best_hits
@@ -684,6 +706,67 @@ def initial_squad(
     return SquadState(purchase=purchase, bank=max(0, BUDGET - spent), ft=1)
 
 
+def rebuild_squad(state: SquadState, pool: pd.DataFrame, score_col: str) -> SquadState:
+    """Wildcard or Free Hit squad, paid from the bank plus sell prices.
+
+    A kept player's purchase price stays. A new player is bought at the
+    current price. This is not a fresh £100.0m.
+    """
+    df = pool.copy()
+    df["player_id"] = df["player_id"].astype(str)
+    df = df.drop_duplicates("player_id", keep="first")
+    owned = state.ids()
+    missing = owned - set(df["player_id"])
+    if missing:
+        raise RuntimeError("owned players missing from the chip pool")
+    market = {
+        str(r.player_id): _as_int_value(r.value) for r in df.itertuples()
+    }
+    sell = {pid: sell_price(state.purchase[pid], market[pid]) for pid in owned}
+    budget = int(state.bank + sum(sell.values()))
+    df["value"] = [sell[pid] if pid in sell else market[pid] for pid in df["player_id"]]
+    df[score_col] = _fill_score(df, score_col)
+    chosen = pick_squad(df, score_col, budget=budget)
+    purchase: dict[str, int] = {}
+    spent = 0
+    for row in chosen.itertuples():
+        pid = str(row.player_id)
+        if pid in state.purchase:
+            purchase[pid] = state.purchase[pid]
+            spent += sell[pid]
+        else:
+            purchase[pid] = market[pid]
+            spent += market[pid]
+    return SquadState(purchase=purchase, bank=int(budget - spent), ft=state.ft)
+
+
+def _chip_additions(
+    squad_df: pd.DataFrame, banked: dict[str, Any], chip: str
+) -> tuple[float, float]:
+    """Captain extra and bench-boost extra, on top of the XI sum."""
+    mins = {
+        str(r.player_id): float(getattr(r, "minutes") or 0) for r in squad_df.itertuples()
+    }
+    pts = {
+        str(r.player_id): float(getattr(r, "total_points") or 0)
+        for r in squad_df.itertuples()
+    }
+    cap_id = str(banked["captain_id"])
+    vc_id = str(banked["vice_id"])
+    extra = captain_extra_points(
+        pts.get(cap_id, 0.0),
+        pts.get(vc_id, 0.0),
+        captain_played=mins.get(cap_id, 0.0) > 0,
+        vice_played=mins.get(vc_id, 0.0) > 0,
+        chip=chip,
+    )
+    bench = 0.0
+    if chip == "bench_boost":
+        final_ids = set(banked["xi"]["player_id"].astype(str))
+        bench = float(sum(points for pid, points in pts.items() if pid not in final_ids))
+    return extra, bench
+
+
 def run_ft_season(
     feat: pd.DataFrame,
     score_cols: dict[str, str],
@@ -700,10 +783,20 @@ def run_ft_season(
     trace: list[dict[str, Any]] | None = None,
     value_col: str | None = None,
     switch_penalty: float | None = None,
+    chips: dict[int, str] | None = None,
+    opening: SquadState | None = None,
 ) -> pd.DataFrame:
+    """``chips`` maps a gameweek to one chip name. None and {} play nothing.
+
+    ``opening`` is a 15-man squad already owned at the first gameweek.
+    That week is scored with no transfers. Later weeks use the normal rule.
+    """
     rows: list[dict[str, Any]] = []
+    plan = validate_chip_map(chips)
     if roster is None:
         roster = load_vaastav_roster(EVAL_SEASON)
+    if opening is not None and len(opening.purchase) != 15:
+        raise RuntimeError("opening squad must contain 15 players")
 
     roster_by_gw: dict[int, set[str]] = {
         int(g): set(gdf["player_id"].astype(str))
@@ -711,20 +804,36 @@ def run_ft_season(
     }
 
     for method, col in score_cols.items():
-        state: SquadState | None = None
+        state: SquadState | None = deepcopy(opening) if opening is not None else None
         for i, gw in enumerate(gws):
             owned = state.ids() if state else set()
             pool = _gw_pool(feat, roster, gw, owned)
             if pool["position"].nunique() < 4:
                 continue
 
-            if state is None:
+            chip = plan.get(int(gw))
+            restore: SquadState | None = None
+            if state is not None and i == 0 and opening is not None and chip not in FREE_TRANSFER_CHIPS:
+                n_tx, hits = 0, 0
+                ft_before = 0
+            elif state is None:
                 try:
                     state = initial_squad(pool, col)
                 except RuntimeError:
                     break
                 n_tx, hits = 0, 0
                 ft_before = 0
+            elif chip in FREE_TRANSFER_CHIPS:
+                ft_before = state.ft
+                previous = state.ids()
+                if chip == "free_hit":
+                    restore = deepcopy(state)
+                try:
+                    state = rebuild_squad(state, pool, value_col or col)
+                except RuntimeError:
+                    break
+                n_tx = len(state.ids() - previous)
+                hits = 0
             else:
                 ft_before = state.ft
                 new_state, n_tx, hits = choose_transfers(
@@ -759,15 +868,28 @@ def run_ft_season(
                     {
                         "gw": int(gw),
                         "method": f"{method}{method_suffix}",
-                        "xi": xi_intended,
+                        "xi": xi_intended.copy(),
+                        "squad": squad_df.copy(),
+                        "final_xi": banked["xi"].copy(),
                         "captain_id": banked["captain_id"],
+                        "vice_id": banked["vice_id"],
                         "cap_extra": float(banked["cap_extra"]),
                     }
                 )
             form = banked["form"]
-            pts_sum = float(banked["xi_points"])
-            cap_pts = float(banked["cap_extra"])
-            hit_pts = HIT_COST * hits
+            if chip is None:
+                cap_pts = float(banked["cap_extra"])
+                bench_pts = 0.0
+            else:
+                cap_pts, bench_pts = _chip_additions(squad_df, banked, chip)
+            pts_sum = float(banked["xi_points"]) + bench_pts
+            hit_pts = 0.0 if chip in FREE_TRANSFER_CHIPS else float(HIT_COST * hits)
+            if i == 0:
+                ft_after = 1
+            elif chip in FREE_TRANSFER_CHIPS:
+                ft_after = advance_ft(ft_before, 0, chip=chip)
+            else:
+                ft_after = advance_ft(ft_before, n_tx)
             squad_val = float(
                 sum(
                     sell_price(
@@ -789,7 +911,8 @@ def run_ft_season(
                     "n_transfers": n_tx,
                     "hits": hits,
                     "ft_before": ft_before,
-                    "ft_after": 1 if i == 0 else advance_ft(ft_before, n_tx),
+                    "ft_after": ft_after,
+                    "chip": chip,
                     "bank": state.bank,
                     "formation": f"1-{form[0]}-{form[1]}-{form[2]}",
                     "squad_sell_value": squad_val,
@@ -800,10 +923,9 @@ def run_ft_season(
                     "sub_points": float(banked["sub_points"]),
                 }
             )
-            if i == 0:
-                state.ft = 1
-            else:
-                state.ft = advance_ft(ft_before, n_tx)
+            if restore is not None:
+                state = restore
+            state.ft = ft_after
 
     return pd.DataFrame(rows)
 
@@ -862,7 +984,7 @@ def write_report(
     lines = [
         "# Stage 19 — Transfer-constrained season climb",
         "",
-        "FPL rules (chips off):",
+        "FPL rules (chips off unless a week map is passed):",
         "",
         "- **First scored GW:** free 15 under £100.0m (wildcard-like)",
         f"- **Thereafter:** 1 FT / GW, stack to **{MAX_FT}**; extras **−{HIT_COST}** each "

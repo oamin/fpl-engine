@@ -133,13 +133,13 @@ def advance_ft(ft_before: int, n_transfers: int, chip: str | None = None) -> int
 
     Unused transfers roll, capped at 5, then the next gameweek grants one.
     A hit spends the bank down to zero before that grant.
-    Wildcard and Free Hit do not spend banked transfers (treated as zero
-    transfers). Wildcard no longer resets the bank.
+    Wildcard and Free Hit do not spend the bank and do not grant another
+    transfer: two saved free transfers are still two the next gameweek.
     """
     if ft_before < 0 or n_transfers < 0:
         raise ValueError("transfer counts must be non-negative")
     if chip in FREE_TRANSFER_CHIPS:
-        n_transfers = 0
+        return min(MAX_FT, int(ft_before))
     remaining = ft_before - n_transfers if n_transfers <= ft_before else 0
     return min(MAX_FT, remaining + 1)
 
@@ -149,18 +149,30 @@ class ChipWallet:
 
     A chip played in GW1–19 is the first-half copy. The same name played in
     GW20–38 is the second-half copy. An unused first-half chip cannot be
-    played from GW20.
+    played from GW20. Wildcard and Free Hit are not available in GW1.
+    A Free Hit cannot be played in the gameweek after another Free Hit.
     """
 
     def __init__(self) -> None:
         self.used: set[tuple[str, str]] = set()
         self.played_gw: dict[int, str] = {}
 
+    def _free_hit_blocked(self, gw: int) -> bool:
+        return any(
+            played == "free_hit" and abs(int(prev) - int(gw)) == 1
+            for prev, played in self.played_gw.items()
+        )
+
     def available(self, gw: int) -> tuple[str, ...]:
         half = half_for_gw(gw)
-        if gw in self.played_gw:
+        if int(gw) in self.played_gw:
             return ()
-        return tuple(chip for chip in CHIPS if (half, chip) not in self.used)
+        chips = [chip for chip in CHIPS if (half, chip) not in self.used]
+        if int(gw) == 1:
+            chips = [chip for chip in chips if chip not in FREE_TRANSFER_CHIPS]
+        if self._free_hit_blocked(gw):
+            chips = [chip for chip in chips if chip != "free_hit"]
+        return tuple(chips)
 
     def play(self, gw: int, chip: str) -> None:
         if chip not in CHIPS:
@@ -171,11 +183,48 @@ class ChipWallet:
         self.played_gw[int(gw)] = chip
 
 
+def validate_chip_map(chips: Mapping[int, str] | None) -> dict[int, str]:
+    """Check a caller-supplied week → chip map. An empty map plays nothing.
+
+    The map is not a search. Weeks outside 1–38, unknown names, two chips
+    in one week, a repeated chip inside one half, a GW1 wildcard or free
+    hit, and back-to-back free hits all raise.
+    """
+    if not chips:
+        return {}
+    plan = {int(gw): str(chip) for gw, chip in chips.items()}
+    wallet = ChipWallet()
+    for gw in sorted(plan):
+        wallet.play(gw, plan[gw])
+    return plan
+
+
 def captain_multiplier(chip: str | None = None) -> int:
     """Captain points factor. Triple Captain is ×3; otherwise ×2."""
     if chip == "triple_captain":
         return 3
     return 2
+
+
+def captain_extra_points(
+    captain_points: float,
+    vice_points: float,
+    *,
+    captain_played: bool,
+    vice_played: bool,
+    chip: str | None = None,
+) -> float:
+    """Points added on top of the one copy already in the XI.
+
+    A blank captain passes the armband to the vice-captain. Triple Captain
+    triples that effective captain. If neither played, nothing is added.
+    """
+    mult = captain_multiplier(chip)
+    if captain_played:
+        return (mult - 1) * float(captain_points)
+    if vice_played:
+        return (mult - 1) * float(vice_points)
+    return 0.0
 
 
 def squad_legal(

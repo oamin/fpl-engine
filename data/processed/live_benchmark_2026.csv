@@ -1,0 +1,6 @@
+gw,method,mode,xi_points,xi_points_cap,hit_cost,n_transfers,hits,ft_before,ft_after,chip,bank,formation,squad_sell_value,n_eligible,n_autosubs,n_blank_intended,n_blank_final,sub_points
+1,xp_ft,ft,38.0,40.0,0.0,0,0,0,1,,0,1-4-5-1,1000.0,188,0,0,0,0.0
+2,xp_ft,ft,57.0,80.0,0.0,1,0,1,1,,5,1-4-5-1,989.0,186,1,1,0,0.0
+3,xp_ft,ft,38.0,46.0,0.0,1,0,1,1,,0,1-3-4-3,983.0,189,2,2,0,8.0
+4,xp_ft,ft,52.0,59.0,0.0,1,0,1,1,,0,1-4-4-2,964.0,220,2,2,0,9.0
+5,xp_ft,ft,36.0,38.0,0.0,0,0,1,2,,0,1-4-4-2,947.0,212,2,2,0,7.0

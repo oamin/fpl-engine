@@ -1,18 +1,12 @@
 {
-  "updated": "2026-10-01",
-  "milestone": "stage-34-follow",
-  "status": "complete",
-  "summary": "Minutes was +118 on the 2025/26 transfer climb and -116 on 2024/25. Starter was +63 on the screen and was not checked. No winner.",
-  "screen": [
-    {"method": "agree_min", "delta": -44},
-    {"method": "starter", "delta": 63},
-    {"method": "minutes", "delta": 118},
-    {"method": "upside", "delta": -8}
-  ],
-  "check": {"method": "minutes", "season": "2024-25", "delta": -116},
+  "updated": "2026-10-02",
+  "milestone": "live-benchmark-from-entry",
+  "status": "reviewed",
+  "summary": "The published xp climb started from ojaminFC's Gameweek 1 fifteen scores 327 against their 350, residual −23. It is 5 ahead after Gameweek 2, then sells João Pedro and Cherki on a 4-point hit and finishes 23 behind. Shrinking last season's shot share, and adding a book term on top of share times λ, was rejected. No player-prop file exists. No retune.",
   "artifacts": [
-    "src/models/stage_34_follow.py",
-    "reports/stage_34_follow.md",
-    "data/processed/stage_34_follow.csv"
+    "reports/live_benchmark_2026.md",
+    "data/processed/live_benchmark_2026_from_entry.csv",
+    "src/live/benchmark.py",
+    "src/models/season_climb_ft.py"
   ]
 }
