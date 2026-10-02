@@ -228,6 +228,32 @@ def _xi_score_sum(squad_df: pd.DataFrame, score_col: str) -> float:
     return float(xi[score_col].sum())
 
 
+def _horizon_piece(
+    squad_df: pd.DataFrame,
+    score_col: str,
+    bench_weight: float | None,
+) -> float:
+    """XI sum at one horizon step. Optional weight on the players left out.
+
+    ``None`` or ``0`` is the XI sum alone, the same path as before.
+    A non-zero weight is applied only after ``pick_xi`` succeeds. A failed
+    XI stays −1e9 and does not add a bench term.
+    """
+    if bench_weight is None or float(bench_weight) == 0.0:
+        return _xi_score_sum(squad_df, score_col)
+    if len(squad_df) < 11:
+        return -1e9
+    df = squad_df.copy()
+    df[score_col] = _fill_score(df, score_col)
+    try:
+        xi, _form = pick_xi(df, score_col)
+    except RuntimeError:
+        return -1e9
+    xi_ids = set(xi["player_id"].astype(str))
+    bench = df.loc[~df["player_id"].astype(str).isin(xi_ids)]
+    return float(xi[score_col].sum()) + float(bench_weight) * float(bench[score_col].sum())
+
+
 def precision_weight(
     sigma0: float,
     h: int,
@@ -261,8 +287,13 @@ def transfer_value(
     blend_gamma: float | None = None,
     blend_floor: float = 0.5,
     blend_schedule: str = "gamma",
+    bench_weight: float | None = None,
 ) -> float:
-    """V = Σ γ^h XI_score_h − 4·hits; optional σ / FDR / flow / xp–prior blend."""
+    """V = Σ γ^h XI_score_h − 4·hits; optional σ / FDR / flow / xp–prior blend.
+
+    ``bench_weight`` is applied inside each horizon step, after the legal XI
+    is chosen on that step's scores. The switch penalty is not part of V.
+    """
     from src.models.xp_engine import blend_xp_exp
 
     h_len = HORIZON if horizon is None else int(horizon)
@@ -326,7 +357,7 @@ def transfer_value(
                 }
             )
         sdf = pd.DataFrame(rows)
-        v += (GAMMA**h) * _xi_score_sum(sdf, score_col)
+        v += (GAMMA**h) * _horizon_piece(sdf, score_col, bench_weight)
     return v
 
 
@@ -532,6 +563,7 @@ def choose_transfers(
     blend_schedule: str = "gamma",
     hold_eps: float | None = None,
     switch_penalty: float | None = None,
+    bench_weight: float | None = None,
 ) -> tuple[SquadState, int, int]:
     """Argmax V over hold / 1-swaps / optional structural 2-transfers."""
     eps = HOLD_EPS if hold_eps is None else float(hold_eps)
@@ -593,6 +625,7 @@ def choose_transfers(
             blend_gamma=blend_gamma if blend_schedule != "team_fade" else 0.9,
             blend_floor=blend_floor,
             blend_schedule=blend_schedule,
+            bench_weight=bench_weight,
         )
         return base - pen * n_tx
 
@@ -700,6 +733,7 @@ def run_ft_season(
     trace: list[dict[str, Any]] | None = None,
     value_col: str | None = None,
     switch_penalty: float | None = None,
+    bench_weight: float | None = None,
 ) -> pd.DataFrame:
     rows: list[dict[str, Any]] = []
     if roster is None:
@@ -741,6 +775,7 @@ def run_ft_season(
                     blend_schedule=blend_schedule,
                     hold_eps=hold_eps,
                     switch_penalty=switch_penalty,
+                    bench_weight=bench_weight,
                 )
                 state = new_state
 
