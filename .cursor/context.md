@@ -34,6 +34,8 @@ Stage 32 put ownership weight 0.5 only inside transfer value. It scored 1840 aga
 
 Stage 34 climbed agree_min, starter, minutes, and upside. Minutes was +118 on 2025/26 and −116 on 2024/25 (1773 vs 1889), with hits 14 against 9. Starter also cleared the screen (+63) and was not the check arm. No winner. See `reports/stage_34_follow.md`.
 
+Stage 39 put bench weight 0.25 only inside transfer value. The fielded XI stayed on score_xp. 2025/26 was 1926 against paired xp_ft 1868 (+58), both inside the opening-squad band 1839–1972, so that delta is not an edge. Hits were 7 against 3. 2024/25 was run and scored 1737 against 1889 (−152), with hits 14 against 9. Not carried forward. The weight stays 0.25. See `reports/stage_39_bench.md`.
+
 ## Odds
 
 Free-tier Odds API stays expensive. Prefer snapshots, FPL, and football-data.co.uk. See `.cursor/rules/odds-api-quota.mdc`.

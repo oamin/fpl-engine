@@ -183,22 +183,48 @@ def write_report(path: Path, table: pd.DataFrame, ran_check: bool) -> None:
     both_clear = bool(arm["pass_34"]) and ran_check and bool(
         table.loc[(table["role"] == "check") & (table["method"] == "bench_w_ft"), "pass_34"].iloc[0]
     )
+    lines.extend(["", "## Diagnostics", ""])
+    lines.append(
+        f"Screen hits {float(xp['hits']):.0f} to {float(arm['hits']):.0f}, "
+        f"transfers {float(xp['transfers']):.0f} to {float(arm['transfers']):.0f}."
+    )
+    lines.append(
+        f"Screen points from substitutes {float(xp['sub_points']):.0f} to {float(arm['sub_points']):.0f}. "
+        f"Unfilled XI slots after substitutes {float(xp['blank_final']):.0f} to {float(arm['blank_final']):.0f}."
+    )
+    if ran_check:
+        check_xp = table.loc[(table["role"] == "check") & (table["method"] == "xp_ft")].iloc[0]
+        check_arm = table.loc[(table["role"] == "check") & (table["method"] == "bench_w_ft")].iloc[0]
+        lines.append(
+            f"2024/25 hits {float(check_xp['hits']):.0f} to {float(check_arm['hits']):.0f}, "
+            f"transfers {float(check_xp['transfers']):.0f} to {float(check_arm['transfers']):.0f}, "
+            f"points from substitutes {float(check_xp['sub_points']):.0f} to {float(check_arm['sub_points']):.0f}, "
+            f"unfilled XI slots after substitutes {float(check_xp['blank_final']):.0f} to {float(check_arm['blank_final']):.0f}."
+        )
+    lines.append(
+        "The pre-registered failure cases stay open. "
+        "Extra hits are consistent with paying to fix bench players. "
+        "The same weight on all four bench slots does not separate a playing substitute from a dead one. "
+        "Nothing in the rule stops the search from spending starting-XI money on the bench."
+    )
     lines.extend(["", "## Result", ""])
-    if both_clear and not (
-        _in_opening_band(float(arm["xi_points"])) and _in_opening_band(float(xp["xi_points"]))
-    ):
+    in_band = _in_opening_band(float(arm["xi_points"])) and _in_opening_band(float(xp["xi_points"]))
+    if in_band:
+        lines.append(
+            f"Both 2025/26 totals sit in 1839 to 1972, so the {float(arm['delta_vs_xp']):+.0f} screen delta is not an edge."
+        )
+    if both_clear and not in_band:
         lines.append(
             "bench_w_ft is the best of this batch. It cleared +34 on both seasons that were run. "
             "That is the batch label, not a confirmed edge."
         )
     elif both_clear:
         lines.append(
-            "bench_w_ft cleared +34 on both seasons. Both 2025/26 totals sit in the opening-squad band, "
-            "so the delta is not an edge. It is still the only method in the batch."
+            "bench_w_ft cleared +34 on both seasons. It is the only method in the batch, and the screen delta is not an edge."
         )
     else:
         lines.append(
-            "bench_w_ft is the only method in this batch. It is not carried forward."
+            "bench_w_ft is the best of this batch, and the only method in it. It is not carried forward. The weight stays 0.25."
         )
     lines.append("")
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")

@@ -1,0 +1,5 @@
+season,role,method,bench_weight,delta_vs_xp,transfers,pass_34,clear_loss,xi_points,mean_transfers,hits,blank_intended,blank_final,sub_points,n_gw
+2025-26,screen,xp_ft,0.0,0.0,35.0,False,False,1868.0,1.0294117647058822,3.0,52.0,8.0,131.0,34.0
+2025-26,screen,bench_w_ft,0.25,58.0,39.0,True,False,1926.0,1.1470588235294117,7.0,46.0,2.0,159.0,34.0
+2024-25,check,xp_ft,0.0,0.0,42.0,False,False,1889.0,1.2352941176470589,9.0,54.0,11.0,146.0,34.0
+2024-25,check,bench_w_ft,0.25,-152.0,47.0,False,True,1737.0,1.3823529411764706,14.0,52.0,13.0,107.0,34.0

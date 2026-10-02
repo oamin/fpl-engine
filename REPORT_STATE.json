@@ -1,18 +1,32 @@
 {
-  "updated": "2026-10-01",
-  "milestone": "stage-34-follow",
+  "updated": "2026-10-02",
+  "milestone": "stage-39-bench",
   "status": "complete",
-  "summary": "Minutes was +118 on the 2025/26 transfer climb and -116 on 2024/25. Starter was +63 on the screen and was not checked. No winner.",
-  "screen": [
-    {"method": "agree_min", "delta": -44},
-    {"method": "starter", "delta": 63},
-    {"method": "minutes", "delta": 118},
-    {"method": "upside", "delta": -8}
-  ],
-  "check": {"method": "minutes", "season": "2024-25", "delta": -116},
+  "method": "bench_w_ft",
+  "weight": 0.25,
+  "summary": "bench_w_ft was +58 on 2025/26 (1926 vs paired xp_ft 1868) and -152 on 2024/25 (1737 vs 1889). Both 2025/26 totals sit in the opening-squad band 1839 to 1972, so the screen delta is not an edge. Hits rose on both seasons. Not carried forward.",
+  "screen": {
+    "season": "2025-26",
+    "xp_ft": {"points": 1868, "transfers": 35, "hits": 3},
+    "bench_w_ft": {"points": 1926, "transfers": 39, "hits": 7, "delta": 58},
+    "pass_34": true,
+    "clear_loss": false,
+    "in_opening_band": true
+  },
+  "check": {
+    "season": "2024-25",
+    "ran": true,
+    "xp_ft": {"points": 1889, "transfers": 42, "hits": 9},
+    "bench_w_ft": {"points": 1737, "transfers": 47, "hits": 14, "delta": -152},
+    "pass_34": false
+  },
+  "best_of_batch": "bench_w_ft",
+  "carried_forward": false,
   "artifacts": [
-    "src/models/stage_34_follow.py",
-    "reports/stage_34_follow.md",
-    "data/processed/stage_34_follow.csv"
+    "src/models/stage_39_bench.py",
+    "src/models/season_climb_ft.py",
+    "tests/test_stage_39_bench.py",
+    "reports/stage_39_bench.md",
+    "data/processed/stage_39_bench.csv"
   ]
 }
