@@ -1,11 +1,15 @@
 {
   "updated": "2026-10-02",
   "milestone": "live-modeller",
-  "status": "in_progress",
-  "summary": "Chip mechanics and penalty sheets are both on this branch. The live modeller is the next slice: FPL bootstrap, a required Gemini minutes file, odds from a snapshot only, and the locked chip policy. Published xp_ft is not rerun.",
+  "status": "reviewed",
+  "summary": "The live planner collects the free FPL slate and refuses to pick a team without a Gemini minutes file. Odds stay on a snapshot. Captain, bench, and the official formations including 5-2-3 are wired. Chips follow the expected-points policy for blanks and doubles. The GW6 slate is a single gameweek, so no chip is played. Published xp_ft was not rerun.",
   "artifacts": [
-    "src/rules/fpl_2026.py",
-    "src/models/season_climb_ft.py",
-    "src/ingest/understat_penalties.py"
+    "src/live/fpl_snapshot.py",
+    "src/live/xmi.py",
+    "src/live/odds.py",
+    "src/live/policy.py",
+    "src/live/plan.py",
+    "tests/test_live_modeller.py",
+    "reports/live_modeller.md"
   ]
 }

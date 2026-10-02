@@ -71,13 +71,23 @@ def build_scores() -> pd.DataFrame:
     return feat
 
 
-def pick_xi(gw_df: pd.DataFrame, score_col: str) -> tuple[pd.DataFrame, tuple[int, int, int]]:
-    """Pick best formation XI by score_col. Returns selected rows + formation."""
+def pick_xi(
+    gw_df: pd.DataFrame,
+    score_col: str,
+    formations: list[tuple[int, int, int]] | None = None,
+) -> tuple[pd.DataFrame, tuple[int, int, int]]:
+    """Pick best formation XI by score_col. Returns selected rows + formation.
+
+    The default list is the historical climb list, which omits 5-2-3.
+    A live plan passes the official list instead. That does not change
+    the published climb.
+    """
+    forms = FORMATIONS if formations is None else formations
     best_pts_proxy = -1.0
     best_sel: pd.DataFrame | None = None
-    best_form = FORMATIONS[0]
+    best_form = forms[0]
 
-    for n_def, n_mid, n_fwd in FORMATIONS:
+    for n_def, n_mid, n_fwd in forms:
         gkp = gw_df.loc[gw_df["position"] == "GKP"].nlargest(1, score_col)
         deff = gw_df.loc[gw_df["position"] == "DEF"].nlargest(n_def, score_col)
         mid = gw_df.loc[gw_df["position"] == "MID"].nlargest(n_mid, score_col)
