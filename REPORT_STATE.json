@@ -1,15 +1,14 @@
 {
   "updated": "2026-10-02",
-  "milestone": "live-modeller",
+  "milestone": "live-benchmark-2026",
   "status": "reviewed",
-  "summary": "ojaminFC (entry 2632584) is backfilled from the public FPL API through GW5. Opening squad is the GW1 fifteen. Triple Captain was played in GW1. One free transfer and £1.5m bank roll into GW6. GW6 picks are not published. Published xp_ft was not rerun.",
+  "summary": "Published xp free-transfer climb for 2026/27 GW1–5 scored 263. ojaminFC scored 350. Residual −87. Haaland's Triple Captain added 2 points. Ndiaye's transfer to Manchester City is treated as a club change, and the climb sold O'Reilly to stay at three City players. No retune.",
   "artifacts": [
-    "src/live/fpl_snapshot.py",
-    "src/live/xmi.py",
-    "src/live/odds.py",
-    "src/live/policy.py",
-    "src/live/plan.py",
-    "tests/test_live_modeller.py",
-    "reports/live_modeller.md"
+    "src/live/benchmark.py",
+    "src/live/entry.py",
+    "reports/live_benchmark_2026.md",
+    "data/processed/live_benchmark_2026.csv",
+    "data/processed/live_benchmark_2026_picks.csv",
+    "data/entry/2632584.json"
   ]
 }

@@ -171,6 +171,32 @@ def build_entry(
     }
 
 
+def stamp_matchday_teams(
+    payload: dict[str, Any], clubs: dict[tuple[int, int], str]
+) -> dict[str, Any]:
+    """Use the club a player played for that week.
+
+    The bootstrap club is the current one. A mid-season transfer leaves the
+    old club on earlier gameweeks. ``clubs`` maps ``(element id, gw)`` to the
+    short name. A week with no appearance keeps the stored club.
+    """
+    out = json.loads(json.dumps(payload))
+    for week in out.get("gameweeks") or []:
+        gw = int(week["gw"])
+        for group in ("xi", "bench"):
+            for player in week.get(group) or []:
+                club = clubs.get((int(player["id"]), gw))
+                if club:
+                    player["team"] = club
+    gw1 = next((week for week in out.get("gameweeks") or [] if int(week["gw"]) == 1), None)
+    if gw1 is not None and out.get("opening_squad"):
+        by_id = {int(p["id"]): p["team"] for p in gw1["xi"] + gw1["bench"]}
+        for player in out["opening_squad"]:
+            if int(player["id"]) in by_id:
+                player["team"] = by_id[int(player["id"])]
+    return out
+
+
 def _slots(
     picks: list[dict[str, Any]], names: dict[int, dict[str, str]]
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]], str, str]:

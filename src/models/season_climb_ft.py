@@ -609,8 +609,16 @@ def choose_transfers(
     hold_v = value_of(state, 0)
     if hold_v is None:
         return state, 0, 0
-
-    best_st, best_n, best_hits, best_v = state, 0, 0, hold_v
+    hold_legal = _squad_legal(
+        [str(by_id[pid].position) for pid in state.ids()],
+        [str(by_id[pid].team_norm) for pid in state.ids()],
+    )
+    # A legal hold is the baseline. An illegal hold (a player changed club and
+    # the squad is now over the cap) is not a baseline: any legal squad beats it.
+    if hold_legal:
+        best_st, best_n, best_hits, best_v = state, 0, 0, hold_v
+    else:
+        best_st, best_n, best_hits, best_v = None, 0, 0, -1e18
     max_tx = min(state.ft + MAX_HITS, 3)
 
     # Depth 1: evaluate top score-Δ swaps under full V
@@ -675,6 +683,10 @@ def choose_transfers(
                         val,
                     )
 
+    if not hold_legal:
+        if best_st is None:
+            return state, 0, 0
+        return best_st, best_n, best_hits
     if best_n > 0 and best_v < hold_v + eps:
         return state, 0, 0
     return best_st, best_n, best_hits
@@ -846,8 +858,11 @@ def run_ft_season(
                     {
                         "gw": int(gw),
                         "method": f"{method}{method_suffix}",
-                        "xi": xi_intended,
+                        "xi": xi_intended.copy(),
+                        "squad": squad_df.copy(),
+                        "final_xi": banked["xi"].copy(),
                         "captain_id": banked["captain_id"],
+                        "vice_id": banked["vice_id"],
                         "cap_extra": float(banked["cap_extra"]),
                     }
                 )

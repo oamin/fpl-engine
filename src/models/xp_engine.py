@@ -223,7 +223,15 @@ def add_market_pots(df: pd.DataFrame) -> pd.DataFrame:
     return out
 
 
-def add_player_priors(df: pd.DataFrame) -> pd.DataFrame:
+def add_player_priors(
+    df: pd.DataFrame, fill_from: pd.DataFrame | None = None
+) -> pd.DataFrame:
+    """Shift-1 priors. ``fill_from`` limits NaN fills to that frame.
+
+    The default uses the whole input, which is the historical season path.
+    A partial season passes last season's rows so a Gameweek 1 NaN does not
+    take its position mean from later weeks of the season being scored.
+    """
     out = df.sort_values(["player_id", "gw", "date"], kind="mergesort").copy()
     g = out.groupby("player_id", sort=False)
     out["n_prior"] = g.cumcount()
@@ -242,8 +250,12 @@ def add_player_priors(df: pd.DataFrame) -> pd.DataFrame:
         ("exp_xA", "xA"),
         ("exp_defcon_hit", "defcon_hit"),
     ):
-        pos_mean = out.groupby("position")[src].transform("mean")
-        out[col] = out[col].fillna(pos_mean)
+        if fill_from is None:
+            pos_mean = out.groupby("position")[src].transform("mean")
+            out[col] = out[col].fillna(pos_mean)
+        else:
+            pos_mean = fill_from.groupby("position")[src].mean()
+            out[col] = out[col].fillna(out["position"].map(pos_mean))
 
     # Team expanding attack (sum of player xG per team-fixture, then team expanding mean)
     played = out.loc[out["minutes"] > 0]
@@ -254,16 +266,34 @@ def add_player_priors(df: pd.DataFrame) -> pd.DataFrame:
     tg = team_fix.groupby("team_norm", sort=False)
     team_fix["exp_team_xg"] = tg["team_xg"].transform(_exp_mean)
     team_fix["exp_team_xa"] = tg["team_xa"].transform(_exp_mean)
-    team_fix["exp_team_xg"] = team_fix["exp_team_xg"].fillna(team_fix["team_xg"].mean())
-    team_fix["exp_team_xa"] = team_fix["exp_team_xa"].fillna(team_fix["team_xa"].mean())
+    if fill_from is None:
+        team_fix["exp_team_xg"] = team_fix["exp_team_xg"].fillna(team_fix["team_xg"].mean())
+        team_fix["exp_team_xa"] = team_fix["exp_team_xa"].fillna(team_fix["team_xa"].mean())
+    else:
+        played_fill = fill_from.loc[
+            pd.to_numeric(fill_from["minutes"], errors="coerce").fillna(0) > 0
+        ]
+        prior_teams = played_fill.groupby(
+            ["team_norm", "fixture_id"], as_index=False
+        ).agg(team_xg=("xG", "sum"), team_xa=("xA", "sum"))
+        team_fix["exp_team_xg"] = team_fix["exp_team_xg"].fillna(
+            float(prior_teams["team_xg"].mean()) if len(prior_teams) else np.nan
+        )
+        team_fix["exp_team_xa"] = team_fix["exp_team_xa"].fillna(
+            float(prior_teams["team_xa"].mean()) if len(prior_teams) else np.nan
+        )
 
     out = out.merge(
         team_fix[["team_norm", "fixture_id", "exp_team_xg", "exp_team_xa"]],
         on=["team_norm", "fixture_id"],
         how="left",
     )
-    out["exp_team_xg"] = out["exp_team_xg"].fillna(out["exp_xG"].mean() * 8)
-    out["exp_team_xa"] = out["exp_team_xa"].fillna(out["exp_xA"].mean() * 8)
+    if fill_from is None:
+        out["exp_team_xg"] = out["exp_team_xg"].fillna(out["exp_xG"].mean() * 8)
+        out["exp_team_xa"] = out["exp_team_xa"].fillna(out["exp_xA"].mean() * 8)
+    else:
+        out["exp_team_xg"] = out["exp_team_xg"].fillna(float(fill_from["xG"].mean()) * 8)
+        out["exp_team_xa"] = out["exp_team_xa"].fillna(float(fill_from["xA"].mean()) * 8)
 
     out["share_xG"] = (out["exp_xG"] / out["exp_team_xg"].replace(0, np.nan)).clip(0, 1)
     out["share_xA"] = (out["exp_xA"] / out["exp_team_xa"].replace(0, np.nan)).clip(0, 1)

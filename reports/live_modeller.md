@@ -28,3 +28,5 @@ The score itself is still an input. This slice does not build λ, and it does no
 ## ojaminFC
 
 Entry `2632584` is backfilled in `data/entry/2632584.json`. Gameweek 1 is the opening 15. Five weeks are played, 350 points, rank 746,666. Triple Captain was used in Gameweek 1 on Haaland. Wildcard, Free Hit, and Bench Boost remain for this half. The side that rolls into Gameweek 6 is the Gameweek 5 squad, with 1 free transfer and £1.5m in the bank. Gameweek 6 picks are not on the public API yet.
+
+The published xp climb over those five weeks scores 263. The residual against 350 is −87. Haaland scored 2 in Gameweek 1, so the Triple Captain added 2 points over a normal captain. Ndiaye moved from Everton to Manchester City before Gameweek 3, and that transfer is what made the climb sell O'Reilly. Martinez played Gameweek 1 for Aston Villa. See `reports/live_benchmark_2026.md`.

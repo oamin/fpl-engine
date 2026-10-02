@@ -4,7 +4,13 @@ from __future__ import annotations
 
 import unittest
 
-from src.live.entry import build_entry, chip_name, chips_remaining, roll_free_transfers
+from src.live.entry import (
+    build_entry,
+    chip_name,
+    chips_remaining,
+    roll_free_transfers,
+    stamp_matchday_teams,
+)
 
 
 def _pick(element: int, position: int, captain: bool = False, vice: bool = False) -> dict:
@@ -81,6 +87,30 @@ class BuildTest(unittest.TestCase):
         self.assertEqual(payload["gameweeks"][0]["captain"], "Captain")
         self.assertEqual(payload["ft_for_next"], 1)
         self.assertEqual(payload["chips_played"], [{"gw": 1, "chip": "triple_captain"}])
+
+    def test_matchday_club_replaces_the_current_club(self) -> None:
+        payload = {
+            "gameweeks": [
+                {
+                    "gw": 1,
+                    "xi": [{"id": 28, "name": "Martinez", "position": "GKP", "team": "CHE", "slot": 1}],
+                    "bench": [],
+                },
+                {
+                    "gw": 2,
+                    "xi": [{"id": 28, "name": "Martinez", "position": "GKP", "team": "CHE", "slot": 1}],
+                    "bench": [],
+                },
+            ],
+            "opening_squad": [
+                {"id": 28, "name": "Martinez", "position": "GKP", "team": "CHE", "slot": 1}
+            ],
+        }
+        stamped = stamp_matchday_teams(payload, {(28, 1): "AVL"})
+        self.assertEqual(stamped["gameweeks"][0]["xi"][0]["team"], "AVL")
+        self.assertEqual(stamped["gameweeks"][1]["xi"][0]["team"], "CHE")
+        self.assertEqual(stamped["opening_squad"][0]["team"], "AVL")
+        self.assertEqual(payload["gameweeks"][0]["xi"][0]["team"], "CHE")
 
 
 if __name__ == "__main__":

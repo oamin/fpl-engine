@@ -42,6 +42,10 @@ Vaastav has `penalties_missed` and `penalties_saved`, not penalties scored. `src
 
 `src/live/` collects the free FPL bootstrap and fixtures for the next deadline. Expected minutes arrive as a `player_id, gw, xmi` file; a missing file picks no team and does not use the historical rolling minutes. Odds are a snapshot already on disk. The Odds API is not called. Captain and bench follow the supplied score. The XI list is the official one, including 5-2-3, and the historical climb list is unchanged. The chip rule is in `src/live/policy.py`. As of the GW6 deadline on 10 Oct 2026 the slate is a single gameweek, so that rule plays no chip until a minutes file and a score exist.
 
+## 2026/27 benchmark
+
+`python -m src.live.benchmark` runs the published xp free-transfer climb from Gameweek 1 through 5, with an empty chip map. Priors are 2025/26 rows linked by Opta code and stored before this season, then dropped. A later 2026/27 week is not used to fill a Gameweek 1 prior. The club on each row is the club they played for that week. A change of club is a transfer and counts toward the three-player cap. The model scored 263 and ojaminFC scored 350, residual −87. Haaland's Triple Captain added 2 points. See `reports/live_benchmark_2026.md`. The score was not retuned.
+
 ## Odds
 
 Free-tier Odds API stays expensive. Prefer snapshots, FPL, and football-data.co.uk. See `.cursor/rules/odds-api-quota.mdc`.
