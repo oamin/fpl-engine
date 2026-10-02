@@ -1,12 +1,11 @@
 {
   "updated": "2026-10-02",
-  "milestone": "understat-penalties",
-  "status": "reviewed",
-  "summary": "Understat penalty shots are on the 2022/23–2025/26 sheets. Gemini parked using them inside xp_goals: Vaastav xG already includes penalties, a second term double-counts, and the goal residual is conversion variance. No fast-XI screen. score_xp unchanged.",
+  "milestone": "live-modeller",
+  "status": "in_progress",
+  "summary": "Chip mechanics and penalty sheets are both on this branch. The live modeller is the next slice: FPL bootstrap, a required Gemini minutes file, odds from a snapshot only, and the locked chip policy. Published xp_ft is not rerun.",
   "artifacts": [
-    "src/ingest/understat_penalties.py",
-    "tests/test_understat_penalties.py",
-    "reports/penalty_sheets.md",
-    "data/processed/understat_penalty_shots.csv"
+    "src/rules/fpl_2026.py",
+    "src/models/season_climb_ft.py",
+    "src/ingest/understat_penalties.py"
   ]
 }
