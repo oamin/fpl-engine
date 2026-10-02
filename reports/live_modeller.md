@@ -24,3 +24,7 @@ Chips use expected points for the current half. A chip is played this week only 
 - Wildcard and Free Hit stay illegal in GW1. Free Hit cannot be played in consecutive weeks. Bench Boost in GW1 is legal.
 
 The score itself is still an input. This slice does not build λ, and it does not pick a squad until the minutes file is present.
+
+## ojaminFC
+
+Entry `2632584` is backfilled in `data/entry/2632584.json`. Gameweek 1 is the opening 15. Five weeks are played, 350 points, rank 746,666. Triple Captain was used in Gameweek 1 on Haaland. Wildcard, Free Hit, and Bench Boost remain for this half. The side that rolls into Gameweek 6 is the Gameweek 5 squad, with 1 free transfer and £1.5m in the bank. Gameweek 6 picks are not on the public API yet.

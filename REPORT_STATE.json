@@ -2,7 +2,7 @@
   "updated": "2026-10-02",
   "milestone": "live-modeller",
   "status": "reviewed",
-  "summary": "The live planner collects the free FPL slate and refuses to pick a team without a Gemini minutes file. Odds stay on a snapshot. Captain, bench, and the official formations including 5-2-3 are wired. Chips follow the expected-points policy for blanks and doubles. The GW6 slate is a single gameweek, so no chip is played. Published xp_ft was not rerun.",
+  "summary": "ojaminFC (entry 2632584) is backfilled from the public FPL API through GW5. Opening squad is the GW1 fifteen. Triple Captain was played in GW1. One free transfer and £1.5m bank roll into GW6. GW6 picks are not published. Published xp_ft was not rerun.",
   "artifacts": [
     "src/live/fpl_snapshot.py",
     "src/live/xmi.py",
