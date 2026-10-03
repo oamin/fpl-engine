@@ -329,17 +329,33 @@ def opening_pots_for_sheet(
     frame = frame.dropna(subset=["kickoff_time", "team", "gw"])
     frame["kickoff_time"] = frame["kickoff_time"].astype(str)
     home_flag = frame["was_home"].astype(str).str.lower().isin(["true", "1"])
-    homes = (
-        frame.loc[home_flag, ["kickoff_time", "team", "gw"]]
-        .drop_duplicates("kickoff_time")
-        .rename(columns={"team": "home"})
-    )
-    aways = (
-        frame.loc[~home_flag, ["kickoff_time", "team"]]
-        .drop_duplicates("kickoff_time")
-        .rename(columns={"team": "away"})
-    )
-    matched = homes.merge(aways, on="kickoff_time", how="inner").sort_values("kickoff_time")
+    # Several matches share a Saturday kickoff. Pairing on the time alone
+    # keeps one of them. A fixture id pairs the two clubs in that match.
+    if "fixture" in frame.columns and frame["fixture"].notna().any():
+        homes = (
+            frame.loc[home_flag, ["fixture", "kickoff_time", "team", "gw"]]
+            .drop_duplicates("fixture")
+            .rename(columns={"team": "home"})
+        )
+        aways = (
+            frame.loc[~home_flag, ["fixture", "team"]]
+            .drop_duplicates("fixture")
+            .rename(columns={"team": "away"})
+        )
+        matched = homes.merge(aways, on="fixture", how="inner")
+    else:
+        homes = (
+            frame.loc[home_flag, ["kickoff_time", "team", "gw"]]
+            .drop_duplicates("kickoff_time")
+            .rename(columns={"team": "home"})
+        )
+        aways = (
+            frame.loc[~home_flag, ["kickoff_time", "team"]]
+            .drop_duplicates("kickoff_time")
+            .rename(columns={"team": "away"})
+        )
+        matched = homes.merge(aways, on="kickoff_time", how="inner")
+    matched = matched.sort_values("kickoff_time")
     names = sorted(set(matched["home"]).union(set(matched["away"])))
     id_of = {name: i + 1 for i, name in enumerate(names)}
     fixtures = [

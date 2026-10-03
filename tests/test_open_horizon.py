@@ -177,6 +177,46 @@ class OpenHorizonTests(unittest.TestCase):
         self.assertGreater(pots[(4, "chelsea")][0]["lam_scored"], 2.2)
         self.assertLess(pots[(4, "hull")][0]["lam_scored"], 1.0)
 
+    def test_two_matches_at_one_kickoff_both_keep_a_price(self) -> None:
+        odds = pd.DataFrame(
+            [
+                {
+                    "Date": "12/08/2023",
+                    "HomeTeam": "Chelsea",
+                    "AwayTeam": "Luton",
+                    "AvgH": 1.30,
+                    "AvgD": 5.5,
+                    "AvgA": 9.0,
+                    "Avg>2.5": 1.5,
+                    "Avg<2.5": 2.5,
+                },
+                {
+                    "Date": "12/08/2023",
+                    "HomeTeam": "Brighton",
+                    "AwayTeam": "Burnley",
+                    "AvgH": 1.60,
+                    "AvgD": 4.0,
+                    "AvgA": 5.5,
+                    "Avg>2.5": 1.7,
+                    "Avg<2.5": 2.1,
+                },
+            ]
+        )
+        kick = "2023-08-12T14:00:00Z"
+        sheet = pd.DataFrame(
+            [
+                {"fixture": 1, "gw": 1, "kickoff_time": kick, "team": "Chelsea", "was_home": True},
+                {"fixture": 1, "gw": 1, "kickoff_time": kick, "team": "Luton", "was_home": False},
+                {"fixture": 2, "gw": 1, "kickoff_time": kick, "team": "Brighton", "was_home": True},
+                {"fixture": 2, "gw": 1, "kickoff_time": kick, "team": "Burnley", "was_home": False},
+            ]
+        )
+        pots = opening_pots_for_sheet(odds, sheet)
+        self.assertIn((1, "chelsea"), pots)
+        self.assertIn((1, "brighton"), pots)
+        self.assertIn((1, "luton"), pots)
+        self.assertIn((1, "burnley"), pots)
+
     def test_step_scores_replace_the_frozen_week(self) -> None:
         spec = (
             [("g1", "GKP"), ("g2", "GKP")]

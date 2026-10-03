@@ -1,15 +1,12 @@
 {
   "updated": "2026-10-03",
-  "milestone": "plan-diagnostics",
+  "milestone": "open-horizon-screen",
   "status": "reviewed",
-  "summary": "A missing score_xp is now 0, not the price. Gemini kept that fill. Gameweeks 1-5 from the same opening fifteen move from 313 to 336 against ojaminFC's 350. The remaining -14 is final elevens +1, captain extra -5, their Triple Captain -2, and a -8 hit. The old -21 captain gap was the price fill. 2025/26 calibration on 7569 rows: bias +0.13, MAE 2.29, Spearman 0.23. The horizon change is next, and a blank week must not zero the weeks after it.",
+  "summary": "A missing score is 0, not the price. Gameweeks 1-5 from the same opening fifteen are 336 against 350. The remaining -14 is final elevens +1, captain extra -5, their Triple Captain -2, and a -8 hit. The 2023/24 opening-price horizon scores 1734 against the published 1665 (+69), and +84 on weeks where all twenty clubs play. The other weeks are -15. Gemini kept the pass. The published value is not replaced. The other seasons are the next gate. 2025/26 calibration: bias +0.13, MAE 2.29, Spearman 0.23.",
   "artifacts": [
     "reports/forward_plan.md",
     "reports/stage_39_calibration.md",
     "reports/stage_40_gw15_gap.md",
-    "data/processed/stage_39_calibration_position.csv",
-    "data/processed/stage_39_calibration_component.csv",
-    "data/processed/stage_39_calibration_decile.csv",
-    "data/processed/stage_40_gw15_gap.csv"
+    "reports/stage_41_open_horizon.md"
   ]
 }

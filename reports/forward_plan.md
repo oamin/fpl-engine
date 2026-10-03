@@ -58,7 +58,9 @@ Defensive contributions before 2025/26 are not subtracted from this table. That 
 
 **0B. One change to the three-week value, after the price fill is gone.** Later weeks keep the decision-week share and minutes prior, and take that fixture's own pre-deadline scoring rate and clean-sheet probability from odds already on disk. Saves, goals conceded, and the bonus proxy move with those two inputs, because they are functions of them. A new defensive-contribution model against possession is not part of this change. A week with no fixture is 0 for that week only. A blank this week must not zero a later week that has a fixture. No double multiplier. No new odds call. γ, the hold margin, the penalty, and `score_xp` stay put. The screen is the 2023/24 free-transfer climb, Gameweeks 5–38, because that season contains the Gameweek 29 blank. The fast XI cannot see this change.
 
-Park 0B if the season total is not higher, or if the total on weeks where all twenty clubs play is not higher. A gain that exists only on the blank weeks is not a pass. A pass on 2023/24 does not replace the published value. The other seasons are the next gate, under the same rule.
+Park 0B if the season total is not higher, or if the total on weeks where all twenty clubs play is not higher. A gain that exists only on the blank weeks is not a pass.
+
+2023/24 Gameweeks 5–38: the published path scores 1665 and the opening horizon scores 1734 (+69). On the 29 weeks where all twenty clubs play the gap is +84. The other weeks are −15. Opening prices cover every club-week that has a sheet row. Gemini kept the pass. It does not replace the published value. The other seasons are the next gate, under the same rule, and a season whose opening-price coverage is below 0.98 is not run. See `reports/stage_41_open_horizon.md`.
 
 Reading a future feature row is not allowed. That row's minutes prior includes matches after the deadline.
 
