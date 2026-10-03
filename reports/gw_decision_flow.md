@@ -45,7 +45,8 @@ An owned player who has no row on this week's sheet keeps the latest score from 
 ## Step 3 — Who has a fixture
 
 - A club with at least one row on the sheet keeps its score.
-- A club with no row is ranked at 0 for this week and for every later week in the three-week window.
+- A club with no row is ranked at 0 for that week only. A later week in which the club plays is not tagged as a blank.
+- If this week is the blank, today's score is 0, and the horizon copies that 0 onto later weeks. The copy is a flaw. A later blank week is zeroed on its own step.
 
 A player who is benched while his club plays is not zeroed. Only a missing club is zeroed. A player on 0 whose club does play outranks a player on 0 whose club does not, when the XI is chosen.
 

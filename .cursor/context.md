@@ -50,6 +50,10 @@ Vaastav has `penalties_missed` and `penalties_saved`, not penalties scored. `src
 
 A club with no row in the week is ranked at 0, and a week with no clubs is skipped. The hold and the chosen move record the XI sum and the no-fixture count for each week of the three-week window. On 2023/24 this scored 1665 against the previous 1676, with Gameweek 29 blanks falling from 8 to 2. `score_xp` and the transfer penalty are unchanged. See `reports/stage_38_blank_context.md`.
 
+## Forward plan
+
+An outside review of the gameweek note is answered in `reports/forward_plan.md`. `score_xp` already includes clean sheets, saves, defensive contributions, a bonus proxy, and deductions. The three-week value still reuses today's score, and a blank this week copies that 0 onto later weeks that have a fixture. The next measurement is a component calibration on 2025/26. The hold margin and the transfer penalty stay.
+
 ## Lineup
 
 Each week the XI is the legal shape with the highest sum of `score_xp`, taking the top score in each position. The published shape list omits 5-2-3 so older totals stay comparable. The bench is the other four, ordered by that same score, and an automatic substitute skips anyone who did not play or who would break the shape. The transfer search scores the XI and scores the bench at zero. The whole week, from the empty-sheet check through the free-transfer bank, is drawn in `data/plots/gw_decision_flow.png`. Six patches to that stream were parked on 2026-10-03. See `.cursor/ideas.md`.

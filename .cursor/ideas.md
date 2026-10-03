@@ -54,6 +54,16 @@ The weekly search scores the XI only. `pick_xi` then takes, for each shape, the 
 - A cap of two starters per club, lifted on a double. Killed. It benches a third attacker from a strong side and leaves that fee on the bench.
 - Adding 5-2-3 to the published formation list. Not a trial. That list is the published comparison. A count of how often the official list would pick 5-2-3, without replacing the list, is the only check that stays inside the rule, and it has not been run.
 
+## Forward plan
+
+Locked 2026-10-03 with Gemini after an outside review of the gameweek note ([forward plan](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). The note understated `score_xp`. The formula already sums appearance, goals, assists, clean sheets, defensive contributions, saves, a bonus proxy, and two deductions. The review's horizon point stands. See `reports/forward_plan.md`.
+
+0A is a calibration table on 2025/26, Gameweeks 5–38, by position and by component. No formula change. A component inside 0.10 mean error, whose removal moves rank correlation by less than 0.01, stays.
+
+0B, after that table, is the only formula change. Later weeks in the three-week value keep today's share and minutes and take that fixture's own pre-deadline rate. A blank week is 0 for that week only. A blank this week must not zero a later week that has a fixture. No double multiplier. Screen: 2023/24 free-transfer climb. Park if the season is not ahead, or if the weeks where all twenty clubs play are not ahead. A pass does not replace the published value until the other seasons are run the same way.
+
+The opening 15 stays the sum of all fifteen scores. An XI-only opener with a worthless bench was rejected. Defensive contributions before 2025/26 are a subtraction only if 0A shows they are phantom points. 5-2-3 is counted, not added to the published list. The cross-position two-transfer switch is one season against the current beam. The hold margin, the penalty, chips, and a new attacking model stay untouched.
+
 ## Rules gaps
 
 - Full Opta BPS table (goals, assists, playing time, and the rest) is not in the 20 Jul 2026 change note. Only the 2026/27 deltas are coded.
