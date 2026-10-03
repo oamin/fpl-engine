@@ -41,6 +41,19 @@ A red card is on the sheet, and the player is usually on 0 minutes in the next c
 
 A later live season can store status only as an append-only bootstrap snapshot taken before that gameweek's deadline, keeping status, both chance fields, news, `news_added`, and the capture time. The live snapshot today overwrites one file. Do not backfill a past week from a later dump. Nothing was coded.
 
+## XI and bench selection
+
+Parked 2026-10-03 after Gemini reviewed the stream ([lineup stream](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Nothing in the batch is worth a climb. `score_xp`, the transfer penalty, and the published formation list stay as they are.
+
+The weekly search scores the XI only. `pick_xi` then takes, for each shape, the top score in each position and keeps the shape with the highest sum. For an additive score that is the best XI. The other four are the bench: the goalkeeper, then the outfield by the same score. An automatic substitute already skips a player who did not play and a player who would break the formation, and that skip does not use the player up. The captain and the vice-captain are the top two scores. The vice-captain is paid only when the captain records zero minutes.
+
+- Bench order by who can cover the lowest `p_play` starter. Killed. The autosub walk already skips an illegal first substitute. Putting a cheap defender first hands a midfield blank to that defender.
+- Swapping a starter out for a cover player when the score given up is under an epsilon. Killed. It spends points every week on a blank the appearance-only minutes prior does not see coming.
+- A vice-captain minutes bar. Killed. It does not touch the weeks where the captain plays and someone else hauls, and on a real captain blank it can hand the double to a low score.
+- Adding a fraction of the first substitute into the transfer value. Killed. The weight is unfitted, and it spends budget and free transfers on the bench.
+- A cap of two starters per club, lifted on a double. Killed. It benches a third attacker from a strong side and leaves that fee on the bench.
+- Adding 5-2-3 to the published formation list. Not a trial. That list is the published comparison. A count of how often the official list would pick 5-2-3, without replacing the list, is the only check that stays inside the rule, and it has not been run.
+
 ## Rules gaps
 
 - Full Opta BPS table (goals, assists, playing time, and the rest) is not in the 20 Jul 2026 change note. Only the 2026/27 deltas are coded.

@@ -1,8 +1,8 @@
 {
   "updated": "2026-10-03",
-  "milestone": "availability-status",
+  "milestone": "xi-bench-selection",
   "status": "reviewed",
-  "summary": "Historical injury status cannot be added from the cached sheets without leakage. players_raw is one end-of-season row. merged_gw has no status column. A lagged zero-minute week is not an injury. Nothing was coded. Fixture context remains the pre-deadline absence tag.",
+  "summary": "The XI is the shape with the highest score sum, and the bench is whoever that leaves out. Six selection patches were reviewed with Gemini and parked. No climb was run. score_xp, the transfer penalty, and the published formation list are unchanged.",
   "artifacts": [
     ".cursor/ideas.md",
     ".cursor/context.md"
