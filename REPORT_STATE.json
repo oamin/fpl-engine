@@ -1,8 +1,8 @@
 {
   "updated": "2026-10-03",
   "milestone": "open-horizon-screen",
-  "status": "measured",
-  "summary": "A missing score is 0, not the price. Gameweeks 1-5 from the same opening fifteen are 336 against 350. The opening-price horizon is ahead on every climbed season, Gameweeks 5-38: 2023/24 +69, 2022/23 +84, 2024/25 +65, 2025/26 +29. Full weeks are ahead in each. Opening prices cover every club-week. The published climb is not switched. 2025/26 calibration: bias +0.13, MAE 2.29, Spearman 0.23.",
+  "status": "reviewed",
+  "summary": "A missing score is 0, not the price. Gameweeks 1-5 from the same opening fifteen are 336 against 350. The opening-price horizon is ahead on every climbed season, Gameweeks 5-38: 2023/24 +69, 2022/23 +84, 2024/25 +65, 2025/26 +29. Full weeks are ahead in each. Gemini kept the four-season result. The published climb stays on the frozen score. 2025/26 calibration: bias +0.13, MAE 2.29, Spearman 0.23.",
   "artifacts": [
     "reports/forward_plan.md",
     "reports/stage_39_calibration.md",
