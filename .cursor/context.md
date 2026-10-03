@@ -50,6 +50,10 @@ Vaastav has `penalties_missed` and `penalties_saved`, not penalties scored. `src
 
 A club with no row in the week is ranked at 0, and a week with no clubs is skipped. The hold and the chosen move record the XI sum and the no-fixture count for each week of the three-week window. On 2023/24 this scored 1665 against the previous 1676, with Gameweek 29 blanks falling from 8 to 2. `score_xp` and the transfer penalty are unchanged. See `reports/stage_38_blank_context.md`.
 
+## Lineup
+
+Each week the XI is the legal shape with the highest sum of `score_xp`, taking the top score in each position. The published shape list omits 5-2-3 so older totals stay comparable. The bench is the other four, ordered by that same score, and an automatic substitute skips anyone who did not play or who would break the shape. The transfer search scores the XI and scores the bench at zero. Six patches to that stream were parked on 2026-10-03. See `.cursor/ideas.md`.
+
 ## Availability
 
 Injury and doubt are known before the deadline, and they are a valid reason to leave a player out. The 2022/23–2025/26 cache cannot carry that fact. `merged_gw` is the match. `players_raw` is one end-of-season status row: De Bruyne's 2023/24 absence is missing from it, and a May injury flag would be copied back onto weeks when the player was fit. A zero-minute week is not an injury label. The live bootstrap may be used for a future deadline only if that deadline has its own snapshot taken before the deadline. Nothing was added to the climb. See `.cursor/ideas.md`.
