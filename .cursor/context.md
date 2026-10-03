@@ -28,7 +28,7 @@ Cursor builds and runs. Gemini 3.8 Flash is the Co-PI: method design and diagnos
 
 Stage 30 left arm 2 inconclusive and killed the ownership player score. The search protocol is `src/models/search_protocol.py` with candidates in `experiments/matrix.json`. The equal blend (alpha=0.5) was +22 on the 2025/26 transfer climb, +187 on 2023/24, and −23 on the required 2024/25 holdout (1866 vs 1889). It is not carried forward. See `reports/search_protocol.md`.
 
-Stage 31 tested switch penalties 0, 2, and 3 against the default 1.0. Zero penalty was +90 on 2025/26 and −55 on 2023/24. Penalty 2 also cleared the screen and was not the holdout arm. The default penalty stays. See `reports/stage_31_churn.md`.
+Stage 31 tested switch penalties 0, 2, and 3 against the default 1.0. Zero penalty was +90 on 2025/26 and −55 on 2023/24. Penalty 2 was +46 on that screen. On 2022/23, 2023/24, and 2024/25 it was −128, −79, and −156, with more blank starters after substitutes in each. The default penalty stays 1.0. See `reports/stage_37_penalty2.md`.
 
 Stage 32 put ownership weight 0.5 only inside transfer value. It scored 1840 against 1868 (−28) with the same transfer rate and more blank starters. No 2024/25 check. See `reports/stage_32_own_value.md`.
 
