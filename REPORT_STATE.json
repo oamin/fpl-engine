@@ -1,12 +1,11 @@
 {
   "updated": "2026-10-03",
-  "milestone": "sched-minutes-stability",
+  "milestone": "penalty-2-holdout",
   "status": "reviewed",
-  "summary": "The +34 bar stays the bar for replacing score_xp. It was not hiding a stable scheduled-minutes edge. Free-transfer gaps on GW5–38 are +9, −78, +146, and −44 across 2025/26, 2022/23, 2023/24, and 2024/25. Two seasons are ahead and two are behind, so the column is unstable and stays parked. The fast XI is quieter: +76, +51, +10, and −4. About 15% of eligible rows differ by more than 0.5.",
+  "summary": "Switch penalty 2.0 was +46 on 2025/26 and was not the arm sent to the holdout. On 2022/23, 2023/24, and 2024/25 it scored −128, −79, and −156 against the default penalty of 1.0. Hits fell and blank starters after substitutes rose in each of those seasons. The out-of-sample sum is −363. The default stays 1.0.",
   "artifacts": [
-    "reports/stage_36_sched_stability.md",
-    "data/processed/stage_36_sched_stability.csv",
-    "data/processed/stage_36_sched_weekly.csv",
-    "src/models/stage_36_sched_stability.py"
+    "reports/stage_37_penalty2.md",
+    "data/processed/stage_37_penalty2.csv",
+    "src/models/stage_37_penalty2.py"
   ]
 }

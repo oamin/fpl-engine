@@ -1,0 +1,5 @@
+season,oos,missing,climbed,delta,points_pen,points_base,hits_pen,hits_base,transfers_pen,transfers_base,blanks_pen,blanks_base,n_gw
+2025-26,False,False,True,46.0,1914.0,1868.0,1.0,3.0,0.94,1.03,3.0,8.0,34.0
+2022-23,True,False,True,-128.0,1459.0,1587.0,9.0,14.0,1.0909090909090908,1.393939393939394,20.0,10.0,33.0
+2023-24,True,False,True,-79.0,1597.0,1676.0,6.0,7.0,1.088235294117647,1.1176470588235294,29.0,21.0,34.0
+2024-25,True,False,True,-156.0,1720.0,1876.0,2.0,8.0,0.9705882352941176,1.1470588235294117,11.0,4.0,34.0
