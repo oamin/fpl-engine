@@ -271,8 +271,13 @@ def transfer_value(
     blend_gamma: float | None = None,
     blend_floor: float = 0.5,
     blend_schedule: str = "gamma",
+    score_by_gw: dict[int, dict[str, float]] | None = None,
 ) -> float:
-    """V = Σ γ^h XI_score_h − 4·hits; optional σ / FDR / flow / xp–prior blend."""
+    """V = Σ γ^h XI_score_h − 4·hits; optional σ / FDR / flow / xp–prior blend.
+
+    ``score_by_gw`` replaces the frozen decision-week score at that horizon
+    step. The published path leaves it empty and keeps the freeze.
+    """
     from src.models.xp_engine import blend_xp_exp
 
     h_len = HORIZON if horizon is None else int(horizon)
@@ -285,8 +290,13 @@ def transfer_value(
         rows = []
         for pid in squad_ids:
             m = meta[pid]
-            # Leakage-free: freeze decision-GW scores; blank → 0; DGW × fixtures
-            if fc_gw is not None:
+            # Leakage-free: freeze decision-GW scores; blank → 0; DGW × fixtures.
+            # A supplied step score is already that week's total, including a blank.
+            step_scores = score_by_gw.get(g) if score_by_gw is not None else None
+            if step_scores is not None and pid in step_scores:
+                sc = float(step_scores[pid])
+                sc_exp = sc
+            elif fc_gw is not None:
                 n_fix = int(fc_gw.get(pid, 0))
                 sc = float(score_now.get(pid, 0.0)) * n_fix if n_fix > 0 else 0.0
                 sc_exp = (
@@ -542,6 +552,7 @@ def choose_transfers(
     blend_schedule: str = "gamma",
     hold_eps: float | None = None,
     switch_penalty: float | None = None,
+    score_by_gw: dict[int, dict[str, float]] | None = None,
 ) -> tuple[SquadState, int, int]:
     """Argmax V over hold / 1-swaps / optional structural 2-transfers."""
     eps = HOLD_EPS if hold_eps is None else float(hold_eps)
@@ -603,6 +614,7 @@ def choose_transfers(
             blend_gamma=blend_gamma if blend_schedule != "team_fade" else 0.9,
             blend_floor=blend_floor,
             blend_schedule=blend_schedule,
+            score_by_gw=score_by_gw,
         )
         return base - pen * n_tx
 
@@ -785,11 +797,15 @@ def run_ft_season(
     switch_penalty: float | None = None,
     chips: dict[int, str] | None = None,
     opening: SquadState | None = None,
+    horizon_scores: Any | None = None,
 ) -> pd.DataFrame:
     """``chips`` maps a gameweek to one chip name. None and {} play nothing.
 
     ``opening`` is a 15-man squad already owned at the first gameweek.
     That week is scored with no transfers. Later weeks use the normal rule.
+
+    ``horizon_scores(gw, pool, gws)`` returns a step-score map for that
+    deadline. None keeps the frozen decision-week score.
     """
     rows: list[dict[str, Any]] = []
     plan = validate_chip_map(chips)
@@ -836,6 +852,9 @@ def run_ft_season(
                 hits = 0
             else:
                 ft_before = state.ft
+                step_scores = None
+                if horizon_scores is not None:
+                    step_scores = horizon_scores(int(gw), pool, list(gws))
                 new_state, n_tx, hits = choose_transfers(
                     state,
                     pool,
@@ -850,6 +869,7 @@ def run_ft_season(
                     blend_schedule=blend_schedule,
                     hold_eps=hold_eps,
                     switch_penalty=switch_penalty,
+                    score_by_gw=step_scores,
                 )
                 state = new_state
 
