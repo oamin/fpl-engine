@@ -1,11 +1,10 @@
 {
   "updated": "2026-10-03",
-  "milestone": "gw-decision-flow",
+  "milestone": "forward-plan",
   "status": "reviewed",
-  "summary": "The published gameweek is written out for an outside reader in reports/gw_decision_flow.md, matching the figure in data/plots/gw_decision_flow.png. No rule was changed.",
+  "summary": "The outside review is answered in reports/forward_plan.md. score_xp already includes the defensive and appearance terms the note omitted. The next measurement is a 2025/26 component calibration. The horizon change waits for that table. The hold margin and the transfer penalty stay.",
   "artifacts": [
-    "reports/gw_decision_flow.md",
-    "data/plots/gw_decision_flow.png",
-    "src/models/gw_decision_flow.py"
+    "reports/forward_plan.md",
+    "reports/gw_decision_flow.md"
   ]
 }
