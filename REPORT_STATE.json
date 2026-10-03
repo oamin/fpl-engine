@@ -1,11 +1,12 @@
 {
   "updated": "2026-10-03",
-  "milestone": "penalty-2-holdout",
+  "milestone": "blank-context",
   "status": "reviewed",
-  "summary": "Switch penalty 2.0 was +46 on 2025/26 and was not the arm sent to the holdout. On 2022/23, 2023/24, and 2024/25 it scored −128, −79, and −156 against the default penalty of 1.0. Hits fell and blank starters after substitutes rose in each of those seasons. The out-of-sample sum is −363. The default stays 1.0.",
+  "summary": "A club with no fixture is ranked at 0 that week, and a week with no matches is skipped. The hold and the move record the no-fixture count. On 2023/24 the climb scored 1665 against the previous 1676, with one more hit. Gameweek 29 blanks after substitutes fell from 8 to 2. score_xp and the transfer penalty are unchanged.",
   "artifacts": [
-    "reports/stage_37_penalty2.md",
-    "data/processed/stage_37_penalty2.csv",
-    "src/models/stage_37_penalty2.py"
+    "reports/stage_38_blank_context.md",
+    "data/processed/stage_38_blank_context.csv",
+    "data/processed/stage_38_blank_decisions.csv",
+    "src/models/blank_context.py"
   ]
 }
