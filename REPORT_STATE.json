@@ -1,10 +1,11 @@
 {
   "updated": "2026-10-03",
-  "milestone": "xi-bench-selection",
+  "milestone": "gw-decision-flow",
   "status": "reviewed",
-  "summary": "The XI is the shape with the highest score sum, and the bench is whoever that leaves out. Six selection patches were reviewed with Gemini and parked. No climb was run. score_xp, the transfer penalty, and the published formation list are unchanged.",
+  "summary": "The published gameweek is drawn as one path: skip an empty sheet, price the hold against same-position swaps, fix the 15, then pick the XI and score it after the matches. The figure is data/plots/gw_decision_flow.png. No rule was changed.",
   "artifacts": [
-    ".cursor/ideas.md",
-    ".cursor/context.md"
+    "data/plots/gw_decision_flow.png",
+    "reports/gw_decision_flow.md",
+    "src/models/gw_decision_flow.py"
   ]
 }

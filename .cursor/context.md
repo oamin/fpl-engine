@@ -52,7 +52,7 @@ A club with no row in the week is ranked at 0, and a week with no clubs is skipp
 
 ## Lineup
 
-Each week the XI is the legal shape with the highest sum of `score_xp`, taking the top score in each position. The published shape list omits 5-2-3 so older totals stay comparable. The bench is the other four, ordered by that same score, and an automatic substitute skips anyone who did not play or who would break the shape. The transfer search scores the XI and scores the bench at zero. Six patches to that stream were parked on 2026-10-03. See `.cursor/ideas.md`.
+Each week the XI is the legal shape with the highest sum of `score_xp`, taking the top score in each position. The published shape list omits 5-2-3 so older totals stay comparable. The bench is the other four, ordered by that same score, and an automatic substitute skips anyone who did not play or who would break the shape. The transfer search scores the XI and scores the bench at zero. The whole week, from the empty-sheet check through the free-transfer bank, is drawn in `data/plots/gw_decision_flow.png`. Six patches to that stream were parked on 2026-10-03. See `.cursor/ideas.md`.
 
 ## Availability
 
