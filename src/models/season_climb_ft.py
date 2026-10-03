@@ -37,6 +37,7 @@ from src.models.ridge_starters import (
     walk_forward_global_ridge_starters,
 )
 from src.models.season_climb import bank_squad_gw, pick_xi, summarize
+from src.teams import norm_team
 from src.models.season_climb_budget import (
     BUDGET,
     MAX_PER_CLUB,
@@ -235,11 +236,12 @@ def _xi_score_sum(squad_df: pd.DataFrame, score_col: str) -> float:
         return -1e9
     df = squad_df.copy()
     df[score_col] = _fill_score(df, score_col)
+    priority = "xi_priority" if "xi_priority" in df.columns else None
     try:
-        xi, _ = pick_xi(df, score_col)
+        xi, _ = pick_xi(df, score_col, priority_col=priority)
     except RuntimeError:
         return -1e9
-    return float(xi[score_col].sum())
+    return float(pd.to_numeric(xi[score_col], errors="coerce").fillna(0.0).sum())
 
 
 def precision_weight(
@@ -276,6 +278,7 @@ def transfer_value(
     blend_floor: float = 0.5,
     blend_schedule: str = "gamma",
     score_by_gw: dict[int, dict[str, float]] | None = None,
+    clubs: dict[int, set[str]] | None = None,
 ) -> float:
     """V = Σ γ^h XI_score_h − 4·hits; optional σ / FDR / flow / xp–prior blend.
 
@@ -286,7 +289,10 @@ def transfer_value(
 
     h_len = HORIZON if horizon is None else int(horizon)
     v = -float(HIT_COST * hits)
-    horizon_gws = [gw] + [g for g in future_gws if g > gw][: h_len - 1]
+    later = [g for g in future_gws if g > gw]
+    if clubs is not None:
+        later = [g for g in later if clubs.get(int(g))]
+    horizon_gws = [gw] + later[: h_len - 1]
     for h, g in enumerate(horizon_gws):
         playing = roster_by_gw.get(g, set())
         fc_gw = fixture_counts.get(g, {}) if fixture_counts is not None else None
@@ -341,12 +347,23 @@ def transfer_value(
                     sc *= float(fdr_gw.get(pid, 0.0 if fc_gw is not None else 1.0))
                 if flow_by_pid is not None:
                     sc *= float(flow_by_pid.get(pid, 1.0))
+            tag = "fixture"
+            if clubs is not None:
+                playing_clubs = clubs.get(int(g), set())
+                tag = (
+                    "fixture"
+                    if norm_team(str(m["team_norm"])) in playing_clubs
+                    else "no_fixture"
+                )
+                if tag == "no_fixture":
+                    sc = 0.0
             rows.append(
                 {
                     "player_id": pid,
                     "position": m["position"],
                     "team_norm": m["team_norm"],
                     score_col: sc,
+                    "xi_priority": 0.0 if tag == "no_fixture" else 1.0,
                 }
             )
         sdf = pd.DataFrame(rows)
@@ -557,6 +574,8 @@ def choose_transfers(
     hold_eps: float | None = None,
     switch_penalty: float | None = None,
     score_by_gw: dict[int, dict[str, float]] | None = None,
+    clubs: dict[int, set[str]] | None = None,
+    decisions: list[dict[str, Any]] | None = None,
 ) -> tuple[SquadState, int, int]:
     """Argmax V over hold / 1-swaps / optional structural 2-transfers."""
     eps = HOLD_EPS if hold_eps is None else float(hold_eps)
@@ -577,7 +596,7 @@ def choose_transfers(
         return {
             pid: {
                 "position": str(by_id[pid].position),
-                "team_norm": str(by_id[pid].team_norm),
+                "team_norm": norm_team(str(getattr(by_id[pid], "team", by_id[pid].team_norm))),
             }
             for pid in ids
             if pid in by_id
@@ -619,6 +638,7 @@ def choose_transfers(
             blend_floor=blend_floor,
             blend_schedule=blend_schedule,
             score_by_gw=score_by_gw,
+            clubs=clubs,
         )
         return base - pen * n_tx
 
@@ -701,11 +721,48 @@ def choose_transfers(
 
     if not hold_legal:
         if best_st is None:
-            return state, 0, 0
-        return best_st, best_n, best_hits
-    if best_n > 0 and best_v < hold_v + eps:
-        return state, 0, 0
-    return best_st, best_n, best_hits
+            chosen, n_out, hits_out, chosen_v = state, 0, 0, hold_v
+        else:
+            chosen, n_out, hits_out, chosen_v = best_st, best_n, best_hits, best_v
+    elif best_n > 0 and best_v < hold_v + eps:
+        chosen, n_out, hits_out, chosen_v = state, 0, 0, hold_v
+    else:
+        chosen, n_out, hits_out, chosen_v = best_st, best_n, best_hits, best_v
+    if decisions is not None and clubs is not None:
+        from src.models.blank_context import horizon_sheet
+
+        def _sheet(st: SquadState) -> list[dict[str, Any]]:
+            return horizon_sheet(
+                st.ids(),
+                scores_for(st.ids()),
+                meta_for(st.ids()),
+                gw,
+                future_gws,
+                clubs,
+                horizon=HORIZON if horizon is None else int(horizon),
+            )
+
+        decisions.append(
+            {
+                "gw": int(gw),
+                "role": "hold",
+                "n_transfers": 0,
+                "value": float(hold_v),
+                "margin": 0.0,
+                "weeks": _sheet(state),
+            }
+        )
+        decisions.append(
+            {
+                "gw": int(gw),
+                "role": "move",
+                "n_transfers": int(n_out),
+                "value": float(chosen_v),
+                "margin": float(chosen_v - hold_v),
+                "weeks": _sheet(chosen),
+            }
+        )
+    return chosen, n_out, hits_out
 
 
 def initial_squad(
@@ -802,6 +859,7 @@ def run_ft_season(
     chips: dict[int, str] | None = None,
     opening: SquadState | None = None,
     horizon_scores: Any | None = None,
+    decisions: list[dict[str, Any]] | None = None,
 ) -> pd.DataFrame:
     """``chips`` maps a gameweek to one chip name. None and {} play nothing.
 
@@ -818,6 +876,9 @@ def run_ft_season(
     if opening is not None and len(opening.purchase) != 15:
         raise RuntimeError("opening squad must contain 15 players")
 
+    from src.models.blank_context import apply_fixture_tags, clubs_by_gw
+
+    clubs = clubs_by_gw(roster)
     roster_by_gw: dict[int, set[str]] = {
         int(g): set(gdf["player_id"].astype(str))
         for g, gdf in roster.groupby("gw")
@@ -826,8 +887,12 @@ def run_ft_season(
     for method, col in score_cols.items():
         state: SquadState | None = deepcopy(opening) if opening is not None else None
         for i, gw in enumerate(gws):
+            if clubs and not clubs.get(int(gw)):
+                continue
             owned = state.ids() if state else set()
             pool = _gw_pool(feat, roster, gw, owned)
+            if clubs:
+                pool = apply_fixture_tags(pool, int(gw), clubs)
             if pool["position"].nunique() < 4:
                 continue
 
@@ -874,6 +939,8 @@ def run_ft_season(
                     hold_eps=hold_eps,
                     switch_penalty=switch_penalty,
                     score_by_gw=step_scores,
+                    clubs=clubs or None,
+                    decisions=decisions,
                 )
                 state = new_state
 
