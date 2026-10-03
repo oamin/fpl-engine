@@ -191,7 +191,7 @@ def run_follow() -> list[dict[str, float]]:
         "",
         "Same rule as 2023/24. A season passes when its total is higher and the "
         "weeks where all twenty clubs play are higher. Coverage below 0.98 stops "
-        "the season. None of these replace the published value.",
+        "the season. The published climb is not switched by this script.",
         "",
         "| season | published | opening | gap | full weeks published | full weeks opening | full gap | cover | result |",
         "|---|---:|---:|---:|---:|---:|---:|---:|---|",

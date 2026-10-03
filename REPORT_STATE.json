@@ -1,12 +1,13 @@
 {
   "updated": "2026-10-03",
   "milestone": "open-horizon-screen",
-  "status": "reviewed",
-  "summary": "A missing score is 0, not the price. Gameweeks 1-5 from the same opening fifteen are 336 against 350. The remaining -14 is final elevens +1, captain extra -5, their Triple Captain -2, and a -8 hit. The 2023/24 opening-price horizon scores 1734 against the published 1665 (+69), and +84 on weeks where all twenty clubs play. The other weeks are -15. Gemini kept the pass. The published value is not replaced. The other seasons are the next gate. 2025/26 calibration: bias +0.13, MAE 2.29, Spearman 0.23.",
+  "status": "measured",
+  "summary": "A missing score is 0, not the price. Gameweeks 1-5 from the same opening fifteen are 336 against 350. The opening-price horizon is ahead on every climbed season, Gameweeks 5-38: 2023/24 +69, 2022/23 +84, 2024/25 +65, 2025/26 +29. Full weeks are ahead in each. Opening prices cover every club-week. The published climb is not switched. 2025/26 calibration: bias +0.13, MAE 2.29, Spearman 0.23.",
   "artifacts": [
     "reports/forward_plan.md",
     "reports/stage_39_calibration.md",
     "reports/stage_40_gw15_gap.md",
-    "reports/stage_41_open_horizon.md"
+    "reports/stage_41_open_horizon.md",
+    "reports/stage_41_open_horizon_follow.md"
   ]
 }

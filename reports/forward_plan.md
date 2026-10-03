@@ -60,7 +60,7 @@ Defensive contributions before 2025/26 are not subtracted from this table. That 
 
 Park 0B if the season total is not higher, or if the total on weeks where all twenty clubs play is not higher. A gain that exists only on the blank weeks is not a pass.
 
-2023/24 Gameweeks 5–38: the published path scores 1665 and the opening horizon scores 1734 (+69). On the 29 weeks where all twenty clubs play the gap is +84. The other weeks are −15. Opening prices cover every club-week that has a sheet row. Gemini kept the pass. It does not replace the published value. The other seasons are the next gate, under the same rule, and a season whose opening-price coverage is below 0.98 is not run. See `reports/stage_41_open_horizon.md`.
+2023/24 Gameweeks 5–38: the published path scores 1665 and the opening horizon scores 1734 (+69). On the 29 weeks where all twenty clubs play the gap is +84. The other weeks are −15. The same rule on the other seasons: 2022/23 +84 (full weeks +59), 2024/25 +65 (full weeks +110), 2025/26 +29 (full weeks +21). Opening prices cover every club-week that has a sheet row in each season. The published climb is not switched. That switch would move every published total. See `reports/stage_41_open_horizon.md` and `reports/stage_41_open_horizon_follow.md`.
 
 Reading a future feature row is not allowed. That row's minutes prior includes matches after the deadline.
 
