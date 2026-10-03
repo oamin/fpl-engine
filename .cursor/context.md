@@ -60,6 +60,8 @@ Both fixtures of a double scored 1799 against 1734 on 2023/24, then missed the s
 
 The 2025/26 calibration is done (`reports/stage_39_calibration.md`). On 7,569 buy-pool rows the score is high by 0.13, MAE is 2.29, and Spearman is 0.23. Clean sheets are the large positive bias. Defensive contributions on this season stay. The hold margin and the transfer penalty stay.
 
+Seven repairs of that score were screened on the fast XI and parked (`reports/stage_45_score_repair.md`). Mean defensive-contribution points are 0 before 2025/26, because the sheet has no such column. Removing the real 2025/26 term costs 85 points. `appear_linear` is the best of that batch and is 29 behind in 2022/23. No arm was ahead on every season, so none took a free-transfer climb. `score_xp` stays the published score.
+
 ## Lineup
 
 Each week the XI is the legal shape with the highest sum of `score_xp`, taking the top score in each position. The published shape list omits 5-2-3 so older totals stay comparable. The bench is the other four, ordered by that same score, and an automatic substitute skips anyone who did not play or who would break the shape. The transfer search scores the XI and scores the bench at zero. The whole week, from the empty-sheet check through the free-transfer bank, is drawn in `data/plots/gw_decision_flow.png`. Six patches to that stream were parked on 2026-10-03. See `.cursor/ideas.md`.

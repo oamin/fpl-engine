@@ -1,12 +1,11 @@
 {
   "updated": "2026-10-03",
-  "milestone": "publish-horizon",
+  "milestone": "score-repair-screen",
   "status": "reviewed",
-  "summary": "The published three-week value is the opening-price horizon. A double stays one fixture. The holdout missed the locked bar: 2022/23 -78, 2024/25 +33 with the other weeks -4, 2025/26 -65. Gemini kept the park. An owned player with one or two prior appearances keeps a past-only score capped at 6. Gameweeks 1-5 on the published path: 333 against ojaminFC 350. 5-2-3 wins no week. The cross-position gap on 2025/26 is 0.06 a week.",
+  "summary": "Seven fast-XI repairs of score_xp were locked before the totals and then parked. appear_linear is the best of the batch, about +50 across four seasons, and 29 behind in 2022/23, so it takes no free-transfer climb. Removing clean sheets is killed. Defensive-contribution points are 0 before 2025/26. score_xp stays the published score.",
   "artifacts": [
-    "reports/stage_42_gw15_horizon.md",
-    "reports/stage_43_dgw.md",
-    "reports/stage_43_dgw_follow.md",
-    "reports/stage_44_search_counts.md"
+    "reports/stage_45_score_repair.md",
+    "data/processed/stage_45_score_repair.csv",
+    "data/processed/stage_45_defcon.csv"
   ]
 }

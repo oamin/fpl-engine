@@ -274,8 +274,8 @@ def _write(
         [
             "",
             f"Goalkeeper goals rescaled to 6 move the fast XI by "
-            f"{gk.abs().max():.1f} points in the largest season. A move past "
-            "1 point would mean the cut reached an outfield player.",
+            f"{gk.abs().max():.0f} points in the largest season. The formula "
+            "leaves every outfield row equal to `score_xp`.",
             "",
             "## Published shapes",
             "",

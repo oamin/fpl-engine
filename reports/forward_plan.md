@@ -66,7 +66,7 @@ An owned player with one or two prior appearances keeps that decision week's pas
 
 Reading a future feature row is not allowed. That row's minutes prior includes matches after the deadline.
 
-**1. Defensive contributions on earlier seasons, only after their own table.** Set that term to 0 for seasons before 2025/26 only if that table shows phantom points. No new parameter. The 2025/26 calibration does not justify it.
+**1. Defensive contributions on earlier seasons.** Done. The sheet has no defensive-contribution column in 2022/23, 2023/24, or 2024/25, the hit stays 0, and mean `xp_defcon` on the buy pool is 0. There is nothing to subtract. On 2025/26, where the award is real, removing it costs the fast XI 85 points, so the term stays. See `reports/stage_45_score_repair.md`.
 
 **2. The opener is not switched to an XI-only sum in this batch.** It stays the sum of fifteen. The later bench rule, if one is written, is the expected value of the automatic substitute. That rule is not designed here.
 

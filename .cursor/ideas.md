@@ -70,6 +70,8 @@ Both fixtures scored 1799 against 1734 on 2023/24. The holdout misses the same r
 
 5-2-3 is counted, not added to the published list, and the count is closed at zero wins. The cross-position pairs are closed at 0.06 a week. Player goal and assist prices are not on disk, so that experiment is parked and no odds call is made. The penalty of 1.0 and the hold margin of 1.25 stay frozen. A later grid, if one is run, walks forward. It does not crown a one-season winner.
 
+Seven score repairs were locked and screened on the fast XI, Gameweeks 5–38, four seasons ([score repairs](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). All are parked. `appear_linear` is the best of that batch and is still behind in 2022/23 by 29, so it does not take a free-transfer climb. Removing clean sheets is killed. Halving them, halving the goals-conceded deduction, and the defender/forward shift of 0.25 all change sign across seasons. A goalkeeper goal at 6 instead of 10 moves the fast XI by about a point. See `reports/stage_45_score_repair.md`.
+
 ## Rules gaps
 
 - Full Opta BPS table (goals, assists, playing time, and the rest) is not in the 20 Jul 2026 change note. Only the 2026/27 deltas are coded.
