@@ -19,7 +19,7 @@ Gemini reviewed a split on 2026-10-02 ([penalty split](bc-721d1cc3-4c05-586a-a1e
 
 ## Scheduled minutes
 
-Parked 2026-10-03 after the 2025/26 screen ([minutes screen](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). `score_xp_sched` puts bench weeks into the minutes prior and leaves the shot share alone. Fast XI was −4. The free-transfer climb was +9 (1838 vs 1829) with 12 hit points against 16. That is inside the +34 bar. Do not replace `score_xp`. OpenFPL and Dastan separate on players who do not play; on this gate the gain is smaller than one transfer.
+Parked after four seasons, not only because 2025/26 was +9. Free-transfer gaps, GW5–38: 2025/26 +9, 2022/23 −78, 2023/24 +146, 2024/25 −44. Two seasons ahead, two behind, worst loss 78. The fast XI never lost by more than 4 and was ahead in the three earlier seasons, so the ranking among players who played is quiet and the squad path is not. About 15% of eligible rows move by more than 0.5. Do not replace `score_xp`. Do not put the column in `experiments/matrix.json`. The +34 bar stays the bar for a claim that a new score should replace the published one. See `reports/stage_36_sched_stability.md`.
 
 ## Opening-price horizon
 
