@@ -83,6 +83,10 @@ def _write(weekly: pd.DataFrame, decisions: pd.DataFrame) -> None:
         f"Hold records that still name a no-fixture player inside the Gameweek 29 "
         f"XI, when that week is inside the three-week window: **{named}**.",
         "",
+        "The previous climb on this scorer scored 1676, with 7 hits and 21 blanks, "
+        "8 of them in Gameweek 29. A playing week's score is still copied forward, "
+        "so those three steps match. The blank week is the step that changes.",
+        "",
     ]
     (REPORTS / "stage_38_blank_context.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 

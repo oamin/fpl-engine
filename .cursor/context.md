@@ -46,6 +46,10 @@ Vaastav has `penalties_missed` and `penalties_saved`, not penalties scored. `src
 
 `score_xp_sched` keeps bench weeks in the minutes prior and leaves the shot share alone. It does not replace `score_xp`. Across GW5–38 the free-transfer gap is +9, −78, +146, and −44 for 2025/26, 2022/23, 2023/24, and 2024/25. The +34 replace-the-score bar was left where it is. It was not what hid a stable edge: the transfer gap changes sign. The fast XI stays within 4 points on 2025/26 and is ahead on the earlier seasons. See `reports/stage_36_sched_stability.md`.
 
+## Blank weeks
+
+A club with no row in the week is ranked at 0, and a week with no clubs is skipped. The hold and the chosen move record the XI sum and the no-fixture count for each week of the three-week window. On 2023/24 this scored 1665 against the previous 1676, with Gameweek 29 blanks falling from 8 to 2. `score_xp` and the transfer penalty are unchanged. See `reports/stage_38_blank_context.md`.
+
 ## Stub scores
 
 A player with no row in the decision week used to inherit his latest score in the whole frame, including a later week. Davis and Sangaré were named in the Gameweek 1–3 XI on a Gameweek 4 score. The carry is now limited to earlier weeks. The 327 in `reports/live_benchmark_2026.md` is the run that had the leak. The same published rule, past weeks only, scores 313 on those five weeks, keeps João Pedro, and takes no hit.
