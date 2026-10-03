@@ -1,12 +1,10 @@
 {
   "updated": "2026-10-03",
-  "milestone": "blank-context",
+  "milestone": "availability-status",
   "status": "reviewed",
-  "summary": "A club with no fixture is ranked at 0 that week, and a week with no matches is skipped. The hold and the move record the no-fixture count. On 2023/24 the climb scored 1665 against the previous 1676, with one more hit. Gameweek 29 blanks after substitutes fell from 8 to 2. score_xp and the transfer penalty are unchanged.",
+  "summary": "Historical injury status cannot be added from the cached sheets without leakage. players_raw is one end-of-season row. merged_gw has no status column. A lagged zero-minute week is not an injury. Nothing was coded. Fixture context remains the pre-deadline absence tag.",
   "artifacts": [
-    "reports/stage_38_blank_context.md",
-    "data/processed/stage_38_blank_context.csv",
-    "data/processed/stage_38_blank_decisions.csv",
-    "src/models/blank_context.py"
+    ".cursor/ideas.md",
+    ".cursor/context.md"
   ]
 }

@@ -29,6 +29,18 @@ Coded 2026-10-02 after Gemini locked the split ([horizon prices](bc-b57f0f87-87e
 
 Parked 2026-10-02 after Gemini reviewed it ([share versus book](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Do not shrink the 2025/26 shot share to close the Gameweek 1–5 gap against ojaminFC, and do not add a book term on top of `share × λ`. The team rate and the clean-sheet proxy already come from 1X2 and over/under. There is no player goal or clean-sheet price in that window, so the book cannot replace the share. A forced decay, only if later required, uses a fixed prior of 5 matches and replaces the share. It is not an extra term, and the weight is not fit on these five weeks. No fast XI screen: the player-prop score does not exist.
 
+## Player status
+
+Parked 2026-10-03 after Gemini reviewed the files ([availability leakage](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). An injury known before the deadline is a valid reason to leave a player out. The cached seasons cannot supply that fact.
+
+`merged_gw` has minutes, cards, and `xP`. It has no status, chance of playing, or news. A zero-minute row in the same week is the match result, so it cannot be the label. A lagged zero still misses the first week of a new injury, because that player's previous week was an appearance, and it treats a rotation rest as an injury.
+
+`players_raw_{season}.csv` is one bootstrap row per player, scraped at the end of the season. In 2023/24 De Bruyne has an 18-week club-played hole from GW2 to GW20 and the season-end row is available, with empty news. The other direction is the same file: 46 of the 74 players marked injured at the end of 2023/24 had already played at least 400 minutes in GW1–15, including Cash, Ederson, and Dunk. Copying that flag onto the autumn benches them for an injury that had not happened.
+
+A red card is on the sheet, and the player is usually on 0 minutes in the next club week that has a row (22 of 28, 53 of 55, 40 of 49, 38 of 43). That tag stays parked. A domestic cup can absorb the ban, an appeal can clear it before the next deadline, and the sheet does not say whether the ban is one match or three. There are 30 to 58 reds in a season.
+
+A later live season can store status only as an append-only bootstrap snapshot taken before that gameweek's deadline, keeping status, both chance fields, news, `news_added`, and the capture time. The live snapshot today overwrites one file. Do not backfill a past week from a later dump. Nothing was coded.
+
 ## Rules gaps
 
 - Full Opta BPS table (goals, assists, playing time, and the rest) is not in the 20 Jul 2026 change note. Only the 2026/27 deltas are coded.
