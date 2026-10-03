@@ -6,4 +6,4 @@ The baseline scores a double as one fixture. This arm adds the two opening pots.
 
 Weeks where all twenty clubs play (29): **+25**. The other weeks (5): **+40**.
 
-**PASS.** The season must be ahead, the other weeks must be ahead, and the full slates may be at most 5 points behind. A pass on this season does not replace the single-fixture horizon.
+**PASS** on this season. The season must be ahead, the other weeks must be ahead, and the full slates may be at most 5 points behind. The other three seasons miss that rule (`reports/stage_43_dgw_follow.md`). Gemini kept the park. The published calendar stays one fixture.

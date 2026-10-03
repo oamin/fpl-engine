@@ -66,7 +66,7 @@ The Gameweek 1–5 split was 313 against 350 while a missing score was filled wi
 
 The opening horizon is the published three-week value, approved after four seasons. A double is still one fixture on that path. An owned player with one or two prior appearances keeps a past-only score capped at 6. Gemini kept that guard after Gameweeks 1–5 scored 333 with it and 366 without it ([early score](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). The zero-score sale is not rewarded by those five weeks.
 
-Both fixtures passed 2023/24, 1799 against 1734. Gemini kept the pass. It does not replace the single-fixture calendar until the other seasons clear the same rule. 5-2-3 wins no week on the eligible pool across four seasons. The unsearched cross-position pairs are worth 0.06 a week on 2025/26. Both counts are closed.
+Both fixtures scored 1799 against 1734 on 2023/24. The holdout misses the same rule: 2022/23 −78, 2024/25 +33 with the other weeks −4, 2025/26 −65. Gemini kept the park ([double fixtures](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). The published calendar stays one fixture. A later double formula needs its own rule, locked before the totals are read. 5-2-3 wins no week on the eligible pool across four seasons. The unsearched cross-position pairs are worth 0.06 a week on 2025/26. Both counts are closed.
 
 5-2-3 is counted, not added to the published list, and the count is closed at zero wins. The cross-position pairs are closed at 0.06 a week. Player goal and assist prices are not on disk, so that experiment is parked and no odds call is made. The penalty of 1.0 and the hold margin of 1.25 stay frozen. A later grid, if one is run, walks forward. It does not crown a one-season winner.
 

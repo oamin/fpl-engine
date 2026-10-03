@@ -76,7 +76,7 @@ Reading a future feature row is not allowed. That row's minutes prior includes m
 
 **5. The penalty and the hold margin, only after the horizon has a result.** A walk-forward grid. Not a one-season maximum.
 
-**6. Automatic substitutes, doubles, and chips.** A double is the sum of two fixture projections. On 2023/24 that sum scores 1799 against the one-fixture horizon's 1734 (+65). Full slates are +25 and the other weeks are +40. Gemini kept the pass. It does not replace the single-fixture calendar until 2022/23, 2024/25, and 2025/26 clear the same rule: the season ahead, the non-full weeks ahead, and the full slates no more than 5 behind. Chips stay off in the historical climb until the forecast path is the thing being measured. See `reports/stage_43_dgw.md`.
+**6. Automatic substitutes, doubles, and chips.** A double is the sum of two fixture projections. On 2023/24 that sum scores 1799 against the one-fixture horizon's 1734 (+65). Full slates are +25 and the other weeks are +40. The same rule on the holdout: 2022/23 −78 (full slates −80), 2024/25 +33 with the other weeks −4, 2025/26 −65 (full slates −63). All three miss the locked bar. Gemini kept the park. The published calendar stays one fixture. A later double formula needs its own rule, locked before the totals are read. Chips stay off in the historical climb until the forecast path is the thing being measured. See `reports/stage_43_dgw.md` and `reports/stage_43_dgw_follow.md`.
 
 ## Not in this batch
 

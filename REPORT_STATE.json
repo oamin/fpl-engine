@@ -2,10 +2,11 @@
   "updated": "2026-10-03",
   "milestone": "publish-horizon",
   "status": "reviewed",
-  "summary": "The published three-week value is the opening-price horizon. A double is still one fixture. An owned player with one or two prior appearances keeps a past-only score capped at 6. Gameweeks 1-5: freeze 336, horizon without that score 366, published path 333, ojaminFC 350. Both fixtures passed 2023/24 by 65 and are not the default yet. 5-2-3 wins no week. The cross-position gap on 2025/26 is 0.06 a week.",
+  "summary": "The published three-week value is the opening-price horizon. A double stays one fixture. The holdout missed the locked bar: 2022/23 -78, 2024/25 +33 with the other weeks -4, 2025/26 -65. Gemini kept the park. An owned player with one or two prior appearances keeps a past-only score capped at 6. Gameweeks 1-5 on the published path: 333 against ojaminFC 350. 5-2-3 wins no week. The cross-position gap on 2025/26 is 0.06 a week.",
   "artifacts": [
     "reports/stage_42_gw15_horizon.md",
     "reports/stage_43_dgw.md",
+    "reports/stage_43_dgw_follow.md",
     "reports/stage_44_search_counts.md"
   ]
 }
