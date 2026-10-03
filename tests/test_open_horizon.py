@@ -8,9 +8,11 @@ import pandas as pd
 
 from src.models.open_horizon import (
     opening_pots_by_team_gw,
+    opening_pots_for_sheet,
     prior_pots,
     project_player,
     side_pot,
+    single_fixture_calendar,
     xp_on_pot,
 )
 from src.models.season_climb_ft import transfer_value
@@ -98,6 +100,82 @@ class OpenHorizonTests(unittest.TestCase):
         self.assertGreater(scored, 3.5)
         blank = project_player(row, 4, pots={}, priors=priors, calendar={})
         self.assertEqual(blank, 0.0)
+
+    def test_a_blank_this_week_does_not_zero_the_next_fixture(self) -> None:
+        history = pd.DataFrame(
+            {
+                "gw": [1, 2],
+                "team_norm": ["chelsea", "chelsea"],
+                "lam_scored": [1.5, 1.7],
+                "lam_assist": [1.1, 1.3],
+                "e_total": [2.6, 2.8],
+                "p_cs_mkt": [0.3, 0.28],
+            }
+        )
+        priors = prior_pots(history, before_gw=29)
+        row = {
+            "team_norm": "chelsea",
+            "position": "FWD",
+            "xmi": 90.0,
+            "share_xG": 0.25,
+            "share_xA": 0.05,
+            "exp_defcon_hit": 0.0,
+            "fwd_goal_scale": 1.0,
+            "score_xp": 0.0,
+            "fixture_tag": "no_fixture",
+        }
+        nxt = project_player(
+            row, 30, pots={}, priors=priors, calendar={(30, "chelsea"): 1}
+        )
+        self.assertGreater(nxt, 3.0)
+        still_blank = project_player(row, 30, pots={}, priors=priors, calendar={})
+        self.assertEqual(still_blank, 0.0)
+
+    def test_a_double_on_the_sheet_is_still_one_fixture(self) -> None:
+        roster = pd.DataFrame(
+            {
+                "gw": [29, 29],
+                "team": ["Arsenal", "Arsenal"],
+                "player_id": ["a", "b"],
+            }
+        )
+        calendar = single_fixture_calendar(roster)
+        self.assertEqual(calendar[(29, "arsenal")], 1)
+
+    def test_opening_prices_join_the_sheet_kickoff(self) -> None:
+        odds = pd.DataFrame(
+            [
+                {
+                    "Date": "12/09/2026",
+                    "HomeTeam": "Chelsea",
+                    "AwayTeam": "Hull",
+                    "AvgH": 1.21,
+                    "AvgD": 6.50,
+                    "AvgA": 11.92,
+                    "Avg>2.5": 1.36,
+                    "Avg<2.5": 3.10,
+                }
+            ]
+        )
+        sheet = pd.DataFrame(
+            [
+                {
+                    "gw": 4,
+                    "kickoff_time": "2026-09-12T14:00:00Z",
+                    "team": "Chelsea",
+                    "was_home": True,
+                },
+                {
+                    "gw": 4,
+                    "kickoff_time": "2026-09-12T14:00:00Z",
+                    "team": "Hull City",
+                    "was_home": False,
+                },
+            ]
+        )
+        pots = opening_pots_for_sheet(odds, sheet)
+        self.assertGreater(pots[(4, "chelsea")][0]["lam_scored"], 2.2)
+        self.assertLess(pots[(4, "hull")][0]["lam_scored"], 1.0)
 
     def test_step_scores_replace_the_frozen_week(self) -> None:
         spec = (

@@ -221,6 +221,16 @@ def _row_float(row: dict[str, Any], key: str, default: float) -> float:
     return number if math.isfinite(number) else default
 
 
+def _share_missing(share: object) -> bool:
+    if share is None:
+        return True
+    try:
+        number = float(share)  # type: ignore[arg-type]
+    except (TypeError, ValueError):
+        return True
+    return not math.isfinite(number)
+
+
 def project_player(
     row: dict[str, Any],
     gw: int,
@@ -229,15 +239,20 @@ def project_player(
     *,
     calendar: dict[tuple[int, str], int],
 ) -> float:
-    """Step score for one player. Deadline share. No future player row."""
+    """Step score for one player. Deadline share. No future player row.
+
+    A blank this week writes 0 onto ``score_xp``. That 0 is not the score
+    for a later week in which the club plays. A missing share on a normal
+    week still keeps the deadline score, because there is no shot share
+    to move onto the next opponent.
+    """
     club = norm_team(str(row.get("team_norm") or ""))
     n_fix = int(calendar.get((gw, club), 0))
     if n_fix <= 0:
         return 0.0
-    share = row.get("share_xG")
-    if share is None or (isinstance(share, float) and not math.isfinite(share)):
-        frozen = _row_float(row, "score_xp", 0.0)
-        return frozen
+    blanked = str(row.get("fixture_tag") or "") == "no_fixture"
+    if _share_missing(row.get("share_xG")) and not blanked:
+        return _row_float(row, "score_xp", 0.0)
     quotes = pots.get((gw, club), [])
     fallback = priors.get(club, neutral_pot())
     if not quotes:
@@ -286,6 +301,67 @@ def make_horizon_scores(
         return out
 
     return horizon_scores
+
+
+def single_fixture_calendar(roster: pd.DataFrame) -> dict[tuple[int, str], int]:
+    """One if the club has a sheet row that week. A double is still one.
+
+    Adding the two fixtures together is a separate change. This calendar
+    keeps that out of the horizon screen.
+    """
+    from src.models.blank_context import clubs_by_gw
+
+    clubs = clubs_by_gw(roster)
+    return {(int(gw), club): 1 for gw, names in clubs.items() for club in names}
+
+
+def opening_pots_for_sheet(
+    odds: pd.DataFrame, sheet: pd.DataFrame
+) -> dict[tuple[int, str], list[dict[str, float]]]:
+    """Opening 1X2 pots, joined on the sheet kickoff. No future player row.
+
+    ``sheet`` needs ``team``, ``kickoff_time``, ``was_home``, and ``gw``
+    (or ``GW``). The odds table is the football-data file, opening columns.
+    """
+    frame = sheet.copy()
+    if "gw" not in frame.columns and "GW" in frame.columns:
+        frame = frame.rename(columns={"GW": "gw"})
+    frame = frame.dropna(subset=["kickoff_time", "team", "gw"])
+    frame["kickoff_time"] = frame["kickoff_time"].astype(str)
+    home_flag = frame["was_home"].astype(str).str.lower().isin(["true", "1"])
+    homes = (
+        frame.loc[home_flag, ["kickoff_time", "team", "gw"]]
+        .drop_duplicates("kickoff_time")
+        .rename(columns={"team": "home"})
+    )
+    aways = (
+        frame.loc[~home_flag, ["kickoff_time", "team"]]
+        .drop_duplicates("kickoff_time")
+        .rename(columns={"team": "away"})
+    )
+    matched = homes.merge(aways, on="kickoff_time", how="inner").sort_values("kickoff_time")
+    names = sorted(set(matched["home"]).union(set(matched["away"])))
+    id_of = {name: i + 1 for i, name in enumerate(names)}
+    fixtures = [
+        {
+            "event": int(row.gw),
+            "kickoff_time": str(row.kickoff_time),
+            "team_h": id_of[row.home],
+            "team_a": id_of[row.away],
+        }
+        for row in matched.itertuples(index=False)
+    ]
+    team_names = {i: name for name, i in id_of.items()}
+    return opening_pots_by_team_gw(odds, fixtures, team_names)
+
+
+def deadline_rate_history(feat: pd.DataFrame) -> pd.DataFrame:
+    """One team rate per week, for the fallback when a later line is missing."""
+    cols = ["gw", "team_norm", "lam_scored", "lam_assist", "e_total", "p_cs_mkt"]
+    missing = [col for col in cols if col not in feat.columns]
+    if missing:
+        raise RuntimeError(f"feature frame has no {missing}")
+    return feat.loc[:, cols].drop_duplicates(["gw", "team_norm"])
 
 
 def fixture_calendar(

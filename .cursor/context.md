@@ -52,7 +52,11 @@ A club with no row in the week is ranked at 0, and a week with no clubs is skipp
 
 ## Forward plan
 
-An outside review of the gameweek note is answered in `reports/forward_plan.md`. `score_xp` already includes clean sheets, saves, defensive contributions, a bonus proxy, and deductions. The three-week value still reuses today's score, and a blank this week copies that 0 onto later weeks that have a fixture. The next measurement is a component calibration on 2025/26. The hold margin and the transfer penalty stay.
+An outside review of the gameweek note is answered in `reports/forward_plan.md`. `score_xp` already includes clean sheets, saves, defensive contributions, a bonus proxy, and deductions. The three-week value still reuses today's score, and a blank this week copies that 0 onto later weeks that have a fixture.
+
+The Gameweek 1–5 gap from the same opening fifteen was 313 against 350 while a missing `score_xp` was filled with the price. That fill is now 0. The same five weeks are 336 against 350 (`reports/stage_40_gw15_gap.md`). The final elevens are one point ahead, the captain extra is −5, their Triple Captain is −2, and Gameweek 2 pays an eight-point hit. The horizon change is next. A blank this week must not zero a later week, and a missing opening line falls back to the club's earlier rate rather than to zero.
+
+The 2025/26 calibration is done (`reports/stage_39_calibration.md`). On 7,569 buy-pool rows the score is high by 0.13, MAE is 2.29, and Spearman is 0.23. Clean sheets are the large positive bias. Defensive contributions on this season stay. The hold margin and the transfer penalty stay.
 
 ## Lineup
 

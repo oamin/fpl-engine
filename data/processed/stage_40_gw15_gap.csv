@@ -1,0 +1,6 @@
+gw,model_points,their_points,gap,model_xi,their_xi,xi_gap,model_captain_extra,their_captain_extra,captain_gap,their_chip_premium,model_hits,their_hits,hit_gap,only_model_points,only_their_points,their_built,their_residual,model_in,model_out,their_transfers,model_captain,their_captain,nan_score,hold_value,move_value,move_margin
+1,72.0,62.0,10.0,70.0,58.0,12.0,2.0,2.0,0.0,2.0,0.0,0.0,-0.0,14.0,2.0,62.0,0.0,,,none,B.Fernandes,Haaland,0,,,
+2,96.0,108.0,-12.0,81.0,85.0,-4.0,23.0,23.0,0.0,0.0,8.0,0.0,-8.0,18.0,22.0,108.0,0.0,"Tchaouna, Szoboszlai, Mbeumo","Cherki, Gibbs-White, M.Sangaré",in Lammens; out Martinez,B.Fernandes,B.Fernandes,0,118.03745656036946,134.8132139888759,16.775757428506438
+3,62.0,53.0,9.0,53.0,44.0,9.0,9.0,9.0,0.0,0.0,0.0,0.0,-0.0,17.0,8.0,53.0,0.0,Ndiaye,Tchaouna,none,Haaland,Haaland,0,130.72163388123477,137.34964476652073,6.62801088528596
+4,68.0,79.0,-11.0,61.0,67.0,-6.0,7.0,12.0,-5.0,0.0,0.0,0.0,-0.0,15.0,21.0,79.0,0.0,Khalaili,Guéhi,in Rogers; out Gibbs-White,Khalaili,João Pedro,0,91.5227279044739,94.20616746194884,2.683439557474941
+5,38.0,48.0,-10.0,32.0,42.0,-10.0,6.0,6.0,0.0,0.0,0.0,0.0,-0.0,19.0,29.0,48.0,0.0,,,in Calvert-Lewin; out João Pedro; in Barnes; out M.Sangaré,Haaland,Haaland,0,50.15408293166102,50.15408293166102,0.0

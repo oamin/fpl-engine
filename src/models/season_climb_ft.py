@@ -70,7 +70,7 @@ UNC_BETA = 1.0
 UNC_TAU = 3.0
 # Multi-transfer beam: sequential best-1 from top partials
 BEAM_WIDTH = 6
-FALLBACK_SCORE_COLS = ("score_xp", "score_exp_points", "value")
+FALLBACK_SCORE_COLS = ("score_xp", "score_exp_points")
 
 
 def load_vaastav_roster(season: str) -> pd.DataFrame:
@@ -145,13 +145,17 @@ class SquadState:
 
 
 def _fill_score(df: pd.DataFrame, score_col: str) -> pd.Series:
-    """Score for optimisation; fall back so owned non-eligible rows stay usable."""
+    """Points estimate for the search. A missing score is 0.
+
+    Price stays the budget column. Using it as a score ranks a player
+    with no forecast above anyone the model has actually scored.
+    """
     s = pd.to_numeric(df[score_col], errors="coerce")
     for col in FALLBACK_SCORE_COLS:
         if col == score_col or col not in df.columns:
             continue
         s = s.fillna(pd.to_numeric(df[col], errors="coerce"))
-    return s.fillna(-1e6)
+    return s.fillna(0.0)
 
 
 def _gw_pool(

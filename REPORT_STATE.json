@@ -1,10 +1,15 @@
 {
   "updated": "2026-10-03",
-  "milestone": "forward-plan",
+  "milestone": "plan-diagnostics",
   "status": "reviewed",
-  "summary": "The outside review is answered in reports/forward_plan.md. score_xp already includes the defensive and appearance terms the note omitted. The next measurement is a 2025/26 component calibration. The horizon change waits for that table. The hold margin and the transfer penalty stay.",
+  "summary": "A missing score_xp is now 0, not the price. Gemini kept that fill. Gameweeks 1-5 from the same opening fifteen move from 313 to 336 against ojaminFC's 350. The remaining -14 is final elevens +1, captain extra -5, their Triple Captain -2, and a -8 hit. The old -21 captain gap was the price fill. 2025/26 calibration on 7569 rows: bias +0.13, MAE 2.29, Spearman 0.23. The horizon change is next, and a blank week must not zero the weeks after it.",
   "artifacts": [
     "reports/forward_plan.md",
-    "reports/gw_decision_flow.md"
+    "reports/stage_39_calibration.md",
+    "reports/stage_40_gw15_gap.md",
+    "data/processed/stage_39_calibration_position.csv",
+    "data/processed/stage_39_calibration_component.csv",
+    "data/processed/stage_39_calibration_decile.csv",
+    "data/processed/stage_40_gw15_gap.csv"
   ]
 }
