@@ -1,12 +1,13 @@
 {
-  "updated": "2026-10-02",
-  "milestone": "open-horizon-gw1-5",
+  "updated": "2026-10-03",
+  "milestone": "open-source-comparison",
   "status": "reviewed",
-  "summary": "The opening-price horizon, started from ojaminFC's Gameweek 1 fifteen, scores 331 against the published 327 and their 350. It does not sell João Pedro in Gameweek 3. His scores that week are 2.94, then 5.36 for Hull and 3.82 for Brentford. Gameweek 4 scores 80 against the published 62. Gameweeks 2 and 5 are lower. Gemini reviewed the diagnostic. These five weeks do not accept or reject the arm.",
+  "summary": "OpenFPL and Dastan separate on players who do not play, and they are close once a player plays 60 minutes. A missing week in this engine was being filled from a later score. That carry now uses past weeks only. The published five-week total of 327 was the leaked run. The same rule scores 313, keeps João Pedro, and takes no hit. A scheduled-minutes score was −4 on the fast XI and +9 on the 2025/26 free-transfer climb, inside the +34 bar, and does not replace score_xp.",
   "artifacts": [
+    "reports/open_source_predictors.md",
+    "reports/stage_35_sched.md",
     "reports/open_horizon_gw1_5.md",
-    "data/processed/open_horizon_gw1_5.csv",
-    "src/models/open_horizon.py",
-    "src/live/open_horizon.py"
+    "src/models/sched_minutes.py",
+    "src/models/stage_35_sched.py"
   ]
 }

@@ -142,11 +142,12 @@ def _write(result: dict[str, Any], entry: dict[str, Any]) -> None:
     lines = [
         "# Opening-price horizon, Gameweeks 1–5",
         "",
-        "Diagnostic only. The published `score_xp` climb is unchanged. "
+        "Diagnostic only. The published `score_xp` formula is unchanged. "
+        "A missing week no longer borrows a later week's score. "
         "This arm starts from ojaminFC's Gameweek 1 fifteen. The current week "
         "keeps that week's closing-price xp. Gameweeks inside the three-week "
         "hold use the opening 1X2 (`AvgH`, `Avg>2.5`). Share and minutes stay "
-        "on the deadline row. Gemini 3.8 Flash locked that split.",
+        "on the deadline row.",
         "",
         f"Published path: **{result['published_points']:.0f}** points, "
         f"hits {result['published_hits']:.0f}.",
@@ -188,13 +189,16 @@ def _write(result: dict[str, Any], entry: dict[str, Any]) -> None:
         "",
         f"Opening prices matched {result['priced_sides']} club-gameweeks. "
         "A week with a fixture and no opening price uses that club's earlier "
-        "scoring rate. A blank week is zero. No Odds API call was made.",
+        "scoring rate. A blank week is zero. No Odds API call was made. "
+        "The record of 327 in `reports/live_benchmark_2026.md` is the earlier "
+        "run, which could fill a missing week from a later score.",
         "",
-        "Gemini reviewed this run. Gameweek 3 is the case the rule was built for: "
-        "2.94 against Arsenal, 5.36 against Hull, and João Pedro stays. "
-        "The five-week total is not a pass or a fail. Gameweek 2 and Gameweek 5 "
-        "moved the other way. A full historical free-transfer season is what can "
-        "accept or reject the arm. The formula was not changed after these weeks.",
+        "Gemini accepted the stub fix. With past weeks only, the published "
+        "rule also keeps João Pedro and takes no hit. The Gameweek 3 sale in "
+        "that 327 record was the future score, not the Arsenal projection by "
+        "itself. The opening-odds horizon still keeps him and scores "
+        f"{result['open_points']:.0f} on this window, behind the corrected "
+        f"published path at {result['published_points']:.0f}.",
         "",
     ]
     (REPORTS / "open_horizon_gw1_5.md").write_text("\n".join(lines) + "\n", encoding="utf-8")

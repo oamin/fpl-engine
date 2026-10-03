@@ -176,10 +176,14 @@ def _gw_pool(
             stubs = pd.concat([stubs, carried], ignore_index=True)
             stubs = stubs.drop_duplicates("player_id", keep="first")
         if not stubs.empty:
-            # Carry last known feat scores for ranking; else cheap fallbacks
+            # Carry the latest score from before this deadline. A later
+            # week in the frame is not known yet.
+            hist = feat.loc[
+                feat["player_id"].isin(stubs["player_id"])
+                & (pd.to_numeric(feat["gw"], errors="coerce") < gw)
+            ]
             hist = (
-                feat.loc[feat["player_id"].isin(stubs["player_id"])]
-                .sort_values("gw")
+                hist.sort_values("gw")
                 .groupby("player_id", as_index=False)
                 .tail(1)
             )

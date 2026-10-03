@@ -17,6 +17,10 @@ The gameweek sheets now carry Understat penalty shots (`penalties_taken`, `penal
 
 Gemini reviewed a split on 2026-10-02 ([penalty split](bc-721d1cc3-4c05-586a-a1e8-c24f0aecfff3)) and parked it. No fast-XI screen. `xp_goals` stays `share_xG × λ`. Vaastav `expected_goals` already includes penalty xG, so a second penalty term counts the same kick twice. Subtracting Understat `penalty_xg` (~0.76) from Opta xG is unsafe: in 2022/23, 37 of 97 taker rows have Opta xG below that penalty xG. A team awards about 0.11–0.14 penalties per match, and an established taker's kicks are already inside the rolling share. The 35% goal residual is conversion variance. A new taker is still unknown until after the first kick.
 
+## Scheduled minutes
+
+Parked 2026-10-03 after the 2025/26 screen ([minutes screen](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). `score_xp_sched` puts bench weeks into the minutes prior and leaves the shot share alone. Fast XI was −4. The free-transfer climb was +9 (1838 vs 1829) with 12 hit points against 16. That is inside the +34 bar. Do not replace `score_xp`. OpenFPL and Dastan separate on players who do not play; on this gate the gain is smaller than one transfer.
+
 ## Opening-price horizon
 
 Coded 2026-10-02 after Gemini locked the split ([horizon prices](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). `xp_open_odds_h3` keeps the published current-week score and prices later horizon weeks from opening 1X2. The Gameweek 1–5 diagnostic held João Pedro and scored 331 against the published 327. That window is not the test. The remaining test is a full historical free-transfer season. Do not retune γ, the hold margin, or the share on these five weeks.
