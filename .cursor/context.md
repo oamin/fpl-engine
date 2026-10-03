@@ -42,6 +42,10 @@ Vaastav has `penalties_missed` and `penalties_saved`, not penalties scored. `src
 
 `src/live/` collects the free FPL bootstrap and fixtures for the next deadline. Expected minutes arrive as a `player_id, gw, xmi` file; a missing file picks no team and does not use the historical rolling minutes. Odds are a snapshot already on disk. The Odds API is not called. Captain and bench follow the supplied score. The XI list is the official one, including 5-2-3, and the historical climb list is unchanged. The chip rule is in `src/live/policy.py`. As of the GW6 deadline on 10 Oct 2026 the slate is a single gameweek, so that rule plays no chip until a minutes file and a score exist.
 
+## Scheduled minutes
+
+`score_xp_sched` keeps bench weeks in the minutes prior and leaves the shot share alone. It does not replace `score_xp`. Across GW5–38 the free-transfer gap is +9, −78, +146, and −44 for 2025/26, 2022/23, 2023/24, and 2024/25. The +34 replace-the-score bar was left where it is. It was not what hid a stable edge: the transfer gap changes sign. The fast XI stays within 4 points on 2025/26 and is ahead on the earlier seasons. See `reports/stage_36_sched_stability.md`.
+
 ## Stub scores
 
 A player with no row in the decision week used to inherit his latest score in the whole frame, including a later week. Davis and Sangaré were named in the Gameweek 1–3 XI on a Gameweek 4 score. The carry is now limited to earlier weeks. The 327 in `reports/live_benchmark_2026.md` is the run that had the leak. The same published rule, past weeks only, scores 313 on those five weeks, keeps João Pedro, and takes no hit.
