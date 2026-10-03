@@ -10,6 +10,7 @@ scoring rate. A blank week is zero. Two fixtures are added.
 from __future__ import annotations
 
 import math
+from pathlib import Path
 from typing import Any
 
 import pandas as pd
@@ -315,14 +316,8 @@ def single_fixture_calendar(roster: pd.DataFrame) -> dict[tuple[int, str], int]:
     return {(int(gw), club): 1 for gw, names in clubs.items() for club in names}
 
 
-def opening_pots_for_sheet(
-    odds: pd.DataFrame, sheet: pd.DataFrame
-) -> dict[tuple[int, str], list[dict[str, float]]]:
-    """Opening 1X2 pots, joined on the sheet kickoff. No future player row.
-
-    ``sheet`` needs ``team``, ``kickoff_time``, ``was_home``, and ``gw``
-    (or ``GW``). The odds table is the football-data file, opening columns.
-    """
+def _matched_sheet(sheet: pd.DataFrame) -> pd.DataFrame:
+    """One row per match: home club, away club, gameweek, kickoff."""
     frame = sheet.copy()
     if "gw" not in frame.columns and "GW" in frame.columns:
         frame = frame.rename(columns={"GW": "gw"})
@@ -355,7 +350,28 @@ def opening_pots_for_sheet(
             .rename(columns={"team": "away"})
         )
         matched = homes.merge(aways, on="kickoff_time", how="inner")
-    matched = matched.sort_values("kickoff_time")
+    return matched.sort_values("kickoff_time")
+
+
+def match_count_calendar(sheet: pd.DataFrame) -> dict[tuple[int, str], int]:
+    """How many matches each club has in the week. A double is two."""
+    counts: dict[tuple[int, str], int] = {}
+    for row in _matched_sheet(sheet).itertuples(index=False):
+        for name in (row.home, row.away):
+            key = (int(row.gw), norm_team(str(name)))
+            counts[key] = counts.get(key, 0) + 1
+    return counts
+
+
+def opening_pots_for_sheet(
+    odds: pd.DataFrame, sheet: pd.DataFrame
+) -> dict[tuple[int, str], list[dict[str, float]]]:
+    """Opening 1X2 pots, joined on the sheet kickoff. No future player row.
+
+    ``sheet`` needs ``team``, ``kickoff_time``, ``was_home``, and ``gw``
+    (or ``GW``). The odds table is the football-data file, opening columns.
+    """
+    matched = _matched_sheet(sheet)
     names = sorted(set(matched["home"]).union(set(matched["away"])))
     id_of = {name: i + 1 for i, name in enumerate(names)}
     fixtures = [
@@ -378,6 +394,96 @@ def deadline_rate_history(feat: pd.DataFrame) -> pd.DataFrame:
     if missing:
         raise RuntimeError(f"feature frame has no {missing}")
     return feat.loc[:, cols].drop_duplicates(["gw", "team_norm"])
+
+
+SEASON_CODE = {
+    "2022-23": "2223",
+    "2023-24": "2324",
+    "2024-25": "2425",
+    "2025-26": "2526",
+    "2026-27": "2627",
+}
+_CACHE = Path(__file__).resolve().parents[2] / "data" / "cache"
+_LIVE = Path(__file__).resolve().parents[2] / "data" / "live"
+MIN_OPENING_COVER = 0.98
+
+
+def season_key(feat: pd.DataFrame) -> str | None:
+    """The season this frame belongs to, when every row agrees."""
+    if "season" in feat.columns:
+        values = [str(v) for v in feat["season"].dropna().unique()]
+        if len(values) == 1 and values[0] in SEASON_CODE:
+            return values[0]
+    if "player_id" not in feat.columns or feat.empty:
+        return None
+    prefixes = feat["player_id"].astype(str).str.split(":").str[0]
+    values = [str(v) for v in prefixes.unique()]
+    if len(values) == 1 and values[0] in SEASON_CODE:
+        return values[0]
+    return None
+
+
+def _cover(
+    calendar: dict[tuple[int, str], int],
+    pots: dict[tuple[int, str], list[dict[str, float]]],
+    gws: set[int],
+) -> float:
+    relevant = [key for key in calendar if key[0] in gws]
+    if not relevant:
+        return 0.0
+    return sum(1 for key in relevant if pots.get(key)) / len(relevant)
+
+
+def _live_calendar_and_pots(
+    odds: pd.DataFrame, *, doubles: bool
+) -> tuple[dict[tuple[int, str], list[dict[str, float]]], dict[tuple[int, str], int]]:
+    import json
+
+    fixtures = json.loads((_LIVE / "fixtures.json").read_text(encoding="utf-8"))
+    boot = json.loads((_LIVE / "bootstrap.json").read_text(encoding="utf-8"))
+    names = {int(team["id"]): str(team["name"]) for team in boot["teams"]}
+    pots = opening_pots_by_team_gw(odds, fixtures, names)
+    counts = fixture_calendar(fixtures, names)
+    if not doubles:
+        counts = {key: 1 for key in counts}
+    return pots, counts
+
+
+def attach_opening_horizon(feat: pd.DataFrame, *, doubles: bool = False):
+    """Step scores for a real season. A toy frame returns None.
+
+    Later weeks use that fixture's opening price. The current week keeps
+    the row's own score. A double stays one fixture unless ``doubles`` is set.
+    Coverage below 0.98 raises, so a broken join cannot become the published path.
+    """
+    season = season_key(feat)
+    needed = {"team_norm", "lam_scored", "lam_assist", "e_total", "p_cs_mkt", "gw"}
+    if season is None or not needed.issubset(feat.columns):
+        return None
+    odds_path = _CACHE / f"E0_{SEASON_CODE[season]}.csv"
+    if not odds_path.exists():
+        return None
+    odds = pd.read_csv(odds_path)
+    if season == "2026-27":
+        pots, calendar = _live_calendar_and_pots(odds, doubles=doubles)
+    else:
+        sheet_path = _CACHE / f"merged_gw_{season.replace('-', '_')}.csv"
+        if not sheet_path.exists():
+            return None
+        sheet = pd.read_csv(
+            sheet_path, usecols=["team", "kickoff_time", "was_home", "GW", "fixture"]
+        )
+        pots = opening_pots_for_sheet(odds, sheet)
+        calendar = match_count_calendar(sheet)
+        if not doubles:
+            calendar = {key: 1 for key in calendar}
+    gws = set(pd.to_numeric(feat["gw"], errors="coerce").dropna().astype(int))
+    cover = _cover(calendar, pots, gws)
+    if cover < MIN_OPENING_COVER:
+        raise RuntimeError(f"{season} opening-price coverage is {cover:.3f}")
+    return make_horizon_scores(
+        pots, deadline_rate_history(feat), calendar, horizon=3
+    )
 
 
 def fixture_calendar(

@@ -6,7 +6,9 @@ Rules modelled (chips only when the caller passes a week → chip map):
   - Sell price = purchase + ⌊rise/2⌋; full fall to current
   - Transfer policy: enumerate hold / swaps; maximise
       V = Σ_{h<H} γ^h · XI_score_h − 4·hits
-    with current scores carried forward (leakage-free) and blanks → 0.
+    The current week keeps its score. A later week uses that fixture's
+    opening price. freeze_horizon carries the current score forward.
+    Blanks are 0 for that week only.
   - Hold unless best V beats hold by HOLD_EPS (stops FT churn)
   - Scoring: FPL autosubs (0-min starters ← ordered bench) + captain/VC
   - An empty chip map plays nothing. The map does not choose the week.
@@ -158,11 +160,63 @@ def _fill_score(df: pd.DataFrame, score_col: str) -> pd.Series:
     return s.fillna(0.0)
 
 
+EARLY_SCORE_CAP = 6.0
+
+
+def early_score_table(scored: pd.DataFrame) -> pd.DataFrame:
+    """Past-only scores for players with one or two prior appearances.
+
+    The buy gate stays at three. These rows are for someone already owned.
+    The cap stops a one-match shot share from becoming a captain.
+    """
+    empty = pd.DataFrame(columns=["player_id", "gw", "score_xp"])
+    if scored.empty or "n_prior" not in scored.columns:
+        return empty
+    score_col = "score_xp" if "score_xp" in scored.columns else "xp"
+    if score_col not in scored.columns:
+        return empty
+    part = scored.loc[scored["n_prior"].between(1, 2), ["player_id", "gw", score_col]].copy()
+    if part.empty:
+        return empty
+    part["player_id"] = part["player_id"].astype(str)
+    part["gw"] = pd.to_numeric(part["gw"], errors="coerce")
+    part["score_xp"] = pd.to_numeric(part[score_col], errors="coerce").clip(upper=EARLY_SCORE_CAP)
+    part = part.dropna(subset=["gw", "score_xp"])
+    part["gw"] = part["gw"].astype(int)
+    return part[["player_id", "gw", "score_xp"]]
+
+
+def _attach_early_scores(
+    stubs: pd.DataFrame, early: pd.DataFrame | None, gw: int
+) -> pd.DataFrame:
+    """Fill a missing owned score from the pre-deadline row. Never the price."""
+    if early is None or early.empty or stubs.empty:
+        return stubs
+    week = early.loc[pd.to_numeric(early["gw"], errors="coerce") == int(gw)]
+    if week.empty or "score_xp" not in week.columns:
+        return stubs
+    lookup = dict(
+        zip(
+            week["player_id"].astype(str),
+            pd.to_numeric(week["score_xp"], errors="coerce"),
+            strict=False,
+        )
+    )
+    out = stubs.copy()
+    if "score_xp" not in out.columns:
+        out["score_xp"] = np.nan
+    current = pd.to_numeric(out["score_xp"], errors="coerce")
+    filled = out["player_id"].astype(str).map(lookup)
+    out["score_xp"] = current.where(current.notna(), filled)
+    return out
+
+
 def _gw_pool(
     feat: pd.DataFrame,
     roster: pd.DataFrame,
     gw: int,
     owned: set[str],
+    early_scores: pd.DataFrame | None = None,
 ) -> pd.DataFrame:
     """Eligible buy pool + owned rows (roster-filled when odds-join dropped them)."""
     pool = feat.loc[feat["gw"] == gw].copy()
@@ -208,6 +262,7 @@ def _gw_pool(
             for c in pool.columns:
                 if c not in stubs.columns:
                     stubs[c] = np.nan
+            stubs = _attach_early_scores(stubs, early_scores, gw)
             stubs = stubs[pool.columns]
             pool = pd.concat([pool, stubs], ignore_index=True)
 
@@ -580,6 +635,7 @@ def choose_transfers(
     score_by_gw: dict[int, dict[str, float]] | None = None,
     clubs: dict[int, set[str]] | None = None,
     decisions: list[dict[str, Any]] | None = None,
+    shadow_structural: bool = False,
 ) -> tuple[SquadState, int, int]:
     """Argmax V over hold / 1-swaps / optional structural 2-transfers."""
     eps = HOLD_EPS if hold_eps is None else float(hold_eps)
@@ -766,6 +822,28 @@ def choose_transfers(
                 "weeks": _sheet(chosen),
             }
         )
+    if shadow_structural and decisions is not None and max_tx >= 2:
+        structural_best: float | None = None
+        for _sells, _buys, st2, _d in _two_swap_candidates(
+            state, gw_df, score_col, top_n=40
+        ):
+            val = value_of(st2, 2)
+            if val is None:
+                continue
+            if structural_best is None or val > structural_best:
+                structural_best = val
+        gap = 0.0 if structural_best is None else max(0.0, structural_best - float(chosen_v))
+        decisions.append(
+            {
+                "gw": int(gw),
+                "role": "structural_gap",
+                "n_transfers": 0,
+                "value": float(chosen_v),
+                "margin": gap,
+                "structural": None if structural_best is None else float(structural_best),
+                "weeks": [],
+            }
+        )
     return chosen, n_out, hits_out
 
 
@@ -864,6 +942,10 @@ def run_ft_season(
     opening: SquadState | None = None,
     horizon_scores: Any | None = None,
     decisions: list[dict[str, Any]] | None = None,
+    freeze_horizon: bool = False,
+    use_early_scores: bool = True,
+    shadow_structural: bool = False,
+    structural_2tx: bool = False,
 ) -> pd.DataFrame:
     """``chips`` maps a gameweek to one chip name. None and {} play nothing.
 
@@ -871,12 +953,24 @@ def run_ft_season(
     That week is scored with no transfers. Later weeks use the normal rule.
 
     ``horizon_scores(gw, pool, gws)`` returns a step-score map for that
-    deadline. None keeps the frozen decision-week score.
+    deadline. The default builds that map from opening prices already on
+    disk. ``freeze_horizon`` keeps this week's score on the later weeks.
     """
     rows: list[dict[str, Any]] = []
     plan = validate_chip_map(chips)
     if roster is None:
         roster = load_vaastav_roster(EVAL_SEASON)
+    if horizon_scores is None and not freeze_horizon:
+        from src.models.open_horizon import attach_opening_horizon
+
+        horizon_scores = attach_opening_horizon(feat)
+    early = None
+    if use_early_scores:
+        stored = feat.attrs.get("early_scores")
+        if isinstance(stored, pd.DataFrame):
+            early = stored
+        elif stored:
+            early = pd.DataFrame(list(stored), columns=["player_id", "gw", "score_xp"])
     if opening is not None and len(opening.purchase) != 15:
         raise RuntimeError("opening squad must contain 15 players")
 
@@ -894,7 +988,7 @@ def run_ft_season(
             if clubs and not clubs.get(int(gw)):
                 continue
             owned = state.ids() if state else set()
-            pool = _gw_pool(feat, roster, gw, owned)
+            pool = _gw_pool(feat, roster, gw, owned, early)
             if clubs:
                 pool = apply_fixture_tags(pool, int(gw), clubs)
             if pool["position"].nunique() < 4:
@@ -945,6 +1039,8 @@ def run_ft_season(
                     score_by_gw=step_scores,
                     clubs=clubs or None,
                     decisions=decisions,
+                    shadow_structural=shadow_structural,
+                    structural_2tx=structural_2tx,
                 )
                 state = new_state
 

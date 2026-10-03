@@ -65,7 +65,14 @@ def run_season(season: str, code: str) -> dict[str, float]:
     callback = make_horizon_scores(pots, history, calendar, horizon=HORIZON)
     clubs = clubs_by_gw(roster)
     full = [gw for gw, names in clubs.items() if len(names) >= 20 and gw in GWS]
-    base = run_ft_season(feat, {"xp": "score_xp"}, GWS, roster=roster, horizon=HORIZON)
+    base = run_ft_season(
+        feat,
+        {"xp": "score_xp"},
+        GWS,
+        roster=roster,
+        horizon=HORIZON,
+        freeze_horizon=True,
+    )
     arm = run_ft_season(
         feat,
         {"xp": "score_xp"},
@@ -116,7 +123,12 @@ def run() -> dict[str, float]:
     full = [gw for gw, names in clubs.items() if len(names) >= 20 and gw in GWS]
 
     base = run_ft_season(
-        feat, {"xp": "score_xp"}, GWS, roster=roster, horizon=HORIZON
+        feat,
+        {"xp": "score_xp"},
+        GWS,
+        roster=roster,
+        horizon=HORIZON,
+        freeze_horizon=True,
     )
     arm = run_ft_season(
         feat,

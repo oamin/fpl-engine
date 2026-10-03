@@ -52,9 +52,11 @@ A club with no row in the week is ranked at 0, and a week with no clubs is skipp
 
 ## Forward plan
 
-An outside review of the gameweek note is answered in `reports/forward_plan.md`. `score_xp` already includes clean sheets, saves, defensive contributions, a bonus proxy, and deductions. The three-week value still reuses today's score, and a blank this week copies that 0 onto later weeks that have a fixture.
+An outside review of the gameweek note is answered in `reports/forward_plan.md`. `score_xp` already includes clean sheets, saves, defensive contributions, a bonus proxy, and deductions. The published three-week value no longer reuses today's score, and a blank this week does not copy that 0 onto a later week that has a fixture.
 
-The Gameweek 1–5 gap from the same opening fifteen was 313 against 350 while a missing `score_xp` was filled with the price. That fill is now 0. The same five weeks are 336 against 350 (`reports/stage_40_gw15_gap.md`). The final elevens are one point ahead, the captain extra is −5, their Triple Captain is −2, and Gameweek 2 pays an eight-point hit. The opening-price horizon is ahead on every season that was climbed, Gameweeks 5–38: 2023/24 +69, 2022/23 +84, 2024/25 +65, 2025/26 +29. In each season the weeks where all twenty clubs play are also ahead, and every club-week with a sheet row had an opening line. A double is still one fixture. The published climb is unchanged, because switching it would move every published total. See `reports/stage_41_open_horizon.md`.
+The Gameweek 1–5 gap from the same opening fifteen was 313 against 350 while a missing `score_xp` was filled with the price. That fill is now 0. The same five weeks are 336 against 350 (`reports/stage_40_gw15_gap.md`). The final elevens are one point ahead, the captain extra is −5, their Triple Captain is −2, and Gameweek 2 pays an eight-point hit. The published three-week value is the opening-price horizon. The current week keeps `score_xp`. A later week uses that fixture's opening line. A double is still one fixture until the double screen replaces it. An owned player with one or two prior appearances keeps a past-only score, capped at 6, and he cannot be bought. On Gameweeks 1–5 from the same opening fifteen the freeze scores 336, the horizon without that score scores 366, and the published path scores 333 against ojaminFC's 350. See `reports/stage_42_gw15_horizon.md`.
+
+Both fixtures of a double passed 2023/24: 1799 against 1734 (+65), with the full slates +25 and the other weeks +40. It is not the published calendar yet. 5-2-3 is the best shape in none of 135 weeks. The cross-position pairs the beam skips are worth 0.06 a week on 2025/26. See `reports/stage_43_dgw.md` and `reports/stage_44_search_counts.md`.
 
 The 2025/26 calibration is done (`reports/stage_39_calibration.md`). On 7,569 buy-pool rows the score is high by 0.13, MAE is 2.29, and Spearman is 0.23. Clean sheets are the large positive bias. Defensive contributions on this season stay. The hold margin and the transfer penalty stay.
 
@@ -72,7 +74,7 @@ A player with no row in the decision week used to inherit his latest score in th
 
 ## Opening-price horizon
 
-`python -m src.live.open_horizon` is a diagnostic arm, not the published climb. The current week keeps `score_xp`. Later weeks in the three-week hold use that fixture's opening 1X2, with share and minutes frozen at the deadline. On the ojaminFC Gameweek 1 fifteen it scores 331 against the published 327 and their 350. It does not sell João Pedro in Gameweek 3. His step scores that week are 2.94, 5.36 and 3.82. Gemini reviewed the run. These five weeks do not accept or reject the arm. See `reports/open_horizon_gw1_5.md`.
+`python -m src.live.open_horizon` is an older diagnostic. Its on-disk note scores 331 against the leaked 327. That number is not the published path. The published climb now prices later weeks from the opening line itself, with a double still counted as one fixture, and an owned player below the history gate keeps a past-only score capped at 6. Gameweeks 1–5 on that path are in `reports/stage_42_gw15_horizon.md`.
 
 ## 2026/27 benchmark
 

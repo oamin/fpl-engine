@@ -1,13 +1,11 @@
 {
   "updated": "2026-10-03",
-  "milestone": "open-horizon-screen",
+  "milestone": "publish-horizon",
   "status": "reviewed",
-  "summary": "A missing score is 0, not the price. Gameweeks 1-5 from the same opening fifteen are 336 against 350. The opening-price horizon is ahead on every climbed season, Gameweeks 5-38: 2023/24 +69, 2022/23 +84, 2024/25 +65, 2025/26 +29. Full weeks are ahead in each. Gemini kept the four-season result. The published climb stays on the frozen score. 2025/26 calibration: bias +0.13, MAE 2.29, Spearman 0.23.",
+  "summary": "The published three-week value is the opening-price horizon. A double is still one fixture. An owned player with one or two prior appearances keeps a past-only score capped at 6. Gameweeks 1-5: freeze 336, horizon without that score 366, published path 333, ojaminFC 350. Both fixtures passed 2023/24 by 65 and are not the default yet. 5-2-3 wins no week. The cross-position gap on 2025/26 is 0.06 a week.",
   "artifacts": [
-    "reports/forward_plan.md",
-    "reports/stage_39_calibration.md",
-    "reports/stage_40_gw15_gap.md",
-    "reports/stage_41_open_horizon.md",
-    "reports/stage_41_open_horizon_follow.md"
+    "reports/stage_42_gw15_horizon.md",
+    "reports/stage_43_dgw.md",
+    "reports/stage_44_search_counts.md"
   ]
 }

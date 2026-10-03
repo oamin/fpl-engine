@@ -52,7 +52,7 @@ The weekly search scores the XI only. `pick_xi` then takes, for each shape, the 
 - A vice-captain minutes bar. Killed. It does not touch the weeks where the captain plays and someone else hauls, and on a real captain blank it can hand the double to a low score.
 - Adding a fraction of the first substitute into the transfer value. Killed. The weight is unfitted, and it spends budget and free transfers on the bench.
 - A cap of two starters per club, lifted on a double. Killed. It benches a third attacker from a strong side and leaves that fee on the bench.
-- Adding 5-2-3 to the published formation list. Not a trial. That list is the published comparison. A count of how often the official list would pick 5-2-3, without replacing the list, is the only check that stays inside the rule, and it has not been run.
+- Adding 5-2-3 to the published formation list. Closed. The count on the eligible pool, Gameweeks 5–38, is 0 wins in 135 weeks. The list stays as it is. See `reports/stage_44_search_counts.md`.
 
 ## Forward plan
 
@@ -64,9 +64,11 @@ The Gameweek 1–5 split was 313 against 350 while a missing score was filled wi
 
 0A is done on 2025/26, Gameweeks 5–38, 7,569 buy-pool rows. Bias +0.13, MAE 2.29, Spearman 0.23. Clean sheets are high by 0.23. Goals are the largest rank term. Defensive contributions on this season stay. The bonus proxy and the card proxy meet the leave-alone rule. See `reports/stage_39_calibration.md`. Subtracting defensive contributions before 2025/26 still needs its own table.
 
-0B is screened on four seasons. Later weeks keep today's share and minutes and take that fixture's opening rate and clean-sheet probability. A blank week is 0 for that week only. A double is still one fixture. Gameweeks 5–38, opening horizon minus the published path: 2023/24 +69 (full weeks +84), 2022/23 +84 (full weeks +59), 2024/25 +65 (full weeks +110), 2025/26 +29 (full weeks +21). Coverage is complete on each season. Gemini kept the 2023/24 pass ([horizon screen](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). The published climb is not switched, because that would move every published total.
+The opening horizon is the published three-week value, approved after four seasons. A double is still one fixture on that path. An owned player with one or two prior appearances keeps a past-only score capped at 6. Gemini kept that guard after Gameweeks 1–5 scored 333 with it and 366 without it ([early score](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). The zero-score sale is not rewarded by those five weeks.
 
-5-2-3 is counted, not added to the published list. The cross-position switch is one season against the current beam, and each week records the best exhaustive value minus the beam's value. A gap of about 0.1 to 0.2 per week stops the search work. Player goal and assist prices are not on disk, so that experiment is parked and no odds call is made. The penalty and the hold margin stay frozen until the horizon has a result. A later grid walks forward. It does not crown a one-season winner.
+Both fixtures passed 2023/24, 1799 against 1734. Gemini kept the pass. It does not replace the single-fixture calendar until the other seasons clear the same rule. 5-2-3 wins no week on the eligible pool across four seasons. The unsearched cross-position pairs are worth 0.06 a week on 2025/26. Both counts are closed.
+
+5-2-3 is counted, not added to the published list, and the count is closed at zero wins. The cross-position pairs are closed at 0.06 a week. Player goal and assist prices are not on disk, so that experiment is parked and no odds call is made. The penalty of 1.0 and the hold margin of 1.25 stay frozen. A later grid, if one is run, walks forward. It does not crown a one-season winner.
 
 ## Rules gaps
 

@@ -24,7 +24,7 @@ from src.ingest.fpl_odds import (
 from src.live.entry import stamp_matchday_teams
 from src.live.fpl_snapshot import ELEMENT
 from src.models.ridge_multiseason import _attach_value_defcon
-from src.models.season_climb_ft import SquadState, run_ft_season
+from src.models.season_climb_ft import SquadState, early_score_table, run_ft_season
 from src.models.xp_engine import (
     DEFCON_THRESH,
     MIN_HISTORY,
@@ -282,11 +282,21 @@ def build_frames() -> tuple[pd.DataFrame, pd.DataFrame, dict[str, Any]]:
     scored = add_player_priors(scored, fill_from=prior)
     scored, n_debut = stamp_unmatched_priors(scored)
     scored = compute_xp(scored)
+    early_scores = early_score_table(scored)
     feat = scored.loc[scored["gw"].isin(GWS)].copy()
     feat = feat.loc[feat["n_prior"] >= MIN_HISTORY].copy()
     feat["score_xp"] = feat["xp"]
     feat["eligible"] = pd.to_numeric(feat["xmi"], errors="coerce").fillna(0) >= 45.0
     feat["player_id"] = feat["player_id"].astype(str)
+    early_scores["player_id"] = early_scores["player_id"].astype(str)
+    feat.attrs["early_scores"] = tuple(
+        zip(
+            early_scores["player_id"].astype(str),
+            early_scores["gw"].astype(int),
+            early_scores["score_xp"].astype(float),
+            strict=False,
+        )
+    )
     info.update(
         {
             "played_rows": int(len(played)),

@@ -11,6 +11,7 @@ from src.models.open_horizon import (
     opening_pots_for_sheet,
     prior_pots,
     project_player,
+    season_key,
     side_pot,
     single_fixture_calendar,
     xp_on_pot,
@@ -216,6 +217,34 @@ class OpenHorizonTests(unittest.TestCase):
         self.assertIn((1, "brighton"), pots)
         self.assertIn((1, "luton"), pots)
         self.assertIn((1, "burnley"), pots)
+
+    def test_two_fixtures_are_added(self) -> None:
+        pot = side_pot(1.21, 6.50, 11.92, 1.36, 3.10, is_home=True)
+        row = {
+            "team_norm": "chelsea",
+            "position": "FWD",
+            "xmi": 90.0,
+            "share_xG": 0.25,
+            "share_xA": 0.05,
+            "exp_defcon_hit": 0.0,
+            "fwd_goal_scale": 1.0,
+            "score_xp": 1.0,
+        }
+        one = project_player(
+            row, 1, {(1, "chelsea"): [pot]}, {}, calendar={(1, "chelsea"): 1}
+        )
+        two = project_player(
+            row,
+            1,
+            {(1, "chelsea"): [pot, pot]},
+            {},
+            calendar={(1, "chelsea"): 2},
+        )
+        self.assertAlmostEqual(two, one * 2, places=5)
+
+    def test_a_toy_frame_is_not_a_season(self) -> None:
+        frame = pd.DataFrame({"player_id": ["p1"], "gw": [1]})
+        self.assertIsNone(season_key(frame))
 
     def test_step_scores_replace_the_frozen_week(self) -> None:
         spec = (

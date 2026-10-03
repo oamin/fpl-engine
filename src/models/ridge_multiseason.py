@@ -127,6 +127,9 @@ def build_one_season(season: str, fd_code: str) -> pd.DataFrame:
     feat = add_player_priors(feat)
     feat = compute_xp(feat)
     feat = add_team_prior_score(feat)
+    from src.models.season_climb_ft import early_score_table
+
+    early_scores = early_score_table(feat)
     feat = feat.loc[feat["n_prior"] >= MIN_HISTORY].copy()
 
     # Climb score aliases
@@ -140,6 +143,15 @@ def build_one_season(season: str, fd_code: str) -> pd.DataFrame:
     feat["score_price"] = feat["value"]
     # Order key for walk-forward
     feat["season_ord"] = {s: i for i, (s, _) in enumerate(SEASONS)}[season]
+    # A DataFrame in attrs breaks pandas ranking. A tuple compares cleanly.
+    feat.attrs["early_scores"] = tuple(
+        zip(
+            early_scores["player_id"].astype(str),
+            early_scores["gw"].astype(int),
+            early_scores["score_xp"].astype(float),
+            strict=False,
+        )
+    )
     return feat
 
 

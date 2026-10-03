@@ -4,7 +4,7 @@ An outside review treated the one-gameweek note as the whole forecast. Some of t
 
 A second pass on that plan added three things that change the order. The 37-point gap is split before any formula change. Calibration reports rank and error size, not only the mean. The bench's later objective is the expected value of an automatic substitute, not a minutes floor.
 
-The gap already measured is actual points. From ojaminFC's Gameweek 1 fifteen, the past-only published path scored 313 against their 350 over Gameweeks 1–5. Five weeks are a diagnosis. They are not a verdict that the rule is worse.
+The gap already measured is actual points. From ojaminFC's Gameweek 1 fifteen, the past-only path scored 313 against their 350 over Gameweeks 1–5 while a missing score was filled with the price. After that fill became 0 the same freeze path is 336 against 350. Five weeks are a diagnosis. They are not a verdict that the rule is worse.
 
 ## What the score already contains
 
@@ -12,7 +12,7 @@ The gap already measured is actual points. From ojaminFC's Gameweek 1 fifteen, t
 
 ## What the review got right
 
-The three-week value reuses this week's score. It does not rebuild the rate for the next opponent. A future week in which the club has no fixture is already set to 0 for that week only. A blank this week is different: today's score is set to 0, and that 0 is what the later weeks copy, even when the club plays. Doubles are scored once. `fixture_counts` is not passed in.
+The three-week value used to reuse this week's score. It did not rebuild the rate for the next opponent. A future week in which the club has no fixture is already set to 0 for that week only. A blank this week used to copy that 0 onto later weeks that have a fixture. Doubles were scored once. `fixture_counts` is still not passed on the published path.
 
 The opening 15 maximises the sum of all fifteen scores. Every later week maximises the XI only, and the bench is worth 0 in that value. Those are different objectives. Replacing the opener with an XI-only sum, and leaving the bench worth nothing, was rejected. Under a £100m cap that buy fills the bench with the cheapest bodies, and the season then spends free transfers repairing it. Autosubs are the reason that matters: in 2023/24 they covered 65 of 86 intended blanks, and in 2024/25 they covered 38 of 42.
 
@@ -60,7 +60,9 @@ Defensive contributions before 2025/26 are not subtracted from this table. That 
 
 Park 0B if the season total is not higher, or if the total on weeks where all twenty clubs play is not higher. A gain that exists only on the blank weeks is not a pass.
 
-2023/24 Gameweeks 5–38: the published path scores 1665 and the opening horizon scores 1734 (+69). On the 29 weeks where all twenty clubs play the gap is +84. The other weeks are −15. The same rule on the other seasons: 2022/23 +84 (full weeks +59), 2024/25 +65 (full weeks +110), 2025/26 +29 (full weeks +21). Opening prices cover every club-week that has a sheet row in each season. The published climb is not switched. That switch would move every published total. See `reports/stage_41_open_horizon.md` and `reports/stage_41_open_horizon_follow.md`.
+2023/24 Gameweeks 5–38: the freeze scores 1665 and the opening horizon scores 1734 (+69). On the 29 weeks where all twenty clubs play the gap is +84. The other weeks are −15. The same rule on the other seasons: 2022/23 +84 (full weeks +59), 2024/25 +65 (full weeks +110), 2025/26 +29 (full weeks +21). Opening prices cover every club-week that has a sheet row in each season. The published climb is now that horizon. A double on it is still one fixture. `freeze_horizon=True` is the old path, and the stage 41 baselines pass it so a re-run still means the freeze. See `reports/stage_41_open_horizon.md` and `reports/stage_41_open_horizon_follow.md`.
+
+An owned player with one or two prior appearances keeps that decision week's past-only `score_xp`, capped at 6, and he cannot be bought. The buy gate stays at three priors and 45 minutes. On Gameweeks 1–5 from the same opening fifteen the freeze scores 336, the horizon without that score scores 366, and the published path scores 333 against ojaminFC's 350. Gemini kept the cap. Selling Sangaré because his score was 0 is not a result those five weeks get to reward. See `reports/stage_42_gw15_horizon.md`.
 
 Reading a future feature row is not allowed. That row's minutes prior includes matches after the deadline.
 
@@ -68,13 +70,13 @@ Reading a future feature row is not allowed. That row's minutes prior includes m
 
 **2. The opener is not switched to an XI-only sum in this batch.** It stays the sum of fifteen. The later bench rule, if one is written, is the expected value of the automatic substitute. That rule is not designed here.
 
-**3. Counts, not replacements.** How often 5-2-3 would be the best shape, the mean score advantage when it is, and the actual points, without changing the published list. One season with the cross-position two-transfer switch on, against the current beam, plus the per-week gap between the best exhaustive value and the value the beam kept. Availability and the minutes gate wait for a snapshot taken before each deadline.
+**3. Counts, not replacements.** Done. 5-2-3 is the best shape in none of 33, 34, 34, and 34 weeks. Mean advantage 0. The published list stays. On 2025/26 the cross-position pairs the beam does not try are worth 0.06 of three-week value per week, across 33 weeks, and no week reaches 1. Both counts are closed. Availability and the minutes gate still wait for a snapshot taken before each deadline. See `reports/stage_44_search_counts.md`.
 
 **4. Player goal and assist prices, only when a snapshot is already on disk.** No fetch. De-vigging and the joint goal-or-assist price belong to that experiment.
 
 **5. The penalty and the hold margin, only after the horizon has a result.** A walk-forward grid. Not a one-season maximum.
 
-**6. Automatic substitutes, doubles, and chips.** A double is the sum of two fixture projections. Chips stay off in the historical climb until the forecast path is the thing being measured.
+**6. Automatic substitutes, doubles, and chips.** A double is the sum of two fixture projections. On 2023/24 that sum scores 1799 against the one-fixture horizon's 1734 (+65). Full slates are +25 and the other weeks are +40. Gemini kept the pass. It does not replace the single-fixture calendar until 2022/23, 2024/25, and 2025/26 clear the same rule: the season ahead, the non-full weeks ahead, and the full slates no more than 5 behind. Chips stay off in the historical climb until the forecast path is the thing being measured. See `reports/stage_43_dgw.md`.
 
 ## Not in this batch
 
