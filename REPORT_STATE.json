@@ -2,10 +2,10 @@
   "updated": "2026-10-03",
   "milestone": "gw-decision-flow",
   "status": "reviewed",
-  "summary": "The published gameweek is drawn as one path: skip an empty sheet, price the hold against same-position swaps, fix the 15, then pick the XI and score it after the matches. The figure is data/plots/gw_decision_flow.png. No rule was changed.",
+  "summary": "The published gameweek is written out for an outside reader in reports/gw_decision_flow.md, matching the figure in data/plots/gw_decision_flow.png. No rule was changed.",
   "artifacts": [
-    "data/plots/gw_decision_flow.png",
     "reports/gw_decision_flow.md",
+    "data/plots/gw_decision_flow.png",
     "src/models/gw_decision_flow.py"
   ]
 }
