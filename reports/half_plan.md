@@ -45,7 +45,7 @@ Phases 2 and 3 are the optional `bench_gw` argument on `transfer_value` and `cho
 - A week already passed, or a week missing from the horizon list, adds nothing.
 - The default is no week. `run_ft_season` leaves the argument off, so the published climb still scores the bench at zero.
 
-There is no price term and no separate sale. After the chip is used the caller stops passing the week. An equal eleven with a cheaper bench then fails the same hold that already sits on a transfer, so the bench is sold only when an eleven gain pays for it. A historical climb that fills in the chip map is still a later lock. That climb would move published season totals.
+There is no price term and no separate sale. After the chip is used the caller stops passing the week. An equal eleven with a cheaper bench then fails the same hold that already sits on a transfer, so the bench is sold only when an eleven gain pays for it. The crowd fifteens have a side report that calls this plan at each deadline (`reports/half_plan_scores.md`). The published climb still passes no Bench Boost week, and its season totals stay where they are.
 
 ## What the plan still does not see
 

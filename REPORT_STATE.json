@@ -1,12 +1,13 @@
 {
   "updated": "2026-10-04",
-  "milestone": "sale-margins",
+  "milestone": "half-plan-scores",
   "status": "reviewed",
-  "summary": "The margins on the four leading climbs are inconclusive. The 2022/23 template second half had a median of 4.47, with 1 of 16 sales under 2.5. The 2023/24 second half had a median of 3.49, with 4 of 13 under 2.5. A tighter hold would cut the paying half harder. The hold margin stays 1.25.",
+  "summary": "The chip plan was scored against the stored empty-chip climbs on 2022/23, 2023/24, and 2025/26. All 12 squads finished. 2022/23, on the 2026 wallet, loses on every squad; the best lift is Third at -40. 2023/24's best lift is Third at +128, and the highest chip total is Template at 2090, 15 below its empty climb. 2025/26, the matched wallet, gains on every squad; the best lift is Template at +199 and the highest chip total is Premium at 2214. Every squad wildcards in Gameweek 4, the first week the buy pool exists. Hits on the 2025/26 chip climbs are 0. The published climb is unchanged.",
   "artifacts": [
-    "src/models/crowd_sale_margins.py",
-    "tests/test_crowd_sale_margins.py",
-    "reports/crowd_sale_margins.md",
-    "data/processed/crowd_sale_margins.csv"
+    "src/models/half_plan_scores.py",
+    "src/models/season_climb_ft.py",
+    "tests/test_half_plan_scores.py",
+    "reports/half_plan_scores.md",
+    "data/processed/half_plan_scores.csv"
   ]
 }

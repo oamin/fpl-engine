@@ -80,6 +80,8 @@ The close-call count is closed (`reports/stage_48_crowd_calls.md`). On players w
 
 `plan_half` in `src/live/half_plan.py` searches the remaining half at each deadline, with `score_xp` as the points the caller already priced. Bench points enter on the planned Bench Boost week inside that sum. A chip left unused at Gameweek 19 is worth nothing. It does not replace the live chip rule. The transfer search scores that same bench on the planned week only, when the caller passes it: discounted inside the next three weeks, or once from the decision-week bench when the chip is further out. The published climb passes no week, so its bench stays at zero. After the chip is used the week is dropped and the ordinary hold sells the bench down. A double stays one fixture. See `reports/half_plan.md`.
 
+The same plan was solved on the crowd fifteens for 2022/23, 2023/24, and 2025/26 (`reports/half_plan_scores.md`). 2024/25 is absent. The baseline is the stored empty-chip climb. All 12 squads wildcard in Gameweek 4. 2022/23 loses on every squad, best lift Third at −40. 2023/24 best lift is Third at +128. 2025/26 gains on every squad, best lift Template at +199, highest chip total Premium at 2214. Gemini kept the count. The published climb file is unchanged.
+
 ## Crowd openings
 
 No public archive holds hall-of-fame Gameweek 1 squads for 2022/23–2025/26. Four legal fifteens per season are drawn from that week's ownership: the template, the dearest names in that same pool, then two later waves that share nobody with the template. The share is of managers. Points are not used. See `reports/crowd_openings.md`.
