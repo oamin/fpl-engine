@@ -6,10 +6,17 @@ import unittest
 
 import pandas as pd
 
-from src.models.season_climb_ft import GAMMA, SquadState, choose_transfers, transfer_value
+from src.models.season_climb_ft import (
+    GAMMA,
+    HOLD_EPS,
+    SWITCH_PENALTY,
+    SquadState,
+    choose_transfers,
+    transfer_value,
+)
 
 
-def _player(pid: str, position: str, score: float, *, eligible: bool) -> dict:
+def _player(pid: str, position: str, score: float, eligible: bool) -> dict:
     return {
         "player_id": pid,
         "position": position,
@@ -134,8 +141,16 @@ class BenchWeightTests(unittest.TestCase):
 class ChoiceTests(unittest.TestCase):
     def test_the_bench_week_keeps_a_move_the_eleven_alone_would_refuse(self) -> None:
         rows = _rows(7.0)
-        rows.append(_player("f4", "FWD", 11.0, eligible=True))
+        # 10.5 enters the XI and the 10 drops to the bench. Across three weeks
+        # that half-point does not clear the hold. On the bench week the bench
+        # also rises by 3, and that does.
+        rows.append(_player("f4", "FWD", 10.5, True))
         pool = pd.DataFrame(rows)
+        horizon = 1.0 + GAMMA + GAMMA**2
+        xi_only = 0.5 * horizon - SWITCH_PENALTY
+        with_bench = xi_only + (10.0 - 7.0)
+        self.assertLess(xi_only, HOLD_EPS)
+        self.assertGreaterEqual(with_bench, HOLD_EPS)
         purchase = {row["player_id"]: 40 for row in rows if row["player_id"] != "f4"}
         state = SquadState(purchase=purchase, bank=40, ft=1)
         held, n_hold, _ = choose_transfers(

@@ -1,6 +1,6 @@
 # Half-season chip plan
 
-Locked with Gemini on 2026-10-04 ([half plan](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Phase 1 is `plan_half` in `src/live/half_plan.py`. Gemini kept that function. `score_xp` stays the published score. A double stays one fixture. The historical climb keeps an empty chip map. The transfer search is unchanged.
+Locked with Gemini on 2026-10-04 ([half plan](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Phase 1 is `plan_half` in `src/live/half_plan.py`. Gemini kept that function. `score_xp` stays the published score. A double stays one fixture. The historical climb keeps an empty chip map. Phases 2 and 3 score the bench inside a transfer only when the caller names the planned Bench Boost week. The published climb does not name one. Twenty-four unit tests passed, and Gemini kept the bench term.
 
 The layer chooses chips. It does not price players. Each deadline it looks to the end of the current half, Gameweek 19 or Gameweek 38, using the squads and the fixture list already in hand. It is solved again at the next deadline. A double that has not been announced is not in the plan.
 
@@ -36,12 +36,17 @@ The margins 12 and 16 stay the live margins. They are not refit.
 
 ## Phases
 
-Phase 1 is `plan_half` in `src/live/half_plan.py`, with tests in `tests/test_half_plan.py`. The caller passes the week tables. The function returns the chip for this week and the schedule that matches that action. It does not replace `recommend_chip`. It does not call the squad picker, the climb, or the network.
+Phase 1 is `plan_half` in `src/live/half_plan.py`, with tests in `tests/test_half_plan.py`. The caller passes the week tables. The function returns the chip for this week and the schedule that matches that action. It does not replace `recommend_chip`. It does not call the squad picker, the climb, or the network. `bench_week` reads the Bench Boost week from that schedule when the week is still ahead, including this week. A used chip, or a schedule with no Bench Boost, returns nothing.
 
-Phase 2, after those tests, changes the transfer search on one point. If the planned Bench Boost week sits inside the next three weeks, that week's bench is scored at `score_xp` and every other week's bench stays at zero. The weight is not a constant.
+Phases 2 and 3 are the optional `bench_gw` argument on `transfer_value` and `choose_transfers` in `src/models/season_climb_ft.py`. The bench is the four players left out of the XI, scored with the same `score_xp` column as the XI. It is added on one week.
 
-Phase 3 is the part that keeps a strong bench for a Bench Boost outside those three weeks, then drops the term once the chip is used, so later transfers sell the bench down. Its formula is locked only after phase 1. A historical climb that fills in the chip map is not part of phase 3. That climb would move published season totals and needs its own lock.
+- When that week is one of the next three, only that step is added, discounted by γ to the power of the step. The other two steps stay at zero.
+- When that week is later than the three, the decision-week bench is added once, discounted by γ to the power of the gap from this week to the chip.
+- A week already passed, or a week missing from the horizon list, adds nothing.
+- The default is no week. `run_ft_season` leaves the argument off, so the published climb still scores the bench at zero.
 
-## What phase 1 does not see
+There is no price term and no separate sale. After the chip is used the caller stops passing the week. An equal eleven with a cheaper bench then fails the same hold that already sits on a transfer, so the bench is sold only when an eleven gain pays for it. A historical climb that fills in the chip map is still a later lock. That climb would move published season totals.
 
-Transfers between this deadline and the Bench Boost week are invisible until the next solve. The wildcard fifteen is whatever the caller priced. The Gameweek 6 example is in the sum: the wildcard's value includes the Bench Boost it makes available before Gameweek 19, and the weeks after that chip do not pay for the bench. The transfers that actually assemble and then sell that bench are phases 2 and 3.
+## What the plan still does not see
+
+Transfers between this deadline and the Bench Boost week are invisible until the next solve. The wildcard fifteen is whatever the caller priced. The Gameweek 6 example is in the chip sum: the wildcard's value includes the Bench Boost it makes available before Gameweek 19, and the 16-point hurdle is the eleven only. The transfer search pays for the bench on the chip week, and the discount on a chip thirteen weeks away is small, so the strong bench is built when that week is close.
