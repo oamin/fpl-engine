@@ -833,6 +833,8 @@ def choose_transfers(
                 "n_transfers": 0,
                 "value": float(hold_v),
                 "margin": 0.0,
+                "hold_legal": bool(hold_legal),
+                "hits": 0,
                 "weeks": _sheet(state),
             }
         )
@@ -843,6 +845,8 @@ def choose_transfers(
                 "n_transfers": int(n_out),
                 "value": float(chosen_v),
                 "margin": float(chosen_v - hold_v),
+                "hold_legal": bool(hold_legal),
+                "hits": int(hits_out),
                 "weeks": _sheet(chosen),
             }
         )
