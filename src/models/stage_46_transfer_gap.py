@@ -514,6 +514,37 @@ def select_group(rows: list[dict[str, Any]], group: str) -> list[dict[str, Any]]
     return [row for row in rows if row.get("group") == group]
 
 
+REBUILD_CHIPS = frozenset({"wildcard", "free_hit"})
+
+
+def chip_sale_split(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    """Wildcard and free hit rebuild a squad. The other weeks spend the transfer bank."""
+    paired = [row for row in rows if row.get("paired") and row.get("gross") is not None]
+    rebuild = [row for row in paired if row.get("chip") in REBUILD_CHIPS]
+    other = [row for row in paired if row.get("chip") not in REBUILD_CHIPS]
+    return {
+        "n": len(paired),
+        "n_rebuild": len(rebuild),
+        "mean_rebuild": pooled_mean([float(row["gross"]) for row in rebuild]),
+        "n_other": len(other),
+        "mean_other": pooled_mean([float(row["gross"]) for row in other]),
+    }
+
+
+def repeated_pairs(rows: list[dict[str, Any]]) -> list[tuple[str, str, int]]:
+    """Model sales of the same two names from more than one opening fifteen."""
+    counts: dict[tuple[str, str], int] = {}
+    for row in rows:
+        if row.get("group") == "reference" or not row.get("paired"):
+            continue
+        if row.get("side") not in (None, "model"):
+            continue
+        key = (str(row.get("sold_name")), str(row.get("bought_name")))
+        counts[key] = counts.get(key, 0) + 1
+    found = [(sold, bought, count) for (sold, bought), count in counts.items() if count >= 2]
+    return sorted(found, key=lambda item: (-item[2], item[0], item[1]))
+
+
 def _fmt(value: float | None, digits: int = 2) -> str:
     if value is None:
         return "none"
@@ -882,6 +913,25 @@ def write_report(
             "The sign gives every manager with a paired sale the same weight. "
             "Kept means the sold player was still in that manager's fifteen in the sale week. "
             "Week net adds that week's hit once.",
+            "",
+        ]
+    )
+    for group in ("veteran", "rank"):
+        split = chip_sale_split(select_group(own_rows, group))
+        lines.append(
+            f"{group.capitalize()}: {split['n_rebuild']} of {split['n']} own sales are a wildcard or a free hit "
+            f"(mean gross {_fmt(split['mean_rebuild'])}). "
+            f"The other {split['n_other']} have mean gross {_fmt(split['mean_other'])}. "
+            "The group mean above keeps both."
+        )
+    repeats = repeated_pairs(model_rows)
+    if repeats:
+        listed = ", ".join(f"{sold} to {bought} ({count})" for sold, bought, count in repeats)
+        lines.append(
+            "The same model sale appears from more than one opening fifteen: " + listed + "."
+        )
+    lines.extend(
+        [
             "",
             "| label | group | season points | model points | model hits | sales | mean gross | kept | mean kept | own sales | mean own | chips |",
             "|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|",

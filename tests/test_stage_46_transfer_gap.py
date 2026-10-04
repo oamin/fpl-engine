@@ -15,6 +15,7 @@ from src.models.stage_46_transfer_gap import (
     VETERANS,
     assign_week_net,
     bought_held,
+    chip_sale_split,
     consistency,
     decision_score,
     iter_squad_diffs,
@@ -24,6 +25,7 @@ from src.models.stage_46_transfer_gap import (
     pair_within_position,
     pairs_from_entry_transfers,
     prior_inside,
+    repeated_pairs,
     rows_for_week,
     score_paired_move,
     select_group,
@@ -257,6 +259,54 @@ class ConsistencyTests(unittest.TestCase):
     def test_a_one_sided_group_of_four_is_consistent(self) -> None:
         self.assertEqual(consistency([1, 1, 1, 1]), "consistent sold ahead")
         self.assertEqual(consistency([-1, -1, -1, -1, 1]), "consistent bought ahead")
+
+
+class ChipFlagTests(unittest.TestCase):
+    def test_wildcard_and_free_hit_are_split_from_the_bank(self) -> None:
+        rows = [
+            {"paired": True, "gross": 2.0, "chip": "wildcard"},
+            {"paired": True, "gross": -4.0, "chip": "free_hit"},
+            {"paired": True, "gross": -6.0, "chip": None},
+            {"paired": True, "gross": -8.0, "chip": "triple_captain"},
+        ]
+        split = chip_sale_split(rows)
+        self.assertEqual(split["n_rebuild"], 2)
+        self.assertEqual(split["mean_rebuild"], -1.0)
+        self.assertEqual(split["n_other"], 2)
+        self.assertEqual(split["mean_other"], -7.0)
+
+    def test_a_sale_from_two_squads_is_listed_once(self) -> None:
+        rows = [
+            {
+                "group": "veteran",
+                "side": "model",
+                "paired": True,
+                "sold_name": "Isak",
+                "bought_name": "Thiago",
+            },
+            {
+                "group": "rank",
+                "side": "model",
+                "paired": True,
+                "sold_name": "Isak",
+                "bought_name": "Thiago",
+            },
+            {
+                "group": "reference",
+                "side": "model",
+                "paired": True,
+                "sold_name": "Cherki",
+                "bought_name": "Szoboszlai",
+            },
+            {
+                "group": "veteran",
+                "side": "manager",
+                "paired": True,
+                "sold_name": "Isak",
+                "bought_name": "Thiago",
+            },
+        ]
+        self.assertEqual(repeated_pairs(rows), [("Isak", "Thiago", 2)])
 
 
 class WriterGuardTests(unittest.TestCase):
