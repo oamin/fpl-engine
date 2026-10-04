@@ -1,6 +1,6 @@
 # Architectural state
 
-Updated: 2026-10-03. Stage history lives in root `CONTEXT.md`. This file is the living state for the execution engine.
+Updated: 2026-10-04. Stage history lives in root `CONTEXT.md`. This file is the living state for the execution engine.
 
 ## What exists
 
@@ -67,6 +67,10 @@ Seven repairs of that score were screened on the fast XI and parked (`reports/st
 Fourteen managers were locked before their squads were opened: seven with at least two top-10,000 finishes in 2022/23–2025/26, and seven current rank slots at rank_sort 100, 500, 1000, 5000, 10000, 25000, and 50000. ojaminFC is a reference row. Each published climb starts from that Gameweek 1 fifteen. Gross is the sold player's points over the sale week and the next two, minus the bought player's points. Positive would mean the sale was the wrong way. A sign is consistent when at least four managers share it and that side is at least twice the other. The systematic reading would have been the model's sales sharing a sign while the managers' own sales did not.
 
 Veterans: 17 model sales, mean gross −4.94, and the nine the manager still held averaged −2.89. Rank slots: 17 sales, mean −2.53, kept subset −2.83. Both groups, and the managers' own sales, are bought ahead. That is the variance reading. The same names recur (Isak to Thiago from three openings, Tarkowski to Guéhi from three). Those repeated sales sit inside the negative mean. Wildcard and free-hit weeks are most of the managers' own sales; the ordinary weeks are bought ahead by more, not by the other sign. The reference row is the other sign: Cherki to Szoboszlai +8 and Ødegaard to Enzo +3, mean +5.50, and the climb is 333 against 350. The cohort climbs score about 321–353 against official totals of 367–429, chips included, with no hit. Gemini kept the count. `attack_minutes` stays parked. `score_xp` stays the published score. See `reports/stage_46_transfer_gap.md`.
+
+## Crowd flow
+
+A residual on transfers in, `score_xp` plus the within-week gap between the percentile of `log1p(transfers_in)` and the percentile of `score_xp`, was dropped on 2026-10-04 before any code. It takes about half a point off a player everyone already owns, and it adds up to a point to last week's scorer. The return a press conference can reveal sits below the buy gate, so it never enters the eleven. Raw net transfers lost 104 (stage 23). Ownership as a player score lost the fast eleven by 124. No screen. `score_xp` stays the published score. See `.cursor/ideas.md`.
 
 ## Lineup
 

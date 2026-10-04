@@ -76,6 +76,8 @@ Seven score repairs were locked and screened on the fast XI, Gameweeks 5–38, f
 
 The Gameweek 1–5 transfer count against the locked managers was kept ([transfer gap](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Model and managers are both bought ahead, so the pre-registered systematic reading does not fire. See `reports/stage_46_transfer_gap.md`.
 
+Residual transfers in were dropped on 2026-10-04 before any code ([crowd flow](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). The locked formula would have added, inside each gameweek and only on the eligible pool, the gap between the percentile of `log1p(transfers_in)` and the percentile of `score_xp`, with the weight fixed at 1.0. A player everyone already owns has only middling transfers in and a score near the top, so the residual takes about half a point off him. The positive side is last week's scorer: a low score and a flood of transfers in adds up to a point. Residualizing last week's points as well leaves noise. The players a press conference might reveal, those below 45 expected minutes or with fewer than three prior appearances, are outside the eleven's pool. Raw net transfers already lost 104 (stage 23). Ownership as a penalty already lost the fast eleven by 124, and the same weight inside transfer value lost the 2025/26 climb by 28. A price change is that same flow a day later. No screen, no column, and no grid on the weight. `score_xp` stays the published score.
+
 ## Rules gaps
 
 - Full Opta BPS table (goals, assists, playing time, and the rest) is not in the 20 Jul 2026 change note. Only the 2026/27 deltas are coded.
