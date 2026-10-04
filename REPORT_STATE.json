@@ -1,10 +1,11 @@
 {
   "updated": "2026-10-04",
-  "milestone": "crowd-flow-park",
-  "status": "dropped",
-  "summary": "Residual transfers in, score_xp plus the within-week gap between the percentile of log1p(transfers_in) and the percentile of score_xp, was dropped before any code. It docks a player everyone already owns and promotes last week's scorer. The press-conference return sits outside the buy pool. No screen. score_xp stays the published score.",
+  "milestone": "crowd-context",
+  "status": "reviewed",
+  "summary": "Deadline transfer flow and ownership, kept out of score_xp, lowered holdout mean absolute error by 0.012, 0.012, 0.003, and 0.015 on the four finished seasons. The mean is 0.011, short of the locked 0.02. The flow-times-ownership interaction raised the error in every season. Both are parked. score_xp stays the published score.",
   "artifacts": [
-    ".cursor/ideas.md",
-    ".cursor/context.md"
+    "reports/stage_47_crowd_context.md",
+    "data/processed/stage_47_crowd_context.csv",
+    "src/models/stage_47_crowd_context.py"
   ]
 }

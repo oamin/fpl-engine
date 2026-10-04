@@ -70,7 +70,9 @@ Veterans: 17 model sales, mean gross −4.94, and the nine the manager still hel
 
 ## Crowd flow
 
-A residual on transfers in, `score_xp` plus the within-week gap between the percentile of `log1p(transfers_in)` and the percentile of `score_xp`, was dropped on 2026-10-04 before any code. It takes about half a point off a player everyone already owns, and it adds up to a point to last week's scorer. The return a press conference can reveal sits below the buy gate, so it never enters the eleven. Raw net transfers lost 104 (stage 23). Ownership as a player score lost the fast eleven by 124. No screen. `score_xp` stays the published score. See `.cursor/ideas.md`.
+A residual on transfers in, `score_xp` plus the within-week gap between the percentile of `log1p(transfers_in)` and the percentile of `score_xp`, was dropped on 2026-10-04 before any code. It takes about half a point off a player everyone already owns, and it adds up to a point to last week's scorer.
+
+The context check that replaced it is parked (`reports/stage_47_crowd_context.md`). Flow and ownership stayed in their own columns. On Gameweeks 5–38, leaving out one season at a time, they lowered the points error by 0.011 on average, short of the locked 0.02. The error fell in every season. The interaction raised it in every season. The in-sample slopes are not the score. `score_xp` stays the published score.
 
 ## Lineup
 
