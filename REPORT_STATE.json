@@ -1,11 +1,9 @@
 {
   "updated": "2026-10-04",
-  "milestone": "crowd-calls",
-  "status": "reviewed",
-  "summary": "On players within 0.25 of the position leader, the stage 47 crowd slopes picked the higher scorer on 57%, 43%, 43%, and 50% of decisive flips. The mean point gap changed sign. The question is closed. score_xp stays the published score.",
+  "milestone": "half-plan",
+  "status": "locked",
+  "summary": "The half-season chip plan is locked and not yet coded. Phase 1 is a pure schedule search through Gameweek 19 or 38. score_xp is unchanged. Bench Boost may fall on the best ordinary week in the half. Wildcard must clear 16 across the rest of the half. The transfer search and the historical climb are later phases.",
   "artifacts": [
-    "reports/stage_48_crowd_calls.md",
-    "data/processed/stage_48_crowd_calls.csv",
-    "data/processed/stage_48_crowd_calls_weeks.csv"
+    "reports/half_plan.md"
   ]
 }

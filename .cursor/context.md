@@ -76,6 +76,10 @@ The context check that replaced it is parked (`reports/stage_47_crowd_context.md
 
 The close-call count is closed (`reports/stage_48_crowd_calls.md`). On players within 0.25 of the position leader, the same slopes picked the higher scorer on 57%, 43%, 43%, and 50% of decisive flips. The point gap changed sign. `score_xp` stays the published score.
 
+## Half-season chips
+
+A chip plan is locked and not yet coded (`reports/half_plan.md`). It searches the remaining half at each deadline, with `score_xp` as the points. Bench points enter on the planned Bench Boost week. A chip left unused at Gameweek 19 is worth nothing. The first code is a pure function. It does not replace the live chip rule, and it does not change the transfer search. The bench weight, and the sale of that bench after the chip, are later phases. A double stays one fixture.
+
 ## Lineup
 
 Each week the XI is the legal shape with the highest sum of `score_xp`, taking the top score in each position. The published shape list omits 5-2-3 so older totals stay comparable. The bench is the other four, ordered by that same score, and an automatic substitute skips anyone who did not play or who would break the shape. The transfer search scores the XI and scores the bench at zero. The whole week, from the empty-sheet check through the free-transfer bank, is drawn in `data/plots/gw_decision_flow.png`. Six patches to that stream were parked on 2026-10-03. See `.cursor/ideas.md`.
