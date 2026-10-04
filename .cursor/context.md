@@ -82,7 +82,7 @@ The close-call count is closed (`reports/stage_48_crowd_calls.md`). On players w
 
 ## Crowd openings
 
-No public archive holds hall-of-fame Gameweek 1 squads for 2022/23–2025/26. Four legal fifteens per season are drawn from that week's highest-owned players: the template, then the same pool with the biggest names left out. The share is of managers. Points are not used. See `reports/crowd_openings.md`.
+No public archive holds hall-of-fame Gameweek 1 squads for 2022/23–2025/26. Four legal fifteens per season are drawn from that week's ownership: the template, the dearest names in that same pool, then two later waves that share nobody with the template. The share is of managers. Points are not used. See `reports/crowd_openings.md`.
 
 ## Lineup
 

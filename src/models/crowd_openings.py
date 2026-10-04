@@ -25,7 +25,14 @@ SEASON_LABEL = {
     "2025_26": "2025/26",
 }
 POOL_DEPTH = {"GKP": 8, "DEF": 16, "MID": 16, "FWD": 10}
-SQUAD_NAMES = ("A", "B", "C", "D")
+WIDE_DEPTH = {"GKP": 12, "DEF": 24, "MID": 24, "FWD": 15}
+SQUAD_NAMES = ("template", "premium", "next", "third")
+SQUAD_LABEL = {
+    "template": "Template",
+    "premium": "Premium",
+    "next": "Next",
+    "third": "Third",
+}
 _POSITION = {"GK": "GKP", "GKP": "GKP", "DEF": "DEF", "MID": "MID", "FWD": "FWD"}
 
 
@@ -59,38 +66,20 @@ def gameweek_one(frame: pd.DataFrame) -> pd.DataFrame:
     return out.reset_index(drop=True)
 
 
-def ownership_pool(gw1: pd.DataFrame) -> pd.DataFrame:
+def ownership_pool(
+    gw1: pd.DataFrame, depth: dict[str, int] | None = None
+) -> pd.DataFrame:
     """Top owned players in each position. Ties go to the smaller element id."""
+    depth = POOL_DEPTH if depth is None else depth
     parts = []
-    for position, depth in POOL_DEPTH.items():
+    for position, n in depth.items():
         block = gw1.loc[gw1["position"] == position].sort_values(
             ["own", "element"], ascending=[False, True]
         )
-        parts.append(block.head(depth))
+        parts.append(block.head(n))
     if not parts:
         return gw1.iloc[0:0].copy()
     return pd.concat(parts, ignore_index=True)
-
-
-def exclusions(gw1: pd.DataFrame) -> dict[str, set[int]]:
-    """Who each squad must leave out, from the gameweek ranking."""
-    ranked = gw1.sort_values(["own", "element"], ascending=[False, True])
-    top = int(ranked.iloc[0]["element"])
-    per_position: dict[str, list[int]] = {}
-    for position in SQUAD_QUOTA:
-        ids = (
-            ranked.loc[ranked["position"] == position, "element"]
-            .astype(int)
-            .head(2)
-            .tolist()
-        )
-        per_position[position] = ids
-    return {
-        "A": set(),
-        "B": {top},
-        "C": {ids[0] for ids in per_position.values() if ids},
-        "D": {element for ids in per_position.values() for element in ids},
-    }
 
 
 def _can_finish(
@@ -132,13 +121,25 @@ def _can_finish(
     return True
 
 
-def build_squad(pool: pd.DataFrame, banned: set[int]) -> pd.DataFrame | None:
-    """Highest-ownership legal fifteen inside the pool, skipping ``banned``."""
+def build_squad(
+    pool: pd.DataFrame,
+    banned: set[int],
+    sort_cols: list[str] | None = None,
+    ascending: list[bool] | None = None,
+) -> pd.DataFrame | None:
+    """Legal fifteen inside the pool. A banned player cannot fill a slot either.
+
+    The default order is ownership. Premium passes price first.
+    """
+    work = pool.loc[~pool["element"].isin(banned)].copy()
     quota = {position: int(count) for position, count in SQUAD_QUOTA.items()}
     picked: list[pd.Series] = []
     clubs: dict[str, int] = {}
     budget = int(BUDGET_TENTHS)
-    order = pool.sort_values(["own", "element"], ascending=[False, True])
+    if sort_cols is None:
+        sort_cols = ["own", "element"]
+        ascending = [False, True]
+    order = work.sort_values(sort_cols, ascending=ascending)
     while sum(quota.values()):
         chosen: pd.Series | None = None
         picked_ids = {int(row["element"]) for row in picked}
@@ -157,7 +158,7 @@ def build_squad(pool: pd.DataFrame, banned: set[int]) -> pd.DataFrame | None:
             quota_after[position] -= 1
             clubs_after = dict(clubs)
             clubs_after[club] = clubs_after.get(club, 0) + 1
-            if _can_finish(pool, picked_ids | {element}, quota_after, clubs_after, budget - price):
+            if _can_finish(work, picked_ids | {element}, quota_after, clubs_after, budget - price):
                 chosen = row
                 break
         if chosen is None:
@@ -172,13 +173,20 @@ def build_squad(pool: pd.DataFrame, banned: set[int]) -> pd.DataFrame | None:
 
 
 def build_season(frame: pd.DataFrame) -> dict[str, pd.DataFrame | None]:
-    """The four cross-section fifteens for one season file."""
+    """Template, premium, and two later waves of the same Gameweek 1 crowd."""
     gw1 = gameweek_one(frame)
-    pool = ownership_pool(gw1)
-    built = {}
-    for name, banned in exclusions(gw1).items():
-        built[name] = build_squad(pool, banned)
-    return built
+    high = ownership_pool(gw1, POOL_DEPTH)
+    wide = ownership_pool(gw1, WIDE_DEPTH)
+    template = build_squad(high, set())
+    premium = build_squad(high, set(), ["value", "own", "element"], [False, False, True])
+    banned: set[int] = set()
+    if template is not None:
+        banned = {int(element) for element in template["element"]}
+    nxt = build_squad(wide, banned)
+    if nxt is not None:
+        banned = banned | {int(element) for element in nxt["element"]}
+    third = build_squad(wide, banned)
+    return {"template": template, "premium": premium, "next": nxt, "third": third}
 
 
 def squad_frame(season: str, squads: dict[str, pd.DataFrame | None]) -> pd.DataFrame:
@@ -234,11 +242,14 @@ def render_report(table: pd.DataFrame) -> str:
         "transfer made before the scrape can move a rank. Later weeks are not read. "
         "Points are not read.",
         "",
-        "The pool is the top 8 goalkeepers, top 16 defenders, top 16 midfielders, and "
-        "top 10 forwards. Squad A takes the highest-owned legal fifteen inside that pool. "
-        "Squad B leaves out the single most-owned player. Squad C leaves out the most-owned "
-        "player in each position. Squad D leaves out the two most-owned in each position. "
-        "A fifteen that cannot be finished inside the pool is left missing.",
+        "The high pool is the top 8 goalkeepers, top 16 defenders, top 16 midfielders, "
+        "and top 10 forwards. The wide pool is the top 12, 24, 24, and 15. "
+        "Template is the highest-owned legal fifteen in the high pool. "
+        "Premium is the dearest legal fifteen in that same pool. "
+        "Next bans the template and takes the highest-owned fifteen in the wide pool. "
+        "Third bans both of those fifteens and does the same. "
+        "A banned player cannot be used to show that a dearer pick still fits. "
+        "A fifteen that cannot be finished inside its pool is left missing.",
         "",
     ]
     position_order = {"GKP": 0, "DEF": 1, "MID": 2, "FWD": 3}
@@ -248,7 +259,7 @@ def render_report(table: pd.DataFrame) -> str:
         block = table.loc[table["season"] == season]
         for name in SQUAD_NAMES:
             squad = block.loc[block["squad"] == name].copy()
-            lines.append(f"### Squad {name}")
+            lines.append(f"### {SQUAD_LABEL[name]}")
             lines.append("")
             if squad.empty:
                 lines.append("Missing. The pool could not fill a legal fifteen.")

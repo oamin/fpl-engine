@@ -7,11 +7,12 @@ import unittest
 import pandas as pd
 
 from src.models.crowd_openings import (
+    POOL_DEPTH,
     SEASONS,
     SQUAD_NAMES,
+    WIDE_DEPTH,
     build_all,
     build_season,
-    exclusions,
     gameweek_one,
     ownership_pool,
 )
@@ -75,16 +76,6 @@ class RuleTests(unittest.TestCase):
             )
             self.assertEqual(set(pool.loc[pool["position"] == position, "element"]), top)
 
-    def test_exclusions_follow_the_gameweek_ranking(self) -> None:
-        gw1 = gameweek_one(_legal_universe())
-        banned = exclusions(gw1)
-        top = int(gw1.sort_values(["own", "element"], ascending=[False, True]).iloc[0]["element"])
-        self.assertEqual(banned["A"], set())
-        self.assertEqual(banned["B"], {top})
-        self.assertEqual(len(banned["C"]), 4)
-        self.assertEqual(len(banned["D"]), 8)
-        self.assertTrue(banned["C"] <= banned["D"])
-
     def test_a_short_pool_is_missing_rather_than_padded(self) -> None:
         rows = []
         element = 1
@@ -95,26 +86,31 @@ class RuleTests(unittest.TestCase):
         squads = build_season(pd.DataFrame(rows))
         self.assertTrue(all(squad is None for squad in squads.values()))
 
-    def test_built_squads_are_legal_and_distinct(self) -> None:
+    def test_built_squads_are_legal_and_the_waves_do_not_overlap(self) -> None:
+        gw1 = gameweek_one(_legal_universe())
         squads = build_season(_legal_universe())
-        seen: list[frozenset[int]] = []
-        pool_ids = set(ownership_pool(gameweek_one(_legal_universe()))["element"])
-        banned = exclusions(gameweek_one(_legal_universe()))
+        high = set(ownership_pool(gw1, POOL_DEPTH)["element"])
+        wide = set(ownership_pool(gw1, WIDE_DEPTH)["element"])
+        ids: dict[str, frozenset[int]] = {}
         for name in SQUAD_NAMES:
             squad = squads[name]
-            self.assertIsNotNone(squad)
+            self.assertIsNotNone(squad, name)
             assert squad is not None
-            ids = [int(x) for x in squad["element"]]
-            self.assertEqual(len(ids), 15)
-            self.assertEqual(len(set(ids)), 15)
-            self.assertTrue(set(ids) <= pool_ids)
-            self.assertTrue(set(ids).isdisjoint(banned[name]))
+            chosen = frozenset(int(x) for x in squad["element"])
+            self.assertEqual(len(chosen), 15)
             self.assertLessEqual(int(squad["value"].sum()), BUDGET_TENTHS)
             for position, count in SQUAD_QUOTA.items():
                 self.assertEqual(int((squad["position"] == position).sum()), count)
             self.assertLessEqual(int(squad.groupby("team").size().max()), MAX_PER_CLUB)
-            seen.append(frozenset(ids))
-        self.assertEqual(len(set(seen)), 4)
+            ids[name] = chosen
+        self.assertTrue(ids["template"] <= high)
+        self.assertTrue(ids["premium"] <= high)
+        self.assertTrue(ids["next"] <= wide)
+        self.assertTrue(ids["third"] <= wide)
+        self.assertTrue(ids["template"].isdisjoint(ids["next"]))
+        self.assertTrue(ids["template"].isdisjoint(ids["third"]))
+        self.assertTrue(ids["next"].isdisjoint(ids["third"]))
+        self.assertNotEqual(ids["template"], ids["premium"])
 
 
 class SeasonTests(unittest.TestCase):
@@ -123,7 +119,7 @@ class SeasonTests(unittest.TestCase):
         self.assertEqual(set(table["season"]), set(SEASONS))
         for season in SEASONS:
             block = table.loc[table["season"] == season]
-            letters = []
+            ids = {}
             for name in SQUAD_NAMES:
                 squad = block.loc[block["squad"] == name]
                 self.assertEqual(len(squad), 15, season + name)
@@ -131,8 +127,11 @@ class SeasonTests(unittest.TestCase):
                 self.assertLessEqual(int(squad.groupby("team").size().max()), MAX_PER_CLUB)
                 for position, count in SQUAD_QUOTA.items():
                     self.assertEqual(int((squad["position"] == position).sum()), count)
-                letters.append(frozenset(squad["element"]))
-            self.assertEqual(len(set(letters)), 4)
+                ids[name] = frozenset(int(x) for x in squad["element"])
+            self.assertTrue(ids["template"].isdisjoint(ids["next"]))
+            self.assertTrue(ids["template"].isdisjoint(ids["third"]))
+            self.assertTrue(ids["next"].isdisjoint(ids["third"]))
+            self.assertLessEqual(len(ids["template"] & ids["premium"]), 9)
 
 
 if __name__ == "__main__":
