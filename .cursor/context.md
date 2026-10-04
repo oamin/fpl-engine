@@ -72,7 +72,9 @@ Veterans: 17 model sales, mean gross −4.94, and the nine the manager still hel
 
 A residual on transfers in, `score_xp` plus the within-week gap between the percentile of `log1p(transfers_in)` and the percentile of `score_xp`, was dropped on 2026-10-04 before any code. It takes about half a point off a player everyone already owns, and it adds up to a point to last week's scorer.
 
-The context check that replaced it is parked (`reports/stage_47_crowd_context.md`). Flow and ownership stayed in their own columns. On Gameweeks 5–38, leaving out one season at a time, they lowered the points error by 0.011 on average, short of the locked 0.02. The error fell in every season. The interaction raised it in every season. The in-sample slopes are not the score. `score_xp` stays the published score.
+The context check that replaced it is parked (`reports/stage_47_crowd_context.md`). Flow and ownership stayed in their own columns. On Gameweeks 5–38, leaving out one season at a time, they lowered the points error by 0.011 on average, short of the locked 0.02. The error fell in every season. The interaction raised it in every season. The in-sample slopes are not the score.
+
+The close-call count is closed (`reports/stage_48_crowd_calls.md`). On players within 0.25 of the position leader, the same slopes picked the higher scorer on 57%, 43%, 43%, and 50% of decisive flips. The point gap changed sign. `score_xp` stays the published score.
 
 ## Lineup
 

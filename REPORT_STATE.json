@@ -1,11 +1,11 @@
 {
   "updated": "2026-10-04",
-  "milestone": "crowd-context",
+  "milestone": "crowd-calls",
   "status": "reviewed",
-  "summary": "Deadline transfer flow and ownership, kept out of score_xp, lowered holdout mean absolute error by 0.012, 0.012, 0.003, and 0.015 on the four finished seasons. The mean is 0.011, short of the locked 0.02. The flow-times-ownership interaction raised the error in every season. Both are parked. score_xp stays the published score.",
+  "summary": "On players within 0.25 of the position leader, the stage 47 crowd slopes picked the higher scorer on 57%, 43%, 43%, and 50% of decisive flips. The mean point gap changed sign. The question is closed. score_xp stays the published score.",
   "artifacts": [
-    "reports/stage_47_crowd_context.md",
-    "data/processed/stage_47_crowd_context.csv",
-    "src/models/stage_47_crowd_context.py"
+    "reports/stage_48_crowd_calls.md",
+    "data/processed/stage_48_crowd_calls.csv",
+    "data/processed/stage_48_crowd_calls_weeks.csv"
   ]
 }
