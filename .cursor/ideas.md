@@ -84,6 +84,8 @@ The close-call count was run on 2026-10-04 and closed ([crowd calls](bc-b57f0f87
 
 The half-season chip plan was locked on 2026-10-04 ([half plan](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Phase 1, `plan_half`, is coded and kept. A schedule values the remaining chips through Gameweek 19 or 38 with `score_xp` left as it is. Bench Boost may fall on the best ordinary week still in the half. Wildcard clears 16 on the half-season gap between the rebuilt eleven and the held eleven, not on one week and not on the bench. Phases 2 and 3 pass that Bench Boost week into the transfer search, and Gemini kept the term. The four players left out are scored on that week alone, discounted by the same γ the eleven already uses, and the decision-week bench stands in when the chip is past the three-week horizon. The default omits the week. There is no cash term that sells the bench for its own sake. A historical climb with the chip map filled in is still parked: it would move published season totals. A double stays one fixture. See `reports/half_plan.md`.
 
+Hall-of-fame Gameweek 1 squads for 2022/23–2025/26 are not in a public archive. The substitute starting points are four crowd fifteens per season, built on 2026-10-04 from Gameweek 1 ownership only ([crowd openings](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Squad A is the highest-owned legal fifteen in the top of each position. B, C, and D leave out the biggest names and refill from that same pool. Points are not used. These are not hall-of-fame teams, and they are not a season climb. See `reports/crowd_openings.md`.
+
 ## Rules gaps
 
 - Full Opta BPS table (goals, assists, playing time, and the rest) is not in the 20 Jul 2026 change note. Only the 2026/27 deltas are coded.

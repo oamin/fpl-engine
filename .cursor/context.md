@@ -80,6 +80,10 @@ The close-call count is closed (`reports/stage_48_crowd_calls.md`). On players w
 
 `plan_half` in `src/live/half_plan.py` searches the remaining half at each deadline, with `score_xp` as the points the caller already priced. Bench points enter on the planned Bench Boost week inside that sum. A chip left unused at Gameweek 19 is worth nothing. It does not replace the live chip rule. The transfer search scores that same bench on the planned week only, when the caller passes it: discounted inside the next three weeks, or once from the decision-week bench when the chip is further out. The published climb passes no week, so its bench stays at zero. After the chip is used the week is dropped and the ordinary hold sells the bench down. A double stays one fixture. See `reports/half_plan.md`.
 
+## Crowd openings
+
+No public archive holds hall-of-fame Gameweek 1 squads for 2022/23–2025/26. Four legal fifteens per season are drawn from that week's highest-owned players: the template, then the same pool with the biggest names left out. The share is of managers. Points are not used. See `reports/crowd_openings.md`.
+
 ## Lineup
 
 Each week the XI is the legal shape with the highest sum of `score_xp`, taking the top score in each position. The published shape list omits 5-2-3 so older totals stay comparable. The bench is the other four, ordered by that same score, and an automatic substitute skips anyone who did not play or who would break the shape. The published transfer search scores the XI and scores the bench at zero. A caller who names a Bench Boost week scores the bench on that week only. The whole week, from the empty-sheet check through the free-transfer bank, is drawn in `data/plots/gw_decision_flow.png`. Six patches to that stream were parked on 2026-10-03. See `.cursor/ideas.md`.

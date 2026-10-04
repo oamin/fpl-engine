@@ -1,13 +1,12 @@
 {
   "updated": "2026-10-04",
-  "milestone": "half-plan",
+  "milestone": "crowd-openings",
   "status": "reviewed",
-  "summary": "Phases 2 and 3 score the bench on the planned Bench Boost week inside the transfer search. The default omits that week, so the published climb is unchanged. Twenty-four unit tests passed and Gemini kept the term. score_xp is unchanged. No historical climb was run.",
+  "summary": "Four Gameweek 1 crowd fifteens were built for each of 2022/23-2025/26 from the highest-owned players in each position. Gemini kept the rule before the squads were read. Points were not used. No season climb was run.",
   "artifacts": [
-    "src/live/half_plan.py",
-    "src/models/season_climb_ft.py",
-    "tests/test_half_plan.py",
-    "tests/test_season_climb_ft.py",
-    "reports/half_plan.md"
+    "src/models/crowd_openings.py",
+    "tests/test_crowd_openings.py",
+    "reports/crowd_openings.md",
+    "data/processed/crowd_openings.csv"
   ]
 }
