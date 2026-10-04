@@ -26,7 +26,7 @@ from __future__ import annotations
 from copy import deepcopy
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -51,6 +51,7 @@ from src.rules.fpl_2026 import (
     FREE_TRANSFER_CHIPS,
     HIT_COST,
     MAX_FT,
+    ChipWallet,
     advance_ft,
     captain_extra_points,
     sell_price,
@@ -950,6 +951,25 @@ def _chip_additions(
     return extra, bench
 
 
+def _policy_choice(
+    policy: Callable[..., tuple[str | None, int | None]],
+    gw: int,
+    state: SquadState,
+    pool: pd.DataFrame,
+    gws: list[int],
+) -> tuple[str | None, int | None]:
+    """A policy returns this week's chip and the Bench Boost week, or neither."""
+    choice = policy(gw, state, pool, gws)
+    if not isinstance(choice, tuple) or len(choice) != 2:
+        raise RuntimeError("a chip policy returns the chip and the bench week")
+    chip, bench = choice
+    if chip is not None:
+        chip = str(chip)
+    if bench is not None:
+        bench = int(bench)
+    return chip, bench
+
+
 def run_ft_season(
     feat: pd.DataFrame,
     score_cols: dict[str, str],
@@ -974,6 +994,7 @@ def run_ft_season(
     use_early_scores: bool = True,
     shadow_structural: bool = False,
     structural_2tx: bool = False,
+    chip_policy: Callable[..., tuple[str | None, int | None]] | None = None,
 ) -> pd.DataFrame:
     """``chips`` maps a gameweek to one chip name. None and {} play nothing.
 
@@ -983,9 +1004,16 @@ def run_ft_season(
     ``horizon_scores(gw, pool, gws)`` returns a step-score map for that
     deadline. The default builds that map from opening prices already on
     disk. ``freeze_horizon`` keeps this week's score on the later weeks.
+
+    ``chip_policy(gw, state, pool, gws)`` returns the chip for this week
+    and the Bench Boost week for the transfer search. It replaces the week
+    map. A chip the wallet rejects fails the squad. The default is no
+    policy, and an empty map still plays nothing.
     """
+    if chip_policy is not None and chips:
+        raise RuntimeError("a chip policy replaces the week map")
     rows: list[dict[str, Any]] = []
-    plan = validate_chip_map(chips)
+    plan = {} if chip_policy is not None else validate_chip_map(chips)
     if roster is None:
         roster = load_vaastav_roster(EVAL_SEASON)
     if horizon_scores is None and not freeze_horizon:
@@ -1012,6 +1040,7 @@ def run_ft_season(
 
     for method, col in score_cols.items():
         state: SquadState | None = deepcopy(opening) if opening is not None else None
+        wallet = ChipWallet() if chip_policy is not None else None
         for i, gw in enumerate(gws):
             if clubs and not clubs.get(int(gw)):
                 continue
@@ -1022,7 +1051,22 @@ def run_ft_season(
             if pool["position"].nunique() < 4:
                 continue
 
-            chip = plan.get(int(gw))
+            bench_gw: int | None = None
+            if wallet is not None and chip_policy is not None:
+                if state is None:
+                    chip = None
+                else:
+                    chip, bench_gw = _policy_choice(
+                        chip_policy, int(gw), state, pool, list(gws)
+                    )
+                    if chip is not None and chip not in wallet.available(int(gw)):
+                        raise RuntimeError(
+                            f"{chip} is not available in GW{int(gw)}"
+                        )
+                    if chip is not None:
+                        wallet.play(int(gw), chip)
+            else:
+                chip = plan.get(int(gw))
             restore: SquadState | None = None
             if state is not None and i == 0 and opening is not None and chip not in FREE_TRANSFER_CHIPS:
                 n_tx, hits = 0, 0
@@ -1069,6 +1113,7 @@ def run_ft_season(
                     decisions=decisions,
                     shadow_structural=shadow_structural,
                     structural_2tx=structural_2tx,
+                    bench_gw=bench_gw,
                 )
                 state = new_state
 
