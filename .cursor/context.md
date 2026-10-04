@@ -78,7 +78,7 @@ The close-call count is closed (`reports/stage_48_crowd_calls.md`). On players w
 
 ## Half-season chips
 
-A chip plan is locked and not yet coded (`reports/half_plan.md`). It searches the remaining half at each deadline, with `score_xp` as the points. Bench points enter on the planned Bench Boost week. A chip left unused at Gameweek 19 is worth nothing. The first code is a pure function. It does not replace the live chip rule, and it does not change the transfer search. The bench weight, and the sale of that bench after the chip, are later phases. A double stays one fixture.
+`plan_half` in `src/live/half_plan.py` searches the remaining half at each deadline, with `score_xp` as the points the caller already priced. Bench points enter on the planned Bench Boost week inside that sum. A chip left unused at Gameweek 19 is worth nothing. It does not replace the live chip rule, and it does not change the transfer search. The bench weight, and the sale of that bench after the chip, are later phases. A double stays one fixture. See `reports/half_plan.md`.
 
 ## Lineup
 

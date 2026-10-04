@@ -1,9 +1,11 @@
 {
   "updated": "2026-10-04",
   "milestone": "half-plan",
-  "status": "locked",
-  "summary": "The half-season chip plan is locked and not yet coded. Phase 1 is a pure schedule search through Gameweek 19 or 38. score_xp is unchanged. Bench Boost may fall on the best ordinary week in the half. Wildcard must clear 16 across the rest of the half. The transfer search and the historical climb are later phases.",
+  "status": "reviewed",
+  "summary": "Phase 1 of the half-season chip plan is plan_half. It chooses this week's chip from priced weeks through Gameweek 19 or 38. Fifteen unit tests passed and Gemini kept the function. score_xp and the transfer search are unchanged.",
   "artifacts": [
+    "src/live/half_plan.py",
+    "tests/test_half_plan.py",
     "reports/half_plan.md"
   ]
 }

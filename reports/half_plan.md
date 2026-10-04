@@ -1,6 +1,6 @@
 # Half-season chip plan
 
-Locked with Gemini on 2026-10-04 ([half plan](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Nothing in this note is coded yet. `score_xp` stays the published score. A double stays one fixture. The historical climb keeps an empty chip map.
+Locked with Gemini on 2026-10-04 ([half plan](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Phase 1 is `plan_half` in `src/live/half_plan.py`. Gemini kept that function. `score_xp` stays the published score. A double stays one fixture. The historical climb keeps an empty chip map. The transfer search is unchanged.
 
 The layer chooses chips. It does not price players. Each deadline it looks to the end of the current half, Gameweek 19 or Gameweek 38, using the squads and the fixture list already in hand. It is solved again at the next deadline. A double that has not been announced is not in the plan.
 
@@ -36,7 +36,7 @@ The margins 12 and 16 stay the live margins. They are not refit.
 
 ## Phases
 
-Phase 1 is a pure function, `plan_half`, in `src/live/half_plan.py`, with tests in `tests/test_half_plan.py`. The caller passes the week tables. The function returns the schedule and the chip for this week. It does not replace `recommend_chip`. It does not call the squad picker, the climb, or the network. The first code commit touches those two files only.
+Phase 1 is `plan_half` in `src/live/half_plan.py`, with tests in `tests/test_half_plan.py`. The caller passes the week tables. The function returns the chip for this week and the schedule that matches that action. It does not replace `recommend_chip`. It does not call the squad picker, the climb, or the network.
 
 Phase 2, after those tests, changes the transfer search on one point. If the planned Bench Boost week sits inside the next three weeks, that week's bench is scored at `score_xp` and every other week's bench stays at zero. The weight is not a constant.
 
