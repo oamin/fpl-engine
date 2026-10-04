@@ -1,12 +1,13 @@
 {
   "updated": "2026-10-04",
-  "milestone": "crowd-openings",
+  "milestone": "crowd-opening-scores",
   "status": "reviewed",
-  "summary": "Each finished season now has four Gameweek 1 crowd fifteens that can be compared: the ownership template, the dearest names in that pool, and two later waves that share no players with the template. Gemini kept the wider draw. Points were not used. No season climb was run.",
+  "summary": "The four Gameweek 1 crowd fifteens were held and climbed on the published rule, chips off. The best climb is the template in 2022/23 (1735), 2023/24 (2105), and 2024/25 (2086), and Next in 2025/26 (2171). The 2025/26 template hold failed after four Chelsea players and is not a baseline. Gemini kept the diagnostics.",
   "artifacts": [
-    "src/models/crowd_openings.py",
-    "tests/test_crowd_openings.py",
-    "reports/crowd_openings.md",
-    "data/processed/crowd_openings.csv"
+    "src/models/crowd_opening_scores.py",
+    "tests/test_crowd_opening_scores.py",
+    "reports/crowd_opening_scores.md",
+    "data/processed/crowd_opening_scores.csv",
+    "data/processed/crowd_opening_score_weeks.csv"
   ]
 }

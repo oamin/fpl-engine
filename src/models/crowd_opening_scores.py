@@ -243,12 +243,18 @@ def score_squad(
     return summary, weeks
 
 
-def score_all(openings: pd.DataFrame | None = None) -> tuple[pd.DataFrame, pd.DataFrame]:
+def score_all(
+    openings: pd.DataFrame | None = None,
+    seasons: list[tuple[str, str]] | None = None,
+    checkpoint: Path | None = None,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Four seasons, four squads, hold and climb. One season is built once."""
     openings = load_openings() if openings is None else openings
+    chosen = list(SEASONS if seasons is None else seasons)
     summaries: list[dict[str, object]] = []
     weeks: list[pd.DataFrame] = []
-    for season, code in SEASONS:
+    partial = SCORE_CSV if checkpoint is None else checkpoint
+    for season, code in chosen:
         print(f"building {season}", flush=True)
         slug = season.replace("-", "_")
         try:
@@ -267,7 +273,7 @@ def score_all(openings: pd.DataFrame | None = None) -> tuple[pd.DataFrame, pd.Da
             summaries.append(summary)
             if not detail.empty:
                 weeks.append(detail)
-            pd.DataFrame(summaries).to_csv(SCORE_CSV, index=False)
+            pd.DataFrame(summaries).to_csv(partial, index=False)
     table = pd.DataFrame(summaries)
     detail = pd.concat(weeks, ignore_index=True) if weeks else pd.DataFrame()
     return table, detail
@@ -291,7 +297,7 @@ def _squad_name(squad: str) -> str:
     return SQUAD_LABEL.get(squad, squad)
 
 
-def render_report(table: pd.DataFrame, *, review: str = "") -> str:
+def render_report(table: pd.DataFrame, *, review: str = "", reading: str = "") -> str:
     """Side report. The best climb is named inside its own season."""
     lines = [
         "# Crowd opening scores",
@@ -375,6 +381,8 @@ def render_report(table: pd.DataFrame, *, review: str = "") -> str:
             joined = " and ".join(_squad_name(name) for name in names)
             lines.append(f"Best climb in {label}: {joined}, tied at {_points(top)}.")
         lines.append("")
+    if reading:
+        lines.extend([reading.strip(), ""])
     lines.extend(
         [
             "Week rows are in `data/processed/crowd_opening_score_weeks.csv`. "
@@ -390,6 +398,7 @@ def write_outputs(
     weeks: pd.DataFrame | None = None,
     *,
     review: str = "",
+    reading: str = "",
 ) -> pd.DataFrame:
     if table is None or weeks is None:
         table, weeks = score_all()
@@ -397,10 +406,33 @@ def write_outputs(
     REPORTS.mkdir(parents=True, exist_ok=True)
     table.to_csv(SCORE_CSV, index=False)
     weeks.to_csv(WEEK_CSV, index=False)
-    REPORT_PATH.write_text(render_report(table, review=review), encoding="utf-8")
+    REPORT_PATH.write_text(
+        render_report(table, review=review, reading=reading), encoding="utf-8"
+    )
     return table
 
 
+def _one_season(season: str) -> None:
+    """Write one season under /tmp so a batch can run in parallel."""
+    code = dict(SEASONS)[season]
+    slug = season.replace("-", "_")
+    out = Path("/tmp") / "crowd_scores"
+    out.mkdir(parents=True, exist_ok=True)
+    table, weeks = score_all(
+        seasons=[(season, code)],
+        checkpoint=out / f"{slug}.csv",
+    )
+    weeks.to_csv(out / f"{slug}_weeks.csv", index=False)
+    print(f"{season} squads {len(table)}", flush=True)
+
+
 if __name__ == "__main__":
-    scored = write_outputs()
-    print(f"wrote {len(scored)} squads")
+    import sys
+    import warnings
+
+    warnings.filterwarnings("ignore", category=pd.errors.PerformanceWarning)
+    if len(sys.argv) == 2:
+        _one_season(sys.argv[1])
+    else:
+        scored = write_outputs()
+        print(f"wrote {len(scored)} squads")

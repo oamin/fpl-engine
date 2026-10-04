@@ -234,8 +234,9 @@ def render_report(table: pd.DataFrame) -> str:
         "",
         "Built on 2026-10-04. Gemini kept the rule before the squads were read "
         "([crowd openings](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). "
-        "These are templates from Gameweek 1 ownership. They are not hall-of-fame squads, "
-        "and no season climb was run.",
+        "These are templates from Gameweek 1 ownership. They are not hall-of-fame squads. "
+        "The hold and the published climb of these fifteens are in "
+        "`reports/crowd_opening_scores.md`.",
         "",
         "Ownership is the share of managers, `15 × selected / sum(selected)`, on the "
         "deduped Gameweek 1 list. The file is scraped after the gameweek, so a Gameweek 2 "

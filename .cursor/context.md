@@ -84,6 +84,8 @@ The close-call count is closed (`reports/stage_48_crowd_calls.md`). On players w
 
 No public archive holds hall-of-fame Gameweek 1 squads for 2022/23–2025/26. Four legal fifteens per season are drawn from that week's ownership: the template, the dearest names in that same pool, then two later waves that share nobody with the template. The share is of managers. Points are not used. See `reports/crowd_openings.md`.
 
+Those fifteens were scored on the published rule with an empty chip map (`reports/crowd_opening_scores.md`). The best climb is the template in 2022/23 (1735), 2023/24 (2105), and 2024/25 (2086), and Next in 2025/26 (2171). In 2022/23 the template and the premium both finish 51 below their hold. The 2025/26 template hold failed: Marc Guiu's move to Chelsea left four Chelsea players, and Gameweek 4 spent three free transfers. That sum is not a baseline. The template climb that season is 1988. Gemini kept the count. `score_xp` stays the published score.
+
 ## Lineup
 
 Each week the XI is the legal shape with the highest sum of `score_xp`, taking the top score in each position. The published shape list omits 5-2-3 so older totals stay comparable. The bench is the other four, ordered by that same score, and an automatic substitute skips anyone who did not play or who would break the shape. The published transfer search scores the XI and scores the bench at zero. A caller who names a Bench Boost week scores the bench on that week only. The whole week, from the empty-sheet check through the free-transfer bank, is drawn in `data/plots/gw_decision_flow.png`. Six patches to that stream were parked on 2026-10-03. See `.cursor/ideas.md`.
