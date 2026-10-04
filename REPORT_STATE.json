@@ -1,11 +1,11 @@
 {
-  "updated": "2026-10-03",
-  "milestone": "score-repair-screen",
+  "updated": "2026-10-04",
+  "milestone": "transfer-gap",
   "status": "reviewed",
-  "summary": "Seven fast-XI repairs of score_xp were locked before the totals and then parked. appear_linear is the best of the batch, about +50 across four seasons, and 29 behind in 2022/23, so it takes no free-transfer climb. Removing clean sheets is killed. Defensive-contribution points are 0 before 2025/26. score_xp stays the published score.",
+  "summary": "Gameweeks 1-5 sales from 14 locked managers are bought ahead, and the managers' own sales share that sign. Mean gross is -4.94 for the seven multi-season managers and -2.53 for the seven rank slots. The ojaminFC reference is the other sign, +5.50, and the climb is 333 against 350. That is the variance reading. score_xp stays the published score. attack_minutes stays parked.",
   "artifacts": [
-    "reports/stage_45_score_repair.md",
-    "data/processed/stage_45_score_repair.csv",
-    "data/processed/stage_45_defcon.csv"
+    "reports/stage_46_transfer_gap.md",
+    "data/processed/stage_46_transfer_gap.csv",
+    "data/processed/stage_46_transfer_weeks.csv"
   ]
 }

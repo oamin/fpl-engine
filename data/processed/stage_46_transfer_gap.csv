@@ -1,0 +1,268 @@
+group,entry_id,label,side,gw,window_len,short,paired,sold_id,sold_name,sold_position,sold_team,sold_score,sold_points,bought_id,bought_name,bought_position,bought_team,bought_score,bought_points,gross,manager_kept,bought_held,hit_on_row,week_net,chip
+veteran,2076855,elevenify.com,model,3,3,False,True,2026-27:532,Ballard,DEF,Sunderland,3.553140013328233,6.0,2026-27:388,Guéhi,DEF,Man City,5.858255810451381,18.0,-12.0,False,True,0.0,3.0,
+veteran,2076855,elevenify.com,model,3,3,False,True,2026-27:379,Isak,FWD,Liverpool,3.725646719809165,23.0,2026-27:106,Thiago,FWD,Brentford,5.14888371224784,8.0,15.0,False,True,0.0,,
+veteran,2076855,elevenify.com,model,4,2,True,True,2026-27:11,Mosquera,DEF,Arsenal,3.7124291599188317,0.0,2026-27:588,Khalaili,DEF,Crystal Palace,6.174161416387822,13.0,-13.0,False,True,0.0,-13.0,
+veteran,9267,Cameron Scott,model,2,3,False,True,2026-27:366,Wirtz,MID,Liverpool,3.5214870226291075,10.0,2026-27:367,Gakpo,MID,Liverpool,4.849982239815953,17.0,-7.0,True,True,0.0,-7.0,
+veteran,9267,Cameron Scott,model,3,3,False,True,2026-27:229,Tarkowski,DEF,Everton,3.8941327951732965,25.0,2026-27:388,Guéhi,DEF,Man City,5.858255810451381,18.0,7.0,False,True,0.0,7.0,
+veteran,9267,Cameron Scott,model,4,2,True,True,2026-27:418,Maguire,DEF,Man Utd,3.3071308805304342,3.0,2026-27:588,Khalaili,DEF,Crystal Palace,6.174161416387822,13.0,-10.0,False,True,0.0,-10.0,
+veteran,31365,Ashley Marsh,model,2,3,False,True,2026-27:366,Wirtz,MID,Liverpool,3.5214870226291075,10.0,2026-27:367,Gakpo,MID,Liverpool,4.849982239815953,17.0,-7.0,True,True,0.0,-7.0,
+veteran,31365,Ashley Marsh,model,3,3,False,True,2026-27:10,White,DEF,Arsenal,3.910681864879393,3.0,2026-27:388,Guéhi,DEF,Man City,5.858255810451381,18.0,-15.0,False,True,0.0,-15.0,
+veteran,616,Mark Brookes,model,3,3,False,True,2026-27:418,Maguire,DEF,Man Utd,3.9914666374508045,5.0,2026-27:388,Guéhi,DEF,Man City,5.858255810451381,18.0,-13.0,False,True,0.0,2.0,
+veteran,616,Mark Brookes,model,3,3,False,True,2026-27:379,Isak,FWD,Liverpool,3.725646719809165,23.0,2026-27:106,Thiago,FWD,Brentford,5.14888371224784,8.0,15.0,True,True,0.0,,
+veteran,4109079,Will Morrison,model,2,3,False,True,2026-27:152,Palestra,DEF,Chelsea,0.0,0.0,2026-27:112,Van Hecke,DEF,Spurs,4.630411925099347,17.0,-17.0,True,True,0.0,-17.0,
+veteran,4109079,Will Morrison,model,3,3,False,True,2026-27:379,Isak,FWD,Liverpool,3.725646719809165,23.0,2026-27:106,Thiago,FWD,Brentford,5.14888371224784,8.0,15.0,True,True,0.0,15.0,
+veteran,4109079,Will Morrison,model,4,2,True,True,2026-27:175,van Ewijk,DEF,Coventry City,3.198581685274019,0.0,2026-27:588,Khalaili,DEF,Crystal Palace,6.174161416387822,13.0,-13.0,True,True,0.0,-13.0,
+veteran,2116184,Paul Mitchell,model,3,3,False,True,2026-27:175,van Ewijk,DEF,Coventry City,1.4074035671191756,3.0,2026-27:112,Van Hecke,DEF,Spurs,4.312759306447605,22.0,-19.0,True,True,0.0,-19.0,
+veteran,2116184,Paul Mitchell,model,3,3,False,True,2026-27:427,Mbeumo,MID,Man Utd,5.0929888399695695,12.0,2026-27:155,Enzo,MID,Man City,5.83471926964702,12.0,0.0,True,True,0.0,,
+veteran,32058,Thomas O'Brien,model,2,3,False,True,2026-27:229,Tarkowski,DEF,Everton,4.150526366047474,23.0,2026-27:388,Guéhi,DEF,Man City,5.061054252953975,16.0,7.0,True,True,0.0,7.0,
+veteran,32058,Thomas O'Brien,model,3,3,False,True,2026-27:418,Maguire,DEF,Man Utd,3.9914666374508045,5.0,2026-27:112,Van Hecke,DEF,Spurs,4.312759306447605,22.0,-17.0,False,True,0.0,-17.0,
+rank,5874076,Jess Bernstein,model,2,3,False,True,2026-27:229,Tarkowski,DEF,Everton,4.150526366047474,23.0,2026-27:388,Guéhi,DEF,Man City,5.061054252953975,16.0,7.0,True,True,0.0,7.0,
+rank,5874076,Jess Bernstein,model,3,3,False,True,2026-27:40,Rogers,MID,Chelsea,2.9497151941404867,16.0,2026-27:155,Enzo,MID,Man City,5.83471926964702,12.0,4.0,True,True,0.0,4.0,
+rank,5874076,Jess Bernstein,model,4,2,True,True,2026-27:149,Colwill,DEF,Chelsea,4.568709894283838,2.0,2026-27:588,Khalaili,DEF,Crystal Palace,6.174161416387822,13.0,-11.0,True,True,0.0,-11.0,
+rank,3669095,Adam Whitting,model,2,3,False,True,2026-27:15,Ødegaard,MID,Arsenal,3.466064663719451,16.0,2026-27:481,Anderson,MID,Man City,4.5351363958518265,11.0,5.0,False,True,0.0,5.0,
+rank,3669095,Adam Whitting,model,3,3,False,True,2026-27:542,E.Le Fée,MID,Sunderland,3.6465791968701224,13.0,2026-27:237,Ndiaye,MID,Man City,5.0953131531669795,9.0,4.0,True,True,0.0,4.0,
+rank,3669095,Adam Whitting,model,4,2,True,True,2026-27:11,Mosquera,DEF,Arsenal,3.7124291599188317,0.0,2026-27:588,Khalaili,DEF,Crystal Palace,6.174161416387822,13.0,-13.0,False,True,0.0,-13.0,
+rank,169164,Filip Stripaj,model,3,3,False,True,2026-27:175,van Ewijk,DEF,Coventry City,1.4074035671191756,3.0,2026-27:112,Van Hecke,DEF,Spurs,4.312759306447605,22.0,-19.0,True,True,0.0,-19.0,
+rank,169164,Filip Stripaj,model,3,3,False,True,2026-27:427,Mbeumo,MID,Man Utd,5.0929888399695695,12.0,2026-27:155,Enzo,MID,Man City,5.83471926964702,12.0,0.0,False,True,0.0,,
+rank,217044,daniel bowes,model,3,3,False,True,2026-27:10,White,DEF,Arsenal,3.910681864879393,3.0,2026-27:445,Thiaw,DEF,Newcastle,4.54120330814237,5.0,-2.0,True,True,0.0,-7.0,
+rank,217044,daniel bowes,model,3,3,False,True,2026-27:305,Davis,DEF,Ipswich Town,2.8071643527277788,17.0,2026-27:112,Van Hecke,DEF,Spurs,4.312759306447605,22.0,-5.0,True,True,0.0,,
+rank,534464,Sion Jones,model,2,3,False,True,2026-27:11,Mosquera,DEF,Arsenal,3.7124291599188317,6.0,2026-27:112,Van Hecke,DEF,Spurs,4.630411925099347,17.0,-11.0,True,True,0.0,-11.0,
+rank,534464,Sion Jones,model,3,3,False,True,2026-27:233,Mykolenko,DEF,Everton,2.87566026318091,17.0,2026-27:445,Thiaw,DEF,Newcastle,4.54120330814237,5.0,12.0,False,True,0.0,12.0,
+rank,3503484,Viniii Denie,model,2,3,False,True,2026-27:40,Rogers,MID,Chelsea,3.948161297876062,19.0,2026-27:368,Szoboszlai,MID,Liverpool,4.943852778728511,10.0,9.0,True,True,0.0,9.0,
+rank,3503484,Viniii Denie,model,3,3,False,True,2026-27:236,Dewsbury-Hall,MID,Everton,3.6047832523695096,7.0,2026-27:155,Enzo,MID,Man City,5.83471926964702,12.0,-5.0,True,True,0.0,-5.0,
+rank,3503484,Viniii Denie,model,4,2,True,True,2026-27:448,Burn,DEF,Newcastle,5.2179809050484245,0.0,2026-27:588,Khalaili,DEF,Crystal Palace,6.174161416387822,13.0,-13.0,False,True,0.0,-13.0,
+rank,1585157,Tom Anderson,model,2,3,False,True,2026-27:15,Ødegaard,MID,Arsenal,3.466064663719451,16.0,2026-27:481,Anderson,MID,Man City,4.5351363958518265,11.0,5.0,True,True,0.0,5.0,
+rank,1585157,Tom Anderson,model,4,2,True,True,2026-27:418,Maguire,DEF,Man Utd,3.3071308805304342,3.0,2026-27:588,Khalaili,DEF,Crystal Palace,6.174161416387822,13.0,-10.0,True,True,0.0,-10.0,
+reference,2632584,ojaminFC,model,2,3,False,True,2026-27:399,Cherki,MID,Man City,2.7114494179685473,18.0,2026-27:368,Szoboszlai,MID,Liverpool,4.943852778728511,10.0,8.0,True,True,0.0,8.0,
+reference,2632584,ojaminFC,model,3,3,False,True,2026-27:15,Ødegaard,MID,Arsenal,3.3013987376962337,15.0,2026-27:155,Enzo,MID,Man City,5.83471926964702,12.0,3.0,True,True,0.0,3.0,
+veteran,2076855,elevenify.com,manager,3,3,False,True,2026-27:569,Gonzalo,,Fulham,,6.0,2026-27:411,Haaland,FWD,Man City,,24.0,-18.0,,True,0.0,-62.0,wildcard
+veteran,2076855,elevenify.com,manager,3,3,False,True,2026-27:565,M.Sangaré,,Brentford,,4.0,2026-27:12,Saka,MID,Arsenal,,12.0,-8.0,,True,0.0,,wildcard
+veteran,2076855,elevenify.com,manager,3,3,False,True,2026-27:454,Elanga,,Newcastle,,1.0,2026-27:124,Groß,MID,Brighton,,32.0,-31.0,,True,0.0,,wildcard
+veteran,2076855,elevenify.com,manager,3,3,False,True,2026-27:399,Cherki,,Man City,,12.0,2026-27:290,Slater,MID,Hull City,,7.0,5.0,,False,0.0,,wildcard
+veteran,2076855,elevenify.com,manager,3,3,False,True,2026-27:391,Gvardiol,,Man City,,23.0,2026-27:4,Gabriel,DEF,Arsenal,,12.0,11.0,,True,0.0,,wildcard
+veteran,2076855,elevenify.com,manager,3,3,False,True,2026-27:279,Ajayi,,Hull City,,7.0,2026-27:304,O'Shea,DEF,Ipswich Town,,6.0,1.0,,True,0.0,,wildcard
+veteran,2076855,elevenify.com,manager,3,3,False,True,2026-27:8,Calafiori,,Arsenal,,9.0,2026-27:31,Konsa,DEF,Arsenal,,11.0,-2.0,,True,0.0,,wildcard
+veteran,2076855,elevenify.com,manager,3,3,False,True,2026-27:171,Dovin,,Coventry City,,0.0,2026-27:496,Kinsky,GKP,Spurs,,15.0,-15.0,,True,0.0,,wildcard
+veteran,2076855,elevenify.com,manager,3,3,False,True,2026-27:10,White,DEF,Arsenal,,3.0,2026-27:8,Calafiori,,Arsenal,,9.0,-6.0,,False,0.0,,wildcard
+veteran,2076855,elevenify.com,manager,3,3,False,True,2026-27:82,Kelleher,,Brentford,,11.0,2026-27:171,Dovin,,Coventry City,,0.0,11.0,,False,0.0,,wildcard
+veteran,2076855,elevenify.com,manager,3,3,False,True,2026-27:557,Tzolis,,Arsenal,,10.0,2026-27:565,M.Sangaré,,Brentford,,4.0,6.0,,False,0.0,,wildcard
+veteran,2076855,elevenify.com,manager,3,3,False,True,2026-27:586,Mendy,,Hull City,,9.0,2026-27:279,Ajayi,,Hull City,,7.0,2.0,,False,0.0,,wildcard
+veteran,2076855,elevenify.com,manager,3,3,False,True,2026-27:388,Guéhi,,Man City,,18.0,2026-27:449,Hall,DEF,Newcastle,,17.0,1.0,,True,0.0,,wildcard
+veteran,2076855,elevenify.com,manager,3,3,False,True,2026-27:40,Rogers,,Chelsea,,16.0,2026-27:454,Elanga,,Newcastle,,1.0,15.0,,False,0.0,,wildcard
+veteran,2076855,elevenify.com,manager,3,3,False,True,2026-27:379,Isak,FWD,Liverpool,,23.0,2026-27:464,Wissa,FWD,Newcastle,,3.0,20.0,,True,0.0,,wildcard
+veteran,2076855,elevenify.com,manager,3,3,False,True,2026-27:346,Calvert-Lewin,FWD,Leeds,,13.0,2026-27:569,Gonzalo,,Fulham,,6.0,7.0,,False,0.0,,wildcard
+veteran,2076855,elevenify.com,manager,3,3,False,True,2026-27:542,E.Le Fée,MID,Sunderland,,13.0,2026-27:40,Rogers,,Chelsea,,16.0,-3.0,,False,0.0,,wildcard
+veteran,2076855,elevenify.com,manager,3,3,False,True,2026-27:427,Mbeumo,MID,Man Utd,,12.0,2026-27:557,Tzolis,,Arsenal,,10.0,2.0,,False,0.0,,wildcard
+veteran,2076855,elevenify.com,manager,3,3,False,True,2026-27:426,B.Fernandes,MID,Man Utd,,6.0,2026-27:399,Cherki,,Man City,,12.0,-6.0,,False,0.0,,wildcard
+veteran,2076855,elevenify.com,manager,3,3,False,True,2026-27:237,Ndiaye,MID,Man City,,9.0,2026-27:154,Palmer,MID,Chelsea,,8.0,1.0,,True,0.0,,wildcard
+veteran,2076855,elevenify.com,manager,3,3,False,True,2026-27:532,Ballard,DEF,Sunderland,,6.0,2026-27:391,Gvardiol,,Man City,,23.0,-17.0,,False,0.0,,wildcard
+veteran,2076855,elevenify.com,manager,3,3,False,True,2026-27:418,Maguire,DEF,Man Utd,,5.0,2026-27:586,Mendy,,Hull City,,9.0,-4.0,,False,0.0,,wildcard
+veteran,2076855,elevenify.com,manager,3,3,False,True,2026-27:11,Mosquera,DEF,Arsenal,,0.0,2026-27:388,Guéhi,,Man City,,18.0,-18.0,,False,0.0,,wildcard
+veteran,2076855,elevenify.com,manager,3,3,False,True,2026-27:4,Gabriel,DEF,Arsenal,,12.0,2026-27:115,De Cuyper,DEF,Brighton,,21.0,-9.0,,True,0.0,,wildcard
+veteran,2076855,elevenify.com,manager,3,3,False,True,2026-27:529,Roefs,GKP,Sunderland,,4.0,2026-27:82,Kelleher,,Brentford,,11.0,-7.0,,False,0.0,,wildcard
+veteran,2076855,elevenify.com,manager,5,1,True,True,2026-27:165,João Pedro,FWD,Chelsea,,0.0,2026-27:249,Barry,FWD,Everton,,6.0,-6.0,,True,0.0,-13.0,
+veteran,2076855,elevenify.com,manager,5,1,True,True,2026-27:290,Slater,MID,Hull City,,2.0,2026-27:453,Barnes,MID,Newcastle,,9.0,-7.0,,True,0.0,,
+veteran,9267,Cameron Scott,manager,3,3,False,True,2026-27:504,Vuskovic,,Brighton,,26.0,2026-27:87,Ajer,DEF,Brentford,,10.0,16.0,,False,0.0,6.0,free_hit
+veteran,9267,Cameron Scott,manager,3,3,False,True,2026-27:623,Bentley,,Coventry City,,0.0,2026-27:250,Leno,GKP,Fulham,,13.0,-13.0,,False,0.0,,free_hit
+veteran,9267,Cameron Scott,manager,3,3,False,True,2026-27:94,Schade,,Brentford,,26.0,2026-27:41,Buendía,MID,Aston Villa,,17.0,9.0,,False,0.0,,free_hit
+veteran,9267,Cameron Scott,manager,3,3,False,True,2026-27:87,Ajer,DEF,Brentford,,10.0,2026-27:504,Vuskovic,,Brighton,,26.0,-16.0,,False,0.0,,free_hit
+veteran,9267,Cameron Scott,manager,3,3,False,True,2026-27:597,Suzuki,,Aston Villa,,14.0,2026-27:623,Bentley,,Coventry City,,0.0,14.0,,False,0.0,,free_hit
+veteran,9267,Cameron Scott,manager,3,3,False,True,2026-27:109,Verbruggen,,Brighton,,17.0,2026-27:82,Kelleher,GKP,Brentford,,11.0,6.0,,False,0.0,,free_hit
+veteran,9267,Cameron Scott,manager,3,3,False,True,2026-27:166,N.Jackson,,Aston Villa,,8.0,2026-27:464,Wissa,FWD,Newcastle,,3.0,5.0,,False,0.0,,free_hit
+veteran,9267,Cameron Scott,manager,3,3,False,True,2026-27:106,Thiago,,Brentford,,8.0,2026-27:379,Isak,FWD,Liverpool,,23.0,-15.0,,False,0.0,,free_hit
+veteran,9267,Cameron Scott,manager,3,3,False,True,2026-27:124,Groß,,Brighton,,32.0,2026-27:94,Schade,,Brentford,,26.0,6.0,,False,0.0,,free_hit
+veteran,9267,Cameron Scott,manager,3,3,False,True,2026-27:250,Leno,GKP,Fulham,,13.0,2026-27:597,Suzuki,,Aston Villa,,14.0,-1.0,,False,0.0,,free_hit
+veteran,9267,Cameron Scott,manager,3,3,False,True,2026-27:1,Raya,GKP,Arsenal,,18.0,2026-27:109,Verbruggen,,Brighton,,17.0,1.0,,False,0.0,,free_hit
+veteran,9267,Cameron Scott,manager,3,3,False,True,2026-27:346,Calvert-Lewin,FWD,Leeds,,13.0,2026-27:166,N.Jackson,,Aston Villa,,8.0,5.0,,False,0.0,,free_hit
+veteran,9267,Cameron Scott,manager,3,3,False,True,2026-27:295,McBurnie,FWD,Hull City,,7.0,2026-27:106,Thiago,,Brentford,,8.0,-1.0,,False,0.0,,free_hit
+veteran,9267,Cameron Scott,manager,3,3,False,True,2026-27:165,João Pedro,FWD,Chelsea,,13.0,2026-27:411,Haaland,FWD,Man City,,24.0,-11.0,,False,0.0,,free_hit
+veteran,9267,Cameron Scott,manager,3,3,False,True,2026-27:426,B.Fernandes,MID,Man Utd,,6.0,2026-27:124,Groß,,Brighton,,32.0,-26.0,,False,0.0,,free_hit
+veteran,9267,Cameron Scott,manager,3,3,False,True,2026-27:366,Wirtz,MID,Liverpool,,12.0,2026-27:127,Gomez,MID,Brighton,,13.0,-1.0,,False,0.0,,free_hit
+veteran,9267,Cameron Scott,manager,3,3,False,True,2026-27:237,Ndiaye,MID,Man City,,9.0,2026-27:398,Foden,MID,Man City,,-1.0,10.0,,False,0.0,,free_hit
+veteran,9267,Cameron Scott,manager,3,3,False,True,2026-27:154,Palmer,MID,Chelsea,,8.0,2026-27:12,Saka,MID,Arsenal,,12.0,-4.0,,False,0.0,,free_hit
+veteran,9267,Cameron Scott,manager,3,3,False,True,2026-27:418,Maguire,DEF,Man Utd,,5.0,2026-27:87,Ajer,DEF,Brentford,,10.0,-5.0,,False,0.0,,free_hit
+veteran,9267,Cameron Scott,manager,3,3,False,True,2026-27:304,O'Shea,DEF,Ipswich Town,,6.0,2026-27:586,Mendy,DEF,Hull City,,9.0,-3.0,,False,0.0,,free_hit
+veteran,9267,Cameron Scott,manager,3,3,False,True,2026-27:229,Tarkowski,DEF,Everton,,25.0,2026-27:115,De Cuyper,DEF,Brighton,,21.0,4.0,,False,0.0,,free_hit
+veteran,9267,Cameron Scott,manager,3,3,False,True,2026-27:112,Van Hecke,DEF,Spurs,,22.0,2026-27:84,Collins,DEF,Brentford,,1.0,21.0,,False,0.0,,free_hit
+veteran,9267,Cameron Scott,manager,3,3,False,True,2026-27:4,Gabriel,DEF,Arsenal,,12.0,2026-27:387,O'Reilly,DEF,Man City,,2.0,10.0,,False,0.0,,free_hit
+veteran,9267,Cameron Scott,manager,3,3,False,True,2026-27:412,Lammens,GKP,Man Utd,,8.0,2026-27:250,Leno,GKP,Fulham,,13.0,-5.0,,False,0.0,,free_hit
+veteran,9267,Cameron Scott,manager,4,2,True,True,2026-27:418,Maguire,DEF,Man Utd,,3.0,2026-27:31,Konsa,DEF,Arsenal,,7.0,-4.0,,True,0.0,-4.0,triple_captain
+veteran,9267,Cameron Scott,manager,5,1,True,True,2026-27:165,João Pedro,FWD,Chelsea,,0.0,2026-27:249,Barry,FWD,Everton,,6.0,-6.0,,True,0.0,-6.0,
+veteran,31365,Ashley Marsh,manager,3,3,False,True,2026-27:109,Verbruggen,GKP,Brighton,,17.0,2026-27:623,Bentley,GKP,Coventry City,,0.0,17.0,,True,0.0,-34.0,wildcard
+veteran,31365,Ashley Marsh,manager,3,3,False,True,2026-27:454,Elanga,,Newcastle,,1.0,2026-27:124,Groß,MID,Brighton,,32.0,-31.0,,True,0.0,,wildcard
+veteran,31365,Ashley Marsh,manager,3,3,False,True,2026-27:279,Ajayi,,Hull City,,7.0,2026-27:31,Konsa,DEF,Arsenal,,11.0,-4.0,,True,0.0,,wildcard
+veteran,31365,Ashley Marsh,manager,3,3,False,True,2026-27:445,Thiaw,,Newcastle,,5.0,2026-27:449,Hall,DEF,Newcastle,,17.0,-12.0,,True,0.0,,wildcard
+veteran,31365,Ashley Marsh,manager,3,3,False,True,2026-27:557,Tzolis,,Arsenal,,10.0,2026-27:368,Szoboszlai,MID,Liverpool,,8.0,2.0,,True,0.0,,wildcard
+veteran,31365,Ashley Marsh,manager,3,3,False,True,2026-27:304,O'Shea,,Ipswich Town,,6.0,2026-27:279,Ajayi,,Hull City,,7.0,-1.0,,False,0.0,,wildcard
+veteran,31365,Ashley Marsh,manager,3,3,False,True,2026-27:368,Szoboszlai,MID,Liverpool,,8.0,2026-27:557,Tzolis,,Arsenal,,10.0,-2.0,,False,0.0,,wildcard
+veteran,31365,Ashley Marsh,manager,3,3,False,True,2026-27:40,Rogers,MID,Chelsea,,16.0,2026-27:565,M.Sangaré,MID,Brentford,,4.0,12.0,,False,0.0,,wildcard
+veteran,31365,Ashley Marsh,manager,3,3,False,True,2026-27:387,O'Reilly,,Man City,,2.0,2026-27:445,Thiaw,,Newcastle,,5.0,-3.0,,False,0.0,,wildcard
+veteran,31365,Ashley Marsh,manager,3,3,False,True,2026-27:4,Gabriel,DEF,Arsenal,,12.0,2026-27:8,Calafiori,DEF,Arsenal,,9.0,3.0,,True,0.0,,wildcard
+veteran,31365,Ashley Marsh,manager,3,3,False,True,2026-27:569,Gonzalo,,Fulham,,6.0,2026-27:411,Haaland,FWD,Man City,,24.0,-18.0,,True,0.0,,wildcard
+veteran,31365,Ashley Marsh,manager,3,3,False,True,2026-27:557,Tzolis,,Arsenal,,10.0,2026-27:454,Elanga,,Newcastle,,1.0,9.0,,False,0.0,,wildcard
+veteran,31365,Ashley Marsh,manager,3,3,False,True,2026-27:346,Calvert-Lewin,FWD,Leeds,,13.0,2026-27:464,Wissa,FWD,Newcastle,,3.0,10.0,,True,0.0,,wildcard
+veteran,31365,Ashley Marsh,manager,3,3,False,True,2026-27:8,Calafiori,DEF,Arsenal,,9.0,2026-27:115,De Cuyper,DEF,Brighton,,21.0,-12.0,,True,0.0,,wildcard
+veteran,31365,Ashley Marsh,manager,3,3,False,True,2026-27:10,White,DEF,Arsenal,,3.0,2026-27:391,Gvardiol,DEF,Man City,,23.0,-20.0,,True,0.0,,wildcard
+veteran,31365,Ashley Marsh,manager,3,3,False,True,2026-27:552,Brobbey,FWD,Sunderland,,20.0,2026-27:569,Gonzalo,,Fulham,,6.0,14.0,,False,0.0,,wildcard
+veteran,31365,Ashley Marsh,manager,3,3,False,True,2026-27:356,Virgil,DEF,Liverpool,,22.0,2026-27:387,O'Reilly,,Man City,,2.0,20.0,,False,0.0,,wildcard
+veteran,31365,Ashley Marsh,manager,3,3,False,True,2026-27:542,E.Le Fée,MID,Sunderland,,13.0,2026-27:557,Tzolis,,Arsenal,,10.0,3.0,,False,0.0,,wildcard
+veteran,31365,Ashley Marsh,manager,3,3,False,True,2026-27:427,Mbeumo,MID,Man Utd,,12.0,2026-27:40,Rogers,MID,Chelsea,,16.0,-4.0,,True,0.0,,wildcard
+veteran,31365,Ashley Marsh,manager,3,3,False,True,2026-27:426,B.Fernandes,MID,Man Utd,,6.0,2026-27:154,Palmer,MID,Chelsea,,8.0,-2.0,,True,0.0,,wildcard
+veteran,31365,Ashley Marsh,manager,3,3,False,True,2026-27:366,Wirtz,MID,Liverpool,,12.0,2026-27:399,Cherki,MID,Man City,,12.0,0.0,,False,0.0,,wildcard
+veteran,31365,Ashley Marsh,manager,3,3,False,True,2026-27:418,Maguire,DEF,Man Utd,,5.0,2026-27:304,O'Shea,,Ipswich Town,,6.0,-1.0,,False,0.0,,wildcard
+veteran,31365,Ashley Marsh,manager,3,3,False,True,2026-27:529,Roefs,GKP,Sunderland,,4.0,2026-27:1,Raya,GKP,Arsenal,,18.0,-14.0,,True,0.0,,wildcard
+veteran,31365,Ashley Marsh,manager,4,2,True,True,2026-27:399,Cherki,MID,Man City,,9.0,2026-27:40,Rogers,MID,Chelsea,,10.0,-1.0,,True,0.0,-1.0,triple_captain
+veteran,31365,Ashley Marsh,manager,5,1,True,True,2026-27:165,João Pedro,FWD,Chelsea,,0.0,2026-27:249,Barry,FWD,Everton,,6.0,-6.0,,True,0.0,-8.0,
+veteran,31365,Ashley Marsh,manager,5,1,True,True,2026-27:565,M.Sangaré,MID,Brentford,,0.0,2026-27:480,Gibbs-White,MID,Nott'm Forest,,2.0,-2.0,,True,0.0,,
+veteran,616,Mark Brookes,manager,3,3,False,True,2026-27:124,Groß,MID,Brighton,,32.0,2026-27:127,Gomez,MID,Brighton,,13.0,19.0,,False,0.0,-13.0,free_hit
+veteran,616,Mark Brookes,manager,3,3,False,True,2026-27:497,Dubravka,,Spurs,,0.0,2026-27:109,Verbruggen,GKP,Brighton,,17.0,-17.0,,False,0.0,,free_hit
+veteran,616,Mark Brookes,manager,3,3,False,True,2026-27:605,Yalcouyé,,Brighton,,11.0,2026-27:124,Groß,MID,Brighton,,32.0,-21.0,,True,0.0,,free_hit
+veteran,616,Mark Brookes,manager,3,3,False,True,2026-27:165,João Pedro,FWD,Chelsea,,13.0,2026-27:411,Haaland,FWD,Man City,,24.0,-11.0,,False,0.0,,free_hit
+veteran,616,Mark Brookes,manager,3,3,False,True,2026-27:565,M.Sangaré,,Brentford,,4.0,2026-27:12,Saka,MID,Arsenal,,12.0,-8.0,,False,0.0,,free_hit
+veteran,616,Mark Brookes,manager,3,3,False,True,2026-27:454,Elanga,,Newcastle,,1.0,2026-27:397,Semenyo,MID,Man City,,26.0,-25.0,,False,0.0,,free_hit
+veteran,616,Mark Brookes,manager,3,3,False,True,2026-27:154,Palmer,MID,Chelsea,,8.0,2026-27:605,Yalcouyé,,Brighton,,11.0,-3.0,,False,0.0,,free_hit
+veteran,616,Mark Brookes,manager,3,3,False,True,2026-27:449,Hall,,Newcastle,,17.0,2026-27:277,Egan,DEF,Hull City,,9.0,8.0,,False,0.0,,free_hit
+veteran,616,Mark Brookes,manager,3,3,False,True,2026-27:391,Gvardiol,,Man City,,23.0,2026-27:87,Ajer,DEF,Brentford,,10.0,13.0,,False,0.0,,free_hit
+veteran,616,Mark Brookes,manager,3,3,False,True,2026-27:8,Calafiori,DEF,Arsenal,,9.0,2026-27:84,Collins,DEF,Brentford,,1.0,8.0,,False,0.0,,free_hit
+veteran,616,Mark Brookes,manager,3,3,False,True,2026-27:412,Lammens,GKP,Man Utd,,8.0,2026-27:497,Dubravka,,Spurs,,0.0,8.0,,False,0.0,,free_hit
+veteran,616,Mark Brookes,manager,3,3,False,True,2026-27:109,Verbruggen,GKP,Brighton,,17.0,2026-27:82,Kelleher,GKP,Brentford,,11.0,6.0,,False,0.0,,free_hit
+veteran,616,Mark Brookes,manager,3,3,False,True,2026-27:368,Szoboszlai,MID,Liverpool,,8.0,2026-27:367,Gakpo,MID,Liverpool,,15.0,-7.0,,False,0.0,,free_hit
+veteran,616,Mark Brookes,manager,3,3,False,True,2026-27:367,Gakpo,MID,Liverpool,,15.0,2026-27:565,M.Sangaré,,Brentford,,4.0,11.0,,False,0.0,,free_hit
+veteran,616,Mark Brookes,manager,3,3,False,True,2026-27:87,Ajer,DEF,Brentford,,10.0,2026-27:449,Hall,,Newcastle,,17.0,-7.0,,False,0.0,,free_hit
+veteran,616,Mark Brookes,manager,3,3,False,True,2026-27:557,Tzolis,,Arsenal,,10.0,2026-27:367,Gakpo,MID,Liverpool,,15.0,-5.0,,False,0.0,,free_hit
+veteran,616,Mark Brookes,manager,3,3,False,True,2026-27:112,Van Hecke,DEF,Spurs,,22.0,2026-27:87,Ajer,DEF,Brentford,,10.0,12.0,,False,0.0,,free_hit
+veteran,616,Mark Brookes,manager,3,3,False,True,2026-27:124,Groß,MID,Brighton,,32.0,2026-27:454,Elanga,,Newcastle,,1.0,31.0,,False,0.0,,free_hit
+veteran,616,Mark Brookes,manager,3,3,False,True,2026-27:4,Gabriel,DEF,Arsenal,,12.0,2026-27:279,Ajayi,DEF,Hull City,,7.0,5.0,,False,0.0,,free_hit
+veteran,616,Mark Brookes,manager,3,3,False,True,2026-27:346,Calvert-Lewin,FWD,Leeds,,13.0,2026-27:464,Wissa,FWD,Newcastle,,3.0,10.0,,False,0.0,,free_hit
+veteran,616,Mark Brookes,manager,3,3,False,True,2026-27:237,Ndiaye,MID,Man City,,9.0,2026-27:557,Tzolis,,Arsenal,,10.0,-1.0,,False,0.0,,free_hit
+veteran,616,Mark Brookes,manager,3,3,False,True,2026-27:304,O'Shea,DEF,Ipswich Town,,6.0,2026-27:115,De Cuyper,DEF,Brighton,,21.0,-15.0,,False,0.0,,free_hit
+veteran,616,Mark Brookes,manager,3,3,False,True,2026-27:426,B.Fernandes,MID,Man Utd,,6.0,2026-27:399,Cherki,MID,Man City,,12.0,-6.0,,False,0.0,,free_hit
+veteran,616,Mark Brookes,manager,3,3,False,True,2026-27:418,Maguire,DEF,Man Utd,,5.0,2026-27:391,Gvardiol,,Man City,,23.0,-18.0,,False,0.0,,free_hit
+veteran,616,Mark Brookes,manager,5,1,True,True,2026-27:165,João Pedro,FWD,Chelsea,,0.0,2026-27:569,Gonzalo,FWD,Fulham,,2.0,-2.0,,True,0.0,-7.0,wildcard
+veteran,616,Mark Brookes,manager,5,1,True,True,2026-27:290,Slater,,Hull City,,2.0,2026-27:453,Barnes,MID,Newcastle,,9.0,-7.0,,True,0.0,,wildcard
+veteran,616,Mark Brookes,manager,5,1,True,True,2026-27:40,Rogers,,Chelsea,,2.0,2026-27:12,Saka,MID,Arsenal,,2.0,0.0,,True,0.0,,wildcard
+veteran,616,Mark Brookes,manager,5,1,True,True,2026-27:391,Gvardiol,,Man City,,4.0,2026-27:469,N.Williams,DEF,Nott'm Forest,,2.0,2.0,,True,0.0,,wildcard
+veteran,616,Mark Brookes,manager,5,1,True,True,2026-27:229,Tarkowski,,Everton,,14.0,2026-27:334,Muharemović,DEF,Leeds,,6.0,8.0,,True,0.0,,wildcard
+veteran,616,Mark Brookes,manager,5,1,True,True,2026-27:115,De Cuyper,DEF,Brighton,,6.0,2026-27:31,Konsa,DEF,Arsenal,,1.0,5.0,,True,0.0,,wildcard
+veteran,616,Mark Brookes,manager,5,1,True,True,2026-27:629,Zetterer,,Leeds,,0.0,2026-27:250,Leno,GKP,Fulham,,3.0,-3.0,,True,0.0,,wildcard
+veteran,616,Mark Brookes,manager,5,1,True,True,2026-27:109,Verbruggen,GKP,Brighton,,6.0,2026-27:496,Kinsky,GKP,Spurs,,2.0,4.0,,True,0.0,,wildcard
+veteran,616,Mark Brookes,manager,5,1,True,True,2026-27:68,Tavernier,,Bournemouth,,2.0,2026-27:290,Slater,,Hull City,,2.0,0.0,,True,0.0,,wildcard
+veteran,616,Mark Brookes,manager,5,1,True,True,2026-27:304,O'Shea,DEF,Ipswich Town,,2.0,2026-27:115,De Cuyper,DEF,Brighton,,6.0,-4.0,,True,0.0,,wildcard
+veteran,616,Mark Brookes,manager,5,1,True,True,2026-27:379,Isak,FWD,Liverpool,,8.0,2026-27:411,Haaland,FWD,Man City,,6.0,2.0,,True,0.0,,wildcard
+veteran,616,Mark Brookes,manager,5,1,True,True,2026-27:346,Calvert-Lewin,FWD,Leeds,,2.0,2026-27:249,Barry,FWD,Everton,,6.0,-4.0,,True,0.0,,wildcard
+veteran,616,Mark Brookes,manager,5,1,True,True,2026-27:94,Schade,,Brentford,,9.0,2026-27:480,Gibbs-White,MID,Nott'm Forest,,2.0,7.0,,True,0.0,,wildcard
+veteran,616,Mark Brookes,manager,5,1,True,True,2026-27:496,Kinsky,GKP,Spurs,,2.0,2026-27:629,Zetterer,,Leeds,,0.0,2.0,,True,0.0,,wildcard
+veteran,616,Mark Brookes,manager,5,1,True,True,2026-27:237,Ndiaye,MID,Man City,,5.0,2026-27:94,Schade,,Brentford,,9.0,-4.0,,True,0.0,,wildcard
+veteran,616,Mark Brookes,manager,5,1,True,True,2026-27:426,B.Fernandes,MID,Man Utd,,2.0,2026-27:68,Tavernier,,Bournemouth,,2.0,0.0,,True,0.0,,wildcard
+veteran,616,Mark Brookes,manager,5,1,True,True,2026-27:418,Maguire,DEF,Man Utd,,2.0,2026-27:391,Gvardiol,,Man City,,4.0,-2.0,,True,0.0,,wildcard
+veteran,616,Mark Brookes,manager,5,1,True,True,2026-27:368,Szoboszlai,MID,Liverpool,,2.0,2026-27:40,Rogers,,Chelsea,,2.0,0.0,,True,0.0,,wildcard
+veteran,616,Mark Brookes,manager,5,1,True,True,2026-27:4,Gabriel,DEF,Arsenal,,1.0,2026-27:229,Tarkowski,,Everton,,14.0,-13.0,,True,0.0,,wildcard
+veteran,616,Mark Brookes,manager,5,1,True,True,2026-27:412,Lammens,GKP,Man Utd,,4.0,2026-27:496,Kinsky,GKP,Spurs,,2.0,2.0,,True,0.0,,wildcard
+veteran,4109079,Will Morrison,manager,3,3,False,True,2026-27:88,Kayode,,Brentford,,8.0,2026-27:84,Collins,DEF,Brentford,,1.0,7.0,,False,0.0,26.0,free_hit
+veteran,4109079,Will Morrison,manager,3,3,False,True,2026-27:175,van Ewijk,DEF,Coventry City,,3.0,2026-27:36,Maatsen,DEF,Aston Villa,,8.0,-5.0,,False,0.0,,free_hit
+veteran,4109079,Will Morrison,manager,3,3,False,True,2026-27:124,Groß,MID,Brighton,,32.0,2026-27:398,Foden,MID,Man City,,-1.0,33.0,,False,0.0,,free_hit
+veteran,4109079,Will Morrison,manager,3,3,False,True,2026-27:173,Thomas,DEF,Coventry City,,13.0,2026-27:115,De Cuyper,DEF,Brighton,,21.0,-8.0,,False,0.0,,free_hit
+veteran,4109079,Will Morrison,manager,3,3,False,True,2026-27:346,Calvert-Lewin,FWD,Leeds,,13.0,2026-27:464,Wissa,FWD,Newcastle,,3.0,10.0,,False,0.0,,free_hit
+veteran,4109079,Will Morrison,manager,3,3,False,True,2026-27:237,Ndiaye,MID,Man City,,9.0,2026-27:399,Cherki,MID,Man City,,12.0,-3.0,,False,0.0,,free_hit
+veteran,4109079,Will Morrison,manager,3,3,False,True,2026-27:426,B.Fernandes,MID,Man Utd,,6.0,2026-27:12,Saka,MID,Arsenal,,12.0,-6.0,,False,0.0,,free_hit
+veteran,4109079,Will Morrison,manager,3,3,False,True,2026-27:1,Raya,GKP,Arsenal,,18.0,2026-27:82,Kelleher,GKP,Brentford,,11.0,7.0,,False,0.0,,free_hit
+veteran,4109079,Will Morrison,manager,3,3,False,True,2026-27:110,Rushworth,GKP,Coventry City,,13.0,2026-27:497,Dubravka,GKP,Spurs,,0.0,13.0,,False,0.0,,free_hit
+veteran,4109079,Will Morrison,manager,3,3,False,True,2026-27:152,Palestra,DEF,Chelsea,,0.0,2026-27:277,Egan,DEF,Hull City,,9.0,-9.0,,False,0.0,,free_hit
+veteran,4109079,Will Morrison,manager,3,3,False,True,2026-27:427,Mbeumo,MID,Man Utd,,12.0,2026-27:41,Buendía,MID,Aston Villa,,17.0,-5.0,,False,0.0,,free_hit
+veteran,4109079,Will Morrison,manager,3,3,False,True,2026-27:8,Calafiori,DEF,Arsenal,,9.0,2026-27:88,Kayode,,Brentford,,8.0,1.0,,False,0.0,,free_hit
+veteran,4109079,Will Morrison,manager,3,3,False,True,2026-27:4,Gabriel,DEF,Arsenal,,12.0,2026-27:87,Ajer,DEF,Brentford,,10.0,2.0,,False,0.0,,free_hit
+veteran,4109079,Will Morrison,manager,3,3,False,True,2026-27:165,João Pedro,FWD,Chelsea,,13.0,2026-27:411,Haaland,FWD,Man City,,24.0,-11.0,,False,0.0,,free_hit
+veteran,4109079,Will Morrison,manager,4,2,True,True,2026-27:427,Mbeumo,MID,Man Utd,,4.0,2026-27:154,Palmer,MID,Chelsea,,7.0,-3.0,,True,0.0,-16.0,
+veteran,4109079,Will Morrison,manager,4,2,True,True,2026-27:152,Palestra,DEF,Chelsea,,0.0,2026-27:334,Muharemović,DEF,Leeds,,13.0,-13.0,,True,0.0,,
+veteran,2116184,Paul Mitchell,manager,4,2,True,True,2026-27:426,B.Fernandes,MID,Man Utd,,4.0,2026-27:154,Palmer,MID,Chelsea,,7.0,-3.0,,True,0.0,-8.0,
+veteran,2116184,Paul Mitchell,manager,4,2,True,True,2026-27:423,Shaw,DEF,Man Utd,,2.0,2026-27:31,Konsa,DEF,Arsenal,,7.0,-5.0,,True,0.0,,
+veteran,32058,Thomas O'Brien,manager,3,3,False,True,2026-27:569,Gonzalo,,Fulham,,6.0,2026-27:411,Haaland,FWD,Man City,,24.0,-18.0,,True,0.0,-42.0,wildcard
+veteran,32058,Thomas O'Brien,manager,3,3,False,True,2026-27:557,Tzolis,,Arsenal,,10.0,2026-27:124,Groß,MID,Brighton,,32.0,-22.0,,True,0.0,,wildcard
+veteran,32058,Thomas O'Brien,manager,3,3,False,True,2026-27:399,Cherki,,Man City,,12.0,2026-27:565,M.Sangaré,MID,Brentford,,4.0,8.0,,True,0.0,,wildcard
+veteran,32058,Thomas O'Brien,manager,3,3,False,True,2026-27:40,Rogers,,Chelsea,,16.0,2026-27:12,Saka,MID,Arsenal,,12.0,4.0,,True,0.0,,wildcard
+veteran,32058,Thomas O'Brien,manager,3,3,False,True,2026-27:418,Maguire,DEF,Man Utd,,5.0,2026-27:112,Van Hecke,DEF,Spurs,,22.0,-17.0,,True,0.0,,wildcard
+veteran,32058,Thomas O'Brien,manager,3,3,False,True,2026-27:391,Gvardiol,,Man City,,23.0,2026-27:445,Thiaw,DEF,Newcastle,,5.0,18.0,,True,0.0,,wildcard
+veteran,32058,Thomas O'Brien,manager,3,3,False,True,2026-27:304,O'Shea,DEF,Ipswich Town,,6.0,2026-27:334,Muharemović,DEF,Leeds,,17.0,-11.0,,True,0.0,,wildcard
+veteran,32058,Thomas O'Brien,manager,3,3,False,True,2026-27:8,Calafiori,,Arsenal,,9.0,2026-27:31,Konsa,DEF,Arsenal,,11.0,-2.0,,True,0.0,,wildcard
+veteran,32058,Thomas O'Brien,manager,3,3,False,True,2026-27:564,Scherpen,GKP,Ipswich Town,,3.0,2026-27:623,Bentley,GKP,Coventry City,,0.0,3.0,,True,0.0,,wildcard
+veteran,32058,Thomas O'Brien,manager,3,3,False,True,2026-27:229,Tarkowski,DEF,Everton,,25.0,2026-27:8,Calafiori,,Arsenal,,9.0,16.0,,False,0.0,,wildcard
+veteran,32058,Thomas O'Brien,manager,3,3,False,True,2026-27:469,N.Williams,DEF,Nott'm Forest,,11.0,2026-27:115,De Cuyper,DEF,Brighton,,21.0,-10.0,,True,0.0,,wildcard
+veteran,32058,Thomas O'Brien,manager,3,3,False,True,2026-27:26,Havertz,,Arsenal,,11.0,2026-27:464,Wissa,FWD,Newcastle,,3.0,8.0,,True,0.0,,wildcard
+veteran,32058,Thomas O'Brien,manager,3,3,False,True,2026-27:346,Calvert-Lewin,FWD,Leeds,,13.0,2026-27:569,Gonzalo,,Fulham,,6.0,7.0,,False,0.0,,wildcard
+veteran,32058,Thomas O'Brien,manager,3,3,False,True,2026-27:295,McBurnie,FWD,Hull City,,7.0,2026-27:26,Havertz,,Arsenal,,11.0,-4.0,,False,0.0,,wildcard
+veteran,32058,Thomas O'Brien,manager,3,3,False,True,2026-27:427,Mbeumo,MID,Man Utd,,12.0,2026-27:40,Rogers,,Chelsea,,16.0,-4.0,,False,0.0,,wildcard
+veteran,32058,Thomas O'Brien,manager,3,3,False,True,2026-27:426,B.Fernandes,MID,Man Utd,,6.0,2026-27:557,Tzolis,,Arsenal,,10.0,-4.0,,False,0.0,,wildcard
+veteran,32058,Thomas O'Brien,manager,3,3,False,True,2026-27:237,Ndiaye,MID,Man City,,9.0,2026-27:399,Cherki,,Man City,,12.0,-3.0,,False,0.0,,wildcard
+veteran,32058,Thomas O'Brien,manager,3,3,False,True,2026-27:4,Gabriel,DEF,Arsenal,,12.0,2026-27:391,Gvardiol,,Man City,,23.0,-11.0,,False,0.0,,wildcard
+veteran,32058,Thomas O'Brien,manager,5,1,True,True,2026-27:165,João Pedro,FWD,Chelsea,,0.0,2026-27:249,Barry,FWD,Everton,,6.0,-6.0,,True,0.0,-6.0,
+rank,5874076,Jess Bernstein,manager,3,3,False,True,2026-27:426,B.Fernandes,MID,Man Utd,,6.0,2026-27:290,Slater,MID,Hull City,,7.0,-1.0,,True,4.0,-4.0,triple_captain
+rank,5874076,Jess Bernstein,manager,3,3,False,True,2026-27:109,Verbruggen,GKP,Brighton,,17.0,2026-27:301,Palmer,GKP,Ipswich Town,,0.0,17.0,,True,0.0,,triple_captain
+rank,5874076,Jess Bernstein,manager,3,3,False,True,2026-27:55,Watkins,FWD,Aston Villa,,0.0,2026-27:411,Haaland,FWD,Man City,,24.0,-24.0,,True,0.0,,triple_captain
+rank,3669095,Adam Whitting,manager,2,3,False,True,2026-27:15,Ødegaard,MID,Arsenal,,16.0,2026-27:453,Barnes,MID,Newcastle,,17.0,-1.0,,True,0.0,-1.0,
+rank,3669095,Adam Whitting,manager,3,3,False,True,2026-27:11,Mosquera,DEF,Arsenal,,0.0,2026-27:391,Gvardiol,DEF,Man City,,23.0,-23.0,,True,0.0,-23.0,
+rank,3669095,Adam Whitting,manager,4,2,True,True,2026-27:426,B.Fernandes,MID,Man Utd,,4.0,2026-27:40,Rogers,MID,Chelsea,,10.0,-6.0,,True,0.0,-6.0,
+rank,3669095,Adam Whitting,manager,5,1,True,True,2026-27:499,Pedro Porro,DEF,Spurs,,1.0,2026-27:8,Calafiori,DEF,Arsenal,,1.0,0.0,,True,0.0,0.0,
+rank,169164,Filip Stripaj,manager,3,3,False,True,2026-27:502,Robertson,DEF,Spurs,,12.0,2026-27:115,De Cuyper,DEF,Brighton,,21.0,-9.0,,False,0.0,-9.0,triple_captain
+rank,169164,Filip Stripaj,manager,3,3,False,True,2026-27:427,Mbeumo,MID,Man Utd,,12.0,2026-27:399,Cherki,MID,Man City,,12.0,0.0,,False,0.0,,triple_captain
+rank,169164,Filip Stripaj,manager,4,2,True,True,2026-27:552,Brobbey,FWD,Sunderland,,18.0,2026-27:346,Calvert-Lewin,FWD,Leeds,,12.0,6.0,,True,0.0,6.0,
+rank,169164,Filip Stripaj,manager,5,1,True,True,2026-27:426,B.Fernandes,MID,Man Utd,,2.0,2026-27:427,Mbeumo,MID,Man Utd,,2.0,0.0,,True,0.0,-33.0,free_hit
+rank,169164,Filip Stripaj,manager,5,1,True,True,2026-27:8,Calafiori,DEF,Arsenal,,1.0,2026-27:449,Hall,DEF,Newcastle,,13.0,-12.0,,True,0.0,,free_hit
+rank,169164,Filip Stripaj,manager,5,1,True,True,2026-27:423,Shaw,DEF,Man Utd,,2.0,2026-27:259,Diop,DEF,Ipswich Town,,4.0,-2.0,,True,0.0,,free_hit
+rank,169164,Filip Stripaj,manager,5,1,True,True,2026-27:399,Cherki,MID,Man City,,8.0,2026-27:154,Palmer,MID,Chelsea,,2.0,6.0,,True,0.0,,free_hit
+rank,169164,Filip Stripaj,manager,5,1,True,True,2026-27:109,Verbruggen,GKP,Brighton,,6.0,2026-27:497,Dubravka,GKP,Spurs,,0.0,6.0,,True,0.0,,free_hit
+rank,169164,Filip Stripaj,manager,5,1,True,True,2026-27:496,Kinsky,GKP,Spurs,,2.0,2026-27:467,Sels,GKP,Nott'm Forest,,2.0,0.0,,True,0.0,,free_hit
+rank,169164,Filip Stripaj,manager,5,1,True,True,2026-27:565,M.Sangaré,MID,Brentford,,0.0,2026-27:397,Semenyo,MID,Man City,,17.0,-17.0,,True,0.0,,free_hit
+rank,169164,Filip Stripaj,manager,5,1,True,True,2026-27:165,João Pedro,FWD,Chelsea,,0.0,2026-27:249,Barry,FWD,Everton,,6.0,-6.0,,True,0.0,,free_hit
+rank,169164,Filip Stripaj,manager,5,1,True,True,2026-27:115,De Cuyper,DEF,Brighton,,6.0,2026-27:229,Tarkowski,DEF,Everton,,14.0,-8.0,,True,0.0,,free_hit
+rank,169164,Filip Stripaj,manager,5,1,True,True,2026-27:368,Szoboszlai,MID,Liverpool,,2.0,2026-27:40,Rogers,MID,Chelsea,,2.0,0.0,,True,0.0,,free_hit
+rank,217044,daniel bowes,manager,2,3,False,True,2026-27:496,Kinsky,GKP,Spurs,,14.0,2026-27:572,Tzolakis,GKP,Hull City,,18.0,-4.0,,True,0.0,-4.0,
+rank,217044,daniel bowes,manager,3,3,False,True,2026-27:237,Ndiaye,MID,Man City,,9.0,2026-27:124,Groß,MID,Brighton,,32.0,-23.0,,False,0.0,-23.0,triple_captain
+rank,217044,daniel bowes,manager,4,2,True,True,2026-27:329,Rodon,DEF,Leeds,,0.0,2026-27:115,De Cuyper,DEF,Brighton,,17.0,-17.0,,False,0.0,-17.0,
+rank,217044,daniel bowes,manager,5,1,True,True,2026-27:212,Hughes,,Crystal Palace,,0.0,2026-27:438,Fletcher,MID,Man Utd,,0.0,0.0,,True,0.0,9.0,free_hit
+rank,217044,daniel bowes,manager,5,1,True,True,2026-27:495,Austin,,Spurs,,0.0,2026-27:623,Bentley,GKP,Coventry City,,0.0,0.0,,True,0.0,,free_hit
+rank,217044,daniel bowes,manager,5,1,True,True,2026-27:453,Barnes,,Newcastle,,9.0,2026-27:236,Dewsbury-Hall,MID,Everton,,3.0,6.0,,True,0.0,,free_hit
+rank,217044,daniel bowes,manager,5,1,True,True,2026-27:201,Muñoz,,Nott'm Forest,,2.0,2026-27:469,N.Williams,DEF,Nott'm Forest,,2.0,0.0,,True,0.0,,free_hit
+rank,217044,daniel bowes,manager,5,1,True,True,2026-27:236,Dewsbury-Hall,MID,Everton,,3.0,2026-27:40,Rogers,MID,Chelsea,,2.0,1.0,,True,0.0,,free_hit
+rank,217044,daniel bowes,manager,5,1,True,True,2026-27:382,Danns,,Liverpool,,0.0,2026-27:464,Wissa,FWD,Newcastle,,0.0,0.0,,True,0.0,,free_hit
+rank,217044,daniel bowes,manager,5,1,True,True,2026-27:397,Semenyo,,Man City,,17.0,2026-27:212,Hughes,,Crystal Palace,,0.0,17.0,,True,0.0,,free_hit
+rank,217044,daniel bowes,manager,5,1,True,True,2026-27:447,Botman,,Newcastle,,4.0,2026-27:449,Hall,DEF,Newcastle,,13.0,-9.0,,True,0.0,,free_hit
+rank,217044,daniel bowes,manager,5,1,True,True,2026-27:334,Muharemović,,Leeds,,6.0,2026-27:391,Gvardiol,DEF,Man City,,4.0,2.0,,True,0.0,,free_hit
+rank,217044,daniel bowes,manager,5,1,True,True,2026-27:384,Donnarumma,,Man City,,2.0,2026-27:226,Pickford,GKP,Everton,,8.0,-6.0,,True,0.0,,free_hit
+rank,217044,daniel bowes,manager,5,1,True,True,2026-27:330,Bogle,,Leeds,,5.0,2026-27:334,Muharemović,,Leeds,,6.0,-1.0,,True,0.0,,free_hit
+rank,217044,daniel bowes,manager,5,1,True,True,2026-27:438,Fletcher,MID,Man Utd,,0.0,2026-27:397,Semenyo,,Man City,,17.0,-17.0,,True,0.0,,free_hit
+rank,217044,daniel bowes,manager,5,1,True,True,2026-27:464,Wissa,FWD,Newcastle,,0.0,2026-27:382,Danns,,Liverpool,,0.0,0.0,,True,0.0,,free_hit
+rank,217044,daniel bowes,manager,5,1,True,True,2026-27:449,Hall,DEF,Newcastle,,13.0,2026-27:447,Botman,,Newcastle,,4.0,9.0,,True,0.0,,free_hit
+rank,217044,daniel bowes,manager,5,1,True,True,2026-27:230,Branthwaite,,Everton,,8.0,2026-27:330,Bogle,,Leeds,,5.0,3.0,,True,0.0,,free_hit
+rank,217044,daniel bowes,manager,5,1,True,True,2026-27:165,João Pedro,FWD,Chelsea,,0.0,2026-27:464,Wissa,FWD,Newcastle,,0.0,0.0,,True,0.0,,free_hit
+rank,217044,daniel bowes,manager,5,1,True,True,2026-27:491,Igor Jesus,FWD,Nott'm Forest,,1.0,2026-27:346,Calvert-Lewin,FWD,Leeds,,2.0,-1.0,,True,0.0,,free_hit
+rank,217044,daniel bowes,manager,5,1,True,True,2026-27:423,Shaw,DEF,Man Utd,,2.0,2026-27:278,Hughes,DEF,Hull City,,0.0,2.0,,True,0.0,,free_hit
+rank,217044,daniel bowes,manager,5,1,True,True,2026-27:305,Davis,DEF,Ipswich Town,,2.0,2026-27:303,Kipré,DEF,Ipswich Town,,0.0,2.0,,True,0.0,,free_hit
+rank,217044,daniel bowes,manager,5,1,True,True,2026-27:572,Tzolakis,GKP,Hull City,,6.0,2026-27:495,Austin,,Spurs,,0.0,6.0,,True,0.0,,free_hit
+rank,217044,daniel bowes,manager,5,1,True,True,2026-27:565,M.Sangaré,MID,Brentford,,0.0,2026-27:438,Fletcher,MID,Man Utd,,0.0,0.0,,True,0.0,,free_hit
+rank,217044,daniel bowes,manager,5,1,True,True,2026-27:427,Mbeumo,MID,Man Utd,,2.0,2026-27:453,Barnes,,Newcastle,,9.0,-7.0,,True,0.0,,free_hit
+rank,217044,daniel bowes,manager,5,1,True,True,2026-27:124,Groß,MID,Brighton,,14.0,2026-27:480,Gibbs-White,MID,Nott'm Forest,,2.0,12.0,,True,0.0,,free_hit
+rank,217044,daniel bowes,manager,5,1,True,True,2026-27:557,Tzolis,MID,Arsenal,,2.0,2026-27:236,Dewsbury-Hall,MID,Everton,,3.0,-1.0,,True,0.0,,free_hit
+rank,217044,daniel bowes,manager,5,1,True,True,2026-27:391,Gvardiol,DEF,Man City,,4.0,2026-27:449,Hall,DEF,Newcastle,,13.0,-9.0,,True,0.0,,free_hit
+rank,217044,daniel bowes,manager,5,1,True,True,2026-27:115,De Cuyper,DEF,Brighton,,6.0,2026-27:201,Muñoz,,Nott'm Forest,,2.0,4.0,,True,0.0,,free_hit
+rank,217044,daniel bowes,manager,5,1,True,True,2026-27:10,White,DEF,Arsenal,,0.0,2026-27:230,Branthwaite,,Everton,,8.0,-8.0,,True,0.0,,free_hit
+rank,217044,daniel bowes,manager,5,1,True,True,2026-27:109,Verbruggen,GKP,Brighton,,6.0,2026-27:384,Donnarumma,,Man City,,2.0,4.0,,True,0.0,,free_hit
+rank,534464,Sion Jones,manager,3,3,False,True,2026-27:165,João Pedro,FWD,Chelsea,,13.0,2026-27:379,Isak,FWD,Liverpool,,23.0,-10.0,,False,0.0,-50.0,wildcard
+rank,534464,Sion Jones,manager,3,3,False,True,2026-27:321,Walle Egeli,FWD,Ipswich Town,,0.0,2026-27:464,Wissa,FWD,Newcastle,,3.0,-3.0,,True,0.0,,wildcard
+rank,534464,Sion Jones,manager,3,3,False,True,2026-27:159,Caicedo,MID,Chelsea,,0.0,2026-27:124,Groß,MID,Brighton,,32.0,-32.0,,True,0.0,,wildcard
+rank,534464,Sion Jones,manager,3,3,False,True,2026-27:557,Tzolis,MID,Arsenal,,10.0,2026-27:154,Palmer,MID,Chelsea,,8.0,2.0,,True,0.0,,wildcard
+rank,534464,Sion Jones,manager,3,3,False,True,2026-27:427,Mbeumo,MID,Man Utd,,12.0,2026-27:454,Elanga,MID,Newcastle,,1.0,11.0,,False,0.0,,wildcard
+rank,534464,Sion Jones,manager,3,3,False,True,2026-27:426,B.Fernandes,MID,Man Utd,,6.0,2026-27:399,Cherki,MID,Man City,,12.0,-6.0,,True,0.0,,wildcard
+rank,534464,Sion Jones,manager,3,3,False,True,2026-27:237,Ndiaye,MID,Man City,,9.0,2026-27:368,Szoboszlai,MID,Liverpool,,8.0,1.0,,False,0.0,,wildcard
+rank,534464,Sion Jones,manager,3,3,False,True,2026-27:233,Mykolenko,DEF,Everton,,17.0,2026-27:115,De Cuyper,DEF,Brighton,,21.0,-4.0,,True,0.0,,wildcard
+rank,534464,Sion Jones,manager,3,3,False,True,2026-27:11,Mosquera,DEF,Arsenal,,0.0,2026-27:277,Egan,DEF,Hull City,,9.0,-9.0,,True,0.0,,wildcard
+rank,534464,Sion Jones,manager,4,2,True,True,2026-27:454,Elanga,MID,Newcastle,,0.0,2026-27:40,Rogers,MID,Chelsea,,10.0,-10.0,,True,0.0,-12.0,triple_captain
+rank,534464,Sion Jones,manager,4,2,True,True,2026-27:379,Isak,FWD,Liverpool,,10.0,2026-27:165,João Pedro,FWD,Chelsea,,12.0,-2.0,,True,0.0,,triple_captain
+rank,534464,Sion Jones,manager,5,1,True,True,2026-27:368,Szoboszlai,MID,Liverpool,,2.0,2026-27:15,Ødegaard,MID,Arsenal,,2.0,0.0,,True,0.0,0.0,
+rank,3503484,Viniii Denie,manager,2,3,False,True,2026-27:448,Burn,DEF,Newcastle,,0.0,2026-27:586,Mendy,DEF,Hull City,,10.0,-10.0,,False,4.0,-24.0,bench_boost
+rank,3503484,Viniii Denie,manager,2,3,False,True,2026-27:273,Phillips,GKP,Hull City,,0.0,2026-27:572,Tzolakis,GKP,Hull City,,18.0,-18.0,,True,0.0,,bench_boost
+rank,3503484,Viniii Denie,manager,3,3,False,True,2026-27:11,Mosquera,DEF,Arsenal,,0.0,2026-27:391,Gvardiol,DEF,Man City,,23.0,-23.0,,True,0.0,-23.0,
+rank,3503484,Viniii Denie,manager,4,2,True,True,2026-27:586,Mendy,DEF,Hull City,,1.0,2026-27:113,F.Kadıoğlu,DEF,Brighton,,11.0,-10.0,,True,0.0,-10.0,
+reference,2632584,ojaminFC,manager,2,3,False,True,2026-27:28,Martinez,GKP,Chelsea,,7.0,2026-27:412,Lammens,GKP,Man Utd,,6.0,1.0,,True,0.0,1.0,
+reference,2632584,ojaminFC,manager,4,2,True,True,2026-27:480,Gibbs-White,MID,Nott'm Forest,,10.0,2026-27:40,Rogers,MID,Chelsea,,10.0,0.0,,True,0.0,0.0,
+reference,2632584,ojaminFC,manager,5,1,True,True,2026-27:165,João Pedro,FWD,Chelsea,,0.0,2026-27:346,Calvert-Lewin,FWD,Leeds,,2.0,-2.0,,True,0.0,-11.0,
+reference,2632584,ojaminFC,manager,5,1,True,True,2026-27:565,M.Sangaré,MID,Brentford,,0.0,2026-27:453,Barnes,MID,Newcastle,,9.0,-9.0,,True,0.0,,

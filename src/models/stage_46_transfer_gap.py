@@ -1006,6 +1006,13 @@ def write_report(
             "One row per sale week, with the hit counted once, is in "
             "`data/processed/stage_46_transfer_weeks.csv`.",
             "",
+            "Gemini kept this count "
+            "([transfer gap](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). "
+            "Both groups are bought ahead on the model's sales and on the managers' own sales, "
+            "which is the variance reading under the rule above. "
+            "The reference row is the other sign and stays out of the means. "
+            "The score stays `score_xp`.",
+            "",
         ]
     )
     return "\n".join(lines)

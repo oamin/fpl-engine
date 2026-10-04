@@ -74,6 +74,8 @@ Seven score repairs were locked and screened on the fast XI, Gameweeks 5–38, f
 
 `attack_minutes` was dropped on 2026-10-04 before any code ([transfer gap](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). It would have added a full clean sheet and a full defensive-contribution expectation for a midfielder or forward when those two were smaller than his goals and assists, leaving appearance as it is. A clean sheet needs 60 minutes. Scaling those awards up because the shots are large has no basis in the scoring rules, and the piece is too small to close the Cherki gap, which is mostly appearance and the team rate. The buy pool would have given a full clean sheet to players with 45 to 60 expected minutes. Before 2025/26 defensive contributions are already zero, so the arm would only have raised midfielder clean sheets. It was not put on the fast XI. `appear_linear` remains parked for the same sale: the 60-minute gate stays shut, and at 31 minutes that repair lowers appearance. `score_xp` stays the published score.
 
+The Gameweek 1–5 transfer count against the locked managers was kept ([transfer gap](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Model and managers are both bought ahead, so the pre-registered systematic reading does not fire. See `reports/stage_46_transfer_gap.md`.
+
 ## Rules gaps
 
 - Full Opta BPS table (goals, assists, playing time, and the rest) is not in the 20 Jul 2026 change note. Only the 2026/27 deltas are coded.
