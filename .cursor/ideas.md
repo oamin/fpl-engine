@@ -88,6 +88,8 @@ Hall-of-fame Gameweek 1 squads for 2022/23–2025/26 are not in a public archive
 
 The same fifteens were held and climbed on 2026-10-04 ([crowd opening scores](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). The chip map was empty and `score_xp` was unchanged. Gemini kept a climb that finishes below its hold, the voided 2025/26 template gap, and the large 2024/25 third gap. The best climb is inside the season: template, template, template, then Next. A chip-filled historical climb stays parked. It would move published season totals, and 2024/25 still has no Assistant Manager in the repo. See `reports/crowd_opening_scores.md`.
 
+The sale margins on those four leading climbs were read on 2026-10-04 ([sale margins](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). The call is inconclusive. The 2022/23 second-half median was 4.47, under the locked 5 and over the locked 2.5. One of 16 sales in the half that gave back 66 points was under 2.5, against 4 of 13 in the half that added 197. A tighter hold is not the next test. The other twelve squads stay unread. See `reports/crowd_sale_margins.md`.
+
 ## Rules gaps
 
 - Full Opta BPS table (goals, assists, playing time, and the rest) is not in the 20 Jul 2026 change note. Only the 2026/27 deltas are coded.

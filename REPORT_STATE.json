@@ -1,13 +1,12 @@
 {
   "updated": "2026-10-04",
-  "milestone": "crowd-opening-scores",
+  "milestone": "sale-margins",
   "status": "reviewed",
-  "summary": "The four Gameweek 1 crowd fifteens were held and climbed on the published rule, chips off. The best climb is the template in 2022/23 (1735), 2023/24 (2105), and 2024/25 (2086), and Next in 2025/26 (2171). The 2025/26 template hold failed after four Chelsea players and is not a baseline. Gemini kept the diagnostics.",
+  "summary": "The margins on the four leading climbs are inconclusive. The 2022/23 template second half had a median of 4.47, with 1 of 16 sales under 2.5. The 2023/24 second half had a median of 3.49, with 4 of 13 under 2.5. A tighter hold would cut the paying half harder. The hold margin stays 1.25.",
   "artifacts": [
-    "src/models/crowd_opening_scores.py",
-    "tests/test_crowd_opening_scores.py",
-    "reports/crowd_opening_scores.md",
-    "data/processed/crowd_opening_scores.csv",
-    "data/processed/crowd_opening_score_weeks.csv"
+    "src/models/crowd_sale_margins.py",
+    "tests/test_crowd_sale_margins.py",
+    "reports/crowd_sale_margins.md",
+    "data/processed/crowd_sale_margins.csv"
   ]
 }
