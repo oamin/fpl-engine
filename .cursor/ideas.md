@@ -72,6 +72,8 @@ Both fixtures scored 1799 against 1734 on 2023/24. The holdout misses the same r
 
 Seven score repairs were locked and screened on the fast XI, Gameweeks 5–38, four seasons ([score repairs](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). All are parked. `appear_linear` is the best of that batch and is still behind in 2022/23 by 29, so it does not take a free-transfer climb. Removing clean sheets is killed. Halving them, halving the goals-conceded deduction, and the defender/forward shift of 0.25 all change sign across seasons. A goalkeeper goal at 6 instead of 10 moves the fast XI by about a point. See `reports/stage_45_score_repair.md`.
 
+`attack_minutes` was dropped on 2026-10-04 before any code ([transfer gap](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). It would have added a full clean sheet and a full defensive-contribution expectation for a midfielder or forward when those two were smaller than his goals and assists, leaving appearance as it is. A clean sheet needs 60 minutes. Scaling those awards up because the shots are large has no basis in the scoring rules, and the piece is too small to close the Cherki gap, which is mostly appearance and the team rate. The buy pool would have given a full clean sheet to players with 45 to 60 expected minutes. Before 2025/26 defensive contributions are already zero, so the arm would only have raised midfielder clean sheets. It was not put on the fast XI. `appear_linear` remains parked for the same sale: the 60-minute gate stays shut, and at 31 minutes that repair lowers appearance. `score_xp` stays the published score.
+
 ## Rules gaps
 
 - Full Opta BPS table (goals, assists, playing time, and the rest) is not in the 20 Jul 2026 change note. Only the 2026/27 deltas are coded.
