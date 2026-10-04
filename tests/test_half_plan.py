@@ -6,9 +6,11 @@ import inspect
 import unittest
 
 from src.live.half_plan import (
+    HalfPlan,
     HalfPlanError,
     SquadOutlook,
     WeekInputs,
+    bench_week,
     plan_half,
 )
 from src.live.policy import FH_MARGIN, WC_MARGIN
@@ -197,6 +199,38 @@ class TieTests(unittest.TestCase):
         plan = plan_half(19, rows)
         self.assertIsNone(plan.chip)
         self.assertAlmostEqual(plan.value, 10.0)
+
+
+class BenchWeekTests(unittest.TestCase):
+    def test_a_future_bench_boost_is_returned(self) -> None:
+        plan = HalfPlan(
+            chip=None,
+            schedule={"wildcard": None, "free_hit": None, "bench_boost": 19, "triple_captain": None},
+            value=0.0,
+        )
+        self.assertEqual(bench_week(plan, 17), 19)
+
+    def test_this_week_still_counts(self) -> None:
+        plan = HalfPlan(
+            chip="bench_boost",
+            schedule={"wildcard": None, "free_hit": None, "bench_boost": 17, "triple_captain": None},
+            value=0.0,
+        )
+        self.assertEqual(bench_week(plan, 17), 17)
+
+    def test_a_spent_or_unused_chip_is_absent(self) -> None:
+        spent = HalfPlan(
+            chip=None,
+            schedule={"wildcard": None, "free_hit": None, "bench_boost": 16, "triple_captain": None},
+            value=0.0,
+        )
+        unused = HalfPlan(
+            chip=None,
+            schedule={"wildcard": None, "free_hit": None, "bench_boost": None, "triple_captain": None},
+            value=0.0,
+        )
+        self.assertIsNone(bench_week(spent, 17))
+        self.assertIsNone(bench_week(unused, 17))
 
 
 class IsolationTests(unittest.TestCase):

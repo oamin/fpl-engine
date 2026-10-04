@@ -54,6 +54,14 @@ class HalfPlan:
     value: float
 
 
+def bench_week(plan: HalfPlan, current_gw: int) -> int | None:
+    """Bench Boost week still ahead, including this week. A used chip is None."""
+    target = plan.schedule.get("bench_boost")
+    if target is not None and int(target) >= int(current_gw):
+        return int(target)
+    return None
+
+
 def half_end(gw: int) -> int:
     """Last gameweek of the half that contains ``gw``."""
     return FIRST_HALF_END_GW if half_for_gw(gw) == "H1" else N_GAMEWEEKS

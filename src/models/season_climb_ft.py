@@ -338,11 +338,18 @@ def transfer_value(
     blend_schedule: str = "gamma",
     score_by_gw: dict[int, dict[str, float]] | None = None,
     clubs: dict[int, set[str]] | None = None,
+    bench_gw: int | None = None,
 ) -> float:
     """V = Σ γ^h XI_score_h − 4·hits; optional σ / FDR / flow / xp–prior blend.
 
     ``score_by_gw`` replaces the frozen decision-week score at that horizon
     step. The published path leaves it empty and keeps the freeze.
+
+    ``bench_gw`` adds the four players left out of the XI on the Bench Boost
+    week only. Inside the horizon that week's bench is discounted by γ^h.
+    After the horizon the decision-week bench is discounted once by γ to the
+    power of the gap. A past week or a hole in the horizon adds nothing.
+    None leaves the bench at 0, which is the published climb.
     """
     from src.models.xp_engine import blend_xp_exp
 
@@ -352,6 +359,7 @@ def transfer_value(
     if clubs is not None:
         later = [g for g in later if clubs.get(int(g))]
     horizon_gws = [gw] + later[: h_len - 1]
+    decision_bench: float | None = None
     for h, g in enumerate(horizon_gws):
         playing = roster_by_gw.get(g, set())
         fc_gw = fixture_counts.get(g, {}) if fixture_counts is not None else None
@@ -426,7 +434,21 @@ def transfer_value(
                 }
             )
         sdf = pd.DataFrame(rows)
-        v += (GAMMA**h) * _xi_score_sum(sdf, score_col)
+        xi = _xi_score_sum(sdf, score_col)
+        v += (GAMMA**h) * xi
+        if xi > -1e8:
+            bench = float(pd.to_numeric(sdf[score_col], errors="coerce").fillna(0.0).sum()) - xi
+            if h == 0:
+                decision_bench = bench
+            if bench_gw is not None and int(g) == int(bench_gw):
+                v += (GAMMA**h) * bench
+    if (
+        bench_gw is not None
+        and decision_bench is not None
+        and horizon_gws
+        and int(bench_gw) > int(horizon_gws[-1])
+    ):
+        v += (GAMMA ** (int(bench_gw) - int(gw))) * decision_bench
     return v
 
 
@@ -636,6 +658,7 @@ def choose_transfers(
     clubs: dict[int, set[str]] | None = None,
     decisions: list[dict[str, Any]] | None = None,
     shadow_structural: bool = False,
+    bench_gw: int | None = None,
 ) -> tuple[SquadState, int, int]:
     """Argmax V over hold / 1-swaps / optional structural 2-transfers."""
     eps = HOLD_EPS if hold_eps is None else float(hold_eps)
@@ -699,6 +722,7 @@ def choose_transfers(
             blend_schedule=blend_schedule,
             score_by_gw=score_by_gw,
             clubs=clubs,
+            bench_gw=bench_gw,
         )
         return base - pen * n_tx
 
