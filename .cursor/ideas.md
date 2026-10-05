@@ -118,6 +118,8 @@ The five-midfielder close call was run on 2026-10-05 and retired ([close calls](
 
 The wildcard lead on the same 14 was run on 2026-10-05 and kept as a score miss ([wildcard lead](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). The carry could already buy the chip signings. Gameweeks 4–5 lead by a median of 3.67, and Gameweeks 2–3 by 8.75. The turned-down rebuild held 19 of them, −100 points. The other 64 were left out, with a median score gap of −0.31 against the lowest rebuilt player at that position. Do not lower the wildcard hurdle from 16. Do not let a chip buy on one appearance. Do not fit a score on these 83 players. See `reports/chip_lead_gw15.md`.
 
+The price reach on those ranked-lower pairs was run on 2026-10-05 and kept as budget ([price reach](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). Fourteen of the seventeen pairs have no sale in the fifteen that pays for them. The list of 35 cut nobody. Do not lower the hold from 1.25. Do not widen that list from these five weeks. Do not open a two-transfer replay for the six pairs that sum to −7. The cohort chain stops. See `reports/sale_reach_gw15.md`.
+
 - Asian handicap, as a live-week pot only, after its own lock. Historical `score_xp` stays on the 1X2 and the 2.5 line. The free file has the handicap and no 3.5 line.
 - Player props, on the decision week only, in their own column. An Odds API call needs a cost estimate and the PI's approval. No market is discovered in a loop.
 - A season-rank weight on the copied tail only. Strength comes from season prices on a log scale, shrunk and clipped to about a 15% move in the team rate. It is idle on a week that already has a 1X2. It is not a 1–10 multiplier. The first Gameweek 6 call, once a line exists, still copies the third priced step flat.

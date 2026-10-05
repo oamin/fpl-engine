@@ -1,0 +1,19 @@
+entry_id,label,group,gw,human_id,model_id,points,status,rank,sale_id,delta,klass,two_transfer,defect
+2076855,elevenify.com,veteran,4,2026-27:411,2026-27:346,1.0,eligible,1,,,no_fund,False,False
+2076855,elevenify.com,veteran,4,2026-27:12,2026-27:427,-6.0,eligible,2,,,no_fund,True,False
+2076855,elevenify.com,veteran,5,2026-27:411,2026-27:346,-4.0,eligible,1,,,no_fund,False,False
+31365,Ashley Marsh,veteran,4,2026-27:411,2026-27:346,1.0,eligible,1,,,no_fund,False,False
+31365,Ashley Marsh,veteran,4,2026-27:1,2026-27:109,-6.0,eligible,2,,,no_fund,True,False
+31365,Ashley Marsh,veteran,4,2026-27:154,2026-27:367,-4.0,eligible,1,2026-27:426,1.5730107844853896,seen,False,False
+31365,Ashley Marsh,veteran,5,2026-27:411,2026-27:346,-4.0,eligible,1,,,no_fund,False,False
+31365,Ashley Marsh,veteran,5,2026-27:1,2026-27:109,5.0,eligible,3,,,no_fund,True,False
+4109079,Will Morrison,veteran,4,2026-27:154,2026-27:427,-3.0,eligible,1,2026-27:426,1.5730107844853896,seen,False,False
+32058,Thomas O'Brien,veteran,4,2026-27:411,2026-27:346,1.0,eligible,1,,,no_fund,False,False
+32058,Thomas O'Brien,veteran,5,2026-27:411,2026-27:346,-4.0,eligible,1,,,no_fund,False,False
+5874076,Jess Bernstein,rank,3,2026-27:411,2026-27:106,-7.0,eligible,1,,,no_fund,True,False
+5874076,Jess Bernstein,rank,4,2026-27:411,2026-27:106,-8.0,eligible,1,,,no_fund,False,False
+5874076,Jess Bernstein,rank,5,2026-27:411,2026-27:106,-1.0,eligible,1,,,no_fund,False,False
+3669095,Adam Whitting,rank,5,2026-27:8,2026-27:588,5.0,eligible,19,,,no_fund,True,False
+534464,Sion Jones,rank,4,2026-27:40,2026-27:237,-7.0,eligible,5,2026-27:427,0.6201282041599123,delta_le_125,False,False
+3503484,Viniii Denie,rank,5,2026-27:391,2026-27:588,2.0,eligible,9,,,no_fund,True,False
+2632584,ojaminFC,reference,2,2026-27:412,2026-27:109,-2.0,eligible,2,,,no_fund,True,False

@@ -1,13 +1,12 @@
 {
   "updated": "2026-10-05",
-  "milestone": "chip-lead",
+  "milestone": "sale-reach",
   "status": "reviewed",
-  "summary": "The chip-signing deficit of -329 is a score miss. The model could already buy 83 of the 85 players. The wildcard lead it turned down has a Gameweek 4-5 median of 3.67 and a Gameweek 2-3 median of 8.75. The turned-down rebuild held 19 of those players, -100 points, a share of 0.30. The other 64 were left out, and the lowest rebuilt player at that position outscored them by a median of 0.31. Gemini kept the reading. No constant moves. The lineup gap does not share these players.",
+  "summary": "The ranked-lower price deficit of -39 is budget. Fourteen of the seventeen pairs have no sale in the fifteen that pays for them, -25, and one sits within 1.25, -7. Nine of those fourteen are Haaland. Two pairs were already in the list of 35 and the horizon declined them. A second sale would fund six pairs that sum to -7, which does not open a replay. Gemini kept the reading. The hold stays 1.25. The cohort chain stops.",
   "artifacts": [
-    "src/models/chip_lead.py",
-    "tests/test_chip_lead.py",
-    "reports/chip_lead_gw15.md",
-    "data/processed/chip_lead_gw15.csv",
-    "data/processed/chip_lead_players_gw15.csv"
+    "src/models/sale_reach.py",
+    "tests/test_sale_reach.py",
+    "reports/sale_reach_gw15.md",
+    "data/processed/sale_reach_gw15.csv"
   ]
 }

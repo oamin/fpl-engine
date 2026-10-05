@@ -351,7 +351,8 @@ def write_report(path: Path, result: dict[str, Any]) -> None:
     if reference:
         ref_points = sum(float(row["points"]) for row in reference)
         lines.append(
-            f"ojaminFC, left out of the reading: {len(reference)} price pairs, {_fmt(ref_points)}."
+            f"ojaminFC, left out of the reading: {len(reference)} price "
+            f"{'pair' if len(reference) == 1 else 'pairs'}, {_fmt(ref_points)}."
         )
         lines.append("")
     lines.append(
