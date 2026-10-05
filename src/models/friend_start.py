@@ -128,6 +128,19 @@ def his_score(week: dict[str, Any], roster: pd.DataFrame) -> dict[str, Any]:
     }
 
 
+def _position_counts(ids: list[str] | set[str], position_of) -> dict[str, int]:
+    """How many of each position were named in the eleven before the deadline."""
+    counts = {"GKP": 0, "DEF": 0, "MID": 0, "FWD": 0}
+    for pid in ids:
+        position = str(position_of(pid))
+        if position not in counts:
+            raise RuntimeError(f"unknown position {position}")
+        counts[position] += 1
+    if sum(counts.values()) != 11:
+        raise RuntimeError(f"an intended eleven has {sum(counts.values())} players")
+    return counts
+
+
 def lineup_detail(ids: list[str], squad_by: dict[str, Any], intended: set[str]) -> list[dict[str, Any]]:
     """Shared starters in one final eleven, with the score used to pick the side."""
     rows = []
@@ -256,6 +269,12 @@ def one_week(
         raise RuntimeError(f"GW{int(gw)} pieces {pieces} do not equal the gap {gap}")
     squad_by = {str(player.player_id): player for player in squad.itertuples()}
     their_intended = {player_key(player["id"]) for player in week["xi"]}
+    model_counts = _position_counts(
+        banked["intended_ids"],
+        lambda pid: str(squad_by[pid].position),
+    )
+    their_position = {player_key(player["id"]): str(player["position"]) for player in week["xi"]}
+    their_counts = _position_counts(their_intended, lambda pid: their_position[pid])
     nxt = carried_state(prior, new_state, chip, int(n_tx))
     row = {
         "gw": int(gw),
@@ -280,6 +299,8 @@ def one_week(
         "lineup_their_detail": lineup_detail(
             split["lineup_their"], squad_by, their_intended
         ),
+        "model_intended_counts": model_counts,
+        "their_intended_counts": their_counts,
         "model_in": sorted(new_state.ids() - pre_ids),
         "model_out": sorted(pre_ids - new_state.ids()),
         "n_transfers": int(n_tx),

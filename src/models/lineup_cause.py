@@ -25,9 +25,12 @@ def _single(player: dict[str, Any], side: str, tag: str) -> dict[str, Any]:
     sign = 1.0 if side == "model" else -1.0
     return {
         "tag": tag,
+        "side": side,
+        "id": str(player["id"]),
         "points": sign * float(player["points"]),
         "inversion": False,
         "position": str(player["position"]),
+        "score_xp": float(player["score_xp"]),
         "model_xp": float(player["score_xp"]) if side == "model" else None,
         "human_xp": float(player["score_xp"]) if side == "human" else None,
         "model_points": float(player["points"]) if side == "model" else None,
