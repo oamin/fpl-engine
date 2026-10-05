@@ -1,13 +1,10 @@
 {
   "updated": "2026-10-05",
-  "milestone": "chip-audit",
+  "milestone": "live-whatif",
   "status": "reviewed",
-  "summary": "The twelve stored chip climbs were replayed and matched the stored chip file. Ten of twelve Gameweek 4 wildcards clear 16 on the priced steps. The chip week is positive on every climb, and in 2022/23 the weeks with no chip are the loss. All eight second-half wildcards in 2023/24 and 2025/26 miss 16 on the priced steps. Gemini kept the split. The margins stay 12 and 16. Bounding the wildcard sum is a later batch.",
+  "summary": "The Gameweek 6 wildcard rebuild and the one free transfer were named on the two priced weeks. The rebuild leads that transfer by 10.55 in Gameweek 6 and by 2.75 in Gameweek 7. The 12.56 in the deadline note is the same rebuild against the squad with no transfer. Gemini kept the note as the forecast for those two weeks. No season total was added and the Odds API was not called.",
   "artifacts": [
-    "src/models/chip_audit.py",
-    "reports/chip_audit.md",
-    "data/processed/chip_audit_wildcards.csv",
-    "data/processed/chip_audit_lifts.csv",
-    "data/processed/chip_audit_churn.csv"
+    "src/live/whatif.py",
+    "reports/live_whatif_gw6.md"
   ]
 }

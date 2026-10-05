@@ -73,4 +73,6 @@ The scorer has read the minutes sheet. The locked sum plays Wildcard in Gameweek
 
 The chip audit is the check on that rule. The chip week scores points. The 2022/23 loss is the squad in the weeks after the wildcard. Bounding the wildcard sum to the priced steps is the open formula change, and it has not been locked. See `reports/chip_audit.md`.
 
+The live what-if names the two Gameweek 6 squads. The wildcard rebuild leads the one free transfer by 10.55 in Gameweek 6 and by 2.75 in Gameweek 7. The 12.56 in the deadline note is the same rebuild against the squad with no transfer. Gemini kept the note as the forecast for those two weeks ([two paths](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). See `reports/live_whatif_gw6.md`.
+
 Still parked: an Asian handicap as a live-week pot only, player props after a fresh cost estimate and the PI's approval, a shrunk season-rank weight on weeks that have no 1X2, and the other two guider outputs (a search constraint, or a question back). Those outputs leave `score_xp` unchanged. The 2025/26 top-100 archive remains a descriptive benchmark, not a sample to fit. Assistant Manager, and the 2024/25 chip wallet, stay out until that chip exists.
