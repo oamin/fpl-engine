@@ -1,0 +1,68 @@
+entry_id,label,group,gw,reason,position,side,points,score_xp,model_def,model_mid,model_fwd,their_def,their_mid,their_fwd
+2076855,elevenify.com,veteran,1,formation,DEF,model,1.0,4.703441660390367,4,5,1,3,5,2
+2076855,elevenify.com,veteran,1,formation,FWD,human,-2.0,2.868851381036525,4,5,1,3,5,2
+2076855,elevenify.com,veteran,2,formation,DEF,model,8.0,4.777696350580603,4,5,1,3,4,3
+2076855,elevenify.com,veteran,2,formation,MID,model,3.0,4.647177792829108,4,5,1,3,4,3
+2076855,elevenify.com,veteran,2,formation,FWD,human,-8.0,3.8868036399106574,4,5,1,3,4,3
+2076855,elevenify.com,veteran,2,formation,FWD,human,-8.0,3.557812611772864,4,5,1,3,4,3
+2076855,elevenify.com,veteran,3,formation,FWD,human,-1.0,2.9354102663499595,5,4,1,3,4,3
+2076855,elevenify.com,veteran,5,displacement,GKP,model,6.0,3.257669173355076,3,4,3,3,4,3
+9267,Cameron Scott,veteran,1,formation,DEF,model,1.0,3.8145296898968346,4,4,2,3,5,2
+9267,Cameron Scott,veteran,1,formation,MID,human,-2.0,3.5446570176233125,4,4,2,3,5,2
+9267,Cameron Scott,veteran,2,formation,DEF,model,12.0,4.150526366047474,4,5,1,3,5,2
+9267,Cameron Scott,veteran,2,formation,FWD,human,-8.0,3.8868036399106574,4,5,1,3,5,2
+31365,Ashley Marsh,veteran,3,formation,DEF,model,2.0,4.263231943234743,5,4,1,3,5,2
+616,Mark Brookes,veteran,1,formation,DEF,model,1.0,3.8145296898968346,4,4,2,3,4,3
+616,Mark Brookes,veteran,1,formation,FWD,human,-2.0,2.868851381036525,4,4,2,3,4,3
+616,Mark Brookes,veteran,2,formation,DEF,model,1.0,4.630411925099347,4,4,2,3,4,3
+616,Mark Brookes,veteran,2,formation,FWD,human,-8.0,3.557812611772864,4,4,2,3,4,3
+616,Mark Brookes,veteran,3,displacement,GKP,model,3.0,3.6070515810708224,4,5,1,3,4,3
+616,Mark Brookes,veteran,5,displacement,DEF,model,6.0,4.957890814576457,3,4,3,3,4,3
+4109079,Will Morrison,veteran,1,formation,MID,model,2.0,3.662058814468649,3,5,2,3,4,3
+4109079,Will Morrison,veteran,1,displacement,DEF,human,-3.0,0.0,3,5,2,3,4,3
+4109079,Will Morrison,veteran,1,formation,FWD,human,-2.0,2.868851381036525,3,5,2,3,4,3
+4109079,Will Morrison,veteran,2,formation,FWD,human,-8.0,3.557812611772864,4,4,2,3,4,3
+4109079,Will Morrison,veteran,4,formation,DEF,model,0.0,4.356675853644903,4,3,3,3,4,3
+4109079,Will Morrison,veteran,4,formation,MID,human,-17.0,3.907855604316777,4,3,3,3,4,3
+4109079,Will Morrison,veteran,5,formation,MID,human,-14.0,3.049567289279748,3,4,3,3,5,2
+2116184,Paul Mitchell,veteran,3,formation,FWD,human,-1.0,3.4823021351748427,4,5,1,3,5,2
+2116184,Paul Mitchell,veteran,5,displacement,DEF,human,-7.0,3.4576424837714503,3,4,3,3,5,2
+2116184,Paul Mitchell,veteran,5,formation,MID,human,-14.0,3.049567289279748,3,4,3,3,5,2
+5874076,Jess Bernstein,rank,1,formation,DEF,model,0.0,4.449738082494093,5,3,2,4,5,1
+5874076,Jess Bernstein,rank,1,formation,MID,human,-2.0,3.662058814468649,5,3,2,4,5,1
+5874076,Jess Bernstein,rank,1,formation,MID,human,-8.0,3.633487309019104,5,3,2,4,5,1
+5874076,Jess Bernstein,rank,2,formation,DEF,model,1.0,4.131420749800219,5,3,2,4,5,1
+5874076,Jess Bernstein,rank,2,formation,MID,human,-5.0,3.948161297876062,5,3,2,4,5,1
+5874076,Jess Bernstein,rank,2,formation,MID,human,-13.0,3.085712730687831,5,3,2,4,5,1
+5874076,Jess Bernstein,rank,3,formation,FWD,human,-1.0,2.9354102663499595,5,4,1,4,4,2
+5874076,Jess Bernstein,rank,4,formation,MID,human,-3.0,4.015124465124597,5,3,2,4,4,2
+5874076,Jess Bernstein,rank,4,displacement,MID,human,-17.0,3.907855604316777,5,3,2,4,4,2
+5874076,Jess Bernstein,rank,5,formation,MID,human,-14.0,3.049567289279748,4,4,2,4,5,1
+3669095,Adam Whitting,rank,1,formation,MID,human,-11.0,3.676492049162947,5,3,2,3,4,3
+3669095,Adam Whitting,rank,1,formation,FWD,human,-1.0,3.6840459140910227,5,3,2,3,4,3
+3669095,Adam Whitting,rank,2,displacement,DEF,human,-6.0,2.3291533838240106,3,4,3,3,4,3
+3669095,Adam Whitting,rank,3,formation,MID,model,1.0,3.692797835630784,4,5,1,3,4,3
+3669095,Adam Whitting,rank,3,formation,FWD,human,-1.0,3.4823021351748427,4,5,1,3,4,3
+3669095,Adam Whitting,rank,3,formation,FWD,human,-1.0,2.9354102663499595,4,5,1,3,4,3
+3669095,Adam Whitting,rank,5,formation,MID,human,-14.0,3.049567289279748,4,3,3,3,5,2
+169164,Filip Stripaj,rank,1,formation,FWD,model,2.0,3.1468896609713917,3,4,3,4,4,2
+169164,Filip Stripaj,rank,1,formation,DEF,human,-3.0,2.8051758198285532,3,4,3,4,4,2
+169164,Filip Stripaj,rank,3,formation,DEF,model,4.0,3.495047351874468,4,5,1,3,5,2
+169164,Filip Stripaj,rank,3,formation,FWD,human,-1.0,2.9354102663499595,4,5,1,3,5,2
+169164,Filip Stripaj,rank,4,formation,MID,model,4.0,4.496651888257588,3,5,2,3,4,3
+169164,Filip Stripaj,rank,4,displacement,DEF,human,-11.0,3.7232013325247446,3,5,2,3,4,3
+217044,daniel bowes,rank,1,formation,DEF,model,1.0,4.156381919245258,4,3,3,3,4,3
+217044,daniel bowes,rank,1,formation,MID,human,-6.0,0.0,4,3,3,3,4,3
+217044,daniel bowes,rank,3,displacement,GKP,model,3.0,3.6070515810708224,5,4,1,3,5,2
+217044,daniel bowes,rank,3,formation,FWD,human,-1.0,2.9354102663499595,5,4,1,3,5,2
+534464,Sion Jones,rank,1,formation,FWD,human,-1.0,0.0,3,5,2,3,4,3
+534464,Sion Jones,rank,2,formation,DEF,human,-4.0,3.089347180244755,3,5,2,4,4,2
+3503484,Viniii Denie,rank,3,displacement,GKP,model,3.0,3.6717589610412977,3,5,2,3,5,2
+3503484,Viniii Denie,rank,4,displacement,DEF,model,7.0,3.7960984494181758,3,4,3,3,4,3
+3503484,Viniii Denie,rank,5,formation,DEF,human,-4.0,3.8739478365123188,3,4,3,4,4,2
+1585157,Tom Anderson,rank,1,formation,DEF,model,1.0,3.8145296898968346,4,3,3,3,4,3
+1585157,Tom Anderson,rank,1,formation,MID,human,-2.0,3.662058814468649,4,3,3,3,4,3
+1585157,Tom Anderson,rank,4,formation,MID,human,-3.0,4.015124465124597,4,3,3,3,4,3
+1585157,Tom Anderson,rank,4,displacement,MID,human,-17.0,3.907855604316777,4,3,3,3,4,3
+1585157,Tom Anderson,rank,5,formation,MID,human,-14.0,3.049567289279748,3,4,3,3,5,2
+2632584,ojaminFC,reference,1,formation,DEF,human,-2.0,0.0,3,5,2,4,4,2

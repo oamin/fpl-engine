@@ -1,11 +1,11 @@
 {
   "updated": "2026-10-05",
-  "milestone": "lineup-cause",
+  "milestone": "shape-split",
   "status": "reviewed",
-  "summary": "The lineup gap of -198 was tagged from the intended eleven and from score_xp. Shape, an unmatched shared starter, is -196. Same-position pairs where the model had the higher score are -17. There is no pair where the model had the lower score. Shape is not yet split into a different formation and a benched shared player. Gemini kept the tags. The score was not changed.",
+  "summary": "The unmatched shared starters split into formation -163 and displacement -33. Those sum to the shape figure of -196. The model named more defenders on 24 of the 39 weeks that have one of these starters. Gemini kept the split. The score was not changed.",
   "artifacts": [
-    "src/models/lineup_cause.py",
-    "reports/lineup_cause_gw15.md",
-    "data/processed/lineup_cause_gw15.csv"
+    "src/models/shape_split.py",
+    "reports/shape_split_gw15.md",
+    "data/processed/shape_split_gw15.csv"
   ]
 }

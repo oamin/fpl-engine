@@ -106,7 +106,9 @@ A bench floor after the Gameweek 4 return of 2 was not added. The same rule, car
 
 The same carry on the 14 locked managers was run on 2026-10-05 and kept ([cohort carry](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). 0 of 14 gained. The mean gap is −27.43. Veterans are −17.29 and rank slots are −37.57. The model plays Bench Boost and Triple Captain only, and the veteran gap sits in the transfers. A bench floor is still not the next change, and the margins stay 12 and 16. See `reports/cohort_carry_gw15.md`.
 
-The lineup piece was tagged on 2026-10-05 and kept ([lineup cause](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Shape is −196 of −198. Same-position ranking is −17, and the model is never the lower score in those pairs. Do not read shape as a formation error until it is split from a shared player benched for someone the other side does not own. Do not refit score_xp on these shares. See `reports/lineup_cause_gw15.md`.
+The lineup piece was tagged on 2026-10-05 and kept ([lineup cause](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Shape is −196 of −198. Same-position ranking is −17, and the model is never the lower score in those pairs. See `reports/lineup_cause_gw15.md`.
+
+The shape figure was split on 2026-10-05 and kept ([shape split](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Formation is −163. Displacement is −33. The loss sits in the eleven named before the deadline, mostly fewer midfielders and more defenders than the other side. Do not refit score_xp on this split. A later formation check has to be locked before it is run. See `reports/shape_split_gw15.md`.
 
 - Asian handicap, as a live-week pot only, after its own lock. Historical `score_xp` stays on the 1X2 and the 2.5 line. The free file has the handicap and no 3.5 line.
 - Player props, on the decision week only, in their own column. An Odds API call needs a cost estimate and the PI's approval. No market is discovered in a loop.
