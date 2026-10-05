@@ -190,8 +190,12 @@ def week_inputs(
     return spread_outlooks(current_gw, clubs, priced)
 
 
-def make_chip_policy(horizon_scores, clubs: dict[int, set[str]], played: dict[int, str]):
-    """Close over the shared horizon and the chips this squad has already used."""
+def make_chip_policy(horizon_scores, clubs: dict[int, set[str]], played: dict[int, str], sink=None):
+    """Close over the shared horizon and the chips this squad has already used.
+
+    ``sink(gw, state, pool, weeks, plan)`` sees the decision and does not
+    choose it. The default is no sink.
+    """
 
     def policy(gw, state, pool, gws):
         del gws
@@ -202,6 +206,8 @@ def make_chip_policy(horizon_scores, clubs: dict[int, set[str]], played: dict[in
         step_scores = {int(key): dict(value) for key, value in raw.items()}
         weeks = week_inputs(int(gw), state, pool, clubs, step_scores)
         plan = plan_half(int(gw), weeks, played=played)
+        if sink is not None:
+            sink(int(gw), state, pool, weeks, plan)
         chip = plan.chip
         bench = None if chip in FREE_TRANSFER_CHIPS else bench_week(plan, int(gw))
         print(f"    GW{int(gw)} {chip or 'none'}", flush=True)
