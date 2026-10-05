@@ -1,13 +1,13 @@
 {
   "updated": "2026-10-05",
-  "milestone": "midfield-close",
+  "milestone": "chip-lead",
   "status": "reviewed",
-  "summary": "Five midfielders within 1 of the named score are +0.85 on 33 carried weeks and +0.38 for the veterans, so that window is present. The six weeks above 1.50 are +9.83 and were too few to apply the control. The weeks within 0.25 are -1.33. The fast eleven clears 0 of 4 seasons. The 18 legal close calls average -0.39. Gemini kept the retirement. The picker is unchanged.",
+  "summary": "The chip-signing deficit of -329 is a score miss. The model could already buy 83 of the 85 players. The wildcard lead it turned down has a Gameweek 4-5 median of 3.67 and a Gameweek 2-3 median of 8.75. The turned-down rebuild held 19 of those players, -100 points, a share of 0.30. The other 64 were left out, and the lowest rebuilt player at that position outscored them by a median of 0.31. Gemini kept the reading. No constant moves. The lineup gap does not share these players.",
   "artifacts": [
-    "src/models/midfield_close.py",
-    "tests/test_midfield_close.py",
-    "reports/midfield_close.md",
-    "data/processed/midfield_close_gw15.csv",
-    "data/processed/midfield_close_seasons.csv"
+    "src/models/chip_lead.py",
+    "tests/test_chip_lead.py",
+    "reports/chip_lead_gw15.md",
+    "data/processed/chip_lead_gw15.csv",
+    "data/processed/chip_lead_players_gw15.csv"
   ]
 }
