@@ -1,12 +1,13 @@
 {
   "updated": "2026-10-05",
-  "milestone": "squad-gap",
+  "milestone": "midfield-close",
   "status": "reviewed",
-  "summary": "The transfer gap of -180 splits into chip signings -329, ranked-lower pairs -81, and other unshared starters +230. Chip signings are past -90, so on this window the squad gap is the chip reset. Gemini kept the split. No rule was changed. The formation tag of -163 was not treated as recoverable points.",
+  "summary": "Five midfielders within 1 of the named score are +0.85 on 33 carried weeks and +0.38 for the veterans, so that window is present. The six weeks above 1.50 are +9.83 and were too few to apply the control. The weeks within 0.25 are -1.33. The fast eleven clears 0 of 4 seasons. The 18 legal close calls average -0.39. Gemini kept the retirement. The picker is unchanged.",
   "artifacts": [
-    "src/models/squad_gap.py",
-    "reports/squad_gap_gw15.md",
-    "reports/model_manifest.md",
-    "data/processed/squad_gap_gw15.csv"
+    "src/models/midfield_close.py",
+    "tests/test_midfield_close.py",
+    "reports/midfield_close.md",
+    "data/processed/midfield_close_gw15.csv",
+    "data/processed/midfield_close_seasons.csv"
   ]
 }
