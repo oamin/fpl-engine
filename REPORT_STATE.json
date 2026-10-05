@@ -1,11 +1,11 @@
 {
   "updated": "2026-10-05",
-  "milestone": "cohort-carry",
+  "milestone": "lineup-cause",
   "status": "reviewed",
-  "summary": "The free-wallet carry was run on the 14 managers locked on 4 October. The model is ahead of none of them. The mean gap is -27.43. Veterans are -17.29 and rank slots are -37.57. The model plays Bench Boost and Triple Captain only. ojaminFC, left out of the mean, is 372 against 350 on the same carry. Gemini kept the split. No bench floor was added.",
+  "summary": "The lineup gap of -198 was tagged from the intended eleven and from score_xp. Shape, an unmatched shared starter, is -196. Same-position pairs where the model had the higher score are -17. There is no pair where the model had the lower score. Shape is not yet split into a different formation and a benched shared player. Gemini kept the tags. The score was not changed.",
   "artifacts": [
-    "src/models/cohort_carry.py",
-    "reports/cohort_carry_gw15.md",
-    "data/processed/cohort_carry_gw15.csv"
+    "src/models/lineup_cause.py",
+    "reports/lineup_cause_gw15.md",
+    "data/processed/lineup_cause_gw15.csv"
   ]
 }
