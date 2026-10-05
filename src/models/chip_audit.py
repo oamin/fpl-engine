@@ -25,7 +25,6 @@ from src.models.half_plan_scores import (
     WALLET_LABEL,
     chip_result,
     club_steps,
-    load_baseline,
     make_chip_policy,
 )
 from src.models.open_horizon import attach_opening_horizon
@@ -543,7 +542,7 @@ def _one_season(season: str) -> None:
         code,
         load_openings(),
         pd.read_csv(EMPTY_WEEKS),
-        load_baseline(SCORE_CSV),
+        pd.read_csv(SCORE_CSV),
     )
     _write_partial(season, bundle)
     print(f"{season} wildcards {len(bundle['wildcards'])}", flush=True)
