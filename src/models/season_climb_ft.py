@@ -142,6 +142,8 @@ class SquadState:
     purchase: dict[str, int] = field(default_factory=dict)  # player_id → buy price
     bank: int = 0
     ft: int = 1
+    # Site selling prices, in tenths. None uses ``sell_price``.
+    selling: dict[str, int] | None = None
 
     def ids(self) -> set[str]:
         return set(self.purchase.keys())
@@ -894,7 +896,9 @@ def rebuild_squad(state: SquadState, pool: pd.DataFrame, score_col: str) -> Squa
     """Wildcard or Free Hit squad, paid from the bank plus sell prices.
 
     A kept player's purchase price stays. A new player is bought at the
-    current price. This is not a fresh £100.0m.
+    current price. This is not a fresh £100.0m. When ``state.selling``
+    is set, those are the prices the site pays, and every owned id must
+    be in that map. An unset map uses ``sell_price``.
     """
     df = pool.copy()
     df["player_id"] = df["player_id"].astype(str)
@@ -906,7 +910,13 @@ def rebuild_squad(state: SquadState, pool: pd.DataFrame, score_col: str) -> Squa
     market = {
         str(r.player_id): _as_int_value(r.value) for r in df.itertuples()
     }
-    sell = {pid: sell_price(state.purchase[pid], market[pid]) for pid in owned}
+    if state.selling is not None:
+        absent = owned - set(state.selling)
+        if absent:
+            raise RuntimeError("owned players missing a selling price")
+        sell = {pid: int(state.selling[pid]) for pid in owned}
+    else:
+        sell = {pid: sell_price(state.purchase[pid], market[pid]) for pid in owned}
     budget = int(state.bank + sum(sell.values()))
     df["value"] = [sell[pid] if pid in sell else market[pid] for pid in df["player_id"]]
     df[score_col] = _fill_score(df, score_col)

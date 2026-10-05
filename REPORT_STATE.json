@@ -1,13 +1,13 @@
 {
-  "updated": "2026-10-04",
-  "milestone": "half-plan-scores",
-  "status": "reviewed",
-  "summary": "The chip plan was scored against the stored empty-chip climbs on 2022/23, 2023/24, and 2025/26. All 12 squads finished. 2022/23, on the 2026 wallet, loses on every squad; the best lift is Third at -40. 2023/24's best lift is Third at +128, and the highest chip total is Template at 2090, 15 below its empty climb. 2025/26, the matched wallet, gains on every squad; the best lift is Template at +199 and the highest chip total is Premium at 2214. Every squad wildcards in Gameweek 4, the first week the buy pool exists. Hits on the 2025/26 chip climbs are 0. The published climb is unchanged.",
+  "updated": "2026-10-05",
+  "milestone": "live-deadline",
+  "status": "stopped",
+  "summary": "The Gameweek 6 deadline note for ojaminFC was written before the 10 Oct 2026 deadline. The stored football-data file has no opening 1X2 for that week, and no minutes file was supplied. No chip was chosen, the half was not priced, and the transfer search was not run. Purchase prices were reconstructed from the Gameweek 1 value and later in_cost. The picks have no selling price, so the formula was used. Gemini had already kept this stop. It is not a reviewed chip recommendation.",
   "artifacts": [
-    "src/models/half_plan_scores.py",
+    "src/live/deadline.py",
+    "src/live/entry.py",
     "src/models/season_climb_ft.py",
-    "tests/test_half_plan_scores.py",
-    "reports/half_plan_scores.md",
-    "data/processed/half_plan_scores.csv"
+    "tests/test_live_deadline.py",
+    "reports/live_deadline_gw6.md"
   ]
 }

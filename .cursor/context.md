@@ -1,6 +1,6 @@
 # Architectural state
 
-Updated: 2026-10-04. Stage history lives in root `CONTEXT.md`. This file is the living state for the execution engine.
+Updated: 2026-10-05. Stage history lives in root `CONTEXT.md`. This file is the living state for the execution engine.
 
 ## What exists
 
@@ -81,6 +81,12 @@ The close-call count is closed (`reports/stage_48_crowd_calls.md`). On players w
 `plan_half` in `src/live/half_plan.py` searches the remaining half at each deadline, with `score_xp` as the points the caller already priced. Bench points enter on the planned Bench Boost week inside that sum. A chip left unused at Gameweek 19 is worth nothing. It does not replace the live chip rule. The transfer search scores that same bench on the planned week only, when the caller passes it: discounted inside the next three weeks, or once from the decision-week bench when the chip is further out. The published climb passes no week, so its bench stays at zero. After the chip is used the week is dropped and the ordinary hold sells the bench down. A double stays one fixture. See `reports/half_plan.md`.
 
 The same plan was solved on the crowd fifteens for 2022/23, 2023/24, and 2025/26 (`reports/half_plan_scores.md`). 2024/25 is absent. The baseline is the stored empty-chip climb. All 12 squads wildcard in Gameweek 4. 2022/23 loses on every squad, best lift Third at −40. 2023/24 best lift is Third at +128. 2025/26 gains on every squad, best lift Template at +199, highest chip total Premium at 2214. Gemini kept the count. The published climb file is unchanged.
+
+## Live deadline
+
+`src/live/deadline.py` writes `reports/live_deadline_gw6.md` for ojaminFC before the 10 Oct 2026 deadline. The squad is the stored entry. Purchase price is the Gameweek 1 value, or `in_cost` for a later buy. The picks carry no selling price, so the formula is used. A site selling price, when the picks have one, is what a rebuild pays, and a difference from the formula is logged. A player a minutes file marks at 0 stays at 0. A player the file omits keeps his last observed minutes and is labelled `no_news`. That fallback is this live pricer only. The historical minutes loader still treats an omission as zero.
+
+Gameweek 6 has ten fixtures and no opening 1X2 on the stored football-data file. No minutes file was passed. No chip was chosen, the half was not priced, and the transfer search was not run. The fixture list through Gameweek 19 is ten matches a week, with no blank and no double. Gemini kept this stop before the file was written. It is not a reviewed chip recommendation. The model's Gameweek 1–5 climb is a different squad. The Asian handicap, player props, a season-rank weight, and the news guider stay out. See `.cursor/ideas.md`.
 
 ## Crowd openings
 

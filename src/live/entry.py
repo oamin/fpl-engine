@@ -212,6 +212,10 @@ def _slots(
             "team": meta["team"],
             "slot": int(pick["position"]),
         }
+        if pick.get("purchase_price") is not None:
+            player["purchase_price"] = int(pick["purchase_price"])
+        if pick.get("selling_price") is not None:
+            player["selling_price"] = int(pick["selling_price"])
         if int(pick["position"]) <= 11:
             xi.append(player)
         else:

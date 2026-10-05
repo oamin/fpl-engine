@@ -87,6 +87,45 @@ class BuildTest(unittest.TestCase):
         self.assertEqual(payload["gameweeks"][0]["captain"], "Captain")
         self.assertEqual(payload["ft_for_next"], 1)
         self.assertEqual(payload["chips_played"], [{"gw": 1, "chip": "triple_captain"}])
+        self.assertNotIn("purchase_price", payload["opening_squad"][0])
+        self.assertNotIn("selling_price", payload["opening_squad"][0])
+
+    def test_pick_prices_are_kept_when_the_payload_has_them(self) -> None:
+        names = {
+            1: {"web_name": "Keeper", "position": "GKP", "team": "CHE"},
+            2: {"web_name": "Captain", "position": "FWD", "team": "MCI"},
+        }
+        priced = _pick(1, 1, vice=True)
+        priced["purchase_price"] = 55
+        priced["selling_price"] = 56
+        picks = {1: {"active_chip": None, "picks": [priced, _pick(2, 2, captain=True)]}}
+        payload = build_entry(
+            {"id": 5, "name": "Test", "summary_overall_points": 10, "summary_overall_rank": 1},
+            {
+                "current": [
+                    {
+                        "event": 1,
+                        "points": 10,
+                        "total_points": 10,
+                        "event_transfers": 0,
+                        "event_transfers_cost": 0,
+                        "points_on_bench": 0,
+                        "bank": 0,
+                        "value": 1000,
+                    }
+                ],
+                "chips": [],
+            },
+            [],
+            picks,
+            names,
+        )
+        keeper = payload["opening_squad"][0]
+        captain = payload["opening_squad"][1]
+        self.assertEqual(keeper["purchase_price"], 55)
+        self.assertEqual(keeper["selling_price"], 56)
+        self.assertNotIn("purchase_price", captain)
+        self.assertNotIn("selling_price", captain)
 
     def test_matchday_club_replaces_the_current_club(self) -> None:
         payload = {

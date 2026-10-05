@@ -92,6 +92,17 @@ The sale margins on those four leading climbs were read on 2026-10-04 ([sale mar
 
 The chip side report was run on 2026-10-04 and kept ([chip scores](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Twelve climbs, three seasons, four squads. 2024/25 stays out. The baseline is the stored empty-chip climb, and that file was left as it was. Every squad wildcards in Gameweek 4, the first week a player has three prior appearances. 2022/23 loses on every squad, best lift Third at −40. 2023/24 best lift is Third at +128, and Template, Premium, and Next share one chip calendar with lifts −15, +100, and −216. 2025/26 gains on every squad, best lift Template at +199, highest chip total Premium at 2214, and the four hit counts are 0. Free Hit is played once, Gameweek 30 on the 2023/24 Third squad. See `reports/half_plan_scores.md`. The 2025/26 top-100 archive is the next descriptive benchmark. It was not read here, and it is not a sample to fit.
 
+## Live week, not this pass
+
+Parked on 2026-10-05 after Gemini kept the deadline stop ([live deadline](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). The Gameweek 6 note is `reports/live_deadline_gw6.md`. The opening line is missing, so nothing was priced.
+
+- Asian handicap, as a live-week pot only, after its own lock. Historical `score_xp` stays on the 1X2 and the 2.5 line. The free file has the handicap and no 3.5 line.
+- Player props, on the decision week only, in their own column. An Odds API call needs a cost estimate and the PI's approval. No market is discovered in a loop.
+- A season-rank weight on the copied tail only. Strength comes from season prices on a log scale, shrunk and clipped to about a 15% move in the team rate. It is idle on a week that already has a 1X2. It is not a 1–10 multiplier. The first Gameweek 6 call, once a line exists, still copies the third priced step flat.
+- An LLM guider with three outputs: minutes rows with a source, a search constraint, or a question back. The backend re-solves and reports the points cost. Ownership stays out of `score_xp`. A human pick of the constrained squad is logged and scored after the gameweek against the declined plan.
+
+The 2025/26 top-100 archive is still unread. It is not a sample to fit.
+
 ## Rules gaps
 
 - Full Opta BPS table (goals, assists, playing time, and the rest) is not in the 20 Jul 2026 change note. Only the 2026/27 deltas are coded.
