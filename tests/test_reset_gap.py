@@ -152,6 +152,7 @@ class SplitTest(unittest.TestCase):
             "transfer_their": ["b"],
             "lineup_model": ["a"],
             "lineup_their": ["d"],
+            "model_in": ["c"],
             "gap": 1.0,
         }
         names = {"a": "Rogers", "b": "Pedro", "c": "Watkins", "d": "Gordon"}
@@ -165,6 +166,27 @@ class SplitTest(unittest.TestCase):
         self.assertTrue(text[0].startswith("Captaincy on Haaland vs Salah"))
         self.assertIn("Transferring Watkins in for Pedro", text[1])
         self.assertIn("Starting Rogers over Gordon", text[2])
+
+    def test_a_held_player_is_not_called_a_signing(self) -> None:
+        row = {
+            "captain_gap": 0.0,
+            "transfer_gap": -10.0,
+            "lineup_gap": 0.0,
+            "hit_gap": 0.0,
+            "residual": 0.0,
+            "model_captain": "A",
+            "their_captain": "A",
+            "transfer_model": ["m", "s"],
+            "transfer_their": ["c", "l"],
+            "lineup_model": [],
+            "lineup_their": [],
+            "model_in": ["s"],
+            "gap": -10.0,
+        }
+        names = {"m": "Martinez", "s": "Szoboszlai", "c": "Cherki", "l": "Lammens"}
+        text = phrases(row, names)
+        self.assertIn("Holding Martinez and transferring Szoboszlai in for", text[1])
+        self.assertNotIn("Transferring Martinez", text[1])
 
     def test_a_carried_squad_fails(self) -> None:
         rows = [

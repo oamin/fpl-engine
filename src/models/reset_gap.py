@@ -220,33 +220,66 @@ def _names(ids: list[str], names: dict[str, str]) -> str:
     return ", ".join(names.get(pid, pid) for pid in sorted(ids))
 
 
-def phrases(row: dict[str, Any], names: dict[str, str]) -> list[str]:
-    """One sentence per additive piece. The signed numbers sum to the gap."""
+def _as_list(value: Any) -> list[str]:
+    if value is None or isinstance(value, float):
+        return []
+    if isinstance(value, str):
+        return [part.strip() for part in value.split(",") if part.strip()]
+    return [str(part) for part in value]
+
+
+def phrases(row: dict[str, Any], names: dict[str, str] | None = None) -> list[str]:
+    """One sentence per additive piece. The signed numbers sum to the gap.
+
+    ``names`` maps an id to a display name. A row that already holds display
+    names, as the CSV does, is used as it stands.
+    """
+    labels = names or {}
+
+    def show(key: str) -> list[str]:
+        return [labels.get(pid, pid) for pid in _as_list(row.get(key))]
+
     cap = float(row["captain_gap"])
     cap_word = "added" if cap >= 0 else "cost"
     lines = [
         f"Captaincy on {row['model_captain']} vs {row['their_captain']} {cap_word} {_fmt(cap)}."
     ]
-    ins = _names(list(row["transfer_model"]), names)
-    outs = _names(list(row["transfer_their"]), names)
+    bought = [pid for pid in show("transfer_model") if pid in set(show("model_in"))]
+    held = [pid for pid in show("transfer_model") if pid not in set(show("model_in"))]
+    outgoing = show("transfer_their")
     tx = float(row["transfer_gap"])
     tx_word = "added" if tx >= 0 else "cost"
-    if ins and outs:
-        lines.append(f"Transferring {ins} in for {outs} {tx_word} {_fmt(tx)} net points.")
-    elif ins:
-        lines.append(f"Transferring {ins} in {tx_word} {_fmt(tx)} net points.")
-    elif outs:
-        lines.append(f"Holding against {outs} {tx_word} {_fmt(tx)} net points.")
+    chunks: list[str] = []
+    if held:
+        chunks.append(f"Holding {', '.join(sorted(held))}")
+    if bought:
+        verb = "transferring" if chunks else "Transferring"
+        chunks.append(f"{verb} {', '.join(sorted(bought))} in")
+    head = " and ".join(chunks) if chunks else "Holding"
+    if outgoing:
+        lines.append(
+            f"{head} for {', '.join(sorted(outgoing))} {tx_word} {_fmt(tx)} net points."
+        )
     else:
-        lines.append(f"Holding {tx_word} {_fmt(tx)} net points.")
-    started = _names(list(row["lineup_model"]), names) or "the same names"
-    benched = _names(list(row["lineup_their"]), names) or "the same names"
+        lines.append(f"{head} {tx_word} {_fmt(tx)} net points.")
+    started = show("lineup_model")
+    benched = show("lineup_their")
     line = float(row["lineup_gap"])
     line_word = "added" if line >= 0 else "cost"
-    if not row["lineup_model"] and not row["lineup_their"]:
+    if not started and not benched:
         lines.append(f"Starting the same eleven {line_word} {_fmt(line)}.")
+    elif not started:
+        lines.append(
+            f"Starting the rest of the eleven over {', '.join(sorted(benched))} {line_word} {_fmt(line)}."
+        )
+    elif not benched:
+        lines.append(
+            f"Starting {', '.join(sorted(started))} over the rest of the eleven {line_word} {_fmt(line)}."
+        )
     else:
-        lines.append(f"Starting {started} over {benched} {line_word} {_fmt(line)}.")
+        lines.append(
+            f"Starting {', '.join(sorted(started))} over {', '.join(sorted(benched))} {line_word} {_fmt(line)}."
+        )
     hits = float(row["hit_gap"])
     hit_word = "added" if hits >= 0 else "cost"
     lines.append(f"Hits {hit_word} {_fmt(hits)}.")
@@ -598,7 +631,7 @@ def _write_report(path: Path, rows: list[dict[str, Any]], gained: bool) -> None:
         "",
         "Each week starts from the fifteen ojaminFC owned before that deadline, with that week's bank and free transfers. The search is the published rule: hold margin 1.25, switch penalty 1.0, a three-week opening horizon, and the early score capped at 6. The model plays no wildcard, free hit, or bench boost. Gameweek 1 triples the model's captain, because that is the chip he played. The squad is then discarded. The next week starts from the fifteen he actually fielded.",
         "",
-        "The search maximises a discounted three-week value. The score is one week of realised points, so a hit taken for a later week is charged here and those later points are not in the total. Gameweek 6 is not in the sum.",
+        "The search maximises a discounted three-week value. The score is one week of realised points, so a hit taken for a later week is charged here and those later points are not in the total. Gameweeks 4 and 5 look ahead to Gameweeks 6 and 7 on those fixtures' opening prices. Gameweek 6 is not in the sum.",
         "",
         "The bar was locked before this total was read. A sum above 0 and at least 3 of 5 weeks non-negative is a gain on these five decisions. Anything else is the model not beating these five decisions.",
         "",
