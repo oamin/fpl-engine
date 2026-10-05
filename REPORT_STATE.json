@@ -1,12 +1,11 @@
 {
   "updated": "2026-10-05",
-  "milestone": "live-scorer",
+  "milestone": "minutes-llm",
   "status": "stopped",
-  "summary": "The live scorer is ready. It calls xp_on_pot, the same one-match formula as compute_xp, with file minutes, deadline shot shares, and the opening pot. Gameweek 8 would repeat Gameweek 7. No minutes file was passed, so the scorer was not run and no chip was chosen. This is not a reviewed chip recommendation.",
+  "summary": "The minutes model is one LLM completion for the owned fifteen and every flagged player. The 2 Oct 2026 snapshot passed for 227 players and wrote data/live/xmi_gw6.csv. A question or an illegal row would have written no file. The scorer was not run and no chip was chosen. This is not a reviewed chip recommendation.",
   "artifacts": [
-    "src/live/scorer.py",
-    "src/live/deadline.py",
-    "tests/test_live_scorer.py",
-    "reports/live_deadline_gw6.md"
+    "src/live/minutes_llm.py",
+    "tests/test_live_minutes_llm.py",
+    "reports/live_minutes_gw6.md"
   ]
 }

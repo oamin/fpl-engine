@@ -63,6 +63,8 @@ The build is now the live week. The historical formula is the inner call. Around
 
 ## Next
 
-A minutes file unlocks one scorer run. Players left off that file keep last observed minutes. The run can choose a chip. Gemini reviews those diagnostics before the choice is called reviewed. Until the file exists, the deadline note stays stopped.
+`src/live/minutes_llm.py` is the minutes model. One completion covers the owned fifteen and every player who is doubtful, injured, suspended, unavailable, or given a chance below 100. Last observed minutes are context. A question, a missing id, minutes outside 0 to 90, or minutes above 0 for someone who cannot play writes no file. The scorer is not called from that module.
 
-Still parked, each behind its own lock: an Asian handicap as a live-week pot only, player props after a fresh cost estimate and the PI's approval, a shrunk season-rank weight on weeks that have no 1X2, and an LLM guider whose outputs are minutes rows, a search constraint, or a question back. The guider leaves `score_xp` unchanged. The 2025/26 top-100 archive is the next descriptive benchmark after this live package. It is a comparison set, not a sample to fit. Assistant Manager, and the 2024/25 chip wallet, stay out until that chip exists.
+One call was made on the 2 Oct 2026 bootstrap. All 227 required rows passed. The sheet is `data/live/xmi_gw6.csv`, which stays out of git. Players with no flag and no place in the fifteen are absent from it. See `reports/live_minutes_gw6.md`. The deadline note was not rewritten, and the scorer has not read the sheet. A chip from that file is not reviewed until Gemini has seen the diagnostics.
+
+Still parked: an Asian handicap as a live-week pot only, player props after a fresh cost estimate and the PI's approval, a shrunk season-rank weight on weeks that have no 1X2, and the other two guider outputs (a search constraint, or a question back). Those outputs leave `score_xp` unchanged. The 2025/26 top-100 archive remains a descriptive benchmark, not a sample to fit. Assistant Manager, and the 2024/25 chip wallet, stay out until that chip exists.
