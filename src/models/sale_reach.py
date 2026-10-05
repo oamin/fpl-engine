@@ -23,6 +23,7 @@ from src.models.reset_gap import PROCESSED, REPORTS, _fmt
 from src.models.season_climb_ft import (
     HOLD_EPS,
     SquadState,
+    _as_int_value,
     _fill_score,
     _gw_pool,
     _one_swap_candidates,
@@ -39,6 +40,11 @@ CLASSES = ("gate_block", "no_fund", "delta_le_125", "truncated", "seen")
 
 def _within_club(clubs: list[str]) -> bool:
     return all(count <= MAX_PER_CLUB for count in Counter(clubs).values())
+
+
+def _price(row: Any) -> int:
+    """The same missing-price fill the one-swap list uses."""
+    return _as_int_value(getattr(row, "value", None))
 
 
 def _index(pool: pd.DataFrame) -> dict[str, Any]:
@@ -113,7 +119,7 @@ def funded_sales(
     if str(human_id) in state.ids():
         return []
     position = str(human.position)
-    price = int(getattr(human, "value"))
+    price = _price(human)
     human_score = float(scores.get(str(human_id), 0.0))
     found: list[tuple[str, float]] = []
     owned = state.ids()
@@ -123,7 +129,7 @@ def funded_sales(
             continue
         if sale not in state.purchase:
             continue
-        proceeds = sell_price(int(state.purchase[sale]), int(getattr(other, "value")))
+        proceeds = sell_price(int(state.purchase[sale]), _price(other))
         if proceeds + int(state.bank) < price:
             continue
         new_ids = (owned - {sale}) | {str(human_id)}
@@ -156,7 +162,7 @@ def _enablers(pool_by: dict[str, Any], owned: set[str], human_id: str) -> dict[s
             continue
         grouped.setdefault(str(row.position), []).append(pid)
     for ids in grouped.values():
-        ids.sort(key=lambda pid: (int(getattr(pool_by[pid], "value")), pid))
+        ids.sort(key=lambda pid: (_price(pool_by[pid]), pid))
     return grouped
 
 
@@ -172,7 +178,7 @@ def two_transfer_funds(state: SquadState, human_id: str, pool: pd.DataFrame) -> 
     if str(human_id) in state.ids():
         return False
     position = str(human.position)
-    human_price = int(getattr(human, "value"))
+    human_price = _price(human)
     owned = state.ids()
     same = [
         pid
@@ -187,14 +193,10 @@ def two_transfer_funds(state: SquadState, human_id: str, pool: pd.DataFrame) -> 
             if other == sale or other not in pool_by:
                 continue
             other_position = str(pool_by[other].position)
-            sale_cash = sell_price(
-                int(state.purchase[sale]), int(getattr(pool_by[sale], "value"))
-            )
-            other_cash = sell_price(
-                int(state.purchase[other]), int(getattr(pool_by[other], "value"))
-            )
+            sale_cash = sell_price(int(state.purchase[sale]), _price(pool_by[sale]))
+            other_cash = sell_price(int(state.purchase[other]), _price(pool_by[other]))
             for enabler in buys.get(other_position, []):
-                spend = human_price + int(getattr(pool_by[enabler], "value"))
+                spend = human_price + _price(pool_by[enabler])
                 if int(state.bank) + sale_cash + other_cash < spend:
                     break
                 new_ids = (owned - {sale, other}) | {str(human_id), enabler}

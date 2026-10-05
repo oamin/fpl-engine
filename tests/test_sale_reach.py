@@ -67,6 +67,16 @@ class PurchaseTest(unittest.TestCase):
         )
         self.assertNotIn("o7", [sale for sale, _delta in missed])
 
+    def test_a_missing_price_uses_the_search_fill(self) -> None:
+        state, rows = _squad(purchase_mid=40, mid_value=40, bank=0)
+        for row in rows:
+            if row["player_id"] == "o7":
+                row["value"] = float("nan")
+        rows.append(_row("buy", "MID", 45, 8.0, "c99", eligible=True))
+        labelled = classify_pair("buy", "o7", -4.0, state, _pool(rows))
+        self.assertEqual(sell_price(40, 50), 45)
+        self.assertEqual(labelled["sale_id"], "o7")
+
     def test_a_full_squad_at_his_club_is_not_a_funded_sale(self) -> None:
         state, rows = _squad(bank=20)
         for row in rows:
