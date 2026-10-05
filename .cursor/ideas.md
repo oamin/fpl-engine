@@ -112,6 +112,8 @@ The shape figure was split on 2026-10-05 and kept ([shape split](bc-b57f0f87-87e
 
 The eleven-only trial was run on 2026-10-05 and kept ([shape trial](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Five midfielders are 0.25 below the named score and +1.54 points, which is inconclusive. Three forwards are −0.89 points, so that alternate does not score more. The picker stays. Do not refit score_xp on these five weeks. See `reports/shape_trial_gw15.md`.
 
+The transfer gap was tagged on 2026-10-05 and kept ([squad gap](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Chip signings are −329, ranked-lower pairs are −81, and other unshared starters are +230. The chip tag is past −90, so this window reads as the chip reset. Do not lower the wildcard margin from these five weeks. A multi-season manager sample is not available from the current entry API. See `reports/squad_gap_gw15.md`.
+
 - Asian handicap, as a live-week pot only, after its own lock. Historical `score_xp` stays on the 1X2 and the 2.5 line. The free file has the handicap and no 3.5 line.
 - Player props, on the decision week only, in their own column. An Odds API call needs a cost estimate and the PI's approval. No market is discovered in a loop.
 - A season-rank weight on the copied tail only. Strength comes from season prices on a log scale, shrunk and clipped to about a 15% move in the team rate. It is idle on a week that already has a 1X2. It is not a 1–10 multiplier. The first Gameweek 6 call, once a line exists, still copies the third priced step flat.

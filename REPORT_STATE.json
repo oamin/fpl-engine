@@ -1,11 +1,12 @@
 {
   "updated": "2026-10-05",
-  "milestone": "shape-trial",
+  "milestone": "squad-gap",
   "status": "reviewed",
-  "summary": "On the carried fifteens, five midfielders sit 0.25 below the named score and score +1.54 points. That is inconclusive, so the picker stays. Three forwards score -0.89, so that alternate does not score more. Gemini kept the calls. The score was not changed.",
+  "summary": "The transfer gap of -180 splits into chip signings -329, ranked-lower pairs -81, and other unshared starters +230. Chip signings are past -90, so on this window the squad gap is the chip reset. Gemini kept the split. No rule was changed. The formation tag of -163 was not treated as recoverable points.",
   "artifacts": [
-    "src/models/shape_trial.py",
-    "reports/shape_trial_gw15.md",
-    "data/processed/shape_trial_gw15.csv"
+    "src/models/squad_gap.py",
+    "reports/squad_gap_gw15.md",
+    "reports/model_manifest.md",
+    "data/processed/squad_gap_gw15.csv"
   ]
 }

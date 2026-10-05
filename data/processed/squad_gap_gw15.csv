@@ -1,0 +1,375 @@
+entry_id,label,group,gw,tag,points,position,side
+2076855,elevenify.com,veteran,3,chip_squad,-4.0,DEF,human
+2076855,elevenify.com,veteran,3,chip_squad,-2.0,MID,human
+2076855,elevenify.com,veteran,3,chip_squad,-1.0,MID,human
+2076855,elevenify.com,veteran,3,chip_squad,-1.0,MID,human
+2076855,elevenify.com,veteran,3,chip_squad,-9.0,FWD,human
+2076855,elevenify.com,veteran,3,chip_squad,-4.0,DEF,human
+2076855,elevenify.com,veteran,3,chip_squad,-1.0,FWD,human
+2076855,elevenify.com,veteran,3,unmatched_squad,2.0,DEF,model
+2076855,elevenify.com,veteran,3,unmatched_squad,2.0,FWD,model
+2076855,elevenify.com,veteran,3,unmatched_squad,3.0,MID,model
+2076855,elevenify.com,veteran,3,unmatched_squad,8.0,DEF,model
+2076855,elevenify.com,veteran,3,unmatched_squad,2.0,DEF,model
+2076855,elevenify.com,veteran,3,unmatched_squad,2.0,MID,model
+2076855,elevenify.com,veteran,3,unmatched_squad,8.0,MID,model
+2076855,elevenify.com,veteran,3,unmatched_squad,8.0,MID,model
+2076855,elevenify.com,veteran,4,unmatched_squad,-4.0,DEF,pair
+2076855,elevenify.com,veteran,4,unmatched_squad,0.0,DEF,pair
+2076855,elevenify.com,veteran,4,ranked_lower,1.0,FWD,pair
+2076855,elevenify.com,veteran,4,unmatched_squad,-1.0,FWD,pair
+2076855,elevenify.com,veteran,4,ranked_lower,-3.0,MID,pair
+2076855,elevenify.com,veteran,4,ranked_lower,-6.0,MID,pair
+2076855,elevenify.com,veteran,4,unmatched_squad,-16.0,MID,pair
+2076855,elevenify.com,veteran,5,unmatched_squad,-9.0,DEF,pair
+2076855,elevenify.com,veteran,5,unmatched_squad,2.0,DEF,pair
+2076855,elevenify.com,veteran,5,ranked_lower,-4.0,FWD,pair
+2076855,elevenify.com,veteran,5,unmatched_squad,-1.0,FWD,pair
+2076855,elevenify.com,veteran,5,unmatched_squad,0.0,MID,pair
+2076855,elevenify.com,veteran,5,unmatched_squad,0.0,MID,pair
+2076855,elevenify.com,veteran,5,unmatched_squad,-4.0,MID,pair
+2076855,elevenify.com,veteran,5,unmatched_squad,6.0,DEF,model
+2076855,elevenify.com,veteran,5,unmatched_squad,-0.0,FWD,human
+2076855,elevenify.com,veteran,5,unmatched_squad,-2.0,GKP,human
+9267,Cameron Scott,veteran,2,unmatched_squad,1.0,MID,pair
+9267,Cameron Scott,veteran,3,chip_squad,-4.0,DEF,human
+9267,Cameron Scott,veteran,3,chip_squad,-2.0,MID,human
+9267,Cameron Scott,veteran,3,chip_squad,-13.0,FWD,human
+9267,Cameron Scott,veteran,3,chip_squad,-1.0,MID,human
+9267,Cameron Scott,veteran,3,chip_squad,-3.0,MID,human
+9267,Cameron Scott,veteran,3,chip_squad,-9.0,FWD,human
+9267,Cameron Scott,veteran,3,chip_squad,-1.0,FWD,human
+9267,Cameron Scott,veteran,3,chip_squad,-2.0,GKP,human
+9267,Cameron Scott,veteran,3,chip_squad,-1.0,DEF,human
+9267,Cameron Scott,veteran,3,chip_squad,-2.0,DEF,human
+9267,Cameron Scott,veteran,3,unmatched_squad,3.0,GKP,model
+9267,Cameron Scott,veteran,3,unmatched_squad,8.0,DEF,model
+9267,Cameron Scott,veteran,3,unmatched_squad,1.0,MID,model
+9267,Cameron Scott,veteran,3,unmatched_squad,3.0,MID,model
+9267,Cameron Scott,veteran,3,unmatched_squad,1.0,FWD,model
+9267,Cameron Scott,veteran,3,unmatched_squad,11.0,MID,model
+9267,Cameron Scott,veteran,3,unmatched_squad,8.0,DEF,model
+9267,Cameron Scott,veteran,3,unmatched_squad,2.0,DEF,model
+9267,Cameron Scott,veteran,3,unmatched_squad,2.0,DEF,model
+9267,Cameron Scott,veteran,3,unmatched_squad,2.0,MID,model
+9267,Cameron Scott,veteran,4,unmatched_squad,-1.0,DEF,pair
+9267,Cameron Scott,veteran,4,unmatched_squad,0.0,DEF,pair
+9267,Cameron Scott,veteran,4,unmatched_squad,-2.0,MID,pair
+9267,Cameron Scott,veteran,5,unmatched_squad,-10.0,DEF,pair
+9267,Cameron Scott,veteran,5,unmatched_squad,-3.0,MID,pair
+9267,Cameron Scott,veteran,5,unmatched_squad,6.0,DEF,model
+9267,Cameron Scott,veteran,5,unmatched_squad,-6.0,FWD,human
+31365,Ashley Marsh,veteran,2,unmatched_squad,1.0,MID,pair
+31365,Ashley Marsh,veteran,3,chip_squad,-3.0,GKP,human
+31365,Ashley Marsh,veteran,3,chip_squad,-4.0,DEF,human
+31365,Ashley Marsh,veteran,3,chip_squad,-1.0,MID,human
+31365,Ashley Marsh,veteran,3,chip_squad,-1.0,MID,human
+31365,Ashley Marsh,veteran,3,chip_squad,-8.0,DEF,human
+31365,Ashley Marsh,veteran,3,chip_squad,-3.0,MID,human
+31365,Ashley Marsh,veteran,3,chip_squad,-9.0,FWD,human
+31365,Ashley Marsh,veteran,3,chip_squad,-4.0,DEF,human
+31365,Ashley Marsh,veteran,3,chip_squad,-1.0,FWD,human
+31365,Ashley Marsh,veteran,3,chip_squad,-0.0,,human
+31365,Ashley Marsh,veteran,3,unmatched_squad,3.0,GKP,model
+31365,Ashley Marsh,veteran,3,unmatched_squad,1.0,FWD,model
+31365,Ashley Marsh,veteran,3,unmatched_squad,6.0,DEF,model
+31365,Ashley Marsh,veteran,3,unmatched_squad,11.0,MID,model
+31365,Ashley Marsh,veteran,3,unmatched_squad,8.0,DEF,model
+31365,Ashley Marsh,veteran,3,unmatched_squad,2.0,DEF,model
+31365,Ashley Marsh,veteran,3,unmatched_squad,2.0,DEF,model
+31365,Ashley Marsh,veteran,3,unmatched_squad,2.0,MID,model
+31365,Ashley Marsh,veteran,3,unmatched_squad,8.0,MID,model
+31365,Ashley Marsh,veteran,4,unmatched_squad,-3.0,DEF,pair
+31365,Ashley Marsh,veteran,4,unmatched_squad,3.0,DEF,pair
+31365,Ashley Marsh,veteran,4,ranked_lower,1.0,FWD,pair
+31365,Ashley Marsh,veteran,4,ranked_lower,-6.0,GKP,pair
+31365,Ashley Marsh,veteran,4,ranked_lower,-4.0,MID,pair
+31365,Ashley Marsh,veteran,4,ranked_lower,-6.0,MID,pair
+31365,Ashley Marsh,veteran,4,unmatched_squad,-15.0,MID,pair
+31365,Ashley Marsh,veteran,4,unmatched_squad,6.0,DEF,model
+31365,Ashley Marsh,veteran,4,unmatched_squad,-2.0,FWD,human
+31365,Ashley Marsh,veteran,5,unmatched_squad,0.0,DEF,pair
+31365,Ashley Marsh,veteran,5,unmatched_squad,-10.0,DEF,pair
+31365,Ashley Marsh,veteran,5,ranked_lower,-4.0,FWD,pair
+31365,Ashley Marsh,veteran,5,ranked_lower,5.0,GKP,pair
+31365,Ashley Marsh,veteran,5,unmatched_squad,0.0,MID,pair
+31365,Ashley Marsh,veteran,5,unmatched_squad,5.0,MID,pair
+31365,Ashley Marsh,veteran,5,unmatched_squad,0.0,MID,pair
+31365,Ashley Marsh,veteran,5,unmatched_squad,8.0,DEF,model
+31365,Ashley Marsh,veteran,5,unmatched_squad,1.0,DEF,model
+31365,Ashley Marsh,veteran,5,unmatched_squad,-6.0,FWD,human
+31365,Ashley Marsh,veteran,5,unmatched_squad,-0.0,FWD,human
+616,Mark Brookes,veteran,3,chip_squad,-4.0,DEF,human
+616,Mark Brookes,veteran,3,chip_squad,-2.0,MID,human
+616,Mark Brookes,veteran,3,chip_squad,-11.0,MID,human
+616,Mark Brookes,veteran,3,chip_squad,-6.0,MID,human
+616,Mark Brookes,veteran,3,chip_squad,-3.0,MID,human
+616,Mark Brookes,veteran,3,chip_squad,-9.0,FWD,human
+616,Mark Brookes,veteran,3,chip_squad,-1.0,FWD,human
+616,Mark Brookes,veteran,3,chip_squad,-2.0,GKP,human
+616,Mark Brookes,veteran,3,chip_squad,-1.0,DEF,human
+616,Mark Brookes,veteran,3,chip_squad,-2.0,DEF,human
+616,Mark Brookes,veteran,3,unmatched_squad,-11.0,FWD,pair
+616,Mark Brookes,veteran,3,unmatched_squad,8.0,DEF,model
+616,Mark Brookes,veteran,3,unmatched_squad,1.0,MID,model
+616,Mark Brookes,veteran,3,unmatched_squad,3.0,MID,model
+616,Mark Brookes,veteran,3,unmatched_squad,3.0,MID,model
+616,Mark Brookes,veteran,3,unmatched_squad,3.0,MID,model
+616,Mark Brookes,veteran,3,unmatched_squad,2.0,DEF,model
+616,Mark Brookes,veteran,3,unmatched_squad,2.0,DEF,model
+616,Mark Brookes,veteran,3,unmatched_squad,2.0,MID,model
+616,Mark Brookes,veteran,3,unmatched_squad,2.0,DEF,model
+616,Mark Brookes,veteran,4,unmatched_squad,-15.0,MID,pair
+616,Mark Brookes,veteran,4,unmatched_squad,7.0,DEF,model
+616,Mark Brookes,veteran,4,unmatched_squad,-2.0,FWD,human
+616,Mark Brookes,veteran,5,chip_squad,-2.0,MID,human
+616,Mark Brookes,veteran,5,chip_squad,-6.0,FWD,human
+616,Mark Brookes,veteran,5,chip_squad,-6.0,DEF,human
+616,Mark Brookes,veteran,5,chip_squad,-6.0,FWD,human
+616,Mark Brookes,veteran,5,chip_squad,-9.0,MID,human
+616,Mark Brookes,veteran,5,chip_squad,-2.0,DEF,human
+616,Mark Brookes,veteran,5,chip_squad,-2.0,MID,human
+616,Mark Brookes,veteran,5,chip_squad,-2.0,GKP,human
+616,Mark Brookes,veteran,5,chip_squad,-2.0,FWD,human
+616,Mark Brookes,veteran,5,unmatched_squad,5.0,FWD,model
+616,Mark Brookes,veteran,5,unmatched_squad,7.0,MID,model
+616,Mark Brookes,veteran,5,unmatched_squad,5.0,MID,model
+616,Mark Brookes,veteran,5,unmatched_squad,2.0,FWD,model
+616,Mark Brookes,veteran,5,unmatched_squad,2.0,MID,model
+616,Mark Brookes,veteran,5,unmatched_squad,1.0,DEF,model
+616,Mark Brookes,veteran,5,unmatched_squad,4.0,GKP,model
+616,Mark Brookes,veteran,5,unmatched_squad,2.0,MID,model
+4109079,Will Morrison,veteran,1,unmatched_squad,10.0,DEF,model
+4109079,Will Morrison,veteran,2,unmatched_squad,2.0,DEF,model
+4109079,Will Morrison,veteran,3,chip_squad,-4.0,DEF,human
+4109079,Will Morrison,veteran,3,chip_squad,-2.0,MID,human
+4109079,Will Morrison,veteran,3,chip_squad,-1.0,MID,human
+4109079,Will Morrison,veteran,3,chip_squad,-3.0,MID,human
+4109079,Will Morrison,veteran,3,chip_squad,-9.0,FWD,human
+4109079,Will Morrison,veteran,3,chip_squad,-1.0,FWD,human
+4109079,Will Morrison,veteran,3,chip_squad,-2.0,GKP,human
+4109079,Will Morrison,veteran,3,chip_squad,-1.0,DEF,human
+4109079,Will Morrison,veteran,3,chip_squad,-2.0,DEF,human
+4109079,Will Morrison,veteran,3,unmatched_squad,-11.0,FWD,pair
+4109079,Will Morrison,veteran,3,unmatched_squad,3.0,GKP,model
+4109079,Will Morrison,veteran,3,unmatched_squad,1.0,MID,model
+4109079,Will Morrison,veteran,3,unmatched_squad,3.0,MID,model
+4109079,Will Morrison,veteran,3,unmatched_squad,8.0,DEF,model
+4109079,Will Morrison,veteran,3,unmatched_squad,8.0,DEF,model
+4109079,Will Morrison,veteran,3,unmatched_squad,2.0,DEF,model
+4109079,Will Morrison,veteran,3,unmatched_squad,2.0,MID,model
+4109079,Will Morrison,veteran,3,unmatched_squad,8.0,MID,model
+4109079,Will Morrison,veteran,3,unmatched_squad,2.0,DEF,model
+4109079,Will Morrison,veteran,4,ranked_lower,-1.0,DEF,pair
+4109079,Will Morrison,veteran,4,unmatched_squad,-1.0,FWD,pair
+4109079,Will Morrison,veteran,4,ranked_lower,-3.0,MID,pair
+4109079,Will Morrison,veteran,5,unmatched_squad,-2.0,DEF,pair
+4109079,Will Morrison,veteran,5,unmatched_squad,-3.0,FWD,pair
+4109079,Will Morrison,veteran,5,unmatched_squad,0.0,MID,pair
+4109079,Will Morrison,veteran,5,unmatched_squad,4.0,DEF,model
+2116184,Paul Mitchell,veteran,3,unmatched_squad,-5.0,MID,pair
+2116184,Paul Mitchell,veteran,3,unmatched_squad,8.0,DEF,model
+2116184,Paul Mitchell,veteran,4,unmatched_squad,2.0,DEF,pair
+2116184,Paul Mitchell,veteran,4,ranked_lower,-3.0,MID,pair
+2116184,Paul Mitchell,veteran,4,unmatched_squad,0.0,MID,pair
+2116184,Paul Mitchell,veteran,5,unmatched_squad,2.0,DEF,pair
+2116184,Paul Mitchell,veteran,5,unmatched_squad,5.0,DEF,pair
+2116184,Paul Mitchell,veteran,5,unmatched_squad,0.0,MID,pair
+2116184,Paul Mitchell,veteran,5,unmatched_squad,5.0,MID,pair
+2116184,Paul Mitchell,veteran,5,unmatched_squad,6.0,DEF,model
+32058,Thomas O'Brien,veteran,2,unmatched_squad,-10.0,DEF,pair
+32058,Thomas O'Brien,veteran,3,chip_squad,-4.0,DEF,human
+32058,Thomas O'Brien,veteran,3,chip_squad,-2.0,MID,human
+32058,Thomas O'Brien,veteran,3,chip_squad,-1.0,MID,human
+32058,Thomas O'Brien,veteran,3,chip_squad,-9.0,FWD,human
+32058,Thomas O'Brien,veteran,3,chip_squad,1.0,DEF,human
+32058,Thomas O'Brien,veteran,3,chip_squad,-1.0,FWD,human
+32058,Thomas O'Brien,veteran,3,chip_squad,-0.0,,human
+32058,Thomas O'Brien,veteran,3,unmatched_squad,3.0,MID,model
+32058,Thomas O'Brien,veteran,3,unmatched_squad,1.0,FWD,model
+32058,Thomas O'Brien,veteran,3,unmatched_squad,8.0,DEF,model
+32058,Thomas O'Brien,veteran,3,unmatched_squad,2.0,DEF,model
+32058,Thomas O'Brien,veteran,3,unmatched_squad,2.0,MID,model
+32058,Thomas O'Brien,veteran,3,unmatched_squad,8.0,MID,model
+32058,Thomas O'Brien,veteran,3,unmatched_squad,7.0,DEF,model
+32058,Thomas O'Brien,veteran,4,unmatched_squad,-4.0,DEF,pair
+32058,Thomas O'Brien,veteran,4,unmatched_squad,3.0,DEF,pair
+32058,Thomas O'Brien,veteran,4,ranked_lower,1.0,FWD,pair
+32058,Thomas O'Brien,veteran,4,ranked_lower,-6.0,MID,pair
+32058,Thomas O'Brien,veteran,4,unmatched_squad,-15.0,MID,pair
+32058,Thomas O'Brien,veteran,4,unmatched_squad,6.0,DEF,model
+32058,Thomas O'Brien,veteran,4,unmatched_squad,-2.0,FWD,human
+32058,Thomas O'Brien,veteran,5,unmatched_squad,0.0,DEF,pair
+32058,Thomas O'Brien,veteran,5,ranked_lower,-5.0,DEF,pair
+32058,Thomas O'Brien,veteran,5,unmatched_squad,5.0,DEF,pair
+32058,Thomas O'Brien,veteran,5,ranked_lower,-4.0,FWD,pair
+32058,Thomas O'Brien,veteran,5,unmatched_squad,0.0,MID,pair
+32058,Thomas O'Brien,veteran,5,unmatched_squad,5.0,MID,model
+32058,Thomas O'Brien,veteran,5,unmatched_squad,2.0,MID,model
+32058,Thomas O'Brien,veteran,5,unmatched_squad,-6.0,FWD,human
+32058,Thomas O'Brien,veteran,5,unmatched_squad,-0.0,FWD,human
+5874076,Jess Bernstein,rank,1,unmatched_squad,0.0,FWD,model
+5874076,Jess Bernstein,rank,2,unmatched_squad,-10.0,DEF,pair
+5874076,Jess Bernstein,rank,2,unmatched_squad,2.0,FWD,model
+5874076,Jess Bernstein,rank,3,unmatched_squad,5.0,DEF,pair
+5874076,Jess Bernstein,rank,3,ranked_lower,-7.0,FWD,pair
+5874076,Jess Bernstein,rank,3,unmatched_squad,3.0,MID,model
+5874076,Jess Bernstein,rank,3,unmatched_squad,2.0,MID,model
+5874076,Jess Bernstein,rank,3,unmatched_squad,-3.0,,human
+5874076,Jess Bernstein,rank,4,unmatched_squad,-1.0,DEF,pair
+5874076,Jess Bernstein,rank,4,ranked_lower,-8.0,FWD,pair
+5874076,Jess Bernstein,rank,4,ranked_lower,-6.0,MID,pair
+5874076,Jess Bernstein,rank,4,unmatched_squad,2.0,MID,model
+5874076,Jess Bernstein,rank,4,unmatched_squad,6.0,DEF,model
+5874076,Jess Bernstein,rank,5,unmatched_squad,-10.0,DEF,pair
+5874076,Jess Bernstein,rank,5,ranked_lower,-1.0,FWD,pair
+5874076,Jess Bernstein,rank,5,unmatched_squad,0.0,MID,pair
+5874076,Jess Bernstein,rank,5,unmatched_squad,5.0,MID,pair
+5874076,Jess Bernstein,rank,5,unmatched_squad,6.0,DEF,model
+3669095,Adam Whitting,rank,1,unmatched_squad,1.0,DEF,model
+3669095,Adam Whitting,rank,1,unmatched_squad,1.0,DEF,model
+3669095,Adam Whitting,rank,2,unmatched_squad,0.0,MID,pair
+3669095,Adam Whitting,rank,2,unmatched_squad,4.0,DEF,model
+3669095,Adam Whitting,rank,3,ranked_lower,0.0,DEF,pair
+3669095,Adam Whitting,rank,3,unmatched_squad,-9.0,MID,pair
+3669095,Adam Whitting,rank,3,unmatched_squad,2.0,DEF,model
+3669095,Adam Whitting,rank,4,unmatched_squad,-4.0,DEF,pair
+3669095,Adam Whitting,rank,4,unmatched_squad,8.0,DEF,pair
+3669095,Adam Whitting,rank,4,ranked_lower,-6.0,MID,pair
+3669095,Adam Whitting,rank,4,unmatched_squad,3.0,MID,pair
+3669095,Adam Whitting,rank,5,unmatched_squad,-1.0,DEF,pair
+3669095,Adam Whitting,rank,5,unmatched_squad,4.0,DEF,pair
+3669095,Adam Whitting,rank,5,ranked_lower,5.0,DEF,pair
+3669095,Adam Whitting,rank,5,unmatched_squad,-7.0,MID,pair
+3669095,Adam Whitting,rank,5,unmatched_squad,0.0,MID,pair
+169164,Filip Stripaj,rank,3,unmatched_squad,4.0,DEF,pair
+169164,Filip Stripaj,rank,3,unmatched_squad,0.0,MID,pair
+169164,Filip Stripaj,rank,4,unmatched_squad,-3.0,DEF,pair
+169164,Filip Stripaj,rank,4,unmatched_squad,1.0,MID,pair
+169164,Filip Stripaj,rank,4,unmatched_squad,7.0,DEF,model
+169164,Filip Stripaj,rank,4,unmatched_squad,-10.0,FWD,human
+169164,Filip Stripaj,rank,5,chip_squad,-2.0,MID,human
+169164,Filip Stripaj,rank,5,chip_squad,-14.0,DEF,human
+169164,Filip Stripaj,rank,5,chip_squad,-6.0,FWD,human
+169164,Filip Stripaj,rank,5,chip_squad,-17.0,MID,human
+169164,Filip Stripaj,rank,5,chip_squad,-2.0,MID,human
+169164,Filip Stripaj,rank,5,chip_squad,-2.0,MID,human
+169164,Filip Stripaj,rank,5,chip_squad,-13.0,DEF,human
+169164,Filip Stripaj,rank,5,chip_squad,-2.0,GKP,human
+169164,Filip Stripaj,rank,5,unmatched_squad,-1.0,DEF,pair
+169164,Filip Stripaj,rank,5,unmatched_squad,6.0,DEF,model
+169164,Filip Stripaj,rank,5,unmatched_squad,7.0,MID,model
+169164,Filip Stripaj,rank,5,unmatched_squad,2.0,MID,model
+169164,Filip Stripaj,rank,5,unmatched_squad,2.0,MID,model
+169164,Filip Stripaj,rank,5,unmatched_squad,2.0,MID,model
+169164,Filip Stripaj,rank,5,unmatched_squad,2.0,GKP,model
+169164,Filip Stripaj,rank,5,unmatched_squad,4.0,DEF,model
+169164,Filip Stripaj,rank,5,unmatched_squad,0.0,MID,model
+169164,Filip Stripaj,rank,5,unmatched_squad,1.0,DEF,model
+169164,Filip Stripaj,rank,5,unmatched_squad,-2.0,FWD,human
+217044,daniel bowes,rank,2,unmatched_squad,1.0,GKP,model
+217044,daniel bowes,rank,2,unmatched_squad,-10.0,,human
+217044,daniel bowes,rank,3,unmatched_squad,-3.0,DEF,pair
+217044,daniel bowes,rank,3,unmatched_squad,2.0,MID,pair
+217044,daniel bowes,rank,3,unmatched_squad,8.0,DEF,model
+217044,daniel bowes,rank,3,unmatched_squad,-6.0,,human
+217044,daniel bowes,rank,4,unmatched_squad,-4.0,DEF,pair
+217044,daniel bowes,rank,4,unmatched_squad,7.0,DEF,pair
+217044,daniel bowes,rank,4,unmatched_squad,-16.0,MID,pair
+217044,daniel bowes,rank,5,chip_squad,-8.0,GKP,human
+217044,daniel bowes,rank,5,chip_squad,-3.0,MID,human
+217044,daniel bowes,rank,5,chip_squad,-2.0,FWD,human
+217044,daniel bowes,rank,5,chip_squad,-2.0,MID,human
+217044,daniel bowes,rank,5,chip_squad,-13.0,DEF,human
+217044,daniel bowes,rank,5,chip_squad,-0.0,FWD,human
+217044,daniel bowes,rank,5,chip_squad,-2.0,DEF,human
+217044,daniel bowes,rank,5,chip_squad,-2.0,MID,human
+217044,daniel bowes,rank,5,unmatched_squad,6.0,DEF,model
+217044,daniel bowes,rank,5,unmatched_squad,5.0,MID,model
+217044,daniel bowes,rank,5,unmatched_squad,2.0,DEF,model
+217044,daniel bowes,rank,5,unmatched_squad,2.0,MID,model
+217044,daniel bowes,rank,5,unmatched_squad,2.0,GKP,model
+217044,daniel bowes,rank,5,unmatched_squad,0.0,MID,model
+217044,daniel bowes,rank,5,unmatched_squad,6.0,DEF,model
+217044,daniel bowes,rank,5,unmatched_squad,6.0,DEF,model
+534464,Sion Jones,rank,1,unmatched_squad,2.0,MID,model
+534464,Sion Jones,rank,1,unmatched_squad,3.0,MID,model
+534464,Sion Jones,rank,1,unmatched_squad,-6.0,MID,human
+534464,Sion Jones,rank,2,unmatched_squad,-5.0,DEF,pair
+534464,Sion Jones,rank,2,unmatched_squad,3.0,MID,model
+534464,Sion Jones,rank,2,unmatched_squad,10.0,MID,model
+534464,Sion Jones,rank,2,unmatched_squad,-0.0,,human
+534464,Sion Jones,rank,3,chip_squad,-4.0,DEF,human
+534464,Sion Jones,rank,3,chip_squad,-1.0,MID,human
+534464,Sion Jones,rank,3,chip_squad,-3.0,MID,human
+534464,Sion Jones,rank,3,chip_squad,-13.0,FWD,human
+534464,Sion Jones,rank,3,chip_squad,-3.0,MID,human
+534464,Sion Jones,rank,3,chip_squad,-1.0,MID,human
+534464,Sion Jones,rank,3,chip_squad,-1.0,FWD,human
+534464,Sion Jones,rank,3,unmatched_squad,8.0,DEF,model
+534464,Sion Jones,rank,3,unmatched_squad,3.0,MID,model
+534464,Sion Jones,rank,3,unmatched_squad,2.0,MID,model
+534464,Sion Jones,rank,3,unmatched_squad,8.0,MID,model
+534464,Sion Jones,rank,3,unmatched_squad,-1.0,DEF,model
+534464,Sion Jones,rank,3,unmatched_squad,8.0,MID,model
+534464,Sion Jones,rank,3,unmatched_squad,2.0,MID,model
+534464,Sion Jones,rank,4,unmatched_squad,-4.0,DEF,pair
+534464,Sion Jones,rank,4,ranked_lower,-3.0,MID,pair
+534464,Sion Jones,rank,4,ranked_lower,-1.0,MID,pair
+534464,Sion Jones,rank,4,ranked_lower,-7.0,MID,pair
+534464,Sion Jones,rank,4,ranked_lower,-2.0,MID,pair
+534464,Sion Jones,rank,4,unmatched_squad,8.0,DEF,model
+534464,Sion Jones,rank,4,unmatched_squad,-2.0,FWD,human
+534464,Sion Jones,rank,5,unmatched_squad,0.0,DEF,pair
+534464,Sion Jones,rank,5,unmatched_squad,-6.0,MID,pair
+534464,Sion Jones,rank,5,unmatched_squad,0.0,MID,pair
+534464,Sion Jones,rank,5,unmatched_squad,3.0,MID,pair
+534464,Sion Jones,rank,5,unmatched_squad,7.0,MID,pair
+534464,Sion Jones,rank,5,unmatched_squad,-9.0,MID,pair
+534464,Sion Jones,rank,5,unmatched_squad,6.0,DEF,model
+534464,Sion Jones,rank,5,unmatched_squad,-0.0,FWD,human
+3503484,Viniii Denie,rank,2,unmatched_squad,-1.0,MID,pair
+3503484,Viniii Denie,rank,3,unmatched_squad,1.0,MID,pair
+3503484,Viniii Denie,rank,3,unmatched_squad,-3.0,MID,pair
+3503484,Viniii Denie,rank,3,unmatched_squad,-8.0,DEF,human
+3503484,Viniii Denie,rank,3,unmatched_squad,-6.0,,human
+3503484,Viniii Denie,rank,4,unmatched_squad,1.0,DEF,pair
+3503484,Viniii Denie,rank,4,unmatched_squad,-5.0,MID,pair
+3503484,Viniii Denie,rank,4,unmatched_squad,0.0,MID,pair
+3503484,Viniii Denie,rank,4,unmatched_squad,-11.0,DEF,human
+3503484,Viniii Denie,rank,5,ranked_lower,2.0,DEF,pair
+3503484,Viniii Denie,rank,5,unmatched_squad,4.0,MID,pair
+3503484,Viniii Denie,rank,5,unmatched_squad,-2.0,MID,pair
+3503484,Viniii Denie,rank,5,unmatched_squad,2.0,MID,model
+1585157,Tom Anderson,rank,2,unmatched_squad,0.0,MID,pair
+1585157,Tom Anderson,rank,3,unmatched_squad,-7.0,MID,pair
+1585157,Tom Anderson,rank,4,unmatched_squad,1.0,MID,pair
+1585157,Tom Anderson,rank,4,unmatched_squad,5.0,MID,model
+1585157,Tom Anderson,rank,4,unmatched_squad,7.0,DEF,model
+1585157,Tom Anderson,rank,5,unmatched_squad,-3.0,MID,pair
+1585157,Tom Anderson,rank,5,unmatched_squad,0.0,MID,pair
+1585157,Tom Anderson,rank,5,unmatched_squad,6.0,DEF,model
+2632584,ojaminFC,reference,1,unmatched_squad,6.0,GKP,model
+2632584,ojaminFC,reference,1,unmatched_squad,3.0,MID,model
+2632584,ojaminFC,reference,1,unmatched_squad,-0.0,GKP,human
+2632584,ojaminFC,reference,2,ranked_lower,-2.0,GKP,pair
+2632584,ojaminFC,reference,2,unmatched_squad,-10.0,MID,pair
+2632584,ojaminFC,reference,2,unmatched_squad,10.0,MID,model
+2632584,ojaminFC,reference,2,unmatched_squad,-4.0,,human
+2632584,ojaminFC,reference,3,unmatched_squad,1.0,GKP,pair
+2632584,ojaminFC,reference,3,unmatched_squad,0.0,MID,pair
+2632584,ojaminFC,reference,3,unmatched_squad,-7.0,MID,pair
+2632584,ojaminFC,reference,3,unmatched_squad,2.0,MID,model
+2632584,ojaminFC,reference,3,unmatched_squad,-0.0,,human
+2632584,ojaminFC,reference,4,unmatched_squad,6.0,GKP,pair
+2632584,ojaminFC,reference,4,unmatched_squad,-5.0,MID,pair
+2632584,ojaminFC,reference,4,ranked_lower,-2.0,MID,pair
+2632584,ojaminFC,reference,4,unmatched_squad,7.0,MID,pair
+2632584,ojaminFC,reference,4,unmatched_squad,12.0,MID,pair
+2632584,ojaminFC,reference,5,unmatched_squad,-2.0,GKP,pair
+2632584,ojaminFC,reference,5,unmatched_squad,-6.0,MID,pair
+2632584,ojaminFC,reference,5,unmatched_squad,-2.0,MID,pair
+2632584,ojaminFC,reference,5,unmatched_squad,0.0,MID,pair
+2632584,ojaminFC,reference,5,unmatched_squad,7.0,MID,pair
+2632584,ojaminFC,reference,5,unmatched_squad,6.0,DEF,model
+2632584,ojaminFC,reference,5,unmatched_squad,-2.0,FWD,human
