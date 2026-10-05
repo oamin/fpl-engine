@@ -389,6 +389,8 @@ def one_week(
         "later_cap": float(later_cap),
         "later_bench": float(later_bench),
         "purchase": {str(pid): int(price) for pid, price in prior.purchase.items()},
+        "rebuilt_ids": sorted(rebuilt.ids()),
+        "rebuilt_bank": int(rebuilt.bank),
         "bench_scored": float(bench_pts),
         "his_bench": float(theirs["bench"]),
         "pre_ids": sorted(pre_ids),

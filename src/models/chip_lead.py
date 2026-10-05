@@ -19,7 +19,7 @@ from src.models.friend_start import _early
 from src.models.reset_chips import StepOutlook, choose_chip
 from src.models.reset_gap import PROCESSED, REPORTS, _fmt
 from src.models.season_climb_ft import _gw_pool
-from src.models.squad_gap import label_transfers
+from src.models.squad_gap import CHIP_SQUADS, label_transfers
 from src.rules.fpl_2026 import MAX_PER_CLUB, ChipWallet, sell_price
 from src.live.policy import FH_MARGIN, WC_MARGIN
 
@@ -279,6 +279,115 @@ def decide(
     return "stop"
 
 
+def follow_call(share_in: float, median_gap: float | None, constrained_share: float | None) -> str:
+    """The locked follow-up. A non-positive median is a score miss."""
+    if share_in >= POOL_SHARE:
+        return "in_squad"
+    if median_gap is None:
+        raise RuntimeError("the players outside the rebuild have no score gap")
+    if median_gap <= 0:
+        return "score_miss"
+    if constrained_share is None:
+        raise RuntimeError("the constraint share needs players outside the rebuild")
+    if constrained_share >= POOL_SHARE:
+        return "constraint"
+    return "solver"
+
+
+def _lowest(rebuilt: list[str], position: str, pool_by: dict[str, Any]) -> str:
+    same = [
+        pid
+        for pid in rebuilt
+        if pid in pool_by and str(getattr(pool_by[pid], "position")) == position
+    ]
+    if not same:
+        raise RuntimeError(f"the rebuild has no {position}")
+    return min(same, key=lambda pid: (float(getattr(pool_by[pid], "score_xp")), pid))
+
+
+def place_signing(
+    player_id: str,
+    pool_by: dict[str, Any],
+    rebuilt_ids: list[str],
+    rebuilt_bank: int,
+    purchase: dict[str, int],
+) -> dict[str, Any]:
+    """Whether the rebuild already held him, and why it left him out."""
+    src = pool_by.get(str(player_id))
+    if src is None:
+        raise RuntimeError(f"{player_id} was eligible and is not in the pool")
+    if str(player_id) in set(rebuilt_ids):
+        return {"place": "in", "gap": None, "block": ""}
+    position = str(getattr(src, "position"))
+    lowest = _lowest(rebuilt_ids, position, pool_by)
+    gap = float(getattr(src, "score_xp")) - float(getattr(pool_by[lowest], "score_xp"))
+    human_club = str(getattr(src, "team_norm"))
+    low_club = str(getattr(pool_by[lowest], "team_norm"))
+    club_count = sum(
+        1
+        for pid in rebuilt_ids
+        if str(getattr(pool_by[pid], "team_norm")) == human_club
+    )
+    if club_count >= MAX_PER_CLUB and low_club != human_club:
+        block = "club"
+    else:
+        market = int(getattr(src, "value"))
+        if lowest in purchase:
+            release = sell_price(int(purchase[lowest]), int(getattr(pool_by[lowest], "value")))
+        else:
+            release = int(getattr(pool_by[lowest], "value"))
+        block = "price" if market > int(rebuilt_bank) + release else "neither"
+    return {"place": "out", "gap": gap, "block": block}
+
+
+def lineup_chip_share(weeks: list[dict[str, Any]]) -> float | None:
+    """Descriptive. Chip signings inside the lineup gap, over the lineup gap."""
+    numer = 0.0
+    denom = 0.0
+    for week in weeks:
+        denom += float(week["lineup_gap"])
+        if week["his_chip"] not in CHIP_SQUADS:
+            continue
+        owned = set(week["human_pre_ids"])
+        signed = {
+            str(player["id"])
+            for player in week["transfer_their_detail"]
+            if str(player["id"]) not in owned
+        }
+        for player in week["lineup_their_detail"]:
+            if str(player["id"]) in signed:
+                numer += -float(player["points"])
+    if abs(denom) < TIE:
+        return None
+    return float(numer / denom)
+
+
+def analyse_rebuild(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    """S, M, and the constraint share. Eligible chip signings only."""
+    chosen = [row for row in rows if row["kind"] == "chip_squad" and row["tag"] == "eligible"]
+    inside = [row for row in chosen if row["place"] == "in"]
+    outside = [row for row in chosen if row["place"] == "out"]
+    points_in = sum(float(row["points"]) for row in inside)
+    points_out = sum(float(row["points"]) for row in outside)
+    share_in = float(points_in / CHIP_BASE)
+    gaps = [float(row["gap"]) for row in outside]
+    median_gap = _median(gaps)
+    blocked = sum(
+        float(row["points"]) for row in outside if row["block"] in {"club", "price"}
+    )
+    constrained = None if abs(points_out) < TIE else float(blocked / points_out)
+    return {
+        "n_in": len(inside),
+        "n_out": len(outside),
+        "points_in": points_in,
+        "points_out": points_out,
+        "share_in": share_in,
+        "median_gap": median_gap,
+        "constrained": constrained,
+        "call": follow_call(share_in, median_gap, constrained),
+    }
+
+
 def week_status(weeks: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Legal wildcard weeks, in played order, plus the bug flag."""
     wallet = ChipWallet()
@@ -391,8 +500,14 @@ def write_report(path: Path, result: dict[str, Any]) -> None:
         "pool": "At least half of the chip-signing points were players the buy pool could not see. The pool replay is next. The hurdle stays 16.",
         "margin": "The late wildcard lead sits between 12 and 16. The side replay uses 12 for that call only. The published hurdle stays 16.",
         "open": "Neither chip lever fired. The open pairs, a score lead above 1.25 that was still affordable, are the next gap.",
-        "stop": "Neither chip lever fired, and the open pairs are not past 40 points. This batch stops.",
+        "stop": "Neither chip lever fired, and the open pairs are not past 40 points.",
         "inconclusive": "The carry did not reproduce the chip-signing total, or too few managers finished. No replay.",
+    }
+    follow_sentences = {
+        "in_squad": "The rebuild that was turned down already held the players who scored those points. The summed score still led by only a few points. No hurdle change.",
+        "score_miss": "The rebuild left those players out, and its lowest player at that position had the higher score. That is a score miss on the chip-week players. No live retune.",
+        "constraint": "Those players had the higher score, and the club cap or the price left them out of the rebuild.",
+        "solver": "Those players had the higher score and a legal swap for the lowest player at that position. The squad search still left them out. No new solver.",
     }
     early = result["early_median"]
     late = result["late_median"]
@@ -424,6 +539,34 @@ def write_report(path: Path, result: dict[str, Any]) -> None:
         f"Ranked lower: {_tag_line(result['ranked'])}.",
         "",
     ]
+    rebuild = result.get("rebuild")
+    if rebuild is not None:
+        gap = rebuild["median_gap"]
+        constrained = rebuild["constrained"]
+        lineup = result.get("lineup_share")
+        lines.extend(
+            [
+                "## Who the rebuild held",
+                "",
+                follow_sentences[rebuild["call"]],
+                "",
+                (
+                    f"Inside the rebuild: {rebuild['n_in']} players, {_fmt(rebuild['points_in'])}, "
+                    f"share {rebuild['share_in']:.2f}. "
+                    f"Outside: {rebuild['n_out']} players, {_fmt(rebuild['points_out'])}. "
+                    f"Median score gap {'' if gap is None else f'{gap:.2f}'}. "
+                    f"Club or price share of the outside points "
+                    f"{'' if constrained is None else f'{constrained:.2f}'}."
+                ),
+                "",
+                (
+                    "The lineup overlap is descriptive and does not change the reading. "
+                    f"Share of the lineup gap on these chip signings: "
+                    f"{'' if lineup is None else f'{lineup:.2f}'}."
+                ),
+                "",
+            ]
+        )
     if call == "open":
         lines.append("Open pairs:")
         lines.append("")
@@ -465,7 +608,18 @@ def run() -> dict[str, Any]:
             continue
         for week in result["weeks"]:
             pool = _gw_pool(feat, roster, int(week["gw"]), set(week["pre_ids"]), early)
+            pool_by = _pool_index(pool)
             for row in explain_week(week, pool):
+                if row["kind"] == "chip_squad" and row["tag"] == "eligible":
+                    row.update(
+                        place_signing(
+                            row["human_id"],
+                            pool_by,
+                            list(week["rebuilt_ids"]),
+                            int(week["rebuilt_bank"]),
+                            {str(pid): int(price) for pid, price in week["purchase"].items()},
+                        )
+                    )
                 explained.append(
                     {
                         **row,
@@ -476,6 +630,16 @@ def run() -> dict[str, Any]:
                     }
                 )
     outcome = analyse(managers, explained)
+    cohort_weeks = [
+        week
+        for manager in managers
+        if manager["group"] != "reference" and manager["finished"]
+        for week in manager["weeks"]
+    ]
+    outcome["rebuild"] = analyse_rebuild(
+        [row for row in explained if row["group"] != "reference"]
+    )
+    outcome["lineup_share"] = lineup_chip_share(cohort_weeks)
     PROCESSED.mkdir(parents=True, exist_ok=True)
     REPORTS.mkdir(parents=True, exist_ok=True)
     pd.DataFrame(outcome["leads"]).to_csv(WINDOW_CSV, index=False)
@@ -490,6 +654,9 @@ def run() -> dict[str, Any]:
         "chip_total": outcome["chip_total"],
         "open_points": outcome["open_points"],
         "bugs": outcome["bugs"],
+        "follow": outcome["rebuild"]["call"],
+        "share_in": outcome["rebuild"]["share_in"],
+        "median_gap": outcome["rebuild"]["median_gap"],
     }
 
 

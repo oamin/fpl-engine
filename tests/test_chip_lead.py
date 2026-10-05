@@ -8,10 +8,13 @@ import pandas as pd
 
 from src.models.chip_lead import (
     analyse,
+    analyse_rebuild,
     bug_status,
     buy_tag,
     decide,
+    follow_call,
     pair_tag,
+    place_signing,
     reconstruct_choice,
 )
 from src.models.reset_chips import StepOutlook, choose_chip
@@ -130,6 +133,63 @@ class ReadingTest(unittest.TestCase):
     def test_eleven_finished_managers_are_inconclusive(self) -> None:
         result = analyse(_managers(13.0, n=11), [_chip("absent", -329.0)])
         self.assertEqual(result["call"], "inconclusive")
+
+
+class RebuildTest(unittest.TestCase):
+    def _pool(self) -> dict:
+        rows = [
+            {"player_id": "h", "position": "MID", "score_xp": 7.0, "value": 80, "team_norm": "arsenal", "eligible": True},
+            {"player_id": "q", "position": "MID", "score_xp": 4.0, "value": 45, "team_norm": "chelsea", "eligible": True},
+            {"player_id": "a1", "position": "DEF", "score_xp": 4.0, "value": 40, "team_norm": "arsenal", "eligible": True},
+            {"player_id": "a2", "position": "DEF", "score_xp": 4.0, "value": 40, "team_norm": "arsenal", "eligible": True},
+            {"player_id": "a3", "position": "DEF", "score_xp": 4.0, "value": 40, "team_norm": "arsenal", "eligible": True},
+        ]
+        frame = pd.DataFrame(rows)
+        return {str(row.player_id): row for row in frame.itertuples()}
+
+    def test_a_player_already_in_the_rebuild_is_in(self) -> None:
+        placed = place_signing("h", self._pool(), ["h", "q"], 0, {})
+        self.assertEqual(placed["place"], "in")
+
+    def test_half_the_points_inside_stops_at_the_squad(self) -> None:
+        rows = [
+            {"kind": "chip_squad", "tag": "eligible", "place": "in", "points": -200.0, "gap": None, "block": ""},
+            {"kind": "chip_squad", "tag": "eligible", "place": "out", "points": -129.0, "gap": 2.0, "block": "neither"},
+        ]
+        result = analyse_rebuild(rows)
+        self.assertGreaterEqual(result["share_in"], 0.5)
+        self.assertEqual(result["call"], "in_squad")
+
+    def test_a_negative_median_is_a_score_miss(self) -> None:
+        rows = [
+            {"kind": "chip_squad", "tag": "eligible", "place": "out", "points": -329.0, "gap": -1.0, "block": "neither"},
+        ]
+        self.assertEqual(analyse_rebuild(rows)["call"], "score_miss")
+
+    def test_a_zero_median_is_a_score_miss(self) -> None:
+        self.assertEqual(follow_call(0.2, 0.0, 0.0), "score_miss")
+
+    def test_club_before_price(self) -> None:
+        placed = place_signing("h", self._pool(), ["q", "a1", "a2", "a3"], 100, {})
+        self.assertEqual(placed["place"], "out")
+        self.assertEqual(placed["block"], "club")
+        self.assertAlmostEqual(placed["gap"], 3.0)
+
+    def test_an_unaffordable_replacement_is_price(self) -> None:
+        placed = place_signing("h", self._pool(), ["q"], 0, {"q": 45})
+        self.assertEqual(placed["block"], "price")
+
+    def test_a_legal_replacement_left_out_is_neither(self) -> None:
+        placed = place_signing("h", self._pool(), ["q"], 50, {"q": 45})
+        self.assertEqual(placed["block"], "neither")
+
+    def test_constraints_on_half_the_outside_points(self) -> None:
+        rows = [
+            {"kind": "chip_squad", "tag": "eligible", "place": "out", "points": -200.0, "gap": 2.0, "block": "price"},
+            {"kind": "chip_squad", "tag": "eligible", "place": "out", "points": -129.0, "gap": 2.0, "block": "neither"},
+        ]
+        result = analyse_rebuild(rows)
+        self.assertEqual(result["call"], "constraint")
 
 
 class TagTest(unittest.TestCase):
