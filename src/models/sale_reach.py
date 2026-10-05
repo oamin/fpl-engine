@@ -451,5 +451,15 @@ def run() -> dict[str, Any]:
         "points": float(sum(float(row["points"]) for row in cohort)),
     }
     write_report(REPORTS / "sale_reach_gw15.md", outcome)
-    print(outcome["call"], outcome["points"], outcome["two_transfer"], flush=True)
-    return outcome
+    summary = {
+        "call": call,
+        "points": outcome["points"],
+        "two_transfer": outcome["two_transfer"],
+        "n": len(cohort),
+    }
+    print(summary, flush=True)
+    return summary
+
+
+if __name__ == "__main__":
+    run()
