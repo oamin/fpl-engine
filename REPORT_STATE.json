@@ -1,11 +1,11 @@
 {
   "updated": "2026-10-05",
-  "milestone": "reset-gap",
+  "milestone": "reset-chips",
   "status": "reviewed",
-  "summary": "Each of Gameweeks 1–5 was solved from the fifteen ojaminFC held before that deadline, then discarded. The model scores 332 against his 350. The gap is -18, with two non-negative weeks, so the model did not beat these five decisions. Captaincy is -5, transfers 0, lineup -5, and hits -8. Gemini kept the split. The rule was not retuned.",
+  "summary": "The Gameweek 1-5 reset was run again with a free chip wallet. The model scores 347 against ojaminFC's 350. The gap is -3, with two weeks ahead, so the wallet did not beat these five decisions. Triple Captain is in Gameweek 3 and Bench Boost in Gameweek 4. The wallet is 15 points ahead of the mirrored reset at 332. Gemini kept the split. The margins were not changed.",
   "artifacts": [
-    "src/models/reset_gap.py",
-    "reports/reset_gap_gw15.md",
-    "data/processed/reset_gap_gw15.csv"
+    "src/models/reset_chips.py",
+    "reports/reset_chips_gw15.md",
+    "data/processed/reset_chips_gw15.csv"
   ]
 }

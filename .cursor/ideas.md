@@ -100,6 +100,8 @@ The live 1X2 trial was run on 2026-10-05 after Gemini kept the source rule ([liv
 
 The reset to his own squad was run on 2026-10-05 and kept ([reset gap](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Each week starts from the fifteen he held, and the model's buys are thrown away. The sum is −18, with two level weeks. The model did not beat these five decisions. The transfer piece sums to 0, and the gap is captaincy, the lineup, and a Gameweek 1 hit. The rule stays. A retune from these five weeks is not the next batch. See `reports/reset_gap_gw15.md`.
 
+The free wallet on that same reset was run on 2026-10-05 and kept ([free wallet](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). The chip is chosen on the priced horizon only. Gameweek 1 cannot spend the wildcard outlook of about 38. Triple Captain lands in Gameweek 3 and Bench Boost in Gameweek 4. The wallet scores 347 against 350, which is 15 ahead of the mirrored 332, with two weeks ahead. The wallet did not beat these five decisions. The margins stay 12 and 16. See `reports/reset_chips_gw15.md`.
+
 - Asian handicap, as a live-week pot only, after its own lock. Historical `score_xp` stays on the 1X2 and the 2.5 line. The free file has the handicap and no 3.5 line.
 - Player props, on the decision week only, in their own column. An Odds API call needs a cost estimate and the PI's approval. No market is discovered in a loop.
 - A season-rank weight on the copied tail only. Strength comes from season prices on a log scale, shrunk and clipped to about a 15% move in the team rate. It is idle on a week that already has a 1X2. It is not a 1–10 multiplier. The first Gameweek 6 call, once a line exists, still copies the third priced step flat.
