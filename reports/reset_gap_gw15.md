@@ -6,7 +6,7 @@ The search maximises a discounted three-week value. The score is one week of rea
 
 The bar was locked before this total was read. A sum above 0 and at least 3 of 5 weeks non-negative is a gain on these five decisions. Anything else is the model not beating these five decisions.
 
-The sum is -18 and 2 of 5 weeks are non-negative. The model did not beat these five decisions. Five weeks remain too few to call the rule reliable.
+The sum is -18 and 2 of 5 weeks are non-negative. The model did not beat these five decisions. Five weeks remain too few to call the rule reliable. Gemini kept the split on 2026-10-05 ([reset gap](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)).
 
 | GW | Model | ojaminFC | Gap | Captain | Transfers | Lineup | Hits | Residual | Horizon |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---|

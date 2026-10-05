@@ -1,10 +1,11 @@
 {
   "updated": "2026-10-05",
-  "milestone": "live-whatif",
+  "milestone": "reset-gap",
   "status": "reviewed",
-  "summary": "The Gameweek 6 wildcard rebuild and the one free transfer were named on the two priced weeks. The rebuild leads that transfer by 10.55 in Gameweek 6 and by 2.75 in Gameweek 7. The 12.56 in the deadline note is the same rebuild against the squad with no transfer. Gemini kept the note as the forecast for those two weeks. No season total was added and the Odds API was not called.",
+  "summary": "Each of Gameweeks 1–5 was solved from the fifteen ojaminFC held before that deadline, then discarded. The model scores 332 against his 350. The gap is -18, with two non-negative weeks, so the model did not beat these five decisions. Captaincy is -5, transfers 0, lineup -5, and hits -8. Gemini kept the split. The rule was not retuned.",
   "artifacts": [
-    "src/live/whatif.py",
-    "reports/live_whatif_gw6.md"
+    "src/models/reset_gap.py",
+    "reports/reset_gap_gw15.md",
+    "data/processed/reset_gap_gw15.csv"
   ]
 }
