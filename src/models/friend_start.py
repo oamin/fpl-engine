@@ -259,6 +259,8 @@ def one_week(
     prior = deepcopy(state)
     rebuilt = rebuild_squad(state, pool, "score_xp")
     steps = price_horizon(pool, pre_ids, rebuilt.ids(), step_scores, window)
+    later_cap = max((step.cap_xp for step in steps[1:]), default=-1.0)
+    later_bench = max((step.bench_xp for step in steps[1:]), default=-1.0)
     chip, gain = choose_chip(steps, wallet.available(int(gw)))
     if chip is not None:
         wallet.play(int(gw), chip)
@@ -384,6 +386,9 @@ def one_week(
         "fh_margin": float(steps[0].fh_xi - steps[0].held_xi),
         "cap_xp": float(steps[0].cap_xp),
         "bench_xp": float(steps[0].bench_xp),
+        "later_cap": float(later_cap),
+        "later_bench": float(later_bench),
+        "purchase": {str(pid): int(price) for pid, price in prior.purchase.items()},
         "bench_scored": float(bench_pts),
         "his_bench": float(theirs["bench"]),
         "pre_ids": sorted(pre_ids),
