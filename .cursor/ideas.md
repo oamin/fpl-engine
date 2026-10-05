@@ -102,6 +102,8 @@ The reset to his own squad was run on 2026-10-05 and kept ([reset gap](bc-b57f0f
 
 The free wallet on that same reset was run on 2026-10-05 and kept ([free wallet](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). The chip is chosen on the priced horizon only. Gameweek 1 cannot spend the wildcard outlook of about 38. Triple Captain lands in Gameweek 3 and Bench Boost in Gameweek 4. The wallet scores 347 against 350, which is 15 ahead of the mirrored 332, with two weeks ahead. The wallet did not beat these five decisions. The margins stay 12 and 16. See `reports/reset_chips_gw15.md`.
 
+A bench floor after the Gameweek 4 return of 2 was not added. The same rule, carried from entry 1078627's Gameweek 1 fifteen, played Bench Boost in Gameweek 1 for a realised bench of 18 against an outlook of 9.27. The model scores 376 against his 368. That is a gain on these five weeks, and it is one squad. It does not loosen the rule and it does not install a floor. See `reports/friend_start_gw15.md`.
+
 - Asian handicap, as a live-week pot only, after its own lock. Historical `score_xp` stays on the 1X2 and the 2.5 line. The free file has the handicap and no 3.5 line.
 - Player props, on the decision week only, in their own column. An Odds API call needs a cost estimate and the PI's approval. No market is discovered in a loop.
 - A season-rank weight on the copied tail only. Strength comes from season prices on a log scale, shrunk and clipped to about a 15% move in the team rate. It is idle on a week that already has a 1X2. It is not a 1–10 multiplier. The first Gameweek 6 call, once a line exists, still copies the third priced step flat.

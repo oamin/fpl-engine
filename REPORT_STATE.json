@@ -1,11 +1,12 @@
 {
   "updated": "2026-10-05",
-  "milestone": "reset-chips",
+  "milestone": "friend-start",
   "status": "reviewed",
-  "summary": "The Gameweek 1-5 reset was run again with a free chip wallet. The model scores 347 against ojaminFC's 350. The gap is -3, with two weeks ahead, so the wallet did not beat these five decisions. Triple Captain is in Gameweek 3 and Bench Boost in Gameweek 4. The wallet is 15 points ahead of the mirrored reset at 332. Gemini kept the split. The margins were not changed.",
+  "summary": "The free chip wallet was given entry 1078627's Gameweek 1 fifteen and the squad was carried. The model scores 376 against Charcot Donetsk's 368. The gap is +8, with 3 of 5 weeks non-negative, so that is a gain on these five weeks from his starting fifteen. Bench Boost is in Gameweek 1 and the bench scored 18 against an outlook of 9.27. He played the same chip. Gemini kept the split. No bench floor was added.",
   "artifacts": [
-    "src/models/reset_chips.py",
-    "reports/reset_chips_gw15.md",
-    "data/processed/reset_chips_gw15.csv"
+    "src/models/friend_start.py",
+    "reports/friend_start_gw15.md",
+    "data/processed/friend_start_gw15.csv",
+    "data/entry/1078627.json"
   ]
 }
