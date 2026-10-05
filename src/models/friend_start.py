@@ -128,6 +128,24 @@ def his_score(week: dict[str, Any], roster: pd.DataFrame) -> dict[str, Any]:
     }
 
 
+def _squad_snapshot(squad: pd.DataFrame) -> list[dict[str, Any]]:
+    """The fifteen, with the score and the points, and nothing decided by the result."""
+    rows = []
+    for player in squad.itertuples():
+        priority = getattr(player, "xi_priority", 1.0)
+        rows.append(
+            {
+                "id": str(player.player_id),
+                "position": str(player.position),
+                "score_xp": float(player.score_xp),
+                "minutes": float(getattr(player, "minutes") or 0),
+                "total_points": float(getattr(player, "total_points") or 0),
+                "xi_priority": float(0.0 if priority is None else priority),
+            }
+        )
+    return rows
+
+
 def _position_counts(ids: list[str] | set[str], position_of) -> dict[str, int]:
     """How many of each position were named in the eleven before the deadline."""
     counts = {"GKP": 0, "DEF": 0, "MID": 0, "FWD": 0}
@@ -301,6 +319,8 @@ def one_week(
         ),
         "model_intended_counts": model_counts,
         "their_intended_counts": their_counts,
+        "model_intended_ids": sorted(banked["intended_ids"]),
+        "squad_rows": _squad_snapshot(squad),
         "model_in": sorted(new_state.ids() - pre_ids),
         "model_out": sorted(pre_ids - new_state.ids()),
         "n_transfers": int(n_tx),
