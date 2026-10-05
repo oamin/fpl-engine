@@ -1,13 +1,12 @@
 {
   "updated": "2026-10-05",
-  "milestone": "live-lines",
+  "milestone": "live-scorer",
   "status": "stopped",
-  "summary": "One Odds API request priced the Gameweek 6 and Gameweek 7 1X2 from the US books. It cost 2 credits. Four matches have no 2.5 total, and those cells are blank. No minutes file was passed, so no chip was chosen and the half was not planned. Gemini had already kept this source rule. It is not a reviewed chip recommendation.",
+  "summary": "The live scorer is ready. It calls xp_on_pot, the same one-match formula as compute_xp, with file minutes, deadline shot shares, and the opening pot. Gameweek 8 would repeat Gameweek 7. No minutes file was passed, so the scorer was not run and no chip was chosen. This is not a reviewed chip recommendation.",
   "artifacts": [
-    "src/live/lines.py",
+    "src/live/scorer.py",
     "src/live/deadline.py",
-    "tests/test_live_lines.py",
-    "data/live/gw_lines.csv",
+    "tests/test_live_scorer.py",
     "reports/live_deadline_gw6.md"
   ]
 }

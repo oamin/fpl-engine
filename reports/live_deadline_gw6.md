@@ -2,7 +2,7 @@
 
 ojaminFC (entry 2632584) at the Gameweek 6 deadline, 2026-10-10T10:00:00Z. This note was written before that deadline. No chip was chosen.
 
-Every club in this gameweek has a 1X2 on the live file. The half was not planned. The minutes file is absent, and this pass does not turn the line into a chip.
+Every club in this gameweek has a 1X2 on the live file. The scorer is ready and was not run because the minutes file is absent.
 
 One Odds API request was sent for soccer_epl, markets h2h and totals, region us. It cost 2 credits. 498 credits remain. Where that slate has a 1X2, the price is the average of the US books. ESPN close fills a fixture the trial does not price. A total other than 2.5 is blank.
 

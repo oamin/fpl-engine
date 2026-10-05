@@ -1,0 +1,425 @@
+"""Deadline scores for one live half.
+
+``xp_on_pot`` is the one-match formula, the same components as ``compute_xp``.
+This module chooses the inputs. Minutes come from the file, and a zero stays
+a zero. Shot shares stay on the deadline. A priced week moves only the
+opponent pot, and a double uses the first pot. The next club week with no
+1X2 repeats the last priced week. One rebuild is shared by Wildcard and the
+decision-week Free Hit. ``plan_half`` then reads that table.
+
+The formula is not changed here. A missing minutes file never reaches this
+module: the caller records ``missing_minutes`` and does not plan a chip.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import Any, Mapping, Sequence
+
+import pandas as pd
+
+from src.live.fpl_snapshot import ELEMENT
+from src.live.half_plan import HalfPlan, WeekInputs, half_end, plan_half
+from src.models.half_plan_scores import club_steps, week_inputs
+from src.models.open_horizon import opening_pots_by_team_gw, xp_on_pot
+from src.models.season_climb_ft import SquadState
+from src.models.xp_engine import DEFCON_THRESH, MIN_HISTORY, MIN_MINUTES, add_player_priors
+from src.teams import norm_team
+
+# The climb's buy gate. It is not a 2026/27 rules constant.
+ELIGIBLE_XMI = 45.0
+SEASON = "2026-27"
+SCORE_COL = "score_xp"
+_STUB_DATE = "2099-01-01"
+_GHOST = "__team__:"
+
+
+class ScorerError(RuntimeError):
+    """The line is present and the scorer cannot price the half."""
+
+
+@dataclass(frozen=True)
+class ScorerResult:
+    """The half that was priced. ``line_weeks`` have their own 1X2."""
+
+    plan: HalfPlan
+    weeks: tuple[WeekInputs, ...]
+    line_weeks: tuple[int, ...]
+    horizon_weeks: tuple[int, ...]
+    copy_note: str
+    step_scores: dict[int, dict[str, float]]
+
+
+def player_key(element: int) -> str:
+    """Element id as the live season key."""
+    return f"{SEASON}:{int(element)}"
+
+
+def score_on_line(
+    *,
+    position: str,
+    xmi: float,
+    share_xg: float,
+    share_xa: float,
+    exp_defcon_hit: float,
+    pot: Mapping[str, float],
+    fwd_goal_scale: float = 1.0,
+) -> float:
+    """One player, one pot. The scale stays 1 until a later lock fits it."""
+    return xp_on_pot(
+        position=position,
+        xmi=xmi,
+        share_xg=share_xg,
+        share_xa=share_xa,
+        exp_defcon_hit=exp_defcon_hit,
+        fwd_goal_scale=fwd_goal_scale,
+        pot=dict(pot),
+    )
+
+
+def deadline_shares(logs: pd.DataFrame, before_gw: int) -> pd.DataFrame:
+    """Shot shares at the deadline. The stub's own match is not in the share.
+
+    Rolling minutes on the stub are the historical prior. The live scorer
+    does not use them. A later step overwrites the club with the current one.
+    """
+    empty = pd.DataFrame(
+        columns=[
+            "player_id",
+            "n_prior",
+            "share_xG",
+            "share_xA",
+            "exp_defcon_hit",
+            "team_norm",
+            "position",
+        ]
+    )
+    if logs.empty or "gw" not in logs.columns:
+        return empty
+    hist = logs.loc[pd.to_numeric(logs["gw"], errors="coerce") < int(before_gw)].copy()
+    if hist.empty:
+        return empty
+    hist["player_id"] = [_key_from_log(value) for value in hist["player_id"]]
+    hist["gw"] = pd.to_numeric(hist["gw"], errors="coerce").astype(int)
+    hist["date"] = hist["date"].astype(str) if "date" in hist.columns else ""
+    hist["team_norm"] = hist["team_norm"].map(lambda name: norm_team(str(name)))
+    hist["position"] = hist["position"].astype(str)
+    for col in ("minutes", "xG", "xA", "total_points", "defcon_raw"):
+        if col not in hist.columns:
+            hist[col] = 0.0
+        hist[col] = pd.to_numeric(hist[col], errors="coerce").fillna(0.0)
+    hist["defcon_hit"] = _defcon_hit(hist)
+    hist["fixture_id"] = hist["date"] + ":" + hist["team_norm"]
+
+    last = (
+        hist.sort_values(["player_id", "gw", "date"], kind="mergesort")
+        .groupby("player_id", as_index=False)
+        .tail(1)
+    )
+    stubs = last.copy()
+    stubs["gw"] = int(before_gw)
+    stubs["date"] = _STUB_DATE
+    stubs["minutes"] = 0.0
+    stubs["xG"] = 0.0
+    stubs["xA"] = 0.0
+    stubs["total_points"] = 0.0
+    stubs["defcon_hit"] = 0.0
+    stubs["defcon_raw"] = 0.0
+    stubs["fixture_id"] = _STUB_DATE + ":" + stubs["team_norm"]
+
+    clubs = stubs.drop_duplicates("team_norm")
+    ghosts = clubs.copy()
+    ghosts["player_id"] = ghosts["team_norm"].map(lambda club: f"{_GHOST}{club}")
+    ghosts["minutes"] = 90.0
+    ghosts["position"] = "MID"
+
+    frame = pd.concat([hist, stubs, ghosts], ignore_index=True)
+    priors = add_player_priors(frame)
+    kept = priors.loc[
+        (priors["gw"] == int(before_gw))
+        & ~priors["player_id"].astype(str).str.startswith(_GHOST)
+    ].copy()
+    kept = kept.drop_duplicates("player_id", keep="first")
+    return kept.reset_index(drop=True)
+
+
+def roster_from_bootstrap(bootstrap: Mapping[str, Any]) -> pd.DataFrame:
+    """Current club and price. The club is the one this week's fixture uses."""
+    names = {int(row["id"]): str(row["name"]) for row in bootstrap["teams"]}
+    rows = []
+    for element in bootstrap["elements"]:
+        team_id = int(element["team"])
+        rows.append(
+            {
+                "player_id": player_key(int(element["id"])),
+                "position": ELEMENT[int(element["element_type"])],
+                "team_norm": norm_team(names[team_id]),
+                "value": int(element["now_cost"]),
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def build_pool(
+    roster: pd.DataFrame,
+    shares: pd.DataFrame,
+    minutes: Mapping[str, float],
+    owned: set[str],
+) -> pd.DataFrame:
+    """Eligible buyers plus every owned id. A missing share is zero.
+
+    ``minutes`` is the live map. Rolling minutes on ``shares`` are ignored.
+    """
+    share_rows = (
+        shares.drop_duplicates("player_id", keep="first").set_index("player_id")
+        if not shares.empty
+        else pd.DataFrame()
+    )
+    rows: list[dict[str, Any]] = []
+    for person in roster.itertuples(index=False):
+        pid = str(person.player_id)
+        if not share_rows.empty and pid in share_rows.index:
+            src = share_rows.loc[pid]
+            share_xg = float(src["share_xG"])
+            share_xa = float(src["share_xA"])
+            defcon = float(src["exp_defcon_hit"])
+            n_prior = int(src["n_prior"])
+        else:
+            share_xg = 0.0
+            share_xa = 0.0
+            defcon = 0.0
+            n_prior = 0
+        xmi = float(minutes.get(pid, 0.0))
+        eligible = n_prior >= MIN_HISTORY and xmi >= ELIGIBLE_XMI
+        if not eligible and pid not in owned:
+            continue
+        rows.append(
+            {
+                "player_id": pid,
+                "position": str(person.position),
+                "team_norm": str(person.team_norm),
+                "value": int(person.value),
+                "eligible": bool(eligible),
+                "minutes": xmi,
+                "share_xG": share_xg,
+                "share_xA": share_xa,
+                "exp_defcon_hit": defcon,
+                "n_prior": n_prior,
+                "total_points": 0.0,
+                SCORE_COL: 0.0,
+            }
+        )
+    pool = pd.DataFrame(rows)
+    if pool.empty:
+        raise ScorerError("the chip pool is empty")
+    missing = set(owned) - set(pool["player_id"].astype(str))
+    if missing:
+        raise ScorerError("owned players missing from the chip pool")
+    return pool
+
+
+def priced_gameweeks(
+    fixtures: Sequence[Mapping[str, Any]],
+    pots: Mapping[tuple[int, str], Sequence[Mapping[str, float]]],
+    names: Mapping[int, str],
+    start: int,
+    end: int,
+    limit: int = 3,
+) -> list[int]:
+    """Club weeks with a 1X2 for every side, in order, at most ``limit``.
+
+    A week with no clubs is skipped. The walk stops at the first club week
+    that is missing a 1X2. A later priced week is not used in its place.
+    """
+    found: list[int] = []
+    for gw in range(int(start), int(end) + 1):
+        clubs = _clubs_in_week(fixtures, names, gw)
+        if not clubs:
+            continue
+        if any((gw, club) not in pots for club in clubs):
+            break
+        found.append(gw)
+        if len(found) >= int(limit):
+            break
+    return found
+
+
+def score_steps(
+    pool: pd.DataFrame,
+    pots: Mapping[tuple[int, str], Sequence[Mapping[str, float]]],
+    weeks: Sequence[int],
+) -> dict[int, dict[str, float]]:
+    """Score each priced week from the live minutes and the first pot.
+
+    A club with no fixture that week scores 0. A second pot is not added.
+    """
+    out: dict[int, dict[str, float]] = {}
+    for gw in weeks:
+        scores: dict[str, float] = {}
+        for row in pool.itertuples(index=False):
+            quotes = pots.get((int(gw), str(row.team_norm)), [])
+            pid = str(row.player_id)
+            if not quotes:
+                scores[pid] = 0.0
+                continue
+            scores[pid] = score_on_line(
+                position=str(row.position),
+                xmi=float(row.minutes),
+                share_xg=float(row.share_xG),
+                share_xa=float(row.share_xA),
+                exp_defcon_hit=float(row.exp_defcon_hit),
+                pot=quotes[0],
+            )
+        out[int(gw)] = scores
+    return out
+
+
+def scores_for_horizon(
+    line_scores: Mapping[int, Mapping[str, float]],
+    horizon: Sequence[int],
+) -> tuple[dict[int, dict[str, float]], list[tuple[int, int]]]:
+    """Fill a horizon week that has no line with the previous line's scores.
+
+    The copy is the last priced step, not a new pot. The pairs are
+    ``(week, source)``.
+    """
+    if not horizon:
+        raise ScorerError("no club week to price")
+    out: dict[int, dict[str, float]] = {}
+    copies: list[tuple[int, int]] = []
+    last: int | None = None
+    for gw in horizon:
+        week = int(gw)
+        if week in line_scores:
+            out[week] = {str(pid): float(value) for pid, value in line_scores[week].items()}
+            last = week
+            continue
+        if last is None:
+            raise ScorerError(f"GW{week} has no earlier line to copy")
+        out[week] = {str(pid): float(value) for pid, value in line_scores[last].items()}
+        copies.append((week, last))
+    return out, copies
+
+
+def copy_note(copies: Sequence[tuple[int, int]]) -> str:
+    """One sentence per copied week. Empty when every horizon week has a line."""
+    if not copies:
+        return ""
+    parts = [
+        f"GW{int(gw)} repeats GW{int(src)} and has no 1X2 of its own"
+        for gw, src in copies
+    ]
+    return ". ".join(parts) + "."
+
+
+def clubs_from_fixtures(
+    fixtures: Sequence[Mapping[str, Any]],
+    names: Mapping[int, str],
+    start: int,
+    end: int,
+) -> dict[int, set[str]]:
+    """Clubs with a fixture. A week with none is left out, and it is not copied."""
+    out: dict[int, set[str]] = {}
+    for gw in range(int(start), int(end) + 1):
+        clubs = _clubs_in_week(fixtures, names, gw)
+        if clubs:
+            out[gw] = clubs
+    return out
+
+
+def plan_deadline(
+    current_gw: int,
+    state: SquadState,
+    pool: pd.DataFrame,
+    step_scores: Mapping[int, Mapping[str, float]],
+    clubs: Mapping[int, set[str]],
+    played: Mapping[int, str] | None = None,
+) -> tuple[HalfPlan, list[WeekInputs]]:
+    """One rebuild on the decision-week scores, then the half plan.
+
+    Later weeks keep that fifteen. They do not solve the squad again.
+    """
+    if int(current_gw) not in step_scores:
+        raise ScorerError(f"GW{int(current_gw)} has no outlook scores")
+    frame = pool.copy()
+    frame["player_id"] = frame["player_id"].astype(str)
+    decision = {str(pid): float(value) for pid, value in step_scores[int(current_gw)].items()}
+    frame[SCORE_COL] = [decision.get(pid, 0.0) for pid in frame["player_id"]]
+    frame["total_points"] = frame[SCORE_COL]
+    prepared = {
+        int(gw): {str(pid): float(value) for pid, value in scores.items()}
+        for gw, scores in step_scores.items()
+    }
+    weeks = week_inputs(int(current_gw), state, frame, dict(clubs), prepared, SCORE_COL)
+    plan = plan_half(int(current_gw), weeks, played=played)
+    return plan, weeks
+
+
+def price_half(
+    *,
+    gw: int,
+    logs: pd.DataFrame,
+    odds: pd.DataFrame,
+    fixtures: Sequence[Mapping[str, Any]],
+    bootstrap: Mapping[str, Any],
+    state: SquadState,
+    minutes: Mapping[str, float],
+    played: Mapping[int, str] | None = None,
+) -> ScorerResult:
+    """Price the half from the opening line and call ``plan_half`` once."""
+    names = {int(row["id"]): str(row["name"]) for row in bootstrap["teams"]}
+    shares = deadline_shares(logs, int(gw))
+    roster = roster_from_bootstrap(bootstrap)
+    pool = build_pool(roster, shares, minutes, set(state.ids()))
+    pots = opening_pots_by_team_gw(odds, list(fixtures), names)
+    end = half_end(int(gw))
+    line_weeks = priced_gameweeks(fixtures, pots, names, int(gw), end, limit=3)
+    if not line_weeks or int(line_weeks[0]) != int(gw):
+        raise ScorerError(f"GW{int(gw)} is not fully priced")
+    line_scores = score_steps(pool, pots, line_weeks)
+    clubs = clubs_from_fixtures(fixtures, names, int(gw), end)
+    horizon = club_steps(int(gw), clubs)
+    step_scores, copies = scores_for_horizon(line_scores, horizon)
+    plan, weeks = plan_deadline(int(gw), state, pool, step_scores, clubs, played)
+    return ScorerResult(
+        plan=plan,
+        weeks=tuple(weeks),
+        line_weeks=tuple(int(week) for week in line_weeks),
+        horizon_weeks=tuple(int(week) for week in horizon),
+        copy_note=copy_note(copies),
+        step_scores=step_scores,
+    )
+
+
+def _key_from_log(value: object) -> str:
+    text = str(value)
+    if ":" in text:
+        return text
+    return player_key(int(text))
+
+
+def _defcon_hit(frame: pd.DataFrame) -> pd.Series:
+    threshold = frame["position"].map(DEFCON_THRESH)
+    hit = (
+        frame["position"].isin(list(DEFCON_THRESH))
+        & (frame["minutes"] >= MIN_MINUTES)
+        & (frame["defcon_raw"] >= threshold)
+    )
+    return hit.astype(float)
+
+
+def _clubs_in_week(
+    fixtures: Sequence[Mapping[str, Any]],
+    names: Mapping[int, str],
+    gw: int,
+) -> set[str]:
+    clubs: set[str] = set()
+    for fixture in fixtures:
+        event = fixture.get("event")
+        if event is None or int(event) != int(gw):
+            continue
+        for side in ("team_h", "team_a"):
+            raw = names.get(int(fixture[side]))
+            if raw:
+                clubs.add(norm_team(raw))
+    return clubs

@@ -6,8 +6,9 @@ chip pays when the picks carry one. A minutes file is hashed and applied
 as written, including a zero. A player left out of that file keeps his
 last observed minutes and is labelled ``no_news``.
 
-Gameweek 6 is not priced when its opening 1X2 is missing. This module
-does not invent a team rate, and it does not call the published climb.
+Gameweek 6 is not priced when its opening 1X2 is missing. A priced line
+with a minutes file is scored by ``src.live.scorer`` and planned once.
+This module does not invent a team rate, and it does not call the published climb.
 """
 
 from __future__ import annotations
@@ -103,6 +104,9 @@ class DeadlineLog:
     odds_remaining: str = ""
     odds_last_cost: str = ""
     live_rows: tuple[dict[str, Any], ...] = ()
+    scorer_ran: bool = False
+    copy_note: str = ""
+    bench_gw: int | None = None
 
 
 def player_key(element: int) -> str:
@@ -517,7 +521,12 @@ def render(log: DeadlineLog) -> str:
         (
             f"{log.team_name} (entry {log.entry_id}) at the Gameweek {log.gw} "
             f"deadline, {log.deadline or 'time not on the snapshot'}. "
-            "This note was written before that deadline. No chip was chosen."
+            "This note was written before that deadline. "
+            + (
+                "No chip was chosen."
+                if log.chip is None
+                else f"The chip this week is {log.chip}."
+            )
         ),
         "",
     ]
@@ -528,12 +537,24 @@ def render(log: DeadlineLog) -> str:
             "season table, and it does not call the half-season plan."
         )
         lines.append("")
-    elif log.line_status == "priced":
+    elif log.line_status == "priced" and not log.scorer_ran:
         lines.append(
             "Every club in this gameweek has a 1X2 on the live file. "
-            "The half was not planned. The minutes file is absent, and this "
-            "pass does not turn the line into a chip."
+            "The scorer is ready and was not run because the minutes file is absent."
         )
+        lines.append("")
+    elif log.scorer_ran:
+        lines.append(
+            "The scorer called the same one-match formula as score_xp. "
+            "Minutes came from the file, a zero stayed a zero, and a player "
+            "the file omits kept his last observed minutes. Shot shares stayed "
+            "on the deadline. Each priced week uses that week's opening pot, "
+            "and only the first pot when a club has two fixtures. "
+            "One rebuild was paid from the bank plus sales. "
+            "The transfer search was not run."
+        )
+        if log.copy_note:
+            lines.append(log.copy_note)
         lines.append("")
     if log.odds_trial == "no_key":
         lines.append(
@@ -650,10 +671,18 @@ def render(log: DeadlineLog) -> str:
         lines.append(f"Priced weeks: {weeks}.")
     else:
         lines.append("Priced weeks: none.")
-    lines.append(
-        f"Free Hit hurdle {FH_MARGIN:g} and Wildcard hurdle {WC_MARGIN:g} "
-        "were not applied. No transfer search was run."
-    )
+    if log.scorer_ran:
+        bench = "none" if log.bench_gw is None else f"GW{log.bench_gw}"
+        lines.append(
+            f"Free Hit hurdle {FH_MARGIN:g} and Wildcard hurdle {WC_MARGIN:g} "
+            f"were applied. The bench week recorded for a later transfer search "
+            f"is {bench}. No transfer search was run."
+        )
+    else:
+        lines.append(
+            f"Free Hit hurdle {FH_MARGIN:g} and Wildcard hurdle {WC_MARGIN:g} "
+            "were not applied. No transfer search was run."
+        )
     lines.append("")
     lines.append(f"## Fixtures through Gameweek {half_end(log.gw)}")
     lines.append("")
@@ -664,10 +693,16 @@ def render(log: DeadlineLog) -> str:
             f"| {row['gw']} | {row['matches']} | {row['clubs']} | {row['doubles']} |"
         )
     lines.append("")
-    lines.append(
-        "Doubles stay one fixture. The live file stores the 1X2 it could join. "
-        "Those rows were not passed to the half-season plan."
-    )
+    if log.scorer_ran:
+        lines.append(
+            "Doubles stay one fixture. The first pot is the one that was scored. "
+            "A week with no clubs is zero and is not the week later scores copy."
+        )
+    else:
+        lines.append(
+            "Doubles stay one fixture. The live file stores the 1X2 it could join. "
+            "Those rows were not passed to the half-season plan."
+        )
     lines.append("")
     return "\n".join(lines)
 
@@ -709,10 +744,6 @@ def collect(
         minutes_hash = file_hash(Path(minutes_path))
         supplied = load_minutes(Path(minutes_path), gw)
     ready, reasons = readiness(status, minutes_file is not None)
-    if ready:
-        raise DeadlineError(
-            "the opening line is present and this pass has no scorer for it"
-        )
     minutes = tuple(
         apply_live_minutes(
             [row.element for row in holdings],
@@ -724,6 +755,38 @@ def collect(
         (int(row["gw"]), str(row["chip"])) for row in entry.get("chips_played") or []
     )
     trial = read_trial(trial_path)
+    chip = None
+    priced: tuple[int, ...] = ()
+    scorer_ran = False
+    note = ""
+    bench_gw = None
+    if ready:
+        from src.live.scorer import player_key as score_key
+        from src.live.scorer import price_half
+
+        resolved = apply_live_minutes(
+            [int(element["id"]) for element in bootstrap["elements"]],
+            supplied,
+            last_observed_minutes(logs),
+        )
+        minute_map = {
+            score_key(int(row["player_id"])): float(row["xmi"]) for row in resolved
+        }
+        scored = price_half(
+            gw=int(gw),
+            logs=logs,
+            odds=odds,
+            fixtures=fixtures,
+            bootstrap=bootstrap,
+            state=state,
+            minutes=minute_map,
+            played={week: chip_name for week, chip_name in played},
+        )
+        chip = scored.plan.chip
+        priced = scored.line_weeks
+        scorer_ran = True
+        note = scored.copy_note
+        bench_gw = bench_for_transfers(scored.plan, int(gw))
     return DeadlineLog(
         entry_id=int(entry["entry_id"]),
         team_name=str(entry.get("team_name") or ""),
@@ -741,14 +804,17 @@ def collect(
         line_status=status,
         missing_clubs=missing,
         reasons=reasons,
-        chip=None,
-        priced_weeks=(),
+        chip=chip,
+        priced_weeks=priced,
         fixtures=tuple(fixture_calendar(fixtures, gw, half_end(gw))),
         api_selling_absent=site is None,
         odds_trial=str(trial.get("reason") or "not_sent"),
         odds_remaining=str(trial.get("remaining") or ""),
         odds_last_cost=str(trial.get("last") or ""),
         live_rows=read_live_rows(live_path),
+        scorer_ran=scorer_ran,
+        copy_note=note,
+        bench_gw=bench_gw,
     )
 
 
