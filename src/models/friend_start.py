@@ -159,6 +159,44 @@ def _position_counts(ids: list[str] | set[str], position_of) -> dict[str, int]:
     return counts
 
 
+def human_held_before(entry: dict[str, Any], gw: int) -> list[str]:
+    """The fifteen he held before this deadline, before the chip and the deals."""
+    if int(gw) == 1:
+        players = list(entry.get("opening_squad") or [])
+    else:
+        previous = next(row for row in entry["gameweeks"] if int(row["gw"]) == int(gw) - 1)
+        players = list(previous["xi"]) + list(previous["bench"])
+    ids = sorted({player_key(player["id"]) for player in players})
+    if len(ids) != 15:
+        raise RuntimeError(f"GW{int(gw)} pre-deadline fifteen has {len(ids)} players")
+    return ids
+
+
+def transfer_players(
+    ids: list[str], pool_by: dict[str, Any], points: dict[str, float]
+) -> list[dict[str, Any]]:
+    """Players in one final eleven only. The score is the one on the pool."""
+    rows = []
+    for pid in ids:
+        src = pool_by.get(pid)
+        score = None
+        position = None
+        if src is not None:
+            position = str(src.position)
+            raw = getattr(src, "score_xp", None)
+            if raw is not None and raw == raw:
+                score = float(raw)
+        rows.append(
+            {
+                "id": pid,
+                "position": position,
+                "score_xp": score,
+                "points": float(points.get(pid, 0.0)),
+            }
+        )
+    return rows
+
+
 def lineup_detail(ids: list[str], squad_by: dict[str, Any], intended: set[str]) -> list[dict[str, Any]]:
     """Shared starters in one final eleven, with the score used to pick the side."""
     rows = []
@@ -309,6 +347,17 @@ def one_week(
         "their_captain": theirs["captain"],
         "transfer_model": split["transfer_model"],
         "transfer_their": split["transfer_their"],
+        "transfer_model_detail": transfer_players(
+            split["transfer_model"],
+            {str(player.player_id): player for player in pool.itertuples()},
+            _points(banked["xi"]),
+        ),
+        "transfer_their_detail": transfer_players(
+            split["transfer_their"],
+            {str(player.player_id): player for player in pool.itertuples()},
+            theirs["points_map"],
+        ),
+        "human_pre_ids": human_held_before(entry, gw),
         "lineup_model": split["lineup_model"],
         "lineup_their": split["lineup_their"],
         "lineup_model_detail": lineup_detail(
