@@ -1,12 +1,12 @@
 # Gameweek 6 deadline
 
-ojaminFC (entry 2632584) at the Gameweek 6 deadline, 2026-10-10T10:00:00Z. This note was written before that deadline. No chip was chosen.
+ojaminFC (entry 2632584) at the Gameweek 6 deadline, 2026-10-10T10:00:00Z. This note was written before that deadline. The chip this week is wildcard.
 
-Every club in this gameweek has a 1X2 on the live file. The scorer is ready and was not run because the minutes file is absent.
+The scorer called the same one-match formula as score_xp. Minutes came from the file, a zero stayed a zero, and a player the file omits kept his last observed minutes. Shot shares stayed on the deadline. Each priced week uses that week's opening pot, and only the first pot when a club has two fixtures. One rebuild was paid from the bank plus sales. The transfer search was not run.
+GW8 repeats GW7 and has no 1X2 of its own.
+That chip is the locked sum. The wildcard hurdle adds every later week, including weeks that repeat the last priced step. This is not a reviewed recommendation.
 
 One Odds API request was sent for soccer_epl, markets h2h and totals, region us. It cost 2 credits. 498 credits remain. Where that slate has a 1X2, the price is the average of the US books. ESPN close fills a fixture the trial does not price. A total other than 2.5 is blank.
-
-No minutes file was passed, so nothing was hashed. A player with a stored appearance keeps his last observed minutes and is labelled no_news. That is the live pricer's fallback when a file omits him. It is not a news sheet, and it is not a reason to pick a chip.
 
 The stored picks have no selling price. Every row uses the rules-module formula: half the rise, rounded down, and the full fall.
 
@@ -36,25 +36,25 @@ Prices are tenths of £1m.
 
 ## Minutes
 
-Minutes file: absent.
+File `/workspace/data/live/xmi_gw6.csv`, SHA-256 prefix `e3615a56acc1840b`.
 
 | Player | xmi | Source |
 | --- | --- | --- |
-| Lammens | 90 | no_news |
-| Davis | 90 | no_news |
-| Calafiori | 90 | no_news |
-| Guéhi | 90 | no_news |
-| Barnes | 90 | no_news |
-| B.Fernandes | 90 | no_news |
-| Rogers | 90 | no_news |
-| Cherki | 84 | no_news |
-| Ødegaard | 72 | no_news |
-| Calvert-Lewin | 90 | no_news |
-| Haaland | 90 | no_news |
-| Forster | 0 | no_news |
-| van Ewijk | 0 | no_news |
-| Shaw | 83 | no_news |
-| Scarlett | 0 | no_news |
+| Lammens | 90 | file |
+| Davis | 90 | file |
+| Calafiori | 90 | file |
+| Guéhi | 90 | file |
+| Barnes | 85 | file |
+| B.Fernandes | 90 | file |
+| Rogers | 85 | file |
+| Cherki | 75 | file |
+| Ødegaard | 80 | file |
+| Calvert-Lewin | 80 | file |
+| Haaland | 90 | file |
+| Forster | 0 | file |
+| van Ewijk | 60 | file |
+| Shaw | 80 | file |
+| Scarlett | 0 | file |
 
 ## Line
 
@@ -85,9 +85,28 @@ Status: priced.
 
 ## Plan
 
-Chip: not chosen. Stops: missing_minutes.
-Priced weeks: none.
-Free Hit hurdle 12 and Wildcard hurdle 16 were not applied. No transfer search was run.
+Chip: wildcard. Stops: none.
+Priced weeks: GW6, GW7.
+Free Hit hurdle 12 and Wildcard hurdle 16 were applied. The bench week recorded for a later transfer search is none. No transfer search was run.
+Schedule: wildcard GW6, free_hit GW10, bench_boost GW7, triple_captain none.
+The later chips in that schedule are the rest of today's winning combo. They are not played now. A free hit in the combo was not checked against the 12-point hurdle.
+
+| GW | Held XI | Held bench | Rebuilt XI | Free hit |
+| --- | --- | --- | --- | --- |
+| 6 | 54.82 | 5.79 | 67.38 | 67.38 |
+| 7 | 56.74 | 4.52 | 61.85 | 69.08 |
+| 8 | 56.74 | 4.52 | 61.85 | 69.08 |
+| 9 | 56.74 | 4.52 | 61.85 | 69.08 |
+| 10 | 56.74 | 4.52 | 61.85 | 69.08 |
+| 11 | 56.74 | 4.52 | 61.85 | 69.08 |
+| 12 | 56.74 | 4.52 | 61.85 | 69.08 |
+| 13 | 56.74 | 4.52 | 61.85 | 69.08 |
+| 14 | 56.74 | 4.52 | 61.85 | 69.08 |
+| 15 | 56.74 | 4.52 | 61.85 | 69.08 |
+| 16 | 56.74 | 4.52 | 61.85 | 69.08 |
+| 17 | 56.74 | 4.52 | 61.85 | 69.08 |
+| 18 | 56.74 | 4.52 | 61.85 | 69.08 |
+| 19 | 56.74 | 4.52 | 61.85 | 69.08 |
 
 ## Fixtures through Gameweek 19
 
@@ -108,4 +127,4 @@ Free Hit hurdle 12 and Wildcard hurdle 16 were not applied. No transfer search w
 | 18 | 10 | 20 | 0 |
 | 19 | 10 | 20 | 0 |
 
-Doubles stay one fixture. The live file stores the 1X2 it could join. Those rows were not passed to the half-season plan.
+Doubles stay one fixture. The first pot is the one that was scored. A week with no clubs is zero and is not the week later scores copy.

@@ -107,6 +107,8 @@ class DeadlineLog:
     scorer_ran: bool = False
     copy_note: str = ""
     bench_gw: int | None = None
+    schedule: tuple[tuple[str, int | None], ...] = ()
+    outlooks: tuple[tuple[int, float, float, float, float], ...] = ()
 
 
 def player_key(element: int) -> str:
@@ -555,6 +557,12 @@ def render(log: DeadlineLog) -> str:
         )
         if log.copy_note:
             lines.append(log.copy_note)
+        if log.chip is not None and log.copy_note:
+            lines.append(
+                "That chip is the locked sum. The wildcard hurdle adds every "
+                "later week, including weeks that repeat the last priced step. "
+                "This is not a reviewed recommendation."
+            )
         lines.append("")
     if log.odds_trial == "no_key":
         lines.append(
@@ -678,6 +686,26 @@ def render(log: DeadlineLog) -> str:
             f"were applied. The bench week recorded for a later transfer search "
             f"is {bench}. No transfer search was run."
         )
+        if log.schedule:
+            parts = [
+                f"{name} {'none' if gw is None else f'GW{gw}'}"
+                for name, gw in log.schedule
+            ]
+            lines.append("Schedule: " + ", ".join(parts) + ".")
+            if log.copy_note:
+                lines.append(
+                    "The later chips in that schedule are the rest of today's "
+                    "winning combo. They are not played now. A free hit in the "
+                    "combo was not checked against the 12-point hurdle."
+                )
+        if log.outlooks:
+            lines.append("")
+            lines.append("| GW | Held XI | Held bench | Rebuilt XI | Free hit |")
+            lines.append("| --- | --- | --- | --- | --- |")
+            for gw, held, bench_xp, rebuilt, fh in log.outlooks:
+                lines.append(
+                    f"| {gw} | {held:.2f} | {bench_xp:.2f} | {rebuilt:.2f} | {fh:.2f} |"
+                )
     else:
         lines.append(
             f"Free Hit hurdle {FH_MARGIN:g} and Wildcard hurdle {WC_MARGIN:g} "
@@ -760,6 +788,8 @@ def collect(
     scorer_ran = False
     note = ""
     bench_gw = None
+    schedule: tuple[tuple[str, int | None], ...] = ()
+    outlooks: tuple[tuple[int, float, float, float, float], ...] = ()
     if ready:
         from src.live.scorer import player_key as score_key
         from src.live.scorer import price_half
@@ -787,6 +817,20 @@ def collect(
         scorer_ran = True
         note = scored.copy_note
         bench_gw = bench_for_transfers(scored.plan, int(gw))
+        schedule = tuple(
+            (str(name), None if week is None else int(week))
+            for name, week in scored.plan.schedule.items()
+        )
+        outlooks = tuple(
+            (
+                int(row.gw),
+                float(row.held.xi_xp),
+                float(row.held.bench_xp),
+                float(row.rebuilt.xi_xp if row.rebuilt is not None else 0.0),
+                float(row.fh_xi or 0.0),
+            )
+            for row in scored.weeks
+        )
     return DeadlineLog(
         entry_id=int(entry["entry_id"]),
         team_name=str(entry.get("team_name") or ""),
@@ -815,6 +859,8 @@ def collect(
         scorer_ran=scorer_ran,
         copy_note=note,
         bench_gw=bench_gw,
+        schedule=schedule,
+        outlooks=outlooks,
     )
 
 
