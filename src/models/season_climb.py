@@ -286,6 +286,7 @@ def bank_squad_gw(
         "sub_points": points_from_subs(xi, intended_ids, points_col=points_col),
         "captain_id": cap_id,
         "vice_id": vc_id,
+        "intended_ids": sorted(intended_ids),
     }
 
 

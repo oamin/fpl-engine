@@ -128,6 +128,26 @@ def his_score(week: dict[str, Any], roster: pd.DataFrame) -> dict[str, Any]:
     }
 
 
+def lineup_detail(ids: list[str], squad_by: dict[str, Any], intended: set[str]) -> list[dict[str, Any]]:
+    """Shared starters in one final eleven, with the score used to pick the side."""
+    rows = []
+    for pid in ids:
+        src = squad_by.get(pid)
+        if src is None:
+            raise RuntimeError(f"{pid} is in the lineup gap and not in the model squad")
+        rows.append(
+            {
+                "id": pid,
+                "position": str(src.position),
+                "score_xp": float(src.score_xp),
+                "minutes": float(getattr(src, "minutes") or 0),
+                "points": float(getattr(src, "total_points") or 0),
+                "intended": pid in intended,
+            }
+        )
+    return rows
+
+
 def assert_carried(rows: list[dict[str, Any]]) -> None:
     """The next fifteen is the model's, unless the week was a free hit."""
     for prev, nxt in zip(rows, rows[1:], strict=False):
@@ -234,6 +254,8 @@ def one_week(
     )
     if abs(pieces - gap) > 1e-6:
         raise RuntimeError(f"GW{int(gw)} pieces {pieces} do not equal the gap {gap}")
+    squad_by = {str(player.player_id): player for player in squad.itertuples()}
+    their_intended = {player_key(player["id"]) for player in week["xi"]}
     nxt = carried_state(prior, new_state, chip, int(n_tx))
     row = {
         "gw": int(gw),
@@ -252,6 +274,12 @@ def one_week(
         "transfer_their": split["transfer_their"],
         "lineup_model": split["lineup_model"],
         "lineup_their": split["lineup_their"],
+        "lineup_model_detail": lineup_detail(
+            split["lineup_model"], squad_by, set(banked["intended_ids"])
+        ),
+        "lineup_their_detail": lineup_detail(
+            split["lineup_their"], squad_by, their_intended
+        ),
         "model_in": sorted(new_state.ids() - pre_ids),
         "model_out": sorted(pre_ids - new_state.ids()),
         "n_transfers": int(n_tx),
