@@ -1,12 +1,11 @@
 {
   "updated": "2026-10-05",
-  "milestone": "friend-start",
+  "milestone": "cohort-carry",
   "status": "reviewed",
-  "summary": "The free chip wallet was given entry 1078627's Gameweek 1 fifteen and the squad was carried. The model scores 376 against Charcot Donetsk's 368. The gap is +8, with 3 of 5 weeks non-negative, so that is a gain on these five weeks from his starting fifteen. Bench Boost is in Gameweek 1 and the bench scored 18 against an outlook of 9.27. He played the same chip. Gemini kept the split. No bench floor was added.",
+  "summary": "The free-wallet carry was run on the 14 managers locked on 4 October. The model is ahead of none of them. The mean gap is -27.43. Veterans are -17.29 and rank slots are -37.57. The model plays Bench Boost and Triple Captain only. ojaminFC, left out of the mean, is 372 against 350 on the same carry. Gemini kept the split. No bench floor was added.",
   "artifacts": [
-    "src/models/friend_start.py",
-    "reports/friend_start_gw15.md",
-    "data/processed/friend_start_gw15.csv",
-    "data/entry/1078627.json"
+    "src/models/cohort_carry.py",
+    "reports/cohort_carry_gw15.md",
+    "data/processed/cohort_carry_gw15.csv"
   ]
 }

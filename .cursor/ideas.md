@@ -104,6 +104,8 @@ The free wallet on that same reset was run on 2026-10-05 and kept ([free wallet]
 
 A bench floor after the Gameweek 4 return of 2 was not added. The same rule, carried from entry 1078627's Gameweek 1 fifteen, played Bench Boost in Gameweek 1 for a realised bench of 18 against an outlook of 9.27. The model scores 376 against his 368. That is a gain on these five weeks, and it is one squad. It does not loosen the rule and it does not install a floor. See `reports/friend_start_gw15.md`.
 
+The same carry on the 14 locked managers was run on 2026-10-05 and kept ([cohort carry](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). 0 of 14 gained. The mean gap is −27.43. Veterans are −17.29 and rank slots are −37.57. The model plays Bench Boost and Triple Captain only, and the veteran gap sits in the transfers. A bench floor is still not the next change, and the margins stay 12 and 16. See `reports/cohort_carry_gw15.md`.
+
 - Asian handicap, as a live-week pot only, after its own lock. Historical `score_xp` stays on the 1X2 and the 2.5 line. The free file has the handicap and no 3.5 line.
 - Player props, on the decision week only, in their own column. An Odds API call needs a cost estimate and the PI's approval. No market is discovered in a loop.
 - A season-rank weight on the copied tail only. Strength comes from season prices on a log scale, shrunk and clipped to about a 15% move in the team rate. It is idle on a week that already has a 1X2. It is not a 1–10 multiplier. The first Gameweek 6 call, once a line exists, still copies the third priced step flat.
