@@ -94,7 +94,7 @@ The chip side report was run on 2026-10-04 and kept ([chip scores](bc-b57f0f87-8
 
 ## Live week, not this pass
 
-Parked on 2026-10-05 after Gemini kept the deadline stop ([live deadline](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). The Gameweek 6 note is `reports/live_deadline_gw6.md`. The opening line is missing, so nothing was priced.
+The live 1X2 trial was run on 2026-10-05 after Gemini kept the source rule ([live lines](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). One Odds API request, `us` only, `h2h` and `totals`, cost 2 credits. Gameweeks 6 and 7 are on `data/live/gw_lines.csv`, ten matches each. Four matches have no 2.5 total and those cells are blank. The minutes file is still absent, so no chip was chosen. See `reports/live_deadline_gw6.md`.
 
 - Asian handicap, as a live-week pot only, after its own lock. Historical `score_xp` stays on the 1X2 and the 2.5 line. The free file has the handicap and no 3.5 line.
 - Player props, on the decision week only, in their own column. An Odds API call needs a cost estimate and the PI's approval. No market is discovered in a loop.

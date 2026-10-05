@@ -1,13 +1,13 @@
 {
   "updated": "2026-10-05",
-  "milestone": "live-deadline",
+  "milestone": "live-lines",
   "status": "stopped",
-  "summary": "The Gameweek 6 deadline note for ojaminFC was written before the 10 Oct 2026 deadline. The stored football-data file has no opening 1X2 for that week, and no minutes file was supplied. No chip was chosen, the half was not priced, and the transfer search was not run. Purchase prices were reconstructed from the Gameweek 1 value and later in_cost. The picks have no selling price, so the formula was used. Gemini had already kept this stop. It is not a reviewed chip recommendation.",
+  "summary": "One Odds API request priced the Gameweek 6 and Gameweek 7 1X2 from the US books. It cost 2 credits. Four matches have no 2.5 total, and those cells are blank. No minutes file was passed, so no chip was chosen and the half was not planned. Gemini had already kept this source rule. It is not a reviewed chip recommendation.",
   "artifacts": [
+    "src/live/lines.py",
     "src/live/deadline.py",
-    "src/live/entry.py",
-    "src/models/season_climb_ft.py",
-    "tests/test_live_deadline.py",
+    "tests/test_live_lines.py",
+    "data/live/gw_lines.csv",
     "reports/live_deadline_gw6.md"
   ]
 }

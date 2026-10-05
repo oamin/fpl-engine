@@ -5,4 +5,5 @@ __pycache__/
 .ruff_cache/
 *.pyc
 .DS_Store
-data/live/
+data/live/*
+!data/live/gw_lines.csv

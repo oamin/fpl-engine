@@ -21,6 +21,7 @@ from typing import Any, Mapping, Sequence
 import pandas as pd
 
 from src.live.half_plan import HalfPlan, WeekInputs, bench_week, half_end, plan_half
+from src.live.lines import LINES_PATH, TRIAL_META
 from src.live.policy import FH_MARGIN, WC_MARGIN
 from src.models.open_horizon import opening_pots_by_team_gw
 from src.models.season_climb_ft import SquadState
@@ -98,6 +99,10 @@ class DeadlineLog:
     priced_weeks: tuple[int, ...]
     fixtures: tuple[dict[str, int], ...]
     api_selling_absent: bool
+    odds_trial: str = "not_sent"
+    odds_remaining: str = ""
+    odds_last_cost: str = ""
+    live_rows: tuple[dict[str, Any], ...] = ()
 
 
 def player_key(element: int) -> str:
@@ -442,6 +447,66 @@ def _money(tenths: int) -> str:
     return f"£{int(tenths) / 10:.1f}m"
 
 
+def _price(value: object) -> str:
+    try:
+        number = float(value)  # type: ignore[arg-type]
+    except (TypeError, ValueError):
+        return ""
+    if number != number:
+        return ""
+    return f"{number:.2f}"
+
+
+def _books(value: object) -> str:
+    try:
+        number = float(value)  # type: ignore[arg-type]
+    except (TypeError, ValueError):
+        return ""
+    if number != number:
+        return ""
+    return str(int(number))
+
+
+def load_odds_frame(odds_path: Path, live_path: Path | None) -> pd.DataFrame:
+    """Football-data history, then the live file so a live row wins on a clash."""
+    frame = pd.read_csv(odds_path)
+    if live_path is None or not Path(live_path).is_file():
+        return frame
+    live = pd.read_csv(live_path)
+    if live.empty:
+        return frame
+    return pd.concat([frame, live], ignore_index=True)
+
+
+def read_live_rows(path: Path | None) -> tuple[dict[str, Any], ...]:
+    if path is None or not Path(path).is_file():
+        return ()
+    frame = pd.read_csv(path)
+    rows = []
+    for record in frame.to_dict("records"):
+        rows.append(
+            {
+                "gw": int(float(record["gw"])),
+                "home": record.get("HomeTeam"),
+                "away": record.get("AwayTeam"),
+                "avg_h": record.get("AvgH"),
+                "avg_d": record.get("AvgD"),
+                "avg_a": record.get("AvgA"),
+                "over": record.get("Avg>2.5"),
+                "under": record.get("Avg<2.5"),
+                "source": record.get("source"),
+                "books": record.get("books"),
+            }
+        )
+    return tuple(rows)
+
+
+def read_trial(path: Path | None) -> dict[str, Any]:
+    if path is None or not Path(path).is_file():
+        return {"reason": "not_sent", "remaining": "", "last": ""}
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+
+
 def render(log: DeadlineLog) -> str:
     """The pre-deadline note. A stop names the missing line and chooses no chip."""
     played = ", ".join(f"GW{gw} {chip}" for gw, chip in log.chips_played) or "none"
@@ -458,10 +523,38 @@ def render(log: DeadlineLog) -> str:
     ]
     if "missing_opening_line" in log.reasons:
         lines.append(
-            "The opening 1X2 for this gameweek is not on the stored football-data "
-            "file. The run stops there. It does not invent a team rate from the "
-            "Asian handicap or from the season table, and it does not call the "
-            "half-season plan."
+            "This gameweek still has a club with no 1X2. The run stops there. "
+            "It does not invent a team rate from the Asian handicap or from the "
+            "season table, and it does not call the half-season plan."
+        )
+        lines.append("")
+    elif log.line_status == "priced":
+        lines.append(
+            "Every club in this gameweek has a 1X2 on the live file. "
+            "The half was not planned. The minutes file is absent, and this "
+            "pass does not turn the line into a chip."
+        )
+        lines.append("")
+    if log.odds_trial == "no_key":
+        lines.append(
+            "The Odds API call was not sent. No key is set. "
+            "The live 1X2 is the ESPN close."
+        )
+        lines.append("")
+    elif log.odds_trial == "sent":
+        lines.append(
+            "One Odds API request was sent for soccer_epl, markets h2h and totals, "
+            f"region us. It cost {log.odds_last_cost or '-'} credits. "
+            f"{log.odds_remaining or '-'} credits remain. "
+            "Where that slate has a 1X2, the price is the average of the US books. "
+            "ESPN close fills a fixture the trial does not price. "
+            "A total other than 2.5 is blank."
+        )
+        lines.append("")
+    elif log.odds_trial == "error":
+        lines.append(
+            "The Odds API request failed and was not retried. "
+            "ESPN close fills a fixture the trial does not price."
         )
         lines.append("")
     if "missing_minutes" in log.reasons:
@@ -533,6 +626,18 @@ def render(log: DeadlineLog) -> str:
     if log.missing_clubs:
         lines.append("")
         lines.append("Clubs with a fixture and no opening 1X2: " + ", ".join(log.missing_clubs) + ".")
+    if log.live_rows:
+        lines.append("")
+        lines.append("| GW | Match | Source | Books | 1X2 | Over 2.5 | Under 2.5 |")
+        lines.append("| --- | --- | --- | --- | --- | --- | --- |")
+        ordered = sorted(log.live_rows, key=lambda row: (int(row["gw"]), str(row["home"])))
+        for row in ordered:
+            one = f"{_price(row['avg_h'])} / {_price(row['avg_d'])} / {_price(row['avg_a'])}"
+            books = _books(row.get("books"))
+            lines.append(
+                f"| {int(row['gw'])} | {row['home']} vs {row['away']} | {row['source']} | "
+                f"{books} | {one} | {_price(row['over']) or 'blank'} | {_price(row['under']) or 'blank'} |"
+            )
     lines.append("")
     lines.append("## Plan")
     lines.append("")
@@ -560,8 +665,8 @@ def render(log: DeadlineLog) -> str:
         )
     lines.append("")
     lines.append(
-        "Doubles stay one fixture. The three priced steps would have been the "
-        "next three club-weeks with an opening 1X2. Those steps were not built."
+        "Doubles stay one fixture. The live file stores the 1X2 it could join. "
+        "Those rows were not passed to the half-season plan."
     )
     lines.append("")
     return "\n".join(lines)
@@ -575,12 +680,14 @@ def collect(
     bootstrap_path: Path = BOOTSTRAP_PATH,
     fixtures_path: Path = FIXTURES_PATH,
     minutes_path: Path | None = None,
+    live_path: Path | None = LINES_PATH,
+    trial_path: Path | None = TRIAL_META,
     gw: int = DECISION_GW,
 ) -> DeadlineLog:
-    """Read the stored files and stop when Gameweek 6 has no opening line."""
+    """Read the stored files. A live 1X2 is used in front of the historical file."""
     entry = json.loads(entry_path.read_text(encoding="utf-8"))
     logs = pd.read_csv(log_path)
-    odds = pd.read_csv(odds_path)
+    odds = load_odds_frame(odds_path, live_path)
     bootstrap = json.loads(bootstrap_path.read_text(encoding="utf-8"))
     fixtures = json.loads(fixtures_path.read_text(encoding="utf-8"))
     players = final_players(entry)
@@ -616,6 +723,7 @@ def collect(
     played = tuple(
         (int(row["gw"]), str(row["chip"])) for row in entry.get("chips_played") or []
     )
+    trial = read_trial(trial_path)
     return DeadlineLog(
         entry_id=int(entry["entry_id"]),
         team_name=str(entry.get("team_name") or ""),
@@ -637,6 +745,10 @@ def collect(
         priced_weeks=(),
         fixtures=tuple(fixture_calendar(fixtures, gw, half_end(gw))),
         api_selling_absent=site is None,
+        odds_trial=str(trial.get("reason") or "not_sent"),
+        odds_remaining=str(trial.get("remaining") or ""),
+        odds_last_cost=str(trial.get("last") or ""),
+        live_rows=read_live_rows(live_path),
     )
 
 
@@ -651,6 +763,12 @@ def run(
 
 
 def main() -> None:
+    from src.live.fpl_snapshot import load
+    from src.live.lines import refresh_lines
+
+    snap = load()
+    names = {int(row["id"]): str(row["name"]) for row in snap["bootstrap"]["teams"]}
+    refresh_lines(fixtures=snap["fixtures"], team_names=names)
     log = run()
     print(
         f"GW{log.gw} {log.team_name}: {', '.join(log.reasons) or 'ready'}; "

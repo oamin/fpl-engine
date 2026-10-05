@@ -215,7 +215,8 @@ class LogTargetTest(unittest.TestCase):
     def test_the_stored_gameweek_stops_with_no_chip(self) -> None:
         with tempfile.TemporaryDirectory() as folder:
             dest = Path(folder) / "live_deadline_gw6.md"
-            log = run(report_path=dest)
+            missing = Path(folder) / "no-live-lines.csv"
+            log = run(report_path=dest, live_path=missing, trial_path=missing)
             text = dest.read_text(encoding="utf-8")
         self.assertIn("missing_opening_line", text)
         self.assertIn("missing_minutes", text)

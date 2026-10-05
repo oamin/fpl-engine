@@ -9,6 +9,7 @@ TEAM_ALIASES = {
     "man city": "man city",
     "manchester city": "man city",
     "tottenham": "spurs",
+    "tottenham hotspur": "spurs",
     "spurs": "spurs",
     "nottingham forest": "nottm forest",
     "nott'm forest": "nottm forest",
