@@ -41,6 +41,8 @@ Four legal Gameweek 1 fifteens per season come from that week's ownership: templ
 
 `plan_half` on those fifteens is a side report. 2024/25 is absent. Every squad wildcards in Gameweek 4. 2022/23 loses on every squad, best lift Third at −40. 2023/24 best lift is Third at +128. 2025/26 gains on every squad. Quote Next +34 (2171 to 2205). The highest chip total is Premium 2214. Template's lift is +199. Free Hit is played once, on the 2023/24 Third squad in Gameweek 30. Gemini kept the count. The empty-chip file is unchanged. 2022/23 and 2023/24 use the 2026 wallet. 2025/26 is the matched wallet. See `reports/half_plan_scores.md`.
 
+The same twelve climbs were replayed on 2026-10-05 and matched that file. Ten of the twelve Gameweek 4 wildcards still clear 16 on the three priced steps. The chip week is positive on every climb, and in 2022/23 the weeks with no chip are the loss. All eight second-half wildcards in 2023/24 and 2025/26 miss 16 on the priced steps. Gemini kept the split ([chip audit](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). The margins stay 12 and 16. See `reports/chip_audit.md`.
+
 ### Live deadline, Gameweek 6
 
 The deadline is 10 Oct 2026. Entry 2632584, ojaminFC, has 350 points through Gameweek 5, £1.5m in the bank, 1 free transfer, and Triple Captain already played in Gameweek 1. Purchase price is the Gameweek 1 value, or `in_cost` for a later buy. The stored picks have no site selling price, so the formula is used. Calafiori was bought at 55, is now 58, and sells at 56.
@@ -49,7 +51,7 @@ The deadline is 10 Oct 2026. Entry 2632584, ojaminFC, has 350 points through Gam
 
 `src/live/scorer.py` wraps `xp_on_pot`, the same one-match formula as `compute_xp`. Minutes come from a `player_id, gw, xmi` file. A written 0 stays 0. A player the file omits keeps his last observed minutes and is labelled `no_news`. Shot shares stay at the deadline. Each priced week uses that week's opening pot, and a double uses the first pot. Gameweek 8 has no 1X2, so a run repeats Gameweek 7 and later club weeks copy that step. One rebuild is paid from the bank plus sales. `plan_half` then reads the table. The transfer search is left for a later pass.
 
-No minutes file was passed. The scorer was not run. No chip was chosen. The 12 and 16 hurdles were not applied. The note is `reports/live_deadline_gw6.md`. This is not a reviewed chip recommendation.
+The minutes sheet from the 2 Oct completion was read. The locked sum plays Wildcard in Gameweek 6. The rebuilt eleven leads by 12.56 this week and by 5.11 in Gameweek 7, and Gameweeks 8–19 repeat Gameweek 7, so the half-season sum is about 79 against the hurdle of 16. Gemini kept that as the arithmetic only. The note is `reports/live_deadline_gw6.md`.
 
 ## How the direction moved
 
@@ -67,6 +69,8 @@ The build is now the live week. The historical formula is the inner call. Around
 
 One call was made on the 2 Oct 2026 bootstrap. All 227 required rows passed. The sheet is `data/live/xmi_gw6.csv`, which stays out of git. Players with no flag and no place in the fifteen are absent from it. See `reports/live_minutes_gw6.md`.
 
-The scorer has now read that sheet. The locked sum plays Wildcard in Gameweek 6. The rebuilt eleven leads by 12.56 this week and by 5.11 in Gameweek 7, and Gameweeks 8–19 repeat Gameweek 7, so the half-season sum is about 79 against the hurdle of 16. Gemini reviewed that table ([wildcard arithmetic](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)) and kept it as the arithmetic only. It is not a reviewed recommendation. The later Free Hit and Bench Boost in the schedule are the rest of today's winning combo. They are not played now. See `reports/live_deadline_gw6.md`.
+The scorer has read the minutes sheet. The locked sum plays Wildcard in Gameweek 6. Gameweeks 6 and 7 are about 17.7 against the hurdle of 16, and the printed half-season sum of about 79 repeats Gameweek 7. Gemini kept that as the arithmetic only ([wildcard arithmetic](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). The later Free Hit and Bench Boost in the schedule are the rest of today's winning combo. They are not played now. See `reports/live_deadline_gw6.md`.
+
+The chip audit is the check on that rule. The chip week scores points. The 2022/23 loss is the squad in the weeks after the wildcard. Bounding the wildcard sum to the priced steps is the open formula change, and it has not been locked. See `reports/chip_audit.md`.
 
 Still parked: an Asian handicap as a live-week pot only, player props after a fresh cost estimate and the PI's approval, a shrunk season-rank weight on weeks that have no 1X2, and the other two guider outputs (a search constraint, or a question back). Those outputs leave `score_xp` unchanged. The 2025/26 top-100 archive remains a descriptive benchmark, not a sample to fit. Assistant Manager, and the 2024/25 chip wallet, stay out until that chip exists.

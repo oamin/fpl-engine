@@ -1,11 +1,13 @@
 {
   "updated": "2026-10-05",
-  "milestone": "live-scorer-run",
-  "status": "stopped",
-  "summary": "The scorer read the LLM minutes sheet. The locked sum plays Wildcard in Gameweek 6. The rebuilt eleven leads by 12.56 this week and by 5.11 in Gameweek 7, and Gameweeks 8 to 19 repeat Gameweek 7, so the half-season sum is about 79 against the hurdle of 16. Gemini kept that as the arithmetic only. It is not a reviewed chip recommendation. No transfer search was run and the Odds API was not called.",
+  "milestone": "chip-audit",
+  "status": "reviewed",
+  "summary": "The twelve stored chip climbs were replayed and matched the stored chip file. Ten of twelve Gameweek 4 wildcards clear 16 on the priced steps. The chip week is positive on every climb, and in 2022/23 the weeks with no chip are the loss. All eight second-half wildcards in 2023/24 and 2025/26 miss 16 on the priced steps. Gemini kept the split. The margins stay 12 and 16. Bounding the wildcard sum is a later batch.",
   "artifacts": [
-    "src/live/deadline.py",
-    "reports/live_deadline_gw6.md",
-    "reports/live_minutes_gw6.md"
+    "src/models/chip_audit.py",
+    "reports/chip_audit.md",
+    "data/processed/chip_audit_wildcards.csv",
+    "data/processed/chip_audit_lifts.csv",
+    "data/processed/chip_audit_churn.csv"
   ]
 }
