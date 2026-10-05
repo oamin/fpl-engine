@@ -87,4 +87,6 @@ The lineup piece of that gap is −198. It was tagged from the intended eleven a
 
 That shape figure splits into formation −163 and displacement −33. Formation is an extra player at the position in the eleven named before the deadline. Displacement is a shared starter left over after that extra count. The model named more defenders on 24 of the 39 weeks that have one of these starters. Gemini kept the split ([shape split](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). See `reports/shape_split_gw15.md`.
 
+The same fifteens were then tried with only the eleven changed. Five midfielders sit 0.25 below the named score and score +1.54 points. That is inconclusive, so the picker stays. Three forwards score −0.89 and the picker stays. Gemini kept the calls ([shape trial](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). See `reports/shape_trial_gw15.md`.
+
 Still parked: an Asian handicap as a live-week pot only, player props after a fresh cost estimate and the PI's approval, a shrunk season-rank weight on weeks that have no 1X2, and the other two guider outputs (a search constraint, or a question back). Those outputs leave `score_xp` unchanged. The 2025/26 top-100 archive remains a descriptive benchmark, not a sample to fit. Assistant Manager, and the 2024/25 chip wallet, stay out until that chip exists.

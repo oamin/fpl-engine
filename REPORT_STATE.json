@@ -1,11 +1,11 @@
 {
   "updated": "2026-10-05",
-  "milestone": "shape-split",
+  "milestone": "shape-trial",
   "status": "reviewed",
-  "summary": "The unmatched shared starters split into formation -163 and displacement -33. Those sum to the shape figure of -196. The model named more defenders on 24 of the 39 weeks that have one of these starters. Gemini kept the split. The score was not changed.",
+  "summary": "On the carried fifteens, five midfielders sit 0.25 below the named score and score +1.54 points. That is inconclusive, so the picker stays. Three forwards score -0.89, so that alternate does not score more. Gemini kept the calls. The score was not changed.",
   "artifacts": [
-    "src/models/shape_split.py",
-    "reports/shape_split_gw15.md",
-    "data/processed/shape_split_gw15.csv"
+    "src/models/shape_trial.py",
+    "reports/shape_trial_gw15.md",
+    "data/processed/shape_trial_gw15.csv"
   ]
 }

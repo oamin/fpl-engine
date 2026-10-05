@@ -108,7 +108,9 @@ The same carry on the 14 locked managers was run on 2026-10-05 and kept ([cohort
 
 The lineup piece was tagged on 2026-10-05 and kept ([lineup cause](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Shape is −196 of −198. Same-position ranking is −17, and the model is never the lower score in those pairs. See `reports/lineup_cause_gw15.md`.
 
-The shape figure was split on 2026-10-05 and kept ([shape split](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Formation is −163. Displacement is −33. The loss sits in the eleven named before the deadline, mostly fewer midfielders and more defenders than the other side. Do not refit score_xp on this split. A later formation check has to be locked before it is run. See `reports/shape_split_gw15.md`.
+The shape figure was split on 2026-10-05 and kept ([shape split](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Formation is −163. Displacement is −33. The loss sits in the eleven named before the deadline, mostly fewer midfielders and more defenders than the other side. See `reports/shape_split_gw15.md`.
+
+The eleven-only trial was run on 2026-10-05 and kept ([shape trial](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Five midfielders are 0.25 below the named score and +1.54 points, which is inconclusive. Three forwards are −0.89 points, so that alternate does not score more. The picker stays. Do not refit score_xp on these five weeks. See `reports/shape_trial_gw15.md`.
 
 - Asian handicap, as a live-week pot only, after its own lock. Historical `score_xp` stays on the 1X2 and the 2.5 line. The free file has the handicap and no 3.5 line.
 - Player props, on the decision week only, in their own column. An Odds API call needs a cost estimate and the PI's approval. No market is discovered in a loop.
