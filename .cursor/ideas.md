@@ -225,6 +225,12 @@ Near is a per-week gap of at most 1.0. Far is above 4.0. The call is near when a
 
 Counted the same day ([squad frontier](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). Ten chip weeks. Nine have a player with no row on the published frame, so they stay unscored. Mark Brookes in Gameweek 5 is the other week: the fifteen costs £0.3m more than the model's budget, and the per-week gap of 4.33 stays out of the call. Both chips have no call. The score stays. See `reports/squad_frontier.md`.
 
+## Early row
+
+Locked 2026-10-06 before any new gap is read ([early row](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). Not a new score, and not a new buy. The three-appearance gate stays. Early buy stays rejected: the four template climbs lost 129, 145, and 67, and gained 30, and the pool was 7603 against 7948.
+
+Reading D scores the nine pool weeks again. A player with one or two prior appearances uses the early score, capped at 6, even when the model does not own him. A 0-minute player with no row still blocks the week. The same bars apply, at most 1.0 and above 4.0. A blank is tagged `replaced`, `benched`, or `no_fixture` from the sheet, beside the call. Last season stays for a player who stayed at his club. A club-change score waits for its own fast XI screen. The blank does not yet enter the minutes mean. See `reports/early_row_plan.md`.
+
 ## Lost shirt
 
 Noted 2026-10-06 ([blank context](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). Not switched on.
