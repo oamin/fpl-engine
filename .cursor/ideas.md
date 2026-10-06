@@ -237,6 +237,8 @@ Counted the same day ([early row](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). Six
 
 Locked 2026-10-06 before any discounted sum is read ([chip horizon](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). The weight is the existing 0.9, imported. h starts at 0 on the decision week. The hurdle stays 16. Free hit, bench boost, and triple captain stay undiscounted. The transfer value is not discounted a second time. The count is the 14 carried managers, Gameweeks 1–5. A flip is a different chip, and the path after it is not re-solved. The crowd climbs stay out. See `reports/chip_horizon_plan.md`.
 
+Counted the same day ([chip horizon](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). Zero flips on 70 deadlines. The Gameweek 1 cross, 16.90 against 15.33, cannot play a wildcard. The stored Gameweek 6 sum discounts from 17.67 to 17.16 and still clears. The hurdle stays 16. The crowd replay stays unrun. See `reports/chip_horizon.md`.
+
 ## Lost shirt
 
 Noted 2026-10-06 ([blank context](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). Not switched on.
