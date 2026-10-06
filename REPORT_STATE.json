@@ -2,8 +2,9 @@
   "updated": "2026-10-06",
   "milestone": "zero-minutes",
   "status": "noted",
-  "summary": "Of the 23 model starters who played 0 minutes in Gameweeks 1–5, 14 are João Pedro in Gameweek 5, named after four 90-minute weeks and benched by every owner. Three are Rico Lewis in Gameweeks 3–5, still on a Gameweek 1 score because a 0-minute row never updates the prior. The other six are first zeros. All 23 were automatic substitutes. The managers named none. No score change.",
+  "summary": "The stored human slot is the eleven after automatic substitutes. João Pedro was started by four of his seven owners in Gameweek 5, then replaced by a midfielder. The submitted human elevens have 10 zero-minute starters, not 0. The model does the same replacement from a three-forward eleven: the next midfielder or defender who played comes in, and the only forward in an eleven is not replaced by an outfielder. No score change.",
   "artifacts": [
-    "reports/zero_minutes_gw15.md"
+    "reports/zero_minutes_gw15.md",
+    "tests/test_autosub.py"
   ]
 }

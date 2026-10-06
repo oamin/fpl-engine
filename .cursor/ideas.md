@@ -151,7 +151,7 @@ The 2025/26 top-100 archive is still unread. It is not a sample to fit.
 
 ## Zero-minute starters, Gameweeks 1–5
 
-Noted 2026-10-06. Do not treat the 23 named zeros as one rule, and do not retune `score_xp` from them. Fourteen are João Pedro in Gameweek 5. His previous four weeks were all 90 minutes, so a lagged zero does not bench him. The seven owners all benched him. That is team news, already parked under player status.
+Noted 2026-10-06, corrected the same day. Do not treat the 23 named zeros as one rule, and do not retune `score_xp` from them. Fourteen are João Pedro in Gameweek 5. His previous four weeks were all 90 minutes, so a lagged zero does not bench him. The stored human slot is the eleven after automatic substitutes. Four of the seven owners started him and were substituted. Three benched him. The picks list `automatic_subs` is not kept in `data/entry`.
 
 Three are Rico Lewis in Gameweeks 3–5 on one squad. He had already recorded 0 minutes, and the owned stub kept the Gameweek 1 score of 3.99 because rows with 0 minutes are dropped before the prior is built. A lagged zero would move those three starts. It would also cut a player who misses one week and returns: Enzo missed Gameweek 2 and then played, and Elvedi missed Gameweek 1 and then played. The scored eleven already replaced every zero. See `reports/zero_minutes_gw15.md`.
 
