@@ -193,6 +193,14 @@ Reddit and other FPL forums are not a source for the tag ([forum sources](bc-919
 
 The loose trial was run on 2026-10-06 ([tag trial](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). A tag writes minutes only where one was already set. A doubtful flag is not zeroed. A zero clears that week's score. A 0-minute week is missing from the published frame, so the tag is inserted there and the roster supplies the points. The tagged climb scores 280, the same as the published one. Sánchez stays in the eleven in Gameweeks 1 and 2. From Gameweek 3 his score is 0 and he is benched, and Verbruggen is named. He is not sold. The week totals do not move, because the automatic substitute was already Verbruggen. The published squad is unchanged. See `reports/news_trial_gw15.md`.
 
+## Outside expected points
+
+Read on 2026-10-06 ([external xp](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). Not a new score. The climb is not rerun on these numbers.
+
+OpenFPL is open source and its published test is 2024/25. There is no frozen 2026/27 Gameweeks 1–5 file from it. The comparison uses the Onside Arena graded CSV (CC-BY-4.0, Zenodo 10.5281/zenodo.22746985) and the official `ep_next` stored on the same rows. A capture time before the deadline is the gate. Gameweek 2 fails that as a refreshed forecast: 13 values, a cap of 2.95, captured the evening of Gameweek 1, and `ep_next` copied from Gameweek 1. Those rows stay in the table and out of the mean. Dasilva's Gameweek 1 value of 14.99 is a bad source row and is not in the squad. Sánchez is missing from the file in Gameweeks 4 and 5.
+
+On the other four weeks, `score_xp` on this squad averages 4.52 against 3.85 points. Onside averages 3.34 and `ep_next` averages 2.81. The outside columns price the same names lower. Do not replace `score_xp` with either column. Do not put the file in `experiments/matrix.json`. See `reports/external_xp_gw15.md`.
+
 ## Lost shirt
 
 Noted 2026-10-06 ([blank context](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). Not switched on.
