@@ -1,8 +1,8 @@
 {
   "updated": "2026-10-06",
-  "milestone": "hypothesis-audit",
+  "milestone": "hypothesis-queue",
   "status": "reviewed",
-  "summary": "Three outside hypotheses were audited and not run. The transfer search already tries two and three transfers. The pairs it skips were worth 0.06 a week on 2025/26. The same shadow on the three earlier seasons is queued, and a rewrite is rejected if each season stays under 0.25 with fewer than three weeks at or above 1. A clean previous-season fill on the fast eleven is the second test. A distribution around the same mean does not change the expected captain or the expected total, so that hypothesis stays parked. No engine change.",
+  "summary": "Two tests are queued and not run. First is the transfer-search shadow on 2022/23, 2023/24, and 2024/25: a rewrite is rejected if each season averages under 0.25 value points a week and has fewer than three weeks at or above 1. Second is the clean previous-season fill on the fast eleven for 2023/24, 2024/25, and 2025/26. The upper-tail reading is the haul arm already parked, so a cut at 10, 12, or 15 is not added. No engine change.",
   "artifacts": [
     "reports/three_hypotheses.md"
   ]

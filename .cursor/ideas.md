@@ -124,15 +124,14 @@ The price reach on those ranked-lower pairs was run on 2026-10-05 and kept as bu
 
 Run on 2026-10-06 and parked ([close-pair shape](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). The eligible leader and the closest player within half a point, four seasons, Gameweeks 6–38. The leader wins 48.6%, 56.1%, 45.8% and 56.6% of decisive pairs. Blank rates and haul rates, counted from earlier weeks on the full sheet, stay under 80 decisive pairs in every season (blanks 59, 59, 68, 71; hauls 57, 56, 60, 60). Both miss a 5 point margin over the leader in three seasons. Do not screen either shape. Do not open a position split from the thin cells. Do not rerun `score_xp / (σ + 1)` or `score_xp − 0.25σ`. The score stays `score_xp`. See `reports/close_pair_shape.md`.
 
-## Three hypotheses
+## Queued tests
 
-Reviewed on 2026-10-06 and locked ([hypothesis audit](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). Not run. See `reports/three_hypotheses.md`.
+Locked on 2026-10-06 and still not run ([hypothesis audit](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). See `reports/three_hypotheses.md`.
 
-The transfer search already tries two and three transfers by extending one-swaps. The cross-position pairs it does not try were worth 0.06 of three-week value a week on 2025/26, and no week reached 1. The same shadow on 2022/23, 2023/24, and 2024/25 is the remaining test. A rewrite is rejected if each season averages under 0.25 and has fewer than three weeks at or above 1. A larger season is inconclusive and still does not change the search.
+1. Transfer-search shadow on 2022/23, 2023/24, and 2024/25. The pairs the beam does not try were worth 0.06 of three-week value a week on 2025/26. A rewrite is rejected if each of the three seasons averages under 0.25 and has fewer than three weeks at or above 1. A larger season is inconclusive and still does not change the search.
+2. Clean-fill fast eleven on 2023/24, 2024/25, and 2025/26. The historical builder fills a missing early prior with later weeks of the same season. The live path fills from the previous season only. The clean fill is kept only if, in at least two seasons, Gameweeks 1–8 trail Gameweeks 9–38 by at least 2 points a week and Gameweeks 5–8 trail the published eleven by at least 1 point a week. There is no 2021/22 sheet.
 
-The historical season builder fills a missing early prior with the whole season's position mean, including later weeks. The live path fills from the previous season only. The clean-fill fast eleven is the second test, on 2023/24, 2024/25, and 2025/26. It is kept only if, in at least two seasons, Gameweeks 1–8 trail Gameweeks 9–38 by at least 2 points a week and Gameweeks 5–8 trail the published eleven by at least 1 point a week. There is no 2021/22 sheet.
-
-A distribution around the same mean does not change the captain or the expected squad total. Spread penalties and the blank and haul counts are already parked. That hypothesis is not reopened. No engine change until a test is counted.
+The upper-tail reading was reviewed the same day and not added ([upper tail](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). A higher historical ceiling, conditional on a half-point score gap, is the haul arm already parked. A cut at 10, 12, or 15 would have fewer decisive pairs. Spread penalties stay parked. No engine change until a queued test is counted.
 
 - Asian handicap, as a live-week pot only, after its own lock. Historical `score_xp` stays on the 1X2 and the 2.5 line. The free file has the handicap and no 3.5 line.
 - Player props, on the decision week only, in their own column. An Odds API call needs a cost estimate and the PI's approval. No market is discovered in a loop.

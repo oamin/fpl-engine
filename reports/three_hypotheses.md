@@ -34,6 +34,16 @@ Under expected points, the captain is twice one player's points. The player with
 
 No further distribution test is queued. No code change.
 
+## Upper tail, reviewed and not queued
+
+A later note accepted that a generic spread penalty should stay parked, and asked a narrower question. When two players are within half a point, does a higher historical ceiling (the 90th percentile, or the rate of weeks at 10, 12, or 15 points) predict more points than the slightly higher score? If it does, the mean is missing a feature. If it does not, the hypothesis is dead.
+
+That question is the haul arm already counted this morning. The feature was the share of earlier weeks at 8 points or more, on the same pairs, the same half-point gap, four seasons, shift-1. Decisive pairs were 57, 56, 60, and 60. The margins against the leader were +7.5, −4.3, +4.2, and −1.6 percentage points. It missed +5 in three seasons and missed 80 pairs in every season. See `reports/close_pair_shape.md`.
+
+A rarer cut has fewer events, not more. A week of 10 or more is a subset of a week of 8 or more, so the decisive pairs would shrink below the floor they already missed. Running 10, 12, and 15 together would be a grid after a failed test. Gemini declined that ([upper tail](bc-7121b96b-db3a-552d-ade8-335c01d37eda)).
+
+The stacking point is already inside the mean. A goal and the bonus it tends to bring are added as 0.18 times expected goal points. On 7,569 buy-pool rows that bonus proxy has a mean error of −0.082, inside the leave-alone band. Dependence changes how wide a single week is. The expected total is still the sum of the means, and the captain who maximises that total is still the higher expected score. A ceiling would change the captain only if it predicted the mean better than `score_xp`. The haul arm was that check, and it did not.
+
 ## Order
 
-The search shadow on the three earlier seasons is the one test that can still change a belief quickly, and the harness already exists. The clean-fill fast eleven is second. The distribution hypothesis is not reopened.
+The search shadow on the three earlier seasons is first. The clean-fill fast eleven is second. The upper-tail reading is not added. Nothing is run in this note.
