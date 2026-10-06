@@ -209,9 +209,11 @@ def _pct(fraction: Fraction | None) -> str:
 
 
 def _arm_line(title: str, arm: dict[str, Any]) -> str:
+    ties = int(arm["ties"])
+    tie_word = "tie" if ties == 1 else "ties"
     return (
         f"{title}: {_pct(arm['fraction'])} on {arm['n']} decisive pairs, "
-        f"{arm['ties']} ties."
+        f"{ties} {tie_word}."
     )
 
 
