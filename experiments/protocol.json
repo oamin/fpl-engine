@@ -1,0 +1,24 @@
+{
+  "holdout_season": "2026-27",
+  "closed_seasons": ["2022-23", "2023-24", "2024-25", "2025-26"],
+  "season_codes": {
+    "2022-23": "2223",
+    "2023-24": "2324",
+    "2024-25": "2425",
+    "2025-26": "2526"
+  },
+  "gw_start": 5,
+  "gw_end": 38,
+  "min_gws_per_season": 20,
+  "sigma": 3.0,
+  "bootstrap": 1000,
+  "seed": 0,
+  "min_history": 3,
+  "min_xmi": 45,
+  "comparisons": [
+    ["score_xp", "score_exp_points"],
+    ["score_xp", "score_official_xp"],
+    ["score_official_xp", "score_exp_points"]
+  ],
+  "note": "Gaussian log score with sigma fixed at 3. The cluster is a gameweek. 2026-27 is frozen and is not in the comparison. A season total is not a pass."
+}

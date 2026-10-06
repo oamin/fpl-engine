@@ -1,8 +1,8 @@
 """Counts that do not change the published list or the search.
 
 5-2-3: how often that shape is the best XI on the eligible pool, the mean
-score advantage when it is, and the actual points. The published formation
-list is not edited.
+score advantage when it is, and the actual points. The default list now
+includes 5-2-3, so a fresh count is not a contrast against a shorter list.
 
 Cross-position: on one season, the value the beam kept against the best
 cross-position pair it did not try. The gap is expected value, not points.
@@ -24,7 +24,7 @@ ROOT = Path(__file__).resolve().parents[2]
 PROCESSED = ROOT / "data" / "processed"
 REPORTS = ROOT / "reports"
 GWS = list(range(5, 39))
-WITH_523 = list(FORMATIONS) + [(5, 2, 3)]
+WITH_523 = list(dict.fromkeys([*FORMATIONS, (5, 2, 3)]))
 
 
 def formation_count(season: str, code: str) -> dict[str, float]:
@@ -111,8 +111,8 @@ def _write(shapes: pd.DataFrame, gap: dict[str, float]) -> None:
         "# Stage 44 — shapes and the cross-position gap",
         "",
         "5-2-3 is counted on the eligible pool, not inside a 15-man squad. "
-        "The published formation list is unchanged. Official formations are "
-        f"{len(OFFICIAL_FORMATIONS)}. The published list omits 5-2-3 only.",
+        "The default formation list is the official list, including 5-2-3. "
+        f"Official formations are {len(OFFICIAL_FORMATIONS)}.",
         "",
         "| season | weeks | 5-2-3 wins | mean xP when it wins | mean actual | actual sum |",
         "|---|---:|---:|---:|---:|---:|",

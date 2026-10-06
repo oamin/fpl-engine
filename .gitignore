@@ -8,3 +8,8 @@ __pycache__/
 data/live/*
 !data/live/gw_lines.csv
 !data/live/news_docs_gw15.json
+!data/live/HOLDOUT_FREEZE.json
+
+# Full-season frames. The committed evidence is the gameweek log-score table.
+data/processed/honest_pool_frame.csv
+data/processed/*_full_player_gw.csv

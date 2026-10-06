@@ -358,7 +358,7 @@ class PoolTest(unittest.TestCase):
         self.assertEqual(compared["named_form"], "3-4-3")
         self.assertAlmostEqual(compared["sacrifice"], 2.1)
         self.assertAlmostEqual(compared["gain"], 18.0)
-        self.assertNotIn((5, 2, 3), FORMATIONS)
+        self.assertIn((5, 2, 3), FORMATIONS)
 
     def test_four_from_one_club_is_skipped(self) -> None:
         frame = self._frame(

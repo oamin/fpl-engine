@@ -32,6 +32,7 @@ from src.models.xp_engine import (
     add_player_priors,
     add_team_prior_score,
 )
+from src.rules.fpl_2026 import OFFICIAL_FORMATIONS
 
 ROOT = Path(__file__).resolve().parents[2]
 PROCESSED = ROOT / "data" / "processed"
@@ -39,16 +40,10 @@ PLOTS = ROOT / "data" / "plots"
 REPORTS = ROOT / "reports"
 
 MIN_HISTORY = 3
-FORMATIONS = [
-    # (def, mid, fwd) — GKP always 1
-    (3, 4, 3),
-    (3, 5, 2),
-    (4, 4, 2),
-    (4, 3, 3),
-    (4, 5, 1),
-    (5, 3, 2),
-    (5, 4, 1),
-]
+# Official shapes, including 5-2-3. Tie-break is strict greater, so the first
+# equal shape in this list wins. Order is defenders 3–5, midfielders 2–5,
+# forwards 1–3, summing to 10.
+FORMATIONS = list(OFFICIAL_FORMATIONS)
 
 
 def build_scores() -> pd.DataFrame:
@@ -79,9 +74,7 @@ def pick_xi(
 ) -> tuple[pd.DataFrame, tuple[int, int, int]]:
     """Pick best formation XI by score_col. Returns selected rows + formation.
 
-    The default list is the historical climb list, which omits 5-2-3.
-    A live plan passes the official list instead. That does not change
-    the published climb.
+    The default list is ``OFFICIAL_FORMATIONS``, including 5-2-3.
 
     ``priority_col`` breaks a tie toward a player whose club has a fixture.
     It does not change the score that is summed.

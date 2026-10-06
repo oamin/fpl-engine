@@ -264,18 +264,19 @@ def build_frames() -> tuple[pd.DataFrame, pd.DataFrame, dict[str, Any]]:
         }
     ).drop_duplicates(["player_id", "gw"], keep="first")
 
-    played = logs.loc[logs["minutes"] > 0].copy()
+    # The pool is the sheet, including 0-minute rows. A missed fixture stays
+    # on the frame with an empty market cell.
+    sheet = logs.copy()
     fixtures = load_football_data(code=FD_CODE)
-    joined, _, stats = join_players_to_fixtures(played, fixtures)
+    joined, _, stats = join_players_to_fixtures(
+        sheet, fixtures, retain_sheet_rows=True
+    )
     joined = _scoring_columns(joined)
     joined["player_id"] = [player_key(e) for e in joined["player_id"]]
     joined["gw"] = pd.to_numeric(joined["gw"], errors="coerce").astype(int)
     if "value" not in joined.columns:
         joined["value"] = np.nan
     joined["value"] = pd.to_numeric(joined["value"], errors="coerce")
-    joined["value"] = joined["value"].fillna(
-        joined.groupby("position")["value"].transform("median")
-    )
 
     combined = pd.concat([prior, joined], ignore_index=True, sort=False)
     scored = add_market_pots(combined)
@@ -299,7 +300,11 @@ def build_frames() -> tuple[pd.DataFrame, pd.DataFrame, dict[str, Any]]:
     )
     info.update(
         {
-            "played_rows": int(len(played)),
+            "sheet_rows": int(len(sheet)),
+            "played_rows": int(len(sheet)),
+            "zero_minute_rows": int(
+                (pd.to_numeric(sheet["minutes"], errors="coerce").fillna(0) <= 0).sum()
+            ),
             "joined_rows": int(stats["n_player_joined"]),
             "join_rate": float(stats["join_rate"]),
             "missing_fixture": int(logs.attrs.get("missing_fixture", 0)),
@@ -542,7 +547,7 @@ def _write(
         f"published cut: at least {MIN_HISTORY} prior appearances and expected minutes "
         "at least 45.",
         "",
-        f"Odds join: {info['joined_rows']} of {info['played_rows']} appearances "
+        f"Odds join: {info['joined_rows']} of {info['sheet_rows']} sheet rows "
         f"({info['join_rate']:.3f}), {info['odds_fixtures']} fixtures. "
         "GW1 eligible pool: "
         + ", ".join(

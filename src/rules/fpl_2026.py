@@ -29,7 +29,7 @@ MIN_DEF, MAX_DEF = 3, 5
 MIN_MID, MAX_MID = 2, 5
 MIN_FWD, MAX_FWD = 1, 3
 
-# Every legal XI, including 5-2-3 (the season-climb list currently omits it).
+# Every legal XI, including 5-2-3. The climb list is this tuple.
 OFFICIAL_FORMATIONS: tuple[tuple[int, int, int], ...] = tuple(
     (n_def, n_mid, n_fwd)
     for n_def in range(MIN_DEF, MAX_DEF + 1)
