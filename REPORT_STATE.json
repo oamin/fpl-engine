@@ -1,11 +1,9 @@
 {
   "updated": "2026-10-06",
-  "milestone": "decision-margin",
-  "status": "reviewed",
-  "summary": "Club or price is 0.71 of the chip-week points the rebuild left out, so that set stays a constraint. The 24 swaps it could make are −66, split −31, −29, and −6. The ranking call is inconclusive. The historical top rank band does not clear the curse bar in every season. The score stays. Gemini kept the count.",
+  "milestone": "squad-frontier",
+  "status": "locked",
+  "summary": "The chip-week portfolio comparison is locked and not yet counted. Chip signings are −329. The 19 already held are −100 and sit in that total. The 64 left out are −229, which is −163 plus −66. Both fifteens will be scored with the model's own xi_xp. A reachable week at or below 1.0 per priced week is near, and a week above 4.0 is far. The call needs half the reachable weeks of that chip. The force-in waits. The score stays.",
   "artifacts": [
-    "reports/decision_margin.md",
-    "reports/decision_margin_plan.md",
-    "data/processed/decision_margin_bands.csv"
+    "reports/squad_frontier_plan.md"
   ]
 }

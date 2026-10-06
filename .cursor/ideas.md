@@ -213,6 +213,16 @@ Reading B is in the same batch. Four seasons, weeks 6–38, eligible rows only, 
 
 Counted the same day ([decision margin](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). Constraint remains the call on the −229: club or price is −163. The unconstrained −66 splits −31, −29, and −6 across the three positive bins, shares 0.47, 0.44, and 0.09. The ranking call is inconclusive. The curse claim is parked. Only 2022/23 clears the 0.25 gap, and the 2023/24 top band bias is −0.04. The score stays. See `reports/decision_margin.md`.
 
+## Squad frontier
+
+Locked 2026-10-06 before any squad gap is read ([squad frontier](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). Not a new score. The count above stays. Formation, the hold of 1.25, ownership, a ranking correction, a winner's-curse correction, and a residual stay frozen. The chip margins stay 16 and 12.
+
+Chip signings are −329. The 19 already held are −100 and sit in that −329. The 64 left out are −229, which is −163 plus −66. The −163 is a one-for-one swap into the fifteen already chosen. It does not say the human fifteen is illegal.
+
+Reading C scores both fifteens with `squad_outlook` on the pre-deadline steps. A wildcard sums `xi_xp` over the priced window. A free hit uses the decision week only. The per-week gap is that difference divided by the steps actually priced. Reachable weeks, costed from the model's pre-chip bank and sell prices, enter the call. A money shortfall, a squad-shape or club-cap break, and a player absent from the pool stay out of the call.
+
+Near is a per-week gap of at most 1.0. Far is above 4.0. The call is near when at least half the reachable weeks for that chip are near, and far when at least half are far. Otherwise it is middle. The two chips are separate. The mean sits beside the call. Realised points stay beside it as well. The *k*-player force-in waits. See `reports/squad_frontier_plan.md`.
+
 ## Lost shirt
 
 Noted 2026-10-06 ([blank context](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). Not switched on.
