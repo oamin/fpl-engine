@@ -1,9 +1,9 @@
 {
   "updated": "2026-10-06",
-  "milestone": "chip-match",
-  "status": "reviewed",
-  "summary": "A larger Gameweek 1–5 pool, kept only when the chips left match the model's, is not worth running. Three of the locked 14 already match. Their gaps are 0, −26, and −46, mean −24. The two with the same chip in the same week average −13, and those points are in the lineup. Today's overall rank is the result being measured, so it cannot supply the extra names.",
+  "milestone": "zero-minutes",
+  "status": "noted",
+  "summary": "Of the 23 model starters who played 0 minutes in Gameweeks 1–5, 14 are João Pedro in Gameweek 5, named after four 90-minute weeks and benched by every owner. Three are Rico Lewis in Gameweeks 3–5, still on a Gameweek 1 score because a 0-minute row never updates the prior. The other six are first zeros. All 23 were automatic substitutes. The managers named none. No score change.",
   "artifacts": [
-    "reports/chip_match_gw15.md"
+    "reports/zero_minutes_gw15.md"
   ]
 }
