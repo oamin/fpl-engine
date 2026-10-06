@@ -120,6 +120,18 @@ The wildcard lead on the same 14 was run on 2026-10-05 and kept as a score miss 
 
 The price reach on those ranked-lower pairs was run on 2026-10-05 and kept as budget ([price reach](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). Fourteen of the seventeen pairs have no sale in the fifteen that pays for them. The list of 35 cut nobody. Do not lower the hold from 1.25. Do not widen that list from these five weeks. Do not open a two-transfer replay for the six pairs that sum to −7. The cohort chain stops. See `reports/sale_reach_gw15.md`.
 
+## Queued: close-pair shape
+
+Locked 2026-10-06 with Gemini ([close-pair shape](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). Not run. The module will be `src/models/close_pair_shape.py`. It is a count, not a new score. No fast XI. No free-transfer climb. No standard deviation and no normal curve. `score_xp` stays.
+
+Seasons 2022/23–2025/26, Gameweeks 5–38, eligible rows only. One pair per position per week: the score leader and the closest other eligible player at that position. Keep the pair when the leader is strictly ahead and the gap is at most 0.5. An equal score drops the pair. Both players need at least 5 earlier weeks with a realised total in that season, so Gameweek 5 has no pairs. A player short of 5 weeks is dropped, not filled. 2026/27 is not in the sample.
+
+Realised points are that week's total, including 0. A 0-minute week stays in. A tie on points is neither side. Blank rate is the share of earlier weeks at 2 points or fewer. Haul rate is the share at 8 or more. Those rates use weeks before the deadline only.
+
+The mean arm is the fraction of decisive pairs the leader wins, by season and by position. Position is not a gate. If every season sits between 0.45 and 0.55, the mean does not separate these pairs, and it still cannot promote a score.
+
+The shape arm uses the same pairs where the two rates differ. One test picks the lower blank rate. The other picks the higher haul rate. A shape is ahead of the mean only when every season has at least 80 decisive pairs and the shape's fraction beats the mean arm by at least 0.05 in every season. Ahead allows a later fast-XI screen. It does not change `score_xp`. A thin season, or a smaller margin, parks the shape. Do not rerun `score_xp / (σ + 1)` or `score_xp − 0.25σ`.
+
 - Asian handicap, as a live-week pot only, after its own lock. Historical `score_xp` stays on the 1X2 and the 2.5 line. The free file has the handicap and no 3.5 line.
 - Player props, on the decision week only, in their own column. An Odds API call needs a cost estimate and the PI's approval. No market is discovered in a loop.
 - A season-rank weight on the copied tail only. Strength comes from season prices on a log scale, shrunk and clipped to about a 15% move in the team rate. It is idle on a week that already has a 1X2. It is not a 1–10 multiplier. The first Gameweek 6 call, once a line exists, still copies the third priced step flat.

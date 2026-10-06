@@ -1,12 +1,10 @@
 {
-  "updated": "2026-10-05",
-  "milestone": "sale-reach",
-  "status": "reviewed",
-  "summary": "The ranked-lower price deficit of -39 is budget. Fourteen of the seventeen pairs have no sale in the fifteen that pays for them, -25, and one sits within 1.25, -7. Nine of those fourteen are Haaland. Two pairs were already in the list of 35 and the horizon declined them. A second sale would fund six pairs that sum to -7, which does not open a replay. Gemini kept the reading. The hold stays 1.25. The cohort chain stops.",
+  "updated": "2026-10-06",
+  "milestone": "close-pair-shape",
+  "status": "queued",
+  "summary": "The close-pair shape trial is locked and not run. On 2022/23-2025/26, Gameweeks 5-38, one pair per position is the score leader and the closest eligible player within 0.5. The mean arm is how often the leader scores more. The shape arm counts earlier blanks at 2 points or fewer and hauls at 8 or more, with no standard deviation. A shape is ahead only if it beats the mean by 0.05 in every season with at least 80 decisive pairs. Ahead does not change score_xp.",
   "artifacts": [
-    "src/models/sale_reach.py",
-    "tests/test_sale_reach.py",
-    "reports/sale_reach_gw15.md",
-    "data/processed/sale_reach_gw15.csv"
+    ".cursor/ideas.md",
+    ".cursor/context.md"
   ]
 }
