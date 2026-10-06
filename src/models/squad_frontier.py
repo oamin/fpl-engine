@@ -19,9 +19,10 @@ from src.models.half_plan_scores import squad_outlook
 from src.models.open_horizon import attach_opening_horizon
 from src.models.reset_gap import PROCESSED, REPORTS, _early, bank_before, merged_clubs
 from src.models.season_climb import pick_xi
-from src.models.season_climb_ft import _gw_pool
+from src.models.season_climb_ft import EARLY_SCORE_CAP, _gw_pool
 from src.models.squad_gap import CHIP_SQUADS
 from src.rules.fpl_2026 import sell_price, squad_legal
+from src.teams import norm_team
 
 NEAR = 1.0
 FAR = 4.0
@@ -320,6 +321,155 @@ def _buy_pool(ids: list[str], pool_by: dict[str, Any]) -> int:
     return sum(1 for pid in ids if pid in pool_by and bool(getattr(pool_by[pid], "eligible", False)))
 
 
+def _norm_pos(raw: object) -> str:
+    position = str(raw)
+    if position == "GK":
+        return "GKP"
+    return position
+
+
+def _week_sheet(roster: pd.DataFrame, gw: int) -> pd.DataFrame:
+    block = roster.loc[pd.to_numeric(roster["gw"], errors="coerce") == int(gw)].copy()
+    if block.empty:
+        return block
+    block["player_id"] = block["player_id"].astype(str)
+    block["minutes"] = pd.to_numeric(block["minutes"], errors="coerce").fillna(0.0)
+    return block
+
+
+def _minutes_by_player(roster: pd.DataFrame, gw: int) -> dict[str, float]:
+    block = _week_sheet(roster, gw)
+    if block.empty:
+        return {}
+    return {str(pid): float(total) for pid, total in block.groupby("player_id")["minutes"].sum().items()}
+
+
+def _early_lookup(early: pd.DataFrame | None, gw: int) -> dict[str, float]:
+    """Capped early scores for this deadline. A missing table is empty."""
+    if early is None or early.empty or "score_xp" not in early.columns:
+        return {}
+    week = early.loc[pd.to_numeric(early["gw"], errors="coerce") == int(gw)]
+    found: dict[str, float] = {}
+    scores = pd.to_numeric(week["score_xp"], errors="coerce")
+    for pid, score in zip(week["player_id"].astype(str), scores, strict=False):
+        if pd.isna(score):
+            continue
+        found[str(pid)] = min(float(score), float(EARLY_SCORE_CAP))
+    return found
+
+
+def _roster_stub(
+    roster: pd.DataFrame,
+    gw: int,
+    pid: str,
+    score: float,
+    columns: pd.Index,
+) -> dict[str, Any] | None:
+    block = _week_sheet(roster, gw)
+    hit = block.loc[block["player_id"] == str(pid)]
+    if hit.empty:
+        return None
+    source = hit.iloc[0]
+    stub = {col: (source[col] if col in source.index else pd.NA) for col in columns}
+    stub["player_id"] = str(pid)
+    stub["score_xp"] = float(score)
+    stub["eligible"] = False
+    if _norm_pos(stub.get("position")) == "GKP":
+        stub["position"] = "GKP"
+    return stub
+
+
+def attach_early_players(
+    pool: pd.DataFrame,
+    roster: pd.DataFrame,
+    early: pd.DataFrame | None,
+    gw: int,
+    human_ids: list[str],
+) -> tuple[pd.DataFrame, list[str]]:
+    """Score a played player the published frame has not kept yet.
+
+    The number is capped at 6. Minutes of 0 stay out, even when an early
+    score exists. The row is not eligible to buy.
+    """
+    lookup = _early_lookup(early, gw)
+    minutes = _minutes_by_player(roster, gw)
+    out = pool.copy()
+    out["player_id"] = out["player_id"].astype(str)
+    attached: list[str] = []
+    stubs: list[dict[str, Any]] = []
+    for pid in human_ids:
+        if float(minutes.get(str(pid), 0.0)) <= 0.0:
+            continue
+        score = lookup.get(str(pid))
+        if score is None:
+            continue
+        mask = out["player_id"] == str(pid)
+        if bool(mask.any()):
+            current = pd.to_numeric(out.loc[mask, "score_xp"], errors="coerce")
+            if bool(current.notna().all()):
+                continue
+            out.loc[mask, "score_xp"] = float(score)
+            out.loc[mask, "eligible"] = False
+            attached.append(str(pid))
+            continue
+        stub = _roster_stub(roster, gw, str(pid), float(score), out.columns)
+        if stub is None:
+            continue
+        stubs.append(stub)
+        attached.append(str(pid))
+    if stubs:
+        out = pd.concat([out, pd.DataFrame(stubs)], ignore_index=True)
+    out = out.drop_duplicates("player_id", keep="first").reset_index(drop=True)
+    return out, attached
+
+
+def blank_tag(
+    roster: pd.DataFrame,
+    clubs: dict[int, set[str]],
+    gw: int,
+    player_id: str,
+) -> str:
+    """Sheet tag for a player who did not play. A player who played has none.
+
+    ``replaced`` is a teammate at the same club and position on at least 60
+    minutes. ``benched`` is a club that played while nobody at that position
+    did. ``no_fixture`` is a club with no game. A teammate on 1 to 59
+    minutes is unresolved. The tag does not change a score.
+    """
+    block = _week_sheet(roster, gw)
+    hit = block.loc[block["player_id"] == str(player_id)] if not block.empty else block
+    played = 0.0 if hit.empty else float(hit["minutes"].sum())
+    if played > 0.0:
+        return ""
+    if hit.empty:
+        return "unresolved"
+    row = hit.iloc[0]
+    club_raw = row["team_norm"] if "team_norm" in hit.columns and pd.notna(row["team_norm"]) else row.get("team", "")
+    club = norm_team("" if club_raw is None else str(club_raw))
+    if club == "" or club.lower() == "nan":
+        return "unresolved"
+    playing = {norm_team(str(name)) for name in clubs.get(int(gw), set())}
+    if club not in playing:
+        return "no_fixture"
+    position = _norm_pos(row["position"])
+    others = block.loc[block["player_id"] != str(player_id)].copy()
+    if others.empty:
+        return "benched"
+    club_col = "team_norm" if "team_norm" in others.columns else "team"
+    others = others.copy()
+    others["_club"] = others[club_col].map(lambda value: norm_team("" if value is None else str(value)))
+    others["_pos"] = others["position"].map(_norm_pos)
+    mates = others.loc[(others["_club"] == club) & (others["_pos"] == position)]
+    if mates.empty:
+        return "benched"
+    highest = float(mates.groupby("player_id")["minutes"].sum().max())
+    if highest >= 60.0:
+        return "replaced"
+    if highest <= 0.0:
+        return "benched"
+    return "unresolved"
+
+
 def _shape_ok(ids: list[str], pool: pd.DataFrame, pool_by: dict[str, Any]) -> bool:
     if any(pid not in pool_by for pid in ids):
         return False
@@ -346,8 +496,15 @@ def score_week(
     clubs: dict[int, set[str]],
     horizon_scores: Any,
     early: pd.DataFrame | None,
+    *,
+    use_early: bool = False,
 ) -> dict[str, Any]:
-    """One human chip week. The stored rebuild is the model's portfolio."""
+    """One human chip week. The stored rebuild is the model's portfolio.
+
+    ``use_early`` scores a played human player from the capped early table
+    when the published frame has not kept him. It does not change the
+    model's steps, and it does not make that player buyable.
+    """
     chip = str(week["his_chip"])
     if chip not in CHIPS:
         raise RuntimeError(f"{chip} is not in this reading")
@@ -375,6 +532,18 @@ def score_week(
         raise RuntimeError(f"GW{gw} free-hit lead {decision} does not match the stored {week['fh_margin']}")
     played = next(row for row in entry["gameweeks"] if int(row["gw"]) == gw)
     human_ids = _ids(list(played["xi"]) + list(played["bench"]))
+    names = {
+        player_key(player["id"]): str(player.get("name") or player["id"])
+        for player in list(played["xi"]) + list(played["bench"])
+    }
+    attached: list[str] = []
+    if use_early:
+        pool, attached = attach_early_players(pool, roster, early, gw, human_ids)
+        pool = apply_fixture_tags(pool, gw, clubs)
+        pool_by = _index(pool)
+        market = _market(pool_by)
+        market.update({pid: price for pid, price in _roster_market(roster, gw).items() if pid not in market})
+        step_scores = horizon_scores(gw, pool, window)
     in_pool = all(pid in pool_by for pid in human_ids)
     scored = in_pool and all(_finite(getattr(pool_by[pid], "score_xp", None)) for pid in human_ids)
     shape_ok = _shape_ok(human_ids, pool, pool_by) if in_pool else False
@@ -453,6 +622,13 @@ def score_week(
         "same_fifteen": set(human_ids) == set(rebuilt),
         "points_model": _squad_points(roster, gw, rebuilt),
         "points_human": _squad_points(roster, gw, human_ids),
+        "early_players": "; ".join(names.get(pid, pid) for pid in attached),
+        "blank_tags": "; ".join(
+            f"{names.get(pid, pid)} {tag}"
+            for pid in human_ids
+            for tag in [blank_tag(roster, clubs, gw, pid)]
+            if tag
+        ),
     }
     for position in POSITIONS:
         row[f"spend_{position.lower()}_model"] = None if model_spend_pos is None else model_spend_pos[position]
