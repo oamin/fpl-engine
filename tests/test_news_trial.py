@@ -84,6 +84,33 @@ class OverlayTest(unittest.TestCase):
             float(original.loc[untouched, "score_xp"].iloc[0]),
         )
 
+    def test_a_missing_blank_week_gets_the_zero_and_the_roster_minutes(self) -> None:
+        feat = _frame()
+        feat = feat.loc[~((feat["player_id"] == "2026-27:140") & (feat["gw"] == 3))].copy()
+        roster = pd.DataFrame(
+            [
+                {
+                    "player_id": "2026-27:140",
+                    "gw": 3,
+                    "total_points": 0.0,
+                    "minutes": 0.0,
+                    "team": "Chelsea",
+                    "team_norm": "chelsea",
+                    "position": "GKP",
+                    "value": 50,
+                    "player_name": "Sánchez",
+                }
+            ]
+        )
+        tagged, counts = apply_tag_scores(feat, {(3, 140): 0.0}, roster)
+        row = tagged.loc[(tagged["player_id"] == "2026-27:140") & (tagged["gw"] == 3)].iloc[0]
+        earlier = tagged.loc[(tagged["player_id"] == "2026-27:140") & (tagged["gw"] == 2)].iloc[0]
+        self.assertEqual(float(row["score_xp"]), 0.0)
+        self.assertEqual(float(row["minutes"]), 0.0)
+        self.assertEqual(float(earlier["score_xp"]), 3.61)
+        self.assertEqual(counts["inserted"], 1)
+        self.assertEqual(counts["zeroed"], 1)
+
     def test_the_sheet_leaves_gameweek_2_open(self) -> None:
         writes = load_writes()
         self.assertNotIn((2, 140), writes)

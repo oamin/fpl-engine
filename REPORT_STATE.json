@@ -2,8 +2,10 @@
   "updated": "2026-10-06",
   "milestone": "news-tags",
   "status": "reviewed",
-  "summary": "Reddit and other FPL forums are not a source for the live news tag. A post time is not enough: the body can be edited, a comment needs its own time, and an anonymous line is not a team sheet. Reading old threads to fill Gameweeks 1–5 is out. A forum may only point at a club statement or a named reporter, and that piece’s own time is what the date gate uses. Gemini kept forums out.",
+  "summary": "The loose Gameweeks 1–5 tag trial scores 280, level with the published climb. Sánchez stays in the eleven for Gameweeks 1 and 2. From Gameweek 3 his score is 0 and he is benched, and Verbruggen is named. He is not sold. The week totals do not move, because the automatic substitute was already Verbruggen. A doubtful flag is not zeroed. Gemini kept the reading.",
   "artifacts": [
+    "reports/news_trial_gw15.md",
+    "data/processed/news_trial_gw15.csv",
     "reports/news_tags_gw15.md"
   ]
 }

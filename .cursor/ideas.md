@@ -191,6 +191,8 @@ Coded 2026-10-06 on the live path only ([news tags](bc-9194ff85-d0a7-5b7b-a9e9-1
 
 Reddit and other FPL forums are not a source for the tag ([forum sources](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). A post time is not enough. The body can be edited after the deadline, a comment needs its own time, and an anonymous line is the agreed-deal failure again. Upvotes are not evidence. Reading old threads after the matches, to fill Gameweeks 1–5, is selection after the fact and is out. A forum may only point at a club statement or a named reporter, and that piece’s own time is what the date gate uses.
 
+The loose trial was run on 2026-10-06 ([tag trial](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). A tag writes minutes only where one was already set. A doubtful flag is not zeroed. A zero clears that week's score. A 0-minute week is missing from the published frame, so the tag is inserted there and the roster supplies the points. The tagged climb scores 280, the same as the published one. Sánchez stays in the eleven in Gameweeks 1 and 2. From Gameweek 3 his score is 0 and he is benched, and Verbruggen is named. He is not sold. The week totals do not move, because the automatic substitute was already Verbruggen. The published squad is unchanged. See `reports/news_trial_gw15.md`.
+
 ## Lost shirt
 
 Noted 2026-10-06 ([blank context](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). Not switched on.
