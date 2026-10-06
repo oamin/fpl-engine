@@ -201,6 +201,8 @@ OpenFPL is open source and its published test is 2024/25. There is no frozen 202
 
 On the other four weeks, `score_xp` on this squad averages 4.52 against 3.85 points. Onside averages 3.34 and `ep_next` averages 2.81. The outside columns price the same names lower. Do not replace `score_xp` with either column. Do not put the file in `experiments/matrix.json`. See `reports/external_xp_gw15.md`.
 
+The same file on the 14 locked squads was read the same day ([cohort xp](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). Unique player-weeks, minutes above 0, Gameweek 2 out. Veterans: mean absolute error 3.00, 3.13, 3.22. Rank slots: 3.07, 3.14, 3.36. Counting each squad that owned the player keeps that order. Gameweek 1 is the week the outside numbers are closer, and the rank-only players are a tie on the error. Ten Gameweek 1 debuts have no published score and stay out. Do not switch the cohort onto Onside or `ep_next`. See `reports/cohort_xp_gw15.md`.
+
 ## Lost shirt
 
 Noted 2026-10-06 ([blank context](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). Not switched on.
