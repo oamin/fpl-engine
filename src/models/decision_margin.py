@@ -198,6 +198,12 @@ def _fmt_points(value: float) -> str:
     return f"{value:.0f}"
 
 
+def _fmt_share(value: float) -> str:
+    if abs(value) < 5e-3:
+        return "0.00"
+    return f"{value:.2f}"
+
+
 def write_report(path: Path, signing: dict[str, Any], bands: dict[str, Any]) -> None:
     lines = [
         "# Decision margin",
@@ -224,7 +230,7 @@ def write_report(path: Path, signing: dict[str, Any], bands: dict[str, Any]) -> 
     for name in ("<=0", "0-0.5", "0.5-1.25", ">1.25"):
         block = signing["bins"][name]
         lines.append(
-            f"| {name} | {int(block['n'])} | {_fmt_points(block['points'])} | {signing['shares'][name]:.2f} |"
+            f"| {name} | {int(block['n'])} | {_fmt_points(block['points'])} | {_fmt_share(signing['shares'][name])} |"
         )
     lines.extend(
         [

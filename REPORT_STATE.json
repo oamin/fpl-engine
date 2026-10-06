@@ -1,9 +1,11 @@
 {
   "updated": "2026-10-06",
   "milestone": "decision-margin",
-  "status": "locked",
-  "summary": "The five-week gap is not another formation rule or another hold. The chip weeks are the remaining mass: 64 signings left out of the rebuild, median 0.31 below the model's worst same-position player, and club or price already 0.71 of those points. The ranking bins are locked on the unconstrained rows only. A historical rank-band table is locked in the same batch. Neither has been counted. score_xp stays. A residual on the decision boundary is not built.",
+  "status": "reviewed",
+  "summary": "Club or price is 0.71 of the chip-week points the rebuild left out, so that set stays a constraint. The 24 swaps it could make are −66, split −31, −29, and −6. The ranking call is inconclusive. The historical top rank band does not clear the curse bar in every season. The score stays. Gemini kept the count.",
   "artifacts": [
-    "reports/decision_margin_plan.md"
+    "reports/decision_margin.md",
+    "reports/decision_margin_plan.md",
+    "data/processed/decision_margin_bands.csv"
   ]
 }

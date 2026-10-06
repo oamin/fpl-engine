@@ -211,6 +211,8 @@ Reading A uses the 64 chip signings the rebuild left out, paired with that rebui
 
 Reading B is in the same batch. Four seasons, weeks 6–38, eligible rows only, rank within position, bands 1–5, 6–10, 11–20, and the rest. A winner's-curse claim needs the top band's bias positive in every season and at least 0.25 above that season's eligible bias. Otherwise it is parked. See `reports/decision_margin_plan.md`.
 
+Counted the same day ([decision margin](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). Constraint remains the call on the −229: club or price is −163. The unconstrained −66 splits −31, −29, and −6 across the three positive bins, shares 0.47, 0.44, and 0.09. The ranking call is inconclusive. The curse claim is parked. Only 2022/23 clears the 0.25 gap, and the 2023/24 top band bias is −0.04. The score stays. See `reports/decision_margin.md`.
+
 ## Lost shirt
 
 Noted 2026-10-06 ([blank context](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). Not switched on.
