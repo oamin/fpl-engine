@@ -169,6 +169,12 @@ Three are Rico Lewis in Gameweeks 3–5 on one squad. He had already recorded 0 
 
 Kept 2026-10-06 ([wildcard priced](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). The hurdle is the rebuilt eleven minus the held eleven on weeks with their own opening line. A copied week adds nothing to that sum and nothing to the schedule. The Gameweek 6 replay is 17.67 and still plays wildcard. Free Hit is unset: Gameweek 10 is a copy, and Gameweek 7's rebuilt bench outscores the free hit. Do not move 16 because 17.67 cleared it. Do not put the twelve copies of Gameweek 7 back into the sum. See `reports/wildcard_priced.md`.
 
+## Forced chip calendar, queued
+
+Queued 2026-10-06 and not scored ([forced chips](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). Each of the 14 keeps his Gameweek 1 fifteen. His chip weeks replace the model's chip choice. The model still picks the squad with `score_xp`. A Gameweek 1 wildcard or free hit is dropped. Chip value is the forced gap minus the current gap. The claim is killed if that mean is 0 or below, or if the mean forced gap is −20 or below. The margins stay 12 and 16. See `reports/forced_chips_queue.md`.
+
+The field book is rejected. A squad taken from these 14 leaks the benchmark, and the wildcard margin is not a licence to give up 16 points of expected score. The race count was the tie-break on that squad, so it is rejected with it. Ownership and the close-call differential stay parked.
+
 ## Rules gaps
 
 - Full Opta BPS table (goals, assists, playing time, and the rest) is not in the 20 Jul 2026 change note. Only the 2026/27 deltas are coded.

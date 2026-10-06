@@ -1,10 +1,9 @@
 {
   "updated": "2026-10-06",
-  "milestone": "wildcard-priced",
-  "status": "reviewed",
-  "summary": "The wildcard hurdle now sums only the weeks with their own opening line. The Gameweek 6 replay is 17.67 and the chip stays wildcard. Free Hit leaves the copied Gameweek 10 and is unset. Bench Boost stays on Gameweek 7. The margin stays 16. Gemini kept the replay.",
+  "milestone": "forced-chips",
+  "status": "queued",
+  "summary": "The forced chip calendar is queued and not scored. Each of the 14 keeps his Gameweek 1 fifteen, and his chip weeks replace the model's chip choice. The model still picks the squad. The claim is killed if the mean chip value is 0 or below, or if the mean forced gap is -20 or below. The field book and the race count are rejected.",
   "artifacts": [
-    "reports/wildcard_priced.md",
-    "reports/live_deadline_gw6.md"
+    "reports/forced_chips_queue.md"
   ]
 }
