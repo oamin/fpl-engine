@@ -33,7 +33,7 @@ ojaminFC scored 350. From their opening fifteen:
 - The same freeze after that fill became 0: 336 (`reports/stage_40_gw15_gap.md`).
 - The published path, opening horizon plus the early score: 333, with no hit (`reports/stage_42_gw15_horizon.md`). The horizon without the early score is 366.
 
-A fresh squad on the same rule scores 263 against 350. Fourteen managers were locked before their squads were opened. The model's sales and the managers' own sales are both bought ahead. That is the variance reading. See `reports/stage_46_transfer_gap.md`.
+A fresh squad on the 2 October file scores 263 against 350. Re-run on 6 October, the same climber scores 280: Gameweeks 40, 89, 48, 62, and 41. It keeps the Gameweek 1 fifteen through Gameweek 2, sells O'Reilly and Hincapie for Van Hecke and Thiaw in Gameweek 3, and makes no further transfers. Sánchez is named in the eleven in Gameweeks 2–5 on a score of 3.61 with 0 minutes, and Verbruggen replaces him. See `reports/own_squad_gw15.md`. Fourteen managers were locked before their squads were opened. The model's sales and the managers' own sales are both bought ahead. That is the variance reading. See `reports/stage_46_transfer_gap.md`.
 
 ### Crowd squads and chips
 
