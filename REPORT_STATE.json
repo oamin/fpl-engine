@@ -1,7 +1,7 @@
 {
   "updated": "2026-10-06",
-  "milestone": "lost-shirt",
-  "status": "diagnosed",
-  "summary": "Sánchez is named in Gameweeks 2–5 on a frozen 3.61 because a 0-minute week is dropped. Martínez started those Chelsea matches. Haaland is first or second in the pool and costs £15.5m. Forcing him into the opening squad lowers its expected score by 0.77, and a later single sale cannot pay for him. Gemini rejected zeroing a goalkeeper after one blank. The score is unchanged.",
+  "milestone": "news-tags",
+  "status": "amended",
+  "summary": "Gemini amended the PI's news tags. They belong on the live minutes sheet only. A firm starter is never zeroed. A ruled-out player is 0, a doubtful one keeps chance times his old minutes, a transfer is 0 at the old club, a benched goalkeeper is 0, and a benched outfielder is 15 minutes. The historical climb cannot take the tag. Nothing was coded.",
   "artifacts": []
 }

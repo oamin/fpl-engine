@@ -179,6 +179,14 @@ Run on 2026-10-06 and killed ([forced chips](bc-7121b96b-db3a-552d-ade8-335c01d3
 
 The field book is rejected. A squad taken from these 14 leaks the benchmark, and the wildcard margin is not a licence to give up 16 points of expected score. The race count was the tie-break on that squad, so it is rejected with it. Ownership and the close-call differential stay parked.
 
+## News tags
+
+Gemini amended this on 2026-10-06 ([news tags](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). The PI rejected the two-week goalkeeper cutoff. The replacement is a pre-deadline tag from the live minutes completion, not a rule on past match rows.
+
+`firm_starter` keeps the existing minutes, never zero. `injured` is 0 when the player is ruled out, and the chance times the old minutes when he is doubtful. `transferred` is 0 at the old club. `benched` is 0 for a goalkeeper and 15 minutes for an outfielder. A benched goalkeeper is the Sánchez case: he drops behind the other goalkeeper at the next deadline. An outfielder at 15 minutes keeps a cameo, stays under the buy gate of 45, and is not sold for a hit if the bench covers him.
+
+This cannot enter the historical climb. Those seasons have no weekly news, and an end-of-season status scraped backwards is already rejected. The published `score_xp` climb stays as it is. Nothing was coded.
+
 ## Lost shirt
 
 Noted 2026-10-06 ([blank context](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). Not switched on.
