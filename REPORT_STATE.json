@@ -1,11 +1,10 @@
 {
   "updated": "2026-10-06",
-  "milestone": "early-buy",
+  "milestone": "wildcard-priced",
   "status": "reviewed",
-  "summary": "The early-gameweek FDR-and-share score and the ownership tie-break are rejected. The buy after one or two appearances, capped at 6, scored 1606, 1960, 2019, and 2018 on the four template climbs. The pool is 7603 against 7948. One season is ahead and three finish more than 30 behind. The buy gate stays at three appearances.",
+  "summary": "The wildcard hurdle now sums only the weeks with their own opening line. The Gameweek 6 replay is 17.67 and the chip stays wildcard. Free Hit leaves the copied Gameweek 10 and is unset. Bench Boost stays on Gameweek 7. The margin stays 16. Gemini kept the replay.",
   "artifacts": [
-    "reports/early_buy.md",
-    "data/processed/early_buy.csv",
-    "data/processed/early_buy_signings.csv"
+    "reports/wildcard_priced.md",
+    "reports/live_deadline_gw6.md"
   ]
 }

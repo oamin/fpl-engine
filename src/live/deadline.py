@@ -694,9 +694,9 @@ def render(log: DeadlineLog) -> str:
             lines.append("Schedule: " + ", ".join(parts) + ".")
             if log.copy_note:
                 lines.append(
-                    "The later chips in that schedule are the rest of today's "
-                    "winning combo. They are not played now. A free hit in the "
-                    "combo was not checked against the 12-point hurdle."
+                    "A copied week adds nothing, so a chip that would sit only "
+                    "on a copied week is left unset. Free Hit is checked against "
+                    "12 only when it is the chip this week."
                 )
         if log.outlooks:
             lines.append("")

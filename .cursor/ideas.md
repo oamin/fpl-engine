@@ -92,7 +92,7 @@ The sale margins on those four leading climbs were read on 2026-10-04 ([sale mar
 
 The chip side report was run on 2026-10-04 and kept ([chip scores](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Twelve climbs, three seasons, four squads. 2024/25 stays out. The baseline is the stored empty-chip climb, and that file was left as it was. Every squad wildcards in Gameweek 4, the first week a player has three prior appearances. 2022/23 loses on every squad, best lift Third at −40. 2023/24 best lift is Third at +128, and Template, Premium, and Next share one chip calendar with lifts −15, +100, and −216. 2025/26 gains on every squad, best lift Template at +199, highest chip total Premium at 2214, and the four hit counts are 0. Free Hit is played once, Gameweek 30 on the 2023/24 Third squad. See `reports/half_plan_scores.md`. The 2025/26 top-100 archive is the next descriptive benchmark. It was not read here, and it is not a sample to fit.
 
-The chip audit was run on 2026-10-05 and kept ([chip audit](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). The replay matched the stored chip file. Ten of twelve Gameweek 4 wildcards clear 16 on the priced steps, and the tail is still about three quarters of the printed gap. The chip week is positive on every climb. In 2022/23 the weeks with no chip are the whole loss. All eight second-half wildcards in 2023/24 and 2025/26 miss 16 on the priced steps. Hits after the wildcard are not the drag. Bounding the wildcard sum to the priced steps is a later batch. The margins stay 12 and 16. See `reports/chip_audit.md`.
+The chip audit was run on 2026-10-05 and kept ([chip audit](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). The replay matched the stored chip file. Ten of twelve Gameweek 4 wildcards clear 16 on the priced steps, and the tail is still about three quarters of the printed gap. The chip week is positive on every climb. In 2022/23 the weeks with no chip are the whole loss. All eight second-half wildcards in 2023/24 and 2025/26 miss 16 on the priced steps. Hits after the wildcard are not the drag. The live hurdle now uses that priced sum. The margins stay 12 and 16. See `reports/chip_audit.md` and `reports/wildcard_priced.md`.
 
 ## Live week, not this pass
 
@@ -164,6 +164,10 @@ The buy was run the same day and rejected ([early buy](bc-7121b96b-db3a-552d-ade
 Noted 2026-10-06, corrected the same day. Do not treat the 23 named zeros as one rule, and do not retune `score_xp` from them. Fourteen are João Pedro in Gameweek 5. His previous four weeks were all 90 minutes, so a lagged zero does not bench him. The stored human slot is the eleven after automatic substitutes. Four of the seven owners started him and were substituted. Three benched him. The picks list `automatic_subs` is not kept in `data/entry`.
 
 Three are Rico Lewis in Gameweeks 3–5 on one squad. He had already recorded 0 minutes, and the owned stub kept the Gameweek 1 score of 3.99 because rows with 0 minutes are dropped before the prior is built. A lagged zero would move those three starts. It would also cut a player who misses one week and returns: Enzo missed Gameweek 2 and then played, and Elvedi missed Gameweek 1 and then played. The scored eleven already replaced every zero. See `reports/zero_minutes_gw15.md`.
+
+## Wildcard sum on priced weeks
+
+Kept 2026-10-06 ([wildcard priced](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). The hurdle is the rebuilt eleven minus the held eleven on weeks with their own opening line. A copied week adds nothing to that sum and nothing to the schedule. The Gameweek 6 replay is 17.67 and still plays wildcard. Free Hit is unset: Gameweek 10 is a copy, and Gameweek 7's rebuilt bench outscores the free hit. Do not move 16 because 17.67 cleared it. Do not put the twelve copies of Gameweek 7 back into the sum. See `reports/wildcard_priced.md`.
 
 ## Rules gaps
 

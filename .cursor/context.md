@@ -14,7 +14,7 @@ Cursor writes and runs the code. Gemini locks a formula before it is coded and r
 
 - `score_xp` is the published score. Hold margin 1.25. Switch penalty 1.0. Buy gate: three prior appearances and expected minutes at least 45. A missing score is 0.
 - The three-week value is the opening-price horizon. The current week keeps `score_xp`. A later week uses that fixture's opening 1X2 and the 2.5 total. A double stays one fixture. An owned player with one or two prior appearances keeps a past-only score capped at 6 and cannot be bought.
-- The published climb plays a chip only when a week map is passed. The empty map is the published path. `plan_half` is the half-season planner: Bench Boost on the best week still in the half, Free Hit margin 12 on that week alone, Wildcard margin 16 on the rebuilt eleven against the held eleven across the rest of the half. Those margins stay. `src/live/policy.py` is the earlier single-week rule and is called from tests. The deadline scorer calls `plan_half`.
+- The published climb plays a chip only when a week map is passed. The empty map is the published path. `plan_half` is the half-season planner: Bench Boost on the best priced week still in the half, Free Hit margin 12 on that week alone, Wildcard margin 16 on the rebuilt eleven against the held eleven across the weeks that have their own opening line. A copied week adds nothing to that sum and nothing to the schedule. Those margins stay. `src/live/policy.py` is the earlier single-week rule and is called from tests. The deadline scorer calls `plan_half`.
 - A goalkeeper goal inside `compute_xp` is 10 points. The official award is 6. The published formation list omits 5-2-3. Both stay so older totals remain comparable.
 - Solver constants live in `src/rules/fpl_2026.py`. Historical targets are Vaastav `total_points` for that season, not a 2026/27 rescore.
 
@@ -69,9 +69,9 @@ The build is now the live week. The historical formula is the inner call. Around
 
 One call was made on the 2 Oct 2026 bootstrap. All 227 required rows passed. The sheet is `data/live/xmi_gw6.csv`, which stays out of git. Players with no flag and no place in the fifteen are absent from it. See `reports/live_minutes_gw6.md`.
 
-The scorer has read the minutes sheet. The locked sum plays Wildcard in Gameweek 6. Gameweeks 6 and 7 are about 17.7 against the hurdle of 16, and the printed half-season sum of about 79 repeats Gameweek 7. Gemini kept that as the arithmetic only ([wildcard arithmetic](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). The later Free Hit and Bench Boost in the schedule are the rest of today's winning combo. They are not played now. See `reports/live_deadline_gw6.md`.
+The scorer has read the minutes sheet. Gameweeks 6 and 7 lead by 12.56 and 5.11. The old half-sum of about 79 was twelve copies of the Gameweek 7 gap. Gemini kept that as the arithmetic only ([wildcard arithmetic](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). See `reports/live_deadline_gw6.md`.
 
-The chip audit is the check on that rule. The chip week scores points. The 2022/23 loss is the squad in the weeks after the wildcard. Bounding the wildcard sum to the priced steps is the open formula change, and it has not been locked. See `reports/chip_audit.md`.
+The chip audit is the check on that rule. The chip week scores points. The 2022/23 loss is the squad in the weeks after the wildcard. All eight second-half wildcards in 2023/24 and 2025/26 miss 16 on the priced steps. See `reports/chip_audit.md`.
 
 The live what-if names the two Gameweek 6 squads. The wildcard rebuild leads the one free transfer by 10.55 in Gameweek 6 and by 2.75 in Gameweek 7. The 12.56 in the deadline note is the same rebuild against the squad with no transfer. Gemini kept the note as the forecast for those two weeks ([two paths](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). See `reports/live_whatif_gw6.md`.
 
@@ -108,6 +108,8 @@ The Gameweek 1–5 gap does not include chips still held. The model played two c
 Three of those 14 already hold the same chips as the model. The gaps are 0, −26, and −46. The two with the same chip in the same week average −13, in the lineup column. A larger pool was reviewed and not opened ([chip match](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). See `reports/chip_match_gw15.md`.
 
 Three early-season trials were reviewed on 2026-10-06. The FDR-and-share score and the ownership tie-break are rejected. The buy from Gameweek 2, for one or two appearances capped at 6, scored 1606, 1960, 2019, and 2018 against the template climbs of 1735, 2105, 2086, and 1988. The pool is 7603 against 7948. Gemini kept the rejection ([early buy](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). The buy gate stays at three appearances. See `reports/early_buy.md`.
+
+The wildcard sum is now the weeks with their own opening line. The Gameweek 6 replay is 17.67 and the chip stays wildcard. Free Hit leaves the copied Gameweek 10 and is unset. Bench Boost stays on Gameweek 7. The margin stays 16. Gemini kept the replay ([wildcard priced](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). The published climb was not rerun. See `reports/wildcard_priced.md`.
 
 The 23 model starters who played 0 minutes are not one fault. Fourteen are João Pedro in Gameweek 5, named on a carried 5.30 after four 90-minute weeks. The stored human slot is the eleven after automatic substitutes. Four of his seven owners had started him, including Jess Bernstein as captain, and a midfielder replaced him. Three had benched him. The submitted human elevens contain 10 zeros, not 0, and all 10 were replaced. A three-forward eleven replaces a zero-minute forward with the next midfielder or defender who played. Three are Rico Lewis in Gameweeks 3–5, still on his Gameweek 1 score, because a 0-minute row is dropped before the prior updates. The other six are the first week that player recorded 0. See `reports/zero_minutes_gw15.md`.
 

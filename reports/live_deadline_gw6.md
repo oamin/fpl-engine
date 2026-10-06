@@ -4,7 +4,7 @@ ojaminFC (entry 2632584) at the Gameweek 6 deadline, 2026-10-10T10:00:00Z. This 
 
 The scorer called the same one-match formula as score_xp. Minutes came from the file, a zero stayed a zero, and a player the file omits kept his last observed minutes. Shot shares stayed on the deadline. Each priced week uses that week's opening pot, and only the first pot when a club has two fixtures. One rebuild was paid from the bank plus sales. The transfer search was not run.
 GW8 repeats GW7 and has no 1X2 of its own.
-That chip is the locked sum. The wildcard hurdle adds every later week, including weeks that repeat the last priced step. This is not a reviewed recommendation.
+The wildcard hurdle adds only the weeks with their own opening line. A week that repeats the last priced step adds nothing to that sum and nothing to the schedule. The margin stays 16.
 
 One Odds API request was sent for soccer_epl, markets h2h and totals, region us. It cost 2 credits. 498 credits remain. Where that slate has a 1X2, the price is the average of the US books. ESPN close fills a fixture the trial does not price. A total other than 2.5 is blank.
 
@@ -88,8 +88,8 @@ Status: priced.
 Chip: wildcard. Stops: none.
 Priced weeks: GW6, GW7.
 Free Hit hurdle 12 and Wildcard hurdle 16 were applied. The bench week recorded for a later transfer search is none. No transfer search was run.
-Schedule: wildcard GW6, free_hit GW10, bench_boost GW7, triple_captain none.
-The later chips in that schedule are the rest of today's winning combo. They are not played now. A free hit in the combo was not checked against the 12-point hurdle.
+Schedule: wildcard GW6, free_hit none, bench_boost GW7, triple_captain none.
+A copied week adds nothing, so a chip that would sit only on a copied week is left unset. Free Hit is checked against 12 only when it is the chip this week.
 
 | GW | Held XI | Held bench | Rebuilt XI | Free hit |
 | --- | --- | --- | --- | --- |
