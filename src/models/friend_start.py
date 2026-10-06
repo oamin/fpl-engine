@@ -53,6 +53,7 @@ from src.rules.fpl_2026 import (
 
 ENTRY_ID = 1078627
 LAST_PRICED_GW = 7
+_AUTO_CHIP = object()
 
 
 def carried_state(
@@ -238,8 +239,14 @@ def one_week(
     clubs: dict[int, set[str]],
     roster_by_gw: dict[int, set[str]],
     horizon_scores: Any,
+    forced_chip: Any = _AUTO_CHIP,
 ) -> tuple[dict[str, Any], SquadState]:
-    """One carried week. Returns the row and the state for the next deadline."""
+    """One carried week. Returns the row and the state for the next deadline.
+
+    ``forced_chip`` replaces the priced-horizon choice. ``None`` plays
+    nothing. The default leaves that choice as it is. The rebuild is still
+    the model's squad.
+    """
     if horizon_scores is None:
         raise RuntimeError("the opening horizon is missing")
     week = next(row for row in entry["gameweeks"] if int(row["gw"]) == int(gw))
@@ -261,7 +268,13 @@ def one_week(
     steps = price_horizon(pool, pre_ids, rebuilt.ids(), step_scores, window)
     later_cap = max((step.cap_xp for step in steps[1:]), default=-1.0)
     later_bench = max((step.bench_xp for step in steps[1:]), default=-1.0)
-    chip, gain = choose_chip(steps, wallet.available(int(gw)))
+    if forced_chip is _AUTO_CHIP:
+        chip, gain = choose_chip(steps, wallet.available(int(gw)))
+    else:
+        chip = None if forced_chip is None else str(forced_chip)
+        gain = 0.0
+        if chip is not None and chip not in wallet.available(int(gw)):
+            raise RuntimeError(f"GW{int(gw)} cannot play {chip}")
     if chip is not None:
         wallet.play(int(gw), chip)
     ft_before = int(state.ft)
