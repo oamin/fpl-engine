@@ -1,11 +1,10 @@
 {
   "updated": "2026-10-06",
-  "milestone": "squad-overlap",
+  "milestone": "core-xp",
   "status": "measured",
-  "summary": "A typical pair of the 14 human fifteens shares 5.51 of 15 players across Gameweeks 1–5. Gameweek 3 is the widest week at 4.89. Groß, Haaland, João Pedro, and Szoboszlai are in at least 7 squads every week. No two fifteens are the same. The count does not move the score or the margins.",
+  "summary": "The four names in at least half the squads every week were scored with the published xp. Groß was 17.40 against 47 points, Haaland 30.93 against 39, João Pedro 16.34 against 33 on the four weeks he played, and Szoboszlai 23.40 against 20. João Pedro's Gameweek 5 row is absent. The climb would copy 5.30, and the same formula on that fixture is 3.75. The score and the margins stay.",
   "artifacts": [
-    "reports/squad_overlap_gw15.md",
-    "data/processed/squad_overlap_gw15.csv",
-    "data/processed/squad_overlap_owners_gw15.csv"
+    "reports/core_xp_gw15.md",
+    "data/processed/core_xp_gw15.csv"
   ]
 }
