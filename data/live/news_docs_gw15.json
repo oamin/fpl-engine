@@ -1,0 +1,44 @@
+[
+  {
+    "doc_id": "athletic-martinez-2026-08-27",
+    "published_at": "2026-08-27T18:26:00Z",
+    "url": "https://www.nytimes.com/athletic/7540460/2026/08/27/chelsea-emiliano-martinez-transfer-aston-villa/",
+    "player_ids": [28],
+    "text": "Chelsea have agreed a deal to sign Emiliano Martinez. He is set to sign a contract."
+  },
+  {
+    "doc_id": "guardian-deal-2026-08-27",
+    "published_at": "2026-08-27T18:19:00Z",
+    "url": "https://www.theguardian.com/football/2026/aug/27/chelsea-agree-deal-sign-emiliano-martinez-aston-villa-enzo-fernandez",
+    "player_ids": [28, 140],
+    "text": "Chelsea have agreed a deal for Emiliano Martinez, who is due to sign. The signing raises questions over Robert Sanchez. Sources believe Sanchez may need to be moved on before the window shuts."
+  },
+  {
+    "doc_id": "guardian-exit-2026-08-30",
+    "published_at": "2026-08-30T08:44:00Z",
+    "url": "https://www.theguardian.com/football/2026/aug/30/emiliano-martinez-aston-villa-exit-move-chelsea",
+    "player_ids": [28, 140],
+    "text": "Chelsea have completed the signing of Emiliano Martinez. Emiliano Martinez is set to displace Robert Sanchez as the number one."
+  },
+  {
+    "doc_id": "sky-martinez-2026-08-30",
+    "published_at": "2026-08-30T16:25:00Z",
+    "url": "https://www.skysports.com/football/news/13578946/emi-martinez-transfer-news-chelsea-complete-signing-of-argentina-international-goalkeeper-from-aston-villa",
+    "player_ids": [28, 140],
+    "text": "Chelsea have completed the signing of Emiliano Martinez. The transfer was announced hours before the Brighton match. Emiliano Martinez is expected to be a regular starter."
+  },
+  {
+    "doc_id": "bbc-como-2026-09-01",
+    "published_at": "2026-09-01",
+    "url": "https://www.bbc.com/sport/football/articles/ce3r0yww04ro",
+    "player_ids": [28, 140],
+    "text": "Robert Sanchez has joined Como on a season-long loan. Emiliano Martinez started Chelsea's match against Brighton. Robert Sanchez was dropped from the matchday squad."
+  },
+  {
+    "doc_id": "france24-como-2026-09-01",
+    "published_at": "2026-09-01T23:33:00Z",
+    "url": "https://www.france24.com/en/live-news/20260901-chelsea-keeper-sanchez-makes-deadline-day-move-to-como",
+    "player_ids": [28, 140],
+    "text": "Robert Sanchez has joined Como on a one-year loan. Emiliano Martinez started on Sunday, hours after signing."
+  }
+]
