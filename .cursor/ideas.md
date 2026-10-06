@@ -233,6 +233,10 @@ Reading D scores the nine pool weeks again. A player with one or two prior appea
 
 Counted the same day ([early row](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). Six of the nine stay pool. Free hit has no call. The wildcard call is far, and the reachable sample is one week: Sion Jones in Gameweek 3, per-week gap 4.52, points 60 against 53. The cap did not bind. The chip sum stays undiscounted. Putting γ = 0.9 on that sum would be a different trial, because the hurdle of 16 was set on the undiscounted sum. See `reports/early_row.md`.
 
+## Chip horizon
+
+Locked 2026-10-06 before any discounted sum is read ([chip horizon](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). The weight is the existing 0.9, imported. h starts at 0 on the decision week. The hurdle stays 16. Free hit, bench boost, and triple captain stay undiscounted. The transfer value is not discounted a second time. The count is the 14 carried managers, Gameweeks 1–5. A flip is a different chip, and the path after it is not re-solved. The crowd climbs stay out. See `reports/chip_horizon_plan.md`.
+
 ## Lost shirt
 
 Noted 2026-10-06 ([blank context](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). Not switched on.

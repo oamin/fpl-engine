@@ -268,8 +268,9 @@ def one_week(
     steps = price_horizon(pool, pre_ids, rebuilt.ids(), step_scores, window)
     later_cap = max((step.cap_xp for step in steps[1:]), default=-1.0)
     later_bench = max((step.bench_xp for step in steps[1:]), default=-1.0)
+    open_chips = wallet.available(int(gw))
     if forced_chip is _AUTO_CHIP:
-        chip, gain = choose_chip(steps, wallet.available(int(gw)))
+        chip, gain = choose_chip(steps, open_chips)
     else:
         chip = None if forced_chip is None else str(forced_chip)
         gain = 0.0
@@ -397,6 +398,10 @@ def one_week(
         "chip_gain": float(gain),
         "wc_sum": float(sum(step.rebuilt_xi - step.held_xi for step in steps)),
         "fh_margin": float(steps[0].fh_xi - steps[0].held_xi),
+        "step_gaps": [float(step.rebuilt_xi - step.held_xi) for step in steps],
+        "step_caps": [float(step.cap_xp) for step in steps],
+        "step_bench": [float(step.bench_xp) for step in steps],
+        "open_chips": list(open_chips),
         "cap_xp": float(steps[0].cap_xp),
         "bench_xp": float(steps[0].bench_xp),
         "later_cap": float(later_cap),

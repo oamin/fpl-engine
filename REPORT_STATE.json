@@ -1,11 +1,9 @@
 {
   "updated": "2026-10-06",
-  "milestone": "early-row",
-  "status": "reviewed",
-  "summary": "Six of the nine pool weeks stay unscored because a 0-minute player still has no row. Free hit has no reachable week. The wildcard call is far on one week: Sion Jones in Gameweek 3, per-week gap 4.52, points 60 against 53. The buy gate stays. The chip sum stays undiscounted. Gemini kept the count.",
+  "milestone": "chip-horizon",
+  "status": "locked",
+  "summary": "The wildcard sum will be weighted by the existing 0.9, and the hurdle stays 16. The count is the 14 carried managers across Gameweeks 1 to 5. A flip is a different chip on that deadline. The path after a flip is not re-solved. The crowd climbs stay out. The count has not been run.",
   "artifacts": [
-    "reports/early_row_plan.md",
-    "reports/early_row.md",
-    "data/processed/early_row_gw15.csv"
+    "reports/chip_horizon_plan.md"
   ]
 }

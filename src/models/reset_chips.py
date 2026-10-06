@@ -47,6 +47,7 @@ from src.models.reset_gap import (
 )
 from src.models.season_climb import bank_squad_gw
 from src.models.season_climb_ft import (
+    GAMMA,
     _gw_pool,
     choose_transfers,
     rebuild_squad,
@@ -71,14 +72,37 @@ class StepOutlook:
     fh_xi: float
 
 
+def discounted_gap(gaps: list[float], gamma: float = GAMMA) -> float:
+    """Σ γ^h times each step gap. h is the index, and it starts at 0.
+
+    A blank that was already skipped is not a step. One step has weight 1.
+    The weight multiplies the gap. The hurdle is not rescaled.
+    """
+    if not gaps:
+        raise RuntimeError("the horizon has no step")
+    if len(gaps) > 3:
+        raise RuntimeError("the horizon is longer than three weeks")
+    weight = float(gamma)
+    if not 0.0 < weight <= 1.0:
+        raise RuntimeError("gamma is outside the unit interval")
+    total = 0.0
+    for index, gap in enumerate(gaps):
+        total += (weight**index) * float(gap)
+    return float(total)
+
+
 def choose_chip(
-    steps: list[StepOutlook], available: tuple[str, ...]
+    steps: list[StepOutlook],
+    available: tuple[str, ...],
+    *,
+    gamma: float | None = None,
 ) -> tuple[str | None, float]:
     """The unique legal chip that clears its hurdle, or nothing on a tie.
 
     Triple Captain and Bench Boost must be strictly the best week on this
     horizon. Free Hit and Wildcard use the locked margins and are refused
-    in Gameweek 1 even if a caller lists them.
+    in Gameweek 1 even if a caller lists them. ``gamma`` discounts only the
+    wildcard sum. The default leaves that sum undiscounted.
     """
     if not steps:
         raise RuntimeError("the chip choice has no priced week")
@@ -98,7 +122,8 @@ def choose_chip(
         if margin >= FH_MARGIN:
             gains["free_hit"] = margin
     if "wildcard" in legal:
-        total = sum(step.rebuilt_xi - step.held_xi for step in steps)
+        gaps = [float(step.rebuilt_xi) - float(step.held_xi) for step in steps]
+        total = float(sum(gaps)) if gamma is None else discounted_gap(gaps, gamma)
         if total >= WC_MARGIN:
             gains["wildcard"] = float(total)
     if not gains:
