@@ -1,12 +1,9 @@
 {
   "updated": "2026-10-06",
-  "milestone": "close-pair-shape",
+  "milestone": "hypothesis-audit",
   "status": "reviewed",
-  "summary": "The close-pair shapes are parked. On four seasons the leader wins 48.6%, 56.1%, 45.8% and 56.6% of decisive pairs within half a point. Blank rates and haul rates from earlier weeks are short of 80 decisive pairs in every season, and both miss a 5 point margin over the leader in three seasons. Gemini kept the reading. No later screen. The score stays score_xp.",
+  "summary": "Three outside hypotheses were audited and not run. The transfer search already tries two and three transfers. The pairs it skips were worth 0.06 a week on 2025/26. The same shadow on the three earlier seasons is queued, and a rewrite is rejected if each season stays under 0.25 with fewer than three weeks at or above 1. A clean previous-season fill on the fast eleven is the second test. A distribution around the same mean does not change the expected captain or the expected total, so that hypothesis stays parked. No engine change.",
   "artifacts": [
-    "src/models/close_pair_shape.py",
-    "tests/test_close_pair_shape.py",
-    "reports/close_pair_shape.md",
-    "data/processed/close_pair_shape.csv"
+    "reports/three_hypotheses.md"
   ]
 }

@@ -124,6 +124,16 @@ The price reach on those ranked-lower pairs was run on 2026-10-05 and kept as bu
 
 Run on 2026-10-06 and parked ([close-pair shape](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). The eligible leader and the closest player within half a point, four seasons, Gameweeks 6–38. The leader wins 48.6%, 56.1%, 45.8% and 56.6% of decisive pairs. Blank rates and haul rates, counted from earlier weeks on the full sheet, stay under 80 decisive pairs in every season (blanks 59, 59, 68, 71; hauls 57, 56, 60, 60). Both miss a 5 point margin over the leader in three seasons. Do not screen either shape. Do not open a position split from the thin cells. Do not rerun `score_xp / (σ + 1)` or `score_xp − 0.25σ`. The score stays `score_xp`. See `reports/close_pair_shape.md`.
 
+## Three hypotheses
+
+Reviewed on 2026-10-06 and locked ([hypothesis audit](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). Not run. See `reports/three_hypotheses.md`.
+
+The transfer search already tries two and three transfers by extending one-swaps. The cross-position pairs it does not try were worth 0.06 of three-week value a week on 2025/26, and no week reached 1. The same shadow on 2022/23, 2023/24, and 2024/25 is the remaining test. A rewrite is rejected if each season averages under 0.25 and has fewer than three weeks at or above 1. A larger season is inconclusive and still does not change the search.
+
+The historical season builder fills a missing early prior with the whole season's position mean, including later weeks. The live path fills from the previous season only. The clean-fill fast eleven is the second test, on 2023/24, 2024/25, and 2025/26. It is kept only if, in at least two seasons, Gameweeks 1–8 trail Gameweeks 9–38 by at least 2 points a week and Gameweeks 5–8 trail the published eleven by at least 1 point a week. There is no 2021/22 sheet.
+
+A distribution around the same mean does not change the captain or the expected squad total. Spread penalties and the blank and haul counts are already parked. That hypothesis is not reopened. No engine change until a test is counted.
+
 - Asian handicap, as a live-week pot only, after its own lock. Historical `score_xp` stays on the 1X2 and the 2.5 line. The free file has the handicap and no 3.5 line.
 - Player props, on the decision week only, in their own column. An Odds API call needs a cost estimate and the PI's approval. No market is discovered in a loop.
 - A season-rank weight on the copied tail only. Strength comes from season prices on a log scale, shrunk and clipped to about a 15% move in the team rate. It is idle on a week that already has a 1X2. It is not a 1–10 multiplier. The first Gameweek 6 call, once a line exists, still copies the third priced step flat.
