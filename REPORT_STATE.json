@@ -1,10 +1,11 @@
 {
   "updated": "2026-10-06",
-  "milestone": "zero-minutes",
-  "status": "noted",
-  "summary": "The stored human slot is the eleven after automatic substitutes. João Pedro was started by four of his seven owners in Gameweek 5, then replaced by a midfielder. The submitted human elevens have 10 zero-minute starters, not 0. The model does the same replacement from a three-forward eleven: the next midfielder or defender who played comes in, and the only forward in an eleven is not replaced by an outfielder. No score change.",
+  "milestone": "early-buy",
+  "status": "locked",
+  "summary": "The early-gameweek FDR-and-share score and the ownership tie-break are rejected. The locked trial buys a player from Gameweek 2 with one or two appearances this season, expected minutes at least 45, and the published xp capped at 6. The four template climbs must sum to at least 7948, at least three must match their published climb, and none may finish more than 30 behind. Totals are not yet read.",
   "artifacts": [
-    "reports/zero_minutes_gw15.md",
-    "tests/test_autosub.py"
+    "reports/early_buy.md",
+    "src/models/early_buy.py",
+    "tests/test_early_buy.py"
   ]
 }

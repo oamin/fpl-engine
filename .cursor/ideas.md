@@ -149,6 +149,16 @@ The upper-tail reading was reviewed the same day and not added ([upper tail](bc-
 
 The 2025/26 top-100 archive is still unread. It is not a sample to fit.
 
+## Early score, early buy, ownership tie-break
+
+Reviewed 2026-10-06 ([early trials](bc-7121b96b-db3a-552d-ade8-335c01d37eda)).
+
+The early-gameweek score is rejected. Fixture difficulty on top of the book counts the fixture twice. A share with no current shots is the same number for every forward on a club. A likely squad is not on the historical sheets, and the revealed lineup would be leakage. The previous-season fill already failed. The capped score for an owned player with one or two appearances stays as it is.
+
+The ownership tie-break is rejected. A lower-owned player inside half a point is the ownership penalty and the 0.5 band, both already closed. Ownership is the average manager. Captaincy and the chip margins do not take a crowd term.
+
+The buy is locked and not yet scored. From Gameweek 2, one or two appearances this season and expected minutes of at least 45 may be bought. The score is the published xp capped at 6. The climb is the crowd template, empty chip map, four seasons. The pool must reach 7948. At least three seasons must match or beat 1735, 2105, 2086, and 1988. None may finish more than 30 behind. See `src/models/early_buy.py`.
+
 ## Zero-minute starters, Gameweeks 1–5
 
 Noted 2026-10-06, corrected the same day. Do not treat the 23 named zeros as one rule, and do not retune `score_xp` from them. Fourteen are João Pedro in Gameweek 5. His previous four weeks were all 90 minutes, so a lagged zero does not bench him. The stored human slot is the eleven after automatic substitutes. Four of the seven owners started him and were substituted. Three benched him. The picks list `automatic_subs` is not kept in `data/entry`.
