@@ -4,8 +4,10 @@
 This module chooses the inputs. Minutes come from the file, and a zero stays
 a zero. Shot shares stay on the deadline. A priced week moves only the
 opponent pot, and a double uses the first pot. The next club week with no
-1X2 repeats the last priced week. One rebuild is shared by Wildcard and the
-decision-week Free Hit. ``plan_half`` then reads that table.
+1X2 repeats the last priced week in the outlook table. One rebuild is shared
+by Wildcard and the decision-week Free Hit. ``plan_half`` counts only the
+weeks that have their own opening line. A copied week stays in the table and
+adds nothing.
 
 The formula is not changed here. A missing minutes file never reaches this
 module: the caller records ``missing_minutes`` and does not plan a chip.
@@ -334,10 +336,13 @@ def plan_deadline(
     step_scores: Mapping[int, Mapping[str, float]],
     clubs: Mapping[int, set[str]],
     played: Mapping[int, str] | None = None,
+    priced: set[int] | None = None,
 ) -> tuple[HalfPlan, list[WeekInputs]]:
     """One rebuild on the decision-week scores, then the half plan.
 
     Later weeks keep that fifteen. They do not solve the squad again.
+    ``priced`` is the weeks with their own opening line. Omitting it counts
+    every week in the table.
     """
     if int(current_gw) not in step_scores:
         raise ScorerError(f"GW{int(current_gw)} has no outlook scores")
@@ -351,7 +356,7 @@ def plan_deadline(
         for gw, scores in step_scores.items()
     }
     weeks = week_inputs(int(current_gw), state, frame, dict(clubs), prepared, SCORE_COL)
-    plan = plan_half(int(current_gw), weeks, played=played)
+    plan = plan_half(int(current_gw), weeks, played=played, priced=priced)
     return plan, weeks
 
 
@@ -380,7 +385,15 @@ def price_half(
     clubs = clubs_from_fixtures(fixtures, names, int(gw), end)
     horizon = club_steps(int(gw), clubs)
     step_scores, copies = scores_for_horizon(line_scores, horizon)
-    plan, weeks = plan_deadline(int(gw), state, pool, step_scores, clubs, played)
+    plan, weeks = plan_deadline(
+        int(gw),
+        state,
+        pool,
+        step_scores,
+        clubs,
+        played,
+        priced=set(int(week) for week in line_weeks),
+    )
     return ScorerResult(
         plan=plan,
         weeks=tuple(weeks),

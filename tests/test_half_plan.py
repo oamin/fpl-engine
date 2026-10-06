@@ -181,6 +181,41 @@ class WildcardTests(unittest.TestCase):
         self.assertIsNone(plan.chip)
         self.assertEqual(plan.schedule["wildcard"], 18)
 
+    def test_a_copied_tail_does_not_clear_the_wildcard(self) -> None:
+        held = [_squad(10.0)] * 14
+        rebuilt = [_squad(16.0), _squad(14.0)] + [_squad(15.0)] * 12
+        rows = _weeks(6, 19, held=held, rebuilt=rebuilt)
+        plan = plan_half(6, rows, priced={6, 7})
+        self.assertNotEqual(plan.chip, "wildcard")
+
+    def test_the_second_priced_week_is_in_the_wildcard_sum(self) -> None:
+        held = [_squad(10.0)] * 14
+        rebuilt = [_squad(22.0), _squad(15.0)] + [_squad(15.0)] * 12
+        rows = _weeks(6, 19, held=held, rebuilt=rebuilt)
+        plan = plan_half(6, rows, priced={6, 7})
+        self.assertEqual(plan.chip, "wildcard")
+        self.assertEqual(plan.schedule["wildcard"], 6)
+
+    def test_bench_boost_ignores_a_copied_week(self) -> None:
+        held = [
+            _squad(10.0, bench=2.0),
+            _squad(10.0, bench=0.0),
+        ] + [_squad(10.0, bench=20.0)] * 12
+        rows = _weeks(6, 19, held=held)
+        plan = plan_half(6, rows, priced={6, 7})
+        self.assertEqual(plan.chip, "bench_boost")
+        self.assertEqual(plan.schedule["bench_boost"], 6)
+
+    def test_an_empty_priced_set_is_rejected(self) -> None:
+        rows = _weeks(17, 19, held=_squad(10.0), rebuilt=_squad(20.0))
+        with self.assertRaises(HalfPlanError):
+            plan_half(17, rows, priced=set())
+
+    def test_a_priced_set_without_the_decision_week_is_rejected(self) -> None:
+        rows = _weeks(17, 19, held=_squad(10.0), rebuilt=_squad(20.0))
+        with self.assertRaises(HalfPlanError):
+            plan_half(17, rows, priced={18, 19})
+
     def test_wildcard_waits_for_a_later_week(self) -> None:
         rows = _weeks(
             17,

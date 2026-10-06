@@ -71,6 +71,7 @@ def plan_half(
     current_gw: int,
     weeks: Sequence[WeekInputs],
     played: Mapping[int, str] | None = None,
+    priced: set[int] | None = None,
 ) -> HalfPlan:
     """Best legal chip schedule through the end of this half.
 
@@ -82,10 +83,15 @@ def plan_half(
     Bench Boost and Triple Captain play this week when it is strictly the
     best week left for that chip. Free Hit also needs a lead of ``FH_MARGIN``
     on this week alone. Wildcard also needs the rebuilt eleven to lead the
-    held eleven by ``WC_MARGIN`` across the rest of the half. Two chips with
-    the same best value play nothing.
+    held eleven by ``WC_MARGIN`` across the weeks that have their own line.
+    Two chips with the same best value play nothing.
+
+    ``priced`` is the gameweeks with their own opening line. A week left out
+    of that set is a copied line and adds nothing. Omitting the set counts
+    every week in the table.
     """
     table = _week_table(current_gw, weeks)
+    priced_set = _priced_weeks(table, priced)
     already = _played(played)
     if current_gw in already:
         raise HalfPlanError(f"GW{current_gw} already has a chip")
@@ -98,7 +104,7 @@ def plan_half(
     ]
     if not legal:
         raise HalfPlanError("no legal chip schedule")
-    scored = [(item, _value(item, table)) for item in legal]
+    scored = [(item, _value(item, table, priced_set)) for item in legal]
     best = max(value for _, value in scored)
     optimal = [item for item, value in scored if abs(value - best) <= _VALUE_TIE]
     chips_now = {_chip_now(item, current_gw) for item in optimal}
@@ -107,7 +113,7 @@ def plan_half(
     if len(real) != 1 or None in chips_now:
         return quiet
     chip = real.pop()
-    if not _hurdle(chip, table, rebuilt_ok):
+    if not _hurdle(chip, table, rebuilt_ok, priced_set):
         return quiet
     chosen = _best_with(scored, current_gw, chip)
     return HalfPlan(chip=chip, schedule=_as_map(chosen[0]), value=chosen[1])
@@ -164,11 +170,39 @@ def _legal(combo: tuple, played: dict[int, str], table: tuple[WeekInputs, ...]) 
     return True
 
 
-def _value(combo: tuple, table: tuple[WeekInputs, ...]) -> float:
+def _priced_weeks(
+    table: tuple[WeekInputs, ...], priced: set[int] | None
+) -> set[int] | None:
+    """Gameweeks that count. None means the whole table."""
+    if priced is None:
+        return None
+    wanted = {int(gw) for gw in priced}
+    found = {int(row.gw) for row in table}
+    if not wanted:
+        raise HalfPlanError("priced weeks are empty")
+    missing = wanted - found
+    if missing:
+        raise HalfPlanError(
+            "a priced week is outside the half: " + ", ".join(str(gw) for gw in sorted(missing))
+        )
+    if int(table[0].gw) not in wanted:
+        raise HalfPlanError("the decision week has no line")
+    return wanted
+
+
+def _counts(gw: int, priced: set[int] | None) -> bool:
+    return priced is None or int(gw) in priced
+
+
+def _value(
+    combo: tuple, table: tuple[WeekInputs, ...], priced: set[int] | None
+) -> float:
     assigned = {CHIPS[index]: gw for index, gw in enumerate(combo)}
     wildcard = assigned["wildcard"]
     total = 0.0
     for row in table:
+        if not _counts(row.gw, priced):
+            continue
         if assigned["free_hit"] == row.gw:
             total += float(row.fh_xi or 0.0)
             continue
@@ -215,7 +249,12 @@ def _best_with(
     return max(matching, key=lambda item: item[1])
 
 
-def _hurdle(chip: str, table: tuple[WeekInputs, ...], rebuilt_ok: bool) -> bool:
+def _hurdle(
+    chip: str,
+    table: tuple[WeekInputs, ...],
+    rebuilt_ok: bool,
+    priced: set[int] | None,
+) -> bool:
     row = table[0]
     if chip == "bench_boost":
         return float(row.held.bench_xp) > 0.0
@@ -231,6 +270,7 @@ def _hurdle(chip: str, table: tuple[WeekInputs, ...], rebuilt_ok: bool) -> bool:
         gap = sum(
             float(week.rebuilt.xi_xp) - float(week.held.xi_xp)  # type: ignore[union-attr]
             for week in table
+            if _counts(week.gw, priced)
         )
         return gap >= WC_MARGIN
     return False

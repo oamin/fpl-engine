@@ -559,9 +559,9 @@ def render(log: DeadlineLog) -> str:
             lines.append(log.copy_note)
         if log.chip is not None and log.copy_note:
             lines.append(
-                "That chip is the locked sum. The wildcard hurdle adds every "
-                "later week, including weeks that repeat the last priced step. "
-                "This is not a reviewed recommendation."
+                "The wildcard hurdle adds only the weeks with their own opening "
+                "line. A week that repeats the last priced step adds nothing to "
+                "that sum and nothing to the schedule. The margin stays 16."
             )
         lines.append("")
     if log.odds_trial == "no_key":
