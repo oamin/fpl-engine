@@ -1,11 +1,11 @@
 {
   "updated": "2026-10-06",
   "milestone": "early-buy",
-  "status": "locked",
-  "summary": "The early-gameweek FDR-and-share score and the ownership tie-break are rejected. The locked trial buys a player from Gameweek 2 with one or two appearances this season, expected minutes at least 45, and the published xp capped at 6. The four template climbs must sum to at least 7948, at least three must match their published climb, and none may finish more than 30 behind. Totals are not yet read.",
+  "status": "reviewed",
+  "summary": "The early-gameweek FDR-and-share score and the ownership tie-break are rejected. The buy after one or two appearances, capped at 6, scored 1606, 1960, 2019, and 2018 on the four template climbs. The pool is 7603 against 7948. One season is ahead and three finish more than 30 behind. The buy gate stays at three appearances.",
   "artifacts": [
     "reports/early_buy.md",
-    "src/models/early_buy.py",
-    "tests/test_early_buy.py"
+    "data/processed/early_buy.csv",
+    "data/processed/early_buy_signings.csv"
   ]
 }

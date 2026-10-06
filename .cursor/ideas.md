@@ -157,7 +157,7 @@ The early-gameweek score is rejected. Fixture difficulty on top of the book coun
 
 The ownership tie-break is rejected. A lower-owned player inside half a point is the ownership penalty and the 0.5 band, both already closed. Ownership is the average manager. Captaincy and the chip margins do not take a crowd term.
 
-The buy is locked and not yet scored. From Gameweek 2, one or two appearances this season and expected minutes of at least 45 may be bought. The score is the published xp capped at 6. The climb is the crowd template, empty chip map, four seasons. The pool must reach 7948. At least three seasons must match or beat 1735, 2105, 2086, and 1988. None may finish more than 30 behind. See `src/models/early_buy.py`.
+The buy was run the same day and rejected ([early buy](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). From Gameweek 2, one or two appearances and expected minutes of at least 45 could be bought, at the published xp capped at 6. The four template climbs scored 1606, 1960, 2019, and 2018 against 1735, 2105, 2086, and 1988. The pool is 7603 against 7948. One season is ahead. Three finish more than 30 behind. The buy gate stays at three appearances. See `reports/early_buy.md`.
 
 ## Zero-minute starters, Gameweeks 1–5
 
