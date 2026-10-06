@@ -220,6 +220,14 @@ def _fmt(row: dict[str, Any]) -> str:
     return f"{row['mean']:+.4f} [{row['lo']:+.4f}, {row['hi']:+.4f}]"
 
 
+def _band(row: dict[str, Any]) -> str:
+    if row["lo"] > 0:
+        return "the interval stays above zero"
+    if row["hi"] < 0:
+        return "the interval stays below zero"
+    return "the interval covers zero"
+
+
 def _report_lines(
     intervals: dict[str, Any],
     log_rows: pd.DataFrame,
@@ -246,12 +254,57 @@ def _report_lines(
         lines.append(f"| {left} − {right} | {_fmt(row)} | {row['n_rows']} |")
     lines += [
         "",
-        "Gameweeks per season:",
+        "The same delta by season. Each cell is the mean of that season's gameweek deltas.",
         "",
+        "| season | score_xp − exp | score_xp − official | official − exp |",
+        "|---|---:|---:|---:|",
     ]
-    counts = log_rows.groupby(["comparison", "season"])["gw"].nunique()
-    for key, season in counts.index:
-        lines.append(f"- {key}, {season}: {int(counts.loc[(key, season)])} gameweeks")
+    order = [comparison_key(left, right) for left, right in COMPARISONS]
+    for season in intervals["seasons"]:
+        cells = []
+        for key in order:
+            block = log_rows.loc[
+                (log_rows["season"] == season) & (log_rows["comparison"] == key), "delta"
+            ]
+            cells.append(f"{float(block.mean()):+.4f}")
+        lines.append(f"| {season} | " + " | ".join(cells) + " |")
+    gw_start = 5
+    gw_end = 38
+    for season in intervals["seasons"]:
+        present = set(log_rows.loc[log_rows["season"] == season, "gw"].astype(int))
+        missing = [gw for gw in range(gw_start, gw_end + 1) if gw not in present]
+        if missing:
+            joined = ", ".join(str(gw) for gw in missing)
+            lines.append("")
+            lines.append(
+                f"{season} has no sheet rows in gameweek {joined}, so that week is absent. "
+                f"{len(present)} gameweeks remain."
+            )
+    xp_exp = intervals["comparisons"][comparison_key("score_xp", "score_exp_points")]
+    xp_off = intervals["comparisons"][comparison_key("score_xp", "score_official_xp")]
+    off_exp = intervals["comparisons"][comparison_key("score_official_xp", "score_exp_points")]
+    off_key = comparison_key("score_xp", "score_official_xp")
+    off_vs_exp = comparison_key("score_official_xp", "score_exp_points")
+    xp_vs_off = ", ".join(
+        f"{season} {float(log_rows.loc[(log_rows['season']==season) & (log_rows['comparison']==off_key), 'delta'].mean()):+.4f}"
+        for season in intervals["seasons"]
+    )
+    off_vs = ", ".join(
+        f"{season} {float(log_rows.loc[(log_rows['season']==season) & (log_rows['comparison']==off_vs_exp), 'delta'].mean()):+.4f}"
+        for season in intervals["seasons"]
+    )
+    lines += [
+        "",
+        f"On the pooled gameweeks, score_xp minus score_exp_points is {_fmt(xp_exp)}, "
+        f"and {_band(xp_exp)}. "
+        f"score_xp minus score_official_xp is {_fmt(xp_off)}, and {_band(xp_off)}. "
+        f"The season means of that second comparison are {xp_vs_off}. "
+        f"score_official_xp minus score_exp_points is {_fmt(off_exp)}, and {_band(off_exp)}. "
+        f"Its season means are {off_vs}.",
+        "",
+        "The likelihood is the mean over every finite player-GW row, including "
+        "0-minute rows. It is not the eleven.",
+    ]
     lines += [
         "",
         "## Stripped XI, descriptive",
@@ -273,6 +326,25 @@ def _report_lines(
                 f"| {season} | {len(block)} | {block['score_xp'].sum():.0f} | "
                 f"{block['score_exp_points'].sum():.0f} | {block['score_official_xp'].sum():.0f} |"
             )
+    if not xi.empty:
+        off_ahead = []
+        xp_ahead = []
+        for season, block in xi.groupby("season", sort=False):
+            xp_total = float(block["score_xp"].sum())
+            off_total = float(block["score_official_xp"].sum())
+            exp_total = float(block["score_exp_points"].sum())
+            if off_total >= xp_total and off_total >= exp_total:
+                off_ahead.append(str(season))
+            elif xp_total >= off_total and xp_total >= exp_total:
+                xp_ahead.append(str(season))
+        lines += [
+            "",
+            "There is no budget and no transfer constraint, and the captain is the "
+            "highest realised score in the eleven. "
+            f"Official xP has the highest total in {', '.join(off_ahead) or 'no season'}. "
+            f"score_xp has the highest total in {', '.join(xp_ahead) or 'no season'}. "
+            "These totals are not a pass.",
+        ]
     lines += [
         "",
         "## What was wrong, and what changed",

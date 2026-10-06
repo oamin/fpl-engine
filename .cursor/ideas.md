@@ -1,6 +1,10 @@
 # Candidate hypotheses
 
-Cursor and Gemini choose the next one. The PI is not asked to pick.
+Cursor chooses the next pre-registered comparison. The PI is not asked to pick. A result needs the as-of audit and paired intervals on all four closed seasons. One comparison at a time.
+
+## Procedure, locked 2026-10-06
+
+The +34 season-total bar is retired. The paragraphs below are the record of those screens. They are not a pass. Sharpe, ownership, and churn stay parked. A captain model and a chip simulator stay deferred. The development metric is the player-GW log score in `experiments/protocol.json`. 2026-27 is a frozen holdout. Stage 13 (xP trailed expected points at horizon 8) and stage 18 (ridge tied xP under budget, −2) stay set aside. See `reports/procedure_audit.md`.
 
 ## Objective functions (from the project outline)
 

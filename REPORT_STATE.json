@@ -1,11 +1,14 @@
 {
   "updated": "2026-10-06",
-  "milestone": "chip-horizon",
-  "status": "reviewed",
-  "summary": "Weighting the wildcard sum by 0.9 changes no chip across the 70 Gameweek 1 to 5 deadlines. The one sum that crosses 16 is Gameweek 1, where a wildcard cannot be played. The stored Gameweek 6 leads discount from 17.67 to 17.16 and still clear 16. The hurdle stays. The crowd climbs were not replayed. Gemini kept the count.",
+  "milestone": "honest-pool",
+  "status": "gated",
+  "summary": "The as-of audit passed. On the four closed seasons, score_xp beats expected points on the player-GW log score, +0.0153 [+0.0130, +0.0175]. score_xp against official xP is -0.0016 [-0.0163, +0.0125], and the interval covers zero. Official xP beats expected points, +0.0169 [+0.0035, +0.0306]. The stripped eleven is descriptive and is not a pass. 2026-27 is frozen and was not scored. The season-total bar is retired.",
   "artifacts": [
-    "reports/chip_horizon_plan.md",
-    "reports/chip_horizon.md",
-    "data/processed/chip_horizon_gw15.csv"
+    "reports/procedure_audit.md",
+    "data/processed/player_gw_logscore.csv",
+    "data/processed/player_gw_xi_sanity.csv",
+    "data/processed/procedure_intervals.json",
+    "data/live/HOLDOUT_FREEZE.json",
+    "experiments/protocol.json"
   ]
 }
