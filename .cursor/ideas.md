@@ -169,7 +169,11 @@ Three are Rico Lewis in Gameweeks 3–5 on one squad. He had already recorded 0 
 
 Kept 2026-10-06 ([wildcard priced](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). The hurdle is the rebuilt eleven minus the held eleven on weeks with their own opening line. A copied week adds nothing to that sum and nothing to the schedule. The Gameweek 6 replay is 17.67 and still plays wildcard. Free Hit is unset: Gameweek 10 is a copy, and Gameweek 7's rebuilt bench outscores the free hit. Do not move 16 because 17.67 cleared it. Do not put the twelve copies of Gameweek 7 back into the sum. See `reports/wildcard_priced.md`.
 
-## Forced chip calendar, queued
+## Gameweek 4 stack
+
+Kept 2026-10-06 and closed ([Gameweek 4 stack](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). Groß, João Pedro, and De Cuyper were eligible for the Gameweek 3 wildcard rebuild. The three-appearance gate did not stop them. Groß trailed Gakpo by 0.99 with the money free. João Pedro trailed Calvert-Lewin by 0.55 and the sale could not pay 77. De Cuyper was within 0.17 of the defender who was kept. They scored 1, 1, and 4 that week, then 17, 12, and 11. Do not fit a score on that next week. See `reports/gw4_stack.md`.
+
+## Forced chip calendar
 
 Run on 2026-10-06 and killed ([forced chips](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). Each of the 14 kept his Gameweek 1 fifteen. His chip weeks replaced the model's chip choice, and the model still picked the squad. The mean chip value is −3.43 and the mean forced gap is −30.86. Cameron Scott finishes 4 ahead. Sion Jones goes from −4 to −46. Do not copy their chip weeks. The margins stay 12 and 16. See `reports/forced_chips_gw15.md`.
 

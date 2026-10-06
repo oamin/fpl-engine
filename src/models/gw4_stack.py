@@ -177,6 +177,13 @@ def run() -> list[dict[str, Any]]:
     return found
 
 
+def _text(value: Any) -> str:
+    if value is None or value != value:
+        return ""
+    text = str(value)
+    return "" if text == "nan" else text
+
+
 def _num(value: Any) -> str:
     if value is None or value != value:
         return ""
@@ -189,7 +196,7 @@ def render(rows: list[dict[str, Any]]) -> str:
     lines = [
         "# Gameweek 4 stack",
         "",
-        "Groß, João Pedro, and De Cuyper are the shared Gameweek 4 haul. The four managers who wildcarded in Gameweek 3 under the forced calendar are replayed. The rebuild is the model's. Eligible means three prior appearances and expected minutes of at least 45. A negative gap means the cheapest player the rebuild kept at that position had the higher score. Price means selling that player plus the bank still could not buy him. Neither means the score left him out with the money and the club slot available.",
+        "Groß, João Pedro, and De Cuyper are the shared Gameweek 4 haul. The four managers who wildcarded in Gameweek 3 under the forced calendar are replayed. The rebuild is the model's. Eligible means three prior appearances and expected minutes of at least 45. Those appearance counts include earlier seasons on the same id. A negative gap means the cheapest player the rebuild kept at that position had the higher score. Price means selling that player plus the bank still could not buy him. Neither means the score left him out with the money and the club slot available. The Instead column is the Gameweek 3 rebuild only.",
         "",
         "| Manager | Week | Player | Pool | Place | Block | Score gap | Score | Appearances | Minutes | Price | Instead | Started | Points |",
         "|---|---:|---|---|---|---|---:|---:|---:|---:|---:|---|---|---:|",
@@ -197,11 +204,35 @@ def render(rows: list[dict[str, Any]]) -> str:
     for row in rows:
         lines.append(
             f"| {row['label']} | {row['gw']} | {row['player']} | {row['tag']} | "
-            f"{row['place']} | {row['block']} | {_num(row['gap'])} | {_num(row['score_xp'])} | "
+            f"{row['place']} | {_text(row['block'])} | {_num(row['gap'])} | {_num(row['score_xp'])} | "
             f"{_num(row['n_prior'])} | {_num(row['xmi'])} | {_num(row['value'])} | "
-            f"{row['lowest']} | {'yes' if row['in_xi'] else 'no'} | {_num(row['points'])} |"
+            f"{row['lowest'] if int(row['gw']) == WILDCARD_GW else ''} | "
+            f"{'yes' if row['in_xi'] else 'no'} | {_num(row['points'])} |"
         )
+    gross_gap = next(
+        row["gap"] for row in rows if row["player"] == "Groß" and int(row["gw"]) == WILDCARD_GW
+    )
+    pedro_gap = next(
+        row["gap"]
+        for row in rows
+        if row["player"] == "João Pedro" and int(row["gw"]) == WILDCARD_GW
+    )
     lines += [
+        "",
+        (
+            "All three were eligible. The three-appearance gate did not stop them. "
+            f"Groß was left out on the score: Gakpo led him by {abs(float(gross_gap)):.2f}, "
+            "and the money and the club slot were both free. He scored 1 in the wildcard "
+            "week and 17 in Gameweek 4. "
+            f"João Pedro trailed Calvert-Lewin by {abs(float(pedro_gap)):.2f}, and the bank "
+            "plus that sale could not pay his price of 77. He scored 1 and then 12. "
+            "De Cuyper was within 0.17 of the defender who was kept, and on one of the four "
+            "squads the same sale could not pay his price. He scored 4 and then 11. "
+            "None of the four squads started them in Gameweek 4. "
+            "A rebuild solved again in Gameweek 4 would have included João Pedro. "
+            "The squad locked in by the Gameweek 3 wildcard did not hold him, and "
+            "Groß was still outside that later rebuild."
+        ),
         "",
         "The margins stay 12 and 16. `score_xp` is unchanged.",
         "",

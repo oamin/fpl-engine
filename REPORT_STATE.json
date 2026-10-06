@@ -1,10 +1,10 @@
 {
   "updated": "2026-10-06",
-  "milestone": "forced-chips",
+  "milestone": "gw4-stack",
   "status": "reviewed",
-  "summary": "Forcing each manager's chip weeks scored a mean chip value of -3.43 and a mean forced gap of -30.86, against the autonomous -27.43. Both kill conditions fire. His chip weeks do not explain the deficit. Cameron Scott finishes 4 ahead. The margins stay 12 and 16.",
+  "summary": "Groß, João Pedro, and De Cuyper were eligible for the Gameweek 3 wildcard rebuild. The three-appearance gate did not stop them. Groß trailed Gakpo by 0.99 with the money free. João Pedro trailed Calvert-Lewin by 0.55 and the sale could not pay 77. De Cuyper was within 0.17 of the defender who was kept. The check is closed. The score and the margins stay.",
   "artifacts": [
-    "reports/forced_chips_gw15.md",
-    "data/processed/forced_chips_gw15.csv"
+    "reports/gw4_stack.md",
+    "data/processed/gw4_stack.csv"
   ]
 }
