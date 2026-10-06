@@ -189,6 +189,8 @@ This cannot enter the historical climb. Those seasons have no weekly news, and a
 
 Coded 2026-10-06 on the live path only ([news tags](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). A note counts only when its own time is before that deadline. Thirty players share one second and those rows are dropped. Sánchez is an ask on 28 Aug, because the deadline had an agreed deal and not a team sheet, and 0 from Gameweek 3, when the Como loan is dated. Martínez is a firm starter from that week. Every doubtful row in the window played 0. The chance times the old minutes stays. A player with no appearance still uses 90 before the chance, and that is the case to watch. See `reports/news_tags_gw15.md`.
 
+Reddit and other FPL forums are not a source for the tag ([forum sources](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). A post time is not enough. The body can be edited after the deadline, a comment needs its own time, and an anonymous line is the agreed-deal failure again. Upvotes are not evidence. Reading old threads after the matches, to fill Gameweeks 1–5, is selection after the fact and is out. A forum may only point at a club statement or a named reporter, and that piece’s own time is what the date gate uses.
+
 ## Lost shirt
 
 Noted 2026-10-06 ([blank context](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). Not switched on.

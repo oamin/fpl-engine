@@ -2,11 +2,8 @@
   "updated": "2026-10-06",
   "milestone": "news-tags",
   "status": "reviewed",
-  "summary": "Live Gameweeks 1–5 now take a news tag only when the note is dated before that deadline. Sánchez is an ask on 28 Aug and 0 minutes from Gameweek 3, when the Como loan is dated. Martínez is a firm starter from that week. Every doubtful row played 0, and the chance scaling stays. The historical climb was not run. Gemini kept the sheet.",
+  "summary": "Reddit and other FPL forums are not a source for the live news tag. A post time is not enough: the body can be edited, a comment needs its own time, and an anonymous line is not a team sheet. Reading old threads to fill Gameweeks 1–5 is out. A forum may only point at a club statement or a named reporter, and that piece’s own time is what the date gate uses. Gemini kept forums out.",
   "artifacts": [
-    "reports/news_tags_gw15.md",
-    "data/processed/news_tags_gw15.csv",
-    "data/processed/news_tag_completion_gw15.json",
-    "data/live/news_docs_gw15.json"
+    "reports/news_tags_gw15.md"
   ]
 }
