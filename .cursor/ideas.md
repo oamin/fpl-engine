@@ -179,6 +179,18 @@ Run on 2026-10-06 and killed ([forced chips](bc-7121b96b-db3a-552d-ade8-335c01d3
 
 The field book is rejected. A squad taken from these 14 leaks the benchmark, and the wildcard margin is not a licence to give up 16 points of expected score. The race count was the tie-break on that squad, so it is rejected with it. Ownership and the close-call differential stay parked.
 
+## Lost shirt
+
+Noted 2026-10-06 ([blank context](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). Not switched on.
+
+Sánchez is named in the model's eleven in Gameweeks 2–5 on the Gameweek 1 score of 3.61. He played 0 minutes in each of those weeks. Martínez played 90 for Chelsea in each. The 0-minute row is dropped before the prior, so the score does not move.
+
+A blank has to enter the minutes history. An injury flag is not available: the sheets have minutes, not news, and the season-end status is the wrong week. That part stays parked under Player status. The tag that is available is `replaced` when another player of the same club and position played at least 60 minutes, `benched` when the club played and nobody at the position did, and `no_fixture` when the club had no game.
+
+Gemini rejected zeroing a goalkeeper after one `replaced` week, and rejected zeroing an outfielder at all. One rested league match would be sold, and a benched defender almost always has a teammate who played 60. The amended cut is: every blank enters the three-game minutes mean; a goalkeeper with two consecutive `replaced` weeks has expected minutes 0 until he plays 60; an outfielder is never hard-zeroed. One 90-minute history plus one zero is still a mean of 60, and appearance points do not fall until the mean is below 60, so Sánchez would still be named in Gameweek 3. He would be benched from Gameweek 4.
+
+Scheduled minutes already counted every missed club week as zero and was parked. The transfer climb went +146 and −78. The fast XI never sees a player who did not play, so it cannot test this. `score_xp` stays the published score until a transfer-climb screen of the narrower rule is locked.
+
 ## Rules gaps
 
 - Full Opta BPS table (goals, assists, playing time, and the rest) is not in the 20 Jul 2026 change note. Only the 2026/27 deltas are coded.

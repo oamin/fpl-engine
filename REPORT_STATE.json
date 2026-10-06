@@ -1,10 +1,7 @@
 {
   "updated": "2026-10-06",
-  "milestone": "own-squad",
-  "status": "measured",
-  "summary": "The published climber, starting from its own Gameweek 1 squad, scores 280 over Gameweeks 1–5. The weeks are 40, 89, 48, 62, and 41. It transfers once, in Gameweek 3. Sánchez is named in the eleven in Gameweeks 2–5 with 0 minutes and a score that stays 3.61. The score and the margins stay.",
-  "artifacts": [
-    "reports/own_squad_gw15.md",
-    "data/processed/own_squad_gw15.csv"
-  ]
+  "milestone": "lost-shirt",
+  "status": "diagnosed",
+  "summary": "Sánchez is named in Gameweeks 2–5 on a frozen 3.61 because a 0-minute week is dropped. Martínez started those Chelsea matches. Haaland is first or second in the pool and costs £15.5m. Forcing him into the opening squad lowers its expected score by 0.77, and a later single sale cannot pay for him. Gemini rejected zeroing a goalkeeper after one blank. The score is unchanged.",
+  "artifacts": []
 }
