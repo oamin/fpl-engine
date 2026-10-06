@@ -244,7 +244,7 @@ def _merge(
         by_key[key] = item
     for key, wrapped in llm_rows.items():
         decision = wrapped["decision"]
-        gw, player_id = key
+        player_id, gw = key
         existing = by_key.get((gw, player_id))
         if existing is not None and existing["tag"] not in {None, "ask"}:
             existing["llm_tag"] = decision.tag or ""
@@ -423,8 +423,20 @@ def _write_report(
         first = block.splitlines()[0]
         lines.append(f"- {first}")
     lines.append("")
-    lines.append(f"Sheet: `{OUT_CSV}`.")
-    lines.append("")
+    lines.extend(
+        [
+            "## Review",
+            "",
+            "The Friday deadline stays an ask. Sánchez is 0 from Gameweek 3, when the loan is dated. "
+            "Martínez stays a firm starter from that week. There is no later team sheet, and nothing in the packet contradicts the 1 Sep note. "
+            "Every doubtful row played 0. The chance times the old minutes stays, because this set is too small to turn every doubtful flag into a zero. "
+            "A player with no earlier appearance still uses 90 before the chance. That is the case to watch. "
+            "None of this enters the historical climb.",
+            "",
+            f"Sheet: `{OUT_CSV.relative_to(ROOT)}`.",
+            "",
+        ]
+    )
     OUT_REPORT.parent.mkdir(parents=True, exist_ok=True)
     OUT_REPORT.write_text("\n".join(lines), encoding="utf-8")
 
@@ -464,7 +476,8 @@ def _pool_section(rows: Sequence[Mapping[str, Any]]) -> list[str]:
     if doubtful:
         lines.append(
             "Doubtful players keep a share of their old minutes. They are not zeroed. "
-            "A player with no earlier appearance uses 90 as the full match, then the chance."
+            "A player with no earlier appearance uses 90 as the full match, then the chance. "
+            "In this window every row below played 0."
         )
         lines.append("")
         lines.append("| GW | Player | Chance line | Old minutes | Tagged minutes | Played |")

@@ -15,7 +15,7 @@ Gameweek 2's deadline is Friday 28 Aug 17:30 UTC. The Athletic and Guardian piec
 | GW | Tag | Source | Tagged minutes | Old minutes | Played | Note |
 | --- | --- | --- | ---: | ---: | ---: | --- |
 | 1 | none | none | unchanged |  | 90 |  |
-| 2 | none | pending | unchanged | 90 | 0 | prose packet not classified |
+| 2 | ask | llm | unchanged | 90 | 0 | Potential future transfer of a competitor raised, but Sanchez is neither transferred nor benched |
 | 3 | transferred | fpl | 0 | 90 | 0 | Has joined Como on loan for the rest of the season |
 | 4 | transferred | fpl | 0 | 90 | 0 | Has joined Como on loan for the rest of the season |
 | 5 | transferred | fpl | 0 | 90 | 0 | Has joined Como on loan for the rest of the season |
@@ -26,10 +26,10 @@ The same dates apply. He is not tagged as the Chelsea starter until a document d
 
 | GW | Tag | Source | Tagged minutes | Old minutes | Played | Note |
 | --- | --- | --- | ---: | ---: | ---: | --- |
-| 2 | none | pending | unchanged |  | 90 | prose packet not classified |
-| 3 | none | pending | unchanged | 90 | 90 | prose packet not classified |
-| 4 | none | pending | unchanged | 90 | 90 | prose packet not classified |
-| 5 | none | pending | unchanged | 90 | 90 | prose packet not classified |
+| 2 | ask | llm | unchanged |  | 90 | Deal agreed to sign Martinez but contract not yet completed before the GW2 deadline |
+| 3 | firm_starter | llm | 90 | 90 | 90 | Martinez started Chelsea's match against Brighton and is the regular starter |
+| 4 | firm_starter | llm | 90 | 90 | 90 | Martinez started Chelsea's match against Brighton and is the regular starter |
+| 5 | firm_starter | llm | 90 | 90 | 90 | Martinez started Chelsea's match against Brighton and is the regular starter |
 
 ## The model's squad
 
@@ -49,7 +49,7 @@ Each count is a player whose own `news_added` is before that deadline and is not
 | 4 | 100 | 44 | 3 | 1 | 0 | 0 |
 | 5 | 101 | 59 | 6 | 1 | 0 | 0 |
 
-Doubtful players keep a share of their old minutes. They are not zeroed. A player with no earlier appearance uses 90 as the full match, then the chance.
+Doubtful players keep a share of their old minutes. They are not zeroed. A player with no earlier appearance uses 90 as the full match, then the chance. In this window every row below played 0.
 
 | GW | Player | Chance line | Old minutes | Tagged minutes | Played |
 | --- | --- | --- | ---: | ---: | ---: |
@@ -68,7 +68,7 @@ Doubtful players keep a share of their old minutes. They are not zeroed. A playe
 
 ## The prose packets
 
-The prose completion has not been applied. FPL lines above stand on their own timestamps.
+The prose completion was applied.
 
 Cases in the prompt:
 
@@ -80,5 +80,9 @@ Cases in the prompt:
 - player_id 140 | Sánchez | GKP | gw 4 | deadline 2026-09-12T12:30:00Z
 - player_id 28 | Martinez | GKP | gw 5 | deadline 2026-09-18T17:30:00Z
 - player_id 140 | Sánchez | GKP | gw 5 | deadline 2026-09-18T17:30:00Z
+
+## Review
+
+The Friday deadline stays an ask. Sánchez is 0 from Gameweek 3, when the loan is dated. Martínez stays a firm starter from that week. There is no later team sheet, and nothing in the packet contradicts the 1 Sep note. Every doubtful row played 0. The chance times the old minutes stays, because this set is too small to turn every doubtful flag into a zero. A player with no earlier appearance still uses 90 before the chance. That is the case to watch. None of this enters the historical climb.
 
 Sheet: `/workspace/data/processed/news_tags_gw15.csv`.

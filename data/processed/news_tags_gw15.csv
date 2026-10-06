@@ -130,7 +130,7 @@ gw,player_id,name,position,team,tag,xmi,prior,source,lineup,played,news_added,no
 2,276,Lo-Tutala,GKP,HUL,transferred,0.0,,fpl,,0.0,2026-08-17T13:50:27.125537Z,Has joined Colchester United on loan for the rest of the season,,
 2,582,Madjo,FWD,AVL,injured,0.0,,fpl,,0.0,2026-08-15T16:00:07.974271Z,Unspecified injury - Unknown return date,,
 2,196,Markelo,FWD,COV,transferred,0.0,,fpl,,0.0,2026-08-17T13:53:55.791223Z,Has joined Shabab Al-Ahli Dubai permanently,,
-2,28,Martinez,GKP,CHE,,,,pending,,90.0,,prose packet not classified,,
+2,28,Martinez,GKP,CHE,ask,,,llm,,90.0,,Deal agreed to sign Martinez but contract not yet completed before the GW2 deadline,,ask
 2,540,Masuaku,DEF,SUN,transferred,0.0,,fpl,,0.0,2026-08-12T14:08:03.097784Z,Has joined Konyaspor permanently,,
 2,349,Mateo Joseph,FWD,LEE,injured,0.0,,fpl,,0.0,2026-07-29T18:00:10.338170Z,Knee injury - Unknown return date,,
 2,427,Mbeumo,MID,Man Utd,,,90.0,none,XI,90.0,,,,
@@ -154,7 +154,7 @@ gw,player_id,name,position,team,tag,xmi,prior,source,lineup,played,news_added,no
 2,94,Schade,MID,Brentford,,,90.0,none,bench,87.0,,,,
 2,505,Spence,DEF,TOT,transferred,0.0,,fpl,,0.0,2026-08-18T14:13:08.454214Z,Has joined Internazionale permanently,,
 2,319,Szmodics,MID,IPS,transferred,0.0,,fpl,,0.0,2026-08-17T13:51:41.713979Z,Has joined Derby County on loan for the rest of the season,,
-2,140,Sánchez,GKP,Chelsea,,,90.0,pending,XI,0.0,,prose packet not classified,,
+2,140,Sánchez,GKP,Chelsea,ask,,90.0,llm,XI,0.0,,"Potential future transfer of a competitor raised, but Sanchez is neither transferred nor benched",,ask
 2,312,Taylor,MID,IPS,injured,0.0,,fpl,,0.0,2026-07-29T18:00:10.319370Z,Knee injury - Unknown return date,,
 2,106,Thiago,FWD,Brentford,,,82.0,none,XI,90.0,,,,
 2,225,Uche,FWD,CRY,transferred,0.0,,fpl,,0.0,2026-07-23T12:18:56.275922Z,has returned to Getafe CF,,
@@ -255,7 +255,7 @@ gw,player_id,name,position,team,tag,xmi,prior,source,lineup,played,news_added,no
 3,168,Marc Guiu,FWD,CHE,transferred,0.0,,fpl,,0.0,2026-09-01T13:24:48.857362Z,Has joined RB Leipzig permanently,,
 3,196,Markelo,FWD,COV,transferred,0.0,,fpl,,0.0,2026-08-17T13:53:55.791223Z,Has joined Shabab Al-Ahli Dubai permanently,,
 3,18,Martinelli,MID,ARS,transferred,0.0,,fpl,,0.0,2026-09-04T12:34:46.738449Z,Has joined Al Hilal permanently,,
-3,28,Martinez,GKP,CHE,,,90.0,pending,,90.0,,prose packet not classified,,
+3,28,Martinez,GKP,CHE,firm_starter,90.0,90.0,llm,,90.0,,Martinez started Chelsea's match against Brighton and is the regular starter,,firm_starter
 3,540,Masuaku,DEF,SUN,transferred,0.0,,fpl,,0.0,2026-08-12T14:08:03.097784Z,Has joined Konyaspor permanently,,
 3,349,Mateo Joseph,FWD,LEE,injured,0.0,,fpl,,0.0,2026-07-29T18:00:10.338170Z,Knee injury - Unknown return date,,
 3,223,Mateta,FWD,CRY,injured,0.0,62.0,fpl,,0.0,2026-08-28T21:00:08.020382Z,Hamstring injury - Expected back 11 Oct,,
@@ -298,7 +298,7 @@ gw,player_id,name,position,team,tag,xmi,prior,source,lineup,played,news_added,no
 3,511,Souza,DEF,TOT,transferred,0.0,,fpl,,0.0,2026-09-01T13:24:26.858636Z,Has joined FC Porto on loan for the rest of the season,,
 3,505,Spence,DEF,TOT,transferred,0.0,,fpl,,0.0,2026-08-18T14:13:08.454214Z,Has joined Internazionale permanently,,
 3,319,Szmodics,MID,IPS,transferred,0.0,,fpl,,0.0,2026-08-17T13:51:41.713979Z,Has joined Derby County on loan for the rest of the season,,
-3,140,Sánchez,GKP,Chelsea,transferred,0.0,90.0,fpl,XI,0.0,2026-09-02T16:20:41.841936Z,Has joined Como on loan for the rest of the season,,
+3,140,Sánchez,GKP,Chelsea,transferred,0.0,90.0,fpl,XI,0.0,2026-09-02T16:20:41.841936Z,Has joined Como on loan for the rest of the season,,transferred
 3,312,Taylor,MID,IPS,injured,0.0,,fpl,,0.0,2026-07-29T18:00:10.319370Z,Knee injury - Unknown return date,,
 3,106,Thiago,FWD,Brentford,,,86.0,none,XI,90.0,,,,
 3,445,Thiaw,DEF,Newcastle,,,90.0,none,XI,90.0,,,,
@@ -413,7 +413,7 @@ gw,player_id,name,position,team,tag,xmi,prior,source,lineup,played,news_added,no
 4,168,Marc Guiu,FWD,CHE,transferred,0.0,,fpl,,0.0,2026-09-01T13:24:48.857362Z,Has joined RB Leipzig permanently,,
 4,196,Markelo,FWD,COV,transferred,0.0,,fpl,,0.0,2026-08-17T13:53:55.791223Z,Has joined Shabab Al-Ahli Dubai permanently,,
 4,18,Martinelli,MID,ARS,transferred,0.0,,fpl,,0.0,2026-09-04T12:34:46.738449Z,Has joined Al Hilal permanently,,
-4,28,Martinez,GKP,CHE,,,90.0,pending,,90.0,,prose packet not classified,,
+4,28,Martinez,GKP,CHE,firm_starter,90.0,90.0,llm,,90.0,,Martinez started Chelsea's match against Brighton and is the regular starter,,firm_starter
 4,540,Masuaku,DEF,SUN,transferred,0.0,,fpl,,0.0,2026-08-12T14:08:03.097784Z,Has joined Konyaspor permanently,,
 4,349,Mateo Joseph,FWD,LEE,injured,0.0,,fpl,,0.0,2026-07-29T18:00:10.338170Z,Knee injury - Unknown return date,,
 4,223,Mateta,FWD,CRY,injured,0.0,62.0,fpl,,0.0,2026-08-28T21:00:08.020382Z,Hamstring injury - Expected back 11 Oct,,
@@ -460,7 +460,7 @@ gw,player_id,name,position,team,tag,xmi,prior,source,lineup,played,news_added,no
 4,511,Souza,DEF,TOT,transferred,0.0,,fpl,,0.0,2026-09-01T13:24:26.858636Z,Has joined FC Porto on loan for the rest of the season,,
 4,505,Spence,DEF,TOT,transferred,0.0,,fpl,,0.0,2026-08-18T14:13:08.454214Z,Has joined Internazionale permanently,,
 4,319,Szmodics,MID,IPS,transferred,0.0,,fpl,,0.0,2026-08-17T13:51:41.713979Z,Has joined Derby County on loan for the rest of the season,,
-4,140,Sánchez,GKP,Chelsea,transferred,0.0,90.0,fpl,XI,0.0,2026-09-02T16:20:41.841936Z,Has joined Como on loan for the rest of the season,,
+4,140,Sánchez,GKP,Chelsea,transferred,0.0,90.0,fpl,XI,0.0,2026-09-02T16:20:41.841936Z,Has joined Como on loan for the rest of the season,,transferred
 4,312,Taylor,MID,IPS,injured,0.0,,fpl,,0.0,2026-07-29T18:00:10.319370Z,Knee injury - Unknown return date,,
 4,106,Thiago,FWD,Brentford,,,87.33333333333333,none,XI,90.0,,,,
 4,445,Thiaw,DEF,Newcastle,,,90.0,none,bench,90.0,,,,
@@ -589,7 +589,7 @@ gw,player_id,name,position,team,tag,xmi,prior,source,lineup,played,news_added,no
 5,168,Marc Guiu,FWD,CHE,transferred,0.0,,fpl,,0.0,2026-09-01T13:24:48.857362Z,Has joined RB Leipzig permanently,,
 5,196,Markelo,FWD,COV,transferred,0.0,,fpl,,0.0,2026-08-17T13:53:55.791223Z,Has joined Shabab Al-Ahli Dubai permanently,,
 5,18,Martinelli,MID,ARS,transferred,0.0,,fpl,,0.0,2026-09-04T12:34:46.738449Z,Has joined Al Hilal permanently,,
-5,28,Martinez,GKP,CHE,,,90.0,pending,,90.0,,prose packet not classified,,
+5,28,Martinez,GKP,CHE,firm_starter,90.0,90.0,llm,,90.0,,Martinez started Chelsea's match against Brighton and is the regular starter,,firm_starter
 5,540,Masuaku,DEF,SUN,transferred,0.0,,fpl,,0.0,2026-08-12T14:08:03.097784Z,Has joined Konyaspor permanently,,
 5,349,Mateo Joseph,FWD,LEE,injured,0.0,,fpl,,0.0,2026-07-29T18:00:10.338170Z,Knee injury - Unknown return date,,
 5,223,Mateta,FWD,CRY,injured,0.0,62.0,fpl,,0.0,2026-08-28T21:00:08.020382Z,Hamstring injury - Expected back 11 Oct,,
@@ -640,7 +640,7 @@ gw,player_id,name,position,team,tag,xmi,prior,source,lineup,played,news_added,no
 5,511,Souza,DEF,TOT,transferred,0.0,,fpl,,0.0,2026-09-01T13:24:26.858636Z,Has joined FC Porto on loan for the rest of the season,,
 5,505,Spence,DEF,TOT,transferred,0.0,,fpl,,0.0,2026-08-18T14:13:08.454214Z,Has joined Internazionale permanently,,
 5,319,Szmodics,MID,IPS,transferred,0.0,,fpl,,0.0,2026-08-17T13:51:41.713979Z,Has joined Derby County on loan for the rest of the season,,
-5,140,Sánchez,GKP,Chelsea,transferred,0.0,90.0,fpl,XI,0.0,2026-09-02T16:20:41.841936Z,Has joined Como on loan for the rest of the season,,
+5,140,Sánchez,GKP,Chelsea,transferred,0.0,90.0,fpl,XI,0.0,2026-09-02T16:20:41.841936Z,Has joined Como on loan for the rest of the season,,transferred
 5,556,Targett,DEF,HUL,injured,3.75,5.0,fpl,,0.0,2026-09-17T14:00:26.419938Z,Ankle injury - 75% chance of playing,,
 5,312,Taylor,MID,IPS,injured,0.0,,fpl,,0.0,2026-07-29T18:00:10.319370Z,Knee injury - Unknown return date,,
 5,106,Thiago,FWD,Brentford,,,90.0,none,XI,90.0,,,,

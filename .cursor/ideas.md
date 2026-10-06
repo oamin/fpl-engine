@@ -185,7 +185,9 @@ Gemini amended this on 2026-10-06 ([news tags](bc-7121b96b-db3a-552d-ade8-335c01
 
 `firm_starter` keeps the existing minutes, never zero. `injured` is 0 when the player is ruled out, and the chance times the old minutes when he is doubtful. `transferred` is 0 at the old club. `benched` is 0 for a goalkeeper and 15 minutes for an outfielder. A benched goalkeeper is the Sánchez case: he drops behind the other goalkeeper at the next deadline. An outfielder at 15 minutes keeps a cameo, stays under the buy gate of 45, and is not sold for a hit if the bench covers him.
 
-This cannot enter the historical climb. Those seasons have no weekly news, and an end-of-season status scraped backwards is already rejected. The published `score_xp` climb stays as it is. Nothing was coded.
+This cannot enter the historical climb. Those seasons have no weekly news, and an end-of-season status scraped backwards is already rejected. The published `score_xp` climb stays as it is.
+
+Coded 2026-10-06 on the live path only ([news tags](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). A note counts only when its own time is before that deadline. Thirty players share one second and those rows are dropped. Sánchez is an ask on 28 Aug, because the deadline had an agreed deal and not a team sheet, and 0 from Gameweek 3, when the Como loan is dated. Martínez is a firm starter from that week. Every doubtful row in the window played 0. The chance times the old minutes stays. A player with no appearance still uses 90 before the chance, and that is the case to watch. See `reports/news_tags_gw15.md`.
 
 ## Lost shirt
 

@@ -238,5 +238,59 @@ class CompletionTest(unittest.TestCase):
         self.assertIn("Do not use memory", prompt)
 
 
+class MergeTest(unittest.TestCase):
+    def test_a_prose_tag_is_stored_on_that_gameweek(self) -> None:
+        from src.live.news_gw15 import _merge
+        from src.live.news_tags import TagDecision
+
+        fpl = [
+            {
+                "gw": 3,
+                "player_id": 140,
+                "name": "Sánchez",
+                "position": "GKP",
+                "team": "CHE",
+                "tag": "transferred",
+                "xmi": 0.0,
+                "prior": 90,
+                "source": "fpl",
+                "note": "loan",
+                "news_added": "2026-09-02",
+                "rejected": "",
+            }
+        ]
+        llm = {
+            (140, 3): {
+                "decision": TagDecision(140, 3, "transferred", 0.0, "llm", "left", 90),
+                "name": "Sánchez",
+                "position": "GKP",
+                "team": "CHE",
+            },
+            (140, 2): {
+                "decision": TagDecision(140, 2, "ask", None, "llm", "deal only", 90),
+                "name": "Sánchez",
+                "position": "GKP",
+                "team": "CHE",
+            },
+        }
+        packets = [
+            {
+                "gw": 2,
+                "player_id": 140,
+                "name": "Sánchez",
+                "position": "GKP",
+                "team": "CHE",
+                "prior": 90,
+            }
+        ]
+        rows = {(row["gw"], row["player_id"]): row for row in _merge(fpl, llm, packets, {}, {})}
+        self.assertEqual(rows[(3, 140)]["source"], "fpl")
+        self.assertEqual(rows[(3, 140)]["llm_tag"], "transferred")
+        self.assertEqual(rows[(2, 140)]["source"], "llm")
+        self.assertEqual(rows[(2, 140)]["tag"], "ask")
+        self.assertIsNone(rows[(2, 140)]["xmi"])
+        self.assertNotIn((140, 2), rows)
+
+
 if __name__ == "__main__":
     unittest.main()
