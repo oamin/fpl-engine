@@ -1,9 +1,11 @@
 {
   "updated": "2026-10-06",
-  "milestone": "hypothesis-queue",
+  "milestone": "queued-tests",
   "status": "reviewed",
-  "summary": "Two tests are queued and not run. First is the transfer-search shadow on 2022/23, 2023/24, and 2024/25: a rewrite is rejected if each season averages under 0.25 value points a week and has fewer than three weeks at or above 1. Second is the clean previous-season fill on the fast eleven for 2023/24, 2024/25, and 2025/26. The upper-tail reading is the haul arm already parked, so a cut at 10, 12, or 15 is not added. No engine change.",
+  "summary": "Both queued tests were run and rejected. The search shadow on 2022/23, 2023/24, and 2024/25 averages 0.005, 0.004, and 0.101 of three-week value a week, with 0, 0, and 1 weeks at or above 1. A rewrite is rejected and the search stays. The clean previous-season fill clears both bars in 2023/24 only, so cold start is rejected and score_xp stays. Gemini kept both calls.",
   "artifacts": [
-    "reports/three_hypotheses.md"
+    "reports/queued_tests.md",
+    "reports/search_shadow.md",
+    "reports/clean_fill.md"
   ]
 }

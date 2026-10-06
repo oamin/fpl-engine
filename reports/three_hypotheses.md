@@ -46,4 +46,4 @@ The stacking point is already inside the mean. A goal and the bonus it tends to 
 
 ## Order
 
-The search shadow on the three earlier seasons is first. The clean-fill fast eleven is second. The upper-tail reading is not added. Nothing is run in this note.
+The search shadow on the three earlier seasons was run first. The clean-fill fast eleven was second. Both are rejected in `reports/queued_tests.md`. The upper-tail reading was not added.

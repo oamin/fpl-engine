@@ -62,7 +62,7 @@ def _write(frame: pd.DataFrame, rejected: bool) -> None:
     for row in frame.itertuples(index=False):
         quiet = season_quiet(float(row.mean_gap), float(row.weeks_over_1))
         lines.append(
-            f"| {row.season} | {row.weeks:.0f} | {row.mean_gap:.2f} | "
+            f"| {row.season} | {row.weeks:.0f} | {row.mean_gap:.3f} | "
             f"{row.weeks_over_1:.0f} | {row.max_gap:.2f} | "
             f"{'yes' if quiet else 'no'} |"
         )
