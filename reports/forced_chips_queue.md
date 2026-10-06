@@ -1,6 +1,6 @@
 # Forced chip calendar
 
-Queued 2026-10-06. Not scored. Gemini locked this run and rejected the other two builds ([forced chips](bc-7121b96b-db3a-552d-ade8-335c01d37eda)).
+Queued 2026-10-06 and scored the same day. Gemini locked the run and kept the kill ([forced chips](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). The result is `reports/forced_chips_gw15.md`.
 
 Each of the 14 starts from his own Gameweek 1 fifteen, as the carry does now. His chip weeks replace the model's chip choice. Wildcard, free hit, bench boost, and triple captain are played in the weeks he played them. The model still picks the players, the eleven, and the captain with `score_xp`. His squad inside the chip week is not copied.
 
@@ -12,4 +12,4 @@ This is not the same-chips comparison. That one kept the model's chips and the t
 
 The field book and the race count are not in this queue. A squad built from these 14 leaks the benchmark, those managers are absent from the earlier seasons, and giving up 16 of expected points to copy them uses the wildcard margin in the wrong direction. The race count was only a tie-break on that squad. Ownership and a close-call differential are already parked.
 
-The carry has not been rerun.
+The carry scored a mean chip value of -3.43 and a mean forced gap of -30.86. Both kill conditions fire. His chip weeks do not explain the deficit.

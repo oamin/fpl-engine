@@ -171,7 +171,7 @@ Kept 2026-10-06 ([wildcard priced](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). Th
 
 ## Forced chip calendar, queued
 
-Queued 2026-10-06 and not scored ([forced chips](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). Each of the 14 keeps his Gameweek 1 fifteen. His chip weeks replace the model's chip choice. The model still picks the squad with `score_xp`. A Gameweek 1 wildcard or free hit is dropped. Chip value is the forced gap minus the current gap. The claim is killed if that mean is 0 or below, or if the mean forced gap is −20 or below. The margins stay 12 and 16. See `reports/forced_chips_queue.md`.
+Run on 2026-10-06 and killed ([forced chips](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). Each of the 14 kept his Gameweek 1 fifteen. His chip weeks replaced the model's chip choice, and the model still picked the squad. The mean chip value is −3.43 and the mean forced gap is −30.86. Cameron Scott finishes 4 ahead. Sion Jones goes from −4 to −46. Do not copy their chip weeks. The margins stay 12 and 16. See `reports/forced_chips_gw15.md`.
 
 The field book is rejected. A squad taken from these 14 leaks the benchmark, and the wildcard margin is not a licence to give up 16 points of expected score. The race count was the tie-break on that squad, so it is rejected with it. Ownership and the close-call differential stay parked.
 
