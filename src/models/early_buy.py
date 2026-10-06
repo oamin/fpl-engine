@@ -270,7 +270,7 @@ def render_report(
         word = "kept" if call["kept"] else "not kept"
         lines.append(
             f"The pool is {call['pooled']:.0f} against {call['bar']:.0f}. "
-            f"{call['ahead']} seasons are level or ahead. "
+            f"{call['ahead']} of the four seasons are level or ahead. "
             f"The buy is {word}."
         )
     else:
