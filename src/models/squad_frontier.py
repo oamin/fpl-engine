@@ -491,7 +491,7 @@ def summarise(rows: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 def _fmt_xp(value: float | None) -> str:
-    if value is None:
+    if value is None or value != value:
         return ""
     return f"{float(value):.2f}"
 
@@ -506,7 +506,7 @@ def _fmt_share(numer: int, denom: int) -> str:
 
 
 def _fmt_pounds(tenths: int | None) -> str:
-    if tenths is None:
+    if tenths is None or tenths != tenths:
         return ""
     return f"{int(tenths) / 10:.1f}"
 
@@ -527,7 +527,53 @@ def _meaning(call: str) -> str:
     return "This chip has no reachable week, so it has no call."
 
 
-def write_report(path: Any, rows: list[dict[str, Any]], summary: dict[str, Any]) -> None:
+def unscored_players(
+    rows: list[dict[str, Any]],
+    feat: pd.DataFrame,
+    roster: pd.DataFrame,
+) -> list[dict[str, Any]]:
+    """Human chip players with no decision-week row on the published frame."""
+    frame = feat.copy()
+    frame["player_id"] = frame["player_id"].astype(str)
+    sheet = roster.copy()
+    sheet["player_id"] = sheet["player_id"].astype(str)
+    found: list[dict[str, Any]] = []
+    for row in rows:
+        if row["status"] != "pool":
+            continue
+        entry = load_entry(int(row["entry_id"]))
+        played = next(item for item in entry["gameweeks"] if int(item["gw"]) == int(row["gw"]))
+        names = {
+            player_key(player["id"]): str(player.get("name") or player["id"])
+            for player in list(played["xi"]) + list(played["bench"])
+        }
+        ids = list(names)
+        present = set(frame.loc[pd.to_numeric(frame["gw"], errors="coerce") == int(row["gw"]), "player_id"])
+        for pid in ids:
+            if pid in present:
+                continue
+            played_row = sheet.loc[
+                (sheet["player_id"] == pid) & (pd.to_numeric(sheet["gw"], errors="coerce") == int(row["gw"]))
+            ]
+            minutes = None if played_row.empty else float(pd.to_numeric(played_row["minutes"], errors="coerce").sum())
+            found.append(
+                {
+                    "label": row["label"],
+                    "gw": int(row["gw"]),
+                    "chip": row["chip"],
+                    "name": names[pid],
+                    "minutes": minutes,
+                }
+            )
+    return found
+
+
+def write_report(
+    path: Any,
+    rows: list[dict[str, Any]],
+    summary: dict[str, Any],
+    missing: list[dict[str, Any]] | None = None,
+) -> None:
     lines = [
         "# Squad frontier",
         "",
@@ -577,6 +623,44 @@ def write_report(path: Any, rows: list[dict[str, Any]], summary: dict[str, Any])
         f"The human's own budget could not be priced on {unpriced} weeks. Those weeks are not a rules mismatch."
     )
     lines.append("")
+    held_out = [
+        row for row in rows
+        if row["gap_per"] is not None and row["gap_per"] == row["gap_per"] and row["status"] != "reachable"
+    ]
+    if held_out:
+        lines.append("A gap on a week that is not reachable is printed here and stays out of the call.")
+        lines.append("")
+        for row in held_out:
+            lines.append(
+                f"{row['label']}, Gameweek {int(row['gw'])} {row['chip']}: "
+                f"per-week gap {_fmt_xp(row['gap_per'])}, status {row['status']}, "
+                f"shortfall {_fmt_pounds(row['shortfall'])}. "
+                f"Human spend by position, in £m, is "
+                f"goalkeeper {_fmt_pounds(row['spend_gkp_human'])}, "
+                f"defence {_fmt_pounds(row['spend_def_human'])}, "
+                f"midfield {_fmt_pounds(row['spend_mid_human'])}, "
+                f"forward {_fmt_pounds(row['spend_fwd_human'])}. "
+                f"The rebuild is "
+                f"goalkeeper {_fmt_pounds(row['spend_gkp_model'])}, "
+                f"defence {_fmt_pounds(row['spend_def_model'])}, "
+                f"midfield {_fmt_pounds(row['spend_mid_model'])}, "
+                f"forward {_fmt_pounds(row['spend_fwd_model'])}."
+            )
+            lines.append("")
+    if missing:
+        lines.append(
+            "Each pool week has at least one player with no row on the published frame that week. "
+            "The frame keeps a player once he has three prior appearances. No score is filled in for the weeks below."
+        )
+        lines.append("")
+        lines.append("| Manager | GW | Chip | Player | Minutes |")
+        lines.append("|---|---:|---|---|---:|")
+        for item in missing:
+            minutes = "" if item["minutes"] is None else f"{float(item['minutes']):.0f}"
+            lines.append(
+                f"| {item['label']} | {int(item['gw'])} | {item['chip']} | {item['name']} | {minutes} |"
+            )
+        lines.append("")
     lines.extend(
         [
             "## Weeks",
@@ -594,7 +678,13 @@ def write_report(path: Any, rows: list[dict[str, Any]], summary: dict[str, Any])
             f"{_fmt_xp(row['gap_per'])} | {int(row['overlap'])} | {int(row['buy_pool_human'])} | "
             f"{_fmt_pounds(row['shortfall'])} | {_fmt_xp(row['points_human'])} | {_fmt_xp(row['points_model'])} |"
         )
-    lines.append("")
+    lines.extend(
+        [
+            "",
+            "Gemini kept the count ([squad frontier](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)).",
+            "",
+        ]
+    )
     path.write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
 
 
@@ -631,7 +721,8 @@ def run() -> dict[str, Any]:
     PROCESSED.mkdir(parents=True, exist_ok=True)
     REPORTS.mkdir(parents=True, exist_ok=True)
     pd.DataFrame(rows).to_csv(WEEKS_CSV, index=False)
-    write_report(REPORT, rows, summary)
+    missing = unscored_players(rows, feat, roster)
+    write_report(REPORT, rows, summary, missing)
     for chip in CHIPS:
         block = summary["chips"][chip]
         print(

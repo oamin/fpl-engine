@@ -223,6 +223,8 @@ Reading C scores both fifteens with `squad_outlook` on the pre-deadline steps. A
 
 Near is a per-week gap of at most 1.0. Far is above 4.0. The call is near when at least half the reachable weeks for that chip are near, and far when at least half are far. Otherwise it is middle. The two chips are separate. The mean sits beside the call. Realised points stay beside it as well. The *k*-player force-in waits. See `reports/squad_frontier_plan.md`.
 
+Counted the same day ([squad frontier](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). Ten chip weeks. Nine have a player with no row on the published frame, so they stay unscored. Mark Brookes in Gameweek 5 is the other week: the fifteen costs £0.3m more than the model's budget, and the per-week gap of 4.33 stays out of the call. Both chips have no call. The score stays. See `reports/squad_frontier.md`.
+
 ## Lost shirt
 
 Noted 2026-10-06 ([blank context](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). Not switched on.
