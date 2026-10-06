@@ -1,11 +1,9 @@
 {
   "updated": "2026-10-06",
-  "milestone": "queued-tests",
+  "milestone": "chip-stock",
   "status": "reviewed",
-  "summary": "Both queued tests were run and rejected. The search shadow on 2022/23, 2023/24, and 2024/25 averages 0.005, 0.004, and 0.101 of three-week value a week, with 0, 0, and 1 weeks at or above 1. A rewrite is rejected and the search stays. The clean previous-season fill clears both bars in 2023/24 only, so cold start is rejected and score_xp stays. Gemini kept both calls.",
+  "summary": "The Gameweek 1–5 gap is points scored. Unused chips are not in it. The model played two chips on every squad, Bench Boost and Triple Captain. The 14 played 2.5 on average, so the model holds 0.5 more first-half chips. Second-half wallets cancel. Closing −27.43 with that half chip would need it to be worth 55 points. No such price is on file, so the gap stays −27.43.",
   "artifacts": [
-    "reports/queued_tests.md",
-    "reports/search_shadow.md",
-    "reports/clean_fill.md"
+    "reports/chip_stock_gw15.md"
   ]
 }
