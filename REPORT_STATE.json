@@ -1,10 +1,11 @@
 {
   "updated": "2026-10-06",
-  "milestone": "gw4-stack",
-  "status": "reviewed",
-  "summary": "Groß, João Pedro, and De Cuyper were eligible for the Gameweek 3 wildcard rebuild. The three-appearance gate did not stop them. Groß trailed Gakpo by 0.99 with the money free. João Pedro trailed Calvert-Lewin by 0.55 and the sale could not pay 77. De Cuyper was within 0.17 of the defender who was kept. The check is closed. The score and the margins stay.",
+  "milestone": "squad-overlap",
+  "status": "measured",
+  "summary": "A typical pair of the 14 human fifteens shares 5.51 of 15 players across Gameweeks 1–5. Gameweek 3 is the widest week at 4.89. Groß, Haaland, João Pedro, and Szoboszlai are in at least 7 squads every week. No two fifteens are the same. The count does not move the score or the margins.",
   "artifacts": [
-    "reports/gw4_stack.md",
-    "data/processed/gw4_stack.csv"
+    "reports/squad_overlap_gw15.md",
+    "data/processed/squad_overlap_gw15.csv",
+    "data/processed/squad_overlap_owners_gw15.csv"
   ]
 }
