@@ -8,6 +8,8 @@ from src.models.squad_frontier import (
     acquisition_cost,
     chip_call,
     classify_status,
+    held_purchases,
+    human_acquisition,
     objective_gap,
     per_week,
     summarise,
@@ -71,6 +73,29 @@ class StatusTest(unittest.TestCase):
             classify_status(in_pool=True, scored=True, shape_ok=True, human_over=False, model_over=False),
             "reachable",
         )
+
+    def test_a_chip_week_does_not_need_transfer_order(self) -> None:
+        entry = {
+            "opening_squad": [{"id": 1}, {"id": 2}],
+            "transfers": [
+                {"gw": 3, "in_id": 9, "in_cost": 40, "out_id": 2},
+                {"gw": 3, "in_id": 2, "in_cost": 50, "out_id": 9},
+            ],
+        }
+        held = held_purchases(entry, {1: 45, 2: 55}, 4, ["2026-27:1", "2026-27:2"])
+        self.assertEqual(held, {"2026-27:1": 45, "2026-27:2": 50})
+        self.assertIsNone(held_purchases(entry, {1: 45}, 4, ["2026-27:1", "2026-27:8"]))
+        doubled = {
+            "opening_squad": [{"id": 1}],
+            "transfers": [
+                {"gw": 3, "in_id": 4, "in_cost": 40, "out_id": 1},
+                {"gw": 3, "in_id": 4, "in_cost": 41, "out_id": 8},
+            ],
+        }
+        self.assertIsNone(held_purchases(doubled, {1: 45}, 4, ["2026-27:4"]))
+        sell = {"2026-27:1": 45}
+        self.assertEqual(human_acquisition(["2026-27:1", "2026-27:9"], sell, entry, 3), 85)
+        self.assertIsNone(human_acquisition(["2026-27:1", "2026-27:8"], sell, entry, 3))
 
     def test_an_owned_player_costs_his_sell_price(self) -> None:
         cost = acquisition_cost(["a", "b"], {"a": 40}, {"a": 80, "b": 55})

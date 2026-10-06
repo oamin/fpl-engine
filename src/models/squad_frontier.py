@@ -17,7 +17,7 @@ from src.models.blank_context import apply_fixture_tags
 from src.models.cohort_carry import carry_entry, cohort_specs
 from src.models.half_plan_scores import squad_outlook
 from src.models.open_horizon import attach_opening_horizon
-from src.models.reset_gap import PROCESSED, REPORTS, _early, merged_clubs, pre_deadline
+from src.models.reset_gap import PROCESSED, REPORTS, _early, bank_before, merged_clubs
 from src.models.season_climb import pick_xi
 from src.models.season_climb_ft import _gw_pool
 from src.models.squad_gap import CHIP_SQUADS
@@ -121,6 +121,77 @@ def classify_status(
     if model_over:
         return "unreachable_money"
     return "reachable"
+
+
+def _element(player_id: str) -> int:
+    return int(str(player_id).split(":")[-1])
+
+
+def _gw1_prices(roster: pd.DataFrame) -> dict[int, int]:
+    gw1 = roster.loc[pd.to_numeric(roster["gw"], errors="coerce") == 1].drop_duplicates("player_id")
+    prices: dict[int, int] = {}
+    for pid, raw in zip(gw1["player_id"], gw1["value"], strict=True):
+        price = _price(raw)
+        if price is not None:
+            prices[_element(str(pid))] = price
+    return prices
+
+
+def held_purchases(
+    entry: dict[str, Any],
+    gw1_prices: dict[int, int],
+    gw: int,
+    held_ids: list[str],
+) -> dict[str, int] | None:
+    """Purchase price of the fifteen he held before this deadline.
+
+    A chip week lists its deals together, not in the order they must be
+    applied. The price is the latest single buy before this deadline, or
+    the Gameweek 1 price when he has held the player since the start.
+    Two buys in the same week are left unpriced.
+    """
+    earlier = [row for row in entry.get("transfers") or [] if int(row["gw"]) < int(gw)]
+    opening = {int(player["id"]) for player in entry.get("opening_squad") or []}
+    found: dict[str, int] = {}
+    for pid in held_ids:
+        element = _element(pid)
+        buys = [row for row in earlier if int(row["in_id"]) == element]
+        if buys:
+            last = max(int(row["gw"]) for row in buys)
+            same = [row for row in buys if int(row["gw"]) == last]
+            if len(same) != 1:
+                return None
+            found[pid] = int(same[0]["in_cost"])
+            continue
+        if element not in opening or element not in gw1_prices:
+            return None
+        found[pid] = int(gw1_prices[element])
+    return found
+
+
+def human_acquisition(
+    ids: list[str],
+    owned_sell: dict[str, int],
+    entry: dict[str, Any],
+    gw: int,
+) -> int | None:
+    """What his own deals paid. A new player uses that week's buy price."""
+    buys: dict[str, list[int]] = {}
+    for row in entry.get("transfers") or []:
+        if int(row["gw"]) != int(gw):
+            continue
+        pid = player_key(row["in_id"])
+        buys.setdefault(pid, []).append(int(row["in_cost"]))
+    total = 0
+    for pid in ids:
+        if pid in owned_sell:
+            total += int(owned_sell[pid])
+            continue
+        paid = buys.get(pid) or []
+        if len(paid) != 1:
+            return None
+        total += int(paid[0])
+    return int(total)
 
 
 def _sell_map(purchase: dict[str, int], market: dict[str, int]) -> dict[str, int] | None:
@@ -315,14 +386,22 @@ def score_week(
     human_model_cost = acquisition_cost(human_ids, model_sell, market)
     if model_cost is None or (in_pool and human_model_cost is None):
         raise RuntimeError(f"GW{gw} cannot price a fifteen that is in the pool")
-    human_state = pre_deadline(entry, roster, gw)
-    human_sell = _sell_map(dict(human_state.purchase), market)
-    human_cost_own = None if human_sell is None else acquisition_cost(human_ids, human_sell, market)
-    human_budget = None if human_sell is None else int(human_state.bank) + sum(human_sell.values())
+    held_ids = [str(pid) for pid in week["human_pre_ids"]]
+    if len(set(held_ids)) != 15:
+        raise RuntimeError(f"GW{gw} human pre-chip fifteen is not 15 players")
+    held_prices = held_purchases(entry, _gw1_prices(roster), gw, held_ids)
+    human_sell = None if held_prices is None else _sell_map(held_prices, market)
+    human_budget = None if human_sell is None else int(bank_before(entry, gw)) + sum(human_sell.values())
+    human_cost_own = None if human_sell is None else human_acquisition(human_ids, human_sell, entry, gw)
     if human_cost_own is None or human_budget is None:
-        human_over: bool | None = None
+        human_over = None
+        human_account = "unpriced"
+    elif int(human_cost_own) > int(human_budget):
+        human_over = True
+        human_account = "over"
     else:
-        human_over = int(human_cost_own) > int(human_budget)
+        human_over = False
+        human_account = "ok"
     status = classify_status(
         in_pool=in_pool,
         scored=scored,
@@ -360,9 +439,10 @@ def score_week(
         "model_budget": int(model_budget),
         "model_cost": int(model_cost),
         "human_cost": human_model_cost,
-        "shortfall": int(shortfall),
+        "shortfall": shortfall,
         "human_budget": human_budget,
         "human_cost_own": human_cost_own,
+        "human_account": human_account,
         "price_model": None if model_spend_pos is None else int(sum(model_spend_pos.values())),
         "price_human": None if human_spend_pos is None else int(sum(human_spend_pos.values())),
         "max_club_model": _max_club(rebuilt, pool_by),
@@ -492,6 +572,11 @@ def write_report(path: Any, rows: list[dict[str, Any]], summary: dict[str, Any])
     for chip in CHIPS:
         lines.append(f"{chip}: {_meaning(summary['chips'][chip]['call'])}")
         lines.append("")
+    unpriced = sum(str(row.get("human_account")) == "unpriced" for row in rows)
+    lines.append(
+        f"The human's own budget could not be priced on {unpriced} weeks. Those weeks are not a rules mismatch."
+    )
+    lines.append("")
     lines.extend(
         [
             "## Weeks",
