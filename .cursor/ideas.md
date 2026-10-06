@@ -203,6 +203,14 @@ On the other four weeks, `score_xp` on this squad averages 4.52 against 3.85 poi
 
 The same file on the 14 locked squads was read the same day ([cohort xp](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). Unique player-weeks, minutes above 0, Gameweek 2 out. Veterans: mean absolute error 3.00, 3.13, 3.22. Rank slots: 3.07, 3.14, 3.36. Counting each squad that owned the player keeps that order. Gameweek 1 is the week the outside numbers are closer, and the rank-only players are a tie on the error. Ten Gameweek 1 debuts have no published score and stay out. Do not switch the cohort onto Onside or `ep_next`. See `reports/cohort_xp_gw15.md`.
 
+## Decision margin
+
+Locked 2026-10-06 before either histogram is read ([decision margin](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). Not a new score. The residual on the decision boundary is not built. Formation, the hold, and the haul-rate arm stay parked. There is no historical file of elite human squads.
+
+Reading A uses the 64 chip signings the rebuild left out, paired with that rebuild's lowest `score_xp` at the position. The full outside set is already constraint: club or price is 0.71 of the −229. The ranking bins are only the unconstrained rows. Margin is the model player's score minus the human's. Bins are at or below 0, up to 0.5, up to 1.25, and above 1.25. Small-margin needs the up-to-0.5 share at least 0.5 of the unconstrained weight. Wide-margin needs the above-1.25 share at least 0.5. Anything else is inconclusive. The pair's points difference is not the −229.
+
+Reading B is in the same batch. Four seasons, weeks 6–38, eligible rows only, rank within position, bands 1–5, 6–10, 11–20, and the rest. A winner's-curse claim needs the top band's bias positive in every season and at least 0.25 above that season's eligible bias. Otherwise it is parked. See `reports/decision_margin_plan.md`.
+
 ## Lost shirt
 
 Noted 2026-10-06 ([blank context](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). Not switched on.

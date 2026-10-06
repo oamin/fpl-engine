@@ -1,10 +1,9 @@
 {
   "updated": "2026-10-06",
-  "milestone": "cohort-xp",
-  "status": "reviewed",
-  "summary": "Onside and official ep_next do not score the locked veterans or the rank slots more accurately than score_xp. On Gameweeks 1, 3, 4, and 5, unique appearances with minutes above 0, veteran mean absolute error is 3.00, 3.13, and 3.22. Rank slots are 3.07, 3.14, and 3.36. Both outside columns sit further below the points. Gameweek 2 stays out. The published total stays 280. Gemini kept the reading.",
+  "milestone": "decision-margin",
+  "status": "locked",
+  "summary": "The five-week gap is not another formation rule or another hold. The chip weeks are the remaining mass: 64 signings left out of the rebuild, median 0.31 below the model's worst same-position player, and club or price already 0.71 of those points. The ranking bins are locked on the unconstrained rows only. A historical rank-band table is locked in the same batch. Neither has been counted. score_xp stays. A residual on the decision boundary is not built.",
   "artifacts": [
-    "reports/cohort_xp_gw15.md",
-    "data/processed/cohort_xp_gw15.csv"
+    "reports/decision_margin_plan.md"
   ]
 }
