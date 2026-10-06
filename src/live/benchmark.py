@@ -530,8 +530,9 @@ def _write(
         "Hold margin 1.25, switch penalty 1.0, horizon 3, and an empty chip map. "
         "Nothing was retuned after these five weeks.",
         "",
-        "Odds are football-data closing prices (`AvgCH`, `AvgC>2.5`), the same "
-        "family the historical climbs use. They are not a pre-deadline book. "
+        "Odds are football-data opening prices (`AvgH`, then `B365H`, then `PSH`, "
+        "and the opening 2.5 total). A closing price does not fill a missing open. "
+        "The published 280 climb was built when this loader preferred closing prices. "
         "No Odds API call was made.",
         "",
         "A different club in a later week is a transfer. The Opta code keeps the "
