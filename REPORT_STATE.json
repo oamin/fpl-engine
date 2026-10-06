@@ -1,9 +1,11 @@
 {
   "updated": "2026-10-06",
   "milestone": "early-row",
-  "status": "locked",
-  "summary": "The nine unscored chip weeks will be scored with the early number, capped at 6, including players the model does not own. A 0-minute player with no row still blocks the week. The three-appearance buy gate stays. Early buy remains rejected. Last season stays for a player who stayed at his club. The score is unchanged. The count has not been run.",
+  "status": "reviewed",
+  "summary": "Six of the nine pool weeks stay unscored because a 0-minute player still has no row. Free hit has no reachable week. The wildcard call is far on one week: Sion Jones in Gameweek 3, per-week gap 4.52, points 60 against 53. The buy gate stays. The chip sum stays undiscounted. Gemini kept the count.",
   "artifacts": [
-    "reports/early_row_plan.md"
+    "reports/early_row_plan.md",
+    "reports/early_row.md",
+    "data/processed/early_row_gw15.csv"
   ]
 }

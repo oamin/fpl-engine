@@ -231,6 +231,8 @@ Locked 2026-10-06 before any new gap is read ([early row](bc-9194ff85-d0a7-5b7b-
 
 Reading D scores the nine pool weeks again. A player with one or two prior appearances uses the early score, capped at 6, even when the model does not own him. A 0-minute player with no row still blocks the week. The same bars apply, at most 1.0 and above 4.0. A blank is tagged `replaced`, `benched`, or `no_fixture` from the sheet, beside the call. Last season stays for a player who stayed at his club. A club-change score waits for its own fast XI screen. The blank does not yet enter the minutes mean. See `reports/early_row_plan.md`.
 
+Counted the same day ([early row](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). Six of the nine stay pool. Free hit has no call. The wildcard call is far, and the reachable sample is one week: Sion Jones in Gameweek 3, per-week gap 4.52, points 60 against 53. The cap did not bind. The chip sum stays undiscounted. Putting γ = 0.9 on that sum would be a different trial, because the hurdle of 16 was set on the undiscounted sum. See `reports/early_row.md`.
+
 ## Lost shirt
 
 Noted 2026-10-06 ([blank context](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). Not switched on.

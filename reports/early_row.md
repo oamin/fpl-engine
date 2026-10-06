@@ -26,7 +26,7 @@ wildcard: The human portfolio is expensive on the model's objective. The realise
 
 free_hit: This chip has no reachable week, so it has no call.
 
-The wildcard call is one week. Sion Jones in Gameweek 3 is the reachable week, and the per-week gap is 4.52. Three of his fifteen are in the rebuild. Fourteen were already in the buy pool. Egan is the early score, and that row is not buyable. His spend, in £m, is goalkeeper 9.5, defence 24.0, midfield 35.9, and forward 30.6. The rebuild is 9.0, 26.5, 35.0, and 29.5. His fifteen scored 60 and the rebuild scored 53. Those points sit beside the call.
+The wildcard call is one week, and that is the whole reachable sample. Sion Jones in Gameweek 3 is the reachable week, and the per-week gap is 4.52. The locked rule labels that week far. It is this portfolio, not a pattern across chip weeks. Three of his fifteen are in the rebuild. Fourteen were already in the buy pool. Egan is the early score, and that row is not buyable. His spend, in £m, is goalkeeper 9.5, defence 24.0, midfield 35.9, and forward 30.6. The rebuild is 9.0, 26.5, 35.0, and 29.5. His fifteen scored 60 and the rebuild scored 53. Those points sit beside the call.
 
 elevenify.com is fully scored and stays out. His own budget rejects the fifteen. The per-week gap is 2.84, which is the middle band. He scored 47 and the rebuild scored 58. Mark Brookes in Gameweek 3 is fully scored and stays out. The fifteen costs £0.6m more than the model's pre-chip budget. The per-week gap is 4.66. He scored 70 and the rebuild scored 53.
 
@@ -53,3 +53,5 @@ Early players are the ones scored from the capped table. Blank tags are the 0-mi
 | Sion Jones | 3 | wildcard | reachable | 4.52 | Egan |  | 60.00 | 53.00 |
 | Thomas O'Brien | 3 | wildcard | pool |  | M.Sangaré; Muharemović | Bentley replaced | 40.00 | 53.00 |
 | elevenify.com | 3 | wildcard | rules_mismatch | 2.84 | O'Shea; Slater |  | 47.00 | 58.00 |
+
+Gemini kept the count ([early row](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)).
