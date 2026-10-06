@@ -1,9 +1,9 @@
 {
   "updated": "2026-10-06",
-  "milestone": "chip-stock",
+  "milestone": "chip-match",
   "status": "reviewed",
-  "summary": "The Gameweek 1–5 gap is points scored. Unused chips are not in it. The model played two chips on every squad, Bench Boost and Triple Captain. The 14 played 2.5 on average, so the model holds 0.5 more first-half chips. Second-half wallets cancel. Closing −27.43 with that half chip would need it to be worth 55 points. No such price is on file, so the gap stays −27.43.",
+  "summary": "A larger Gameweek 1–5 pool, kept only when the chips left match the model's, is not worth running. Three of the locked 14 already match. Their gaps are 0, −26, and −46, mean −24. The two with the same chip in the same week average −13, and those points are in the lineup. Today's overall rank is the result being measured, so it cannot supply the extra names.",
   "artifacts": [
-    "reports/chip_stock_gw15.md"
+    "reports/chip_match_gw15.md"
   ]
 }

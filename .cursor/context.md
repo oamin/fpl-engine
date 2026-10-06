@@ -105,4 +105,6 @@ Both were run the same day. The search shadow averages 0.005, 0.004, and 0.101 a
 
 The Gameweek 1–5 gap does not include chips still held. The model played two chips on every squad, Bench Boost and Triple Captain. The 14 played 2.5 on average. The model has 0.5 more first-half chips left. Second-half wallets are full on both sides. Closing −27.43 with that half chip would need it to be worth 55 points, and no such price is on file. Gemini left the points unchanged ([chip stock](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). See `reports/chip_stock_gw15.md`.
 
+Three of those 14 already hold the same chips as the model. The gaps are 0, −26, and −46. The two with the same chip in the same week average −13, in the lineup column. A larger pool was reviewed and not opened ([chip match](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). See `reports/chip_match_gw15.md`.
+
 Still parked: an Asian handicap as a live-week pot only, player props after a fresh cost estimate and the PI's approval, a shrunk season-rank weight on weeks that have no 1X2, and the other two guider outputs (a search constraint, or a question back). Those outputs leave `score_xp` unchanged. The 2025/26 top-100 archive remains a descriptive benchmark, not a sample to fit. Assistant Manager, and the 2024/25 chip wallet, stay out until that chip exists.

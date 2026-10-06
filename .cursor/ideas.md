@@ -124,6 +124,10 @@ The price reach on those ranked-lower pairs was run on 2026-10-05 and kept as bu
 
 Run on 2026-10-06 and parked ([close-pair shape](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). The eligible leader and the closest player within half a point, four seasons, Gameweeks 6–38. The leader wins 48.6%, 56.1%, 45.8% and 56.6% of decisive pairs. Blank rates and haul rates, counted from earlier weeks on the full sheet, stay under 80 decisive pairs in every season (blanks 59, 59, 68, 71; hauls 57, 56, 60, 60). Both miss a 5 point margin over the leader in three seasons. Do not screen either shape. Do not open a position split from the thin cells. Do not rerun `score_xp / (σ + 1)` or `score_xp − 0.25σ`. The score stays `score_xp`. See `reports/close_pair_shape.md`.
 
+## Chip match
+
+Reviewed on 2026-10-06 and not run ([chip match](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). Three of the 14 already hold the same chips as the model. The gaps are 0, −26, and −46, mean −24. The two with the same chip in the same week average −13, and those points are in the lineup. Do not add managers from today's overall rank. Do not open the next prior-season names for this filter. See `reports/chip_match_gw15.md`.
+
 ## Chip stock
 
 Counted on 2026-10-06 and left as a count ([chip stock](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). The five-week gap is points scored. The model played two chips on every squad. The 14 played 2.5. The model holds 0.5 more first-half chips. A chip worth 55 points would close the −27.43, and nothing on file is that price. Do not add the hurdle of 16, or the declined wildcard lead, to the gap. See `reports/chip_stock_gw15.md`.
