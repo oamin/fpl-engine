@@ -527,6 +527,19 @@ def _failures_paths() -> list[str]:
             failures.append("the all-weeks pool is not the sensitivity")
         if live.get("decision_capture") != "t1_same_stamp" or live.get("choose_after_seeing_scores") is not False:
             failures.append("the decision capture is not the same-stamp t1 pair")
+        reversion = protocol.get("reversion") or {}
+        if reversion.get("sign") != "actual_minus_baseline":
+            failures.append("the reversion residual is not actual minus baseline")
+        if reversion.get("installs_feature") is not False or reversion.get("replaces_score") is not False:
+            failures.append("the reversion diagnostic edits score_xp")
+        if reversion.get("oracle_is_forecast") is not False or reversion.get("winner") is not None:
+            failures.append("the oracle minutes run is treated as a forecast or a winner")
+        if list(reversion.get("weights") or []) != [0.6, 0.8]:
+            failures.append("the oracle weights are not the locked pair")
+        if int(reversion.get("minutes_gate") or 0) != 60 or int(reversion.get("bootstrap") or 0) != 1000:
+            failures.append("the reversion draw is not locked")
+        if "seed" not in reversion or int(reversion["seed"]) != 0:
+            failures.append("the reversion seed is not 0")
     manifest = json.loads((ROOT / "data" / "live" / "HOLDOUT_FREEZE.json").read_text(encoding="utf-8"))
     tracked = manifest.get("tracked") or {}
     if "data/cache/player_gw_2026_27.csv" in tracked:

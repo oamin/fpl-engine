@@ -172,5 +172,20 @@
     "review_gw": 26,
     "winner": null
   },
-  "note": "Gaussian log score with sigma fixed at 3. The bootstrap resamples gameweeks, not player rows. 2026-27 is not in the closed-season comparison. Gameweeks 1-5 of that season were already read. The clean holdout starts at gameweek 6. A season total is not a pass. The decision batch scores score_xp. From gameweek 6 the live choice primary is ep_next and score_xp is logged as the shadow. Promotion needs the paired interval of score_xp minus ep_next to stay strictly above zero on at least 20 pre-deadline weeks. An interval that covers zero is undetermined, and the test continues through gameweek 38. From gameweek 6 the live squad is chosen by captured ep_next. score_xp is logged in shadow and does not choose. The historical score column stays score_xp. The eligible pool is the primary closed-season result and the all-weeks pool is the sensitivity. The decision capture is the same-stamp pair from the window three hours to fifteen minutes before the deadline. An earlier file is not used. The review is at gameweek 26."
+  "reversion": {
+    "sign": "actual_minus_baseline",
+    "baselines": ["score_exp_points", "score_xp"],
+    "bootstrap": 1000,
+    "seed": 0,
+    "floor": 20,
+    "min_seasons": 2,
+    "minutes_gate": 60,
+    "xmi_split": 60,
+    "weights": [0.6, 0.8],
+    "installs_feature": false,
+    "oracle_is_forecast": false,
+    "replaces_score": false,
+    "winner": null
+  },
+  "note": "Gaussian log score with sigma fixed at 3. The bootstrap resamples gameweeks, not player rows. 2026-27 is not in the closed-season comparison. Gameweeks 1-5 of that season were already read. The clean holdout starts at gameweek 6. A season total is not a pass. The decision batch scores score_xp. From gameweek 6 the live choice primary is ep_next and score_xp is logged as the shadow. Promotion needs the paired interval of score_xp minus ep_next to stay strictly above zero on at least 20 pre-deadline weeks. An interval that covers zero is undetermined, and the test continues through gameweek 38. From gameweek 6 the live squad is chosen by captured ep_next. score_xp is logged in shadow and does not choose. The historical score column stays score_xp. The eligible pool is the primary closed-season result and the all-weeks pool is the sensitivity. The decision capture is the same-stamp pair from the window three hours to fifteen minutes before the deadline. An earlier file is not used. The review is at gameweek 26. The reversion diagnostic does not install a feature. Oracle minutes use the same fixture and are not a forecast."
 }
