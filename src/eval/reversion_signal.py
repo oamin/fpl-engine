@@ -608,13 +608,66 @@ def _lines(summary: dict[str, Any]) -> list[str]:
                     f"{int((spearman.get('n_gws') or {}).get(season, 0))} |"
                 )
         lines.append("")
+    lines.extend(_readings(summary))
     lines.extend(
         [
-            "Gemini kept the formula "
+            "Gemini kept the formula and reviewed the metrics "
             "([reversion signal](bc-e75c8209-ffd3-590a-b610-d0e34e62bbee)).",
             "",
         ]
     )
+    return lines
+
+
+def _interval_covers_zero(row: dict[str, Any]) -> bool:
+    if row.get("mean") is None:
+        return False
+    return float(row["lo"]) <= 0.0 <= float(row["hi"])
+
+
+def _readings(summary: dict[str, Any]) -> list[str]:
+    """Sentences fixed after the draw. They describe the intervals. They do not retune."""
+    spearman_cleared = any(
+        row.get("mean") is not None and float(row["hi"]) < SPEARMAN_BAR
+        for row in summary["spearman"].values()
+    )
+    bucket_cleared = any(
+        row.get("mean") is not None and float(row["lo"]) > BUCKET_BAR
+        for row in summary["bucket"].values()
+    )
+    hurst_cleared = any(
+        row.get("mean") is not None and float(row["hi"]) < HURST_BAR
+        for row in summary["hurst"].values()
+    )
+    lines: list[str] = []
+    if not spearman_cleared and not bucket_cleared and not hurst_cleared:
+        lines.append("No bar is cleared.")
+    xp_one = summary["spearman"]["xp:1"]
+    if xp_one.get("mean") is not None and float(xp_one["lo"]) > 0.0:
+        lines.append("The one-week score_xp correlation stays above zero.")
+    hurst_above = all(
+        row.get("mean") is not None and float(row["lo"]) > HURST_BAR
+        for row in summary["hurst"].values()
+    )
+    if hurst_above:
+        lines.append("Both Hurst intervals stay above 0.5.")
+    buckets_cover = all(_interval_covers_zero(row) for row in summary["bucket"].values())
+    if buckets_cover and not bucket_cleared:
+        lines.append(
+            "Every bucket interval covers zero, so a gap of half a point per 90 is not established."
+        )
+    season_point = (
+        (summary["bucket"].get("xp:2") or {}).get("per_season") or {}
+    ).get("2025-26") or {}
+    pool = summary["bucket"].get("xp:2") or {}
+    if (
+        season_point.get("point") is not None
+        and float(season_point["point"]) > BUCKET_BAR
+        and _interval_covers_zero(pool)
+    ):
+        lines.append("The 2025-26 horizon-2 point is not the pool.")
+    lines.append("No reversion term is added to score_xp.")
+    lines.append("")
     return lines
 
 

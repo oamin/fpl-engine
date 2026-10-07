@@ -13,6 +13,7 @@ from src.eval.reversion_signal import (
     MIN_MINUTES,
     REQUIRED,
     Z_BAR,
+    _readings,
     bucket_interval,
     hurst_rs,
     signal_frame,
@@ -149,3 +150,22 @@ class SignalTest(unittest.TestCase):
         self.assertGreater(float(trend), 0.5)
         self.assertLess(float(wave), 0.5)
         self.assertGreater(float(trend), float(wave))
+
+    def test_readings_follow_the_intervals(self) -> None:
+        def row(mean: float, lo: float, hi: float) -> dict[str, float]:
+            return {"mean": mean, "lo": lo, "hi": hi, "point": mean}
+
+        summary = {
+            "spearman": {f"{name}:{horizon}": row(0.01, -0.01, 0.02) for name in ("exp", "xp") for horizon in (1, 2, 3)},
+            "bucket": {f"{name}:{horizon}": {**row(0.1, -0.2, 0.3), "per_season": {}} for name in ("exp", "xp") for horizon in (1, 2, 3)},
+            "hurst": {"exp": row(0.64, 0.61, 0.68), "xp": row(0.65, 0.63, 0.68)},
+        }
+        summary["spearman"]["xp:1"] = row(0.034, 0.018, 0.053)
+        summary["bucket"]["xp:2"]["per_season"] = {"2025-26": {"point": 0.62}}
+        text = "\n".join(_readings(summary))
+        self.assertIn("No bar is cleared.", text)
+        self.assertIn("The one-week score_xp correlation stays above zero.", text)
+        self.assertIn("Both Hurst intervals stay above 0.5.", text)
+        self.assertIn("The 2025-26 horizon-2 point is not the pool.", text)
+        for banned in FORBIDDEN:
+            self.assertNotIn(banned, text)
