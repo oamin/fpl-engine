@@ -84,8 +84,14 @@ def _attach_value_defcon(players: pd.DataFrame, season: str) -> pd.DataFrame:
     return out
 
 
-def build_one_season(season: str, fd_code: str) -> pd.DataFrame:
-    """Joined odds + xP features for one season (within-season priors only)."""
+def build_one_season(
+    season: str, fd_code: str, *, early_buy: bool = False
+) -> pd.DataFrame:
+    """Joined odds + xP features for one season (within-season priors only).
+
+    ``early_buy`` keeps rows with one or two prior appearances and caps
+    their decision score. The default still drops those rows.
+    """
     fixtures = load_football_data(code=fd_code)
     players = load_player_logs(season=season)
     players = _attach_value_defcon(players, season)
@@ -127,12 +133,22 @@ def build_one_season(season: str, fd_code: str) -> pd.DataFrame:
     feat = add_player_priors(feat)
     feat = compute_xp(feat)
     feat = add_team_prior_score(feat)
-    feat = feat.loc[feat["n_prior"] >= MIN_HISTORY].copy()
+    from src.models.season_climb_ft import early_score_table
+
+    early_scores = early_score_table(feat)
+    if early_buy:
+        feat = feat.loc[pd.to_numeric(feat["n_prior"], errors="coerce") >= 1].copy()
+    else:
+        feat = feat.loc[feat["n_prior"] >= MIN_HISTORY].copy()
 
     # Climb score aliases
     rng = np.random.default_rng(abs(hash(season)) % (2**32))
     feat["score_random"] = rng.random(len(feat))
     feat["score_xp"] = feat["xp"]
+    if early_buy:
+        from src.models.early_buy import cap_decision_score
+
+        feat = cap_decision_score(feat)
     feat["score_exp_points"] = feat["exp_points"]
     feat["score_team_prior"] = feat["xp_team_prior"]
     feat["score_roll3_points"] = feat["roll3_points"]
@@ -140,6 +156,15 @@ def build_one_season(season: str, fd_code: str) -> pd.DataFrame:
     feat["score_price"] = feat["value"]
     # Order key for walk-forward
     feat["season_ord"] = {s: i for i, (s, _) in enumerate(SEASONS)}[season]
+    # A DataFrame in attrs breaks pandas ranking. A tuple compares cleanly.
+    feat.attrs["early_scores"] = tuple(
+        zip(
+            early_scores["player_id"].astype(str),
+            early_scores["gw"].astype(int),
+            early_scores["score_xp"].astype(float),
+            strict=False,
+        )
+    )
     return feat
 
 

@@ -1,5 +1,8 @@
 """Two-tier search. Tier 1 is the fast XI climb on a full season.
 
+Running this module does not produce a reportable result. The reportable
+path is ``src.eval``.
+
 Candidates live in ``experiments/matrix.json``. They are ranked by
 cumulative XI points versus expected points. Spearman, MAE, and bias are
 recorded and do not decide who advances.
@@ -10,10 +13,10 @@ baseline is the comparator and does not advance. A transfer-value
 candidate is not ranked: the fast climb cannot see it.
 
 Tier 2 runs the free-transfer climb on every grid point of those
-architectures and records points, hits, and transfers. P* is the grid
-point with the highest transfer-climb total. It is a winner only if it
-then beats the paired expected-points climb by ``pass_margin`` on the
-holdout season. The label is best of this search.
+architectures and records points, hits, and transfers. A season total
+is not a winner. ``pass_margin`` is retired. The reportable comparison
+is the pre-registered player-GW log score. ``2026-27`` is a frozen
+holdout and is not climbed.
 
 Writes:
   data/processed/search_tier1.csv
@@ -49,8 +52,12 @@ def load_matrix(path: Path | None = None) -> dict[str, Any]:
     raw = json.loads((path or MATRIX).read_text(encoding="utf-8"))
     if raw["advance_n"] < 1:
         raise ValueError("advance_n must be positive")
-    if raw["kill_gap"] < 0 or raw["pass_margin"] < 0:
-        raise ValueError("kill_gap and pass_margin must be non-negative")
+    if raw["kill_gap"] < 0:
+        raise ValueError("kill_gap must be non-negative")
+    if "pass_margin" in raw:
+        raise ValueError("pass_margin is retired; a season total is not a winner")
+    if raw.get("holdout_season") == "2026-27":
+        raw["holdout_frozen"] = True
     return raw
 
 
@@ -288,6 +295,8 @@ def choose_p_star(tier2: pd.DataFrame) -> pd.Series | None:
 
 def run_holdout(spec: dict[str, Any], winner: pd.Series, screen_candidates: list[dict]) -> pd.DataFrame:
     season = spec["holdout_season"]
+    if season == "2026-27":
+        raise RuntimeError("2026-27 is a frozen holdout and is not climbed")
     print(f"Holdout {season}…", flush=True)
     feat = prepare_season(season)
     parent = next(item for item in screen_candidates if item["id"] == winner["candidate"])
@@ -325,7 +334,8 @@ def write_report(
         "the free-transfer grid. Spearman, MAE, and bias do not decide advancement.",
         "",
         f"Holdout season: {spec['holdout_season']}. "
-        f"A winner must beat that season's xp climb by {spec['pass_margin']:.0f}.",
+        "A season total is not a winner. The reportable comparison is the "
+        "pre-registered player-GW log score.",
         "",
         "## Tier 1",
         "",
@@ -358,7 +368,11 @@ def write_report(
                 f"{row.delta_vs_xp:+.0f} | {row.mean_transfers:.2f} | {row.hits:.0f} |"
             )
     lines += ["", "## Holdout", ""]
-    if holdout is None or holdout.empty:
+    if spec.get("holdout_season") == "2026-27" or spec.get("holdout_frozen"):
+        lines.append(
+            "2026-27 is a frozen holdout and was not climbed. A season total is not a winner."
+        )
+    elif holdout is None or holdout.empty:
         lines.append("Not run. Nothing on the screen-season transfer climb was ahead of xp.")
     else:
         summary = summarize(holdout)
@@ -366,16 +380,10 @@ def write_report(
         arm = float(summary.loc[summary["method"] == "winner_ft", "total_points"].iloc[0])
         delta = arm - xp
         season = holdout["season"].iloc[0]
-        if delta >= spec["pass_margin"]:
-            verdict = (
-                f"WINNER on this protocol: {delta:+.0f} on {season}. "
-                "Best of this search, and it cleared the holdout bar."
-            )
-        else:
-            verdict = (
-                f"NO WINNER. Holdout delta on {season} is {delta:+.0f} "
-                f"(bar +{spec['pass_margin']:.0f})."
-            )
+        verdict = (
+            f"No season-total winner. The holdout delta on {season} is {delta:+.0f}. "
+            "A season total is not a pass."
+        )
         lines += [
             f"| method | total |",
             f"|---|---:|",
@@ -411,7 +419,9 @@ def run(matrix_path: Path | None = None) -> dict[str, Any]:
     tier2 = run_tier2(scored, spec, tier1, advanced)
     holdout = None
     winner = choose_p_star(tier2)
-    if winner is not None and float(winner["delta_vs_xp"]) > 0:
+    if spec.get("holdout_season") == "2026-27" or spec.get("holdout_frozen"):
+        print("Holdout 2026-27 is frozen and was not climbed.", flush=True)
+    elif winner is not None and float(winner["delta_vs_xp"]) > 0:
         holdout = run_holdout(spec, winner, spec["candidates"])
     PROCESSED.mkdir(parents=True, exist_ok=True)
     tier1.to_csv(PROCESSED / "search_tier1.csv", index=False)

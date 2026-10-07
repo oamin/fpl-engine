@@ -1,0 +1,117 @@
+kind,tag,points,human_id,model_id,position,place,gap,block,entry_id,label,group,gw
+chip_squad,eligible,-4.0,2026-27:115,,DEF,out,-0.00468912789427911,price,2076855,elevenify.com,veteran,3
+chip_squad,eligible,-2.0,2026-27:12,,MID,out,0.32740537962713745,price,2076855,elevenify.com,veteran,3
+chip_squad,eligible,-1.0,2026-27:124,,MID,out,-0.9894587990284878,neither,2076855,elevenify.com,veteran,3
+chip_squad,eligible,-1.0,2026-27:154,,MID,out,-1.180148282418016,price,2076855,elevenify.com,veteran,3
+chip_squad,eligible,-9.0,2026-27:411,,FWD,in,,,2076855,elevenify.com,veteran,3
+chip_squad,eligible,-4.0,2026-27:449,,DEF,out,-0.36704124023570506,price,2076855,elevenify.com,veteran,3
+chip_squad,eligible,-1.0,2026-27:464,,FWD,out,-0.3572248043673971,price,2076855,elevenify.com,veteran,3
+ranked_lower,price,1.0,2026-27:411,2026-27:346,FWD,,,,2076855,elevenify.com,veteran,4
+ranked_lower,open,-3.0,2026-27:154,2026-27:426,MID,,,,2076855,elevenify.com,veteran,4
+ranked_lower,price,-6.0,2026-27:12,2026-27:427,MID,,,,2076855,elevenify.com,veteran,4
+ranked_lower,price,-4.0,2026-27:411,2026-27:346,FWD,,,,2076855,elevenify.com,veteran,5
+chip_squad,eligible,-4.0,2026-27:115,,DEF,out,-0.16564785437907315,neither,9267,Cameron Scott,veteran,3
+chip_squad,eligible,-2.0,2026-27:12,,MID,out,0.32740537962713745,price,9267,Cameron Scott,veteran,3
+chip_squad,eligible,-13.0,2026-27:379,,FWD,out,0.2433445846343223,price,9267,Cameron Scott,veteran,3
+chip_squad,eligible,-1.0,2026-27:398,,MID,out,0.18115335510455832,club,9267,Cameron Scott,veteran,3
+chip_squad,eligible,-3.0,2026-27:41,,MID,out,-1.2744314964118248,neither,9267,Cameron Scott,veteran,3
+chip_squad,eligible,-9.0,2026-27:411,,FWD,in,,,9267,Cameron Scott,veteran,3
+chip_squad,eligible,-1.0,2026-27:464,,FWD,out,-0.3572248043673971,neither,9267,Cameron Scott,veteran,3
+chip_squad,eligible,-2.0,2026-27:82,,GKP,out,0.14442773707502354,club,9267,Cameron Scott,veteran,3
+chip_squad,eligible,-1.0,2026-27:84,,DEF,in,,,9267,Cameron Scott,veteran,3
+chip_squad,eligible,-2.0,2026-27:87,,DEF,out,-0.1535140150820986,club,9267,Cameron Scott,veteran,3
+chip_squad,eligible,-3.0,2026-27:1,,GKP,out,0.10261062810628463,price,31365,Ashley Marsh,veteran,3
+chip_squad,eligible,-4.0,2026-27:115,,DEF,out,-0.16564785437907315,neither,31365,Ashley Marsh,veteran,3
+chip_squad,eligible,-1.0,2026-27:124,,MID,out,-0.9894587990284878,neither,31365,Ashley Marsh,veteran,3
+chip_squad,eligible,-1.0,2026-27:154,,MID,out,-1.180148282418016,price,31365,Ashley Marsh,veteran,3
+chip_squad,eligible,-8.0,2026-27:391,,DEF,out,0.7240046944376823,club,31365,Ashley Marsh,veteran,3
+chip_squad,eligible,-3.0,2026-27:399,,MID,out,-0.47589732908329996,club,31365,Ashley Marsh,veteran,3
+chip_squad,eligible,-9.0,2026-27:411,,FWD,in,,,31365,Ashley Marsh,veteran,3
+chip_squad,eligible,-4.0,2026-27:449,,DEF,out,-0.5279999667204991,neither,31365,Ashley Marsh,veteran,3
+chip_squad,eligible,-1.0,2026-27:464,,FWD,out,-0.3572248043673971,neither,31365,Ashley Marsh,veteran,3
+chip_squad,absent,-0.0,2026-27:565,,,,,,31365,Ashley Marsh,veteran,3
+ranked_lower,price,1.0,2026-27:411,2026-27:346,FWD,,,,31365,Ashley Marsh,veteran,4
+ranked_lower,price,-6.0,2026-27:1,2026-27:109,GKP,,,,31365,Ashley Marsh,veteran,4
+ranked_lower,price,-4.0,2026-27:154,2026-27:367,MID,,,,31365,Ashley Marsh,veteran,4
+ranked_lower,inside 1.25,-6.0,2026-27:40,2026-27:426,MID,,,,31365,Ashley Marsh,veteran,4
+ranked_lower,price,-4.0,2026-27:411,2026-27:346,FWD,,,,31365,Ashley Marsh,veteran,5
+ranked_lower,price,5.0,2026-27:1,2026-27:109,GKP,,,,31365,Ashley Marsh,veteran,5
+chip_squad,eligible,-4.0,2026-27:115,,DEF,out,-0.16564785437907315,neither,616,Mark Brookes,veteran,3
+chip_squad,eligible,-2.0,2026-27:12,,MID,out,0.32740537962713745,price,616,Mark Brookes,veteran,3
+chip_squad,eligible,-11.0,2026-27:367,,MID,in,,,616,Mark Brookes,veteran,3
+chip_squad,eligible,-6.0,2026-27:397,,MID,out,0.5652195608433832,club,616,Mark Brookes,veteran,3
+chip_squad,eligible,-3.0,2026-27:399,,MID,out,-0.47589732908329996,club,616,Mark Brookes,veteran,3
+chip_squad,eligible,-9.0,2026-27:411,,FWD,in,,,616,Mark Brookes,veteran,3
+chip_squad,eligible,-1.0,2026-27:464,,FWD,out,-0.3572248043673971,neither,616,Mark Brookes,veteran,3
+chip_squad,eligible,-2.0,2026-27:82,,GKP,out,0.14442773707502354,club,616,Mark Brookes,veteran,3
+chip_squad,eligible,-1.0,2026-27:84,,DEF,in,,,616,Mark Brookes,veteran,3
+chip_squad,eligible,-2.0,2026-27:87,,DEF,out,-0.1535140150820986,club,616,Mark Brookes,veteran,3
+chip_squad,eligible,-2.0,2026-27:12,,MID,out,0.3939381581666668,price,616,Mark Brookes,veteran,5
+chip_squad,eligible,-6.0,2026-27:249,,FWD,out,-1.0992497813891728,neither,616,Mark Brookes,veteran,5
+chip_squad,eligible,-6.0,2026-27:334,,DEF,out,-0.152507174960971,club,616,Mark Brookes,veteran,5
+chip_squad,eligible,-6.0,2026-27:411,,FWD,in,,,616,Mark Brookes,veteran,5
+chip_squad,eligible,-9.0,2026-27:453,,MID,out,-0.6338130037575676,neither,616,Mark Brookes,veteran,5
+chip_squad,eligible,-2.0,2026-27:469,,DEF,out,-0.4516174353485809,club,616,Mark Brookes,veteran,5
+chip_squad,eligible,-2.0,2026-27:480,,MID,in,,,616,Mark Brookes,veteran,5
+chip_squad,eligible,-2.0,2026-27:496,,GKP,out,-0.07951370661374879,neither,616,Mark Brookes,veteran,5
+chip_squad,eligible,-2.0,2026-27:569,,FWD,out,-1.2642704750763682,neither,616,Mark Brookes,veteran,5
+chip_squad,eligible,-4.0,2026-27:115,,DEF,out,-0.16564785437907315,neither,4109079,Will Morrison,veteran,3
+chip_squad,eligible,-2.0,2026-27:12,,MID,out,0.32740537962713745,price,4109079,Will Morrison,veteran,3
+chip_squad,eligible,-1.0,2026-27:398,,MID,out,0.18115335510455832,club,4109079,Will Morrison,veteran,3
+chip_squad,eligible,-3.0,2026-27:399,,MID,out,-0.47589732908329996,club,4109079,Will Morrison,veteran,3
+chip_squad,eligible,-9.0,2026-27:411,,FWD,in,,,4109079,Will Morrison,veteran,3
+chip_squad,eligible,-1.0,2026-27:464,,FWD,out,-0.3572248043673971,neither,4109079,Will Morrison,veteran,3
+chip_squad,eligible,-2.0,2026-27:82,,GKP,out,0.14442773707502354,club,4109079,Will Morrison,veteran,3
+chip_squad,eligible,-1.0,2026-27:84,,DEF,in,,,4109079,Will Morrison,veteran,3
+chip_squad,eligible,-2.0,2026-27:87,,DEF,out,-0.1535140150820986,club,4109079,Will Morrison,veteran,3
+ranked_lower,inside 1.25,-1.0,2026-27:334,2026-27:388,DEF,,,,4109079,Will Morrison,veteran,4
+ranked_lower,price,-3.0,2026-27:154,2026-27:427,MID,,,,4109079,Will Morrison,veteran,4
+ranked_lower,open,-3.0,2026-27:154,2026-27:426,MID,,,,2116184,Paul Mitchell,veteran,4
+chip_squad,eligible,-4.0,2026-27:115,,DEF,out,-0.16564785437907315,neither,32058,Thomas O'Brien,veteran,3
+chip_squad,eligible,-2.0,2026-27:12,,MID,out,0.32740537962713745,price,32058,Thomas O'Brien,veteran,3
+chip_squad,eligible,-1.0,2026-27:124,,MID,out,-0.9894587990284878,neither,32058,Thomas O'Brien,veteran,3
+chip_squad,eligible,-9.0,2026-27:411,,FWD,in,,,32058,Thomas O'Brien,veteran,3
+chip_squad,eligible,1.0,2026-27:445,,DEF,in,,,32058,Thomas O'Brien,veteran,3
+chip_squad,eligible,-1.0,2026-27:464,,FWD,out,-0.3572248043673971,neither,32058,Thomas O'Brien,veteran,3
+chip_squad,absent,-0.0,2026-27:565,,,,,,32058,Thomas O'Brien,veteran,3
+ranked_lower,price,1.0,2026-27:411,2026-27:346,FWD,,,,32058,Thomas O'Brien,veteran,4
+ranked_lower,inside 1.25,-6.0,2026-27:12,2026-27:426,MID,,,,32058,Thomas O'Brien,veteran,4
+ranked_lower,inside 1.25,-5.0,2026-27:334,2026-27:4,DEF,,,,32058,Thomas O'Brien,veteran,5
+ranked_lower,price,-4.0,2026-27:411,2026-27:346,FWD,,,,32058,Thomas O'Brien,veteran,5
+ranked_lower,price,-7.0,2026-27:411,2026-27:106,FWD,,,,5874076,Jess Bernstein,rank,3
+ranked_lower,price,-8.0,2026-27:411,2026-27:106,FWD,,,,5874076,Jess Bernstein,rank,4
+ranked_lower,inside 1.25,-6.0,2026-27:40,2026-27:426,MID,,,,5874076,Jess Bernstein,rank,4
+ranked_lower,price,-1.0,2026-27:411,2026-27:106,FWD,,,,5874076,Jess Bernstein,rank,5
+ranked_lower,arrived,0.0,2026-27:391,2026-27:112,DEF,,,,3669095,Adam Whitting,rank,3
+ranked_lower,inside 1.25,-6.0,2026-27:40,2026-27:426,MID,,,,3669095,Adam Whitting,rank,4
+ranked_lower,price,5.0,2026-27:8,2026-27:588,DEF,,,,3669095,Adam Whitting,rank,5
+chip_squad,eligible,-2.0,2026-27:154,,MID,out,-0.2668165498552213,price,169164,Filip Stripaj,rank,5
+chip_squad,eligible,-14.0,2026-27:229,,DEF,in,,,169164,Filip Stripaj,rank,5
+chip_squad,eligible,-6.0,2026-27:249,,FWD,out,-1.0992497813891728,neither,169164,Filip Stripaj,rank,5
+chip_squad,eligible,-17.0,2026-27:397,,MID,out,0.023849831176367964,club,169164,Filip Stripaj,rank,5
+chip_squad,eligible,-2.0,2026-27:40,,MID,out,-1.1343136445234965,price,169164,Filip Stripaj,rank,5
+chip_squad,eligible,-2.0,2026-27:427,,MID,in,,,169164,Filip Stripaj,rank,5
+chip_squad,eligible,-13.0,2026-27:449,,DEF,out,-0.7354094004393286,price,169164,Filip Stripaj,rank,5
+chip_squad,eligible,-2.0,2026-27:467,,GKP,in,,,169164,Filip Stripaj,rank,5
+chip_squad,eligible,-8.0,2026-27:226,,GKP,out,0.08849381060557215,price,217044,daniel bowes,rank,5
+chip_squad,eligible,-3.0,2026-27:236,,MID,out,-0.09627754185782234,price,217044,daniel bowes,rank,5
+chip_squad,eligible,-2.0,2026-27:346,,FWD,in,,,217044,daniel bowes,rank,5
+chip_squad,eligible,-2.0,2026-27:40,,MID,out,-1.1343136445234965,price,217044,daniel bowes,rank,5
+chip_squad,eligible,-13.0,2026-27:449,,DEF,out,-0.7354094004393286,price,217044,daniel bowes,rank,5
+chip_squad,eligible,-0.0,2026-27:464,,FWD,out,-1.6183537362259615,neither,217044,daniel bowes,rank,5
+chip_squad,eligible,-2.0,2026-27:469,,DEF,out,-0.5202037129061026,club,217044,daniel bowes,rank,5
+chip_squad,eligible,-2.0,2026-27:480,,MID,in,,,217044,daniel bowes,rank,5
+chip_squad,eligible,-4.0,2026-27:115,,DEF,out,-0.16564785437907315,neither,534464,Sion Jones,rank,3
+chip_squad,eligible,-1.0,2026-27:124,,MID,out,-0.9894587990284878,neither,534464,Sion Jones,rank,3
+chip_squad,eligible,-3.0,2026-27:368,,MID,in,,,534464,Sion Jones,rank,3
+chip_squad,eligible,-13.0,2026-27:379,,FWD,out,0.2433445846343223,price,534464,Sion Jones,rank,3
+chip_squad,eligible,-3.0,2026-27:399,,MID,out,-0.47589732908329996,club,534464,Sion Jones,rank,3
+chip_squad,eligible,-1.0,2026-27:454,,MID,out,-1.8082293461960481,neither,534464,Sion Jones,rank,3
+chip_squad,eligible,-1.0,2026-27:464,,FWD,out,-0.3572248043673971,price,534464,Sion Jones,rank,3
+ranked_lower,open,-3.0,2026-27:154,2026-27:426,MID,,,,534464,Sion Jones,rank,4
+ranked_lower,inside 1.25,-1.0,2026-27:368,2026-27:427,MID,,,,534464,Sion Jones,rank,4
+ranked_lower,price,-7.0,2026-27:40,2026-27:237,MID,,,,534464,Sion Jones,rank,4
+ranked_lower,inside 1.25,-2.0,2026-27:124,2026-27:94,MID,,,,534464,Sion Jones,rank,4
+ranked_lower,price,2.0,2026-27:391,2026-27:588,DEF,,,,3503484,Viniii Denie,rank,5
+ranked_lower,price,-2.0,2026-27:412,2026-27:109,GKP,,,,2632584,ojaminFC,reference,2
+ranked_lower,inside 1.25,-2.0,2026-27:565,2026-27:155,MID,,,,2632584,ojaminFC,reference,4

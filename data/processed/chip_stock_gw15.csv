@@ -1,0 +1,16 @@
+entry_id,label,group,model_played,human_played,model_left,human_left,model_only,human_only,count_diff,gap
+2076855,elevenify.com,veteran,2,3,2,1,wildcard,,1,-13.0
+9267,Cameron Scott,veteran,2,3,2,1,free_hit,,1,-13.0
+31365,Ashley Marsh,veteran,2,3,2,1,wildcard,,1,-5.0
+616,Mark Brookes,veteran,2,4,2,0,"free_hit,wildcard",,2,-35.0
+4109079,Will Morrison,veteran,2,2,2,2,free_hit,triple_captain,0,-23.0
+2116184,Paul Mitchell,veteran,2,2,2,2,,,0,0.0
+32058,Thomas O'Brien,veteran,2,3,2,1,wildcard,,1,-32.0
+5874076,Jess Bernstein,rank,2,1,2,3,,bench_boost,-1,-71.0
+3669095,Adam Whitting,rank,2,1,2,3,,bench_boost,-1,-37.0
+169164,Filip Stripaj,rank,2,3,2,1,free_hit,,1,-38.0
+217044,daniel bowes,rank,2,3,2,1,free_hit,,1,-41.0
+534464,Sion Jones,rank,2,3,2,1,wildcard,,1,-4.0
+3503484,Viniii Denie,rank,2,2,2,2,,,0,-46.0
+1585157,Tom Anderson,rank,2,2,2,2,,,0,-26.0
+2632584,ojaminFC,reference,2,1,2,3,,bench_boost,-1,22.0

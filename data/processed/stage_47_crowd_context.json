@@ -1,0 +1,22 @@
+{
+  "mean_delta_additive": 0.010631943824856105,
+  "mean_delta_interaction": -0.00038222387698427784,
+  "additive_qualifies": false,
+  "interaction_qualifies": false,
+  "n_by_season": {
+    "2022-23": 7085,
+    "2023-24": 7330,
+    "2024-25": 7427,
+    "2025-26": 7464
+  },
+  "n_doubles": 859,
+  "merge_rate": {
+    "2022-23": 1.0,
+    "2023-24": 1.0,
+    "2024-25": 1.0,
+    "2025-26": 1.0
+  },
+  "corr_score_flow": 0.2841515517825513,
+  "corr_score_own": 0.44421582780752356,
+  "corr_flow_own": 0.1213677815267244
+}

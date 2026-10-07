@@ -1,11 +1,11 @@
 {
   "screen_season": "2025-26",
-  "holdout_season": "2023-24",
+  "holdout_season": "2026-27",
   "gw_start": 5,
   "gw_end": 38,
   "kill_gap": 100,
-  "pass_margin": 34,
   "advance_n": 2,
+  "note": "pass_margin is retired. A season total is not a winner. 2026-27 is a frozen holdout and is not climbed. The reportable comparison is the player-GW log score in experiments/protocol.json.",
   "candidates": [
     {
       "id": "xp",

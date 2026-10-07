@@ -10,16 +10,29 @@ alwaysApply: true
 ## Roles
 
 - **PI (Ollie):** reads a batch report when a pre-registered set of methods has been run. Does not join the screen design. Approves only if a later step would break a published comparison or spend Odds API credits.
-- **Co-PI (Gemini):** mathematical design, edge cases, diagnostic review. Launch a subagent on Gemini 3.8 Flash (`gemini-3.8-flash-high`). Pass the decision, the constraints, and the file paths. Gemini does not see this chat unless the prompt includes it. Resume the same agent for the follow-up so the thread stays intact. Gemini proposes and reviews; Cursor writes the code and runs it.
-- **Cursor:** implement, test, and run. Before a new method or a change to `experiments/matrix.json` is coded, at least one Gemini exchange on the formula and the failure cases. After every search or climb result, one Gemini pass on the diagnostics before the result is called reviewed. Then write the PI mini-report. The two-tier search in `src/models/search_protocol.py` is not exempt.
+- **Co-PI (Gemini):** mathematical design and edge cases. Gemini may propose a formula. A Gemini sentence does not certify a result.
+- **Cursor:** implement, test, and run. One pre-registered comparison at a time, on the fixed protocol in `experiments/protocol.json`, judged on the player-GW likelihood.
+
+## Gates
+
+A result is not reported without both of these:
+
+1. The as-of audit in `src/eval/gates.py` passed. A pool filter or a feature that reads the scored gameweek's minutes, points, or row existence fails the audit.
+2. Paired intervals for the pre-registered comparisons across all four closed seasons (2022-23, 2023-24, 2024-25, 2025-26).
+
+`write_gated_report` is the writer. It raises when either gate is missing. A season total is not a winner. `pass_margin` is retired. A climb is a sanity check.
+
+The live 2026/27 holdout is frozen. Do not modify the hashed snapshots in `data/live/HOLDOUT_FREEZE.json`. Do not fit a parameter on that season. Do not put it in a closed-season comparison.
+
+Fewer comparisons. Do not add a stage per day. Objective-function search stays parked. Captain and chip simulators stay deferred until a pre-registered likelihood comparison asks for them.
 
 ## Evaluation
 
-Optimising the evaluation is rewarded (`PROJECT_OUTLINE.md`). Screen a new player score on the fast XI climb first. Run the free-transfer climb only for a screen that does not clearly lose, or for a change to the transfer rule itself. Plan that split with Gemini. Do not ask the PI.
+Optimising the evaluation is rewarded (`PROJECT_OUTLINE.md`). The development metric is the player-GW log score. Screen a new score on that likelihood. Run a free-transfer climb only as a sanity check after the likelihood does not clearly lose, or for a change to the transfer rule itself.
 
 ## Milestone report
 
-A batch is several methods locked before any of their totals are read, then run and reported together, failures included. The report covers each method, what Gemini challenged, the screen result, the transfer-climb result where one was run, and the next step. The best of the batch is labelled as the best of that batch. Update `.cursor/context.md`, park rejected ideas in `.cursor/ideas.md`, and write `REPORT_STATE.json`.
+A batch is a pre-registered comparison, locked before its totals are read, then run and reported with the gates, failures included. Update `.cursor/context.md`, park rejected ideas in `.cursor/ideas.md`, and write `REPORT_STATE.json`.
 
 After a discrete sub-task, write `REPORT_STATE.json` at the repo root. If a script is still failing after 3 debug cycles, revert that attempt and append the error to `LOGS/error_state.md`.
 

@@ -1,18 +1,19 @@
 {
-  "updated": "2026-10-01",
-  "milestone": "stage-34-follow",
-  "status": "complete",
-  "summary": "Minutes was +118 on the 2025/26 transfer climb and -116 on 2024/25. Starter was +63 on the screen and was not checked. No winner.",
-  "screen": [
-    {"method": "agree_min", "delta": -44},
-    {"method": "starter", "delta": 63},
-    {"method": "minutes", "delta": 118},
-    {"method": "upside", "delta": -8}
-  ],
-  "check": {"method": "minutes", "season": "2024-25", "delta": -116},
+  "updated": "2026-10-07",
+  "milestone": "honest-pool",
+  "status": "gated",
+  "summary": "Unfilled official-xP gameweeks are excluded. score_xp still beats expected points, +0.0153 [+0.0130, +0.0175]. Against official xP on the three seasons with at least 20 filled gameweeks it is -0.0565 [-0.0680, -0.0442], and the interval stays below zero. 2025-26 has 7 filled gameweeks and is not pooled. The walk-forward coefficient on score_xp given official xP is -0.0245 [-0.0356, -0.0139] on 2022-23, 2023-24, and 2024-25. It does not survive. Stop improving the single-gameweek forecast. The decision layer is not built in this batch. Stages 14-34 are superseded. The clean holdout starts at gameweek 6, and a timestamped Gameweek 6 score file was written before the deadline.",
   "artifacts": [
-    "src/models/stage_34_follow.py",
-    "reports/stage_34_follow.md",
-    "data/processed/stage_34_follow.csv"
+    "reports/procedure_audit.md",
+    "reports/SUPERSEDED.md",
+    "reports/CURRENT.md",
+    "data/processed/player_gw_logscore.csv",
+    "data/processed/player_gw_slices.csv",
+    "data/processed/encompassing_coefficients.csv",
+    "data/processed/player_gw_xi_sanity.csv",
+    "data/processed/procedure_intervals.json",
+    "data/predictions/2026-27/gw06/20261007T070450Z.csv",
+    "data/live/HOLDOUT_FREEZE.json",
+    "experiments/protocol.json"
   ]
 }

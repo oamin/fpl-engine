@@ -1,0 +1,10 @@
+[
+  {"player_id": 28, "gw": 2, "tag": "ask", "doc_ids": [], "note": "Deal agreed to sign Martinez but contract not yet completed before the GW2 deadline"},
+  {"player_id": 140, "gw": 2, "tag": "ask", "doc_ids": [], "note": "Potential future transfer of a competitor raised, but Sanchez is neither transferred nor benched"},
+  {"player_id": 28, "gw": 3, "tag": "firm_starter", "doc_ids": ["bbc-como-2026-09-01"], "note": "Martinez started Chelsea's match against Brighton and is the regular starter"},
+  {"player_id": 140, "gw": 3, "tag": "transferred", "doc_ids": ["bbc-como-2026-09-01"], "note": "Sanchez joined Como on a season-long loan"},
+  {"player_id": 28, "gw": 4, "tag": "firm_starter", "doc_ids": ["bbc-como-2026-09-01"], "note": "Martinez started Chelsea's match against Brighton and is the regular starter"},
+  {"player_id": 140, "gw": 4, "tag": "transferred", "doc_ids": ["bbc-como-2026-09-01"], "note": "Sanchez joined Como on a season-long loan"},
+  {"player_id": 28, "gw": 5, "tag": "firm_starter", "doc_ids": ["bbc-como-2026-09-01"], "note": "Martinez started Chelsea's match against Brighton and is the regular starter"},
+  {"player_id": 140, "gw": 5, "tag": "transferred", "doc_ids": ["bbc-como-2026-09-01"], "note": "Sanchez joined Como on a season-long loan"}
+]

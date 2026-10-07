@@ -1,0 +1,11 @@
+entry_id,label,group,gw,chip,status,n_steps,model_xp,human_xp,raw_gap,gap_per,band,model_budget,model_cost,human_cost,shortfall,human_budget,human_cost_own,human_account,price_model,price_human,max_club_model,max_club_human,buy_pool_model,buy_pool_human,overlap,same_fifteen,points_model,points_human,spend_gkp_model,spend_gkp_human,spend_def_model,spend_def_human,spend_mid_model,spend_mid_human,spend_fwd_model,spend_fwd_human
+2076855,elevenify.com,veteran,3,wildcard,pool,3,,,,,,1000,995,1005,5,1000,1001.0,over,995,,3,,15,13,3,False,58.0,47.0,90,,260,,350,,295,
+9267,Cameron Scott,veteran,3,free_hit,pool,1,,,,,,1000,999,998,0,1000,,unpriced,1000,,3,,15,13,4,False,53.0,52.0,90,,265,,350,,295,
+31365,Ashley Marsh,veteran,3,wildcard,pool,3,,,,,,1000,999,1001,1,1000,993.0,ok,1000,,3,,15,13,2,False,53.0,44.0,90,,265,,350,,295,
+616,Mark Brookes,veteran,3,free_hit,pool,1,,,,,,1001,1000,1007,6,1001,,unpriced,1000,,3,,15,13,4,False,53.0,70.0,90,,265,,350,,295,
+616,Mark Brookes,veteran,5,wildcard,unreachable_money,3,181.03610733192426,168.03186861763035,13.004238714293905,4.334746238097968,far,997,996,1000,3,1000,,unpriced,998,1003.0,3,3.0,14,15,2,False,48.0,64.0,100,90.0,259,252.0,345,389.0,294,272.0
+4109079,Will Morrison,veteran,3,free_hit,pool,1,,,,,,1002,1000,1000,0,1001,1000.0,ok,1000,,3,,15,13,3,False,53.0,57.0,90,,265,,350,,295,
+32058,Thomas O'Brien,veteran,3,wildcard,pool,3,,,,,,1001,1000,1004,3,1001,1002.0,over,1000,,3,,15,12,3,False,53.0,40.0,90,,265,,350,,295,
+169164,Filip Stripaj,rank,5,free_hit,pool,1,,,,,,1001,1000,1003,2,1004,1003.0,ok,1004,,3,,14,13,5,False,58.0,88.0,95,,270,,345,,294,
+217044,daniel bowes,rank,5,free_hit,pool,1,,,,,,1001,1000,994,0,998,,unpriced,1004,,3,,14,11,3,False,58.0,44.0,95,,270,,345,,294,
+534464,Sion Jones,rank,3,wildcard,pool,3,,,,,,1000,1000,998,0,1001,998.0,ok,1000,,3,,15,14,3,False,53.0,60.0,90,,265,,350,,295,

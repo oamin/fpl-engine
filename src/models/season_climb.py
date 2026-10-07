@@ -1,5 +1,8 @@
 """Stage 14 — Stripped season climb (no budget / chips / transfer state).
 
+Running this module does not produce a reportable result. The reportable
+path is ``src.eval``.
+
 Each GW: pick a position-legal XI from the full player pool by a score,
 bank *actual* FPL points, plot cumulative total vs baselines.
 
@@ -32,6 +35,7 @@ from src.models.xp_engine import (
     add_player_priors,
     add_team_prior_score,
 )
+from src.rules.fpl_2026 import OFFICIAL_FORMATIONS
 
 ROOT = Path(__file__).resolve().parents[2]
 PROCESSED = ROOT / "data" / "processed"
@@ -39,16 +43,10 @@ PLOTS = ROOT / "data" / "plots"
 REPORTS = ROOT / "reports"
 
 MIN_HISTORY = 3
-FORMATIONS = [
-    # (def, mid, fwd) — GKP always 1
-    (3, 4, 3),
-    (3, 5, 2),
-    (4, 4, 2),
-    (4, 3, 3),
-    (4, 5, 1),
-    (5, 3, 2),
-    (5, 4, 1),
-]
+# Official shapes, including 5-2-3. Tie-break is strict greater, so the first
+# equal shape in this list wins. Order is defenders 3–5, midfielders 2–5,
+# forwards 1–3, summing to 10.
+FORMATIONS = list(OFFICIAL_FORMATIONS)
 
 
 def build_scores() -> pd.DataFrame:
@@ -71,22 +69,42 @@ def build_scores() -> pd.DataFrame:
     return feat
 
 
-def pick_xi(gw_df: pd.DataFrame, score_col: str) -> tuple[pd.DataFrame, tuple[int, int, int]]:
-    """Pick best formation XI by score_col. Returns selected rows + formation."""
+def pick_xi(
+    gw_df: pd.DataFrame,
+    score_col: str,
+    formations: list[tuple[int, int, int]] | None = None,
+    priority_col: str | None = None,
+) -> tuple[pd.DataFrame, tuple[int, int, int]]:
+    """Pick best formation XI by score_col. Returns selected rows + formation.
+
+    The default list is ``OFFICIAL_FORMATIONS``, including 5-2-3.
+
+    ``priority_col`` breaks a tie toward a player whose club has a fixture.
+    It does not change the score that is summed.
+    """
+    forms = FORMATIONS if formations is None else formations
+    frame = gw_df
+    rank_col = score_col
+    if priority_col and priority_col in gw_df.columns:
+        frame = gw_df.copy()
+        base = pd.to_numeric(frame[score_col], errors="coerce").fillna(-1e6)
+        pri = pd.to_numeric(frame[priority_col], errors="coerce").fillna(0.0)
+        frame["_rank"] = base + 1e-4 * pri
+        rank_col = "_rank"
     best_pts_proxy = -1.0
     best_sel: pd.DataFrame | None = None
-    best_form = FORMATIONS[0]
+    best_form = forms[0]
 
-    for n_def, n_mid, n_fwd in FORMATIONS:
-        gkp = gw_df.loc[gw_df["position"] == "GKP"].nlargest(1, score_col)
-        deff = gw_df.loc[gw_df["position"] == "DEF"].nlargest(n_def, score_col)
-        mid = gw_df.loc[gw_df["position"] == "MID"].nlargest(n_mid, score_col)
-        fwd = gw_df.loc[gw_df["position"] == "FWD"].nlargest(n_fwd, score_col)
+    for n_def, n_mid, n_fwd in forms:
+        gkp = frame.loc[frame["position"] == "GKP"].nlargest(1, rank_col)
+        deff = frame.loc[frame["position"] == "DEF"].nlargest(n_def, rank_col)
+        mid = frame.loc[frame["position"] == "MID"].nlargest(n_mid, rank_col)
+        fwd = frame.loc[frame["position"] == "FWD"].nlargest(n_fwd, rank_col)
         if len(gkp) < 1 or len(deff) < n_def or len(mid) < n_mid or len(fwd) < n_fwd:
             continue
         sel = pd.concat([gkp, deff, mid, fwd], axis=0)
         # Proxy for selection quality = sum of scores (not actual pts — no leakage)
-        proxy = float(sel[score_col].sum())
+        proxy = float(pd.to_numeric(sel[rank_col], errors="coerce").fillna(0.0).sum())
         if proxy > best_pts_proxy:
             best_pts_proxy = proxy
             best_sel = sel
@@ -204,7 +222,8 @@ def bank_squad_gw(
     Captain / VC chosen on the *intended* XI (by ``score_col``) before autosubs.
     If captain played 0 minutes, VC receives the double (FPL rule).
     """
-    xi, form = pick_xi(squad_df, score_col)
+    priority = "xi_priority" if "xi_priority" in squad_df.columns else None
+    xi, form = pick_xi(squad_df, score_col, priority_col=priority)
     xi = xi.copy()
     score = pd.to_numeric(xi[score_col], errors="coerce")
     # Captain = best μ; VC = second-best μ on intended XI
@@ -263,6 +282,7 @@ def bank_squad_gw(
         "sub_points": points_from_subs(xi, intended_ids, points_col=points_col),
         "captain_id": cap_id,
         "vice_id": vc_id,
+        "intended_ids": sorted(intended_ids),
     }
 
 

@@ -1,0 +1,88 @@
+entry_id,label,group,gw,residual,tag,points,inversion,position,model_xp,human_xp,model_points,human_points
+2076855,elevenify.com,veteran,1,0.0,shape,1.0,False,DEF,4.703441660390367,,1.0,
+2076855,elevenify.com,veteran,1,0.0,shape,-2.0,False,FWD,,2.868851381036525,,2.0
+2076855,elevenify.com,veteran,1,0.0,ranked_ahead,5.0,False,GKP,3.6071662963873328,3.5507345668268733,6.0,1.0
+2076855,elevenify.com,veteran,2,0.0,shape,8.0,False,DEF,4.777696350580603,,8.0,
+2076855,elevenify.com,veteran,2,0.0,shape,-8.0,False,FWD,,3.8868036399106574,,8.0
+2076855,elevenify.com,veteran,2,0.0,shape,-8.0,False,FWD,,3.557812611772864,,8.0
+2076855,elevenify.com,veteran,2,0.0,shape,3.0,False,MID,4.647177792829108,,3.0,
+2076855,elevenify.com,veteran,3,0.0,shape,-1.0,False,FWD,,2.9354102663499595,,1.0
+2076855,elevenify.com,veteran,5,0.0,shape,6.0,False,GKP,3.257669173355076,,6.0,
+9267,Cameron Scott,veteran,1,0.0,shape,1.0,False,DEF,3.8145296898968346,,1.0,
+9267,Cameron Scott,veteran,1,0.0,shape,-2.0,False,MID,,3.5446570176233125,,2.0
+9267,Cameron Scott,veteran,2,0.0,shape,12.0,False,DEF,4.150526366047474,,12.0,
+9267,Cameron Scott,veteran,2,0.0,shape,-8.0,False,FWD,,3.8868036399106574,,8.0
+31365,Ashley Marsh,veteran,1,0.0,ranked_ahead,5.0,False,GKP,3.6071662963873328,3.5507345668268733,6.0,1.0
+31365,Ashley Marsh,veteran,1,0.0,ranked_ahead,0.0,False,MID,4.443619993508761,3.5446570176233125,2.0,2.0
+31365,Ashley Marsh,veteran,3,0.0,shape,2.0,False,DEF,4.263231943234743,,2.0,
+616,Mark Brookes,veteran,1,0.0,shape,1.0,False,DEF,3.8145296898968346,,1.0,
+616,Mark Brookes,veteran,1,0.0,shape,-2.0,False,FWD,,2.868851381036525,,2.0
+616,Mark Brookes,veteran,2,0.0,shape,1.0,False,DEF,4.630411925099347,,1.0,
+616,Mark Brookes,veteran,2,0.0,shape,-8.0,False,FWD,,3.557812611772864,,8.0
+616,Mark Brookes,veteran,3,0.0,shape,3.0,False,GKP,3.6070515810708224,,3.0,
+616,Mark Brookes,veteran,5,0.0,shape,6.0,False,DEF,4.957890814576457,,6.0,
+4109079,Will Morrison,veteran,1,0.0,shape,-3.0,False,DEF,,0.0,,3.0
+4109079,Will Morrison,veteran,1,0.0,shape,-2.0,False,FWD,,2.868851381036525,,2.0
+4109079,Will Morrison,veteran,1,0.0,shape,2.0,False,MID,3.662058814468649,,2.0,
+4109079,Will Morrison,veteran,2,0.0,ranked_ahead,9.0,False,DEF,4.538134499508069,3.3118536429300587,11.0,2.0
+4109079,Will Morrison,veteran,2,0.0,shape,-8.0,False,FWD,,3.557812611772864,,8.0
+4109079,Will Morrison,veteran,2,0.0,ranked_ahead,-4.0,True,GKP,3.8449328758230026,3.7546122630175316,2.0,6.0
+4109079,Will Morrison,veteran,4,0.0,shape,0.0,False,DEF,4.356675853644903,,0.0,
+4109079,Will Morrison,veteran,4,0.0,shape,-17.0,False,MID,,3.907855604316777,,17.0
+4109079,Will Morrison,veteran,5,0.0,shape,-14.0,False,MID,,3.049567289279748,,14.0
+2116184,Paul Mitchell,veteran,3,0.0,shape,-1.0,False,FWD,,3.4823021351748427,,1.0
+2116184,Paul Mitchell,veteran,4,0.0,ranked_ahead,-13.0,True,MID,4.496651888257588,3.907855604316777,4.0,17.0
+2116184,Paul Mitchell,veteran,5,0.0,autosub,9.0,False,DEF,3.6804526441735312,,9.0,
+2116184,Paul Mitchell,veteran,5,0.0,shape,-7.0,False,DEF,,3.4576424837714503,,7.0
+2116184,Paul Mitchell,veteran,5,0.0,ranked_ahead,-1.0,True,GKP,3.6933258084870486,3.579465575365962,1.0,2.0
+2116184,Paul Mitchell,veteran,5,0.0,shape,-14.0,False,MID,,3.049567289279748,,14.0
+5874076,Jess Bernstein,rank,1,0.0,shape,0.0,False,DEF,4.449738082494093,,0.0,
+5874076,Jess Bernstein,rank,1,0.0,shape,-2.0,False,MID,,3.662058814468649,,2.0
+5874076,Jess Bernstein,rank,1,0.0,shape,-8.0,False,MID,,3.633487309019104,,8.0
+5874076,Jess Bernstein,rank,2,0.0,shape,1.0,False,DEF,4.131420749800219,,1.0,
+5874076,Jess Bernstein,rank,2,0.0,shape,-5.0,False,MID,,3.948161297876062,,5.0
+5874076,Jess Bernstein,rank,2,0.0,shape,-13.0,False,MID,,3.085712730687831,,13.0
+5874076,Jess Bernstein,rank,3,-4.0,shape,-1.0,False,FWD,,2.9354102663499595,,1.0
+5874076,Jess Bernstein,rank,4,0.0,shape,-3.0,False,MID,,4.015124465124597,,3.0
+5874076,Jess Bernstein,rank,4,0.0,shape,-17.0,False,MID,,3.907855604316777,,17.0
+5874076,Jess Bernstein,rank,5,0.0,shape,-14.0,False,MID,,3.049567289279748,,14.0
+3669095,Adam Whitting,rank,1,0.0,shape,-1.0,False,FWD,,3.6840459140910227,,1.0
+3669095,Adam Whitting,rank,1,0.0,shape,-11.0,False,MID,,3.676492049162947,,11.0
+3669095,Adam Whitting,rank,2,0.0,shape,-6.0,False,DEF,,2.3291533838240106,,6.0
+3669095,Adam Whitting,rank,3,0.0,shape,-1.0,False,FWD,,3.4823021351748427,,1.0
+3669095,Adam Whitting,rank,3,0.0,shape,-1.0,False,FWD,,2.9354102663499595,,1.0
+3669095,Adam Whitting,rank,3,0.0,ranked_ahead,-3.0,True,GKP,3.6717589610412977,3.476626731506908,3.0,6.0
+3669095,Adam Whitting,rank,3,0.0,shape,1.0,False,MID,3.692797835630784,,1.0,
+3669095,Adam Whitting,rank,5,0.0,autosub,2.0,False,DEF,3.453225258699093,,2.0,
+3669095,Adam Whitting,rank,5,0.0,shape,-14.0,False,MID,,3.049567289279748,,14.0
+169164,Filip Stripaj,rank,1,0.0,shape,-3.0,False,DEF,,2.8051758198285532,,3.0
+169164,Filip Stripaj,rank,1,0.0,shape,2.0,False,FWD,3.1468896609713917,,2.0,
+169164,Filip Stripaj,rank,2,0.0,ranked_ahead,1.0,False,GKP,3.510654657180248,3.2768354266009343,1.0,0.0
+169164,Filip Stripaj,rank,2,0.0,ranked_ahead,-9.0,True,MID,5.578485424761035,3.085712730687831,4.0,13.0
+169164,Filip Stripaj,rank,3,0.0,shape,4.0,False,DEF,3.495047351874468,,4.0,
+169164,Filip Stripaj,rank,3,0.0,shape,-1.0,False,FWD,,2.9354102663499595,,1.0
+169164,Filip Stripaj,rank,4,0.0,shape,-11.0,False,DEF,,3.7232013325247446,,11.0
+169164,Filip Stripaj,rank,4,0.0,shape,4.0,False,MID,4.496651888257588,,4.0,
+217044,daniel bowes,rank,1,0.0,shape,1.0,False,DEF,4.156381919245258,,1.0,
+217044,daniel bowes,rank,1,0.0,shape,-6.0,False,MID,,0.0,,6.0
+217044,daniel bowes,rank,2,0.0,ranked_ahead,1.0,False,DEF,4.108904138801146,3.4383186482404273,2.0,1.0
+217044,daniel bowes,rank,3,0.0,shape,-1.0,False,FWD,,2.9354102663499595,,1.0
+217044,daniel bowes,rank,3,0.0,shape,3.0,False,GKP,3.6070515810708224,,3.0,
+534464,Sion Jones,rank,1,0.0,ranked_ahead,-3.0,True,DEF,3.6012029744888836,2.986624680765913,6.0,9.0
+534464,Sion Jones,rank,1,0.0,shape,-1.0,False,FWD,,0.0,,1.0
+534464,Sion Jones,rank,2,0.0,shape,-4.0,False,DEF,,3.089347180244755,,4.0
+534464,Sion Jones,rank,3,0.0,ranked_ahead,1.0,False,GKP,3.6070515810708224,3.564368818744145,3.0,2.0
+3503484,Viniii Denie,rank,1,0.0,ranked_ahead,-5.0,True,MID,4.399943770152977,3.633487309019104,3.0,8.0
+3503484,Viniii Denie,rank,2,-4.0,ranked_ahead,0.0,False,DEF,3.6016678285391515,3.4320984162400574,2.0,2.0
+3503484,Viniii Denie,rank,2,-4.0,ranked_ahead,-1.0,True,MID,3.9230296156814886,3.744735049123329,1.0,2.0
+3503484,Viniii Denie,rank,3,0.0,autosub,4.0,False,DEF,2.992638806298113,,4.0,
+3503484,Viniii Denie,rank,3,0.0,shape,3.0,False,GKP,3.6717589610412977,,3.0,
+3503484,Viniii Denie,rank,4,0.0,shape,7.0,False,DEF,3.7960984494181758,,7.0,
+3503484,Viniii Denie,rank,5,0.0,shape,-4.0,False,DEF,,3.8739478365123188,,4.0
+1585157,Tom Anderson,rank,1,0.0,shape,1.0,False,DEF,3.8145296898968346,,1.0,
+1585157,Tom Anderson,rank,1,0.0,ranked_ahead,0.0,False,MID,4.121373362362457,3.676492049162947,11.0,11.0
+1585157,Tom Anderson,rank,1,0.0,shape,-2.0,False,MID,,3.662058814468649,,2.0
+1585157,Tom Anderson,rank,4,0.0,shape,-3.0,False,MID,,4.015124465124597,,3.0
+1585157,Tom Anderson,rank,4,0.0,shape,-17.0,False,MID,,3.907855604316777,,17.0
+1585157,Tom Anderson,rank,5,0.0,shape,-14.0,False,MID,,3.049567289279748,,14.0
+2632584,ojaminFC,reference,1,0.0,shape,-2.0,False,DEF,,0.0,,2.0

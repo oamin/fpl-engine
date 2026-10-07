@@ -1,18 +1,265 @@
 # Candidate hypotheses
 
-Cursor and Gemini choose the next one. The PI is not asked to pick.
+Cursor chooses the next pre-registered comparison. The PI is not asked to pick. A result needs the as-of audit and paired intervals on all four closed seasons. One comparison at a time.
+
+## Procedure, locked 2026-10-07
+
+The +34 season-total bar is retired. Stages 14–34, and the later climbs on that pool, are superseded. See `reports/SUPERSEDED.md`. Sharpe, ownership, and churn stay parked. Pull requests 53–56 stay open as finished counts. They are not extended, and a chip simulator stays deferred. Stage 13 (xP trailed expected points at horizon 8) and stage 18 (ridge tied xP under budget, −2) stay set aside.
+
+The pre-registered encompassing test did not survive. Walk-forward, the coefficient on `score_xp` given official xP is −0.0245 [−0.0356, −0.0139] on 2022-23, 2023-24, and 2024-25, and the interval stays below zero. 2025-26 is the tuning season and was not in that pool. Stop improving the single-gameweek forecast. The next batch is the decision layer: multi-week transfer planning, hit discipline, chip timing, and captaincy. That layer is not built in this batch. Official xP is the forecast input until a later pre-registered test says otherwise. The clean holdout is 2026/27 from gameweek 6. See `reports/procedure_audit.md`.
 
 ## Objective functions (from the project outline)
 
 1. **Variance-aware utility.** `u = score_xp / (σ + 1)` is parked (stage 28, −253). `score_xp − 0.25σ` as the player score lost the fast screen (stage 29). The same penalty only inside transfer value scored +90 on 2025/26, then +79, +8, and −56 on 2023/24, 2024/25, and 2022/23. Exactly one prior season cleared +34, so the result is inconclusive and is not the gate. A swap penalty of 2.5 scored −13.
 2. **Ownership-adjusted yield.** Deadline `selected` gives `ow = 15 * selected / sum(selected)`. As a player score it lost the fast XI by 124 (stage 30). Inside transfer value only, weight 0.5, it lost the 2025/26 free-transfer climb by 28 with more blank starters (stage 32). Not the transfer rule.
-3. **Transfer-churn penalty.** Stage 31 locked penalties 0, 2, and 3 against the default 1.0. Zero penalty was +90 then −55 on the holdout, with more hits and more blank XI slots. Penalty 3 lost 81 on the screen. Penalty 2 cleared the screen by 46 and was not sent to the holdout, because only the best passer was. The default penalty of 1.0 stays. Do not hold out penalty 2 after that result.
+3. **Transfer-churn penalty.** Stage 31 locked penalties 0, 2, and 3 against the default 1.0. Zero penalty was +90 then −55 on the holdout, with more hits and more blank XI slots. Penalty 3 lost 81 on the screen. Penalty 2 was +46 on 2025/26 and was then run on the three earlier seasons: −128, −79, and −156, with more blank starters after substitutes in each. The default penalty of 1.0 stays. See `reports/stage_37_penalty2.md`.
 4. **Bench weight and formation.** Score the bench (and 5-2-3) instead of the XI only, aimed at Bench Boost weeks. Blocked on a chip-aware simulator.
 
 Stage 34 is complete. agree_min −44 and upside −8 on the 2025/26 transfer climb. Minutes was +118 then −116 on 2024/25, with 14 hits against 9. Starter was +63 on the screen and was not checked, because only the best passer went to 2024/25. Do not check starter after that result. No winner.
 
+## Penalty takers
+
+The gameweek sheets now carry Understat penalty shots (`penalties_taken`, `penalties_scored`, `penalty_xg`). That is a post-match fact. It is not a designated-taker list from before the deadline, and it is not wired into `score_xp`.
+
+Gemini reviewed a split on 2026-10-02 ([penalty split](bc-721d1cc3-4c05-586a-a1e8-c24f0aecfff3)) and parked it. No fast-XI screen. `xp_goals` stays `share_xG × λ`. Vaastav `expected_goals` already includes penalty xG, so a second penalty term counts the same kick twice. Subtracting Understat `penalty_xg` (~0.76) from Opta xG is unsafe: in 2022/23, 37 of 97 taker rows have Opta xG below that penalty xG. A team awards about 0.11–0.14 penalties per match, and an established taker's kicks are already inside the rolling share. The 35% goal residual is conversion variance. A new taker is still unknown until after the first kick.
+
+## Scheduled minutes
+
+Parked after four seasons, not only because 2025/26 was +9. Free-transfer gaps, GW5–38: 2025/26 +9, 2022/23 −78, 2023/24 +146, 2024/25 −44. Two seasons ahead, two behind, worst loss 78. The fast XI never lost by more than 4 and was ahead in the three earlier seasons, so the ranking among players who played is quiet and the squad path is not. About 15% of eligible rows move by more than 0.5. Do not replace `score_xp`. Do not put the column in `experiments/matrix.json`. The +34 bar stays the bar for a claim that a new score should replace the published one. See `reports/stage_36_sched_stability.md`.
+
+## Opening-price horizon
+
+Coded 2026-10-02 after Gemini locked the split ([horizon prices](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). `xp_open_odds_h3` keeps the published current-week score and prices later horizon weeks from opening 1X2. The Gameweek 1–5 diagnostic held João Pedro and scored 331 against the published 327. That window is not the test. The remaining test is a full historical free-transfer season. Do not retune γ, the hold margin, or the share on these five weeks.
+
+## Last-season share versus the book
+
+Parked 2026-10-02 after Gemini reviewed it ([share versus book](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Do not shrink the 2025/26 shot share to close the Gameweek 1–5 gap against ojaminFC, and do not add a book term on top of `share × λ`. The team rate and the clean-sheet proxy already come from 1X2 and over/under. There is no player goal or clean-sheet price in that window, so the book cannot replace the share. A forced decay, only if later required, uses a fixed prior of 5 matches and replaces the share. It is not an extra term, and the weight is not fit on these five weeks. No fast XI screen: the player-prop score does not exist.
+
+## Player status
+
+Parked 2026-10-03 after Gemini reviewed the files ([availability leakage](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). An injury known before the deadline is a valid reason to leave a player out. The cached seasons cannot supply that fact.
+
+`merged_gw` has minutes, cards, and `xP`. It has no status, chance of playing, or news. A zero-minute row in the same week is the match result, so it cannot be the label. A lagged zero still misses the first week of a new injury, because that player's previous week was an appearance, and it treats a rotation rest as an injury.
+
+`players_raw_{season}.csv` is one bootstrap row per player, scraped at the end of the season. In 2023/24 De Bruyne has an 18-week club-played hole from GW2 to GW20 and the season-end row is available, with empty news. The other direction is the same file: 46 of the 74 players marked injured at the end of 2023/24 had already played at least 400 minutes in GW1–15, including Cash, Ederson, and Dunk. Copying that flag onto the autumn benches them for an injury that had not happened.
+
+A red card is on the sheet, and the player is usually on 0 minutes in the next club week that has a row (22 of 28, 53 of 55, 40 of 49, 38 of 43). That tag stays parked. A domestic cup can absorb the ban, an appeal can clear it before the next deadline, and the sheet does not say whether the ban is one match or three. There are 30 to 58 reds in a season.
+
+A later live season can store status only as an append-only bootstrap snapshot taken before that gameweek's deadline, keeping status, both chance fields, news, `news_added`, and the capture time. The live snapshot today overwrites one file. Do not backfill a past week from a later dump. Nothing was coded.
+
+## XI and bench selection
+
+Parked 2026-10-03 after Gemini reviewed the stream ([lineup stream](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Nothing in the batch is worth a climb. `score_xp`, the transfer penalty, and the published formation list stay as they are.
+
+The weekly search scores the XI only. `pick_xi` then takes, for each shape, the top score in each position and keeps the shape with the highest sum. For an additive score that is the best XI. The other four are the bench: the goalkeeper, then the outfield by the same score. An automatic substitute already skips a player who did not play and a player who would break the formation, and that skip does not use the player up. The captain and the vice-captain are the top two scores. The vice-captain is paid only when the captain records zero minutes.
+
+- Bench order by who can cover the lowest `p_play` starter. Killed. The autosub walk already skips an illegal first substitute. Putting a cheap defender first hands a midfield blank to that defender.
+- Swapping a starter out for a cover player when the score given up is under an epsilon. Killed. It spends points every week on a blank the appearance-only minutes prior does not see coming.
+- A vice-captain minutes bar. Killed. It does not touch the weeks where the captain plays and someone else hauls, and on a real captain blank it can hand the double to a low score.
+- Adding a fraction of the first substitute into the transfer value. Killed. The weight is unfitted, and it spends budget and free transfers on the bench.
+- A cap of two starters per club, lifted on a double. Killed. It benches a third attacker from a strong side and leaves that fee on the bench.
+- Adding 5-2-3 to the published formation list. Closed. The count on the eligible pool, Gameweeks 5–38, is 0 wins in 135 weeks. The list stays as it is. See `reports/stage_44_search_counts.md`.
+
+## Forward plan
+
+Locked 2026-10-03 with Gemini after an outside review of the gameweek note ([forward plan](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). The note understated `score_xp`. The formula already sums appearance, goals, assists, clean sheets, defensive contributions, saves, a bonus proxy, and two deductions. The review's horizon point stands. See `reports/forward_plan.md`.
+
+The second review of that plan is folded in. Calibration now records MAE, RMSE, Pearson, Spearman, and predicted-score deciles. The leave-alone rule is still mean error inside 0.10 and a Spearman move under 0.01. The later bench objective is the chance a starter blanks, times the chance the bench player plays, times expected points if he plays. That is parked. It is not a minutes floor, and the opener stays the sum of fifteen.
+
+The Gameweek 1–5 split was 313 against 350 while a missing score was filled with the price. After that fill became 0, the same path is 336 against 350. The remaining −14 is the final elevens +1, captain extra −5, their Triple Captain −2, and a −8 hit in Gameweek 2. Gemini kept the fill ([score fill](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). A past-only score for an owned player below the history gate, if one is added later, belongs in the feature table, not inside the fill. See `reports/stage_40_gw15_gap.md`.
+
+0A is done on 2025/26, Gameweeks 5–38, 7,569 buy-pool rows. Bias +0.13, MAE 2.29, Spearman 0.23. Clean sheets are high by 0.23. Goals are the largest rank term. Defensive contributions on this season stay. The bonus proxy and the card proxy meet the leave-alone rule. See `reports/stage_39_calibration.md`. Subtracting defensive contributions before 2025/26 still needs its own table.
+
+The opening horizon is the published three-week value, approved after four seasons. A double is still one fixture on that path. An owned player with one or two prior appearances keeps a past-only score capped at 6. Gemini kept that guard after Gameweeks 1–5 scored 333 with it and 366 without it ([early score](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). The zero-score sale is not rewarded by those five weeks.
+
+Both fixtures scored 1799 against 1734 on 2023/24. The holdout misses the same rule: 2022/23 −78, 2024/25 +33 with the other weeks −4, 2025/26 −65. Gemini kept the park ([double fixtures](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). The published calendar stays one fixture. A later double formula needs its own rule, locked before the totals are read. 5-2-3 wins no week on the eligible pool across four seasons. The unsearched cross-position pairs are worth 0.06 a week on 2025/26. Both counts are closed.
+
+5-2-3 is counted, not added to the published list, and the count is closed at zero wins. The cross-position pairs are closed at 0.06 a week. Player goal and assist prices are not on disk, so that experiment is parked and no odds call is made. The penalty of 1.0 and the hold margin of 1.25 stay frozen. A later grid, if one is run, walks forward. It does not crown a one-season winner.
+
+Seven score repairs were locked and screened on the fast XI, Gameweeks 5–38, four seasons ([score repairs](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). All are parked. `appear_linear` is the best of that batch and is still behind in 2022/23 by 29, so it does not take a free-transfer climb. Removing clean sheets is killed. Halving them, halving the goals-conceded deduction, and the defender/forward shift of 0.25 all change sign across seasons. A goalkeeper goal at 6 instead of 10 moves the fast XI by about a point. See `reports/stage_45_score_repair.md`.
+
+`attack_minutes` was dropped on 2026-10-04 before any code ([transfer gap](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). It would have added a full clean sheet and a full defensive-contribution expectation for a midfielder or forward when those two were smaller than his goals and assists, leaving appearance as it is. A clean sheet needs 60 minutes. Scaling those awards up because the shots are large has no basis in the scoring rules, and the piece is too small to close the Cherki gap, which is mostly appearance and the team rate. The buy pool would have given a full clean sheet to players with 45 to 60 expected minutes. Before 2025/26 defensive contributions are already zero, so the arm would only have raised midfielder clean sheets. It was not put on the fast XI. `appear_linear` remains parked for the same sale: the 60-minute gate stays shut, and at 31 minutes that repair lowers appearance. `score_xp` stays the published score.
+
+The Gameweek 1–5 transfer count against the locked managers was kept ([transfer gap](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Model and managers are both bought ahead, so the pre-registered systematic reading does not fire. See `reports/stage_46_transfer_gap.md`.
+
+Residual transfers in were dropped on 2026-10-04 before any code ([crowd flow](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). The locked formula would have added, inside each gameweek and only on the eligible pool, the gap between the percentile of `log1p(transfers_in)` and the percentile of `score_xp`, with the weight fixed at 1.0. A player everyone already owns has only middling transfers in and a score near the top, so the residual takes about half a point off him. The positive side is last week's scorer: a low score and a flood of transfers in adds up to a point. Residualizing last week's points as well leaves noise. The players a press conference might reveal, those below 45 expected minutes or with fewer than three prior appearances, are outside the eleven's pool. Raw net transfers already lost 104 (stage 23). Ownership as a penalty already lost the fast eleven by 124, and the same weight inside transfer value lost the 2025/26 climb by 28. A price change is that same flow a day later. No screen, no column, and no grid on the weight. `score_xp` stays the published score.
+
+The context check was run on 2026-10-04 and parked ([crowd context](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Flow is `log1p(transfers_in) - log1p(transfers_out)`, scaled within the week. Ownership is the share of managers, in units of 10 percentage points, centered on the training mean. Points were fit on the other three of 2022/23–2025/26 and read on the left-out season, Gameweeks 5–38, eligible rows only. The crowd terms lowered mean absolute error in every season, by 0.012, 0.012, 0.003, and 0.015. The mean is 0.011, short of the locked 0.02. The flow-times-ownership product raised the error in every season. The in-sample flow slope is about 0.14 to 0.21 points per standard deviation, and the ownership slope jumps from 0.08 to 0.25 depending on whether 2022/23 is in the fit. Those slopes are not written onto `score_xp`. See `reports/stage_47_crowd_context.md`.
+
+The close-call count was run on 2026-10-04 and closed ([crowd calls](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Inside one position, a flip is a player within 0.25 of the `score_xp` leader whom the stage 47 slopes strictly prefer. The crowd side scored more on 57%, 43%, 43%, and 50% of decisive flips. The mean gap was +1.13, −0.54, +0.34, and −1.23. The locked bars were 60%, a mean gap of at least 0.20, and 0.03 per slot-week, in every season. Gameweek 7 of 2022/23 is absent, so that season has 132 slot-weeks. Goalkeepers are about half of the flips. A forward or midfield split was not opened after the totals. No further transfer-flow or ownership variant. See `reports/stage_48_crowd_calls.md`.
+
+The half-season chip plan was locked on 2026-10-04 ([half plan](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Phase 1, `plan_half`, is coded and kept. A schedule values the remaining chips through Gameweek 19 or 38 with `score_xp` left as it is. Bench Boost may fall on the best ordinary week still in the half. Wildcard clears 16 on the half-season gap between the rebuilt eleven and the held eleven, not on one week and not on the bench. Phases 2 and 3 pass that Bench Boost week into the transfer search, and Gemini kept the term. The four players left out are scored on that week alone, discounted by the same γ the eleven already uses, and the decision-week bench stands in when the chip is past the three-week horizon. The default omits the week. There is no cash term that sells the bench for its own sake. The crowd fifteens now have a side report that solves the plan at each deadline (`reports/half_plan_scores.md`). The published climb still passes no week. A double stays one fixture. See `reports/half_plan.md`.
+
+Hall-of-fame Gameweek 1 squads for 2022/23–2025/26 are not in a public archive. The substitute starting points are four crowd fifteens per season, built on 2026-10-04 from Gameweek 1 ownership only ([crowd openings](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Template is the highest-owned legal fifteen. Premium is the dearest fifteen in that same pool. Next and third are the two later waves, and they share no players with the template or with each other. Points are not used to pick them. See `reports/crowd_openings.md`.
+
+The same fifteens were held and climbed on 2026-10-04 ([crowd opening scores](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). The chip map was empty and `score_xp` was unchanged. Gemini kept a climb that finishes below its hold, the voided 2025/26 template gap, and the large 2024/25 third gap. The best climb is inside the season: template, template, template, then Next. See `reports/crowd_opening_scores.md`.
+
+The sale margins on those four leading climbs were read on 2026-10-04 ([sale margins](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). The call is inconclusive. The 2022/23 second-half median was 4.47, under the locked 5 and over the locked 2.5. One of 16 sales in the half that gave back 66 points was under 2.5, against 4 of 13 in the half that added 197. A tighter hold is not the next test. The other twelve squads stay unread. See `reports/crowd_sale_margins.md`.
+
+The chip side report was run on 2026-10-04 and kept ([chip scores](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Twelve climbs, three seasons, four squads. 2024/25 stays out. The baseline is the stored empty-chip climb, and that file was left as it was. Every squad wildcards in Gameweek 4, the first week a player has three prior appearances. 2022/23 loses on every squad, best lift Third at −40. 2023/24 best lift is Third at +128, and Template, Premium, and Next share one chip calendar with lifts −15, +100, and −216. 2025/26 gains on every squad, best lift Template at +199, highest chip total Premium at 2214, and the four hit counts are 0. Free Hit is played once, Gameweek 30 on the 2023/24 Third squad. See `reports/half_plan_scores.md`. The 2025/26 top-100 archive is the next descriptive benchmark. It was not read here, and it is not a sample to fit.
+
+The chip audit was run on 2026-10-05 and kept ([chip audit](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). The replay matched the stored chip file. Ten of twelve Gameweek 4 wildcards clear 16 on the priced steps, and the tail is still about three quarters of the printed gap. The chip week is positive on every climb. In 2022/23 the weeks with no chip are the whole loss. All eight second-half wildcards in 2023/24 and 2025/26 miss 16 on the priced steps. Hits after the wildcard are not the drag. The live hurdle now uses that priced sum. The margins stay 12 and 16. See `reports/chip_audit.md` and `reports/wildcard_priced.md`.
+
+## Live week, not this pass
+
+The live 1X2 trial was run on 2026-10-05 after Gemini kept the source rule ([live lines](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). One Odds API request, `us` only, `h2h` and `totals`, cost 2 credits. Gameweeks 6 and 7 are on `data/live/gw_lines.csv`, ten matches each. Four matches have no 2.5 total and those cells are blank. The scorer calls that same one-match formula. Gemini then kept the minutes writer ([minutes rule](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)): the owned fifteen plus every flagged player, and no file if the model asks or gives minutes to someone who cannot play. One completion ([minutes call](bc-cd566656-2e5c-52c5-ab2a-9f385d1fb2f0)) on the 2 Oct snapshot passed for 227 players. The scorer then read that sheet and the locked sum played Wildcard. Gemini refused to call it advice ([wildcard arithmetic](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)): Gameweeks 8–19 repeat Gameweek 7, and the hurdle of 16 adds those copies. The two-path note then named the squads ([two paths](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). The rebuild leads the free transfer by 10.55 and 2.75 on the two priced weeks. The hold path sells van Ewijk and buys Hall. See `reports/live_deadline_gw6.md` and `reports/live_whatif_gw6.md`.
+
+The reset to his own squad was run on 2026-10-05 and kept ([reset gap](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Each week starts from the fifteen he held, and the model's buys are thrown away. The sum is −18, with two level weeks. The model did not beat these five decisions. The transfer piece sums to 0, and the gap is captaincy, the lineup, and a Gameweek 1 hit. The rule stays. A retune from these five weeks is not the next batch. See `reports/reset_gap_gw15.md`.
+
+The free wallet on that same reset was run on 2026-10-05 and kept ([free wallet](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). The chip is chosen on the priced horizon only. Gameweek 1 cannot spend the wildcard outlook of about 38. Triple Captain lands in Gameweek 3 and Bench Boost in Gameweek 4. The wallet scores 347 against 350, which is 15 ahead of the mirrored 332, with two weeks ahead. The wallet did not beat these five decisions. The margins stay 12 and 16. See `reports/reset_chips_gw15.md`.
+
+A bench floor after the Gameweek 4 return of 2 was not added. The same rule, carried from entry 1078627's Gameweek 1 fifteen, played Bench Boost in Gameweek 1 for a realised bench of 18 against an outlook of 9.27. The model scores 376 against his 368. That is a gain on these five weeks, and it is one squad. It does not loosen the rule and it does not install a floor. See `reports/friend_start_gw15.md`.
+
+The same carry on the 14 locked managers was run on 2026-10-05 and kept ([cohort carry](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). 0 of 14 gained. The mean gap is −27.43. Veterans are −17.29 and rank slots are −37.57. The model plays Bench Boost and Triple Captain only, and the veteran gap sits in the transfers. A bench floor is still not the next change, and the margins stay 12 and 16. See `reports/cohort_carry_gw15.md`.
+
+The lineup piece was tagged on 2026-10-05 and kept ([lineup cause](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Shape is −196 of −198. Same-position ranking is −17, and the model is never the lower score in those pairs. See `reports/lineup_cause_gw15.md`.
+
+The shape figure was split on 2026-10-05 and kept ([shape split](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Formation is −163. Displacement is −33. The loss sits in the eleven named before the deadline, mostly fewer midfielders and more defenders than the other side. See `reports/shape_split_gw15.md`.
+
+The eleven-only trial was run on 2026-10-05 and kept ([shape trial](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Five midfielders are 0.25 below the named score and +1.54 points, which is inconclusive. Three forwards are −0.89 points, so that alternate does not score more. The picker stays. Do not refit score_xp on these five weeks. See `reports/shape_trial_gw15.md`.
+
+The transfer gap was tagged on 2026-10-05 and kept ([squad gap](bc-b57f0f87-87e5-5037-b65f-a697e55bf2a9)). Chip signings are −329, ranked-lower pairs are −81, and other unshared starters are +230. The chip tag is past −90, so this window reads as the chip reset. Do not lower the wildcard margin from these five weeks. A multi-season manager sample is not available from the current entry API. See `reports/squad_gap_gw15.md`.
+
+The five-midfielder close call was run on 2026-10-05 and retired ([close calls](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). The gate was a sacrifice of 1.00 or less, locked before the slices. The carried fifteens are +0.85 on 33 weeks and +0.38 for the veterans. The weeks within 0.25 are −1.33, and the six weeks above 1.50 are +9.83. The fast eleven, four seasons, Gameweeks 5–38, clears none of them: 18 to 22 club skips a season, and 4, 4, 4, and 6 legal close calls. Those 18 weeks average −0.39. Do not swap the picker for five midfielders, and do not add a close-call override. See `reports/midfield_close.md`.
+
+The wildcard lead on the same 14 was run on 2026-10-05 and kept as a score miss ([wildcard lead](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). The carry could already buy the chip signings. Gameweeks 4–5 lead by a median of 3.67, and Gameweeks 2–3 by 8.75. The turned-down rebuild held 19 of them, −100 points. The other 64 were left out, with a median score gap of −0.31 against the lowest rebuilt player at that position. Do not lower the wildcard hurdle from 16. Do not let a chip buy on one appearance. Do not fit a score on these 83 players. See `reports/chip_lead_gw15.md`.
+
+The price reach on those ranked-lower pairs was run on 2026-10-05 and kept as budget ([price reach](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). Fourteen of the seventeen pairs have no sale in the fifteen that pays for them. The list of 35 cut nobody. Do not lower the hold from 1.25. Do not widen that list from these five weeks. Do not open a two-transfer replay for the six pairs that sum to −7. The cohort chain stops. See `reports/sale_reach_gw15.md`.
+
+## Close-pair shape
+
+Run on 2026-10-06 and parked ([close-pair shape](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). The eligible leader and the closest player within half a point, four seasons, Gameweeks 6–38. The leader wins 48.6%, 56.1%, 45.8% and 56.6% of decisive pairs. Blank rates and haul rates, counted from earlier weeks on the full sheet, stay under 80 decisive pairs in every season (blanks 59, 59, 68, 71; hauls 57, 56, 60, 60). Both miss a 5 point margin over the leader in three seasons. Do not screen either shape. Do not open a position split from the thin cells. Do not rerun `score_xp / (σ + 1)` or `score_xp − 0.25σ`. The score stays `score_xp`. See `reports/close_pair_shape.md`.
+
+## Chip match
+
+Reviewed on 2026-10-06 and not run ([chip match](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). Three of the 14 already hold the same chips as the model. The gaps are 0, −26, and −46, mean −24. The two with the same chip in the same week average −13, and those points are in the lineup. Do not add managers from today's overall rank. Do not open the next prior-season names for this filter. See `reports/chip_match_gw15.md`.
+
+## Chip stock
+
+Counted on 2026-10-06 and left as a count ([chip stock](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). The five-week gap is points scored. The model played two chips on every squad. The 14 played 2.5. The model holds 0.5 more first-half chips. A chip worth 55 points would close the −27.43, and nothing on file is that price. Do not add the hurdle of 16, or the declined wildcard lead, to the gap. See `reports/chip_stock_gw15.md`.
+
+## Queued tests
+
+Run on 2026-10-06 and rejected ([queued tests](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). See `reports/queued_tests.md`.
+
+The search shadow on 2022/23, 2023/24, and 2024/25 averages 0.005, 0.004, and 0.101 of three-week value a week. Weeks at or above 1 are 0, 0, and 1. Every season is under 0.25 and under three such weeks, so a rewrite is rejected. The search stays.
+
+The clean fill is kept in 2023/24 only. Gameweeks 1–8 against Gameweeks 9–38 are +10.18, −9.97, and −0.82. Gameweeks 5–8 against the published eleven are +3.75, −10.25, and +9.75. One season of three clears both bars. Cold start is rejected. The score stays `score_xp`.
+
+The upper-tail reading was reviewed the same day and not added ([upper tail](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). A higher historical ceiling, conditional on a half-point score gap, is the haul arm already parked. Do not open a cut at 10, 12, or 15. Spread penalties stay parked.
+
+- Asian handicap, as a live-week pot only, after its own lock. Historical `score_xp` stays on the 1X2 and the 2.5 line. The free file has the handicap and no 3.5 line.
+- Player props, on the decision week only, in their own column. An Odds API call needs a cost estimate and the PI's approval. No market is discovered in a loop.
+- A season-rank weight on the copied tail only. Strength comes from season prices on a log scale, shrunk and clipped to about a 15% move in the team rate. It is idle on a week that already has a 1X2. It is not a 1–10 multiplier. The first Gameweek 6 call, once a line exists, still copies the third priced step flat.
+- An LLM guider with three outputs: minutes rows with a source, a search constraint, or a question back. The backend re-solves and reports the points cost. Ownership stays out of `score_xp`. A human pick of the constrained squad is logged and scored after the gameweek against the declined plan.
+
+The 2025/26 top-100 archive is still unread. It is not a sample to fit.
+
+## Early score, early buy, ownership tie-break
+
+Reviewed 2026-10-06 ([early trials](bc-7121b96b-db3a-552d-ade8-335c01d37eda)).
+
+The early-gameweek score is rejected. Fixture difficulty on top of the book counts the fixture twice. A share with no current shots is the same number for every forward on a club. A likely squad is not on the historical sheets, and the revealed lineup would be leakage. The previous-season fill already failed. The capped score for an owned player with one or two appearances stays as it is.
+
+The ownership tie-break is rejected. A lower-owned player inside half a point is the ownership penalty and the 0.5 band, both already closed. Ownership is the average manager. Captaincy and the chip margins do not take a crowd term.
+
+The buy was run the same day and rejected ([early buy](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). From Gameweek 2, one or two appearances and expected minutes of at least 45 could be bought, at the published xp capped at 6. The four template climbs scored 1606, 1960, 2019, and 2018 against 1735, 2105, 2086, and 1988. The pool is 7603 against 7948. One season is ahead. Three finish more than 30 behind. The buy gate stays at three appearances. See `reports/early_buy.md`.
+
+## Zero-minute starters, Gameweeks 1–5
+
+Noted 2026-10-06, corrected the same day. Do not treat the 23 named zeros as one rule, and do not retune `score_xp` from them. Fourteen are João Pedro in Gameweek 5. His previous four weeks were all 90 minutes, so a lagged zero does not bench him. The stored human slot is the eleven after automatic substitutes. Four of the seven owners started him and were substituted. Three benched him. The picks list `automatic_subs` is not kept in `data/entry`.
+
+Three are Rico Lewis in Gameweeks 3–5 on one squad. He had already recorded 0 minutes, and the owned stub kept the Gameweek 1 score of 3.99 because rows with 0 minutes are dropped before the prior is built. A lagged zero would move those three starts. It would also cut a player who misses one week and returns: Enzo missed Gameweek 2 and then played, and Elvedi missed Gameweek 1 and then played. The scored eleven already replaced every zero. See `reports/zero_minutes_gw15.md`.
+
+## Wildcard sum on priced weeks
+
+Kept 2026-10-06 ([wildcard priced](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). The hurdle is the rebuilt eleven minus the held eleven on weeks with their own opening line. A copied week adds nothing to that sum and nothing to the schedule. The Gameweek 6 replay is 17.67 and still plays wildcard. Free Hit is unset: Gameweek 10 is a copy, and Gameweek 7's rebuilt bench outscores the free hit. Do not move 16 because 17.67 cleared it. Do not put the twelve copies of Gameweek 7 back into the sum. See `reports/wildcard_priced.md`.
+
+## Gameweek 4 stack
+
+Kept 2026-10-06 and closed ([Gameweek 4 stack](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). Groß, João Pedro, and De Cuyper were eligible for the Gameweek 3 wildcard rebuild. The three-appearance gate did not stop them. Groß trailed Gakpo by 0.99 with the money free. João Pedro trailed Calvert-Lewin by 0.55 and the sale could not pay 77. De Cuyper was within 0.17 of the defender who was kept. They scored 1, 1, and 4 that week, then 17, 12, and 11. Do not fit a score on that next week. See `reports/gw4_stack.md`.
+
+## Forced chip calendar
+
+Run on 2026-10-06 and killed ([forced chips](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). Each of the 14 kept his Gameweek 1 fifteen. His chip weeks replaced the model's chip choice, and the model still picked the squad. The mean chip value is −3.43 and the mean forced gap is −30.86. Cameron Scott finishes 4 ahead. Sion Jones goes from −4 to −46. Do not copy their chip weeks. The margins stay 12 and 16. See `reports/forced_chips_gw15.md`.
+
+The field book is rejected. A squad taken from these 14 leaks the benchmark, and the wildcard margin is not a licence to give up 16 points of expected score. The race count was the tie-break on that squad, so it is rejected with it. Ownership and the close-call differential stay parked.
+
+## News tags
+
+Gemini amended this on 2026-10-06 ([news tags](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). The PI rejected the two-week goalkeeper cutoff. The replacement is a pre-deadline tag from the live minutes completion, not a rule on past match rows.
+
+`firm_starter` keeps the existing minutes, never zero. `injured` is 0 when the player is ruled out, and the chance times the old minutes when he is doubtful. `transferred` is 0 at the old club. `benched` is 0 for a goalkeeper and 15 minutes for an outfielder. A benched goalkeeper is the Sánchez case: he drops behind the other goalkeeper at the next deadline. An outfielder at 15 minutes keeps a cameo, stays under the buy gate of 45, and is not sold for a hit if the bench covers him.
+
+This cannot enter the historical climb. Those seasons have no weekly news, and an end-of-season status scraped backwards is already rejected. The published `score_xp` climb stays as it is.
+
+Coded 2026-10-06 on the live path only ([news tags](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). A note counts only when its own time is before that deadline. Thirty players share one second and those rows are dropped. Sánchez is an ask on 28 Aug, because the deadline had an agreed deal and not a team sheet, and 0 from Gameweek 3, when the Como loan is dated. Martínez is a firm starter from that week. Every doubtful row in the window played 0. The chance times the old minutes stays. A player with no appearance still uses 90 before the chance, and that is the case to watch. See `reports/news_tags_gw15.md`.
+
+Reddit and other FPL forums are not a source for the tag ([forum sources](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). A post time is not enough. The body can be edited after the deadline, a comment needs its own time, and an anonymous line is the agreed-deal failure again. Upvotes are not evidence. Reading old threads after the matches, to fill Gameweeks 1–5, is selection after the fact and is out. A forum may only point at a club statement or a named reporter, and that piece’s own time is what the date gate uses.
+
+The loose trial was run on 2026-10-06 ([tag trial](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). A tag writes minutes only where one was already set. A doubtful flag is not zeroed. A zero clears that week's score. A 0-minute week is missing from the published frame, so the tag is inserted there and the roster supplies the points. The tagged climb scores 280, the same as the published one. Sánchez stays in the eleven in Gameweeks 1 and 2. From Gameweek 3 his score is 0 and he is benched, and Verbruggen is named. He is not sold. The week totals do not move, because the automatic substitute was already Verbruggen. The published squad is unchanged. See `reports/news_trial_gw15.md`.
+
+## Outside expected points
+
+Read on 2026-10-06 ([external xp](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). Not a new score. The climb is not rerun on these numbers.
+
+OpenFPL is open source and its published test is 2024/25. There is no frozen 2026/27 Gameweeks 1–5 file from it. The comparison uses the Onside Arena graded CSV (CC-BY-4.0, Zenodo 10.5281/zenodo.22746985) and the official `ep_next` stored on the same rows. A capture time before the deadline is the gate. Gameweek 2 fails that as a refreshed forecast: 13 values, a cap of 2.95, captured the evening of Gameweek 1, and `ep_next` copied from Gameweek 1. Those rows stay in the table and out of the mean. Dasilva's Gameweek 1 value of 14.99 is a bad source row and is not in the squad. Sánchez is missing from the file in Gameweeks 4 and 5.
+
+On the other four weeks, `score_xp` on this squad averages 4.52 against 3.85 points. Onside averages 3.34 and `ep_next` averages 2.81. The outside columns price the same names lower. Do not replace `score_xp` with either column. Do not put the file in `experiments/matrix.json`. See `reports/external_xp_gw15.md`.
+
+The same file on the 14 locked squads was read the same day ([cohort xp](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). Unique player-weeks, minutes above 0, Gameweek 2 out. Veterans: mean absolute error 3.00, 3.13, 3.22. Rank slots: 3.07, 3.14, 3.36. Counting each squad that owned the player keeps that order. Gameweek 1 is the week the outside numbers are closer, and the rank-only players are a tie on the error. Ten Gameweek 1 debuts have no published score and stay out. Do not switch the cohort onto Onside or `ep_next`. See `reports/cohort_xp_gw15.md`.
+
+## Decision margin
+
+Locked 2026-10-06 before either histogram is read ([decision margin](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). Not a new score. The residual on the decision boundary is not built. Formation, the hold, and the haul-rate arm stay parked. There is no historical file of elite human squads.
+
+Reading A uses the 64 chip signings the rebuild left out, paired with that rebuild's lowest `score_xp` at the position. The full outside set is already constraint: club or price is 0.71 of the −229. The ranking bins are only the unconstrained rows. Margin is the model player's score minus the human's. Bins are at or below 0, up to 0.5, up to 1.25, and above 1.25. Small-margin needs the up-to-0.5 share at least 0.5 of the unconstrained weight. Wide-margin needs the above-1.25 share at least 0.5. Anything else is inconclusive. The pair's points difference is not the −229.
+
+Reading B is in the same batch. Four seasons, weeks 6–38, eligible rows only, rank within position, bands 1–5, 6–10, 11–20, and the rest. A winner's-curse claim needs the top band's bias positive in every season and at least 0.25 above that season's eligible bias. Otherwise it is parked. See `reports/decision_margin_plan.md`.
+
+Counted the same day ([decision margin](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). Constraint remains the call on the −229: club or price is −163. The unconstrained −66 splits −31, −29, and −6 across the three positive bins, shares 0.47, 0.44, and 0.09. The ranking call is inconclusive. The curse claim is parked. Only 2022/23 clears the 0.25 gap, and the 2023/24 top band bias is −0.04. The score stays. See `reports/decision_margin.md`.
+
+## Squad frontier
+
+Locked 2026-10-06 before any squad gap is read ([squad frontier](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). Not a new score. The count above stays. Formation, the hold of 1.25, ownership, a ranking correction, a winner's-curse correction, and a residual stay frozen. The chip margins stay 16 and 12.
+
+Chip signings are −329. The 19 already held are −100 and sit in that −329. The 64 left out are −229, which is −163 plus −66. The −163 is a one-for-one swap into the fifteen already chosen. It does not say the human fifteen is illegal.
+
+Reading C scores both fifteens with `squad_outlook` on the pre-deadline steps. A wildcard sums `xi_xp` over the priced window. A free hit uses the decision week only. The per-week gap is that difference divided by the steps actually priced. Reachable weeks, costed from the model's pre-chip bank and sell prices, enter the call. A money shortfall, a squad-shape or club-cap break, and a player absent from the pool stay out of the call.
+
+Near is a per-week gap of at most 1.0. Far is above 4.0. The call is near when at least half the reachable weeks for that chip are near, and far when at least half are far. Otherwise it is middle. The two chips are separate. The mean sits beside the call. Realised points stay beside it as well. The *k*-player force-in waits. See `reports/squad_frontier_plan.md`.
+
+Counted the same day ([squad frontier](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). Ten chip weeks. Nine have a player with no row on the published frame, so they stay unscored. Mark Brookes in Gameweek 5 is the other week: the fifteen costs £0.3m more than the model's budget, and the per-week gap of 4.33 stays out of the call. Both chips have no call. The score stays. See `reports/squad_frontier.md`.
+
+## Early row
+
+Locked 2026-10-06 before any new gap is read ([early row](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). Not a new score, and not a new buy. The three-appearance gate stays. Early buy stays rejected: the four template climbs lost 129, 145, and 67, and gained 30, and the pool was 7603 against 7948.
+
+Reading D scores the nine pool weeks again. A player with one or two prior appearances uses the early score, capped at 6, even when the model does not own him. A 0-minute player with no row still blocks the week. The same bars apply, at most 1.0 and above 4.0. A blank is tagged `replaced`, `benched`, or `no_fixture` from the sheet, beside the call. Last season stays for a player who stayed at his club. A club-change score waits for its own fast XI screen. The blank does not yet enter the minutes mean. See `reports/early_row_plan.md`.
+
+Counted the same day ([early row](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). Six of the nine stay pool. Free hit has no call. The wildcard call is far, and the reachable sample is one week: Sion Jones in Gameweek 3, per-week gap 4.52, points 60 against 53. The cap did not bind. The chip sum stays undiscounted. Putting γ = 0.9 on that sum would be a different trial, because the hurdle of 16 was set on the undiscounted sum. See `reports/early_row.md`.
+
+## Chip horizon
+
+Locked 2026-10-06 before any discounted sum is read ([chip horizon](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). The weight is the existing 0.9, imported. h starts at 0 on the decision week. The hurdle stays 16. Free hit, bench boost, and triple captain stay undiscounted. The transfer value is not discounted a second time. The count is the 14 carried managers, Gameweeks 1–5. A flip is a different chip, and the path after it is not re-solved. The crowd climbs stay out. See `reports/chip_horizon_plan.md`.
+
+Counted the same day ([chip horizon](bc-9194ff85-d0a7-5b7b-a9e9-12f9524f4cac)). Zero flips on 70 deadlines. The Gameweek 1 cross, 16.90 against 15.33, cannot play a wildcard. The stored Gameweek 6 sum discounts from 17.67 to 17.16 and still clears. The hurdle stays 16. The crowd replay stays unrun. See `reports/chip_horizon.md`.
+
+## Lost shirt
+
+Noted 2026-10-06 ([blank context](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). Not switched on.
+
+Sánchez is named in the model's eleven in Gameweeks 2–5 on the Gameweek 1 score of 3.61. He played 0 minutes in each of those weeks. Martínez played 90 for Chelsea in each. The 0-minute row is dropped before the prior, so the score does not move.
+
+A blank has to enter the minutes history. An injury flag is not available: the sheets have minutes, not news, and the season-end status is the wrong week. That part stays parked under Player status. The tag that is available is `replaced` when another player of the same club and position played at least 60 minutes, `benched` when the club played and nobody at the position did, and `no_fixture` when the club had no game.
+
+Gemini rejected zeroing a goalkeeper after one `replaced` week, and rejected zeroing an outfielder at all. One rested league match would be sold, and a benched defender almost always has a teammate who played 60. The amended cut is: every blank enters the three-game minutes mean; a goalkeeper with two consecutive `replaced` weeks has expected minutes 0 until he plays 60; an outfielder is never hard-zeroed. One 90-minute history plus one zero is still a mean of 60, and appearance points do not fall until the mean is below 60, so Sánchez would still be named in Gameweek 3. He would be benched from Gameweek 4.
+
+Scheduled minutes already counted every missed club week as zero and was parked. The transfer climb went +146 and −78. The fast XI never sees a player who did not play, so it cannot test this. `score_xp` stays the published score until a transfer-climb screen of the narrower rule is locked.
+
 ## Rules gaps
 
 - Full Opta BPS table (goals, assists, playing time, and the rest) is not in the 20 Jul 2026 change note. Only the 2026/27 deltas are coded.
-- Chip-aware backtest: Wildcard keeps banked transfers; Free Hit squad reverts; Bench Boost adds the bench; Triple Captain is ×3. No season runner calls `ChipWallet` yet.
+- Chip mechanics are wired. `run_ft_season(..., chips={gw: name})` plays that week. An empty map plays nothing and does not choose a week. Wildcard and Free Hit spend the bank plus sell prices, not a fresh £100.0m. A kept player's purchase price stays. Free Hit reverts the squad. Bench Boost adds players left out of the final XI after automatic substitutions. Triple Captain is ×3, and a blank captain passes that ×3 to the vice-captain. The published climb does not search chip weeks. A side report can pass a chip policy, and that policy replaces the week map.
+- Live chip policy (2026-10-02, Gemini): expected points only, current half, candidates are the current week plus blanks and doubles. Free Hit needs a 12-point edge on a blank. Wildcard needs a 16-point edge. Bench Boost and Triple Captain fire only on the best double, and only if that double is this week. A tie plays nothing. GW1 wildcard and back-to-back free hits stay illegal. Bench Boost in GW1 is legal. This does not rerun `xp_ft`.
 - Rescoring historical seasons under 2026/27 BPS needs CBI, save location, and big-chance saves. Do not overwrite Vaastav `total_points` until those fields exist.

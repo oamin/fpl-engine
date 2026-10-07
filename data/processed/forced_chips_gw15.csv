@@ -1,0 +1,76 @@
+entry_id,label,group,gw,chip,his_chip,gap,captain_gap,transfer_gap,lineup_gap,hit_gap,bench_gap,model_points,their_points
+2076855,elevenify.com,veteran,1,bench_boost,bench_boost,0.0,0.0,0.0,4.0,0.0,-4.0,69.0,69.0
+2076855,elevenify.com,veteran,2,,,-5.0,0.0,0.0,-5.0,0.0,0.0,110.0,115.0
+2076855,elevenify.com,veteran,3,wildcard,wildcard,20.0,0.0,20.0,0.0,0.0,0.0,60.0,40.0
+2076855,elevenify.com,veteran,4,triple_captain,triple_captain,-38.0,8.0,-46.0,0.0,0.0,0.0,62.0,100.0
+2076855,elevenify.com,veteran,5,,,-6.0,0.0,-6.0,0.0,0.0,0.0,44.0,50.0
+9267,Cameron Scott,veteran,1,bench_boost,bench_boost,0.0,0.0,0.0,-1.0,0.0,1.0,77.0,77.0
+9267,Cameron Scott,veteran,2,,,5.0,0.0,1.0,4.0,0.0,0.0,106.0,101.0
+9267,Cameron Scott,veteran,3,free_hit,free_hit,10.0,0.0,10.0,0.0,0.0,0.0,60.0,50.0
+9267,Cameron Scott,veteran,4,triple_captain,triple_captain,-8.0,0.0,-1.0,-7.0,0.0,0.0,82.0,90.0
+9267,Cameron Scott,veteran,5,,,-3.0,0.0,-3.0,0.0,0.0,0.0,46.0,49.0
+31365,Ashley Marsh,veteran,1,bench_boost,bench_boost,0.0,0.0,0.0,5.0,0.0,-5.0,67.0,67.0
+31365,Ashley Marsh,veteran,2,,,1.0,0.0,1.0,0.0,0.0,0.0,108.0,107.0
+31365,Ashley Marsh,veteran,3,wildcard,wildcard,14.0,0.0,14.0,0.0,0.0,0.0,60.0,46.0
+31365,Ashley Marsh,veteran,4,triple_captain,triple_captain,-38.0,4.0,-42.0,0.0,0.0,0.0,65.0,103.0
+31365,Ashley Marsh,veteran,5,,,2.0,0.0,2.0,0.0,0.0,0.0,47.0,45.0
+616,Mark Brookes,veteran,1,bench_boost,bench_boost,0.0,0.0,0.0,-1.0,0.0,1.0,77.0,77.0
+616,Mark Brookes,veteran,2,,,-7.0,0.0,0.0,-7.0,0.0,0.0,104.0,111.0
+616,Mark Brookes,veteran,3,free_hit,free_hit,-3.0,0.0,-6.0,3.0,0.0,0.0,60.0,63.0
+616,Mark Brookes,veteran,4,triple_captain,triple_captain,-8.0,0.0,-6.0,-2.0,0.0,0.0,84.0,92.0
+616,Mark Brookes,veteran,5,wildcard,wildcard,0.0,0.0,0.0,0.0,0.0,0.0,46.0,46.0
+4109079,Will Morrison,veteran,1,,,3.0,0.0,10.0,-3.0,-4.0,0.0,63.0,60.0
+4109079,Will Morrison,veteran,2,bench_boost,bench_boost,-8.0,0.0,5.0,-11.0,0.0,-2.0,132.0,140.0
+4109079,Will Morrison,veteran,3,free_hit,free_hit,10.0,0.0,10.0,0.0,0.0,0.0,60.0,50.0
+4109079,Will Morrison,veteran,4,,,-11.0,7.0,-16.0,-2.0,0.0,0.0,81.0,92.0
+4109079,Will Morrison,veteran,5,,,-21.0,0.0,-13.0,-8.0,0.0,0.0,25.0,46.0
+2116184,Paul Mitchell,veteran,1,,,0.0,0.0,0.0,0.0,0.0,0.0,54.0,54.0
+2116184,Paul Mitchell,veteran,2,bench_boost,bench_boost,0.0,0.0,0.0,0.0,0.0,0.0,141.0,141.0
+2116184,Paul Mitchell,veteran,3,triple_captain,triple_captain,2.0,0.0,3.0,-1.0,0.0,0.0,55.0,53.0
+2116184,Paul Mitchell,veteran,4,,,-7.0,7.0,-1.0,-13.0,0.0,0.0,82.0,89.0
+2116184,Paul Mitchell,veteran,5,,,5.0,0.0,18.0,-13.0,0.0,0.0,50.0,45.0
+32058,Thomas O'Brien,veteran,1,bench_boost,bench_boost,0.0,0.0,0.0,0.0,0.0,0.0,79.0,79.0
+32058,Thomas O'Brien,veteran,2,,,-10.0,0.0,-10.0,0.0,0.0,0.0,109.0,119.0
+32058,Thomas O'Brien,veteran,3,wildcard,wildcard,20.0,0.0,19.0,1.0,0.0,0.0,60.0,40.0
+32058,Thomas O'Brien,veteran,4,triple_captain,triple_captain,-40.0,4.0,-46.0,2.0,0.0,0.0,65.0,105.0
+32058,Thomas O'Brien,veteran,5,,,5.0,0.0,5.0,0.0,0.0,0.0,47.0,42.0
+5874076,Jess Bernstein,rank,1,,,-8.0,0.0,0.0,-8.0,0.0,0.0,51.0,59.0
+5874076,Jess Bernstein,rank,2,,,-22.0,0.0,-10.0,-12.0,0.0,0.0,91.0,113.0
+5874076,Jess Bernstein,rank,3,triple_captain,triple_captain,-4.0,-2.0,-2.0,0.0,4.0,0.0,59.0,63.0
+5874076,Jess Bernstein,rank,4,,,-30.0,-5.0,-8.0,-17.0,0.0,0.0,78.0,108.0
+5874076,Jess Bernstein,rank,5,,,-24.0,-15.0,-5.0,-4.0,0.0,0.0,66.0,90.0
+3669095,Adam Whitting,rank,1,triple_captain,triple_captain,-18.0,-18.0,0.0,0.0,0.0,0.0,51.0,69.0
+3669095,Adam Whitting,rank,2,,,-5.0,0.0,0.0,-5.0,0.0,0.0,107.0,112.0
+3669095,Adam Whitting,rank,3,,,-18.0,0.0,-22.0,4.0,0.0,0.0,51.0,69.0
+3669095,Adam Whitting,rank,4,,,-22.0,-1.0,-6.0,-15.0,0.0,0.0,86.0,108.0
+3669095,Adam Whitting,rank,5,,,-16.0,0.0,-4.0,-12.0,0.0,0.0,45.0,61.0
+169164,Filip Stripaj,rank,1,,,-1.0,0.0,0.0,-1.0,0.0,0.0,56.0,57.0
+169164,Filip Stripaj,rank,2,bench_boost,bench_boost,0.0,0.0,0.0,-8.0,0.0,8.0,125.0,125.0
+169164,Filip Stripaj,rank,3,triple_captain,triple_captain,7.0,0.0,4.0,3.0,0.0,0.0,61.0,54.0
+169164,Filip Stripaj,rank,4,,,-12.0,0.0,-5.0,-7.0,0.0,0.0,90.0,102.0
+169164,Filip Stripaj,rank,5,free_hit,free_hit,-19.0,0.0,-19.0,0.0,0.0,0.0,57.0,76.0
+217044,daniel bowes,rank,1,bench_boost,bench_boost,-23.0,0.0,-1.0,-10.0,-8.0,-4.0,64.0,87.0
+217044,daniel bowes,rank,2,,,1.0,0.0,0.0,1.0,0.0,0.0,111.0,110.0
+217044,daniel bowes,rank,3,triple_captain,triple_captain,8.0,0.0,6.0,2.0,0.0,0.0,72.0,64.0
+217044,daniel bowes,rank,4,,,-6.0,0.0,-6.0,0.0,0.0,0.0,86.0,92.0
+217044,daniel bowes,rank,5,free_hit,free_hit,7.0,0.0,7.0,0.0,0.0,0.0,57.0,50.0
+534464,Sion Jones,rank,1,bench_boost,bench_boost,-9.0,0.0,-1.0,-4.0,-8.0,4.0,65.0,74.0
+534464,Sion Jones,rank,2,,,4.0,0.0,8.0,-4.0,0.0,0.0,115.0,111.0
+534464,Sion Jones,rank,3,wildcard,wildcard,4.0,0.0,1.0,3.0,0.0,0.0,60.0,56.0
+534464,Sion Jones,rank,4,triple_captain,triple_captain,-37.0,4.0,-41.0,0.0,0.0,0.0,65.0,102.0
+534464,Sion Jones,rank,5,,,-8.0,0.0,-8.0,0.0,0.0,0.0,47.0,55.0
+3503484,Viniii Denie,rank,1,triple_captain,triple_captain,-21.0,-16.0,0.0,-5.0,0.0,0.0,80.0,101.0
+3503484,Viniii Denie,rank,2,bench_boost,bench_boost,-10.0,0.0,1.0,-3.0,4.0,-8.0,85.0,95.0
+3503484,Viniii Denie,rank,3,,,-6.0,0.0,-9.0,3.0,0.0,0.0,53.0,59.0
+3503484,Viniii Denie,rank,4,,,-8.0,-5.0,-8.0,5.0,0.0,0.0,87.0,95.0
+3503484,Viniii Denie,rank,5,,,6.0,0.0,6.0,0.0,0.0,0.0,51.0,45.0
+1585157,Tom Anderson,rank,1,bench_boost,bench_boost,0.0,0.0,0.0,-1.0,0.0,1.0,77.0,77.0
+1585157,Tom Anderson,rank,2,,,4.0,4.0,0.0,0.0,0.0,0.0,82.0,78.0
+1585157,Tom Anderson,rank,3,triple_captain,triple_captain,-7.0,0.0,-7.0,0.0,0.0,0.0,59.0,66.0
+1585157,Tom Anderson,rank,4,,,-12.0,-5.0,13.0,-20.0,0.0,0.0,88.0,100.0
+1585157,Tom Anderson,rank,5,,,-11.0,0.0,3.0,-14.0,0.0,0.0,52.0,63.0
+2632584,ojaminFC,reference,1,triple_captain,triple_captain,-1.0,0.0,9.0,-2.0,-8.0,0.0,61.0,62.0
+2632584,ojaminFC,reference,2,,,-6.0,0.0,-6.0,0.0,0.0,0.0,102.0,108.0
+2632584,ojaminFC,reference,3,,,-4.0,0.0,-4.0,0.0,0.0,0.0,49.0,53.0
+2632584,ojaminFC,reference,4,,,18.0,0.0,18.0,0.0,0.0,0.0,97.0,79.0
+2632584,ojaminFC,reference,5,,,-4.0,0.0,-4.0,0.0,0.0,0.0,44.0,48.0

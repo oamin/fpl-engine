@@ -37,6 +37,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+from src.rules.fpl_2026 import CS_POINTS as CS_PTS
+from src.rules.fpl_2026 import GOAL_POINTS as GOAL_PTS
+
 ROOT = Path(__file__).resolve().parents[2]
 CACHE = ROOT / "data" / "cache"
 PROCESSED = ROOT / "data" / "processed"
@@ -49,8 +52,11 @@ MIN_HISTORY = 3
 ROLL_XMI = 3
 MIN_MINUTES = 60.0
 DEFCON_THRESH = {"DEF": 10.0, "MID": 12.0, "FWD": 12.0}
-GOAL_PTS = {"GKP": 10.0, "DEF": 6.0, "MID": 5.0, "FWD": 4.0}  # official FPL GK goal = 10
-CS_PTS = {"GKP": 4.0, "DEF": 4.0, "MID": 1.0, "FWD": 0.0}
+# Goal and clean-sheet awards are the rules-module maps. A goalkeeper goal is 6.
+# Same-season team pots with no history use these fixed neutrals. They are not
+# estimated from the season being scored.
+NEUTRAL_TEAM_XG = 1.40
+NEUTRAL_TEAM_XA = 1.05
 # Empirical ~2.0 saves per GC for 60'+ GKs (25/26); 1 FPL pt per 3 saves.
 SAVES_PER_GC = 2.0
 # FWD goal under-projection: leakage-free position scale clipped to this band.
@@ -175,7 +181,7 @@ def load_joined(season: str = "2025_26") -> pd.DataFrame:
     df = df.dropna(subset=["gw", "fixture_id", "position"]).copy()
     df["gw"] = df["gw"].astype(int)
     df = df.merge(extra, on=["player_id", "gw"], how="left")
-    df["value"] = df["value"].fillna(df.groupby("position")["value"].transform("median"))
+    df["value"] = pd.to_numeric(df["value"], errors="coerce")
     df["defcon_raw"] = df["defcon_raw"].fillna(0.0)
     df["xG"] = pd.to_numeric(df["xG"], errors="coerce").fillna(0.0)
     df["xA"] = pd.to_numeric(df["xA"], errors="coerce").fillna(0.0)
@@ -223,7 +229,15 @@ def add_market_pots(df: pd.DataFrame) -> pd.DataFrame:
     return out
 
 
-def add_player_priors(df: pd.DataFrame) -> pd.DataFrame:
+def add_player_priors(
+    df: pd.DataFrame, fill_from: pd.DataFrame | None = None
+) -> pd.DataFrame:
+    """Shift-1 priors. A missing prior stays missing unless ``fill_from`` supplies it.
+
+    The fill frame is an earlier season. A position mean of the season being
+    scored includes later gameweeks, so that fill is not used. A team with no
+    shifted history takes ``NEUTRAL_TEAM_XG`` and ``NEUTRAL_TEAM_XA``.
+    """
     out = df.sort_values(["player_id", "gw", "date"], kind="mergesort").copy()
     g = out.groupby("player_id", sort=False)
     out["n_prior"] = g.cumcount()
@@ -242,28 +256,57 @@ def add_player_priors(df: pd.DataFrame) -> pd.DataFrame:
         ("exp_xA", "xA"),
         ("exp_defcon_hit", "defcon_hit"),
     ):
-        pos_mean = out.groupby("position")[src].transform("mean")
-        out[col] = out[col].fillna(pos_mean)
+        if fill_from is not None:
+            pos_mean = fill_from.groupby("position")[src].mean()
+            out[col] = out[col].fillna(out["position"].map(pos_mean))
 
-    # Team expanding attack (sum of player xG per team-fixture, then team expanding mean)
+    # Team expanding attack. The sum uses players who played. A fixture where
+    # nobody played still receives the shift-1 team rate, so a teammate's
+    # scored-week row is not what attaches the prior.
     played = out.loc[out["minutes"] > 0]
-    team_fix = played.groupby(
+    played_fix = played.groupby(
         ["team_norm", "fixture_id", "date", "gw"], as_index=False
     ).agg(team_xg=("xG", "sum"), team_xa=("xA", "sum"))
+    all_fix = out.groupby(
+        ["team_norm", "fixture_id", "date", "gw"], as_index=False
+    ).size()
+    team_fix = all_fix.drop(columns="size").merge(
+        played_fix,
+        on=["team_norm", "fixture_id", "date", "gw"],
+        how="left",
+    )
     team_fix = team_fix.sort_values(["team_norm", "date", "gw"], kind="mergesort")
     tg = team_fix.groupby("team_norm", sort=False)
     team_fix["exp_team_xg"] = tg["team_xg"].transform(_exp_mean)
     team_fix["exp_team_xa"] = tg["team_xa"].transform(_exp_mean)
-    team_fix["exp_team_xg"] = team_fix["exp_team_xg"].fillna(team_fix["team_xg"].mean())
-    team_fix["exp_team_xa"] = team_fix["exp_team_xa"].fillna(team_fix["team_xa"].mean())
+    if fill_from is None:
+        team_fix["exp_team_xg"] = team_fix["exp_team_xg"].fillna(NEUTRAL_TEAM_XG)
+        team_fix["exp_team_xa"] = team_fix["exp_team_xa"].fillna(NEUTRAL_TEAM_XA)
+    else:
+        played_fill = fill_from.loc[
+            pd.to_numeric(fill_from["minutes"], errors="coerce").fillna(0) > 0
+        ]
+        prior_teams = played_fill.groupby(
+            ["team_norm", "fixture_id"], as_index=False
+        ).agg(team_xg=("xG", "sum"), team_xa=("xA", "sum"))
+        team_fix["exp_team_xg"] = team_fix["exp_team_xg"].fillna(
+            float(prior_teams["team_xg"].mean()) if len(prior_teams) else np.nan
+        )
+        team_fix["exp_team_xa"] = team_fix["exp_team_xa"].fillna(
+            float(prior_teams["team_xa"].mean()) if len(prior_teams) else np.nan
+        )
 
     out = out.merge(
         team_fix[["team_norm", "fixture_id", "exp_team_xg", "exp_team_xa"]],
         on=["team_norm", "fixture_id"],
         how="left",
     )
-    out["exp_team_xg"] = out["exp_team_xg"].fillna(out["exp_xG"].mean() * 8)
-    out["exp_team_xa"] = out["exp_team_xa"].fillna(out["exp_xA"].mean() * 8)
+    if fill_from is None:
+        out["exp_team_xg"] = out["exp_team_xg"].fillna(NEUTRAL_TEAM_XG)
+        out["exp_team_xa"] = out["exp_team_xa"].fillna(NEUTRAL_TEAM_XA)
+    else:
+        out["exp_team_xg"] = out["exp_team_xg"].fillna(float(fill_from["xG"].mean()) * 8)
+        out["exp_team_xa"] = out["exp_team_xa"].fillna(float(fill_from["xA"].mean()) * 8)
 
     out["share_xG"] = (out["exp_xG"] / out["exp_team_xg"].replace(0, np.nan)).clip(0, 1)
     out["share_xA"] = (out["exp_xA"] / out["exp_team_xa"].replace(0, np.nan)).clip(0, 1)
@@ -599,7 +642,7 @@ def write_report(path: Path, rows: list[dict[str, Any]], n: int) -> None:
         "appear   = p_play·1 + p60·1",
         "λ        ≈ e_total(OU) × attack_strength / (att+threat)",
         "P(CS)    ≈ clip(0.08 + 0.35·p_not_lose + 0.15·p_under)",
-        "goal_pts = {GKP:10, DEF:6, MID:5, FWD:4}",
+        "goal_pts = GOAL_POINTS from src/rules/fpl_2026.py ({GKP:6, DEF:6, MID:5, FWD:4})",
         "xP       = appear",
         "         + share_xG · λ · goal_pts          (no play_scale)",
         "         + share_xA · λ_a · 3",
