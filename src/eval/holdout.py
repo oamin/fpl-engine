@@ -50,8 +50,13 @@ def build_manifest(root: Path | None = None) -> dict[str, Any]:
         "frozen": "2026-10-06",
         "rule": (
             "Do not modify these snapshots. Do not fit a parameter on 2026-27. "
-            "The closed-season comparison does not include this season."
+            "The closed-season comparison does not include this season. "
+            "Gameweeks 1-5 were already read. The clean holdout starts at gameweek 6. "
+            "Timestamped files under data/predictions/ are the pre-deadline forecasts. "
+            "A hash of a file that keeps growing is not a freeze of a future gameweek."
         ),
+        "clean_holdout_from_gw": 6,
+        "contaminated_through_gw": 5,
         "tracked": tracked,
         "present_at_freeze": present,
     }

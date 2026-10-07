@@ -1,5 +1,8 @@
 """Stage 14 — Stripped season climb (no budget / chips / transfer state).
 
+Running this module does not produce a reportable result. The reportable
+path is ``src.eval``.
+
 Each GW: pick a position-legal XI from the full player pool by a score,
 bank *actual* FPL points, plot cumulative total vs baselines.
 

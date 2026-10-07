@@ -6,9 +6,6 @@
     "2025-26"
   ],
   "min_gws": 20,
-  "sigma": 3.0,
-  "bootstrap": 1000,
-  "seed": 0,
   "comparisons": {
     "score_xp_minus_score_exp_points": {
       "mean": 0.015305621921945354,
@@ -20,31 +17,221 @@
         "2024-25": 34,
         "2025-26": 34
       },
+      "incomplete_seasons": {},
       "n_rows": 102315
     },
     "score_xp_minus_score_official_xp": {
-      "mean": -0.0016161904223754326,
-      "lo": -0.01628145893573108,
-      "hi": 0.0124949663791707,
+      "mean": -0.056533120427522614,
+      "lo": -0.06797221936725212,
+      "hi": -0.0442486608006968,
       "n_gws": {
-        "2022-23": 33,
-        "2023-24": 34,
-        "2024-25": 34,
-        "2025-26": 34
+        "2022-23": 31,
+        "2023-24": 33,
+        "2024-25": 31
       },
-      "n_rows": 102315
+      "incomplete_seasons": {
+        "2025-26": 7
+      },
+      "n_rows": 71255
     },
     "score_official_xp_minus_score_exp_points": {
-      "mean": 0.01692181234432079,
-      "lo": 0.003485372983106529,
-      "hi": 0.03062124176573223,
+      "mean": 0.06974339597924614,
+      "lo": 0.05820847440348871,
+      "hi": 0.0808211289903827,
       "n_gws": {
-        "2022-23": 33,
-        "2023-24": 34,
-        "2024-25": 34,
-        "2025-26": 34
+        "2022-23": 31,
+        "2023-24": 33,
+        "2024-25": 31
       },
-      "n_rows": 102315
+      "incomplete_seasons": {
+        "2025-26": 7
+      },
+      "n_rows": 71255
     }
-  }
+  },
+  "slices": {
+    "spearman": {
+      "score_xp_minus_score_exp_points": {
+        "mean": 0.02096708877854866,
+        "lo": 0.0016955096830311596,
+        "hi": 0.04134160794712049,
+        "n_gws": {
+          "2022-23": 33,
+          "2023-24": 34,
+          "2024-25": 34,
+          "2025-26": 34
+        },
+        "incomplete_seasons": {}
+      },
+      "score_xp_minus_score_official_xp": {
+        "mean": -0.34873915613004414,
+        "lo": -0.3788915546720567,
+        "hi": -0.3188454850294618,
+        "n_gws": {
+          "2022-23": 31,
+          "2023-24": 33,
+          "2024-25": 31
+        },
+        "incomplete_seasons": {
+          "2025-26": 7
+        }
+      },
+      "score_official_xp_minus_score_exp_points": {
+        "mean": 0.3660494061379193,
+        "lo": 0.34460563016801365,
+        "hi": 0.3906713164419503,
+        "n_gws": {
+          "2022-23": 31,
+          "2023-24": 33,
+          "2024-25": 31
+        },
+        "incomplete_seasons": {
+          "2025-26": 7
+        }
+      }
+    },
+    "top15": {
+      "score_xp_minus_score_exp_points": {
+        "mean": 0.024901716590637408,
+        "lo": 0.004286150889353512,
+        "hi": 0.043435285479785306,
+        "n_gws": {
+          "2022-23": 33,
+          "2023-24": 34,
+          "2024-25": 34,
+          "2025-26": 34
+        },
+        "incomplete_seasons": {}
+      },
+      "score_xp_minus_score_official_xp": {
+        "mean": 0.21741278423039187,
+        "lo": -0.025688334496062597,
+        "hi": 0.4949186219446357,
+        "n_gws": {
+          "2022-23": 31,
+          "2023-24": 33,
+          "2024-25": 31
+        },
+        "incomplete_seasons": {
+          "2025-26": 7
+        }
+      },
+      "score_official_xp_minus_score_exp_points": {
+        "mean": -0.32913977890511,
+        "lo": -0.6223244399416386,
+        "hi": -0.0869113288057832,
+        "n_gws": {
+          "2022-23": 31,
+          "2023-24": 33,
+          "2024-25": 31
+        },
+        "incomplete_seasons": {
+          "2025-26": 7
+        }
+      }
+    }
+  },
+  "encompassing": {
+    "mean": -0.024473061918371435,
+    "lo": -0.03558114975398364,
+    "hi": -0.01389893007185103,
+    "n_gws": {
+      "2022-23": 29,
+      "2023-24": 30,
+      "2024-25": 28
+    },
+    "incomplete_seasons": {},
+    "tuning_season": "2025-26",
+    "tuning_n_gws": 5,
+    "tuning_mean": -0.21078825679292806,
+    "required_seasons": [
+      "2022-23",
+      "2023-24",
+      "2024-25"
+    ],
+    "survives": false
+  },
+  "official_xp_fill": [
+    {
+      "season": "2022-23",
+      "unfilled": [
+        12,
+        36
+      ],
+      "n_gameweeks": 37,
+      "modified": "absent",
+      "high_xp_blanks": 96,
+      "value_median": 45.0,
+      "value_max": 131.0,
+      "selected_mean": 235502.79060554612,
+      "transfers_all_zero": false
+    },
+    {
+      "season": "2023-24",
+      "unfilled": [
+        26
+      ],
+      "n_gameweeks": 38,
+      "modified": "absent",
+      "high_xp_blanks": 86,
+      "value_median": 45.0,
+      "value_max": 145.0,
+      "selected_mean": 201081.45917577797,
+      "transfers_all_zero": false
+    },
+    {
+      "season": "2024-25",
+      "unfilled": [
+        22,
+        32,
+        34
+      ],
+      "n_gameweeks": 38,
+      "modified": "boolean false on every row",
+      "high_xp_blanks": 251,
+      "value_median": 45.0,
+      "value_max": 154.0,
+      "selected_mean": 227979.1339612389,
+      "transfers_all_zero": false
+    },
+    {
+      "season": "2025-26",
+      "unfilled": [
+        7,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        25,
+        26,
+        27,
+        28,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "n_gameweeks": 38,
+      "modified": "boolean false on every row",
+      "high_xp_blanks": 14,
+      "value_median": 46.0,
+      "value_max": 151.0,
+      "selected_mean": 241112.26702960648,
+      "transfers_all_zero": false
+    }
+  ]
 }

@@ -1,5 +1,8 @@
 """Two-tier search. Tier 1 is the fast XI climb on a full season.
 
+Running this module does not produce a reportable result. The reportable
+path is ``src.eval``.
+
 Candidates live in ``experiments/matrix.json``. They are ranked by
 cumulative XI points versus expected points. Spearman, MAE, and bias are
 recorded and do not decide who advances.

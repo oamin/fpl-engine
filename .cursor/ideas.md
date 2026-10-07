@@ -2,9 +2,11 @@
 
 Cursor chooses the next pre-registered comparison. The PI is not asked to pick. A result needs the as-of audit and paired intervals on all four closed seasons. One comparison at a time.
 
-## Procedure, locked 2026-10-06
+## Procedure, locked 2026-10-07
 
-The +34 season-total bar is retired. The paragraphs below are the record of those screens. They are not a pass. Sharpe, ownership, and churn stay parked. A captain model and a chip simulator stay deferred. The development metric is the player-GW log score in `experiments/protocol.json`. 2026-27 is a frozen holdout. Stage 13 (xP trailed expected points at horizon 8) and stage 18 (ridge tied xP under budget, −2) stay set aside. See `reports/procedure_audit.md`.
+The +34 season-total bar is retired. Stages 14–34, and the later climbs on that pool, are superseded. See `reports/SUPERSEDED.md`. Sharpe, ownership, and churn stay parked. Pull requests 53–56 stay open as finished counts. They are not extended, and a chip simulator stays deferred. Stage 13 (xP trailed expected points at horizon 8) and stage 18 (ridge tied xP under budget, −2) stay set aside.
+
+The pre-registered encompassing test did not survive. Walk-forward, the coefficient on `score_xp` given official xP is −0.0245 [−0.0356, −0.0139] on 2022-23, 2023-24, and 2024-25, and the interval stays below zero. 2025-26 is the tuning season and was not in that pool. Stop improving the single-gameweek forecast. The next batch is the decision layer: multi-week transfer planning, hit discipline, chip timing, and captaincy. That layer is not built in this batch. Official xP is the forecast input until a later pre-registered test says otherwise. The clean holdout is 2026/27 from gameweek 6. See `reports/procedure_audit.md`.
 
 ## Objective functions (from the project outline)
 

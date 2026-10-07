@@ -1,7 +1,11 @@
 {
   "season": "2026-27",
   "frozen": "2026-10-06",
-  "rule": "Do not modify these snapshots. Do not fit a parameter on 2026-27. The closed-season comparison does not include this season.",
+  "rule": "Do not modify these snapshots. Do not fit a parameter on 2026-27. The closed-season comparison does not include this season. Gameweeks 1-5 were already read. The clean holdout starts at gameweek 6. Timestamped files under data/predictions/ are the pre-deadline forecasts. A hash of a file that keeps growing is not a freeze of a future gameweek.",
+  "clean_holdout_from_gw": 6,
+  "contaminated_through_gw": 5,
+  "contamination": "Gameweeks 1-5 of 2026-27 were read by the chip-hurdle and horizon trials. The clean holdout starts at gameweek 6.",
+  "predictions": "Timestamped files under data/predictions/ are the pre-deadline forecasts. A hash of a file that keeps growing is not a freeze of a future gameweek.",
   "tracked": {
     "data/cache/player_gw_2026_27.csv": "ffe911b65b5019529f8a7a322ad058e013a0e6146677c35d796f075e2572f09b",
     "data/cache/E0_2627.csv": "8e21d4821be776332f3504f55f85b4277f326f03513b2c7501fbdedf92b8b1a2",

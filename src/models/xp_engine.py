@@ -260,11 +260,21 @@ def add_player_priors(
             pos_mean = fill_from.groupby("position")[src].mean()
             out[col] = out[col].fillna(out["position"].map(pos_mean))
 
-    # Team expanding attack (sum of player xG per team-fixture, then team expanding mean)
+    # Team expanding attack. The sum uses players who played. A fixture where
+    # nobody played still receives the shift-1 team rate, so a teammate's
+    # scored-week row is not what attaches the prior.
     played = out.loc[out["minutes"] > 0]
-    team_fix = played.groupby(
+    played_fix = played.groupby(
         ["team_norm", "fixture_id", "date", "gw"], as_index=False
     ).agg(team_xg=("xG", "sum"), team_xa=("xA", "sum"))
+    all_fix = out.groupby(
+        ["team_norm", "fixture_id", "date", "gw"], as_index=False
+    ).size()
+    team_fix = all_fix.drop(columns="size").merge(
+        played_fix,
+        on=["team_norm", "fixture_id", "date", "gw"],
+        how="left",
+    )
     team_fix = team_fix.sort_values(["team_norm", "date", "gw"], kind="mergesort")
     tg = team_fix.groupby("team_norm", sort=False)
     team_fix["exp_team_xg"] = tg["team_xg"].transform(_exp_mean)

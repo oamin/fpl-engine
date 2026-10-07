@@ -121,7 +121,18 @@ def assert_reportable(audit: dict[str, Any], intervals: dict[str, Any]) -> None:
             if not math.isfinite(float(row[field])):
                 raise RuntimeError(f"refusing report: {key} has no finite {field}")
         counts = row.get("n_gws") or {}
+        incomplete = row.get("incomplete_seasons") or {}
         for season in CLOSED_SEASONS:
+            if season in incomplete:
+                if season in counts:
+                    raise RuntimeError(
+                        f"refusing report: {season} is incomplete and was still pooled for {key}"
+                    )
+                if int(incomplete[season]) >= min_gws:
+                    raise RuntimeError(
+                        f"refusing report: {season} was marked incomplete with {incomplete[season]} gameweeks"
+                    )
+                continue
             if int(counts.get(season, 0)) < min_gws:
                 raise RuntimeError(
                     f"refusing report: {season} has fewer than {min_gws} gameweeks for {key}"
@@ -336,6 +347,15 @@ def _failures_paths() -> list[str]:
         failures.append("pass_margin is still a season-total bar")
     if matrix.get("holdout_season") != HOLDOUT_SEASON:
         failures.append("matrix holdout is not the frozen 2026-27 season")
+    if int(protocol.get("clean_holdout_from_gw") or 0) != 6:
+        failures.append("the clean 2026-27 holdout does not start at gameweek 6")
+    if int(protocol.get("holdout_contaminated_through_gw") or 0) != 5:
+        failures.append("gameweeks 1-5 are not marked as already read")
+    enc = protocol.get("encompassing") or {}
+    if "score_xp" not in str(enc.get("formula") or "") or "score_official_xp" not in str(enc.get("formula") or ""):
+        failures.append("the encompassing formula is not official xP plus the engine")
+    if "entirely above 0" not in str(enc.get("survive_if") or ""):
+        failures.append("the encompassing survival rule is not locked")
     import src.live.benchmark as benchmark
 
     body = inspect.getsource(benchmark.build_frames)
@@ -363,6 +383,95 @@ def _failures_official_xp_unused() -> list[str]:
     return []
 
 
+def _xp_of(rows: list[dict[str, object]], player_id: str, gw: int) -> float:
+    frame = compute_xp(_score_frame(rows))
+    hit = frame.loc[(frame["player_id"] == player_id) & (frame["gw"] == gw)]
+    if hit.empty:
+        return float("nan")
+    return float(hit["xp"].iloc[0])
+
+
+def _xmi_of(rows: list[dict[str, object]], player_id: str, gw: int) -> float:
+    frame = _score_frame(rows)
+    hit = frame.loc[(frame["player_id"] == player_id) & (frame["gw"] == gw)]
+    if hit.empty:
+        return float("nan")
+    return float(hit["xmi"].iloc[0])
+
+
+def _panel() -> list[dict[str, object]]:
+    rows = []
+    for gw in range(1, 7):
+        rows.append(
+            _row(
+                player_id="regular",
+                gw=gw,
+                date=f"2024-08-{gw:02d}",
+                fixture_id=f"2024-08-{gw:02d}:arsenal:wolves",
+                minutes=0.0 if gw == 5 else 90.0,
+                total_points=0.0 if gw == 5 else 6.0,
+                xG=0.2,
+            )
+        )
+    rows.append(
+        _row(
+            player_id="mate",
+            gw=5,
+            date="2024-08-05",
+            fixture_id="2024-08-05:arsenal:wolves",
+            minutes=90.0,
+            total_points=2.0,
+            xG=0.1,
+        )
+    )
+    return rows
+
+
+def _failures_perturbation() -> list[str]:
+    """Scores at the deadline stay put when the scored week is perturbed."""
+    failures: list[str] = []
+    base = _panel()
+    current = _xp_of(base, "regular", 5)
+    if not math.isfinite(current):
+        return ["the perturbation panel did not produce a score"]
+    bumped = [dict(row) for row in base]
+    for row in bumped:
+        if row["player_id"] == "regular" and row["gw"] == 5:
+            row["minutes"] = 90.0
+            row["total_points"] = 40.0
+            row["xG"] = 4.0
+    if abs(_xp_of(bumped, "regular", 5) - current) > 1e-9:
+        failures.append("the scored week's minutes, points or xG changed that week's xp")
+    without_mate = [row for row in base if not (row["player_id"] == "mate" and row["gw"] == 5)]
+    if abs(_xp_of(without_mate, "regular", 5) - current) > 1e-9:
+        failures.append("removing another player's scored-week row changed xp")
+    phantom = base + [
+        _row(
+            player_id="phantom",
+            gw=5,
+            date="2024-08-05",
+            fixture_id="2024-08-05:arsenal:wolves",
+            minutes=90.0,
+            total_points=90.0,
+            xG=6.0,
+        )
+    ]
+    if abs(_xp_of(phantom, "regular", 5) - current) > 1e-9:
+        failures.append("a scored-week row that did not exist changed xp")
+    kept = _xmi_of(base, "regular", 6)
+    dropped = _xmi_of(
+        [row for row in base if not (row["player_id"] == "regular" and row["gw"] == 5)],
+        "regular",
+        6,
+    )
+    if not (math.isfinite(kept) and math.isfinite(dropped)) or abs(kept - dropped) < 1e-9:
+        failures.append("deleting a past 0-minute row left the next week's minutes unchanged")
+    src = inspect.getsource(cluster_interval)
+    if "rng.integers(0, arr.size, size=arr.size)" not in src:
+        failures.append("the interval does not resample one draw per gameweek")
+    return failures
+
+
 def run_asof_audit() -> dict[str, Any]:
     failures: list[str] = []
     failures.extend(_failures_sheet())
@@ -370,4 +479,5 @@ def run_asof_audit() -> dict[str, Any]:
     failures.extend(_failures_odds_rules())
     failures.extend(_failures_paths())
     failures.extend(_failures_official_xp_unused())
+    failures.extend(_failures_perturbation())
     return {"passed": not failures, "failures": failures}
