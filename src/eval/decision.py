@@ -648,6 +648,36 @@ def calibrate(
     return out
 
 
+def loso_thresholds(transfers: pd.DataFrame) -> list[dict[str, Any]]:
+    """One-week hurdle fit on the other seasons. The result is not applied.
+
+    ``transfers`` uses ``predicted`` and the decision-week point gap in
+    ``realised``. A non-positive or unidentified slope has no threshold.
+    """
+    if transfers.empty:
+        return []
+    seasons = list(dict.fromkeys(transfers["season"].astype(str).tolist()))
+    rows: list[dict[str, Any]] = []
+    for held in seasons:
+        train = transfers.loc[transfers["season"].astype(str) != held]
+        fit = ols_line(
+            train["predicted"].to_numpy(float),
+            train["realised"].to_numpy(float),
+        )
+        row: dict[str, Any] = {"held_out": held, "n": int(len(train))}
+        if fit is None or fit[1] <= 0.0:
+            row["a"] = None if fit is None else fit[0]
+            row["b"] = None if fit is None else fit[1]
+            row["threshold"] = None
+        else:
+            intercept, slope = fit
+            row["a"] = intercept
+            row["b"] = slope
+            row["threshold"] = float((HIT_COST - intercept) / slope)
+        rows.append(row)
+    return rows
+
+
 def _complete(rows: pd.DataFrame, column: str, minimum: int) -> tuple[dict[str, np.ndarray], dict[str, int]]:
     complete: dict[str, np.ndarray] = {}
     incomplete: dict[str, int] = {}

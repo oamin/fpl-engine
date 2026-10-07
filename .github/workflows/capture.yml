@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 jobs:
   capture:
@@ -33,3 +34,23 @@ jobs:
             git commit -m "Capture the FPL bootstrap before the deadline"
             git push
           fi
+      - name: Open an issue when the capture fails
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = "FPL capture failed";
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const existing = await github.rest.issues.listForRepo({
+              owner, repo, state: "open", per_page: 30,
+            });
+            const already = existing.data.find((issue) => issue.title === title);
+            if (already) return;
+            const run = `${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}`;
+            await github.rest.issues.create({
+              owner,
+              repo,
+              title,
+              body: `The scheduled capture failed: ${run}\n\nA gameweek with no snapshot delays the 20-week test. This issue is opened once and left open until someone closes it.`,
+            });

@@ -389,11 +389,16 @@ def _report_lines(
         "weeks. Spearman on eligible rows −0.3487 [−0.3789, −0.3188]. Top-15 "
         "intersection +0.2174 [−0.0257, +0.4949]. Walk-forward coefficient on "
         "score_xp −0.0245 [−0.0356, −0.0139]. The −0.35 figure is that rank gap "
-        "against points, not the correlation of the two forecasts. On 2024-25 "
-        "gameweek 10, Spearman(score_xp, scraped xP) is +0.72, the player-fixture "
-        "key is unique, and a sign flip does not fit better. That week is not a "
-        "join bug. It does not explain the pooled rank gap. See "
-        "`reports/decision_layer.md`.",
+        "against points, not the correlation of the two forecasts. Within position, "
+        "on eligible players, the weekly Spearman with points averages +0.23 for "
+        "`score_xp` and +0.59 for scraped xP, and the gap is negative on 106 of 106 "
+        "defined weeks. FPL points are too noisy for a pre-match forecast to lead by "
+        "that much every week. On filled scrapes, 94.4% of players who played have a "
+        "nonzero scraped xP and 23.7% of players who did not, so the column knows who "
+        "was on the pitch. That is the contamination reading. Scraped xP is unusable "
+        "as a feature as well as a benchmark. On 2024-25 gameweek 10 the two forecasts "
+        "still correlate at +0.72 with a unique key, so this is not a join bug. See "
+        "`reports/decision_placebo.md`.",
         "",
         "Filled weeks in the cache, maximum xP greater than 0, are listed so the "
         "pattern can be checked. An all-zero week is an unfilled scrape. That "

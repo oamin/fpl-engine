@@ -2,16 +2,13 @@
   "updated": "2026-10-07",
   "milestone": "decision-placebo",
   "status": "reviewed",
-  "summary": "Greedy minus hold stays +7.36 points per gameweek and is a squad that never transfers. The same rule on scores shuffled within each gameweek is +1.84 [-0.46, +4.16] and covers zero. Greedy on score_xp minus greedy on expected points is -1.67 [-4.44, +1.06] and covers zero. 2022-23 is -14.45 and stays in the pool. The printed 4.33 is (4 - a) / b with intercept -1.14. The printed 0.40 is b/3, not a shrinkage. The one-week slope is +0.49 [+0.10, +1.02]. The withdrawn -0.35 rank gap is negative on 106 of 106 defined weeks. No winner. Chips stay deferred. Gameweeks 1-5 are now separate freeze snapshots.",
+  "summary": "Greedy on score_xp minus the shuffled-score greedy squad is +15.05 [+11.98, +17.92]. About +9.54 is the opening fifteen and +5.51 is a transfer-edge difference with no interval. Greedy on score_xp minus greedy on expected points is -1.67 [-4.44, +1.06] and covers zero. No winner and no threshold was applied. The one-week intercept is +1.16. The in-sample hurdle is +5.80. Leave-one-season-out hurdles are +5.00 to +7.23. Scraped xP Spearman with points is +0.59 against +0.23 for score_xp, which is the contamination reading. 2022-23 stays in the pool. Nothing is tuned.",
   "artifacts": [
     "reports/decision_placebo.md",
-    "reports/decision_layer.md",
-    "reports/CURRENT.md",
+    "reports/procedure_audit.md",
     "data/processed/placebo_weeks.csv",
-    "data/processed/placebo_transfers.csv",
-    "data/processed/spearman_by_week.csv",
     "data/processed/rank_gap_by_week.csv",
-    "data/holdout/2026-27/player_gw/gw01.csv",
+    "data/processed/average_entry_score_2025_26.csv",
     "experiments/protocol.json"
   ]
 }

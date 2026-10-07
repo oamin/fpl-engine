@@ -18,6 +18,7 @@ from src.eval.decision import (
     chips_fired,
     collapse_gameweek,
     greedy_step,
+    loso_thresholds,
     permute_week,
     pool_columns,
     realised_over,
@@ -299,6 +300,20 @@ class DecisionRuleTest(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             assert_open_score(19, "score_xp")
         assert_open_score(20, "score_xp")
+
+    def test_a_non_positive_slope_has_no_threshold_and_the_rule_does_not_read_it(self) -> None:
+        transfers = pd.DataFrame(
+            {
+                "season": ["2022-23"] * 4 + ["2023-24"] * 4,
+                "predicted": [1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0],
+                "realised": [4.0, 3.0, 2.0, 1.0, 1.0, 2.0, 3.0, 4.0],
+            }
+        )
+        folds = {row["held_out"]: row for row in loso_thresholds(transfers)}
+        self.assertIsNone(folds["2023-24"]["threshold"])
+        self.assertAlmostEqual(folds["2022-23"]["threshold"], (4.0 - 0.0) / 1.0)
+        self.assertNotIn("loso_thresholds", inspect.getsource(greedy_step))
+        self.assertNotIn("hit_threshold", inspect.getsource(greedy_step))
 
     def test_the_naive_score_replays_without_doubling_the_column(self) -> None:
         played = replay_season(

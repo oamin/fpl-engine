@@ -94,6 +94,8 @@ class AlignmentTest(unittest.TestCase):
         by_gw = {row["gw"]: row for row in rows}
         self.assertTrue(by_gw[10]["negative"])
         self.assertAlmostEqual(by_gw[10]["rank_gap"], -2.0)
+        self.assertAlmostEqual(by_gw[10]["rho_score"], -1.0)
+        self.assertAlmostEqual(by_gw[10]["rho_scraped"], 1.0)
         self.assertTrue(by_gw[12]["undefined"])
         self.assertFalse(by_gw[12]["negative"])
 

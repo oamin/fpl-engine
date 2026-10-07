@@ -111,7 +111,8 @@ def eligible_rank_gap_by_week(frame: pd.DataFrame) -> list[dict[str, Any]]:
         players = base[keep].merge(summed, on="player_id", how="left")
         official = pd.to_numeric(players["official_xp"], errors="coerce")
         filled = bool(official.notna().any() and float(official.max()) > 0.0)
-        parts: list[float] = []
+        score_levels: list[float] = []
+        scraped_levels: list[float] = []
         if filled:
             for position in POSITIONS:
                 group = players.loc[players["position"] == position]
@@ -122,16 +123,19 @@ def eligible_rank_gap_by_week(frame: pd.DataFrame) -> list[dict[str, Any]]:
                 rho_score = _spearman(y[mask], score[mask])
                 rho_scraped = _spearman(y[mask], scraped[mask])
                 if np.isfinite(rho_score) and np.isfinite(rho_scraped):
-                    parts.append(float(rho_score - rho_scraped))
-        gap = float(np.mean(parts)) if parts else None
+                    score_levels.append(float(rho_score))
+                    scraped_levels.append(float(rho_scraped))
+        gap = float(np.mean(np.subtract(score_levels, scraped_levels))) if score_levels else None
         rows.append(
             {
                 "season": season,
                 "gw": int(gw),
                 "rank_gap": gap,
+                "rho_score": float(np.mean(score_levels)) if score_levels else None,
+                "rho_scraped": float(np.mean(scraped_levels)) if scraped_levels else None,
                 "negative": bool(gap is not None and gap < 0.0),
                 "undefined": gap is None,
-                "n_positions": int(len(parts)),
+                "n_positions": int(len(score_levels)),
             }
         )
     return rows

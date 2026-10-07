@@ -17,6 +17,7 @@ from src.eval.alignment import eligible_rank_gap_by_week, spearman_by_week
 from src.eval.decision import (
     SCORE_COLUMN,
     calibrate,
+    loso_thresholds,
     pool_columns,
     replay_season,
 )
@@ -104,6 +105,8 @@ def run() -> None:
             paired_rows.append({**row, "contrast": "greedy_shuffled_minus_hold_shuffled"})
         for row in _paired(season, xp_g, xp_h):
             paired_rows.append({**row, "contrast": "greedy_xp_minus_hold_xp"})
+        for row in _paired(season, xp_g, sh_g):
+            paired_rows.append({**row, "contrast": "greedy_xp_minus_greedy_shuffled"})
         for row in xp["transfers"]:
             transfer_rows.append({"season": season, "score": SCORE_COLUMN, **row})
         rank_rows.extend(spearman_by_week(frame))
@@ -115,6 +118,7 @@ def run() -> None:
     intervals = pool_columns(
         wide,
         (
+            "greedy_xp_minus_greedy_shuffled",
             "greedy_xp_minus_greedy_exp",
             "greedy_shuffled_minus_hold_shuffled",
             "greedy_xp_minus_hold_xp",
@@ -131,6 +135,7 @@ def run() -> None:
     week_fit = calibrate(
         one_week, n_boot=int(protocol["bootstrap"]), seed=int(protocol["seed"])
     )
+    folds = loso_thresholds(one_week)
     ranks = pd.DataFrame(rank_rows)
     gaps = pd.DataFrame(gap_rows)
     negative = ranks.loc[ranks["negative"]].sort_values(["season", "gw"])
@@ -144,7 +149,19 @@ def run() -> None:
     ranks.to_csv(PROCESSED / "spearman_by_week.csv", index=False)
     gaps.to_csv(PROCESSED / "rank_gap_by_week.csv", index=False)
     lines = _lines(
-        protocol, intervals, wide, horizon_fit, week_fit, negative, ranks, gaps, gap_negative, checked
+        protocol,
+        intervals,
+        wide,
+        horizon_fit,
+        week_fit,
+        folds,
+        negative,
+        ranks,
+        gaps,
+        gap_negative,
+        checked,
+        _odds_sentence(protocol),
+        _anchor_sentence(),
     )
     write_gated_report(
         REPORTS / "decision_placebo.md",
@@ -168,6 +185,119 @@ def _fit_sentence(fit: dict[str, Any], label: str) -> str:
     )
 
 
+def _fill_rate_sentence() -> str:
+    """Nonzero scraped xP among players who played, on weeks the column was filled."""
+    cache = ROOT / "data" / "cache"
+    played_hit = played_n = dnp_hit = dnp_n = 0
+    for season in ("2022_23", "2023_24", "2024_25", "2025_26"):
+        frame = pd.read_csv(cache / f"merged_gw_{season}.csv", usecols=["minutes", "xP", "GW"])
+        frame["xP"] = pd.to_numeric(frame["xP"], errors="coerce")
+        filled = frame.groupby("GW")["xP"].transform("max") > 0
+        block = frame.loc[filled]
+        played = block["minutes"].fillna(0) > 0
+        positive = block["xP"].fillna(0) > 0
+        played_hit += int(positive.loc[played].sum())
+        played_n += int(played.sum())
+        dnp_hit += int(positive.loc[~played].sum())
+        dnp_n += int((~played).sum())
+    return (
+        f"On filled scrapes, {played_hit / played_n:.1%} of players who played have a "
+        f"nonzero scraped xP and {dnp_hit / dnp_n:.1%} of players who did not. "
+        "A pre-match forecast does not know who played."
+    )
+
+
+def _odds_sentence(protocol: dict[str, Any]) -> str:
+    """Count sheet rows whose club has no opening-odds fixture. No network."""
+    from src.ingest.fpl_odds import join_players_to_fixtures, load_football_data, load_player_logs
+
+    parts = []
+    for season in protocol["closed_seasons"]:
+        players = load_player_logs(season=season)
+        fixtures = load_football_data(code=protocol["season_codes"][season])
+        _joined, _fix, stats = join_players_to_fixtures(
+            players, fixtures, retain_sheet_rows=True
+        )
+        parts.append(f"{season} {int(stats['n_unmatched'])} of {int(stats['n_player_appearances'])}")
+    return (
+        "Sheet rows with no opening-odds fixture: " + "; ".join(parts) + ". "
+        "A miss of zero means the World Cup break is a gap in the calendar, not a dropped join."
+    )
+
+
+def _anchor_sentence() -> str:
+    path = PROCESSED / "average_entry_score_2025_26.csv"
+    if not path.is_file():
+        return (
+            "The price-target template is a fixed heuristic, not an ownership squad. "
+            "An official average-manager score for 2022-23, 2023-24, and 2024-25 is not in the cache. "
+            "Anchor: null."
+        )
+    frame = pd.read_csv(path)
+    window = frame.loc[frame["gw"].between(5, 38), "average_entry_score"]
+    decision = pd.read_csv(PROCESSED / "decision_weeks.csv")
+    season = decision.loc[decision["season"] == "2025-26"]
+    return (
+        "The price-target template is a fixed heuristic, not an ownership squad. "
+        "`selected` is not an input. It is built once, at the first week a legal squad exists, "
+        "by walking the locked price targets and taking the closest eligible price in that position. "
+        "Ties break toward the higher score, then the lower player id. Later weeks do not transfer. "
+        f"The official average entry score for 2025-26, gameweeks 5–38, is {float(window.mean()):.2f}. "
+        f"On those weeks this replay's hold averages {float(season['hold'].mean()):.2f}, "
+        f"the template {float(season['template'].mean()):.2f}, "
+        f"and greedy {float(season['greedy'].mean()):.2f}. "
+        "The official average includes automatic substitutes, chips, and hits. "
+        "This replay is the eleven plus the captain, with no hit. "
+        "2022-23, 2023-24, and 2024-25 are not in that public file. Anchor for those seasons: null."
+    )
+
+
+def _break_lines(wide: pd.DataFrame) -> list[str]:
+    block = wide.loc[wide["season"] == "2022-23"].sort_values("gw")
+    column = "greedy_xp_minus_greedy_exp"
+    lines = [
+        "## 2022-23, week by week",
+        "",
+        "This is greedy on `score_xp` minus greedy on expected points. "
+        "Gameweek 7 has no sheet, so it is absent. "
+        "Gameweek 16 kicks off on 12 November 2022 and gameweek 17 on 26 December 2022.",
+        "",
+        "| gameweek | points |",
+        "|---:|---:|",
+    ]
+    for row in block.itertuples():
+        lines.append(f"| {int(row.gw)} | {float(getattr(row, column)):+.1f} |")
+    values = block[column]
+    lines += [
+        "",
+        f"The season mean is {float(values.mean()):+.2f} on {len(block)} weeks. "
+        "The loss is in the block before the World Cup break and in the block after it. "
+        "It is not one missing gameweek and it is not dropped from the pool.",
+        "",
+    ]
+    return lines
+
+
+def _fold_lines(folds: list[dict[str, Any]]) -> list[str]:
+    lines = [
+        "| held-out season | training transfers | a1 | b1 | threshold |",
+        "|---|---:|---:|---:|---:|",
+    ]
+    for fold in folds:
+        if fold.get("threshold") is None:
+            threshold = "undefined"
+            a_text = "—"
+            b_text = "—"
+        else:
+            threshold = f"{fold['threshold']:+.2f}"
+            a_text = f"{fold['a']:+.3f}"
+            b_text = f"{fold['b']:+.3f}"
+        lines.append(
+            f"| {fold['held_out']} | {fold['n']} | {a_text} | {b_text} | {threshold} |"
+        )
+    return lines
+
+
 def _week_list(frame: pd.DataFrame, value: str) -> str:
     if frame.empty:
         return "none"
@@ -183,15 +313,19 @@ def _lines(
     wide: pd.DataFrame,
     horizon_fit: dict[str, Any],
     week_fit: dict[str, Any],
+    folds: list[dict[str, Any]],
     negative: pd.DataFrame,
     ranks: pd.DataFrame,
     gaps: pd.DataFrame,
     gap_negative: pd.DataFrame,
     checked: int,
+    odds_text: str,
+    anchor_text: str,
 ) -> list[str]:
     skill = intervals["greedy_xp_minus_greedy_exp"]
     placebo = intervals["greedy_shuffled_minus_hold_shuffled"]
     straw = intervals["greedy_xp_minus_hold_xp"]
+    direct = intervals["greedy_xp_minus_greedy_shuffled"]
     negative_text = (
         "No gameweek has a negative Spearman of the two forecasts."
         if negative.empty
@@ -210,16 +344,39 @@ def _lines(
     )
     a = horizon_fit.get("a")
     b = horizon_fit.get("b")
+    a1 = week_fit.get("a")
+    b1 = week_fit.get("b")
     if a is None or b is None:
-        threshold_text = "The hit threshold is not identified."
+        three_week_text = "The three-week line is not identified."
     else:
-        threshold_text = (
-            f"The printed threshold solves a + b x = 4, so x = (4 − a) / b "
+        three_week_text = (
+            f"The old printed threshold used this three-week line: (4 − a) / b "
             f"= (4 − ({a:+.4f})) / {b:+.4f} = {(4.0 - a) / b:+.3f}. "
-            "Dividing 4 by b would be that number only if the intercept were zero. "
-            f"b/3 = {b / 3:+.4f} rescales the three-week slope to a per-week rate. "
-            "It is not an estimate that high predictions should be shrunk for winner's curse."
+            "That is not the hurdle. A slope near 1.2 is what a three-week sum against "
+            "a one-week prediction looks like. "
+            f"b/3 = {b / 3:+.4f} is a per-week arithmetic rate rescaling of that slope, "
+            "not winner's-curse shrinkage."
         )
+    if a1 is None or b1 is None or float(b1) <= 0.0:
+        one_week_hurdle = "The in-sample one-week hurdle is undefined."
+    else:
+        one_week_hurdle = (
+            f"The one-week intercept is {a1:+.4f}. "
+            f"The in-sample hurdle solves a1 + b1 x = 4, so x = (4 − a1) / b1 "
+            f"= (4 − ({a1:+.4f})) / {b1:+.4f} = {(4.0 - float(a1)) / float(b1):+.3f}. "
+            "That pooled line is an in-sample observation. It was not used to hurdle or execute a transfer."
+        )
+    defined = gaps.loc[~gaps["undefined"]]
+    if len(defined) and "rho_score" in defined.columns:
+        level_text = (
+            f"On {len(defined)} defined weeks the mean within-position Spearman with points "
+            f"is {float(defined['rho_score'].mean()):+.3f} for `score_xp` and "
+            f"{float(defined['rho_scraped'].mean()):+.3f} for scraped xP. "
+            f"On filled weeks from gameweek 5 to 38 those levels are "
+            f"{float(window['rho_score'].mean()):+.3f} and {float(window['rho_scraped'].mean()):+.3f}."
+        )
+    else:
+        level_text = "The two Spearman levels are not on this frame."
     return [
         "# Decision placebo",
         "",
@@ -242,10 +399,21 @@ def _lines(
         "",
         "| contrast | pooled mean [95% interval] | reading |",
         "|---|---:|---|",
+        f"| greedy score_xp − shuffled greedy | {_fmt_interval(direct)} | {_band(direct)} |",
         f"| greedy score_xp − greedy expected points | {_fmt_interval(skill)} | {_band(skill)} |",
         f"| shuffled greedy − shuffled hold | {_fmt_interval(placebo)} | {_band(placebo)} |",
         f"| score_xp greedy − score_xp hold | {_fmt_interval(straw)} | {_band(straw)} |",
         "",
+        "The placebo contrast pairs the realised weekly points of the `score_xp` greedy "
+        "squad against the shuffled-score greedy squad on the same gameweeks. "
+        "It is not a difference of the two hold baselines. Each squad builds its own "
+        "opening fifteen on the column it sees. "
+        f"The two opening squads differ by {float((wide['greedy_xp_minus_greedy_shuffled'] - wide['greedy_xp_minus_hold_xp'] + wide['greedy_shuffled_minus_hold_shuffled']).mean()):+.2f} "
+        f"points a week, and the two greedy-minus-hold edges differ by "
+        f"{float((wide['greedy_xp_minus_hold_xp'] - wide['greedy_shuffled_minus_hold_shuffled']).mean()):+.2f}. "
+        "That second figure has no interval of its own. The direct gap is those two pieces added, "
+        "and its interval is the one in the table. It is the real score against a squad built on noise. "
+        "It is not a win over expected points. Subtracting the published hold rows is not the contrast. "
         "The hold row is the squad that never transfers. It is not the skill comparison. "
         "Permuting the score inside each gameweek does not reproduce a pooled gain "
         "that stays above zero. 2023-24 of that shuffle is several points, so "
@@ -268,22 +436,41 @@ def _lines(
         "|---|---:|---:|",
         *_season_lines(wide, "greedy_shuffled_minus_hold_shuffled"),
         "",
+        "### greedy score_xp − shuffled greedy",
+        "",
+        "| season | weeks | mean |",
+        "|---|---:|---:|",
+        *_season_lines(wide, "greedy_xp_minus_greedy_shuffled"),
+        "",
         "### score_xp greedy − score_xp hold",
         "",
         "| season | weeks | mean |",
         "|---|---:|---:|",
         *_season_lines(wide, "greedy_xp_minus_hold_xp"),
         "",
+        *_break_lines(wide),
+        odds_text,
+        "",
+        "## Template",
+        "",
+        anchor_text,
+        "",
         "## What 4.33 and 0.40 were",
         "",
         _fit_sentence(horizon_fit, "Three-week realised gain on the one-week predicted gain"),
         "",
-        threshold_text,
+        three_week_text,
         "",
         _fit_sentence(week_fit, "The same transfers, realised in the decision week only"),
         "",
-        "The one-week slope is the one that would sit below 1 if selecting the largest "
-        "predicted gain overstated the points. It is not fed back into the rule. "
+        one_week_hurdle,
+        "",
+        "A threshold that is offered as a choice is fit on the other three seasons. "
+        "It is undefined when that slope is not positive. None of these numbers entered the rule.",
+        "",
+        *_fold_lines(folds),
+        "",
+        "No winner is declared between `score_xp` and `score_exp_points`. "
         "At 20 live weeks, an interval that covers zero is undetermined. "
         f"The test continues through gameweek {protocol['encompassing']['continue_to_gw']}.",
         "",
@@ -298,8 +485,10 @@ def _lines(
         "The withdrawn −0.35 is not that correlation. It is, on eligible players, "
         "Spearman(`score_xp`, points) minus Spearman(scraped xP, points), within "
         "position, averaged across positions. "
+        f"{level_text} "
         f"On filled weeks from gameweek 5 to 38 the mean of those weekly gaps is {gap_mean:+.4f}. "
-        f"{gap_text}",
+        f"{gap_text} {_fill_rate_sentence()} "
+        "Scraped xP stays unusable as a feature and as a benchmark.",
         "",
         "2022-23 has no gameweek 7 sheet, so that week is absent rather than negative. "
         "An all-zero scraped column is undefined, not a negative correlation. "
