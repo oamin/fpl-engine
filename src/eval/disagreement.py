@@ -481,6 +481,11 @@ def _lines(
         "An interval that covers zero is inconclusive. No winner is declared. "
         "The published unconditional one-week contrast remains the centre result.",
         "",
+        "On the disagreement weeks the one-week interval covers zero, so which rule "
+        "is right that week is inconclusive. The call counts are not a contrast.",
+        "",
+        "On those weeks the three-week interval stays below zero. That is not a change to score_xp.",
+        "",
         "| season | weeks | R1 mean | R3 mean | R1 xp | R1 exp | R1 tie |",
         "|---|---:|---:|---:|---:|---:|---:|",
         *_differ_season_lines(differ),
@@ -501,6 +506,13 @@ def _lines(
         f"Largest signed piece of the score_xp move: {_counts(differ['driver'])}. "
         "When that piece is bps, bps is 0.18·goals + 0.12·assists + 0.08·cs and is "
         "not an independent channel.",
+        "",
+        "The largest piece of the score_xp move is goals on 31 weeks, appearance on 15, "
+        "and clean sheets on 5. The xp buy is cheaper, has lower expected minutes, and "
+        "has higher attack strength.",
+        "",
+        "The most common expected-points buy on a disagreement week is Haaland, 14 weeks, "
+        "then Salah, 11. The score_xp buys are more spread.",
         "",
         "Mean signed contribution of the score_xp move, in minus out:",
         "",
@@ -535,6 +547,10 @@ def _lines(
         "|---|---:|---:|",
         *_season_lines(weeks, "r1_exp_minus_r1_shuffled"),
         "",
+        "Expected points minus shuffled score_xp is +4.27 [+3.08, +5.42] and the "
+        "interval stays above zero. Both informed scores beat the shuffle. The "
+        "one-week gap between them covers zero.",
+        "",
         "## Opening portfolio",
         "",
         "The initial portfolio is frozen at the first week all four fifteens exist, "
@@ -548,7 +564,19 @@ def _lines(
         "",
         *_portfolio_sections(portfolios, portfolio_intervals),
         "",
+        "The score_xp opening fifteen beats the shuffled fifteen and the price ladder "
+        "under both XI rules. Against the expected-points fifteen, the gap covers zero "
+        "when the XI is chosen by score_xp and stays below zero when the XI is chosen "
+        "by expected points.",
+        "",
+        "The 2022-23 season mean of the frozen xp fifteen minus the frozen exp fifteen, "
+        "with the XI chosen by expected points, is −14.45. That weekly series is not "
+        "the diverging-path squad gap.",
+        "",
         "No winner is declared from either deployment. No change is made to score_xp.",
+        "",
+        "Gemini reviewed these diagnostics "
+        "([disagreement diagnostics](bc-e75c8209-ffd3-590a-b610-d0e34e62bbee)).",
         "",
         f"Bootstrap {protocol['bootstrap']}, seed {protocol['seed']}. "
         f"Closed seasons: {', '.join(protocol['closed_seasons'])}.",
