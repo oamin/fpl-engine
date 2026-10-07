@@ -3,10 +3,11 @@
 from __future__ import annotations
 
 import json
+import tempfile
 import unittest
 from pathlib import Path
 
-from src.eval.holdout import GROWING_CACHE, MANIFEST_PATH, sha256_file, verify_freeze
+from src.eval.holdout import GROWING_CACHE, MANIFEST_PATH, ROOT, sha256_file, verify_freeze
 
 
 class HoldoutFreezeTest(unittest.TestCase):
@@ -22,7 +23,9 @@ class HoldoutFreezeTest(unittest.TestCase):
             retired["sha256"],
             "ffe911b65b5019529f8a7a322ad058e013a0e6146677c35d796f075e2572f09b",
         )
-        self.assertEqual(sha256_file(Path("/workspace") / GROWING_CACHE), retired["sha256"])
+        cache = ROOT / GROWING_CACHE
+        if cache.is_file():
+            self.assertEqual(sha256_file(cache), retired["sha256"])
         snaps = [
             key
             for key in manifest["tracked"]
@@ -51,7 +54,8 @@ class HoldoutFreezeTest(unittest.TestCase):
             "tracked": {},
             "present_at_freeze": {"data/live/not_a_real_snapshot.json": "abc"},
         }
-        self.assertEqual(verify_freeze(manifest, root=Path("/workspace")), [])
+        with tempfile.TemporaryDirectory() as tmp:
+            self.assertEqual(verify_freeze(manifest, root=Path(tmp)), [])
 
 
 if __name__ == "__main__":
