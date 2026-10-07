@@ -213,7 +213,7 @@ IDENTITY_SENTENCE = (
     "but agree on only 1 of 33 weeks and represent distinct processes."
 )
 REQUIRED_SENTENCES = (
-    "The four-season numbers are unchanged. They are the all-weeks sensitivity. The eligible pool is the primary closed-season result.",
+    "The four-season numbers are unchanged. They remain the published all-weeks benchmark. The data-quality eligible pool is a sensitivity, not the primary closed-season result.",
     "Leave-one-season-out intervals measure the sensitivity of pooled estimates to individual season cohorts; they are diagnostic and do not replace the four-season results.",
     "A sign flip or shift in interval bounds when holding out a season is evidence of cohort heterogeneity, not a justification to drop any season or declare a winner.",
     IDENTITY_SENTENCE,
@@ -526,7 +526,7 @@ def _fold_lines(folds: list[dict[str, Any]]) -> list[str]:
         "two complete seasons is not identified. Concordance is not re-aggregated: the weekly "
         "difference is not a stored column.",
         "",
-        "The four-season numbers are unchanged. They are the all-weeks sensitivity. The eligible pool is the primary closed-season result.",
+        "The four-season numbers are unchanged. They remain the published all-weeks benchmark. The data-quality eligible pool is a sensitivity, not the primary closed-season result.",
         "A sign flip or shift in interval bounds when holding out a season is evidence of cohort "
         "heterogeneity, not a justification to drop any season or declare a winner.",
         "",

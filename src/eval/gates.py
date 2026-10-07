@@ -521,10 +521,17 @@ def _failures_paths() -> list[str]:
             failures.append("the eligibility rule repairs the score")
         if eligible.get("combine") != "and":
             failures.append("eligibility is not the conjunction of xG and a prior season")
-        if eligible.get("timing") != "post-hoc" or eligible.get("primary") != "eligible":
-            failures.append("the eligible pool is not the primary post-hoc result")
-        if eligible.get("all_weeks") != "sensitivity":
-            failures.append("the all-weeks pool is not the sensitivity")
+        if eligible.get("timing") != "post-hoc" or eligible.get("eligible_role") != "data_quality_sensitivity":
+            failures.append("the eligible pool is not the post-hoc data-quality sensitivity")
+        if eligible.get("all_weeks") != "published" or eligible.get("primary_result") is not None:
+            failures.append("the all-weeks pool is not the published benchmark")
+        if "primary" in eligible:
+            failures.append("eligibility still names a primary result")
+        mechanism = protocol.get("mechanism") or {}
+        if mechanism.get("winner") is not None or mechanism.get("changes_score") is not False:
+            failures.append("the mechanism table changes the score or names a winner")
+        if mechanism.get("uses_realised_points") is not False or int(mechanism.get("n_weeks") or 0) != 51:
+            failures.append("the mechanism table is not the 51 disagreement weeks")
         if live.get("decision_capture") != "t1_same_stamp" or live.get("choose_after_seeing_scores") is not False:
             failures.append("the decision capture is not the same-stamp t1 pair")
     manifest = json.loads((ROOT / "data" / "live" / "HOLDOUT_FREEZE.json").read_text(encoding="utf-8"))
