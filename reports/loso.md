@@ -49,7 +49,7 @@ Leave-one-season-out intervals measure the sensitivity of pooled estimates to in
 
 Each fold drops one season and resamples gameweeks inside each remaining season. The point estimate is the mean of the concatenated weeks. B=1000 and the seed is 0. A remaining season under 20 weeks is omitted. A conditional disagreement fold uses a minimum of 5 weeks instead, and that waiver is unchanged. A fold with fewer than two complete seasons is not identified. Concordance is not re-aggregated: the weekly difference is not a stored column.
 
-The four-season numbers are unchanged. They are the all-weeks sensitivity. The eligible pool is the primary closed-season result.
+The four-season numbers are unchanged. They remain the published all-weeks benchmark. The data-quality eligible pool is a sensitivity, not the primary closed-season result.
 A sign flip or shift in interval bounds when holding out a season is evidence of cohort heterogeneity, not a justification to drop any season or declare a winner.
 
 The published unconditional three-week interval is −1.69 [−2.92, −0.52]. Its exclusion of zero does not survive when 2022-23 is held out. The claim between the engine and expected points is inconclusive.

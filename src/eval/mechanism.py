@@ -39,6 +39,8 @@ REQUIRED = (
     "The four slices of the minutes-versus-attack partition are mutually exclusive and sum to the 51 disagreement weeks; overlapping category gaps must not be summed.",
     "No winner is declared between `score_xp` and `score_exp_points`, and `score_xp` is unchanged.",
     "A slice interval that excludes zero is not a win and does not change score_xp.",
+    "On these 51 weeks the fixture flag fired on the same weeks as the attack flag, so it is not a second channel in this table.",
+    "The both slice and the minutes-only slice are undefined, because each has only one season with at least 5 weeks. The attack-only slice covers zero on both horizons.",
 )
 FORBIDDEN = (
     "The eligible pool is the primary closed-season result.",
@@ -212,10 +214,26 @@ def _fmt(row: dict[str, Any]) -> str:
     return f"{row['mean']:+.4f} [{row['lo']:+.4f}, {row['hi']:+.4f}]"
 
 
+def _require_two_seasons(summary: dict[str, Any]) -> dict[str, Any]:
+    """One season is not a cluster interval. The 5-week floor is unchanged."""
+    counted = summary.get("n_disagree") or {}
+    if len(counted) < 2:
+        blank = dict(summary)
+        blank["mean"] = None
+        blank["lo"] = None
+        blank["hi"] = None
+        return blank
+    return summary
+
+
 def _interval_row(frame: pd.DataFrame, n_boot: int, seed: int) -> dict[str, dict[str, Any]]:
     return {
-        "r1": conditional_interval(frame, "r1_xp_minus_r1_exp", n_boot=n_boot, seed=seed, minimum=MIN_DISAGREE),
-        "r3": conditional_interval(frame, "r3_xp_minus_r3_exp", n_boot=n_boot, seed=seed, minimum=MIN_DISAGREE),
+        "r1": _require_two_seasons(
+            conditional_interval(frame, "r1_xp_minus_r1_exp", n_boot=n_boot, seed=seed, minimum=MIN_DISAGREE)
+        ),
+        "r3": _require_two_seasons(
+            conditional_interval(frame, "r3_xp_minus_r3_exp", n_boot=n_boot, seed=seed, minimum=MIN_DISAGREE)
+        ),
     }
 
 
@@ -278,9 +296,15 @@ def _lines(labelled: pd.DataFrame, groups: dict[str, dict[str, Any]], later_week
             "",
             "A slice interval that excludes zero is not a win and does not change score_xp.",
             "",
+            "On these 51 weeks the fixture flag fired on the same weeks as the attack flag, so it is "
+            "not a second channel in this table.",
+            "",
+            "The both slice and the minutes-only slice are undefined, because each has only one season "
+            "with at least 5 weeks. The attack-only slice covers zero on both horizons.",
+            "",
             "No winner is declared between `score_xp` and `score_exp_points`, and `score_xp` is unchanged.",
             "",
-            "Gemini kept the flag definitions "
+            "Gemini kept the flag definitions and reviewed the table "
             "([mechanism](bc-e75c8209-ffd3-590a-b610-d0e34e62bbee)).",
             "",
             "Bootstrap 1000, seed 0. A season with fewer than 5 weeks in a group is omitted. "
@@ -327,6 +351,16 @@ def run() -> None:
         block = labelled.loc[labelled["slice"] == name]
         groups[name] = {"weeks": len(block), **_interval_row(block, n_boot, seed)}
     later_weeks = int((labelled["season"].astype(str) != "2022-23").sum())
+    if not bool((labelled["fixture_to_xp"] == labelled["attack_to_xp"]).all()):
+        raise RuntimeError("the fixture flag is not the attack flag on this set")
+    for name in ("both", "minutes_only"):
+        for horizon in ("r1", "r3"):
+            if groups[name][horizon].get("mean") is not None:
+                raise RuntimeError(f"the {name} slice was identified from one season")
+    for horizon in ("r1", "r3"):
+        row = groups["attack_only"][horizon]
+        if row.get("mean") is None or float(row["lo"]) > 0.0 or float(row["hi"]) < 0.0:
+            raise RuntimeError("the attack-only reading is not a cover of zero")
     lines = _lines(labelled, groups, later_weeks)
     text = "\n".join(lines)
     for sentence in REQUIRED:

@@ -4,7 +4,15 @@ from __future__ import annotations
 
 import unittest
 
-from src.eval.mechanism import FLAGS, FORBIDDEN, REQUIRED, SLICES, flag_row, slice_name
+from src.eval.mechanism import (
+    FLAGS,
+    FORBIDDEN,
+    REQUIRED,
+    SLICES,
+    _require_two_seasons,
+    flag_row,
+    slice_name,
+)
 
 
 class MechanismFlagTest(unittest.TestCase):
@@ -57,3 +65,13 @@ class MechanismFlagTest(unittest.TestCase):
         for banned in FORBIDDEN:
             self.assertNotIn(banned, text)
         self.assertIn("score_xp` is unchanged", text)
+
+    def test_one_season_is_undefined(self) -> None:
+        blank = _require_two_seasons(
+            {"mean": -3.0, "lo": -6.0, "hi": 0.2, "n_disagree": {"2022-23": 7}}
+        )
+        self.assertIsNone(blank["mean"])
+        kept = _require_two_seasons(
+            {"mean": 1.0, "lo": -1.0, "hi": 2.0, "n_disagree": {"2023-24": 5, "2024-25": 7}}
+        )
+        self.assertEqual(kept["mean"], 1.0)
