@@ -1,10 +1,11 @@
 {
   "updated": "2026-10-07",
-  "milestone": "reversion",
+  "milestone": "reversion-players",
   "status": "reviewed",
-  "summary": "The next residual rises with the previous residual. The slope stays above zero for expected points and for score_xp, including when the previous week had at least 60 minutes. That is persistence, not a bounce. No reversion term is added. Same-fixture minutes beat the historical xmi on the one-week transfer, and the gap versus expected points covers zero. Those minutes are not a pre-deadline forecast. score_xp is unchanged.",
+  "summary": "The 2024-25 case study is five players at the 10th, 30th, 50th, 70th, and 90th percentiles of median ownership, each with at least eight weeks after a single 90-minute fixture. The names are Mavropanos, Merino, Ben Johnson, Ødegaard, and Havertz. Johnson is the single-player table. The same pool of 230 reaches Mohamed Salah at 66.7 percent, so the 90th percentile is not the extreme tail. The delta is the next baseline minus the previous week's points. Large negative cells follow a previous haul. No reversion term is added. score_xp is unchanged.",
   "artifacts": [
-    "reports/reversion.md",
-    "data/processed/oracle_minutes_weeks.csv"
+    "reports/reversion_players.md",
+    "data/processed/reversion_players_2024_25.csv",
+    "data/processed/fdr_2024_25.csv"
   ]
 }
