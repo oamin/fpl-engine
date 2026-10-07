@@ -388,9 +388,12 @@ def _report_lines(
         "−0.0565 [−0.0680, −0.0442] on the three seasons with at least 20 filled "
         "weeks. Spearman on eligible rows −0.3487 [−0.3789, −0.3188]. Top-15 "
         "intersection +0.2174 [−0.0257, +0.4949]. Walk-forward coefficient on "
-        "score_xp −0.0245 [−0.0356, −0.0139]. The −0.35 rank gap is unexplained. "
-        "It is not evidence that the scrape is post-match, and it is not evidence "
-        "that it is clean.",
+        "score_xp −0.0245 [−0.0356, −0.0139]. The −0.35 figure is that rank gap "
+        "against points, not the correlation of the two forecasts. On 2024-25 "
+        "gameweek 10, Spearman(score_xp, scraped xP) is +0.72, the player-fixture "
+        "key is unique, and a sign flip does not fit better. That week is not a "
+        "join bug. It does not explain the pooled rank gap. See "
+        "`reports/decision_layer.md`.",
         "",
         "Filled weeks in the cache, maximum xP greater than 0, are listed so the "
         "pattern can be checked. An all-zero week is an unfilled scrape. That "

@@ -4,9 +4,11 @@ Cursor chooses the next pre-registered comparison. The PI is not asked to pick. 
 
 ## Procedure, locked 2026-10-07
 
-The +34 season-total bar is retired. Stages 14–34, and the later climbs on that pool, are superseded. See `reports/SUPERSEDED.md`. Sharpe, ownership, and churn stay parked. Pull requests 53–56 stay open as finished counts. They are not extended, and a chip simulator stays deferred. Stage 13 (xP trailed expected points at horizon 8) and stage 18 (ridge tied xP under budget, −2) stay set aside.
+The +34 season-total bar is retired. Stages 14–34, and the later climbs on that pool, are superseded. See `reports/SUPERSEDED.md`. Sharpe, ownership, and churn stay parked. Stage 13 (xP trailed expected points at horizon 8) and stage 18 (ridge tied xP under budget, −2) stay set aside.
 
-Scraped Vaastav `xP` is not a historical benchmark and not a feature. The README says it is `ep_this` taken after the gameweek, and the timing is uncertain. The coefficient −0.0245 and the Spearman gap −0.35 against that column are withdrawn. They are not a reason to stop the forecast. The live encompassing test uses only pre-deadline captures from 2026/27 gameweek 6 onward. It has zero played weeks, so the decision is held. score_xp stays the forecast. A survival call needs 20 such gameweeks and is not made here. See `reports/procedure_audit.md`.
+Scraped Vaastav `xP` is not a historical benchmark and not a feature. The README says it is `ep_this` taken after the gameweek, and the timing is uncertain. The coefficient −0.0245 and the Spearman gap −0.35 against that column are withdrawn. On 2024-25 gameweek 10 the two forecasts correlate at +0.72, with a unique key and no sign flip. That week is not a join bug. It is still not a reason to stop the forecast, and one week does not explain the pooled rank gap. The live encompassing test uses only pre-deadline captures from 2026/27 gameweek 6 onward. It has zero played weeks, so the decision is held. score_xp stays the forecast. A survival call needs 20 such gameweeks. That test detects a log-score effect of about 0.010 at 80% power, not 0.006 and not −0.0016. See `reports/procedure_audit.md` and `reports/decision_layer.md`.
+
+Pull requests 33–37 and 39–56 are closed. The counts in them are not extended. A chip simulator stays deferred. The growing `player_gw_2026_27.csv` hash was not rewritten. Before that file is updated for a later gameweek, store one immutable snapshot per gameweek instead of replacing the single hash.
 
 ## Objective functions (from the project outline)
 

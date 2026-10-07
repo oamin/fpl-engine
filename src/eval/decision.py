@@ -804,10 +804,13 @@ def _report_lines(
         "built the same week from the locked price targets. Hold keeps that fifteen. "
         "Greedy may make one same-position free transfer when the score gain is positive. "
         "It does not bank a second transfer and it does not take a hit. "
+        "That rule is not the published hold margin of 1.25. "
         "The template never transfers. A week that cannot fill both fifteens is skipped. "
         f"Gameweeks in the table: {counts}.",
         "",
         "A positive mean is points per gameweek for the first name.",
+        "",
+        _season_table(weeks),
         "",
         "| comparison | mean [95% interval] |",
         "|---|---:|",
@@ -831,7 +834,31 @@ def _report_lines(
         "",
         "The chip map is empty. Chips did not fire. Free Hit 12 and Wildcard 16 were not searched.",
         "",
+        "## Review",
+        "",
+        "The formulas were locked before the run (bc-ffc0ced9). "
+        "The diagnostics were reviewed after it (bc-3d00af39). "
+        "The weekly gap is not a captain counted twice and not a double gameweek summed twice. "
+        "The Gameweek 10 correlation shows the two forecasts move together. "
+        "It does not explain the pooled −0.35 rank gap against points. "
+        "0.010 is the effect 20 gameweeks detect at 80% power. "
+        "The null half-width is about half of that, which is a weaker bar. "
+        "The hit threshold is an observation. It was not used to choose a transfer.",
+        "",
     ]
+
+
+def _season_table(weeks: pd.DataFrame) -> str:
+    lines = [
+        "| season | weeks | hold | greedy | template |",
+        "|---|---:|---:|---:|---:|",
+    ]
+    for season, block in weeks.groupby("season", sort=True):
+        lines.append(
+            f"| {season} | {len(block)} | {block['hold'].mean():.2f} | "
+            f"{block['greedy'].mean():.2f} | {block['template'].mean():.2f} |"
+        )
+    return "\n".join(lines)
 
 
 if __name__ == "__main__":
