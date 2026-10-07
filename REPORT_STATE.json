@@ -1,12 +1,10 @@
 {
   "updated": "2026-10-07",
-  "milestone": "eligibility",
+  "milestone": "reversion-signal",
   "status": "reviewed",
-  "summary": "The claim between the engine and expected points is inconclusive. The eligible pool, three seasons and about 100 weeks, is the primary closed-season result. The all-weeks pool is the sensitivity. The shared 2022-23 total of +267 is that season's sum only: weekly gains agree on 1 week, players on 2 weeks, and 2023-24 sums to +461 and +438. The decision capture is the same-stamp pair in the window from three hours to fifteen minutes before the deadline. The 07:04/08:04 shadow is not that pair.",
+  "summary": "The per-90 z-score does not clear its bars. The one-week score_xp correlation with the next per-90 residual is +0.034 and stays above zero. Both Hurst medians stay above 0.5. Every oversold-minus-overbought interval covers zero, so a gap of half a point per 90 is not established. The 2025-26 horizon-2 point is not the pool. No reversion term is added. score_xp is unchanged.",
   "artifacts": [
-    "reports/eligibility.md",
-    "reports/loso.md",
-    "data/processed/transfer_gains.csv",
-    "data/predictions/2026-27/gw06/shadow_20261007T181339Z.csv"
+    "reports/reversion_signal.md",
+    "data/processed/reversion_signal_summary.csv"
   ]
 }
