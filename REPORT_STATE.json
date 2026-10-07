@@ -1,14 +1,12 @@
 {
   "updated": "2026-10-07",
-  "milestone": "decision-placebo",
+  "milestone": "common-state",
   "status": "reviewed",
-  "summary": "Greedy on score_xp minus the shuffled-score greedy squad is +15.05 [+11.98, +17.92]. About +9.54 is the opening fifteen and +5.51 is a transfer-edge difference with no interval. Greedy on score_xp minus greedy on expected points is -1.67 [-4.44, +1.06] and covers zero. No winner and no threshold was applied. The one-week intercept is +1.16. The in-sample hurdle is +5.80. Leave-one-season-out hurdles are +5.00 to +7.23. Scraped xP Spearman with points is +0.59 against +0.23 for score_xp, which is the contamination reading. 2022-23 stays in the pool. Nothing is tuned.",
+  "summary": "From one frozen score-blind squad, score_xp minus expected points is -0.29 [-0.87, +0.31] on the decision week and covers zero. Over three weeks the same contrast is -1.69 [-2.92, -0.52] and stays below zero in every season. That is not a decision to replace score_xp. Against a within-week shuffle the one-week gap is +3.98 [+2.83, +5.13]. Legal-move concordance is +0.014 [+0.007, +0.019]. The 2022-23 squad gap of -14.45 is not the sum of that week's transfers (+1.24). No winner and no model change.",
   "artifacts": [
-    "reports/decision_placebo.md",
-    "reports/procedure_audit.md",
-    "data/processed/placebo_weeks.csv",
-    "data/processed/rank_gap_by_week.csv",
-    "data/processed/average_entry_score_2025_26.csv",
+    "reports/common_state.md",
+    "data/processed/common_state_weeks.csv",
+    "data/processed/forensic_2022_23.csv",
     "experiments/protocol.json"
   ]
 }

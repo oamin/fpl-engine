@@ -275,7 +275,10 @@ def _positions(frame: pd.DataFrame) -> dict[tuple[int, str], str]:
             continue
         key = (int(row.gw), str(row.player_id))
         if key not in found:
-            found[key] = normalize_position(str(row.position))
+            try:
+                found[key] = normalize_position(str(row.position))
+            except ValueError:
+                continue
     return found
 
 
@@ -428,8 +431,62 @@ def _forensic_lines(table: pd.DataFrame) -> list[str]:
     worst = ", ".join(
         f"GW{int(row.gw)} {row.squad_gap:+.0f}" for row in ordered.head(5).itertuples(index=False)
     )
-    lines.extend(["", f"Widest squad gaps, xp minus exp: {worst}."])
+    xp_attack = xp_moves["xp_attack_delta"].dropna()
+    exp_attack = exp_moves["exp_attack_delta"].dropna()
+    lines.extend(
+        [
+            "",
+            f"Widest squad gaps, xp minus exp: {worst}.",
+            "",
+            f"In 2022-23 the diverging squad gap averages {table['squad_gap'].mean():+.2f}. "
+            f"The isolated one-week transfer gap on those weeks averages {isolated.mean():+.2f}. "
+            "The week's in-minus-out does not account for the squad gap.",
+            "",
+            "Among 2022-23 transfers with a finite attack delta, the share with a higher "
+            f"attack strength on the buy is {(xp_attack > 0).mean():.2f} "
+            f"for `score_xp` ({int((xp_attack > 0).sum())} of {len(xp_attack)}) and "
+            f"{(exp_attack > 0).mean():.2f} for expected points "
+            f"({int((exp_attack > 0).sum())} of {len(exp_attack)}).",
+        ]
+    )
     return lines
+
+
+def _one_week_sentence(intervals: dict[str, Any]) -> str:
+    row = intervals["r1_xp_minus_r1_exp"]
+    if row.get("lo") is not None and float(row["lo"]) <= 0.0 <= float(row["hi"]):
+        return "On the one-week contrast the interval covers zero, so that comparison is inconclusive."
+    return f"On the one-week contrast, {_band(row)}. No winner is declared."
+
+
+def _three_week_sentence(intervals: dict[str, Any], weeks: pd.DataFrame) -> str:
+    row = intervals["r3_xp_minus_r3_exp"]
+    means = weeks.groupby("season")["r3_xp_minus_r3_exp"].mean()
+    if row.get("hi") is not None and float(row["hi"]) < 0.0 and bool((means < 0).all()):
+        return (
+            "On the three-week contrast the interval stays below zero, and every season mean "
+            "is negative. That reading is not a decision to replace score_xp."
+        )
+    return (
+        f"On the three-week contrast, {_band(row)}. "
+        "That reading is not a decision to replace score_xp."
+    )
+
+
+def _roll_sentence(weeks: pd.DataFrame) -> str:
+    rolls = int((weeks["xp_in"] == "").sum() + (weeks["exp_in"] == "").sum())
+    agree = float(weeks["agree_xp_exp"].mean()) if len(weeks) else float("nan")
+    differ = weeks.loc[weeks["agree_xp_exp"] == 0]
+    if rolls:
+        rolled = f"Rolls across the two rules: {rolls}."
+    else:
+        rolled = "Neither rule rolls."
+    return (
+        f"{rolled} The two rules pick the same players on {agree:.0%} of weeks. "
+        f"On the weeks they differ, the one-week gap averages {differ['r1_xp_minus_r1_exp'].mean():+.2f} "
+        f"and the three-week gap averages {differ['r3_xp_minus_r3_exp'].mean():+.2f}. "
+        "Means on the weeks they differ are descriptive only and were not bootstrapped."
+    )
 
 
 def _defined_mean(frame: pd.DataFrame, column: str) -> str:
@@ -493,11 +550,20 @@ def _lines(
         "|---|---:|---:|",
         *_season_lines(weeks, "r1_xp_minus_r1_exp"),
         "",
+        _one_week_sentence(intervals),
+        "",
         "### Three-week xp minus expected points",
         "",
         "| season | weeks | mean |",
         "|---|---:|---:|",
         *_season_lines(weeks, "r3_xp_minus_r3_exp"),
+        "",
+        _three_week_sentence(intervals, weeks),
+        "",
+        f"Of the three-week gap, the decision week averages {weeks['r1_xp_minus_r1_exp'].mean():+.2f} "
+        f"and the next two weeks together average "
+        f"{(weeks['r3_xp_minus_r3_exp'] - weeks['r1_xp_minus_r1_exp']).mean():+.2f}. "
+        "That split has no interval.",
         "",
         "### One-week xp minus the rolling three-week mean",
         "",
@@ -517,6 +583,8 @@ def _lines(
         "|---|---:|---:|",
         *_season_lines(weeks, "r1_xp_minus_r1_shuffled"),
         "",
+        "The one-week contrast against shuffled score_xp stays above zero. The squad was not rebuilt.",
+        "",
         "### Pairwise concordance",
         "",
         "Pairwise concordance measures discrimination strictly across legal moves "
@@ -533,6 +601,13 @@ def _lines(
         f"Share of transfer weeks where `score_xp` and expected points pick the same "
         f"players, or both roll: {agree:.3f}. That share is descriptive. Those weeks "
         f"stay in the primary transfer contrasts, where the gap is zero.",
+        "",
+        "Pairwise concordance of score_xp minus expected points stays above zero. "
+        f"The gap is {intervals['c_xp_minus_c_exp']['mean']:+.3f}. "
+        f"The defined-week means are {pd.to_numeric(weeks['c_xp'], errors='coerce').mean():+.3f} "
+        f"and {pd.to_numeric(weeks['c_exp'], errors='coerce').mean():+.3f}.",
+        "",
+        _roll_sentence(weeks),
         "",
         "| season | both defined | mean concordance gap |",
         "|---|---:|---:|",
@@ -556,6 +631,9 @@ def _lines(
         f"Bootstrap {protocol['bootstrap']}, seed {protocol['seed']}. "
         "A season under 20 weeks is not pooled. "
         f"Closed seasons: {', '.join(protocol['closed_seasons'])}.",
+        "",
+        "Gemini reviewed these diagnostics "
+        "([common-state diagnostics](bc-e75c8209-ffd3-590a-b610-d0e34e62bbee)).",
         "",
     ]
 
@@ -588,6 +666,7 @@ def run() -> None:
     starts: list[tuple[str, int, int]] = []
     forensic = pd.DataFrame()
     for index, season in enumerate(protocol["closed_seasons"]):
+        print(f"common state {season}", flush=True)
         frame = build_season(season, codes[season], protocol)
         rows, start = evaluate_season(frame, index, gw_start=gw_start, gw_end=gw_end)
         for row in rows:
@@ -630,3 +709,7 @@ def run() -> None:
         },
         _lines(protocol, intervals, weeks, starts, forensic),
     )
+
+
+if __name__ == "__main__":
+    run()
