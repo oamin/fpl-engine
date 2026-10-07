@@ -23,10 +23,11 @@ import pandas as pd
 
 from src.live.half_plan import HalfPlan, WeekInputs, bench_week, half_end, plan_half
 from src.live.lines import LINES_PATH, TRIAL_META
+from src.live.plan import live_xi
 from src.live.policy import FH_MARGIN, WC_MARGIN
 from src.models.open_horizon import opening_pots_by_team_gw
 from src.models.season_climb_ft import SquadState
-from src.rules.fpl_2026 import FREE_TRANSFER_CHIPS, sell_price
+from src.rules.fpl_2026 import FREE_TRANSFER_CHIPS, sell_price, squad_legal, xi_legal
 from src.teams import norm_team
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -110,6 +111,8 @@ class DeadlineLog:
     schedule: tuple[tuple[str, int | None], ...] = ()
     outlooks: tuple[tuple[int, float, float, float, float], ...] = ()
     choice_field: str = ""
+    dry_run: bool = False
+    lineup_note: str = ""
 
 
 def player_key(element: int) -> str:
@@ -224,6 +227,52 @@ def resolve_holdings(
             )
         )
     return rows
+
+
+def submitted_line(
+    holdings: Sequence[Holding],
+    choice: Mapping[str, float],
+    bank: int,
+) -> str:
+    """The owned fifteen. The XI and the captain are the captured ``ep_next``."""
+    frame = pd.DataFrame(
+        [
+            {
+                "player_id": row.key,
+                "position": row.position,
+                "score_xp": float(choice[row.key]),
+            }
+            for row in holdings
+        ]
+    )
+    picked = live_xi(frame, "score_xp")
+    names = {row.key: row.name for row in holdings}
+    form = picked["formation"]
+    shape = f"1-{form[0]}-{form[1]}-{form[2]}"
+    captain = str(picked["captain"])
+    vice = str(picked["vice"])
+
+    def label(pid: str) -> str:
+        if pid == captain:
+            return f"{names.get(pid, pid)} (C)"
+        if pid == vice:
+            return f"{names.get(pid, pid)} (V)"
+        return names.get(pid, pid)
+
+    xi_ids = [str(pid) for pid in picked["xi"]["player_id"]]
+    bench_ids = [str(pid) for pid in picked["bench"]["player_id"]]
+    positions = [row.position for row in holdings]
+    clubs = [row.team for row in holdings]
+    xi_positions = [str(pos) for pos in picked["xi"]["position"]]
+    structure = squad_legal(positions, clubs) and xi_legal(xi_positions) and int(bank) >= 0
+    state = "legal" if structure else "not legal"
+    xi_text = ", ".join(label(pid) for pid in xi_ids)
+    bench_text = ", ".join(names.get(pid, pid) for pid in bench_ids)
+    return (
+        f"Submitted squad is the current 15, {state}, bank {int(bank)} tenths. "
+        f"Formation {shape}. XI: {xi_text}. Bench: {bench_text}. "
+        "No transfer. No hit. No chip."
+    )
 
 
 def holdings_state(holdings: Sequence[Holding], bank: int, ft: int) -> SquadState:
@@ -521,18 +570,22 @@ def render(log: DeadlineLog) -> str:
     lines = [
         f"# Gameweek {log.gw} deadline",
         "",
-        (
-            f"{log.team_name} (entry {log.entry_id}) at the Gameweek {log.gw} "
-            f"deadline, {log.deadline or 'time not on the snapshot'}. "
-            "This note was written before that deadline. "
-            + (
-                "No chip was chosen."
-                if log.chip is None
-                else f"The chip this week is {log.chip}."
-            )
-        ),
-        "",
     ]
+    if log.dry_run:
+        lines.append(
+            "This is a dry run. It is not the decision pair. "
+            "The decision capture is the T-1h same-stamp file, and an earlier file is not a fallback."
+        )
+        lines.append("")
+    chip_sentence = (
+        "No chip was chosen." if log.chip is None else f"The chip this week is {log.chip}."
+    )
+    lines.append(
+        f"{log.team_name} (entry {log.entry_id}) at the Gameweek {log.gw} "
+        f"deadline, {log.deadline or 'time not on the snapshot'}. "
+        f"This note was written before that deadline. {chip_sentence}"
+    )
+    lines.append("")
     if "missing_opening_line" in log.reasons:
         lines.append(
             "This gameweek still has a club with no 1X2. The run stops there. "
@@ -554,8 +607,12 @@ def render(log: DeadlineLog) -> str:
             "to the chip sum and are not filled from score_xp. "
             "Minutes came from the file, a zero stayed a zero, and a player "
             "the file omits kept his last observed minutes. "
-            "The transfer search was not run."
+            "The transfer search was not run. "
+            "The submitted team plays no chip. A chip named in this note is the plan, not the submission. "
+            "An injury flag is the minutes file, and a written zero stays zero. "
+            "No manual override is recorded."
         )
+        lines.append("")
     elif log.scorer_ran:
         lines.append(
             "The scorer called the same one-match formula as score_xp. "
@@ -685,6 +742,8 @@ def render(log: DeadlineLog) -> str:
         f"Chip: {'not chosen' if log.chip is None else log.chip}. "
         f"Stops: {', '.join(log.reasons) or 'none'}."
     )
+    if log.lineup_note:
+        lines.append(log.lineup_note)
     if log.priced_weeks:
         weeks = ", ".join(f"GW{gw}" for gw in log.priced_weeks)
         lines.append(f"Priced weeks: {weeks}.")
@@ -757,8 +816,18 @@ def collect(
     live_path: Path | None = LINES_PATH,
     trial_path: Path | None = TRIAL_META,
     gw: int = DECISION_GW,
+    dry_run: bool = False,
+    decision_file: Path | None = None,
 ) -> DeadlineLog:
-    """Read the stored files. A live 1X2 is used in front of the historical file."""
+    """Read the stored files. A live 1X2 is used in front of the historical file.
+
+    The decision score is the T−1h ``ep_next`` slot. A dry run names its own
+    file and does not become that slot.
+    """
+    if dry_run and decision_file is None:
+        raise DeadlineError("a dry run names its capture")
+    if decision_file is not None and not dry_run:
+        raise DeadlineError("the decision capture is the T-1h slot")
     entry = json.loads(entry_path.read_text(encoding="utf-8"))
     logs = pd.read_csv(log_path)
     odds = load_odds_frame(odds_path, live_path)
@@ -801,6 +870,7 @@ def collect(
     bench_gw = None
     schedule: tuple[tuple[str, int | None], ...] = ()
     outlooks: tuple[tuple[int, float, float, float, float], ...] = ()
+    lineup_note = ""
     if ready:
         from src.live.scorer import player_key as score_key
         from src.live.scorer import price_half
@@ -815,7 +885,10 @@ def collect(
         }
         from src.live.scorer import load_ep_next
 
-        choice = load_ep_next(int(gw))
+        if dry_run:
+            choice = load_ep_next(int(gw), path=Path(decision_file))  # type: ignore[arg-type]
+        else:
+            choice = load_ep_next(int(gw))
         scored = price_half(
             gw=int(gw),
             logs=logs,
@@ -846,6 +919,7 @@ def collect(
             )
             for row in scored.weeks
         )
+        lineup_note = submitted_line(holdings, choice, int(entry["bank"]))
     return DeadlineLog(
         entry_id=int(entry["entry_id"]),
         team_name=str(entry.get("team_name") or ""),
@@ -877,6 +951,8 @@ def collect(
         schedule=schedule,
         outlooks=outlooks,
         choice_field="ep_next" if scorer_ran else "",
+        dry_run=dry_run,
+        lineup_note=lineup_note,
     )
 
 

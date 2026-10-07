@@ -53,6 +53,12 @@ LIVE_PRIMARY_WIRED = True
 # One decision run, inside the T-1h window. That run's stamp is the pair.
 # An earlier file is not a fallback, and the two scores are not compared first.
 LIVE_DECISION_CAPTURE = "t1_same_stamp"
+LIVE_CAPTURE_FALLBACK = "none"
+GW6_SUBMITTED_CHIP = "unused"
+# A written zero in the minutes file stays zero. A manual override is a log
+# entry that names the player, the value, and the reason.
+LIVE_INJURY_FLAGS = "minutes_file_zero_stays_zero"
+LIVE_MANUAL_OVERRIDE = "logged_with_reason"
 LIVE_CHOOSE_AFTER_SCORES = False
 LIVE_REVIEW_GW = 26
 LOSO_BOOTSTRAP = 1000

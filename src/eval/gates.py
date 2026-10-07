@@ -386,8 +386,12 @@ def _failures_paths() -> list[str]:
         POWER_SIMS,
         POWER_STEP,
         POWER_WEEKS,
+        GW6_SUBMITTED_CHIP,
+        LIVE_CAPTURE_FALLBACK,
         LIVE_CONTINUE_TO_GW,
         LIVE_COVERS_ZERO,
+        LIVE_INJURY_FLAGS,
+        LIVE_MANUAL_OVERRIDE,
         LIVE_PRIMARY,
         LIVE_PRIMARY_FROM_GW,
         LIVE_PRIMARY_WIRED,
@@ -527,6 +531,14 @@ def _failures_paths() -> list[str]:
             failures.append("the all-weeks pool is not the sensitivity")
         if live.get("decision_capture") != "t1_same_stamp" or live.get("choose_after_seeing_scores") is not False:
             failures.append("the decision capture is not the same-stamp t1 pair")
+        if live.get("fallback") != LIVE_CAPTURE_FALLBACK:
+            failures.append("an earlier capture is a fallback")
+        if live.get("gw6_chip") != GW6_SUBMITTED_CHIP:
+            failures.append("the gameweek 6 submission plays a chip")
+        if live.get("injury_flags") != LIVE_INJURY_FLAGS:
+            failures.append("an injury flag is not the minutes file")
+        if live.get("manual_override") != LIVE_MANUAL_OVERRIDE:
+            failures.append("a manual override does not require a logged reason")
     manifest = json.loads((ROOT / "data" / "live" / "HOLDOUT_FREEZE.json").read_text(encoding="utf-8"))
     tracked = manifest.get("tracked") or {}
     if "data/cache/player_gw_2026_27.csv" in tracked:
