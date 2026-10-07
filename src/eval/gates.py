@@ -386,6 +386,17 @@ def _failures_paths() -> list[str]:
         POWER_SIMS,
         POWER_STEP,
         POWER_WEEKS,
+        LIVE_CONTINUE_TO_GW,
+        LIVE_COVERS_ZERO,
+        LIVE_PRIMARY,
+        LIVE_PRIMARY_FROM_GW,
+        LIVE_PRIMARY_WIRED,
+        LIVE_SHADOW,
+        LOSO_BOOTSTRAP,
+        LOSO_CONDITIONAL_FLOOR,
+        LOSO_FLOOR,
+        LOSO_MIN_SEASONS,
+        LOSO_SEED,
         SCORE_COLUMN,
         T1_MINUTES,
         T24_HOURS,
@@ -452,6 +463,49 @@ def _failures_paths() -> list[str]:
             failures.append(f"the {key} block declared a winner")
     if (protocol.get("initial_squad") or {}).get("transfers") != "none":
         failures.append("the initial portfolio applies a transfer")
+    if "loso" not in protocol or "live_primary" not in protocol:
+        failures.append("leave-one-season-out and the live primary are not locked")
+    else:
+        from src.eval.loso import contrast_keys
+
+        loso = protocol["loso"]
+        live = protocol["live_primary"]
+        if loso.get("winner") is not None:
+            failures.append("leave-one-season-out declared a winner")
+        if loso.get("replaces_published") is not False:
+            failures.append("leave-one-season-out replaces the four-season interval")
+        if int(loso.get("bootstrap") or 0) != LOSO_BOOTSTRAP or int(loso["seed"]) != LOSO_SEED:
+            failures.append("leave-one-season-out is not the locked draw")
+        if int(loso.get("floor") or 0) != LOSO_FLOOR:
+            failures.append("leave-one-season-out does not keep the 20-week floor")
+        if int(loso.get("conditional_floor") or 0) != LOSO_CONDITIONAL_FLOOR:
+            failures.append("the conditional floor is not 5 disagreement weeks")
+        if int(loso.get("min_seasons") or 0) != LOSO_MIN_SEASONS:
+            failures.append("a leave-one-out fold may pool a single season")
+        if list(loso.get("contrasts") or []) != list(contrast_keys()):
+            failures.append("the leave-one-season-out contrast list does not match the lock")
+        if live.get("primary") != LIVE_PRIMARY:
+            failures.append("the live primary is not ep_next")
+        if live.get("shadow") != LIVE_SHADOW:
+            failures.append("score_xp is not the live shadow")
+        if live.get("historical_score") != SCORE_COLUMN:
+            failures.append("the published historical score is not score_xp")
+        if live.get("winner") is not None:
+            failures.append("the live primary declared a winner")
+        if live.get("wired") is not LIVE_PRIMARY_WIRED:
+            failures.append("the live primary wiring flag does not match the lock")
+        if live.get("covers_zero") != LIVE_COVERS_ZERO:
+            failures.append("a live interval that covers zero is not undetermined")
+        if int(live.get("continue_to_gw") or 0) != LIVE_CONTINUE_TO_GW:
+            failures.append("the live test does not continue through gameweek 38")
+        if int(live.get("from_gw") or 0) != LIVE_PRIMARY_FROM_GW:
+            failures.append("the live primary does not start at gameweek 6")
+        if int(live.get("min_weeks") or 0) != MIN_LIVE_WEEKS:
+            failures.append("promotion does not wait for 20 live weeks")
+        import src.live.scorer as live_scorer
+
+        if live_scorer.SCORE_COL != SCORE_COLUMN:
+            failures.append("the live scorer no longer prices score_xp")
     manifest = json.loads((ROOT / "data" / "live" / "HOLDOUT_FREEZE.json").read_text(encoding="utf-8"))
     tracked = manifest.get("tracked") or {}
     if "data/cache/player_gw_2026_27.csv" in tracked:
