@@ -1,11 +1,14 @@
 {
   "updated": "2026-10-07",
-  "milestone": "loso",
+  "milestone": "eligibility",
   "status": "reviewed",
-  "summary": "The two 2022-23 gaps of -14.45 agree on one week and both sum to -477. Holding out 2022-23, the greedy contrast is +2.47 [-0.80, +5.31] and covers zero. The three-week common-state interval covers zero without that season and the published -1.69 stays suggestive. No fold promotes score_xp. From gameweek 6 the live primary is ep_next and the scorer is not rewired.",
+  "summary": "The claim between the engine and expected points is inconclusive. The shared 2022-23 total of -477 is an arithmetic equivalence: dynamic transfers gained 267 under both scores, and the weeks are not the same series. Eligible weeks need populated xG and a prior season, so 2022-23 drops out of that second table and stays in the all-weeks pool. Every eligible score_xp-minus-expected-points interval covers zero. From gameweek 6 the live squad uses captured ep_next, and the shadow log still scores score_xp beside it.",
   "artifacts": [
+    "reports/eligibility.md",
     "reports/loso.md",
-    "data/processed/loso_folds.csv",
-    "experiments/protocol.json"
+    "data/processed/eligibility_pool.csv",
+    "data/processed/eligibility_loso.csv",
+    "data/processed/path_totals_2022_23.csv",
+    "data/predictions/2026-27/gw06/shadow_20261007T080406Z.csv"
   ]
 }

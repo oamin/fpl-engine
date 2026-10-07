@@ -52,7 +52,7 @@ Each fold drops one season and resamples gameweeks inside each remaining season.
 The published four-season intervals remain the official evaluation benchmarks and are unchanged.
 A sign flip or shift in interval bounds when holding out a season is evidence of cohort heterogeneity, not a justification to drop any season or declare a winner.
 
-The published unconditional three-week interval is −1.69 [−2.92, −0.52]. About ten comparisons already share these four seasons, with no multiplicity control. That interval is suggestive and not conclusive. A leave-one-out interval is the same kind of evidence.
+The published unconditional three-week interval is −1.69 [−2.92, −0.52]. Its exclusion of zero does not survive when 2022-23 is held out. The claim between the engine and expected points is inconclusive.
 
 No new closed-season contrast is in this file. The certified likelihood was not re-aggregated.
 
@@ -257,7 +257,7 @@ A gain in the bulk of the list, such as who will not play, rather than among the
 
 For live squad decisions from gameweek 6 onward, the primary score is pre-registered as `ep_next`, with `score_xp` logged alongside.
 Promotion of `score_xp` over `ep_next` requires the paired live interval across at least 20 pre-deadline gameweeks to stay strictly above zero; an interval covering zero is undetermined and testing continues through gameweek 38.
-The published historical score stays `score_xp`. The live scorer still prices the half with `score_xp`. This lock does not rewire it.
+The published historical score stays `score_xp`. From gameweek 6 the live squad is chosen by captured `ep_next`, and `score_xp` is logged in shadow and does not choose.
 
 In accordance with protocol, if a paired transfer contrast interval covers zero, the result is inconclusive and no winner is declared.
 No winner is declared. `score_xp` is unchanged.

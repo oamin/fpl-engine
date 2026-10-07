@@ -67,7 +67,10 @@ def live_encompassing(root: Path | None = None) -> dict[str, Any]:
     folder = base / "data" / "predictions" / "2026-27"
     official_paths = sorted(folder.glob("gw*/official_*.csv"))
     engine_paths = sorted(
-        path for path in folder.glob("gw*/*.csv") if not path.name.startswith("official_")
+        path
+        for path in folder.glob("gw*/*.csv")
+        if not path.name.startswith("official_")
+        and not path.name.startswith("shadow_")
         and path.name != "deadlines.json"
     )
     for path in official_paths:

@@ -15,6 +15,7 @@ import pandas as pd
 
 from src.eval.decision_spec import (
     LIVE_PRIMARY,
+    LIVE_PRIMARY_WIRED,
     LIVE_SHADOW,
     LOSO_BOOTSTRAP,
     LOSO_CONDITIONAL_FLOOR,
@@ -280,6 +281,37 @@ def _groups(
     return complete, incomplete
 
 
+def pool_stored(
+    rows: pd.DataFrame,
+    column: str,
+    *,
+    minimum: int = LOSO_FLOOR,
+    n_boot: int = LOSO_BOOTSTRAP,
+    seed: int = LOSO_SEED,
+    seasons: tuple[str, ...] = SEASONS,
+) -> dict[str, Any]:
+    """Pool the seasons that clear the floor. The input frame is not mutated."""
+    from src.eval.gates import cluster_interval
+
+    complete, incomplete = _groups(rows, column, minimum=minimum, seasons=seasons)
+    result: dict[str, Any] = {
+        "incomplete_seasons": incomplete,
+        "undefined": False,
+        "mean": None,
+        "lo": None,
+        "hi": None,
+        "n_gws": {},
+    }
+    if len(complete) < LOSO_MIN_SEASONS:
+        result["undefined"] = True
+        return result
+    summary = cluster_interval(complete, seasons=tuple(complete), n_boot=int(n_boot), seed=int(seed))
+    result.update(summary)
+    result["incomplete_seasons"] = incomplete
+    result["undefined"] = False
+    return result
+
+
 def leave_one_out(
     rows: pd.DataFrame,
     column: str,
@@ -499,8 +531,8 @@ def _fold_lines(folds: list[dict[str, Any]]) -> list[str]:
         "heterogeneity, not a justification to drop any season or declare a winner.",
         "",
         "The published unconditional three-week interval is −1.69 [−2.92, −0.52]. "
-        "About ten comparisons already share these four seasons, with no multiplicity control. "
-        "That interval is suggestive and not conclusive. A leave-one-out interval is the same kind of evidence.",
+        "Its exclusion of zero does not survive when 2022-23 is held out. "
+        "The claim between the engine and expected points is inconclusive.",
         "",
         "No new closed-season contrast is in this file. The certified likelihood was not re-aggregated.",
         "",
@@ -620,8 +652,8 @@ def _close(lines: list[str], folds: list[dict[str, Any]]) -> list[str]:
             "Promotion of `score_xp` over `ep_next` requires the paired live interval across at least "
             "20 pre-deadline gameweeks to stay strictly above zero; an interval covering zero is "
             "undetermined and testing continues through gameweek 38.",
-            f"The published historical score stays `{SCORE_COLUMN}`. The live scorer still prices "
-            f"the half with `{SCORE_COLUMN}`. This lock does not rewire it.",
+            f"The published historical score stays `{SCORE_COLUMN}`. From gameweek 6 the live "
+            "squad is chosen by captured `ep_next`, and `score_xp` is logged in shadow and does not choose.",
             "",
             "In accordance with protocol, if a paired transfer contrast interval covers zero, "
             "the result is inconclusive and no winner is declared.",
@@ -666,8 +698,8 @@ def run() -> None:
         raise RuntimeError("the contrast list does not match the lock")
     if live.get("primary") != LIVE_PRIMARY or live.get("shadow") != LIVE_SHADOW:
         raise RuntimeError("the live primary is not the locked pair")
-    if live.get("wired") is not False:
-        raise RuntimeError("the scorer is not part of this lock")
+    if live.get("wired") is not LIVE_PRIMARY_WIRED:
+        raise RuntimeError("the live wiring flag does not match the lock")
     if int(loso["bootstrap"]) != LOSO_BOOTSTRAP or int(loso["seed"]) != LOSO_SEED:
         raise RuntimeError("the draw is not the locked draw")
     placebo = (REPORTS / "decision_placebo.md").read_text(encoding="utf-8")

@@ -253,6 +253,91 @@ class PlanTest(unittest.TestCase):
         self.assertEqual(plan.chip, "bench_boost")
         self.assertEqual(bench_for_transfers(plan, 6), 6)
 
+    def test_the_live_choice_follows_ep_next(self) -> None:
+        from src.live.scorer import ScorerError, live_choice
+
+        high = ["g1", "d1", "d2", "d3", "m1", "m2", "m3", "m4", "m5", "f1", "f2"]
+        bench = ["g2", "d4", "d5", "f3"]
+        positions = {
+            "g1": "GKP",
+            "g2": "GKP",
+            "d1": "DEF",
+            "d2": "DEF",
+            "d3": "DEF",
+            "d4": "DEF",
+            "d5": "DEF",
+            "m1": "MID",
+            "m2": "MID",
+            "m3": "MID",
+            "m4": "MID",
+            "m5": "MID",
+            "f1": "FWD",
+            "f2": "FWD",
+            "f3": "FWD",
+        }
+        rows = []
+        for index, pid in enumerate(high + bench):
+            rows.append(
+                {
+                    "player_id": pid,
+                    "position": positions[pid],
+                    "team_norm": f"c{index:02d}",
+                    "value": 50,
+                    "eligible": True,
+                    "minutes": 90.0,
+                    "share_xG": 0.0,
+                    "share_xA": 0.0,
+                    "exp_defcon_hit": 0.0,
+                    "total_points": 0.0,
+                    "score_xp": 50.0 if pid in high else 8.0,
+                }
+            )
+        pool = pd.DataFrame(rows)
+        clubs = {gw: {f"c{i:02d}" for i in range(15)} for gw in range(6, 20)}
+        engine = {pid: 50.0 for pid in high}
+        engine.update({pid: 8.0 for pid in bench})
+        steps = {6: engine, 7: engine, 8: engine}
+        choice = {pid: 50.0 for pid in high}
+        choice.update({pid: 0.0 for pid in bench})
+        state = SquadState(purchase={pid: 50 for pid in high + bench}, bank=0, ft=1)
+        _plan, weeks = plan_deadline(
+            6, state, pool, steps, clubs, played={1: "triple_captain"}, choice=choice
+        )
+        by_gw = {int(row.gw): row for row in weeks}
+        self.assertEqual(by_gw[6].held.bench_xp, 0.0)
+        self.assertGreater(by_gw[6].held.xi_xp, 0.0)
+        self.assertEqual(by_gw[7].held.xi_xp, 0.0)
+        chosen = live_choice({"a", "b"}, {"a", "b", "c"}, {"a": 1.0, "b": 10.0})
+        self.assertEqual(max(("a", "b"), key=chosen.get), "b")
+        self.assertNotIn("c", chosen)
+        with self.assertRaises(ScorerError):
+            plan_deadline(
+                6, state, pool, steps, clubs, played={1: "triple_captain"}, choice={"g2": 1.0}
+            )
+
+    def test_the_paired_comparison_ignores_which_score_drives(self) -> None:
+        from src.live.scorer import paired_live_rows
+
+        frame = pd.DataFrame(
+            {
+                "player_id": ["a", "b", "c", "d"],
+                "gw": [6, 6, 6, 6],
+                "score_xp": [1.0, None, 3.0, 4.0],
+                "ep_next": [2.0, 5.0, None, 1.5],
+                "choice_field": ["ep_next", "ep_next", "ep_next", "ep_next"],
+            }
+        )
+        kept = paired_live_rows(frame)
+        self.assertEqual(kept["player_id"].tolist(), ["a", "d"])
+        self.assertEqual(kept["score_xp_minus_ep_next"].tolist(), [-1.0, 2.5])
+        relabelled = frame.copy()
+        relabelled["choice_field"] = "score_xp"
+        again = paired_live_rows(relabelled)
+        self.assertEqual(
+            kept["score_xp_minus_ep_next"].tolist(),
+            again["score_xp_minus_ep_next"].tolist(),
+        )
+
 
 def _world() -> tuple[dict, list, pd.DataFrame, pd.DataFrame]:
     positions = (

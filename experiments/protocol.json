@@ -147,6 +147,14 @@
       "disagreement:r3_xp_minus_r3_exp"
     ]
   },
+  "eligibility": {
+    "xg": "at least one player with minutes > 0 and expected_goals > 0",
+    "prior_season": "an earlier season is in the closed archive",
+    "combine": "and",
+    "repairs_score": false,
+    "replaces_published": false,
+    "winner": null
+  },
   "live_primary": {
     "from_gw": 6,
     "primary": "ep_next",
@@ -155,8 +163,8 @@
     "min_weeks": 20,
     "covers_zero": "undetermined",
     "continue_to_gw": 38,
-    "wired": false,
+    "wired": true,
     "winner": null
   },
-  "note": "Gaussian log score with sigma fixed at 3. The bootstrap resamples gameweeks, not player rows. 2026-27 is not in the closed-season comparison. Gameweeks 1-5 of that season were already read. The clean holdout starts at gameweek 6. A season total is not a pass. The decision batch scores score_xp. From gameweek 6 the live choice primary is ep_next and score_xp is logged as the shadow. Promotion needs the paired interval of score_xp minus ep_next to stay strictly above zero on at least 20 pre-deadline weeks. An interval that covers zero is undetermined, and the test continues through gameweek 38. That lock does not rewire the scorer."
+  "note": "Gaussian log score with sigma fixed at 3. The bootstrap resamples gameweeks, not player rows. 2026-27 is not in the closed-season comparison. Gameweeks 1-5 of that season were already read. The clean holdout starts at gameweek 6. A season total is not a pass. The decision batch scores score_xp. From gameweek 6 the live choice primary is ep_next and score_xp is logged as the shadow. Promotion needs the paired interval of score_xp minus ep_next to stay strictly above zero on at least 20 pre-deadline weeks. An interval that covers zero is undetermined, and the test continues through gameweek 38. From gameweek 6 the live squad is chosen by captured ep_next. score_xp is logged in shadow and does not choose. The historical score column stays score_xp."
 }

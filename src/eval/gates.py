@@ -506,6 +506,21 @@ def _failures_paths() -> list[str]:
 
         if live_scorer.SCORE_COL != SCORE_COLUMN:
             failures.append("the live scorer no longer prices score_xp")
+        if "live_choice" not in inspect.getsource(live_scorer.plan_deadline):
+            failures.append("the live plan does not read the ep_next choice")
+        import src.live.deadline as live_deadline
+
+        if "choice=" not in inspect.getsource(live_deadline.collect):
+            failures.append("the deadline does not pass the ep_next choice")
+        eligible = protocol.get("eligibility") or {}
+        if eligible.get("winner") is not None:
+            failures.append("the eligibility rule declared a winner")
+        if eligible.get("replaces_published") is not False:
+            failures.append("the eligibility rule replaces the four-season interval")
+        if eligible.get("repairs_score") is not False:
+            failures.append("the eligibility rule repairs the score")
+        if eligible.get("combine") != "and":
+            failures.append("eligibility is not the conjunction of xG and a prior season")
     manifest = json.loads((ROOT / "data" / "live" / "HOLDOUT_FREEZE.json").read_text(encoding="utf-8"))
     tracked = manifest.get("tracked") or {}
     if "data/cache/player_gw_2026_27.csv" in tracked:
