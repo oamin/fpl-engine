@@ -98,5 +98,25 @@
       "c_xp_minus_c_exp"
     ]
   },
+  "disagreement": {
+    "population": "common-state weeks where the two moves differ",
+    "equal": "realised gap exactly zero",
+    "floor": "conditional bootstrap, minimum 5 disagreement weeks, 20-week season floor does not apply",
+    "winner": null
+  },
+  "hierarchy": {
+    "contrasts": [
+      "r1_xp_minus_r1_shuffled",
+      "r1_exp_minus_r1_shuffled",
+      "r1_xp_minus_r1_exp"
+    ],
+    "winner": null
+  },
+  "initial_squad": {
+    "opener": "one-week MILP at the first week all four fifteens exist",
+    "deployments": ["score_xp", "score_exp_points"],
+    "transfers": "none",
+    "winner": null
+  },
   "note": "Gaussian log score with sigma fixed at 3. The bootstrap resamples gameweeks, not player rows. 2026-27 is not in the closed-season comparison. Gameweeks 1-5 of that season were already read. The clean holdout starts at gameweek 6. A season total is not a pass. The decision batch scores score_xp. ep_next is logged live and is not a winner until 20 pre-deadline weeks. At 20 live weeks an interval that covers zero is undetermined, and the test continues through gameweek 38."
 }

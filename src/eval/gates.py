@@ -446,6 +446,12 @@ def _failures_paths() -> list[str]:
         failures.append("the common-state shuffle is not within the gameweek")
     if "score unused" not in str(common.get("squad") or ""):
         failures.append("the common-state squad is not score-blind")
+    for key in ("disagreement", "hierarchy", "initial_squad"):
+        block = protocol.get(key) or {}
+        if block.get("winner") is not None:
+            failures.append(f"the {key} block declared a winner")
+    if (protocol.get("initial_squad") or {}).get("transfers") != "none":
+        failures.append("the initial portfolio applies a transfer")
     manifest = json.loads((ROOT / "data" / "live" / "HOLDOUT_FREEZE.json").read_text(encoding="utf-8"))
     tracked = manifest.get("tracked") or {}
     if "data/cache/player_gw_2026_27.csv" in tracked:
