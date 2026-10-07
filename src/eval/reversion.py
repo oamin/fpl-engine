@@ -45,6 +45,8 @@ REQUIRED = (
     "An oracle interval that excludes zero does not demonstrate that `score_xp` beats expected points in pre-deadline decision-making.",
     "No winner is declared between `score_xp` and `score_exp_points`, and `score_xp` is unchanged.",
     "The three-week residual is secondary and does not choose a model.",
+    "The slope stays above zero for both baselines, on the full sample and when the previous week had at least 60 minutes. That is persistence of the residual, not a bounce through the baseline. No reversion term is added to score_xp.",
+    "Same-fixture minutes beat the historical xmi on this one-week transfer, and the gap versus expected points covers zero.",
 )
 FORBIDDEN = (
     "requires an empirical mean-reversion dampener",
@@ -487,6 +489,10 @@ def _lines(
         "",
         "The three-week residual is secondary and does not choose a model.",
         "",
+        "The slope stays above zero for both baselines, on the full sample and when the previous "
+        "week had at least 60 minutes. That is persistence of the residual, not a bounce through "
+        "the baseline. No reversion term is added to score_xp.",
+        "",
         "Doubles are excluded. A missing predecessor is not filled from an older week. "
         "Where 2022-23 gameweek 7 is absent, gameweek 8 uses gameweek 6.",
         "",
@@ -525,6 +531,9 @@ def _lines(
             "An oracle interval that excludes zero does not demonstrate that `score_xp` beats "
             "expected points in pre-deadline decision-making.",
             "",
+            "Same-fixture minutes beat the historical xmi on this one-week transfer, and the gap "
+            "versus expected points covers zero.",
+            "",
             "| score | versus expected points | reading | versus raw score_xp | reading |",
             "|---|---|---|---|---|",
         ]
@@ -545,7 +554,7 @@ def _lines(
             "",
             "No winner is declared between `score_xp` and `score_exp_points`, and `score_xp` is unchanged.",
             "",
-            "Gemini kept the residual sign and the oracle ceiling "
+            "Gemini kept the residual sign and reviewed the table "
             "([reversion](bc-e75c8209-ffd3-590a-b610-d0e34e62bbee)).",
             "",
             "Bootstrap 1000, seed 0. A bin season under 20 weeks is omitted. "

@@ -1,12 +1,10 @@
 {
   "updated": "2026-10-07",
-  "milestone": "eligibility",
+  "milestone": "reversion",
   "status": "reviewed",
-  "summary": "The claim between the engine and expected points is inconclusive. The eligible pool, three seasons and about 100 weeks, is the primary closed-season result. The all-weeks pool is the sensitivity. The shared 2022-23 total of +267 is that season's sum only: weekly gains agree on 1 week, players on 2 weeks, and 2023-24 sums to +461 and +438. The decision capture is the same-stamp pair in the window from three hours to fifteen minutes before the deadline. The 07:04/08:04 shadow is not that pair.",
+  "summary": "The next residual rises with the previous residual. The slope stays above zero for expected points and for score_xp, including when the previous week had at least 60 minutes. That is persistence, not a bounce. No reversion term is added. Same-fixture minutes beat the historical xmi on the one-week transfer, and the gap versus expected points covers zero. Those minutes are not a pre-deadline forecast. score_xp is unchanged.",
   "artifacts": [
-    "reports/eligibility.md",
-    "reports/loso.md",
-    "data/processed/transfer_gains.csv",
-    "data/predictions/2026-27/gw06/shadow_20261007T181339Z.csv"
+    "reports/reversion.md",
+    "data/processed/oracle_minutes_weeks.csv"
   ]
 }
