@@ -44,7 +44,7 @@ def _intervals(*, gws: int = 34, incomplete: dict | None = None) -> dict:
 class ProcedureTest(unittest.TestCase):
     def test_incomplete_season_cannot_also_be_pooled(self) -> None:
         payload = _intervals(incomplete={"2025-26": 7})
-        key = comparison_key("score_xp", "score_official_xp")
+        key = comparison_key("score_xp", "score_exp_points")
         payload["comparisons"][key]["n_gws"]["2025-26"] = 7
         with self.assertRaises(RuntimeError):
             assert_reportable({"passed": True, "failures": []}, payload)

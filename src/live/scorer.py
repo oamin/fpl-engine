@@ -11,11 +11,14 @@ adds nothing.
 
 The formula is not changed here. A missing minutes file never reaches this
 module: the caller records ``missing_minutes`` and does not plan a chip.
+When a captured ``ep_next`` map is passed, that map chooses the squad and
+``score_xp`` stays on the shadow log.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any, Mapping, Sequence
 
 import pandas as pd
@@ -329,6 +332,122 @@ def clubs_from_fixtures(
     return out
 
 
+def load_ep_next(gw: int, folder: Path | None = None) -> dict[str, float]:
+    """The pre-deadline ``ep_next`` capture for one gameweek. There is no engine fill."""
+    base = folder or (
+        Path(__file__).resolve().parents[2]
+        / "data"
+        / "predictions"
+        / "2026-27"
+        / f"gw{int(gw):02d}"
+    )
+    paths = sorted(base.glob("official_*.csv"))
+    if not paths:
+        raise ScorerError(f"GW{gw} has no ep_next capture")
+    frame = pd.read_csv(paths[-1])
+    if "source_field" not in frame.columns or not (frame["source_field"] == "ep_next").all():
+        raise ScorerError(f"GW{gw} capture is not ep_next")
+    chosen: dict[str, float] = {}
+    for row in frame.itertuples(index=False):
+        if not _finite_score(row.official_xp):
+            continue
+        chosen[str(row.player_id)] = float(row.official_xp)
+    if not chosen:
+        raise ScorerError(f"GW{gw} ep_next capture is empty")
+    return chosen
+
+
+def _one_stamp(frame: pd.DataFrame, column: str) -> str:
+    if column not in frame.columns:
+        raise ScorerError(f"the capture has no {column}")
+    values = {str(value) for value in frame[column].dropna().unique()}
+    if len(values) != 1:
+        raise ScorerError(f"{column} is not one capture time")
+    return next(iter(values))
+
+
+def write_shadow_log(
+    dest: Path,
+    engine_path: Path,
+    official_path: Path,
+    *,
+    require_same_stamp: bool = True,
+) -> pd.DataFrame:
+    """Pair the engine score with ``ep_next``. Neither source file is overwritten.
+
+    A decision pair requires both files to carry the same capture time.
+    A missing score is not filled from the other column.
+    """
+    if dest.resolve() in {engine_path.resolve(), official_path.resolve()}:
+        raise ScorerError("refusing to overwrite a source capture")
+    engine = pd.read_csv(engine_path)
+    official = pd.read_csv(official_path)
+    if require_same_stamp:
+        engine_stamp = _one_stamp(engine, "created_at")
+        official_stamp = _one_stamp(official, "captured_at")
+        if engine_stamp != official_stamp:
+            raise ScorerError(
+                f"score_xp {engine_stamp} and ep_next {official_stamp} are not the same capture"
+            )
+    left = engine.loc[:, ["player_id", "gw", "score"]].rename(columns={"score": "score_xp"})
+    right = official.loc[:, ["player_id", "gw", "official_xp"]].rename(columns={"official_xp": "ep_next"})
+    paired = left.merge(right, on=["player_id", "gw"], how="outer")
+    paired["choice_field"] = "ep_next"
+    if require_same_stamp:
+        paired["captured_at"] = _one_stamp(engine, "created_at")
+    paired.to_csv(dest, index=False)
+    return paired
+
+
+def paired_live_rows(frame: pd.DataFrame) -> pd.DataFrame:
+    """Both scores, for every player who has both.
+
+    ``choice_field`` records which score drives the transfer. It does not
+    select these rows, and a missing score is not filled from the other.
+    """
+    needed = ("player_id", "gw", "score_xp", "ep_next")
+    missing = [name for name in needed if name not in frame.columns]
+    if missing:
+        raise ScorerError("the paired live log is missing " + ", ".join(missing))
+    work = frame.loc[:, list(needed)].copy()
+    work["score_xp"] = pd.to_numeric(work["score_xp"], errors="coerce")
+    work["ep_next"] = pd.to_numeric(work["ep_next"], errors="coerce")
+    both = work["score_xp"].notna() & work["ep_next"].notna()
+    out = work.loc[both].copy()
+    out["score_xp_minus_ep_next"] = out["score_xp"] - out["ep_next"]
+    return out.reset_index(drop=True)
+
+
+def live_choice(
+    owned: set[str],
+    pool_ids: set[str],
+    ep_next: Mapping[str, float],
+) -> dict[str, float]:
+    """Decision-week scores from the capture. The engine is not a fallback."""
+    missing = sorted(
+        pid
+        for pid in owned
+        if pid not in ep_next or not _finite_score(ep_next[pid])
+    )
+    if missing:
+        raise ScorerError(
+            "owned players have no ep_next capture: " + ", ".join(missing)
+        )
+    chosen: dict[str, float] = {}
+    for pid in pool_ids:
+        if pid in ep_next and _finite_score(ep_next[pid]):
+            chosen[pid] = float(ep_next[pid])
+    return chosen
+
+
+def _finite_score(value: object) -> bool:
+    try:
+        number = float(value)  # type: ignore[arg-type]
+    except (TypeError, ValueError):
+        return False
+    return number == number and number not in (float("inf"), float("-inf"))
+
+
 def plan_deadline(
     current_gw: int,
     state: SquadState,
@@ -337,24 +456,44 @@ def plan_deadline(
     clubs: Mapping[int, set[str]],
     played: Mapping[int, str] | None = None,
     priced: set[int] | None = None,
+    choice: Mapping[str, float] | None = None,
 ) -> tuple[HalfPlan, list[WeekInputs]]:
     """One rebuild on the decision-week scores, then the half plan.
 
     Later weeks keep that fifteen. They do not solve the squad again.
     ``priced`` is the weeks with their own opening line. Omitting it counts
-    every week in the table.
+    every week in the table. ``choice`` is the captured ``ep_next`` map.
+    When it is passed, later weeks add nothing and are not filled from the engine.
     """
     if int(current_gw) not in step_scores:
         raise ScorerError(f"GW{int(current_gw)} has no outlook scores")
     frame = pool.copy()
     frame["player_id"] = frame["player_id"].astype(str)
-    decision = {str(pid): float(value) for pid, value in step_scores[int(current_gw)].items()}
-    frame[SCORE_COL] = [decision.get(pid, 0.0) for pid in frame["player_id"]]
+    pool_ids = set(frame["player_id"])
+    if choice is None:
+        decision = {
+            str(pid): float(value) for pid, value in step_scores[int(current_gw)].items()
+        }
+        frame[SCORE_COL] = [decision.get(pid, 0.0) for pid in frame["player_id"]]
+        prepared = {
+            int(gw): {str(pid): float(value) for pid, value in scores.items()}
+            for gw, scores in step_scores.items()
+        }
+    else:
+        decision = live_choice({str(pid) for pid in state.ids()}, pool_ids, choice)
+        frame[SCORE_COL] = [decision.get(pid, float("nan")) for pid in frame["player_id"]]
+        frame = frame.loc[pd.to_numeric(frame[SCORE_COL], errors="coerce").notna()].copy()
+        owned = {str(pid) for pid in state.ids()}
+        if not owned <= set(frame["player_id"]):
+            raise ScorerError("an owned player was left out of the ep_next choice")
+        prepared = {}
+        for gw in step_scores:
+            if int(gw) == int(current_gw):
+                prepared[int(gw)] = dict(decision)
+            else:
+                prepared[int(gw)] = {pid: 0.0 for pid in pool_ids}
+        priced = {int(current_gw)}
     frame["total_points"] = frame[SCORE_COL]
-    prepared = {
-        int(gw): {str(pid): float(value) for pid, value in scores.items()}
-        for gw, scores in step_scores.items()
-    }
     weeks = week_inputs(int(current_gw), state, frame, dict(clubs), prepared, SCORE_COL)
     plan = plan_half(int(current_gw), weeks, played=played, priced=priced)
     return plan, weeks
@@ -370,8 +509,13 @@ def price_half(
     state: SquadState,
     minutes: Mapping[str, float],
     played: Mapping[int, str] | None = None,
+    choice: Mapping[str, float] | None = None,
 ) -> ScorerResult:
-    """Price the half from the opening line and call ``plan_half`` once."""
+    """Price the half from the opening line and call ``plan_half`` once.
+
+    ``choice`` is the captured ``ep_next`` map. The engine scores stay on
+    ``step_scores`` and do not choose the squad when ``choice`` is passed.
+    """
     names = {int(row["id"]): str(row["name"]) for row in bootstrap["teams"]}
     shares = deadline_shares(logs, int(gw))
     roster = roster_from_bootstrap(bootstrap)
@@ -385,6 +529,7 @@ def price_half(
     clubs = clubs_from_fixtures(fixtures, names, int(gw), end)
     horizon = club_steps(int(gw), clubs)
     step_scores, copies = scores_for_horizon(line_scores, horizon)
+    choice_prices = None if choice is None else {str(pid): float(value) for pid, value in choice.items()}
     plan, weeks = plan_deadline(
         int(gw),
         state,
@@ -392,7 +537,8 @@ def price_half(
         step_scores,
         clubs,
         played,
-        priced=set(int(week) for week in line_weeks),
+        priced=set(int(week) for week in line_weeks) if choice is None else {int(gw)},
+        choice=choice_prices,
     )
     return ScorerResult(
         plan=plan,

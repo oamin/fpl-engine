@@ -1,0 +1,19 @@
+{
+  "gw": 10,
+  "n_rows": 674,
+  "n_players": 674,
+  "max_rows_per_player": 1,
+  "duplicate_player_fixture": 0,
+  "n_paired": 674,
+  "same_row": true,
+  "spearman_score_vs_official": 0.7236321493849163,
+  "pearson_score_vs_official": 0.7451584603782928,
+  "spearman_negated_score_vs_official": -0.7236321493849163,
+  "sign_flip_fits_better": false,
+  "spearman_score_vs_points": 0.7360220970033968,
+  "spearman_official_vs_points": 0.7700081682032834,
+  "rank_gap_score_minus_official": -0.033986071199886614,
+  "positions_ok": true,
+  "gw_ok": true,
+  "season": "2024-25"
+}

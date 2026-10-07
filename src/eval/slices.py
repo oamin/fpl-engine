@@ -14,6 +14,7 @@ from scipy.stats import spearmanr
 
 from src.eval.gates import COMPARISONS, comparison_key, gaussian_log_score
 from src.eval.official_xp import usable_gameweeks
+from src.eval.provenance import OFFICIAL_XP_COLUMNS, assert_predeadline_xp, load_deadlines
 
 POSITIONS = ("GKP", "DEF", "MID", "FWD")
 
@@ -41,14 +42,16 @@ def slice_rows(frame: pd.DataFrame, protocol: dict[str, Any]) -> list[dict[str, 
     season = str(window["season"].iloc[0])
     rows: list[dict[str, Any]] = []
     for left, right in COMPARISONS:
-        needs_official = "score_official_xp" in (left, right)
+        needs_official = left in OFFICIAL_XP_COLUMNS or right in OFFICIAL_XP_COLUMNS
+        if needs_official:
+            assert_predeadline_xp(window, load_deadlines())
         for gameweek, block in window.groupby("gw", sort=True):
             if needs_official and int(gameweek) not in filled:
                 continue
             ordered = block.sort_values(["date", "fixture_id"], kind="mergesort")
             base = ordered.groupby("player_id", as_index=False).first()
             sums = ordered.groupby("player_id", as_index=False)[
-                ["total_points", "score_xp", "score_exp_points", "score_official_xp"]
+                ["total_points", left, right]
             ].sum()
             keep = [col for col in base.columns if col not in sums.columns or col == "player_id"]
             players = base[keep].merge(sums, on="player_id", how="left")

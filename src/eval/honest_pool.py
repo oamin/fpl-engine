@@ -14,7 +14,7 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
-from src.eval.encompassing import coefficient_rows
+from src.eval.encompassing import live_encompassing
 from src.eval.gates import (
     CLOSED_SEASONS,
     COMPARISONS,
@@ -26,6 +26,7 @@ from src.eval.gates import (
     write_gated_report,
 )
 from src.eval.official_xp import sheet_fill, usable_gameweeks
+from src.eval.provenance import OFFICIAL_XP_COLUMNS, assert_predeadline_xp, load_deadlines
 from src.eval.slices import slice_rows
 from src.ingest.fpl_odds import join_players_to_fixtures, load_football_data, load_player_logs
 from src.models.season_climb import pick_xi
@@ -43,7 +44,6 @@ REPORTS = ROOT / "reports"
 LOGSCORE_CSV = PROCESSED / "player_gw_logscore.csv"
 XI_CSV = PROCESSED / "player_gw_xi_sanity.csv"
 SLICE_CSV = PROCESSED / "player_gw_slices.csv"
-COEF_CSV = PROCESSED / "encompassing_coefficients.csv"
 
 
 def eligible_mask(frame: pd.DataFrame, *, min_history: int, min_xmi: float) -> pd.Series:
@@ -123,7 +123,8 @@ def logscore_rows(frame: pd.DataFrame, protocol: dict[str, Any]) -> list[dict[st
     filled = usable_gameweeks(window)
     for left, right in COMPARISONS:
         view = window
-        if "score_official_xp" in (left, right):
+        if left in OFFICIAL_XP_COLUMNS or right in OFFICIAL_XP_COLUMNS:
+            assert_predeadline_xp(window, load_deadlines())
             view = window.loc[window["gw"].isin(filled)]
         a = pd.to_numeric(view[left], errors="coerce")
         b = pd.to_numeric(view[right], errors="coerce")
@@ -156,12 +157,9 @@ def _one_player(gw: pd.DataFrame) -> pd.DataFrame:
     """Sum a double gameweek onto the earlier row so the XI names each player once."""
     ordered = gw.sort_values(["date", "fixture_id"], kind="mergesort")
     base = ordered.groupby("player_id", as_index=False).first()
-    sums = (
-        ordered.groupby("player_id", as_index=False)[
-            ["total_points", "score_xp", "score_exp_points", "score_official_xp"]
-        ]
-        .sum()
-    )
+    sums = ordered.groupby("player_id", as_index=False)[
+        ["total_points", "score_xp", "score_exp_points"]
+    ].sum()
     keep = [col for col in base.columns if col not in sums.columns or col == "player_id"]
     return base[keep].merge(sums, on="player_id", how="left")
 
@@ -184,14 +182,11 @@ def xi_rows(frame: pd.DataFrame, protocol: dict[str, Any]) -> list[dict[str, Any
     """Stripped XI points. A week that one score cannot fill is dropped from all three."""
     window = _window(frame, protocol)
     window = window.loc[window["eligible"]].copy()
-    filled = usable_gameweeks(window)
     rows: list[dict[str, Any]] = []
     season = str(frame["season"].iloc[0])
     for gw, block in window.groupby("gw", sort=True):
-        if int(gw) not in filled:
-            continue
         pool = _one_player(block)
-        wanted = ("score_xp", "score_exp_points", "score_official_xp")
+        wanted = ("score_xp", "score_exp_points")
         totals = {col: _xi_total(pool, col) for col in wanted}
         if any(value is None for value in totals.values()):
             continue
@@ -288,11 +283,12 @@ def _fill_sentence(fill: dict[str, Any]) -> str:
 
 
 def assert_procedure(intervals: dict[str, Any]) -> None:
-    """The procedure runner refuses its own report when the new blocks are missing."""
+    """The procedure runner refuses a survival call and a scraped-xP comparison."""
     enc = intervals.get("encompassing") or {}
-    for field in ("mean", "lo", "hi"):
-        if field not in enc or not math.isfinite(float(enc[field])):
-            raise RuntimeError(f"refusing report: encompassing coefficient has no finite {field}")
+    if enc.get("status") != "held" or enc.get("survives") is not None:
+        raise RuntimeError("refusing report: the stop-forecasting decision is not held")
+    if int(enc.get("n_gws") or 0) > 0:
+        raise RuntimeError("refusing report: played pre-deadline weeks are not in this batch")
     slices = intervals.get("slices") or {}
     for name in ("spearman", "top15"):
         block = slices.get(name) or {}
@@ -319,8 +315,8 @@ def _report_lines(
         "with σ = 3, fixed before the totals were read. The cluster is a gameweek. "
         "Gameweeks are resampled inside each season, then pooled. Player rows inside "
         "a gameweek are not resampled. B = 1000, seed 0, 95% interval. Gameweeks 5–38. "
-        "An official-xP gameweek whose maximum is not strictly positive is an unfilled "
-        "scrape and is left out. A season with fewer than 20 usable gameweeks is not pooled.",
+        "The certified comparison is score_xp against the shift-1 mean of points. "
+        "Scraped official xP is not in this table.",
         "",
         "## Likelihood",
         "",
@@ -337,8 +333,8 @@ def _report_lines(
         "",
         "The same delta by season. Each cell is the mean of that season's gameweek deltas.",
         "",
-        "| season | score_xp − exp | score_xp − official | official − exp |",
-        "|---|---:|---:|---:|",
+        "| season | score_xp − exp |",
+        "|---|---:|",
     ]
     order = [comparison_key(left, right) for left, right in COMPARISONS]
     incomplete = {
@@ -364,44 +360,49 @@ def _report_lines(
                 f"comparison, so that week is absent. {len(present)} gameweeks remain."
             )
     xp_exp = intervals["comparisons"][comparison_key("score_xp", "score_exp_points")]
-    xp_off = intervals["comparisons"][comparison_key("score_xp", "score_official_xp")]
-    off_exp = intervals["comparisons"][comparison_key("score_official_xp", "score_exp_points")]
-    off_key = comparison_key("score_xp", "score_official_xp")
-    off_vs_exp = comparison_key("score_official_xp", "score_exp_points")
-    xp_vs_off = ", ".join(
-        f"{season} {float(log_rows.loc[(log_rows['season']==season) & (log_rows['comparison']==off_key), 'delta'].mean()):+.4f}"
-        for season in intervals["seasons"]
-    )
-    off_vs = ", ".join(
-        f"{season} {float(log_rows.loc[(log_rows['season']==season) & (log_rows['comparison']==off_vs_exp), 'delta'].mean()):+.4f}"
-        for season in intervals["seasons"]
-    )
     lines += [
         "",
         f"On the pooled gameweeks, score_xp minus score_exp_points is {_fmt(xp_exp)}, "
-        f"and {_band(xp_exp)}. "
-        f"score_xp minus score_official_xp is {_fmt(xp_off)}, and {_band(xp_off)}. "
-        f"The season means of that second comparison are {xp_vs_off}. "
-        f"score_official_xp minus score_exp_points is {_fmt(off_exp)}, and {_band(off_exp)}. "
-        f"Its season means are {off_vs}.",
+        f"and {_band(xp_exp)}.",
         "",
         "The likelihood is the mean over every finite player-GW row, including "
         "0-minute rows. A Gaussian log score with σ fixed at 3 is mean squared error "
         "up to a constant, so non-starters dominate it. The rank slice below is the "
         "decision-relevant cut. It is not the eleven.",
-        "",
-        "2025-26 is the season on which the goalkeeper save rate, defensive contribution, "
-        "and forward calibration were set. Its official-xP column is mostly empty. "
-        "A mean that pools it with the other three seasons is not the official-xP result. "
-        "The official-xP intervals above use only seasons that clear 20 filled gameweeks.",
     ]
     lines += [
         "",
-        "## Official xP timing",
+        "## Scraped xP, withdrawn",
         "",
-        "A gameweek is usable when the maximum official xP on that gameweek is greater "
-        "than 0. The check reads the column. It does not read minutes. An all-zero "
-        "gameweek is an unfilled scrape, not a forecast of zero.",
+        "The Vaastav README says `xP` comes from the FPL field `ep_this`, and the "
+        "scraper runs after each gameweek ends. If FPL updates `ep_this` after the "
+        "matches, the scraped value contains information that was not available before "
+        "the deadline. The maintainer says that cadence is not documented. Weekly "
+        "updates of that repository stopped after 2024-25. A season now has three "
+        "updates. `modified` is not a scrape clock. These sheets have no per-row "
+        "capture time, so they fail the pre-deadline check. They are not a benchmark "
+        "and not a feature. The figures below are the last run that used them. They "
+        "are not a result, and they are not a reason to stop work on the forecast.",
+        "",
+        "Last scraped log score, not certified: score_xp minus official xP "
+        "−0.0565 [−0.0680, −0.0442] on the three seasons with at least 20 filled "
+        "weeks. Spearman on eligible rows −0.3487 [−0.3789, −0.3188]. Top-15 "
+        "intersection +0.2174 [−0.0257, +0.4949]. Walk-forward coefficient on "
+        "score_xp −0.0245 [−0.0356, −0.0139]. The −0.35 figure is that rank gap "
+        "against points, not the correlation of the two forecasts. Within position, "
+        "on eligible players, the weekly Spearman with points averages +0.23 for "
+        "`score_xp` and +0.59 for scraped xP, and the gap is negative on 106 of 106 "
+        "defined weeks. FPL points are too noisy for a pre-match forecast to lead by "
+        "that much every week. On filled scrapes, 94.4% of players who played have a "
+        "nonzero scraped xP and 23.7% of players who did not, so the column knows who "
+        "was on the pitch. That is the contamination reading. Scraped xP is unusable "
+        "as a feature as well as a benchmark. On 2024-25 gameweek 10 the two forecasts "
+        "still correlate at +0.72 with a unique key, so this is not a join bug. See "
+        "`reports/decision_placebo.md`.",
+        "",
+        "Filled weeks in the cache, maximum xP greater than 0, are listed so the "
+        "pattern can be checked. An all-zero week is an unfilled scrape. That "
+        "description is not a score.",
         "",
     ]
     for fill in fills:
@@ -410,8 +411,7 @@ def _report_lines(
     clock = "; ".join(f"{fill['season']}: {fill['modified']}" for fill in fills)
     lines += [
         f"`modified` by season: {clock}. It is not a scrape clock. "
-        "These caches do not say whether official xP was taken before or after late "
-        "team news. No historical news time was invented.",
+        "No historical news time was invented. The README warning is the provenance.",
         "",
         "`value` is the gameweek price in tenths. `selected` is ownership. "
         "`transfers_balance` is the transfer column on the same sheet. None of the "
@@ -427,37 +427,24 @@ def _report_lines(
         "at least 45, both from shift-1 history that includes 0-minute weeks. "
         "The total is the eleven's points plus the highest points inside that eleven. "
         "That captain is the realised maximum, so the column is a sanity check. "
-        "A week one score cannot fill is dropped from all three. This table is not a pass.",
+        "A week one score cannot fill is dropped from both columns. This table is not a pass.",
         "",
-        "| season | weeks | score_xp | score_exp_points | score_official_xp |",
-        "|---|---:|---:|---:|---:|",
+        "| season | weeks | score_xp | score_exp_points |",
+        "|---|---:|---:|---:|",
     ]
     if xi.empty:
-        lines.append("| — | 0 | — | — | — |")
+        lines.append("| — | 0 | — | — |")
     else:
         for season, block in xi.groupby("season", sort=False):
             lines.append(
                 f"| {season} | {len(block)} | {block['score_xp'].sum():.0f} | "
-                f"{block['score_exp_points'].sum():.0f} | {block['score_official_xp'].sum():.0f} |"
+                f"{block['score_exp_points'].sum():.0f} |"
             )
     if not xi.empty:
-        off_ahead = []
-        xp_ahead = []
-        for season, block in xi.groupby("season", sort=False):
-            xp_total = float(block["score_xp"].sum())
-            off_total = float(block["score_official_xp"].sum())
-            exp_total = float(block["score_exp_points"].sum())
-            if off_total >= xp_total and off_total >= exp_total:
-                off_ahead.append(str(season))
-            elif xp_total >= off_total and xp_total >= exp_total:
-                xp_ahead.append(str(season))
         lines += [
             "",
             "There is no budget and no transfer constraint, and the captain is the "
-            "highest realised score in the eleven. "
-            f"Official xP has the highest total in {', '.join(off_ahead) or 'no season'}. "
-            f"score_xp has the highest total in {', '.join(xp_ahead) or 'no season'}. "
-            "These totals are not a pass. Unfilled official-xP weeks are dropped from all three columns.",
+            "highest realised score in the eleven. These totals are not a pass.",
         ]
     lines += ["", "## Decision slice", ""]
     lines.append(
@@ -486,62 +473,31 @@ def _report_lines(
                 f"| {name} | {left} − {right} | {_fmt(row)} | {pooled} | {omitted} |"
             )
     rank_exp = intervals["slices"]["spearman"][comparison_key("score_xp", "score_exp_points")]
-    rank_off = intervals["slices"]["spearman"][comparison_key("score_xp", "score_official_xp")]
-    top_off = intervals["slices"]["top15"][comparison_key("score_xp", "score_official_xp")]
-    top_base = intervals["slices"]["top15"][comparison_key("score_official_xp", "score_exp_points")]
     lines += [
         "",
         f"On the rank slice, score_xp minus score_exp_points is {_fmt(rank_exp)}, "
-        f"and {_band(rank_exp)}. score_xp minus score_official_xp is {_fmt(rank_off)}, "
-        f"and {_band(rank_off)}. On the top-15 intersection, score_xp minus "
-        f"score_official_xp is {_fmt(top_off)}, and {_band(top_off)}. "
-        f"score_official_xp minus score_exp_points on that intersection is {_fmt(top_base)}, "
-        f"and {_band(top_base)}.",
+        f"and {_band(rank_exp)}. Scraped official xP is not in this slice.",
     ]
     enc = intervals["encompassing"]
-    required = ", ".join(enc["required_seasons"])
-    tuning_mean = enc.get("tuning_mean")
-    tuning_text = "not computed" if tuning_mean is None else f"{float(tuning_mean):+.4f}"
-    if enc["survives"]:
-        verdict = (
-            f"The 95% interval on {required} lies entirely above zero. "
-            "The engine coefficient survives on the seasons that were not used to set "
-            "the goalkeeper save rate, defensive contribution, and forward calibration."
-        )
-    else:
-        verdict = (
-            f"The 95% interval on {required} does not lie entirely above zero. "
-            "The engine coefficient does not survive. Stop improving the single-gameweek "
-            "forecast. The next batch is the decision layer: multi-week transfer planning, "
-            "hit discipline, chip timing, and captaincy. That layer is not built in this batch. "
-            "Official xP, or a shrunk blend of it, is the forecast input until a later "
-            "pre-registered test says otherwise."
-        )
+    engine_notes = []
+    for capture in enc.get("engine_captures") or []:
+        committed = capture.get("git_commit_at") or "not committed"
+        engine_notes.append(f"{capture['path']} (git {committed})")
+    official_notes = ", ".join(enc.get("official_captures") or []) or "none"
     lines += [
         "",
-        "## Encompassing test",
+        "## Live encompassing test",
         "",
-        "Pre-registered before these totals were read. Within each season, ordinary "
-        "least squares of `total_points` on an intercept, `score_official_xp`, and "
-        "`score_xp`, using only earlier usable gameweeks. Evaluation starts at gameweek 8 "
-        "and needs at least four training gameweeks. The coefficient is the one on "
-        "`score_xp`. The bootstrap resamples those gameweek coefficients inside each "
-        "season. Survival requires the 95% interval on 2022-23, 2023-24, and 2024-25 "
-        "to lie entirely above zero. 2025-26 is the tuning season and does not decide survival.",
+        "The formula is unchanged: points on an intercept, official xP, and score_xp. "
+        "Both inputs have to be pre-deadline captures, and the points have to be the "
+        "played gameweek. Eligible weeks start at 2026-27 gameweek 6. A survival call "
+        "needs 20 such gameweeks. This batch does not make that call.",
         "",
-        f"Mean coefficient {_fmt(enc)}. Pooled gameweeks: "
-        + ", ".join(f"{season} {count}" for season, count in enc["n_gws"].items())
-        + ". Left out: "
-        + (
-            ", ".join(
-                f"{season} {count}" for season, count in (enc.get("incomplete_seasons") or {}).items()
-            )
-            or "none"
-        )
-        + f". Tuning season {enc['tuning_season']} mean {tuning_text} "
-        f"on {enc['tuning_n_gws']} evaluation gameweeks, reported and not pooled.",
-        "",
-        verdict,
+        f"Status: {enc['status']}. Evaluable gameweeks: {enc['n_gws']}. "
+        f"Outcomes in the 2026-27 log run through gameweek {enc['outcomes_through_gw']}. "
+        f"Engine captures: {', '.join(engine_notes) or 'none'}. "
+        f"Official captures: {official_notes}. {enc['reason']} "
+        "score_xp stays the forecast.",
     ]
     lines += [
         "",
@@ -575,11 +531,10 @@ def _report_lines(
         "`experiments/matrix.json` no longer carries `pass_margin`, and "
         "`search_protocol` does not label a season total as a winner.",
         "",
-        "Official xP is the Vaastav `xP` column on the same row, stored as "
-        "`official_xp` and scored as `score_official_xp`. It is that week's "
-        "pre-deadline forecast. It is not shifted, and it is not an input to "
-        "`compute_xp`. `total_points` stays the outcome. `exp_points` remains the "
-        "expanding mean of past points. It is a different baseline.",
+        "Vaastav `xP` is stored as `official_xp` and is not an input to `compute_xp`. "
+        "It is not a pre-deadline forecast. The README says the scraper runs after "
+        "the gameweek. `total_points` stays the outcome. `exp_points` remains the "
+        "expanding mean of past points.",
         "",
         "Stage 13's information-coefficient gate failed: xP trailed expected points "
         "at horizon 8. Stage 18's ridge tied xP under the budget, a difference of "
@@ -633,7 +588,6 @@ def _report_lines(
         "",
         "- `data/processed/player_gw_logscore.csv`",
         "- `data/processed/player_gw_slices.csv`",
-        "- `data/processed/encompassing_coefficients.csv`",
         "- `data/processed/player_gw_xi_sanity.csv`",
         "- `experiments/protocol.json`",
         "",
@@ -649,7 +603,6 @@ def run() -> dict[str, Any]:
     collected: list[dict[str, Any]] = []
     xi_collected: list[dict[str, Any]] = []
     slice_collected: list[dict[str, Any]] = []
-    coef_collected: list[dict[str, Any]] = []
     fills: list[dict[str, Any]] = []
     for season in protocol["closed_seasons"]:
         code = protocol["season_codes"][season]
@@ -659,32 +612,19 @@ def run() -> dict[str, Any]:
         collected.extend(logscore_rows(frame, protocol))
         xi_collected.extend(xi_rows(frame, protocol))
         slice_collected.extend(slice_rows(frame, protocol))
-        coef_collected.extend(coefficient_rows(frame, protocol))
         print(f"  sheet rows {len(frame)}", flush=True)
         del frame
     log_rows = pd.DataFrame(collected)
     xi = pd.DataFrame(xi_collected)
     slices = pd.DataFrame(slice_collected)
-    coefs = pd.DataFrame(coef_collected)
-    if slices.empty or coefs.empty:
-        raise RuntimeError("the decision slice or the encompassing regression is empty")
+    if slices.empty:
+        raise RuntimeError("the decision slice is empty")
     comparisons = _pool_intervals(log_rows, protocol, value="delta")
     slice_intervals = {
         name: _pool_intervals(slices.loc[slices["slice"] == name], protocol, value="delta")
         for name in ("spearman", "top15")
     }
-    oos = tuple(
-        season for season in protocol["closed_seasons"] if season != protocol["tuning_season"]
-    )
-    encompassing = _pool_intervals(
-        coefs, protocol, value="coefficient", key_col=None, seasons=oos
-    )["engine"]
-    tuning = coefs.loc[coefs["season"] == protocol["tuning_season"], "coefficient"]
-    encompassing["tuning_season"] = protocol["tuning_season"]
-    encompassing["tuning_n_gws"] = int(tuning.size)
-    encompassing["tuning_mean"] = None if tuning.empty else float(tuning.mean())
-    encompassing["required_seasons"] = list(oos)
-    encompassing["survives"] = set(encompassing["n_gws"]) == set(oos) and float(encompassing["lo"]) > 0
+    encompassing = live_encompassing()
     intervals = {
         "seasons": list(protocol["closed_seasons"]),
         "min_gws": int(protocol["min_gws_per_season"]),
@@ -699,7 +639,6 @@ def run() -> dict[str, Any]:
     write_gated_report(REPORTS / "procedure_audit.md", audit, intervals, lines)
     log_rows.to_csv(LOGSCORE_CSV, index=False)
     slices.to_csv(SLICE_CSV, index=False)
-    coefs.to_csv(COEF_CSV, index=False)
     xi.to_csv(XI_CSV, index=False)
     (PROCESSED / "procedure_intervals.json").write_text(
         json.dumps(intervals, indent=2) + "\n", encoding="utf-8"

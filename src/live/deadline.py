@@ -109,6 +109,7 @@ class DeadlineLog:
     bench_gw: int | None = None
     schedule: tuple[tuple[str, int | None], ...] = ()
     outlooks: tuple[tuple[int, float, float, float, float], ...] = ()
+    choice_field: str = ""
 
 
 def player_key(element: int) -> str:
@@ -545,6 +546,16 @@ def render(log: DeadlineLog) -> str:
             "The scorer is ready and was not run because the minutes file is absent."
         )
         lines.append("")
+    elif log.scorer_ran and log.choice_field == "ep_next":
+        lines.append(
+            "The squad this week was chosen by the captured ep_next. "
+            "score_xp was logged beside it and did not choose the squad. "
+            "Later horizon weeks have no ep_next capture, so they add nothing "
+            "to the chip sum and are not filled from score_xp. "
+            "Minutes came from the file, a zero stayed a zero, and a player "
+            "the file omits kept his last observed minutes. "
+            "The transfer search was not run."
+        )
     elif log.scorer_ran:
         lines.append(
             "The scorer called the same one-match formula as score_xp. "
@@ -802,6 +813,9 @@ def collect(
         minute_map = {
             score_key(int(row["player_id"])): float(row["xmi"]) for row in resolved
         }
+        from src.live.scorer import load_ep_next
+
+        choice = load_ep_next(int(gw))
         scored = price_half(
             gw=int(gw),
             logs=logs,
@@ -811,6 +825,7 @@ def collect(
             state=state,
             minutes=minute_map,
             played={week: chip_name for week, chip_name in played},
+            choice=choice,
         )
         chip = scored.plan.chip
         priced = scored.line_weeks
@@ -861,6 +876,7 @@ def collect(
         bench_gw=bench_gw,
         schedule=schedule,
         outlooks=outlooks,
+        choice_field="ep_next" if scorer_ran else "",
     )
 
 

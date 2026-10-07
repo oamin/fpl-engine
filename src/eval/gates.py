@@ -10,6 +10,7 @@ import inspect
 import json
 import math
 import tempfile
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 from unittest.mock import patch
@@ -34,11 +35,7 @@ PROTOCOL_PATH = ROOT / "experiments" / "protocol.json"
 
 CLOSED_SEASONS = ("2022-23", "2023-24", "2024-25", "2025-26")
 HOLDOUT_SEASON = "2026-27"
-COMPARISONS = (
-    ("score_xp", "score_exp_points"),
-    ("score_xp", "score_official_xp"),
-    ("score_official_xp", "score_exp_points"),
-)
+COMPARISONS = (("score_xp", "score_exp_points"),)
 
 
 def comparison_key(left: str, right: str) -> str:
@@ -56,7 +53,7 @@ def load_protocol(path: Path | None = None) -> dict[str, Any]:
         raise ValueError("protocol holdout must be 2026-27")
     pairs = [tuple(pair) for pair in raw["comparisons"]]
     if pairs != list(COMPARISONS):
-        raise ValueError("protocol comparisons do not match the pre-registered three")
+        raise ValueError("protocol comparisons do not match the registered list")
     if float(raw["sigma"]) != 3.0:
         raise ValueError("sigma is pre-registered at 3.0")
     return raw
@@ -112,6 +109,9 @@ def assert_reportable(audit: dict[str, Any], intervals: dict[str, Any]) -> None:
         )
     min_gws = int(intervals.get("min_gws") or 20)
     comps = intervals.get("comparisons") or {}
+    for key in comps:
+        if "official_xp" in str(key) or "ep_this" in str(key) or str(key).endswith("_xP"):
+            raise RuntimeError(f"refusing report: {key} uses official xP without a live capture")
     for left, right in COMPARISONS:
         key = comparison_key(left, right)
         row = comps.get(key)
@@ -352,10 +352,22 @@ def _failures_paths() -> list[str]:
     if int(protocol.get("holdout_contaminated_through_gw") or 0) != 5:
         failures.append("gameweeks 1-5 are not marked as already read")
     enc = protocol.get("encompassing") or {}
-    if "score_xp" not in str(enc.get("formula") or "") or "score_official_xp" not in str(enc.get("formula") or ""):
+    formula = str(enc.get("formula") or "")
+    if "score_xp" not in formula or "official_xp" not in formula:
         failures.append("the encompassing formula is not official xP plus the engine")
-    if "entirely above 0" not in str(enc.get("survive_if") or ""):
-        failures.append("the encompassing survival rule is not locked")
+    if enc.get("decision") != "held":
+        failures.append("the stop-forecasting decision is not held")
+    if "pre-deadline" not in str(enc.get("population") or ""):
+        failures.append("the encompassing test is not limited to pre-deadline captures")
+    if int(enc.get("min_gws") or 0) != 20:
+        failures.append("a survival call does not wait for 20 pre-deadline gameweeks")
+    if enc.get("covers_zero") != "undetermined":
+        failures.append("a 20-week interval that covers zero is not marked undetermined")
+    if int(enc.get("continue_to_gw") or 0) != 38:
+        failures.append("an undetermined live test does not continue through gameweek 38")
+    sheet = str((protocol.get("official_xp") or {}).get("historical_sheet") or "")
+    if "not a benchmark" not in sheet:
+        failures.append("scraped xP is still a historical benchmark")
     import src.live.benchmark as benchmark
 
     body = inspect.getsource(benchmark.build_frames)
@@ -363,6 +375,175 @@ def _failures_paths() -> list[str]:
         failures.append("build_frames still drops 0-minute rows before the join")
     if "retain_sheet_rows=True" not in body:
         failures.append("build_frames drops a sheet row that misses its fixture")
+    from src.eval.decision_spec import (
+        CAPTAIN_BASELINE,
+        HORIZON,
+        LOGGED_ALONGSIDE,
+        MIN_LIVE_WEEKS,
+        POWER_BOOTSTRAP,
+        POWER_LEVEL,
+        POWER_SEED,
+        POWER_SIMS,
+        POWER_STEP,
+        POWER_WEEKS,
+        LIVE_CONTINUE_TO_GW,
+        LIVE_COVERS_ZERO,
+        LIVE_PRIMARY,
+        LIVE_PRIMARY_FROM_GW,
+        LIVE_PRIMARY_WIRED,
+        LIVE_SHADOW,
+        LOSO_BOOTSTRAP,
+        LOSO_CONDITIONAL_FLOOR,
+        LOSO_FLOOR,
+        LOSO_MIN_SEASONS,
+        LOSO_SEED,
+        SCORE_COLUMN,
+        T1_MINUTES,
+        T24_HOURS,
+        TEMPLATE_SLOTS,
+    )
+
+    if "decision_layer" not in protocol or "capture" not in protocol:
+        failures.append("the decision batch and the capture window are not locked")
+        return failures
+    layer = protocol["decision_layer"]
+    if layer.get("score_column") != SCORE_COLUMN:
+        failures.append("the decision batch is not locked on score_xp")
+    if layer.get("winner") is not None:
+        failures.append("a winner was declared between score_xp and ep_next")
+    if layer.get("logged_alongside") != LOGGED_ALONGSIDE:
+        failures.append("ep_next is not the column logged beside score_xp")
+    if int(layer.get("min_live_weeks") or 0) != MIN_LIVE_WEEKS:
+        failures.append("a score-column winner does not wait for 20 live weeks")
+    if layer.get("captain_baseline") != CAPTAIN_BASELINE:
+        failures.append("the captain baseline is not the highest score")
+    if int(layer.get("horizon") or 0) != HORIZON:
+        failures.append("realised transfer gain is not the three-week horizon")
+    targets = [tuple(pair) for pair in layer.get("template_targets") or []]
+    if targets != list(TEMPLATE_SLOTS):
+        failures.append("template price targets do not match the locked slots")
+    if int(layer.get("alignment_gw") or 0) != 10:
+        failures.append("the alignment diagnostic is not locked to one gameweek")
+    if int(layer.get("power_weeks") or 0) != POWER_WEEKS:
+        failures.append("the power check is not locked to 20 gameweeks")
+    if float(layer.get("power_level") or 0) != POWER_LEVEL:
+        failures.append("the power target is not 80 percent")
+    if int(layer.get("power_bootstrap") or 0) != POWER_BOOTSTRAP or int(layer["power_seed"]) != POWER_SEED:
+        failures.append("the power bootstrap is not the locked draw")
+    if int(layer.get("power_sims") or 0) != POWER_SIMS or float(layer.get("power_step") or 0) != POWER_STEP:
+        failures.append("the power grid is not locked")
+    capture = protocol["capture"]
+    if capture.get("clock") != "HTTP Date header":
+        failures.append("the capture clock is not the response Date header")
+    if list(capture.get("t24_hours") or []) != list(T24_HOURS):
+        failures.append("the T-24h window is not locked")
+    if list(capture.get("t1_minutes") or []) != list(T1_MINUTES):
+        failures.append("the T-1h window is not locked")
+    if not capture.get("raw_bootstrap"):
+        failures.append("the raw bootstrap is not saved")
+    if int(capture.get("cadence_minutes") or 0) != 15:
+        failures.append("the capture job is not every 15 minutes")
+    placebo = protocol.get("placebo") or {}
+    if placebo.get("winner") is not None:
+        failures.append("the placebo declared a winner")
+    if "within each gameweek" not in str(placebo.get("shuffle") or ""):
+        failures.append("the placebo shuffle is not within the gameweek")
+    if placebo.get("naive_score") != "score_exp_points":
+        failures.append("the naive score in the placebo is not expected points")
+    common = protocol.get("common_state") or {}
+    if common.get("winner") is not None:
+        failures.append("the common-state test declared a winner")
+    if "within each gameweek" not in str(common.get("shuffle") or ""):
+        failures.append("the common-state shuffle is not within the gameweek")
+    if "score unused" not in str(common.get("squad") or ""):
+        failures.append("the common-state squad is not score-blind")
+    for key in ("disagreement", "hierarchy", "initial_squad"):
+        block = protocol.get(key) or {}
+        if block.get("winner") is not None:
+            failures.append(f"the {key} block declared a winner")
+    if (protocol.get("initial_squad") or {}).get("transfers") != "none":
+        failures.append("the initial portfolio applies a transfer")
+    if "loso" not in protocol or "live_primary" not in protocol:
+        failures.append("leave-one-season-out and the live primary are not locked")
+    else:
+        from src.eval.loso import contrast_keys
+
+        loso = protocol["loso"]
+        live = protocol["live_primary"]
+        if loso.get("winner") is not None:
+            failures.append("leave-one-season-out declared a winner")
+        if loso.get("replaces_published") is not False:
+            failures.append("leave-one-season-out replaces the four-season interval")
+        if int(loso.get("bootstrap") or 0) != LOSO_BOOTSTRAP or int(loso["seed"]) != LOSO_SEED:
+            failures.append("leave-one-season-out is not the locked draw")
+        if int(loso.get("floor") or 0) != LOSO_FLOOR:
+            failures.append("leave-one-season-out does not keep the 20-week floor")
+        if int(loso.get("conditional_floor") or 0) != LOSO_CONDITIONAL_FLOOR:
+            failures.append("the conditional floor is not 5 disagreement weeks")
+        if int(loso.get("min_seasons") or 0) != LOSO_MIN_SEASONS:
+            failures.append("a leave-one-out fold may pool a single season")
+        if list(loso.get("contrasts") or []) != list(contrast_keys()):
+            failures.append("the leave-one-season-out contrast list does not match the lock")
+        if live.get("primary") != LIVE_PRIMARY:
+            failures.append("the live primary is not ep_next")
+        if live.get("shadow") != LIVE_SHADOW:
+            failures.append("score_xp is not the live shadow")
+        if live.get("historical_score") != SCORE_COLUMN:
+            failures.append("the published historical score is not score_xp")
+        if live.get("winner") is not None:
+            failures.append("the live primary declared a winner")
+        if live.get("wired") is not LIVE_PRIMARY_WIRED:
+            failures.append("the live primary wiring flag does not match the lock")
+        if live.get("covers_zero") != LIVE_COVERS_ZERO:
+            failures.append("a live interval that covers zero is not undetermined")
+        if int(live.get("continue_to_gw") or 0) != LIVE_CONTINUE_TO_GW:
+            failures.append("the live test does not continue through gameweek 38")
+        if int(live.get("from_gw") or 0) != LIVE_PRIMARY_FROM_GW:
+            failures.append("the live primary does not start at gameweek 6")
+        if int(live.get("min_weeks") or 0) != MIN_LIVE_WEEKS:
+            failures.append("promotion does not wait for 20 live weeks")
+        import src.live.scorer as live_scorer
+
+        if live_scorer.SCORE_COL != SCORE_COLUMN:
+            failures.append("the live scorer no longer prices score_xp")
+        if "live_choice" not in inspect.getsource(live_scorer.plan_deadline):
+            failures.append("the live plan does not read the ep_next choice")
+        import src.live.deadline as live_deadline
+
+        if "choice=" not in inspect.getsource(live_deadline.collect):
+            failures.append("the deadline does not pass the ep_next choice")
+        eligible = protocol.get("eligibility") or {}
+        if eligible.get("winner") is not None:
+            failures.append("the eligibility rule declared a winner")
+        if eligible.get("replaces_published") is not False:
+            failures.append("the eligibility rule replaces the four-season interval")
+        if eligible.get("repairs_score") is not False:
+            failures.append("the eligibility rule repairs the score")
+        if eligible.get("combine") != "and":
+            failures.append("eligibility is not the conjunction of xG and a prior season")
+        if eligible.get("timing") != "post-hoc" or eligible.get("primary") != "eligible":
+            failures.append("the eligible pool is not the primary post-hoc result")
+        if eligible.get("all_weeks") != "sensitivity":
+            failures.append("the all-weeks pool is not the sensitivity")
+        if live.get("decision_capture") != "t1_same_stamp" or live.get("choose_after_seeing_scores") is not False:
+            failures.append("the decision capture is not the same-stamp t1 pair")
+    manifest = json.loads((ROOT / "data" / "live" / "HOLDOUT_FREEZE.json").read_text(encoding="utf-8"))
+    tracked = manifest.get("tracked") or {}
+    if "data/cache/player_gw_2026_27.csv" in tracked:
+        failures.append("the growing player cache is still a single freeze hash")
+    snaps = [key for key in tracked if str(key).startswith("data/holdout/2026-27/player_gw/")]
+    if len(snaps) < 5:
+        failures.append("gameweeks 1-5 do not each have a snapshot hash")
+    from src.eval.capture_schedule import missing_capture_gws
+    from src.eval.provenance import load_deadlines
+
+    missing = missing_capture_gws(
+        ROOT, datetime.now(timezone.utc), load_deadlines()
+    )
+    if missing:
+        failures.append(
+            "no pre-deadline capture for gameweeks " + ", ".join(str(gw) for gw in missing)
+        )
     return failures
 
 

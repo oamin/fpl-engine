@@ -10,11 +10,12 @@ from __future__ import annotations
 import json
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Mapping
 
 import pandas as pd
 
 from src.eval.holdout import sha256_file
+from src.eval.provenance import aware_utc, load_deadlines
 from src.live.deadline import (
     BOOTSTRAP_PATH,
     DECISION_GW,
@@ -52,6 +53,62 @@ NOTE = (
 )
 
 
+def official_frame_from_elements(
+    elements: list[dict[str, Any]],
+    events: list[dict[str, Any]],
+    *,
+    gw: int,
+    captured_at: str,
+) -> pd.DataFrame:
+    """Build a GW capture from bootstrap elements. ``ep_this`` is the current event only."""
+    event = next(item for item in events if int(item["id"]) == int(gw))
+    deadline = str(event["deadline_time"])
+    if aware_utc(captured_at) >= aware_utc(deadline):
+        raise RuntimeError("refusing xP: the capture is not before the deadline")
+    if event.get("is_next") and not event.get("is_current"):
+        source, role = "ep_next", "next"
+    elif event.get("is_current") and not event.get("finished"):
+        source, role = "ep_this", "current"
+    else:
+        raise RuntimeError(f"refusing xP: GW{gw} is not an open pre-deadline event")
+    rows = []
+    for element in elements:
+        rows.append(
+            {
+                "player_id": f"{SEASON}:{int(element['id'])}",
+                "gw": int(gw),
+                "official_xp": float(element[source]),
+                "source_field": source,
+                "event_role": role,
+                "captured_at": captured_at,
+                "deadline": deadline,
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def write_deadlines(events: list[dict[str, Any]], path: Path | None = None) -> Path:
+    dest = path or (ROOT / "data" / "predictions" / SEASON / "deadlines.json")
+    payload = {
+        "season": SEASON,
+        "source": "FPL bootstrap-static events.deadline_time",
+        "deadlines": {str(int(event["id"])): str(event["deadline_time"]) for event in events},
+    }
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    return dest
+
+
+def capture_official_ep(gw: int = DECISION_GW) -> Path:
+    """Write one official file. The clock is the response Date header, not the local clock."""
+    from src.eval.capture_schedule import fetch_bootstrap, write_snapshot
+
+    payload, captured = fetch_bootstrap()
+    path = write_snapshot(payload, captured, gw=gw, slot=None)
+    load_deadlines()
+    return path
+
+
 def prediction_path(root: Path, season: str, gw: int, stamp: str) -> Path:
     return root / "data" / "predictions" / season / f"gw{int(gw):02d}" / f"{stamp}.csv"
 
@@ -70,15 +127,23 @@ def export_deadline_scores(
     minutes_path: Path = MINUTES_PATH,
     dest_root: Path | None = None,
     stamp: str | None = None,
+    bootstrap: Mapping[str, Any] | None = None,
+    created_at: str | None = None,
+    bootstrap_hash: str | None = None,
 ) -> Path:
-    """Score one deadline from the stored files and write a new timestamped CSV."""
+    """Score one deadline from the stored files and write a new timestamped CSV.
+
+    ``bootstrap`` and ``created_at`` are the capture this score belongs to.
+    The odds file is the one already stored. This function does not fetch odds.
+    """
     root = dest_root or ROOT
-    created = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    created = created_at or datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     stamp = stamp or datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     entry = json.loads(ENTRY_PATH.read_text(encoding="utf-8"))
     logs = pd.read_csv(LOG_PATH)
     odds = load_odds_frame(ODDS_PATH, LINES_PATH if LINES_PATH.is_file() else None)
-    bootstrap = json.loads(BOOTSTRAP_PATH.read_text(encoding="utf-8"))
+    if bootstrap is None:
+        bootstrap = json.loads(BOOTSTRAP_PATH.read_text(encoding="utf-8"))
     fixtures = json.loads(FIXTURES_PATH.read_text(encoding="utf-8"))
     if not minutes_path.is_file():
         raise RuntimeError(f"missing minutes file {minutes_path}")
@@ -124,7 +189,7 @@ def export_deadline_scores(
     hashes = {
         "logs_hash": sha256_file(LOG_PATH),
         "odds_hash": sha256_file(ODDS_PATH),
-        "bootstrap_hash": sha256_file(BOOTSTRAP_PATH),
+        "bootstrap_hash": bootstrap_hash or sha256_file(BOOTSTRAP_PATH),
         "fixtures_hash": sha256_file(FIXTURES_PATH),
         "minutes_hash": sha256_file(minutes_path),
         "entry_hash": sha256_file(ENTRY_PATH),

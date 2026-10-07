@@ -1,0 +1,14 @@
+{
+  "mde": 0.01,
+  "power_at_mde": 0.805,
+  "power_target": 0.8,
+  "median_null_half_width": 0.005473030046229552,
+  "n_weeks": 20,
+  "n_deltas": 135,
+  "residual_sd": 0.01429528158129933,
+  "n_sims": 400,
+  "n_boot": 1000,
+  "seed": 0,
+  "step": 0.0005,
+  "grid_max": 0.04
+}
