@@ -540,6 +540,27 @@ def _failures_paths() -> list[str]:
             failures.append("the reversion draw is not locked")
         if "seed" not in reversion or int(reversion["seed"]) != 0:
             failures.append("the reversion seed is not 0")
+        signal = protocol.get("reversion_signal") or {}
+        if signal.get("installs_feature") is not False or signal.get("replaces_score") is not False:
+            failures.append("the reversion signal edits score_xp")
+        if signal.get("winner") is not None:
+            failures.append("the reversion signal declared a winner")
+        if int(signal.get("lookback") or 0) != 5 or int(signal.get("min_minutes") or 0) != 30:
+            failures.append("the reversion signal window is not locked")
+        if float(signal.get("z_threshold") or 0) != 1.5:
+            failures.append("the reversion signal threshold is not locked")
+        if list(signal.get("horizons") or []) != [1, 2, 3]:
+            failures.append("the reversion signal horizons are not locked")
+        if list(signal.get("baselines") or []) != ["score_exp_points", "score_xp"]:
+            failures.append("the reversion signal baselines are not locked")
+        if float(signal.get("spearman_bar") or 0) != -0.15 or float(signal.get("bucket_bar") or 0) != 0.5:
+            failures.append("the reversion signal bars are not locked")
+        if float(signal.get("hurst_bar") or 0) != 0.5 or int(signal.get("hurst_min_n") or 0) != 16:
+            failures.append("the Hurst bar is not locked")
+        if int(signal.get("bootstrap") or 0) != 1000 or int(signal.get("floor") or 0) != 20:
+            failures.append("the reversion signal draw is not locked")
+        if "seed" not in signal or int(signal["seed"]) != 0:
+            failures.append("the reversion signal seed is not 0")
     manifest = json.loads((ROOT / "data" / "live" / "HOLDOUT_FREEZE.json").read_text(encoding="utf-8"))
     tracked = manifest.get("tracked") or {}
     if "data/cache/player_gw_2026_27.csv" in tracked:
