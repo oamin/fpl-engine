@@ -357,20 +357,44 @@ def load_ep_next(gw: int, folder: Path | None = None) -> dict[str, float]:
     return chosen
 
 
+def _one_stamp(frame: pd.DataFrame, column: str) -> str:
+    if column not in frame.columns:
+        raise ScorerError(f"the capture has no {column}")
+    values = {str(value) for value in frame[column].dropna().unique()}
+    if len(values) != 1:
+        raise ScorerError(f"{column} is not one capture time")
+    return next(iter(values))
+
+
 def write_shadow_log(
     dest: Path,
     engine_path: Path,
     official_path: Path,
+    *,
+    require_same_stamp: bool = True,
 ) -> pd.DataFrame:
-    """Pair the engine score with ``ep_next``. Neither source file is overwritten."""
+    """Pair the engine score with ``ep_next``. Neither source file is overwritten.
+
+    A decision pair requires both files to carry the same capture time.
+    A missing score is not filled from the other column.
+    """
     if dest.resolve() in {engine_path.resolve(), official_path.resolve()}:
         raise ScorerError("refusing to overwrite a source capture")
     engine = pd.read_csv(engine_path)
     official = pd.read_csv(official_path)
+    if require_same_stamp:
+        engine_stamp = _one_stamp(engine, "created_at")
+        official_stamp = _one_stamp(official, "captured_at")
+        if engine_stamp != official_stamp:
+            raise ScorerError(
+                f"score_xp {engine_stamp} and ep_next {official_stamp} are not the same capture"
+            )
     left = engine.loc[:, ["player_id", "gw", "score"]].rename(columns={"score": "score_xp"})
     right = official.loc[:, ["player_id", "gw", "official_xp"]].rename(columns={"official_xp": "ep_next"})
     paired = left.merge(right, on=["player_id", "gw"], how="outer")
     paired["choice_field"] = "ep_next"
+    if require_same_stamp:
+        paired["captured_at"] = _one_stamp(engine, "created_at")
     paired.to_csv(dest, index=False)
     return paired
 

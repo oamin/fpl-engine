@@ -521,6 +521,12 @@ def _failures_paths() -> list[str]:
             failures.append("the eligibility rule repairs the score")
         if eligible.get("combine") != "and":
             failures.append("eligibility is not the conjunction of xG and a prior season")
+        if eligible.get("timing") != "post-hoc" or eligible.get("primary") != "eligible":
+            failures.append("the eligible pool is not the primary post-hoc result")
+        if eligible.get("all_weeks") != "sensitivity":
+            failures.append("the all-weeks pool is not the sensitivity")
+        if live.get("decision_capture") != "t1_same_stamp" or live.get("choose_after_seeing_scores") is not False:
+            failures.append("the decision capture is not the same-stamp t1 pair")
     manifest = json.loads((ROOT / "data" / "live" / "HOLDOUT_FREEZE.json").read_text(encoding="utf-8"))
     tracked = manifest.get("tracked") or {}
     if "data/cache/player_gw_2026_27.csv" in tracked:

@@ -2,13 +2,11 @@
   "updated": "2026-10-07",
   "milestone": "eligibility",
   "status": "reviewed",
-  "summary": "The claim between the engine and expected points is inconclusive. The shared 2022-23 total of -477 is an arithmetic equivalence: dynamic transfers gained 267 under both scores, and the weeks are not the same series. Eligible weeks need populated xG and a prior season, so 2022-23 drops out of that second table and stays in the all-weeks pool. Every eligible score_xp-minus-expected-points interval covers zero. From gameweek 6 the live squad uses captured ep_next, and the shadow log still scores score_xp beside it.",
+  "summary": "The claim between the engine and expected points is inconclusive. The eligible pool, three seasons and about 100 weeks, is the primary closed-season result. The all-weeks pool is the sensitivity. The shared 2022-23 total of +267 is that season's sum only: weekly gains agree on 1 week, players on 2 weeks, and 2023-24 sums to +461 and +438. The decision capture is the same-stamp pair in the window from three hours to fifteen minutes before the deadline. The 07:04/08:04 shadow is not that pair.",
   "artifacts": [
     "reports/eligibility.md",
     "reports/loso.md",
-    "data/processed/eligibility_pool.csv",
-    "data/processed/eligibility_loso.csv",
-    "data/processed/path_totals_2022_23.csv",
-    "data/predictions/2026-27/gw06/shadow_20261007T080406Z.csv"
+    "data/processed/transfer_gains.csv",
+    "data/predictions/2026-27/gw06/shadow_20261007T181339Z.csv"
   ]
 }

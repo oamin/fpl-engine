@@ -338,6 +338,31 @@ class PlanTest(unittest.TestCase):
             again["score_xp_minus_ep_next"].tolist(),
         )
 
+    def test_a_mixed_stamp_is_not_a_decision_pair(self) -> None:
+        from src.live.scorer import ScorerError, write_shadow_log
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            engine = root / "engine.csv"
+            official = root / "official.csv"
+            engine.write_text(
+                "player_id,gw,score,created_at\na,6,1.0,2026-10-07T07:04:50Z\n",
+                encoding="utf-8",
+            )
+            official.write_text(
+                "player_id,gw,official_xp,captured_at\na,6,2.0,2026-10-07T08:04:06Z\n",
+                encoding="utf-8",
+            )
+            with self.assertRaises(ScorerError):
+                write_shadow_log(root / "shadow.csv", engine, official)
+            official.write_text(
+                "player_id,gw,official_xp,captured_at\na,6,2.0,2026-10-07T07:04:50Z\n",
+                encoding="utf-8",
+            )
+            same = write_shadow_log(root / "shadow_ok.csv", engine, official)
+            self.assertEqual(same["captured_at"].tolist(), ["2026-10-07T07:04:50Z"])
+            self.assertEqual(float(same["score_xp"].iloc[0]) - float(same["ep_next"].iloc[0]), -1.0)
+
 
 def _world() -> tuple[dict, list, pd.DataFrame, pd.DataFrame]:
     positions = (

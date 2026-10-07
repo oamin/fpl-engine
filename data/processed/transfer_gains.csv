@@ -1,0 +1,68 @@
+season,gw,hold_xp,hold_exp,pub_xp,pub_exp,xp_out,xp_in,exp_out,exp_in,same_players
+2022-23,5,0.0,0.0,7.0,0.0,roll,roll,roll,roll,True
+2022-23,6,-1.0,1.0,19.0,1.0,Thomas Partey,Rodrigo Bentancur,Ivan Perišić,João Cancelo,False
+2022-23,8,1.0,7.0,7.0,7.0,Alisson Ramses Becker,Nick Pope,Robert Sánchez,José Malheiro de Sá,False
+2022-23,9,8.0,5.0,9.0,5.0,Danny Ings,Roberto Firmino,Rodrigo Moreno,Alexis Mac Allister,False
+2022-23,10,5.0,17.0,-13.0,17.0,Andrew Robertson,Aaron Cresswell,Allan Saint-Maximin,Marcus Rashford,False
+2022-23,11,-5.0,8.0,3.0,8.0,John Stones,Ryan Sessegnon,Emerson Leite de Souza Junior,Kieran Trippier,False
+2022-23,12,-15.0,4.0,-3.0,4.0,Aaron Ramsdale,Robert Sánchez,Erling Haaland,Roberto Firmino,False
+2022-23,13,-18.0,-30.0,-16.0,-30.0,Ryan Sessegnon,Nathan Aké,Luis Díaz,Phil Foden,False
+2022-23,14,-8.0,3.0,1.0,3.0,Jamie Vardy,Brennan Johnson,Harry Kane,Erling Haaland,False
+2022-23,15,-4.0,-10.0,0.0,-10.0,Nathan Aké,Aymeric Laporte,Phil Foden,Miguel Almirón Rejala,False
+2022-23,16,-8.0,5.0,-1.0,5.0,Rúben Gato Alves Dias,John Stones,Erling Haaland,Harry Kane,False
+2022-23,17,-23.0,5.0,-27.0,5.0,Raheem Sterling,Wilfried Zaha,Joël Veltman,Fabian Schär,False
+2022-23,18,-8.0,12.0,-8.0,12.0,Roberto Firmino,Darwin Núñez Ribeiro,Roberto Firmino,Erling Haaland,False
+2022-23,19,-1.0,-1.0,-4.0,-1.0,Rodrigo Bentancur,Raheem Sterling,Alexis Mac Allister,Andreas Hoelgebaum Pereira,False
+2022-23,20,26.0,14.0,35.0,14.0,Jorge Luiz Frello Filho,Marcus Rashford,José Malheiro de Sá,David De Gea Quintana,False
+2022-23,21,2.0,15.0,2.0,15.0,Raheem Sterling,Lucas Tolentino Coelho de Lima,Andreas Hoelgebaum Pereira,Rodrigo Moreno,False
+2022-23,22,63.0,34.0,64.0,34.0,Joseph Gomez,Luke Shaw,João Cancelo,Maximilian Wöber,False
+2022-23,23,12.0,17.0,12.0,17.0,Darwin Núñez Ribeiro,Eddie Nketiah,Dean Henderson,Ederson Santana de Moraes,False
+2022-23,24,-4.0,5.0,-9.0,5.0,Wilfried Zaha,Pablo Sarabia,Rodrigo Moreno,Solly March,False
+2022-23,25,-26.0,12.0,-25.0,12.0,Marcus Rashford,Cody Gakpo,David De Gea Quintana,Alisson Ramses Becker,False
+2022-23,26,3.0,-7.0,-3.0,-7.0,Eddie Nketiah,João Félix Sequeira,Maximilian Wöber,Ben Mee,False
+2022-23,27,24.0,8.0,22.0,8.0,Mason Mount,Alexis Mac Allister,Ederson Santana de Moraes,David Raya Martin,False
+2022-23,28,18.0,6.0,18.0,6.0,Alexis Mac Allister,Gabriel Martinelli Silva,Erling Haaland,Ollie Watkins,False
+2022-23,29,16.0,54.0,12.0,54.0,Pablo Sarabia,Dango Ouattara,Miguel Almirón Rejala,Mohamed Salah,False
+2022-23,30,21.0,7.0,20.0,7.0,João Cancelo,Harry Souttar,William Saliba,Benjamin White,False
+2022-23,31,16.0,5.0,15.0,5.0,Che Adams,Harry Kane,Martin Ødegaard,Gabriel Martinelli Silva,False
+2022-23,32,29.0,28.0,29.0,28.0,João Félix Sequeira,Ivan Toney,Pascal Groß,Eberechi Eze,False
+2022-23,33,13.0,13.0,17.0,13.0,Dango Ouattara,Pablo Sarabia,Ben Mee,Alexandre Moreno Lopera,False
+2022-23,34,29.0,-12.0,19.0,-12.0,Harry Kane,Erling Haaland,Eberechi Eze,Pascal Groß,False
+2022-23,35,12.0,-1.0,8.0,-1.0,Aymeric Laporte,Pedro Porro,Harry Kane,Erling Haaland,False
+2022-23,36,9.0,29.0,9.0,29.0,Harry Souttar,Kieran Trippier,Solly March,Joe Willock,False
+2022-23,37,34.0,13.0,32.0,13.0,Gabriel Martinelli Silva,Alexis Mac Allister,Gabriel Martinelli Silva,Alexis Mac Allister,True
+2022-23,38,10.0,1.0,16.0,1.0,Ivan Toney,Ollie Watkins,Marcus Rashford,Martin Ødegaard,False
+2023-24,5,0.0,0.0,6.0,0.0,roll,roll,roll,roll,True
+2023-24,6,1.0,2.0,5.0,2.0,Taiwo Awoniyi,Odsonne Edouard,Evan Ferguson,Odsonne Edouard,False
+2023-24,7,5.0,8.0,4.0,8.0,Ben Chilwell,Tom Lockyer,Solly March,Bukayo Saka,False
+2023-24,8,-1.0,0.0,1.0,0.0,Bobby De Cordova-Reid,Eberechi Eze,Odsonne Edouard,Ollie Watkins,False
+2023-24,9,-1.0,-4.0,-8.0,-4.0,Nicolas Jackson,Alexander Isak,Pervis Estupiñán,Benjamin White,False
+2023-24,10,5.0,-7.0,5.0,-7.0,Eberechi Eze,Douglas Luiz Soares de Paulo,Destiny Udogie,Micky van de Ven,False
+2023-24,11,-16.0,2.0,-1.0,2.0,Alexander Isak,Julián Álvarez,James Ward-Prowse,Moussa Diaby,False
+2023-24,12,3.0,-3.0,1.0,-3.0,Tom Lockyer,Lewis Dunk,Alphonse Areola,Sam Johnstone,False
+2023-24,13,7.0,7.0,9.0,7.0,James Maddison,Jarrod Bowen,James Maddison,Raheem Sterling,False
+2023-24,14,-1.0,20.0,1.0,20.0,Pape Matar Sarr,Cole Palmer,Benjamin White,William Saliba,False
+2023-24,15,16.0,-6.0,16.0,-6.0,Lewis Dunk,Oleksandr Zinchenko,Moussa Diaby,Anthony Gordon,False
+2023-24,16,9.0,-5.0,-4.0,-5.0,Matty Cash,Manuel Akanji,Matty Cash,Oleksandr Zinchenko,False
+2023-24,17,22.0,19.0,19.0,19.0,Tim Ream,Axel Disasi,Bryan Mbeumo,Hwang Hee-chan,False
+2023-24,18,12.0,7.0,12.0,7.0,Erling Haaland,Ollie Watkins,Micky van de Ven,Kieran Trippier,False
+2023-24,19,15.0,-1.0,15.0,-1.0,Odsonne Edouard,Dominic Solanke,Erling Haaland,Dominic Solanke,False
+2023-24,20,25.0,25.0,27.0,25.0,Manuel Akanji,Matty Cash,Sam Johnstone,Alisson Ramses Becker,False
+2023-24,21,31.0,1.0,30.0,1.0,Matty Cash,Lewis Dunk,Raheem Sterling,Son Heung-min,False
+2023-24,22,21.0,11.0,21.0,11.0,Willy Boly,Pedro Porro,Cristian Romero,Pedro Porro,False
+2023-24,23,25.0,63.0,25.0,63.0,Mohamed Salah,Bruno Borges Fernandes,Son Heung-min,Phil Foden,False
+2023-24,24,1.0,5.0,1.0,5.0,Lewis Dunk,Virgil van Dijk,Hwang Hee-chan,Ben Brereton,False
+2023-24,25,24.0,30.0,24.0,30.0,Matt Turner,Ederson Santana de Moraes,Ben Brereton,Diogo Teixeira da Silva,False
+2023-24,26,53.0,29.0,48.0,29.0,Oleksandr Zinchenko,Matty Cash,Diogo Teixeira da Silva,Pascal Groß,False
+2023-24,27,14.0,12.0,13.0,12.0,Bruno Borges Fernandes,Phil Foden,Alisson Ramses Becker,Jordan Pickford,False
+2023-24,28,10.0,-1.0,10.0,-1.0,Pedro Porro,Illia Zabarnyi,Julián Álvarez,Carlton Morris,False
+2023-24,29,2.0,3.0,-3.0,3.0,Bukayo Saka,Son Heung-min,Bukayo Saka,Son Heung-min,True
+2023-24,30,33.0,30.0,32.0,30.0,Julián Álvarez,Nicolas Jackson,Oleksandr Zinchenko,Benjamin White,False
+2023-24,31,54.0,38.0,54.0,38.0,Douglas Luiz Soares de Paulo,Bukayo Saka,Kieran Trippier,Gabriel dos Santos Magalhães,False
+2023-24,32,6.0,25.0,4.0,25.0,Matty Cash,Destiny Udogie,Anthony Gordon,Cole Palmer,False
+2023-24,33,3.0,12.0,11.0,12.0,Ederson Santana de Moraes,Stefan Ortega Moreno,Joachim Andersen,Fabian Schär,False
+2023-24,34,27.0,55.0,21.0,55.0,Phil Foden,Luis Díaz,Son Heung-min,Mohamed Salah,False
+2023-24,35,13.0,14.0,13.0,14.0,Jarrod Bowen,Bruno Borges Fernandes,Phil Foden,Brennan Johnson,False
+2023-24,36,1.0,4.0,1.0,4.0,Destiny Udogie,Gabriel dos Santos Magalhães,Mohamed Salah,Son Heung-min,False
+2023-24,37,28.0,20.0,28.0,20.0,Axel Disasi,Joško Gvardiol,Jarrod Bowen,Phil Foden,False
+2023-24,38,18.0,23.0,20.0,23.0,Bruno Borges Fernandes,Phil Foden,Fabian Schär,Jarrad Branthwaite,False

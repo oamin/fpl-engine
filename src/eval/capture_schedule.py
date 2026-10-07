@@ -73,6 +73,45 @@ def slot_marker(root: Path, gw: int, slot: str) -> Path:
     return root / "data" / "predictions" / SEASON / f"gw{int(gw):02d}" / f"slot_{slot}.json"
 
 
+def _pair_engine(
+    payload: dict[str, Any],
+    captured: datetime,
+    *,
+    gw: int,
+    official_path: Path,
+    raw_path: Path,
+    root: Path,
+) -> Path | None:
+    """Write ``score_xp`` on this bootstrap and the shadow beside ``ep_next``.
+
+    A toy payload, or a checkout without the live files, leaves the official
+    file in place and writes no engine score. Odds are not fetched.
+    """
+    elements = payload.get("elements") or []
+    if "teams" not in payload or len(elements) < 15:
+        return None
+    from src.eval.holdout import sha256_file
+    from src.eval.predictions import MINUTES_PATH, export_deadline_scores
+    from src.live.deadline import ENTRY_PATH, FIXTURES_PATH, LOG_PATH, ODDS_PATH
+    from src.live.scorer import write_shadow_log
+
+    needed = (ENTRY_PATH, LOG_PATH, ODDS_PATH, FIXTURES_PATH, MINUTES_PATH)
+    if any(not path.is_file() for path in needed):
+        return None
+    stamp = stamp_of(captured)
+    engine_path = export_deadline_scores(
+        gw=gw,
+        dest_root=root,
+        stamp=stamp,
+        bootstrap=payload,
+        created_at=captured_text(captured),
+        bootstrap_hash=sha256_file(raw_path),
+    )
+    shadow = engine_path.parent / f"shadow_{stamp}.csv"
+    write_shadow_log(shadow, engine_path, official_path)
+    return shadow
+
+
 def write_snapshot(
     payload: dict[str, Any],
     captured: datetime,
@@ -80,6 +119,7 @@ def write_snapshot(
     gw: int,
     slot: str | None,
     root: Path | None = None,
+    pair_engine: bool = False,
 ) -> Path:
     """Write the raw bootstrap and the extracted official columns. Do not overwrite."""
     from src.eval.predictions import official_frame_from_elements, write_deadlines, write_prediction
@@ -103,6 +143,8 @@ def write_snapshot(
     write_prediction(csv_path, frame)
     deadlines_path = directory / "deadlines.json" if root is not None else None
     write_deadlines(payload["events"], deadlines_path)
+    if pair_engine:
+        _pair_engine(payload, captured, gw=gw, official_path=csv_path, raw_path=raw_path, root=base)
     if slot:
         marker = slot_marker(base, gw, slot)
         marker.write_text(
@@ -186,7 +228,7 @@ def run(opener: Callable[..., Any] | None = None, root: Path | None = None) -> i
         gw = int(event["id"])
         slot = choose_slot(captured, aware_utc(event["deadline_time"]))
         if slot is not None and not slot_marker(base, gw, slot).exists():
-            write_snapshot(payload, captured, gw=gw, slot=slot, root=root)
+            write_snapshot(payload, captured, gw=gw, slot=slot, root=root, pair_engine=True)
     missing = missing_capture_gws(base, captured, deadlines_from_events(payload["events"]))
     if missing:
         names = ", ".join(str(gw) for gw in missing)

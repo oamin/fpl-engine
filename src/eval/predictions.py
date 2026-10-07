@@ -10,7 +10,7 @@ from __future__ import annotations
 import json
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Mapping
 
 import pandas as pd
 
@@ -127,15 +127,23 @@ def export_deadline_scores(
     minutes_path: Path = MINUTES_PATH,
     dest_root: Path | None = None,
     stamp: str | None = None,
+    bootstrap: Mapping[str, Any] | None = None,
+    created_at: str | None = None,
+    bootstrap_hash: str | None = None,
 ) -> Path:
-    """Score one deadline from the stored files and write a new timestamped CSV."""
+    """Score one deadline from the stored files and write a new timestamped CSV.
+
+    ``bootstrap`` and ``created_at`` are the capture this score belongs to.
+    The odds file is the one already stored. This function does not fetch odds.
+    """
     root = dest_root or ROOT
-    created = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    created = created_at or datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     stamp = stamp or datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     entry = json.loads(ENTRY_PATH.read_text(encoding="utf-8"))
     logs = pd.read_csv(LOG_PATH)
     odds = load_odds_frame(ODDS_PATH, LINES_PATH if LINES_PATH.is_file() else None)
-    bootstrap = json.loads(BOOTSTRAP_PATH.read_text(encoding="utf-8"))
+    if bootstrap is None:
+        bootstrap = json.loads(BOOTSTRAP_PATH.read_text(encoding="utf-8"))
     fixtures = json.loads(FIXTURES_PATH.read_text(encoding="utf-8"))
     if not minutes_path.is_file():
         raise RuntimeError(f"missing minutes file {minutes_path}")
@@ -181,7 +189,7 @@ def export_deadline_scores(
     hashes = {
         "logs_hash": sha256_file(LOG_PATH),
         "odds_hash": sha256_file(ODDS_PATH),
-        "bootstrap_hash": sha256_file(BOOTSTRAP_PATH),
+        "bootstrap_hash": bootstrap_hash or sha256_file(BOOTSTRAP_PATH),
         "fixtures_hash": sha256_file(FIXTURES_PATH),
         "minutes_hash": sha256_file(minutes_path),
         "entry_hash": sha256_file(ENTRY_PATH),
