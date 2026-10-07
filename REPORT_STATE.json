@@ -1,18 +1,19 @@
 {
   "updated": "2026-10-07",
   "milestone": "honest-pool",
-  "status": "gated",
-  "summary": "Unfilled official-xP gameweeks are excluded. score_xp still beats expected points, +0.0153 [+0.0130, +0.0175]. Against official xP on the three seasons with at least 20 filled gameweeks it is -0.0565 [-0.0680, -0.0442], and the interval stays below zero. 2025-26 has 7 filled gameweeks and is not pooled. The walk-forward coefficient on score_xp given official xP is -0.0245 [-0.0356, -0.0139] on 2022-23, 2023-24, and 2024-25. It does not survive. Stop improving the single-gameweek forecast. The decision layer is not built in this batch. Stages 14-34 are superseded. The clean holdout starts at gameweek 6, and a timestamped Gameweek 6 score file was written before the deadline.",
+  "status": "held",
+  "summary": "Scraped Vaastav xP is not a historical benchmark. The README says it is ep_this scraped after the gameweek. Tests that read official xP fail without a capture time strictly before the canonical deadline. score_xp still beats expected points, +0.0153 [+0.0130, +0.0175]. The live encompassing rerun has 0 evaluable gameweeks: GW6 engine scores and ep_next were captured on 7 October 2026, and GW6 has not been played. The stop-forecasting decision is held. score_xp stays the forecast.",
   "artifacts": [
     "reports/procedure_audit.md",
     "reports/SUPERSEDED.md",
     "reports/CURRENT.md",
     "data/processed/player_gw_logscore.csv",
     "data/processed/player_gw_slices.csv",
-    "data/processed/encompassing_coefficients.csv",
     "data/processed/player_gw_xi_sanity.csv",
     "data/processed/procedure_intervals.json",
     "data/predictions/2026-27/gw06/20261007T070450Z.csv",
+    "data/predictions/2026-27/gw06/official_20261007T080406Z.csv",
+    "data/predictions/2026-27/deadlines.json",
     "data/live/HOLDOUT_FREEZE.json",
     "experiments/protocol.json"
   ]

@@ -16,20 +16,21 @@
   "min_history": 3,
   "min_xmi": 45,
   "comparisons": [
-    ["score_xp", "score_exp_points"],
-    ["score_xp", "score_official_xp"],
-    ["score_official_xp", "score_exp_points"]
+    ["score_xp", "score_exp_points"]
   ],
-  "official_xp_usable": "A gameweek is usable only when its maximum official_xp is greater than 0. An all-zero gameweek is an unfilled scrape, not a forecast.",
+  "official_xp": {
+    "historical_sheet": "Vaastav xP is not a benchmark and not a feature. The README says it is ep_this scraped after the gameweek, and the timing is uncertain.",
+    "live_only": "A test that reads official xP fails unless every row has a timezone-aware captured_at strictly before the canonical deadline for that gameweek.",
+    "live_from": "2026-27 gameweek 6"
+  },
   "tuning_season": "2025-26",
   "holdout_contaminated_through_gw": 5,
   "clean_holdout_from_gw": 6,
   "encompassing": {
-    "formula": "total_points = a + b * score_official_xp + c * score_xp",
-    "walk_forward": "within each season, ordinary least squares on earlier usable gameweeks only",
-    "min_train_gws": 4,
-    "eval_gw_start": 8,
-    "survive_if": "the 95% interval for the mean of c on 2022-23, 2023-24 and 2024-25 lies entirely above 0",
+    "formula": "total_points = a + b * official_xp + c * score_xp",
+    "population": "2026-27 from gameweek 6, pre-deadline captures of official xP and the engine only",
+    "min_gws": 20,
+    "decision": "held",
     "bootstrap": 1000,
     "seed": 0
   },

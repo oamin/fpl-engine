@@ -15,6 +15,7 @@ from typing import Any
 import pandas as pd
 
 from src.eval.holdout import sha256_file
+from src.eval.provenance import aware_utc, load_deadlines
 from src.live.deadline import (
     BOOTSTRAP_PATH,
     DECISION_GW,
@@ -50,6 +51,72 @@ NOTE = (
     "Current formula at this deadline. This file does not replace the published "
     "Gameweeks 1-5 total of 280."
 )
+
+
+def official_frame_from_elements(
+    elements: list[dict[str, Any]],
+    events: list[dict[str, Any]],
+    *,
+    gw: int,
+    captured_at: str,
+) -> pd.DataFrame:
+    """Build a GW capture from bootstrap elements. ``ep_this`` is the current event only."""
+    event = next(item for item in events if int(item["id"]) == int(gw))
+    deadline = str(event["deadline_time"])
+    if aware_utc(captured_at) >= aware_utc(deadline):
+        raise RuntimeError("refusing xP: the capture is not before the deadline")
+    if event.get("is_next") and not event.get("is_current"):
+        source, role = "ep_next", "next"
+    elif event.get("is_current") and not event.get("finished"):
+        source, role = "ep_this", "current"
+    else:
+        raise RuntimeError(f"refusing xP: GW{gw} is not an open pre-deadline event")
+    rows = []
+    for element in elements:
+        rows.append(
+            {
+                "player_id": f"{SEASON}:{int(element['id'])}",
+                "gw": int(gw),
+                "official_xp": float(element[source]),
+                "source_field": source,
+                "event_role": role,
+                "captured_at": captured_at,
+                "deadline": deadline,
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def write_deadlines(events: list[dict[str, Any]], path: Path | None = None) -> Path:
+    dest = path or (ROOT / "data" / "predictions" / SEASON / "deadlines.json")
+    payload = {
+        "season": SEASON,
+        "source": "FPL bootstrap-static events.deadline_time",
+        "deadlines": {str(int(event["id"])): str(event["deadline_time"]) for event in events},
+    }
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    return dest
+
+
+def capture_official_ep(gw: int = DECISION_GW) -> Path:
+    """Write one timestamped official expected-points file. Does not touch frozen snapshots."""
+    import urllib.request
+
+    with urllib.request.urlopen(
+        "https://fantasy.premierleague.com/api/bootstrap-static/", timeout=60
+    ) as resp:
+        payload = json.load(resp)
+    captured = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    frame = official_frame_from_elements(
+        payload["elements"], payload["events"], gw=gw, captured_at=captured
+    )
+    write_deadlines(payload["events"])
+    load_deadlines()
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    path = PREDICTIONS / SEASON / f"gw{int(gw):02d}" / f"official_{stamp}.csv"
+    write_prediction(path, frame)
+    return path
 
 
 def prediction_path(root: Path, season: str, gw: int, stamp: str) -> Path:

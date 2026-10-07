@@ -6,7 +6,7 @@ Cursor chooses the next pre-registered comparison. The PI is not asked to pick. 
 
 The +34 season-total bar is retired. Stages 14–34, and the later climbs on that pool, are superseded. See `reports/SUPERSEDED.md`. Sharpe, ownership, and churn stay parked. Pull requests 53–56 stay open as finished counts. They are not extended, and a chip simulator stays deferred. Stage 13 (xP trailed expected points at horizon 8) and stage 18 (ridge tied xP under budget, −2) stay set aside.
 
-The pre-registered encompassing test did not survive. Walk-forward, the coefficient on `score_xp` given official xP is −0.0245 [−0.0356, −0.0139] on 2022-23, 2023-24, and 2024-25, and the interval stays below zero. 2025-26 is the tuning season and was not in that pool. Stop improving the single-gameweek forecast. The next batch is the decision layer: multi-week transfer planning, hit discipline, chip timing, and captaincy. That layer is not built in this batch. Official xP is the forecast input until a later pre-registered test says otherwise. The clean holdout is 2026/27 from gameweek 6. See `reports/procedure_audit.md`.
+Scraped Vaastav `xP` is not a historical benchmark and not a feature. The README says it is `ep_this` taken after the gameweek, and the timing is uncertain. The coefficient −0.0245 and the Spearman gap −0.35 against that column are withdrawn. They are not a reason to stop the forecast. The live encompassing test uses only pre-deadline captures from 2026/27 gameweek 6 onward. It has zero played weeks, so the decision is held. score_xp stays the forecast. A survival call needs 20 such gameweeks and is not made here. See `reports/procedure_audit.md`.
 
 ## Objective functions (from the project outline)
 

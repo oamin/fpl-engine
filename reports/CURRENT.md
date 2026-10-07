@@ -2,7 +2,7 @@
 
 The reportable result is `reports/procedure_audit.md`.
 
-`src/eval` is the default path. A result is written only by `write_gated_report`, after the as-of audit and the paired intervals. Official-xP seasons with fewer than 20 filled gameweeks stay out of that interval.
+`src/eval` is the default path. A result is written only by `write_gated_report`, after the as-of audit and the paired intervals. The certified historical comparison is score_xp against expected points. Scraped Vaastav `xP` is not a benchmark. A test that reads official xP fails unless every row has a capture time strictly before the canonical deadline. The live encompassing decision is held.
 
 Stages 14–48 on the played-only pool are listed in `reports/SUPERSEDED.md`.
 

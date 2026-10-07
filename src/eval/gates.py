@@ -34,11 +34,7 @@ PROTOCOL_PATH = ROOT / "experiments" / "protocol.json"
 
 CLOSED_SEASONS = ("2022-23", "2023-24", "2024-25", "2025-26")
 HOLDOUT_SEASON = "2026-27"
-COMPARISONS = (
-    ("score_xp", "score_exp_points"),
-    ("score_xp", "score_official_xp"),
-    ("score_official_xp", "score_exp_points"),
-)
+COMPARISONS = (("score_xp", "score_exp_points"),)
 
 
 def comparison_key(left: str, right: str) -> str:
@@ -56,7 +52,7 @@ def load_protocol(path: Path | None = None) -> dict[str, Any]:
         raise ValueError("protocol holdout must be 2026-27")
     pairs = [tuple(pair) for pair in raw["comparisons"]]
     if pairs != list(COMPARISONS):
-        raise ValueError("protocol comparisons do not match the pre-registered three")
+        raise ValueError("protocol comparisons do not match the registered list")
     if float(raw["sigma"]) != 3.0:
         raise ValueError("sigma is pre-registered at 3.0")
     return raw
@@ -112,6 +108,9 @@ def assert_reportable(audit: dict[str, Any], intervals: dict[str, Any]) -> None:
         )
     min_gws = int(intervals.get("min_gws") or 20)
     comps = intervals.get("comparisons") or {}
+    for key in comps:
+        if "official_xp" in str(key) or "ep_this" in str(key) or str(key).endswith("_xP"):
+            raise RuntimeError(f"refusing report: {key} uses official xP without a live capture")
     for left, right in COMPARISONS:
         key = comparison_key(left, right)
         row = comps.get(key)
@@ -352,10 +351,18 @@ def _failures_paths() -> list[str]:
     if int(protocol.get("holdout_contaminated_through_gw") or 0) != 5:
         failures.append("gameweeks 1-5 are not marked as already read")
     enc = protocol.get("encompassing") or {}
-    if "score_xp" not in str(enc.get("formula") or "") or "score_official_xp" not in str(enc.get("formula") or ""):
+    formula = str(enc.get("formula") or "")
+    if "score_xp" not in formula or "official_xp" not in formula:
         failures.append("the encompassing formula is not official xP plus the engine")
-    if "entirely above 0" not in str(enc.get("survive_if") or ""):
-        failures.append("the encompassing survival rule is not locked")
+    if enc.get("decision") != "held":
+        failures.append("the stop-forecasting decision is not held")
+    if "pre-deadline" not in str(enc.get("population") or ""):
+        failures.append("the encompassing test is not limited to pre-deadline captures")
+    if int(enc.get("min_gws") or 0) != 20:
+        failures.append("a survival call does not wait for 20 pre-deadline gameweeks")
+    sheet = str((protocol.get("official_xp") or {}).get("historical_sheet") or "")
+    if "not a benchmark" not in sheet:
+        failures.append("scraped xP is still a historical benchmark")
     import src.live.benchmark as benchmark
 
     body = inspect.getsource(benchmark.build_frames)

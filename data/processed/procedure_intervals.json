@@ -19,34 +19,6 @@
       },
       "incomplete_seasons": {},
       "n_rows": 102315
-    },
-    "score_xp_minus_score_official_xp": {
-      "mean": -0.056533120427522614,
-      "lo": -0.06797221936725212,
-      "hi": -0.0442486608006968,
-      "n_gws": {
-        "2022-23": 31,
-        "2023-24": 33,
-        "2024-25": 31
-      },
-      "incomplete_seasons": {
-        "2025-26": 7
-      },
-      "n_rows": 71255
-    },
-    "score_official_xp_minus_score_exp_points": {
-      "mean": 0.06974339597924614,
-      "lo": 0.05820847440348871,
-      "hi": 0.0808211289903827,
-      "n_gws": {
-        "2022-23": 31,
-        "2023-24": 33,
-        "2024-25": 31
-      },
-      "incomplete_seasons": {
-        "2025-26": 7
-      },
-      "n_rows": 71255
     }
   },
   "slices": {
@@ -62,32 +34,6 @@
           "2025-26": 34
         },
         "incomplete_seasons": {}
-      },
-      "score_xp_minus_score_official_xp": {
-        "mean": -0.34873915613004414,
-        "lo": -0.3788915546720567,
-        "hi": -0.3188454850294618,
-        "n_gws": {
-          "2022-23": 31,
-          "2023-24": 33,
-          "2024-25": 31
-        },
-        "incomplete_seasons": {
-          "2025-26": 7
-        }
-      },
-      "score_official_xp_minus_score_exp_points": {
-        "mean": 0.3660494061379193,
-        "lo": 0.34460563016801365,
-        "hi": 0.3906713164419503,
-        "n_gws": {
-          "2022-23": 31,
-          "2023-24": 33,
-          "2024-25": 31
-        },
-        "incomplete_seasons": {
-          "2025-26": 7
-        }
       }
     },
     "top15": {
@@ -102,54 +48,28 @@
           "2025-26": 34
         },
         "incomplete_seasons": {}
-      },
-      "score_xp_minus_score_official_xp": {
-        "mean": 0.21741278423039187,
-        "lo": -0.025688334496062597,
-        "hi": 0.4949186219446357,
-        "n_gws": {
-          "2022-23": 31,
-          "2023-24": 33,
-          "2024-25": 31
-        },
-        "incomplete_seasons": {
-          "2025-26": 7
-        }
-      },
-      "score_official_xp_minus_score_exp_points": {
-        "mean": -0.32913977890511,
-        "lo": -0.6223244399416386,
-        "hi": -0.0869113288057832,
-        "n_gws": {
-          "2022-23": 31,
-          "2023-24": 33,
-          "2024-25": 31
-        },
-        "incomplete_seasons": {
-          "2025-26": 7
-        }
       }
     }
   },
   "encompassing": {
-    "mean": -0.024473061918371435,
-    "lo": -0.03558114975398364,
-    "hi": -0.01389893007185103,
-    "n_gws": {
-      "2022-23": 29,
-      "2023-24": 30,
-      "2024-25": 28
-    },
-    "incomplete_seasons": {},
-    "tuning_season": "2025-26",
-    "tuning_n_gws": 5,
-    "tuning_mean": -0.21078825679292806,
-    "required_seasons": [
-      "2022-23",
-      "2023-24",
-      "2024-25"
+    "status": "held",
+    "survives": null,
+    "n_gws": 0,
+    "evaluable_gws": [],
+    "engine_captures": [
+      {
+        "path": "data/predictions/2026-27/gw06/20261007T070450Z.csv",
+        "gw": 6,
+        "n": 235,
+        "git_commit_at": "2026-10-07T07:06:17+00:00",
+        "committed_before_deadline": true
+      }
     ],
-    "survives": false
+    "official_captures": [
+      "data/predictions/2026-27/gw06/official_20261007T080406Z.csv"
+    ],
+    "outcomes_through_gw": 5,
+    "reason": "No gameweek has a pre-deadline official xP, a pre-deadline engine score, and a played outcome. The stop-forecasting decision stays held."
   },
   "official_xp_fill": [
     {
