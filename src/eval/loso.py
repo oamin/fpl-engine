@@ -229,6 +229,24 @@ FORBIDDEN = (
     "leave-one-season-out calibrated hit hurdles",
     "explained by the World Cup break or odds data gaps",
     "has concluded no difference",
+    "underlying transfer advantage",
+    "definitively proves",
+    "has been promoted over",
+    "validates the transfer model",
+)
+XP_VERSUS_EXP = (
+    "placebo:greedy_xp_minus_greedy_exp",
+    "hierarchy:r1_xp_minus_r1_exp",
+    "hierarchy:r3_xp_minus_r3_exp",
+    "initial:score_xp:xp_minus_exp",
+    "initial:score_exp_points:xp_minus_exp",
+    "disagreement:r1_xp_minus_r1_exp",
+    "disagreement:r3_xp_minus_r3_exp",
+)
+SHUFFLE_KEYS = (
+    "placebo:greedy_xp_minus_greedy_shuffled",
+    "hierarchy:r1_xp_minus_r1_shuffled",
+    "hierarchy:r1_exp_minus_r1_shuffled",
 )
 
 
@@ -524,7 +542,70 @@ def _fold_lines(folds: list[dict[str, Any]]) -> list[str]:
     return lines
 
 
-def _close(lines: list[str]) -> list[str]:
+def _find(folds: list[dict[str, Any]], key: str, holdout: str) -> dict[str, Any]:
+    for fold in folds:
+        if fold["key"] == key and fold["holdout"] == holdout:
+            return fold
+    raise RuntimeError(f"missing fold {key} held out {holdout}")
+
+
+def _signed(value: float) -> str:
+    text = f"{abs(float(value)):.4f}"
+    if float(value) < 0.0:
+        return f"−{text}"
+    return f"+{text}"
+
+
+def assert_no_promotion(folds: list[dict[str, Any]]) -> None:
+    """A fold above zero for score_xp minus expected points is not a promotion."""
+    for fold in folds:
+        if fold["key"] not in XP_VERSUS_EXP:
+            continue
+        lo = fold.get("lo")
+        if lo is not None and float(lo) > 0.0:
+            raise RuntimeError("a fold stays above zero for score_xp minus expected points")
+
+
+def assert_shuffle_separation(folds: list[dict[str, Any]]) -> None:
+    for fold in folds:
+        if fold["key"] not in SHUFFLE_KEYS:
+            continue
+        lo = fold.get("lo")
+        if lo is None or float(lo) <= 0.0:
+            raise RuntimeError("an informed-versus-shuffle fold does not stay above zero")
+
+
+def _diagnostic(folds: list[dict[str, Any]]) -> list[str]:
+    assert_no_promotion(folds)
+    assert_shuffle_separation(folds)
+    three = _find(folds, "hierarchy:r3_xp_minus_r3_exp", "2022-23")
+    greedy = _find(folds, "placebo:greedy_xp_minus_greedy_exp", "2022-23")
+    if three["reading"] != "the interval covers zero" or greedy["reading"] != "the interval covers zero":
+        raise RuntimeError("the 2022-23 hold-out is not the covering-zero sensitivity already read")
+    return [
+        (
+            "Holding out 2022–23 shifts the three-week common-state interval to "
+            f"{_signed(three['mean'])} [{_signed(three['lo'])}, {_signed(three['hi'])}], "
+            "which covers zero; the exclusion of zero in the published four-season estimate "
+            "(−1.6947 [−2.9162, −0.5189]) is sensitive to that single cohort."
+        ),
+        (
+            "Without 2022–23, the greedy contrast point estimate is "
+            f"{_signed(greedy['mean'])} points per gameweek, but the interval "
+            f"[{_signed(greedy['lo'])}, {_signed(greedy['hi'])}] covers zero; setting that "
+            "season aside provides no evidence that `score_xp` outperforms expected points."
+        ),
+        "No leave-one-out fold justifies dropping 2022–23 from the evaluation or promoting "
+        "`score_xp` over expected points.",
+        "The published four-season pooled intervals remain the official benchmarks and are unchanged.",
+        "Both informed scores remain strictly separated from the within-week shuffle across "
+        "all leave-one-season-out folds.",
+        "",
+    ]
+
+
+def _close(lines: list[str], folds: list[dict[str, Any]]) -> list[str]:
+    lines.extend(_diagnostic(folds))
     lines.extend(
         [
             "The pattern already reported on the disagreement weeks, cheaper buys, expected minutes "
@@ -546,7 +627,8 @@ def _close(lines: list[str]) -> list[str]:
             "the result is inconclusive and no winner is declared.",
             "No winner is declared. `score_xp` is unchanged.",
             "",
-            "Gemini kept the estimator and the live primary "
+            "Gemini kept the estimator and, after these folds, the reading that no fold "
+            "promotes `score_xp` "
             "([leave-one-season-out](bc-e75c8209-ffd3-590a-b610-d0e34e62bbee)).",
         ]
     )
@@ -603,7 +685,7 @@ def run() -> None:
         folds.extend(_folds_for(spec, rows, n_boot=n_boot, seed=seed))
     lines = _week_lines(paired)
     lines.extend(_fold_lines(folds))
-    _close(lines)
+    _close(lines, folds)
     text = "\n".join(lines)
     for sentence in REQUIRED_SENTENCES:
         if sentence not in text:

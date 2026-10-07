@@ -13,6 +13,8 @@ from src.eval.loso import (
     CONTRASTS,
     FORBIDDEN,
     REQUIRED_SENTENCES,
+    assert_no_promotion,
+    assert_shuffle_separation,
     contrast_keys,
     leave_one_out,
     refuse_replacement,
@@ -108,6 +110,17 @@ class LeaveOneSeasonOutTest(unittest.TestCase):
         straw = [str(item["key"]) for item in CONTRASTS if item["strawman"]]
         self.assertEqual(straw, ["placebo:greedy_xp_minus_hold_xp"])
         self.assertTrue(all("c_xp" not in key for key in contrast_keys()))
+
+    def test_a_fold_above_zero_is_not_a_promotion(self) -> None:
+        harmless = [{"key": "placebo:greedy_xp_minus_greedy_exp", "lo": -0.1, "hi": 0.2}]
+        assert_no_promotion(harmless)
+        promoted = [{"key": "placebo:greedy_xp_minus_greedy_exp", "lo": 0.1, "hi": 0.2}]
+        with self.assertRaises(RuntimeError):
+            assert_no_promotion(promoted)
+        separated = [{"key": "hierarchy:r1_xp_minus_r1_shuffled", "lo": 0.2, "hi": 0.4}]
+        assert_shuffle_separation(separated)
+        with self.assertRaises(RuntimeError):
+            assert_shuffle_separation([{"key": "hierarchy:r1_xp_minus_r1_shuffled", "lo": -0.1, "hi": 0.4}])
 
     def test_the_required_sentences_avoid_a_winner(self) -> None:
         text = "\n".join(REQUIRED_SENTENCES)

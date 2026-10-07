@@ -1,13 +1,11 @@
 {
   "updated": "2026-10-07",
-  "milestone": "disagreement",
+  "milestone": "loso",
   "status": "reviewed",
-  "summary": "On the 51 weeks the two rules pick different transfers, the one-week gap is -0.75 [-2.24, +0.86] and covers zero. The three-week gap on those weeks is -4.35 [-7.29, -1.29] and stays below zero. Expected points minus the shuffled score is +4.27 [+3.08, +5.42]. The frozen score_xp fifteen beats a shuffled fifteen and the price ladder, and does not beat the expected-points fifteen. No winner and no change to score_xp.",
+  "summary": "The two 2022-23 gaps of -14.45 agree on one week and both sum to -477. Holding out 2022-23, the greedy contrast is +2.47 [-0.80, +5.31] and covers zero. The three-week common-state interval covers zero without that season and the published -1.69 stays suggestive. No fold promotes score_xp. From gameweek 6 the live primary is ep_next and the scorer is not rewired.",
   "artifacts": [
-    "reports/disagreement.md",
-    "data/processed/disagreement_weeks.csv",
-    "data/processed/hierarchy_weeks.csv",
-    "data/processed/initial_squad_weeks.csv",
+    "reports/loso.md",
+    "data/processed/loso_folds.csv",
     "experiments/protocol.json"
   ]
 }
