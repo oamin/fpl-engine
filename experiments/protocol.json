@@ -40,5 +40,36 @@
     "min_intersection": 5,
     "rank": "Spearman of the score against total_points within season, gameweek and position"
   },
-  "note": "Gaussian log score with sigma fixed at 3. The bootstrap resamples gameweeks, not player rows. 2026-27 is not in the closed-season comparison. Gameweeks 1-5 of that season were already read. The clean holdout starts at gameweek 6. A season total is not a pass."
+  "capture": {
+    "clock": "HTTP Date header",
+    "slots": ["t24", "t1"],
+    "t24_hours": [23, 25],
+    "t1_minutes": [30, 90],
+    "raw_bootstrap": true
+  },
+  "decision_layer": {
+    "batch": "hold-greedy-template",
+    "score_column": "score_xp",
+    "logged_alongside": "ep_next",
+    "winner": null,
+    "min_live_weeks": 20,
+    "captain_baseline": "score_exp_points",
+    "horizon": 3,
+    "chips": "empty",
+    "alignment_season": "2024-25",
+    "alignment_gw": 10,
+    "power_weeks": 20,
+    "power_level": 0.8,
+    "power_bootstrap": 1000,
+    "power_seed": 0,
+    "power_sims": 400,
+    "power_step": 0.0005,
+    "template_targets": [
+      ["GKP", 45], ["GKP", 40],
+      ["DEF", 65], ["DEF", 50], ["DEF", 45], ["DEF", 40], ["DEF", 40],
+      ["MID", 90], ["MID", 65], ["MID", 55], ["MID", 50], ["MID", 45],
+      ["FWD", 110], ["FWD", 75], ["FWD", 55]
+    ]
+  },
+  "note": "Gaussian log score with sigma fixed at 3. The bootstrap resamples gameweeks, not player rows. 2026-27 is not in the closed-season comparison. Gameweeks 1-5 of that season were already read. The clean holdout starts at gameweek 6. A season total is not a pass. The decision batch scores score_xp. ep_next is logged live and is not a winner until 20 pre-deadline weeks."
 }

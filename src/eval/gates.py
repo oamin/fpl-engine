@@ -370,6 +370,61 @@ def _failures_paths() -> list[str]:
         failures.append("build_frames still drops 0-minute rows before the join")
     if "retain_sheet_rows=True" not in body:
         failures.append("build_frames drops a sheet row that misses its fixture")
+    from src.eval.decision_spec import (
+        CAPTAIN_BASELINE,
+        HORIZON,
+        LOGGED_ALONGSIDE,
+        MIN_LIVE_WEEKS,
+        POWER_BOOTSTRAP,
+        POWER_LEVEL,
+        POWER_SEED,
+        POWER_SIMS,
+        POWER_STEP,
+        POWER_WEEKS,
+        SCORE_COLUMN,
+        T1_MINUTES,
+        T24_HOURS,
+        TEMPLATE_SLOTS,
+    )
+
+    if "decision_layer" not in protocol or "capture" not in protocol:
+        failures.append("the decision batch and the capture window are not locked")
+        return failures
+    layer = protocol["decision_layer"]
+    if layer.get("score_column") != SCORE_COLUMN:
+        failures.append("the decision batch is not locked on score_xp")
+    if layer.get("winner") is not None:
+        failures.append("a winner was declared between score_xp and ep_next")
+    if layer.get("logged_alongside") != LOGGED_ALONGSIDE:
+        failures.append("ep_next is not the column logged beside score_xp")
+    if int(layer.get("min_live_weeks") or 0) != MIN_LIVE_WEEKS:
+        failures.append("a score-column winner does not wait for 20 live weeks")
+    if layer.get("captain_baseline") != CAPTAIN_BASELINE:
+        failures.append("the captain baseline is not the highest score")
+    if int(layer.get("horizon") or 0) != HORIZON:
+        failures.append("realised transfer gain is not the three-week horizon")
+    targets = [tuple(pair) for pair in layer.get("template_targets") or []]
+    if targets != list(TEMPLATE_SLOTS):
+        failures.append("template price targets do not match the locked slots")
+    if int(layer.get("alignment_gw") or 0) != 10:
+        failures.append("the alignment diagnostic is not locked to one gameweek")
+    if int(layer.get("power_weeks") or 0) != POWER_WEEKS:
+        failures.append("the power check is not locked to 20 gameweeks")
+    if float(layer.get("power_level") or 0) != POWER_LEVEL:
+        failures.append("the power target is not 80 percent")
+    if int(layer.get("power_bootstrap") or 0) != POWER_BOOTSTRAP or int(layer["power_seed"]) != POWER_SEED:
+        failures.append("the power bootstrap is not the locked draw")
+    if int(layer.get("power_sims") or 0) != POWER_SIMS or float(layer.get("power_step") or 0) != POWER_STEP:
+        failures.append("the power grid is not locked")
+    capture = protocol["capture"]
+    if capture.get("clock") != "HTTP Date header":
+        failures.append("the capture clock is not the response Date header")
+    if list(capture.get("t24_hours") or []) != list(T24_HOURS):
+        failures.append("the T-24h window is not locked")
+    if list(capture.get("t1_minutes") or []) != list(T1_MINUTES):
+        failures.append("the T-1h window is not locked")
+    if not capture.get("raw_bootstrap"):
+        failures.append("the raw bootstrap is not saved")
     return failures
 
 

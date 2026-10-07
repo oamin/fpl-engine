@@ -100,22 +100,12 @@ def write_deadlines(events: list[dict[str, Any]], path: Path | None = None) -> P
 
 
 def capture_official_ep(gw: int = DECISION_GW) -> Path:
-    """Write one timestamped official expected-points file. Does not touch frozen snapshots."""
-    import urllib.request
+    """Write one official file. The clock is the response Date header, not the local clock."""
+    from src.eval.capture_schedule import fetch_bootstrap, write_snapshot
 
-    with urllib.request.urlopen(
-        "https://fantasy.premierleague.com/api/bootstrap-static/", timeout=60
-    ) as resp:
-        payload = json.load(resp)
-    captured = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    frame = official_frame_from_elements(
-        payload["elements"], payload["events"], gw=gw, captured_at=captured
-    )
-    write_deadlines(payload["events"])
+    payload, captured = fetch_bootstrap()
+    path = write_snapshot(payload, captured, gw=gw, slot=None)
     load_deadlines()
-    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    path = PREDICTIONS / SEASON / f"gw{int(gw):02d}" / f"official_{stamp}.csv"
-    write_prediction(path, frame)
     return path
 
 
