@@ -85,6 +85,82 @@ def alignment_report(frame: pd.DataFrame, gw: int) -> dict[str, Any]:
     }
 
 
+def eligible_rank_gap_by_week(frame: pd.DataFrame) -> list[dict[str, Any]]:
+    """Weekly piece of the withdrawn −0.35.
+
+    Eligible players only. Within each position, Spearman(score_xp, points)
+    minus Spearman(scraped xP, points), then the mean of those positions.
+    An unfilled scrape is undefined. This is not a benchmark.
+    """
+    from src.eval.slices import POSITIONS, _spearman
+
+    work = frame.loc[frame["eligible"].astype(bool)].copy()
+    rows: list[dict[str, Any]] = []
+    if work.empty or "official_xp" not in work.columns:
+        return rows
+    season = str(work["season"].iloc[0]) if "season" in work.columns else ""
+    work["gw"] = pd.to_numeric(work["gw"], errors="coerce")
+    for gw, block in work.dropna(subset=["gw"]).groupby("gw", sort=True):
+        order = [column for column in ("date", "fixture_id", "player_id") if column in block.columns]
+        ordered = block.sort_values(order or ["player_id"], kind="mergesort")
+        base = ordered.groupby("player_id", as_index=False).first()
+        summed = ordered.groupby("player_id", as_index=False)[
+            ["total_points", "score_xp", "official_xp"]
+        ].sum()
+        keep = [column for column in base.columns if column not in summed.columns or column == "player_id"]
+        players = base[keep].merge(summed, on="player_id", how="left")
+        official = pd.to_numeric(players["official_xp"], errors="coerce")
+        filled = bool(official.notna().any() and float(official.max()) > 0.0)
+        parts: list[float] = []
+        if filled:
+            for position in POSITIONS:
+                group = players.loc[players["position"] == position]
+                y = pd.to_numeric(group["total_points"], errors="coerce").to_numpy(float)
+                score = pd.to_numeric(group["score_xp"], errors="coerce").to_numpy(float)
+                scraped = pd.to_numeric(group["official_xp"], errors="coerce").to_numpy(float)
+                mask = np.isfinite(y) & np.isfinite(score) & np.isfinite(scraped)
+                rho_score = _spearman(y[mask], score[mask])
+                rho_scraped = _spearman(y[mask], scraped[mask])
+                if np.isfinite(rho_score) and np.isfinite(rho_scraped):
+                    parts.append(float(rho_score - rho_scraped))
+        gap = float(np.mean(parts)) if parts else None
+        rows.append(
+            {
+                "season": season,
+                "gw": int(gw),
+                "rank_gap": gap,
+                "negative": bool(gap is not None and gap < 0.0),
+                "undefined": gap is None,
+                "n_positions": int(len(parts)),
+            }
+        )
+    return rows
+
+
+def spearman_by_week(frame: pd.DataFrame) -> list[dict[str, Any]]:
+    """Spearman(score_xp, scraped xP) on every gameweek. A diagnostic, not a benchmark."""
+    rows: list[dict[str, Any]] = []
+    gws = sorted(int(gw) for gw in pd.to_numeric(frame["gw"], errors="coerce").dropna().unique())
+    for gw in gws:
+        report = alignment_report(frame, gw)
+        report.pop("_paired", None)
+        spearman = report["spearman_score_vs_official"]
+        rows.append(
+            {
+                "season": str(frame["season"].iloc[0]) if "season" in frame.columns else "",
+                "gw": gw,
+                "n_players": report["n_players"],
+                "n_paired": report["n_paired"],
+                "max_rows_per_player": report["max_rows_per_player"],
+                "duplicate_player_fixture": report["duplicate_player_fixture"],
+                "spearman": spearman,
+                "negative": bool(spearman is not None and spearman < 0.0),
+                "undefined": spearman is None,
+            }
+        )
+    return rows
+
+
 def save_scatter(frame: pd.DataFrame, gw: int, path: Path) -> dict[str, Any]:
     """Write the scatter and return the report without the paired frame."""
     import matplotlib

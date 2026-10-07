@@ -7,10 +7,14 @@
   "contamination": "Gameweeks 1-5 of 2026-27 were read by the chip-hurdle and horizon trials. The clean holdout starts at gameweek 6.",
   "predictions": "Timestamped files under data/predictions/ are the pre-deadline forecasts. A hash of a file that keeps growing is not a freeze of a future gameweek.",
   "tracked": {
-    "data/cache/player_gw_2026_27.csv": "ffe911b65b5019529f8a7a322ad058e013a0e6146677c35d796f075e2572f09b",
     "data/cache/E0_2627.csv": "8e21d4821be776332f3504f55f85b4277f326f03513b2c7501fbdedf92b8b1a2",
     "data/live/gw_lines.csv": "8b58cfdb7f089942de8b0bd18ad72f63fb68e7c5f34c2df1a31435035e4aaca0",
-    "data/live/news_docs_gw15.json": "41121d64314df68a142fe588b00998c5895662dc68cb04c74d9e9821c83ac000"
+    "data/live/news_docs_gw15.json": "41121d64314df68a142fe588b00998c5895662dc68cb04c74d9e9821c83ac000",
+    "data/holdout/2026-27/player_gw/gw01.csv": "a7c7c18f3712277e22db09a8de1fe201dd20a4863d1f84bf1633b50011a945a7",
+    "data/holdout/2026-27/player_gw/gw02.csv": "95db2694e11e13bd02175f7125ad3b2e5eb3bba98cf8cea79fecf4e27cd4bd70",
+    "data/holdout/2026-27/player_gw/gw03.csv": "d51a3927e7cb9eb020a5fc7548be7ddd1568145c4e11828accee1e2674dbd1b9",
+    "data/holdout/2026-27/player_gw/gw04.csv": "0873de51dd0553880fec338da1ec9e220a0d747f646a97bfef11b09d94634aa8",
+    "data/holdout/2026-27/player_gw/gw05.csv": "0cf32fba3083e5578d74ca0e74581e9b58c2062ee83d965cf8e99d8e60f44136"
   },
   "present_at_freeze": {
     "data/live/bootstrap.json": "4bdb565c1c9841691252069c87a6c4e1c8f137b43a96fc15a718026d5b26a61d",
@@ -21,5 +25,11 @@
     "data/live/odds_api_meta.json": "5b20cface6602de3f9f2436e6040b5c630555cc270d0f71ca7101d5b1f99365d",
     "data/live/odds_api_trial.json": "0ffbbe7d2e881d1c7201871724781596b3b80791f5fd6ce5043e643906998d07",
     "data/cache/fpl_history_2026_27.jsonl": "8d46f15da98bfb175574d2a7aeba7fbf0e03f4f184c49de65e131681f3060022"
+  },
+  "retired_growing_cache": {
+    "path": "data/cache/player_gw_2026_27.csv",
+    "sha256": "ffe911b65b5019529f8a7a322ad058e013a0e6146677c35d796f075e2572f09b",
+    "retired": "2026-10-07",
+    "reason": "One hash cannot freeze a file that grows. Each finished gameweek has its own file."
   }
 }

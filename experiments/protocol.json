@@ -31,6 +31,8 @@
     "population": "2026-27 from gameweek 6, pre-deadline captures of official xP and the engine only",
     "min_gws": 20,
     "decision": "held",
+    "covers_zero": "undetermined",
+    "continue_to_gw": 38,
     "bootstrap": 1000,
     "seed": 0
   },
@@ -43,8 +45,9 @@
   "capture": {
     "clock": "HTTP Date header",
     "slots": ["t24", "t1"],
-    "t24_hours": [23, 25],
-    "t1_minutes": [30, 90],
+    "t24_hours": [20, 28],
+    "t1_minutes": [15, 180],
+    "cadence_minutes": 15,
     "raw_bootstrap": true
   },
   "decision_layer": {
@@ -71,5 +74,15 @@
       ["FWD", 110], ["FWD", 75], ["FWD", 55]
     ]
   },
-  "note": "Gaussian log score with sigma fixed at 3. The bootstrap resamples gameweeks, not player rows. 2026-27 is not in the closed-season comparison. Gameweeks 1-5 of that season were already read. The clean holdout starts at gameweek 6. A season total is not a pass. The decision batch scores score_xp. ep_next is logged live and is not a winner until 20 pre-deadline weeks."
+  "placebo": {
+    "shuffle": "eligible finite score_xp within each gameweek",
+    "seed": [0, "season_index", "gw"],
+    "naive_score": "score_exp_points",
+    "winner": null,
+    "contrasts": [
+      "greedy_xp_minus_greedy_exp",
+      "greedy_shuffled_minus_hold_shuffled"
+    ]
+  },
+  "note": "Gaussian log score with sigma fixed at 3. The bootstrap resamples gameweeks, not player rows. 2026-27 is not in the closed-season comparison. Gameweeks 1-5 of that season were already read. The clean holdout starts at gameweek 6. A season total is not a pass. The decision batch scores score_xp. ep_next is logged live and is not a winner until 20 pre-deadline weeks. At 20 live weeks an interval that covers zero is undetermined, and the test continues through gameweek 38."
 }

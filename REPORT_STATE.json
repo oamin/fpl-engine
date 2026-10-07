@@ -1,17 +1,17 @@
 {
   "updated": "2026-10-07",
-  "milestone": "decision-layer",
-  "status": "held",
-  "summary": "The forecast decision stays held. On 2024-25 GW10, score_xp and scraped xP correlate at Spearman +0.72 with a unique player-fixture key and no sign flip. The 20-week log-score test detects 0.010 at 80% power (null half-width 0.0055). The decision replay on score_xp gives greedy minus hold +7.36 [+4.50, +10.04] points per gameweek. That rule is not the published hold of 1.25. No winner versus ep_next. The hit threshold +4.33 was not applied. Chips did not fire. Live pre-deadline weeks: 0.",
+  "milestone": "decision-placebo",
+  "status": "reviewed",
+  "summary": "Greedy minus hold stays +7.36 points per gameweek and is a squad that never transfers. The same rule on scores shuffled within each gameweek is +1.84 [-0.46, +4.16] and covers zero. Greedy on score_xp minus greedy on expected points is -1.67 [-4.44, +1.06] and covers zero. 2022-23 is -14.45 and stays in the pool. The printed 4.33 is (4 - a) / b with intercept -1.14. The printed 0.40 is b/3, not a shrinkage. The one-week slope is +0.49 [+0.10, +1.02]. The withdrawn -0.35 rank gap is negative on 106 of 106 defined weeks. No winner. Chips stay deferred. Gameweeks 1-5 are now separate freeze snapshots.",
   "artifacts": [
+    "reports/decision_placebo.md",
     "reports/decision_layer.md",
-    "reports/procedure_audit.md",
     "reports/CURRENT.md",
-    "data/processed/decision_weeks.csv",
-    "data/processed/decision_transfers.csv",
-    "data/processed/decision_alignment.json",
-    "data/processed/decision_power.json",
-    "data/plots/alignment_2024_25_gw10.png",
+    "data/processed/placebo_weeks.csv",
+    "data/processed/placebo_transfers.csv",
+    "data/processed/spearman_by_week.csv",
+    "data/processed/rank_gap_by_week.csv",
+    "data/holdout/2026-27/player_gw/gw01.csv",
     "experiments/protocol.json"
   ]
 }

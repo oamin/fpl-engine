@@ -12,11 +12,13 @@ from src.eval.decision import (
     Squad,
     armband,
     assert_open_score,
+    audit_move,
     calibrate,
     captain_gap,
     chips_fired,
     collapse_gameweek,
     greedy_step,
+    permute_week,
     pool_columns,
     realised_over,
     replay_season,
@@ -297,6 +299,65 @@ class DecisionRuleTest(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             assert_open_score(19, "score_xp")
         assert_open_score(20, "score_xp")
+
+    def test_the_naive_score_replays_without_doubling_the_column(self) -> None:
+        played = replay_season(
+            pd.DataFrame(_core(5) + _core(6)),
+            "score_exp_points",
+            gw_start=5,
+            gw_end=6,
+        )
+        self.assertEqual([row["gw"] for row in played["weeks"]], [5, 6])
+
+    def test_the_shuffle_stays_inside_the_gameweek(self) -> None:
+        week = pd.DataFrame(
+            [
+                _row("1", "MID", "a", 50, 1.0, 3.0, 5),
+                _row("2", "MID", "b", 50, 4.0, 5.0, 5),
+                _row("3", "MID", "c", 50, 9.0, 7.0, 5),
+                _row("4", "MID", "d", 50, 2.5, 1.0, 5, eligible=False),
+            ]
+        )
+        shuffled = permute_week(week, "score_xp", 0, 5)
+        eligible = shuffled.loc[shuffled["eligible"].astype(bool), "score_xp"]
+        self.assertCountEqual(eligible.tolist(), [1.0, 4.0, 9.0])
+        kept = shuffled.loc[shuffled["player_id"].astype(str) == "4"].iloc[0]
+        self.assertAlmostEqual(float(kept["score_xp"]), 2.5)
+        self.assertEqual(shuffled["total_points"].tolist(), week["total_points"].tolist())
+        other = pd.DataFrame(
+            [
+                _row("1", "MID", "a", 50, 8.0, 1.0, 6),
+                _row("2", "MID", "b", 50, 8.0, 1.0, 6),
+                _row("3", "MID", "c", 50, 0.5, 1.0, 6),
+            ]
+        )
+        other_scores = permute_week(other, "score_xp", 0, 6)["score_xp"].tolist()
+        self.assertCountEqual(other_scores, [8.0, 8.0, 0.5])
+        self.assertNotIn(9.0, other_scores)
+        moved = False
+        original = week.loc[week["eligible"].astype(bool), "score_xp"].tolist()
+        for season_index in range(10):
+            out = permute_week(week, "score_xp", season_index, 5)
+            got = out.loc[out["eligible"].astype(bool), "score_xp"].tolist()
+            if got != original:
+                moved = True
+        self.assertTrue(moved)
+
+    def test_a_legal_transfer_passes_and_a_position_change_does_not(self) -> None:
+        squad = _hand_squad()
+        rows = [
+            _row(pid, pos, squad.club[pid], 40, 1.0, 2.0, 6)
+            for pid, pos in squad.position.items()
+        ]
+        rows.append(_row("99", "FWD", "z", 55, 4.0, 8.0, 6))
+        week = pd.DataFrame(rows)
+        _nxt, move = greedy_step(squad, week, "score_xp")
+        self.assertIsNotNone(move)
+        audit_move(squad, move, week, "score_xp")
+        bad = dict(move)
+        bad["position"] = "MID"
+        with self.assertRaises(RuntimeError):
+            audit_move(squad, bad, week, "score_xp")
 
     def test_calibration_is_not_applied_by_construction(self) -> None:
         transfers = pd.DataFrame(

@@ -9,8 +9,14 @@ import unittest
 from datetime import datetime, timezone
 from pathlib import Path
 
-from src.eval.capture_schedule import captured_at_from_date_header, choose_slot, run
+from src.eval.capture_schedule import (
+    captured_at_from_date_header,
+    choose_slot,
+    missing_capture_gws,
+    run,
+)
 from src.eval.predictions import capture_official_ep
+from src.live.deadline import SEASON
 
 
 class _Response:
@@ -59,16 +65,43 @@ class CaptureScheduleTest(unittest.TestCase):
 
     def test_windows_are_the_locked_offsets(self) -> None:
         deadline = datetime(2026, 10, 10, 10, 0, tzinfo=timezone.utc)
-        self.assertEqual(choose_slot(datetime(2026, 10, 9, 10, 0, tzinfo=timezone.utc), deadline), "t24")
-        self.assertEqual(choose_slot(datetime(2026, 10, 9, 11, 0, tzinfo=timezone.utc), deadline), "t24")
-        self.assertEqual(choose_slot(datetime(2026, 10, 9, 9, 0, tzinfo=timezone.utc), deadline), "t24")
-        self.assertIsNone(choose_slot(datetime(2026, 10, 9, 8, 59, tzinfo=timezone.utc), deadline))
-        self.assertIsNone(choose_slot(datetime(2026, 10, 9, 11, 1, tzinfo=timezone.utc), deadline))
-        self.assertEqual(choose_slot(datetime(2026, 10, 10, 9, 0, tzinfo=timezone.utc), deadline), "t1")
-        self.assertEqual(choose_slot(datetime(2026, 10, 10, 8, 30, tzinfo=timezone.utc), deadline), "t1")
-        self.assertEqual(choose_slot(datetime(2026, 10, 10, 9, 30, tzinfo=timezone.utc), deadline), "t1")
-        self.assertIsNone(choose_slot(datetime(2026, 10, 10, 8, 29, tzinfo=timezone.utc), deadline))
+        self.assertEqual(choose_slot(datetime(2026, 10, 9, 14, 0, tzinfo=timezone.utc), deadline), "t24")
+        self.assertEqual(choose_slot(datetime(2026, 10, 9, 6, 0, tzinfo=timezone.utc), deadline), "t24")
+        self.assertIsNone(choose_slot(datetime(2026, 10, 9, 14, 1, tzinfo=timezone.utc), deadline))
+        self.assertIsNone(choose_slot(datetime(2026, 10, 9, 5, 59, tzinfo=timezone.utc), deadline))
+        self.assertEqual(choose_slot(datetime(2026, 10, 10, 9, 45, tzinfo=timezone.utc), deadline), "t1")
+        self.assertEqual(choose_slot(datetime(2026, 10, 10, 7, 0, tzinfo=timezone.utc), deadline), "t1")
+        self.assertIsNone(choose_slot(datetime(2026, 10, 10, 9, 46, tzinfo=timezone.utc), deadline))
+        self.assertIsNone(choose_slot(datetime(2026, 10, 10, 6, 59, tzinfo=timezone.utc), deadline))
         self.assertIsNone(choose_slot(datetime(2026, 10, 7, 8, 19, tzinfo=timezone.utc), deadline))
+
+    def test_a_closed_window_without_a_file_fails(self) -> None:
+        payload = _payload("2026-10-10T10:00:00Z")
+
+        def opener(*_args: object, **_kwargs: object) -> _Response:
+            return _Response(payload, "Sat, 10 Oct 2026 09:50:00 GMT")
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            with self.assertRaises(RuntimeError) as raised:
+                run(opener, root)
+            self.assertIn("6", str(raised.exception))
+            directory = root / "data" / "predictions" / SEASON / "gw06"
+            directory.mkdir(parents=True)
+            (directory / "official_existing.csv").write_text("captured\n", encoding="utf-8")
+            self.assertEqual(run(opener, root), 0)
+
+    def test_gameweeks_before_six_are_not_required(self) -> None:
+        deadlines = {
+            "5": "2026-10-03T10:00:00Z",
+            "6": "2026-10-10T10:00:00Z",
+        }
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            after = datetime(2026, 10, 10, 12, 0, tzinfo=timezone.utc)
+            self.assertEqual(missing_capture_gws(root, after, deadlines), [6])
+            still_open = datetime(2026, 10, 7, 8, 19, tzinfo=timezone.utc)
+            self.assertEqual(missing_capture_gws(root, still_open, deadlines), [])
 
     def test_outside_the_window_writes_nothing(self) -> None:
         payload = _payload("2026-10-10T10:00:00Z")

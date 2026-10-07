@@ -10,8 +10,9 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[2]
 MANIFEST_PATH = ROOT / "data" / "live" / "HOLDOUT_FREEZE.json"
 
+GROWING_CACHE = "data/cache/player_gw_2026_27.csv"
+SNAPSHOT_DIR = Path("data/holdout/2026-27/player_gw")
 TRACKED = (
-    "data/cache/player_gw_2026_27.csv",
     "data/cache/E0_2627.csv",
     "data/live/gw_lines.csv",
     "data/live/news_docs_gw15.json",
@@ -79,6 +80,70 @@ def verify_freeze(manifest: dict[str, Any], root: Path | None = None) -> list[st
         if sha256_file(path) != digest:
             errors.append(f"hash mismatch {rel}")
     return errors
+
+
+def write_player_gw_snapshots(root: Path | None = None) -> list[str]:
+    """Copy each gameweek of the cache to its own file. An existing file is not rewritten."""
+    import pandas as pd
+
+    base = root or ROOT
+    frame = pd.read_csv(base / GROWING_CACHE)
+    dest = base / SNAPSHOT_DIR
+    dest.mkdir(parents=True, exist_ok=True)
+    written: list[str] = []
+    for gw, block in frame.groupby(frame["gw"].astype(int), sort=True):
+        rel = f"{SNAPSHOT_DIR.as_posix()}/gw{int(gw):02d}.csv"
+        path = base / rel
+        ordered = block.sort_values(
+            ["date", "player_id", "is_home", "team"], kind="mergesort"
+        )
+        payload = ordered.to_csv(index=False, lineterminator="\n")
+        if path.exists() and path.read_text(encoding="utf-8") != payload:
+            raise RuntimeError(f"refusing to change snapshot {rel}")
+        if not path.exists():
+            path.write_text(payload, encoding="utf-8")
+        written.append(rel)
+    return written
+
+
+def publish_player_gw_snapshots(root: Path | None = None) -> dict[str, Any]:
+    """Add one hash per gameweek and retire the single hash of the growing cache.
+
+    Every hash already in the manifest has to still match. This does not
+    rehash those files.
+    """
+    base = root or ROOT
+    rels = write_player_gw_snapshots(base)
+    dest = base / "data" / "live" / "HOLDOUT_FREEZE.json"
+    manifest = json.loads(dest.read_text(encoding="utf-8"))
+    tracked = dict(manifest["tracked"])
+    for rel, digest in tracked.items():
+        if rel == GROWING_CACHE:
+            continue
+        if sha256_file(base / rel) != digest:
+            raise RuntimeError(f"refusing to publish while {rel} has changed")
+    retired = tracked.get(GROWING_CACHE)
+    if retired is not None and sha256_file(base / GROWING_CACHE) != retired:
+        raise RuntimeError("the growing cache no longer matches the hash being retired")
+    for rel in rels:
+        digest = sha256_file(base / rel)
+        previous = tracked.get(rel)
+        if previous is not None and previous != digest:
+            raise RuntimeError(f"refusing to change the hash of {rel}")
+        tracked[rel] = digest
+    if GROWING_CACHE in tracked:
+        manifest["retired_growing_cache"] = {
+            "path": GROWING_CACHE,
+            "sha256": tracked.pop(GROWING_CACHE),
+            "retired": "2026-10-07",
+            "reason": (
+                "One hash cannot freeze a file that grows. "
+                "Each finished gameweek has its own file."
+            ),
+        }
+    manifest["tracked"] = tracked
+    dest.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    return manifest
 
 
 def write_manifest(path: Path | None = None) -> dict[str, Any]:

@@ -2,7 +2,9 @@ name: capture
 
 on:
   schedule:
-    - cron: "15 * * * *"
+    # Every 15 minutes. The windows are several hours wide; a late hourly run
+    # used to be able to miss the hour before the deadline.
+    - cron: "*/15 * * * *"
   workflow_dispatch:
 
 permissions:

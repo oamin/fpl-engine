@@ -10,6 +10,7 @@ import inspect
 import json
 import math
 import tempfile
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 from unittest.mock import patch
@@ -360,6 +361,10 @@ def _failures_paths() -> list[str]:
         failures.append("the encompassing test is not limited to pre-deadline captures")
     if int(enc.get("min_gws") or 0) != 20:
         failures.append("a survival call does not wait for 20 pre-deadline gameweeks")
+    if enc.get("covers_zero") != "undetermined":
+        failures.append("a 20-week interval that covers zero is not marked undetermined")
+    if int(enc.get("continue_to_gw") or 0) != 38:
+        failures.append("an undetermined live test does not continue through gameweek 38")
     sheet = str((protocol.get("official_xp") or {}).get("historical_sheet") or "")
     if "not a benchmark" not in sheet:
         failures.append("scraped xP is still a historical benchmark")
@@ -425,6 +430,32 @@ def _failures_paths() -> list[str]:
         failures.append("the T-1h window is not locked")
     if not capture.get("raw_bootstrap"):
         failures.append("the raw bootstrap is not saved")
+    if int(capture.get("cadence_minutes") or 0) != 15:
+        failures.append("the capture job is not every 15 minutes")
+    placebo = protocol.get("placebo") or {}
+    if placebo.get("winner") is not None:
+        failures.append("the placebo declared a winner")
+    if "within each gameweek" not in str(placebo.get("shuffle") or ""):
+        failures.append("the placebo shuffle is not within the gameweek")
+    if placebo.get("naive_score") != "score_exp_points":
+        failures.append("the naive score in the placebo is not expected points")
+    manifest = json.loads((ROOT / "data" / "live" / "HOLDOUT_FREEZE.json").read_text(encoding="utf-8"))
+    tracked = manifest.get("tracked") or {}
+    if "data/cache/player_gw_2026_27.csv" in tracked:
+        failures.append("the growing player cache is still a single freeze hash")
+    snaps = [key for key in tracked if str(key).startswith("data/holdout/2026-27/player_gw/")]
+    if len(snaps) < 5:
+        failures.append("gameweeks 1-5 do not each have a snapshot hash")
+    from src.eval.capture_schedule import missing_capture_gws
+    from src.eval.provenance import load_deadlines
+
+    missing = missing_capture_gws(
+        ROOT, datetime.now(timezone.utc), load_deadlines()
+    )
+    if missing:
+        failures.append(
+            "no pre-deadline capture for gameweeks " + ", ".join(str(gw) for gw in missing)
+        )
     return failures
 
 

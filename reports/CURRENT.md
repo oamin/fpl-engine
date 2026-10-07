@@ -1,8 +1,8 @@
 # Current comparison
 
-The reportable results are `reports/procedure_audit.md` and `reports/decision_layer.md`.
+The reportable results are `reports/procedure_audit.md`, `reports/decision_layer.md`, and `reports/decision_placebo.md`.
 
-`src/eval` is the default path. A result is written only by `write_gated_report`, after the as-of audit and the paired intervals. The certified historical comparison is score_xp against expected points. Scraped Vaastav `xP` is not a benchmark. A test that reads official xP fails unless every row has a capture time strictly before the canonical deadline. The live encompassing decision is held. The decision-layer replay uses `score_xp` and does not name a winner against `ep_next`.
+`src/eval` is the default path. A result is written only by `write_gated_report`, after the as-of audit and the paired intervals. The certified historical comparison is score_xp against expected points. Scraped Vaastav `xP` is not a benchmark. A test that reads official xP fails unless every row has a capture time strictly before the canonical deadline. The live encompassing decision is held. At 20 live weeks an interval that covers zero is undetermined, and the test continues through gameweek 38. The decision-layer replay uses `score_xp` and does not name a winner against `ep_next` or against expected points. Greedy minus a squad that never transfers is not the skill comparison.
 
 Stages 14–48 on the played-only pool are listed in `reports/SUPERSEDED.md`.
 

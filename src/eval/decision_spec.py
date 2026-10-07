@@ -39,6 +39,10 @@ POWER_SIMS = 400
 POWER_STEP = 0.0005
 POWER_GRID_MAX = 0.04
 
-# Hours and minutes, inclusive, around the deadline.
-T24_HOURS = (23, 25)
-T1_MINUTES = (30, 90)
+# Inclusive windows. Actions are often late, so neither slot is one hour wide.
+# t24 is 20–28 hours before the deadline. t1 is 15 minutes to 3 hours before it.
+T24_HOURS = (20, 28)
+T1_MINUTES = (15, 180)
+SHUFFLE_SEED = 0
+LIVE_COVERS_ZERO = "undetermined"
+LIVE_CONTINUE_TO_GW = 38

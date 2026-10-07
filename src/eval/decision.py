@@ -88,7 +88,7 @@ def collapse_gameweek(block: pd.DataFrame, sum_columns: tuple[str, ...]) -> pd.D
     if "fixture_id" not in work.columns:
         work["fixture_id"] = ""
     work["player_id"] = work["player_id"].astype(str)
-    present = [column for column in sum_columns if column in work.columns]
+    present = list(dict.fromkeys(column for column in sum_columns if column in work.columns))
     for column in present:
         work[column] = pd.to_numeric(work[column], errors="coerce").fillna(0.0)
     work = work.sort_values(["date", "fixture_id", "player_id"], kind="mergesort")
@@ -432,15 +432,81 @@ def _prepare_weeks(
     return weeks
 
 
+def permute_week(
+    week: pd.DataFrame,
+    score_col: str,
+    season_index: int,
+    gw: int,
+) -> pd.DataFrame:
+    """Permute one score inside one gameweek, among eligible finite values only."""
+    out = week.copy()
+    values = pd.to_numeric(out[score_col], errors="coerce")
+    mask = out["eligible"].astype(bool) & np.isfinite(values)
+    rng = np.random.default_rng(np.random.SeedSequence([0, int(season_index), int(gw)]))
+    shuffled = rng.permutation(values.loc[mask].to_numpy(float))
+    out.loc[mask, score_col] = shuffled
+    return out
+
+
+def audit_move(before: Squad, move: dict[str, Any], week: pd.DataFrame, score_col: str) -> None:
+    """Raise unless this transfer obeys budget, sell price, position, and this week only."""
+    out_id = str(move["player_out"])
+    in_id = str(move["player_in"])
+    if out_id not in before.purchase or in_id in before.purchase:
+        raise RuntimeError("transfer names a player the squad cannot buy or sell")
+    if len(before.purchase) != 15:
+        raise RuntimeError("transfer started from a squad that is not 15")
+    incoming = week.loc[week["player_id"].astype(str) == in_id]
+    if incoming.empty:
+        raise RuntimeError("buy is not in this gameweek")
+    row = incoming.iloc[0]
+    if not bool(row["eligible"]):
+        raise RuntimeError("buy is not eligible this week")
+    in_pos = normalize_position(str(row["position"]))
+    if in_pos != before.position[out_id] or str(move["position"]) != in_pos:
+        raise RuntimeError("transfer is not same-position")
+    current = value_lookup(week).get(out_id, before.purchase[out_id])
+    proceeds = sell_price(before.purchase[out_id], current)
+    price = _price(row["value"])
+    if price is None or int(move["proceeds"]) != int(proceeds) or int(move["price"]) != int(price):
+        raise RuntimeError("buy or sell price is not this week's price")
+    bank = before.bank + int(proceeds) - int(price)
+    if bank < 0 or int(move["bank"]) != int(bank):
+        raise RuntimeError("bank does not match the sell and the buy")
+    counts: dict[str, int] = {}
+    for pid, club in before.club.items():
+        if pid == out_id:
+            continue
+        counts[club] = counts.get(club, 0) + 1
+    in_club = str(row["team_norm"])
+    counts[in_club] = counts.get(in_club, 0) + 1
+    if any(count > MAX_PER_CLUB for count in counts.values()):
+        raise RuntimeError("transfer breaks the club cap")
+    scores = score_lookup(week, score_col)
+    predicted = float(scores.get(in_id, 0.0) - scores.get(out_id, 0.0))
+    if predicted <= 0.0 or abs(predicted - float(move["predicted"])) > 1e-8:
+        raise RuntimeError("predicted gain is not this week's score")
+
+
 def replay_season(
     frame: pd.DataFrame,
     score_col: str = SCORE_COLUMN,
     *,
     gw_start: int = 5,
     gw_end: int = 38,
+    permute_season_index: int | None = None,
 ) -> dict[str, Any]:
-    """Hold, one-free-transfer greedy, and the template, from one legal start."""
+    """Hold, one-free-transfer greedy, and the template, from one legal start.
+
+    ``permute_season_index`` shuffles the score inside each gameweek before
+    the opening squad and every later transfer. Points stay on the player.
+    """
     weeks = _prepare_weeks(frame, score_col, gw_start, gw_end)
+    if permute_season_index is not None:
+        weeks = {
+            gw: permute_week(week, score_col, permute_season_index, gw)
+            for gw, week in weeks.items()
+        }
     start: int | None = None
     hold = template = None
     for gw in sorted(weeks):
@@ -468,8 +534,11 @@ def replay_season(
             continue
         week = weeks[gw]
         if gw != start:
-            greedy, move = greedy_step(greedy, week, score_col)
+            before = greedy
+            greedy, move = greedy_step(before, week, score_col)
             if move is not None:
+                audit_move(before, move, week, score_col)
+                points = points_by_gw[gw]
                 transfers.append(
                     {
                         "gw": gw,
@@ -479,8 +548,14 @@ def replay_season(
                         "realised": realised_over(
                             points_by_gw, gw, move["player_in"], move["player_out"]
                         ),
+                        "realised_t": float(
+                            points.get(str(move["player_in"]), 0.0)
+                            - points.get(str(move["player_out"]), 0.0)
+                        ),
                     }
                 )
+            if len(greedy.purchase) != 15:
+                raise RuntimeError("a transfer changed the squad size")
         rows.append(
             {
                 "gw": gw,

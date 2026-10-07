@@ -8,7 +8,7 @@ the T−1h window, once per gameweek and slot. The raw JSON is kept.
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
 from pathlib import Path
 from typing import Any, Callable
@@ -136,20 +136,61 @@ def fetch_bootstrap(opener: Callable[..., Any] | None = None) -> tuple[dict[str,
     return payload, captured
 
 
+def deadlines_from_events(events: list[dict[str, Any]]) -> dict[str, str]:
+    return {str(int(event["id"])): str(event["deadline_time"]) for event in events}
+
+
+def has_capture(root: Path, gw: int) -> bool:
+    """True when this gameweek already has an official snapshot."""
+    directory = root / "data" / "predictions" / SEASON / f"gw{int(gw):02d}"
+    if not directory.is_dir():
+        return False
+    return any(directory.glob("official_*.csv")) or any(directory.glob("slot_*.json"))
+
+
+def missing_capture_gws(
+    root: Path,
+    now: datetime,
+    deadlines: dict[str, str],
+    *,
+    live_from: int = 6,
+) -> list[int]:
+    """Gameweeks whose capture window has closed and which have no snapshot.
+
+    ``now`` is the clock of the check. A capture file's own timestamp still
+    comes from the response Date header.
+    """
+    close_minutes = int(T1_MINUTES[0])
+    missing: list[int] = []
+    for gw, text in deadlines.items():
+        number = int(gw)
+        if number < int(live_from):
+            continue
+        deadline = aware_utc(text)
+        if now < deadline - timedelta(minutes=close_minutes):
+            continue
+        if not has_capture(root, number):
+            missing.append(number)
+    return sorted(missing)
+
+
 def run(opener: Callable[..., Any] | None = None, root: Path | None = None) -> int:
-    """Write one snapshot when the next deadline sits in a capture window."""
+    """Write one snapshot when the next deadline sits in a capture window.
+
+    After the attempt, a closed gameweek with no snapshot raises.
+    """
     payload, captured = fetch_bootstrap(opener)
     event = next_open_event(payload["events"], captured)
-    if event is None:
-        return 0
-    gw = int(event["id"])
-    slot = choose_slot(captured, aware_utc(event["deadline_time"]))
-    if slot is None:
-        return 0
     base = root or ROOT
-    if slot_marker(base, gw, slot).exists():
-        return 0
-    write_snapshot(payload, captured, gw=gw, slot=slot, root=root)
+    if event is not None:
+        gw = int(event["id"])
+        slot = choose_slot(captured, aware_utc(event["deadline_time"]))
+        if slot is not None and not slot_marker(base, gw, slot).exists():
+            write_snapshot(payload, captured, gw=gw, slot=slot, root=root)
+    missing = missing_capture_gws(base, captured, deadlines_from_events(payload["events"]))
+    if missing:
+        names = ", ".join(str(gw) for gw in missing)
+        raise RuntimeError(f"no pre-deadline capture for gameweeks {names}")
     return 0
 
 
