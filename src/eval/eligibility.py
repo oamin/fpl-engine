@@ -40,7 +40,10 @@ SHADOW_CAPTURE = PREDICTIONS / "shadow_20261007T080406Z.csv"
 REQUIRED = (
     "The claim between the engine and expected points is inconclusive.",
     "The eligibility rule is post-hoc. It was written after 2022-23 was seen, and it uses the missing expected goals and the missing prior season, not the realised points.",
-    "The eligible pool is the primary closed-season result. It covers three seasons and about 100 weeks. The all-weeks pool is a sensitivity check because it contains missing expected goals stored as zeros.",
+    "The data-quality eligible pool is the primary sensitivity analysis, not the primary closed-season result; the all-weeks pool remains the published evaluation benchmark.",
+    "The all-weeks pool contains missing expected goals stored as zeros.",
+    "The progression from 114 eligible gameweeks (GW1–38) to 102 greedy weeks (GW5–38) and 99 common-state weeks reflects the initialization of rolling priors and squad construction; no weeks were dropped by the data-quality filter in those seasons.",
+    "Across the three data-quality-eligible seasons, the common-state three-week contrast yields a consistent negative point estimate (−1.45, −1.15, −0.88), but the pooled interval [−2.5657, +0.0407] covers zero, so a difference from zero is not established.",
     "The identical integer sum of −477 in 2022–23 is an arithmetic equivalence of season totals: dynamic transfers gained exactly 267 points over the opening fifteen under both scores.",
     "In 2022-23 the shared +267 is the season sum of that construction only. The weekly gains agree on 1 of 33 weeks, the players agree on 2 of 33 weeks, and the same-score transfer gains sum to +230 and +267. In 2023-24 the same construction sums to +461 and +438, and the players agree on 2 of 34 weeks. The greedy contrasts are not rechecked.",
     "Week by week, the two 2022–23 series agree on only 1 of 33 gameweeks and represent distinct processes; the shared season total remains unexplained and is not repaired.",
@@ -49,7 +52,7 @@ REQUIRED = (
     "An eligible interval that excludes zero is not a win and does not promote `score_xp`.",
     "The decision capture is the same-stamp pair written inside the window from three hours to fifteen minutes before the deadline. An earlier file is not used, and a capture is not chosen after the two scores have been compared.",
     "The 7 October shadow joins score_xp from 07:04 UTC to ep_next from 08:04 UTC and is not a decision pair. The 08:04 bootstrap was not stored, so that engine score cannot be rebuilt.",
-    "No further closed-season analysis is added. The live review is at gameweek 26, with one outside audit at that review.",
+    "The disagreement mechanism table is the last closed-season description. Nothing further is added on closed seasons. The live review is at gameweek 26, with one outside audit at that review.",
     "From gameweek 6 onward, live squad selections are wired to pre-deadline official `ep_next`, with `score_xp` logged strictly in shadow.",
     "Promotion of `score_xp` requires a paired live interval strictly above zero across at least 20 pre-deadline gameweeks; covering zero remains undetermined through gameweek 38.",
     "The paired live comparison keeps every player who has both scores, and the column that drives the transfer does not drop the other score.",
@@ -62,6 +65,7 @@ FORBIDDEN = (
     "has been promoted over",
     "imputed using `score_xp`",
     "A repair was applied",
+    "The eligible pool is the primary closed-season result.",
 )
 
 
@@ -326,9 +330,16 @@ def _lines(
         "The eligibility rule is post-hoc. It was written after 2022-23 was seen, and it uses "
         "the missing expected goals and the missing prior season, not the realised points.",
         "",
-        "The eligible pool is the primary closed-season result. It covers three seasons and about 100 weeks. "
-        "The all-weeks pool is a sensitivity check because it contains missing expected goals stored as zeros.",
-        "2022-23 stays in the all-weeks sensitivity. The eligible table drops that season and keeps the later three.",
+        "The data-quality eligible pool is the primary sensitivity analysis, not the primary closed-season result; "
+        "the all-weeks pool remains the published evaluation benchmark.",
+        "The all-weeks pool contains missing expected goals stored as zeros.",
+        "2022-23 stays in the published all-weeks numbers. The data-quality table drops that season and keeps the later three.",
+        "The progression from 114 eligible gameweeks (GW1–38) to 102 greedy weeks (GW5–38) and 99 common-state weeks "
+        "reflects the initialization of rolling priors and squad construction; no weeks were dropped by the "
+        "data-quality filter in those seasons.",
+        "Across the three data-quality-eligible seasons, the common-state three-week contrast yields a consistent "
+        "negative point estimate (−1.45, −1.15, −0.88), but the pooled interval [−2.5657, +0.0407] covers zero, "
+        "so a difference from zero is not established.",
         "",
         "## Raw weekly totals, 2022-23",
         "",
@@ -400,7 +411,7 @@ def _lines(
             f"Populated weeks in those three seasons: {int(later['xg_populated'].sum())} of {len(later)}. "
             f"Eligible weeks among them: {int(later['eligible'].sum())}.",
             "",
-            "## Primary result, then the all-weeks sensitivity",
+            "## Data-quality sensitivity, beside the published all-weeks numbers",
             "",
             "An eligible interval that excludes zero is not a win and does not promote `score_xp`. "
             "Every eligible contrast of `score_xp` against expected points covers zero, so the "
@@ -433,7 +444,7 @@ def _lines(
         lines.append("| version | weeks | estimate | reading |")
         lines.append("|---|---:|---|---|")
         lines.append(
-            f"| eligible pool | {row['eligible_weeks']} | {_interval(row['eligible'])} | {row['eligible_reading']} |"
+            f"| data-quality sensitivity | {row['eligible_weeks']} | {_interval(row['eligible'])} | {row['eligible_reading']} |"
         )
         lines.append("")
     lines.append("### Eligible leave-one-season-out")
@@ -473,8 +484,8 @@ def _lines(
             "live files are on the machine. A checkout without those files does not invent an engine score.",
             "The 7 October shadow joins score_xp from 07:04 UTC to ep_next from 08:04 UTC and is not "
             "a decision pair. The 08:04 bootstrap was not stored, so that engine score cannot be rebuilt.",
-            "No further closed-season analysis is added. The live review is at gameweek 26, with one "
-            "outside audit at that review.",
+            "The disagreement mechanism table is the last closed-season description. Nothing further is "
+            "added on closed seasons. The live review is at gameweek 26, with one outside audit at that review.",
             "The shadow file `data/predictions/2026-27/gw06/shadow_20261007T080406Z.csv` is kept as "
             "that mismatched log. The two source captures were not overwritten.",
             "",
@@ -487,6 +498,27 @@ def _lines(
     return lines
 
 
+def _assert_counts(pooled: list[dict[str, Any]]) -> None:
+    """114 sheets, 102 greedy weeks from GW5, 99 common-state weeks after construction."""
+    by_key = {str(row["key"]): row for row in pooled}
+    greedy = by_key["placebo:greedy_xp_minus_greedy_exp"]["eligible_weeks"]
+    common = by_key["hierarchy:r1_xp_minus_r1_exp"]["eligible_weeks"]
+    three = by_key["hierarchy:r3_xp_minus_r3_exp"]
+    if int(greedy) != 102 or int(common) != 99 or int(three["eligible_weeks"]) != 99:
+        raise RuntimeError("the stored week counts are not 102 and 99")
+    means = three["eligible_means"]
+    expected = {"2023-24": -1.45, "2024-25": -1.15, "2025-26": -0.88}
+    for season, target in expected.items():
+        value = means.get(season)
+        if value is None or abs(float(value) - target) > 0.005:
+            raise RuntimeError("a later-season three-week mean moved")
+    summary = three["eligible"]
+    if abs(float(summary["mean"]) - (-1.1616)) > 5e-4:
+        raise RuntimeError("the three-week eligible mean moved")
+    if abs(float(summary["lo"]) - (-2.5657)) > 5e-4 or abs(float(summary["hi"]) - 0.0407) > 5e-4:
+        raise RuntimeError("the three-week eligible interval moved")
+
+
 def run() -> None:
     from src.eval.gates import load_protocol, run_asof_audit, write_gated_report
     protocol = load_protocol()
@@ -495,8 +527,10 @@ def run() -> None:
         raise RuntimeError("the eligibility lock is not the diagnostic rule")
     if rule.get("combine") != "and" or rule.get("timing") != "post-hoc":
         raise RuntimeError("eligibility is not the conjunction")
-    if rule.get("primary") != "eligible" or rule.get("all_weeks") != "sensitivity":
-        raise RuntimeError("the eligible pool is not the primary result")
+    if rule.get("eligible_role") != "data_quality_sensitivity" or rule.get("primary_result") is not None:
+        raise RuntimeError("the eligible pool is not the data-quality sensitivity")
+    if rule.get("all_weeks") != "published" or "primary" in rule:
+        raise RuntimeError("the all-weeks pool is not the published benchmark")
     live = protocol["live_primary"]
     if live.get("decision_capture") != "t1_same_stamp" or live.get("choose_after_seeing_scores"):
         raise RuntimeError("the decision capture is not locked")
@@ -506,6 +540,8 @@ def run() -> None:
     later = flags.loc[flags["season"] != "2022-23"]
     if not bool(later["xg_populated"].all()):
         raise RuntimeError("a later season has an unpopulated xG week")
+    if int(later["eligible"].sum()) != 114:
+        raise RuntimeError("the later seasons are not 114 data-quality sheets")
     paired, gains = transfer_gains(protocol)
     _check_identity(paired)
     _assert_gains(gains)
@@ -554,6 +590,7 @@ def run() -> None:
             fold["label"] = str(spec["label"])
             fold["reading"] = reading(fold)
             fold_rows.append(fold)
+    _assert_counts(pooled_rows)
     lines = _lines(paired, flags, pooled_rows, fold_rows, gains)
     text = "\n".join(lines)
     for sentence in REQUIRED:

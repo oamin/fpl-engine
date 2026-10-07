@@ -152,10 +152,20 @@
     "prior_season": "an earlier season is in the closed archive",
     "combine": "and",
     "timing": "post-hoc",
-    "primary": "eligible",
-    "all_weeks": "sensitivity",
+    "eligible_role": "data_quality_sensitivity",
+    "all_weeks": "published",
+    "primary_result": null,
     "repairs_score": false,
     "replaces_published": false,
+    "winner": null
+  },
+  "mechanism": {
+    "set": "disagreement_weeks",
+    "n_weeks": 51,
+    "inequality": "strict",
+    "timing": "post-hoc",
+    "uses_realised_points": false,
+    "changes_score": false,
     "winner": null
   },
   "live_primary": {
@@ -172,5 +182,5 @@
     "review_gw": 26,
     "winner": null
   },
-  "note": "Gaussian log score with sigma fixed at 3. The bootstrap resamples gameweeks, not player rows. 2026-27 is not in the closed-season comparison. Gameweeks 1-5 of that season were already read. The clean holdout starts at gameweek 6. A season total is not a pass. The decision batch scores score_xp. From gameweek 6 the live choice primary is ep_next and score_xp is logged as the shadow. Promotion needs the paired interval of score_xp minus ep_next to stay strictly above zero on at least 20 pre-deadline weeks. An interval that covers zero is undetermined, and the test continues through gameweek 38. From gameweek 6 the live squad is chosen by captured ep_next. score_xp is logged in shadow and does not choose. The historical score column stays score_xp. The eligible pool is the primary closed-season result and the all-weeks pool is the sensitivity. The decision capture is the same-stamp pair from the window three hours to fifteen minutes before the deadline. An earlier file is not used. The review is at gameweek 26."
+  "note": "Gaussian log score with sigma fixed at 3. The bootstrap resamples gameweeks, not player rows. 2026-27 is not in the closed-season comparison. Gameweeks 1-5 of that season were already read. The clean holdout starts at gameweek 6. A season total is not a pass. The decision batch scores score_xp. From gameweek 6 the live choice primary is ep_next and score_xp is logged as the shadow. Promotion needs the paired interval of score_xp minus ep_next to stay strictly above zero on at least 20 pre-deadline weeks. An interval that covers zero is undetermined, and the test continues through gameweek 38. From gameweek 6 the live squad is chosen by captured ep_next. score_xp is logged in shadow and does not choose. The historical score column stays score_xp. The data-quality eligible pool is a sensitivity, not the primary closed-season result, and the all-weeks pool stays published. The disagreement mechanism table is the last closed-season description. The decision capture is the same-stamp pair from the window three hours to fifteen minutes before the deadline. An earlier file is not used. The review is at gameweek 26."
 }

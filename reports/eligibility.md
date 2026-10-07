@@ -4,8 +4,11 @@ The claim between the engine and expected points is inconclusive.
 
 The eligibility rule is post-hoc. It was written after 2022-23 was seen, and it uses the missing expected goals and the missing prior season, not the realised points.
 
-The eligible pool is the primary closed-season result. It covers three seasons and about 100 weeks. The all-weeks pool is a sensitivity check because it contains missing expected goals stored as zeros.
-2022-23 stays in the all-weeks sensitivity. The eligible table drops that season and keeps the later three.
+The data-quality eligible pool is the primary sensitivity analysis, not the primary closed-season result; the all-weeks pool remains the published evaluation benchmark.
+The all-weeks pool contains missing expected goals stored as zeros.
+2022-23 stays in the published all-weeks numbers. The data-quality table drops that season and keeps the later three.
+The progression from 114 eligible gameweeks (GW1–38) to 102 greedy weeks (GW5–38) and 99 common-state weeks reflects the initialization of rolling priors and squad construction; no weeks were dropped by the data-quality filter in those seasons.
+Across the three data-quality-eligible seasons, the common-state three-week contrast yields a consistent negative point estimate (−1.45, −1.15, −0.88), but the pooled interval [−2.5657, +0.0407] covers zero, so a difference from zero is not established.
 
 ## Raw weekly totals, 2022-23
 
@@ -180,7 +183,7 @@ Gameweeks 1–15 of 2022–23 contain all-zero expected goals in the raw source,
 The eligible-weeks dataset requires populated xG and an available prior archive season, excluding 2022–23 while retaining all evaluated weeks of 2023–24, 2024–25, and 2025–26.
 Populated weeks in those three seasons: 114 of 114. Eligible weeks among them: 114.
 
-## Primary result, then the all-weeks sensitivity
+## Data-quality sensitivity, beside the published all-weeks numbers
 
 An eligible interval that excludes zero is not a win and does not promote `score_xp`. Every eligible contrast of `score_xp` against expected points covers zero, so the closed-season data do not separate the two scores.
 
@@ -194,7 +197,7 @@ Eligible season means: 2022-23 — | 2023-24 +3.03 | 2024-25 +1.09 | 2025-26 +3.
 
 | version | weeks | estimate | reading |
 |---|---:|---|---|
-| eligible pool | 102 | +2.4706 [-0.8044, +5.3142] | the interval covers zero |
+| data-quality sensitivity | 102 | +2.4706 [-0.8044, +5.3142] | the interval covers zero |
 
 ### shuffled greedy − shuffled hold
 
@@ -204,7 +207,7 @@ Eligible season means: 2022-23 — | 2023-24 +7.85 | 2024-25 -2.79 | 2025-26 +2.
 
 | version | weeks | estimate | reading |
 |---|---:|---|---|
-| eligible pool | 102 | +2.3922 [-0.5007, +5.1772] | the interval covers zero |
+| data-quality sensitivity | 102 | +2.3922 [-0.5007, +5.1772] | the interval covers zero |
 
 ### greedy score_xp − shuffled greedy
 
@@ -214,7 +217,7 @@ Eligible season means: 2022-23 — | 2023-24 +18.47 | 2024-25 +20.50 | 2025-26 +
 
 | version | weeks | estimate | reading |
 |---|---:|---|---|
-| eligible pool | 102 | +17.9804 [+14.7743, +21.7752] | the interval stays above zero |
+| data-quality sensitivity | 102 | +17.9804 [+14.7743, +21.7752] | the interval stays above zero |
 
 ### score_xp greedy − score_xp hold
 
@@ -224,7 +227,7 @@ Eligible season means: 2022-23 — | 2023-24 +13.68 | 2024-25 +4.68 | 2025-26 +4
 
 | version | weeks | estimate | reading |
 |---|---:|---|---|
-| eligible pool | 102 | +7.4804 [+4.2451, +10.9020] | the interval stays above zero |
+| data-quality sensitivity | 102 | +7.4804 [+4.2451, +10.9020] | the interval stays above zero |
 
 ### common state, one-week score_xp − expected points
 
@@ -234,7 +237,7 @@ Eligible season means: 2022-23 — | 2023-24 +0.58 | 2024-25 +0.09 | 2025-26 -0.
 
 | version | weeks | estimate | reading |
 |---|---:|---|---|
-| eligible pool | 99 | +0.0505 [-0.4747, +0.5457] | the interval covers zero |
+| data-quality sensitivity | 99 | +0.0505 [-0.4747, +0.5457] | the interval covers zero |
 
 ### common state, three-week score_xp − expected points
 
@@ -244,7 +247,7 @@ Eligible season means: 2022-23 — | 2023-24 -1.45 | 2024-25 -1.15 | 2025-26 -0.
 
 | version | weeks | estimate | reading |
 |---|---:|---|---|
-| eligible pool | 99 | -1.1616 [-2.5657, +0.0407] | the interval covers zero |
+| data-quality sensitivity | 99 | -1.1616 [-2.5657, +0.0407] | the interval covers zero |
 
 ### common state, one-week score_xp − rolling three-week points
 
@@ -254,7 +257,7 @@ Eligible season means: 2022-23 — | 2023-24 +0.12 | 2024-25 +1.03 | 2025-26 +1.
 
 | version | weeks | estimate | reading |
 |---|---:|---|---|
-| eligible pool | 99 | +0.7677 [-0.7376, +2.2333] | the interval covers zero |
+| data-quality sensitivity | 99 | +0.7677 [-0.7376, +2.2333] | the interval covers zero |
 
 ### common state, one-week score_xp − shuffled score
 
@@ -264,7 +267,7 @@ Eligible season means: 2022-23 — | 2023-24 +3.73 | 2024-25 +6.82 | 2025-26 +2.
 
 | version | weeks | estimate | reading |
 |---|---:|---|---|
-| eligible pool | 99 | +4.4040 [+3.1205, +5.7174] | the interval stays above zero |
+| data-quality sensitivity | 99 | +4.4040 [+3.1205, +5.7174] | the interval stays above zero |
 
 ### common state, one-week expected points − shuffled score
 
@@ -274,7 +277,7 @@ Eligible season means: 2022-23 — | 2023-24 +3.15 | 2024-25 +6.73 | 2025-26 +3.
 
 | version | weeks | estimate | reading |
 |---|---:|---|---|
-| eligible pool | 99 | +4.3535 [+2.9692, +5.7583] | the interval stays above zero |
+| data-quality sensitivity | 99 | +4.3535 [+2.9692, +5.7583] | the interval stays above zero |
 
 ### opening fifteen, XI by score_xp, xp − exp
 
@@ -284,7 +287,7 @@ Eligible season means: 2022-23 — | 2023-24 +1.41 | 2024-25 -1.09 | 2025-26 +1.
 
 | version | weeks | estimate | reading |
 |---|---:|---|---|
-| eligible pool | 102 | +0.5980 [-2.2174, +3.3632] | the interval covers zero |
+| data-quality sensitivity | 102 | +0.5980 [-2.2174, +3.3632] | the interval covers zero |
 
 ### opening fifteen, XI by score_xp, xp − shuffled
 
@@ -294,7 +297,7 @@ Eligible season means: 2022-23 — | 2023-24 +10.94 | 2024-25 +10.88 | 2025-26 +
 
 | version | weeks | estimate | reading |
 |---|---:|---|---|
-| eligible pool | 102 | +11.6863 [+7.9902, +15.6669] | the interval stays above zero |
+| data-quality sensitivity | 102 | +11.6863 [+7.9902, +15.6669] | the interval stays above zero |
 
 ### opening fifteen, XI by score_xp, xp − price ladder
 
@@ -304,7 +307,7 @@ Eligible season means: 2022-23 — | 2023-24 +8.12 | 2024-25 +13.82 | 2025-26 +6
 
 | version | weeks | estimate | reading |
 |---|---:|---|---|
-| eligible pool | 102 | +9.6275 [+6.0093, +13.1863] | the interval stays above zero |
+| data-quality sensitivity | 102 | +9.6275 [+6.0093, +13.1863] | the interval stays above zero |
 
 ### opening fifteen, XI by expected points, xp − exp
 
@@ -314,7 +317,7 @@ Eligible season means: 2022-23 — | 2023-24 +2.35 | 2024-25 -2.85 | 2025-26 +1.
 
 | version | weeks | estimate | reading |
 |---|---:|---|---|
-| eligible pool | 102 | +0.3039 [-2.6181, +3.1478] | the interval covers zero |
+| data-quality sensitivity | 102 | +0.3039 [-2.6181, +3.1478] | the interval covers zero |
 
 ### opening fifteen, XI by expected points, xp − shuffled
 
@@ -324,7 +327,7 @@ Eligible season means: 2022-23 — | 2023-24 +12.15 | 2024-25 +10.47 | 2025-26 +
 
 | version | weeks | estimate | reading |
 |---|---:|---|---|
-| eligible pool | 102 | +11.5294 [+7.8725, +15.2949] | the interval stays above zero |
+| data-quality sensitivity | 102 | +11.5294 [+7.8725, +15.2949] | the interval stays above zero |
 
 ### opening fifteen, XI by expected points, xp − price ladder
 
@@ -334,7 +337,7 @@ Eligible season means: 2022-23 — | 2023-24 +8.15 | 2024-25 +13.59 | 2025-26 +7
 
 | version | weeks | estimate | reading |
 |---|---:|---|---|
-| eligible pool | 102 | +9.8824 [+6.2824, +13.4414] | the interval stays above zero |
+| data-quality sensitivity | 102 | +9.8824 [+6.2824, +13.4414] | the interval stays above zero |
 
 ### disagreement weeks, one-week score_xp − expected points
 
@@ -344,7 +347,7 @@ Eligible season means: 2022-23 — | 2023-24 +1.46 | 2024-25 +0.30 | 2025-26 -3.
 
 | version | weeks | estimate | reading |
 |---|---:|---|---|
-| eligible pool | 28 | +0.1786 [-1.5714, +2.0723] | the interval covers zero |
+| data-quality sensitivity | 28 | +0.1786 [-1.5714, +2.0723] | the interval covers zero |
 
 ### disagreement weeks, three-week score_xp − expected points
 
@@ -354,7 +357,7 @@ Eligible season means: 2022-23 — | 2023-24 -3.69 | 2024-25 -3.80 | 2025-26 -5.
 
 | version | weeks | estimate | reading |
 |---|---:|---|---|
-| eligible pool | 28 | -4.1071 [-8.3937, +0.0018] | the interval covers zero |
+| data-quality sensitivity | 28 | -4.1071 [-8.3937, +0.0018] | the interval covers zero |
 
 ### Eligible leave-one-season-out
 
@@ -519,7 +522,7 @@ The paired live comparison keeps every player who has both scores, and the colum
 The decision capture is the same-stamp pair written inside the window from three hours to fifteen minutes before the deadline. An earlier file is not used, and a capture is not chosen after the two scores have been compared.
 The scheduled job writes `ep_next`. `score_xp` is regenerated in that same run when the live files are on the machine. A checkout without those files does not invent an engine score.
 The 7 October shadow joins score_xp from 07:04 UTC to ep_next from 08:04 UTC and is not a decision pair. The 08:04 bootstrap was not stored, so that engine score cannot be rebuilt.
-No further closed-season analysis is added. The live review is at gameweek 26, with one outside audit at that review.
+The disagreement mechanism table is the last closed-season description. Nothing further is added on closed seasons. The live review is at gameweek 26, with one outside audit at that review.
 The shadow file `data/predictions/2026-27/gw06/shadow_20261007T080406Z.csv` is kept as that mismatched log. The two source captures were not overwritten.
 
 No winner is declared. `score_xp` is unchanged. No repair was applied to the stored expected goals.
