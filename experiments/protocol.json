@@ -85,5 +85,18 @@
       "greedy_xp_minus_greedy_shuffled"
     ]
   },
+  "common_state": {
+    "squad": "price-ladder fifteen, tie-break lower player id, score unused",
+    "scores": ["score_xp", "score_exp_points", "roll3_points"],
+    "shuffle": "eligible finite score_xp within each gameweek",
+    "winner": null,
+    "contrasts": [
+      "r1_xp_minus_r1_exp",
+      "r3_xp_minus_r3_exp",
+      "r1_xp_minus_r1_roll3",
+      "r1_xp_minus_r1_shuffled",
+      "c_xp_minus_c_exp"
+    ]
+  },
   "note": "Gaussian log score with sigma fixed at 3. The bootstrap resamples gameweeks, not player rows. 2026-27 is not in the closed-season comparison. Gameweeks 1-5 of that season were already read. The clean holdout starts at gameweek 6. A season total is not a pass. The decision batch scores score_xp. ep_next is logged live and is not a winner until 20 pre-deadline weeks. At 20 live weeks an interval that covers zero is undetermined, and the test continues through gameweek 38."
 }

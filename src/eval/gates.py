@@ -439,6 +439,13 @@ def _failures_paths() -> list[str]:
         failures.append("the placebo shuffle is not within the gameweek")
     if placebo.get("naive_score") != "score_exp_points":
         failures.append("the naive score in the placebo is not expected points")
+    common = protocol.get("common_state") or {}
+    if common.get("winner") is not None:
+        failures.append("the common-state test declared a winner")
+    if "within each gameweek" not in str(common.get("shuffle") or ""):
+        failures.append("the common-state shuffle is not within the gameweek")
+    if "score unused" not in str(common.get("squad") or ""):
+        failures.append("the common-state squad is not score-blind")
     manifest = json.loads((ROOT / "data" / "live" / "HOLDOUT_FREEZE.json").read_text(encoding="utf-8"))
     tracked = manifest.get("tracked") or {}
     if "data/cache/player_gw_2026_27.csv" in tracked:

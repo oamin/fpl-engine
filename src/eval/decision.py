@@ -233,6 +233,58 @@ def template_squad(week: pd.DataFrame, score_col: str) -> Squad:
     return squad
 
 
+def neutral_pool(week: pd.DataFrame) -> pd.DataFrame:
+    """Eligible players with a finite price. A score does not enter the filter."""
+    if "eligible" not in week.columns:
+        raise RuntimeError("neutral squad has no eligibility column")
+    pool = week.loc[week["eligible"].astype(bool)].copy()
+    pool["value"] = pd.to_numeric(pool["value"], errors="coerce")
+    pool = pool.loc[np.isfinite(pool["value"])]
+    pool["player_id"] = pool["player_id"].astype(str)
+    pool["position"] = pool["position"].map(lambda value: normalize_position(str(value)))
+    return pool.drop_duplicates("player_id", keep="first")
+
+
+def neutral_squad(week: pd.DataFrame) -> Squad:
+    """Price-ladder fifteen. The tie-break is the lower player id. Score is unused."""
+    pool = neutral_pool(week)
+    chosen: list[dict[str, Any]] = []
+    used: set[str] = set()
+    clubs: dict[str, int] = {}
+    spent = 0
+    for slot, target in TEMPLATE_SLOTS:
+        slot_pos = normalize_position(slot)
+        best: dict[str, Any] | None = None
+        best_key: tuple[Any, ...] | None = None
+        block = pool.loc[pool["position"] == slot_pos]
+        for row in block.itertuples(index=False):
+            pid = str(row.player_id)
+            if pid in used:
+                continue
+            price = int(round(float(row.value)))
+            if spent + price > BUDGET_TENTHS:
+                continue
+            club = str(row.team_norm)
+            if clubs.get(club, 0) >= MAX_PER_CLUB:
+                continue
+            key = (abs(price - int(target)), _pid(pid))
+            if best_key is None or key < best_key:
+                best_key = key
+                best = {
+                    "player_id": pid,
+                    "position": slot_pos,
+                    "team_norm": club,
+                    "value": price,
+                }
+        if best is None:
+            raise RuntimeError(f"neutral squad cannot fill {slot_pos} near {target}")
+        chosen.append(best)
+        used.add(str(best["player_id"]))
+        clubs[str(best["team_norm"])] = clubs.get(str(best["team_norm"]), 0) + 1
+        spent += int(best["value"])
+    return _squad_from_rows(pd.DataFrame(chosen))
+
+
 def select_xi(frame: pd.DataFrame, score_col: str) -> pd.DataFrame:
     """Legal XI. Ties break toward the higher score, then the lower player id."""
     if score_col == "total_points":
@@ -328,54 +380,72 @@ def _club_ok(squad: Squad, out_id: str, in_club: str) -> bool:
     return all(count <= MAX_PER_CLUB for count in counts.values())
 
 
+def legal_moves(squad: Squad, week: pd.DataFrame, score_col: str) -> list[dict[str, Any]]:
+    """Same-position swaps that clear price, club cap, and this week's eligibility.
+
+    Predicted gain may be negative. A fitted slope is not an argument.
+    """
+    scores = score_lookup(week, score_col)
+    values = value_lookup(week)
+    if week.empty or "eligible" not in week.columns:
+        return []
+    pool = week.loc[week["eligible"].astype(bool)]
+    owned = set(squad.purchase)
+    moves: list[dict[str, Any]] = []
+    for incoming in pool.itertuples(index=False):
+        in_id = str(incoming.player_id)
+        if in_id in owned:
+            continue
+        in_pos = normalize_position(str(incoming.position))
+        in_price = _price(incoming.value)
+        if in_price is None:
+            continue
+        in_score = scores.get(in_id, 0.0)
+        in_club = str(incoming.team_norm)
+        for out_id, out_pos in squad.position.items():
+            if out_pos != in_pos:
+                continue
+            if not _club_ok(squad, out_id, in_club):
+                continue
+            current = values.get(out_id, squad.purchase[out_id])
+            proceeds = sell_price(squad.purchase[out_id], current)
+            bank = squad.bank + proceeds - in_price
+            if bank < 0:
+                continue
+            moves.append(
+                {
+                    "player_in": in_id,
+                    "player_out": out_id,
+                    "position": in_pos,
+                    "predicted": float(in_score - scores.get(out_id, 0.0)),
+                    "price": in_price,
+                    "proceeds": int(proceeds),
+                    "bank": int(bank),
+                    "in_score": float(in_score),
+                    "out_score": float(scores.get(out_id, 0.0)),
+                    "club": in_club,
+                }
+            )
+    return moves
+
+
 def greedy_step(squad: Squad, week: pd.DataFrame, score_col: str) -> tuple[Squad, dict[str, Any] | None]:
     """At most one same-position free transfer. No hit and no saved transfer.
 
     The argument is this gameweek only. A fitted slope is not an argument.
+    The input squad is not mutated.
     """
-    scores = score_lookup(week, score_col)
-    values = value_lookup(week)
-    pool = week.loc[week["eligible"].astype(bool)].copy() if not week.empty else week
     best: dict[str, Any] | None = None
     best_key: tuple[Any, ...] | None = None
-    owned = set(squad.purchase)
-    if not pool.empty:
-        for incoming in pool.itertuples(index=False):
-            in_id = str(incoming.player_id)
-            if in_id in owned:
-                continue
-            in_pos = normalize_position(str(incoming.position))
-            in_price = _price(incoming.value)
-            in_score = scores.get(in_id, 0.0)
-            if in_price is None:
-                continue
-            in_club = str(incoming.team_norm)
-            for out_id, out_pos in squad.position.items():
-                if out_pos != in_pos:
-                    continue
-                if not _club_ok(squad, out_id, in_club):
-                    continue
-                current = values.get(out_id, squad.purchase[out_id])
-                proceeds = sell_price(squad.purchase[out_id], current)
-                bank = squad.bank + proceeds - in_price
-                if bank < 0:
-                    continue
-                gain = in_score - scores.get(out_id, 0.0)
-                key = (-gain, -in_score, _pid(in_id), _pid(out_id))
-                if best_key is None or key < best_key:
-                    best_key = key
-                    best = {
-                        "player_in": in_id,
-                        "player_out": out_id,
-                        "position": in_pos,
-                        "predicted": float(gain),
-                        "price": in_price,
-                        "proceeds": int(proceeds),
-                        "bank": int(bank),
-                        "in_score": float(in_score),
-                        "out_score": float(scores.get(out_id, 0.0)),
-                    }
-    if best is None or best["predicted"] <= 0.0:
+    for move in legal_moves(squad, week, score_col):
+        gain = float(move["predicted"])
+        if gain <= 0.0:
+            continue
+        key = (-gain, -float(move["in_score"]), _pid(move["player_in"]), _pid(move["player_out"]))
+        if best_key is None or key < best_key:
+            best_key = key
+            best = move
+    if best is None:
         return squad, None
     nxt = squad.copy()
     out_id = str(best["player_out"])
@@ -385,8 +455,7 @@ def greedy_step(squad: Squad, week: pd.DataFrame, score_col: str) -> tuple[Squad
     del nxt.club[out_id]
     nxt.purchase[in_id] = int(best["price"])
     nxt.position[in_id] = str(best["position"])
-    match = pool.loc[pool["player_id"].astype(str) == in_id].iloc[0]
-    nxt.club[in_id] = str(match["team_norm"])
+    nxt.club[in_id] = str(best["club"])
     nxt.bank = int(best["bank"])
     return nxt, best
 
