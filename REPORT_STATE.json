@@ -1,7 +1,7 @@
 {
   "milestone": "string-rolling-horizon",
   "status": "ready_to_freeze",
-  "summary": "The string agent can save a legal three-week plan and, from Gameweek 7, continue from that plan instead of the live entry. Gameweek 6 still starts from ojaminFC. The official ledger is written only by an explicit pre-deadline commit, which stores the plan file hash. No model was called and the realised comparison is not built.",
+  "summary": "The string plan stays three validated weeks. The dossier now shows the current gameweek, the chip bank, and the fixture calendar through the end of the half, so a longer strategy does not have to be a longer chain of transfers. Gameweek 7 still continues from the saved plan. No model was called and the realised comparison is not built.",
   "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
     "reports/string_horizon_20261008.md",

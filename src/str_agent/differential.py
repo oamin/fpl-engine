@@ -16,6 +16,7 @@ import pandas as pd
 from src.live.fpl_snapshot import ELEMENT
 from src.live.news_packets import load_packet_files, packets_dir
 from src.rules.fpl_2026 import BUDGET_TENTHS
+from src.str_agent.dossier import club_calendar, season_header
 from src.str_agent.extractor import other_outlets_markdown, packets_markdown
 from src.str_agent.sources import load_string_sources
 from src.str_agent.trial import _fixtures, _minutes_by_gw, last_window
@@ -134,6 +135,10 @@ def prepare_differential(
         "Play no chip. Leave transfers_in and transfers_out as empty lists. "
         "Captain and vice must be two different players in the starting eleven. "
         "Use the numeric id from the table.\n\n"
+        + season_header(int(gw), deadline_utc)
+        + "\nChips: this screen plays none.\n\n"
+        + club_calendar(fixtures, short, int(gw))
+        + "\n"
         f"Listed players: {len(directory)} "
         f"(GKP {counts.get('GKP', 0)}, DEF {counts.get('DEF', 0)}, "
         f"MID {counts.get('MID', 0)}, FWD {counts.get('FWD', 0)}).\n\n"

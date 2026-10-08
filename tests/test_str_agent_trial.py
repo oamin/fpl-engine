@@ -27,6 +27,14 @@ class Trial(unittest.TestCase):
         self.assertEqual(len(pack.carry.purchase_prices), 15)
         self.assertIn("Starting squad: the Gameweek 5 fifteen", pack.context)
         self.assertNotIn("score_xp", pack.context)
+        self.assertIn("Gameweek 6 of 38", pack.context)
+        self.assertIn("Half H1", pack.context)
+        self.assertIn("expire at the Gameweek 19 deadline", pack.context)
+        self.assertIn("Chips still available: wildcard, free_hit, bench_boost.", pack.context)
+        arsenal = next(line for line in pack.context.splitlines() if line.startswith("- ARS:"))
+        self.assertIn("GW7 ", arsenal)
+        self.assertNotIn("GW7 blank", arsenal)
+        self.assertNotIn("GW7 unknown", arsenal)
 
     def test_saved_gw6_choice_is_a_legal_move(self) -> None:
         pack = prepare(2632584)
@@ -75,6 +83,37 @@ class Trial(unittest.TestCase):
         self.assertEqual(list(pack.carry.squad), ids)
         self.assertIn("It is not the live entry.", pack.context)
         self.assertNotIn("the Gameweek 5 fifteen", pack.context)
+        self.assertNotIn("score_xp", pack.context)
+        self.assertIn("Fixture calendar", pack.context)
+        self.assertIn("Gameweek 7 of 38", pack.context)
+
+    def test_a_later_week_uses_the_saved_chip_bank(self) -> None:
+        entry = load_entry(2632584)
+        week = next(row for row in entry["gameweeks"] if int(row["gw"]) == 5)
+        ids = [str(player["id"]) for player in week["xi"] + week["bench"]]
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            plan = {
+                "frozen_at_utc": "2026-10-10T09:00:00Z",
+                "deadline_utc": "2026-10-10T10:00:00Z",
+                "rationale": "Hold the paper squad.",
+                "horizon": [],
+                "carry_after": {
+                    "gw": 7,
+                    "squad": ids,
+                    "purchase_prices": {pid: 40 for pid in ids},
+                    "bank": 77,
+                    "ft_before": 3,
+                    "chips_played": {"1": "triple_captain", "6": "wildcard"},
+                    "selling_prices": {},
+                },
+            }
+            (root / "gw06.json").write_text(json.dumps(plan), encoding="utf-8")
+            pack = prepare(2632584, plan_root=root, next_gw=7)
+        self.assertIn("Chips already played: GW1 triple_captain, GW6 wildcard.", pack.context)
+        self.assertIn("Chips still available: free_hit, bench_boost.", pack.context)
+        self.assertNotIn("Chips still available: wildcard", pack.context)
+        self.assertIn("Fixture calendar", pack.context)
         self.assertNotIn("score_xp", pack.context)
 
     def test_commit_saved_writes_the_chosen_ledger_only(self) -> None:

@@ -13,6 +13,7 @@ summary line is a minutes footnote. You may disagree with it.
 You must still output a legal 2026/27 squad: 2 GKP, 5 DEF, 5 MID, 3 FWD,
 max 3 per club, within budget, legal XI formation, captain and vice.
 Use only the context packet — no memory of post-deadline results.
+A fixture calendar in the context runs to the end of the half. It is not extra weeks to fill in.
 Return JSON with keys rationale, decision (chip_played, squad_15, starting_11,
 captain, vice_captain, bench_order, transfers_in, transfers_out), and horizon.
 horizon is three weeks, this week first. Week 0 matches decision. The next

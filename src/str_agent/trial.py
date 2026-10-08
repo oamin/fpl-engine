@@ -23,6 +23,7 @@ from src.live.news_packets import (
 from src.live.news_tags import prior_minutes
 from src.rules.fpl_2026 import ChipWallet
 from src.str_agent.carry import CarryState, carry_from_entry, validate_move
+from src.str_agent.dossier import club_calendar, deadline_brief
 from src.str_agent.extractor import (
     other_outlets_markdown,
     packets_markdown,
@@ -223,7 +224,16 @@ def prepare(
         "or the current price if it has fallen.\n"
         "Captain and vice must be two different players in the starting eleven. "
         "transfers_in and transfers_out must be exactly the players who join and leave.\n\n"
-        "## Gameweek 5 squad\n"
+        + deadline_brief(
+            gw=int(carry.gw),
+            deadline_utc=deadline_utc,
+            bank=int(entry["bank"]),
+            ft=int(entry["ft_for_next"]),
+            chips_played=dict(carry.chips_played),
+        )
+        + "\n"
+        + club_calendar(fixtures, short, int(carry.gw))
+        + "\n## Gameweek 5 squad\n"
         + "\n".join(slot_lines)
         + "\n\n## Market\n"
         + roster_markdown(
@@ -280,6 +290,7 @@ def prepare(
         team_of_name=team_of_name,
         fixtures=fixtures,
         teams=teams,
+        short=short,
         bootstrap=bootstrap,
         plan_root=plan_root,
     )
@@ -295,6 +306,7 @@ def _paper_pack(
     team_of_name: Mapping[str, int],
     fixtures: list[dict[str, Any]],
     teams: Mapping[int, str],
+    short: Mapping[int, str],
     bootstrap: Mapping[str, Any],
     plan_root: Path | None,
 ) -> TrialPack:
@@ -372,7 +384,16 @@ def _paper_pack(
         "or the current price if it has fallen.\n"
         "Captain and vice must be two different players in the starting eleven. "
         "transfers_in and transfers_out must be exactly the players who join and leave.\n\n"
-        "## Owned fifteen\n"
+        + deadline_brief(
+            gw=int(start.gw),
+            deadline_utc=entry_pack.deadline_utc,
+            bank=int(start.bank),
+            ft=int(start.ft_before),
+            chips_played=dict(start.chips_played),
+        )
+        + "\n"
+        + club_calendar(fixtures, short, int(start.gw))
+        + "\n## Owned fifteen\n"
         + "\n".join(slot_lines)
         + "\n\n## Market\n"
         + roster_markdown(

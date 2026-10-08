@@ -12,6 +12,12 @@ No live model was called. The official string ledger was not written. The realis
 
 Gameweek 6 may start from ojaminFC. From Gameweek 7 the start is `data/predictions/2026-27/string_plans/gw06.json`. If that file is missing, preparation stops. It does not read the live entry. The follow-up context names the paper squad and the intentions, and it refuses `score_xp`, `xp_on_pot`, and `lam_scored`.
 
+## Why the plan stays three weeks
+
+Three weeks is the commitment: successive legal squads at today's prices. A longer chain would throw away a sound imminent week when a later intention failed, and today's prices are the wrong prices for a transfer eight weeks away. The long view is in the dossier, not in extra validated transfers.
+
+Every rolling dossier now states the current gameweek out of 38, the half, and that unused first-half chips expire at the Gameweek 19 deadline. It lists chips already played and chips still available. The fixture calendar runs from this gameweek through Gameweek 19 (through Gameweek 38 in the second half). A club with no match in a scheduled week is `blank`. A week missing from the file is `unknown`. A double lists both matches, with the official difficulty figure when the file has one. The prompt says that calendar is not extra weeks to fill in. On a saved-plan week the chip bank is the paper wallet. The differential screen plays no chip and sees the same calendar. Gemini accepted this split ([string horizon](bc-90156d5d-ce87-56ee-b772-011f4d43dbd0)).
+
 ## Deadline commands
 
 Save a drafted JSON without touching the official ledger:
@@ -28,4 +34,4 @@ The numeric lock is unchanged: on the Mac, inside the T−1h window, capture `sl
 
 ## Tests
 
-`python3 -m unittest tests.test_str_agent_horizon tests.test_str_agent tests.test_str_agent_carry tests.test_str_agent_trial` — 44 tests, all passed. One fixture was corrected: selling the second goalkeeper is a quota failure, so the wildcard successor keeps both goalkeepers. The hit check is unchanged (0, then 4).
+`python3 -m unittest tests.test_str_agent_dossier tests.test_str_agent_horizon tests.test_str_agent tests.test_str_agent_carry tests.test_str_agent_trial tests.test_news_dry_run` — 55 tests, all passed. One fixture was corrected: selling the second goalkeeper is a quota failure, so the wildcard successor keeps both goalkeepers. The hit check is unchanged (0, then 4). The calendar tests keep a blank, an unknown week, and a double distinct.
