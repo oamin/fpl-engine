@@ -130,6 +130,27 @@ def make_packet_id(source: str, gw: int, headline: str) -> str:
     return f"{source}:gw{int(gw):02d}:{_slug(headline)}"
 
 
+def _reject_placeholder_url(url: str, *, source: str) -> None:
+    """Refuse invented demo links. ``fpl:bootstrap`` is the only non-http URL.
+
+    A path or host containing ``example`` is not a dated article. The GW6
+    Haaland file used one of these and quoted Pep Guardiola after he had
+    left Manchester City (Enzo Maresca appointed 29 June 2026).
+    """
+    if source == "fpl_bootstrap":
+        if url != "fpl:bootstrap":
+            raise PacketError("fpl_bootstrap packets must use url fpl:bootstrap")
+        return
+    lowered = url.lower()
+    if not lowered.startswith(("http://", "https://")):
+        raise PacketError("url must be http(s) for a non-FPL source")
+    if "example" in lowered or "localhost" in lowered:
+        raise PacketError(
+            "placeholder url is not admissible provenance "
+            "(host or path contains 'example' or 'localhost')"
+        )
+
+
 def validate_packet(
     raw: Mapping[str, Any],
     *,
@@ -152,6 +173,7 @@ def validate_packet(
     url = str(raw.get("url") or "").strip()
     if not headline and not body:
         raise PacketError("headline or body is required")
+    _reject_placeholder_url(url, source=source)
     player_ids = tuple(int(pid) for pid in (raw.get("player_ids") or ()))
     club = raw.get("club")
     club_s = None if club is None or str(club).strip() == "" else str(club)

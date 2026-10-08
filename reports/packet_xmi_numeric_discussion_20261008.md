@@ -29,7 +29,7 @@ See the live demo for Saliba / van Ewijk / Haaland:
 - `reports/packet_xmi_compile_demo_20261008.md` — markdown the compile sees
 - `reports/packet_xmi_compiled_tags_20261008.json` — numeric rows
 
-Note: Saliba’s FPL `news_added` shares a bulk timestamp with 29 other players, so the synthetic FPL loader drops it. Curated `arsenal_fc` packet is what supplies his evidence — that is the point of audited packets.
+The three hand-written GW6 packets (`*-example` URLs) are withdrawn. The Haaland file quoted Pep Guardiola on 2026-10-08; he left City in May 2026 and Enzo Maresca was appointed on 29 June 2026. The loader now rejects a URL whose host or path contains `example`. Saliba’s FPL `news_added` still shares a bulk timestamp, so with no real club note he stays `ask` and no `xmi` is written. van Ewijk keeps the synthetic FPL line only (chance 75 → 67.5).
 
 ## Live CSV
 

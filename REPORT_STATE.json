@@ -1,7 +1,7 @@
 {
   "milestone": "packet-xmi-demo-and-str-agent-scaffold",
   "status": "demo_ok_scaffold_landed",
-  "summary": "Packet→xmi via news_tags minutes_for_tag; high-profile demo Saliba 0 / van Ewijk 67.5 / Haaland 90. str_agent has validator, freeze, extractor, runner (repair loop). Live xmi CSV not overwritten.",
+  "summary": "Packet→xmi sidecar. Withdrew the Guardiola Haaland demo and the other two example-URL packets; placeholder URLs now fail validation. Recompile: Saliba ask, van Ewijk 67.5 from FPL only, Haaland ask. Live xmi CSV not overwritten.",
   "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
     "reports/packet_xmi_compile_demo_20261008.md",

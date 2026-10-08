@@ -7,6 +7,9 @@ Required keys: `packet_id`, `source` (whitelist), `url`, `published_at_utc`,
 
 `published_at_utc` must be **strictly before** the gameweek deadline.
 Forums and unlisted blogs are rejected.
+The URL must be a real `http(s)` article. A host or path containing
+`example` (or `localhost`) is rejected. `fpl:bootstrap` is allowed only
+on synthetic FPL packets. Do not hand-write a presser quote.
 
 Validate:
 

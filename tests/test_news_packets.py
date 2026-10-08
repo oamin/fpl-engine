@@ -14,7 +14,7 @@ def _packet(**overrides: object) -> dict:
     base = {
         "packet_id": "bbc_sport:gw06:test-hamstring",
         "source": "bbc_sport",
-        "url": "https://www.bbc.com/sport/example",
+        "url": "https://www.bbc.com/sport/football/articles/van-ewijk-hamstring",
         "published_at_utc": "2026-10-09T12:00:00Z",
         "club": "Coventry City",
         "player_ids": [175],
@@ -51,6 +51,12 @@ class NewsPackets(unittest.TestCase):
         raw = _packet(published_at_utc="2026-10-10T11:00:00Z")
         with self.assertRaises(np.LeakageError):
             np.validate_packet(raw, deadline_utc="2026-10-10T10:00:00Z")
+
+    def test_rejects_placeholder_url(self) -> None:
+        raw = _packet(url="https://www.mancity.com/news/haaland-presser-example")
+        with self.assertRaises(np.PacketError) as caught:
+            np.validate_packet(raw, deadline_utc="2026-10-10T10:00:00Z")
+        self.assertIn("placeholder", str(caught.exception))
 
     def test_rejects_unwhitelisted_source(self) -> None:
         raw = _packet(source="random_blog", packet_id="random_blog:gw06:x")

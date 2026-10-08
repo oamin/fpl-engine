@@ -2,6 +2,15 @@
 
 Deterministic SUPPORT phrases → `news_tags.minutes_for_tag`. Does **not** overwrite `data/live/xmi_gw6.csv`.
 
+## Provenance withdrawal (2026-10-08)
+
+Three hand-written packets used `*-example` URLs and invented copy. They are deleted and the loader now rejects that URL shape.
+
+- `mancity_fc:gw06:guardiola-on-haaland` quoted Pep Guardiola confirming Haaland would start, with `published_at_utc` 2026-10-08. Guardiola left Manchester City in May 2026. Enzo Maresca was appointed on 29 June 2026. The note was not a scraped article; it was a demo sentence stamped as this week. It does not enter `xmi`.
+- `arsenal_fc:gw06:saliba-injury-update` and `bbc_sport:gw06:van-ewijk-remains-a-doubt` were the same class (example URLs, no article). Withdrawn with it.
+
+No replacement quote is invented. Haaland has no admissible packet, so the compile returns `ask` and writes no minutes.
+
 ## Context the compile sees
 
 ### Player: Saliba (id 6)
@@ -11,9 +20,7 @@ Deterministic SUPPORT phrases → `news_tags.minutes_for_tag`. Does **not** over
 - FPL news: Back injury - Unknown return date
 
 #### Audited packets (pre-deadline)
-- **[arsenal_fc:gw06:saliba-injury-update]** *arsenal_fc* (2026-10-08T14:00:00Z)
-  > Saliba injury update
-  > William Saliba remains out with a back injury and is suspended from contention until a further assessment. The club says the injury is ongoing.
+- (none)
 
 ### Player: van Ewijk (id 175)
 - Club: Coventry City | Position: DEF
@@ -25,9 +32,6 @@ Deterministic SUPPORT phrases → `news_tags.minutes_for_tag`. Does **not** over
 - **[fpl_bootstrap:gw06:175-hamstring-injury-75-chance-of]** *fpl_bootstrap* (2026-09-19T16:00:09.486751Z)
   > van Ewijk: Hamstring injury - 75% chance of playing
   > status d. chance 75. club Coventry City.
-- **[bbc_sport:gw06:van-ewijk-remains-a-doubt]** *bbc_sport* (2026-10-08T16:00:00Z)
-  > van Ewijk remains a doubt
-  > Coventry defender Milan van Ewijk remains a doubt for Saturday with a hamstring knock after feeling tightness in training.
 
 ### Player: Haaland (id 411)
 - Club: Man City | Position: FWD
@@ -36,14 +40,12 @@ Deterministic SUPPORT phrases → `news_tags.minutes_for_tag`. Does **not** over
 - FPL news: (none)
 
 #### Audited packets (pre-deadline)
-- **[mancity_fc:gw06:guardiola-on-haaland]** *mancity_fc* (2026-10-08T15:30:00Z)
-  > Guardiola on Haaland
-  > Pep Guardiola confirmed Erling Haaland will start and is first choice up front. Haaland trained fully and is named in the team plans for the weekend.
+- (none)
 
 ## Compiled rows
 
 | Player | Tag | Prior | Chance | xmi |
 | --- | --- | ---: | ---: | ---: |
-| Saliba | injured | None | 0.0 | 0.0 |
+| Saliba | ask | none | 0.0 | no write |
 | van Ewijk | injured | 90.0 | 75.0 | 67.5 |
-| Haaland | firm_starter | 90.0 | None | 90.0 |
+| Haaland | ask | 90.0 | blank | no write |
