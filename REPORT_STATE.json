@@ -1,11 +1,13 @@
 {
-  "milestone": "betfair-live-lines-pull",
-  "status": "blocked_geo_us_vm",
-  "summary": "Pure Betfair MATCH_ODDS+OU2.5 live path coded and tested (19 passed). Pull into data/predictions/.../betfair_20261008 failed with betfair_geo_blocked HTTP 403 because this run used a US cloud VM (usePrivateWorker=false). MacBook worker fa332b94-0afc-56cb-a773-b70179980541 was idle/eligible. Re-dispatch there; .env has app key + session token; no username/password for SSO.",
+  "milestone": "betfair-pure-live-lines",
+  "status": "code_ready_geo_blocked",
+  "summary": "Session token stored in gitignored .env. Live refresh_lines is pure Betfair MATCH_ODDS+OU2.5 (Odds API/ESPN removed). Gemini tiered liquidity + simplex mids. Pull from this US cloud IP returns HTTP 403; run python3 -m src.live.betfair_lines on the MacBook worker.",
   "gemini": "bc-e75c8209-ffd3-590a-b610-d0e34e62bbee",
   "artifacts": [
-    "src/live/lines.py",
     "src/live/betfair.py",
+    "src/live/betfair_lines.py",
+    "src/live/lines.py",
+    "reports/betfair_overlay_20261008.md",
     "reports/betfair_lines_20261008.md"
   ]
 }
