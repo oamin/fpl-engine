@@ -1,0 +1,21 @@
+Date,HomeTeam,AwayTeam,AvgH,AvgD,AvgA,Avg>2.5,Avg<2.5,source,books,gw
+10/10/2026,Arsenal,Leeds,1.3677,4.9892,8.1298,1.7635,2.0413,odds_api,48,6
+10/10/2026,Aston Villa,Brentford,2.6162,3.5292,2.5638,1.674,2.168,odds_api,48,6
+10/10/2026,Chelsea,Bournemouth,1.699,4.1306,4.4583,1.4833,2.56,odds_api,48,6
+10/10/2026,Ipswich Town,Fulham,2.776,3.5065,2.4375,1.7357,2.0709,odds_api,48,6
+10/10/2026,Sunderland,Brighton,2.996,3.4783,2.3048,1.79,2.0042,odds_api,48,6
+10/10/2026,Man Utd,Spurs,1.6906,4.1921,4.4354,1.4833,2.5433,odds_api,48,6
+11/10/2026,Crystal Palace,Nott'm Forest,2.6477,3.2969,2.6621,1.964,1.8268,odds_api,48,6
+11/10/2026,Hull City,Everton,3.6487,3.4125,2.04,1.9796,1.8124,odds_api,48,6
+11/10/2026,Liverpool,Man City,2.609,3.6746,2.4917,1.5731,2.3331,odds_api,48,6
+12/10/2026,Coventry City,Newcastle,3.3147,3.6034,2.0972,1.667,2.175,odds_api,47,6
+17/10/2026,Everton,Chelsea,2.8136,3.6744,2.2908,1.6231,2.2481,odds_api,36,7
+17/10/2026,Brentford,Liverpool,2.7114,3.6697,2.3678,1.55,2.4233,odds_api,36,7
+17/10/2026,Fulham,Hull City,1.6675,3.9497,4.7464,1.6875,2.1387,odds_api,36,7
+17/10/2026,Man City,Ipswich Town,1.2126,6.6451,11.2669,1.3767,3.01,odds_api,35,7
+17/10/2026,Newcastle,Aston Villa,2.0736,3.7461,3.1756,1.5913,2.3073,odds_api,36,7
+18/10/2026,Bournemouth,Sunderland,1.9819,3.5608,3.5808,1.8,1.9782,odds_api,36,7
+18/10/2026,Brighton,Crystal Palace,1.6111,4.1775,4.8947,1.5673,2.3533,odds_api,36,7
+18/10/2026,Leeds,Man Utd,2.8161,3.635,2.3039,1.6313,2.228,odds_api,36,7
+18/10/2026,Nott'm Forest,Arsenal,5.3778,3.7256,1.5753,1.8565,1.9124,odds_api,36,7
+19/10/2026,Spurs,Coventry City,1.4871,4.5068,5.9365,1.5677,2.3577,odds_api,34,7

@@ -172,7 +172,7 @@ class TrialRequestTest(unittest.TestCase):
             text = raw.read_text(encoding="utf-8")
         client.close()
         self.assertEqual(len(seen), 1)
-        self.assertEqual(seen[0].params["regions"], "us")
+        self.assertEqual(seen[0].params["regions"], "uk,eu,us")
         self.assertEqual(seen[0].params["markets"], "h2h,totals")
         self.assertEqual(seen[0].params["oddsFormat"], "decimal")
         self.assertNotIn(key, text)

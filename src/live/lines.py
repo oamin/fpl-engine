@@ -1,9 +1,13 @@
 """Live 1X2 and 2.5 totals for the deadline.
 
-One Odds API request, and only when a key is set: EPL, region ``us``,
-markets ``h2h`` and ``totals``. ESPN's current moneyline fills a fixture
-the trial does not price. A total other than 2.5 is left blank. The
-historical football-data file is not modified.
+One Odds API request, and only when a key is set: EPL, markets ``h2h`` and
+``totals``. Regions are ``uk``, ``eu``, and ``us``. The featured odds
+endpoint bills markets times regions, so this request is 6 credits, and it
+returns every fixture those books have already posted. ``us2`` is omitted:
+it repeats US books. ESPN's current moneyline fills a fixture the trial
+does not price, for every scheduled week, not only the next two. A total
+other than 2.5 is left blank. The historical football-data file is not
+modified.
 """
 
 from __future__ import annotations
@@ -26,6 +30,9 @@ TRIAL_RAW = LIVE_DIR / "odds_api_trial.json"
 TRIAL_META = LIVE_DIR / "odds_api_meta.json"
 ODDS_URL = "https://api.the-odds-api.com/v4/sports/soccer_epl/odds"
 ESPN_URL = "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard"
+# 2 markets x 3 regions = 6 credits on the featured odds endpoint.
+REGIONS = "uk,eu,us"
+MARKETS = "h2h,totals"
 
 COLUMNS = (
     "Date",
@@ -127,7 +134,7 @@ def scheduled_fixtures(
 
 
 def quote_from_odds_event(event: Mapping[str, Any]) -> dict[str, Any] | None:
-    """Mean decimal 1X2 across US books. The 2.5 total only, both sides."""
+    """Mean decimal 1X2 across the returned books. The 2.5 total only."""
     home = str(event.get("home_team") or "")
     away = str(event.get("away_team") or "")
     commence = str(event.get("commence_time") or "")
@@ -277,8 +284,8 @@ def fetch_odds_api(
     """One slate request. A non-200 response is not retried."""
     params = {
         "apiKey": key,
-        "regions": "us",
-        "markets": "h2h,totals",
+        "regions": REGIONS,
+        "markets": MARKETS,
         "oddsFormat": "decimal",
     }
     own = client is None
@@ -296,6 +303,8 @@ def fetch_odds_api(
                 "last": "",
                 "used": "",
                 "n_events": 0,
+                "regions": REGIONS,
+                "markets": MARKETS,
             }
     finally:
         if own:
@@ -309,6 +318,8 @@ def fetch_odds_api(
         "last": response.headers.get("x-requests-last", ""),
         "used": response.headers.get("x-requests-used", ""),
         "n_events": 0,
+        "regions": REGIONS,
+        "markets": MARKETS,
     }
     if response.status_code != 200:
         return [], meta
@@ -379,10 +390,16 @@ def refresh_lines(
             "last": "",
             "used": "",
             "n_events": 0,
+            "regions": REGIONS,
+            "markets": MARKETS,
         }
     odds_quotes = [quote for event in payload if (quote := quote_from_odds_event(event))]
-    espn_dates = [row["day"] for row in schedule if int(row["gw"]) in {6, 7}]
-    espn_events = fetch_espn(espn_dates, client=espn_client) if espn_dates else []
+    espn_dates = [str(row["day"]) for row in schedule]
+    try:
+        espn_events = fetch_espn(espn_dates, client=espn_client) if espn_dates else []
+    except httpx.HTTPError as exc:
+        espn_events = []
+        meta["espn"] = str(exc)
     espn_quotes = [quote for event in espn_events if (quote := quote_from_espn_event(event))]
     rows = assemble(schedule, odds_quotes, espn_quotes)
     write_lines(rows, lines_path)

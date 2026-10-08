@@ -1,0 +1,12 @@
+{
+  "sent": true,
+  "ok": true,
+  "reason": "sent",
+  "detail": "",
+  "remaining": "492",
+  "last": "6",
+  "used": "8",
+  "n_events": 20,
+  "regions": "uk,eu,us",
+  "markets": "h2h,totals"
+}

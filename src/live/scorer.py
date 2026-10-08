@@ -230,12 +230,14 @@ def priced_gameweeks(
     names: Mapping[int, str],
     start: int,
     end: int,
-    limit: int = 3,
+    limit: int | None = 3,
 ) -> list[int]:
-    """Club weeks with a 1X2 for every side, in order, at most ``limit``.
+    """Club weeks with a 1X2 for every side, in order.
 
     A week with no clubs is skipped. The walk stops at the first club week
     that is missing a 1X2. A later priced week is not used in its place.
+    ``limit`` caps how many priced weeks are kept. ``None`` keeps every
+    consecutive priced week.
     """
     found: list[int] = []
     for gw in range(int(start), int(end) + 1):
@@ -245,7 +247,7 @@ def priced_gameweeks(
         if any((gw, club) not in pots for club in clubs):
             break
         found.append(gw)
-        if len(found) >= int(limit):
+        if limit is not None and len(found) >= int(limit):
             break
     return found
 
@@ -545,6 +547,7 @@ def price_half(
     minutes: Mapping[str, float],
     played: Mapping[int, str] | None = None,
     choice: Mapping[str, float] | None = None,
+    week_limit: int | None = 3,
 ) -> ScorerResult:
     """Price the half from the opening line and call ``plan_half`` once.
 
@@ -557,7 +560,7 @@ def price_half(
     pool = build_pool(roster, shares, minutes, set(state.ids()))
     pots = opening_pots_by_team_gw(odds, list(fixtures), names)
     end = half_end(int(gw))
-    line_weeks = priced_gameweeks(fixtures, pots, names, int(gw), end, limit=3)
+    line_weeks = priced_gameweeks(fixtures, pots, names, int(gw), end, limit=week_limit)
     if not line_weeks or int(line_weeks[0]) != int(gw):
         raise ScorerError(f"GW{int(gw)} is not fully priced")
     line_scores = score_steps(pool, pots, line_weeks)
