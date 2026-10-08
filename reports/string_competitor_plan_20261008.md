@@ -11,7 +11,7 @@ Almost entirely string/context based. Free to evolve prompts, narrative risk pos
 1. Emit a legal 15 / XI / C / VC / bench (quotas, ≤3 per club, budget, formation).
 2. `frozen_at_utc < deadline_utc` in `string_agent_freeze.jsonl`.
 3. Same bar as the numeric path: GW6–25, first formal read GW26.
-4. No post-deadline context in the prompt (packets pass the same leakage gate).
+4. No post-deadline context in the prompt. Press packets stay on the whitelist. Forums, YouTube, and other outlets are allowed in the string dossier (`string_sources/`) and stay out of `xmi`.
 
 ## Loose (encouraged to evolve)
 
@@ -44,6 +44,7 @@ data/predictions/2026-27/string_agent_freeze.jsonl
 2. ~~Wire `extractor` to `news_packets.load_gameweek_packets` + entry state.~~ Done (markdown context).
 3. ~~Runner with one model; illegal drafts re-prompted ≤N times then fail closed.~~ `runner.run_once` landed; inject `call_model` for a live LLM.
 4. Move accounting (`src/str_agent/carry.py`). A draft must be the carried squad plus a declared set of transfers. Free Hit reverts the next squad, bank, and purchase prices. Official `string_agent_freeze.jsonl` stays closed. Done 2026-10-08. See `reports/string_agent_carry_20261008.md`.
+4b. Open outlets. `src/str_agent/sources.py` accepts `press`, `forum`, `youtube`, and `other` before the deadline. The minutes compile does not read that folder. Done 2026-10-08. See `reports/string_agent_sources_20261008.md`.
 5. Each deadline: commit freeze beside numeric `week_freeze` row. Still closed. The hold dry-run does not write it.
 6. GW26: compare realised Σ vs numeric engine and vs 1FT on the shared bar.
 

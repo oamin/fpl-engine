@@ -1,11 +1,10 @@
 {
-  "milestone": "string-agent-carry",
-  "status": "move_accounting_landed_ledger_closed",
-  "summary": "A string-agent draft must match the carried squad plus declared transfers. Free Hit reverts the next squad, bank, and purchase prices. ojaminFC GW6 hold is legal (bank 15, 0 hits, next FT bank 2). Official string ledger not written.",
+  "milestone": "string-agent-open-outlets",
+  "status": "sources_open_xmi_unchanged",
+  "summary": "Forums, YouTube, and other outlets can be filed as string sources before the deadline and are quoted in the dossier. The press whitelist and xmi compile do not read that folder. No live crawl. Official string ledger still closed.",
   "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
-    "src/str_agent/carry.py",
-    "reports/string_agent_carry_20261008.md",
-    "reports/string_competitor_plan_20261008.md"
+    "src/str_agent/sources.py",
+    "reports/string_agent_sources_20261008.md"
   ]
 }
