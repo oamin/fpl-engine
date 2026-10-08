@@ -1,11 +1,10 @@
 {
   "updated": "2026-10-08",
-  "milestone": "gw6-score-xp-plan",
-  "status": "priced-weeks-only",
-  "summary": "The capture workflow stays. One Odds API request used regions uk,eu,us and markets h2h,totals, costing 6 credits, with 492 remaining. Twenty events came back, all kicking off by 19 October 2026, so only Gameweeks 6 and 7 are priced. On score_xp with the minutes file and current availability, the two-week XI sums are hold 114.99, one free transfer 119.36 (van Ewijk to Hall), and a Gameweek 6 wildcard rebuild 132.58. The wildcard lead over the free transfer is 13.22 across those two weeks, and that rebuild sells Haaland on the Gameweek 6 score of 4.80. Gameweek 8 onward is unknown. This is not a chip-rule result.",
+  "milestone": "gw6-anytime-goals",
+  "status": "trial",
+  "summary": "Ten US anytime-goalscorer requests cost 10 credits, 481 remaining. The book rate is minutes-scaled and capped by the match line. Haaland stays at 0.58 goals and 4.80 points. The free transfer stays van Ewijk to Hall. The wildcard lead over that transfer falls from 13.22 to 5.29 across Gameweeks 6 and 7, and the rebuild still sells Haaland. The Odds API has no Premier League ranking market, so Gameweek 8 onward stays unknown. This is not a chip rule.",
   "artifacts": [
-    "reports/gw6_plan_20261008.md",
-    "data/predictions/2026-27/gw06/live_20261008/gw_lines.csv",
-    "data/predictions/2026-27/gw06/live_20261008/odds_api_meta.json"
+    "reports/gw6_player_odds.md",
+    "data/predictions/2026-27/gw06/live_20261008/player_goals_gw6.json"
   ]
 }

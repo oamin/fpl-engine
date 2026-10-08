@@ -18,6 +18,10 @@ The greedy-minus-hold figure of +7.36 is not a transfer edge to build on. The sa
 
 Pull requests 1, 6–32, 33–37, and 39–56 are closed. The counts in them are not extended. Gameweeks 1–5 of the 2026/27 player file are immutable snapshots. The old single hash of the growing cache is retired and still matches that file. Do not replace a snapshot that already exists.
 
+## Look-ahead from two priced weeks, parked 2026-10-08
+
+Carrying each club's Gameweek 6 and 7 expected-goals rate through the later fixtures was reviewed and dropped. Two matches are not a season ranking, and the Odds API sports list has no Premier League winner, top-four, or relegation market. Unpriced weeks stay unknown.
+
 ## Gameweek 6 submission, locked 2026-10-07
 
 The decision file is `slot_t1.json`. A missing T−1h file does not fall back to the T−24h capture. The 7 October files are dry runs, including the same-stamp pair at 22:09 UTC. The XI and the captain come from that file's `ep_next`. An injury flag is the minutes file, and a written zero stays zero. A manual override is a log entry naming the player, the value, and the reason. None is recorded on the dry run. See `reports/live_dry_run_gw6.md`.
