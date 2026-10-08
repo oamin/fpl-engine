@@ -1,10 +1,9 @@
 {
-  "milestone": "forecast-horizon-outrights",
-  "status": "reviewed",
-  "summary": "Gemini KEEP H=3 past liquid MATCH_ODDS; DROP hope of GW8+ Exchange liquidity; KEEP κ=0.5 outrights for unpriced weeks. Missing outright club defaults to E[rank]=18.5. Published H not widened.",
+  "milestone": "gw6-milp-worth",
+  "status": "drop_now",
+  "summary": "Gemini DROP a fresh GW6 MILP now: 114 lead will not flip; wait for T-1h on Mac with presser minutes and Betfair folder. No plan_half multi-period MILP.",
   "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
-    "src/live/betfair_props.py",
-    "reports/forecast_horizon_outrights_20261008.md"
+    "reports/gw6_milp_worth_20261008.md"
   ]
 }
