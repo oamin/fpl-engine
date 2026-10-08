@@ -1,25 +1,29 @@
-# Betfair exchange overlay (diagnostic + live ingest)
+# Betfair odds → score_xp and forecast_xp
 
-Session token and app key are in gitignored `.env` (never printed).
+Gemini (bc-e75c8209): KEEP MATCH_ODDS + OVER_UNDER_25 as the live pot; CHANGE TO_SCORE into imminent-week score_xp under the team-λ cap; CHANGE season outrights into shrunk strength priors for unpriced forecast_xp weeks; DROP First Goalscorer, BTTS (diagnostic only), Correct Score, and Half-Time from player scoring.
 
-Gemini (bc-e75c8209): **CHANGE** the live pot ingest to pure Betfair `MATCH_ODDS` and `OVER_UNDER_25` using simplex-normalised mid probabilities with tiered liquidity shrinkage; **KEEP** anytime-goalscorer as a live-only overlay with the team-λ cap; **KEEP** clean sheet and BTTS diagnostic only; **DROP** Odds API fallbacks, player assists, and outright ratings from the active decision plan.
+## Rename
 
-## Live path
+Look-ahead lives in `src/models/forecast_xp.py`. Primary names: `compute_player_forecast`, `make_forecast_steps`, `attach_forecast_xp`. `src/models/open_horizon.py` re-exports the old names.
 
-`src/live/lines.refresh_lines` is Betfair-only. Fair decimals are `1/p` after simplex, so `side_pot`'s Shin step is the identity on fair books. Tiered liquidity:
+## Storage (valuable markets)
 
-- Tier 1: matched ≥ £25k and relative spread ≤ 0.10 → pure mid
-- Tier 2: £5k–£25k → shrink toward (0.40, 0.27, 0.33)
-- Tier 3: thinner / wider → neutral pot, tagged
+| Artifact | Role |
+| --- | --- |
+| `gw_lines.csv` | MATCH_ODDS + OU 2.5 → pot for score_xp / forecast_xp |
+| `betfair_to_score.json` | Anytime goalscorer → imminent score_xp goals |
+| `outrights_ranks.json` | Winner / top 6 / relegation → unpriced forecast_xp pots |
+| `diagnostics_btts_cs.json` | BTTS diagnostic only |
+| `data/scratch/betfair/*` | Raw books (gitignored) |
 
-Command (run from an allowed geo — not a US cloud VM):
+## Use
+
+`price_half(..., artifacts_dir=...)` loads the derived JSON beside the lines file. Imminent week: TO_SCORE rates replace `share_xG × λ` when matched. Unpriced later weeks: outright strength pots at κ=0.5 shrinkage; else copy the last priced step.
+
+## Pull
 
 ```bash
 python3 -m src.live.betfair_lines --out data/predictions/2026-27/gw06/betfair_20261008
 ```
 
-Frozen `data/live/gw_lines.csv` is not overwritten.
-
-## Pull status (this environment)
-
-Blocked: Betfair geo HTTP 403 from the US cloud egress. MacBook worker `fa332b94-0afc-56cb-a773-b70179980541` was connected and eligible; Task placement could not force that worker from this run. Re-run `python3 -m src.live.betfair_lines` on the MacBook (or any allowed IP) with the same `.env` keys.
+Must run from an allowed geo (US cloud gets HTTP 403). Historical `compute_xp` / published `score_xp` on closed seasons are unchanged.

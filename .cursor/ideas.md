@@ -282,3 +282,6 @@ Scheduled minutes already counted every missed club week as zero and was parked.
 ## Betfair exchange, parked as decision input 2026-10-08
 
 Gemini: DROP outright-derived ratings from the active decision horizon; keep unpriced weeks unknown. Match and goalscorer overlays need two-sided liquidity and simplex normalisation before shadow diagnostics. Assists DROP (thin books, FPL assist definition differs). BTTS and team clean sheet are diagnostics only. Raw books under `data/scratch/betfair/` stay gitignored.
+## Betfair markets in score_xp / forecast_xp, locked 2026-10-08
+
+Gemini: KEEP MATCH_ODDS+OU2.5; CHANGE TO_SCORE into imminent score_xp; CHANGE outrights into shrunk forecast_xp priors; DROP FGS, BTTS (diag), correct score, half-time from player scoring. Assists stay dropped.

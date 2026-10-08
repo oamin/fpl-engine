@@ -25,7 +25,7 @@ from src.live.half_plan import HalfPlan, WeekInputs, bench_week, half_end, plan_
 from src.live.lines import LINES_PATH, TRIAL_META
 from src.live.plan import live_xi
 from src.live.policy import FH_MARGIN, WC_MARGIN
-from src.models.open_horizon import opening_pots_by_team_gw
+from src.models.forecast_xp import opening_pots_by_team_gw
 from src.models.season_climb_ft import SquadState
 from src.rules.fpl_2026 import FREE_TRANSFER_CHIPS, sell_price, squad_legal, xi_legal
 from src.teams import norm_team

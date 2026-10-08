@@ -36,7 +36,7 @@ from src.live.scorer import (
     score_steps,
     scores_for_horizon,
 )
-from src.models.open_horizon import side_pot, xp_on_pot
+from src.models.forecast_xp import side_pot, xp_on_pot
 from src.models.season_climb_ft import SquadState
 from src.models.xp_engine import compute_xp
 

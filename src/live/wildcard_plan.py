@@ -35,7 +35,7 @@ from src.live.deadline import (
 )
 from src.live.fpl_snapshot import ELEMENT
 from src.live.scorer import ScorerError, load_ep_next
-from src.models.open_horizon import opening_pots_by_team_gw
+from src.models.forecast_xp import opening_pots_by_team_gw
 from src.models.season_climb import pick_xi
 from src.models.season_climb_ft import GAMMA
 from src.rules.fpl_2026 import (

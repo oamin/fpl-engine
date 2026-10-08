@@ -1,7 +1,13 @@
-"""Refresh live gw_lines from Betfair Exchange into a predictions folder.
+"""Refresh live gw_lines and valuable Betfair props into a predictions folder.
 
-Does not overwrite the frozen ``data/live/`` holdout files. Run this from an
-IP Betfair allows (UK / non-restricted). US cloud VMs receive HTTP 403.
+Does not overwrite the frozen ``data/live/`` holdout files. Run from an IP
+Betfair allows (UK / non-restricted). US cloud VMs receive HTTP 403.
+
+Stores and derives:
+- ``gw_lines.csv`` — MATCH_ODDS + OVER_UNDER_25 (Asian 2.5 fallback inside fetch)
+- ``betfair_to_score.json`` — anytime goalscorer for imminent ``score_xp``
+- ``outrights_ranks.json`` — strength prior for unpriced ``forecast_xp`` weeks
+- ``diagnostics_btts_cs.json`` — BTTS diagnostic only
 
 Usage::
 
@@ -15,6 +21,12 @@ import argparse
 from datetime import datetime, timezone
 from pathlib import Path
 
+from src.live.betfair import BetfairClient, load_secret
+from src.live.betfair_props import (
+    fetch_btts_diagnostics,
+    fetch_outrights,
+    fetch_to_score,
+)
 from src.live.fpl_snapshot import load, refresh
 from src.live.lines import refresh_lines
 
@@ -35,7 +47,7 @@ def main(argv: list[str] | None = None) -> int:
         "--out",
         type=Path,
         default=DEFAULT_OUT,
-        help="Directory for bootstrap, fixtures, gw_lines, and Betfair meta",
+        help="Directory for bootstrap, fixtures, gw_lines, and Betfair artifacts",
     )
     args = parser.parse_args(argv)
     out: Path = args.out
@@ -57,6 +69,20 @@ def main(argv: list[str] | None = None) -> int:
     )
     if not meta.get("ok"):
         return 2
+
+    client = BetfairClient(
+        app_key=load_secret("BETFAIR_APP_KEY"),
+        session=load_secret("BETFAIR_SESSION_TOKEN") or None,
+    )
+    try:
+        to_score = fetch_to_score(client, out_dir=out)
+        outrights = fetch_outrights(client, out_dir=out)
+        btts = fetch_btts_diagnostics(client, out_dir=out)
+    finally:
+        client.close()
+    print(
+        f"to_score={len(to_score)} outrights={len(outrights)} btts_diag={len(btts)}"
+    )
     return 0
 
 
