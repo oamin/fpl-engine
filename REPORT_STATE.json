@@ -1,10 +1,11 @@
 {
-  "milestone": "string-rolling-horizon",
-  "status": "ready_to_freeze",
-  "summary": "The string plan stays three validated weeks. The dossier now shows the current gameweek, the chip bank, and the fixture calendar through the end of the half, so a longer strategy does not have to be a longer chain of transfers. Gameweek 7 still continues from the saved plan. No model was called and the realised comparison is not built.",
+  "milestone": "string-horizon-dry-run",
+  "status": "research_only",
+  "summary": "Stragent's first three-week dry run is legal. Gameweek 6 sells Scarlett for Muniz and captains Bruno Fernandes. Gameweek 7 sells Davis for Robinson and captains Haaland. Gameweek 8 holds. No chip, no hits, bank 15 then 6 then 1 tenth. The official ledger and the canonical plan file were not written.",
   "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
-    "reports/string_horizon_20261008.md",
-    "src/str_agent/horizon.py"
+    "reports/string_agent_gw6_horizon_20261008.md",
+    "reports/string_agent_gw6_horizon_decision.json",
+    "reports/string_horizon_dry_run/gw06.json"
   ]
 }

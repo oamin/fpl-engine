@@ -1,0 +1,284 @@
+{
+  "carry": {
+    "bank": 15,
+    "chips_played": {
+      "1": "triple_captain"
+    },
+    "ft_before": 1,
+    "gw": 6,
+    "purchase_prices": {
+      "15": 65,
+      "175": 40,
+      "305": 40,
+      "346": 60,
+      "388": 60,
+      "399": 75,
+      "40": 76,
+      "411": 155,
+      "412": 50,
+      "423": 45,
+      "426": 120,
+      "453": 60,
+      "528": 45,
+      "58": 40,
+      "8": 55
+    },
+    "selling_prices": {},
+    "squad": [
+      "412",
+      "305",
+      "8",
+      "388",
+      "453",
+      "426",
+      "40",
+      "399",
+      "15",
+      "346",
+      "411",
+      "58",
+      "175",
+      "423",
+      "528"
+    ]
+  },
+  "carry_after": {
+    "bank": 6,
+    "chips_played": {
+      "1": "triple_captain"
+    },
+    "ft_before": 1,
+    "gw": 7,
+    "purchase_prices": {
+      "15": 65,
+      "175": 40,
+      "271": 54,
+      "305": 40,
+      "346": 60,
+      "388": 60,
+      "399": 75,
+      "40": 76,
+      "411": 155,
+      "412": 50,
+      "423": 45,
+      "426": 120,
+      "453": 60,
+      "58": 40,
+      "8": 55
+    },
+    "selling_prices": {},
+    "squad": [
+      "412",
+      "58",
+      "8",
+      "305",
+      "388",
+      "423",
+      "175",
+      "453",
+      "426",
+      "40",
+      "399",
+      "15",
+      "346",
+      "411",
+      "271"
+    ]
+  },
+  "context_sha256": "f65326313fc3f226c996c124fabc515a0bf074306e2b152430579f137a6f2633",
+  "deadline_utc": "2026-10-10T10:00:00Z",
+  "decision": {
+    "bench_order": [
+      "423",
+      "346",
+      "175",
+      "58"
+    ],
+    "captain": "426",
+    "chip_played": null,
+    "squad_15": [
+      "412",
+      "58",
+      "8",
+      "305",
+      "388",
+      "423",
+      "175",
+      "453",
+      "426",
+      "40",
+      "399",
+      "15",
+      "346",
+      "411",
+      "271"
+    ],
+    "starting_11": [
+      "412",
+      "8",
+      "305",
+      "388",
+      "453",
+      "426",
+      "40",
+      "399",
+      "15",
+      "411",
+      "271"
+    ],
+    "transfers_in": [
+      "271"
+    ],
+    "transfers_out": [
+      "528"
+    ],
+    "vice_captain": "411"
+  },
+  "frozen_at_utc": "2026-10-08T21:30:00Z",
+  "gw": 6,
+  "horizon": [
+    {
+      "bench_order": [
+        "423",
+        "346",
+        "175",
+        "58"
+      ],
+      "captain": "426",
+      "chip_played": null,
+      "gw": 6,
+      "squad_15": [
+        "412",
+        "58",
+        "8",
+        "305",
+        "388",
+        "423",
+        "175",
+        "453",
+        "426",
+        "40",
+        "399",
+        "15",
+        "346",
+        "411",
+        "271"
+      ],
+      "starting_11": [
+        "412",
+        "8",
+        "305",
+        "388",
+        "453",
+        "426",
+        "40",
+        "399",
+        "15",
+        "411",
+        "271"
+      ],
+      "transfers_in": [
+        "271"
+      ],
+      "transfers_out": [
+        "528"
+      ],
+      "vice_captain": "411"
+    },
+    {
+      "bench_order": [
+        "423",
+        "346",
+        "175",
+        "58"
+      ],
+      "captain": "411",
+      "chip_played": null,
+      "gw": 7,
+      "squad_15": [
+        "412",
+        "58",
+        "8",
+        "254",
+        "388",
+        "423",
+        "175",
+        "453",
+        "426",
+        "40",
+        "399",
+        "15",
+        "346",
+        "411",
+        "271"
+      ],
+      "starting_11": [
+        "412",
+        "8",
+        "254",
+        "388",
+        "453",
+        "426",
+        "40",
+        "399",
+        "15",
+        "411",
+        "271"
+      ],
+      "transfers_in": [
+        "254"
+      ],
+      "transfers_out": [
+        "305"
+      ],
+      "vice_captain": "426"
+    },
+    {
+      "bench_order": [
+        "423",
+        "346",
+        "175",
+        "58"
+      ],
+      "captain": "426",
+      "chip_played": null,
+      "gw": 8,
+      "squad_15": [
+        "412",
+        "58",
+        "8",
+        "254",
+        "388",
+        "423",
+        "175",
+        "453",
+        "426",
+        "40",
+        "399",
+        "15",
+        "346",
+        "411",
+        "271"
+      ],
+      "starting_11": [
+        "412",
+        "8",
+        "254",
+        "388",
+        "453",
+        "426",
+        "40",
+        "399",
+        "15",
+        "411",
+        "271"
+      ],
+      "transfers_in": [],
+      "transfers_out": [],
+      "vice_captain": "411"
+    }
+  ],
+  "model_id": "gemini-3.8-flash",
+  "prompt_sha256": "bf12a926959166176dfa819ed2e3f4107f7210de7b67cdcea752024df3f683b6",
+  "rationale": "Press reports from BBC Sport and the Manchester Evening News confirm Erling Haaland asked to be withdrawn on 67 minutes for Norway with muscle fatigue. While Solbakken downplayed a serious injury and Sports Mole expects him available for Sunday, starting him away at Anfield is reasonable but handing him the armband with a fatigue flag is reckless. Bruno Fernandes is fully fit, on penalty duties, and commands the creative hub at home to Tottenham, making him our Gameweek 6 captain. Meanwhile, Dane Scarlett has permanently departed for Leyton Orient, leaving a completely dead bench asset. With 1.5 in the bank, we move Scarlett to Rodrigo Muniz, who steps directly into the starting eleven for Fulham's prime fixture run (Ipswich away, Hull home, Coventry away). This allows us to bench Dominic Calvert-Lewin against Arsenal's formidable backline. Frank Lampard confirmed Milan van Ewijk returned to training after his hamstring issue, giving us reliable bench depth alongside Luke Shaw. Looking ahead, Gameweek 7 is the ideal Haaland captaincy fixture at home to Ipswich Town, where we use our free transfer to swap Leif Davis (facing City away) for Antonee Robinson (hosting Hull). In Gameweek 8, we roll our transfer with strong home fixtures for Arsenal and Manchester United, banking two free transfers for future fixture swings."
+}
