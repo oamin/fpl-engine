@@ -829,6 +829,16 @@ def collect(
         raise DeadlineError("the decision capture is the T-1h slot")
     entry = json.loads(entry_path.read_text(encoding="utf-8"))
     logs = pd.read_csv(log_path)
+    from src.live.betfair_props import discover_betfair_artifacts
+
+    artifacts = discover_betfair_artifacts(int(gw))
+    if artifacts is not None and (artifacts / "gw_lines.csv").is_file():
+        # Prefer the Betfair slate when a pull has written one.
+        live_path = artifacts / "gw_lines.csv"
+        if trial_path is None or trial_path == TRIAL_META:
+            meta_candidate = artifacts / "betfair_meta.json"
+            if meta_candidate.is_file():
+                trial_path = meta_candidate
     odds = load_odds_frame(odds_path, live_path)
     bootstrap = json.loads(bootstrap_path.read_text(encoding="utf-8"))
     fixtures = json.loads(fixtures_path.read_text(encoding="utf-8"))
@@ -888,6 +898,9 @@ def collect(
             choice = load_ep_next(int(gw), path=Path(decision_file))  # type: ignore[arg-type]
         else:
             choice = load_ep_next(int(gw))
+        from src.live.betfair_props import discover_betfair_artifacts
+
+        artifacts = discover_betfair_artifacts(int(gw))
         scored = price_half(
             gw=int(gw),
             logs=logs,
@@ -898,6 +911,7 @@ def collect(
             minutes=minute_map,
             played={week: chip_name for week, chip_name in played},
             choice=choice,
+            artifacts_dir=artifacts,
         )
         chip = scored.plan.chip
         priced = scored.line_weeks

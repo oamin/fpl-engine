@@ -1,13 +1,12 @@
 {
-  "milestone": "forecast-xp-betfair-props",
-  "status": "code_ready_geo_blocked",
-  "summary": "Renamed open_horizon look-ahead to forecast_xp. Valuable Betfair markets stored (MATCH_ODDS/OU, TO_SCORE, outrights, BTTS diagnostic) and wired into live score_xp (anytime) and forecast_xp (outright strength for unpriced weeks). Pull still needs allowed geo.",
+  "milestone": "betfair-markets-in-scores",
+  "status": "implemented",
+  "summary": "TO_SCORE and outrights now enter live score_xp/forecast_xp via price_half auto-discovery. Callers (deadline, whatif, predictions) prefer Betfair gw_lines when artifacts exist. Name-match dedupe fixed. Tests prove both markets move scores.",
   "gemini": "bc-e75c8209-ffd3-590a-b610-d0e34e62bbee",
   "artifacts": [
-    "src/models/forecast_xp.py",
-    "src/live/betfair_props.py",
-    "src/live/betfair_lines.py",
     "src/live/scorer.py",
-    "reports/betfair_overlay_20261008.md"
+    "src/live/betfair_props.py",
+    "src/live/deadline.py",
+    "tests/test_live_scorer.py"
   ]
 }

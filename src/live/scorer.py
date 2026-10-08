@@ -595,11 +595,16 @@ def price_half(
     if not line_weeks or int(line_weeks[0]) != int(gw):
         raise ScorerError(f"GW{int(gw)} is not fully priced")
 
+    from src.live.betfair_props import discover_betfair_artifacts
+
+    resolved_artifacts = (
+        Path(artifacts_dir) if artifacts_dir is not None else discover_betfair_artifacts(int(gw))
+    )
     goal_rates: dict[str, float] | None = None
     forecast_extra: dict[int, dict[str, float]] | None = None
-    if artifacts_dir is not None:
+    if resolved_artifacts is not None and resolved_artifacts.is_dir():
         goal_rates, forecast_extra = _betfair_score_inputs(
-            artifacts_dir=Path(artifacts_dir),
+            artifacts_dir=resolved_artifacts,
             bootstrap=bootstrap,
             pool=pool,
             pots=pots,

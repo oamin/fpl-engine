@@ -283,6 +283,14 @@ def build(
     played = {
         int(row["gw"]): str(row["chip"]) for row in entry.get("chips_played") or []
     }
+    from src.live.betfair_props import discover_betfair_artifacts
+
+    artifacts = discover_betfair_artifacts(int(gw))
+    if artifacts is not None and (artifacts / "gw_lines.csv").is_file():
+        odds = load_odds_frame(
+            ODDS_PATH if odds_path is None else odds_path,
+            artifacts / "gw_lines.csv",
+        )
     scored = price_half(
         gw=int(gw),
         logs=logs,
@@ -292,6 +300,7 @@ def build(
         state=state,
         minutes=minute_map,
         played=played,
+        artifacts_dir=artifacts,
     )
     line_weeks = tuple(int(week) for week in scored.line_weeks)
     if int(gw) not in line_weeks:

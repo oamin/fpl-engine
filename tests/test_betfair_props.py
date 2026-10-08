@@ -2,7 +2,11 @@
 
 from __future__ import annotations
 
+import os
+import tempfile
 import unittest
+from pathlib import Path
+from unittest import mock
 
 from src.live import betfair_props as bp
 from src.models import forecast_xp as fx
@@ -45,6 +49,16 @@ class Poisson(unittest.TestCase):
         p, mu = bp.poisson_mean([2.0, 2.0])
         self.assertAlmostEqual(p, 0.5)
         self.assertAlmostEqual(mu, -__import__("math").log(0.5))
+
+
+class Discover(unittest.TestCase):
+    def test_env_dir_wins(self) -> None:
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / "betfair_to_score.json").write_text("[]", encoding="utf-8")
+            with mock.patch.dict(os.environ, {"BETFAIR_ARTIFACTS_DIR": str(root)}):
+                found = bp.discover_betfair_artifacts(6)
+            self.assertEqual(found, root)
 
 
 if __name__ == "__main__":

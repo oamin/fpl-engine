@@ -27,3 +27,12 @@ python3 -m src.live.betfair_lines --out data/predictions/2026-27/gw06/betfair_20
 ```
 
 Must run from an allowed geo (US cloud gets HTTP 403). Historical `compute_xp` / published `score_xp` on closed seasons are unchanged.
+
+## Callers (wired 2026-10-08)
+
+`price_half` auto-discovers Betfair artifacts (`discover_betfair_artifacts`) and applies them:
+- imminent week → TO_SCORE rates in `score_xp`
+- unpriced later weeks → outright strength pots in `forecast_xp`
+
+`deadline.collect`, `whatif`, and `eval.predictions` prefer `artifacts/gw_lines.csv` when present and pass `artifacts_dir` into `price_half`.
+

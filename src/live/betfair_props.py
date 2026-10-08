@@ -31,8 +31,48 @@ from src.teams import norm_team
 
 ROOT = Path(__file__).resolve().parents[2]
 SCRATCH = ROOT / "data" / "scratch" / "betfair"
+PREDICTIONS = ROOT / "data" / "predictions" / "2026-27"
+LIVE_DIR = ROOT / "data" / "live"
 MIN_RUNNER_MATCHED = 250.0
 MAX_RUNNER_SPREAD = 0.35
+# Require a Betfair-specific file so a plain historical gw_lines.csv is not
+# mistaken for an Exchange pull (data/live always has a lines file).
+ARTIFACT_MARKERS = (
+    "betfair_to_score.json",
+    "outrights_ranks.json",
+    "betfair_meta.json",
+)
+
+
+def discover_betfair_artifacts(gw: int) -> Path | None:
+    """Newest directory that holds Betfair derived files for this gameweek.
+
+    Order: ``BETFAIR_ARTIFACTS_DIR``, then ``data/predictions/2026-27/gwNN/betfair_*``,
+    then ``data/live`` if it already contains Betfair artifacts.
+    """
+    import os
+
+    forced = os.environ.get("BETFAIR_ARTIFACTS_DIR", "").strip()
+    if forced:
+        path = Path(forced)
+        if path.is_dir() and _has_artifacts(path):
+            return path
+    folder = PREDICTIONS / f"gw{int(gw):02d}"
+    if folder.is_dir():
+        candidates = sorted(
+            [p for p in folder.glob("betfair_*") if p.is_dir() and _has_artifacts(p)],
+            key=lambda p: p.stat().st_mtime,
+            reverse=True,
+        )
+        if candidates:
+            return candidates[0]
+    if _has_artifacts(LIVE_DIR):
+        return LIVE_DIR
+    return None
+
+
+def _has_artifacts(path: Path) -> bool:
+    return any((path / name).is_file() for name in ARTIFACT_MARKERS)
 
 
 def poisson_mean(prices: list[float]) -> tuple[float, float]:
@@ -321,7 +361,7 @@ def match_to_score_runners(
     bootstrap_players: list[Mapping[str, Any]],
 ) -> dict[str, float]:
     """Map FPL player_id → μ_raw from Betfair anytime rows (exact web/full name)."""
-    by_name: dict[str, list[int]] = {}
+    by_name: dict[str, set[int]] = {}
     for player in bootstrap_players:
         pid = int(player["id"])
         for label in (
@@ -332,17 +372,18 @@ def match_to_score_runners(
             key = label.strip().lower()
             if not key:
                 continue
-            by_name.setdefault(key, []).append(pid)
+            by_name.setdefault(key, set()).add(pid)
     out: dict[str, float] = {}
+    matched_vol: dict[str, float] = {}
     for row in rows:
         key = str(row.get("runner") or "").strip().lower()
-        hits = by_name.get(key) or []
+        hits = by_name.get(key) or set()
         if len(hits) != 1:
             continue
-        pid = f"2026-27:{hits[0]}"
-        # Prefer the highest-matched quote if duplicates.
-        prev = out.get(pid)
-        if prev is not None and float(row.get("matched") or 0) < 0:
+        pid = f"2026-27:{next(iter(hits))}"
+        vol = float(row.get("matched") or 0.0)
+        if pid in out and vol < matched_vol.get(pid, 0.0):
             continue
         out[pid] = float(row["mu_raw"])
+        matched_vol[pid] = vol
     return out

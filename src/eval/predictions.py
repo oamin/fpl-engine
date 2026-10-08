@@ -141,7 +141,13 @@ def export_deadline_scores(
     stamp = stamp or datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     entry = json.loads(ENTRY_PATH.read_text(encoding="utf-8"))
     logs = pd.read_csv(LOG_PATH)
-    odds = load_odds_frame(ODDS_PATH, LINES_PATH if LINES_PATH.is_file() else None)
+    from src.live.betfair_props import discover_betfair_artifacts
+
+    artifacts = discover_betfair_artifacts(int(gw))
+    live_lines = LINES_PATH if LINES_PATH.is_file() else None
+    if artifacts is not None and (artifacts / "gw_lines.csv").is_file():
+        live_lines = artifacts / "gw_lines.csv"
+    odds = load_odds_frame(ODDS_PATH, live_lines)
     if bootstrap is None:
         bootstrap = json.loads(BOOTSTRAP_PATH.read_text(encoding="utf-8"))
     fixtures = json.loads(FIXTURES_PATH.read_text(encoding="utf-8"))
@@ -182,6 +188,7 @@ def export_deadline_scores(
         state=state,
         minutes=minute_map,
         played=played,
+        artifacts_dir=artifacts,
     )
     scores = scored.step_scores.get(int(gw))
     if not scores:
