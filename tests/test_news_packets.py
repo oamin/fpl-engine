@@ -76,7 +76,7 @@ class NewsPackets(unittest.TestCase):
             packets=[],
             minutes=[90.0, 0.0, 90.0, 90.0, 45.0],
         )
-        self.assertEqual(row["tag"], "ask")
+        self.assertEqual(row["tag"], "rolling avg")
         self.assertAlmostEqual(float(row["xmi_compiled"]), 75.0)
 
     def test_could_return_is_not_ruled_out(self) -> None:

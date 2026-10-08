@@ -1,7 +1,7 @@
 {
   "milestone": "packet-xmi-demo-and-str-agent-scaffold",
   "status": "demo_ok_scaffold_landed",
-  "summary": "ask now writes the mean of the last 3 gameweeks, zeros included. On ojaminFC that fills the twelve with no packet. Shaw is 57.7 because one of those games is 0. Haaland and van Ewijk stay 45. Live xmi CSV not overwritten.",
+  "summary": "ask remaps to rolling avg (last 3 gameweeks, zeros included). On ojaminFC the twelve with no packet use that label. Shaw is 57.7. Haaland and van Ewijk stay 45. Live xmi CSV not overwritten.",
   "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
     "reports/packet_xmi_compile_demo_20261008.md",

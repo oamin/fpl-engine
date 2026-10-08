@@ -559,9 +559,9 @@ def compile_player_xmi(
 ) -> dict[str, Any]:
     """Deterministic packet → tag → minutes (sidecar, not live CSV).
 
-    ``ask`` writes the last three games' average. ``minutes`` is the
-    gameweek series, zeros included. With no series, the appearance prior
-    is used instead.
+    A classifier ``ask`` is remapped to ``rolling avg`` and writes the last
+    three games' average. ``minutes`` is the gameweek series, zeros included.
+    With no series, the appearance prior is used instead.
     """
     from src.live.news_tags import minutes_for_tag
 
@@ -579,6 +579,7 @@ def compile_player_xmi(
         xmi = rolling_game_minutes(series)
         if xmi is None:
             xmi = prior
+        tag = "rolling avg"
     else:
         xmi = minutes_for_tag(tag, position, prior, chance, status)
     return {
