@@ -40,9 +40,9 @@ data/predictions/2026-27/string_agent_freeze.jsonl
 
 ## Build order (after GW6 deadline is safe)
 
-1. Scaffold `src/str_agent/` with validator + freeze (no LLM required for dry tests).
-2. Wire `extractor` to `news_packets.load_gameweek_packets` + entry state.
-3. Runner with one model; illegal drafts re-prompted ≤N times then fail closed.
+1. ~~Scaffold `src/str_agent/` with validator + freeze (no LLM required for dry tests).~~ Done 2026-10-08.
+2. ~~Wire `extractor` to `news_packets.load_gameweek_packets` + entry state.~~ Done (markdown context).
+3. ~~Runner with one model; illegal drafts re-prompted ≤N times then fail closed.~~ `runner.run_once` landed; inject `call_model` for a live LLM.
 4. Each deadline: commit freeze beside numeric `week_freeze` row.
 5. GW26: compare realised Σ vs numeric engine and vs 1FT on the shared bar.
 

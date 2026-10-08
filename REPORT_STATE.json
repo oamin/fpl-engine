@@ -1,11 +1,13 @@
 {
-  "milestone": "audited-news-packets",
-  "status": "packets_ready_numeric_deferred",
-  "summary": "news_packets module: whitelist, leakage gate, sha256, synthetic FPL fallback. String competitor outlined as separate freeze harness. xmi compile deferred.",
+  "milestone": "packet-xmi-demo-and-str-agent-scaffold",
+  "status": "demo_ok_scaffold_landed",
+  "summary": "Packet→xmi via news_tags minutes_for_tag; high-profile demo Saliba 0 / van Ewijk 67.5 / Haaland 90. str_agent has validator, freeze, extractor, runner (repair loop). Live xmi CSV not overwritten.",
   "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
-    "src/live/news_packets.py",
-    "reports/string_competitor_plan_20261008.md",
-    "data/predictions/2026-27/gw06/news_packets/README.md"
+    "reports/packet_xmi_compile_demo_20261008.md",
+    "reports/packet_xmi_numeric_discussion_20261008.md",
+    "reports/packet_xmi_compiled_tags_20261008.json",
+    "src/str_agent/",
+    "data/predictions/2026-27/gw06/news_packets/"
   ]
 }

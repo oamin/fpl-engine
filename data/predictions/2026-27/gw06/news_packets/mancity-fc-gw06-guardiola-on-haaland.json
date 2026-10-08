@@ -1,0 +1,13 @@
+{
+  "packet_id": "mancity_fc:gw06:guardiola-on-haaland",
+  "source": "mancity_fc",
+  "url": "https://www.mancity.com/news/haaland-presser-example",
+  "published_at_utc": "2026-10-08T15:30:00Z",
+  "club": "Manchester City",
+  "player_ids": [
+    411
+  ],
+  "headline": "Guardiola on Haaland",
+  "body": "Pep Guardiola confirmed Erling Haaland will start and is first choice up front. Haaland trained fully and is named in the team plans for the weekend.",
+  "sha256": "aadd9fb3a54d3474072fd57b89ca9b797f4bd9bc0201ea5597810b6a95fb4e89"
+}

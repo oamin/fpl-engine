@@ -78,6 +78,41 @@ class NewsPackets(unittest.TestCase):
             )
             self.assertEqual(len(loaded), 1)
 
+    def test_compile_high_profile_packets(self) -> None:
+        deadline = "2026-10-10T10:00:00Z"
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            dest = np.packets_dir(6, root)
+            raw = _packet()
+            np.write_packet(np.validate_packet(raw, deadline_utc=deadline), dest)
+            bootstrap = {
+                "teams": [{"id": 7, "name": "Coventry City"}],
+                "elements": [
+                    {
+                        "id": 175,
+                        "web_name": "van Ewijk",
+                        "element_type": 2,
+                        "team": 7,
+                        "status": "d",
+                        "chance_of_playing_next_round": 75,
+                        "news": "Hamstring injury - 75% chance of playing",
+                        "news_added": "2026-10-08T10:00:00Z",
+                    }
+                ],
+            }
+            result = np.compile_high_profile_test(
+                gw=6,
+                deadline_utc=deadline,
+                bootstrap=bootstrap,
+                player_ids=[175],
+                history={175: [90.0, 90.0, 90.0]},
+                root=root,
+            )
+            row = result["players"][0]
+            self.assertEqual(row["tag"], "injured")
+            self.assertAlmostEqual(float(row["xmi_compiled"]), 67.5)
+            self.assertIn("van Ewijk", result["context_markdown"])
+
     def test_synthetic_fpl_from_bootstrap(self) -> None:
         bootstrap = {
             "teams": [{"id": 7, "name": "Coventry City"}],

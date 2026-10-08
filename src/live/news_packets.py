@@ -1,8 +1,8 @@
 """Audited news packets for deeper live tags.
 
 Gemini 2026-10-08 (bc-90156d5d): whitelist sources only; published_at must
-predate the deadline; cite-or-reject via ``news_tags.PacketDoc``. Numeric
-``xmi`` compile is deferred — this module stores and validates evidence.
+predate the deadline; cite-or-reject via ``news_tags.PacketDoc``. Numeric ``xmi`` compile is
+``compile_player_xmi`` / ``compile_high_profile_test`` (sidecar only).
 
 Packets live under ``data/predictions/2026-27/gwNN/news_packets/*.json``.
 When that directory is empty, ``load_gameweek_packets`` synthesises docs from
@@ -210,6 +210,9 @@ def load_packet_files(
         raw = json.loads(path.read_text(encoding="utf-8"))
         if not isinstance(raw, dict):
             raise PacketError(f"{path.name} is not a JSON object")
+        # Sidecar compile dumps are not packets (no source / sha256).
+        if "source" not in raw or "sha256" not in raw:
+            continue
         out.append(validate_packet(raw, deadline_utc=deadline_utc))
     return out
 
@@ -298,6 +301,171 @@ def load_gameweek_packets(
 
 def to_packet_docs(packets: Sequence[NewsPacket]) -> list[PacketDoc]:
     return [packet.to_packet_doc() for packet in packets]
+
+
+def classify_packets_deterministic(
+    packets: Sequence[NewsPacket],
+    *,
+    player_name: str = "",
+) -> tuple[str, list[str]]:
+    """Map packet text to a closed tag via ``news_tags.SUPPORT`` phrases.
+
+    Returns ``(tag, cited_packet_ids)``. No match → ``ask``. Preference order
+    when several tags fire: transferred > injured > benched > firm_starter.
+    """
+    from src.live.news_tags import SUPPORT, fold
+
+    blob = fold(" ".join(f"{p.headline} {p.body}" for p in packets))
+    name = fold(player_name)
+    hits: dict[str, list[str]] = {tag: [] for tag in SUPPORT}
+    for packet in packets:
+        text = fold(f"{packet.headline} {packet.body}")
+        for tag, phrases in SUPPORT.items():
+            if any(fold(phrase) in text for phrase in phrases):
+                # firm_starter needs the player name nearby when many names appear
+                if tag == "firm_starter" and name and name not in text:
+                    continue
+                hits[tag].append(packet.packet_id)
+    for tag in ("transferred", "injured", "benched", "firm_starter"):
+        if hits[tag]:
+            return tag, hits[tag]
+    return "ask", []
+
+
+def render_player_context(
+    *,
+    player_id: int,
+    name: str,
+    position: str,
+    club: str,
+    prior: float | None,
+    status: str | None,
+    chance: float | None,
+    fpl_news: str,
+    packets: Sequence[NewsPacket],
+) -> str:
+    """Markdown block showing the contextual evidence the compile sees."""
+    prior_text = "none" if prior is None else f"{float(prior):.1f}"
+    chance_text = "blank" if chance is None else f"{float(chance):g}"
+    lines = [
+        f"### Player: {name} (id {player_id})",
+        f"- Club: {club} | Position: {position}",
+        f"- Prior minutes (compile base): {prior_text}",
+        f"- FPL flag: status `{status or ''}`, chance {chance_text}",
+        f"- FPL news: {fpl_news or '(none)'}",
+        "",
+        "#### Audited packets (pre-deadline)",
+    ]
+    if not packets:
+        lines.append("- (none)")
+    for packet in packets:
+        lines.append(
+            f"- **[{packet.packet_id}]** *{packet.source}* ({packet.published_at_utc})"
+        )
+        lines.append(f"  > {packet.headline}")
+        if packet.body:
+            lines.append(f"  > {packet.body}")
+    return "\n".join(lines) + "\n"
+
+
+def compile_player_xmi(
+    *,
+    player_id: int,
+    name: str,
+    position: str,
+    prior: float | None,
+    status: str | None,
+    chance: float | None,
+    packets: Sequence[NewsPacket],
+) -> dict[str, Any]:
+    """Deterministic packet → tag → ``minutes_for_tag`` (sidecar, not live CSV)."""
+    from src.live.news_tags import minutes_for_tag
+
+    tag, cited = classify_packets_deterministic(packets, player_name=name)
+    xmi = minutes_for_tag(tag, position, prior, chance, status)
+    return {
+        "player_id": int(player_id),
+        "name": name,
+        "position": position,
+        "tag": tag,
+        "cited_packet_ids": cited,
+        "prior": prior,
+        "status": status,
+        "chance": chance,
+        "xmi_compiled": xmi,
+        "n_packets": len(packets),
+    }
+
+
+def compile_high_profile_test(
+    *,
+    gw: int,
+    deadline_utc: str,
+    bootstrap: Mapping[str, Any],
+    player_ids: Sequence[int],
+    history: Mapping[int, Sequence[float]] | None = None,
+    root: Path | None = None,
+) -> dict[str, Any]:
+    """Compile a small set of players; write context + results for review."""
+    from src.live.fpl_snapshot import ELEMENT
+    from src.live.news_tags import prior_minutes
+
+    packets = load_gameweek_packets(
+        gw,
+        deadline_utc=deadline_utc,
+        bootstrap=bootstrap,
+        root=root,
+        include_synthetic_fpl=True,
+    )
+    elements = {int(row["id"]): row for row in bootstrap.get("elements") or []}
+    teams = {int(row["id"]): str(row["name"]) for row in bootstrap.get("teams") or []}
+    hist = history or {}
+    rows: list[dict[str, Any]] = []
+    contexts: list[str] = []
+    for pid in player_ids:
+        element = elements[int(pid)]
+        mine = packets_for_player(packets, int(pid))
+        prior = prior_minutes(list(hist.get(int(pid), [])))
+        status = str(element.get("status") or "")
+        chance_raw = element.get("chance_of_playing_next_round")
+        try:
+            chance = None if chance_raw is None else float(chance_raw)
+        except (TypeError, ValueError):
+            chance = None
+        name = str(element.get("web_name") or pid)
+        position = ELEMENT[int(element["element_type"])]
+        club = teams.get(int(element["team"]), "")
+        contexts.append(
+            render_player_context(
+                player_id=int(pid),
+                name=name,
+                position=position,
+                club=club,
+                prior=prior,
+                status=status,
+                chance=chance,
+                fpl_news=str(element.get("news") or ""),
+                packets=mine,
+            )
+        )
+        rows.append(
+            compile_player_xmi(
+                player_id=int(pid),
+                name=name,
+                position=position,
+                prior=prior,
+                status=status,
+                chance=chance,
+                packets=mine,
+            )
+        )
+    return {
+        "gw": int(gw),
+        "deadline_utc": deadline_utc,
+        "compile": "news_tags.minutes_for_tag via SUPPORT phrases",
+        "players": rows,
+        "context_markdown": "\n".join(contexts),
+    }
 
 
 def packets_for_player(packets: Sequence[NewsPacket], player_id: int) -> list[NewsPacket]:

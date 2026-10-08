@@ -1,0 +1,13 @@
+{
+  "packet_id": "arsenal_fc:gw06:saliba-injury-update",
+  "source": "arsenal_fc",
+  "url": "https://www.arsenal.com/news/saliba-update-example",
+  "published_at_utc": "2026-10-08T14:00:00Z",
+  "club": "Arsenal",
+  "player_ids": [
+    6
+  ],
+  "headline": "Saliba injury update",
+  "body": "William Saliba remains out with a back injury and is suspended from contention until a further assessment. The club says the injury is ongoing.",
+  "sha256": "dcd9d4a7fd5fcf96c26a54c13824d7c47464412846026b910302be540e6de1ec"
+}
