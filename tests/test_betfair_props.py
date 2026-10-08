@@ -43,6 +43,37 @@ class ForecastRename(unittest.TestCase):
         self.assertIn("lam_scored", home)
         self.assertGreater(home["lam_scored"], away["lam_scored"])
 
+    def test_missing_outright_club_is_bottom_tier(self) -> None:
+        self.assertAlmostEqual(bp.MISSING_OUTRIGHT_STRENGTH, (10.5 - 18.5) / 9.5)
+        self.assertAlmostEqual(bp.club_strength({"arsenal": 0.8}, "arsenal"), 0.8)
+        self.assertAlmostEqual(
+            bp.club_strength({"arsenal": 0.8}, "burnley"),
+            bp.MISSING_OUTRIGHT_STRENGTH,
+        )
+
+    def test_forecast_pots_skip_priced_and_use_missing_default(self) -> None:
+        fixtures = [
+            {"event": 8, "team_h": 1, "team_a": 2},
+            {"event": 7, "team_h": 1, "team_a": 2},
+        ]
+        names = {1: "Arsenal", 2: "Burnley"}
+        pots = bp.forecast_pots_from_outrights(
+            fixtures,
+            names,
+            {"arsenal": 0.9},
+            start=6,
+            end=9,
+            priced_weeks={7},
+        )
+        self.assertNotIn((7, "arsenal"), pots)
+        self.assertIn((8, "arsenal"), pots)
+        self.assertIn((8, "burnley"), pots)
+        # Strong home vs missing (bottom) away → home λ above away λ.
+        self.assertGreater(
+            pots[(8, "arsenal")][0]["lam_scored"],
+            pots[(8, "burnley")][0]["lam_scored"],
+        )
+
 
 class Poisson(unittest.TestCase):
     def test_even_money(self) -> None:

@@ -35,6 +35,10 @@ PREDICTIONS = ROOT / "data" / "predictions" / "2026-27"
 LIVE_DIR = ROOT / "data" / "live"
 MIN_RUNNER_MATCHED = 250.0
 MAX_RUNNER_SPREAD = 0.35
+# Club absent from outrights (often a thin promoted side): bottom table, not
+# mid-table 0.0 (Gemini 2026-10-08 forecast-horizon review).
+MISSING_OUTRIGHT_RANK = 18.5
+MISSING_OUTRIGHT_STRENGTH = strength_from_rank(MISSING_OUTRIGHT_RANK)
 # Require a Betfair-specific file so a plain historical gw_lines.csv is not
 # mistaken for an Exchange pull (data/live always has a lines file).
 ARTIFACT_MARKERS = (
@@ -291,6 +295,13 @@ def strength_index(table: list[Mapping[str, Any]]) -> dict[str, float]:
     return {str(r["club_norm"]): float(r["strength"]) for r in table if r.get("club_norm")}
 
 
+def club_strength(strengths: Mapping[str, float], club_norm: str) -> float:
+    """Strength for a club; missing sides use the bottom-tier outright default."""
+    if club_norm in strengths:
+        return float(strengths[club_norm])
+    return float(MISSING_OUTRIGHT_STRENGTH)
+
+
 def forecast_pots_from_outrights(
     fixtures: list[Mapping[str, Any]],
     team_names: Mapping[int, str],
@@ -300,7 +311,11 @@ def forecast_pots_from_outrights(
     end: int,
     priced_weeks: set[int],
 ) -> dict[tuple[int, str], list[dict[str, float]]]:
-    """Shrunk strength pots for unpriced fixture weeks only."""
+    """Shrunk strength pots for unpriced fixture weeks only.
+
+    Only scheduled fixtures emit pots (blanks stay zero). Clubs absent from
+    the outright table get ``MISSING_OUTRIGHT_STRENGTH``, not mid-table 0.
+    """
     out: dict[tuple[int, str], list[dict[str, float]]] = {}
     for fixture in fixtures:
         event = fixture.get("event")
@@ -315,8 +330,8 @@ def forecast_pots_from_outrights(
             continue
         h = norm_team(home)
         a = norm_team(away)
-        s_h = float(strengths.get(h, 0.0))
-        s_a = float(strengths.get(a, 0.0))
+        s_h = club_strength(strengths, h)
+        s_a = club_strength(strengths, a)
         pot_h, pot_a = strength_match_pots(s_h, s_a)
         out.setdefault((gw, h), []).append(pot_h)
         out.setdefault((gw, a), []).append(pot_a)

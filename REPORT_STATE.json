@@ -1,11 +1,10 @@
 {
-  "milestone": "betfair-mac-pull-ladder-fix",
-  "status": "gw6_priced",
-  "summary": "Mac pull: best_prices now reads runner.ex ladder. GW6 is exchange-priced (5 tier1 / 5 tier2, all with OU2.5). GW7 match odds stay neutral. Anytime empty (liquidity). Outrights 19 clubs. data/live untouched. Rotate session token if transcript shared.",
-  "gemini": "bc-e75c8209-ffd3-590a-b610-d0e34e62bbee",
+  "milestone": "forecast-horizon-outrights",
+  "status": "reviewed",
+  "summary": "Gemini KEEP H=3 past liquid MATCH_ODDS; DROP hope of GW8+ Exchange liquidity; KEEP κ=0.5 outrights for unpriced weeks. Missing outright club defaults to E[rank]=18.5. Published H not widened.",
+  "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
-    "src/live/betfair.py",
-    "reports/betfair_lines_20261008.md",
-    "data/predictions/2026-27/gw06/betfair_20261008/ (Mac local)"
+    "src/live/betfair_props.py",
+    "reports/forecast_horizon_outrights_20261008.md"
   ]
 }
