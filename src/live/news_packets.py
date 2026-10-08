@@ -394,19 +394,76 @@ def _clears_doubt(text: str) -> bool:
     )
 
 
+_FOLD_EXTRA = str.maketrans({"ø": "o", "ö": "o", "æ": "ae", "å": "a", "ł": "l", "đ": "d", "ß": "ss"})
+_NAME_DROP = frozenset({"jr", "sr", "ii", "iii"})
+
+
+def name_tokens(text: str) -> list[str]:
+    """Fold a display name to comparable tokens. ``ø`` becomes ``o``; ``Jr`` drops."""
+    from src.live.news_tags import fold
+
+    folded = fold(text).translate(_FOLD_EXTRA)
+    parts = re.sub(r"[^a-z0-9]+", " ", folded).split()
+    return [part for part in parts if part not in _NAME_DROP]
+
+
+def match_element_id(
+    name: str,
+    club: str,
+    elements: Sequence[Mapping[str, Any]],
+    team_names: Mapping[int, str],
+) -> int | None:
+    """Map an article name to one FPL element id at ``club``.
+
+    Last-name hits stay only when one player at the club has that surname.
+    A first name breaks a tie (Lewis Miley, not Mason Miley). ``None`` means
+    no unique match.
+    """
+    parts = name_tokens(name)
+    if not parts:
+        return None
+    scored: list[tuple[int, int]] = []
+    for element in elements:
+        if team_names.get(int(element["team"])) != club:
+            continue
+        web = name_tokens(str(element.get("web_name") or ""))
+        first = name_tokens(str(element.get("first_name") or ""))
+        second = name_tokens(str(element.get("second_name") or ""))
+        full = first + second
+        score = 0
+        if parts in (web, full, second):
+            score = 100
+        elif web and parts[-1] == web[-1]:
+            score = 80 if first and parts[0] == first[0] else 40
+        elif second and parts[-1] == second[0]:
+            score = 80 if first and parts[0] == first[0] else 40
+        if score:
+            scored.append((score, int(element["id"])))
+    if not scored:
+        return None
+    best = max(score for score, _pid in scored)
+    winners = {pid for score, pid in scored if score == best}
+    if len(winners) != 1:
+        return None
+    return next(iter(winners))
+
+
 def _tag_one_packet(packet: NewsPacket, *, player_name: str) -> str:
-    """Closed tag for a single packet. Negated injury lines do not count."""
+    """Closed tag for a single packet. Negated injury lines do not count.
+
+    ``could return this weekend`` is logged ``50/50`` (half the prior), not ``ask``.
+    """
     from src.live.news_tags import SUPPORT, fold
 
     name = fold(player_name)
     text = fold(f"{packet.headline} {packet.body}")
+    if "could return this weekend" in text:
+        return "50/50"
     sentences = [part.strip() for part in re.split(r"[.!?]+", text) if part.strip()]
     hits: set[str] = set()
     for tag, phrases in SUPPORT.items():
         for sentence in sentences:
             if tag == "injured" and any(phrase in sentence for phrase in _INJURY_NEGATION):
-                continue
-            if tag == "injured" and "could return this weekend" in text:
                 continue
             matched = [phrase for phrase in phrases if fold(phrase) in sentence]
             if tag == "injured" and matched == ["doubt"] and _clears_doubt(text):
@@ -491,7 +548,16 @@ def compile_player_xmi(
     from src.live.news_tags import minutes_for_tag
 
     tag, cited = classify_packets_deterministic(packets, player_name=name)
-    xmi = minutes_for_tag(tag, position, prior, chance, status)
+    if tag == "50/50":
+        # News says he might play. Half the prior. A hard zero on the FPL
+        # flag (suspended, unavailable, chance 0) still wins.
+        if status in {"s", "u"} or chance == 0:
+            xmi: float | None = 0.0
+        else:
+            base = 90.0 if prior is None else float(prior)
+            xmi = 0.5 * base
+    else:
+        xmi = minutes_for_tag(tag, position, prior, chance, status)
     return {
         "player_id": int(player_id),
         "name": name,

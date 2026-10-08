@@ -2,7 +2,7 @@
 
 Deterministic SUPPORT phrases → `news_tags.minutes_for_tag`. Does **not** overwrite `data/live/xmi_gw6.csv`.
 
-The league-wide cite is The Standard's all-20-club list (8 Oct 2026, 17:34 UTC). Counts: `reports/packet_xmi_all_clubs_20261008.md`. These three players are the sample of that file. The latest note wins.
+The league-wide cite is The Standard's all-20-club list (8 Oct 2026, 17:34 UTC). Counts: `reports/packet_xmi_all_clubs_20261008.md`. "Could return this weekend" is logged `50/50` (half the prior). The latest note wins.
 
 ## Context the compile sees
 
@@ -83,5 +83,5 @@ The league-wide cite is The Standard's all-20-club list (8 Oct 2026, 17:34 UTC).
 | Player | Tag | Prior | Chance | xmi | Deciding packet |
 | --- | --- | ---: | ---: | ---: | --- |
 | Saliba | injured | none | 0.0 | 0.0 | the_standard:gw06:6-saliba-listed-out |
-| van Ewijk | ask | 90.0 | 75.0 | no write | the_standard:gw06:175-van-ewijk-could-return-this-weekend |
-| Haaland | ask | 90.0 | blank | no write | the_standard:gw06:411-haaland-could-return-this-weekend |
+| van Ewijk | 50/50 | 90.0 | 75.0 | 45.0 | the_standard:gw06:175-van-ewijk-could-return-this-weekend |
+| Haaland | 50/50 | 90.0 | blank | 45.0 | the_standard:gw06:411-haaland-could-return-this-weekend |

@@ -15,7 +15,7 @@ Every 2026/27 club has a local desk in `CLUB_PRESS` (MEN, Football London,
 Birmingham Mail, Bournemouth Echo, The Argus, Liverpool Echo, Hull Daily Mail,
 East Anglian Daily Times, Yorkshire Evening Post, Nottingham Post, Sunderland
 Echo, Coventry Telegraph, Chronicle, plus Sports Mole and The Standard).
-The latest packet's time wins the tag. "Could return this weekend" stays `ask`.
+The latest packet's time wins the tag. "Could return this weekend" is logged `50/50`.
 
 Validate:
 

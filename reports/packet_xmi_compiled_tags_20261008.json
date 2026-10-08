@@ -21,31 +21,32 @@
       "player_id": 175,
       "name": "van Ewijk",
       "position": "DEF",
-      "tag": "ask",
+      "tag": "50/50",
       "cited_packet_ids": [
         "the_standard:gw06:175-van-ewijk-could-return-this-weekend"
       ],
       "prior": 90.0,
       "status": "d",
       "chance": 75.0,
-      "xmi_compiled": null,
+      "xmi_compiled": 45.0,
       "n_packets": 5
     },
     {
       "player_id": 411,
       "name": "Haaland",
       "position": "FWD",
-      "tag": "ask",
+      "tag": "50/50",
       "cited_packet_ids": [
         "the_standard:gw06:411-haaland-could-return-this-weekend"
       ],
       "prior": 90.0,
       "status": "a",
       "chance": null,
-      "xmi_compiled": null,
+      "xmi_compiled": 45.0,
       "n_packets": 5
     }
   ],
   "context_report": "reports/packet_xmi_compile_demo_20261008.md",
-  "all_clubs_report": "reports/packet_xmi_all_clubs_20261008.md"
+  "all_clubs_report": "reports/packet_xmi_all_clubs_20261008.md",
+  "could_return": "50/50 of prior"
 }

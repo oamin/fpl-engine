@@ -1,7 +1,7 @@
 {
   "milestone": "packet-xmi-demo-and-str-agent-scaffold",
   "status": "demo_ok_scaffold_landed",
-  "summary": "CLUB_PRESS covers all 20 clubs. Filed The Standard 8 Oct 17:34 all-club list: 128 players. Could-return stays ask; ruled out and suspended compile toward 0. Saliba 0, van Ewijk ask, Haaland ask. Live xmi CSV not overwritten.",
+  "summary": "match_element_id resolves Julian Araujo, Kroupi Jr, Nørgaard, Nico Gonzalez, and Lewis Miley (not Mason). Could-return is logged 50/50: van Ewijk and Haaland 45 from a prior of 90. Saliba stays 0. Live xmi CSV not overwritten.",
   "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
     "reports/packet_xmi_compile_demo_20261008.md",

@@ -81,8 +81,40 @@ class NewsPackets(unittest.TestCase):
             deadline_utc=deadline,
         )
         tag, cited = np.classify_packets_deterministic([packet], player_name="Dowman")
-        self.assertEqual(tag, "ask")
+        self.assertEqual(tag, "50/50")
         self.assertEqual(cited, ["the_standard:gw06:dowman-could-return"])
+        row = np.compile_player_xmi(
+            player_id=1,
+            name="Dowman",
+            position="MID",
+            prior=90.0,
+            status="a",
+            chance=None,
+            packets=[packet],
+        )
+        self.assertEqual(row["tag"], "50/50")
+        self.assertAlmostEqual(float(row["xmi_compiled"]), 45.0)
+
+    def test_surname_match_breaks_miley_and_folds_norgaard(self) -> None:
+        elements = [
+            {"id": 65, "team": 3, "web_name": "J.Araujo", "first_name": "Julián", "second_name": "Araujo Zúñiga"},
+            {"id": 78, "team": 3, "web_name": "Kroupi.Jr", "first_name": "Junior", "second_name": "Kroupi"},
+            {"id": 21, "team": 9, "web_name": "Nørgaard", "first_name": "Christian", "second_name": "Nørgaard"},
+            {"id": 405, "team": 17, "web_name": "N.Gonzalez", "first_name": "Nico", "second_name": "González Iglesias"},
+            {"id": 459, "team": 17, "web_name": "L.Miley", "first_name": "Lewis", "second_name": "Miley"},
+            {"id": 659, "team": 17, "web_name": "Miley", "first_name": "Mason", "second_name": "Miley"},
+        ]
+        teams = {3: "Bournemouth", 9: "Everton", 17: "Newcastle"}
+        cases = [
+            ("Julian Araujo", "Bournemouth", 65),
+            ("Eli Junior Kroupi", "Bournemouth", 78),
+            ("Christian Norgaard", "Everton", 21),
+            ("Nico Gonzalez", "Newcastle", 405),
+            ("Lewis Miley", "Newcastle", 459),
+        ]
+        for name, club, pid in cases:
+            self.assertEqual(np.match_element_id(name, club, elements, teams), pid, name)
+        self.assertIsNone(np.match_element_id("Miley", "Newcastle", elements, teams))
 
     def test_local_outlets_are_whitelisted(self) -> None:
         raw = _packet(source="sportsmole", packet_id="sportsmole:gw06:haaland")

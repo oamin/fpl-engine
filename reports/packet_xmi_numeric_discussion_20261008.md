@@ -18,6 +18,7 @@ audited packet JSON
 | firm_starter | `clip(prior, 65, 90)` (0 if status `i`) |
 | benched GKP | `0` |
 | benched outfield | `15` |
+| 50/50 (`could return this weekend`) | half the prior (half of 90 if no prior) |
 | ask / none | leave prior / no write |
 
 Pre-emption: status `s`/`u` or chance `0` → `0`.
