@@ -1,23 +1,24 @@
 # Betfair live lines pull (2026-10-08)
 
-Target: `data/predictions/2026-27/gw06/betfair_20261008/` via pure Exchange `MATCH_ODDS` + `OVER_UNDER_25` on `refresh_lines`.
+Target: `data/predictions/2026-27/gw06/betfair_20261008/` via pure Exchange on `refresh_lines` + prop fetch. Pulled on the Mac (allowed geo). `.env` mode 600, gitignored. `data/live/` freeze untouched.
 
-## Result
+## Ladder fix
 
-**Blocked: Betfair geo (HTTP 403).** This agent run was placed on a US cloud VM (Ohio / AS16509), not the PI MacBook private worker. Session token and app key were present in gitignored `.env`; `BETFAIR_USERNAME` / `BETFAIR_PASSWORD` were empty, so no SSO re-login was attempted. Keepalive and `listMarketCatalogue` both returned the Betfair geo HTML 403 page (not an auth JSON error).
+First pass authenticated but wrote the neutral 2.5 / 3.70 / 3.03 prior for every match: `listMarketBook` with `EX_BEST_OFFERS` returns the ladder under `runner.ex`, and `best_prices` had been reading the runner root. The reader now prefers `ex`, with a root fallback. Unit tests cover both shapes.
 
-FPL bootstrap + fixtures were refreshed into the predictions dir only (`data/live/` freeze untouched). Lines CSV stayed header-only (`rows=0`, `reason=betfair_geo_blocked`).
+## Result (second pull)
 
-## Re-dispatch
+| Item | Status |
+| --- | --- |
+| Gameweek 6 MATCH_ODDS | Exchange prices: 5 tier 1, 5 tier 2; every match has OU 2.5 |
+| Arsenal–Leeds | 1.42 / 5.36 / 9.31; OU 2.5 at 1.93 / 2.07 |
+| Gameweek 7 MATCH_ODDS | Neutral prior (9 thin; Nottingham Forest–Arsenal no two-sided mid); 9/10 still have OU 2.5 |
+| TO_SCORE (anytime) | Empty — one market (Arsenal–Leeds), 0 of 41 runners cleared £250 matched + spread |
+| Outrights | 19 clubs in `outrights_ranks.json` |
+| BTTS | Diagnostic only; probability on 19 of 20 matches |
 
-MacBook worker was connected and idle at pull time:
+Imminent goals stay `share_xG × λ` until anytime liquidity clears the gate. Discovery for gameweek 6 picks up this folder, so GW6 match odds and outrights enter `score_xp` / `forecast_xp`.
 
-- `workerId`: `fa332b94-0afc-56cb-a773-b70179980541`
-- `machineDisplayName`: `MACBOOK-YRQYDLWWPR`
-- `eligibleForSubagent`: true
+## Session token
 
-Re-run the same pull on that worker with `usePrivateWorker=true`. Secrets stay in `.env` (never commit).
-
-## Code on this branch
-
-Working tree wires `src/live/lines.py` to Betfair only (Odds API / ESPN removed from the live path). Unit tests: `tests/test_betfair.py` + `tests/test_live_lines.py` (19 passed).
+The session token was pasted into an earlier chat. If the transcript is shared, log in again on Betfair and replace `BETFAIR_SESSION_TOKEN` in the local `.env`. Do not commit `.env`.

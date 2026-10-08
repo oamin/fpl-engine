@@ -168,17 +168,24 @@ def strength_from_rank(rank: float) -> float:
 
 
 def best_prices(runner: Mapping[str, Any]) -> tuple[float | None, float | None]:
-    """Best available back and lay prices from a ``listMarketBook`` runner."""
+    """Best available back and lay prices from a ``listMarketBook`` runner.
+
+    Betfair puts the ladder under ``ex`` when ``EX_BEST_OFFERS`` is requested.
+    Older shapes keep the arrays on the runner root; both are accepted.
+    """
+    exchange = runner.get("ex") if isinstance(runner.get("ex"), Mapping) else {}
+    back_levels = exchange.get("availableToBack") or runner.get("availableToBack") or []
+    lay_levels = exchange.get("availableToLay") or runner.get("availableToLay") or []
     back = None
     lay = None
-    for level in runner.get("availableToBack") or []:
+    for level in back_levels:
         price = level.get("price")
         if price is None:
             continue
         price = float(price)
         if back is None or price > back:
             back = price
-    for level in runner.get("availableToLay") or []:
+    for level in lay_levels:
         price = level.get("price")
         if price is None:
             continue

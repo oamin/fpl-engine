@@ -24,6 +24,31 @@ class MidImplied(unittest.TestCase):
         self.assertIsNone(bf.mid_implied(2.0, 3.0))  # 50% relative spread
 
 
+class BestPrices(unittest.TestCase):
+    def test_reads_ladder_under_ex(self) -> None:
+        back, lay = bf.best_prices(
+            {
+                "selectionId": 1,
+                "ex": {
+                    "availableToBack": [{"price": 1.42, "size": 100}],
+                    "availableToLay": [{"price": 1.43, "size": 80}],
+                },
+            }
+        )
+        self.assertAlmostEqual(back, 1.42)
+        self.assertAlmostEqual(lay, 1.43)
+
+    def test_falls_back_to_runner_root(self) -> None:
+        back, lay = bf.best_prices(
+            {
+                "availableToBack": [{"price": 2.0, "size": 10}],
+                "availableToLay": [{"price": 2.02, "size": 10}],
+            }
+        )
+        self.assertAlmostEqual(back, 2.0)
+        self.assertAlmostEqual(lay, 2.02)
+
+
 class Simplex(unittest.TestCase):
     def test_match_odds_sum_to_one(self) -> None:
         out = bf.simplex({"Home": 0.45, "Draw": 0.28, "Away": 0.22}, mass=1.0)

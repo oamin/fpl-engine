@@ -1,12 +1,11 @@
 {
-  "milestone": "betfair-markets-in-scores",
-  "status": "implemented",
-  "summary": "TO_SCORE and outrights now enter live score_xp/forecast_xp via price_half auto-discovery. Callers (deadline, whatif, predictions) prefer Betfair gw_lines when artifacts exist. Name-match dedupe fixed. Tests prove both markets move scores.",
+  "milestone": "betfair-mac-pull-ladder-fix",
+  "status": "gw6_priced",
+  "summary": "Mac pull: best_prices now reads runner.ex ladder. GW6 is exchange-priced (5 tier1 / 5 tier2, all with OU2.5). GW7 match odds stay neutral. Anytime empty (liquidity). Outrights 19 clubs. data/live untouched. Rotate session token if transcript shared.",
   "gemini": "bc-e75c8209-ffd3-590a-b610-d0e34e62bbee",
   "artifacts": [
-    "src/live/scorer.py",
-    "src/live/betfair_props.py",
-    "src/live/deadline.py",
-    "tests/test_live_scorer.py"
+    "src/live/betfair.py",
+    "reports/betfair_lines_20261008.md",
+    "data/predictions/2026-27/gw06/betfair_20261008/ (Mac local)"
   ]
 }
