@@ -1,12 +1,12 @@
 {
-  "updated": "2026-10-08",
-  "milestone": "gw6-wildcard-judgement",
-  "status": "dry-run",
-  "summary": "The capture cron is the only schedule. Two successful runs are recorded, not one every 15 minutes. main is not branch-protected. An engine failure still writes the official slot, and a scratch force-write was run. The Gameweek 6 chip is a logged wildcard judgement and does not count toward a chip rule. On the 22:09 dry run the wildcard leads one free transfer by 114.12 discounted XI points, with gameweeks 8 and 9 unpriced, and by 39.00 in gameweek 6 alone. That is a preference, not a certified chip rule. The decision file is still the future T-1h slot.",
+  "milestone": "betfair-exchange-wire",
+  "status": "blocked_on_session",
+  "summary": "Betfair app key stored in gitignored .env. Client, mid/simplex/expected-rank helpers, and diagnostic pull script landed. Gemini: outrights diagnostic only; match mids need liquidity gate. Pull blocked until BETFAIR_USERNAME/PASSWORD or SESSION_TOKEN is set. score_xp unchanged.",
+  "gemini": "bc-e75c8209-ffd3-590a-b610-d0e34e62bbee",
   "artifacts": [
-    "reports/wildcard_plan_gw6_dry_run.md",
-    "reports/chip_calendar_gw6.md",
-    "data/live/chip_decisions.jsonl",
-    "experiments/protocol.json"
+    "src/live/betfair.py",
+    "src/live/betfair_pull.py",
+    "reports/betfair_overlay_20261008.md",
+    "tests/test_betfair.py"
   ]
 }
