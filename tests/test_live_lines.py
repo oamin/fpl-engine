@@ -1,4 +1,4 @@
-"""Live 1X2 lines. No Odds API call and no season climb."""
+"""Live 1X2 lines from Betfair. No Odds API call and no season climb."""
 
 from __future__ import annotations
 
@@ -6,196 +6,137 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
-
-import httpx
+from unittest import mock
 
 from src.live.deadline import BOOTSTRAP_PATH, FIXTURES_PATH, run
-from src.live.lines import (
-    american_to_decimal,
-    assemble,
-    fetch_odds_api,
-    loose_team,
-    quote_from_espn_event,
-    quote_from_odds_event,
-    scheduled_fixtures,
-    write_lines,
-)
-
-
-def _espn(home: str, away: str, day: str, total: float) -> dict:
-    return {
-        "date": f"{day}T14:00Z",
-        "competitions": [
-            {
-                "competitors": [
-                    {"homeAway": "home", "team": {"displayName": home}},
-                    {"homeAway": "away", "team": {"displayName": away}},
-                ],
-                "odds": [
-                    {
-                        "overUnder": total,
-                        "moneyline": {
-                            "home": {"close": {"odds": "-150"}},
-                            "draw": {"close": {"odds": "+250"}},
-                            "away": {"close": {"odds": "+400"}},
-                        },
-                        "total": {
-                            "over": {"close": {"odds": "-110"}},
-                            "under": {"close": {"odds": "-110"}},
-                        },
-                    }
-                ],
-            }
-        ],
-    }
-
-
-def _odds_event() -> dict:
-    return {
-        "home_team": "Chelsea",
-        "away_team": "AFC Bournemouth",
-        "commence_time": "2026-10-10T14:00:00Z",
-        "bookmakers": [
-            {
-                "markets": [
-                    {
-                        "key": "h2h",
-                        "outcomes": [
-                            {"name": "Chelsea", "price": 1.5},
-                            {"name": "AFC Bournemouth", "price": 6.0},
-                            {"name": "Draw", "price": 4.0},
-                        ],
-                    },
-                    {
-                        "key": "totals",
-                        "outcomes": [
-                            {"name": "Over", "price": 1.8, "point": 2.5},
-                            {"name": "Under", "price": 2.0, "point": 2.5},
-                            {"name": "Over", "price": 1.2, "point": 3.5},
-                            {"name": "Under", "price": 3.0, "point": 3.5},
-                        ],
-                    },
-                ]
-            },
-            {
-                "markets": [
-                    {
-                        "key": "h2h",
-                        "outcomes": [
-                            {"name": "Chelsea", "price": 1.7},
-                            {"name": "AFC Bournemouth", "price": 5.0},
-                            {"name": "Draw", "price": 4.2},
-                        ],
-                    },
-                    {
-                        "key": "totals",
-                        "outcomes": [
-                            {"name": "Over", "price": 2.0, "point": 3.5},
-                            {"name": "Under", "price": 1.8, "point": 3.5},
-                        ],
-                    },
-                ]
-            },
-        ],
-    }
+from src.live.lines import assemble, loose_team, scheduled_fixtures, write_lines
 
 
 class ConversionTest(unittest.TestCase):
-    def test_american_prices_and_club_names(self) -> None:
-        self.assertAlmostEqual(american_to_decimal("-260"), 1.0 + 100.0 / 260.0)
-        self.assertAlmostEqual(american_to_decimal("+150"), 2.5)
+    def test_club_names(self) -> None:
         self.assertEqual(loose_team("Tottenham Hotspur"), loose_team("Spurs"))
         self.assertEqual(loose_team("Brighton & Hove Albion"), loose_team("Brighton"))
         self.assertEqual(loose_team("AFC Bournemouth"), loose_team("Bournemouth"))
+        self.assertEqual(loose_team("Man City"), loose_team("Manchester City"))
 
 
-class QuoteTest(unittest.TestCase):
-    def test_a_3_5_total_is_blank_and_the_odds_api_row_wins(self) -> None:
-        espn = quote_from_espn_event(_espn("Chelsea", "AFC Bournemouth", "2026-10-10", 3.5))
-        self.assertIsNotNone(espn)
-        assert espn is not None
-        self.assertIsNone(espn["over"])
-        self.assertIsNone(espn["under"])
-        priced = quote_from_espn_event(_espn("Chelsea", "AFC Bournemouth", "2026-10-10", 2.5))
-        assert priced is not None
-        self.assertAlmostEqual(priced["over"], 1.0 + 100.0 / 110.0)
-
-        odds = quote_from_odds_event(_odds_event())
-        assert odds is not None
-        self.assertAlmostEqual(odds["avg_h"], 1.6)
-        self.assertAlmostEqual(odds["over"], 1.8)
-        self.assertEqual(odds["books"], 2)
-        self.assertEqual(odds["key"], espn["key"])
-
+class AssembleTest(unittest.TestCase):
+    def test_betfair_row_wins_and_blank_total(self) -> None:
+        key = ("2026-10-10", loose_team("Chelsea"), loose_team("Bournemouth"))
         schedule = [
             {
                 "gw": 6,
                 "day": "2026-10-10",
                 "home": "Chelsea",
                 "away": "Bournemouth",
-                "key": odds["key"],
+                "key": key,
             }
         ]
-        rows = assemble(schedule, [odds], [priced])
-        self.assertEqual(rows[0]["source"], "odds_api")
-        self.assertEqual(rows[0]["HomeTeam"], "Chelsea")
-        self.assertEqual(rows[0]["Avg>2.5"], 1.8)
+        quote = {
+            "key": key,
+            "avg_h": 1.55,
+            "avg_d": 4.2,
+            "avg_a": 6.1,
+            "over": 1.9,
+            "under": 1.95,
+            "source": "betfair",
+            "books": 1,
+        }
+        rows = assemble(schedule, [quote])
+        self.assertEqual(rows[0]["source"], "betfair")
+        self.assertEqual(rows[0]["AvgH"], 1.55)
+        self.assertEqual(rows[0]["Avg>2.5"], 1.9)
 
-        odds["over"] = None
-        odds["under"] = None
-        blank = assemble(schedule, [odds], [priced])
-        self.assertEqual(blank[0]["source"], "odds_api")
+        quote["over"] = None
+        quote["under"] = None
+        blank = assemble(schedule, [quote])
         self.assertEqual(blank[0]["Avg>2.5"], "")
 
 
-class TrialRequestTest(unittest.TestCase):
-    def test_one_us_request_is_saved_without_the_key(self) -> None:
-        key = "test-key-not-real"
-        seen: list[httpx.URL] = []
+class RefreshBetfairTest(unittest.TestCase):
+    def test_refresh_writes_betfair_rows_without_odds_api(self) -> None:
+        from src.live import lines as lines_mod
 
-        def handler(request: httpx.Request) -> httpx.Response:
-            seen.append(request.url)
-            return httpx.Response(
-                200,
-                json=[],
-                headers={
-                    "x-requests-remaining": "400",
-                    "x-requests-last": "1",
-                    "x-requests-used": "10",
-                },
-            )
+        key = ("2026-10-10", loose_team("Chelsea"), loose_team("Bournemouth"))
+        fake_quotes = [
+            {
+                "key": key,
+                "day": "2026-10-10",
+                "home": "Chelsea",
+                "away": "Bournemouth",
+                "avg_h": 1.6,
+                "avg_d": 4.0,
+                "avg_a": 5.5,
+                "over": 1.85,
+                "under": 2.05,
+                "source": "betfair",
+                "books": 1,
+                "tier": "tier1",
+                "matched": 80_000.0,
+                "spread": 0.02,
+            }
+        ]
+        fake_meta = {
+            "sent": True,
+            "ok": True,
+            "reason": "betfair",
+            "n_events": 1,
+            "tiers": {"tier1": 1},
+            "source": "betfair",
+            "remaining": "",
+            "last": "",
+            "used": "",
+            "detail": "",
+        }
 
-        client = httpx.Client(transport=httpx.MockTransport(handler))
+        class FakeClient:
+            def __init__(self, *a: object, **k: object) -> None:
+                pass
+
+            def ensure_session(self) -> str:
+                return "tok"
+
+            def close(self) -> None:
+                return None
+
+        fixtures = [
+            {
+                "event": 6,
+                "kickoff_time": "2026-10-10T14:00:00Z",
+                "team_h": 1,
+                "team_a": 2,
+            }
+        ]
+        names = {1: "Chelsea", 2: "Bournemouth"}
         with tempfile.TemporaryDirectory() as folder:
-            raw = Path(folder) / "odds_api_trial.json"
-            _payload, meta = fetch_odds_api(key, client=client, raw_path=raw)
-            text = raw.read_text(encoding="utf-8")
-        client.close()
-        self.assertEqual(len(seen), 1)
-        self.assertEqual(seen[0].params["regions"], "us")
-        self.assertEqual(seen[0].params["markets"], "h2h,totals")
-        self.assertEqual(seen[0].params["oddsFormat"], "decimal")
-        self.assertNotIn(key, text)
-        self.assertEqual(meta["reason"], "sent")
-        self.assertEqual(meta["last"], "1")
-        self.assertEqual(meta["remaining"], "400")
-
-    def test_a_rejected_request_is_not_retried(self) -> None:
-        calls = {"n": 0}
-
-        def handler(request: httpx.Request) -> httpx.Response:
-            calls["n"] += 1
-            return httpx.Response(401, json={"message": "unauthorized"})
-
-        client = httpx.Client(transport=httpx.MockTransport(handler))
-        with tempfile.TemporaryDirectory() as folder:
-            raw = Path(folder) / "odds_api_trial.json"
-            _payload, meta = fetch_odds_api("another-test-key", client=client, raw_path=raw)
-            self.assertFalse(raw.exists())
-        client.close()
-        self.assertEqual(calls["n"], 1)
-        self.assertEqual(meta["reason"], "error")
-        self.assertEqual(meta["detail"], "HTTP 401")
+            root = Path(folder)
+            lines_path = root / "gw_lines.csv"
+            raw_path = root / "betfair_trial.json"
+            meta_path = root / "betfair_meta.json"
+            with (
+                mock.patch.object(lines_mod, "load_secret", side_effect=lambda n: "x" if "KEY" in n or "TOKEN" in n else ""),
+                mock.patch.object(lines_mod, "BetfairClient", FakeClient),
+                mock.patch.object(
+                    lines_mod,
+                    "fetch_epl_line_quotes",
+                    return_value=(fake_quotes, fake_meta),
+                ),
+                mock.patch.object(lines_mod, "RAW_DIR", root / "raw"),
+            ):
+                result = lines_mod.refresh_lines(
+                    fixtures=fixtures,
+                    team_names=names,
+                    lines_path=lines_path,
+                    raw_path=raw_path,
+                    meta_path=meta_path,
+                )
+            text = lines_path.read_text(encoding="utf-8")
+            meta = json.loads(meta_path.read_text(encoding="utf-8"))
+        self.assertEqual(result["rows"], 1)
+        self.assertEqual(meta["reason"], "betfair")
+        self.assertIn("betfair", text)
+        self.assertIn("Chelsea", text)
+        self.assertNotIn("odds_api", text)
 
 
 class LiveFileTest(unittest.TestCase):
@@ -213,19 +154,19 @@ class LiveFileTest(unittest.TestCase):
                 "avg_a": 3.6,
                 "over": None,
                 "under": None,
-                "source": "espn",
+                "source": "betfair",
                 "books": 1,
             }
             for row in schedule
         ]
-        rows = assemble(schedule, [], quotes)
+        rows = assemble(schedule, quotes)
         with tempfile.TemporaryDirectory() as folder:
             path = Path(folder) / "gw_lines.csv"
             meta = Path(folder) / "meta.json"
             dest = Path(folder) / "live_deadline_gw6.md"
             write_lines(rows, path)
             meta.write_text(
-                json.dumps({"reason": "sent", "remaining": "100", "last": "2"}),
+                json.dumps({"reason": "betfair", "n_events": 10, "source": "betfair"}),
                 encoding="utf-8",
             )
             log = run(report_path=dest, live_path=path, trial_path=meta)
@@ -236,7 +177,7 @@ class LiveFileTest(unittest.TestCase):
         self.assertNotIn("missing_opening_line", log.reasons)
         self.assertEqual(log.priced_weeks, ())
         self.assertIn("not chosen", text)
-        self.assertIn("It cost 2 credits", text)
+        self.assertIn("Betfair", text)
         self.assertNotIn("327", text)
 
     def test_one_missing_match_keeps_the_stop(self) -> None:
@@ -252,12 +193,12 @@ class LiveFileTest(unittest.TestCase):
                 "avg_a": 3.6,
                 "over": 1.9,
                 "under": 1.9,
-                "source": "odds_api",
-                "books": 4,
+                "source": "betfair",
+                "books": 1,
             }
             for row in schedule[1:]
         ]
-        rows = assemble(schedule, quotes, [])
+        rows = assemble(schedule, quotes)
         self.assertEqual(len(rows), 9)
         with tempfile.TemporaryDirectory() as folder:
             path = Path(folder) / "gw_lines.csv"

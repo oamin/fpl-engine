@@ -633,26 +633,24 @@ def render(log: DeadlineLog) -> str:
                 "that sum and nothing to the schedule. The margin stays 16."
             )
         lines.append("")
-    if log.odds_trial == "no_key":
+    if log.odds_trial in {"no_betfair_app_key", "no_key"}:
         lines.append(
-            "The Odds API call was not sent. No key is set. "
-            "The live 1X2 is the ESPN close."
+            "Betfair was not called. No app key is set. "
+            "The live 1X2 stays empty until Exchange credentials are present."
         )
         lines.append("")
-    elif log.odds_trial == "sent":
+    elif log.odds_trial == "betfair":
         lines.append(
-            "One Odds API request was sent for soccer_epl, markets h2h and totals, "
-            f"region us. It cost {log.odds_last_cost or '-'} credits. "
-            f"{log.odds_remaining or '-'} credits remain. "
-            "Where that slate has a 1X2, the price is the average of the US books. "
-            "ESPN close fills a fixture the trial does not price. "
-            "A total other than 2.5 is blank."
+            "Live 1X2 and over/under 2.5 come from the Betfair Exchange only: "
+            "unweighted back/lay mids, simplex-normalised to fair decimals, "
+            "with tiered liquidity shrinkage. Odds API and ESPN are not used."
         )
         lines.append("")
-    elif log.odds_trial == "error":
+    elif log.odds_trial in {"betfair_error", "betfair_geo_blocked", "error"}:
         lines.append(
-            "The Odds API request failed and was not retried. "
-            "ESPN close fills a fixture the trial does not price."
+            "The Betfair request failed. Odds API fallback is forbidden, so no "
+            "bookmaker line was written. "
+            f"Reason: {log.odds_trial}."
         )
         lines.append("")
     if "missing_minutes" in log.reasons:

@@ -21,6 +21,10 @@ Cursor writes and runs the code. Gemini may propose a formula. A result is writt
 
 ## Done
 
+### Betfair live lines (2026-10-08)
+
+Pure Exchange MATCH_ODDS + OVER_UNDER_25 wired into `refresh_lines` (Odds API/ESPN off the live path). Live pull blocked on US cloud geo (HTTP 403); needs MacBook private worker. See `reports/betfair_lines_20261008.md`.
+
 ### Score and search
 
 Variance, ownership, a heavier switch penalty, scheduled minutes, seven score repairs, and crowd flow were screened and parked. `score_xp` remains the published score. The 2025/26 calibration on 7,569 buy-pool rows is bias +0.13, MAE 2.29, Spearman 0.23. Clean sheets are the large positive bias. Defensive contributions on this season stay. See `reports/stage_39_calibration.md`, `reports/stage_45_score_repair.md`, `reports/stage_36_sched_stability.md`, `reports/stage_37_penalty2.md`, `reports/stage_47_crowd_context.md`, and `reports/stage_48_crowd_calls.md`.

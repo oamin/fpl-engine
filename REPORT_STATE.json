@@ -1,12 +1,11 @@
 {
-  "milestone": "betfair-exchange-wire",
-  "status": "blocked_on_session",
-  "summary": "Betfair app key stored in gitignored .env. Client, mid/simplex/expected-rank helpers, and diagnostic pull script landed. Gemini: outrights diagnostic only; match mids need liquidity gate. Pull blocked until BETFAIR_USERNAME/PASSWORD or SESSION_TOKEN is set. score_xp unchanged.",
+  "milestone": "betfair-live-lines-pull",
+  "status": "blocked_geo_us_vm",
+  "summary": "Pure Betfair MATCH_ODDS+OU2.5 live path coded and tested (19 passed). Pull into data/predictions/.../betfair_20261008 failed with betfair_geo_blocked HTTP 403 because this run used a US cloud VM (usePrivateWorker=false). MacBook worker fa332b94-0afc-56cb-a773-b70179980541 was idle/eligible. Re-dispatch there; .env has app key + session token; no username/password for SSO.",
   "gemini": "bc-e75c8209-ffd3-590a-b610-d0e34e62bbee",
   "artifacts": [
+    "src/live/lines.py",
     "src/live/betfair.py",
-    "src/live/betfair_pull.py",
-    "reports/betfair_overlay_20261008.md",
-    "tests/test_betfair.py"
+    "reports/betfair_lines_20261008.md"
   ]
 }

@@ -34,6 +34,21 @@ class Simplex(unittest.TestCase):
         self.assertAlmostEqual(sum(out.values()), 6.0, places=9)
 
 
+class LiquidityTiers(unittest.TestCase):
+    def test_tier1_keeps_probs(self) -> None:
+        h, d, a, tier = bf.shrink_1x2(0.5, 0.25, 0.25, matched=50_000)
+        self.assertEqual(tier, "tier1")
+        self.assertAlmostEqual(h, 0.5)
+
+    def test_tier3_is_neutral(self) -> None:
+        h, d, a, tier = bf.shrink_1x2(0.9, 0.05, 0.05, matched=100)
+        self.assertEqual(tier, "tier3_neutral")
+        self.assertAlmostEqual(h, bf.NEUTRAL_1X2[0])
+
+    def test_fair_decimal_round_trip(self) -> None:
+        self.assertAlmostEqual(1.0 / bf.fair_decimal(0.4), 0.4, places=6)
+
+
 class ExpectedRank(unittest.TestCase):
     def test_identity_over_twenty_equal_clubs(self) -> None:
         # Uniform: each club win 1/20, top6 6/20, rel 3/20

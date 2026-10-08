@@ -27,10 +27,17 @@ BETTING_URL = "https://api.betfair.com/exchange/betting/rest/v1.0"
 # Premier League competition id on the UK exchange.
 EPL_COMPETITION_ID = "10932509"
 EVENT_TYPE_SOCCER = "1"
-# Relative spread gate on (lay - back) / back.
+# Relative spread gate on (lay - back) / back for a single runner mid.
 MAX_REL_SPREAD = 0.25
-# Match-odds totalMatched floor (GBP) before a fixture mid is trusted.
-MIN_MATCHED_MATCH_ODDS = 25_000.0
+# Match-odds totalMatched floors (GBP) for the tiered live pot.
+MIN_MATCHED_TIER1 = 25_000.0
+MIN_MATCHED_TIER2 = 5_000.0
+MAX_SPREAD_TIER1 = 0.10
+MAX_SPREAD_TIER2 = 0.20
+# Prior used when shrinking a thin match-odds book (Gemini 2026-10-08).
+NEUTRAL_1X2 = (0.40, 0.27, 0.33)
+# Back-compat alias used by the diagnostic pull report.
+MIN_MATCHED_MATCH_ODDS = MIN_MATCHED_TIER1
 
 
 def load_secret(name: str) -> str:
@@ -60,11 +67,16 @@ def redact(text: str, *secrets: str) -> str:
     return out
 
 
-def mid_implied(back: float | None, lay: float | None) -> float | None:
+def mid_implied(
+    back: float | None,
+    lay: float | None,
+    *,
+    max_rel_spread: float = MAX_REL_SPREAD,
+) -> float | None:
     """Unweighted mid of best back and best lay implied probabilities.
 
     Returns None when either side is missing, crossed, or wider than
-    ``MAX_REL_SPREAD``.
+    ``max_rel_spread``.
     """
     if back is None or lay is None:
         return None
@@ -72,9 +84,53 @@ def mid_implied(back: float | None, lay: float | None) -> float | None:
         return None
     if lay <= back:
         return None
-    if (lay - back) / back > MAX_REL_SPREAD:
+    if (lay - back) / back > max_rel_spread:
         return None
     return 0.5 * (1.0 / back + 1.0 / lay)
+
+
+def max_rel_spread(book: Mapping[str, Any], catalogue: Mapping[str, Any]) -> float | None:
+    """Largest (lay-back)/back among two-sided runners. None if none qualify."""
+    names_ok = {int(r["selectionId"]) for r in catalogue.get("runners") or []}
+    widest: float | None = None
+    for runner in book.get("runners") or []:
+        if int(runner["selectionId"]) not in names_ok:
+            continue
+        back, lay = best_prices(runner)
+        if back is None or lay is None or back <= 1.0 or lay <= back:
+            continue
+        rel = (lay - back) / back
+        if widest is None or rel > widest:
+            widest = rel
+    return widest
+
+
+def fair_decimal(probability: float) -> float:
+    """Decimal odds for a simplex probability. Clipped away from 0 and 1."""
+    p = min(max(float(probability), 1e-6), 1.0 - 1e-6)
+    return 1.0 / p
+
+
+def shrink_1x2(
+    p_home: float,
+    p_draw: float,
+    p_away: float,
+    *,
+    matched: float,
+) -> tuple[float, float, float, str]:
+    """Tiered liquidity protocol. Returns probs and tier label."""
+    prior_h, prior_d, prior_a = NEUTRAL_1X2
+    if matched >= MIN_MATCHED_TIER1:
+        return p_home, p_draw, p_away, "tier1"
+    if matched >= MIN_MATCHED_TIER2:
+        weight = matched / MIN_MATCHED_TIER1
+        return (
+            weight * p_home + (1.0 - weight) * prior_h,
+            weight * p_draw + (1.0 - weight) * prior_d,
+            weight * p_away + (1.0 - weight) * prior_a,
+            "tier2",
+        )
+    return prior_h, prior_d, prior_a, "tier3_neutral"
 
 
 def simplex(raw: Mapping[str, float | None], mass: float = 1.0) -> dict[str, float]:
@@ -297,3 +353,226 @@ def classify_outright(market_name: str) -> str | None:
     if "premier league" in name and "outright" in name:
         return "winner"
     return None
+
+
+def _market_type(catalogue: Mapping[str, Any]) -> str:
+    desc = catalogue.get("description") or {}
+    return str(desc.get("marketType") or catalogue.get("marketName") or "").upper()
+
+
+def match_probs_from_book(
+    book: Mapping[str, Any],
+    catalogue: Mapping[str, Any],
+    *,
+    home_name: str,
+    away_name: str,
+) -> tuple[dict[str, float], float, float | None, str] | None:
+    """Simplex 1X2 probs, matched volume, max spread, tier label.
+
+    Returns None when fewer than two runners have a two-sided mid.
+    """
+    from src.teams import norm_team
+
+    mids = runner_mids(book, catalogue)
+    draw = mids.get("The Draw")
+    home = away = None
+    home_key = norm_team(home_name)
+    away_key = norm_team(away_name)
+    for name, mid in mids.items():
+        if name == "The Draw":
+            continue
+        key = norm_team(name)
+        if key == home_key:
+            home = mid
+        elif key == away_key:
+            away = mid
+    # Fallback: event "Home v Away" ordering of non-draw runners.
+    if home is None or away is None:
+        others = [(n, v) for n, v in mids.items() if n != "The Draw"]
+        if len(others) >= 2:
+            home = home if home is not None else others[0][1]
+            away = away if away is not None else others[1][1]
+    raw = {"home": home, "draw": draw, "away": away}
+    if sum(1 for v in raw.values() if v is not None) < 2:
+        return None
+    # Fill a missing side from residual before simplex when exactly one missing.
+    present = {k: float(v) for k, v in raw.items() if v is not None}
+    if len(present) == 2:
+        missing = next(k for k in raw if k not in present)
+        residual = max(0.0, 1.0 - sum(present.values()))
+        present[missing] = residual if residual > 0 else 1e-6
+    probs = simplex(present, mass=1.0)
+    if len(probs) < 3:
+        return None
+    matched = float(book.get("totalMatched") or 0.0)
+    spread = max_rel_spread(book, catalogue)
+    if spread is not None and spread > MAX_SPREAD_TIER2:
+        p_h, p_d, p_a, tier = NEUTRAL_1X2[0], NEUTRAL_1X2[1], NEUTRAL_1X2[2], "tier3_wide"
+    else:
+        p_h, p_d, p_a, tier = shrink_1x2(
+            probs["home"], probs["draw"], probs["away"], matched=matched
+        )
+        if spread is not None and spread > MAX_SPREAD_TIER1 and tier == "tier1":
+            # Demote a wide tier-1 book to shrinkage.
+            weight = matched / MIN_MATCHED_TIER1
+            prior_h, prior_d, prior_a = NEUTRAL_1X2
+            p_h = weight * p_h + (1.0 - weight) * prior_h
+            p_d = weight * p_d + (1.0 - weight) * prior_d
+            p_a = weight * p_a + (1.0 - weight) * prior_a
+            tier = "tier2_wide"
+    # Renormalise after shrinkage.
+    total = p_h + p_d + p_a
+    p_h, p_d, p_a = p_h / total, p_d / total, p_a / total
+    return {"home": p_h, "draw": p_d, "away": p_a}, matched, spread, tier
+
+
+def ou25_decimals(book: Mapping[str, Any], catalogue: Mapping[str, Any]) -> tuple[float, float] | None:
+    """Fair decimal Over/Under 2.5 from a Betfair OVER_UNDER_25 book."""
+    mids = runner_mids(book, catalogue)
+    over = under = None
+    for name, mid in mids.items():
+        label = name.lower()
+        if "over" in label:
+            over = mid
+        elif "under" in label:
+            under = mid
+    if over is None or under is None:
+        return None
+    probs = simplex({"over": over, "under": under}, mass=1.0)
+    if "over" not in probs or "under" not in probs:
+        return None
+    return fair_decimal(probs["over"]), fair_decimal(probs["under"])
+
+
+def fetch_epl_line_quotes(
+    client: BetfairClient,
+    *,
+    raw_dir: Path | None = None,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """MATCH_ODDS + OVER_UNDER_25 quotes keyed for ``lines.assemble``.
+
+    Each quote carries fair decimal AvgH/D/A (1/p after simplex and liquidity
+    tiers) so ``side_pot``'s Shin path reduces to the identity. Odds API and
+    ESPN are not consulted.
+    """
+    catalogue = client.list_market_catalogue(
+        {
+            "eventTypeIds": [EVENT_TYPE_SOCCER],
+            "competitionIds": [EPL_COMPETITION_ID],
+            "marketTypeCodes": ["MATCH_ODDS", "OVER_UNDER_25"],
+        },
+        max_results=200,
+    )
+    if raw_dir is not None:
+        raw_dir.mkdir(parents=True, exist_ok=True)
+        (raw_dir / "catalogue.json").write_text(
+            json.dumps(catalogue, indent=2), encoding="utf-8"
+        )
+    market_ids = [str(m["marketId"]) for m in catalogue if m.get("marketId")]
+    books = client.list_market_book(market_ids)
+    if raw_dir is not None:
+        (raw_dir / "books.json").write_text(json.dumps(books, indent=2), encoding="utf-8")
+    book_by_id = {str(b["marketId"]): b for b in books}
+
+    # Group by event id.
+    by_event: dict[str, dict[str, Any]] = {}
+    for market in catalogue:
+        event = market.get("event") or {}
+        eid = str(event.get("id") or "")
+        if not eid:
+            continue
+        slot = by_event.setdefault(
+            eid,
+            {
+                "event": event,
+                "match_odds": None,
+                "ou25": None,
+                "start": market.get("marketStartTime") or event.get("openDate"),
+            },
+        )
+        mtype = _market_type(market)
+        name = str(market.get("marketName") or "").upper()
+        if mtype == "MATCH_ODDS" or name == "MATCH ODDS":
+            slot["match_odds"] = market
+        elif mtype == "OVER_UNDER_25" or "OVER/UNDER 2.5" in name or "O/U 2.5" in name:
+            slot["ou25"] = market
+
+    from src.teams import norm_team as _norm
+
+    def _key_team(name: str) -> str:
+        return _norm(str(name).replace("&", " and "))
+
+    quotes: list[dict[str, Any]] = []
+    tiers: dict[str, int] = {}
+    for eid, slot in by_event.items():
+        market = slot.get("match_odds")
+        if market is None:
+            continue
+        book = book_by_id.get(str(market["marketId"]))
+        if book is None:
+            continue
+        event = slot["event"]
+        event_name = str(event.get("name") or "")
+        if " v " not in event_name:
+            continue
+        home_name, away_name = event_name.split(" v ", 1)
+        home_name, away_name = home_name.strip(), away_name.strip()
+        parsed = match_probs_from_book(
+            book, market, home_name=home_name, away_name=away_name
+        )
+        if parsed is None:
+            # Illiquid / one-sided → neutral pot, still emit a row so the week prices.
+            p_h, p_d, p_a = NEUTRAL_1X2
+            matched = float(book.get("totalMatched") or 0.0)
+            tier = "tier3_unquoted"
+            spread = None
+        else:
+            probs, matched, spread, tier = parsed
+            p_h, p_d, p_a = probs["home"], probs["draw"], probs["away"]
+        tiers[tier] = tiers.get(tier, 0) + 1
+        over_dec = under_dec = None
+        ou_market = slot.get("ou25")
+        if ou_market is not None:
+            ou_book = book_by_id.get(str(ou_market["marketId"]))
+            if ou_book is not None:
+                ou = ou25_decimals(ou_book, ou_market)
+                if ou is not None:
+                    over_dec, under_dec = ou
+        start = str(slot.get("start") or "")
+        day = start[:10] if len(start) >= 10 else ""
+        if not day:
+            continue
+        quotes.append(
+            {
+                "key": (day, _key_team(home_name), _key_team(away_name)),
+                "day": day,
+                "home": home_name,
+                "away": away_name,
+                "avg_h": round(fair_decimal(p_h), 4),
+                "avg_d": round(fair_decimal(p_d), 4),
+                "avg_a": round(fair_decimal(p_a), 4),
+                "over": None if over_dec is None else round(over_dec, 4),
+                "under": None if under_dec is None else round(under_dec, 4),
+                "source": "betfair",
+                "books": 1,
+                "tier": tier,
+                "matched": matched,
+                "spread": spread,
+                "event_id": eid,
+                "market_id": market["marketId"],
+            }
+        )
+    meta = {
+        "sent": True,
+        "ok": True,
+        "reason": "betfair",
+        "detail": "",
+        "source": "betfair",
+        "n_events": len(quotes),
+        "n_markets": len(catalogue),
+        "tiers": tiers,
+        "remaining": "",
+        "last": "",
+        "used": "",
+    }
+    return quotes, meta
