@@ -1,11 +1,10 @@
 {
-  "milestone": "week-freeze-bar-lock",
-  "status": "schema_locked_no_row_yet",
-  "summary": "freeze_week schema and GW6–25 bar locked before points. First JSONL row at T-1h only. HOLDOUT_FREEZE untouched.",
+  "milestone": "git-sync-and-tag-depth",
+  "status": "branch_synced",
+  "summary": "Branch even with origin. Ignored large untracked dumps. Minutes path is FPL-news-only LLM→xmi; strings stay intermediate, not MILP inputs.",
   "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
-    "src/live/freeze_week.py",
-    "reports/week_freeze_bar_20261008.md",
-    "tests/test_freeze_week.py"
+    "reports/minutes_tag_depth_20261008.md",
+    ".gitignore"
   ]
 }
