@@ -322,6 +322,25 @@ def render_report(payload: Mapping[str, Any]) -> str:
             f"{float(arm['rebuild_gap_gw'] or 0.0):.2f} | {arm.get('chip')} | "
             f"{arm.get('line_weeks')} |"
         )
+    lines.extend(
+        [
+            "",
+            "## Horizon outlooks (held XI)",
+            "",
+            "| Arm | GW6 | GW7 | GW8 | Copy note |",
+            "| --- | ---: | ---: | ---: | --- |",
+        ]
+    )
+    for arm in payload.get("arms") or []:
+        if arm.get("skipped"):
+            lines.append(f"| {arm['key']} | — | — | — | skipped |")
+            continue
+        by_gw = {int(row["gw"]): float(row["held_xi"]) for row in arm.get("outlooks") or []}
+        note = arm.get("copy_note") or "(none — outrights filled unpriced weeks)"
+        lines.append(
+            f"| {arm['key']} | {by_gw.get(6, 0.0):.2f} | {by_gw.get(7, 0.0):.2f} | "
+            f"{by_gw.get(8, 0.0):.2f} | {note} |"
+        )
     lines.extend(["", "## Deltas vs arm0 (not performance)", ""])
     deltas = payload.get("deltas_vs_arm0") or {}
     if not deltas:

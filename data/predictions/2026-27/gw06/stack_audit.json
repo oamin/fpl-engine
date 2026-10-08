@@ -2,7 +2,7 @@
   "gw": 6,
   "capture": "/workspace/data/predictions/2026-27/gw06/official_20261007T220914Z.csv",
   "betfair_dir": "/workspace/data/predictions/2026-27/gw06/betfair_20261008",
-  "betfair_ready": false,
+  "betfair_ready": true,
   "arms": [
     {
       "key": "arm0_baseline",
@@ -129,14 +129,124 @@
     {
       "key": "arm2_betfair",
       "label": "Betfair lines + tags + GW7 copy",
-      "skipped": true,
-      "reason": "Betfair derived folder missing: /workspace/data/predictions/2026-27/gw06/betfair_20261008"
+      "skipped": false,
+      "use_tags": true,
+      "use_betfair_lines": true,
+      "use_outrights": false,
+      "line_weeks": [
+        6,
+        7
+      ],
+      "horizon_weeks": [
+        6,
+        7,
+        8
+      ],
+      "copy_note": "GW8 repeats GW7 and has no 1X2 of its own.",
+      "chip": "wildcard",
+      "rebuild_gap_gw": 11.801995683891008,
+      "outlooks": [
+        {
+          "gw": 6,
+          "held_xi": 55.81879878829814,
+          "held_bench": 6.079514429152553,
+          "rebuilt_xi": 67.62079447218915,
+          "fh_xi": 67.62079447218915
+        },
+        {
+          "gw": 7,
+          "held_xi": 50.351986242991956,
+          "held_bench": 5.9389850719429305,
+          "rebuilt_xi": 57.88489990538745,
+          "fh_xi": 60.57851688387386
+        },
+        {
+          "gw": 8,
+          "held_xi": 50.351986242991956,
+          "held_bench": 5.9389850719429305,
+          "rebuilt_xi": 57.88489990538745,
+          "fh_xi": 60.57851688387386
+        }
+      ],
+      "owned_gw6": {
+        "Lammens": 3.606762086838543,
+        "Davis": 4.730590959098273,
+        "Calafiori": 5.083271292702795,
+        "Gu\u00e9hi": 3.637751177362985,
+        "Barnes": 3.5778340139426272,
+        "B.Fernandes": 6.022831625441625,
+        "Rogers": 6.222296508633152,
+        "Cherki": 3.435682586551926,
+        "\u00d8degaard": 4.903551284176821,
+        "Calvert-Lewin": 2.7958101475686616,
+        "Haaland": 4.860124634848831,
+        "Forster": 0.0,
+        "van Ewijk": 3.2837042815838995,
+        "Shaw": 3.515806110067403,
+        "Scarlett": 0.0
+      },
+      "owned_gw6_sum": 55.67601670881754
     },
     {
       "key": "arm3_full",
       "label": "Betfair lines + tags + outright forecast",
-      "skipped": true,
-      "reason": "Betfair derived folder missing: /workspace/data/predictions/2026-27/gw06/betfair_20261008"
+      "skipped": false,
+      "use_tags": true,
+      "use_betfair_lines": true,
+      "use_outrights": true,
+      "line_weeks": [
+        6,
+        7
+      ],
+      "horizon_weeks": [
+        6,
+        7,
+        8
+      ],
+      "copy_note": "",
+      "chip": "wildcard",
+      "rebuild_gap_gw": 11.801995683891008,
+      "outlooks": [
+        {
+          "gw": 6,
+          "held_xi": 55.81879878829814,
+          "held_bench": 6.079514429152553,
+          "rebuilt_xi": 67.62079447218915,
+          "fh_xi": 67.62079447218915
+        },
+        {
+          "gw": 7,
+          "held_xi": 50.351986242991956,
+          "held_bench": 5.9389850719429305,
+          "rebuilt_xi": 57.88489990538745,
+          "fh_xi": 60.57851688387386
+        },
+        {
+          "gw": 8,
+          "held_xi": 52.93245886840443,
+          "held_bench": 6.4350097440834375,
+          "rebuilt_xi": 62.20932215695075,
+          "fh_xi": 62.904152094849024
+        }
+      ],
+      "owned_gw6": {
+        "Lammens": 3.606762086838543,
+        "Davis": 4.730590959098273,
+        "Calafiori": 5.083271292702795,
+        "Gu\u00e9hi": 3.637751177362985,
+        "Barnes": 3.5778340139426272,
+        "B.Fernandes": 6.022831625441625,
+        "Rogers": 6.222296508633152,
+        "Cherki": 3.435682586551926,
+        "\u00d8degaard": 4.903551284176821,
+        "Calvert-Lewin": 2.7958101475686616,
+        "Haaland": 4.860124634848831,
+        "Forster": 0.0,
+        "van Ewijk": 3.2837042815838995,
+        "Shaw": 3.515806110067403,
+        "Scarlett": 0.0
+      },
+      "owned_gw6_sum": 55.67601670881754
     }
   ],
   "deltas_vs_arm0": {
@@ -188,6 +298,166 @@
         }
       ],
       "copy_note": "GW8 repeats GW7 and has no 1X2 of its own.",
+      "chip": "wildcard"
+    },
+    "arm2_betfair": {
+      "owned_sum_delta": 3.6390249551130722,
+      "rebuild_gap_delta": -0.7941278703497687,
+      "owned_movers": [
+        {
+          "player": "van Ewijk",
+          "baseline": 0.23412078729781202,
+          "arm": 3.2837042815838995,
+          "delta": 3.0495834942860873
+        },
+        {
+          "player": "Rogers",
+          "baseline": 5.735855411366668,
+          "arm": 6.222296508633152,
+          "delta": 0.4864410972664839
+        },
+        {
+          "player": "B.Fernandes",
+          "baseline": 5.6325789249041325,
+          "arm": 6.022831625441625,
+          "delta": 0.3902527005374923
+        },
+        {
+          "player": "Barnes",
+          "baseline": 3.8145320666389075,
+          "arm": 3.5778340139426272,
+          "delta": -0.2366980526962803
+        },
+        {
+          "player": "\u00d8degaard",
+          "baseline": 5.024850137463713,
+          "arm": 4.903551284176821,
+          "delta": -0.12129885328689216
+        },
+        {
+          "player": "Haaland",
+          "baseline": 4.74200825020403,
+          "arm": 4.860124634848831,
+          "delta": 0.11811638464480101
+        },
+        {
+          "player": "Shaw",
+          "baseline": 3.6072402902090337,
+          "arm": 3.515806110067403,
+          "delta": -0.09143418014163052
+        },
+        {
+          "player": "Gu\u00e9hi",
+          "baseline": 3.553135741222517,
+          "arm": 3.637751177362985,
+          "delta": 0.08461543614046807
+        },
+        {
+          "player": "Lammens",
+          "baseline": 3.685232196782815,
+          "arm": 3.606762086838543,
+          "delta": -0.07847010994427217
+        },
+        {
+          "player": "Calafiori",
+          "baseline": 5.154584322472606,
+          "arm": 5.083271292702795,
+          "delta": -0.07131302976981058
+        },
+        {
+          "player": "Cherki",
+          "baseline": 3.367316445269347,
+          "arm": 3.435682586551926,
+          "delta": 0.06836614128257912
+        },
+        {
+          "player": "Calvert-Lewin",
+          "baseline": 2.7533113121947164,
+          "arm": 2.7958101475686616,
+          "delta": 0.042498835373945276
+        }
+      ],
+      "copy_note": "GW8 repeats GW7 and has no 1X2 of its own.",
+      "chip": "wildcard"
+    },
+    "arm3_full": {
+      "owned_sum_delta": 3.6390249551130722,
+      "rebuild_gap_delta": -0.7941278703497687,
+      "owned_movers": [
+        {
+          "player": "van Ewijk",
+          "baseline": 0.23412078729781202,
+          "arm": 3.2837042815838995,
+          "delta": 3.0495834942860873
+        },
+        {
+          "player": "Rogers",
+          "baseline": 5.735855411366668,
+          "arm": 6.222296508633152,
+          "delta": 0.4864410972664839
+        },
+        {
+          "player": "B.Fernandes",
+          "baseline": 5.6325789249041325,
+          "arm": 6.022831625441625,
+          "delta": 0.3902527005374923
+        },
+        {
+          "player": "Barnes",
+          "baseline": 3.8145320666389075,
+          "arm": 3.5778340139426272,
+          "delta": -0.2366980526962803
+        },
+        {
+          "player": "\u00d8degaard",
+          "baseline": 5.024850137463713,
+          "arm": 4.903551284176821,
+          "delta": -0.12129885328689216
+        },
+        {
+          "player": "Haaland",
+          "baseline": 4.74200825020403,
+          "arm": 4.860124634848831,
+          "delta": 0.11811638464480101
+        },
+        {
+          "player": "Shaw",
+          "baseline": 3.6072402902090337,
+          "arm": 3.515806110067403,
+          "delta": -0.09143418014163052
+        },
+        {
+          "player": "Gu\u00e9hi",
+          "baseline": 3.553135741222517,
+          "arm": 3.637751177362985,
+          "delta": 0.08461543614046807
+        },
+        {
+          "player": "Lammens",
+          "baseline": 3.685232196782815,
+          "arm": 3.606762086838543,
+          "delta": -0.07847010994427217
+        },
+        {
+          "player": "Calafiori",
+          "baseline": 5.154584322472606,
+          "arm": 5.083271292702795,
+          "delta": -0.07131302976981058
+        },
+        {
+          "player": "Cherki",
+          "baseline": 3.367316445269347,
+          "arm": 3.435682586551926,
+          "delta": 0.06836614128257912
+        },
+        {
+          "player": "Calvert-Lewin",
+          "baseline": 2.7533113121947164,
+          "arm": 2.7958101475686616,
+          "delta": 0.042498835373945276
+        }
+      ],
+      "copy_note": "",
       "chip": "wildcard"
     }
   },
