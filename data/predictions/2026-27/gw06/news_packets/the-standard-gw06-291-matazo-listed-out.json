@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:291-matazo-listed-out",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Hull City",
+  "player_ids": [
+    291
+  ],
+  "headline": "Matazo listed out",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Matazo is out with a ACL injury.",
+  "sha256": "bd966edb7d0e93e8fe9c0d6c5593fcf59347f0bd66b21309051fa94df4330a22"
+}

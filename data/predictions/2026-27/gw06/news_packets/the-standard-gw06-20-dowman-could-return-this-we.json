@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:20-dowman-could-return-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Arsenal",
+  "player_ids": [
+    20
+  ],
+  "headline": "Dowman could return this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Dowman could return this weekend (knock).",
+  "sha256": "cbc45c8f13eddb76343b4043915c3e0b3c2924746fcd61b61ebf6356c2323531"
+}

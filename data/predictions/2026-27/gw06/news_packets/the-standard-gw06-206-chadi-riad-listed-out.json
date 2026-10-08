@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:206-chadi-riad-listed-out",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Crystal Palace",
+  "player_ids": [
+    206
+  ],
+  "headline": "Chadi Riad listed out",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Chadi Riad is out with a knee injury.",
+  "sha256": "5763cba159769d3c03de39b83cc1aa678eab9c907d943152fa89203fbc526dfe"
+}

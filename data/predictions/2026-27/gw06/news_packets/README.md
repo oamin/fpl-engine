@@ -11,9 +11,11 @@ The URL must be a real `http(s)` article. A host or path containing
 `example` (or `localhost`) is rejected. `fpl:bootstrap` is allowed only
 on synthetic FPL packets. Do not hand-write a presser quote.
 
-Also whitelisted from 2026-10-08: `manchestereveningnews`, `sportsmole`,
-`football_london`, `the_standard`, `coventry_telegraph`, `chronicle_live`,
-`haaglanden_voetbal`. The latest packet's time wins the tag.
+Every 2026/27 club has a local desk in `CLUB_PRESS` (MEN, Football London,
+Birmingham Mail, Bournemouth Echo, The Argus, Liverpool Echo, Hull Daily Mail,
+East Anglian Daily Times, Yorkshire Evening Post, Nottingham Post, Sunderland
+Echo, Coventry Telegraph, Chronicle, plus Sports Mole and The Standard).
+The latest packet's time wins the tag. "Could return this weekend" stays `ask`.
 
 Validate:
 

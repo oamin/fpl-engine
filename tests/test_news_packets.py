@@ -58,6 +58,32 @@ class NewsPackets(unittest.TestCase):
             np.validate_packet(raw, deadline_utc="2026-10-10T10:00:00Z")
         self.assertIn("placeholder", str(caught.exception))
 
+    def test_every_club_has_a_local_desk(self) -> None:
+        self.assertEqual(len(np.CLUB_PRESS), 20)
+        for club, sources in np.CLUB_PRESS.items():
+            self.assertTrue(sources, club)
+            for source in sources:
+                self.assertIn(source, np.SOURCE_WHITELIST, club)
+
+    def test_could_return_is_not_ruled_out(self) -> None:
+        deadline = "2026-10-10T10:00:00Z"
+        packet = np.validate_packet(
+            _packet(
+                source="the_standard",
+                packet_id="the_standard:gw06:dowman-could-return",
+                url="https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+                headline="Dowman could return this weekend",
+                body="The Standard says Max Dowman could return this weekend (knock).",
+                published_at_utc="2026-10-08T17:34:13Z",
+                player_ids=[1],
+                club="Arsenal",
+            ),
+            deadline_utc=deadline,
+        )
+        tag, cited = np.classify_packets_deterministic([packet], player_name="Dowman")
+        self.assertEqual(tag, "ask")
+        self.assertEqual(cited, ["the_standard:gw06:dowman-could-return"])
+
     def test_local_outlets_are_whitelisted(self) -> None:
         raw = _packet(source="sportsmole", packet_id="sportsmole:gw06:haaland")
         packet = np.validate_packet(raw, deadline_utc="2026-10-10T10:00:00Z")

@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:536-reinildo-suspended-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Sunderland",
+  "player_ids": [
+    536
+  ],
+  "headline": "Reinildo suspended this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Reinildo is suspended for this match.",
+  "sha256": "92c8863ef2bdadca41bd8db6390f8c8a886422dd430a2ad7d2930969f81f95ce"
+}

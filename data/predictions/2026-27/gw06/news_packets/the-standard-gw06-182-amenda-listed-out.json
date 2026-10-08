@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:182-amenda-listed-out",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Coventry City",
+  "player_ids": [
+    182
+  ],
+  "headline": "Amenda listed out",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Amenda is out with a calf injury.",
+  "sha256": "7be6d56a28cb4ebbbf436c05885d2a6ca3785aa5efb95be51469531a4f273287"
+}

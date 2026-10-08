@@ -9,13 +9,13 @@
       "position": "DEF",
       "tag": "injured",
       "cited_packet_ids": [
-        "the_standard:gw06:saliba-still-out-with-a-long-term-back-injury"
+        "the_standard:gw06:6-saliba-listed-out"
       ],
       "prior": null,
       "status": "i",
       "chance": 0.0,
       "xmi_compiled": 0.0,
-      "n_packets": 5
+      "n_packets": 6
     },
     {
       "player_id": 175,
@@ -23,13 +23,13 @@
       "position": "DEF",
       "tag": "ask",
       "cited_packet_ids": [
-        "coventry_telegraph:gw06:lampard-says-van-ewijk-is-back-in-training"
+        "the_standard:gw06:175-van-ewijk-could-return-this-weekend"
       ],
       "prior": 90.0,
       "status": "d",
       "chance": 75.0,
       "xmi_compiled": null,
-      "n_packets": 4
+      "n_packets": 5
     },
     {
       "player_id": 411,
@@ -37,15 +37,15 @@
       "position": "FWD",
       "tag": "ask",
       "cited_packet_ids": [
-        "sportsmole:gw06:haaland-a-minor-doubt-for-liverpool-with-fatigue"
+        "the_standard:gw06:411-haaland-could-return-this-weekend"
       ],
       "prior": 90.0,
       "status": "a",
       "chance": null,
       "xmi_compiled": null,
-      "n_packets": 4
+      "n_packets": 5
     }
   ],
   "context_report": "reports/packet_xmi_compile_demo_20261008.md",
-  "rule": "latest published_at_utc wins; negated injury is not injured"
+  "all_clubs_report": "reports/packet_xmi_all_clubs_20261008.md"
 }

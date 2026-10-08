@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:387-o-reilly-could-return-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Man City",
+  "player_ids": [
+    387
+  ],
+  "headline": "O'Reilly could return this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: O'Reilly could return this weekend (unknown).",
+  "sha256": "9c49871237124a34a6b7bb789808f91ad7573505a30a2c99ee0e72cf348c8835"
+}

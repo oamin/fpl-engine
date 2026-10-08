@@ -64,8 +64,43 @@ SOURCE_WHITELIST = frozenset(
         "coventry_telegraph",
         "chronicle_live",
         "haaglanden_voetbal",
+        # Local desk for every 2026/27 club, same class as MEN / Chronicle.
+        "birmingham_mail",
+        "bournemouth_echo",
+        "the_argus",
+        "liverpool_echo",
+        "hull_daily_mail",
+        "east_anglian_daily_times",
+        "yorkshire_evening_post",
+        "nottingham_post",
+        "sunderland_echo",
     }
 )
+
+# Club name in the FPL bootstrap → local press keys. League-wide outlets
+# (bbc_sport, sportsmole, the_standard, guardian, skysports) sit outside this map.
+CLUB_PRESS: dict[str, tuple[str, ...]] = {
+    "Arsenal": ("football_london", "the_standard"),
+    "Aston Villa": ("birmingham_mail",),
+    "Bournemouth": ("bournemouth_echo",),
+    "Brentford": ("football_london",),
+    "Brighton": ("the_argus",),
+    "Chelsea": ("football_london",),
+    "Coventry City": ("coventry_telegraph",),
+    "Crystal Palace": ("football_london",),
+    "Everton": ("liverpool_echo",),
+    "Fulham": ("football_london",),
+    "Hull City": ("hull_daily_mail",),
+    "Ipswich Town": ("east_anglian_daily_times",),
+    "Leeds": ("yorkshire_evening_post",),
+    "Liverpool": ("liverpool_echo",),
+    "Man City": ("manchestereveningnews",),
+    "Man Utd": ("manchestereveningnews",),
+    "Newcastle": ("chronicle_live",),
+    "Nott'm Forest": ("nottingham_post",),
+    "Spurs": ("football_london",),
+    "Sunderland": ("sunderland_echo",),
+}
 
 _SLUG = re.compile(r"[^a-z0-9]+")
 
@@ -354,6 +389,7 @@ def _clears_doubt(text: str) -> bool:
             "injury eased",
             "back training",
             "back in training",
+            "could return this weekend",
         )
     )
 
@@ -369,6 +405,8 @@ def _tag_one_packet(packet: NewsPacket, *, player_name: str) -> str:
     for tag, phrases in SUPPORT.items():
         for sentence in sentences:
             if tag == "injured" and any(phrase in sentence for phrase in _INJURY_NEGATION):
+                continue
+            if tag == "injured" and "could return this weekend" in text:
                 continue
             matched = [phrase for phrase in phrases if fold(phrase) in sentence]
             if tag == "injured" and matched == ["doubt"] and _clears_doubt(text):

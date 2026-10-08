@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:165-jo-o-pedro-listed-out",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Chelsea",
+  "player_ids": [
+    165
+  ],
+  "headline": "Jo\u00e3o Pedro listed out",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Jo\u00e3o Pedro is out with a knee injury.",
+  "sha256": "eb9e5f9967831d2f12776b2ce4daece77c44a64145b7f4af8a609f74dbb5a8e9"
+}

@@ -2,13 +2,7 @@
 
 Deterministic SUPPORT phrases → `news_tags.minutes_for_tag`. Does **not** overwrite `data/live/xmi_gw6.csv`.
 
-## Sources admitted 2026-10-08
-
-PI called the GW6 table reliable. Whitelisted and filed, each with its own URL and time:
-
-`bbc_sport`, `mancity_fc`, `guardian`, `skysports` (already on the list), plus `manchestereveningnews`, `sportsmole`, `football_london`, `the_standard`, `coventry_telegraph`, `chronicle_live`, `haaglanden_voetbal`.
-
-The latest `published_at_utc` decides the tag. A sentence that says the injury eased, or that he is not nursing an injury, does not count as `injured`. Bodies are short cites, not full articles.
+The league-wide cite is The Standard's all-20-club list (8 Oct 2026, 17:34 UTC). Counts: `reports/packet_xmi_all_clubs_20261008.md`. These three players are the sample of that file. The latest note wins.
 
 ## Context the compile sees
 
@@ -34,6 +28,9 @@ The latest `published_at_utc` decides the tag. A sentence that says the injury e
 - **[the_standard:gw06:saliba-still-out-with-a-long-term-back-injury]** *the_standard* (2026-10-08T13:53:40Z)
   > Saliba still out with a long-term back injury
   > The Standard, 8 Oct 2026: Saliba has yet to play this season due to a long-term back injury worsened at the World Cup. He avoided surgery. No new official update. French reports say he is running and targeting November or December.
+- **[the_standard:gw06:6-saliba-listed-out]** *the_standard* (2026-10-08T17:34:13Z)
+  > Saliba listed out
+  > The Standard, 8 Oct 2026, all 20 clubs: Saliba is out with a back injury.
 
 ### Player: van Ewijk (id 175)
 - Club: Coventry City | Position: DEF
@@ -54,6 +51,9 @@ The latest `published_at_utc` decides the tag. A sentence that says the injury e
 - **[coventry_telegraph:gw06:lampard-says-van-ewijk-is-back-in-training]** *coventry_telegraph* (2026-10-08T15:14:00Z)
   > Lampard says van Ewijk is back in training
   > Coventry Telegraph, 8 Oct 2026: Frank Lampard said Milan van Ewijk is back in training ahead of Newcastle after a hamstring issue. He hopes van Ewijk will be alright if he comes through the next few days.
+- **[the_standard:gw06:175-van-ewijk-could-return-this-weekend]** *the_standard* (2026-10-08T17:34:13Z)
+  > van Ewijk could return this weekend
+  > The Standard, 8 Oct 2026, all 20 clubs: van Ewijk could return this weekend (hamstring).
 
 ### Player: Haaland (id 411)
 - Club: Man City | Position: FWD
@@ -74,11 +74,14 @@ The latest `published_at_utc` decides the tag. A sentence that says the injury e
 - **[sportsmole:gw06:haaland-a-minor-doubt-for-liverpool-with-fatigue]** *sportsmole* (2026-10-08T07:10:00Z)
   > Haaland a minor doubt for Liverpool with fatigue
   > Sports Mole, 8 Oct 2026: status minor doubt, fatigue, possible return 11 October versus Liverpool. Haaland is not nursing an injury and should be available for selection on Sunday.
+- **[the_standard:gw06:411-haaland-could-return-this-weekend]** *the_standard* (2026-10-08T17:34:13Z)
+  > Haaland could return this weekend
+  > The Standard, 8 Oct 2026, all 20 clubs: Haaland could return this weekend (unknown).
 
 ## Compiled rows
 
 | Player | Tag | Prior | Chance | xmi | Deciding packet |
 | --- | --- | ---: | ---: | ---: | --- |
-| Saliba | injured | none | 0.0 | 0.0 | the_standard:gw06:saliba-still-out-with-a-long-term-back-injury |
-| van Ewijk | ask | 90.0 | 75.0 | no write | coventry_telegraph:gw06:lampard-says-van-ewijk-is-back-in-training |
-| Haaland | ask | 90.0 | blank | no write | sportsmole:gw06:haaland-a-minor-doubt-for-liverpool-with-fatigue |
+| Saliba | injured | none | 0.0 | 0.0 | the_standard:gw06:6-saliba-listed-out |
+| van Ewijk | ask | 90.0 | 75.0 | no write | the_standard:gw06:175-van-ewijk-could-return-this-weekend |
+| Haaland | ask | 90.0 | blank | no write | the_standard:gw06:411-haaland-could-return-this-weekend |

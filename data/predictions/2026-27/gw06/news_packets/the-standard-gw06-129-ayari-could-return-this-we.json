@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:129-ayari-could-return-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Brighton",
+  "player_ids": [
+    129
+  ],
+  "headline": "Ayari could return this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Ayari could return this weekend (illness).",
+  "sha256": "70c7a090e592260efe49b03b80c34d3971cee7ce579cececb5ac3ce13580cd7c"
+}

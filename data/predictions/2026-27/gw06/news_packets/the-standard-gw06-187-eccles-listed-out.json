@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:187-eccles-listed-out",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Coventry City",
+  "player_ids": [
+    187
+  ],
+  "headline": "Eccles listed out",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Eccles is out with a calf injury.",
+  "sha256": "fd01da87036439d30d66c29778849f49fad6c2171af11fdac234797bb319a291"
+}

@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:362-jacquet-could-return-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Liverpool",
+  "player_ids": [
+    362
+  ],
+  "headline": "Jacquet could return this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Jacquet could return this weekend (hamstring strain).",
+  "sha256": "062cac844e9bd4e9ec6bd80dceb72f89ebd83b1fcb68ca42f1b7a51e196d2057"
+}

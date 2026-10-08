@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:593-dedi-could-return-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Newcastle",
+  "player_ids": [
+    593
+  ],
+  "headline": "Dedi\u0107 could return this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Dedi\u0107 could return this weekend (thigh).",
+  "sha256": "7ecae4e5d558012a2468d97fd3ebf5489b83929b051e18ff25794d1f4744fbd2"
+}

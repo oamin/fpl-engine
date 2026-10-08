@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:70-kluivert-could-return-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Bournemouth",
+  "player_ids": [
+    70
+  ],
+  "headline": "Kluivert could return this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Kluivert could return this weekend (muscle).",
+  "sha256": "e6be268fa92c1a5e311328048e77a0a792b787a4b159ad29d99c6f0306641db9"
+}

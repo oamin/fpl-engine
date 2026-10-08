@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:78-kroupi-jr-listed-out",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Bournemouth",
+  "player_ids": [
+    78
+  ],
+  "headline": "Kroupi.Jr listed out",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Kroupi.Jr is out with a ankle injury.",
+  "sha256": "83c4737a6734e8848efcb2c6bfa9a9a3ec0c53f22df04715dd470dbe0cea3987"
+}

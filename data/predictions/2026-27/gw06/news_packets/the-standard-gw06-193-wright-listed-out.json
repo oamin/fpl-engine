@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:193-wright-listed-out",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Coventry City",
+  "player_ids": [
+    193
+  ],
+  "headline": "Wright listed out",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Wright is out with a thigh injury.",
+  "sha256": "cf064477dae4dd91857380ae2c747ee34450de7eed71e3596af2920282e79d51"
+}

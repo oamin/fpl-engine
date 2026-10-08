@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:499-pedro-porro-listed-out",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Spurs",
+  "player_ids": [
+    499
+  ],
+  "headline": "Pedro Porro listed out",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Pedro Porro is out with a hamstring injury.",
+  "sha256": "384b5dc33b71126a94110f22774048d537317c519ef890af415186611e6488d7"
+}

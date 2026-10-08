@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:122-minteh-listed-out",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Brighton",
+  "player_ids": [
+    122
+  ],
+  "headline": "Minteh listed out",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Minteh is out with a leg injury.",
+  "sha256": "c8a1f248ffb2c0679eebc152374dd9877948302897fb304b8947914d89cd759a"
+}

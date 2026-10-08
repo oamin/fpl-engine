@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:380-ekitik-listed-out",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Liverpool",
+  "player_ids": [
+    380
+  ],
+  "headline": "Ekitik\u00e9 listed out",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Ekitik\u00e9 is out with a Achilles injury.",
+  "sha256": "dd152f46147a4e91a906c21d2b062e9cbf9ac75da8cba6173ee667d9679a9c39"
+}

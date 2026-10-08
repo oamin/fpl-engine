@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:116-dunk-could-return-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Brighton",
+  "player_ids": [
+    116
+  ],
+  "headline": "Dunk could return this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Dunk could return this weekend (neck).",
+  "sha256": "93df03b89bcc62f458f13e067d0b17f80ad04ee42439d9d66e9a054c45c375b9"
+}

@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:152-palestra-could-return-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Chelsea",
+  "player_ids": [
+    152
+  ],
+  "headline": "Palestra could return this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Palestra could return this weekend (quad).",
+  "sha256": "2ae5f55705ea9f92680ac3d6f1713939446975f8dab41b71e617dd392c70b380"
+}

@@ -29,7 +29,7 @@ See the live demo for Saliba / van Ewijk / Haaland:
 - `reports/packet_xmi_compile_demo_20261008.md` — markdown the compile sees
 - `reports/packet_xmi_compiled_tags_20261008.json` — numeric rows
 
-The three hand-written GW6 packets are withdrawn. On 2026-10-08 the PI marked the replacement table reliable. Those outlets are now on the whitelist and filed as short cites with their own URLs and times. The latest `published_at_utc` sets the tag, so Haaland's 8 Oct Sports Mole note (fatigue, not an injury, available Sunday) beats the 5 Oct BBC "injury doubt", and Lampard's 8 Oct line that van Ewijk is back in training beats the 19 Sep FPL hamstring flag. Saliba's latest note is still a long-term back injury, so his `xmi` is 0.
+The three hand-written GW6 packets are withdrawn. `CLUB_PRESS` names a local paper for all 20 clubs. The Standard's all-club list (8 Oct 2026, 17:34 UTC) is filed for 128 players. A "could return this weekend" line stays `ask`. Saliba's latest line is still out with a back injury, so his `xmi` is 0. See `reports/packet_xmi_all_clubs_20261008.md`.
 
 ## Live CSV
 

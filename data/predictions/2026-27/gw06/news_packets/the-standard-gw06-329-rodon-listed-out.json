@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:329-rodon-listed-out",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Leeds",
+  "player_ids": [
+    329
+  ],
+  "headline": "Rodon listed out",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Rodon is out with a hamstring injury.",
+  "sha256": "638255eb931e7a1eed8c7327aaa2859fbf6998e20f88457d665695878ec3de27"
+}

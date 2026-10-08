@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:632-ansah-listed-out",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Hull City",
+  "player_ids": [
+    632
+  ],
+  "headline": "Ansah listed out",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Ansah is out with a back injury.",
+  "sha256": "c15085ff6a596c890c9018df8e07fd84dd0c84cb96e2f9d80c87d6a2efe5ad20"
+}

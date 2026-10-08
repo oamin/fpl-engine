@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:315-fatawu-suspended-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Ipswich Town",
+  "player_ids": [
+    315
+  ],
+  "headline": "Fatawu suspended this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Fatawu is suspended for this match.",
+  "sha256": "242335219072404da95fa2a24d1d683e65d85e1c51bd6210b0bda6e5b75ff44d"
+}

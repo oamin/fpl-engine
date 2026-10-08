@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:360-bradley-listed-out",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Liverpool",
+  "player_ids": [
+    360
+  ],
+  "headline": "Bradley listed out",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Bradley is out with a knee injury.",
+  "sha256": "d2e9ac35d99ec61b5c827982bf4ac06f411b26561923917cfdd295e744c7090f"
+}

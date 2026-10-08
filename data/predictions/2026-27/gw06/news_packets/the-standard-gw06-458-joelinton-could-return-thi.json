@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:458-joelinton-could-return-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Newcastle",
+  "player_ids": [
+    458
+  ],
+  "headline": "Joelinton could return this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Joelinton could return this weekend (thigh).",
+  "sha256": "04733293d31603f1ac6f56e41c3f56e27c4a229efc42c7ae20083a0911e2f691"
+}

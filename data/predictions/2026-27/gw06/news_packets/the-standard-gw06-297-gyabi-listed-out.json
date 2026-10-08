@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:297-gyabi-listed-out",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Hull City",
+  "player_ids": [
+    297
+  ],
+  "headline": "Gyabi listed out",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Gyabi is out with a groin injury.",
+  "sha256": "1b25dd3b543531f9204e82fd1fc3a4c6fbcf0c6f91fc7a0816df7d0fbe3eba7d"
+}
