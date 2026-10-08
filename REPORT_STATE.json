@@ -1,10 +1,11 @@
 {
-  "milestone": "git-sync-and-tag-depth",
-  "status": "branch_synced",
-  "summary": "Branch even with origin. Ignored large untracked dumps. Minutes path is FPL-news-only LLM→xmi; strings stay intermediate, not MILP inputs.",
+  "milestone": "audited-news-packets",
+  "status": "packets_ready_numeric_deferred",
+  "summary": "news_packets module: whitelist, leakage gate, sha256, synthetic FPL fallback. String competitor outlined as separate freeze harness. xmi compile deferred.",
   "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
-    "reports/minutes_tag_depth_20261008.md",
-    ".gitignore"
+    "src/live/news_packets.py",
+    "reports/string_competitor_plan_20261008.md",
+    "data/predictions/2026-27/gw06/news_packets/README.md"
   ]
 }

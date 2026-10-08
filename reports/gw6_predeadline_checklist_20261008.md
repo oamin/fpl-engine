@@ -12,7 +12,8 @@ Gemini ([checklist](bc-90156d5d-ce87-56ee-b772-011f4d43dbd0)): sensitivity audit
 ## Friday (after pressers)
 
 1. Refresh `xmi_gw6.csv` on a fresh bootstrap (minutes completion path).
-2. Optional knapsack check: `python3 -m src.live.wildcard_plan --capture <latest official csv>`.
+2. Optional: stage curated notes under `data/predictions/2026-27/gw06/news_packets/` and run `python3 -m src.live.news_packets --gw 6 --validate --with-fpl`.
+3. Optional knapsack check: `python3 -m src.live.wildcard_plan --capture <latest official csv>`.
 
 ## Saturday T−1h (Mac only)
 
