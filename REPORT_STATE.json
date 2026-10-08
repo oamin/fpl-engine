@@ -1,11 +1,11 @@
 {
-  "milestone": "stack-audit-gw6",
-  "status": "tags_arms_done_betfair_pending_sync",
-  "summary": "Four-arm sensitivity audit coded. Arms 0–1 ran: tags move owned GW6 Σ by +2.82 (van Ewijk). Arms 2–3 wait on Mac commit of betfair_20261008 derived files. Not accuracy; realised check after GW6.",
+  "milestone": "stack-audit-gw6-full",
+  "status": "all_arms_ran",
+  "summary": "Full stack audit after Mac betfair_20261008 sync. Tags +2.82 owned Σ; Betfair +3.64 vs baseline; rebuild gap 12.60→11.80; wildcard every arm. Outrights lift GW8 held XI 50.35→52.93 (clear copy). Sensitivity only.",
   "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
-    "src/live/stack_audit.py",
     "reports/stack_audit_gw6.md",
-    "data/predictions/2026-27/gw06/stack_audit.json"
+    "data/predictions/2026-27/gw06/stack_audit.json",
+    "data/predictions/2026-27/gw06/betfair_20261008/"
   ]
 }
