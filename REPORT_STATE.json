@@ -1,11 +1,9 @@
 {
-  "milestone": "stack-audit-gw6-full",
-  "status": "all_arms_ran",
-  "summary": "Full stack audit after Mac betfair_20261008 sync. Tags +2.82 owned Σ; Betfair +3.64 vs baseline; rebuild gap 12.60→11.80; wildcard every arm. Outrights lift GW8 held XI 50.35→52.93 (clear copy). Sensitivity only.",
+  "milestone": "gw6-predeadline-checklist",
+  "status": "stand_by_for_t1",
+  "summary": "Sensitivity audit closed. Before deadline: Friday presser minutes + optional WC dry-run; Saturday T-1h capture, Betfair re-pull, wildcard_plan, deadline note. No more research screens tonight.",
   "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
-    "reports/stack_audit_gw6.md",
-    "data/predictions/2026-27/gw06/stack_audit.json",
-    "data/predictions/2026-27/gw06/betfair_20261008/"
+    "reports/gw6_predeadline_checklist_20261008.md"
   ]
 }
