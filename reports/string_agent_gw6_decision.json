@@ -1,0 +1,50 @@
+{
+  "rationale": "Chip Strategy: Preserved all chips (wildcard, free_hit, bench_boost) as the squad has strong fixture coverage and 14 active Premier League assets, making a chip unnecessary for Gameweek 6.\n\nTransfers: Scarlett (id 528) has permanently departed the Premier League for Leyton Orient (xmi: 0.0), making him a completely dead asset. Selling Scarlett (selling price: 45) with 15 tenths in the bank provides 60 tenths of purchasing power. We use our 1 free transfer (0 hit points) to bring in Chris Wood (id 490, NFO, cost: 58 tenths), leaving 2 tenths in the bank. Wood is Nottingham Forest's talismanic starting striker and penalty taker, avoiding any team quota limits (NFO count: 1) and avoiding a fixture clash with our goalkeeper Lammens (unlike Solanke playing away at Old Trafford).\n\nLineup & Formation (3-5-2): Lammens (412) starts in goal home to Spurs. The back three consists of Calafiori (8) home to Leeds (high clean sheet expectation), Davis (305) home to Fulham, and Guéhi (388). Shaw (423) is benched due to recent rotation, and van Ewijk (175) is benched due to a 75% hamstring doubt. The 5-man midfield is fully deployed: Ødegaard (15) home to Leeds, B.Fernandes (426) home to Spurs, Rogers (40) home to Bournemouth, Barnes (453) away to Coventry, and Cherki (399) away to Liverpool. Up front, Haaland (411) starts alongside Wood (490). Calvert-Lewin (346) is placed as 1st substitute on the bench due to Leeds facing Arsenal away at Emirates, which also eliminates negative correlation with starting defender Calafiori.\n\nCaptaincy: Ødegaard (15) takes the armband given Arsenal's standout home fixture against Leeds and Haaland's 50/50 fatigue concern away at Anfield. Bruno Fernandes (426) is Vice-Captain, offering 90-minute reliability, set-piece/penalty duties, and a home fixture against Spurs.\n\nBench Order: Calvert-Lewin (346) is 1st sub to immediately cover any Haaland absence; Shaw (423) is 2nd sub; van Ewijk (175) is 3rd sub; Forster (58) is backup goalkeeper.",
+  "decision": {
+    "chip_played": null,
+    "squad_15": [
+      "412",
+      "58",
+      "8",
+      "305",
+      "388",
+      "423",
+      "175",
+      "453",
+      "426",
+      "40",
+      "399",
+      "15",
+      "346",
+      "411",
+      "490"
+    ],
+    "starting_11": [
+      "412",
+      "8",
+      "305",
+      "388",
+      "453",
+      "426",
+      "40",
+      "399",
+      "15",
+      "411",
+      "490"
+    ],
+    "captain": "15",
+    "vice_captain": "426",
+    "bench_order": [
+      "346",
+      "423",
+      "175",
+      "58"
+    ],
+    "transfers_in": [
+      "490"
+    ],
+    "transfers_out": [
+      "528"
+    ]
+  }
+}
