@@ -444,7 +444,7 @@ class DecisionCaptureTest(unittest.TestCase):
         self.assertNotIn("export_deadline_scores", source)
         note = inspect.getsource(render)
         self.assertIn("not the decision pair", note)
-        self.assertIn("plays no chip", note)
+        self.assertIn("does not count as a chip rule", note)
         self.assertIn("No manual override is recorded.", note)
         with self.assertRaises(DeadlineError):
             collect(dry_run=False, decision_file=Path("x.csv"))
@@ -512,7 +512,7 @@ class DecisionCaptureTest(unittest.TestCase):
         self.assertIn("Formation 1-3-5-2", note)
         self.assertIn("g1 (C)", note)
         self.assertIn("bank 15 tenths", note)
-        self.assertIn("No transfer. No hit. No chip.", note)
+        self.assertIn("The chip is the logged judgement.", note)
         broken = list(holdings)
         broken[0] = Holding(
             element=broken[0].element,

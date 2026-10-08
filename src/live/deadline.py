@@ -271,7 +271,7 @@ def submitted_line(
     return (
         f"Submitted squad is the current 15, {state}, bank {int(bank)} tenths. "
         f"Formation {shape}. XI: {xi_text}. Bench: {bench_text}. "
-        "No transfer. No hit. No chip."
+        "No transfer and no hit are priced in this note. The chip is the logged judgement."
     )
 
 
@@ -608,7 +608,8 @@ def render(log: DeadlineLog) -> str:
             "Minutes came from the file, a zero stayed a zero, and a player "
             "the file omits kept his last observed minutes. "
             "The transfer search was not run. "
-            "The submitted team plays no chip. A chip named in this note is the plan, not the submission. "
+            "The chip is a logged judgement and does not count as a chip rule. "
+            "A chip named in this note is the plan, not the submission. "
             "An injury flag is the minutes file, and a written zero stays zero. "
             "No manual override is recorded."
         )

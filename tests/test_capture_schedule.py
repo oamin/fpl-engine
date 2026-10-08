@@ -142,6 +142,74 @@ class CaptureScheduleTest(unittest.TestCase):
         source = inspect.getsource(capture_official_ep)
         self.assertNotIn("datetime.now", source)
 
+    def test_force_write_stays_out_of_the_decision_slot(self) -> None:
+        payload = _payload("2026-10-10T10:00:00Z")
+
+        def opener(*_args: object, **_kwargs: object) -> _Response:
+            return _Response(payload, "Wed, 07 Oct 2026 08:19:00 GMT")
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.assertEqual(run(opener, root, force=True), 0)
+            official = list(root.rglob("official_*.csv"))
+            self.assertEqual(len(official), 1)
+            self.assertEqual(list(root.rglob("slot_*.json")), [])
+            with self.assertRaises(RuntimeError):
+                run(opener, None, force=True)
+
+    def test_fail_after_write_leaves_the_file_and_raises(self) -> None:
+        payload = _payload("2026-10-10T10:00:00Z")
+
+        def opener(*_args: object, **_kwargs: object) -> _Response:
+            return _Response(payload, "Wed, 07 Oct 2026 08:19:00 GMT")
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            with self.assertRaises(RuntimeError) as raised:
+                run(opener, root, force=True, fail_after_write=True)
+            self.assertIn("forced failure after the scratch write", str(raised.exception))
+            self.assertEqual(len(list(root.rglob("official_*.csv"))), 1)
+
+    def test_an_engine_failure_still_writes_the_official_slot(self) -> None:
+        from unittest.mock import patch
+
+        from src.eval.capture_schedule import write_snapshot
+
+        payload = _payload("2026-10-10T10:00:00Z")
+        payload["elements"] = [{"id": i, "ep_next": 1.5, "ep_this": 0.0} for i in range(1, 16)]
+        payload["teams"] = [{"id": 1, "name": "Arsenal"}]
+        captured = datetime(2026, 10, 9, 10, 0, tzinfo=timezone.utc)
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            # The live files are absent on CI. Point the checks at a file that exists
+            # so the patched engine is the thing that fails.
+            present = root / "present.txt"
+            present.write_text("x", encoding="utf-8")
+            with (
+                patch("src.eval.predictions.MINUTES_PATH", present),
+                patch("src.live.deadline.ENTRY_PATH", present),
+                patch("src.live.deadline.LOG_PATH", present),
+                patch("src.live.deadline.ODDS_PATH", present),
+                patch("src.live.deadline.FIXTURES_PATH", present),
+                patch(
+                    "src.eval.predictions.export_deadline_scores",
+                    side_effect=RuntimeError("deadline is not priced"),
+                ),
+            ):
+                write_snapshot(payload, captured, gw=6, slot="t24", root=root, pair_engine=True)
+            self.assertEqual(len(list(root.rglob("slot_t24.json"))), 1)
+            self.assertEqual(len(list(root.rglob("official_*.csv"))), 1)
+            errors = list(root.rglob("shadow_error_*.txt"))
+            self.assertEqual(len(errors), 1)
+            self.assertIn("deadline is not priced", errors[0].read_text(encoding="utf-8"))
+
+    def test_the_capture_does_not_call_the_odds_api(self) -> None:
+        import src.eval.capture_schedule as schedule
+
+        source = inspect.getsource(schedule)
+        self.assertNotIn("fetch_odds_api", source)
+        self.assertNotIn("ODDS_API_KEY", source)
+
 
 if __name__ == "__main__":
     unittest.main()

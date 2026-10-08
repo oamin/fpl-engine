@@ -20,7 +20,9 @@ Pull requests 1, 6–32, 33–37, and 39–56 are closed. The counts in them are
 
 ## Gameweek 6 submission, locked 2026-10-07
 
-The decision file is `slot_t1.json`. A missing T−1h file does not fall back to the T−24h capture. The 7 October files are dry runs, including the same-stamp pair at 22:09 UTC. The submitted fifteen is the one already owned. The XI and the captain come from that file's `ep_next`. No transfer, no hit, and no chip. An injury flag is the minutes file, and a written zero stays zero. A manual override is a log entry naming the player, the value, and the reason. None is recorded on the dry run. See `reports/live_dry_run_gw6.md`.
+The decision file is `slot_t1.json`. A missing T−1h file does not fall back to the T−24h capture. The 7 October files are dry runs, including the same-stamp pair at 22:09 UTC. The XI and the captain come from that file's `ep_next`. An injury flag is the minutes file, and a written zero stays zero. A manual override is a log entry naming the player, the value, and the reason. None is recorded on the dry run. See `reports/live_dry_run_gw6.md`.
+
+The chip is a logged judgement, not a chip-rule test. Horizon weights are `0.9**h` for four steps. A week with no opening 1X2 adds zero and the weight stays put. Buys need two starts in the previous three gameweeks, status `a`, and chance null or 100. The budget is `sell_price` plus bank. The decision number is the discounted XI plus captain. On the 22:09 dry run that gap over one free transfer is 114.12, of which the gameweek 6 piece is 39.00, and gameweeks 8 and 9 are unpriced. A requirement was not pre-registered. Realised points stay blank. The command is `python -m src.live.wildcard_plan --capture <official file>`. See `reports/wildcard_plan_gw6_dry_run.md` and `reports/chip_calendar_gw6.md`.
 
 ## Objective functions (from the project outline)
 
