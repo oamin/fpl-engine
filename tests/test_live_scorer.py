@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import inspect
 import json
 import tempfile
 import unittest
@@ -13,10 +14,15 @@ from src.live.deadline import (
     BOOTSTRAP_PATH,
     ENTRY_PATH,
     LOG_PATH,
+    DeadlineError,
+    Holding,
     bench_for_transfers,
+    collect,
     final_players,
     player_key,
+    render,
     run,
+    submitted_line,
 )
 from src.live.scorer import (
     build_pool,
@@ -362,6 +368,193 @@ class PlanTest(unittest.TestCase):
             same = write_shadow_log(root / "shadow_ok.csv", engine, official)
             self.assertEqual(same["captured_at"].tolist(), ["2026-10-07T07:04:50Z"])
             self.assertEqual(float(same["score_xp"].iloc[0]) - float(same["ep_next"].iloc[0]), -1.0)
+
+    def test_ep_next_is_the_number_that_prices_the_eleven(self) -> None:
+        high = ["g1", "d1", "d2", "d3", "m1", "m2", "m3", "m4", "m5", "f1", "f2"]
+        bench = ["g2", "d4", "d5", "f3"]
+        positions = {
+            "g1": "GKP",
+            "g2": "GKP",
+            "d1": "DEF",
+            "d2": "DEF",
+            "d3": "DEF",
+            "d4": "DEF",
+            "d5": "DEF",
+            "m1": "MID",
+            "m2": "MID",
+            "m3": "MID",
+            "m4": "MID",
+            "m5": "MID",
+            "f1": "FWD",
+            "f2": "FWD",
+            "f3": "FWD",
+        }
+        rows = []
+        for index, pid in enumerate(high + bench):
+            rows.append(
+                {
+                    "player_id": pid,
+                    "position": positions[pid],
+                    "team_norm": f"c{index:02d}",
+                    "value": 50,
+                    "eligible": True,
+                    "minutes": 90.0,
+                    "share_xG": 0.0,
+                    "share_xA": 0.0,
+                    "exp_defcon_hit": 0.0,
+                    "total_points": 0.0,
+                    "score_xp": 1.0,
+                }
+            )
+        pool = pd.DataFrame(rows)
+        clubs = {gw: {f"c{i:02d}" for i in range(15)} for gw in range(6, 20)}
+        engine = {pid: 1.0 for pid in high + bench}
+        steps = {6: engine, 7: engine, 8: engine}
+        choice = {pid: 20.0 for pid in high}
+        choice.update({pid: 0.0 for pid in bench})
+        state = SquadState(purchase={pid: 50 for pid in high + bench}, bank=0, ft=1)
+        _plan, weeks = plan_deadline(
+            6, state, pool, steps, clubs, played={1: "triple_captain"}, choice=choice
+        )
+        by_gw = {int(row.gw): row for row in weeks}
+        self.assertEqual(by_gw[6].held.xi_xp, 240.0)
+        self.assertEqual(by_gw[6].held.bench_xp, 0.0)
+        self.assertEqual(by_gw[7].held.xi_xp, 0.0)
+        _engine_plan, engine_weeks = plan_deadline(
+            6, state, pool, steps, clubs, played={1: "triple_captain"}
+        )
+        engine_by = {int(row.gw): row for row in engine_weeks}
+        self.assertEqual(engine_by[6].held.xi_xp, 12.0)
+
+
+def _official(path: Path, rows: list[tuple[str, float]], field: str = "ep_next") -> None:
+    lines = ["player_id,gw,official_xp,source_field,captured_at"]
+    for pid, xp in rows:
+        lines.append(f"{pid},6,{xp},{field},2026-10-10T09:00:00Z")
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+class DecisionCaptureTest(unittest.TestCase):
+    def test_the_live_path_reads_only_the_captured_ep_next(self) -> None:
+        source = inspect.getsource(collect)
+        self.assertIn("load_ep_next", source)
+        self.assertIn("choice=choice", source)
+        self.assertNotIn("score_xp", source)
+        self.assertNotIn("score_steps", source)
+        self.assertNotIn("export_deadline_scores", source)
+        note = inspect.getsource(render)
+        self.assertIn("not the decision pair", note)
+        self.assertIn("plays no chip", note)
+        self.assertIn("No manual override is recorded.", note)
+        with self.assertRaises(DeadlineError):
+            collect(dry_run=False, decision_file=Path("x.csv"))
+        with self.assertRaises(DeadlineError):
+            collect(dry_run=True)
+
+    def test_the_decision_file_is_the_t1_slot(self) -> None:
+        from src.live.scorer import ScorerError, decision_capture_file, load_ep_next
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            early = root / "official_20261009T100000Z.csv"
+            later = root / "official_20261010T090000Z.csv"
+            _official(early, [("a", 4.0), ("b", 1.0)])
+            _official(later, [("a", 9.0), ("b", 9.0)])
+            (root / "slot_t24.json").write_text(
+                json.dumps({"slot": "t24", "official": early.name}),
+                encoding="utf-8",
+            )
+            with self.assertRaises(ScorerError):
+                decision_capture_file(6, root)
+            (root / "slot_t1.json").write_text(
+                json.dumps({"gw": 6, "slot": "t1", "official": early.name}),
+                encoding="utf-8",
+            )
+            chosen = load_ep_next(6, root)
+            self.assertEqual(chosen, {"a": 4.0, "b": 1.0})
+            _official(later, [("a", 0.0), ("b", 0.0)], field="score_xp")
+            with self.assertRaises(ScorerError):
+                load_ep_next(6, path=later)
+            zeros = root / "zeros.csv"
+            _official(zeros, [("a", 0.0), ("b", 0.0)])
+            with self.assertRaises(ScorerError):
+                load_ep_next(6, path=zeros)
+            named = load_ep_next(6, path=early)
+            self.assertEqual(named["a"], 4.0)
+
+    def test_the_submitted_line_is_the_owned_fifteen(self) -> None:
+        roles = (
+            [("g1", "GKP"), ("g2", "GKP")]
+            + [(f"d{i}", "DEF") for i in range(1, 6)]
+            + [(f"m{i}", "MID") for i in range(1, 6)]
+            + [(f"f{i}", "FWD") for i in range(1, 4)]
+        )
+        holdings = [
+            Holding(
+                element=index,
+                key=pid,
+                name=pid,
+                position=pos,
+                team=f"c{index:02d}",
+                purchase=50,
+                purchase_source="gw1",
+                current=50,
+                formula_sell=50,
+                selling=50,
+                selling_source="formula",
+            )
+            for index, (pid, pos) in enumerate(roles, start=1)
+        ]
+        high = {"g1", "d1", "d2", "d3", "m1", "m2", "m3", "m4", "m5", "f1", "f2"}
+        choice = {row.key: (20.0 if row.key in high else 0.0) for row in holdings}
+        note = submitted_line(holdings, choice, 15)
+        self.assertIn("current 15, legal", note)
+        self.assertIn("Formation 1-3-5-2", note)
+        self.assertIn("g1 (C)", note)
+        self.assertIn("bank 15 tenths", note)
+        self.assertIn("No transfer. No hit. No chip.", note)
+        broken = list(holdings)
+        broken[0] = Holding(
+            element=broken[0].element,
+            key=broken[0].key,
+            name=broken[0].name,
+            position=broken[0].position,
+            team=broken[1].team,
+            purchase=50,
+            purchase_source="gw1",
+            current=50,
+            formula_sell=50,
+            selling=50,
+            selling_source="formula",
+        )
+        # Four from one club: g1 joins g2's club, and two more are pointed at it.
+        broken[2] = Holding(
+            element=broken[2].element,
+            key=broken[2].key,
+            name=broken[2].name,
+            position=broken[2].position,
+            team=broken[1].team,
+            purchase=50,
+            purchase_source="gw1",
+            current=50,
+            formula_sell=50,
+            selling=50,
+            selling_source="formula",
+        )
+        broken[3] = Holding(
+            element=broken[3].element,
+            key=broken[3].key,
+            name=broken[3].name,
+            position=broken[3].position,
+            team=broken[1].team,
+            purchase=50,
+            purchase_source="gw1",
+            current=50,
+            formula_sell=50,
+            selling=50,
+            selling_source="formula",
+        )
+        self.assertIn("not legal", submitted_line(broken, choice, 15))
 
 
 def _world() -> tuple[dict, list, pd.DataFrame, pd.DataFrame]:

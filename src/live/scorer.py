@@ -17,6 +17,7 @@ When a captured ``ep_next`` map is passed, that map chooses the squad and
 
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Mapping, Sequence
@@ -332,19 +333,51 @@ def clubs_from_fixtures(
     return out
 
 
-def load_ep_next(gw: int, folder: Path | None = None) -> dict[str, float]:
-    """The pre-deadline ``ep_next`` capture for one gameweek. There is no engine fill."""
-    base = folder or (
+def _capture_dir(gw: int, folder: Path | None) -> Path:
+    if folder is not None:
+        return folder
+    return (
         Path(__file__).resolve().parents[2]
         / "data"
         / "predictions"
         / "2026-27"
         / f"gw{int(gw):02d}"
     )
-    paths = sorted(base.glob("official_*.csv"))
-    if not paths:
+
+
+def decision_capture_file(gw: int, folder: Path | None = None) -> Path:
+    """The T−1h official file. A T−24h file is not a fallback."""
+    base = _capture_dir(gw, folder)
+    marker = base / "slot_t1.json"
+    if not marker.is_file():
+        raise ScorerError(
+            f"GW{gw} has no T-1h decision capture. An earlier file is not a fallback."
+        )
+    meta = json.loads(marker.read_text(encoding="utf-8"))
+    if str(meta.get("slot")) != "t1":
+        raise ScorerError(f"GW{gw} decision slot is not t1")
+    name = Path(str(meta.get("official") or "")).name
+    official = base / name
+    if not name or not official.is_file():
+        raise ScorerError(f"GW{gw} T-1h capture is missing its official file")
+    return official
+
+
+def load_ep_next(
+    gw: int,
+    folder: Path | None = None,
+    *,
+    path: Path | None = None,
+) -> dict[str, float]:
+    """The pre-deadline ``ep_next`` capture. The decision file is the T−1h slot.
+
+    ``path`` is only for a named dry run. It does not become the decision.
+    There is no engine fill, and an all-zero column is refused.
+    """
+    csv_path = path if path is not None else decision_capture_file(gw, folder)
+    if not csv_path.is_file():
         raise ScorerError(f"GW{gw} has no ep_next capture")
-    frame = pd.read_csv(paths[-1])
+    frame = pd.read_csv(csv_path)
     if "source_field" not in frame.columns or not (frame["source_field"] == "ep_next").all():
         raise ScorerError(f"GW{gw} capture is not ep_next")
     chosen: dict[str, float] = {}
@@ -354,6 +387,8 @@ def load_ep_next(gw: int, folder: Path | None = None) -> dict[str, float]:
         chosen[str(row.player_id)] = float(row.official_xp)
     if not chosen:
         raise ScorerError(f"GW{gw} ep_next capture is empty")
+    if all(value == 0.0 for value in chosen.values()):
+        raise ScorerError(f"GW{gw} ep_next capture is all zeros")
     return chosen
 
 

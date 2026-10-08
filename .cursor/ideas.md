@@ -18,6 +18,10 @@ The greedy-minus-hold figure of +7.36 is not a transfer edge to build on. The sa
 
 Pull requests 1, 6–32, 33–37, and 39–56 are closed. The counts in them are not extended. Gameweeks 1–5 of the 2026/27 player file are immutable snapshots. The old single hash of the growing cache is retired and still matches that file. Do not replace a snapshot that already exists.
 
+## Gameweek 6 submission, locked 2026-10-07
+
+The decision file is `slot_t1.json`. A missing T−1h file does not fall back to the T−24h capture. The 7 October files are dry runs, including the same-stamp pair at 22:09 UTC. The submitted fifteen is the one already owned. The XI and the captain come from that file's `ep_next`. No transfer, no hit, and no chip. An injury flag is the minutes file, and a written zero stays zero. A manual override is a log entry naming the player, the value, and the reason. None is recorded on the dry run. See `reports/live_dry_run_gw6.md`.
+
 ## Objective functions (from the project outline)
 
 1. **Variance-aware utility.** `u = score_xp / (σ + 1)` is parked (stage 28, −253). `score_xp − 0.25σ` as the player score lost the fast screen (stage 29). The same penalty only inside transfer value scored +90 on 2025/26, then +79, +8, and −56 on 2023/24, 2024/25, and 2022/23. Exactly one prior season cleared +34, so the result is inconclusive and is not the gate. A swap penalty of 2.5 scored −13.
