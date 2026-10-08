@@ -52,12 +52,20 @@ def validate_freeze_row(row: Mapping[str, Any]) -> None:
 
 
 def write_string_freeze(row: Mapping[str, Any], path: Path | None = None) -> Path:
-    """Append one legal, pre-deadline freeze row."""
+    """Append one legal, pre-deadline freeze row.
+
+    The official ledger stays closed until a deadline commit. Pass a
+    different path. The default path raises.
+    """
     payload = dict(row)
     if "realised" not in payload:
         payload["realised"] = empty_realised()
     validate_freeze_row(payload)
     ledger = Path(path) if path is not None else LEDGER
+    if ledger.resolve() == LEDGER.resolve():
+        raise StringFreezeError(
+            "official string_agent_freeze.jsonl is closed until the deadline commit"
+        )
     ledger.parent.mkdir(parents=True, exist_ok=True)
     if ledger.is_file():
         for line in ledger.read_text(encoding="utf-8").splitlines():

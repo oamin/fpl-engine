@@ -15,6 +15,7 @@ from typing import Any, Callable, Mapping
 from src.str_agent import freeze as fz
 from src.str_agent import prompt as pr
 from src.str_agent import validator as val
+from src.str_agent.carry import CarryState, validate_move
 
 CallModel = Callable[[str, str], str]
 
@@ -47,18 +48,44 @@ def assemble_freeze_row(
     model_payload: Mapping[str, Any],
     directory: Mapping[str, Mapping[str, Any]],
     budget: int,
+    carry: CarryState | None = None,
 ) -> dict[str, Any]:
     """Build a freeze-ready row from model JSON + accounting."""
     decision = dict(model_payload.get("decision") or {})
     squad = [str(pid) for pid in decision.get("squad_15") or []]
-    total_cost = sum(int(directory[pid]["now_cost"]) for pid in squad if pid in directory)
-    bank = int(budget) - total_cost
-    errors = val.validate_draft(
-        {"decision": decision},
-        directory=directory,
-        budget=budget,
+    total_cost = sum(
+        int(directory[pid]["now_cost"])
+        for pid in squad
+        if pid in directory and directory[pid].get("now_cost") is not None
     )
-    return {
+    if carry is None:
+        bank = int(budget) - total_cost
+        errors = val.validate_draft(
+            {"decision": decision},
+            directory=directory,
+            budget=budget,
+        )
+        hits = None
+        bank_after = None
+        carry_after = None
+    else:
+        move = validate_move({"decision": decision}, carry, directory)
+        errors = list(move.errors)
+        hits = int(move.hits)
+        bank_after = move.bank_after
+        bank = int(carry.bank if bank_after is None else bank_after)
+        carry_after = move.carry_after
+    accounting: dict[str, Any] = {
+        "bank_remaining": bank,
+        "total_cost": total_cost,
+        "is_legal": not errors,
+        "errors": errors,
+    }
+    if hits is not None:
+        accounting["hits"] = hits
+    if bank_after is not None:
+        accounting["bank_after"] = bank_after
+    row: dict[str, Any] = {
         "gw": int(gw),
         "deadline_utc": deadline_utc,
         "frozen_at_utc": frozen_at_utc,
@@ -69,14 +96,13 @@ def assemble_freeze_row(
         },
         "rationale": str(model_payload.get("rationale") or ""),
         "decision": decision,
-        "accounting": {
-            "bank_remaining": bank,
-            "total_cost": total_cost,
-            "is_legal": not errors,
-            "errors": errors,
-        },
+        "accounting": accounting,
         "realised": fz.empty_realised(),
     }
+    if carry is not None:
+        row["carry"] = carry.as_dict()
+        row["carry_after"] = carry_after
+    return row
 
 
 def run_once(
@@ -92,6 +118,7 @@ def run_once(
     max_repairs: int = 2,
     ledger: Path | None = None,
     commit: bool = False,
+    carry: CarryState | None = None,
 ) -> dict[str, Any]:
     """Call the model, repair illegal drafts, optionally freeze.
 
@@ -125,6 +152,7 @@ def run_once(
             model_payload=payload,
             directory=directory,
             budget=budget,
+            carry=carry,
         )
         last_errors = list(row["accounting"]["errors"])
         if not last_errors:
@@ -142,6 +170,10 @@ def run_once(
             "total_cost": row["accounting"]["total_cost"],
             "is_legal": True,
         }
+        if "hits" in row["accounting"]:
+            clean["accounting"]["hits"] = row["accounting"]["hits"]
+        if "bank_after" in row["accounting"]:
+            clean["accounting"]["bank_after"] = row["accounting"]["bank_after"]
         fz.write_string_freeze(clean, path=ledger)
         return clean
     return row
