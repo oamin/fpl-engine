@@ -1,12 +1,11 @@
 {
-  "updated": "2026-10-08",
-  "milestone": "gw6-wildcard-judgement",
-  "status": "dry-run",
-  "summary": "The capture cron is the only schedule. Two successful runs are recorded, not one every 15 minutes. main is not branch-protected. An engine failure still writes the official slot, and a scratch force-write was run. The Gameweek 6 chip is a logged wildcard judgement and does not count toward a chip rule. On the 22:09 dry run the wildcard leads one free transfer by 114.12 discounted XI points, with gameweeks 8 and 9 unpriced, and by 39.00 in gameweek 6 alone. That is a preference, not a certified chip rule. The decision file is still the future T-1h slot.",
+  "milestone": "news-xmi-differential-dry-run",
+  "status": "research_only",
+  "summary": "On news-compiled minutes the numeric engine's fresh Gameweek 6 fifteen scores 67.33 with Saka counted twice. The same solver under 15% ownership scores 61.10. A legal string fifteen under that ownership cut overlays at 51.42. The 22:09 capture and both freeze ledgers were left as they were.",
+  "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
-    "reports/wildcard_plan_gw6_dry_run.md",
-    "reports/chip_calendar_gw6.md",
-    "data/live/chip_decisions.jsonl",
-    "experiments/protocol.json"
+    "reports/news_xmi_dry_run_20261008.md",
+    "data/predictions/2026-27/gw06/news_xmi_20261008T195949Z.csv",
+    "reports/string_agent_gw6_differential_decision.json"
   ]
 }

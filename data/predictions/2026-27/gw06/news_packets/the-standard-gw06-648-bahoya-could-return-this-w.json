@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:648-bahoya-could-return-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Leeds",
+  "player_ids": [
+    648
+  ],
+  "headline": "Bahoya could return this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Bahoya could return this weekend (ankle).",
+  "sha256": "95155e7df51142a1377b28c9295b899e4dbcc97687693b8a40498c6af5906404"
+}

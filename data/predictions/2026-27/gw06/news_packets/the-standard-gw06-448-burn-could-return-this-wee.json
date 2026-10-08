@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:448-burn-could-return-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Newcastle",
+  "player_ids": [
+    448
+  ],
+  "headline": "Burn could return this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Burn could return this weekend (ankle).",
+  "sha256": "c9831515fa4254ebbf5d9596f552a9c9f58fdc6ab7e023c663ebf1f6adfc4f1d"
+}

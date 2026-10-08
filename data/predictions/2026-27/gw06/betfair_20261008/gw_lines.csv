@@ -1,0 +1,21 @@
+Date,HomeTeam,AwayTeam,AvgH,AvgD,AvgA,Avg>2.5,Avg<2.5,source,books,gw
+10/10/2026,Arsenal,Leeds,1.4167,5.3559,9.31,1.9324,2.0725,betfair,1,6
+10/10/2026,Aston Villa,Brentford,2.7115,3.6856,2.7787,1.7597,2.3162,betfair,1,6
+10/10/2026,Chelsea,Bournemouth,1.7405,4.4863,4.9368,1.533,2.876,betfair,1,6
+10/10/2026,Ipswich Town,Fulham,2.843,3.6875,2.652,1.838,2.1933,betfair,1,6
+10/10/2026,Sunderland,Brighton,3.2334,3.6345,2.4062,1.8963,2.1157,betfair,1,6
+10/10/2026,Man Utd,Spurs,1.7434,4.5453,4.845,1.5572,2.7946,betfair,1,6
+11/10/2026,Crystal Palace,Nott'm Forest,2.5736,3.6371,2.9718,1.9803,2.0201,betfair,1,6
+11/10/2026,Hull City,Everton,2.8335,3.6544,2.6778,2.0833,1.9231,betfair,1,6
+11/10/2026,Liverpool,Man City,2.8315,3.877,2.5714,1.6226,2.6061,betfair,1,6
+12/10/2026,Coventry City,Newcastle,2.7789,3.7174,2.6943,1.7352,2.3601,betfair,1,6
+17/10/2026,Everton,Chelsea,2.5,3.7037,3.0303,1.7375,2.3558,betfair,1,7
+17/10/2026,Brentford,Liverpool,2.5,3.7037,3.0303,1.6348,2.5753,betfair,1,7
+17/10/2026,Fulham,Hull City,2.5,3.7037,3.0303,1.8025,2.2461,betfair,1,7
+17/10/2026,Man City,Ipswich Town,2.5,3.7037,3.0303,1.4275,3.339,betfair,1,7
+17/10/2026,Newcastle,Aston Villa,2.5,3.7037,3.0303,1.6906,2.448,betfair,1,7
+18/10/2026,Bournemouth,Sunderland,2.5,3.7037,3.0303,1.8874,2.1269,betfair,1,7
+18/10/2026,Brighton,Crystal Palace,2.5,3.7037,3.0303,1.6544,2.5282,betfair,1,7
+18/10/2026,Leeds,Man Utd,2.5,3.7037,3.0303,1.7047,2.4191,betfair,1,7
+18/10/2026,Nott'm Forest,Arsenal,2.5,3.7037,3.0303,,,betfair,1,7
+19/10/2026,Spurs,Coventry City,2.5,3.7037,3.0303,1.6475,2.5444,betfair,1,7

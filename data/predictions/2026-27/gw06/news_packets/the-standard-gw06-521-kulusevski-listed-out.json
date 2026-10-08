@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:521-kulusevski-listed-out",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Spurs",
+  "player_ids": [
+    521
+  ],
+  "headline": "Kulusevski listed out",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Kulusevski is out with a knee injury.",
+  "sha256": "9bb39b1c66fecb0dc10ab245a624fe3d10ea0afdfe2c75c97f70b15683c5016e"
+}

@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:139-ferguson-listed-out",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Brighton",
+  "player_ids": [
+    139
+  ],
+  "headline": "Ferguson listed out",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Ferguson is out with a ankle injury.",
+  "sha256": "fd54b0c72d1f824f273bafde2e82e738b4b8bdcc7255f875918377f69069ec8b"
+}

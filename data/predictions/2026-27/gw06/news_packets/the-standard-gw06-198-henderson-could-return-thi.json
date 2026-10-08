@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:198-henderson-could-return-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Crystal Palace",
+  "player_ids": [
+    198
+  ],
+  "headline": "Henderson could return this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Henderson could return this weekend (ankle).",
+  "sha256": "af2569442fa181a37d977faed4f5025c54cc4faddb27a3c8f5b42eb6bef35ade"
+}

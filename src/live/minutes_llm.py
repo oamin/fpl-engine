@@ -4,6 +4,10 @@ The model sees status, chance, news, and last observed minutes. It returns
 a number or a question. A question, a missing id, or minutes above 0 for a
 player who cannot play means no file is written. This module does not call
 the scorer, the half-season plan, or the Odds API.
+
+Audited external notes are staged via ``src.live.news_packets`` (whitelist +
+as-of gate). Numeric compile from those packets into ``xmi`` is deferred; the
+bootstrap news line remains the live default until that path is locked.
 """
 
 from __future__ import annotations

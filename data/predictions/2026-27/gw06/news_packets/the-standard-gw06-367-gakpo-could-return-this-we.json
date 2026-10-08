@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:367-gakpo-could-return-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Liverpool",
+  "player_ids": [
+    367
+  ],
+  "headline": "Gakpo could return this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Gakpo could return this weekend (ankle).",
+  "sha256": "00928721ad58f0660522e362828ae042e539615933de0bbd3ba91f8a0fb25454"
+}

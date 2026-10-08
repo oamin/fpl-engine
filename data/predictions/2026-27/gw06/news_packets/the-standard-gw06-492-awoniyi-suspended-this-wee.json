@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:492-awoniyi-suspended-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Coventry City",
+  "player_ids": [
+    492
+  ],
+  "headline": "Awoniyi suspended this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Awoniyi is suspended for this match.",
+  "sha256": "9b767a561f0a497df65cb23c9a3a8386a9dc8286aee7ede758c2d97639d5f775"
+}

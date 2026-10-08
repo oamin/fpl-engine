@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:431-amad-could-return-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Man Utd",
+  "player_ids": [
+    431
+  ],
+  "headline": "Amad could return this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Amad could return this weekend (ankle).",
+  "sha256": "b2fc3bba80714abc9d5d78bf8ad3c58bf0cac7e56c6fb8b8194ab53f884a9936"
+}

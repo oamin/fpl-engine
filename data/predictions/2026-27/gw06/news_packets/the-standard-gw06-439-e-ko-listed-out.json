@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:439-e-ko-listed-out",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Man Utd",
+  "player_ids": [
+    439
+  ],
+  "headline": "\u0160e\u0161ko listed out",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: \u0160e\u0161ko is out with a shin injury.",
+  "sha256": "c34514d5e161abf06d21905da6f9b3d596abad09037e8f45ea73e9fa7e6953b2"
+}

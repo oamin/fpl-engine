@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:142-james-could-return-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Chelsea",
+  "player_ids": [
+    142
+  ],
+  "headline": "James could return this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: James could return this weekend (hamstring).",
+  "sha256": "42bbb1f954776b6eb2f53ef6fef42da0fcbcbf34b69f4052ac4249136f15e0e2"
+}

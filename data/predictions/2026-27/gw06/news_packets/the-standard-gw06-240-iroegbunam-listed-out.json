@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:240-iroegbunam-listed-out",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Hull City",
+  "player_ids": [
+    240
+  ],
+  "headline": "Iroegbunam listed out",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Iroegbunam is out with a groin injury.",
+  "sha256": "3a8d6d5f43c1d08a3941893df7ffd0057e1c09f68064162cd602c2367f47fbd9"
+}

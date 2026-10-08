@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:266-cairney-listed-out",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Fulham",
+  "player_ids": [
+    266
+  ],
+  "headline": "Cairney listed out",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Cairney is out with a knee injury.",
+  "sha256": "8efda7c8676cce8672e5147ba2bfad8d5271b704b2a6e55c9502e73b6bec6734"
+}

@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:11-mosquera-could-return-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Arsenal",
+  "player_ids": [
+    11
+  ],
+  "headline": "Mosquera could return this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Mosquera could return this weekend (hamstring).",
+  "sha256": "dca7a840fe2462575e454787ad5262015cdf3e609534e66be19c2f993e61432c"
+}

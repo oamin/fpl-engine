@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:312-taylor-could-return-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Ipswich Town",
+  "player_ids": [
+    312
+  ],
+  "headline": "Taylor could return this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Taylor could return this weekend (knee).",
+  "sha256": "685cf4a8fb8bb10af3c6f57b2932456c400cc9510d51369b23a362ffb7288c95"
+}

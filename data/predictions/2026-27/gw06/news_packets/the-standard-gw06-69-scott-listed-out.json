@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:69-scott-listed-out",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Bournemouth",
+  "player_ids": [
+    69
+  ],
+  "headline": "Scott listed out",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Scott is out with a thigh injury.",
+  "sha256": "a8377fc8c43dc5cdbec3f8bb43e2fb5e0fdf2c7d58faf60504dbeac65caf4278"
+}

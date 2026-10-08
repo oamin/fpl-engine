@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:246-r-hl-could-return-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Everton",
+  "player_ids": [
+    246
+  ],
+  "headline": "R\u00f6hl could return this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: R\u00f6hl could return this weekend (knock).",
+  "sha256": "b74d186534e139273b37111be2a3fe23f9693bbdbc3fb7a122763bb09150670f"
+}

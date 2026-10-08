@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:48-onana-listed-out",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Aston Villa",
+  "player_ids": [
+    48
+  ],
+  "headline": "Onana listed out",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Onana is out with a ACL injury.",
+  "sha256": "b8bcf7579930c842cece967a6daa41843d8ebb3f5924e846412a419c67a2b231"
+}

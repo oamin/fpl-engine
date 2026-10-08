@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:415-dorgu-listed-out",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Man Utd",
+  "player_ids": [
+    415
+  ],
+  "headline": "Dorgu listed out",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Dorgu is out with a hamstring injury.",
+  "sha256": "8fed196d46274bc5b60635fd6561bcb36d57614510af2ae55c93608a8400c7fd"
+}

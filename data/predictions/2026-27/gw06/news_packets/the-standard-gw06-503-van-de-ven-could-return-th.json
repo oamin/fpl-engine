@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:503-van-de-ven-could-return-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Spurs",
+  "player_ids": [
+    503
+  ],
+  "headline": "Van de Ven could return this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Van de Ven could return this weekend (hand).",
+  "sha256": "0e770ac5c88f8e076654d2e4126ab51944fb4bc86fd4d978338eb338b6b9c30e"
+}

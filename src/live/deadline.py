@@ -25,7 +25,7 @@ from src.live.half_plan import HalfPlan, WeekInputs, bench_week, half_end, plan_
 from src.live.lines import LINES_PATH, TRIAL_META
 from src.live.plan import live_xi
 from src.live.policy import FH_MARGIN, WC_MARGIN
-from src.models.open_horizon import opening_pots_by_team_gw
+from src.models.forecast_xp import opening_pots_by_team_gw
 from src.models.season_climb_ft import SquadState
 from src.rules.fpl_2026 import FREE_TRANSFER_CHIPS, sell_price, squad_legal, xi_legal
 from src.teams import norm_team
@@ -633,26 +633,24 @@ def render(log: DeadlineLog) -> str:
                 "that sum and nothing to the schedule. The margin stays 16."
             )
         lines.append("")
-    if log.odds_trial == "no_key":
+    if log.odds_trial in {"no_betfair_app_key", "no_key"}:
         lines.append(
-            "The Odds API call was not sent. No key is set. "
-            "The live 1X2 is the ESPN close."
+            "Betfair was not called. No app key is set. "
+            "The live 1X2 stays empty until Exchange credentials are present."
         )
         lines.append("")
-    elif log.odds_trial == "sent":
+    elif log.odds_trial == "betfair":
         lines.append(
-            "One Odds API request was sent for soccer_epl, markets h2h and totals, "
-            f"region us. It cost {log.odds_last_cost or '-'} credits. "
-            f"{log.odds_remaining or '-'} credits remain. "
-            "Where that slate has a 1X2, the price is the average of the US books. "
-            "ESPN close fills a fixture the trial does not price. "
-            "A total other than 2.5 is blank."
+            "Live 1X2 and over/under 2.5 come from the Betfair Exchange only: "
+            "unweighted back/lay mids, simplex-normalised to fair decimals, "
+            "with tiered liquidity shrinkage. Odds API and ESPN are not used."
         )
         lines.append("")
-    elif log.odds_trial == "error":
+    elif log.odds_trial in {"betfair_error", "betfair_geo_blocked", "error"}:
         lines.append(
-            "The Odds API request failed and was not retried. "
-            "ESPN close fills a fixture the trial does not price."
+            "The Betfair request failed. Odds API fallback is forbidden, so no "
+            "bookmaker line was written. "
+            f"Reason: {log.odds_trial}."
         )
         lines.append("")
     if "missing_minutes" in log.reasons:
@@ -831,6 +829,16 @@ def collect(
         raise DeadlineError("the decision capture is the T-1h slot")
     entry = json.loads(entry_path.read_text(encoding="utf-8"))
     logs = pd.read_csv(log_path)
+    from src.live.betfair_props import discover_betfair_artifacts
+
+    artifacts = discover_betfair_artifacts(int(gw))
+    if artifacts is not None and (artifacts / "gw_lines.csv").is_file():
+        # Prefer the Betfair slate when a pull has written one.
+        live_path = artifacts / "gw_lines.csv"
+        if trial_path is None or trial_path == TRIAL_META:
+            meta_candidate = artifacts / "betfair_meta.json"
+            if meta_candidate.is_file():
+                trial_path = meta_candidate
     odds = load_odds_frame(odds_path, live_path)
     bootstrap = json.loads(bootstrap_path.read_text(encoding="utf-8"))
     fixtures = json.loads(fixtures_path.read_text(encoding="utf-8"))
@@ -890,6 +898,9 @@ def collect(
             choice = load_ep_next(int(gw), path=Path(decision_file))  # type: ignore[arg-type]
         else:
             choice = load_ep_next(int(gw))
+        from src.live.betfair_props import discover_betfair_artifacts
+
+        artifacts = discover_betfair_artifacts(int(gw))
         scored = price_half(
             gw=int(gw),
             logs=logs,
@@ -900,6 +911,7 @@ def collect(
             minutes=minute_map,
             played={week: chip_name for week, chip_name in played},
             choice=choice,
+            artifacts_dir=artifacts,
         )
         chip = scored.plan.chip
         priced = scored.line_weeks

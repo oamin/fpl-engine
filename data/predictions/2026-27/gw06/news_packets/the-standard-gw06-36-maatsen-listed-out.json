@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:36-maatsen-listed-out",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Aston Villa",
+  "player_ids": [
+    36
+  ],
+  "headline": "Maatsen listed out",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Maatsen is out with a ankle injury.",
+  "sha256": "04230e7c239e967b7c904b2e45fba884de6f5042d06fcc0bb47c1ec9e3142abb"
+}

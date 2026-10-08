@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:638-norton-cuffy-listed-out",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Hull City",
+  "player_ids": [
+    638
+  ],
+  "headline": "Norton-Cuffy listed out",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Norton-Cuffy is out with a hamstring injury.",
+  "sha256": "27c0998d1319426a2c66fb10f66177cc9c93f3f2ac1ad7d181154acd2e47d2ac"
+}

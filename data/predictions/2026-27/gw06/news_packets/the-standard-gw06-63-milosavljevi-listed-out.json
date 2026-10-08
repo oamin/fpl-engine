@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:63-milosavljevi-listed-out",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Bournemouth",
+  "player_ids": [
+    63
+  ],
+  "headline": "Milosavljevi\u0107 listed out",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Milosavljevi\u0107 is out with a knee injury.",
+  "sha256": "2471c5db0116012bd2961ee07ac535ae9627e1901ea92923ebd2fd6207ead41a"
+}

@@ -18,13 +18,12 @@ from src.live.benchmark import (
     FIXTURES_PATH,
     GWS,
     build_frames,
-    player_key,
     stamp_matchday_teams,
     matchday_clubs,
     load_2026_logs,
 )
 from src.live.benchmark import _opening_state
-from src.models.open_horizon import (
+from src.models.forecast_xp import (
     fixture_calendar,
     make_horizon_scores,
     opening_pots_by_team_gw,

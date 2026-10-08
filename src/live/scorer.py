@@ -27,7 +27,7 @@ import pandas as pd
 from src.live.fpl_snapshot import ELEMENT
 from src.live.half_plan import HalfPlan, WeekInputs, half_end, plan_half
 from src.models.half_plan_scores import club_steps, week_inputs
-from src.models.open_horizon import opening_pots_by_team_gw, xp_on_pot
+from src.models.forecast_xp import opening_pots_by_team_gw, xp_on_pot
 from src.models.season_climb_ft import SquadState
 from src.models.xp_engine import DEFCON_THRESH, MIN_HISTORY, MIN_MINUTES, add_player_priors
 from src.teams import norm_team
@@ -254,57 +254,87 @@ def score_steps(
     pool: pd.DataFrame,
     pots: Mapping[tuple[int, str], Sequence[Mapping[str, float]]],
     weeks: Sequence[int],
+    *,
+    goal_rates: Mapping[str, float] | None = None,
+    imminent_gw: int | None = None,
 ) -> dict[int, dict[str, float]]:
     """Score each priced week from the live minutes and the first pot.
 
     A club with no fixture that week scores 0. A second pot is not added.
+    When ``goal_rates`` is set, the imminent week replaces ``share_xG × λ``
+    with the Betfair anytime rate for that player.
     """
     out: dict[int, dict[str, float]] = {}
+    rates = {str(k): float(v) for k, v in (goal_rates or {}).items()}
     for gw in weeks:
         scores: dict[str, float] = {}
+        use_book = rates and imminent_gw is not None and int(gw) == int(imminent_gw)
         for row in pool.itertuples(index=False):
             quotes = pots.get((int(gw), str(row.team_norm)), [])
             pid = str(row.player_id)
             if not quotes:
                 scores[pid] = 0.0
                 continue
-            scores[pid] = score_on_line(
-                position=str(row.position),
-                xmi=float(row.minutes),
-                share_xg=float(row.share_xG),
-                share_xa=float(row.share_xA),
-                exp_defcon_hit=float(row.exp_defcon_hit),
-                pot=quotes[0],
-            )
+            pot = quotes[0]
+            if use_book and pid in rates:
+                lam = float(pot.get("lam_scored") or 0.0)
+                share = 0.0 if lam <= 0 else rates[pid] / lam
+                scores[pid] = score_on_line(
+                    position=str(row.position),
+                    xmi=float(row.minutes),
+                    share_xg=share,
+                    share_xa=float(row.share_xA),
+                    exp_defcon_hit=float(row.exp_defcon_hit),
+                    pot=pot,
+                )
+            else:
+                scores[pid] = score_on_line(
+                    position=str(row.position),
+                    xmi=float(row.minutes),
+                    share_xg=float(row.share_xG),
+                    share_xa=float(row.share_xA),
+                    exp_defcon_hit=float(row.exp_defcon_hit),
+                    pot=pot,
+                )
         out[int(gw)] = scores
     return out
 
 
-def scores_for_horizon(
+def scores_for_forecast(
     line_scores: Mapping[int, Mapping[str, float]],
     horizon: Sequence[int],
+    *,
+    forecast_scores: Mapping[int, Mapping[str, float]] | None = None,
 ) -> tuple[dict[int, dict[str, float]], list[tuple[int, int]]]:
-    """Fill a horizon week that has no line with the previous line's scores.
+    """Fill ``forecast_xp`` weeks: prefer outright-strength scores, else copy.
 
     The copy is the last priced step, not a new pot. The pairs are
-    ``(week, source)``.
+    ``(week, source)`` for copied weeks only.
     """
     if not horizon:
         raise ScorerError("no club week to price")
     out: dict[int, dict[str, float]] = {}
     copies: list[tuple[int, int]] = []
     last: int | None = None
+    forecast = {int(k): dict(v) for k, v in (forecast_scores or {}).items()}
     for gw in horizon:
         week = int(gw)
         if week in line_scores:
             out[week] = {str(pid): float(value) for pid, value in line_scores[week].items()}
             last = week
             continue
+        if week in forecast:
+            out[week] = {str(pid): float(value) for pid, value in forecast[week].items()}
+            continue
         if last is None:
             raise ScorerError(f"GW{week} has no earlier line to copy")
         out[week] = {str(pid): float(value) for pid, value in line_scores[last].items()}
         copies.append((week, last))
     return out, copies
+
+
+# Compatibility alias.
+scores_for_horizon = scores_for_forecast
 
 
 def copy_note(copies: Sequence[tuple[int, int]]) -> str:
@@ -545,11 +575,15 @@ def price_half(
     minutes: Mapping[str, float],
     played: Mapping[int, str] | None = None,
     choice: Mapping[str, float] | None = None,
+    artifacts_dir: Path | None = None,
 ) -> ScorerResult:
     """Price the half from the opening line and call ``plan_half`` once.
 
     ``choice`` is the captured ``ep_next`` map. The engine scores stay on
     ``step_scores`` and do not choose the squad when ``choice`` is passed.
+    When ``artifacts_dir`` holds Betfair derived files, anytime goal rates
+    enter imminent ``score_xp`` and outright strengths fill unpriced
+    ``forecast_xp`` weeks.
     """
     names = {int(row["id"]): str(row["name"]) for row in bootstrap["teams"]}
     shares = deadline_shares(logs, int(gw))
@@ -560,10 +594,40 @@ def price_half(
     line_weeks = priced_gameweeks(fixtures, pots, names, int(gw), end, limit=3)
     if not line_weeks or int(line_weeks[0]) != int(gw):
         raise ScorerError(f"GW{int(gw)} is not fully priced")
-    line_scores = score_steps(pool, pots, line_weeks)
+
+    from src.live.betfair_props import discover_betfair_artifacts
+
+    resolved_artifacts = (
+        Path(artifacts_dir) if artifacts_dir is not None else discover_betfair_artifacts(int(gw))
+    )
+    goal_rates: dict[str, float] | None = None
+    forecast_extra: dict[int, dict[str, float]] | None = None
+    if resolved_artifacts is not None and resolved_artifacts.is_dir():
+        goal_rates, forecast_extra = _betfair_score_inputs(
+            artifacts_dir=resolved_artifacts,
+            bootstrap=bootstrap,
+            pool=pool,
+            pots=pots,
+            fixtures=list(fixtures),
+            names=names,
+            minutes=minutes,
+            gw=int(gw),
+            end=end,
+            priced_weeks=set(int(w) for w in line_weeks),
+        )
+
+    line_scores = score_steps(
+        pool,
+        pots,
+        line_weeks,
+        goal_rates=goal_rates,
+        imminent_gw=int(gw),
+    )
     clubs = clubs_from_fixtures(fixtures, names, int(gw), end)
     horizon = club_steps(int(gw), clubs)
-    step_scores, copies = scores_for_horizon(line_scores, horizon)
+    step_scores, copies = scores_for_forecast(
+        line_scores, horizon, forecast_scores=forecast_extra
+    )
     choice_prices = None if choice is None else {str(pid): float(value) for pid, value in choice.items()}
     plan, weeks = plan_deadline(
         int(gw),
@@ -583,6 +647,72 @@ def price_half(
         copy_note=copy_note(copies),
         step_scores=step_scores,
     )
+
+
+def _betfair_score_inputs(
+    *,
+    artifacts_dir: Path,
+    bootstrap: Mapping[str, Any],
+    pool: pd.DataFrame,
+    pots: Mapping[tuple[int, str], Sequence[Mapping[str, float]]],
+    fixtures: list[Mapping[str, Any]],
+    names: Mapping[int, str],
+    minutes: Mapping[str, float],
+    gw: int,
+    end: int,
+    priced_weeks: set[int],
+) -> tuple[dict[str, float] | None, dict[int, dict[str, float]] | None]:
+    """Load derived Betfair JSON and build goal rates + forecast step scores."""
+    from src.live.betfair_props import (
+        forecast_pots_from_outrights,
+        match_to_score_runners,
+        strength_index,
+        team_goal_rates,
+    )
+
+    goal_rates: dict[str, float] | None = None
+    to_score_path = artifacts_dir / "betfair_to_score.json"
+    if to_score_path.is_file():
+        rows = json.loads(to_score_path.read_text(encoding="utf-8"))
+        raw = match_to_score_runners(rows, list(bootstrap.get("elements") or []))
+        # Cap per club using imminent pots.
+        by_club: dict[str, dict[str, float]] = {}
+        shares: dict[str, float] = {}
+        mins: dict[str, float] = {}
+        for row in pool.itertuples(index=False):
+            pid = str(row.player_id)
+            shares[pid] = float(row.share_xG)
+            mins[pid] = float(minutes.get(pid, row.minutes))
+            by_club.setdefault(str(row.team_norm), {})
+            if pid in raw:
+                by_club[str(row.team_norm)][pid] = raw[pid]
+        capped: dict[str, float] = {}
+        for club, rates in by_club.items():
+            quotes = pots.get((int(gw), club), [])
+            lam = float(quotes[0]["lam_scored"]) if quotes else 1.35
+            capped.update(
+                team_goal_rates(rates, shares, lam=lam, minutes=mins)
+            )
+        goal_rates = capped or None
+
+    forecast_extra: dict[int, dict[str, float]] | None = None
+    ranks_path = artifacts_dir / "outrights_ranks.json"
+    if ranks_path.is_file():
+        table = json.loads(ranks_path.read_text(encoding="utf-8"))
+        strengths = strength_index(table)
+        forecast_pots = forecast_pots_from_outrights(
+            fixtures,
+            names,
+            strengths,
+            start=int(gw),
+            end=int(end),
+            priced_weeks=priced_weeks,
+        )
+        if forecast_pots:
+            extra_weeks = sorted({k[0] for k in forecast_pots})
+            forecast_extra = score_steps(pool, forecast_pots, extra_weeks)
+
+    return goal_rates, forecast_extra
 
 
 def _key_from_log(value: object) -> str:

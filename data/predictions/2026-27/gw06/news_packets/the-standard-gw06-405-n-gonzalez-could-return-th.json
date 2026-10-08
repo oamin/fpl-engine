@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:405-n-gonzalez-could-return-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Newcastle",
+  "player_ids": [
+    405
+  ],
+  "headline": "N.Gonzalez could return this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: N.Gonzalez could return this weekend (concussion protocol).",
+  "sha256": "3aaf3fe74504798346c1818ebeb54190f30fad59912408df6a832eed45e5245e"
+}

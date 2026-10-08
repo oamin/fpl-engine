@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:175-van-ewijk-could-return-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Coventry City",
+  "player_ids": [
+    175
+  ],
+  "headline": "van Ewijk could return this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: van Ewijk could return this weekend (hamstring).",
+  "sha256": "0f53b566c07293bbcee42164be36cba9a743c2d26c16e502528963f1fddf46e3"
+}

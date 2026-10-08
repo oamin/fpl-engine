@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:77-adli-could-return-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Bournemouth",
+  "player_ids": [
+    77
+  ],
+  "headline": "Adli could return this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Adli could return this weekend (lower leg).",
+  "sha256": "135c02a68d5d00a8bd02128ccc858ecbc4317111115d9a12fe8eb3c49ed51cc0"
+}

@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:517-odobert-listed-out",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Spurs",
+  "player_ids": [
+    517
+  ],
+  "headline": "Odobert listed out",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Odobert is out with a ACL injury.",
+  "sha256": "29c0b5a2e60b5ceca72e2ad2a8bb9a26fdf5bf82cfd25acb714a6b514e5d2139"
+}

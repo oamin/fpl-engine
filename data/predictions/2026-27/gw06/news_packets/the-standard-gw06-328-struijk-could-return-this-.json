@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:328-struijk-could-return-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Brighton",
+  "player_ids": [
+    328
+  ],
+  "headline": "Struijk could return this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Struijk could return this weekend (hamstring).",
+  "sha256": "125b7bc3a7915ec8ccb13ecd77c5cedce7dc1493fa69c04e26f4bc345337e921"
+}

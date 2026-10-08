@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:84-collins-could-return-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Brentford",
+  "player_ids": [
+    84
+  ],
+  "headline": "Collins could return this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Collins could return this weekend (calf).",
+  "sha256": "4ed9f6a515fa7b5209b33876c2a1c08d8fec6f1f9256be35051811f9b89bafe6"
+}

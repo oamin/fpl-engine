@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:121-mitoma-could-return-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Brighton",
+  "player_ids": [
+    121
+  ],
+  "headline": "Mitoma could return this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Mitoma could return this weekend (hamstring).",
+  "sha256": "db0343a9ac5eff2b326abba2873598b8449c962b5b3a7137dc3402eb90586518"
+}

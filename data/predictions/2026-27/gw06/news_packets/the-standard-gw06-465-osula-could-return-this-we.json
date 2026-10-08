@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:465-osula-could-return-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Newcastle",
+  "player_ids": [
+    465
+  ],
+  "headline": "Osula could return this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Osula could return this weekend (foot).",
+  "sha256": "6b463de1e9a12daa750394f8929ce192a16c484f6209f30118dcfe141cf2e172"
+}

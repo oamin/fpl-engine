@@ -1,0 +1,13 @@
+{
+  "packet_id": "football_london:gw06:saliba-still-out-for-leeds-with-a-back-injury",
+  "source": "football_london",
+  "url": "https://www.football.london/arsenal-fc/news/arsenal-injury-news-latest-leeds-34721050",
+  "published_at_utc": "2026-10-06T05:00:00Z",
+  "club": "Arsenal",
+  "player_ids": [
+    6
+  ],
+  "headline": "Saliba still out for Leeds with a back injury",
+  "body": "Football London, 6 Oct 2026: William Saliba is yet to feature this season because of a back injury from the World Cup. Surgery was not needed. A return from November is suggested.",
+  "sha256": "87551215c1063a2192372ff17e92dd40f4866041048c8e7340ea8c678364b1b8"
+}

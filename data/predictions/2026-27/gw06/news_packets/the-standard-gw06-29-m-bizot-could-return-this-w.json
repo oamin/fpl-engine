@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:29-m-bizot-could-return-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Aston Villa",
+  "player_ids": [
+    29
+  ],
+  "headline": "M.Bizot could return this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: M.Bizot could return this weekend (back).",
+  "sha256": "f13b0b5540d36c292a153522f65bf93ee1eca007a46aedcf7289cbb05e31c158"
+}

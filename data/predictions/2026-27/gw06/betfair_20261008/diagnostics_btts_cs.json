@@ -1,0 +1,142 @@
+[
+  {
+    "event": "Arsenal v Leeds",
+    "start": "2026-10-10T11:30:00.000Z",
+    "p_yes": 0.442692814396818,
+    "p_no": 0.5573071856031819,
+    "matched": 225.59
+  },
+  {
+    "event": "Ipswich v Fulham",
+    "start": "2026-10-10T14:00:00.000Z",
+    "p_yes": 0.5927410626219092,
+    "p_no": 0.4072589373780908,
+    "matched": 148.86
+  },
+  {
+    "event": "Sunderland v Brighton",
+    "start": "2026-10-10T14:00:00.000Z",
+    "p_yes": 0.5807465044273616,
+    "p_no": 0.4192534955726383,
+    "matched": 190.64
+  },
+  {
+    "event": "Chelsea v Bournemouth",
+    "start": "2026-10-10T14:00:00.000Z",
+    "p_yes": 0.6365351277647504,
+    "p_no": 0.36346487223524965,
+    "matched": 426.02
+  },
+  {
+    "event": "Aston Villa v Brentford",
+    "start": "2026-10-10T14:00:00.000Z",
+    "p_yes": 0.6120625498046964,
+    "p_no": 0.38793745019530357,
+    "matched": 113.9
+  },
+  {
+    "event": "Man Utd v Tottenham",
+    "start": "2026-10-10T16:30:00.000Z",
+    "p_yes": 0.6259643802034017,
+    "p_no": 0.3740356197965984,
+    "matched": 158.8
+  },
+  {
+    "event": "Crystal Palace v Nottm Forest",
+    "start": "2026-10-11T13:00:00.000Z",
+    "p_yes": 0.5639928043384062,
+    "p_no": 0.4360071956615938,
+    "matched": 52.93
+  },
+  {
+    "event": "Hull v Everton",
+    "start": "2026-10-11T13:00:00.000Z",
+    "p_yes": 0.5310982281694498,
+    "p_no": 0.4689017718305502,
+    "matched": 128.58
+  },
+  {
+    "event": "Liverpool v Man City",
+    "start": "2026-10-11T15:30:00.000Z",
+    "p_yes": 0.6451627435238837,
+    "p_no": 0.35483725647611647,
+    "matched": 149.74
+  },
+  {
+    "event": "Coventry v Newcastle",
+    "start": "2026-10-12T19:00:00.000Z",
+    "p_yes": 0.6087231973381202,
+    "p_no": 0.3912768026618798,
+    "matched": 68.88
+  },
+  {
+    "event": "Everton v Chelsea",
+    "start": "2026-10-17T11:30:00.000Z",
+    "p_yes": 0.6054038991146298,
+    "p_no": 0.3945961008853702,
+    "matched": 20.0
+  },
+  {
+    "event": "Fulham v Hull",
+    "start": "2026-10-17T14:00:00.000Z",
+    "p_yes": 0.5494918406359091,
+    "p_no": 0.45050815936409083,
+    "matched": 0.0
+  },
+  {
+    "event": "Brentford v Liverpool",
+    "start": "2026-10-17T14:00:00.000Z",
+    "p_yes": 0.6464799705347767,
+    "p_no": 0.3535200294652234,
+    "matched": 8.0
+  },
+  {
+    "event": "Man City v Ipswich",
+    "start": "2026-10-17T14:00:00.000Z",
+    "p_yes": 0.5161699180301998,
+    "p_no": 0.48383008196980015,
+    "matched": 69.3
+  },
+  {
+    "event": "Newcastle v Aston Villa",
+    "start": "2026-10-17T16:30:00.000Z",
+    "p_yes": 0.6120267134261906,
+    "p_no": 0.3879732865738093,
+    "matched": 8.0
+  },
+  {
+    "event": "Bournemouth v Sunderland",
+    "start": "2026-10-18T13:00:00.000Z",
+    "p_yes": 0.5643454193124668,
+    "p_no": 0.43565458068753316,
+    "matched": 4.0
+  },
+  {
+    "event": "Brighton v Crystal Palace",
+    "start": "2026-10-18T13:00:00.000Z",
+    "p_yes": 0.5772310537907239,
+    "p_no": 0.422768946209276,
+    "matched": 0.0
+  },
+  {
+    "event": "Leeds v Man Utd",
+    "start": "2026-10-18T13:00:00.000Z",
+    "p_yes": 0.6145130994986706,
+    "p_no": 0.38548690050132944,
+    "matched": 8.0
+  },
+  {
+    "event": "Nottm Forest v Arsenal",
+    "start": "2026-10-18T15:30:00.000Z",
+    "p_yes": null,
+    "p_no": null,
+    "matched": 0.0
+  },
+  {
+    "event": "Tottenham v Coventry",
+    "start": "2026-10-19T19:00:00.000Z",
+    "p_yes": 0.5444007071475564,
+    "p_no": 0.4555992928524436,
+    "matched": 12.0
+  }
+]

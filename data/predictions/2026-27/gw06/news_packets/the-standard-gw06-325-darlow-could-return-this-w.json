@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:325-darlow-could-return-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Man Utd",
+  "player_ids": [
+    325
+  ],
+  "headline": "Darlow could return this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Darlow could return this weekend (unknown).",
+  "sha256": "5d362ef32e8c7e7e275e4a2768c984c4074a397595a59b995410f2a2f47eccab"
+}

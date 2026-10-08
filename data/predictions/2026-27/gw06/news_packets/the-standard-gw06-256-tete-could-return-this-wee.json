@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:256-tete-could-return-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Fulham",
+  "player_ids": [
+    256
+  ],
+  "headline": "Tete could return this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Tete could return this weekend (concussion).",
+  "sha256": "6c6466dbcf8d5bd83d9337c739157f1353db9f2e2dcafa63f039a658c2ba05c8"
+}

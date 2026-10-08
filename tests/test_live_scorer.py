@@ -36,7 +36,7 @@ from src.live.scorer import (
     score_steps,
     scores_for_horizon,
 )
-from src.models.open_horizon import side_pot, xp_on_pot
+from src.models.forecast_xp import side_pot, xp_on_pot
 from src.models.season_climb_ft import SquadState
 from src.models.xp_engine import compute_xp
 
@@ -573,6 +573,9 @@ def _world() -> tuple[dict, list, pd.DataFrame, pd.DataFrame]:
                 "element_type": types[pos],
                 "team": pid,
                 "now_cost": 50,
+                "web_name": f"Player{pid}",
+                "first_name": "P",
+                "second_name": f"Player{pid}",
             }
             for pid, pos in positions
         ],
@@ -662,6 +665,80 @@ class PriceHalfTest(unittest.TestCase):
             quieter.step_scores[6][player_key(8)],
             result.step_scores[6][player_key(8)],
         )
+
+    def test_to_score_and_outrights_enter_score_and_forecast(self) -> None:
+        """Betfair anytime rates move GW6 score_xp; outrights move unpriced GW8."""
+        bootstrap, fixtures, odds, logs = _world()
+        owned = [player_key(i) for i in range(1, 16)]
+        state = SquadState(purchase={pid: 50 for pid in owned}, bank=0, ft=1)
+        minutes = {pid: 90.0 for pid in owned}
+        baseline = price_half(
+            gw=6,
+            logs=logs,
+            odds=odds,
+            fixtures=fixtures,
+            bootstrap=bootstrap,
+            state=state,
+            minutes=minutes,
+            played={1: "triple_captain"},
+        )
+        mid = next(e for e in bootstrap["elements"] if int(e["id"]) == 8)
+        from src.teams import norm_team
+
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            # High anytime rate for element 8 (first MID in the toy world).
+            (root / "betfair_to_score.json").write_text(
+                json.dumps(
+                    [
+                        {
+                            "runner": str(mid["web_name"]),
+                            "mu_raw": 1.2,
+                            "matched": 5000,
+                            "p_mid": 0.7,
+                        }
+                    ]
+                ),
+                encoding="utf-8",
+            )
+            # Extreme strengths so GW8 forecast differs from a GW7 copy.
+            ranks = []
+            for team in bootstrap["teams"]:
+                name = str(team["name"])
+                tid = int(team["id"])
+                ranks.append(
+                    {
+                        "club": name,
+                        "club_norm": norm_team(name),
+                        "p_win": 0.9 if tid == 1 else 0.01,
+                        "p_top6": 0.95 if tid == 1 else 0.05,
+                        "p_rel": 0.01 if tid != 2 else 0.8,
+                        "E_rank": 1.5 if tid == 1 else (19.0 if tid == 2 else 12.0),
+                        "strength": 0.9 if tid == 1 else (-0.9 if tid == 2 else 0.0),
+                    }
+                )
+            (root / "outrights_ranks.json").write_text(
+                json.dumps(ranks), encoding="utf-8"
+            )
+            with_book = price_half(
+                gw=6,
+                logs=logs,
+                odds=odds,
+                fixtures=fixtures,
+                bootstrap=bootstrap,
+                state=state,
+                minutes=minutes,
+                played={1: "triple_captain"},
+                artifacts_dir=root,
+            )
+        pid = player_key(8)
+        self.assertNotEqual(
+            with_book.step_scores[6][pid],
+            baseline.step_scores[6][pid],
+        )
+        # Unpriced GW8 should not merely copy GW7 when outrights supply pots.
+        self.assertNotEqual(with_book.step_scores[8], with_book.step_scores[7])
+        self.assertEqual(with_book.copy_note, "")
 
 
 class StoredRunTest(unittest.TestCase):

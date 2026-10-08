@@ -1,0 +1,52 @@
+{
+  "gw": 6,
+  "deadline_utc": "2026-10-10T10:00:00Z",
+  "compile": "news_tags.minutes_for_tag via SUPPORT phrases",
+  "players": [
+    {
+      "player_id": 6,
+      "name": "Saliba",
+      "position": "DEF",
+      "tag": "injured",
+      "cited_packet_ids": [
+        "the_standard:gw06:6-saliba-listed-out"
+      ],
+      "prior": null,
+      "status": "i",
+      "chance": 0.0,
+      "xmi_compiled": 0.0,
+      "n_packets": 6
+    },
+    {
+      "player_id": 175,
+      "name": "van Ewijk",
+      "position": "DEF",
+      "tag": "50/50",
+      "cited_packet_ids": [
+        "the_standard:gw06:175-van-ewijk-could-return-this-weekend"
+      ],
+      "prior": 90.0,
+      "status": "d",
+      "chance": 75.0,
+      "xmi_compiled": 45.0,
+      "n_packets": 5
+    },
+    {
+      "player_id": 411,
+      "name": "Haaland",
+      "position": "FWD",
+      "tag": "50/50",
+      "cited_packet_ids": [
+        "the_standard:gw06:411-haaland-could-return-this-weekend"
+      ],
+      "prior": 90.0,
+      "status": "a",
+      "chance": null,
+      "xmi_compiled": 45.0,
+      "n_packets": 5
+    }
+  ],
+  "context_report": "reports/packet_xmi_compile_demo_20261008.md",
+  "all_clubs_report": "reports/packet_xmi_all_clubs_20261008.md",
+  "could_return": "50/50 of prior"
+}

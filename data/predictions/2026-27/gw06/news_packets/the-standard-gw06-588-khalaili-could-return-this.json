@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw06:588-khalaili-could-return-this-weekend",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/premier-league-injury-update-latest-news-return-dates-all-clubs-b1300072.html",
+  "published_at_utc": "2026-10-08T17:34:13Z",
+  "club": "Crystal Palace",
+  "player_ids": [
+    588
+  ],
+  "headline": "Khalaili could return this weekend",
+  "body": "The Standard, 8 Oct 2026, all 20 clubs: Khalaili could return this weekend (hamstring tightness).",
+  "sha256": "775b2cd33ae3a105fb60c3540b1a46b870382631699ed14afd403177ea00b60b"
+}
