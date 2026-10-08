@@ -1,11 +1,9 @@
 {
-  "milestone": "string-agent-gw6-trial",
-  "status": "legal_dry_run_ledger_closed",
-  "summary": "The string agent was given ojaminFC's Gameweek 5 fifteen and the pre-deadline packet. It sold Scarlett for Wood, captained Ødegaard, played no chip. The move is legal: 0 hits, bank 2. Official string ledger not written.",
+  "milestone": "string-agent-gw6-xp-lookup",
+  "status": "research_only",
+  "summary": "On the 7 October 22:09 ep_next capture the string-agent Gameweek 6 eleven with Odegaard counted twice is 50.00. The Gameweek 5 eleven with Haaland counted twice is 60.00 on the same file. Wood has no score_xp row, so the engine total is incomplete. The squad was not changed.",
   "gemini": "bc-b322a99d-ac2f-5c69-bb00-7038003550b2",
   "artifacts": [
-    "reports/string_agent_gw6_trial_20261008.md",
-    "reports/string_agent_gw6_decision.json",
-    "src/str_agent/trial.py"
+    "reports/string_agent_gw6_xp_20261008.md"
   ]
 }
