@@ -99,16 +99,21 @@ def _pair_engine(
     if any(not path.is_file() for path in needed):
         return None
     stamp = stamp_of(captured)
-    engine_path = export_deadline_scores(
-        gw=gw,
-        dest_root=root,
-        stamp=stamp,
-        bootstrap=payload,
-        created_at=captured_text(captured),
-        bootstrap_hash=sha256_file(raw_path),
-    )
-    shadow = engine_path.parent / f"shadow_{stamp}.csv"
-    write_shadow_log(shadow, engine_path, official_path)
+    try:
+        engine_path = export_deadline_scores(
+            gw=gw,
+            dest_root=root,
+            stamp=stamp,
+            bootstrap=payload,
+            created_at=captured_text(captured),
+            bootstrap_hash=sha256_file(raw_path),
+        )
+        shadow = engine_path.parent / f"shadow_{stamp}.csv"
+        write_shadow_log(shadow, engine_path, official_path)
+    except Exception as exc:
+        error_path = official_path.with_name(f"shadow_error_{stamp}.txt")
+        error_path.write_text(f"{type(exc).__name__}: {exc}\n", encoding="utf-8")
+        return None
     return shadow
 
 
@@ -216,19 +221,42 @@ def missing_capture_gws(
     return sorted(missing)
 
 
-def run(opener: Callable[..., Any] | None = None, root: Path | None = None) -> int:
+def run(
+    opener: Callable[..., Any] | None = None,
+    root: Path | None = None,
+    *,
+    force: bool = False,
+    fail_after_write: bool = False,
+) -> int:
     """Write one snapshot when the next deadline sits in a capture window.
 
-    After the attempt, a closed gameweek with no snapshot raises.
+    ``force`` writes even outside the window, and only into ``root``. That
+    write is not a decision slot. After the attempt, a closed gameweek with
+    no snapshot raises. Odds are not fetched. A shadow failure still leaves
+    the official file.
     """
+    if force and root is None:
+        raise RuntimeError("a force write names a scratch root")
+    if fail_after_write and not force:
+        raise RuntimeError("fail-after-write is a scratch test")
     payload, captured = fetch_bootstrap(opener)
     event = next_open_event(payload["events"], captured)
     base = root or ROOT
+    wrote = False
     if event is not None:
         gw = int(event["id"])
-        slot = choose_slot(captured, aware_utc(event["deadline_time"]))
-        if slot is not None and not slot_marker(base, gw, slot).exists():
-            write_snapshot(payload, captured, gw=gw, slot=slot, root=root, pair_engine=True)
+        if force:
+            write_snapshot(payload, captured, gw=gw, slot=None, root=root, pair_engine=True)
+            wrote = True
+        else:
+            slot = choose_slot(captured, aware_utc(event["deadline_time"]))
+            if slot is not None and not slot_marker(base, gw, slot).exists():
+                write_snapshot(payload, captured, gw=gw, slot=slot, root=root, pair_engine=True)
+                wrote = True
+    if fail_after_write:
+        if not wrote:
+            raise RuntimeError("fail-after-write had nothing to write")
+        raise RuntimeError("forced failure after the scratch write")
     missing = missing_capture_gws(base, captured, deadlines_from_events(payload["events"]))
     if missing:
         names = ", ".join(str(gw) for gw in missing)
@@ -237,7 +265,16 @@ def run(opener: Callable[..., Any] | None = None, root: Path | None = None) -> i
 
 
 def main() -> None:
-    raise SystemExit(run())
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Capture the FPL bootstrap before a deadline.")
+    parser.add_argument("--scratch", type=Path, default=None)
+    parser.add_argument("--force", action="store_true")
+    parser.add_argument("--fail-after-write", action="store_true")
+    args = parser.parse_args()
+    raise SystemExit(
+        run(root=args.scratch, force=args.force, fail_after_write=args.fail_after_write)
+    )
 
 
 if __name__ == "__main__":

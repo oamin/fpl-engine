@@ -169,12 +169,35 @@
     "wired": true,
     "decision_capture": "t1_same_stamp",
     "fallback": "none",
-    "gw6_chip": "unused",
+    "gw6_chip": "logged_judgement",
+    "counts_toward_chip_rule": false,
     "injury_flags": "minutes_file_zero_stays_zero",
     "manual_override": "logged_with_reason",
     "choose_after_seeing_scores": false,
     "review_gw": 26,
     "winner": null
   },
-  "note": "Gaussian log score with sigma fixed at 3. The bootstrap resamples gameweeks, not player rows. 2026-27 is not in the closed-season comparison. Gameweeks 1-5 of that season were already read. The clean holdout starts at gameweek 6. A season total is not a pass. The decision batch scores score_xp. From gameweek 6 the live choice primary is ep_next and score_xp is logged as the shadow. Promotion needs the paired interval of score_xp minus ep_next to stay strictly above zero on at least 20 pre-deadline weeks. An interval that covers zero is undetermined, and the test continues through gameweek 38. From gameweek 6 the live squad is chosen by captured ep_next. score_xp is logged in shadow and does not choose. The historical score column stays score_xp. The eligible pool is the primary closed-season result and the all-weeks pool is the sensitivity. The decision capture is the same-stamp pair from the window three hours to fifteen minutes before the deadline. An earlier file is not a fallback. The Gameweek 6 submission plays no chip. An injury flag is the minutes file, and a written zero stays zero. A manual override is a log entry that names the player, the value, and the reason. The review is at gameweek 26."
+  "gw6_wildcard_judgement": {
+    "intent": "wildcard",
+    "preceded_capture": true,
+    "counts_toward_chip_rule": false,
+    "decision_number": "discounted_xi_plus_captain",
+    "solver_objective": "discounted_squad_sum",
+    "gamma": 0.9,
+    "gamma_source": "src/models/season_climb_ft.GAMMA",
+    "horizon_steps": 4,
+    "weights": "gamma**h for h = 0,1,2,3",
+    "renormalize_missing": false,
+    "fixture_multiplier": "first-pot lam_scored that week over lam_scored in the decision week",
+    "unpriced_week": "contribution 0 and the weight stays",
+    "minutes": "starts >= 1 in at least 2 of the previous 3 finished gameweeks",
+    "status": "a",
+    "chance": "null or 100",
+    "filter_applies_to": "incoming buys",
+    "budget": "sum of sell_price plus bank",
+    "plans": ["held", "one_free_transfer", "wildcard"],
+    "later_window": "decision-week XI given up; the first-half wildcard expires at gameweek 19",
+    "winner": null
+  },
+  "note": "Gaussian log score with sigma fixed at 3. The bootstrap resamples gameweeks, not player rows. 2026-27 is not in the closed-season comparison. Gameweeks 1-5 of that season were already read. The clean holdout starts at gameweek 6. A season total is not a pass. The decision batch scores score_xp. From gameweek 6 the live choice primary is ep_next and score_xp is logged as the shadow. Promotion needs the paired interval of score_xp minus ep_next to stay strictly above zero on at least 20 pre-deadline weeks. An interval that covers zero is undetermined, and the test continues through gameweek 38. From gameweek 6 the live squad is chosen by captured ep_next. score_xp is logged in shadow and does not choose. The historical score column stays score_xp. The eligible pool is the primary closed-season result and the all-weeks pool is the sensitivity. The decision capture is the same-stamp pair from the window three hours to fifteen minutes before the deadline. An earlier file is not a fallback. The Gameweek 6 chip is a logged wildcard judgement. It preceded the capture and does not count toward a chip rule. An injury flag is the minutes file, and a written zero stays zero. A manual override is a log entry that names the player, the value, and the reason. The review is at gameweek 26."
 }

@@ -54,7 +54,9 @@ LIVE_PRIMARY_WIRED = True
 # An earlier file is not a fallback, and the two scores are not compared first.
 LIVE_DECISION_CAPTURE = "t1_same_stamp"
 LIVE_CAPTURE_FALLBACK = "none"
-GW6_SUBMITTED_CHIP = "unused"
+# A logged judgement. It is not a chip-rule result and it does not count.
+GW6_SUBMITTED_CHIP = "logged_judgement"
+GW6_CHIP_COUNTS = False
 # A written zero in the minutes file stays zero. A manual override is a log
 # entry that names the player, the value, and the reason.
 LIVE_INJURY_FLAGS = "minutes_file_zero_stays_zero"

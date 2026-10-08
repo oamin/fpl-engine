@@ -386,6 +386,7 @@ def _failures_paths() -> list[str]:
         POWER_SIMS,
         POWER_STEP,
         POWER_WEEKS,
+        GW6_CHIP_COUNTS,
         GW6_SUBMITTED_CHIP,
         LIVE_CAPTURE_FALLBACK,
         LIVE_CONTINUE_TO_GW,
@@ -534,7 +535,20 @@ def _failures_paths() -> list[str]:
         if live.get("fallback") != LIVE_CAPTURE_FALLBACK:
             failures.append("an earlier capture is a fallback")
         if live.get("gw6_chip") != GW6_SUBMITTED_CHIP:
-            failures.append("the gameweek 6 submission plays a chip")
+            failures.append("the gameweek 6 chip is not the logged judgement")
+        if live.get("counts_toward_chip_rule") is not GW6_CHIP_COUNTS:
+            failures.append("the gameweek 6 chip counts toward a chip rule")
+        judgement = protocol.get("gw6_wildcard_judgement") or {}
+        if judgement.get("counts_toward_chip_rule") is not False:
+            failures.append("the wildcard judgement counts toward a chip rule")
+        if judgement.get("preceded_capture") is not True:
+            failures.append("the wildcard intent did not precede the capture")
+        if judgement.get("renormalize_missing") is not False:
+            failures.append("a missing odds week is renormalized")
+        from src.models.season_climb_ft import GAMMA
+
+        if judgement.get("gamma") != GAMMA:
+            failures.append("the wildcard discount is not the locked gamma")
         if live.get("injury_flags") != LIVE_INJURY_FLAGS:
             failures.append("an injury flag is not the minutes file")
         if live.get("manual_override") != LIVE_MANUAL_OVERRIDE:
