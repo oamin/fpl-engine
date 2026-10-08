@@ -1,0 +1,195 @@
+{
+  "gw": 6,
+  "capture": "/workspace/data/predictions/2026-27/gw06/official_20261007T220914Z.csv",
+  "betfair_dir": "/workspace/data/predictions/2026-27/gw06/betfair_20261008",
+  "betfair_ready": false,
+  "arms": [
+    {
+      "key": "arm0_baseline",
+      "label": "Odds API + rolling minutes + GW7 copy",
+      "skipped": false,
+      "use_tags": false,
+      "use_betfair_lines": false,
+      "use_outrights": false,
+      "line_weeks": [
+        6,
+        7
+      ],
+      "horizon_weeks": [
+        6,
+        7,
+        8
+      ],
+      "copy_note": "GW8 repeats GW7 and has no 1X2 of its own.",
+      "chip": "wildcard",
+      "rebuild_gap_gw": 12.596123554240776,
+      "outlooks": [
+        {
+          "gw": 6,
+          "held_xi": 54.785415065578604,
+          "held_bench": 2.9874320994925228,
+          "rebuilt_xi": 67.38153861981938,
+          "fh_xi": 67.38153861981938
+        },
+        {
+          "gw": 7,
+          "held_xi": 56.69974537255271,
+          "held_bench": 2.2889462332135295,
+          "rebuilt_xi": 61.850586660709055,
+          "fh_xi": 69.04096497221934
+        },
+        {
+          "gw": 8,
+          "held_xi": 56.69974537255271,
+          "held_bench": 2.2889462332135295,
+          "rebuilt_xi": 61.850586660709055,
+          "fh_xi": 69.04096497221934
+        }
+      ],
+      "owned_gw6": {
+        "Lammens": 3.685232196782815,
+        "Davis": 4.732225867678169,
+        "Calafiori": 5.154584322472606,
+        "Gu\u00e9hi": 3.553135741222517,
+        "Barnes": 3.8145320666389075,
+        "B.Fernandes": 5.6325789249041325,
+        "Rogers": 5.735855411366668,
+        "Cherki": 3.367316445269347,
+        "\u00d8degaard": 5.024850137463713,
+        "Calvert-Lewin": 2.7533113121947164,
+        "Haaland": 4.74200825020403,
+        "Forster": 0.0,
+        "van Ewijk": 0.23412078729781202,
+        "Shaw": 3.6072402902090337,
+        "Scarlett": 0.0
+      },
+      "owned_gw6_sum": 52.03699175370447
+    },
+    {
+      "key": "arm1_tags",
+      "label": "Odds API + contextual tags + GW7 copy",
+      "skipped": false,
+      "use_tags": true,
+      "use_betfair_lines": false,
+      "use_outrights": false,
+      "line_weeks": [
+        6,
+        7
+      ],
+      "horizon_weeks": [
+        6,
+        7,
+        8
+      ],
+      "copy_note": "GW8 repeats GW7 and has no 1X2 of its own.",
+      "chip": "wildcard",
+      "rebuild_gap_gw": 12.559456887574107,
+      "outlooks": [
+        {
+          "gw": 6,
+          "held_xi": 54.81708173224528,
+          "held_bench": 5.7860674405622845,
+          "rebuilt_xi": 67.37653861981939,
+          "fh_xi": 67.37653861981939
+        },
+        {
+          "gw": 7,
+          "held_xi": 56.73974537255271,
+          "held_bench": 4.521831862699571,
+          "rebuilt_xi": 61.84558666070905,
+          "fh_xi": 69.08263163888601
+        },
+        {
+          "gw": 8,
+          "held_xi": 56.73974537255271,
+          "held_bench": 4.521831862699571,
+          "rebuilt_xi": 61.84558666070905,
+          "fh_xi": 69.08263163888601
+        }
+      ],
+      "owned_gw6": {
+        "Lammens": 3.685232196782815,
+        "Davis": 4.732225867678169,
+        "Calafiori": 5.154584322472606,
+        "Gu\u00e9hi": 3.553135741222517,
+        "Barnes": 3.822865399972241,
+        "B.Fernandes": 5.6325789249041325,
+        "Rogers": 5.7441887447000015,
+        "Cherki": 3.382316445269347,
+        "\u00d8degaard": 5.0115168041303795,
+        "Calvert-Lewin": 2.769977978861383,
+        "Haaland": 4.74200825020403,
+        "Forster": 0.0,
+        "van Ewijk": 3.016089461700907,
+        "Shaw": 3.6122402902090336,
+        "Scarlett": 0.0
+      },
+      "owned_gw6_sum": 54.858960428107565
+    },
+    {
+      "key": "arm2_betfair",
+      "label": "Betfair lines + tags + GW7 copy",
+      "skipped": true,
+      "reason": "Betfair derived folder missing: /workspace/data/predictions/2026-27/gw06/betfair_20261008"
+    },
+    {
+      "key": "arm3_full",
+      "label": "Betfair lines + tags + outright forecast",
+      "skipped": true,
+      "reason": "Betfair derived folder missing: /workspace/data/predictions/2026-27/gw06/betfair_20261008"
+    }
+  ],
+  "deltas_vs_arm0": {
+    "arm1_tags": {
+      "owned_sum_delta": 2.821968674403095,
+      "rebuild_gap_delta": -0.036666666666668846,
+      "owned_movers": [
+        {
+          "player": "van Ewijk",
+          "baseline": 0.23412078729781202,
+          "arm": 3.016089461700907,
+          "delta": 2.7819686744030947
+        },
+        {
+          "player": "Calvert-Lewin",
+          "baseline": 2.7533113121947164,
+          "arm": 2.769977978861383,
+          "delta": 0.016666666666666607
+        },
+        {
+          "player": "Cherki",
+          "baseline": 3.367316445269347,
+          "arm": 3.382316445269347,
+          "delta": 0.015000000000000124
+        },
+        {
+          "player": "\u00d8degaard",
+          "baseline": 5.024850137463713,
+          "arm": 5.0115168041303795,
+          "delta": -0.013333333333333641
+        },
+        {
+          "player": "Rogers",
+          "baseline": 5.735855411366668,
+          "arm": 5.7441887447000015,
+          "delta": 0.008333333333333748
+        },
+        {
+          "player": "Barnes",
+          "baseline": 3.8145320666389075,
+          "arm": 3.822865399972241,
+          "delta": 0.008333333333333304
+        },
+        {
+          "player": "Shaw",
+          "baseline": 3.6072402902090337,
+          "arm": 3.6122402902090336,
+          "delta": 0.004999999999999893
+        }
+      ],
+      "copy_note": "GW8 repeats GW7 and has no 1X2 of its own.",
+      "chip": "wildcard"
+    }
+  },
+  "note": "Sensitivity only. Do not read higher xP as better performance. Realised check waits until GW6 points land."
+}
