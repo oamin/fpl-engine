@@ -1,7 +1,7 @@
 {
   "milestone": "string-agent-open-outlets",
   "status": "sources_open_xmi_unchanged",
-  "summary": "Forums, YouTube, and other outlets can be filed as string sources before the deadline and are quoted in the dossier. The press whitelist and xmi compile do not read that folder. No live crawl. Official string ledger still closed.",
+  "summary": "String sources re-parse the outlet clock (YouTube, Reddit unix, HTML time, JSON-LD, HTTP date, feed) into YYYY-MM-DDTHH:MM:SSZ. Capture time is separate. Bare dates and naive clocks are refused. The hash covers both clocks. xmi still ignores the folder.",
   "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
     "src/str_agent/sources.py",

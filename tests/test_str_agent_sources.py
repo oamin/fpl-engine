@@ -13,6 +13,8 @@ from src.str_agent.extractor import build_context
 from src.str_agent.sources import (
     StringSourceError,
     load_string_sources,
+    parse_outlet_clock,
+    source_sha256,
     validate_string_source,
 )
 
@@ -26,17 +28,24 @@ def _note(**overrides: object) -> dict:
         "source": "reddit_fantasypl",
         "outlet_class": "forum",
         "url": "https://www.reddit.com/r/FantasyPL/comments/haaland",
+        "clock": "html_time",
+        "raw_published_at": "2026-10-08T18:00:00Z",
         "published_at_utc": "2026-10-08T18:00:00Z",
+        "observed_at_utc": "2026-10-08T18:30:00Z",
         "headline": "Haaland minutes thread",
         "body": "Several regulars say he was seen finishing training.",
         "player_ids": [411],
     }
     raw.update(overrides)
-    raw["sha256"] = content_sha256(
+    raw["sha256"] = source_sha256(
         headline=str(raw["headline"]),
         body=str(raw["body"]),
         url=str(raw["url"]),
+        clock=str(raw["clock"]),
+        raw_published_at=str(raw["raw_published_at"]),
         published_at_utc=str(raw["published_at_utc"]),
+        observed_at_utc=str(raw["observed_at_utc"]),
+        recorded_at_utc=str(raw.get("recorded_at_utc") or ""),
     )
     return raw
 
@@ -90,7 +99,11 @@ class StringSources(unittest.TestCase):
     def test_published_after_the_deadline_fails(self) -> None:
         with self.assertRaises(StringSourceError):
             validate_string_source(
-                _note(published_at_utc="2026-10-10T10:00:00Z"),
+                _note(
+                    raw_published_at="2026-10-10T10:00:00Z",
+                    published_at_utc="2026-10-10T10:00:00Z",
+                    observed_at_utc="2026-10-10T10:00:00Z",
+                ),
                 deadline_utc=DEADLINE,
             )
 
@@ -173,9 +186,72 @@ class StringSources(unittest.TestCase):
         self.assertIn("seen finishing training", text)
         self.assertIn("## Other outlets", text)
         self.assertIn("[youtube]", text)
+        self.assertIn("via html_time", text)
+        self.assertIn("observed 2026-10-08T18:30:00Z", text)
         self.assertIn("Sidecar summary: rolling avg", text)
         self.assertNotIn("score_xp", text)
         self.assertLess(text.index("seen finishing training"), text.index("Sidecar summary"))
+
+    def test_clocks_convert_to_canonical_utc(self) -> None:
+        self.assertEqual(
+            parse_outlet_clock("reddit_created_utc", "1759946400.9"),
+            parse_outlet_clock("reddit_created_utc", "1759946400"),
+        )
+        self.assertEqual(
+            parse_outlet_clock("http_last_modified", "Wed, 07 Oct 2026 12:00:00 GMT"),
+            "2026-10-07T12:00:00Z",
+        )
+        self.assertEqual(
+            parse_outlet_clock("youtube_published_at", "2026-10-08T19:00:00+01:00"),
+            "2026-10-08T18:00:00Z",
+        )
+        note = validate_string_source(
+            _note(
+                clock="youtube_published_at",
+                raw_published_at="2026-10-08T19:00:00+01:00",
+                published_at_utc="2026-10-08T18:00:00Z",
+            ),
+            deadline_utc=DEADLINE,
+        )
+        self.assertEqual(note.published_at_utc, "2026-10-08T18:00:00Z")
+        self.assertEqual(note.clock, "youtube_published_at")
+
+    def test_ambiguous_clocks_fail(self) -> None:
+        for raw_time in ("2026-10-08", "2026-10-08T14:30:00", "2 hours ago"):
+            with self.assertRaises(StringSourceError):
+                parse_outlet_clock("html_time", raw_time)
+        with self.assertRaises(StringSourceError):
+            parse_outlet_clock("page_claimed", "2026-10-08T18:00:00Z")
+
+    def test_declared_time_must_match_the_raw_clock(self) -> None:
+        with self.assertRaises(StringSourceError):
+            validate_string_source(
+                _note(published_at_utc="2026-10-08T17:00:00Z"),
+                deadline_utc=DEADLINE,
+            )
+
+    def test_causality(self) -> None:
+        with self.assertRaises(StringSourceError):
+            validate_string_source(
+                _note(observed_at_utc="2026-10-08T17:00:00Z"),
+                deadline_utc=DEADLINE,
+            )
+        with self.assertRaises(StringSourceError):
+            validate_string_source(
+                _note(recorded_at_utc="2026-10-08T18:30:00Z"),
+                deadline_utc=DEADLINE,
+            )
+
+    def test_hash_covers_the_clocks(self) -> None:
+        original = _note()
+        shifted = dict(original)
+        shifted["observed_at_utc"] = "2026-10-08T18:30:01Z"
+        with self.assertRaises(StringSourceError):
+            validate_string_source(shifted, deadline_utc=DEADLINE)
+        raw_shifted = dict(original)
+        raw_shifted["raw_published_at"] = "2026-10-08T19:00:00+01:00"
+        with self.assertRaises(StringSourceError):
+            validate_string_source(raw_shifted, deadline_utc=DEADLINE)
 
 
 if __name__ == "__main__":
