@@ -7,45 +7,45 @@
       "player_id": 6,
       "name": "Saliba",
       "position": "DEF",
-      "tag": "ask",
-      "cited_packet_ids": [],
+      "tag": "injured",
+      "cited_packet_ids": [
+        "the_standard:gw06:saliba-still-out-with-a-long-term-back-injury"
+      ],
       "prior": null,
       "status": "i",
       "chance": 0.0,
-      "xmi_compiled": null,
-      "n_packets": 0
+      "xmi_compiled": 0.0,
+      "n_packets": 5
     },
     {
       "player_id": 175,
       "name": "van Ewijk",
       "position": "DEF",
-      "tag": "injured",
+      "tag": "ask",
       "cited_packet_ids": [
-        "fpl_bootstrap:gw06:175-hamstring-injury-75-chance-of"
+        "coventry_telegraph:gw06:lampard-says-van-ewijk-is-back-in-training"
       ],
       "prior": 90.0,
       "status": "d",
       "chance": 75.0,
-      "xmi_compiled": 67.5,
-      "n_packets": 1
+      "xmi_compiled": null,
+      "n_packets": 4
     },
     {
       "player_id": 411,
       "name": "Haaland",
       "position": "FWD",
       "tag": "ask",
-      "cited_packet_ids": [],
+      "cited_packet_ids": [
+        "sportsmole:gw06:haaland-a-minor-doubt-for-liverpool-with-fatigue"
+      ],
       "prior": 90.0,
       "status": "a",
       "chance": null,
       "xmi_compiled": null,
-      "n_packets": 0
+      "n_packets": 4
     }
   ],
-  "withdrawn": [
-    "mancity_fc:gw06:guardiola-on-haaland",
-    "arsenal_fc:gw06:saliba-injury-update",
-    "bbc_sport:gw06:van-ewijk-remains-a-doubt"
-  ],
-  "context_report": "reports/packet_xmi_compile_demo_20261008.md"
+  "context_report": "reports/packet_xmi_compile_demo_20261008.md",
+  "rule": "latest published_at_utc wins; negated injury is not injured"
 }

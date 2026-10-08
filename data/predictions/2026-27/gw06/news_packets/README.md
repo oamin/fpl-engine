@@ -11,6 +11,10 @@ The URL must be a real `http(s)` article. A host or path containing
 `example` (or `localhost`) is rejected. `fpl:bootstrap` is allowed only
 on synthetic FPL packets. Do not hand-write a presser quote.
 
+Also whitelisted from 2026-10-08: `manchestereveningnews`, `sportsmole`,
+`football_london`, `the_standard`, `coventry_telegraph`, `chronicle_live`,
+`haaglanden_voetbal`. The latest packet's time wins the tag.
+
 Validate:
 
 ```bash

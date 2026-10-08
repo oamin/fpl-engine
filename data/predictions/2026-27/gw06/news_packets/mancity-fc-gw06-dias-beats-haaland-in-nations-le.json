@@ -1,0 +1,13 @@
+{
+  "packet_id": "mancity_fc:gw06:dias-beats-haaland-in-nations-league",
+  "source": "mancity_fc",
+  "url": "https://www.mancity.com/news/mens/international-roundup-4-october-2026-63926730",
+  "published_at_utc": "2026-10-04T21:00:00Z",
+  "club": "Manchester City",
+  "player_ids": [
+    411
+  ],
+  "headline": "Dias beats Haaland in Nations League",
+  "body": "Portugal beat Norway 2-1 in Porto. Haaland was replaced in the 67th minute.",
+  "sha256": "2b3c471b6eb02c71723f07f5a1517bef9f090278af5b0879b180240829aa6be8"
+}

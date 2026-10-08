@@ -7,7 +7,7 @@ Gemini ([compile](bc-90156d5d-ce87-56ee-b772-011f4d43dbd0)): reuse the closed `n
 ```
 audited packet JSON
   → (optional) synthetic FPL news packet
-  → SUPPORT phrase match → tag ∈ {firm_starter, injured, transferred, benched, ask}
+  → SUPPORT phrase match on the latest packet → tag ∈ {firm_starter, injured, transferred, benched, ask}
   → minutes_for_tag(tag, position, prior, chance, status) → xmi
 ```
 
@@ -29,7 +29,7 @@ See the live demo for Saliba / van Ewijk / Haaland:
 - `reports/packet_xmi_compile_demo_20261008.md` — markdown the compile sees
 - `reports/packet_xmi_compiled_tags_20261008.json` — numeric rows
 
-The three hand-written GW6 packets (`*-example` URLs) are withdrawn. The Haaland file quoted Pep Guardiola on 2026-10-08; he left City in May 2026 and Enzo Maresca was appointed on 29 June 2026. The loader now rejects a URL whose host or path contains `example`. Saliba’s FPL `news_added` still shares a bulk timestamp, so with no real club note he stays `ask` and no `xmi` is written. van Ewijk keeps the synthetic FPL line only (chance 75 → 67.5).
+The three hand-written GW6 packets are withdrawn. On 2026-10-08 the PI marked the replacement table reliable. Those outlets are now on the whitelist and filed as short cites with their own URLs and times. The latest `published_at_utc` sets the tag, so Haaland's 8 Oct Sports Mole note (fatigue, not an injury, available Sunday) beats the 5 Oct BBC "injury doubt", and Lampard's 8 Oct line that van Ewijk is back in training beats the 19 Sep FPL hamstring flag. Saliba's latest note is still a long-term back injury, so his `xmi` is 0.
 
 ## Live CSV
 

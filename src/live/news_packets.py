@@ -56,6 +56,14 @@ SOURCE_WHITELIST = frozenset(
         "burnley_fc",
         "sunderland_fc",
         "coventry_fc",
+        # PI 2026-10-08: local and specialist reports for the GW6 table.
+        "manchestereveningnews",
+        "sportsmole",
+        "football_london",
+        "the_standard",
+        "coventry_telegraph",
+        "chronicle_live",
+        "haaglanden_voetbal",
     }
 )
 
@@ -325,6 +333,58 @@ def to_packet_docs(packets: Sequence[NewsPacket]) -> list[PacketDoc]:
     return [packet.to_packet_doc() for packet in packets]
 
 
+_INJURY_NEGATION = (
+    "not nursing an injury",
+    "not an injury",
+    "no injury",
+    "not a serious injury",
+    "injury eased",
+    "concerns over a serious injury eased",
+)
+
+
+def _clears_doubt(text: str) -> bool:
+    """True when the note says the player should still be available."""
+    return any(
+        phrase in text
+        for phrase in (
+            "available",
+            "not nursing an injury",
+            "not an injury",
+            "injury eased",
+            "back training",
+            "back in training",
+        )
+    )
+
+
+def _tag_one_packet(packet: NewsPacket, *, player_name: str) -> str:
+    """Closed tag for a single packet. Negated injury lines do not count."""
+    from src.live.news_tags import SUPPORT, fold
+
+    name = fold(player_name)
+    text = fold(f"{packet.headline} {packet.body}")
+    sentences = [part.strip() for part in re.split(r"[.!?]+", text) if part.strip()]
+    hits: set[str] = set()
+    for tag, phrases in SUPPORT.items():
+        for sentence in sentences:
+            if tag == "injured" and any(phrase in sentence for phrase in _INJURY_NEGATION):
+                continue
+            matched = [phrase for phrase in phrases if fold(phrase) in sentence]
+            if tag == "injured" and matched == ["doubt"] and _clears_doubt(text):
+                continue
+            if not matched:
+                continue
+            if tag == "firm_starter" and name and name not in text:
+                continue
+            hits.add(tag)
+            break
+    for tag in ("transferred", "injured", "benched", "firm_starter"):
+        if tag in hits:
+            return tag
+    return "ask"
+
+
 def classify_packets_deterministic(
     packets: Sequence[NewsPacket],
     *,
@@ -332,26 +392,15 @@ def classify_packets_deterministic(
 ) -> tuple[str, list[str]]:
     """Map packet text to a closed tag via ``news_tags.SUPPORT`` phrases.
 
-    Returns ``(tag, cited_packet_ids)``. No match → ``ask``. Preference order
-    when several tags fire: transferred > injured > benched > firm_starter.
+    The latest ``published_at_utc`` wins, including ``ask``. An older injury
+    line does not outvote a later note that the player is available.
+    Within that packet: transferred > injured > benched > firm_starter.
     """
-    from src.live.news_tags import SUPPORT, fold
-
-    blob = fold(" ".join(f"{p.headline} {p.body}" for p in packets))
-    name = fold(player_name)
-    hits: dict[str, list[str]] = {tag: [] for tag in SUPPORT}
-    for packet in packets:
-        text = fold(f"{packet.headline} {packet.body}")
-        for tag, phrases in SUPPORT.items():
-            if any(fold(phrase) in text for phrase in phrases):
-                # firm_starter needs the player name nearby when many names appear
-                if tag == "firm_starter" and name and name not in text:
-                    continue
-                hits[tag].append(packet.packet_id)
-    for tag in ("transferred", "injured", "benched", "firm_starter"):
-        if hits[tag]:
-            return tag, hits[tag]
-    return "ask", []
+    if not packets:
+        return "ask", []
+    deciding = max(packets, key=lambda packet: (packet.published_at_utc, packet.packet_id))
+    tag = _tag_one_packet(deciding, player_name=player_name)
+    return tag, [deciding.packet_id]
 
 
 def render_player_context(

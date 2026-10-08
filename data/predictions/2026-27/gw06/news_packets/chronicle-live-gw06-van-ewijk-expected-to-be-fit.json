@@ -1,0 +1,13 @@
+{
+  "packet_id": "chronicle_live:gw06:van-ewijk-expected-to-be-fit-for-newcastle",
+  "source": "chronicle_live",
+  "url": "https://www.chroniclelive.co.uk/sport/football/football-news/coventry-city-vs-newcastle-united-34731497",
+  "published_at_utc": "2026-10-08T05:00:00Z",
+  "club": "Coventry City",
+  "player_ids": [
+    175
+  ],
+  "headline": "van Ewijk expected to be fit for Newcastle",
+  "body": "Chronicle Live, 8 Oct 2026: Milan van Ewijk is expected to be fit again this week after missing the Forest game with a hamstring issue.",
+  "sha256": "b0b167511f32f0986e7ef7ae79dd765afc9f1fd2e02c21e7631d1ad6a9812325"
+}

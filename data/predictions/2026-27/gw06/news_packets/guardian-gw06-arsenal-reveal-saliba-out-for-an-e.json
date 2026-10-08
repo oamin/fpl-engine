@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw06:arsenal-reveal-saliba-out-for-an-extended-period",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/jul/22/arsenal-william-saliba-back-injury-france-world-cup",
+  "published_at_utc": "2026-07-22T21:05:00Z",
+  "club": "Arsenal",
+  "player_ids": [
+    6
+  ],
+  "headline": "Arsenal reveal Saliba out for an extended period with back injury",
+  "body": "The Guardian, 22 Jul 2026: Arsenal said reviews confirmed a back injury needing rehabilitation, surgery is not recommended, and he is expected to be out for an extended period.",
+  "sha256": "31c41603cc584d041d8401d9079b7d020c4ca9a69ac874ec10269737ceba6322"
+}

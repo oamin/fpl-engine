@@ -58,6 +58,42 @@ class NewsPackets(unittest.TestCase):
             np.validate_packet(raw, deadline_utc="2026-10-10T10:00:00Z")
         self.assertIn("placeholder", str(caught.exception))
 
+    def test_local_outlets_are_whitelisted(self) -> None:
+        raw = _packet(source="sportsmole", packet_id="sportsmole:gw06:haaland")
+        packet = np.validate_packet(raw, deadline_utc="2026-10-10T10:00:00Z")
+        self.assertEqual(packet.source, "sportsmole")
+
+    def test_latest_available_note_supersedes_injury_doubt(self) -> None:
+        deadline = "2026-10-10T10:00:00Z"
+        early = np.validate_packet(
+            _packet(
+                packet_id="bbc_sport:gw06:haaland-doubt",
+                headline="Haaland injury doubt",
+                body="Erling Haaland is an injury doubt after he limped off.",
+                published_at_utc="2026-10-05T14:54:39Z",
+                player_ids=[411],
+            ),
+            deadline_utc=deadline,
+        )
+        late = np.validate_packet(
+            _packet(
+                source="sportsmole",
+                packet_id="sportsmole:gw06:haaland-fatigue",
+                url="https://www.sportsmole.co.uk/football/man-city/haaland-fatigue",
+                headline="Haaland minor doubt for Liverpool",
+                body=(
+                    "Status: minor doubt. Type of issue: fatigue. "
+                    "Haaland is not nursing an injury and should be available for selection."
+                ),
+                published_at_utc="2026-10-08T07:10:00Z",
+                player_ids=[411],
+            ),
+            deadline_utc=deadline,
+        )
+        tag, cited = np.classify_packets_deterministic([early, late], player_name="Haaland")
+        self.assertEqual(tag, "ask")
+        self.assertEqual(cited, ["sportsmole:gw06:haaland-fatigue"])
+
     def test_rejects_unwhitelisted_source(self) -> None:
         raw = _packet(source="random_blog", packet_id="random_blog:gw06:x")
         with self.assertRaises(np.WhitelistError):
