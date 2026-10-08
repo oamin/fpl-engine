@@ -1,0 +1,46 @@
+{
+  "rationale": "Fresh Differential Squad Strategy: Assembled a balanced 15-man squad composed exclusively of differential assets owned by strictly under 15% of managers, adhering to the 1000 tenths budget (total spend: 866 tenths) and the maximum 3 players per club limit. No chip is activated, and transfers lists remain empty for this fresh build.\n\nContext & Injury News Audit: Traps identified in the press notes have been strictly avoided despite deceptively positive table flags. Havertz (id 26) is excluded after The Standard (8 Oct 2026) confirmed \"Havertz is out with a hamstring injury\". Saliba (id 6) remains sidelined as \"William Saliba is yet to feature this season because of a back injury from the World Cup\" (Football London, 6 Oct 2026; The Standard, 8 Oct 2026). Similarly, Scott (id 69) and Damsgaard (id 96) are excluded as The Standard confirmed \"Scott is out with a thigh injury\" and \"Damsgaard is out with a ankle injury\" respectively, despite status 'a' markings. Conversely, van Ewijk (id 175) is rostered as an enabled bench asset following positive manager confirmation: Frank Lampard confirmed \"Milan van Ewijk is back in training ahead of Newcastle after a hamstring issue. He hopes van Ewijk will be alright if he comes through the next few days\" (Coventry Telegraph, 8 Oct 2026; Chronicle Live, 8 Oct 2026). Van de Ven (id 503) is also cleared, with The Standard noting \"Van de Ven could return this weekend (hand)\" alongside three full 90-minute appearances.\n\nGoalkeepers: Martinez (id 28, CHE, cost 50, own 4.7%) starts with status 'a' and three consecutive 90-minute outings (90, 90, 90) in an appealing home clash against Bournemouth. Leno (id 250, FUL, cost 45, own 3.4%) provides secure backup on the bench having played 90, 90, 90, with Fulham traveling to Ipswich Town.\n\nDefenders: A back three in a 3-4-3 shape maximizes clean sheet potential. Branthwaite (id 230, EVE, cost 55, own 2.4%) is status 'a' with 90, 90, 90 away at promoted Hull City. Bassey (id 257, FUL, cost 45, own 0.7%) is status 'a' with 90, 90, 90 away at Ipswich Town. Van de Ven (id 503, TOT, cost 50, own 3.8%) has status 'a', 100% chance, and 90, 90, 90 away at Man Utd. On the bench, Lindelöf (id 37, AVL, cost 45, own 0.3%, 90, 90, 90 home to Brentford) and van Ewijk (id 175, COV, cost 40, own 8.7%, home to Newcastle) provide dependable defensive depth.\n\nMidfielders: Saka (id 12, ARS, cost 95, own 13.8%) anchors the midfield with status 'a' and reliable minutes (89, 90, 80) in an exceptional home fixture against Leeds. Dewsbury-Hall (id 236, EVE, cost 66, own 5.9%) boasts status 'a' and 90, 90, 90 away at Hull City. Barnes (id 453, NEW, cost 61, own 5.8%) is an established attacking outlet with status 'a' and 90, 90, 90 away at Coventry City. Schade (id 94, BRE, cost 62, own 11.6%) provides direct goal threat with status 'a' and 90, 90, 90 away at Aston Villa. E.Le Fée (id 542, SUN, cost 57, own 3.4%, 90, 90, 90 home to Brighton) serves as first substitute on the bench.\n\nForwards: A potent three-man frontline takes advantage of reliable 90-minute starters. Thiago (id 106, BRE, cost 78, own 9.1%) has started every match (90, 90, 90) as Brentford's focal point. Barry (id 249, EVE, cost 57, own 8.3%) leads Everton's attack with status 'a' and 90, 90, 90 away at Hull City. Gonzalo (id 569, FUL, cost 60, own 4.0%) starts with strong recent minutes (90, 76, 79) away at Ipswich Town.\n\nCaptaincy: Saka (id 12) is named captain due to Arsenal's prime home fixture against Leeds and his talismanic role. Dewsbury-Hall (id 236) is designated vice-captain offering 90-minute certainty and set-piece involvement away at Hull City.\n\nBench Order: E.Le Fée (id 542) is 1st substitute, followed by Lindelöf (id 37) as 2nd substitute, van Ewijk (id 175) as 3rd substitute, and backup goalkeeper Leno (id 250) as 4th substitute.",
+  "decision": {
+    "chip_played": null,
+    "squad_15": [
+      "28",
+      "250",
+      "230",
+      "503",
+      "257",
+      "37",
+      "175",
+      "12",
+      "453",
+      "236",
+      "94",
+      "542",
+      "106",
+      "249",
+      "569"
+    ],
+    "starting_11": [
+      "28",
+      "230",
+      "503",
+      "257",
+      "12",
+      "453",
+      "236",
+      "94",
+      "106",
+      "249",
+      "569"
+    ],
+    "captain": "12",
+    "vice_captain": "236",
+    "bench_order": [
+      "542",
+      "37",
+      "175",
+      "250"
+    ],
+    "transfers_in": [],
+    "transfers_out": []
+  }
+}

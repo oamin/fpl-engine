@@ -1,9 +1,11 @@
 {
-  "milestone": "string-agent-gw6-xp-lookup",
+  "milestone": "news-xmi-differential-dry-run",
   "status": "research_only",
-  "summary": "On the 7 October 22:09 ep_next capture the string-agent Gameweek 6 eleven with Odegaard counted twice is 50.00. The Gameweek 5 eleven with Haaland counted twice is 60.00 on the same file. Wood has no score_xp row, so the engine total is incomplete. The squad was not changed.",
-  "gemini": "bc-b322a99d-ac2f-5c69-bb00-7038003550b2",
+  "summary": "On news-compiled minutes the numeric engine's fresh Gameweek 6 fifteen scores 67.33 with Saka counted twice. The same solver under 15% ownership scores 61.10. A legal string fifteen under that ownership cut overlays at 51.42. The 22:09 capture and both freeze ledgers were left as they were.",
+  "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
-    "reports/string_agent_gw6_xp_20261008.md"
+    "reports/news_xmi_dry_run_20261008.md",
+    "data/predictions/2026-27/gw06/news_xmi_20261008T195949Z.csv",
+    "reports/string_agent_gw6_differential_decision.json"
   ]
 }
