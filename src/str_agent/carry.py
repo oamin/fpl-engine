@@ -47,6 +47,18 @@ class CarryState:
             "selling_prices": {str(k): int(v) for k, v in self.selling_prices.items()},
         }
 
+    @classmethod
+    def from_dict(cls, raw: Mapping[str, Any]) -> CarryState:
+        return cls(
+            gw=int(raw["gw"]),
+            squad=tuple(str(pid) for pid in raw["squad"]),
+            purchase_prices={str(k): int(v) for k, v in raw["purchase_prices"].items()},
+            bank=int(raw["bank"]),
+            ft_before=int(raw["ft_before"]),
+            chips_played={int(k): str(v) for k, v in raw.get("chips_played", {}).items()},
+            selling_prices={str(k): int(v) for k, v in raw.get("selling_prices", {}).items()},
+        )
+
 
 @dataclass(frozen=True)
 class MoveResult:

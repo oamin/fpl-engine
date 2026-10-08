@@ -27,6 +27,10 @@ class StringFreezeError(RuntimeError):
     """String-agent freeze rule broken."""
 
 
+class DuplicateFreezeError(StringFreezeError):
+    """This gameweek already has an official row."""
+
+
 def empty_realised() -> dict[str, None]:
     return {"actual_points": None, "evaluated_at_utc": None}
 
@@ -74,6 +78,50 @@ def write_string_freeze(row: Mapping[str, Any], path: Path | None = None) -> Pat
             existing = json.loads(line)
             if int(existing["gw"]) == int(payload["gw"]):
                 raise StringFreezeError(f"GW{payload['gw']} already frozen")
+    with ledger.open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(payload, sort_keys=True) + "\n")
+    return ledger
+
+
+def _sha256_hex(value: str) -> bool:
+    if len(value) != 64:
+        return False
+    try:
+        int(value, 16)
+    except ValueError:
+        return False
+    return True
+
+
+def commit_official(
+    row: Mapping[str, Any],
+    *,
+    plan_sha256: str,
+    path: Path | None = None,
+) -> Path:
+    """Append the imminent week to the official ledger.
+
+    A dry run does not call this. ``frozen_at_utc`` must be strictly before
+    the deadline. A second row for the same gameweek raises.
+    """
+    if not _sha256_hex(str(plan_sha256)):
+        raise StringFreezeError("plan_sha256 must be a sha256 hex digest")
+    payload = dict(row)
+    if "realised" not in payload:
+        payload["realised"] = empty_realised()
+    provenance = dict(payload.get("provenance") or {})
+    provenance["plan_sha256"] = str(plan_sha256)
+    payload["provenance"] = provenance
+    validate_freeze_row(payload)
+    ledger = Path(path) if path is not None else LEDGER
+    ledger.parent.mkdir(parents=True, exist_ok=True)
+    if ledger.is_file():
+        for line in ledger.read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            existing = json.loads(line)
+            if int(existing["gw"]) == int(payload["gw"]):
+                raise DuplicateFreezeError(f"GW{payload['gw']} already frozen")
     with ledger.open("a", encoding="utf-8") as handle:
         handle.write(json.dumps(payload, sort_keys=True) + "\n")
     return ledger

@@ -21,12 +21,22 @@ from src.live.news_packets import (
     synthetic_fpl_packets,
 )
 from src.live.news_tags import prior_minutes
+from src.rules.fpl_2026 import ChipWallet
 from src.str_agent.carry import CarryState, carry_from_entry, validate_move
 from src.str_agent.extractor import (
     other_outlets_markdown,
     packets_markdown,
     roster_markdown,
 )
+from src.str_agent.horizon import (
+    followup_context,
+    load_plan,
+    resolve_start,
+    validate_horizon,
+    write_plan,
+)
+from src.str_agent.prompt import SYSTEM
+from src.str_agent.runner import sha256_text
 from src.str_agent.sources import load_string_sources
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -87,6 +97,14 @@ def _fixtures(gw: int, fixtures: list[dict[str, Any]], teams: Mapping[int, str])
     }
 
 
+def chips_remaining(played: Mapping[int, str], gw: int) -> list[str]:
+    """Chips still available at ``gw`` after the ones already played."""
+    wallet = ChipWallet()
+    for week in sorted(int(key) for key in played):
+        wallet.play(week, str(played[week]))
+    return list(wallet.available(int(gw)))
+
+
 def prepare(
     entry_id: int = 2632584,
     *,
@@ -94,6 +112,8 @@ def prepare(
     logs_path: Path | None = None,
     bootstrap_path: Path | None = None,
     fixtures_path: Path | None = None,
+    plan_root: Path | None = None,
+    next_gw: int | None = None,
 ) -> TrialPack:
     """Gameweek context whose starting fifteen is the entry's last week."""
     entry = load_entry(int(entry_id))
@@ -236,7 +256,9 @@ def prepare(
         chips_played=dict(carry.chips_played),
         selling_prices={},
     )
-    return TrialPack(
+    asked = int(next_gw) if next_gw is not None else int(carry.gw)
+    start = resolve_start(asked, carry, plan_root)
+    pack = TrialPack(
         entry_id=int(entry["entry_id"]),
         team_name=str(entry.get("team_name") or ""),
         deadline_utc=deadline_utc,
@@ -244,6 +266,162 @@ def prepare(
         directory=directory,
         names=names,
         context=context,
+    )
+    if start is carry and asked == int(carry.gw):
+        return pack
+    if int(start.gw) != asked:
+        raise ValueError(f"saved plan continues at GW{start.gw}, not GW{asked}")
+    return _paper_pack(
+        pack,
+        start,
+        roster=roster,
+        elements=elements,
+        history=history,
+        team_of_name=team_of_name,
+        fixtures=fixtures,
+        teams=teams,
+        bootstrap=bootstrap,
+        plan_root=plan_root,
+    )
+
+
+def _paper_pack(
+    entry_pack: TrialPack,
+    start: CarryState,
+    *,
+    roster: list[dict[str, Any]],
+    elements: Mapping[int, Mapping[str, Any]],
+    history: Mapping[int, list[tuple[int, float]]],
+    team_of_name: Mapping[str, int],
+    fixtures: list[dict[str, Any]],
+    teams: Mapping[int, str],
+    bootstrap: Mapping[str, Any],
+    plan_root: Path | None,
+) -> TrialPack:
+    """Context for a later week, from the saved plan rather than the live entry."""
+    owned_ids = [int(pid) for pid in start.squad]
+    missing = [pid for pid in owned_ids if pid not in elements]
+    if missing:
+        raise ValueError(f"paper squad is not in the bootstrap: {missing}")
+    prices = {int(key): int(value) for key, value in start.purchase_prices.items()}
+    missing_prices = [pid for pid in owned_ids if pid not in prices]
+    if missing_prices:
+        raise ValueError(f"paper squad has no purchase price: {missing_prices}")
+    through = int(start.gw) - 1
+    minutes = {
+        pid: last_window(list(history.get(pid, [])), through) for pid in owned_ids
+    }
+    owned = set(owned_ids)
+    paper_roster = [dict(row) for row in roster]
+    for row in paper_roster:
+        row["owned"] = int(row["player_id"]) in owned
+    paper_roster.sort(key=lambda row: (not row["owned"], row["position"], row["name"]))
+    dossier: dict[int, dict[str, Any]] = {}
+    for pid in owned_ids:
+        element = elements[pid]
+        series = [pair[1] for pair in history.get(pid, []) if pair[0] <= through]
+        dossier[pid] = {
+            "name": entry_pack.names[str(pid)],
+            "position": entry_pack.directory[str(pid)]["position"],
+            "club": entry_pack.directory[str(pid)]["club"],
+            "prior": prior_minutes(series),
+            "status": element.get("status"),
+            "chance": element.get("chance_of_playing_next_round"),
+            "news": str(element.get("news") or ""),
+        }
+    packets = load_gameweek_packets(
+        start.gw,
+        deadline_utc=entry_pack.deadline_utc,
+        include_synthetic_fpl=False,
+    )
+    packets.extend(
+        synthetic_fpl_packets(
+            bootstrap,
+            gw=start.gw,
+            deadline_utc=entry_pack.deadline_utc,
+            owned=owned,
+        )
+    )
+    sources = load_string_sources(start.gw, deadline_utc=entry_pack.deadline_utc)
+    fixture_by_team = _fixtures(start.gw, fixtures, teams)
+    slot_lines = []
+    for pid in owned_ids:
+        meta = entry_pack.directory[str(pid)]
+        team_id = team_of_name.get(str(meta["club"]))
+        fixture = fixture_by_team.get(int(team_id), "no game") if team_id else "no game"
+        window = minutes.get(pid) or []
+        window_text = ", ".join(str(int(value)) for value in window) or "none"
+        slot_lines.append(
+            f"- owned {meta['name']} (id {pid}), {meta['position']}, "
+            f"{meta['club']}, cost {meta['now_cost']}, "
+            f"bought at {prices[pid]}, last minutes {window_text}. Fixture: {fixture}."
+        )
+    left = chips_remaining(dict(start.chips_played), start.gw)
+    chips = ", ".join(left) or "none"
+    prior = followup_context(load_plan(int(start.gw) - 1, plan_root))
+    context = (
+        f"# Gameweek {start.gw} string-agent context\n"
+        f"Deadline: {entry_pack.deadline_utc}\n"
+        f"Starting squad: the saved plan after Gameweek {start.gw - 1}. "
+        f"That is the squad you already own. It is not the live entry.\n\n"
+        + prior
+        + f"Bank: {int(start.bank)} tenths. Free transfers: {int(start.ft_before)}. "
+        f"Chips left: {chips}.\n"
+        "A transfer beyond the free-transfer bank costs 4 points. "
+        "Selling price is the buy price plus half of any rise, rounded down, "
+        "or the current price if it has fallen.\n"
+        "Captain and vice must be two different players in the starting eleven. "
+        "transfers_in and transfers_out must be exactly the players who join and leave.\n\n"
+        "## Owned fifteen\n"
+        + "\n".join(slot_lines)
+        + "\n\n## Market\n"
+        + roster_markdown(
+            paper_roster,
+            bank=int(start.bank),
+            ft=int(start.ft_before),
+            chips_left=left,
+        )
+        + "\n## Your fifteen, with notes\n"
+        + packets_markdown(owned_ids, dossier, packets, minutes, sources)
+        + "\n"
+        + other_outlets_markdown(sources, owned_ids)
+    )
+    return TrialPack(
+        entry_id=entry_pack.entry_id,
+        team_name=entry_pack.team_name,
+        deadline_utc=entry_pack.deadline_utc,
+        carry=start,
+        directory=entry_pack.directory,
+        names=entry_pack.names,
+        context=context,
+    )
+
+
+def save_submitted_plan(
+    pack: TrialPack,
+    payload: Mapping[str, Any],
+    *,
+    frozen_at_utc: str,
+    model_id: str,
+    root: Path | None = None,
+) -> tuple[Path, str]:
+    """Validate a three-week plan and write it. Does not touch the official ledger."""
+    decision = dict(payload["decision"])
+    horizon = [dict(week) for week in payload["horizon"]]
+    result = validate_horizon(decision, horizon, pack.carry, pack.directory)
+    return write_plan(
+        gw=int(pack.carry.gw),
+        deadline_utc=pack.deadline_utc,
+        frozen_at_utc=frozen_at_utc,
+        model_id=model_id,
+        prompt_sha256=sha256_text(SYSTEM),
+        context=pack.context,
+        rationale=str(payload.get("rationale") or ""),
+        decision=decision,
+        horizon=horizon,
+        carry=pack.carry,
+        result=result,
+        root=root,
     )
 
 

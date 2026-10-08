@@ -16,6 +16,7 @@ from src.str_agent import freeze as fz
 from src.str_agent import prompt as pr
 from src.str_agent import validator as val
 from src.str_agent.carry import CarryState, validate_move
+from src.str_agent.horizon import HORIZON_WEEKS, HorizonError, validate_horizon, write_plan
 
 CallModel = Callable[[str, str], str]
 
@@ -119,6 +120,8 @@ def run_once(
     ledger: Path | None = None,
     commit: bool = False,
     carry: CarryState | None = None,
+    plan_root: Path | None = None,
+    save_plan: bool = False,
 ) -> dict[str, Any]:
     """Call the model, repair illegal drafts, optionally freeze.
 
@@ -126,10 +129,14 @@ def run_once(
     exhausted). Raises ``fz.StringFreezeError`` only when ``commit`` is true
     and the row fails freeze rules.
     """
+    if save_plan and carry is None:
+        raise HorizonError("saving a plan needs the carried squad")
     system = pr.SYSTEM
     user = pr.wrap_user_context(context_markdown)
     last_errors: list[str] = []
     row: dict[str, Any] | None = None
+    payload: dict[str, Any] = {}
+    horizon_result = None
     for attempt in range(max_repairs + 1):
         if attempt == 0:
             raw = call_model(system, user)
@@ -155,9 +162,47 @@ def run_once(
             carry=carry,
         )
         last_errors = list(row["accounting"]["errors"])
+        horizon_result = None
+        if save_plan:
+            horizon = payload.get("horizon")
+            if not isinstance(horizon, list):
+                horizon_errors = [f"horizon must have {HORIZON_WEEKS} weeks"]
+            else:
+                assert carry is not None
+                horizon_result = validate_horizon(
+                    dict(payload.get("decision") or {}),
+                    horizon,
+                    carry,
+                    directory,
+                )
+                horizon_errors = list(horizon_result.errors)
+            for item in horizon_errors:
+                if item not in last_errors:
+                    last_errors.append(item)
+            if horizon_errors:
+                row["accounting"]["errors"] = list(last_errors)
+                row["accounting"]["is_legal"] = False
         if not last_errors:
             break
     assert row is not None
+    if save_plan and not last_errors:
+        assert horizon_result is not None and carry is not None
+        _path, digest = write_plan(
+            gw=gw,
+            deadline_utc=deadline_utc,
+            frozen_at_utc=frozen_at_utc,
+            model_id=model_id,
+            prompt_sha256=sha256_text(system),
+            context=context_markdown,
+            rationale=str(payload.get("rationale") or ""),
+            decision=dict(payload.get("decision") or {}),
+            horizon=list(payload.get("horizon") or []),
+            carry=carry,
+            result=horizon_result,
+            root=plan_root,
+        )
+        row["plan_sha256"] = digest
+        row["plan_path"] = str(_path)
     if commit:
         if not row["accounting"]["is_legal"]:
             raise fz.StringFreezeError(
@@ -174,6 +219,16 @@ def run_once(
             clean["accounting"]["hits"] = row["accounting"]["hits"]
         if "bank_after" in row["accounting"]:
             clean["accounting"]["bank_after"] = row["accounting"]["bank_after"]
-        fz.write_string_freeze(clean, path=ledger)
+        clean.pop("plan_path", None)
+        if save_plan:
+            digest = str(clean.pop("plan_sha256"))
+            provenance = dict(clean["provenance"])
+            provenance["plan_sha256"] = digest
+            clean["provenance"] = provenance
+            fz.commit_official(clean, plan_sha256=digest, path=ledger)
+            clean["plan_sha256"] = digest
+        else:
+            clean.pop("plan_sha256", None)
+            fz.write_string_freeze(clean, path=ledger)
         return clean
     return row

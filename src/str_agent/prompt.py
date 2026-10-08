@@ -14,12 +14,17 @@ You must still output a legal 2026/27 squad: 2 GKP, 5 DEF, 5 MID, 3 FWD,
 max 3 per club, within budget, legal XI formation, captain and vice.
 Use only the context packet — no memory of post-deadline results.
 Return JSON with keys rationale, decision (chip_played, squad_15, starting_11,
-captain, vice_captain, bench_order, transfers_in, transfers_out).
+captain, vice_captain, bench_order, transfers_in, transfers_out), and horizon.
+horizon is three weeks, this week first. Week 0 matches decision. The next
+two weeks are intentions at today's prices, each a legal successor of the
+squad left by the week before. A free hit lasts one week.
 """
 
 
 def wrap_user_context(context_markdown: str) -> str:
     return (
-        "Using only the context below, choose this gameweek's squad and chip.\n\n"
+        "Using only the context below, choose this gameweek's squad and chip, "
+        "and a horizon of three weeks. Week 0 is this decision. The next two "
+        "weeks are intentions at today's prices.\n\n"
         + context_markdown
     )
