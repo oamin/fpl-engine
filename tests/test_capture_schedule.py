@@ -181,9 +181,20 @@ class CaptureScheduleTest(unittest.TestCase):
         captured = datetime(2026, 10, 9, 10, 0, tzinfo=timezone.utc)
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            with patch(
-                "src.eval.predictions.export_deadline_scores",
-                side_effect=RuntimeError("deadline is not priced"),
+            # The live files are absent on CI. Point the checks at a file that exists
+            # so the patched engine is the thing that fails.
+            present = root / "present.txt"
+            present.write_text("x", encoding="utf-8")
+            with (
+                patch("src.eval.predictions.MINUTES_PATH", present),
+                patch("src.live.deadline.ENTRY_PATH", present),
+                patch("src.live.deadline.LOG_PATH", present),
+                patch("src.live.deadline.ODDS_PATH", present),
+                patch("src.live.deadline.FIXTURES_PATH", present),
+                patch(
+                    "src.eval.predictions.export_deadline_scores",
+                    side_effect=RuntimeError("deadline is not priced"),
+                ),
             ):
                 write_snapshot(payload, captured, gw=6, slot="t24", root=root, pair_engine=True)
             self.assertEqual(len(list(root.rglob("slot_t24.json"))), 1)
