@@ -3,7 +3,8 @@
   "team": "ojaminFC",
   "gw": 6,
   "deadline_utc": "2026-10-10T10:00:00Z",
-  "note": "Sidecar. Does not overwrite data/live/xmi_gw6.csv. 50/50 is half the GW1-5 prior.",
+  "ask_rule": "mean of the last 3 gameweeks, zeros included",
+  "note": "Sidecar. Does not overwrite data/live/xmi_gw6.csv.",
   "players": [
     {
       "slot": 1,
@@ -13,16 +14,21 @@
       "position": "GKP",
       "captain": false,
       "vice": false,
+      "minutes_gw1_5": [
+        90.0,
+        90.0,
+        90.0,
+        90.0,
+        90.0
+      ],
       "status": "a",
       "chance": null,
-      "prior": 90.0,
+      "prior_appearances": 90.0,
       "tag": "ask",
-      "xmi_packet": null,
+      "xmi_packet": 90.0,
       "xmi_llm": 90.0,
-      "xmi_applied": 90.0,
       "cited": [],
-      "n_packets": 0,
-      "fpl_news": null
+      "n_packets": 0
     },
     {
       "slot": 2,
@@ -32,16 +38,21 @@
       "position": "DEF",
       "captain": false,
       "vice": false,
+      "minutes_gw1_5": [
+        90.0,
+        90.0,
+        90.0,
+        90.0,
+        90.0
+      ],
       "status": "a",
       "chance": null,
-      "prior": 90.0,
+      "prior_appearances": 90.0,
       "tag": "ask",
-      "xmi_packet": null,
+      "xmi_packet": 90.0,
       "xmi_llm": 90.0,
-      "xmi_applied": 90.0,
       "cited": [],
-      "n_packets": 0,
-      "fpl_news": null
+      "n_packets": 0
     },
     {
       "slot": 3,
@@ -51,16 +62,21 @@
       "position": "DEF",
       "captain": false,
       "vice": false,
+      "minutes_gw1_5": [
+        80.0,
+        90.0,
+        66.0,
+        90.0,
+        90.0
+      ],
       "status": "a",
       "chance": null,
-      "prior": 82.0,
+      "prior_appearances": 82.0,
       "tag": "ask",
-      "xmi_packet": null,
+      "xmi_packet": 82.0,
       "xmi_llm": 90.0,
-      "xmi_applied": 82.0,
       "cited": [],
-      "n_packets": 0,
-      "fpl_news": null
+      "n_packets": 0
     },
     {
       "slot": 4,
@@ -70,16 +86,21 @@
       "position": "DEF",
       "captain": false,
       "vice": false,
+      "minutes_gw1_5": [
+        90.0,
+        90.0,
+        90.0,
+        90.0,
+        90.0
+      ],
       "status": "a",
       "chance": null,
-      "prior": 90.0,
+      "prior_appearances": 90.0,
       "tag": "ask",
-      "xmi_packet": null,
+      "xmi_packet": 90.0,
       "xmi_llm": 90.0,
-      "xmi_applied": 90.0,
       "cited": [],
-      "n_packets": 0,
-      "fpl_news": null
+      "n_packets": 0
     },
     {
       "slot": 5,
@@ -89,16 +110,21 @@
       "position": "MID",
       "captain": false,
       "vice": false,
+      "minutes_gw1_5": [
+        90.0,
+        90.0,
+        90.0,
+        90.0,
+        90.0
+      ],
       "status": "a",
       "chance": null,
-      "prior": 90.0,
+      "prior_appearances": 90.0,
       "tag": "ask",
-      "xmi_packet": null,
+      "xmi_packet": 90.0,
       "xmi_llm": 85.0,
-      "xmi_applied": 90.0,
       "cited": [],
-      "n_packets": 0,
-      "fpl_news": null
+      "n_packets": 0
     },
     {
       "slot": 6,
@@ -107,17 +133,22 @@
       "name": "B.Fernandes",
       "position": "MID",
       "captain": false,
-      "vice": false,
+      "vice": true,
+      "minutes_gw1_5": [
+        90.0,
+        90.0,
+        90.0,
+        90.0,
+        90.0
+      ],
       "status": "a",
       "chance": null,
-      "prior": 90.0,
+      "prior_appearances": 90.0,
       "tag": "ask",
-      "xmi_packet": null,
+      "xmi_packet": 90.0,
       "xmi_llm": 90.0,
-      "xmi_applied": 90.0,
       "cited": [],
-      "n_packets": 0,
-      "fpl_news": null
+      "n_packets": 0
     },
     {
       "slot": 7,
@@ -127,16 +158,21 @@
       "position": "MID",
       "captain": false,
       "vice": false,
+      "minutes_gw1_5": [
+        81.0,
+        90.0,
+        86.0,
+        90.0,
+        90.0
+      ],
       "status": "a",
       "chance": null,
-      "prior": 88.66666666666667,
+      "prior_appearances": 88.66666666666667,
       "tag": "ask",
-      "xmi_packet": null,
+      "xmi_packet": 88.66666666666667,
       "xmi_llm": 85.0,
-      "xmi_applied": 88.66666666666667,
       "cited": [],
-      "n_packets": 0,
-      "fpl_news": null
+      "n_packets": 0
     },
     {
       "slot": 8,
@@ -146,16 +182,21 @@
       "position": "MID",
       "captain": false,
       "vice": false,
+      "minutes_gw1_5": [
+        27.0,
+        81.0,
+        65.0,
+        45.0,
+        84.0
+      ],
       "status": "a",
       "chance": null,
-      "prior": 64.66666666666667,
+      "prior_appearances": 64.66666666666667,
       "tag": "ask",
-      "xmi_packet": null,
+      "xmi_packet": 64.66666666666667,
       "xmi_llm": 75.0,
-      "xmi_applied": 64.66666666666667,
       "cited": [],
-      "n_packets": 0,
-      "fpl_news": null
+      "n_packets": 0
     },
     {
       "slot": 9,
@@ -165,16 +206,21 @@
       "position": "MID",
       "captain": false,
       "vice": false,
+      "minutes_gw1_5": [
+        75.0,
+        70.0,
+        76.0,
+        84.0,
+        72.0
+      ],
       "status": "a",
       "chance": null,
-      "prior": 77.33333333333333,
+      "prior_appearances": 77.33333333333333,
       "tag": "ask",
-      "xmi_packet": null,
+      "xmi_packet": 77.33333333333333,
       "xmi_llm": 80.0,
-      "xmi_applied": 77.33333333333333,
       "cited": [],
-      "n_packets": 0,
-      "fpl_news": null
+      "n_packets": 0
     },
     {
       "slot": 10,
@@ -184,16 +230,21 @@
       "position": "FWD",
       "captain": false,
       "vice": false,
+      "minutes_gw1_5": [
+        90.0,
+        90.0,
+        72.0,
+        77.0,
+        90.0
+      ],
       "status": "a",
       "chance": null,
-      "prior": 79.66666666666667,
+      "prior_appearances": 79.66666666666667,
       "tag": "ask",
-      "xmi_packet": null,
+      "xmi_packet": 79.66666666666667,
       "xmi_llm": 80.0,
-      "xmi_applied": 79.66666666666667,
       "cited": [],
-      "n_packets": 0,
-      "fpl_news": null
+      "n_packets": 0
     },
     {
       "slot": 11,
@@ -201,20 +252,25 @@
       "id": 411,
       "name": "Haaland",
       "position": "FWD",
-      "captain": false,
+      "captain": true,
       "vice": false,
+      "minutes_gw1_5": [
+        90.0,
+        90.0,
+        90.0,
+        90.0,
+        90.0
+      ],
       "status": "a",
       "chance": null,
-      "prior": 90.0,
+      "prior_appearances": 90.0,
       "tag": "50/50",
       "xmi_packet": 45.0,
       "xmi_llm": 90.0,
-      "xmi_applied": 45.0,
       "cited": [
         "the_standard:gw06:411-haaland-could-return-this-weekend"
       ],
-      "n_packets": 5,
-      "fpl_news": null
+      "n_packets": 5
     },
     {
       "slot": 12,
@@ -224,16 +280,21 @@
       "position": "GKP",
       "captain": false,
       "vice": false,
+      "minutes_gw1_5": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
       "status": "a",
       "chance": null,
-      "prior": null,
+      "prior_appearances": null,
       "tag": "ask",
-      "xmi_packet": null,
+      "xmi_packet": 0.0,
       "xmi_llm": 0.0,
-      "xmi_applied": null,
       "cited": [],
-      "n_packets": 0,
-      "fpl_news": null
+      "n_packets": 0
     },
     {
       "slot": 13,
@@ -243,18 +304,23 @@
       "position": "DEF",
       "captain": false,
       "vice": false,
+      "minutes_gw1_5": [
+        90.0,
+        90.0,
+        90.0,
+        90.0,
+        0.0
+      ],
       "status": "d",
       "chance": 75.0,
-      "prior": 90.0,
+      "prior_appearances": 90.0,
       "tag": "50/50",
       "xmi_packet": 45.0,
       "xmi_llm": 60.0,
-      "xmi_applied": 45.0,
       "cited": [
         "the_standard:gw06:175-van-ewijk-could-return-this-weekend"
       ],
-      "n_packets": 5,
-      "fpl_news": null
+      "n_packets": 5
     },
     {
       "slot": 14,
@@ -264,16 +330,21 @@
       "position": "DEF",
       "captain": false,
       "vice": false,
+      "minutes_gw1_5": [
+        90.0,
+        72.0,
+        90.0,
+        0.0,
+        83.0
+      ],
       "status": "a",
       "chance": 100.0,
-      "prior": 81.66666666666667,
+      "prior_appearances": 81.66666666666667,
       "tag": "ask",
-      "xmi_packet": null,
+      "xmi_packet": 57.666666666666664,
       "xmi_llm": 80.0,
-      "xmi_applied": 81.66666666666667,
       "cited": [],
-      "n_packets": 0,
-      "fpl_news": null
+      "n_packets": 0
     },
     {
       "slot": 15,
@@ -283,18 +354,23 @@
       "position": "FWD",
       "captain": false,
       "vice": false,
+      "minutes_gw1_5": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
       "status": "u",
       "chance": 0.0,
-      "prior": null,
+      "prior_appearances": null,
       "tag": "transferred",
       "xmi_packet": 0.0,
       "xmi_llm": 0.0,
-      "xmi_applied": 0.0,
       "cited": [
         "fpl_bootstrap:gw06:528-has-joined-leyton-orient-permane"
       ],
-      "n_packets": 1,
-      "fpl_news": null
+      "n_packets": 1
     }
   ]
 }

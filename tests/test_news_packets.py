@@ -65,6 +65,20 @@ class NewsPackets(unittest.TestCase):
             for source in sources:
                 self.assertIn(source, np.SOURCE_WHITELIST, club)
 
+    def test_ask_fills_last_three_games(self) -> None:
+        row = np.compile_player_xmi(
+            player_id=1,
+            name="Lammens",
+            position="GKP",
+            prior=90.0,
+            status="a",
+            chance=None,
+            packets=[],
+            minutes=[90.0, 0.0, 90.0, 90.0, 45.0],
+        )
+        self.assertEqual(row["tag"], "ask")
+        self.assertAlmostEqual(float(row["xmi_compiled"]), 75.0)
+
     def test_could_return_is_not_ruled_out(self) -> None:
         deadline = "2026-10-10T10:00:00Z"
         packet = np.validate_packet(

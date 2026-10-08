@@ -534,6 +534,18 @@ def render_player_context(
     return "\n".join(lines) + "\n"
 
 
+def rolling_game_minutes(history: Sequence[float], window: int = 3) -> float | None:
+    """Mean of the last ``window`` gameweek rows, including zeros.
+
+    A short history uses every row it has. An empty history returns None.
+    """
+    rows = [float(minutes) for minutes in history]
+    if not rows:
+        return None
+    sample = rows[-int(window) :]
+    return sum(sample) / len(sample)
+
+
 def compile_player_xmi(
     *,
     player_id: int,
@@ -543,8 +555,14 @@ def compile_player_xmi(
     status: str | None,
     chance: float | None,
     packets: Sequence[NewsPacket],
+    minutes: Sequence[float] | None = None,
 ) -> dict[str, Any]:
-    """Deterministic packet → tag → ``minutes_for_tag`` (sidecar, not live CSV)."""
+    """Deterministic packet → tag → minutes (sidecar, not live CSV).
+
+    ``ask`` writes the last three games' average. ``minutes`` is the
+    gameweek series, zeros included. With no series, the appearance prior
+    is used instead.
+    """
     from src.live.news_tags import minutes_for_tag
 
     tag, cited = classify_packets_deterministic(packets, player_name=name)
@@ -556,6 +574,11 @@ def compile_player_xmi(
         else:
             base = 90.0 if prior is None else float(prior)
             xmi = 0.5 * base
+    elif tag == "ask":
+        series = list(minutes) if minutes is not None else []
+        xmi = rolling_game_minutes(series)
+        if xmi is None:
+            xmi = prior
     else:
         xmi = minutes_for_tag(tag, position, prior, chance, status)
     return {
@@ -632,6 +655,7 @@ def compile_high_profile_test(
                 status=status,
                 chance=chance,
                 packets=mine,
+                minutes=list(hist.get(int(pid), [])),
             )
         )
     return {

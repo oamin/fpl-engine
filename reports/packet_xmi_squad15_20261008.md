@@ -1,33 +1,25 @@
 # Packet → xmi on ojaminFC (GW6)
 
-Entry 2632584. Fifteen from the Gameweek 5 picks. Prior is the mean of Gameweeks 1–5 appearances (a 0-minute week is not an appearance). Sidecar only: `data/live/xmi_gw6.csv` is not overwritten.
+Entry 2632584. Fifteen from the Gameweek 5 picks. Sidecar only: `data/live/xmi_gw6.csv` is not overwritten.
 
-`pkt` is what the packet compile writes. `ask` writes nothing, so the prior stays. `50/50` is half that prior. `llm` is the current minutes file, for comparison.
+An `ask` (no packet) now writes the mean of the last three gameweeks, and a 0-minute week stays in that window. `50/50` is still half the appearance prior.
 
-| | Player | Pos | Flag | Prior | Tag | Packet xmi | LLM xmi |
-| --- | --- | --- | --- | ---: | --- | ---: | ---: |
-| XI | Lammens | GKP | a | 90 | ask | — | 90 |
-| XI | Davis | DEF | a | 90 | ask | — | 90 |
-| XI | Calafiori | DEF | a | 82 | ask | — | 90 |
-| XI | Guéhi | DEF | a | 90 | ask | — | 90 |
-| XI | Barnes | MID | a | 90 | ask | — | 85 |
-| XI | B.Fernandes (V) | MID | a | 90 | ask | — | 90 |
-| XI | Rogers | MID | a | 89 | ask | — | 85 |
-| XI | Cherki | MID | a | 65 | ask | — | 75 |
-| XI | Ødegaard | MID | a | 77 | ask | — | 80 |
-| XI | Calvert-Lewin | FWD | a | 80 | ask | — | 80 |
-| XI | Haaland (C) | FWD | a | 90 | 50/50 | 45 | 90 |
-| BN | Forster | GKP | a | none | ask | — | 0 |
-| BN | van Ewijk | DEF | d, 75% | 90 | 50/50 | 45 | 60 |
-| BN | Shaw | DEF | a, 100% | 82 | ask | — | 80 |
-| BN | Scarlett | FWD | u, 0% | none | transferred | 0 | 0 |
+| | Player | Last 3 games | Tag | Packet xmi | LLM xmi |
+| --- | --- | --- | --- | ---: | ---: |
+| XI | Lammens | 90, 90, 90 | ask | 90 | 90 |
+| XI | Davis | 90, 90, 90 | ask | 90 | 90 |
+| XI | Calafiori | 66, 90, 90 | ask | 82 | 90 |
+| XI | Guéhi | 90, 90, 90 | ask | 90 | 90 |
+| XI | Barnes | 90, 90, 90 | ask | 90 | 85 |
+| XI | B.Fernandes (V) | 90, 90, 90 | ask | 90 | 90 |
+| XI | Rogers | 86, 90, 90 | ask | 88.7 | 85 |
+| XI | Cherki | 65, 45, 84 | ask | 64.7 | 75 |
+| XI | Ødegaard | 76, 84, 72 | ask | 77.3 | 80 |
+| XI | Calvert-Lewin | 72, 77, 90 | ask | 79.7 | 80 |
+| XI | Haaland (C) | 90, 90, 90 | 50/50 | 45 | 90 |
+| BN | Forster | 0, 0, 0 | ask | 0 | 0 |
+| BN | van Ewijk | 90, 90, 0 | 50/50 | 45 | 60 |
+| BN | Shaw | 90, 0, 83 | ask | 57.7 | 80 |
+| BN | Scarlett | 0, 0, 0 | transferred | 0 | 0 |
 
-Captain on the Gameweek 5 picks is Haaland. Vice is B.Fernandes.
-
-Three of the fifteen have a deciding packet:
-
-- Haaland: The Standard, 8 Oct, could return this weekend → 45, against 90 on the LLM sheet.
-- van Ewijk: the same list, could return → 45, against 60 on the LLM sheet (the FPL 75% flag is not reapplied once the later note says 50/50).
-- Scarlett: FPL news that he has joined Leyton Orient → 0. He was already 0 on the LLM sheet. Status `u` and chance 0 would have zeroed him anyway.
-
-The other twelve have no audited packet. The compile does not move them. Forster has no Gameweek 1–5 appearance, so there is no prior to leave in place.
+Shaw is the row the window changes. Dropping the 0-minute week would leave the mean of 90 and 83. Keeping it, as a game in the window, gives 57.7.

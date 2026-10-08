@@ -19,7 +19,7 @@ audited packet JSON
 | benched GKP | `0` |
 | benched outfield | `15` |
 | 50/50 (`could return this weekend`) | half the prior (half of 90 if no prior) |
-| ask / none | leave prior / no write |
+| ask | mean of the last 3 gameweeks, zeros included |
 
 Pre-emption: status `s`/`u` or chance `0` → `0`.
 
