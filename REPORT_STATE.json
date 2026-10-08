@@ -1,9 +1,11 @@
 {
-  "milestone": "gw6-predeadline-checklist",
-  "status": "stand_by_for_t1",
-  "summary": "Sensitivity audit closed. Before deadline: Friday presser minutes + optional WC dry-run; Saturday T-1h capture, Betfair re-pull, wildcard_plan, deadline note. No more research screens tonight.",
+  "milestone": "week-freeze-bar-lock",
+  "status": "schema_locked_no_row_yet",
+  "summary": "freeze_week schema and GW6–25 bar locked before points. First JSONL row at T-1h only. HOLDOUT_FREEZE untouched.",
   "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
-    "reports/gw6_predeadline_checklist_20261008.md"
+    "src/live/freeze_week.py",
+    "reports/week_freeze_bar_20261008.md",
+    "tests/test_freeze_week.py"
   ]
 }

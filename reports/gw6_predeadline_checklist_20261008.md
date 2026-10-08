@@ -20,6 +20,7 @@ Gemini ([checklist](bc-90156d5d-ce87-56ee-b772-011f4d43dbd0)): sensitivity audit
 2. `python3 -m src.live.betfair_lines --out data/predictions/2026-27/gw06/betfair_t1`
 3. `python3 -m src.live.wildcard_plan --capture <official_t1 csv>` → `chip_decisions.jsonl`
 4. Deadline note: `python3 -m src.live.deadline` (with minutes file present; prefers Betfair `gw_lines`).
+5. Append the GW6 freeze row via `python3 -m src.live.freeze_week --from-json <row.json>` (schema in `reports/week_freeze_bar_20261008.md`). No stub before this window.
 
 ## Do not
 
