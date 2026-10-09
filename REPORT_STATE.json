@@ -1,11 +1,12 @@
 {
-  "milestone": "string-dossier-gw6-trial",
+  "milestone": "main-solid-branches",
   "status": "research_only",
-  "summary": "A Gameweek 6 stragent trial on ojaminFC, after the collector wrote 189 pre-deadline notes, sells Scarlett for Barry and captains Fernandes. No hit, bank 3 tenths, no chip. The Scoutcast sentence about Barry is unsupported. The official ledger was not written.",
+  "summary": "Main now has the three-week string plan, the dossier collector, the Gameweek 6 ojaminFC trial, and the entry 3271409 dry runs. Mean reversion and the mechanism split still conflict with main and stay on their branches. Feed text was not committed.",
   "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
     "reports/string_dossier_gw6_trial.md",
-    "reports/string_dossier_gw6_trial/gw06.json",
-    "reports/string_dossier_gw6_trial/notebook.jsonl"
+    "reports/string_dossier_trawl.md",
+    "reports/numagent_3271409_gw6.md",
+    "reports/stragent_3271409_gw6.md"
   ]
 }

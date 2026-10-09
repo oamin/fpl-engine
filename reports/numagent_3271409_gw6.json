@@ -1,0 +1,474 @@
+{
+  "team": "hiking w djed spence",
+  "entry_id": 3271409,
+  "points": 323,
+  "bank": 1,
+  "ft": 2,
+  "chips_played": [
+    {
+      "gw": 3,
+      "chip": "triple_captain"
+    }
+  ],
+  "chips_left": [
+    "wildcard",
+    "free_hit",
+    "bench_boost"
+  ],
+  "kind": "dry_run",
+  "captured_at": "2026-10-07T22:09:14Z",
+  "horizon_gws": [
+    6,
+    7,
+    8,
+    9
+  ],
+  "unpriced_gws": [
+    8,
+    9
+  ],
+  "budget": 994,
+  "bank_plan": 1,
+  "owned_failing_filter": [
+    "Jo\u00e3o Pedro",
+    "Jacquet",
+    "Igor Jesus",
+    "Dubravka"
+  ],
+  "weights": [
+    1.0,
+    0.9,
+    0.81,
+    0.7290000000000001
+  ],
+  "plans": {
+    "held": {
+      "move": "hold",
+      "players": [
+        "Raya",
+        "Calafiori",
+        "\u00d8degaard",
+        "M.Sangar\u00e9",
+        "De Cuyper",
+        "Gomez",
+        "Jo\u00e3o Pedro",
+        "Jacquet",
+        "Szoboszlai",
+        "Haaland",
+        "Shaw",
+        "B.Fernandes",
+        "Igor Jesus",
+        "Dubravka",
+        "Robertson"
+      ],
+      "squad_sum": 130.85696336140956,
+      "decision_number": 143.69185115595252,
+      "week0_xi_captain": 65.6,
+      "formation": "1-4-3-3",
+      "xi": [
+        "Raya",
+        "De Cuyper",
+        "Jacquet",
+        "Robertson",
+        "Calafiori",
+        "Gomez",
+        "\u00d8degaard",
+        "Szoboszlai",
+        "Haaland",
+        "Jo\u00e3o Pedro",
+        "Igor Jesus"
+      ],
+      "captain": "De Cuyper",
+      "feasible": true,
+      "gain_vs_held": 0.0,
+      "weeks_detail": [
+        {
+          "formation": "1-4-3-3",
+          "xi": [
+            "Raya",
+            "De Cuyper",
+            "Jacquet",
+            "Robertson",
+            "Calafiori",
+            "Gomez",
+            "\u00d8degaard",
+            "Szoboszlai",
+            "Haaland",
+            "Jo\u00e3o Pedro",
+            "Igor Jesus"
+          ],
+          "captain": "De Cuyper",
+          "xi_captain": 65.6
+        },
+        {
+          "formation": "1-4-3-3",
+          "xi": [
+            "Raya",
+            "Robertson",
+            "De Cuyper",
+            "Jacquet",
+            "Calafiori",
+            "Gomez",
+            "Szoboszlai",
+            "\u00d8degaard",
+            "Haaland",
+            "Jo\u00e3o Pedro",
+            "Igor Jesus"
+          ],
+          "captain": "Robertson",
+          "xi_captain": 86.76872350661392
+        },
+        {
+          "formation": "1-3-4-3",
+          "xi": [
+            "Raya",
+            "Calafiori",
+            "De Cuyper",
+            "Jacquet",
+            "\u00d8degaard",
+            "M.Sangar\u00e9",
+            "Gomez",
+            "Szoboszlai",
+            "Jo\u00e3o Pedro",
+            "Haaland",
+            "Igor Jesus"
+          ],
+          "captain": "Raya",
+          "xi_captain": 0.0
+        },
+        {
+          "formation": "1-3-4-3",
+          "xi": [
+            "Raya",
+            "Calafiori",
+            "De Cuyper",
+            "Jacquet",
+            "\u00d8degaard",
+            "M.Sangar\u00e9",
+            "Gomez",
+            "Szoboszlai",
+            "Jo\u00e3o Pedro",
+            "Haaland",
+            "Igor Jesus"
+          ],
+          "captain": "Raya",
+          "xi_captain": 0.0
+        }
+      ]
+    },
+    "free_transfer": {
+      "move": "sell B.Fernandes buy Gro\u00df",
+      "players": [
+        "Raya",
+        "Calafiori",
+        "\u00d8degaard",
+        "M.Sangar\u00e9",
+        "De Cuyper",
+        "Gomez",
+        "Jo\u00e3o Pedro",
+        "Jacquet",
+        "Szoboszlai",
+        "Haaland",
+        "Shaw",
+        "Igor Jesus",
+        "Dubravka",
+        "Robertson",
+        "Gro\u00df"
+      ],
+      "squad_sum": 162.50890710509998,
+      "decision_number": 187.90793267037324,
+      "week0_xi_captain": 85.6,
+      "formation": "1-4-3-3",
+      "xi": [
+        "Raya",
+        "De Cuyper",
+        "Jacquet",
+        "Robertson",
+        "Calafiori",
+        "Gro\u00df",
+        "Gomez",
+        "\u00d8degaard",
+        "Haaland",
+        "Jo\u00e3o Pedro",
+        "Igor Jesus"
+      ],
+      "captain": "Gro\u00df",
+      "feasible": true,
+      "in": "Gro\u00df",
+      "out": "B.Fernandes",
+      "gain_vs_held": 44.21608151442072,
+      "weeks_detail": [
+        {
+          "formation": "1-4-3-3",
+          "xi": [
+            "Raya",
+            "De Cuyper",
+            "Jacquet",
+            "Robertson",
+            "Calafiori",
+            "Gro\u00df",
+            "Gomez",
+            "\u00d8degaard",
+            "Haaland",
+            "Jo\u00e3o Pedro",
+            "Igor Jesus"
+          ],
+          "captain": "Gro\u00df",
+          "xi_captain": 85.6
+        },
+        {
+          "formation": "1-4-4-2",
+          "xi": [
+            "Raya",
+            "Robertson",
+            "De Cuyper",
+            "Jacquet",
+            "Calafiori",
+            "Gro\u00df",
+            "Gomez",
+            "Szoboszlai",
+            "\u00d8degaard",
+            "Haaland",
+            "Jo\u00e3o Pedro"
+          ],
+          "captain": "Gro\u00df",
+          "xi_captain": 113.67548074485916
+        },
+        {
+          "formation": "1-3-4-3",
+          "xi": [
+            "Raya",
+            "Calafiori",
+            "De Cuyper",
+            "Jacquet",
+            "\u00d8degaard",
+            "M.Sangar\u00e9",
+            "Gomez",
+            "Szoboszlai",
+            "Jo\u00e3o Pedro",
+            "Haaland",
+            "Igor Jesus"
+          ],
+          "captain": "Raya",
+          "xi_captain": 0.0
+        },
+        {
+          "formation": "1-3-4-3",
+          "xi": [
+            "Raya",
+            "Calafiori",
+            "De Cuyper",
+            "Jacquet",
+            "\u00d8degaard",
+            "M.Sangar\u00e9",
+            "Gomez",
+            "Szoboszlai",
+            "Jo\u00e3o Pedro",
+            "Haaland",
+            "Igor Jesus"
+          ],
+          "captain": "Raya",
+          "xi_captain": 0.0
+        }
+      ]
+    },
+    "wildcard": {
+      "move": "wildcard",
+      "players": [
+        "Tavernier",
+        "Schade",
+        "De Cuyper",
+        "Gro\u00df",
+        "Kostoulas",
+        "Tarkowski",
+        "Belloumi",
+        "Bogle",
+        "Ampadu",
+        "Calvert-Lewin",
+        "A.Becker",
+        "Gvardiol",
+        "Haaland",
+        "Kinsky",
+        "Robertson"
+      ],
+      "squad_sum": 304.74328773459575,
+      "decision_number": 290.6288592990759,
+      "week0_xi_captain": 120.5,
+      "formation": "1-4-3-3",
+      "xi": [
+        "A.Becker",
+        "Tarkowski",
+        "Bogle",
+        "De Cuyper",
+        "Gvardiol",
+        "Gro\u00df",
+        "Schade",
+        "Belloumi",
+        "Kostoulas",
+        "Haaland",
+        "Calvert-Lewin"
+      ],
+      "captain": "Gro\u00df",
+      "feasible": true,
+      "cost": 918,
+      "weeks_detail": [
+        {
+          "formation": "1-4-3-3",
+          "xi": [
+            "A.Becker",
+            "Tarkowski",
+            "Bogle",
+            "De Cuyper",
+            "Gvardiol",
+            "Gro\u00df",
+            "Schade",
+            "Belloumi",
+            "Kostoulas",
+            "Haaland",
+            "Calvert-Lewin"
+          ],
+          "captain": "Gro\u00df",
+          "xi_captain": 120.5
+        },
+        {
+          "formation": "1-4-3-3",
+          "xi": [
+            "Kinsky",
+            "Bogle",
+            "Robertson",
+            "De Cuyper",
+            "Gvardiol",
+            "Gro\u00df",
+            "Ampadu",
+            "Schade",
+            "Calvert-Lewin",
+            "Kostoulas",
+            "Haaland"
+          ],
+          "captain": "Bogle",
+          "xi_captain": 189.03206588786207
+        },
+        {
+          "formation": "1-3-4-3",
+          "xi": [
+            "A.Becker",
+            "De Cuyper",
+            "Tarkowski",
+            "Bogle",
+            "Tavernier",
+            "Schade",
+            "Gro\u00df",
+            "Belloumi",
+            "Kostoulas",
+            "Calvert-Lewin",
+            "Haaland"
+          ],
+          "captain": "A.Becker",
+          "xi_captain": 0.0
+        },
+        {
+          "formation": "1-3-4-3",
+          "xi": [
+            "A.Becker",
+            "De Cuyper",
+            "Tarkowski",
+            "Bogle",
+            "Tavernier",
+            "Schade",
+            "Gro\u00df",
+            "Belloumi",
+            "Kostoulas",
+            "Calvert-Lewin",
+            "Haaland"
+          ],
+          "captain": "A.Becker",
+          "xi_captain": 0.0
+        }
+      ]
+    },
+    "wildcard_minus_free_transfer": 102.72092662870264,
+    "decision_week_xi_given_up": 34.900000000000006
+  },
+  "calendar": [
+    {
+      "chip": "wildcard",
+      "half": "H1",
+      "status": "open",
+      "use_by_gw": 19,
+      "first_gw": 2,
+      "deadline": "2027-01-01T18:30:00Z"
+    },
+    {
+      "chip": "wildcard",
+      "half": "H2",
+      "status": "open",
+      "use_by_gw": 38,
+      "first_gw": 20,
+      "deadline": "2027-05-30T13:30:00Z"
+    },
+    {
+      "chip": "free_hit",
+      "half": "H1",
+      "status": "open",
+      "use_by_gw": 19,
+      "first_gw": 2,
+      "deadline": "2027-01-01T18:30:00Z"
+    },
+    {
+      "chip": "free_hit",
+      "half": "H2",
+      "status": "open",
+      "use_by_gw": 38,
+      "first_gw": 20,
+      "deadline": "2027-05-30T13:30:00Z"
+    },
+    {
+      "chip": "bench_boost",
+      "half": "H1",
+      "status": "open",
+      "use_by_gw": 19,
+      "first_gw": 1,
+      "deadline": "2027-01-01T18:30:00Z"
+    },
+    {
+      "chip": "bench_boost",
+      "half": "H2",
+      "status": "open",
+      "use_by_gw": 38,
+      "first_gw": 20,
+      "deadline": "2027-05-30T13:30:00Z"
+    },
+    {
+      "chip": "triple_captain",
+      "half": "H1",
+      "status": "played",
+      "use_by_gw": 19,
+      "first_gw": null,
+      "deadline": "2027-01-01T18:30:00Z"
+    },
+    {
+      "chip": "triple_captain",
+      "half": "H2",
+      "status": "open",
+      "use_by_gw": 38,
+      "first_gw": 20,
+      "deadline": "2027-05-30T13:30:00Z"
+    }
+  ],
+  "reading": {
+    "status": "dry_run",
+    "not_the_saturday_lock": true,
+    "priced_gws": [
+      6,
+      7
+    ],
+    "unpriced_gws_add_nothing": [
+      8,
+      9
+    ],
+    "second_free_transfer_searched": false,
+    "gw6_wildcard_minus_one_transfer": 34.9,
+    "discounted_gap_includes_gw7_scaling": 102.72,
+    "wildcard_cost_tenths": 918
+  }
+}

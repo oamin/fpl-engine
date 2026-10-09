@@ -1,0 +1,284 @@
+{
+  "carry": {
+    "bank": 1,
+    "chips_played": {
+      "3": "triple_captain"
+    },
+    "ft_before": 2,
+    "gw": 6,
+    "purchase_prices": {
+      "1": 60,
+      "115": 48,
+      "127": 50,
+      "15": 67,
+      "165": 75,
+      "362": 50,
+      "368": 70,
+      "411": 155,
+      "423": 45,
+      "426": 120,
+      "491": 60,
+      "497": 40,
+      "502": 45,
+      "565": 56,
+      "8": 55
+    },
+    "selling_prices": {},
+    "squad": [
+      "1",
+      "115",
+      "362",
+      "8",
+      "502",
+      "368",
+      "15",
+      "565",
+      "426",
+      "491",
+      "411",
+      "497",
+      "165",
+      "127",
+      "423"
+    ]
+  },
+  "carry_after": {
+    "bank": 19,
+    "chips_played": {
+      "3": "triple_captain"
+    },
+    "ft_before": 2,
+    "gw": 7,
+    "purchase_prices": {
+      "1": 60,
+      "115": 48,
+      "127": 50,
+      "15": 67,
+      "362": 50,
+      "368": 70,
+      "411": 155,
+      "423": 45,
+      "426": 120,
+      "490": 58,
+      "491": 60,
+      "497": 40,
+      "502": 45,
+      "565": 56,
+      "8": 55
+    },
+    "selling_prices": {},
+    "squad": [
+      "1",
+      "115",
+      "362",
+      "8",
+      "502",
+      "368",
+      "15",
+      "565",
+      "426",
+      "491",
+      "411",
+      "497",
+      "490",
+      "127",
+      "423"
+    ]
+  },
+  "context_sha256": "ec5f85d81c8e3397bda0e771bc2eda299bf8d640277382f0e0954e445eba57ff",
+  "deadline_utc": "2026-10-10T10:00:00Z",
+  "decision": {
+    "bench_order": [
+      "127",
+      "362",
+      "502",
+      "497"
+    ],
+    "captain": "15",
+    "chip_played": null,
+    "squad_15": [
+      "1",
+      "115",
+      "362",
+      "8",
+      "502",
+      "368",
+      "15",
+      "565",
+      "426",
+      "491",
+      "411",
+      "497",
+      "490",
+      "127",
+      "423"
+    ],
+    "starting_11": [
+      "1",
+      "115",
+      "8",
+      "423",
+      "368",
+      "15",
+      "565",
+      "426",
+      "491",
+      "411",
+      "490"
+    ],
+    "transfers_in": [
+      "490"
+    ],
+    "transfers_out": [
+      "165"
+    ],
+    "vice_captain": "426"
+  },
+  "frozen_at_utc": "2026-10-09T13:13:34Z",
+  "gw": 6,
+  "horizon": [
+    {
+      "bench_order": [
+        "127",
+        "362",
+        "502",
+        "497"
+      ],
+      "captain": "15",
+      "chip_played": null,
+      "gw": 6,
+      "squad_15": [
+        "1",
+        "115",
+        "362",
+        "8",
+        "502",
+        "368",
+        "15",
+        "565",
+        "426",
+        "491",
+        "411",
+        "497",
+        "490",
+        "127",
+        "423"
+      ],
+      "starting_11": [
+        "1",
+        "115",
+        "8",
+        "423",
+        "368",
+        "15",
+        "565",
+        "426",
+        "491",
+        "411",
+        "490"
+      ],
+      "transfers_in": [
+        "490"
+      ],
+      "transfers_out": [
+        "165"
+      ],
+      "vice_captain": "426"
+    },
+    {
+      "bench_order": [
+        "491",
+        "423",
+        "502",
+        "497"
+      ],
+      "captain": "411",
+      "chip_played": null,
+      "gw": 7,
+      "squad_15": [
+        "1",
+        "115",
+        "362",
+        "8",
+        "502",
+        "368",
+        "15",
+        "262",
+        "426",
+        "491",
+        "411",
+        "497",
+        "490",
+        "127",
+        "423"
+      ],
+      "starting_11": [
+        "1",
+        "115",
+        "362",
+        "8",
+        "368",
+        "15",
+        "426",
+        "262",
+        "127",
+        "411",
+        "490"
+      ],
+      "transfers_in": [
+        "262"
+      ],
+      "transfers_out": [
+        "565"
+      ],
+      "vice_captain": "15"
+    },
+    {
+      "bench_order": [
+        "127",
+        "115",
+        "362",
+        "497"
+      ],
+      "captain": "411",
+      "chip_played": null,
+      "gw": 8,
+      "squad_15": [
+        "1",
+        "115",
+        "362",
+        "8",
+        "502",
+        "368",
+        "15",
+        "262",
+        "426",
+        "491",
+        "411",
+        "497",
+        "490",
+        "127",
+        "423"
+      ],
+      "starting_11": [
+        "1",
+        "8",
+        "502",
+        "423",
+        "368",
+        "15",
+        "426",
+        "262",
+        "491",
+        "411",
+        "490"
+      ],
+      "transfers_in": [],
+      "transfers_out": [],
+      "vice_captain": "15"
+    }
+  ],
+  "model_id": "gemini-3.8-flash-high",
+  "prompt_sha256": "bf12a926959166176dfa819ed2e3f4107f7210de7b67cdcea752024df3f683b6",
+  "rationale": "Chip Strategy: With 13 outfield players fit and available, activating Wildcard, Free Hit, or Bench Boost is unnecessary. We preserve our full suite of second-half chips for congested festive fixtures and major double gameweeks.\n\nTransfers & Injury News: The audit flags significant injury developments for our squad. The Standard (8 Oct 2026) lists Jo\u00e3o Pedro (id 165) as definitively 'out with a knee injury', confirming the earlier FPL flag of a knee injury with only a 75% chance of playing. Holding an injured \u00a37.7m forward on the bench is inefficient. Selling Jo\u00e3o Pedro (bought at 75, current cost 77, yielding a selling price of 76 tenths) combined with our 1 tenth in the bank gives 77 tenths of purchasing power. We use 1 of our 2 free transfers (0 hits) to bring in Chris Wood (id 490, NFO, cost 58 tenths), leaving 19 tenths in the bank. Wood offers an ideal fixture run starting away at Crystal Palace (GW6) followed by Ipswich (GW8), and keeps Nottingham Forest club representation legal at 2 players (with Igor Jesus). Meanwhile, Erling Haaland (id 411) was reported as limping off against Portugal with fatigue (BBC Sport, 5 Oct; MEN, 6 Oct; Sports Mole, 8 Oct), with The Standard noting he 'could return this weekend'. Solbakken noted serious concerns eased, and Sports Mole confirms he is 'not nursing an injury and should be available for selection on Sunday' away at Liverpool. We confidently start Haaland in our attack.\n\nDefensive News & Lineup: Jacquet (id 362) is flagged by The Standard (8 Oct) as managing a hamstring strain ('could return this weekend'), and faces a tough fixture at home to Manchester City. We bench Jacquet and start Luke Shaw (id 423) home to Spurs alongside Riccardo Calafiori (id 8) home to Leeds and Maxim De Cuyper (id 115) away at Sunderland. In midfield, \u00d8degaard (15), B.Fernandes (426), Szoboszlai (368), and M.Sangar\u00e9 (565) form a robust quartet. In attack, Haaland (411), Wood (490), and Igor Jesus (491) lead the line in a 3-4-3 shape.\n\nCaptaincy & Bench: Martin \u00d8degaard (15) takes the captain's armband given Arsenal's prime home fixture against Leeds and Haaland's minor fatigue cloud at Anfield. Bruno Fernandes (426) is vice-captain, offering 90-minute reliability and home talisman duties against Spurs. The bench order places Gomez (127) first to provide immediate midfield cover, followed by Jacquet (362), Robertson (502), and backup goalkeeper Dubravka (497).\n\nThree-Week Horizon: In Gameweek 7, Manchester City host Ipswich (GW7 home IPS 2), making Haaland the undisputed captain. We plan to transfer out M.Sangar\u00e9 (565, cost 56 tenths) for Emile Smith Rowe (262, FUL, cost 53 tenths) ahead of Fulham's plum home tie against Hull (GW7 home HUL 2), rolling into GW8 with 22 tenths in the bank and 2 free transfers. In Gameweek 8, we hold transfers to roll a third free transfer into GW9, starting Wood (490) away at Ipswich (IPS 2), Haaland (411) away at Aston Villa, and Calafiori (8) home to Everton (EVE 3)."
+}

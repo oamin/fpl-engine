@@ -286,6 +286,16 @@ Gemini: DROP outright-derived ratings from the active decision horizon; keep unp
 
 Gemini: KEEP MATCH_ODDS+OU2.5; CHANGE TO_SCORE into imminent score_xp; CHANGE outrights into shrunk forecast_xp priors; DROP FGS, BTTS (diag), correct score, half-time from player scoring. Assists stay dropped.
 
+## LightGBM reweighting during a climb
+
+Rejected 2026-10-02, with Gemini. Stage 24 already trained walk-forward trees on the xP parts. Spearman fell from 0.308 to about 0.24–0.25, and the climb trailed xP by 74 to 132. It is not a new label.
+
 ## Same-week minutes as the minutes prior
 
 Rejected 2026-10-09 ([gw15 rerun](bc-90156d5d-ce87-56ee-b772-011f4d43dbd0)). Setting expected minutes to the minutes played in that same row is lookahead. It is not a deployable numagent, and it is not an estimate of the Gameweeks 1–5 climb. The lagged minutes prior stays. Zeroing Sánchez from Gameweek 3 left the recorded 280 where it was, because Verbruggen was already the automatic substitute. See `reports/gw15_rerun_now.md`.
+
+## Two free transfers in the live wildcard search
+
+Noted 2026-10-09 ([entry 3271409](bc-90156d5d-ce87-56ee-b772-011f4d43dbd0)). Not built.
+
+`best_free_transfer` tries one sale. A team with two free transfers is compared with a one-transfer plan, so the wildcard gap is wider than a two-transfer search would leave it. Entry 3271409 has two. The Gameweek 6 gap on the 7 Oct file is 34.90 against that one-transfer plan. A second sale was not priced. Do not read 102.72 as the lead over the best no-chip move.
