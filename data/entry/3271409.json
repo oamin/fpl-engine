@@ -1,0 +1,776 @@
+{
+  "entry_id": 3271409,
+  "team_name": "hiking w djed spence",
+  "season": "2026-27",
+  "played_through": 5,
+  "points": 323,
+  "overall_rank": 2413527,
+  "bank": 1,
+  "value": 1003,
+  "ft_for_next": 2,
+  "next_gw": 6,
+  "chips_played": [
+    {
+      "gw": 3,
+      "chip": "triple_captain"
+    }
+  ],
+  "chips_left": [
+    "wildcard",
+    "free_hit",
+    "bench_boost"
+  ],
+  "opening_squad": [
+    {
+      "id": 1,
+      "name": "Raya",
+      "position": "GKP",
+      "team": "ARS",
+      "slot": 1
+    },
+    {
+      "id": 423,
+      "name": "Shaw",
+      "position": "DEF",
+      "team": "MUN",
+      "slot": 2
+    },
+    {
+      "id": 8,
+      "name": "Calafiori",
+      "position": "DEF",
+      "team": "ARS",
+      "slot": 3
+    },
+    {
+      "id": 362,
+      "name": "Jacquet",
+      "position": "DEF",
+      "team": "LIV",
+      "slot": 4
+    },
+    {
+      "id": 426,
+      "name": "B.Fernandes",
+      "position": "MID",
+      "team": "MUN",
+      "slot": 5
+    },
+    {
+      "id": 368,
+      "name": "Szoboszlai",
+      "position": "MID",
+      "team": "LIV",
+      "slot": 6
+    },
+    {
+      "id": 260,
+      "name": "Wilson",
+      "position": "MID",
+      "team": "LEE",
+      "slot": 7
+    },
+    {
+      "id": 481,
+      "name": "Anderson",
+      "position": "MID",
+      "team": "MCI",
+      "slot": 8
+    },
+    {
+      "id": 165,
+      "name": "Jo\u00e3o Pedro",
+      "position": "FWD",
+      "team": "CHE",
+      "slot": 9
+    },
+    {
+      "id": 411,
+      "name": "Haaland",
+      "position": "FWD",
+      "team": "MCI",
+      "slot": 10
+    },
+    {
+      "id": 491,
+      "name": "Igor Jesus",
+      "position": "FWD",
+      "team": "NFO",
+      "slot": 11
+    },
+    {
+      "id": 497,
+      "name": "Dubravka",
+      "position": "GKP",
+      "team": "TOT",
+      "slot": 12
+    },
+    {
+      "id": 329,
+      "name": "Rodon",
+      "position": "DEF",
+      "team": "LEE",
+      "slot": 13
+    },
+    {
+      "id": 127,
+      "name": "Gomez",
+      "position": "MID",
+      "team": "BHA",
+      "slot": 14
+    },
+    {
+      "id": 502,
+      "name": "Robertson",
+      "position": "DEF",
+      "team": "TOT",
+      "slot": 15
+    }
+  ],
+  "gameweeks": [
+    {
+      "gw": 1,
+      "chip": null,
+      "points": 49,
+      "total_points": 49,
+      "transfers": 0,
+      "transfer_cost": 0,
+      "points_on_bench": 15,
+      "bank": 0,
+      "value": 1000,
+      "ft_available": 0,
+      "captain": "Haaland",
+      "vice": "B.Fernandes",
+      "xi": [
+        {
+          "id": 1,
+          "name": "Raya",
+          "position": "GKP",
+          "team": "ARS",
+          "slot": 1
+        },
+        {
+          "id": 423,
+          "name": "Shaw",
+          "position": "DEF",
+          "team": "MUN",
+          "slot": 2
+        },
+        {
+          "id": 8,
+          "name": "Calafiori",
+          "position": "DEF",
+          "team": "ARS",
+          "slot": 3
+        },
+        {
+          "id": 362,
+          "name": "Jacquet",
+          "position": "DEF",
+          "team": "LIV",
+          "slot": 4
+        },
+        {
+          "id": 426,
+          "name": "B.Fernandes",
+          "position": "MID",
+          "team": "MUN",
+          "slot": 5
+        },
+        {
+          "id": 368,
+          "name": "Szoboszlai",
+          "position": "MID",
+          "team": "LIV",
+          "slot": 6
+        },
+        {
+          "id": 260,
+          "name": "Wilson",
+          "position": "MID",
+          "team": "LEE",
+          "slot": 7
+        },
+        {
+          "id": 481,
+          "name": "Anderson",
+          "position": "MID",
+          "team": "MCI",
+          "slot": 8
+        },
+        {
+          "id": 165,
+          "name": "Jo\u00e3o Pedro",
+          "position": "FWD",
+          "team": "CHE",
+          "slot": 9
+        },
+        {
+          "id": 411,
+          "name": "Haaland",
+          "position": "FWD",
+          "team": "MCI",
+          "slot": 10
+        },
+        {
+          "id": 491,
+          "name": "Igor Jesus",
+          "position": "FWD",
+          "team": "NFO",
+          "slot": 11
+        }
+      ],
+      "bench": [
+        {
+          "id": 497,
+          "name": "Dubravka",
+          "position": "GKP",
+          "team": "TOT",
+          "slot": 12
+        },
+        {
+          "id": 329,
+          "name": "Rodon",
+          "position": "DEF",
+          "team": "LEE",
+          "slot": 13
+        },
+        {
+          "id": 127,
+          "name": "Gomez",
+          "position": "MID",
+          "team": "BHA",
+          "slot": 14
+        },
+        {
+          "id": 502,
+          "name": "Robertson",
+          "position": "DEF",
+          "team": "TOT",
+          "slot": 15
+        }
+      ]
+    },
+    {
+      "gw": 2,
+      "chip": null,
+      "points": 100,
+      "total_points": 149,
+      "transfers": 1,
+      "transfer_cost": 0,
+      "points_on_bench": 8,
+      "bank": 9,
+      "value": 1002,
+      "ft_available": 1,
+      "captain": "B.Fernandes",
+      "vice": "Jo\u00e3o Pedro",
+      "xi": [
+        {
+          "id": 1,
+          "name": "Raya",
+          "position": "GKP",
+          "team": "ARS",
+          "slot": 1
+        },
+        {
+          "id": 423,
+          "name": "Shaw",
+          "position": "DEF",
+          "team": "MUN",
+          "slot": 2
+        },
+        {
+          "id": 8,
+          "name": "Calafiori",
+          "position": "DEF",
+          "team": "ARS",
+          "slot": 3
+        },
+        {
+          "id": 362,
+          "name": "Jacquet",
+          "position": "DEF",
+          "team": "LIV",
+          "slot": 4
+        },
+        {
+          "id": 329,
+          "name": "Rodon",
+          "position": "DEF",
+          "team": "LEE",
+          "slot": 5
+        },
+        {
+          "id": 426,
+          "name": "B.Fernandes",
+          "position": "MID",
+          "team": "MUN",
+          "slot": 6
+        },
+        {
+          "id": 368,
+          "name": "Szoboszlai",
+          "position": "MID",
+          "team": "LIV",
+          "slot": 7
+        },
+        {
+          "id": 260,
+          "name": "Wilson",
+          "position": "MID",
+          "team": "LEE",
+          "slot": 8
+        },
+        {
+          "id": 565,
+          "name": "M.Sangar\u00e9",
+          "position": "MID",
+          "team": "BRE",
+          "slot": 9
+        },
+        {
+          "id": 165,
+          "name": "Jo\u00e3o Pedro",
+          "position": "FWD",
+          "team": "CHE",
+          "slot": 10
+        },
+        {
+          "id": 411,
+          "name": "Haaland",
+          "position": "FWD",
+          "team": "MCI",
+          "slot": 11
+        }
+      ],
+      "bench": [
+        {
+          "id": 497,
+          "name": "Dubravka",
+          "position": "GKP",
+          "team": "TOT",
+          "slot": 12
+        },
+        {
+          "id": 502,
+          "name": "Robertson",
+          "position": "DEF",
+          "team": "TOT",
+          "slot": 13
+        },
+        {
+          "id": 491,
+          "name": "Igor Jesus",
+          "position": "FWD",
+          "team": "NFO",
+          "slot": 14
+        },
+        {
+          "id": 127,
+          "name": "Gomez",
+          "position": "MID",
+          "team": "BHA",
+          "slot": 15
+        }
+      ]
+    },
+    {
+      "gw": 3,
+      "chip": "triple_captain",
+      "points": 49,
+      "total_points": 198,
+      "transfers": 0,
+      "transfer_cost": 0,
+      "points_on_bench": 2,
+      "bank": 9,
+      "value": 1003,
+      "ft_available": 1,
+      "captain": "Haaland",
+      "vice": "B.Fernandes",
+      "xi": [
+        {
+          "id": 1,
+          "name": "Raya",
+          "position": "GKP",
+          "team": "ARS",
+          "slot": 1
+        },
+        {
+          "id": 423,
+          "name": "Shaw",
+          "position": "DEF",
+          "team": "MUN",
+          "slot": 2
+        },
+        {
+          "id": 8,
+          "name": "Calafiori",
+          "position": "DEF",
+          "team": "ARS",
+          "slot": 3
+        },
+        {
+          "id": 362,
+          "name": "Jacquet",
+          "position": "DEF",
+          "team": "LIV",
+          "slot": 4
+        },
+        {
+          "id": 127,
+          "name": "Gomez",
+          "position": "MID",
+          "team": "BHA",
+          "slot": 5
+        },
+        {
+          "id": 426,
+          "name": "B.Fernandes",
+          "position": "MID",
+          "team": "MUN",
+          "slot": 6
+        },
+        {
+          "id": 368,
+          "name": "Szoboszlai",
+          "position": "MID",
+          "team": "LIV",
+          "slot": 7
+        },
+        {
+          "id": 260,
+          "name": "Wilson",
+          "position": "MID",
+          "team": "LEE",
+          "slot": 8
+        },
+        {
+          "id": 565,
+          "name": "M.Sangar\u00e9",
+          "position": "MID",
+          "team": "BRE",
+          "slot": 9
+        },
+        {
+          "id": 165,
+          "name": "Jo\u00e3o Pedro",
+          "position": "FWD",
+          "team": "CHE",
+          "slot": 10
+        },
+        {
+          "id": 411,
+          "name": "Haaland",
+          "position": "FWD",
+          "team": "MCI",
+          "slot": 11
+        }
+      ],
+      "bench": [
+        {
+          "id": 497,
+          "name": "Dubravka",
+          "position": "GKP",
+          "team": "TOT",
+          "slot": 12
+        },
+        {
+          "id": 502,
+          "name": "Robertson",
+          "position": "DEF",
+          "team": "TOT",
+          "slot": 13
+        },
+        {
+          "id": 491,
+          "name": "Igor Jesus",
+          "position": "FWD",
+          "team": "NFO",
+          "slot": 14
+        },
+        {
+          "id": 329,
+          "name": "Rodon",
+          "position": "DEF",
+          "team": "LEE",
+          "slot": 15
+        }
+      ]
+    },
+    {
+      "gw": 4,
+      "chip": null,
+      "points": 88,
+      "total_points": 286,
+      "transfers": 2,
+      "transfer_cost": 0,
+      "points_on_bench": 14,
+      "bank": 1,
+      "value": 1000,
+      "ft_available": 2,
+      "captain": "Jo\u00e3o Pedro",
+      "vice": "\u00d8degaard",
+      "xi": [
+        {
+          "id": 1,
+          "name": "Raya",
+          "position": "GKP",
+          "team": "ARS",
+          "slot": 1
+        },
+        {
+          "id": 115,
+          "name": "De Cuyper",
+          "position": "DEF",
+          "team": "BHA",
+          "slot": 2
+        },
+        {
+          "id": 8,
+          "name": "Calafiori",
+          "position": "DEF",
+          "team": "ARS",
+          "slot": 3
+        },
+        {
+          "id": 362,
+          "name": "Jacquet",
+          "position": "DEF",
+          "team": "LIV",
+          "slot": 4
+        },
+        {
+          "id": 127,
+          "name": "Gomez",
+          "position": "MID",
+          "team": "BHA",
+          "slot": 5
+        },
+        {
+          "id": 426,
+          "name": "B.Fernandes",
+          "position": "MID",
+          "team": "MUN",
+          "slot": 6
+        },
+        {
+          "id": 368,
+          "name": "Szoboszlai",
+          "position": "MID",
+          "team": "LIV",
+          "slot": 7
+        },
+        {
+          "id": 15,
+          "name": "\u00d8degaard",
+          "position": "MID",
+          "team": "ARS",
+          "slot": 8
+        },
+        {
+          "id": 565,
+          "name": "M.Sangar\u00e9",
+          "position": "MID",
+          "team": "BRE",
+          "slot": 9
+        },
+        {
+          "id": 165,
+          "name": "Jo\u00e3o Pedro",
+          "position": "FWD",
+          "team": "CHE",
+          "slot": 10
+        },
+        {
+          "id": 411,
+          "name": "Haaland",
+          "position": "FWD",
+          "team": "MCI",
+          "slot": 11
+        }
+      ],
+      "bench": [
+        {
+          "id": 497,
+          "name": "Dubravka",
+          "position": "GKP",
+          "team": "TOT",
+          "slot": 12
+        },
+        {
+          "id": 502,
+          "name": "Robertson",
+          "position": "DEF",
+          "team": "TOT",
+          "slot": 13
+        },
+        {
+          "id": 491,
+          "name": "Igor Jesus",
+          "position": "FWD",
+          "team": "NFO",
+          "slot": 14
+        },
+        {
+          "id": 423,
+          "name": "Shaw",
+          "position": "DEF",
+          "team": "MUN",
+          "slot": 15
+        }
+      ]
+    },
+    {
+      "gw": 5,
+      "chip": null,
+      "points": 37,
+      "total_points": 323,
+      "transfers": 0,
+      "transfer_cost": 0,
+      "points_on_bench": 10,
+      "bank": 1,
+      "value": 1003,
+      "ft_available": 1,
+      "captain": "Haaland",
+      "vice": "B.Fernandes",
+      "xi": [
+        {
+          "id": 1,
+          "name": "Raya",
+          "position": "GKP",
+          "team": "ARS",
+          "slot": 1
+        },
+        {
+          "id": 115,
+          "name": "De Cuyper",
+          "position": "DEF",
+          "team": "BHA",
+          "slot": 2
+        },
+        {
+          "id": 362,
+          "name": "Jacquet",
+          "position": "DEF",
+          "team": "LIV",
+          "slot": 3
+        },
+        {
+          "id": 8,
+          "name": "Calafiori",
+          "position": "DEF",
+          "team": "ARS",
+          "slot": 4
+        },
+        {
+          "id": 502,
+          "name": "Robertson",
+          "position": "DEF",
+          "team": "TOT",
+          "slot": 5
+        },
+        {
+          "id": 368,
+          "name": "Szoboszlai",
+          "position": "MID",
+          "team": "LIV",
+          "slot": 6
+        },
+        {
+          "id": 15,
+          "name": "\u00d8degaard",
+          "position": "MID",
+          "team": "ARS",
+          "slot": 7
+        },
+        {
+          "id": 565,
+          "name": "M.Sangar\u00e9",
+          "position": "MID",
+          "team": "BRE",
+          "slot": 8
+        },
+        {
+          "id": 426,
+          "name": "B.Fernandes",
+          "position": "MID",
+          "team": "MUN",
+          "slot": 9
+        },
+        {
+          "id": 491,
+          "name": "Igor Jesus",
+          "position": "FWD",
+          "team": "NFO",
+          "slot": 10
+        },
+        {
+          "id": 411,
+          "name": "Haaland",
+          "position": "FWD",
+          "team": "MCI",
+          "slot": 11
+        }
+      ],
+      "bench": [
+        {
+          "id": 497,
+          "name": "Dubravka",
+          "position": "GKP",
+          "team": "TOT",
+          "slot": 12
+        },
+        {
+          "id": 165,
+          "name": "Jo\u00e3o Pedro",
+          "position": "FWD",
+          "team": "CHE",
+          "slot": 13
+        },
+        {
+          "id": 127,
+          "name": "Gomez",
+          "position": "MID",
+          "team": "BHA",
+          "slot": 14
+        },
+        {
+          "id": 423,
+          "name": "Shaw",
+          "position": "DEF",
+          "team": "MUN",
+          "slot": 15
+        }
+      ]
+    }
+  ],
+  "transfers": [
+    {
+      "gw": 4,
+      "out": "Rodon",
+      "out_id": 329,
+      "in": "De Cuyper",
+      "in_id": 115,
+      "in_cost": 48,
+      "out_cost": 44
+    },
+    {
+      "gw": 4,
+      "out": "Wilson",
+      "out_id": 260,
+      "in": "\u00d8degaard",
+      "in_id": 15,
+      "in_cost": 67,
+      "out_cost": 63
+    },
+    {
+      "gw": 2,
+      "out": "Anderson",
+      "out_id": 481,
+      "in": "M.Sangar\u00e9",
+      "in_id": 565,
+      "in_cost": 56,
+      "out_cost": 65
+    }
+  ]
+}

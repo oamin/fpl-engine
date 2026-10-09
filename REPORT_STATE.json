@@ -1,10 +1,10 @@
 {
-  "milestone": "numagent-entry-3271409",
+  "milestone": "stragent-entry-3271409",
   "status": "research_only",
-  "summary": "Dry run of the ep_next judgement on entry 3271409. The search prefers the same wildcard fifteen already solved for ojaminFC. The one-transfer plan sells Fernandes for Groß. Only Gameweeks 6 and 7 are priced. The second free transfer was not searched. Not the Saturday lock.",
+  "summary": "Stragent's first reply for entry 3271409 is legal. Gameweek 6 sells João Pedro for Wood and captains Ødegaard. Gameweek 7 sells M.Sangaré for Smith Rowe and captains Haaland. Gameweek 8 holds. No chip, no hits, bank 1 then 19 then 22 tenths. The rationale mislabels the remaining chips as a second-half suite. The official ledger and the canonical plan file were not written.",
   "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
-    "reports/numagent_3271409_gw6.md",
-    "reports/numagent_3271409_gw6.json"
+    "reports/stragent_3271409_gw6.md",
+    "reports/string_horizon_3271409/gw06.json"
   ]
 }
