@@ -285,3 +285,9 @@ Gemini: DROP outright-derived ratings from the active decision horizon; keep unp
 ## Betfair markets in score_xp / forecast_xp, locked 2026-10-08
 
 Gemini: KEEP MATCH_ODDS+OU2.5; CHANGE TO_SCORE into imminent score_xp; CHANGE outrights into shrunk forecast_xp priors; DROP FGS, BTTS (diag), correct score, half-time from player scoring. Assists stay dropped.
+
+## Two free transfers in the live wildcard search
+
+Noted 2026-10-09 ([entry 3271409](bc-90156d5d-ce87-56ee-b772-011f4d43dbd0)). Not built.
+
+`best_free_transfer` tries one sale. A team with two free transfers is compared with a one-transfer plan, so the wildcard gap is wider than a two-transfer search would leave it. Entry 3271409 has two. The Gameweek 6 gap on the 7 Oct file is 34.90 against that one-transfer plan. A second sale was not priced. Do not read 102.72 as the lead over the best no-chip move.

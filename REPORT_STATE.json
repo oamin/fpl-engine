@@ -1,11 +1,10 @@
 {
-  "milestone": "news-xmi-differential-dry-run",
+  "milestone": "numagent-entry-3271409",
   "status": "research_only",
-  "summary": "On news-compiled minutes the numeric engine's fresh Gameweek 6 fifteen scores 67.33 with Saka counted twice. The same solver under 15% ownership scores 61.10. A legal string fifteen under that ownership cut overlays at 51.42. The 22:09 capture and both freeze ledgers were left as they were.",
+  "summary": "Dry run of the ep_next judgement on entry 3271409. The search prefers the same wildcard fifteen already solved for ojaminFC. The one-transfer plan sells Fernandes for Groß. Only Gameweeks 6 and 7 are priced. The second free transfer was not searched. Not the Saturday lock.",
   "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
-    "reports/news_xmi_dry_run_20261008.md",
-    "data/predictions/2026-27/gw06/news_xmi_20261008T195949Z.csv",
-    "reports/string_agent_gw6_differential_decision.json"
+    "reports/numagent_3271409_gw6.md",
+    "reports/numagent_3271409_gw6.json"
   ]
 }
