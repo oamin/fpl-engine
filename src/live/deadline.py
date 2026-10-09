@@ -22,7 +22,7 @@ from typing import Any, Mapping, Sequence
 import pandas as pd
 
 from src.live.half_plan import HalfPlan, WeekInputs, bench_week, half_end, plan_half
-from src.live.lines import LINES_PATH, TRIAL_META
+from src.live.lines import TRIAL_META
 from src.live.plan import live_xi
 from src.live.policy import FH_MARGIN, WC_MARGIN
 from src.models.forecast_xp import opening_pots_by_team_gw
@@ -812,16 +812,16 @@ def collect(
     bootstrap_path: Path = BOOTSTRAP_PATH,
     fixtures_path: Path = FIXTURES_PATH,
     minutes_path: Path | None = None,
-    live_path: Path | None = LINES_PATH,
+    live_path: Path | None = None,
     trial_path: Path | None = TRIAL_META,
     gw: int = DECISION_GW,
     dry_run: bool = False,
     decision_file: Path | None = None,
 ) -> DeadlineLog:
-    """Read the stored files. A live 1X2 is used in front of the historical file.
+    """Read the stored files. A Betfair 1X2 is used in front of the historical file.
 
     The decision score is the T−1h ``ep_next`` slot. A dry run names its own
-    file and does not become that slot.
+    file and does not become that slot. The frozen holdout slate is not read.
     """
     if dry_run and decision_file is None:
         raise DeadlineError("a dry run names its capture")
@@ -829,16 +829,14 @@ def collect(
         raise DeadlineError("the decision capture is the T-1h slot")
     entry = json.loads(entry_path.read_text(encoding="utf-8"))
     logs = pd.read_csv(log_path)
-    from src.live.betfair_props import discover_betfair_artifacts
+    from src.live.betfair_props import resolve_live_book
 
-    artifacts = discover_betfair_artifacts(int(gw))
-    if artifacts is not None and (artifacts / "gw_lines.csv").is_file():
-        # Prefer the Betfair slate when a pull has written one.
-        live_path = artifacts / "gw_lines.csv"
-        if trial_path is None or trial_path == TRIAL_META:
-            meta_candidate = artifacts / "betfair_meta.json"
-            if meta_candidate.is_file():
-                trial_path = meta_candidate
+    book = resolve_live_book(int(gw), live_path)
+    if book is not None and (trial_path is None or trial_path == TRIAL_META):
+        meta_candidate = book.parent / "betfair_meta.json"
+        if meta_candidate.is_file():
+            trial_path = meta_candidate
+    live_path = book
     odds = load_odds_frame(odds_path, live_path)
     bootstrap = json.loads(bootstrap_path.read_text(encoding="utf-8"))
     fixtures = json.loads(fixtures_path.read_text(encoding="utf-8"))
@@ -980,12 +978,7 @@ def run(
 
 
 def main() -> None:
-    from src.live.fpl_snapshot import load
-    from src.live.lines import refresh_lines
-
-    snap = load()
-    names = {int(row["id"]): str(row["name"]) for row in snap["bootstrap"]["teams"]}
-    refresh_lines(fixtures=snap["fixtures"], team_names=names)
+    """Read the deadline note. Does not refresh lines or touch the holdout slate."""
     log = run()
     print(
         f"GW{log.gw} {log.team_name}: {', '.join(log.reasons) or 'ready'}; "

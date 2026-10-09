@@ -25,8 +25,8 @@ def write_stage0() -> None:
 
 ## Kept
 - `.env.example`, `.gitignore`, `.venv`, `uv.lock`
-- `.cursor/rules/odds-api-quota.mdc`
-- `data/cache/odds_snapshot.json` (no Odds API re-fetch)
+- `.cursor/rules/odds-api-quota.mdc` (The Odds API is not called)
+- `data/cache/odds_snapshot.json` (historical snapshot only; no bookmaker re-fetch)
 
 ## New layout
 - `src/ingest/` — FPL + football-data odds

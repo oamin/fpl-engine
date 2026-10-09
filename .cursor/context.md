@@ -6,7 +6,7 @@ Updated: 2026-10-09. Stage history is root `CONTEXT.md`. Parked hypotheses are `
 
 The engine is a pre-deadline squad advisor under 2026/27 rules. The published comparison stays the free-transfer climb on `score_xp` with an empty chip map, so older totals stay side by side. A new player score is screened on the fast XI. A change to the transfer rule is tested on the free-transfer climb. Chip choice sits above the points model: the caller prices the weeks, and `plan_half` leaves `score_xp` as it is.
 
-The live path advises the stored ojaminFC squad at the next deadline. It uses that squad's bank, free transfers, and chips already played. A chip total from that path stays out of the published comparison. An Odds API call needs a cost estimate and the PI's approval. One trial has already been spent. See `.cursor/rules/odds-api-quota.mdc`.
+The live path advises the stored ojaminFC squad at the next deadline. It uses that squad's bank, free transfers, and chips already played. A chip total from that path stays out of the published comparison. Live 1X2 is Betfair Exchange only. The frozen file `data/live/gw_lines.csv` is not a live book. See `.cursor/rules/odds-api-quota.mdc`.
 
 Cursor writes and runs the code. Gemini may propose a formula. A result is written only by `write_gated_report`, after the as-of audit and paired intervals on 2022-23, 2023-24, 2024-25, and 2025-26. The PI reads a batch.
 
@@ -24,6 +24,10 @@ Cursor writes and runs the code. Gemini may propose a formula. A result is writt
 ### Betfair live lines (2026-10-08)
 
 Pure Exchange MATCH_ODDS + OVER_UNDER_25 wired into `refresh_lines` (Odds API/ESPN off the live path). Live pull blocked on US cloud geo (HTTP 403); needs MacBook private worker. See `reports/betfair_lines_20261008.md`.
+
+### Betfair only (2026-10-09)
+
+The Odds API is gone from the live engines. `fetch_odds_api` and `ODDS_API_KEY` reads are deleted. A live reader takes `gw_lines.csv` from the newest `betfair_*` folder and returns no live book when that folder is missing. `refresh_lines` and `lines.main` refuse `data/live/gw_lines.csv`. `deadline.main` does not refresh lines. Freeze `odds_source` is `betfair` or `none`. The holdout CSV hash is still `8b58cfdb…`. Gemini accepted the removal ([Betfair only](bc-90156d5d-ce87-56ee-b772-011f4d43dbd0)). Historical football-data E0 files stay.
 
 ### Score and search
 

@@ -79,6 +79,39 @@ def _has_artifacts(path: Path) -> bool:
     return any((path / name).is_file() for name in ARTIFACT_MARKERS)
 
 
+def _frozen_lines() -> Path:
+    return (LIVE_DIR / "gw_lines.csv").resolve()
+
+
+def betfair_gw_lines(gw: int) -> Path | None:
+    """Exchange ``gw_lines.csv`` for this gameweek.
+
+    A path that resolves to the frozen holdout file is not a live book.
+    """
+    artifacts = discover_betfair_artifacts(int(gw))
+    if artifacts is None:
+        return None
+    candidate = artifacts / "gw_lines.csv"
+    if not candidate.is_file():
+        return None
+    if candidate.resolve() == _frozen_lines():
+        return None
+    return candidate
+
+
+def resolve_live_book(gw: int, live_path: Path | None) -> Path | None:
+    """Use a caller file when it exists and is not the frozen slate.
+
+    The default, and any path that is the frozen file, is the newest Betfair
+    slate. A missing caller file stays missing.
+    """
+    if live_path is not None:
+        candidate = Path(live_path)
+        if candidate.resolve() != _frozen_lines():
+            return candidate if candidate.is_file() else None
+    return betfair_gw_lines(gw)
+
+
 def poisson_mean(prices: list[float]) -> tuple[float, float]:
     """Mean of 1/price → p, then μ = -ln(1-p). Clips p to [0.01, 0.85]."""
     implied = [1.0 / p for p in prices if p and p > 1.0]

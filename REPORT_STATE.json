@@ -1,12 +1,7 @@
 {
-  "milestone": "main-solid-branches",
+  "milestone": "betfair-only",
   "status": "research_only",
-  "summary": "Main now has the three-week string plan, the dossier collector, the Gameweek 6 ojaminFC trial, and the entry 3271409 dry runs. Mean reversion and the mechanism split still conflict with main and stay on their branches. Feed text was not committed.",
+  "summary": "The Odds API is removed from the live engines. Readers take gw_lines.csv only from a Betfair predictions folder. The frozen data/live/gw_lines.csv hash is unchanged. A missing Betfair folder does not open that file. Freeze odds_source odds_api is refused. Holdout verify still passes.",
   "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
-  "artifacts": [
-    "reports/string_dossier_gw6_trial.md",
-    "reports/string_dossier_trawl.md",
-    "reports/numagent_3271409_gw6.md",
-    "reports/stragent_3271409_gw6.md"
-  ]
+  "artifacts": []
 }

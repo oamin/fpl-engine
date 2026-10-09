@@ -240,7 +240,7 @@ def render_report(
     lines.append("")
     lines.append(
         f"Gate: totalMatched ≥ £{MIN_MATCHED_MATCH_ODDS:,.0f} and at least two "
-        "two-sided runners. Illiquid fixtures fall back to the stored Odds API lines."
+        "two-sided runners. A fixture under that gate is left unpriced."
     )
     lines.append("")
     lines.append("| Kickoff | Event | Matched | Liquid | Home | Draw | Away |")

@@ -21,7 +21,6 @@ from src.live.deadline import (
     BOOTSTRAP_PATH,
     ENTRY_PATH,
     FIXTURES_PATH,
-    LINES_PATH,
     LOG_PATH,
     ODDS_PATH,
     current_costs,
@@ -330,7 +329,9 @@ def build_plan(capture: Path, *, gw: int = 6) -> dict[str, Any]:
     logs = pd.read_csv(LOG_PATH)
     bootstrap, bootstrap_source = _bootstrap_for(capture)
     fixtures = json.loads(FIXTURES_PATH.read_text(encoding="utf-8"))
-    odds = load_odds_frame(ODDS_PATH, LINES_PATH if LINES_PATH.is_file() else None)
+    from src.live.betfair_props import betfair_gw_lines
+
+    odds = load_odds_frame(ODDS_PATH, betfair_gw_lines(int(gw)))
     names = team_names(bootstrap)
     pots = opening_pots_by_team_gw(odds, list(fixtures), names)
     owned_ids = [int(player["id"]) for player in final_players(entry)]

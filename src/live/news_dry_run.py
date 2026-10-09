@@ -33,7 +33,6 @@ from src.live.deadline import (
     team_names,
 )
 from src.live.fpl_snapshot import ELEMENT
-from src.live.lines import LINES_PATH
 from src.live.news_packets import compile_player_xmi, load_gameweek_packets
 from src.live.news_tags import prior_minutes
 from src.live.plan import live_xi
@@ -171,17 +170,14 @@ def score_news_pool(
     bootstrap: Mapping[str, Any] | None = None,
 ) -> tuple[pd.DataFrame, dict[str, float]]:
     """One ``price_half`` on the news minutes. Owned players stay in the pool."""
-    from src.live.betfair_props import discover_betfair_artifacts
+    from src.live.betfair_props import betfair_gw_lines, discover_betfair_artifacts
 
     boot = bootstrap if bootstrap is not None else json.loads(BOOTSTRAP_PATH.read_text(encoding="utf-8"))
     entry = json.loads(ENTRY_PATH.read_text(encoding="utf-8"))
     logs = pd.read_csv(LOG_PATH)
     fixtures = json.loads(FIXTURES_PATH.read_text(encoding="utf-8"))
     artifacts = discover_betfair_artifacts(int(gw))
-    live_lines = LINES_PATH if LINES_PATH.is_file() else None
-    if artifacts is not None and (artifacts / "gw_lines.csv").is_file():
-        live_lines = artifacts / "gw_lines.csv"
-    odds = load_odds_frame(ODDS_PATH, live_lines)
+    odds = load_odds_frame(ODDS_PATH, betfair_gw_lines(int(gw)))
     names = team_names(boot)
     ready, reasons = readiness(line_status(odds, fixtures, names, gw), True)
     if not ready:

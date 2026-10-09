@@ -51,7 +51,7 @@ class StackAudit(unittest.TestCase):
                 empty,
             )
             self.assertEqual(
-                sa._artifacts_for_arm(sa.ARMS[3], bf, empty),
+                sa._artifacts_for_arm(sa.ARMS[1], bf, empty),
                 bf,
             )
 

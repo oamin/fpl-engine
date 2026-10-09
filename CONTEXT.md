@@ -79,10 +79,9 @@ Stage 17: **starter-only / no-xMi / per-position Ridge** on eligible 60′ pool
 Stage 18: **budgeted climb** (£100.0m / 15 → XI). Shows premium inflation in
 free climb; under budget ridge ≈ xP and still beats exp_points.
 
-## Odds API
+## Odds
 
-Free tier is tiny. Historical path uses **football-data.co.uk** only (no Odds API).
-Live meso later may use `data/cache/odds_snapshot.json`. See `.cursor/rules/odds-api-quota.mdc`.
+Historical 1X2 is football-data.co.uk. Live 1X2 is Betfair Exchange. The Odds API is not called. See `.cursor/rules/odds-api-quota.mdc`.
 
 ## Keep / wipe
 

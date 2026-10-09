@@ -23,8 +23,6 @@ OPTIONAL = (
     "data/live/xmi_gw6.csv",
     "data/live/minutes_raw.json",
     "data/live/minutes_prompt.txt",
-    "data/live/odds_api_meta.json",
-    "data/live/odds_api_trial.json",
     "data/cache/fpl_history_2026_27.jsonl",
 )
 
