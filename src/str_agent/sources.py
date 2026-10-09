@@ -143,8 +143,9 @@ def parse_outlet_clock(clock: str, raw_published_at: str) -> str:
         parsed = datetime.fromtimestamp(int(seconds), tz=timezone.utc)
         return _canonical_from_aware(parsed)
     if clock == "http_last_modified":
+        candidate = raw[:-4] + " +0100" if raw.endswith(" BST") else raw
         try:
-            parsed = parsedate_to_datetime(raw)
+            parsed = parsedate_to_datetime(candidate)
         except (TypeError, ValueError) as exc:
             raise StringSourceError("http_last_modified is not an HTTP date") from exc
         if parsed is None or parsed.tzinfo is None:

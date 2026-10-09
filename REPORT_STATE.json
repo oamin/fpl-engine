@@ -1,10 +1,11 @@
 {
-  "milestone": "gw15-rerun-now",
+  "milestone": "string-dossier-gw6-trial",
   "status": "research_only",
-  "summary": "Today's causal free-transfer climber scores 315 from a fresh squad and 339 from ojaminFC's Gameweek 1 fifteen. The recorded totals stay 280 and 333. Their own total stays 350. The 315 is a different fifteen. The 339 is net of one 4-point hit. No minutes oracle. The published Gameweeks 1-5 files were not overwritten.",
+  "summary": "A Gameweek 6 stragent trial on ojaminFC, after the collector wrote 189 pre-deadline notes, sells Scarlett for Barry and captains Fernandes. No hit, bank 3 tenths, no chip. The Scoutcast sentence about Barry is unsupported. The official ledger was not written.",
   "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
-    "reports/gw15_rerun_now.md",
-    "reports/gw15_rerun_now.json"
+    "reports/string_dossier_gw6_trial.md",
+    "reports/string_dossier_gw6_trial/gw06.json",
+    "reports/string_dossier_gw6_trial/notebook.jsonl"
   ]
 }

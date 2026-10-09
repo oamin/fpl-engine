@@ -19,6 +19,9 @@ captain, vice_captain, bench_order, transfers_in, transfers_out), and horizon.
 horizon is three weeks, this week first. Week 0 matches decision. The next
 two weeks are intentions at today's prices, each a legal successor of the
 squad left by the week before. A free hit lasts one week.
+Also return notes and adjustments. notes is a short manager's note on what
+you used. adjustments is what you would change next week. Use empty strings
+when you have nothing to add. The next deadline will see those notes.
 """
 
 

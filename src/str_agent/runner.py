@@ -200,6 +200,8 @@ def run_once(
             carry=carry,
             result=horizon_result,
             root=plan_root,
+            notes=str(payload.get("notes") or ""),
+            adjustments=str(payload.get("adjustments") or ""),
         )
         row["plan_sha256"] = digest
         row["plan_path"] = str(_path)

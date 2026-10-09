@@ -1,0 +1,284 @@
+{
+  "carry": {
+    "bank": 15,
+    "chips_played": {
+      "1": "triple_captain"
+    },
+    "ft_before": 1,
+    "gw": 6,
+    "purchase_prices": {
+      "15": 65,
+      "175": 40,
+      "305": 40,
+      "346": 60,
+      "388": 60,
+      "399": 75,
+      "40": 76,
+      "411": 155,
+      "412": 50,
+      "423": 45,
+      "426": 120,
+      "453": 60,
+      "528": 45,
+      "58": 40,
+      "8": 55
+    },
+    "selling_prices": {},
+    "squad": [
+      "412",
+      "305",
+      "8",
+      "388",
+      "453",
+      "426",
+      "40",
+      "399",
+      "15",
+      "346",
+      "411",
+      "58",
+      "175",
+      "423",
+      "528"
+    ]
+  },
+  "carry_after": {
+    "bank": 3,
+    "chips_played": {
+      "1": "triple_captain"
+    },
+    "ft_before": 1,
+    "gw": 7,
+    "purchase_prices": {
+      "15": 65,
+      "175": 40,
+      "249": 57,
+      "305": 40,
+      "346": 60,
+      "388": 60,
+      "399": 75,
+      "40": 76,
+      "411": 155,
+      "412": 50,
+      "423": 45,
+      "426": 120,
+      "453": 60,
+      "58": 40,
+      "8": 55
+    },
+    "selling_prices": {},
+    "squad": [
+      "412",
+      "58",
+      "8",
+      "305",
+      "388",
+      "175",
+      "423",
+      "453",
+      "426",
+      "40",
+      "399",
+      "15",
+      "346",
+      "411",
+      "249"
+    ]
+  },
+  "context_sha256": "9c1500df6ee4bfc1cb5a84a6c8a62d865f112570c92eea7e11d581862ab6a7ac",
+  "deadline_utc": "2026-10-10T10:00:00Z",
+  "decision": {
+    "bench_order": [
+      "346",
+      "388",
+      "175",
+      "58"
+    ],
+    "captain": "426",
+    "chip_played": null,
+    "squad_15": [
+      "412",
+      "58",
+      "8",
+      "305",
+      "388",
+      "175",
+      "423",
+      "453",
+      "426",
+      "40",
+      "399",
+      "15",
+      "346",
+      "411",
+      "249"
+    ],
+    "starting_11": [
+      "412",
+      "8",
+      "305",
+      "423",
+      "15",
+      "40",
+      "453",
+      "426",
+      "399",
+      "411",
+      "249"
+    ],
+    "transfers_in": [
+      "249"
+    ],
+    "transfers_out": [
+      "528"
+    ],
+    "vice_captain": "411"
+  },
+  "frozen_at_utc": "2026-10-09T19:08:45Z",
+  "gw": 6,
+  "horizon": [
+    {
+      "bench_order": [
+        "346",
+        "388",
+        "175",
+        "58"
+      ],
+      "captain": "426",
+      "chip_played": null,
+      "gw": 6,
+      "squad_15": [
+        "412",
+        "58",
+        "8",
+        "305",
+        "388",
+        "175",
+        "423",
+        "453",
+        "426",
+        "40",
+        "399",
+        "15",
+        "346",
+        "411",
+        "249"
+      ],
+      "starting_11": [
+        "412",
+        "8",
+        "305",
+        "423",
+        "15",
+        "40",
+        "453",
+        "426",
+        "399",
+        "411",
+        "249"
+      ],
+      "transfers_in": [
+        "249"
+      ],
+      "transfers_out": [
+        "528"
+      ],
+      "vice_captain": "411"
+    },
+    {
+      "bench_order": [
+        "346",
+        "305",
+        "175",
+        "58"
+      ],
+      "captain": "411",
+      "chip_played": null,
+      "gw": 7,
+      "squad_15": [
+        "412",
+        "58",
+        "8",
+        "305",
+        "388",
+        "175",
+        "423",
+        "453",
+        "426",
+        "40",
+        "399",
+        "15",
+        "346",
+        "411",
+        "249"
+      ],
+      "starting_11": [
+        "412",
+        "8",
+        "388",
+        "423",
+        "15",
+        "40",
+        "453",
+        "426",
+        "399",
+        "411",
+        "249"
+      ],
+      "transfers_in": [],
+      "transfers_out": [],
+      "vice_captain": "426"
+    },
+    {
+      "bench_order": [
+        "249",
+        "305",
+        "175",
+        "58"
+      ],
+      "captain": "426",
+      "chip_played": null,
+      "gw": 8,
+      "squad_15": [
+        "412",
+        "58",
+        "8",
+        "305",
+        "388",
+        "175",
+        "423",
+        "453",
+        "426",
+        "40",
+        "399",
+        "15",
+        "464",
+        "411",
+        "249"
+      ],
+      "starting_11": [
+        "412",
+        "8",
+        "388",
+        "423",
+        "15",
+        "40",
+        "453",
+        "426",
+        "399",
+        "411",
+        "464"
+      ],
+      "transfers_in": [
+        "464"
+      ],
+      "transfers_out": [
+        "346"
+      ],
+      "vice_captain": "411"
+    }
+  ],
+  "model_id": "gemini-3.8-flash-high",
+  "prompt_sha256": "89fc9d8850ec352c7515bbb97c5892b88e48d8065c1f63c41410a16d679287c1",
+  "rationale": "Prior to the Gameweek 6 deadline, team news, press conferences, and analytical discussions dictated an essential roster move and tactical lineup setup. Most urgently, Dane Scarlett (528) completed a permanent transfer to Leyton Orient (status u, 0% chance of playing), creating an inactive roster vacancy that required immediate resolution using our free transfer. Meanwhile, Erling Haaland (411) limped off with suspected muscle fatigue in the 67th minute of Norway's Nations League match against Portugal, with manager Stale Solbakken remarking he was thoroughly spent; however, subsequent reports from the Manchester Evening News and Sports Mole confirmed there was no structural muscle tear and that extra rest should see him fit for selection at Anfield against Liverpool. In defense, Milan van Ewijk (175) suffered a minor hamstring strain, but Coventry manager Frank Lampard confirmed to the Coventry Telegraph and Chronicle Live that the issue was not severe and that the defender had returned to training ahead of the Newcastle fixture, warranting a 75% availability flag. Elsewhere across the league, Liverpool suffered significant setbacks with both Alexander Isak and Cody Gakpo sidelined, while Bournemouth lost key midfielder Alex Scott for up to two months with a quadriceps tear sustained on international duty, materially weakening their midfield spine ahead of their visit to Stamford Bridge to face Morgan Rogers (40). Forum sentiment on Reddit r/FantasyPL and FPL Scoutcast videos highlighted Louie Barry (249) as a prime transfer target; statistical breakdowns demonstrated Barry running cold with 2 goals from 3.65 xGI (-1.7 underperformance), indicating overdue positive regression ahead of an enticing fixture against newly promoted Hull City. Barry is also the most transferred-in forward among tracked elite managers (owned by 40% of the top managers cohort). For captaincy, rule-based analysis comparing Haaland and Bruno Fernandes (426) demonstrated the strength of targeting home fixtures against struggling opponents; with Tottenham sitting bottom of the table and winless under Michael Carrick and Roberto De Zerbi, Bruno Fernandes represents the most reliable talismanic captain option at Old Trafford, while Haaland serves as vice-captain given his recent fatigue doubt and challenging away trip to Anfield."
+}

@@ -11,6 +11,7 @@ from pathlib import Path
 
 from src.live.entry import load_entry
 from src.str_agent.horizon import MissingPriorPlanError
+from src.str_agent.notebook import upsert_note
 from src.str_agent.trial import judge, prepare
 
 
@@ -115,6 +116,49 @@ class Trial(unittest.TestCase):
         self.assertNotIn("Chips still available: wildcard", pack.context)
         self.assertIn("Fixture calendar", pack.context)
         self.assertNotIn("score_xp", pack.context)
+
+    def test_a_future_notebook_row_stays_out_of_this_prompt(self) -> None:
+        entry = load_entry(2632584)
+        week = next(row for row in entry["gameweeks"] if int(row["gw"]) == 5)
+        ids = [str(player["id"]) for player in week["xi"] + week["bench"]]
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            plan = {
+                "frozen_at_utc": "2026-10-10T09:00:00Z",
+                "deadline_utc": "2026-10-10T10:00:00Z",
+                "rationale": "Hold the paper squad.",
+                "horizon": [],
+                "carry_after": {
+                    "gw": 7,
+                    "squad": ids,
+                    "purchase_prices": {pid: 40 for pid in ids},
+                    "bank": 77,
+                    "ft_before": 3,
+                    "chips_played": {"1": "triple_captain"},
+                    "selling_prices": {},
+                },
+            }
+            (root / "gw06.json").write_text(json.dumps(plan), encoding="utf-8")
+            upsert_note(
+                gw=6,
+                written_at_utc="2026-10-09T18:00:00Z",
+                notes="GW6 note about the knee.",
+                adjustments="Keep the cover.",
+                root=root,
+            )
+            upsert_note(
+                gw=7,
+                written_at_utc="2026-10-16T18:00:00Z",
+                notes="GW7 secret about the presser.",
+                adjustments="Wait.",
+                root=root,
+            )
+            current = prepare(2632584, plan_root=root)
+            later = prepare(2632584, plan_root=root, next_gw=7)
+        self.assertIn("GW6 note about the knee.", later.context)
+        self.assertNotIn("GW7 secret", later.context)
+        self.assertNotIn("GW7 secret", current.context)
+        self.assertNotIn("score_xp", later.context)
 
     def test_commit_saved_writes_the_chosen_ledger_only(self) -> None:
         from src.str_agent.__main__ import main
