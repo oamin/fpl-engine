@@ -1,11 +1,10 @@
 {
-  "milestone": "string-horizon-dry-run",
+  "milestone": "gw15-rerun-now",
   "status": "research_only",
-  "summary": "Stragent's first three-week dry run is legal. Gameweek 6 sells Scarlett for Muniz and captains Bruno Fernandes. Gameweek 7 sells Davis for Robinson and captains Haaland. Gameweek 8 holds. No chip, no hits, bank 15 then 6 then 1 tenth. The official ledger and the canonical plan file were not written.",
+  "summary": "Today's causal free-transfer climber scores 315 from a fresh squad and 339 from ojaminFC's Gameweek 1 fifteen. The recorded totals stay 280 and 333. Their own total stays 350. The 315 is a different fifteen. The 339 is net of one 4-point hit. No minutes oracle. The published Gameweeks 1-5 files were not overwritten.",
   "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
-    "reports/string_agent_gw6_horizon_20261008.md",
-    "reports/string_agent_gw6_horizon_decision.json",
-    "reports/string_horizon_dry_run/gw06.json"
+    "reports/gw15_rerun_now.md",
+    "reports/gw15_rerun_now.json"
   ]
 }

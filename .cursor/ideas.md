@@ -285,3 +285,7 @@ Gemini: DROP outright-derived ratings from the active decision horizon; keep unp
 ## Betfair markets in score_xp / forecast_xp, locked 2026-10-08
 
 Gemini: KEEP MATCH_ODDS+OU2.5; CHANGE TO_SCORE into imminent score_xp; CHANGE outrights into shrunk forecast_xp priors; DROP FGS, BTTS (diag), correct score, half-time from player scoring. Assists stay dropped.
+
+## Same-week minutes as the minutes prior
+
+Rejected 2026-10-09 ([gw15 rerun](bc-90156d5d-ce87-56ee-b772-011f4d43dbd0)). Setting expected minutes to the minutes played in that same row is lookahead. It is not a deployable numagent, and it is not an estimate of the Gameweeks 1–5 climb. The lagged minutes prior stays. Zeroing Sánchez from Gameweek 3 left the recorded 280 where it was, because Verbruggen was already the automatic substitute. See `reports/gw15_rerun_now.md`.

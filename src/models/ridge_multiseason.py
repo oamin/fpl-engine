@@ -75,7 +75,14 @@ def _attach_value_defcon(players: pd.DataFrame, season: str) -> pd.DataFrame:
     out = players.copy()
     out["player_id"] = out["player_id"].astype(str)
     out["gw"] = pd.to_numeric(out["gw"], errors="coerce").astype(int)
-    out = out.merge(extra, on=["player_id", "gw"], how="left")
+    # Player logs already carry value. The sheet join must not create value_x.
+    out = out.merge(extra, on=["player_id", "gw"], how="left", suffixes=("", "_sheet"))
+    if "value_sheet" in out.columns:
+        if "value" not in out.columns:
+            out["value"] = out["value_sheet"]
+        else:
+            out["value"] = out["value"].fillna(out["value_sheet"])
+        out = out.drop(columns=["value_sheet"])
     out["value"] = out["value"].fillna(
         out.groupby("position")["value"].transform("median")
     )
