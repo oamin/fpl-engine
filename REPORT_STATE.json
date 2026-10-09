@@ -1,10 +1,9 @@
 {
-  "milestone": "gw15-rerun-now",
+  "milestone": "string-dossier-trawl",
   "status": "research_only",
-  "summary": "Today's causal free-transfer climber scores 315 from a fresh squad and 339 from ojaminFC's Gameweek 1 fifteen. The recorded totals stay 280 and 333. Their own total stays 350. The 315 is a different fifteen. The 339 is net of one 4-point hit. No minutes oracle. The published Gameweeks 1-5 files were not overwritten.",
+  "summary": "Stragent can fill a gameweek dossier from a fixed list of feeds and keep one manager note per gameweek. The minutes compile does not read those files. No live feed was stored and no squad was chosen.",
   "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
-    "reports/gw15_rerun_now.md",
-    "reports/gw15_rerun_now.json"
+    "reports/string_dossier_trawl.md"
   ]
 }

@@ -36,6 +36,7 @@ from src.str_agent.horizon import (
     validate_horizon,
     write_plan,
 )
+from src.str_agent.notebook import notebook_section
 from src.str_agent.prompt import SYSTEM
 from src.str_agent.runner import sha256_text
 from src.str_agent.sources import load_string_sources
@@ -233,6 +234,7 @@ def prepare(
         )
         + "\n"
         + club_calendar(fixtures, short, int(carry.gw))
+        + notebook_section(int(carry.gw), plan_root)
         + "\n## Gameweek 5 squad\n"
         + "\n".join(slot_lines)
         + "\n\n## Market\n"
@@ -377,6 +379,7 @@ def _paper_pack(
         f"Starting squad: the saved plan after Gameweek {start.gw - 1}. "
         f"That is the squad you already own. It is not the live entry.\n\n"
         + prior
+        + notebook_section(int(start.gw), plan_root)
         + f"Bank: {int(start.bank)} tenths. Free transfers: {int(start.ft_before)}. "
         f"Chips left: {chips}.\n"
         "A transfer beyond the free-transfer bank costs 4 points. "
@@ -443,6 +446,8 @@ def save_submitted_plan(
         carry=pack.carry,
         result=result,
         root=root,
+        notes=str(payload.get("notes") or ""),
+        adjustments=str(payload.get("adjustments") or ""),
     )
 
 

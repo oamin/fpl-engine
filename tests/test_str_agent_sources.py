@@ -202,6 +202,10 @@ class StringSources(unittest.TestCase):
             "2026-10-07T12:00:00Z",
         )
         self.assertEqual(
+            parse_outlet_clock("http_last_modified", "Fri, 09 Oct 2026 16:22:00 BST"),
+            "2026-10-09T15:22:00Z",
+        )
+        self.assertEqual(
             parse_outlet_clock("youtube_published_at", "2026-10-08T19:00:00+01:00"),
             "2026-10-08T18:00:00Z",
         )

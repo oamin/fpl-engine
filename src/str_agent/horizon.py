@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from src.str_agent.carry import CarryState, validate_move
+from src.str_agent.notebook import upsert_note, validate_note
 
 ROOT = Path(__file__).resolve().parents[2]
 PLAN_DIR = ROOT / "data" / "predictions" / "2026-27" / "string_plans"
@@ -151,6 +152,8 @@ def write_plan(
     carry: CarryState,
     result: HorizonResult,
     root: Path | None = None,
+    notes: str = "",
+    adjustments: str = "",
 ) -> tuple[Path, str]:
     """Write the plan and its context. Returns the plan path and its sha256.
 
@@ -159,6 +162,16 @@ def write_plan(
     """
     if result.errors or not result.steps:
         raise HorizonError("refusing to save an illegal horizon: " + "; ".join(result.errors))
+    manager_notes = str(notes or "")
+    manager_adjustments = str(adjustments or "")
+    pending_note = None
+    if manager_notes.strip() or manager_adjustments.strip():
+        pending_note = validate_note(
+            gw=int(gw),
+            written_at_utc=frozen_at_utc,
+            notes=manager_notes,
+            adjustments=manager_adjustments,
+        )
     payload = {
         "gw": int(gw),
         "deadline_utc": deadline_utc,
@@ -180,6 +193,14 @@ def write_plan(
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8")
     context_path(gw, root).write_text(context, encoding="utf-8")
+    if pending_note is not None:
+        upsert_note(
+            gw=int(pending_note["gw"]),
+            written_at_utc=str(pending_note["written_at_utc"]),
+            notes=str(pending_note["notes"]),
+            adjustments=str(pending_note["adjustments"]),
+            root=root,
+        )
     digest = hashlib.sha256(path.read_bytes()).hexdigest()
     return path, digest
 
