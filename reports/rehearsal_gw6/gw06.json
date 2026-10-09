@@ -1,0 +1,280 @@
+{
+  "carry": {
+    "bank": 15,
+    "chips_played": {
+      "1": "triple_captain"
+    },
+    "ft_before": 1,
+    "gw": 6,
+    "purchase_prices": {
+      "15": 65,
+      "175": 40,
+      "305": 40,
+      "346": 60,
+      "388": 60,
+      "399": 75,
+      "40": 76,
+      "411": 155,
+      "412": 50,
+      "423": 45,
+      "426": 120,
+      "453": 60,
+      "528": 45,
+      "58": 40,
+      "8": 55
+    },
+    "selling_prices": {},
+    "squad": [
+      "412",
+      "305",
+      "8",
+      "388",
+      "453",
+      "426",
+      "40",
+      "399",
+      "15",
+      "346",
+      "411",
+      "58",
+      "175",
+      "423",
+      "528"
+    ]
+  },
+  "carry_after": {
+    "bank": 3,
+    "chips_played": {
+      "1": "triple_captain"
+    },
+    "ft_before": 1,
+    "gw": 7,
+    "purchase_prices": {
+      "15": 65,
+      "175": 40,
+      "249": 57,
+      "305": 40,
+      "346": 60,
+      "388": 60,
+      "399": 75,
+      "40": 76,
+      "411": 155,
+      "412": 50,
+      "423": 45,
+      "426": 120,
+      "453": 60,
+      "58": 40,
+      "8": 55
+    },
+    "selling_prices": {},
+    "squad": [
+      "412",
+      "58",
+      "8",
+      "305",
+      "388",
+      "423",
+      "175",
+      "453",
+      "426",
+      "40",
+      "399",
+      "15",
+      "346",
+      "411",
+      "249"
+    ]
+  },
+  "context_sha256": "42df27563ddd7cbd94755c5fee33685f5a1e7f71398c4717f001f56630bf3fc0",
+  "deadline_utc": "2026-10-10T10:00:00Z",
+  "decision": {
+    "bench_order": [
+      "423",
+      "346",
+      "175",
+      "58"
+    ],
+    "captain": "426",
+    "chip_played": null,
+    "squad_15": [
+      "412",
+      "58",
+      "8",
+      "305",
+      "388",
+      "423",
+      "175",
+      "453",
+      "426",
+      "40",
+      "399",
+      "15",
+      "346",
+      "411",
+      "249"
+    ],
+    "starting_11": [
+      "412",
+      "8",
+      "305",
+      "388",
+      "426",
+      "40",
+      "453",
+      "15",
+      "399",
+      "411",
+      "249"
+    ],
+    "transfers_in": [
+      "249"
+    ],
+    "transfers_out": [
+      "528"
+    ],
+    "vice_captain": "411"
+  },
+  "frozen_at_utc": "2026-10-09T20:16:12Z",
+  "gw": 6,
+  "horizon": [
+    {
+      "bench_order": [
+        "423",
+        "346",
+        "175",
+        "58"
+      ],
+      "captain": "426",
+      "chip_played": null,
+      "gw": 6,
+      "squad_15": [
+        "412",
+        "58",
+        "8",
+        "305",
+        "388",
+        "423",
+        "175",
+        "453",
+        "426",
+        "40",
+        "399",
+        "15",
+        "346",
+        "411",
+        "249"
+      ],
+      "starting_11": [
+        "412",
+        "8",
+        "305",
+        "388",
+        "426",
+        "40",
+        "453",
+        "15",
+        "399",
+        "411",
+        "249"
+      ],
+      "transfers_in": [
+        "249"
+      ],
+      "transfers_out": [
+        "528"
+      ],
+      "vice_captain": "411"
+    },
+    {
+      "bench_order": [
+        "305",
+        "346",
+        "175",
+        "58"
+      ],
+      "captain": "411",
+      "chip_played": null,
+      "gw": 7,
+      "squad_15": [
+        "412",
+        "58",
+        "8",
+        "305",
+        "388",
+        "423",
+        "175",
+        "453",
+        "426",
+        "40",
+        "399",
+        "15",
+        "346",
+        "411",
+        "249"
+      ],
+      "starting_11": [
+        "412",
+        "8",
+        "388",
+        "423",
+        "426",
+        "40",
+        "453",
+        "15",
+        "399",
+        "411",
+        "249"
+      ],
+      "transfers_in": [],
+      "transfers_out": [],
+      "vice_captain": "426"
+    },
+    {
+      "bench_order": [
+        "249",
+        "388",
+        "175",
+        "58"
+      ],
+      "captain": "426",
+      "chip_played": null,
+      "gw": 8,
+      "squad_15": [
+        "412",
+        "58",
+        "8",
+        "305",
+        "388",
+        "423",
+        "175",
+        "453",
+        "426",
+        "40",
+        "399",
+        "15",
+        "346",
+        "411",
+        "249"
+      ],
+      "starting_11": [
+        "412",
+        "8",
+        "305",
+        "423",
+        "426",
+        "40",
+        "453",
+        "15",
+        "399",
+        "411",
+        "346"
+      ],
+      "transfers_in": [],
+      "transfers_out": [],
+      "vice_captain": "411"
+    }
+  ],
+  "model_id": "gemini-3.8-flash-high",
+  "prompt_sha256": "89fc9d8850ec352c7515bbb97c5892b88e48d8065c1f63c41410a16d679287c1",
+  "rationale": "Transfer decision: Scarlett (id 528) is transferred out. The squad line lists \"- bench Scarlett (id 528), FWD, TOT, cost 45, bought at 45, last minutes 0, 0, 0. Fixture: away at Man Utd.\" Under fpl_bootstrap: \"Scarlett: Has joined Leyton Orient permanently\", \"status u. chance 0. club Spurs.\", with sidecar summary: \"transferred. xmi: 0.0.\" The starting bank is 15 tenths with 1 free transfer. Selling Scarlett yields 45 tenths, giving 60 tenths available. Barry (id 249) is transferred in from the market at cost 57, leaving 3 tenths in bank. In reddit_fantasypl, \"All-time Top FPL Managers Template Team\" lists \"Barry: 40.0% (8.5% Overall)\" with \"Top Transfers IN\" showing \"Barry (10)\". The fixture calendar shows Everton: \"GW6 away HUL 2\".\n\nCaptaincy decision: B.Fernandes (id 426) is named captain. The squad line lists \"- XI B.Fernandes (id 426), MID, MUN, cost 119, bought at 120, last minutes 90, 90, 90. Fixture: home to Spurs.\" with sidecar summary: \"rolling avg. xmi: 90.0.\" The fixture calendar lists Man Utd: \"GW6 home TOT 2\". Haaland (id 411) is named vice-captain. The squad line lists \"- XI Haaland (id 411), FWD, MCI, cost 156, bought at 155, last minutes 90, 90, 90. Fixture: away at Liverpool.\" Under bbc_sport: \"Haaland an injury doubt after limping off against Portugal\" and \"Erling Haaland is an injury doubt after he limped off in Norway's match against Portugal. He asked to be substituted on 67 minutes and left camp on Monday.\" Under manchestereveningnews: \"Stale Solbakken said Haaland was thoroughly spent. He was withdrawn with suspected muscle fatigue, and concerns over a serious injury eased. City hope to have him available.\" Under sportsmole: \"status minor doubt, fatigue, possible return 11 October versus Liverpool. Haaland is not nursing an injury and should be available for selection on Sunday.\" The sidecar summary gives \"50/50. xmi: 45.0.\" with fixture away at Liverpool (FDR 4). In reddit_fantasypl, \"How to Captain: Rule Based Strategies Validated with 25/26 Data\" recommends: \"Pick one of Haaland/Bruno with easier fixture\" and \"Version b is enforcing the home fix\".\n\nStarting eleven and bench: Lammens (id 412) starts in goal with sidecar summary \"rolling avg. xmi: 90.0\" and fixture home to Spurs. The three starting defenders are Calafiori (id 8) with sidecar summary \"rolling avg. xmi: 82.0\" (home to Leeds), Davis (id 305) with sidecar summary \"rolling avg. xmi: 90.0\" (home to Fulham), and Gu\u00e9hi (id 388) with sidecar summary \"rolling avg. xmi: 90.0\" (away at Liverpool). The five starting midfielders are B.Fernandes (id 426), Rogers (id 40) with sidecar summary \"rolling avg. xmi: 88.7\" (home to Bournemouth), Barnes (id 453) with sidecar summary \"rolling avg. xmi: 90.0\" (away at Coventry City), \u00d8degaard (id 15) with sidecar summary \"rolling avg. xmi: 77.3\" (home to Leeds), and Cherki (id 399) with sidecar summary \"rolling avg. xmi: 64.7\" (away at Liverpool). The two starting forwards are Haaland (id 411) and Barry (id 249). The bench order is Shaw (id 423) with sidecar summary \"rolling avg. xmi: 57.7\", Calvert-Lewin (id 346) with sidecar summary \"rolling avg. xmi: 79.7\" and fixture away at Arsenal (FDR 5), van Ewijk (id 175) who has FPL news \"Hamstring injury - 75% chance of playing\" and sidecar summary \"50/50. xmi: 45.0.\", and Forster (id 58) with sidecar summary \"rolling avg. xmi: 0.0.\" No chip is played (chip_played: null)."
+}

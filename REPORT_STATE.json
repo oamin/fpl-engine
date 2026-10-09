@@ -1,7 +1,10 @@
 {
-  "milestone": "betfair-only",
+  "milestone": "rehearsal-gw6",
   "status": "research_only",
-  "summary": "The Odds API is removed from the live engines. Readers take gw_lines.csv only from a Betfair predictions folder. The frozen data/live/gw_lines.csv hash is unchanged. A missing Betfair folder does not open that file. Freeze odds_source odds_api is refused. Holdout verify still passes.",
-  "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
-  "artifacts": []
+  "summary": "Gameweek 6 ojaminFC rehearsal. The carried fifteen is legal. The saved plan sells Scarlett for Barry, plays no chip, captains Fernandes, and leaves 3 tenths. The three-week horizon is legal. The official ledger was not written. Feed files were not committed.",
+  "gemini": "bc-6b943639-61a4-5bc4-af3a-6de5f1b75ee0",
+  "artifacts": [
+    "reports/rehearsal_gw6.md",
+    "reports/rehearsal_gw6/gw06.json"
+  ]
 }
