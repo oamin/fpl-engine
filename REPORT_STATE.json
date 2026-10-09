@@ -1,9 +1,11 @@
 {
-  "milestone": "string-dossier-trawl",
+  "milestone": "string-dossier-gw6-trial",
   "status": "research_only",
-  "summary": "Stragent can fill a gameweek dossier from a fixed list of feeds and keep one manager note per gameweek. The minutes compile does not read those files. No live feed was stored and no squad was chosen.",
+  "summary": "A Gameweek 6 stragent trial on ojaminFC, after the collector wrote 189 pre-deadline notes, sells Scarlett for Barry and captains Fernandes. No hit, bank 3 tenths, no chip. The Scoutcast sentence about Barry is unsupported. The official ledger was not written.",
   "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
-    "reports/string_dossier_trawl.md"
+    "reports/string_dossier_gw6_trial.md",
+    "reports/string_dossier_gw6_trial/gw06.json",
+    "reports/string_dossier_gw6_trial/notebook.jsonl"
   ]
 }
