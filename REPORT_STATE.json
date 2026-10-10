@@ -1,7 +1,9 @@
 {
-  "milestone": "betfair-only",
+  "milestone": "xmi-t1",
   "status": "research_only",
-  "summary": "The Odds API is removed from the live engines. Readers take gw_lines.csv only from a Betfair predictions folder. The frozen data/live/gw_lines.csv hash is unchanged. A missing Betfair folder does not open that file. Freeze odds_source odds_api is refused. Holdout verify still passes.",
+  "summary": "Gameweek 6 minutes sheet compiled from the 140 audited news packets and a fresh FPL bootstrap. Written to data/predictions/2026-27/gw06/xmi_t1.csv. data/live/xmi_gw6.csv was not changed. The RSS dossier was not an input.",
   "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
-  "artifacts": []
+  "artifacts": [
+    "data/predictions/2026-27/gw06/xmi_t1.csv"
+  ]
 }
