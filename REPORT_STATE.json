@@ -1,9 +1,10 @@
 {
-  "milestone": "gw6-ep-next-team",
+  "milestone": "gw6-score-xp-team",
   "status": "research_only",
-  "summary": "The Gameweek 6 selector used xmi_t1, betfair_t1, and the T-1 ep_next capture. Only Gameweek 6 is priced. The free-hit eleven equals the wildcard rebuild, so the tie rule plays no chip. The team is the current fifteen, no transfer, Davis captain on 8.0, Haaland vice on 7.5. The 60.5 figure is that eleven with the captain counted twice. It is not locked. week_freeze.jsonl was not appended.",
+  "summary": "The Gameweek 6 selector was rerun on score_xp with the updated xmi_t1 sheet and betfair_t1. Gameweek 8 is an outright forecast. plan_half sums Gameweeks 6 and 7 only. It plays the wildcard. The 138.38 figure is the Gameweek 6 rebuilt eleven, the Gameweek 7 rebuilt eleven, and the Gameweek 7 rebuilt bench. The rebuild leads the untouched squad by 18.06 and the one-transfer path by 13.88. Haaland starts on 5.02. Mbeumo is captain. It is not locked. week_freeze.jsonl was not appended.",
   "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
-    "reports/gw6_ep_next_team.md"
+    "reports/gw6_score_xp_team.md",
+    "data/predictions/2026-27/gw06/20261010T091116Z.csv"
   ]
 }
