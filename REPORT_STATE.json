@@ -1,10 +1,11 @@
 {
-  "milestone": "gw6-score-xp-team",
-  "status": "research_only",
-  "summary": "The Gameweek 6 selector was rerun on score_xp with the updated xmi_t1 sheet and betfair_t1. Gameweek 8 is an outright forecast. plan_half sums Gameweeks 6 and 7 only. It plays the wildcard. The 138.38 figure is the Gameweek 6 rebuilt eleven, the Gameweek 7 rebuilt eleven, and the Gameweek 7 rebuilt bench. The rebuild leads the untouched squad by 18.06 and the one-transfer path by 13.88. Haaland starts on 5.02. Mbeumo is captain. It is not locked. week_freeze.jsonl was not appended.",
+  "milestone": "gw6-score-xp-lock",
+  "status": "locked",
+  "summary": "The Gameweek 6 score_xp wildcard is locked. Captain Mbeumo, vice Fernandes, bench order Verbruggen, Wissa, Davis, Mainoo. The freeze row is data/predictions/2026-27/week_freeze.jsonl at 2026-10-10T09:27:29Z. The sidecar is data/predictions/2026-27/gw06/lock_gw6.json. Realised points are null. The string-agent dossier is not logged.",
   "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
-    "reports/gw6_score_xp_team.md",
-    "data/predictions/2026-27/gw06/20261010T091116Z.csv"
+    "data/predictions/2026-27/week_freeze.jsonl",
+    "data/predictions/2026-27/gw06/lock_gw6.json",
+    "reports/gw6_score_xp_team.md"
   ]
 }

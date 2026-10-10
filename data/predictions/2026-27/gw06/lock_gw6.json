@@ -1,0 +1,678 @@
+{
+  "entry_id": 2632584,
+  "team_name": "ojaminFC",
+  "gw": 6,
+  "deadline_utc": "2026-10-10T10:00:00Z",
+  "frozen_at_utc": "2026-10-10T09:27:29Z",
+  "locked": true,
+  "chip_counts_toward_chip_rule": false,
+  "choice_field": "score_xp",
+  "note": "reports/gw6_score_xp_team.md",
+  "score_file": "data/predictions/2026-27/gw06/20261010T091116Z.csv",
+  "ledger": "data/predictions/2026-27/week_freeze.jsonl",
+  "formation": [
+    4,
+    4,
+    2
+  ],
+  "bank_left_tenths": 5,
+  "hits": 0,
+  "bench_order": [
+    {
+      "order": 1,
+      "id": "2026-27:109",
+      "name": "Verbruggen",
+      "score_xp": 3.6631816454248
+    },
+    {
+      "order": 2,
+      "id": "2026-27:464",
+      "name": "Wissa",
+      "score_xp": 4.787776506900638
+    },
+    {
+      "order": 3,
+      "id": "2026-27:305",
+      "name": "Davis",
+      "score_xp": 4.668693464025673
+    },
+    {
+      "order": 4,
+      "id": "2026-27:432",
+      "name": "Mainoo",
+      "score_xp": 4.605080637949813
+    }
+  ],
+  "squad": [
+    {
+      "id": "2026-27:1",
+      "name": "Raya",
+      "position": "GKP",
+      "club": "ARS",
+      "price": 61,
+      "score": 3.7928260805907885,
+      "role": "XI",
+      "minutes": 90.0
+    },
+    {
+      "id": "2026-27:109",
+      "name": "Verbruggen",
+      "position": "GKP",
+      "club": "BHA",
+      "price": 45,
+      "score": 3.6631816454248,
+      "role": "bench",
+      "minutes": 90.0
+    },
+    {
+      "id": "2026-27:449",
+      "name": "Hall",
+      "position": "DEF",
+      "club": "NEW",
+      "price": 53,
+      "score": 5.10859798296002,
+      "role": "XI",
+      "minutes": 89.66666666666667
+    },
+    {
+      "id": "2026-27:588",
+      "name": "Khalaili",
+      "position": "DEF",
+      "club": "CRY",
+      "price": 50,
+      "score": 5.1260781973446825,
+      "role": "XI",
+      "minutes": 90.0
+    },
+    {
+      "id": "2026-27:472",
+      "name": "Murillo",
+      "position": "DEF",
+      "club": "NFO",
+      "price": 55,
+      "score": 4.930997298921462,
+      "role": "XI",
+      "minutes": 89.66666666666667
+    },
+    {
+      "id": "2026-27:173",
+      "name": "Thomas",
+      "position": "DEF",
+      "club": "COV",
+      "price": 40,
+      "score": 4.826002069289678,
+      "role": "XI",
+      "minutes": 90.0
+    },
+    {
+      "id": "2026-27:305",
+      "name": "Davis",
+      "position": "DEF",
+      "club": "IPS",
+      "price": 40,
+      "score": 4.668693464025673,
+      "role": "bench",
+      "minutes": 90.0
+    },
+    {
+      "id": "2026-27:426",
+      "name": "B.Fernandes",
+      "position": "MID",
+      "club": "MUN",
+      "price": 119,
+      "score": 5.985027943720986,
+      "role": "vice",
+      "minutes": 90.0
+    },
+    {
+      "id": "2026-27:427",
+      "name": "Mbeumo",
+      "position": "MID",
+      "club": "MUN",
+      "price": 79,
+      "score": 6.145879959488864,
+      "role": "captain",
+      "minutes": 90.0
+    },
+    {
+      "id": "2026-27:40",
+      "name": "Rogers",
+      "position": "MID",
+      "club": "CHE",
+      "price": 78,
+      "score": 5.930332292859592,
+      "role": "XI",
+      "minutes": 88.66666666666667
+    },
+    {
+      "id": "2026-27:183",
+      "name": "Rudoni",
+      "position": "MID",
+      "club": "COV",
+      "price": 49,
+      "score": 4.948221586413327,
+      "role": "XI",
+      "minutes": 69.0
+    },
+    {
+      "id": "2026-27:432",
+      "name": "Mainoo",
+      "position": "MID",
+      "club": "MUN",
+      "price": 55,
+      "score": 4.605080637949813,
+      "role": "bench",
+      "minutes": 63.0
+    },
+    {
+      "id": "2026-27:249",
+      "name": "Barry",
+      "position": "FWD",
+      "club": "EVE",
+      "price": 57,
+      "score": 5.181119399300901,
+      "role": "XI",
+      "minutes": 90.0
+    },
+    {
+      "id": "2026-27:411",
+      "name": "Haaland",
+      "position": "FWD",
+      "club": "MCI",
+      "price": 156,
+      "score": 5.019322745554685,
+      "role": "XI",
+      "minutes": 90.0
+    },
+    {
+      "id": "2026-27:464",
+      "name": "Wissa",
+      "position": "FWD",
+      "club": "NEW",
+      "price": 62,
+      "score": 4.787776506900638,
+      "role": "bench",
+      "minutes": 90.0
+    }
+  ],
+  "sells": [
+    {
+      "name": "Forster",
+      "position": "GKP",
+      "club": "BOU",
+      "price": 40
+    },
+    {
+      "name": "Lammens",
+      "position": "GKP",
+      "club": "MUN",
+      "price": 49
+    },
+    {
+      "name": "Calafiori",
+      "position": "DEF",
+      "club": "ARS",
+      "price": 57
+    },
+    {
+      "name": "Gu\u00e9hi",
+      "position": "DEF",
+      "club": "MCI",
+      "price": 60
+    },
+    {
+      "name": "Shaw",
+      "position": "DEF",
+      "club": "MUN",
+      "price": 43
+    },
+    {
+      "name": "van Ewijk",
+      "position": "DEF",
+      "club": "COV",
+      "price": 40
+    },
+    {
+      "name": "Barnes",
+      "position": "MID",
+      "club": "NEW",
+      "price": 60
+    },
+    {
+      "name": "Cherki",
+      "position": "MID",
+      "club": "MCI",
+      "price": 76
+    },
+    {
+      "name": "\u00d8degaard",
+      "position": "MID",
+      "club": "ARS",
+      "price": 66
+    },
+    {
+      "name": "Calvert-Lewin",
+      "position": "FWD",
+      "club": "LEE",
+      "price": 60
+    },
+    {
+      "name": "Scarlett",
+      "position": "FWD",
+      "club": "TOT",
+      "price": 45
+    }
+  ],
+  "buys": [
+    {
+      "name": "Raya",
+      "position": "GKP",
+      "club": "ARS",
+      "price": 61
+    },
+    {
+      "name": "Verbruggen",
+      "position": "GKP",
+      "club": "BHA",
+      "price": 45
+    },
+    {
+      "name": "Hall",
+      "position": "DEF",
+      "club": "NEW",
+      "price": 53
+    },
+    {
+      "name": "Khalaili",
+      "position": "DEF",
+      "club": "CRY",
+      "price": 50
+    },
+    {
+      "name": "Murillo",
+      "position": "DEF",
+      "club": "NFO",
+      "price": 55
+    },
+    {
+      "name": "Thomas",
+      "position": "DEF",
+      "club": "COV",
+      "price": 40
+    },
+    {
+      "name": "Mainoo",
+      "position": "MID",
+      "club": "MUN",
+      "price": 55
+    },
+    {
+      "name": "Mbeumo",
+      "position": "MID",
+      "club": "MUN",
+      "price": 79
+    },
+    {
+      "name": "Rudoni",
+      "position": "MID",
+      "club": "COV",
+      "price": 49
+    },
+    {
+      "name": "Barry",
+      "position": "FWD",
+      "club": "EVE",
+      "price": 57
+    },
+    {
+      "name": "Wissa",
+      "position": "FWD",
+      "club": "NEW",
+      "price": 62
+    }
+  ],
+  "hold_squad": [
+    {
+      "id": "2026-27:412",
+      "name": "Lammens",
+      "position": "GKP",
+      "club": "MUN",
+      "price": 49,
+      "score": 3.5999750197452167,
+      "role": "XI",
+      "minutes": 90.0
+    },
+    {
+      "id": "2026-27:58",
+      "name": "Forster",
+      "position": "GKP",
+      "club": "BOU",
+      "price": 40,
+      "score": 0.0,
+      "role": "bench",
+      "minutes": 0.0
+    },
+    {
+      "id": "2026-27:8",
+      "name": "Calafiori",
+      "position": "DEF",
+      "club": "ARS",
+      "price": 59,
+      "score": 4.015925049213947,
+      "role": "XI",
+      "minutes": 82.0
+    },
+    {
+      "id": "2026-27:305",
+      "name": "Davis",
+      "position": "DEF",
+      "club": "IPS",
+      "price": 40,
+      "score": 4.668693464025673,
+      "role": "XI",
+      "minutes": 90.0
+    },
+    {
+      "id": "2026-27:388",
+      "name": "Gu\u00e9hi",
+      "position": "DEF",
+      "club": "MCI",
+      "price": 60,
+      "score": 3.7888129006050177,
+      "role": "XI",
+      "minutes": 90.0
+    },
+    {
+      "id": "2026-27:423",
+      "name": "Shaw",
+      "position": "DEF",
+      "club": "MUN",
+      "price": 43,
+      "score": 3.3622769976650346,
+      "role": "XI",
+      "minutes": 57.66666666666666
+    },
+    {
+      "id": "2026-27:175",
+      "name": "van Ewijk",
+      "position": "DEF",
+      "club": "COV",
+      "price": 40,
+      "score": 2.2126438045736045,
+      "role": "bench",
+      "minutes": 45.0
+    },
+    {
+      "id": "2026-27:426",
+      "name": "B.Fernandes",
+      "position": "MID",
+      "club": "MUN",
+      "price": 119,
+      "score": 5.985027943720986,
+      "role": "captain",
+      "minutes": 90.0
+    },
+    {
+      "id": "2026-27:453",
+      "name": "Barnes",
+      "position": "MID",
+      "club": "NEW",
+      "price": 61,
+      "score": 3.634969237070285,
+      "role": "XI",
+      "minutes": 90.0
+    },
+    {
+      "id": "2026-27:399",
+      "name": "Cherki",
+      "position": "MID",
+      "club": "MCI",
+      "price": 78,
+      "score": 3.5298246521008494,
+      "role": "XI",
+      "minutes": 64.66666666666667
+    },
+    {
+      "id": "2026-27:40",
+      "name": "Rogers",
+      "position": "MID",
+      "club": "CHE",
+      "price": 78,
+      "score": 5.930332292859592,
+      "role": "vice",
+      "minutes": 88.66666666666667
+    },
+    {
+      "id": "2026-27:15",
+      "name": "\u00d8degaard",
+      "position": "MID",
+      "club": "ARS",
+      "price": 68,
+      "score": 3.503818948384059,
+      "role": "XI",
+      "minutes": 77.33333333333333
+    },
+    {
+      "id": "2026-27:411",
+      "name": "Haaland",
+      "position": "FWD",
+      "club": "MCI",
+      "price": 156,
+      "score": 5.019322745554685,
+      "role": "XI",
+      "minutes": 90.0
+    },
+    {
+      "id": "2026-27:346",
+      "name": "Calvert-Lewin",
+      "position": "FWD",
+      "club": "LEE",
+      "price": 60,
+      "score": 2.2458825456005083,
+      "role": "bench",
+      "minutes": 79.66666666666667
+    },
+    {
+      "id": "2026-27:528",
+      "name": "Scarlett",
+      "position": "FWD",
+      "club": "TOT",
+      "price": 45,
+      "score": 0.0,
+      "role": "bench",
+      "minutes": 0.0
+    }
+  ],
+  "ft1_squad": [
+    {
+      "id": "2026-27:412",
+      "name": "Lammens",
+      "position": "GKP",
+      "club": "MUN",
+      "price": 49,
+      "score": 3.5999750197452167,
+      "role": "XI",
+      "minutes": 90.0
+    },
+    {
+      "id": "2026-27:58",
+      "name": "Forster",
+      "position": "GKP",
+      "club": "BOU",
+      "price": 40,
+      "score": 0.0,
+      "role": "bench",
+      "minutes": 0.0
+    },
+    {
+      "id": "2026-27:8",
+      "name": "Calafiori",
+      "position": "DEF",
+      "club": "ARS",
+      "price": 59,
+      "score": 4.015925049213947,
+      "role": "XI",
+      "minutes": 82.0
+    },
+    {
+      "id": "2026-27:305",
+      "name": "Davis",
+      "position": "DEF",
+      "club": "IPS",
+      "price": 40,
+      "score": 4.668693464025673,
+      "role": "XI",
+      "minutes": 90.0
+    },
+    {
+      "id": "2026-27:388",
+      "name": "Gu\u00e9hi",
+      "position": "DEF",
+      "club": "MCI",
+      "price": 60,
+      "score": 3.7888129006050177,
+      "role": "XI",
+      "minutes": 90.0
+    },
+    {
+      "id": "2026-27:566",
+      "name": "Silva",
+      "position": "DEF",
+      "club": "BOU",
+      "price": 50,
+      "score": 4.667833502410412,
+      "role": "XI",
+      "minutes": 90.0
+    },
+    {
+      "id": "2026-27:423",
+      "name": "Shaw",
+      "position": "DEF",
+      "club": "MUN",
+      "price": 43,
+      "score": 3.3622769976650346,
+      "role": "bench",
+      "minutes": 57.66666666666666
+    },
+    {
+      "id": "2026-27:426",
+      "name": "B.Fernandes",
+      "position": "MID",
+      "club": "MUN",
+      "price": 119,
+      "score": 5.985027943720986,
+      "role": "captain",
+      "minutes": 90.0
+    },
+    {
+      "id": "2026-27:453",
+      "name": "Barnes",
+      "position": "MID",
+      "club": "NEW",
+      "price": 61,
+      "score": 3.634969237070285,
+      "role": "XI",
+      "minutes": 90.0
+    },
+    {
+      "id": "2026-27:399",
+      "name": "Cherki",
+      "position": "MID",
+      "club": "MCI",
+      "price": 78,
+      "score": 3.5298246521008494,
+      "role": "XI",
+      "minutes": 64.66666666666667
+    },
+    {
+      "id": "2026-27:40",
+      "name": "Rogers",
+      "position": "MID",
+      "club": "CHE",
+      "price": 78,
+      "score": 5.930332292859592,
+      "role": "vice",
+      "minutes": 88.66666666666667
+    },
+    {
+      "id": "2026-27:15",
+      "name": "\u00d8degaard",
+      "position": "MID",
+      "club": "ARS",
+      "price": 68,
+      "score": 3.503818948384059,
+      "role": "XI",
+      "minutes": 77.33333333333333
+    },
+    {
+      "id": "2026-27:411",
+      "name": "Haaland",
+      "position": "FWD",
+      "club": "MCI",
+      "price": 156,
+      "score": 5.019322745554685,
+      "role": "XI",
+      "minutes": 90.0
+    },
+    {
+      "id": "2026-27:346",
+      "name": "Calvert-Lewin",
+      "position": "FWD",
+      "club": "LEE",
+      "price": 60,
+      "score": 2.2458825456005083,
+      "role": "bench",
+      "minutes": 79.66666666666667
+    },
+    {
+      "id": "2026-27:528",
+      "name": "Scarlett",
+      "position": "FWD",
+      "club": "TOT",
+      "price": 45,
+      "score": 0.0,
+      "role": "bench",
+      "minutes": 0.0
+    }
+  ],
+  "ft1_move": "sell 2026-27:175 van Ewijk; buy 2026-27:566 Silva",
+  "priced_weeks": [
+    6,
+    7
+  ],
+  "forecast_week_filled": 8,
+  "plan_value_gw6_gw7": 138.37834306359906,
+  "gap_vs_untouched_gw6_gw7": 18.060041188612814,
+  "gap_vs_ft1_gw6_gw7": 13.882970143213498,
+  "forecast_expected_points": {
+    "decision_xi_c_ep_next": 56.0,
+    "decision_xi_c_score_xp": 63.140285515933854,
+    "hold_xi_c_ep_next": 49.5,
+    "ft1_xi_c_ep_next": 51.5
+  },
+  "score_xp_xi_c": {
+    "decision_gw6": 63.140285515933854,
+    "hold_gw6": 53.02400719466633,
+    "ft1_gw6": 54.3295636994117
+  },
+  "hashes": {
+    "official_ep_next": "de9775a6f44aa61513956e0b367331ad0e693df077566e8cc6cd214fd905c5ac",
+    "minutes_xmi_t1": "efb2c9b0cb1be3de920b75bf0f5f5f1cace273389576971cd0b9d19ef382067d",
+    "betfair_gw_lines": "98e5bb4281312953f19a18383d2d6691e34279618c900c736d39c22085bb1b0a",
+    "pool_forecast": "75c802b7c65e0bc47cd7a147e6e3e21fb10bfb927c77a730de813bcf00517ae9",
+    "betfair_fixtures": "477fee196153c242d686d57bb9605fedb219ebdcdb8ee09b33660fc52cd8c120",
+    "bootstrap_t1": "f53c43b2c822d111bca9e3ae615ceb539ff324fbf9fae9a07ded738891b01546",
+    "entry": "3049c664dd1b2e517d0ef8b59c0078d485f327951d4603e1bc460e11248013c2",
+    "outrights_ranks": "85f2818ac767a3878618fe3cb357c2a5e86a82111f7002edbb1c683b3789805c",
+    "betfair_to_score": "c5b4ae7591fe81c80e0eb4dac8f2a65b9465088fb1b843cae9c4abfb25dc051b"
+  },
+  "inputs": {
+    "minutes": "data/predictions/2026-27/gw06/xmi_t1.csv",
+    "lines": "data/predictions/2026-27/gw06/betfair_t1/gw_lines.csv",
+    "fixtures": "data/predictions/2026-27/gw06/betfair_t1/fixtures.json",
+    "bootstrap": "data/predictions/2026-27/gw06/bootstrap_20261010T082509Z_t1.json",
+    "outrights": "data/predictions/2026-27/gw06/betfair_t1/outrights_ranks.json",
+    "anytime": "data/predictions/2026-27/gw06/betfair_t1/betfair_to_score.json",
+    "ep_next": "data/predictions/2026-27/gw06/official_20261010T082509Z_t1.csv"
+  }
+}
