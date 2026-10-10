@@ -40,6 +40,8 @@ No chip. No hit. Bank left 1 tenth. Sells Davis. Buys Robinson. Haaland is capta
 
 No chip. No transfer. Bank stays 1 tenth. Fernandes is captain. Haaland is vice.
 
-## After approval
+## Stored
 
-The dossier log is the outlet files, the context those files produced, and this plan. It is not written yet.
+The plan is `data/predictions/2026-27/string_plans/gw06.json`, frozen at 2026-10-10T09:37:55Z. The context that produced it is `data/predictions/2026-27/string_plans/gw06_context.md`. The ledger row is `data/predictions/2026-27/string_agent_freeze.jsonl`. Plan sha256 `cafb5269f2cf375a12e753aa85489d363a4586ba4ee14c4baaefc666d14beccc`.
+
+`ep_next` for both Gameweek 6 squads, the players they sold, and Robinson (the Gameweek 7 intention) is `data/predictions/2026-27/gw06/cited_ep_next.csv`. The values are the T−1 capture `official_20261010T082509Z_t1.csv` at 2026-10-10T08:25:09Z.
