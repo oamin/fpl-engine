@@ -1,10 +1,10 @@
 {
-  "milestone": "gw6-haaland-minutes",
+  "milestone": "gw6-xmi-trawl",
   "status": "research_only",
-  "summary": "The minutes oracle was not using news after 8 October 17:34 UTC. Haaland's 45 came from the Standard 'could return this weekend' line, half of a 90-minute prior. FPL on 10 October lists him available with blank news, which does not become a packet. Manchester City's Friday press conference is now filed. The same compile writes Haaland 90 from his last three games. No other xmi_t1 row moved. Stored score files still use 45.",
-  "gemini": "unchanged rule; no new review",
+  "summary": "Friday club and league notes are filed for the Gameweek 6 minutes sheet. Sports Mole at 18:04 BST is the out, doubt, and suspension list. Premier League predicted line-ups name who is fit. A clearance sentence is not read as an injury unless it is negated. Palmer, Joao Pedro, Van de Ven, Van Hecke, Jacquet and others move up. Doubts scale by the FPL chance. Haaland stays 90. van Ewijk stays 45. Five returning players stay on the Thursday coin-flip because their recent window is empty. Stored score files still use the previous minutes.",
+  "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
-    "data/predictions/2026-27/gw06/news_packets/mancity-fc-gw06-haaland-fit-for-trip-to-liverpoo.json",
+    "reports/gw6_xmi_trawl.md",
     "data/predictions/2026-27/gw06/xmi_t1.csv"
   ]
 }

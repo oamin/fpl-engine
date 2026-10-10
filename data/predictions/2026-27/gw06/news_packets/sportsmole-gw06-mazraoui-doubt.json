@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:mazraoui-doubt",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Man Utd",
+  "player_ids": [
+    422
+  ],
+  "headline": "Mazraoui doubt",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Noussair Mazraoui is a doubt with a back.",
+  "sha256": "2922fe2fe1fb443c6367d4f1d36e4b9f2552ea63479f787f6fd66a6b81eab229"
+}

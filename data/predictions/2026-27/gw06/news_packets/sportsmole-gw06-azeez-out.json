@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:azeez-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Brighton",
+  "player_ids": [
+    652
+  ],
+  "headline": "Azeez out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Femi Azeez is out with a hamstring injury.",
+  "sha256": "f185d1cae6b511c963bd9f0bba384ee0ce7d9e69680b8701e7cfc9480b541860"
+}

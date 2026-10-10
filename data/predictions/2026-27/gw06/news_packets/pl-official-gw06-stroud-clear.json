@@ -1,0 +1,13 @@
+{
+  "packet_id": "pl_official:gw06:stroud-clear",
+  "source": "pl_official",
+  "url": "https://www.premierleague.com/en/news/4730320",
+  "published_at_utc": "2026-10-09T12:00:00Z",
+  "club": "Hull City",
+  "player_ids": [
+    576
+  ],
+  "headline": "Stroud available",
+  "body": "Premier League, 9 Oct 2026: Elliot Stroud has recovered.",
+  "sha256": "b395b514c204e9fdc724075cf55cb27a863cff007b435cb9af6b82d64352285e"
+}

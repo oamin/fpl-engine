@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:jensen-doubt",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Brentford",
+  "player_ids": [
+    97
+  ],
+  "headline": "Jensen doubt",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Mathias Jensen is a doubt with a unspecified.",
+  "sha256": "b3e272d51daa6c6e237cdcfca7294b1daf146bc06dfa07879ddeed31eca5b216"
+}

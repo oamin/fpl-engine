@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:wieffer-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Brighton",
+  "player_ids": [
+    130
+  ],
+  "headline": "Wieffer out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Mats Wieffer is out with a knee injury.",
+  "sha256": "af62ec0a79082618463908a07acb1358ff66b7b08aac227e8d949f870891c856"
+}

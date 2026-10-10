@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:hughes-doubt",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Hull City",
+  "player_ids": [
+    278
+  ],
+  "headline": "Hughes doubt",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Charlie Hughes is a doubt with a groin.",
+  "sha256": "cbc8a21a54b4a8ec3aafc17355ffa286a62da85ce95d318235363154105aa407"
+}

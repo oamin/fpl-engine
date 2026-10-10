@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:ekitik\u00e9-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Liverpool",
+  "player_ids": [
+    380
+  ],
+  "headline": "Ekitik\u00e9 out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Hugo Ekitike is out with a achilles injury.",
+  "sha256": "c0fc483f4072686f001565079826fabce7c414eead3892c618fa9f44610ee480"
+}

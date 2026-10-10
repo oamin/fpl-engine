@@ -1,0 +1,13 @@
+{
+  "packet_id": "pl_official:gw06:cash-clear",
+  "source": "pl_official",
+  "url": "https://www.premierleague.com/en/news/4730320",
+  "published_at_utc": "2026-10-09T12:00:00Z",
+  "club": "Aston Villa",
+  "player_ids": [
+    32
+  ],
+  "headline": "Cash available",
+  "body": "Premier League, 9 Oct 2026: Matty Cash is expected to be fit.",
+  "sha256": "5ff7dc4c75083355b19a87cd3ef0fa80658aec2289629ed3a9c92cda48d1a3f0"
+}

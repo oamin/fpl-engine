@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:odobert-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Spurs",
+  "player_ids": [
+    517
+  ],
+  "headline": "Odobert out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Wilson Odobert is out with a knee injury.",
+  "sha256": "113b887c1075f37834f6ded71b1cfd1660c3a157cd06ba20b2bfe99bbd9f2fc3"
+}

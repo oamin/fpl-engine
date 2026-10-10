@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:kulusevski-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Spurs",
+  "player_ids": [
+    521
+  ],
+  "headline": "Kulusevski out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Dejan Kulusevski is out with a knee injury.",
+  "sha256": "eb182fbaecce830a4466630e97e6dc17227e19f6540ee44d3af260471b2f7592"
+}

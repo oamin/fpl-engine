@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:disasi-susp",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Crystal Palace",
+  "player_ids": [
+    153
+  ],
+  "headline": "Disasi suspended",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Axel Disasi is suspended for this match.",
+  "sha256": "25f24e94fd92b48433aba2b03a9c175ab8598750b906c3bb4c4a66e02f06c35a"
+}

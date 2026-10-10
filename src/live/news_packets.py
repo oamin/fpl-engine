@@ -377,6 +377,45 @@ _INJURY_NEGATION = (
     "concerns over a serious injury eased",
 )
 
+# Positive availability inside an injury sentence. ``ready for`` is not here:
+# ``not ready for`` contains it and would clear a player who is ruled out.
+# A negation in the 32 characters before the phrase keeps the injury.
+_CLEARANCE = (
+    "recovered from injury",
+    "passed fit",
+    "expected to be fit",
+    "ready to go",
+    "back from suspension",
+)
+_CLEARANCE_NEG = (
+    "not ",
+    "no ",
+    "hasn't ",
+    "isn't ",
+    "won't ",
+    "haven't ",
+    "can't ",
+    "cannot ",
+    "failed ",
+)
+
+
+def _skips_injured_sentence(sentence: str) -> bool:
+    """True when this sentence is a clearance, not a ruling-out."""
+    if any(phrase in sentence for phrase in _INJURY_NEGATION):
+        return True
+    for phrase in _CLEARANCE:
+        start = 0
+        while True:
+            idx = sentence.find(phrase, start)
+            if idx < 0:
+                break
+            window = sentence[max(0, idx - 32) : idx]
+            if not any(block in window for block in _CLEARANCE_NEG):
+                return True
+            start = idx + len(phrase)
+    return False
+
 
 def _clears_doubt(text: str) -> bool:
     """True when the note says the player should still be available."""
@@ -463,7 +502,7 @@ def _tag_one_packet(packet: NewsPacket, *, player_name: str) -> str:
     hits: set[str] = set()
     for tag, phrases in SUPPORT.items():
         for sentence in sentences:
-            if tag == "injured" and any(phrase in sentence for phrase in _INJURY_NEGATION):
+            if tag == "injured" and _skips_injured_sentence(sentence):
                 continue
             matched = [phrase for phrase in phrases if fold(phrase) in sentence]
             if tag == "injured" and matched == ["doubt"] and _clears_doubt(text):

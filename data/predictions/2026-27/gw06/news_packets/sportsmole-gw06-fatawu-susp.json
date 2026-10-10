@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:fatawu-susp",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Ipswich Town",
+  "player_ids": [
+    315
+  ],
+  "headline": "Fatawu suspended",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Abdul Fatawu is suspended for this match.",
+  "sha256": "56bea6562391f95d49d940ec21100e461d8c090b86faa1bd12b2e8d77a0b14b6"
+}

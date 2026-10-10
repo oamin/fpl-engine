@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:mudryk-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Spurs",
+  "player_ids": [
+    578
+  ],
+  "headline": "Mudryk out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Mykhailo Mudryk is out with a ankle injury.",
+  "sha256": "f7edaa719b5b8e78bb847324452ef5966dcc2d24590ccc67fdeb04329e6803e7"
+}

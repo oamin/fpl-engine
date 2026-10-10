@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:targett-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Hull City",
+  "player_ids": [
+    556
+  ],
+  "headline": "Targett out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Matt Targett is out with a ankle injury.",
+  "sha256": "04d40acc0d399dc8ddacc912c315185f5a0ce53c0714a5a5f489b397013bdeff"
+}

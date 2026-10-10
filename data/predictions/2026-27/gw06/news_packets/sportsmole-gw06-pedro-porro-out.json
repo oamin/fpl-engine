@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:pedro-porro-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Spurs",
+  "player_ids": [
+    499
+  ],
+  "headline": "Pedro Porro out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Pedro Porro is out with a hamstring injury.",
+  "sha256": "f6d21d5832319f768a284b802a96369e4c45139a58dda8318cbdef996ff242ff"
+}

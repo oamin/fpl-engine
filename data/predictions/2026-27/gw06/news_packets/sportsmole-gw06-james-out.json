@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:james-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Leeds",
+  "player_ids": [
+    343
+  ],
+  "headline": "James out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Daniel James is out with a back injury.",
+  "sha256": "49c8db393d7b7a87b89141c3b2ed219cbdd3f08a06bdc54208e03d012f2c8b3d"
+}

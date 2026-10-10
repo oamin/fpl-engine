@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:osula-doubt",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Newcastle",
+  "player_ids": [
+    465
+  ],
+  "headline": "Osula doubt",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Will Osula is a doubt with a foot.",
+  "sha256": "63a837384f887eee1ff6e1f1ac33e41c0b394b28921210e50dfd9fd0789104d4"
+}

@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:hinshelwood-doubt",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Brighton",
+  "player_ids": [
+    123
+  ],
+  "headline": "Hinshelwood doubt",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Jack Hinshelwood is a doubt with a unspecified.",
+  "sha256": "8bf12e2981d21b3224ff50614bd65f4bb70b76724abc3c1e13c444ffdb4724dc"
+}

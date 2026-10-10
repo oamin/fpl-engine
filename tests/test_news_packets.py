@@ -255,5 +255,81 @@ class NewsPackets(unittest.TestCase):
         self.assertEqual(len(cases[0]["docs"]), 1)
 
 
+class ClearanceSentence(unittest.TestCase):
+    def test_recovered_from_injury_is_not_a_zero(self) -> None:
+        packet = np.validate_packet(
+            _packet(
+                packet_id="pl_official:gw06:pau-recovered",
+                source="pl_official",
+                url="https://www.premierleague.com/en/news/4730320",
+                headline="Pau Torres has recovered",
+                body="Pau Torres has recovered from injury and is available.",
+                player_ids=[34],
+                club="Aston Villa",
+            ),
+            deadline_utc="2026-10-10T10:00:00Z",
+        )
+        tag, _cited = np.classify_packets_deterministic([packet], player_name="Pau")
+        self.assertEqual(tag, "ask")
+
+    def test_not_recovered_stays_injured(self) -> None:
+        packet = np.validate_packet(
+            _packet(
+                packet_id="pl_official:gw06:still-out",
+                source="pl_official",
+                url="https://www.premierleague.com/en/news/4730320",
+                headline="Still out",
+                body="He has not recovered from injury.",
+            ),
+            deadline_utc="2026-10-10T10:00:00Z",
+        )
+        tag, _cited = np.classify_packets_deterministic([packet], player_name="Pau")
+        self.assertEqual(tag, "injured")
+
+    def test_not_ready_for_the_weekend_stays_injured(self) -> None:
+        packet = np.validate_packet(
+            _packet(
+                packet_id="pl_official:gw06:not-ready",
+                source="pl_official",
+                url="https://www.premierleague.com/en/news/4730320",
+                headline="Not ready",
+                body="He has an ankle injury and is not ready for the weekend.",
+            ),
+            deadline_utc="2026-10-10T10:00:00Z",
+        )
+        tag, _cited = np.classify_packets_deterministic([packet], player_name="Scott")
+        self.assertEqual(tag, "injured")
+
+    def test_back_from_suspension_is_not_a_zero(self) -> None:
+        packet = np.validate_packet(
+            _packet(
+                packet_id="pl_official:gw06:reinildo-back",
+                source="pl_official",
+                url="https://www.premierleague.com/en/news/4730320",
+                headline="Reinildo is back",
+                body="Reinildo is back from suspension and is available.",
+                player_ids=[536],
+                club="Sunderland",
+            ),
+            deadline_utc="2026-10-10T10:00:00Z",
+        )
+        tag, _cited = np.classify_packets_deterministic([packet], player_name="Reinildo")
+        self.assertEqual(tag, "ask")
+
+    def test_suspended_stays_injured(self) -> None:
+        packet = np.validate_packet(
+            _packet(
+                packet_id="sportsmole:gw06:foden-suspended",
+                source="sportsmole",
+                url="https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+                headline="Phil Foden is suspended",
+                body="Phil Foden is suspended for this match.",
+            ),
+            deadline_utc="2026-10-10T10:00:00Z",
+        )
+        tag, _cited = np.classify_packets_deterministic([packet], player_name="Foden")
+        self.assertEqual(tag, "injured")
+
+
 if __name__ == "__main__":
     unittest.main()

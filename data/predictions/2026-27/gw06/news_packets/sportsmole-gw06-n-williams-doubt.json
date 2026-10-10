@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:n.williams-doubt",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Nott'm Forest",
+  "player_ids": [
+    469
+  ],
+  "headline": "N.Williams doubt",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Neco Williams is a doubt with a illness.",
+  "sha256": "e4495741388e8a5206c6a4cefad5894efe61c25cf00dedf245b2d72da4e5c7d0"
+}
