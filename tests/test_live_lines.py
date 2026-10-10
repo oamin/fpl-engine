@@ -210,7 +210,12 @@ class LiveFileTest(unittest.TestCase):
                 json.dumps({"reason": "betfair", "n_events": 10, "source": "betfair"}),
                 encoding="utf-8",
             )
-            log = run(report_path=dest, live_path=path, trial_path=meta)
+            log = run(
+                report_path=dest,
+                live_path=path,
+                trial_path=meta,
+                minutes_path=Path(folder) / "no-minutes.csv",
+            )
             text = dest.read_text(encoding="utf-8")
         self.assertEqual(log.line_status, "priced")
         self.assertIsNone(log.chip)

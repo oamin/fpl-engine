@@ -91,11 +91,19 @@ def _pair_engine(
     if "teams" not in payload or len(elements) < 15:
         return None
     from src.eval.holdout import sha256_file
-    from src.eval.predictions import MINUTES_PATH, export_deadline_scores
+    from src.eval.predictions import export_deadline_scores
     from src.live.deadline import ENTRY_PATH, FIXTURES_PATH, LOG_PATH, ODDS_PATH
     from src.live.scorer import write_shadow_log
+    from src.live.t1_inputs import exchange_sheet, minutes_sheet
 
-    needed = (ENTRY_PATH, LOG_PATH, ODDS_PATH, FIXTURES_PATH, MINUTES_PATH)
+    needed = (
+        ENTRY_PATH,
+        LOG_PATH,
+        ODDS_PATH,
+        FIXTURES_PATH,
+        minutes_sheet(gw),
+        exchange_sheet(gw),
+    )
     if any(not path.is_file() for path in needed):
         return None
     stamp = stamp_of(captured)

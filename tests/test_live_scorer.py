@@ -747,8 +747,10 @@ class StoredRunTest(unittest.TestCase):
             dest = Path(folder) / "live_deadline_gw6.md"
             log = run(report_path=dest)
             text = dest.read_text(encoding="utf-8")
-        self.assertIn("The scorer is ready and was not run", text)
-        self.assertIn("missing_minutes", log.reasons)
+        self.assertTrue(str(log.minutes_file).endswith("xmi_t1.csv"))
+        self.assertIn("missing_opening_line", log.reasons)
+        self.assertNotIn("missing_minutes", log.reasons)
+        self.assertIn("no 1X2", text)
         self.assertFalse(log.scorer_ran)
         self.assertIsNone(log.chip)
         self.assertEqual(log.priced_weeks, ())

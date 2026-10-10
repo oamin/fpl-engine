@@ -1,9 +1,10 @@
 {
-  "milestone": "xmi-t1",
+  "milestone": "score-t1-inputs",
   "status": "research_only",
-  "summary": "Gameweek 6 minutes sheet compiled from the 140 audited news packets and a fresh FPL bootstrap. Written to data/predictions/2026-27/gw06/xmi_t1.csv. data/live/xmi_gw6.csv was not changed. The RSS dossier was not an input.",
-  "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
+  "summary": "Live score_xp and forecast_xp read data/predictions/2026-27/gw06/xmi_t1.csv and gw06/betfair_t1/gw_lines.csv. A missing T-1 sheet is an error. The frozen xmi_gw6.csv and gw_lines.csv are refused, and betfair_20261008 is not a fallback. The 10 October FPL bootstrap matched the stored minutes sheet (667 rows, Haaland 45, Scarlett 0). The T-1 Exchange folder is not in this checkout, so the score was not run. The score formula is unchanged.",
+  "gemini": "none",
   "artifacts": [
-    "data/predictions/2026-27/gw06/xmi_t1.csv"
+    "data/predictions/2026-27/gw06/xmi_t1.csv",
+    "src/live/t1_inputs.py"
   ]
 }

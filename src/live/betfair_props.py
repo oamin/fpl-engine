@@ -51,7 +51,8 @@ ARTIFACT_MARKERS = (
 def discover_betfair_artifacts(gw: int) -> Path | None:
     """Newest directory that holds Betfair derived files for this gameweek.
 
-    Order: ``BETFAIR_ARTIFACTS_DIR``, then ``data/predictions/2026-27/gwNN/betfair_*``,
+    Order: ``BETFAIR_ARTIFACTS_DIR``, then ``gwNN/betfair_t1`` when that
+    folder has derived files, then the newest other ``betfair_*`` directory,
     then ``data/live`` if it already contains Betfair artifacts.
     """
     import os
@@ -63,6 +64,9 @@ def discover_betfair_artifacts(gw: int) -> Path | None:
             return path
     folder = PREDICTIONS / f"gw{int(gw):02d}"
     if folder.is_dir():
+        t1 = folder / "betfair_t1"
+        if t1.is_dir() and _has_artifacts(t1):
+            return t1
         candidates = sorted(
             [p for p in folder.glob("betfair_*") if p.is_dir() and _has_artifacts(p)],
             key=lambda p: p.stat().st_mtime,
@@ -102,13 +106,19 @@ def betfair_gw_lines(gw: int) -> Path | None:
 def resolve_live_book(gw: int, live_path: Path | None) -> Path | None:
     """Use a caller file when it exists and is not the frozen slate.
 
-    The default, and any path that is the frozen file, is the newest Betfair
-    slate. A missing caller file stays missing.
+    The default, and any path that is the frozen file, is the T−1 Exchange
+    sheet when that file exists, otherwise the newest Betfair slate. A
+    missing caller file stays missing.
     """
     if live_path is not None:
         candidate = Path(live_path)
         if candidate.resolve() != _frozen_lines():
             return candidate if candidate.is_file() else None
+    from src.live.t1_inputs import exchange_sheet
+
+    sheet = exchange_sheet(int(gw))
+    if sheet.is_file() and sheet.resolve() != _frozen_lines():
+        return sheet
     return betfair_gw_lines(gw)
 
 
