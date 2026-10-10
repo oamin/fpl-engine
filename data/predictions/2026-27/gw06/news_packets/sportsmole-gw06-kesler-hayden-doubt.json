@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:kesler-hayden-doubt",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Coventry City",
+  "player_ids": [
+    177
+  ],
+  "headline": "Kesler-Hayden doubt",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Kaine Kesler-Hayden is a doubt with a hamstring.",
+  "sha256": "d3cc27dfa8c13e1e94317d834072696ba01fa91da26a68575c35990143aa36fb"
+}

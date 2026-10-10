@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:scott-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Bournemouth",
+  "player_ids": [
+    69
+  ],
+  "headline": "Scott out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Alex Scott is out with a tendon injury.",
+  "sha256": "0ce9e1d449894caf0777f696dbc9729b899783c2f515cec1509e5c9cffbcefd1"
+}

@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:cairney-doubt",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Fulham",
+  "player_ids": [
+    266
+  ],
+  "headline": "Cairney doubt",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Tom Cairney is a doubt with a knee.",
+  "sha256": "6ee0359c947c0c228ba42e1f25d16e41027d1b05a47731d0418f35b08515699a"
+}

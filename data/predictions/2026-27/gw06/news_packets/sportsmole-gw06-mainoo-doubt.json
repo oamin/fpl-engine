@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:mainoo-doubt",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Man Utd",
+  "player_ids": [
+    432
+  ],
+  "headline": "Mainoo doubt",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Kobbie Mainoo is a doubt with a unspecified.",
+  "sha256": "9a0c3bca78f08b61b1279edb76274ee47d56577365375c7204ad5c5a0e36297d"
+}

@@ -45,7 +45,6 @@ from src.live.scorer import player_key, price_half
 
 ROOT = Path(__file__).resolve().parents[2]
 PREDICTIONS = ROOT / "data" / "predictions"
-MINUTES_PATH = ROOT / "data" / "live" / "xmi_gw6.csv"
 NOTE = (
     "Current formula at this deadline. This file does not replace the published "
     "Gameweeks 1-5 total of 280."
@@ -123,32 +122,49 @@ def write_prediction(path: Path, frame: pd.DataFrame) -> None:
 def export_deadline_scores(
     *,
     gw: int = DECISION_GW,
-    minutes_path: Path = MINUTES_PATH,
+    minutes_path: Path | None = None,
+    lines_path: Path | None = None,
     dest_root: Path | None = None,
     stamp: str | None = None,
     bootstrap: Mapping[str, Any] | None = None,
     created_at: str | None = None,
     bootstrap_hash: str | None = None,
 ) -> Path:
-    """Score one deadline from the stored files and write a new timestamped CSV.
+    """Score one deadline from ``xmi_t1`` and the T−1 Exchange sheet.
 
     ``bootstrap`` and ``created_at`` are the capture this score belongs to.
-    The odds file is the one already stored. This function does not fetch odds.
+    This function does not fetch odds. A missing T−1 sheet is an error. The
+    frozen holdout files and an earlier ``betfair_*`` pull are not used.
+    Imminent ``score_xp`` and later ``forecast_xp`` weeks both use these files.
     """
+    from src.live.t1_inputs import LiveScoreInputError, refuse_frozen, require_score_inputs
+
+    if minutes_path is None or lines_path is None:
+        default_minutes, default_lines = require_score_inputs(int(gw))
+        minutes_path = default_minutes if minutes_path is None else Path(minutes_path)
+        lines_path = default_lines if lines_path is None else Path(lines_path)
+    else:
+        minutes_path = Path(minutes_path)
+        lines_path = Path(lines_path)
+    refuse_frozen(minutes_path)
+    refuse_frozen(lines_path)
+    if not minutes_path.is_file():
+        raise LiveScoreInputError(f"xmi_t1 is missing: {minutes_path}")
+    if not lines_path.is_file():
+        raise LiveScoreInputError(
+            f"updated Exchange sheet is missing: {lines_path}. "
+            "An earlier betfair folder is not used."
+        )
     root = dest_root or ROOT
     created = created_at or datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     stamp = stamp or datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     entry = json.loads(ENTRY_PATH.read_text(encoding="utf-8"))
     logs = pd.read_csv(LOG_PATH)
-    from src.live.betfair_props import betfair_gw_lines, discover_betfair_artifacts
-
-    artifacts = discover_betfair_artifacts(int(gw))
-    odds = load_odds_frame(ODDS_PATH, betfair_gw_lines(int(gw)))
+    artifacts = lines_path.parent
+    odds = load_odds_frame(ODDS_PATH, lines_path)
     if bootstrap is None:
         bootstrap = json.loads(BOOTSTRAP_PATH.read_text(encoding="utf-8"))
     fixtures = json.loads(FIXTURES_PATH.read_text(encoding="utf-8"))
-    if not minutes_path.is_file():
-        raise RuntimeError(f"missing minutes file {minutes_path}")
     names = team_names(bootstrap)
     status = line_status(odds, fixtures, names, gw)
     ready, reasons = readiness(status, True)
@@ -192,6 +208,7 @@ def export_deadline_scores(
     hashes = {
         "logs_hash": sha256_file(LOG_PATH),
         "odds_hash": sha256_file(ODDS_PATH),
+        "exchange_hash": sha256_file(lines_path),
         "bootstrap_hash": bootstrap_hash or sha256_file(BOOTSTRAP_PATH),
         "fixtures_hash": sha256_file(FIXTURES_PATH),
         "minutes_hash": sha256_file(minutes_path),

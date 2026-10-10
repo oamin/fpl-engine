@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:saliba-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Arsenal",
+  "player_ids": [
+    6
+  ],
+  "headline": "Saliba out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: William Saliba is out with a back injury.",
+  "sha256": "196680b5bd4b4e7adfd7085e32ef9c92a49890ce86f1ef45451fcacab6e5a63a"
+}

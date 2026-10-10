@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:struijk-doubt",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Brighton",
+  "player_ids": [
+    328
+  ],
+  "headline": "Struijk doubt",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Pascal Struijk is a doubt with a hamstring.",
+  "sha256": "d80a1d8c6e2651f367dd5fa589edd3b9a4bedeb102c79836c2ff7d80630c6bc4"
+}

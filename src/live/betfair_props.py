@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import json
 import math
+import unicodedata
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -51,7 +52,8 @@ ARTIFACT_MARKERS = (
 def discover_betfair_artifacts(gw: int) -> Path | None:
     """Newest directory that holds Betfair derived files for this gameweek.
 
-    Order: ``BETFAIR_ARTIFACTS_DIR``, then ``data/predictions/2026-27/gwNN/betfair_*``,
+    Order: ``BETFAIR_ARTIFACTS_DIR``, then ``gwNN/betfair_t1`` when that
+    folder has derived files, then the newest other ``betfair_*`` directory,
     then ``data/live`` if it already contains Betfair artifacts.
     """
     import os
@@ -63,6 +65,9 @@ def discover_betfair_artifacts(gw: int) -> Path | None:
             return path
     folder = PREDICTIONS / f"gw{int(gw):02d}"
     if folder.is_dir():
+        t1 = folder / "betfair_t1"
+        if t1.is_dir() and _has_artifacts(t1):
+            return t1
         candidates = sorted(
             [p for p in folder.glob("betfair_*") if p.is_dir() and _has_artifacts(p)],
             key=lambda p: p.stat().st_mtime,
@@ -102,13 +107,19 @@ def betfair_gw_lines(gw: int) -> Path | None:
 def resolve_live_book(gw: int, live_path: Path | None) -> Path | None:
     """Use a caller file when it exists and is not the frozen slate.
 
-    The default, and any path that is the frozen file, is the newest Betfair
-    slate. A missing caller file stays missing.
+    The default, and any path that is the frozen file, is the T−1 Exchange
+    sheet when that file exists, otherwise the newest Betfair slate. A
+    missing caller file stays missing.
     """
     if live_path is not None:
         candidate = Path(live_path)
         if candidate.resolve() != _frozen_lines():
             return candidate if candidate.is_file() else None
+    from src.live.t1_inputs import exchange_sheet
+
+    sheet = exchange_sheet(int(gw))
+    if sheet.is_file() and sheet.resolve() != _frozen_lines():
+        return sheet
     return betfair_gw_lines(gw)
 
 
@@ -124,25 +135,31 @@ def poisson_mean(prices: list[float]) -> tuple[float, float]:
 
 def team_goal_rates(
     rates: Mapping[str, float],
-    shares: Mapping[str, float],
     *,
     lam: float,
     minutes: Mapping[str, float],
 ) -> dict[str, float]:
-    """Minutes-scale and cap priced μ to residual team λ (unpriced keep share)."""
+    """Minutes-scale each anytime rate. Cap only when those rates exceed team λ.
+
+    A priced player's own rate is his allocation. Other players' historical
+    shares do not reduce it. Unpriced players stay on ``share_xG × λ``.
+    """
+    team = float(lam)
+    if not math.isfinite(team) or team <= 0.0:
+        return {}
     priced: dict[str, float] = {}
     for pid, mu_raw in rates.items():
+        mu = float(mu_raw)
+        if not math.isfinite(mu) or mu < 0.0:
+            continue
         xmi = float(minutes.get(pid, 90.0))
-        priced[pid] = float(mu_raw) * max(xmi, 0.0) / 90.0
-    unpriced_share = sum(
-        max(float(share), 0.0) for pid, share in shares.items() if pid not in priced
-    )
-    unpriced_share = min(unpriced_share, 1.0)
-    budget = max(0.1, float(lam) * (1.0 - unpriced_share))
-    total = sum(priced.values())
-    if total <= 0.0:
+        if not math.isfinite(xmi):
+            xmi = 0.0
+        priced[str(pid)] = mu * max(xmi, 0.0) / 90.0
+    if not priced:
         return {}
-    scale = min(1.0, budget / total)
+    total = sum(priced.values())
+    scale = 1.0 if total <= team else team / total
     return {pid: mu * scale for pid, mu in priced.items()}
 
 
@@ -404,28 +421,76 @@ def apply_to_score_overlay(
     )
 
 
+def _fold_name(text: str) -> str:
+    """Case-fold and strip accents so Gyökeres and Ødegaard match plain spellings."""
+    raw = str(text)
+    for src, dst in (("ø", "o"), ("Ø", "o"), ("æ", "ae"), ("Æ", "ae"), ("å", "a"), ("Å", "a")):
+        raw = raw.replace(src, dst)
+    raw = unicodedata.normalize("NFKD", raw)
+    return "".join(ch for ch in raw if not unicodedata.combining(ch)).casefold().strip()
+
+
+def _name_hits(
+    runner_name: str,
+    by_label: Mapping[str, set[int]],
+    players: list[dict[str, Any]],
+) -> set[int]:
+    """One FPL id for a Betfair runner, or empty when the name is ambiguous."""
+    key = _fold_name(runner_name)
+    exact = by_label.get(key) or set()
+    if len(exact) == 1:
+        return set(exact)
+    if len(exact) > 1 or not key:
+        return set()
+    parts = [part for part in key.split() if part]
+    if len(parts) < 2:
+        return set()
+    last = parts[-1]
+    found: set[int] = set()
+    for player in players:
+        tokens = player["tokens"]
+        if not tokens or tokens[-1] != last:
+            continue
+        if all(
+            any(len(part) >= 3 and len(token) >= 3 and token.startswith(part) for token in tokens)
+            for part in parts[:-1]
+        ):
+            found.add(int(player["pid"]))
+    return found if len(found) == 1 else set()
+
+
 def match_to_score_runners(
     rows: list[Mapping[str, Any]],
     bootstrap_players: list[Mapping[str, Any]],
 ) -> dict[str, float]:
-    """Map FPL player_id → μ_raw from Betfair anytime rows (exact web/full name)."""
-    by_name: dict[str, set[int]] = {}
+    """Map FPL player_id → μ_raw from Betfair anytime rows.
+
+    Labels are web name, surname, and full name, with accents folded. A
+    shortened first name still matches when the surname token is unique
+    (Ben White → Benjamin White, Gabriel Magalhaes → Gabriel dos Santos
+    Magalhães). ``mu_raw`` is the populated goal rate. ``matched`` only
+    breaks a tie.
+    """
+    by_label: dict[str, set[int]] = {}
+    players: list[dict[str, Any]] = []
     for player in bootstrap_players:
         pid = int(player["id"])
+        full = f"{player.get('first_name', '')} {player.get('second_name', '')}".strip()
+        tokens = [part for part in _fold_name(full).split() if part]
+        players.append({"pid": pid, "tokens": tokens})
         for label in (
             str(player.get("web_name") or ""),
             str(player.get("second_name") or ""),
-            f"{player.get('first_name', '')} {player.get('second_name', '')}".strip(),
+            full,
         ):
-            key = label.strip().lower()
+            key = _fold_name(label)
             if not key:
                 continue
-            by_name.setdefault(key, set()).add(pid)
+            by_label.setdefault(key, set()).add(pid)
     out: dict[str, float] = {}
     matched_vol: dict[str, float] = {}
     for row in rows:
-        key = str(row.get("runner") or "").strip().lower()
-        hits = by_name.get(key) or set()
+        hits = _name_hits(str(row.get("runner") or ""), by_label, players)
         if len(hits) != 1:
             continue
         pid = f"2026-27:{next(iter(hits))}"

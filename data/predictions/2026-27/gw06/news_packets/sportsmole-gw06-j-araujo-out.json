@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:j.araujo-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Bournemouth",
+  "player_ids": [
+    65
+  ],
+  "headline": "J.Araujo out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Julian Araujo is out with a thigh injury.",
+  "sha256": "8302f4cbf31b5fbcf169ad738539c471efb417ca71c9ff500903914e5812712a"
+}

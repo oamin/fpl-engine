@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:chadi-riad-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Crystal Palace",
+  "player_ids": [
+    206
+  ],
+  "headline": "Chadi Riad out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Chadi Riad is out with a knee injury.",
+  "sha256": "f4994fe0d304396d4cd3e730f2987fb846cb6bbd1c3feb82ce90d6ed9403b55a"
+}

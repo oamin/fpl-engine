@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:eccles-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Coventry City",
+  "player_ids": [
+    187
+  ],
+  "headline": "Eccles out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Josh Eccles is out with a calf injury.",
+  "sha256": "3a46cf98d1d36c573c1ed579beff67f4bb2a18fde35138889d7e5bff35ac7be2"
+}

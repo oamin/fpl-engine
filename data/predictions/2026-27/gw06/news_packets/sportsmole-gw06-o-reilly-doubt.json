@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:o'reilly-doubt",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Man City",
+  "player_ids": [
+    387
+  ],
+  "headline": "O'Reilly doubt",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Nico O'Reilly is a doubt with a unspecified.",
+  "sha256": "af31a071655869c15dcdcd0eecc492c275c071d92052925579f60dfb4fe2d47e"
+}

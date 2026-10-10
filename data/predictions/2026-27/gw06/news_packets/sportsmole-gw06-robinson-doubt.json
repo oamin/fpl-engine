@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:robinson-doubt",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Fulham",
+  "player_ids": [
+    254
+  ],
+  "headline": "Robinson doubt",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Antonee Robinson is a doubt with a ankle.",
+  "sha256": "c16181c678ff943a40b0c26292eb6aeea7d532e8ffb7289efe0d1543b047bb9b"
+}

@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:milambo-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Brentford",
+  "player_ids": [
+    99
+  ],
+  "headline": "Milambo out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Antoni Milambo is out with a knee injury.",
+  "sha256": "8464328f2f1d4958e480c3923449d5a4ef48e38e5d912a65a26b6800ed143f12"
+}

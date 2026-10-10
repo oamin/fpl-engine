@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:maatsen-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Aston Villa",
+  "player_ids": [
+    36
+  ],
+  "headline": "Maatsen out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Ian Maatsen is out with a ankle injury.",
+  "sha256": "dc0f01d739b030db67633d183b36702f8896de4c4cfe4a4f958f31b8505de39c"
+}

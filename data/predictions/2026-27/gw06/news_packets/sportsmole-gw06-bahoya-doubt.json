@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:bahoya-doubt",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Leeds",
+  "player_ids": [
+    648
+  ],
+  "headline": "Bahoya doubt",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Jean-Matteo Bahoya is a doubt with a ankle.",
+  "sha256": "e28949526318818674dbb5b37d7b01fa936d4a1dbe77888b4c0a006153590c57"
+}

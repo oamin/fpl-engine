@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:wilson-doubt",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Leeds",
+  "player_ids": [
+    260
+  ],
+  "headline": "Wilson doubt",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Harry Wilson is a doubt with a quad.",
+  "sha256": "97e3c79094327bc5cac68003e7b7b8bcdae4d4dae0b619b82c4ef20e02702bd9"
+}

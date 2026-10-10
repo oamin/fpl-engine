@@ -1,0 +1,13 @@
+{
+  "packet_id": "pl_official:gw06:jacquet-clear",
+  "source": "pl_official",
+  "url": "https://www.premierleague.com/en/news/4730320",
+  "published_at_utc": "2026-10-09T12:00:00Z",
+  "club": "Liverpool",
+  "player_ids": [
+    362
+  ],
+  "headline": "Jacquet available",
+  "body": "Premier League, 9 Oct 2026: Jeremy Jacquet has been declared fit.",
+  "sha256": "502fa528a4f6e5d74a0c66cc355f666245ae0fcf55c1ea157872945bcf9b08cc"
+}

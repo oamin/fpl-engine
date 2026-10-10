@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:foden-susp",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Man City",
+  "player_ids": [
+    398
+  ],
+  "headline": "Foden suspended",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Phil Foden is suspended for this match.",
+  "sha256": "c1f41697e5c2bd71a01c0d5d5c76722d0e02fa621a11857a88a15ec073d7f048"
+}

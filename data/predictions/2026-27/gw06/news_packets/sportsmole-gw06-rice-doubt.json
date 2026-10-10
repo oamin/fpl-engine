@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:rice-doubt",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Arsenal",
+  "player_ids": [
+    13
+  ],
+  "headline": "Rice doubt",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Declan Rice is a doubt with a fitness.",
+  "sha256": "06bd84c8877f144007d8731ed65d5b214bd7d4cb2787e9079135f9c5ee732c73"
+}

@@ -675,24 +675,19 @@ def _betfair_score_inputs(
     if to_score_path.is_file():
         rows = json.loads(to_score_path.read_text(encoding="utf-8"))
         raw = match_to_score_runners(rows, list(bootstrap.get("elements") or []))
-        # Cap per club using imminent pots.
+        # Each club's anytime rates, capped by that club's λ only.
         by_club: dict[str, dict[str, float]] = {}
-        shares: dict[str, float] = {}
         mins: dict[str, float] = {}
         for row in pool.itertuples(index=False):
             pid = str(row.player_id)
-            shares[pid] = float(row.share_xG)
             mins[pid] = float(minutes.get(pid, row.minutes))
-            by_club.setdefault(str(row.team_norm), {})
             if pid in raw:
-                by_club[str(row.team_norm)][pid] = raw[pid]
+                by_club.setdefault(str(row.team_norm), {})[pid] = raw[pid]
         capped: dict[str, float] = {}
         for club, rates in by_club.items():
             quotes = pots.get((int(gw), club), [])
             lam = float(quotes[0]["lam_scored"]) if quotes else 1.35
-            capped.update(
-                team_goal_rates(rates, shares, lam=lam, minutes=mins)
-            )
+            capped.update(team_goal_rates(rates, lam=lam, minutes=mins))
         goal_rates = capped or None
 
     forecast_extra: dict[int, dict[str, float]] | None = None

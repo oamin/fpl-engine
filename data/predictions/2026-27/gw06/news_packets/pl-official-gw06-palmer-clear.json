@@ -1,0 +1,13 @@
+{
+  "packet_id": "pl_official:gw06:palmer-clear",
+  "source": "pl_official",
+  "url": "https://www.premierleague.com/en/news/4730320",
+  "published_at_utc": "2026-10-09T12:00:00Z",
+  "club": "Chelsea",
+  "player_ids": [
+    154
+  ],
+  "headline": "Palmer available",
+  "body": "Premier League, 9 Oct 2026: Cole Palmer is ready to go against Bournemouth.",
+  "sha256": "9993ad14dc610ae3bbe6f3787c0e913c78191bffac701a1af8898fad2a379248"
+}

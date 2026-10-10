@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:konsa-doubt",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Arsenal",
+  "player_ids": [
+    31
+  ],
+  "headline": "Konsa doubt",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Ezri Konsa is a doubt with a dead leg.",
+  "sha256": "4c6e1475659d37094d96fbf15a7ca24d0775a0f4b360bc3a820cb51300c1d8d6"
+}

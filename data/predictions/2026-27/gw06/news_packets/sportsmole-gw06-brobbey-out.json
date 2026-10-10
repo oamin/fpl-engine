@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:brobbey-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Sunderland",
+  "player_ids": [
+    552
+  ],
+  "headline": "Brobbey out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Brian Brobbey is out with a hamstring injury.",
+  "sha256": "f01f219daf11ac3c7b706de6c692747fd72ec1c327de0298b6137b55c90d0f79"
+}

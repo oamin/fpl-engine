@@ -171,6 +171,10 @@ class FrozenSlateTest(unittest.TestCase):
         with (
             mock.patch("src.live.deadline.load_odds_frame", spy),
             mock.patch.object(bp, "discover_betfair_artifacts", return_value=None),
+            mock.patch(
+                "src.live.t1_inputs.exchange_sheet",
+                return_value=Path("/tmp/no-such-betfair-t1-gw_lines.csv"),
+            ),
         ):
             from src.live.deadline import collect
 
@@ -210,7 +214,12 @@ class LiveFileTest(unittest.TestCase):
                 json.dumps({"reason": "betfair", "n_events": 10, "source": "betfair"}),
                 encoding="utf-8",
             )
-            log = run(report_path=dest, live_path=path, trial_path=meta)
+            log = run(
+                report_path=dest,
+                live_path=path,
+                trial_path=meta,
+                minutes_path=Path(folder) / "no-minutes.csv",
+            )
             text = dest.read_text(encoding="utf-8")
         self.assertEqual(log.line_status, "priced")
         self.assertIsNone(log.chip)

@@ -1,0 +1,13 @@
+{
+  "packet_id": "mancity_fc:gw06:haaland-fit-for-trip-to-liverpool",
+  "source": "mancity_fc",
+  "url": "https://www.mancity.com/news/mens/enzo-maresca-liverpool-v-manchester-city-team-news-update-63927129",
+  "published_at_utc": "2026-10-09T11:15:00Z",
+  "club": "Manchester City",
+  "player_ids": [
+    411
+  ],
+  "headline": "Haaland fit for trip to Liverpool, says Maresca",
+  "body": "Manchester City, 9 Oct 2026, 12:15 BST: Enzo Maresca says Erling Haaland is fit and available for Sunday's match at Liverpool. Haaland came off against Portugal as a precautionary measure. Maresca said he is ready for Anfield.",
+  "sha256": "c6503074185a19247b02dacd8434bf06ce955c6210a0609cb38d852c6dadb39a"
+}

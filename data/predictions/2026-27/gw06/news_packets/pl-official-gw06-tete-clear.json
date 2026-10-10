@@ -1,0 +1,13 @@
+{
+  "packet_id": "pl_official:gw06:tete-clear",
+  "source": "pl_official",
+  "url": "https://www.premierleague.com/en/news/4730320",
+  "published_at_utc": "2026-10-09T12:00:00Z",
+  "club": "Fulham",
+  "player_ids": [
+    256
+  ],
+  "headline": "Tete available",
+  "body": "Premier League, 9 Oct 2026: Kenny Tete is back available.",
+  "sha256": "fb3fcea9045e1b18af46863d526bce401a10eae615f3d891a701df0cfb3c74c1"
+}

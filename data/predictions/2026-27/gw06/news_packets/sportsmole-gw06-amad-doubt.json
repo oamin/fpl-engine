@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:amad-doubt",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Man Utd",
+  "player_ids": [
+    431
+  ],
+  "headline": "Amad doubt",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Amad Diallo is a doubt with a unspecified.",
+  "sha256": "ca6e7f9711952a4e3bdcab243d1f49bebec612a200a328b2671fccc5e1035db2"
+}

@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:chiesa-doubt",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Liverpool",
+  "player_ids": [
+    370
+  ],
+  "headline": "Chiesa doubt",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Federico Chiesa is a doubt with a back.",
+  "sha256": "ebdff4fcaef8aea3d3badf97ad4865029822463129ad3c9095bf3e568acc294e"
+}

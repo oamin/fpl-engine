@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:isak-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Liverpool",
+  "player_ids": [
+    379
+  ],
+  "headline": "Isak out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Alexander Isak is out with a quad injury.",
+  "sha256": "41e34f45c92e7f92286911da4281efe965f25f9a6c215d3ef11ba304a0386798"
+}

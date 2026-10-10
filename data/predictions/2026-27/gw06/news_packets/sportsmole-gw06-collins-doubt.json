@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:collins-doubt",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Brentford",
+  "player_ids": [
+    84
+  ],
+  "headline": "Collins doubt",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Nathan Collins is a doubt with a calf.",
+  "sha256": "112d8bc897075f4060a223f4225de4bf2c2d206f515168c2144e2132ee14ae77"
+}
