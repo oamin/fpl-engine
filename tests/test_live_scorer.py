@@ -689,15 +689,15 @@ class PriceHalfTest(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
-            # High anytime rate for element 8 (first MID in the toy world).
+            # A low anytime rate for element 8. His own rate is the allocation.
             (root / "betfair_to_score.json").write_text(
                 json.dumps(
                     [
                         {
                             "runner": str(mid["web_name"]),
-                            "mu_raw": 1.2,
+                            "mu_raw": 0.2,
                             "matched": 5000,
-                            "p_mid": 0.7,
+                            "p_mid": 0.18,
                         }
                     ]
                 ),
@@ -734,10 +734,13 @@ class PriceHalfTest(unittest.TestCase):
                 artifacts_dir=root,
             )
         pid = player_key(8)
-        self.assertNotEqual(
+        self.assertLess(
             with_book.step_scores[6][pid],
             baseline.step_scores[6][pid],
         )
+        self.assertEqual(with_book.step_scores[7][pid], baseline.step_scores[7][pid])
+        other = player_key(9)
+        self.assertEqual(with_book.step_scores[6][other], baseline.step_scores[6][other])
         # Unpriced GW8 should not merely copy GW7 when outrights supply pots.
         self.assertNotEqual(with_book.step_scores[8], with_book.step_scores[7])
         self.assertEqual(with_book.copy_note, "")

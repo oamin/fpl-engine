@@ -17,23 +17,51 @@ from src.models import forecast_xp as fx
 
 
 class GoalRates(unittest.TestCase):
-    def test_minutes_scale_and_cap(self) -> None:
+    def test_minutes_scale_ignores_other_players(self) -> None:
         rates = {"2026-27:1": 1.0}
-        shares = {"2026-27:1": 0.5, "2026-27:2": 0.5}
-        out = bp.team_goal_rates(rates, shares, lam=2.0, minutes={"2026-27:1": 45.0})
-        # raw 1.0 * 45/90 = 0.5; budget = 2*(1-0.5)=1.0 → no further cut
+        out = bp.team_goal_rates(rates, lam=2.0, minutes={"2026-27:1": 45.0})
+        # 1.0 * 45/90 = 0.5, under λ, so the rate is kept in full.
         self.assertAlmostEqual(out["2026-27:1"], 0.5)
 
     def test_cap_scales_down_not_up(self) -> None:
-        rates = {"2026-27:1": 1.5}
-        shares = {"2026-27:1": 0.5}
-        out = bp.team_goal_rates(rates, shares, lam=2.0, minutes={"2026-27:1": 90.0})
-        # budget = 2*(1-0)=2, priced 1.5 → stays 1.5 (never scale up)
+        out = bp.team_goal_rates(
+            {"2026-27:1": 1.5}, lam=2.0, minutes={"2026-27:1": 90.0}
+        )
         self.assertAlmostEqual(out["2026-27:1"], 1.5)
-        # if priced exceeds budget
-        rates = {"2026-27:1": 3.0}
-        out = bp.team_goal_rates(rates, shares, lam=2.0, minutes={"2026-27:1": 90.0})
+        out = bp.team_goal_rates(
+            {"2026-27:1": 3.0}, lam=2.0, minutes={"2026-27:1": 90.0}
+        )
         self.assertAlmostEqual(out["2026-27:1"], 2.0)
+
+    def test_two_players_share_only_the_team_ceiling(self) -> None:
+        under = bp.team_goal_rates(
+            {"2026-27:1": 0.4, "2026-27:2": 0.8},
+            lam=2.0,
+            minutes={"2026-27:1": 90.0, "2026-27:2": 90.0},
+        )
+        self.assertAlmostEqual(under["2026-27:1"], 0.4)
+        self.assertAlmostEqual(under["2026-27:2"], 0.8)
+        over = bp.team_goal_rates(
+            {"2026-27:1": 1.5, "2026-27:2": 1.5},
+            lam=2.0,
+            minutes={"2026-27:1": 90.0, "2026-27:2": 90.0},
+        )
+        self.assertAlmostEqual(over["2026-27:1"], 1.0)
+        self.assertAlmostEqual(over["2026-27:2"], 1.0)
+
+    def test_zero_minutes_writes_zero_and_empty_rates_stay_empty(self) -> None:
+        out = bp.team_goal_rates(
+            {"2026-27:1": 1.0}, lam=2.0, minutes={"2026-27:1": 0.0}
+        )
+        self.assertAlmostEqual(out["2026-27:1"], 0.0)
+        self.assertEqual(
+            bp.team_goal_rates({}, lam=2.0, minutes={}),
+            {},
+        )
+        self.assertEqual(
+            bp.team_goal_rates({"2026-27:1": 1.0}, lam=0.0, minutes={"2026-27:1": 90.0}),
+            {},
+        )
 
 
 class ForecastRename(unittest.TestCase):

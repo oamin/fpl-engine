@@ -1,7 +1,7 @@
 {
   "milestone": "gw6-stragent-stored",
   "status": "locked",
-  "summary": "The Gameweek 6 score_xp wildcard is locked. Stragent's pick is stored: no chip, Scarlett to Muniz, Fernandes captain, Haaland vice. ep_next for both squads is in cited_ep_next.csv from the T-1 capture at 2026-10-10T08:25:09Z. Numeric dry-run elevens from Thursday 8 October are beside that eleven in reports/gw6_numagent_dry_runs.md.",
+  "summary": "The Gameweek 6 score_xp wildcard is locked. Stragent's pick is stored: no chip, Scarlett to Muniz, Fernandes captain, Haaland vice. ep_next for both squads is in cited_ep_next.csv from the T-1 capture at 2026-10-10T08:25:09Z. Numeric dry-run elevens from Thursday 8 October are beside that eleven in reports/gw6_numagent_dry_runs.md. Anytime rates now apply in full per player, capped only when a club's priced rates exceed its λ. The freeze row was not rewritten.",
   "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
     "data/predictions/2026-27/week_freeze.jsonl",

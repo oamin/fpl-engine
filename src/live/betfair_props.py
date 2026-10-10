@@ -135,25 +135,31 @@ def poisson_mean(prices: list[float]) -> tuple[float, float]:
 
 def team_goal_rates(
     rates: Mapping[str, float],
-    shares: Mapping[str, float],
     *,
     lam: float,
     minutes: Mapping[str, float],
 ) -> dict[str, float]:
-    """Minutes-scale and cap priced μ to residual team λ (unpriced keep share)."""
+    """Minutes-scale each anytime rate. Cap only when those rates exceed team λ.
+
+    A priced player's own rate is his allocation. Other players' historical
+    shares do not reduce it. Unpriced players stay on ``share_xG × λ``.
+    """
+    team = float(lam)
+    if not math.isfinite(team) or team <= 0.0:
+        return {}
     priced: dict[str, float] = {}
     for pid, mu_raw in rates.items():
+        mu = float(mu_raw)
+        if not math.isfinite(mu) or mu < 0.0:
+            continue
         xmi = float(minutes.get(pid, 90.0))
-        priced[pid] = float(mu_raw) * max(xmi, 0.0) / 90.0
-    unpriced_share = sum(
-        max(float(share), 0.0) for pid, share in shares.items() if pid not in priced
-    )
-    unpriced_share = min(unpriced_share, 1.0)
-    budget = max(0.1, float(lam) * (1.0 - unpriced_share))
-    total = sum(priced.values())
-    if total <= 0.0:
+        if not math.isfinite(xmi):
+            xmi = 0.0
+        priced[str(pid)] = mu * max(xmi, 0.0) / 90.0
+    if not priced:
         return {}
-    scale = min(1.0, budget / total)
+    total = sum(priced.values())
+    scale = 1.0 if total <= team else team / total
     return {pid: mu * scale for pid, mu in priced.items()}
 
 
