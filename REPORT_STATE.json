@@ -1,10 +1,12 @@
 {
-  "milestone": "gw6-t1-plan",
+  "milestone": "gw6-t1-capture",
   "status": "research_only",
-  "summary": "Gameweek 6 score_xp and forecast_xp were run on xmi_t1.csv and betfair_t1. plan_half names the wildcard in Gameweek 6 because the rebuild leads the untouched squad by 19.68 over the two priced weeks. The same rebuild leads the one-transfer path, van Ewijk to Silva, by 15.09, which is under 16. The 138.80 value is Gameweek 6 and 7 only, including the Gameweek 7 rebuilt bench. Gameweek 8 is an outright forecast. Gameweek 9 repeats it. No slot_t1.json, so this is not the ep_next decision. Haaland is 4.59 on 45 minutes and is benched on the wildcard.",
+  "summary": "Gameweek 6 T-1 capture written at 2026-10-10T08:25:09Z. slot_t1.json names official_20261010T082509Z_t1.csv, 667 rows of ep_next. Haaland 7.5, Fernandes 2.0, Scarlett 0. The same stamp has the engine score and the shadow pair. The earlier score-only plan is not this decision.",
   "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
-    "data/predictions/2026-27/gw06/20261010T081519Z.csv",
-    "reports/gw6_t1_paths.md"
+    "data/predictions/2026-27/gw06/slot_t1.json",
+    "data/predictions/2026-27/gw06/official_20261010T082509Z_t1.csv",
+    "data/predictions/2026-27/gw06/20261010T082509Z.csv",
+    "data/predictions/2026-27/gw06/shadow_20261010T082509Z.csv"
   ]
 }
