@@ -1,11 +1,10 @@
 {
-  "milestone": "betfair-t1-fields",
+  "milestone": "gw6-t1-plan",
   "status": "research_only",
-  "summary": "The Gameweek 6 T-1 Betfair book is in data/predictions/2026-27/gw06/betfair_t1. All 20 match lines join score pots. Nineteen over/under prices move the total; the blank Forest-Arsenal total stays even. All 12 anytime runners, including Gyokeres, Odegaard, Gabriel, Timber and White, enter imminent score_xp via mu_raw. Nineteen outright strengths fill gameweek 8 forecast_xp. Nott'm Forest is missing from outrights and uses the bottom-table default. BTTS diagnostics stay out of the score. The score formula is unchanged.",
-  "gemini": "none",
+  "summary": "Gameweek 6 score_xp and forecast_xp were run on xmi_t1.csv and betfair_t1. plan_half names the wildcard in Gameweek 6 because the rebuild leads the untouched squad by 19.68 over the two priced weeks. The same rebuild leads the one-transfer path, van Ewijk to Silva, by 15.09, which is under 16. The 138.80 value is Gameweek 6 and 7 only, including the Gameweek 7 rebuilt bench. Gameweek 8 is an outright forecast. Gameweek 9 repeats it. No slot_t1.json, so this is not the ep_next decision. Haaland is 4.59 on 45 minutes and is benched on the wildcard.",
+  "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
-    "data/predictions/2026-27/gw06/betfair_t1/gw_lines.csv",
-    "data/predictions/2026-27/gw06/betfair_t1/betfair_to_score.json",
-    "data/predictions/2026-27/gw06/betfair_t1/outrights_ranks.json"
+    "data/predictions/2026-27/gw06/20261010T081519Z.csv",
+    "reports/gw6_t1_paths.md"
   ]
 }
