@@ -1,12 +1,10 @@
 {
-  "milestone": "gw6-t1-capture",
+  "milestone": "gw6-haaland-minutes",
   "status": "research_only",
-  "summary": "Gameweek 6 T-1 capture written at 2026-10-10T08:25:09Z. slot_t1.json names official_20261010T082509Z_t1.csv, 667 rows of ep_next. Haaland 7.5, Fernandes 2.0, Scarlett 0. The same stamp has the engine score and the shadow pair. The earlier score-only plan is not this decision.",
-  "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
+  "summary": "The minutes oracle was not using news after 8 October 17:34 UTC. Haaland's 45 came from the Standard 'could return this weekend' line, half of a 90-minute prior. FPL on 10 October lists him available with blank news, which does not become a packet. Manchester City's Friday press conference is now filed. The same compile writes Haaland 90 from his last three games. No other xmi_t1 row moved. Stored score files still use 45.",
+  "gemini": "unchanged rule; no new review",
   "artifacts": [
-    "data/predictions/2026-27/gw06/slot_t1.json",
-    "data/predictions/2026-27/gw06/official_20261010T082509Z_t1.csv",
-    "data/predictions/2026-27/gw06/20261010T082509Z.csv",
-    "data/predictions/2026-27/gw06/shadow_20261010T082509Z.csv"
+    "data/predictions/2026-27/gw06/news_packets/mancity-fc-gw06-haaland-fit-for-trip-to-liverpoo.json",
+    "data/predictions/2026-27/gw06/xmi_t1.csv"
   ]
 }

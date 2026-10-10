@@ -490,7 +490,7 @@ player_id,gw,xmi,tag
 408,6,0.0,transferred
 409,6,0.0,transferred
 410,6,0.0,transferred
-411,6,45.0,50/50
+411,6,90.0,rolling avg
 481,6,90.0,rolling avg
 587,6,0.0,rolling avg
 616,6,4.666666666666667,rolling avg
