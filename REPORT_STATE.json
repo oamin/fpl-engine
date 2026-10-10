@@ -1,10 +1,9 @@
 {
-  "milestone": "gw6-xmi-trawl",
+  "milestone": "gw6-ep-next-team",
   "status": "research_only",
-  "summary": "Friday club and league notes are filed for the Gameweek 6 minutes sheet. Sports Mole at 18:04 BST is the out, doubt, and suspension list. Premier League predicted line-ups name who is fit. A clearance sentence is not read as an injury unless it is negated. Palmer, Joao Pedro, Van de Ven, Van Hecke, Jacquet and others move up. Doubts scale by the FPL chance. Haaland stays 90. van Ewijk stays 45. Five returning players stay on the Thursday coin-flip because their recent window is empty. Stored score files still use the previous minutes.",
+  "summary": "The Gameweek 6 selector used xmi_t1, betfair_t1, and the T-1 ep_next capture. Only Gameweek 6 is priced. The free-hit eleven equals the wildcard rebuild, so the tie rule plays no chip. The team is the current fifteen, no transfer, Davis captain on 8.0, Haaland vice on 7.5. The 60.5 figure is that eleven with the captain counted twice. It is not locked. week_freeze.jsonl was not appended.",
   "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
-    "reports/gw6_xmi_trawl.md",
-    "data/predictions/2026-27/gw06/xmi_t1.csv"
+    "reports/gw6_ep_next_team.md"
   ]
 }
