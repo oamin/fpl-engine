@@ -1,10 +1,11 @@
 {
-  "milestone": "score-t1-inputs",
+  "milestone": "betfair-t1-fields",
   "status": "research_only",
-  "summary": "Live score_xp and forecast_xp read data/predictions/2026-27/gw06/xmi_t1.csv and gw06/betfair_t1/gw_lines.csv. A missing T-1 sheet is an error. The frozen xmi_gw6.csv and gw_lines.csv are refused, and betfair_20261008 is not a fallback. The 10 October FPL bootstrap matched the stored minutes sheet (667 rows, Haaland 45, Scarlett 0). The T-1 Exchange folder is not in this checkout, so the score was not run. The score formula is unchanged.",
+  "summary": "The Gameweek 6 T-1 Betfair book is in data/predictions/2026-27/gw06/betfair_t1. All 20 match lines join score pots. Nineteen over/under prices move the total; the blank Forest-Arsenal total stays even. All 12 anytime runners, including Gyokeres, Odegaard, Gabriel, Timber and White, enter imminent score_xp via mu_raw. Nineteen outright strengths fill gameweek 8 forecast_xp. Nott'm Forest is missing from outrights and uses the bottom-table default. BTTS diagnostics stay out of the score. The score formula is unchanged.",
   "gemini": "none",
   "artifacts": [
-    "data/predictions/2026-27/gw06/xmi_t1.csv",
-    "src/live/t1_inputs.py"
+    "data/predictions/2026-27/gw06/betfair_t1/gw_lines.csv",
+    "data/predictions/2026-27/gw06/betfair_t1/betfair_to_score.json",
+    "data/predictions/2026-27/gw06/betfair_t1/outrights_ranks.json"
   ]
 }

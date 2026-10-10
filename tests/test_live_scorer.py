@@ -7,6 +7,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 import pandas as pd
 
@@ -642,6 +643,7 @@ class PriceHalfTest(unittest.TestCase):
             state=state,
             minutes=minutes,
             played={1: "triple_captain"},
+            artifacts_dir=Path("/tmp/no-betfair-artifacts"),
         )
         self.assertEqual(result.line_weeks, (6, 7))
         self.assertEqual(result.horizon_weeks, (6, 7, 8))
@@ -745,7 +747,11 @@ class StoredRunTest(unittest.TestCase):
     def test_no_minutes_file_leaves_the_scorer_unrun(self) -> None:
         with tempfile.TemporaryDirectory() as folder:
             dest = Path(folder) / "live_deadline_gw6.md"
-            log = run(report_path=dest)
+            with mock.patch(
+                "src.live.t1_inputs.exchange_sheet",
+                return_value=Path("/tmp/no-such-betfair-t1-gw_lines.csv"),
+            ):
+                log = run(report_path=dest)
             text = dest.read_text(encoding="utf-8")
         self.assertTrue(str(log.minutes_file).endswith("xmi_t1.csv"))
         self.assertIn("missing_opening_line", log.reasons)

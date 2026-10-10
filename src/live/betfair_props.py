@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import json
 import math
+import unicodedata
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -414,28 +415,76 @@ def apply_to_score_overlay(
     )
 
 
+def _fold_name(text: str) -> str:
+    """Case-fold and strip accents so Gyökeres and Ødegaard match plain spellings."""
+    raw = str(text)
+    for src, dst in (("ø", "o"), ("Ø", "o"), ("æ", "ae"), ("Æ", "ae"), ("å", "a"), ("Å", "a")):
+        raw = raw.replace(src, dst)
+    raw = unicodedata.normalize("NFKD", raw)
+    return "".join(ch for ch in raw if not unicodedata.combining(ch)).casefold().strip()
+
+
+def _name_hits(
+    runner_name: str,
+    by_label: Mapping[str, set[int]],
+    players: list[dict[str, Any]],
+) -> set[int]:
+    """One FPL id for a Betfair runner, or empty when the name is ambiguous."""
+    key = _fold_name(runner_name)
+    exact = by_label.get(key) or set()
+    if len(exact) == 1:
+        return set(exact)
+    if len(exact) > 1 or not key:
+        return set()
+    parts = [part for part in key.split() if part]
+    if len(parts) < 2:
+        return set()
+    last = parts[-1]
+    found: set[int] = set()
+    for player in players:
+        tokens = player["tokens"]
+        if not tokens or tokens[-1] != last:
+            continue
+        if all(
+            any(len(part) >= 3 and len(token) >= 3 and token.startswith(part) for token in tokens)
+            for part in parts[:-1]
+        ):
+            found.add(int(player["pid"]))
+    return found if len(found) == 1 else set()
+
+
 def match_to_score_runners(
     rows: list[Mapping[str, Any]],
     bootstrap_players: list[Mapping[str, Any]],
 ) -> dict[str, float]:
-    """Map FPL player_id → μ_raw from Betfair anytime rows (exact web/full name)."""
-    by_name: dict[str, set[int]] = {}
+    """Map FPL player_id → μ_raw from Betfair anytime rows.
+
+    Labels are web name, surname, and full name, with accents folded. A
+    shortened first name still matches when the surname token is unique
+    (Ben White → Benjamin White, Gabriel Magalhaes → Gabriel dos Santos
+    Magalhães). ``mu_raw`` is the populated goal rate. ``matched`` only
+    breaks a tie.
+    """
+    by_label: dict[str, set[int]] = {}
+    players: list[dict[str, Any]] = []
     for player in bootstrap_players:
         pid = int(player["id"])
+        full = f"{player.get('first_name', '')} {player.get('second_name', '')}".strip()
+        tokens = [part for part in _fold_name(full).split() if part]
+        players.append({"pid": pid, "tokens": tokens})
         for label in (
             str(player.get("web_name") or ""),
             str(player.get("second_name") or ""),
-            f"{player.get('first_name', '')} {player.get('second_name', '')}".strip(),
+            full,
         ):
-            key = label.strip().lower()
+            key = _fold_name(label)
             if not key:
                 continue
-            by_name.setdefault(key, set()).add(pid)
+            by_label.setdefault(key, set()).add(pid)
     out: dict[str, float] = {}
     matched_vol: dict[str, float] = {}
     for row in rows:
-        key = str(row.get("runner") or "").strip().lower()
-        hits = by_name.get(key) or set()
+        hits = _name_hits(str(row.get("runner") or ""), by_label, players)
         if len(hits) != 1:
             continue
         pid = f"2026-27:{next(iter(hits))}"

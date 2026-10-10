@@ -32,17 +32,29 @@ class SheetPaths(unittest.TestCase):
         self.assertEqual(path.name, "gw_lines.csv")
         self.assertNotEqual(path.resolve(), FROZEN_LINES)
 
-    def test_a_missing_t1_sheet_does_not_open_the_earlier_pull(self) -> None:
+    def test_the_stored_sheet_is_the_live_book(self) -> None:
         from src.live.t1_inputs import live_score_book
 
         book = live_score_book(6, None)
-        self.assertIsNone(book)
+        self.assertEqual(book, exchange_sheet(6))
+        self.assertTrue(book.is_file())
+        earlier = Path("data/predictions/2026-27/gw06/betfair_20261008/gw_lines.csv")
+        self.assertNotEqual(book.resolve(), earlier.resolve())
+
+    def test_a_missing_t1_sheet_does_not_open_the_earlier_pull(self) -> None:
+        from src.live.t1_inputs import live_score_book
+
+        missing = Path("/tmp/betfair_t1/gw_lines.csv")
         earlier = Path("data/predictions/2026-27/gw06/betfair_20261008/gw_lines.csv")
         self.assertTrue(earlier.is_file())
+        with mock.patch("src.live.t1_inputs.exchange_sheet", return_value=missing):
+            self.assertIsNone(live_score_book(6, None))
 
     def test_a_missing_t1_sheet_is_an_error(self) -> None:
-        with self.assertRaises(LiveScoreInputError) as raised:
-            require_score_inputs(6)
+        missing = Path("/tmp/betfair_t1/gw_lines.csv")
+        with mock.patch("src.live.t1_inputs.exchange_sheet", return_value=missing):
+            with self.assertRaises(LiveScoreInputError) as raised:
+                require_score_inputs(6)
         self.assertIn("betfair_t1", str(raised.exception))
         self.assertIn("not used", str(raised.exception))
 
@@ -88,7 +100,11 @@ class ExportReadsTheUpdatedFiles(unittest.TestCase):
     def test_export_stops_before_any_older_sheet(self) -> None:
         from src.eval.predictions import export_deadline_scores
 
-        with mock.patch("src.live.deadline.load_odds_frame") as odds:
+        missing = Path("/tmp/betfair_t1/gw_lines.csv")
+        with (
+            mock.patch("src.live.t1_inputs.exchange_sheet", return_value=missing),
+            mock.patch("src.live.deadline.load_odds_frame") as odds,
+        ):
             with self.assertRaises(LiveScoreInputError) as raised:
                 export_deadline_scores()
             odds.assert_not_called()

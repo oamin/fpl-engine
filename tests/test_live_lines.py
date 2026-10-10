@@ -171,6 +171,10 @@ class FrozenSlateTest(unittest.TestCase):
         with (
             mock.patch("src.live.deadline.load_odds_frame", spy),
             mock.patch.object(bp, "discover_betfair_artifacts", return_value=None),
+            mock.patch(
+                "src.live.t1_inputs.exchange_sheet",
+                return_value=Path("/tmp/no-such-betfair-t1-gw_lines.csv"),
+            ),
         ):
             from src.live.deadline import collect
 
