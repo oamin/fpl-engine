@@ -1,7 +1,7 @@
 {
   "milestone": "gw6-stragent-stored",
   "status": "locked",
-  "summary": "The Gameweek 6 score_xp wildcard is locked. Stragent's pick is stored: no chip, Scarlett to Muniz, Fernandes captain, Haaland vice. ep_next for both squads is in cited_ep_next.csv from the T-1 capture at 2026-10-10T08:25:09Z. Numeric dry-run elevens from Thursday 8 October are beside that eleven in reports/gw6_numagent_dry_runs.md. Anytime rates now apply in full per player, capped only when a club's priced rates exceed its λ. The freeze row was not rewritten. Entry 1078627's wildcard is scored in reports/numagent_1078627_gw6.md: stated lead 5.30, engine rebuild lead 21.92.",
+  "summary": "The Gameweek 6 score_xp wildcard is locked. Stragent's pick is stored: no chip, Scarlett to Muniz, Fernandes captain, Haaland vice. ep_next for both squads is in cited_ep_next.csv from the T-1 capture at 2026-10-10T08:25:09Z. Numeric dry-run elevens from Thursday 8 October are beside that eleven in reports/gw6_numagent_dry_runs.md. Anytime rates now apply in full per player, capped only when a club's priced rates exceed its λ. The freeze row was not rewritten. Entry 1078627's wildcard is scored in reports/numagent_1078627_gw6.md: stated lead 5.30, engine rebuild lead 21.92. Stragent on that entry's stored Gameweek 5 squad sells White and Cherki for Saka and Hall, captains Saka, and keeps both chips. The research plan is reports/string_horizon_1078627/gw06.json.",
   "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
     "data/predictions/2026-27/week_freeze.jsonl",
@@ -12,6 +12,8 @@
     "data/predictions/2026-27/string_agent_freeze.jsonl",
     "data/predictions/2026-27/gw06/cited_ep_next.csv",
     "reports/gw6_numagent_dry_runs.md",
-    "reports/numagent_1078627_gw6.md"
+    "reports/numagent_1078627_gw6.md",
+    "reports/stragent_1078627_gw6.md",
+    "reports/string_horizon_1078627/gw06.json"
   ]
 }
