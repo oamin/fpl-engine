@@ -6,6 +6,7 @@
   "artifacts": [
     "data/predictions/2026-27/week_freeze.jsonl",
     "data/predictions/2026-27/gw06/lock_gw6.json",
-    "reports/gw6_score_xp_team.md"
+    "reports/gw6_score_xp_team.md",
+    "reports/gw6_stragent_proposal.md"
   ]
 }
