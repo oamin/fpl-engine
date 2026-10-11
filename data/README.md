@@ -11,10 +11,14 @@ Collectors write files. The models read the paths below. A frozen holdout file i
 | Minutes sheet | `src.live.xmi` | `predictions/2026-27/gwNN/xmi_t1.csv` |
 | Exchange lines | `src.live.betfair_pull`, `src.live.betfair_lines` | `predictions/2026-27/gwNN/betfair_t1/` |
 | String dossier | `src.str_agent.trawl` | `predictions/2026-27/gwNN/string_sources/` |
+| Numagent session | `src.live.session` | `gwNN/xmi_t1.csv`, `gwNN/betfair_t1/`, a timestamped score file, `gwNN/session_numagent.json`, and on `--lock` one row of `week_freeze.jsonl` |
+| Stragent session | `src.str_agent.session` | `gwNN/string_sources/`, `string_plans/gwNN_context.md`, `string_plans/gwNN.json`, `gwNN/session_stragent.json`, and on `--lock` one row of `string_agent_freeze.jsonl` |
 | Entry ledger | `src.live.entry` | `entry/{id}.json` |
 | History and odds | `src.ingest` | `cache/` and `processed/` |
 
 `python3 -m src.live` collects the slate and stops until a minutes file is supplied. `python3 -m src.str_agent.trawl` stores feed titles and summaries. It does not fetch article pages, and it does not write `news_packets/`.
+
+`python3 -m src.live.session --gw N --deadline <utc>` compiles the minutes sheet from `news_packets` and finished `holdout` weeks, then prices the squad from `betfair_t1`. A complete `betfair_t1` book is reused. A missing book is pulled into that folder. `python3 -m src.str_agent.session --gw N --deadline <utc>` fills the dossier and writes the prompt. From Gameweek 7 it starts from `string_plans/gw{N-1}.json`.
 
 ## Storage
 

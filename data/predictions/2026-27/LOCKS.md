@@ -35,6 +35,19 @@ These files are legal dry runs. They are not ledger rows.
 | 3271409 | `reports/string_horizon_3271409/gw06.json` | João Pedro to Wood, Ødegaard captain, no chip |
 | 1078627 | `reports/string_horizon_1078627/gw06.json` | White and Cherki to Saka and Hall, Saka captain, no chip |
 
+## Next deadline
+
+Gameweek 6 is the only row in each ledger. The next row is appended by the session commands, one gameweek at a time, while the clock is before that deadline.
+
+```bash
+python3 -m src.live.session --gw N --deadline <utc>
+python3 -m src.live.session --gw N --deadline <utc> --lock --frozen-at <utc>
+python3 -m src.str_agent.session --gw N --deadline <utc>
+python3 -m src.str_agent.session --gw N --deadline <utc> --reply reply.json --lock --frozen-at <utc>
+```
+
+Numagent stores the minutes sheet, the `betfair_t1` book, the score file, and `gwNN/session_numagent.json`. The ledger row carries the decision squad, the untouched eleven, the one-transfer eleven, `score_xp`, and `ep_next`. Stragent stores the dossier, the prompt, the three-week plan, the notebook row, and `gwNN/session_stragent.json`. The ledger row is week 0. `realised` stays null on both until that gameweek is read. A second row for the same gameweek is refused, and a locked manifest is left in place.
+
 ## Holdout snapshot
 
 `data/live/HOLDOUT_FREEZE.json` was frozen on 2026-10-06. It locks the evaluation files for Gameweeks 1–5. It is not a team selection.

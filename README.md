@@ -15,7 +15,13 @@ Stragent writes prose from the dossier and returns a legal squad. It does not re
 python3 -m src.live
 python3 -m src.str_agent --entry 2632584 --hold
 python3 -m src.str_agent.trawl --gw 6 --deadline 2026-10-10T10:00:00Z
+python3 -m src.live.session --gw N --deadline <utc>
+python3 -m src.str_agent.session --gw N --deadline <utc>
 ```
+
+The next deadline uses those two session commands. Numagent compiles `gwNN/xmi_t1.csv` from `news_packets`, reads `gwNN/betfair_t1` for match odds, anytime prices, and outright ranks, writes `score_xp` for the deadline week and `forecast_xp` for later weeks, and chooses the squad on `score_xp`. `--lock` appends one numeric ledger row when the clock is before the deadline. That row keeps the decision, the untouched eleven, the one-transfer eleven, and both scores for those elevens.
+
+Stragent polls the dossier feeds, writes the prompt from that dossier and earlier notebook rows, and waits. `--reply` is the agent's JSON. From Gameweek 7 the starting squad is the previous plan. `--lock` appends week 0 of that plan. Each session leaves `gwNN/session_numagent.json` or `gwNN/session_stragent.json`, with file hashes, `locked`, and `realised` null until the gameweek is read.
 
 Collectors and storage are mapped in `data/README.md`. Locked sessions are indexed in `data/predictions/2026-27/LOCKS.md`. Older stage reports live under `reports/`. `reports/SUPERSEDED.md` names which of those totals are historical.
 
