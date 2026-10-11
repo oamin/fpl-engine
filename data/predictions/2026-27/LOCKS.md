@@ -14,6 +14,8 @@ Ledger: `week_freeze.jsonl`. Writer: `src/live/freeze_week.py`. Sidecar for Game
 
 Formation 4-4-2. Bench order: Verbruggen, Wissa, Davis, Mainoo. The row records the wildcard that was submitted. `GW6_CHIP_COUNTS` in `src/eval/decision_spec.py` is false, so the row is a logged judgement. Minutes hash `efb2c9b0cb1be3de920b75bf0f5f5f1cace273389576971cd0b9d19ef382067d`. Exchange lines hash `98e5bb4281312953f19a18383d2d6691e34279618c900c736d39c22085bb1b0a`. Score file `gw06/20261010T091116Z.csv`.
 
+The morning run is the locked session file `gw06/session_numagent.json`. Its hashes are the freeze hashes. `20261010T091116Z.csv` keeps the writer columns from that morning. `load_step_scores` reads Gameweek 6 in that file as `score_xp` and Gameweeks 7 and 8 as `forecast_xp`.
+
 The ledger starts at Gameweek 6. The published Gameweeks 1–5 total of 280 is the historical climb in `reports/SUPERSEDED.md`. It is not a row in this file.
 
 ## Stragent
@@ -24,7 +26,7 @@ Ledger: `string_agent_freeze.jsonl`. Writer: `src/str_agent/freeze.py`. Plan: `s
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | 6 | 2026-10-10T09:37:55Z | 2026-10-10T10:00:00Z | none | Scarlett to Muniz | Fernandes `426` | Haaland `411` | empty |
 
-Bench order: Forster, Shaw, Calvert-Lewin, van Ewijk. Bank left 6 tenths. Plan sha256 `cafb5269f2cf375a12e753aa85489d363a4586ba4ee14c4baaefc666d14beccc`. The dossier for that plan is `gw06/string_sources/`.
+Bench order: Forster, Shaw, Calvert-Lewin, van Ewijk. Bank left 6 tenths. Plan sha256 `cafb5269f2cf375a12e753aa85489d363a4586ba4ee14c4baaefc666d14beccc`. The dossier for that plan is `gw06/string_sources/`. The morning run is the locked session file `gw06/session_stragent.json`. Its plan and context hashes are the ledger hashes. The notebook row for Gameweek 6 is in `string_plans/notebook.jsonl`.
 
 ## Research plans
 

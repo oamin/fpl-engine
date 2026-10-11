@@ -296,6 +296,35 @@ def compile_minutes(
     return sheet
 
 
+def load_step_scores(path: Path, decision_gw: int) -> list[dict[str, Any]]:
+    """Rows as ``player_id, gw, score, column``.
+
+    A file from the session writer already has ``column``. The Gameweek 6
+    morning file does not: the deadline week is ``score_xp`` and every later
+    week in that file is ``forecast_xp``. The file is not rewritten.
+    """
+    frame = pd.read_csv(path)
+    if "score" not in frame.columns or "gw" not in frame.columns:
+        raise SessionError(f"{path} has no score rows")
+    labelled = "column" in frame.columns
+    rows: list[dict[str, Any]] = []
+    for record in frame.itertuples(index=False):
+        week = int(record.gw)
+        if labelled:
+            column = str(record.column)
+        else:
+            column = "score_xp" if week == int(decision_gw) else "forecast_xp"
+        rows.append(
+            {
+                "player_id": str(record.player_id),
+                "gw": week,
+                "score": float(record.score),
+                "column": column,
+            }
+        )
+    return rows
+
+
 def write_step_scores(
     gw: int,
     step_scores: Mapping[int, Mapping[str, float]],

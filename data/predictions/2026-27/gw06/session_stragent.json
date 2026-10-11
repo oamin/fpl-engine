@@ -1,0 +1,30 @@
+{
+  "gw": 6,
+  "hashes": {
+    "context_sha256": "b644261972422ea7f87dd662a96a69bf9f8539a19884a495c5c437a60b5b7f1a",
+    "plan_sha256": "cafb5269f2cf375a12e753aa85489d363a4586ba4ee14c4baaefc666d14beccc"
+  },
+  "locked": true,
+  "realised": null,
+  "steps": [
+    {
+      "name": "trawl",
+      "notes": 244,
+      "status": "ok"
+    },
+    {
+      "name": "context",
+      "prior_notes": false,
+      "status": "ok"
+    },
+    {
+      "name": "reply",
+      "status": "ok"
+    },
+    {
+      "gw": 6,
+      "name": "lock",
+      "status": "locked"
+    }
+  ]
+}

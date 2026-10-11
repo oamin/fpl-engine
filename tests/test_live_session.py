@@ -20,6 +20,7 @@ from src.live.session import (
     book_is_ready,
     compile_minutes,
     lineup_points,
+    load_step_scores,
     lock_from_pick,
     resolve_exchange,
     run_numagent,
@@ -462,6 +463,44 @@ class ScoresAndLock(unittest.TestCase):
                     bootstrap_path=boot,
                 )
             self.assertFalse(ledger.exists())
+
+
+class MorningGameweek(unittest.TestCase):
+    def test_the_saturday_score_file_keeps_its_hash_and_reads_as_the_session_columns(self) -> None:
+        from src.live.freeze_week import LEDGER
+
+        score = Path("data/predictions/2026-27/gw06/20261010T091116Z.csv")
+        before = score.read_bytes()
+        rows = load_step_scores(score, 6)
+        self.assertEqual(score.read_bytes(), before)
+        labels = {int(row["gw"]): row["column"] for row in rows}
+        self.assertEqual(labels[6], "score_xp")
+        self.assertEqual(labels[7], "forecast_xp")
+        self.assertEqual(labels[8], "forecast_xp")
+        freeze = json.loads(LEDGER.read_text(encoding="utf-8").splitlines()[0])
+        manifest = json.loads(
+            Path("data/predictions/2026-27/gw06/session_numagent.json").read_text(encoding="utf-8")
+        )
+        self.assertTrue(manifest["locked"])
+        self.assertIsNone(manifest["realised"])
+        self.assertEqual(manifest["chip"], "wildcard")
+        self.assertEqual(manifest["hashes"]["pool_forecast_sha256"], freeze["provenance"]["pool_forecast_sha256"])
+        self.assertEqual(manifest["hashes"]["minutes_sha256"], freeze["provenance"]["minutes_sha256"])
+        self.assertEqual(manifest["hashes"]["odds_manifest_sha256"], freeze["provenance"]["odds_manifest_sha256"])
+        self.assertEqual(manifest["hashes"]["official_sha256"], freeze["provenance"]["official_sha256"])
+        self.assertEqual(
+            manifest["score_xp_xi_c"]["decision"],
+            freeze["forecast_expected_points"]["decision_xi_c_score_xp"],
+        )
+
+    def test_the_locked_morning_manifest_stops_another_session(self) -> None:
+        with self.assertRaises(SessionError):
+            run_numagent(
+                6,
+                deadline_utc="2026-10-10T10:00:00Z",
+                pull=lambda _path: (_ for _ in ()).throw(AssertionError("pull")),
+                score_fn=lambda **_kwargs: (_ for _ in ()).throw(AssertionError("score")),
+            )
 
 
 if __name__ == "__main__":

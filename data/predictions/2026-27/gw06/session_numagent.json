@@ -1,0 +1,43 @@
+{
+  "chip": "wildcard",
+  "gw": 6,
+  "hashes": {
+    "minutes_sha256": "efb2c9b0cb1be3de920b75bf0f5f5f1cace273389576971cd0b9d19ef382067d",
+    "odds_manifest_sha256": "98e5bb4281312953f19a18383d2d6691e34279618c900c736d39c22085bb1b0a",
+    "official_sha256": "de9775a6f44aa61513956e0b367331ad0e693df077566e8cc6cd214fd905c5ac",
+    "pool_forecast_sha256": "75c802b7c65e0bc47cd7a147e6e3e21fb10bfb927c77a730de813bcf00517ae9"
+  },
+  "locked": true,
+  "realised": null,
+  "score_xp_xi_c": {
+    "decision": 63.140285515933854,
+    "ft1": 54.3295636994117,
+    "hold": 53.02400719466633
+  },
+  "steps": [
+    {
+      "file": "xmi_t1.csv",
+      "name": "xmi",
+      "status": "ok"
+    },
+    {
+      "file": "betfair_t1",
+      "name": "exchange",
+      "status": "ok"
+    },
+    {
+      "file": "20261010T091116Z.csv",
+      "name": "scores",
+      "status": "ok"
+    },
+    {
+      "chip": "wildcard",
+      "name": "team",
+      "status": "ok"
+    },
+    {
+      "name": "lock",
+      "status": "locked"
+    }
+  ]
+}

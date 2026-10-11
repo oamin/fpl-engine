@@ -218,5 +218,32 @@ class StringSession(unittest.TestCase):
             self.assertEqual(ledger.read_bytes(), before)
 
 
+class MorningStringSession(unittest.TestCase):
+    def test_the_saturday_manifest_matches_the_ledger_and_stops_another_run(self) -> None:
+        from src.str_agent.freeze import LEDGER as STRING_LEDGER
+        from src.str_agent.horizon import PLAN_DIR
+
+        manifest = json.loads(
+            Path("data/predictions/2026-27/gw06/session_stragent.json").read_text(encoding="utf-8")
+        )
+        row = json.loads(STRING_LEDGER.read_text(encoding="utf-8").splitlines()[0])
+        self.assertTrue(manifest["locked"])
+        self.assertIsNone(manifest["realised"])
+        self.assertEqual(manifest["hashes"]["plan_sha256"], row["provenance"]["plan_sha256"])
+        self.assertEqual(manifest["hashes"]["context_sha256"], row["provenance"]["context_sha256"])
+        self.assertEqual(manifest["steps"][-1]["status"], "locked")
+
+        def trawl_fn(*_args: object, **_kwargs: object) -> object:
+            raise AssertionError("feeds polled")
+
+        with self.assertRaises(SessionError):
+            run_stragent(
+                6,
+                deadline_utc="2026-10-10T10:00:00Z",
+                plan_root=PLAN_DIR,
+                trawl_fn=trawl_fn,
+            )
+
+
 if __name__ == "__main__":
     unittest.main()
