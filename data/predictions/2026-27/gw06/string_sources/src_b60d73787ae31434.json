@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:b60d73787ae31434",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/crvg6lx2yj29o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 09 Oct 2026 09:57:48 GMT",
+  "published_at_utc": "2026-10-09T09:57:48Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "Mourinho calls criticism of Mbappe 'ridiculous'",
+  "body": "Jose Mourinho defends Kylian Mbappe who has been scrutinised during the international break.",
+  "player_ids": [],
+  "sha256": "850bdf965ecd3bd28525f0f6dbd1d62ad805dbc1a6092b07c7f7f0ea7c7d0586"
+}

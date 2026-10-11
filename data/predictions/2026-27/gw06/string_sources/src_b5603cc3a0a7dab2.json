@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:b5603cc3a0a7dab2",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/news/articles/cq8jz9p2ln9zo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 08 Oct 2026 10:51:47 GMT",
+  "published_at_utc": "2026-10-08T10:51:47Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "How a folk band, football club and Fifa 11 came together for unlikely anthem",
+  "body": "After playing a bit of Fifa 11, Kingfishr leader singer Eddie Keogh posted a song in tribute to English League One club Wycombe Wanderers.",
+  "player_ids": [],
+  "sha256": "beb60b3a995667490f68ecfe7dbf900630ae96f7d49fe74de70b39190129c091"
+}

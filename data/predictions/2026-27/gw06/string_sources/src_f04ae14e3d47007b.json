@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:f04ae14e3d47007b",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cqzrdmjp5162o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 08 Oct 2026 07:01:10 GMT",
+  "published_at_utc": "2026-10-08T07:01:10Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "How can home nations reach Women's World Cup?",
+  "body": "England, Wales, Northern Ireland, Scotland and the Republic of Ireland are among those hoping to qualify for next year's Women's World Cup. What awaits them in the play-offs?",
+  "player_ids": [],
+  "sha256": "742c46760b8d0445ff753cde3fdbe24f5f5526e46e3ee9a2e43b2bc681cb3df3"
+}

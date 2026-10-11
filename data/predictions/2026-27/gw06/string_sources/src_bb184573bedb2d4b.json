@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:bb184573bedb2d4b",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cx2lggyz2wgo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 08 Oct 2026 05:48:17 GMT",
+  "published_at_utc": "2026-10-08T05:48:17Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "Inside the £1-an-hour official football shirt factories",
+  "body": "A BBC Sport investigation traces official football shirt production to factories in Cambodia where workers are paid less than £1 an hour.",
+  "player_ids": [],
+  "sha256": "342c8ae849d3f0b848d54b6af1e79a119cc1701a0093e30b6dca6d15438d3ba5"
+}

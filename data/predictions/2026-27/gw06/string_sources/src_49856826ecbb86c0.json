@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:49856826ecbb86c0",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sounds/play/p0pftxly?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 09 Oct 2026 07:00:00 GMT",
+  "published_at_utc": "2026-10-09T07:00:00Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "Listen: The Premiership is back - weekend preview",
+  "body": "It's the SPFL weekend preview",
+  "player_ids": [],
+  "sha256": "8a7705b7e1a1104b40affc0be40cde3898449be9fb8899488c43f8c78f1da379"
+}

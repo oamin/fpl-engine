@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:d9048ed2b0f832d0",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/ckjwel862376o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 09 Oct 2026 03:55:20 GMT",
+  "published_at_utc": "2026-10-09T03:55:20Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "How Swansea refound their way as ambition returns",
+  "body": "With Swansea City leading the Championship as the EFL returns, BBC Sport looks at how the club has brought back old values and new hopes.",
+  "player_ids": [],
+  "sha256": "cf2392f83a3419ba741a47d788f833f859f9b294fc5a9650c5aa0ed9dbc392d1"
+}

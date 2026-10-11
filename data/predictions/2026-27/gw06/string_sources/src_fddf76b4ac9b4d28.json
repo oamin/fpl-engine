@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:fddf76b4ac9b4d28",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/c6y93qq5175wo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 08 Oct 2026 09:16:56 GMT",
+  "published_at_utc": "2026-10-08T09:16:56Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "Clubs fear political interference in Man City appeal",
+  "body": "Premier League clubs are \"concerned\" about political interference in Manchester City's appeal after Prime Minister Andy Burnham's comments.",
+  "player_ids": [],
+  "sha256": "df81e9c731c84f886b1c719b3e5228e9b00f8524486b70a0febe8b507526aa01"
+}

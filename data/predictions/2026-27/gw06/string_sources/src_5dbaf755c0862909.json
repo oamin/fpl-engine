@@ -1,0 +1,14 @@
+{
+  "source_id": "skysports:5dbaf755c0862909",
+  "source": "skysports",
+  "outlet_class": "press",
+  "url": "https://www.skysports.com/football/live-blog/12040/12507208/football-latest-news-gossip",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 09 Oct 2026 21:20:00 BST",
+  "published_at_utc": "2026-10-09T20:20:00Z",
+  "observed_at_utc": "2026-10-10T09:27:28Z",
+  "headline": "Scotland and Wales win in World Cup play-offs",
+  "body": "",
+  "player_ids": [],
+  "sha256": "7f8af1ad1cb2caa1429a62e22d26a0a9d3b143f12f831fef98c6994a7d27a63c"
+}

@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:7a97e303fe26f98f",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/videos/c61kdn0nwld4o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Wed, 07 Oct 2026 05:24:54 GMT",
+  "published_at_utc": "2026-10-07T05:24:54Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "Watch: Every Messi World Cup goal for Argentina",
+  "body": "Watch every World Cup goal scored by Lionel Messi, as the Argentina forward retires from international football.",
+  "player_ids": [],
+  "sha256": "03ded1eafc70c1a266cf0c9c86ad45b828988d481a25cd93f9c75d72f75cad04"
+}

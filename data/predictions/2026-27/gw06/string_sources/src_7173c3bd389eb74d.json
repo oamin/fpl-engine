@@ -1,0 +1,14 @@
+{
+  "source_id": "reddit_fantasypl:7173c3bd389eb74d",
+  "source": "reddit_fantasypl",
+  "outlet_class": "forum",
+  "url": "https://www.reddit.com/r/FantasyPL/comments/1x1r9us/how_to_captain_rule_based_strategies_validated/",
+  "clock": "feed_updated",
+  "raw_published_at": "2026-10-09T17:21:17+00:00",
+  "published_at_utc": "2026-10-09T17:21:17Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "How to Captain: Rule Based Strategies Validated with 25/26 Data",
+  "body": "Hello fellow managers, I hope you survived the international break and ready for another weekend of spicy action, I know I am. I started the season with a Haaland+Bruno full of premiums team accompanied with a dumpster fire of a defence. This genuis strategy so far allowed me to obtain an impressive ranking of 3.7m. Naturally, instead of actually fixing my team I choose to overanalyze things involving data, plots, simulations, and such to pick a captain. This leads to todays essay: Rules for picking a captain. For many seasons I did have a single rule; &quot;never bet against the king&quot;. Unfortunately, the king has moved to Trabzon which is a city known for its always sunny and warm weather unlike Liverpool... The alterantive new rule(s) has to be simple so that I can follow it for 38 weeks without relying on something outside the brilliant FPL app. Because I know that you like to make that decision 30 minutes before the deadline for maximum regret points. The obvious easiest version is just declaring the new king, anyone that followed last season knows it has to be either Bruno or Haaland (well maybe not next season). The performance of those two during the 25/26 season will be the baseline for every other alternative we throw in. I have tried around a dozen different rules and decided on showing 8 of those. The calculations are simple: what would be the cumulative addition to the end of season total if we selected this particular player as captain given the rule. Excludes the GW1 because some rules dictate to have at least one match played. Additionally rule 2 and 3 has an at least selected by 1m threshold so that they suggest players that are actually owned and doesn&#39;t require having 5 free transfers each week. Here are the rules: Baselines: Always Haaland, always Bruno Pick one of Haaland/Bruno with easier fixture. Check the FDR gap, pick the stronger teams top points scorer, excludes Bruno/Haaland and their teammates. Version b is enforcing the home fix",
+  "player_ids": [],
+  "sha256": "c2d707b2fb75bcceacd6fd509308b3fddef1ab6af3640d3078986ed0a0a80200"
+}

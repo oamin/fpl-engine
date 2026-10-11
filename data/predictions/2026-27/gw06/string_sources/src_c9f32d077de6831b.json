@@ -1,0 +1,14 @@
+{
+  "source_id": "reddit_fantasypl:c9f32d077de6831b",
+  "source": "reddit_fantasypl",
+  "outlet_class": "forum",
+  "url": "https://www.reddit.com/r/FantasyPL/comments/1x2axjj/the_official_fdr_may_be_underselling_newcastle/",
+  "clock": "feed_updated",
+  "raw_published_at": "2026-10-10T09:25:07+00:00",
+  "published_at_utc": "2026-10-10T09:25:07Z",
+  "observed_at_utc": "2026-10-10T09:27:28Z",
+  "headline": "The official FDR may be underselling Newcastle defenders from GW6",
+  "body": "I&#39;ve been looking at the upcoming fixtures specifically from a defensive perspective, rather than using the overall FDR. Newcastle caught my eye. The official FDR gives them just 1 green fixture in GW6–9 , while my defensive ratings give them 3: Coventry (A), Palace (A) and Everton (H) . They also rank 3rd for defensive fixtures across GW6–11 , which makes Lewis Hall an interesting option for a GW6 Wildcard. I made the attached ticker using fpl-advantage.com , a tool I&#39;ve built that lets you customize team strengths and assess attacking and defensive fixtures separately. These are my own ratings, but you can adjust them to reflect your own view of the teams. Curious whether others are considering Newcastle defenders or see things differently. I also share FPL analysis and updates on Twitter/X: u/FPLadvantage . &#32; submitted by &#32; /u/wwonderr [link] &#32; [comments]",
+  "player_ids": [],
+  "sha256": "732e2c6385e7da3b2fc498653ea4dde33a656045a35ca89c462db3fd7dad3961"
+}

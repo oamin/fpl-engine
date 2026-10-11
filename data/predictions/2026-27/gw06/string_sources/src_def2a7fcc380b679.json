@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:def2a7fcc380b679",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/crgj96ww6x4eo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 08 Oct 2026 21:10:23 GMT",
+  "published_at_utc": "2026-10-08T21:10:23Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "Real seek McTominay move - Friday's gossip",
+  "body": "Real Madrid are interested in former Manchester United midfielder Scott McTominay and France forward Michael Olise, while Chelsea are keen on Frenkie de Jong.",
+  "player_ids": [],
+  "sha256": "2823dcaff8fa55e31e39cd907b160c1e9b550d403920b220f72d8a0519159db1"
+}

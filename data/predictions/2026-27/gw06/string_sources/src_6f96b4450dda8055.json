@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:6f96b4450dda8055",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cx240n2p57y5o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 09 Oct 2026 10:04:35 GMT",
+  "published_at_utc": "2026-10-09T10:04:35Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "What could Rangers' 2012 case tell us about Man City's uncertain future?",
+  "body": "From sanctions and stripped titles to starting from scratch, BBC Scotland explains how potential consequences for Manchester City compare with the financial collapse of Rangers in 2012.",
+  "player_ids": [],
+  "sha256": "45bb0ec4d56dad6d3dae8b182fac036043ac69dacb36032275f997b1a63e361c"
+}

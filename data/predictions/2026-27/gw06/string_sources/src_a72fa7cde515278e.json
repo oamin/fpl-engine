@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:a72fa7cde515278e",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/videos/ck5ynp3ej7m8o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Mon, 05 Oct 2026 21:56:05 GMT",
+  "published_at_utc": "2026-10-05T21:56:05Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "Highlights: Northern Ireland frustrated by Georgia",
+  "body": "Watch highlights as Northern Ireland end the extended window with a 0-0 Nations League draw against Georgia at Windsor Park.",
+  "player_ids": [],
+  "sha256": "8b377ea60955d35f0ef5debd5bb1fff76821cacb7f858d5a480c04287e6dc8bd"
+}

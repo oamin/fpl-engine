@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:0cddfda2032a6aac",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cxj0l2d4dp2vo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Sat, 10 Oct 2026 08:28:17 GMT",
+  "published_at_utc": "2026-10-10T08:28:17Z",
+  "observed_at_utc": "2026-10-10T09:27:28Z",
+  "headline": "Delight for Scotland's Cuthbert after long summer of recovery",
+  "body": "Erin Cuthbert expresses joy and relief at making her first appearance of the season in Scotland's impressive 2-0 win over Czech Republic.",
+  "player_ids": [],
+  "sha256": "e10a0f17729efe620b4750660cdd2c438336f2774f400bf87b664813e5db8ab3"
+}

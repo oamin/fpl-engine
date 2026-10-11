@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:d66484db6d5fdb25",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/c6y4z21xelk4o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Wed, 30 Sep 2026 06:07:28 GMT",
+  "published_at_utc": "2026-09-30T06:07:28Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "The part-timers who won three Wembley finals in a row",
+  "body": "You probably knew Pep Guardiola's Manchester City won four League Cups on the bounce between 2018 and 2021 – but another side did the silverware hat-trick first.",
+  "player_ids": [],
+  "sha256": "6eeebf9d6d46cdacb22e1b4f6ad585039b699b324bedd12534b26a03ae726ff6"
+}

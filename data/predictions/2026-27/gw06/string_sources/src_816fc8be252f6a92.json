@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:816fc8be252f6a92",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cv1j300zln14o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 09 Oct 2026 05:35:26 GMT",
+  "published_at_utc": "2026-10-09T05:35:26Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "Who am I? Plus today's other quizzes",
+  "body": "Test your ball knowledge against today's Who Am I?, Five in Five and Brainteaser.",
+  "player_ids": [],
+  "sha256": "c5f5be2a5a38bc88321afb7981a6ca496de8c69e69efb17eafe656fff4baf4dc"
+}

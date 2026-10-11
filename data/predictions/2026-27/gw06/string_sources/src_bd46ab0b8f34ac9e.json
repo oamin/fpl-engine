@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:bd46ab0b8f34ac9e",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cq2d6l0p6ry0o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 08 Oct 2026 08:20:13 GMT",
+  "published_at_utc": "2026-10-08T08:20:13Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "'Are you accusing me of receiving money?' - what Guardiola has said about charges",
+  "body": "BBC Sport examines Pep Guardiola's comments about the Manchester City financial rule-breaking case during his time managing the club.",
+  "player_ids": [],
+  "sha256": "a6b224f68a45ce7dae0131fcba267e51a9e3d3c04b30f0b2eaba278f9166fe58"
+}

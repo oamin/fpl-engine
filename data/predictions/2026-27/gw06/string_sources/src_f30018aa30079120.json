@@ -1,0 +1,14 @@
+{
+  "source_id": "guardian:f30018aa30079120",
+  "source": "guardian",
+  "outlet_class": "press",
+  "url": "https://www.theguardian.com/football/2026/oct/09/premier-league-so-far-data-pointers-draw-xg",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 09 Oct 2026 18:00:34 GMT",
+  "published_at_utc": "2026-10-09T18:00:34Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "The Premier League so far: draws, underperforming xG and other data pointers",
+  "body": "Goal averages are crumbling as players take fewer touches in the box and forwards underperform against xG Goals are on the up in the Premier League. The average of 2.70 non-penalty goals per game in 2026-27 is higher than last season and two of the four previous campaigns. Yet we should have been even more royally entertained. Matches have averaged 2.88 non-penalty expected goals, the second most in the past six seasons. Chances have been going to waste. If the 20 teams converted at the par rate, there would have been almost two extra goals per week. As few as that sounds, the proportion of games drawn is higher than in any past Premier League season. Some tied matches might have been settled had the finishing been up to the mark. Continue reading...",
+  "player_ids": [],
+  "sha256": "9ac7941a0c9532a8be3a139c73f0153ff7792bb88e65f6631aee2d6e91373545"
+}
