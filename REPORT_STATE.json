@@ -1,19 +1,10 @@
 {
-  "milestone": "model-iteration",
+  "milestone": "gw6-numagent-audit",
   "status": "recorded",
-  "summary": "Each gameweek lock stores the model iteration that produced it. The registry is data/predictions/2026-27/model_registry.jsonl. The Saturday numagent lock is numagent-gw6-lock at 6638dce (source 69da7110), which still passes anytime rates through the residual budget. The current numagent iteration is numagent-anytime-full at 57ea53d (source f3c1ebce). The Saturday stragent lock is stragent-gw6 at 756491e (source ae4de9a0, model_id gemini-3.8-flash-high), and that row is still the current string iteration. A later --lock stores the current row and stops, with no ledger bytes, when the working-tree hash differs. Gameweek 6 ledger rows and 20261010T091116Z.csv are unchanged. The iteration for that lock is on the two session manifests and on lock_gw6.json. Required freeze keys are unchanged.",
+  "summary": "The Gameweek 6 numagent selection is iteration numagent-gw6-lock at 6638dce. The scorer opened the retired player-history cache, E0_2627, the 20-row Betfair sheet, xmi_t1, the T-1 bootstrap, fixtures, 12 anytime runners, 19 outright clubs, and the ojaminFC entry. ep_next was stored after the squad was chosen. The score is xp_on_pot. This iteration scales priced anytime rates into the lambda left after unpriced teammates' historical shares. plan_half sums Gameweeks 6 and 7 only. The audit is reports/gw6_numagent_audit.md. The lock files were not rewritten.",
   "gemini": null,
   "artifacts": [
-    "src/live/model_registry.py",
-    "data/predictions/2026-27/model_registry.jsonl",
-    "src/live/session.py",
-    "src/str_agent/session.py",
-    "tests/test_model_registry.py",
-    "tests/test_live_session.py",
-    "tests/test_str_agent_session.py",
-    "data/predictions/2026-27/gw06/session_numagent.json",
-    "data/predictions/2026-27/gw06/session_stragent.json",
-    "data/predictions/2026-27/gw06/lock_gw6.json",
+    "reports/gw6_numagent_audit.md",
     "data/predictions/2026-27/LOCKS.md"
   ]
 }
