@@ -393,6 +393,11 @@ class ScoresAndLock(unittest.TestCase):
             self.assertEqual(row["forecast_expected_points"]["ft1_xi_c_score_xp"], 25.0)
             self.assertIsNone(row["realised"]["evaluated_at_utc"])
             self.assertEqual(row["provenance"]["official_sha256"], sha256_file(kwargs["official_path"]))
+            self.assertEqual(row["provenance"]["model_iteration_id"], "numagent-anytime-full")
+            self.assertEqual(
+                row["provenance"]["model_source_sha256"],
+                "f3c1ebce7fa42a335bde4b9f68fc2a2b3e2e96020d0c936ea5ff326dd13e2e0b",
+            )
             from src.live.freeze_week import ProvenanceViolationError
 
             with self.assertRaises(ProvenanceViolationError):
@@ -438,6 +443,8 @@ class ScoresAndLock(unittest.TestCase):
             text = (gw / "20261017T090000Z.csv").read_text(encoding="utf-8")
             self.assertIn("forecast_xp", text)
             self.assertIn("score_xp", text)
+            self.assertEqual(stored["model"]["iteration_id"], "numagent-anytime-full")
+            self.assertTrue(stored["model"]["matches_registered"])
 
     def test_a_late_run_writes_no_ledger_row(self) -> None:
         with tempfile.TemporaryDirectory() as folder:
@@ -463,6 +470,47 @@ class ScoresAndLock(unittest.TestCase):
                     bootstrap_path=boot,
                 )
             self.assertFalse(ledger.exists())
+
+    def test_a_changed_model_file_writes_no_ledger(self) -> None:
+        from src.live.model_registry import NUMAGENT_FILES
+
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            code = root / "code"
+            for rel in NUMAGENT_FILES:
+                dest = code / rel
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                dest.write_bytes(Path(rel).read_bytes())
+            scorer = code / "src" / "live" / "scorer.py"
+            scorer.write_bytes(scorer.read_bytes() + b"\n# drift\n")
+            kwargs = self._lock_inputs(root)
+            with self.assertRaises(SessionError) as caught:
+                lock_from_pick(
+                    _pick(),
+                    gw=7,
+                    deadline_utc="2026-10-17T10:00:00Z",
+                    frozen_at_utc="2026-10-17T09:00:00Z",
+                    code_root=code,
+                    **kwargs,
+                )
+            self.assertIn("source hash", str(caught.exception))
+            self.assertFalse(kwargs["ledger"].exists())
+
+            def pull(_path: Path) -> int:
+                raise AssertionError("exchange pulled")
+
+            with self.assertRaises(SessionError):
+                run_numagent(
+                    7,
+                    deadline_utc="2026-10-17T10:00:00Z",
+                    root=root,
+                    lock=True,
+                    frozen_at_utc="2026-10-17T09:00:00Z",
+                    ledger=root / "week_freeze.jsonl",
+                    pull=pull,
+                    code_root=code,
+                )
+            self.assertFalse((root / "week_freeze.jsonl").exists())
 
 
 class MorningGameweek(unittest.TestCase):
@@ -491,6 +539,22 @@ class MorningGameweek(unittest.TestCase):
         self.assertEqual(
             manifest["score_xp_xi_c"]["decision"],
             freeze["forecast_expected_points"]["decision_xi_c_score_xp"],
+        )
+        self.assertEqual(manifest["model"]["iteration_id"], "numagent-gw6-lock")
+        self.assertEqual(
+            manifest["model"]["iteration_commit"],
+            "6638dce8baee02071c3f1461f065face9bd50863",
+        )
+        self.assertEqual(
+            manifest["model"]["source_sha256"],
+            "69da7110464578f4f546167d559bd3405bc4e225e32f1fd0bdca03a246d83c55",
+        )
+        from src.live.freeze_week import REQUIRED_PROVENANCE
+
+        self.assertEqual(set(freeze["provenance"]), set(REQUIRED_PROVENANCE))
+        self.assertEqual(
+            sha256_file(LEDGER),
+            "2a8d08122ba8c9539f0c096b048d578d231ae2db3a26af85166daec5e1784f27",
         )
 
     def test_the_locked_morning_manifest_stops_another_session(self) -> None:

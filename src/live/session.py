@@ -4,8 +4,9 @@ The order is fixed. Minutes are compiled from ``news_packets`` into
 ``gwNN/xmi_t1.csv``. The Exchange book is ``gwNN/betfair_t1`` and nowhere
 else. ``price_half`` then runs with ``choice=None``, so the squad is chosen
 on ``score_xp`` and later weeks stay ``forecast_xp``. ``--lock`` appends one
-row to the numeric ledger only when the clock is before the deadline and
-that gameweek has no row yet.
+row to the numeric ledger only when the clock is before the deadline,
+that gameweek has no row yet, and the model files match the current
+iteration in ``model_registry.jsonl``.
 
 The dossier under ``string_sources`` is not a minutes input. A missing
 Exchange file stops the run. An older ``betfair_*`` folder and
@@ -28,6 +29,11 @@ from src.live.freeze_week import (
     build_freeze_row,
     sha256_file,
     write_deadline_freeze,
+)
+from src.live.model_registry import (
+    RegistryError,
+    record_for_lock,
+    record_for_session,
 )
 from src.live.news_packets import (
     compile_player_xmi,
@@ -407,16 +413,22 @@ def lock_from_pick(
     scores_path: Path,
     ledger: Path,
     root: Path | None = None,
+    code_root: Path | None = None,
+    registry: Path | None = None,
 ) -> dict[str, Any]:
     """Build the freeze row from the score_xp squads and the official ``ep_next`` file.
 
-    The clock is checked first. A late clock or a second gameweek writes
-    nothing.
+    The clock is checked first. A late clock, a second gameweek, or a model
+    tree that is not the current iteration writes nothing.
     """
     if not published_before(frozen_at_utc, deadline_utc):
         raise SessionError("frozen_at is not before the deadline")
     if _ledger_has_gw(ledger, gw):
         raise ProvenanceViolationError(f"GW{int(gw)} already has a freeze row")
+    try:
+        model = record_for_lock("numagent", root=code_root, registry=registry)
+    except RegistryError as exc:
+        raise SessionError(str(exc)) from exc
     ep_next = load_ep_next(official_path, gw)
     decision = pick.decision
     base = Path(root) if root is not None else ROOT
@@ -441,6 +453,10 @@ def lock_from_pick(
             "odds_source": "betfair",
             "odds_manifest_sha256": sha256_file(lines_path),
             "pool_forecast_sha256": sha256_file(scores_path),
+            "model_iteration_id": model["iteration_id"],
+            "model_iteration_commit": model["iteration_commit"],
+            "model_locked_commit": model["locked_commit"],
+            "model_source_sha256": model["source_sha256"],
         },
         decision={
             "chip_played": pick.chip,
@@ -467,6 +483,7 @@ def lock_from_pick(
         },
     )
     write_deadline_freeze(row, ledger)
+    row["model"] = model
     return row
 
 
@@ -710,6 +727,8 @@ def run_numagent(
     stamp: str | None = None,
     bootstrap_path: Path | None = None,
     history_dir: Path | None = None,
+    code_root: Path | None = None,
+    registry: Path | None = None,
 ) -> dict[str, Any]:
     """Compile, price, and optionally lock. A locked manifest is left as it is."""
     base = Path(root) if root is not None else ROOT
@@ -720,6 +739,11 @@ def run_numagent(
     ledger_path = ledger or (base / "data" / "predictions" / "2026-27" / "week_freeze.jsonl")
     if _ledger_has_gw(ledger_path, gw):
         raise SessionError(f"GW{int(gw)} already has a freeze row")
+    if lock:
+        try:
+            record_for_lock("numagent", root=code_root, registry=registry)
+        except RegistryError as exc:
+            raise SessionError(str(exc)) from exc
     steps: list[dict[str, Any]] = []
     sheet = gw_folder(gw, base) / "xmi_t1.csv"
     boot = bootstrap_path or _find_bootstrap(gw, base)
@@ -775,7 +799,7 @@ def run_numagent(
         if not published_before(frozen, deadline_utc):
             raise SessionError("frozen_at is not before the deadline")
         official = official_capture(gw, base)
-        lock_from_pick(
+        locked_row = lock_from_pick(
             pick,
             gw=gw,
             deadline_utc=deadline_utc,
@@ -786,10 +810,17 @@ def run_numagent(
             scores_path=scores_path,
             ledger=ledger_path,
             root=base,
+            code_root=code_root,
+            registry=registry,
         )
+        model = locked_row["model"]
         locked = True
         steps.append({"name": "lock", "status": "locked"})
     else:
+        try:
+            model = record_for_session("numagent", root=code_root, registry=registry)
+        except RegistryError as exc:
+            raise SessionError(str(exc)) from exc
         steps.append({"name": "lock", "status": "skipped"})
     payload = {
         "gw": int(gw),
@@ -801,6 +832,7 @@ def run_numagent(
             "pool_forecast_sha256": sha256_file(scores_path),
         },
         "locked": locked,
+        "model": model,
         "realised": None,
         "chip": pick.chip,
         "score_xp_xi_c": {

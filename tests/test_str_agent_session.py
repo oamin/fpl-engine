@@ -205,6 +205,11 @@ class StringSession(unittest.TestCase):
             plan = json.loads((plan_root / "gw07.json").read_text(encoding="utf-8"))
             self.assertEqual(len(plan["horizon"]), 3)
             self.assertEqual(row["provenance"]["plan_sha256"], result["plan_sha256"])
+            self.assertEqual(row["provenance"]["model_iteration_id"], "stragent-gw6")
+            self.assertEqual(
+                row["provenance"]["model_source_sha256"],
+                "ae4de9a0ce5a0f784c353e0a8d809f52ed49c2f7fa0eb59cbe6e58f3d9fab10e",
+            )
             before = ledger.read_bytes()
             with self.assertRaises(DuplicateFreezeError):
                 apply_reply(
@@ -216,6 +221,50 @@ class StringSession(unittest.TestCase):
                     ledger=ledger,
                 )
             self.assertEqual(ledger.read_bytes(), before)
+
+    def test_a_changed_prompt_writes_no_plan_or_ledger(self) -> None:
+        from src.live.model_registry import STRAGENT_FILES
+
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            code = root / "code"
+            for rel in STRAGENT_FILES:
+                dest = code / rel
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                dest.write_bytes(Path(rel).read_bytes())
+            prompt = code / "src" / "str_agent" / "prompt.py"
+            prompt.write_bytes(prompt.read_bytes() + b"\n# drift\n")
+            ledger = root / "string_agent_freeze.jsonl"
+            with self.assertRaises(SessionError) as caught:
+                apply_reply(
+                    _pack(),
+                    _reply(),
+                    frozen_at_utc=FROZEN,
+                    plan_root=root / "plans",
+                    lock=True,
+                    ledger=ledger,
+                    code_root=code,
+                )
+            self.assertIn("source hash", str(caught.exception))
+            self.assertFalse(ledger.exists())
+            self.assertFalse((root / "plans").exists())
+
+            def trawl_fn(*_args: object, **_kwargs: object) -> object:
+                raise AssertionError("feeds polled")
+
+            with self.assertRaises(SessionError):
+                run_stragent(
+                    6,
+                    deadline_utc=DEADLINE,
+                    root=root,
+                    plan_root=root / "plans",
+                    lock=True,
+                    frozen_at_utc=FROZEN,
+                    ledger=ledger,
+                    trawl_fn=trawl_fn,
+                    code_root=code,
+                )
+            self.assertFalse(ledger.exists())
 
 
 class MorningStringSession(unittest.TestCase):
@@ -232,6 +281,23 @@ class MorningStringSession(unittest.TestCase):
         self.assertEqual(manifest["hashes"]["plan_sha256"], row["provenance"]["plan_sha256"])
         self.assertEqual(manifest["hashes"]["context_sha256"], row["provenance"]["context_sha256"])
         self.assertEqual(manifest["steps"][-1]["status"], "locked")
+        self.assertEqual(manifest["model"]["iteration_id"], "stragent-gw6")
+        self.assertEqual(
+            manifest["model"]["iteration_commit"],
+            "756491ed3d458fb19e595d46ae62cf5468836a6a",
+        )
+        self.assertEqual(manifest["model"]["model_id"], "gemini-3.8-flash-high")
+        self.assertEqual(
+            manifest["model"]["prompt_sha256"],
+            row["provenance"]["prompt_sha256"],
+        )
+        from src.live.freeze_week import sha256_file
+
+        self.assertNotIn("model_iteration_id", row["provenance"])
+        self.assertEqual(
+            sha256_file(STRING_LEDGER),
+            "e166d3d79cbc6cd595809008d9a6f83f9282083182bdf6dc6835d829f826f5ad",
+        )
 
         def trawl_fn(*_args: object, **_kwargs: object) -> object:
             raise AssertionError("feeds polled")

@@ -1,17 +1,19 @@
 {
-  "milestone": "live-session",
-  "status": "reviewed",
-  "summary": "The next deadline has one command for each manager. python3 -m src.live.session compiles xmi_t1 from news_packets, uses gwNN/betfair_t1 for match odds, anytime prices, and outright ranks, writes score_xp and forecast_xp, and chooses the squad on score_xp. --lock stores the decision, the untouched eleven, and the one-transfer eleven with both score_xp and ep_next. python3 -m src.str_agent.session fills the dossier, passes earlier notebook rows, and waits for --reply. From Gameweek 7 the string squad starts from the previous plan. --lock stores week 0. A late clock and a second row write no ledger bytes. Realised stays null. Gameweek 6 ledgers were not appended. The session was not run for Gameweek 7. Gemini accepted the session gates. The Saturday morning Gameweek 6 run is now gw06/session_numagent.json and gw06/session_stragent.json. Both are locked and use the ledger hashes. The morning score file is unchanged; Gameweek 6 in it reads as score_xp and Gameweeks 7 and 8 as forecast_xp.",
-  "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
+  "milestone": "model-iteration",
+  "status": "recorded",
+  "summary": "Each gameweek lock stores the model iteration that produced it. The registry is data/predictions/2026-27/model_registry.jsonl. The Saturday numagent lock is numagent-gw6-lock at 6638dce (source 69da7110), which still passes anytime rates through the residual budget. The current numagent iteration is numagent-anytime-full at 57ea53d (source f3c1ebce). The Saturday stragent lock is stragent-gw6 at 756491e (source ae4de9a0, model_id gemini-3.8-flash-high), and that row is still the current string iteration. A later --lock stores the current row and stops, with no ledger bytes, when the working-tree hash differs. Gameweek 6 ledger rows and 20261010T091116Z.csv are unchanged. The iteration for that lock is on the two session manifests and on lock_gw6.json. Required freeze keys are unchanged.",
+  "gemini": null,
   "artifacts": [
+    "src/live/model_registry.py",
+    "data/predictions/2026-27/model_registry.jsonl",
     "src/live/session.py",
     "src/str_agent/session.py",
+    "tests/test_model_registry.py",
     "tests/test_live_session.py",
     "tests/test_str_agent_session.py",
-    "README.md",
-    "data/README.md",
-    "data/predictions/2026-27/LOCKS.md",
     "data/predictions/2026-27/gw06/session_numagent.json",
-    "data/predictions/2026-27/gw06/session_stragent.json"
+    "data/predictions/2026-27/gw06/session_stragent.json",
+    "data/predictions/2026-27/gw06/lock_gw6.json",
+    "data/predictions/2026-27/LOCKS.md"
   ]
 }

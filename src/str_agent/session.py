@@ -19,6 +19,7 @@ import json
 from pathlib import Path
 from typing import Any, Callable, Mapping
 
+from src.live.model_registry import RegistryError, record_for_lock, record_for_session
 from src.live.news_tags import published_before
 from src.str_agent.freeze import DuplicateFreezeError, commit_official
 from src.str_agent.horizon import (
@@ -29,7 +30,7 @@ from src.str_agent.horizon import (
 )
 from src.str_agent.notebook import NotebookError, notebook_section
 from src.str_agent.prompt import SYSTEM
-from src.str_agent.runner import assemble_freeze_row
+from src.str_agent.runner import assemble_freeze_row, sha256_text
 from src.str_agent.trial import TrialPack, prepare, save_submitted_plan
 from src.str_agent.trawl import trawl
 
@@ -131,24 +132,35 @@ def apply_reply(
     lock: bool = False,
     ledger: Path | None = None,
     model_id: str | None = None,
+    code_root: Path | None = None,
+    registry: Path | None = None,
 ) -> dict[str, Any]:
     """Validate the three-week reply. An illegal reply writes no plan and no note.
 
     ``--lock`` commits week 0 only, and only before the deadline. A second
     row for the gameweek raises ``DuplicateFreezeError`` before the plan is
-    rewritten.
+    rewritten. A model tree that is not the current iteration writes no plan
+    and no ledger row.
     """
     if not published_before(frozen_at_utc, pack.deadline_utc):
         raise SessionError("frozen_at is not before the deadline")
     if lock and ledger is not None and _ledger_has_gw(ledger, pack.carry.gw):
         raise DuplicateFreezeError(f"GW{pack.carry.gw} already frozen")
-    model = model_id or str(payload.get("model_id") or "file")
+    model_name = model_id or str(payload.get("model_id") or "file")
+    iteration = None
+    if lock:
+        try:
+            iteration = record_for_lock("stragent", root=code_root, registry=registry)
+        except RegistryError as exc:
+            raise SessionError(str(exc)) from exc
+        iteration["model_id"] = model_name
+        iteration["prompt_sha256"] = sha256_text(SYSTEM)
     try:
         path, digest = save_submitted_plan(
             pack,
             payload,
             frozen_at_utc=frozen_at_utc,
-            model_id=model,
+            model_id=model_name,
             root=plan_root,
         )
     except (HorizonError, NotebookError, KeyError, ValueError) as exc:
@@ -159,7 +171,7 @@ def apply_reply(
             gw=int(pack.carry.gw),
             deadline_utc=pack.deadline_utc,
             frozen_at_utc=frozen_at_utc,
-            model_id=model,
+            model_id=model_name,
             system_prompt=SYSTEM,
             context_markdown=pack.context,
             model_payload=payload,
@@ -169,6 +181,12 @@ def apply_reply(
         )
         if not row["accounting"]["is_legal"]:
             raise SessionError("; ".join(row["accounting"]["errors"]))
+        if iteration is None:
+            raise SessionError("a lock has no model iteration")
+        row["provenance"]["model_iteration_id"] = iteration["iteration_id"]
+        row["provenance"]["model_iteration_commit"] = iteration["iteration_commit"]
+        row["provenance"]["model_locked_commit"] = iteration["locked_commit"]
+        row["provenance"]["model_source_sha256"] = iteration["source_sha256"]
         clean = dict(row)
         clean["accounting"] = {
             "bank_remaining": row["accounting"]["bank_remaining"],
@@ -180,7 +198,13 @@ def apply_reply(
                 clean["accounting"][key] = row["accounting"][key]
         # Week 0 is ``decision``. Later horizon weeks stay on the plan file.
         committed = str(commit_official(clean, plan_sha256=digest, path=ledger))
-    return {"plan": str(path), "plan_sha256": digest, "committed": committed, "gw": int(pack.carry.gw)}
+    return {
+        "plan": str(path),
+        "plan_sha256": digest,
+        "committed": committed,
+        "gw": int(pack.carry.gw),
+        "model": iteration,
+    }
 
 
 def run_stragent(
@@ -197,6 +221,8 @@ def run_stragent(
     trawl_fn: TrawlFn | None = None,
     prepare_fn: PrepareFn | None = None,
     observed_at_utc: str | None = None,
+    code_root: Path | None = None,
+    registry: Path | None = None,
 ) -> dict[str, Any]:
     """Trawl, build the prompt, and stop until a reply is passed in.
 
@@ -208,6 +234,11 @@ def run_stragent(
     if existing is not None and existing.get("locked") is True:
         raise SessionError(f"locked manifest is not overwritten: {manifest}")
     require_prior_plan(gw, plan_root)
+    if lock:
+        try:
+            record_for_lock("stragent", root=code_root, registry=registry)
+        except RegistryError as exc:
+            raise SessionError(str(exc)) from exc
     observed = observed_at_utc or utc_now()
     if trawl_fn is None:
         trawl_result = trawl(int(gw), deadline_utc=deadline_utc, observed_at_utc=observed, root=root)
@@ -251,7 +282,14 @@ def run_stragent(
     plan_sha = None
     if reply is None:
         steps.append({"name": "reply", "status": "waiting"})
-        payload = _manifest(gw, steps, locked=False, plan_sha=None, context_sha=context_sha)
+        payload = _manifest(
+            gw,
+            steps,
+            locked=False,
+            plan_sha=None,
+            context_sha=context_sha,
+            model=_session_model(code_root=code_root, registry=registry, model_id=None),
+        )
         _write_manifest(manifest, payload)
         payload["exit_code"] = 2
         return payload
@@ -262,19 +300,46 @@ def run_stragent(
         plan_root=plan_root,
         lock=lock,
         ledger=ledger,
+        code_root=code_root,
+        registry=registry,
     )
     plan_sha = result["plan_sha256"]
     steps.append({"name": "reply", "status": "ok"})
     if lock:
         locked = True
+        model = result["model"]
         steps.append({"name": "lock", "status": "locked", "gw": int(pack.carry.gw)})
     else:
+        named = str(reply.get("model_id") or "file")
+        model = _session_model(code_root=code_root, registry=registry, model_id=named)
         steps.append({"name": "lock", "status": "skipped"})
-    payload = _manifest(gw, steps, locked=locked, plan_sha=plan_sha, context_sha=context_sha)
+    payload = _manifest(
+        gw,
+        steps,
+        locked=locked,
+        plan_sha=plan_sha,
+        context_sha=context_sha,
+        model=model,
+    )
     _write_manifest(manifest, payload)
     payload["exit_code"] = 0
     payload["plan"] = result["plan"]
     return payload
+
+
+def _session_model(
+    *,
+    code_root: Path | None,
+    registry: Path | None,
+    model_id: str | None,
+) -> dict[str, Any]:
+    try:
+        record = record_for_session("stragent", root=code_root, registry=registry)
+    except RegistryError as exc:
+        raise SessionError(str(exc)) from exc
+    record["model_id"] = model_id
+    record["prompt_sha256"] = sha256_text(SYSTEM)
+    return record
 
 
 def _manifest(
@@ -284,12 +349,14 @@ def _manifest(
     locked: bool,
     plan_sha: str | None,
     context_sha: str | None,
+    model: Mapping[str, Any],
 ) -> dict[str, Any]:
     return {
         "gw": int(gw),
         "steps": steps,
         "hashes": {"plan_sha256": plan_sha, "context_sha256": context_sha},
         "locked": locked,
+        "model": dict(model),
         "realised": None,
     }
 

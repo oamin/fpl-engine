@@ -8,6 +8,13 @@
     "pool_forecast_sha256": "75c802b7c65e0bc47cd7a147e6e3e21fb10bfb927c77a730de813bcf00517ae9"
   },
   "locked": true,
+  "model": {
+    "iteration_commit": "6638dce8baee02071c3f1461f065face9bd50863",
+    "iteration_id": "numagent-gw6-lock",
+    "locked_commit": "6638dce8baee02071c3f1461f065face9bd50863",
+    "manager": "numagent",
+    "source_sha256": "69da7110464578f4f546167d559bd3405bc4e225e32f1fd0bdca03a246d83c55"
+  },
   "realised": null,
   "score_xp_xi_c": {
     "decision": 63.140285515933854,

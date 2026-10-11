@@ -7,6 +7,13 @@
   "locked": true,
   "chip_counts_toward_chip_rule": false,
   "choice_field": "score_xp",
+  "model": {
+    "manager": "numagent",
+    "iteration_id": "numagent-gw6-lock",
+    "iteration_commit": "6638dce8baee02071c3f1461f065face9bd50863",
+    "locked_commit": "6638dce8baee02071c3f1461f065face9bd50863",
+    "source_sha256": "69da7110464578f4f546167d559bd3405bc4e225e32f1fd0bdca03a246d83c55"
+  },
   "note": "reports/gw6_score_xp_team.md",
   "score_file": "data/predictions/2026-27/gw06/20261010T091116Z.csv",
   "ledger": "data/predictions/2026-27/week_freeze.jsonl",

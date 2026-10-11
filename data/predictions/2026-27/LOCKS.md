@@ -37,6 +37,22 @@ These files are legal dry runs. They are not ledger rows.
 | 3271409 | `reports/string_horizon_3271409/gw06.json` | João Pedro to Wood, Ødegaard captain, no chip |
 | 1078627 | `reports/string_horizon_1078627/gw06.json` | White and Cherki to Saka and Hall, Saka captain, no chip |
 
+## Model iterations
+
+`model_registry.jsonl` is append-only. The current iteration of a manager is the last row for that manager. A lock stores that iteration on the session manifest: `iteration_id`, `iteration_commit`, `locked_commit`, and `source_sha256`. A later numeric row also stores those four fields on the freeze provenance. Gameweek 6 keeps its iteration on `session_numagent.json`, `session_stragent.json`, and `lock_gw6.json`.
+
+| Lock | Iteration | Commit | Source |
+| --- | --- | --- | --- |
+| Gameweek 6 numagent | `numagent-gw6-lock` | `6638dce8baee02071c3f1461f065face9bd50863` | `69da7110464578f4f546167d559bd3405bc4e225e32f1fd0bdca03a246d83c55` |
+| Current numagent | `numagent-anytime-full` | `57ea53daf4ca8328f8cae524c87135da11f87ebf` | `f3c1ebce7fa42a335bde4b9f68fc2a2b3e2e96020d0c936ea5ff326dd13e2e0b` |
+| Gameweek 6 stragent, and the current string code | `stragent-gw6` | `756491ed3d458fb19e595d46ae62cf5468836a6a` | `ae4de9a0ce5a0f784c353e0a8d809f52ed49c2f7fa0eb59cbe6e58f3d9fab10e` |
+
+`numagent-gw6-lock` still passes anytime rates through the residual budget. That is the code that scored the Saturday lock. `numagent-anytime-full` applies each minutes-scaled rate in full and scales the club down only when the sum exceeds that club's lambda. `stragent-gw6` is the Saturday prompt, horizon, and carry, called as `gemini-3.8-flash-high`.
+
+The numagent hash covers the rules, the points formula, the chip margins, the squad search, and the deadline scorer. The stragent hash covers the rules, the prompt, and the legality of a plan. Session modules, manifests, and docs sit outside the hash.
+
+`--lock` hashes the working tree. When that hash differs from the current row, the lock stops and the ledger gains no bytes. Append a new registry row for the changed files before locking again.
+
 ## Next deadline
 
 Gameweek 6 is the only row in each ledger. The next row is appended by the session commands, one gameweek at a time, while the clock is before that deadline.

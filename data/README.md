@@ -24,7 +24,8 @@ Collectors write files. The models read the paths below. A frozen holdout file i
 
 | Directory | Holds |
 | --- | --- |
-| `predictions/2026-27/` | Pre-deadline scores, T−1 inputs, both lock ledgers, and the official string plan. |
+| `predictions/2026-27/` | Pre-deadline scores, T−1 inputs, both lock ledgers, the model iteration registry, and the official string plan. |
+| `predictions/2026-27/model_registry.jsonl` | Append-only iterations. The last row for a manager is the one a lock may store. |
 | `predictions/2026-27/gw06/` | Gameweek 6 minutes, Exchange book, news packets, string dossier, score file, and the two locked session manifests. |
 | `predictions/2026-27/gw06/fpl_t1/` | Bootstrap used to compile `xmi_t1.csv`. |
 | `predictions/2026-27/gw06/betfair_t1/` | T−1 match odds, anytime prices, outrights, and fixtures. |
