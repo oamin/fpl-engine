@@ -1,7 +1,7 @@
 {
   "milestone": "live-session",
   "status": "reviewed",
-  "summary": "The next deadline has one command for each manager. python3 -m src.live.session compiles xmi_t1 from news_packets, uses gwNN/betfair_t1 for match odds, anytime prices, and outright ranks, writes score_xp and forecast_xp, and chooses the squad on score_xp. --lock stores the decision, the untouched eleven, and the one-transfer eleven with both score_xp and ep_next. python3 -m src.str_agent.session fills the dossier, passes earlier notebook rows, and waits for --reply. From Gameweek 7 the string squad starts from the previous plan. --lock stores week 0. A late clock and a second row write no ledger bytes. Realised stays null. Gameweek 6 ledgers were not appended. The session was not run for Gameweek 7.",
+  "summary": "The next deadline has one command for each manager. python3 -m src.live.session compiles xmi_t1 from news_packets, uses gwNN/betfair_t1 for match odds, anytime prices, and outright ranks, writes score_xp and forecast_xp, and chooses the squad on score_xp. --lock stores the decision, the untouched eleven, and the one-transfer eleven with both score_xp and ep_next. python3 -m src.str_agent.session fills the dossier, passes earlier notebook rows, and waits for --reply. From Gameweek 7 the string squad starts from the previous plan. --lock stores week 0. A late clock and a second row write no ledger bytes. Realised stays null. Gameweek 6 ledgers were not appended. The session was not run for Gameweek 7. Gemini accepted the session gates.",
   "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
   "artifacts": [
     "src/live/session.py",
