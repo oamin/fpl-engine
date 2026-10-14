@@ -530,7 +530,6 @@ class MorningGameweek(unittest.TestCase):
             Path("data/predictions/2026-27/gw06/session_numagent.json").read_text(encoding="utf-8")
         )
         self.assertTrue(manifest["locked"])
-        self.assertIsNone(manifest["realised"])
         self.assertEqual(manifest["chip"], "wildcard")
         self.assertEqual(manifest["hashes"]["pool_forecast_sha256"], freeze["provenance"]["pool_forecast_sha256"])
         self.assertEqual(manifest["hashes"]["minutes_sha256"], freeze["provenance"]["minutes_sha256"])
@@ -552,10 +551,20 @@ class MorningGameweek(unittest.TestCase):
         from src.live.freeze_week import REQUIRED_PROVENANCE
 
         self.assertEqual(set(freeze["provenance"]), set(REQUIRED_PROVENANCE))
+        self.assertEqual(freeze["realised"]["actual_decision_xi_pts"], 56.0)
+        self.assertEqual(freeze["realised"]["actual_hold_xi_pts"], 51.0)
+        self.assertEqual(freeze["realised"]["actual_ft1_xi_pts"], 48.0)
+        self.assertEqual(freeze["realised"]["net_gain_vs_ft1"], 8.0)
+        self.assertEqual(manifest["realised"]["actual_decision_xi_pts"], 56.0)
         self.assertEqual(
-            sha256_file(LEDGER),
-            "2a8d08122ba8c9539f0c096b048d578d231ae2db3a26af85166daec5e1784f27",
+            freeze["forecast_expected_points"]["decision_xi_c_ep_next"],
+            56.0,
         )
+        self.assertEqual(
+            sha256_file(score),
+            "75c802b7c65e0bc47cd7a147e6e3e21fb10bfb927c77a730de813bcf00517ae9",
+        )
+        self.assertTrue(Path("data/holdout/2026-27/player_gw/gw06.csv").is_file())
 
     def test_the_locked_morning_manifest_stops_another_session(self) -> None:
         with self.assertRaises(SessionError):

@@ -33,7 +33,7 @@ Collectors write files. The models read the paths below. A frozen holdout file i
 | `predictions/2026-27/gw06/string_sources/` | The dossier stragent read for Gameweek 6. |
 | `predictions/2026-27/string_plans/` | The official three-week string plan and the manager notebook. |
 | `entry/` | Stored manager ledgers. |
-| `holdout/2026-27/player_gw/` | Finished Gameweeks 1–5, one file each. |
+| `holdout/2026-27/player_gw/` | Finished gameweeks, one file each. Gameweeks 1–5 are in the holdout freeze. Gameweek 6 is the first clean post-match sheet. |
 | `live/` | Holdout snapshots. Tracked files are `gw_lines.csv`, `news_docs_gw15.json`, `HOLDOUT_FREEZE.json`, and `chip_decisions.jsonl`. The rest of this directory stays local. |
 | `cache/` | Rebuildable pulls. Full-season dumps are gitignored. |
 | `processed/` | Derived frames. Full-season dumps are gitignored. |

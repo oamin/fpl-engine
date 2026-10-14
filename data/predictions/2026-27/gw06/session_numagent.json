@@ -15,7 +15,16 @@
     "manager": "numagent",
     "source_sha256": "69da7110464578f4f546167d559bd3405bc4e225e32f1fd0bdca03a246d83c55"
   },
-  "realised": null,
+  "realised": {
+    "actual_decision_xi_pts": 56.0,
+    "actual_ft1_xi_pts": 48.0,
+    "actual_hold_xi_pts": 51.0,
+    "clean_sheet_brier": 0.1372664661785353,
+    "evaluated_at_utc": "2026-10-14T16:22:48Z",
+    "net_gain_vs_ft1": 8.0,
+    "net_gain_vs_hold": 5.0,
+    "pool_spearman_rho": 0.3307813986806938
+  },
   "score_xp_xi_c": {
     "decision": 63.140285515933854,
     "ft1": 54.3295636994117,

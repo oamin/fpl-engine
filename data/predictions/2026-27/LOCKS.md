@@ -8,13 +8,13 @@ Realised points stay empty until the gameweek is read.
 
 Ledger: `week_freeze.jsonl`. Writer: `src/live/freeze_week.py`. Sidecar for Gameweek 6: `gw06/lock_gw6.json`.
 
-| GW | Frozen | Deadline | Chip on the row | Captain | Vice | Realised |
-| --- | --- | --- | --- | --- | --- | --- |
-| 6 | 2026-10-10T09:27:29Z | 2026-10-10T10:00:00Z | wildcard | Mbeumo `2026-27:427` | Fernandes `2026-27:426` | empty |
+| GW | Frozen | Deadline | Chip on the row | Captain | Vice | Realised XI+C | vs hold | vs 1FT |
+| --- | --- | --- | --- | --- | --- | ---: | ---: | ---: |
+| 6 | 2026-10-10T09:27:29Z | 2026-10-10T10:00:00Z | wildcard | Mbeumo `2026-27:427` | Fernandes `2026-27:426` | 56 | +5 | +8 |
 
 Formation 4-4-2. Bench order: Verbruggen, Wissa, Davis, Mainoo. The row records the wildcard that was submitted. `GW6_CHIP_COUNTS` in `src/eval/decision_spec.py` is false, so the row is a logged judgement. Minutes hash `efb2c9b0cb1be3de920b75bf0f5f5f1cace273389576971cd0b9d19ef382067d`. Exchange lines hash `98e5bb4281312953f19a18383d2d6691e34279618c900c736d39c22085bb1b0a`. Score file `gw06/20261010T091116Z.csv`.
 
-The morning run is the locked session file `gw06/session_numagent.json`. Its hashes are the freeze hashes. `20261010T091116Z.csv` keeps the writer columns from that morning. `load_step_scores` reads Gameweek 6 in that file as `score_xp` and Gameweeks 7 and 8 as `forecast_xp`. The iteration is `numagent-gw6-lock`. What that run read, and the formula that turned it into the wildcard, is `reports/gw6_numagent_audit.md`.
+The morning run is the locked session file `gw06/session_numagent.json`. Its hashes are the freeze hashes. `20261010T091116Z.csv` keeps the writer columns from that morning. `load_step_scores` reads Gameweek 6 in that file as `score_xp` and Gameweeks 7 and 8 as `forecast_xp`. The iteration is `numagent-gw6-lock`. What that run read, and the formula that turned it into the wildcard, is `reports/gw6_numagent_audit.md`. Realised points are on the freeze row and in `reports/gw6_realised.md`. The post-match sheet is `data/holdout/2026-27/player_gw/gw06.csv`.
 
 The ledger starts at Gameweek 6. The published Gameweeks 1–5 total of 280 is the historical climb in `reports/SUPERSEDED.md`. It is not a row in this file.
 
@@ -22,9 +22,9 @@ The ledger starts at Gameweek 6. The published Gameweeks 1–5 total of 280 is t
 
 Ledger: `string_agent_freeze.jsonl`. Writer: `src/str_agent/freeze.py`. Plan: `string_plans/gw06.json`.
 
-| GW | Frozen | Deadline | Chip | Move | Captain | Vice | Realised |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| 6 | 2026-10-10T09:37:55Z | 2026-10-10T10:00:00Z | none | Scarlett to Muniz | Fernandes `426` | Haaland `411` | empty |
+| GW | Frozen | Deadline | Chip | Move | Captain | Vice | Realised XI+C |
+| --- | --- | --- | --- | --- | --- | --- | ---: |
+| 6 | 2026-10-10T09:37:55Z | 2026-10-10T10:00:00Z | none | Scarlett to Muniz | Fernandes `426` | Haaland `411` | 49 |
 
 Bench order: Forster, Shaw, Calvert-Lewin, van Ewijk. Bank left 6 tenths. Plan sha256 `cafb5269f2cf375a12e753aa85489d363a4586ba4ee14c4baaefc666d14beccc`. The dossier for that plan is `gw06/string_sources/`. The morning run is the locked session file `gw06/session_stragent.json`. Its plan and context hashes are the ledger hashes. The notebook row for Gameweek 6 is in `string_plans/notebook.jsonl`.
 

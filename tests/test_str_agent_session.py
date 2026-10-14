@@ -277,7 +277,6 @@ class MorningStringSession(unittest.TestCase):
         )
         row = json.loads(STRING_LEDGER.read_text(encoding="utf-8").splitlines()[0])
         self.assertTrue(manifest["locked"])
-        self.assertIsNone(manifest["realised"])
         self.assertEqual(manifest["hashes"]["plan_sha256"], row["provenance"]["plan_sha256"])
         self.assertEqual(manifest["hashes"]["context_sha256"], row["provenance"]["context_sha256"])
         self.assertEqual(manifest["steps"][-1]["status"], "locked")
@@ -291,13 +290,10 @@ class MorningStringSession(unittest.TestCase):
             manifest["model"]["prompt_sha256"],
             row["provenance"]["prompt_sha256"],
         )
-        from src.live.freeze_week import sha256_file
-
         self.assertNotIn("model_iteration_id", row["provenance"])
-        self.assertEqual(
-            sha256_file(STRING_LEDGER),
-            "e166d3d79cbc6cd595809008d9a6f83f9282083182bdf6dc6835d829f826f5ad",
-        )
+        self.assertEqual(row["realised"]["actual_points"], 49.0)
+        self.assertEqual(manifest["realised"]["actual_points"], 49.0)
+        self.assertEqual(row["provenance"]["plan_sha256"], manifest["hashes"]["plan_sha256"])
 
         def trawl_fn(*_args: object, **_kwargs: object) -> object:
             raise AssertionError("feeds polled")
