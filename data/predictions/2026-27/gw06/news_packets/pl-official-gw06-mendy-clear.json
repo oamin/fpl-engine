@@ -1,0 +1,13 @@
+{
+  "packet_id": "pl_official:gw06:mendy-clear",
+  "source": "pl_official",
+  "url": "https://www.premierleague.com/en/news/4730320",
+  "published_at_utc": "2026-10-09T12:00:00Z",
+  "club": "Hull City",
+  "player_ids": [
+    586
+  ],
+  "headline": "Mendy available",
+  "body": "Premier League, 9 Oct 2026: Nobel Mendy has recovered and is expected to play.",
+  "sha256": "32d0a54ba2b63577b2e2b5f2d9be7b162895915f20b8b9180612e0a66944e936"
+}

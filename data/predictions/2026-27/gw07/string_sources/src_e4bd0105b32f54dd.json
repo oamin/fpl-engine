@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:e4bd0105b32f54dd",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/videos/c65y71z4rjj2o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Mon, 12 Oct 2026 21:35:07 GMT",
+  "published_at_utc": "2026-10-12T21:35:07Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "Coventry thrash Newcastle to claim first home win of season",
+  "body": "Coventry City stun Newcastle United with an emphatic 4-1 victory as they win their first Premier League game at home in 25 years.",
+  "player_ids": [],
+  "sha256": "70b8ee444fc5808e4d50181cece49e1e7b18dc0f9ab24562fddfd57931429d39"
+}

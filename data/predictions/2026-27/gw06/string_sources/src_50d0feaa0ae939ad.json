@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:50d0feaa0ae939ad",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cxr5y32r26l5o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Sat, 10 Oct 2026 06:29:58 GMT",
+  "published_at_utc": "2026-10-10T06:29:58Z",
+  "observed_at_utc": "2026-10-10T09:27:28Z",
+  "headline": "Tottenham to fly to Marbella for training camp",
+  "body": "Tottenham manager Roberto De Zerbi to take his squad to Marbella for team-bonding training camp after clash against Manchester United",
+  "player_ids": [],
+  "sha256": "a002da7c6523ed8f742e18a5ac679fecdc668c8f9510be63eab1da061fa6f473"
+}

@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:e31baf6f2b46c3fd",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/bitesize/articles/zgv7dnb?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 25 Sep 2026 10:15:00 GMT",
+  "published_at_utc": "2026-09-25T10:15:00Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "'I persuaded my club to give me a job as a content creator'",
+  "body": "Jacob discusses his route into his job as a content creator for a football club. Find out more about his role, career progression and top tips for getting into a similar role.",
+  "player_ids": [],
+  "sha256": "f8e6da76ce0c2b3cd4e40037803a6d9f49683095b234bdea38cdf7f17d7b4cba"
+}

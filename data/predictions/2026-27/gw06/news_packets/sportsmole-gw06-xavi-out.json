@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:xavi-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Spurs",
+  "player_ids": [
+    513
+  ],
+  "headline": "Xavi out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Xavi Simons is out with a knee injury.",
+  "sha256": "3fdc4761952d4faf7108c2f1c108de997e9ad56e8b6e32e7d8092a0c28b6d0b8"
+}

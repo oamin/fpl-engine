@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:4d28dc0b8f1a3fae",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/videos/crlyk7w4zp5xo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 09 Oct 2026 18:20:41 GMT",
+  "published_at_utc": "2026-10-09T18:20:41Z",
+  "observed_at_utc": "2026-10-09T20:08:14Z",
+  "headline": "Highlights: Albania 0-1 Wales",
+  "body": "Watch the best of the action as Wales beat Albania in Shkoder",
+  "player_ids": [],
+  "sha256": "188e31ee42c919fa443f9746094569c1c1d9c58c418d10a4ee328778f07f3d6f"
+}

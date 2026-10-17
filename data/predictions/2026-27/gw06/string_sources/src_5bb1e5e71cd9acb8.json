@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:5bb1e5e71cd9acb8",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cq5yjyyzd35do?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Sat, 10 Oct 2026 05:14:17 GMT",
+  "published_at_utc": "2026-10-10T05:14:17Z",
+  "observed_at_utc": "2026-10-10T09:27:28Z",
+  "headline": "Time to rise? Ranking European football's sleeping giants",
+  "body": "From Sampdoria to Saint-Etienne and Real Zaragoza, who are the sleeping giants of European football?",
+  "player_ids": [],
+  "sha256": "f05f4780d51ff889226fca72f26689391897eed4a3269908f0ea6456708c71b9"
+}

@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:c8582381f5839052",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sounds/play/p0ph0g51?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 16 Oct 2026 07:00:00 GMT",
+  "published_at_utc": "2026-10-16T07:00:00Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "Listen: Scottish Premiership weekend preview after European blows",
+  "body": "Full Scottish premiership preview with Craig Telfer, Scott Allan and Conor Sammon.",
+  "player_ids": [],
+  "sha256": "d49a592c35bf5c0b1408e481a5ec4e7138db838c38930187f7003c5734ed9c2e"
+}

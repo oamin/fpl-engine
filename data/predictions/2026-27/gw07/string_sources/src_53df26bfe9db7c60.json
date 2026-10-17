@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:53df26bfe9db7c60",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/c920v34y4l2zo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Mon, 28 Sep 2026 14:43:05 GMT",
+  "published_at_utc": "2026-09-28T14:43:05Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "How does Cas work and why can't Man City appeal to it?",
+  "body": "The Court of Arbitration for Sport (CAS) regulates legal disputes across the world of sport",
+  "player_ids": [],
+  "sha256": "ce2dcf670bba1d1b204dafd086b4c6bd099e963e8f39746722082d2ae83b550e"
+}

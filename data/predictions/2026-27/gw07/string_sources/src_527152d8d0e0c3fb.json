@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:527152d8d0e0c3fb",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cq073d9l0ly9o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 16 Oct 2026 13:36:09 GMT",
+  "published_at_utc": "2026-10-16T13:36:09Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "Chelsea's James out for three months after knee surgery",
+  "body": "Chelsea captain Reece James is set to miss three months of action after undergoing knee surgery.",
+  "player_ids": [],
+  "sha256": "ea4b792264aa80f614b029f06a78c73fae7843b72220983acfaa35f34f347928"
+}

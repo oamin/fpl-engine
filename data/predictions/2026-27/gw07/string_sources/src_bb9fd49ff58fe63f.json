@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:bb9fd49ff58fe63f",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/ckr5y8l0ey2po?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 15 Oct 2026 13:35:56 GMT",
+  "published_at_utc": "2026-10-15T13:35:56Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "Arsenal's injured Caldentey out for up to 10 weeks",
+  "body": "Arsenal midfielder Mariona Caldentey is set to miss about two months of Women's Super League action because of a hamstring injury.",
+  "player_ids": [],
+  "sha256": "e7e4761dc8e7319e640b865df86c62ca65e2a678bd93df70b5608d49f29c863e"
+}

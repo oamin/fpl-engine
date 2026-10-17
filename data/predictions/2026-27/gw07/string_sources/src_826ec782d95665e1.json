@@ -1,0 +1,14 @@
+{
+  "source_id": "reddit_fantasypl:826ec782d95665e1",
+  "source": "reddit_fantasypl",
+  "outlet_class": "forum",
+  "url": "https://www.reddit.com/r/FantasyPL/comments/1x7pnbg/xhaka_has_created_5_big_chances_for_sunderland/",
+  "clock": "feed_updated",
+  "raw_published_at": "2026-10-16T19:31:38+00:00",
+  "published_at_utc": "2026-10-16T19:31:38Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "Xhaka has created 5 big chances for Sunderland and still has no assists. The PL players creating the most with zero assists after 6 gameweeks",
+  "body": "Put together some interesting data on Premier League players who have created the most chances so far but are still waiting for an assist. The ones that stood out: Xhaka has set up 5 big chances, the kind you&#39;d expect to be scored, and has nothing to show for it. Iwobi has 13 chances created and 4 of them big ones. McAtee has created the most of anyone on zero, 14. Ødegaard has 12, and Savinho 11 in only 331 minutes. Rashford is the odd one: 13 chances created but none of them big chances. Would love to hear your thoughts on which of these you&#39;d back for returns in the next few GM&#39;s? (Data source: The Prism , a football scouting and analytics tool I&#39;m currently building. Looking for testers, so feel free to sign up to the waitlist if you are interested in this type of data!) &#32; submitted by &#32; /u/moabusin [link] &#32; [comments]",
+  "player_ids": [],
+  "sha256": "f618469a0e59fbd4a30d433f11f0df70e21fe35e577e38c60f6027587ee4655b"
+}

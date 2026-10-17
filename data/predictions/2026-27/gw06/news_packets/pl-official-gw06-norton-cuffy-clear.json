@@ -1,0 +1,13 @@
+{
+  "packet_id": "pl_official:gw06:norton-cuffy-clear",
+  "source": "pl_official",
+  "url": "https://www.premierleague.com/en/news/4730320",
+  "published_at_utc": "2026-10-09T12:00:00Z",
+  "club": "Hull City",
+  "player_ids": [
+    638
+  ],
+  "headline": "Norton-Cuffy available",
+  "body": "Premier League, 9 Oct 2026: Brooke Norton-Cuffy is likely to return.",
+  "sha256": "9c6518bc150c62549631417bb4a9678b67779a01f070e1371a373fd09d91cd64"
+}

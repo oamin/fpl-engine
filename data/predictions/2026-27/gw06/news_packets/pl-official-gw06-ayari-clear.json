@@ -1,0 +1,13 @@
+{
+  "packet_id": "pl_official:gw06:ayari-clear",
+  "source": "pl_official",
+  "url": "https://www.premierleague.com/en/news/4730320",
+  "published_at_utc": "2026-10-09T12:00:00Z",
+  "club": "Brighton",
+  "player_ids": [
+    129
+  ],
+  "headline": "Ayari available",
+  "body": "Premier League, 9 Oct 2026: Yasin Ayari is now fine.",
+  "sha256": "18872e20b81b1057070c4ebfbfe1367bc171fbe611921cb154650e1dd30a2005"
+}

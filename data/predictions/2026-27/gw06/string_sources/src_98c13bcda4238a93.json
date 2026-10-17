@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:98c13bcda4238a93",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/bitesize/articles/zk64b7h?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 24 Sep 2026 10:28:27 GMT",
+  "published_at_utc": "2026-09-24T10:28:27Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "Ever wondered what it's like to work on Match of the Day?",
+  "body": "BBC Bitesize Careers finds out about the jobs people do on Match of the Day and how they got their roles",
+  "player_ids": [],
+  "sha256": "4e02d25f5cc7cb9e785c229c5d49bd09e6ba523f0e13b1181171de3511306d61"
+}

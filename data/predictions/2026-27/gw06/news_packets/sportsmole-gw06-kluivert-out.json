@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:kluivert-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Bournemouth",
+  "player_ids": [
+    70
+  ],
+  "headline": "Kluivert out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Justin Kluivert is out with a muscle injury.",
+  "sha256": "9362648749d8615072dfb85a056cc7b0984635ca5aa9a6aa83c8da771096ae49"
+}

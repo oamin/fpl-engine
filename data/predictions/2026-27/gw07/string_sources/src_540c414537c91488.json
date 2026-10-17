@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:540c414537c91488",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cqj9k38x7x1xo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 15 Oct 2026 15:15:38 GMT",
+  "published_at_utc": "2026-10-15T15:15:38Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "Red card, suspension and a conspiracy - what's up with Vini Jr?",
+  "body": "Vinicius Jr speaks to the press after being handed a four-match ban following his red card against Villarreal.",
+  "player_ids": [],
+  "sha256": "22b42683acce609617813a12808a57f145bcb276ce500ad1c4fad1ce2b8ad659"
+}

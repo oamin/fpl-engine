@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:c612ace3390c9405",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cr5yngpgejw0o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 16 Oct 2026 15:43:32 GMT",
+  "published_at_utc": "2026-10-16T15:43:32Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "Real demand Tebas resign over Goebbels comparison",
+  "body": "Real Madrid have called for the \"immediate resignation\" of La Liga president Javier Tebas after he compared the club's management to Joseph Goebbels.",
+  "player_ids": [],
+  "sha256": "40c0ef232286b284164f764ebf582606ffbca8a251adbd95510804f571d5b81c"
+}

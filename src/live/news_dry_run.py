@@ -170,14 +170,15 @@ def score_news_pool(
     bootstrap: Mapping[str, Any] | None = None,
 ) -> tuple[pd.DataFrame, dict[str, float]]:
     """One ``price_half`` on the news minutes. Owned players stay in the pool."""
-    from src.live.betfair_props import betfair_gw_lines, discover_betfair_artifacts
+    from src.live.t1_inputs import live_score_book
 
     boot = bootstrap if bootstrap is not None else json.loads(BOOTSTRAP_PATH.read_text(encoding="utf-8"))
     entry = json.loads(ENTRY_PATH.read_text(encoding="utf-8"))
     logs = pd.read_csv(LOG_PATH)
     fixtures = json.loads(FIXTURES_PATH.read_text(encoding="utf-8"))
-    artifacts = discover_betfair_artifacts(int(gw))
-    odds = load_odds_frame(ODDS_PATH, betfair_gw_lines(int(gw)))
+    lines = live_score_book(int(gw), None)
+    artifacts = None if lines is None else lines.parent
+    odds = load_odds_frame(ODDS_PATH, lines)
     names = team_names(boot)
     ready, reasons = readiness(line_status(odds, fixtures, names, gw), True)
     if not ready:

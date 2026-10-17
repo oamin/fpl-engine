@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:cc0e6c937c304d9b",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cj5ynpgzly7no?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Sat, 17 Oct 2026 07:16:49 GMT",
+  "published_at_utc": "2026-10-17T07:16:49Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "'I had so many medals under the bed' - Green on Chelsea success",
+  "body": "When Paul Green left Chelsea after 13 years, he had achieved so much success that the majority of his medals were hidden away in a box under the bed.",
+  "player_ids": [],
+  "sha256": "440ee2d9c3138da5ee1ebd163aef7c5e10e35e8e25b2ea96573f34bbd7ba2352"
+}

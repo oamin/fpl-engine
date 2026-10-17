@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:5da22ece454bcc9c",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/videos/cwdr8d6kr8mlo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Tue, 06 Oct 2026 15:54:22 GMT",
+  "published_at_utc": "2026-10-06T15:54:22Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "Marsch calls USA politics 'big talk' as Pochettino praises Canada coach",
+  "body": "Canada manager Jesse Marsch calls USA politics \"big talk\" while US coach Mauricio Pochettino praises his opposite number before Tuesday's game.",
+  "player_ids": [],
+  "sha256": "ddce3a73df7183d2d1e1fe7262c7afac1a44d3b3f6c99134f5b51b7abde9f4f7"
+}

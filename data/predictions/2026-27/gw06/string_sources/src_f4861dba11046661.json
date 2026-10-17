@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:f4861dba11046661",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cvrly3el4e63o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 08 Oct 2026 16:13:02 GMT",
+  "published_at_utc": "2026-10-08T16:13:02Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "'It's changed my life' - Eckert on Spygate scandal",
+  "body": "Southampton head coach Tonda Eckert says the Spygate scandal is an experience that has changed his life.",
+  "player_ids": [],
+  "sha256": "fe449cda293d1b70be46e8d59968e5a33eed5ac91d703098cfd577a3637b2e8b"
+}

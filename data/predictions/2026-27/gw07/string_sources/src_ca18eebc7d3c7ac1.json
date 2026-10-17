@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:ca18eebc7d3c7ac1",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/c6jrwn993y0lo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 16 Oct 2026 13:52:39 GMT",
+  "published_at_utc": "2026-10-16T13:52:39Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "Celtic-Hearts showdown tops weekend's Premiership bill",
+  "body": "Celtic face Heart of Midlothian in the big game of the Scottish Premiership weekend on Sunday, but there is plenty of interest in Saturday's five games too.",
+  "player_ids": [],
+  "sha256": "2593e923d8e9f00c3663dc18c8fdfd0ae22188bfab3a4feec314102601b71f30"
+}

@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:a54ee1e9db95fcb8",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cmzxl500q40qo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 09 Oct 2026 08:47:06 GMT",
+  "published_at_utc": "2026-10-09T08:47:06Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "EFL preview: Savage salvation and a happy homecoming?",
+  "body": "Here are the five things across the EFL that you should be keeping your eyes on this weekend.",
+  "player_ids": [],
+  "sha256": "ed412c92ed1397e5c2b21241c9b766bf4385fc924a10fca989ec08a0d2564cb4"
+}

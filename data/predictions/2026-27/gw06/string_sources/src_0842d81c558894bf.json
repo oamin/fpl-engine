@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:0842d81c558894bf",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cmwyzk1jq35go?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Tue, 22 Sep 2026 09:30:39 GMT",
+  "published_at_utc": "2026-09-22T09:30:39Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "Who has scored against the most Premier League teams?",
+  "body": "BBC Sport's Ask Me Anything team looks at which players have scored against the most teams in Premier League history",
+  "player_ids": [],
+  "sha256": "319d12d158670c76b84ad97cc9841fb27df583d89dc095a464dda606aae5a83e"
+}

@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:damsgaard-doubt",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Brentford",
+  "player_ids": [
+    96
+  ],
+  "headline": "Damsgaard doubt",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Mikkel Damsgaard is a doubt with a ankle.",
+  "sha256": "400906998ae8bd3821adc0c0da2d6f2bfda1df67c0129d9326ed324c1472ed8b"
+}

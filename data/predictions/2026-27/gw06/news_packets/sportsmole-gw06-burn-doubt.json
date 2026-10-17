@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:burn-doubt",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Newcastle",
+  "player_ids": [
+    448
+  ],
+  "headline": "Burn doubt",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Dan Burn is a doubt with a ankle.",
+  "sha256": "6903b40dac45333e914d2e5df1372cd52487089149e25cbf57e640478e1e6f5f"
+}

@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:minteh-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Brighton",
+  "player_ids": [
+    122
+  ],
+  "headline": "Minteh out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Yankuba Minteh is out with a leg injury.",
+  "sha256": "f9433b94eae076222a5858de61e1350757d0eba84213265f60dce53bd7a9e127"
+}

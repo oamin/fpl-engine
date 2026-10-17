@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:00de1c23b9bdd16b",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/articles/cx2z7rjn2p2o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 04 Sep 2026 09:31:21 GMT",
+  "published_at_utc": "2026-09-04T09:31:21Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "73 goals from dropping deep - we ask Kane to break down how he did it",
+  "body": "Harry Kane was the highest goalscorer in Europe last season, yet he plays like a midfielder. We ask him to break down his game.",
+  "player_ids": [],
+  "sha256": "25b2ac9aae954f569f7a22ff9a5d8500cdab389dc0c3671fa25047ae109e765c"
+}

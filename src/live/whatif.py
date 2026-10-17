@@ -33,6 +33,7 @@ from src.live.deadline import (
     resolve_holdings,
     team_names,
 )
+from src.live.t1_inputs import minutes_sheet
 from src.live.scorer import (
     SCORE_COL,
     build_pool,
@@ -50,7 +51,7 @@ from src.teams import norm_team
 
 ROOT = Path(__file__).resolve().parents[2]
 REPORT_PATH = ROOT / "reports" / "live_whatif_gw6.md"
-MINUTES_PATH = ROOT / "data" / "live" / "xmi_gw6.csv"
+MINUTES_PATH = minutes_sheet(6)
 DECISION_GW = 6
 _POS = {"GKP": 0, "DEF": 1, "MID": 2, "FWD": 3}
 
@@ -256,12 +257,12 @@ def build(
     gw: int = DECISION_GW,
 ) -> WhatIf:
     """Price the two paths from the Betfair slate. The frozen holdout file is not read."""
-    from src.live.betfair_props import resolve_live_book
     from src.live.deadline import ODDS_PATH
+    from src.live.t1_inputs import live_score_book
 
     entry = json.loads(entry_path.read_text(encoding="utf-8"))
     logs = pd.read_csv(log_path)
-    book = resolve_live_book(int(gw), live_path)
+    book = live_score_book(int(gw), live_path)
     odds = load_odds_frame(ODDS_PATH if odds_path is None else odds_path, book)
     bootstrap = json.loads(bootstrap_path.read_text(encoding="utf-8"))
     fixtures = json.loads(fixtures_path.read_text(encoding="utf-8"))
@@ -284,9 +285,7 @@ def build(
     played = {
         int(row["gw"]): str(row["chip"]) for row in entry.get("chips_played") or []
     }
-    from src.live.betfair_props import discover_betfair_artifacts
-
-    artifacts = discover_betfair_artifacts(int(gw))
+    artifacts = None if book is None else book.parent
     scored = price_half(
         gw=int(gw),
         logs=logs,

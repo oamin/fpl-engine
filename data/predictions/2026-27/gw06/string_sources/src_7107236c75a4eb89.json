@@ -1,0 +1,14 @@
+{
+  "source_id": "reddit_fantasypl:7107236c75a4eb89",
+  "source": "reddit_fantasypl",
+  "outlet_class": "forum",
+  "url": "https://www.reddit.com/r/FantasyPL/comments/1x1ttun/fpl_ga_vs_xgi_after_gw5_whos_running_hot_and_whos/",
+  "clock": "feed_updated",
+  "raw_published_at": "2026-10-09T18:59:58+00:00",
+  "published_at_utc": "2026-10-09T18:59:58Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "FPL G+A vs xGI after GW5: who's running hot and who's due, mean reversions have tended to happen in previous seasons!",
+  "body": "Before I begin - These are FPL numbers, and FPL hands out assists the PL doesn&#39;t (won pens, rebounds, deflections). So read G+A here as FPL G+A. Made this because I wanted to see who&#39;s running hot after 5 gameweeks before doing my transfers. G+A is FPL goals + FPL assists, xGI is xG + xA as shown in FPL. All pulled from the FPL API after GW5. Anyone with at least one return or 1.0+ xGI is included, which is 157 players. Running hot: | Player | Club | FPL G+A | xGI | Diff | |---|---|---|---|---| | Groß | Brighton | 7 | 2.63 | +4.4 | | João Pedro | Chelsea | 6 | 2.36 | +3.6 | | Kostoulas | Brighton | 5 | 1.41 | +3.6 | | Semenyo | Man City | 5 | 1.49 | +3.5 | | Schade | Brentford | 5 | 1.84 | +3.2 | | Gvardiol | Man City | 4 | 0.96 | +3.0 | | Barnes | Newcastle | 4 | 1.10 | +2.9 | | Belloumi | Hull | 4 | 1.15 | +2.9 | Running cold: | Player | Club | FPL G+A | xGI | Diff | |---|---|---|---|---| | Igor Thiago | Brentford | 1 | 3.29 | -2.3 | | Rudoni | Coventry | 0 | 2.03 | -2.0 | | Gonzalo García | Fulham | 1 | 2.91 | -1.9 | | Bobb | Fulham | 0 | 1.68 | -1.7 | | Barry | Everton | 2 | 3.65 | -1.7 | | Iwobi | Fulham | 0 | 1.61 | -1.6 | | Le Fée | Sunderland | 2 | 3.40 | -1.4 | | Awoniyi | Coventry | 0 | 1.34 | -1.3 | A few things that jumped out: - João Pedro&#39;s goals are about right (3 from 2.17 xG). It&#39;s the 3 FPL assists from 0.19 xA doing the work. - García, Bobb and Iwobi have 1 G+A between them from 6.2 xGI. Rough start for Fulham&#39;s attack. - Haaland is 5 from 4.95, pretty much exactly where you&#39;d expect. Obvious caveat: it&#39;s 5 games, so one deflection moves someone a lot. And since FPL assists are more generous than xA, most players end up above the line, so it&#39;s more useful to compare players with each other than with zero. Happy to share the CSV if anyone wants it. &#32; submitted by &#32; /u/Low-Market7848 [link] &#32; [comments]",
+  "player_ids": [],
+  "sha256": "4617218dfa03a2f6cfbc4ea8b2502a8799d5d4e1070b11f920f81c6a5af262fd"
+}

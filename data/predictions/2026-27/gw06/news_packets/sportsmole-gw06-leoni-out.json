@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:leoni-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Liverpool",
+  "player_ids": [
+    363
+  ],
+  "headline": "Leoni out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Giovanni Leoni is out with a knee injury.",
+  "sha256": "0d02cb9491a1a6818e4e16bf251b2d3bb756aea056b8c8f82235a821a063fa5c"
+}

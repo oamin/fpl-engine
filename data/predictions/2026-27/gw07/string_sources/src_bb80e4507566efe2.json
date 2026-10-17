@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:bb80e4507566efe2",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cmdx3nk7kwwro?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 16 Oct 2026 10:00:27 GMT",
+  "published_at_utc": "2026-10-16T10:00:27Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "Arrest made after alleged racial abuse of Swansea's Eom",
+  "body": "Police investigating a report of racial abuse during Millwall's Championship game against Swansea City have arrested a man.",
+  "player_ids": [],
+  "sha256": "eb34e07bd0c20859ec00191adf4e50a717cd7feae31a3683b1c2d76118364c6d"
+}

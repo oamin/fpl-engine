@@ -1,0 +1,13 @@
+{
+  "packet_id": "pl_official:gw06:jo\u00e3o-pedro-clear",
+  "source": "pl_official",
+  "url": "https://www.premierleague.com/en/news/4730320",
+  "published_at_utc": "2026-10-09T12:00:00Z",
+  "club": "Chelsea",
+  "player_ids": [
+    165
+  ],
+  "headline": "Jo\u00e3o Pedro available",
+  "body": "Premier League, 9 Oct 2026: Joao Pedro is ready to go against Bournemouth.",
+  "sha256": "29165c0386474251c96d0948991316e37498333f3186cd978a5d0e26859abc5b"
+}

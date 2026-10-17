@@ -1,0 +1,13 @@
+{
+  "packet_id": "pl_official:gw06:sarr-clear",
+  "source": "pl_official",
+  "url": "https://www.premierleague.com/en/news/4730320",
+  "published_at_utc": "2026-10-09T12:00:00Z",
+  "club": "Crystal Palace",
+  "player_ids": [
+    208
+  ],
+  "headline": "Sarr available",
+  "body": "Premier League, 9 Oct 2026: Ismaila Sarr is able to start.",
+  "sha256": "591a79069c56c9b093c878b0a1219e89e82292617989bf3863082fae499949cc"
+}

@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:e5e65430de2fec2a",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/ck0e3edj2l4zo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 01 Oct 2026 16:59:08 GMT",
+  "published_at_utc": "2026-10-01T16:59:08Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "Why is Croatia v England behind closed doors?",
+  "body": "BBC Sport's Ask Me Anything team explains why England's Nations League match in Croatia is being played in front of a reduced capacity.",
+  "player_ids": [],
+  "sha256": "7c329f63594ec77e0286d556ad37ef362b40aab19b69427fedffb96c5129db65"
+}

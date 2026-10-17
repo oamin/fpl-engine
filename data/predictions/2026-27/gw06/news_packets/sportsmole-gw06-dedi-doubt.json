@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:dedi\u0107-doubt",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Newcastle",
+  "player_ids": [
+    593
+  ],
+  "headline": "Dedi\u0107 doubt",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Amar Dedic is a doubt with a hamstring.",
+  "sha256": "a47f91df512feea0ffb784d2f60326feccb5ff8d8444692a5886643a214a74d6"
+}

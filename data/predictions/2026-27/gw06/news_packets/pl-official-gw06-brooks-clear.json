@@ -1,0 +1,13 @@
+{
+  "packet_id": "pl_official:gw06:brooks-clear",
+  "source": "pl_official",
+  "url": "https://www.premierleague.com/en/news/4730320",
+  "published_at_utc": "2026-10-09T12:00:00Z",
+  "club": "Bournemouth",
+  "player_ids": [
+    74
+  ],
+  "headline": "Brooks available",
+  "body": "Premier League, 9 Oct 2026: David Brooks is in full team training.",
+  "sha256": "ffd360006f93e1a6dee499a8fa1098a01f2d80e8ece44bd90f1b85333b9b4738"
+}

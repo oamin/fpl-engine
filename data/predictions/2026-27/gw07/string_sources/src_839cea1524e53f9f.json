@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:839cea1524e53f9f",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cq0k0x1l8gndo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Wed, 14 Oct 2026 13:25:56 GMT",
+  "published_at_utc": "2026-10-14T13:25:56Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "Big scorelines, one-sided games - are Women's World Cup play-offs working?",
+  "body": "The ease in which England saw off Greece in round one of the Women's World Cup qualifying play-offs showed just how inefficient the structure currently is.",
+  "player_ids": [],
+  "sha256": "5a67897e2aecbe35cec0a30af95926b9af1648f4314db5cb9fe1c72da8dd3de8"
+}

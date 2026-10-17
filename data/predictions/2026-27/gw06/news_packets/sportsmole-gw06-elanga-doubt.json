@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:elanga-doubt",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Newcastle",
+  "player_ids": [
+    454
+  ],
+  "headline": "Elanga doubt",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Anthony Elanga is a doubt with a unspecified.",
+  "sha256": "22f5d60846a42193280f3562acbc7c8c3c89abd78351d659088a3f79e8976d03"
+}

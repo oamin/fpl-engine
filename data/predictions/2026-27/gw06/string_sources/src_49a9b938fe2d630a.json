@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:49a9b938fe2d630a",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cx2ln5n7yqdo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Tue, 06 Oct 2026 19:15:12 GMT",
+  "published_at_utc": "2026-10-06T19:15:12Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "Kane's rise from childhood keeper to equalling England cap record",
+  "body": "Harry Kane reaches another significant England milestone by equalling Peter Shilton's record as the most-capped Three Lions player that he has held for 36 years.",
+  "player_ids": [],
+  "sha256": "1bf3577db6652066a1381da3ec412156baec32eff2f4dcae5481fa8b2f210825"
+}

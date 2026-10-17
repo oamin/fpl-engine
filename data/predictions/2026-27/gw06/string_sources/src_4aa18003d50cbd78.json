@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:4aa18003d50cbd78",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cq4g1xerk398o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 09 Oct 2026 22:59:32 GMT",
+  "published_at_utc": "2026-10-09T22:59:32Z",
+  "observed_at_utc": "2026-10-10T09:27:28Z",
+  "headline": "Man City whistleblower to remain in witness protection",
+  "body": "The computer hacker who released documents which helped trigger the Premier League investigation into Manchester City will remain under witness protection after authorities in Portugal suspend the decision to end it.",
+  "player_ids": [],
+  "sha256": "cffdb38aac680b7e0d4fc88aea7f179184d51f6d84299a74ff1702cd001bed51"
+}

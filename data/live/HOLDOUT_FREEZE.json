@@ -14,7 +14,8 @@
     "data/holdout/2026-27/player_gw/gw02.csv": "95db2694e11e13bd02175f7125ad3b2e5eb3bba98cf8cea79fecf4e27cd4bd70",
     "data/holdout/2026-27/player_gw/gw03.csv": "d51a3927e7cb9eb020a5fc7548be7ddd1568145c4e11828accee1e2674dbd1b9",
     "data/holdout/2026-27/player_gw/gw04.csv": "0873de51dd0553880fec338da1ec9e220a0d747f646a97bfef11b09d94634aa8",
-    "data/holdout/2026-27/player_gw/gw05.csv": "0cf32fba3083e5578d74ca0e74581e9b58c2062ee83d965cf8e99d8e60f44136"
+    "data/holdout/2026-27/player_gw/gw05.csv": "0cf32fba3083e5578d74ca0e74581e9b58c2062ee83d965cf8e99d8e60f44136",
+    "data/holdout/2026-27/player_gw/gw06.csv": "b342dada2b88cf6b0ca45c9e5cb1d6efbc3acdf8dd8e478bc43cfce758876a77"
   },
   "present_at_freeze": {
     "data/live/bootstrap.json": "4bdb565c1c9841691252069c87a6c4e1c8f137b43a96fc15a718026d5b26a61d",
@@ -31,5 +32,6 @@
     "sha256": "ffe911b65b5019529f8a7a322ad058e013a0e6146677c35d796f075e2572f09b",
     "retired": "2026-10-07",
     "reason": "One hash cannot freeze a file that grows. Each finished gameweek has its own file."
-  }
+  },
+  "clean_holdout_note": "Gameweek 6 points are stored. They are the first clean holdout week. Do not fit on them."
 }

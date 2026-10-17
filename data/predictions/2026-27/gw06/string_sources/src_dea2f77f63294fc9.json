@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:dea2f77f63294fc9",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cwp8gnj1n7yyo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 09 Oct 2026 03:27:58 GMT",
+  "published_at_utc": "2026-10-09T03:27:58Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "Wales captain James has World Cup on her mind",
+  "body": "Wales take on Albania over two legs in the semi-finals of the play-offs motivated by reaching a World Cup for the first time.",
+  "player_ids": [],
+  "sha256": "038fa3285190837afcfe144a841ca4b802eb3774f77f25d4e857e8488850193a"
+}

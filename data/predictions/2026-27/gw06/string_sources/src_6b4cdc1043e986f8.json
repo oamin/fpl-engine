@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:6b4cdc1043e986f8",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cw4g1z0g17x8o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 09 Oct 2026 19:34:54 GMT",
+  "published_at_utc": "2026-10-09T19:34:54Z",
+  "observed_at_utc": "2026-10-10T09:27:28Z",
+  "headline": "Wales must improve in World Cup bid - Wilkinson",
+  "body": "Rhian Wilkinson accepts Wales must raise their standards after they scrape to a 1-0 victory in their Women's World Cup play-off semi-final in Albania.",
+  "player_ids": [],
+  "sha256": "424bd96efee7627a8543910abf32ee9431181ed5d91ef8125ebe17c19b6ba17d"
+}

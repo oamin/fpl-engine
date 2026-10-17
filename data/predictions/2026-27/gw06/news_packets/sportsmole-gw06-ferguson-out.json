@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:ferguson-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Brighton",
+  "player_ids": [
+    139
+  ],
+  "headline": "Ferguson out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Evan Ferguson is out with a ankle injury.",
+  "sha256": "775bd00baa8e8155ae5482ccfa82efb3dc3681bd9d872d48001ad5a511aff8d8"
+}

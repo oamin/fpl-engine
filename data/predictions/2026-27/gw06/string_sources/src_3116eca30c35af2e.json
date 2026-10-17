@@ -1,0 +1,14 @@
+{
+  "source_id": "reddit_fantasypl:3116eca30c35af2e",
+  "source": "reddit_fantasypl",
+  "outlet_class": "forum",
+  "url": "https://www.reddit.com/r/FantasyPL/comments/1x1ngel/everyones_worried_about_players_being_knackered/",
+  "clock": "feed_updated",
+  "raw_published_at": "2026-10-09T14:53:14+00:00",
+  "published_at_utc": "2026-10-09T14:53:14Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "Everyone's worried about players being knackered after the break. I checked if it's actually a thing",
+  "body": "Saw loads of &quot;he&#39;ll be tired after the break&quot; comments this week so I had a look at the last 3 seasons. Took everyone who played 60+ mins in the last GW before a break, then checked how many did the same in the first GW back. 11 breaks, 2,120 cases. 77% did, vs 77% in a normal week. So basically no difference. Doesn&#39;t tell you anything about a specific injury or a 75% flag, just whether regulars drop out more after a break. Premium sample is small too (46) so take that bit with a pinch of salt. Data&#39;s from the vaastav FPL dataset on GitHub, anyone can check it. Let me know if there&#39;s anything else you want me to look at. &#32; submitted by &#32; /u/FballLegend [link] &#32; [comments]",
+  "player_ids": [],
+  "sha256": "c1fc30a1f376d0c3f24fd08e3296a38b8da078c331cc15ff3eaafd28ad32ddae"
+}

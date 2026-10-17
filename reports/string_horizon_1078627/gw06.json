@@ -1,0 +1,290 @@
+{
+  "carry": {
+    "bank": 26,
+    "chips_played": {
+      "1": "bench_boost",
+      "3": "triple_captain"
+    },
+    "ft_before": 2,
+    "gw": 6,
+    "purchase_prices": {
+      "10": 55,
+      "109": 45,
+      "124": 55,
+      "127": 50,
+      "154": 97,
+      "165": 75,
+      "304": 40,
+      "31": 44,
+      "346": 60,
+      "368": 70,
+      "399": 77,
+      "411": 155,
+      "418": 50,
+      "496": 45,
+      "8": 55
+    },
+    "selling_prices": {},
+    "squad": [
+      "496",
+      "418",
+      "8",
+      "31",
+      "304",
+      "154",
+      "368",
+      "124",
+      "399",
+      "411",
+      "346",
+      "109",
+      "165",
+      "127",
+      "10"
+    ]
+  },
+  "carry_after": {
+    "bank": 8,
+    "chips_played": {
+      "1": "bench_boost",
+      "3": "triple_captain"
+    },
+    "ft_before": 1,
+    "gw": 7,
+    "purchase_prices": {
+      "109": 45,
+      "12": 96,
+      "124": 55,
+      "127": 50,
+      "154": 97,
+      "165": 75,
+      "304": 40,
+      "31": 44,
+      "346": 60,
+      "368": 70,
+      "411": 155,
+      "418": 50,
+      "449": 53,
+      "496": 45,
+      "8": 55
+    },
+    "selling_prices": {},
+    "squad": [
+      "496",
+      "418",
+      "8",
+      "31",
+      "304",
+      "154",
+      "368",
+      "124",
+      "411",
+      "346",
+      "109",
+      "165",
+      "127",
+      "12",
+      "449"
+    ]
+  },
+  "context_sha256": "2b58c66d8d24b0086bafb4ee7aec5b64466dbc64a231e908e9ca36e092acb24b",
+  "deadline_utc": "2026-10-10T10:00:00Z",
+  "decision": {
+    "bench_order": [
+      "346",
+      "127",
+      "31",
+      "496"
+    ],
+    "captain": "12",
+    "chip_played": null,
+    "squad_15": [
+      "496",
+      "418",
+      "8",
+      "31",
+      "304",
+      "154",
+      "368",
+      "124",
+      "411",
+      "346",
+      "109",
+      "165",
+      "127",
+      "12",
+      "449"
+    ],
+    "starting_11": [
+      "109",
+      "8",
+      "418",
+      "449",
+      "304",
+      "154",
+      "12",
+      "124",
+      "368",
+      "411",
+      "165"
+    ],
+    "transfers_in": [
+      "12",
+      "449"
+    ],
+    "transfers_out": [
+      "10",
+      "399"
+    ],
+    "vice_captain": "154"
+  },
+  "frozen_at_utc": "2026-10-10T13:50:43Z",
+  "gw": 6,
+  "horizon": [
+    {
+      "bench_order": [
+        "346",
+        "127",
+        "31",
+        "496"
+      ],
+      "captain": "12",
+      "chip_played": null,
+      "gw": 6,
+      "squad_15": [
+        "496",
+        "418",
+        "8",
+        "31",
+        "304",
+        "154",
+        "368",
+        "124",
+        "411",
+        "346",
+        "109",
+        "165",
+        "127",
+        "12",
+        "449"
+      ],
+      "starting_11": [
+        "109",
+        "8",
+        "418",
+        "449",
+        "304",
+        "154",
+        "12",
+        "124",
+        "368",
+        "411",
+        "165"
+      ],
+      "transfers_in": [
+        "12",
+        "449"
+      ],
+      "transfers_out": [
+        "10",
+        "399"
+      ],
+      "vice_captain": "154"
+    },
+    {
+      "bench_order": [
+        "346",
+        "127",
+        "31",
+        "496"
+      ],
+      "captain": "411",
+      "chip_played": null,
+      "gw": 7,
+      "squad_15": [
+        "496",
+        "418",
+        "8",
+        "31",
+        "154",
+        "368",
+        "124",
+        "411",
+        "346",
+        "109",
+        "165",
+        "127",
+        "12",
+        "449",
+        "254"
+      ],
+      "starting_11": [
+        "109",
+        "8",
+        "449",
+        "254",
+        "418",
+        "154",
+        "12",
+        "124",
+        "368",
+        "411",
+        "165"
+      ],
+      "transfers_in": [
+        "254"
+      ],
+      "transfers_out": [
+        "304"
+      ],
+      "vice_captain": "12"
+    },
+    {
+      "bench_order": [
+        "346",
+        "127",
+        "31",
+        "496"
+      ],
+      "captain": "12",
+      "chip_played": null,
+      "gw": 8,
+      "squad_15": [
+        "496",
+        "418",
+        "8",
+        "31",
+        "154",
+        "368",
+        "124",
+        "411",
+        "346",
+        "109",
+        "165",
+        "127",
+        "12",
+        "449",
+        "254"
+      ],
+      "starting_11": [
+        "109",
+        "8",
+        "254",
+        "418",
+        "449",
+        "154",
+        "12",
+        "124",
+        "368",
+        "411",
+        "165"
+      ],
+      "transfers_in": [],
+      "transfers_out": [],
+      "vice_captain": "154"
+    }
+  ],
+  "model_id": "gemini-3.8-flash",
+  "prompt_sha256": "89fc9d8850ec352c7515bbb97c5892b88e48d8065c1f63c41410a16d679287c1",
+  "rationale": "Gameweek 6 Strategy & Chip Management: We preserve both remaining chips (wildcard and free_hit) for future fixture swings and blank gameweeks later in the first half of the season. With 2 free transfers in hand and 26 tenths in the bank, the squad can address its main structural issue without spending hits or chips.\n\nTransfers (GW6): We sell Ben White (id 10) and Rayan Cherki (id 399) to purchase Bukayo Saka (id 12) and Lewis Hall (id 449). White is currently carrying a groin issue (noted as 50/50 in The Standard, dropping in price to 54 tenths after recording 0 minutes in Gameweek 5). More crucially, holding White, Riccardo Calafiori, and Ezri Konsa fills the 3-player Arsenal club quota entirely in defence, blocking any access to Arsenal attack. Liquidating White yields 54 tenths and frees up an Arsenal slot. Cherki (selling price 77 tenths) faces a daunting trip to Anfield against Liverpool and has seen rotational minutes (45 minutes in GW4, 65 in GW3). Combined with our 26 tenths in the bank, selling White and Cherki gives 157 tenths of purchasing power. We bring in Bukayo Saka (cost 96 tenths) ahead of Arsenal hosting Leeds at Emirates Stadium, which community outlets (WhatTheFPL and Fantasy Football Scout) and transfer trends (+99,959 net transfers in) identify as the standout attacking fixture of the round. With the remaining 61 tenths, we secure Newcastle left-back Lewis Hall (cost 53 tenths), who has an appealing fixture away to Coventry (FDR 2) and embarks on a favourable multi-week run (Coventry, Palace, Everton) highlighted on reddit_fantasypl as an undervalued defensive run. This leaves 8 tenths in the bank and costs 0 hit points.\n\nGoalkeeping & Lineup Selection (4-4-2): Bart Verbruggen (id 109) starts in goal away to Sunderland. As reported by The Guardian, Sunderland have been hit hard by international injuries, losing both key striker Brian Brobbey and defensive pillar Dan Ballard to muscle strains, which significantly improves Brighton clean sheet potential. In contrast, Spurs backup Kinsky (id 496) is benched for his trip to Old Trafford with Tottenham sitting bottom of the table without a victory. The starting defence comprises Calafiori (id 8, home to Leeds), Harry Maguire (id 418, home to Spurs), Hall (id 449, away to Coventry), and Dara O'Shea (id 304, home to Fulham). O'Shea starts because Fulham's attack is running noticeably cold according to the G+A vs xGI audit (Gonzalo Garcia, Oscar Bobb, and Alex Iwobi combining for just 1 G+A from 6.2 xGI), and O'Shea is a template pick among 26% of all-time top managers. Konsa (id 31) is benched due to his dead-leg doubt (75% flag reported by Sports Mole).\n\nMidfield & Forwards: The midfield four features Saka (id 12), Cole Palmer (id 154, cleared by official Premier League communications for Bournemouth at home), Pascal Gro\u00df (id 124, running hot with 7 G+A for third-placed Brighton), and Dominik Szoboszlai (id 368, whose midfield responsibilities increase with Alexander Isak and Cody Gakpo sidelined). Up front, Erling Haaland (id 411) starts after Enzo Maresca confirmed in Friday's presser that he was merely fatigued and is fit for Anfield, partnering Joao Pedro (id 165). While Joao Pedro carries conflicting injury reports (The Standard listing a knee problem versus official clearance), Dominic Calvert-Lewin (id 346) is assigned first substitute. This provides instant auto-sub insurance if Joao Pedro is rested, while avoiding starting Calvert-Lewin away against Calafiori's Arsenal defence. Midfielder Gomez (id 127) is second sub, Konsa third sub, and Kinsky backup keeper.\n\nCaptaincy: Bukayo Saka (id 12) takes the armband for his home fixture against Leeds, offering penalty duty, talismanic role, and elite goal involvement. Cole Palmer (id 154) is vice-captain at home to Bournemouth.\n\nHorizon Planning (GW7 & GW8):\n- In Gameweek 7 (1 free transfer, 8 tenths in bank), Ipswich travel away to Manchester City (FDR 5). We transfer out O'Shea (sell price 40 tenths) for Antonee Robinson (id 254, FUL DEF, cost 45 tenths), leaving 3 tenths in the bank. Fulham host Hull City (FDR 2) in GW7 and visit Coventry (FDR 2) in GW8. Haaland takes the armband at home to Ipswich.\n- In Gameweek 8 (1 free transfer, 3 tenths in bank), we roll our free transfer to accumulate 2 free transfers for Gameweek 9. Our starting XI lines up in 4-4-2 with Calafiori and Saka home to Everton, Maguire home to Bournemouth, Robinson away to Coventry, Palmer home to Spurs, and Haaland away to Aston Villa, with Saka captain and Palmer vice-captain."
+}

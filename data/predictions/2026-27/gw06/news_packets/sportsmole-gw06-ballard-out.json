@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:ballard-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Sunderland",
+  "player_ids": [
+    532
+  ],
+  "headline": "Ballard out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Dan Ballard is out with a hamstring injury.",
+  "sha256": "6f393d5c3df72e7aec385c585afe5438ea314ad04da2e422a0aa920b07834c0f"
+}

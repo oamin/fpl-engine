@@ -1,7 +1,17 @@
 {
-  "milestone": "betfair-only",
-  "status": "research_only",
-  "summary": "The Odds API is removed from the live engines. Readers take gw_lines.csv only from a Betfair predictions folder. The frozen data/live/gw_lines.csv hash is unchanged. A missing Betfair folder does not open that file. Freeze odds_source odds_api is refused. Holdout verify still passes.",
-  "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
-  "artifacts": []
+  "milestone": "gw7-stragent-lock",
+  "status": "locked",
+  "summary": "Gameweek 7 stragent is locked before the 2026-10-17T10:00:00Z deadline. Trawl wrote 195 string sources under gw07/string_sources/. The reply holds the Gameweek 6 fifteen, plays no chip, captains Haaland with Fernandes as vice, and rolls the free transfer (bank 6, FT 2 into Gameweek 8). The planned Davis-to-Robinson move was declined after Robinson's 75% ankle flag. Model gemini-4-argon-high on iteration stragent-gw6. Plan string_plans/gw07.json; ledger string_agent_freeze.jsonl; session gw07/session_stragent.json.",
+  "gemini": "bc-7f7dc6ee-0fa5-543f-9817-3489620259c0",
+  "artifacts": [
+    "data/predictions/2026-27/gw07/fpl_t1/bootstrap.json",
+    "data/predictions/2026-27/gw07/fpl_t1/fixtures.json",
+    "data/predictions/2026-27/gw07/string_sources/",
+    "data/predictions/2026-27/gw07/session_stragent.json",
+    "data/predictions/2026-27/string_plans/gw07.json",
+    "data/predictions/2026-27/string_plans/gw07_context.md",
+    "data/predictions/2026-27/string_plans/gw07_reply.json",
+    "data/predictions/2026-27/string_agent_freeze.jsonl",
+    "data/predictions/2026-27/string_plans/notebook.jsonl"
+  ]
 }

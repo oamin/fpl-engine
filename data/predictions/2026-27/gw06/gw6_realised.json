@@ -1,0 +1,308 @@
+{
+  "evaluated_at_utc": "2026-10-14T16:22:48Z",
+  "gw": 6,
+  "holdout_file": "data/holdout/2026-27/player_gw/gw06.csv",
+  "holdout_sha256": "b342dada2b88cf6b0ca45c9e5cb1d6efbc3acdf8dd8e478bc43cfce758876a77",
+  "numagent": {
+    "clean_sheet_brier": 0.1372664661785353,
+    "decision_detail": [
+      {
+        "captain": false,
+        "id": "2026-27:1",
+        "name": "Raya",
+        "points": 3.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:449",
+        "name": "Hall",
+        "points": 0.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:588",
+        "name": "Khalaili",
+        "points": 2.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:472",
+        "name": "Murillo",
+        "points": 2.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:173",
+        "name": "Thomas",
+        "points": 4.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:426",
+        "name": "B.Fernandes",
+        "points": 1.0
+      },
+      {
+        "captain": true,
+        "id": "2026-27:427",
+        "name": "Mbeumo",
+        "points": 8.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:40",
+        "name": "Rogers",
+        "points": 9.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:183",
+        "name": "Rudoni",
+        "points": 7.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:249",
+        "name": "Barry",
+        "points": 6.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:411",
+        "name": "Haaland",
+        "points": 6.0
+      }
+    ],
+    "decision_xi_c": 56.0,
+    "entry_chip": "wildcard",
+    "entry_points": 56,
+    "forecast": {
+      "decision_xi_c_ep_next": 56.0,
+      "decision_xi_c_score_xp": 63.140285515933854,
+      "ft1_xi_c_ep_next": 51.5,
+      "hold_xi_c_ep_next": 49.5
+    },
+    "ft1_detail": [
+      {
+        "captain": false,
+        "id": "2026-27:412",
+        "name": "Lammens",
+        "points": 2.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:8",
+        "name": "Calafiori",
+        "points": 9.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:305",
+        "name": "Davis",
+        "points": 1.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:388",
+        "name": "Gu\u00e9hi",
+        "points": 6.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:566",
+        "name": "Silva",
+        "points": 0.0
+      },
+      {
+        "captain": true,
+        "id": "2026-27:426",
+        "name": "B.Fernandes",
+        "points": 1.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:453",
+        "name": "Barnes",
+        "points": 2.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:399",
+        "name": "Cherki",
+        "points": 10.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:40",
+        "name": "Rogers",
+        "points": 9.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:15",
+        "name": "\u00d8degaard",
+        "points": 1.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:411",
+        "name": "Haaland",
+        "points": 6.0
+      }
+    ],
+    "ft1_move": "sell 2026-27:175 van Ewijk; buy 2026-27:566 Silva",
+    "ft1_xi_c": 48.0,
+    "hold_detail": [
+      {
+        "captain": false,
+        "id": "2026-27:412",
+        "name": "Lammens",
+        "points": 2.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:8",
+        "name": "Calafiori",
+        "points": 9.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:305",
+        "name": "Davis",
+        "points": 1.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:388",
+        "name": "Gu\u00e9hi",
+        "points": 6.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:423",
+        "name": "Shaw",
+        "points": 3.0
+      },
+      {
+        "captain": true,
+        "id": "2026-27:426",
+        "name": "B.Fernandes",
+        "points": 1.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:453",
+        "name": "Barnes",
+        "points": 2.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:399",
+        "name": "Cherki",
+        "points": 10.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:40",
+        "name": "Rogers",
+        "points": 9.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:15",
+        "name": "\u00d8degaard",
+        "points": 1.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:411",
+        "name": "Haaland",
+        "points": 6.0
+      }
+    ],
+    "hold_xi_c": 51.0,
+    "net_vs_ft1": 8.0,
+    "net_vs_hold": 5.0,
+    "pool_spearman_rho": 0.3307813986806938
+  },
+  "stragent": {
+    "captain": "426",
+    "chip": null,
+    "decision_xi_c": 49.0,
+    "detail": [
+      {
+        "captain": false,
+        "id": "2026-27:412",
+        "name": "Lammens",
+        "points": 2.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:8",
+        "name": "Calafiori",
+        "points": 9.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:305",
+        "name": "Davis",
+        "points": 1.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:388",
+        "name": "Gu\u00e9hi",
+        "points": 6.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:453",
+        "name": "Barnes",
+        "points": 2.0
+      },
+      {
+        "captain": true,
+        "id": "2026-27:426",
+        "name": "B.Fernandes",
+        "points": 1.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:40",
+        "name": "Rogers",
+        "points": 9.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:399",
+        "name": "Cherki",
+        "points": 10.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:15",
+        "name": "\u00d8degaard",
+        "points": 1.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:411",
+        "name": "Haaland",
+        "points": 6.0
+      },
+      {
+        "captain": false,
+        "id": "2026-27:271",
+        "name": "Muniz",
+        "points": 1.0
+      }
+    ],
+    "transfers_in": [
+      "271"
+    ],
+    "transfers_out": [
+      "528"
+    ],
+    "vice_captain": "411"
+  }
+}

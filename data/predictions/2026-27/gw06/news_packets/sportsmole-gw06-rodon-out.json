@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:rodon-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Leeds",
+  "player_ids": [
+    329
+  ],
+  "headline": "Rodon out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Joe Rodon is out with a hamstring injury.",
+  "sha256": "f931e04e5ce789055a456c3ad98eb2d68dcbac21909d65fad0f0200405b1f2b7"
+}

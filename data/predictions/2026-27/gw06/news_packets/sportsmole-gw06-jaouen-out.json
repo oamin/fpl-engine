@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:jaouen-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Newcastle",
+  "player_ids": [
+    444
+  ],
+  "headline": "Jaouen out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Ewen Jaouen is out with a hamstring injury.",
+  "sha256": "c2c82679ea876eaa997c6bae54767d5e64962bebf3bf590b63ca8deeae725bd1"
+}

@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:goretzka-doubt",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Aston Villa",
+  "player_ids": [
+    618
+  ],
+  "headline": "Goretzka doubt",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Leon Goretzka is a doubt with a knee.",
+  "sha256": "61946320ceb41c360d2c11492c1031805da79ba1ad9faff438bdddbd73f3ee25"
+}

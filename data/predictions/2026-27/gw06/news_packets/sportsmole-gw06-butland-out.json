@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:butland-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Hull City",
+  "player_ids": [
+    274
+  ],
+  "headline": "Butland out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Jack Butland is out with a shoulder injury.",
+  "sha256": "9c1fe0746847be73340262f242da08a2d1e5c8c4338d7579d8e68fb1f97a3707"
+}

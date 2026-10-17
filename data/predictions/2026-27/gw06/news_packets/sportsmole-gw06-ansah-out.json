@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:ansah-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Hull City",
+  "player_ids": [
+    632
+  ],
+  "headline": "Ansah out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Ilyas Ansah is out with a back injury.",
+  "sha256": "fd03de85dfa088bd79aebc1c15793bf4900cd9f3fe3761a304da5c4c00e03b1b"
+}

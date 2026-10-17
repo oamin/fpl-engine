@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:milenkovi\u0107-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Nott'm Forest",
+  "player_ids": [
+    471
+  ],
+  "headline": "Milenkovi\u0107 out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Nikola Milenkovic is out with a bone bruise injury.",
+  "sha256": "df3e197948d18c60664387f8251f9bd952531d588bf26bec5e8a8ff80959efb9"
+}

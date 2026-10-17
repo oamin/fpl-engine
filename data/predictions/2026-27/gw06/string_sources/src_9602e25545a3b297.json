@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:9602e25545a3b297",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cm3vqrz41l2vo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 08 Oct 2026 11:48:50 GMT",
+  "published_at_utc": "2026-10-08T11:48:50Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "'It's longer than lot of tournaments' - McInnes against extended break",
+  "body": "Rangers manager Derek McInnes says he is \"not a fan\" of the extended international break which he considers \"too long\".",
+  "player_ids": [],
+  "sha256": "c0d5458bc417a15962383d5f3e0b3a308477e93925300dc08281f2c48e0890ca"
+}

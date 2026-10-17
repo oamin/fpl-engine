@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:f834f6530cc8a23e",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cp30ggvqj0do?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 16 Oct 2026 09:52:49 GMT",
+  "published_at_utc": "2026-10-16T09:52:49Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "How to follow the Premier League on the BBC this weekend",
+  "body": "Our Ask Me Anything team explains how to follow matches from week seven of the Premier League season on the BBC this weekend.",
+  "player_ids": [],
+  "sha256": "2664945e5e4282e3cf84b3ffacdf3fb3e496816077fd2c0b95b62c6be30fd8c3"
+}

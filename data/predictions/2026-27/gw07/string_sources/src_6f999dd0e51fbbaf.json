@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:6f999dd0e51fbbaf",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/news/articles/cq8rzgry7dgko?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 15 Oct 2026 11:27:07 GMT",
+  "published_at_utc": "2026-10-15T11:27:07Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "Everton's Barry on the video he was scared to post",
+  "body": "The Everton striker explains why he chose to post an emotional video from a training session.",
+  "player_ids": [],
+  "sha256": "99d1e086173b61aa7c82e89fe34643e50603f6a640d90cede780751f2e945079"
+}

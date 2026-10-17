@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:van-den-berg-doubt",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Brentford",
+  "player_ids": [
+    85
+  ],
+  "headline": "Van den Berg doubt",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Sepp van den Berg is a doubt with a knee.",
+  "sha256": "ddb8031849361fb2d262d334e4c9ccfd3c359a2d5bfd6e93d408c37769dde210"
+}

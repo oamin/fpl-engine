@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:0e581a09a0d385c1",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/videos/ck3wvxz8n1nyo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Tue, 13 Oct 2026 17:10:46 GMT",
+  "published_at_utc": "2026-10-13T17:10:46Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "Majority of clubs on edge of 'financial disaster' - regulator",
+  "body": "Research by the Independent Football Regulator finds 94% of clubs are loss-making, and more than 60% of EFL and National League clubs are technically insolvent.",
+  "player_ids": [],
+  "sha256": "0db0711d1ce619522382247e88efe8fca56b7233bcbc53e10974524c1d488289"
+}

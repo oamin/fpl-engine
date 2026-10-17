@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:mundle-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Sunderland",
+  "player_ids": [
+    547
+  ],
+  "headline": "Mundle out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Romaine Mundle is out with a knee injury.",
+  "sha256": "55f5e0cdb9c2490b58bd76b6d65b30f74fdd129cfadd2bb9155498144f5b32c2"
+}

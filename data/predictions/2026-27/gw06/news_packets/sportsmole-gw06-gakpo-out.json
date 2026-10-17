@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:gakpo-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Liverpool",
+  "player_ids": [
+    367
+  ],
+  "headline": "Gakpo out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Cody Gakpo is out with a ankle injury.",
+  "sha256": "0be3a64183af395ae9c4127949babe68ba0339b1c77a298162c12dbab0d4c67a"
+}

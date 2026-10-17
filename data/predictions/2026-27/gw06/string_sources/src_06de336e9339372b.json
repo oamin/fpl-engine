@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:06de336e9339372b",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cwr7yv4yl59do?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 08 Oct 2026 14:38:30 GMT",
+  "published_at_utc": "2026-10-08T14:38:30Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "Wales target clean sheet in World Cup play-off first leg",
+  "body": "Rhian Wilkinson makes a clean sheet the first target for Wales in Friday's Women's World Cup play-off semi-final first leg against Albania.",
+  "player_ids": [],
+  "sha256": "0335f45442f32d398561f3ce852886d91d24083de76f0017467c1ce97cc7d048"
+}

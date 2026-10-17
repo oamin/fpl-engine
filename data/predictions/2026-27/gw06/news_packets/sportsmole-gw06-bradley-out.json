@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:bradley-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Liverpool",
+  "player_ids": [
+    360
+  ],
+  "headline": "Bradley out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Conor Bradley is out with a knee injury.",
+  "sha256": "916cdbc5ad958362f074644bf7092247b3d46803199e1502e1be5cc9d9d530d9"
+}

@@ -1,0 +1,13 @@
+{
+  "packet_id": "pl_official:gw06:dunk-clear",
+  "source": "pl_official",
+  "url": "https://www.premierleague.com/en/news/4730320",
+  "published_at_utc": "2026-10-09T12:00:00Z",
+  "club": "Brighton",
+  "player_ids": [
+    116
+  ],
+  "headline": "Dunk available",
+  "body": "Premier League, 9 Oct 2026: Lewis Dunk has been passed fit.",
+  "sha256": "d058169bbe6e74a8b53bf6e4779c6a2d368685a1330f8060851cf6e94f716e4c"
+}

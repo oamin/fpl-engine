@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:8e29e59c160558fd",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cm040l634249o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 09 Oct 2026 09:02:26 GMT",
+  "published_at_utc": "2026-10-09T09:02:26Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "From doomscrolling to defiance - how do Man City fans feel?",
+  "body": "With Manchester City found guilty of the majority of 115 charges against them, how are their fans feeling?",
+  "player_ids": [],
+  "sha256": "448a6e6634c8c2ae70902dc2aab35b7b653c9bede046e04edc366fe854d1912f"
+}

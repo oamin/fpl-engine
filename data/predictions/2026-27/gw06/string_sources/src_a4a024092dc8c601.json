@@ -1,0 +1,14 @@
+{
+  "source_id": "skysports:a4a024092dc8c601",
+  "source": "skysports",
+  "outlet_class": "press",
+  "url": "https://www.skysports.com/f1/news/12040/13596695/singapore-gp-sprint-qualifying-max-verstappen-claims-pole-position-from-george-russell-but-faces-yellow-flags-investigation",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 09 Oct 2026 15:00:00 BST",
+  "published_at_utc": "2026-10-09T14:00:00Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "Verstappen keeps Singapore Sprint pole after investigation",
+  "body": "Max Verstappen maintained his rich vein of form to claim pole position for Saturday's Sprint at the Singapore Grand Prix, which he kept after avoiding a penalty in an investigation over yellow flags.",
+  "player_ids": [],
+  "sha256": "fe2293373250b95a3259bb55361bbeeb67ecd84aca40c1591c690a0f43480322"
+}

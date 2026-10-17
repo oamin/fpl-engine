@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:27af253c1f752198",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/ced4lq94ldvo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Tue, 04 Aug 2026 05:17:17 GMT",
+  "published_at_utc": "2026-08-04T05:17:17Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "The summer that changed Welsh football",
+  "body": "A decade on from Euro 2016, key figures tell BBC Sport Wales the inside story of the summer that changed Welsh football forever.",
+  "player_ids": [],
+  "sha256": "0f7c1a054b8ce2df64a0366c16b2534bed1f65c8d87a5d4f50df61304269d4f5"
+}

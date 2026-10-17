@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:dasilva-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Brentford",
+  "player_ids": [
+    103
+  ],
+  "headline": "Dasilva out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Josh Dasilva is out with a hamstring injury.",
+  "sha256": "1087d90891a1e77e69221f5d1a1f44c3dd87cf147f90e7094113a69574880ab8"
+}

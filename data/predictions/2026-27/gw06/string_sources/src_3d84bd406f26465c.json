@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:3d84bd406f26465c",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sounds/play/m0032mc0?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 09 Oct 2026 15:51:00 GMT",
+  "published_at_utc": "2026-10-09T15:51:00Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "Football Daily",
+  "body": "Conor McNamara joins Ian Dennis and John Murray ahead of a big Premier League weekend.",
+  "player_ids": [],
+  "sha256": "d3c5ac3d1f9e4dc3bb97f6947b77630f94c08744cd307d445e490de26d593e56"
+}

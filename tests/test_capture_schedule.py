@@ -186,7 +186,8 @@ class CaptureScheduleTest(unittest.TestCase):
             present = root / "present.txt"
             present.write_text("x", encoding="utf-8")
             with (
-                patch("src.eval.predictions.MINUTES_PATH", present),
+                patch("src.live.t1_inputs.minutes_sheet", return_value=present),
+                patch("src.live.t1_inputs.exchange_sheet", return_value=present),
                 patch("src.live.deadline.ENTRY_PATH", present),
                 patch("src.live.deadline.LOG_PATH", present),
                 patch("src.live.deadline.ODDS_PATH", present),

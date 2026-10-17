@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:tzimas-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Brighton",
+  "player_ids": [
+    137
+  ],
+  "headline": "Tzimas out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Stefanos Tzimas is out with a knee injury.",
+  "sha256": "974b3a19468d22994982922d3847fc5fb23bd6f4af49c9b346ad9309c73cc879"
+}

@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:f7481385546d1d1e",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/articles/cx7vpe1p070mo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 08 Oct 2026 18:57:13 GMT",
+  "published_at_utc": "2026-10-08T18:57:13Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "Ticket rises and more TV packages - why is price of sport increasing?",
+  "body": "The price of sports tickets and TV subscriptions are on the rise - so what is behind the increases and how are they justified?",
+  "player_ids": [],
+  "sha256": "35f45706c2b25c77012ccb0739c638f0c13636c6179bf97b344be0b2223715ac"
+}

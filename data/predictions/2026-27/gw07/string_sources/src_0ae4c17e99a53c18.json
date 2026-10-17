@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:0ae4c17e99a53c18",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/c8dx3l9r5lqlo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 16 Oct 2026 09:16:31 GMT",
+  "published_at_utc": "2026-10-16T09:16:31Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "'I'm fortunate to be alive' - Merino relives bus attack",
+  "body": "Arsenal and Spain midfielder Mikel Merino reflects on the attack on Dortmund's team bus in 2017, when he was 20 years old.",
+  "player_ids": [],
+  "sha256": "f3429aaabe4a20b3c34513f33ebb3dfbc713339d2e7f5dcfa4bf9f6e77985686"
+}

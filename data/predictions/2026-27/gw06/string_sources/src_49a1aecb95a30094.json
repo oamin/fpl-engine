@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:49a1aecb95a30094",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/videos/c64g71j3dkw7o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Sun, 04 Oct 2026 21:20:21 GMT",
+  "published_at_utc": "2026-10-04T21:20:21Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "Man City fight back to beat struggling Arsenal",
+  "body": "Manchester City twice came from behind to beat Arsenal 4-2 at the Etihad Stadium and increase the pressure on Gunners manager Renee Slegers.",
+  "player_ids": [],
+  "sha256": "5dc4953595452ec0d14c01467cf8265d21a06ceb60dba23e087b507cb93a04f9"
+}

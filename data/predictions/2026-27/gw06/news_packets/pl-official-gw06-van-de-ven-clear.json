@@ -1,0 +1,13 @@
+{
+  "packet_id": "pl_official:gw06:van-de-ven-clear",
+  "source": "pl_official",
+  "url": "https://www.premierleague.com/en/news/4730320",
+  "published_at_utc": "2026-10-09T12:00:00Z",
+  "club": "Spurs",
+  "player_ids": [
+    503
+  ],
+  "headline": "Van de Ven available",
+  "body": "Premier League, 9 Oct 2026: Micky van de Ven is fit to play.",
+  "sha256": "27df6c5e25707df32823c4217bb20abdfd85c6928dd127d13ae8a49bf5aa7ae4"
+}

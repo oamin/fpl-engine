@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:havertz-doubt",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Arsenal",
+  "player_ids": [
+    26
+  ],
+  "headline": "Havertz doubt",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Kai Havertz is a doubt with a hamstring.",
+  "sha256": "abc21cce3cd8b9fb99fc4caa88679974902b003a5b6c1df1de5e07eea0d43168"
+}

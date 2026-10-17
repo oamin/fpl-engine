@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:mateta-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Crystal Palace",
+  "player_ids": [
+    223
+  ],
+  "headline": "Mateta out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Jean-Philippe Mateta is out with a hamstring injury.",
+  "sha256": "c0d4aca5b14acafc7012375ce748a735271d2bb00f9ab3083e1d6d61731d16c2"
+}

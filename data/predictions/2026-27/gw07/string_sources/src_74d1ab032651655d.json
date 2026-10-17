@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:74d1ab032651655d",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/videos/cmx235v7gqwro?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Tue, 13 Oct 2026 20:34:16 GMT",
+  "published_at_utc": "2026-10-13T20:34:16Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "Watch: Scotland beat Czechs to set up Sweden play-off",
+  "body": "Watch the goals as Scotland twice come from behind to beat the Czech Republic 3-2 on Paisley and progress 5-2 on aggregate to a Women's World Cup play-off final against Sweden.",
+  "player_ids": [],
+  "sha256": "a70615f430c8f02c49a2e3477faa76d2a116dd265b40dda65f1cf5825ba2759e"
+}

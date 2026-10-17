@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:mitoma-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Brighton",
+  "player_ids": [
+    121
+  ],
+  "headline": "Mitoma out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Kaoru Mitoma is out with a hamstring injury.",
+  "sha256": "d1227a82b8a7cb228b91fcb6f632a26c9db8d6466b76c252f610d300da052129"
+}

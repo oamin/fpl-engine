@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:c292fbf78c05f701",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cr86zg3w2lg2o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 16 Oct 2026 11:48:33 GMT",
+  "published_at_utc": "2026-10-16T11:48:33Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "Spain handed partial stadium closure after discriminatory chants v Egypt",
+  "body": "Spain must play their next international friendly with a partial stadium closure after supporters sang a discriminatory chant about Muslims multiple times during a game against Egypt on 31 March.",
+  "player_ids": [],
+  "sha256": "d2ae8a0321c1f13294cb3fb3c48f19c51574f016f1d6393f1b18cbb7b88680a9"
+}

@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:savona-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Nott'm Forest",
+  "player_ids": [
+    475
+  ],
+  "headline": "Savona out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Nicolo Savona is out with a knee injury.",
+  "sha256": "576a1aee2fbea60e6312cb9290328d80905aa9f4e71847ab88e71d6f2a1bf4ed"
+}

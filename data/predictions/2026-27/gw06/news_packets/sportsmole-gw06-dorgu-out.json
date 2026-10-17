@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:dorgu-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Man Utd",
+  "player_ids": [
+    415
+  ],
+  "headline": "Dorgu out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Patrick Dorgu is out with a hamstring injury.",
+  "sha256": "5abf95d57f3187d4341d8e5288fb558e12c2d827d6d4057233316a06a9790128"
+}

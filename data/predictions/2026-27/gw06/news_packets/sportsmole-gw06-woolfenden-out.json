@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:woolfenden-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Coventry City",
+  "player_ids": [
+    180
+  ],
+  "headline": "Woolfenden out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Luke Woolfenden is out with a knee injury.",
+  "sha256": "a35d69545f74672658b534c1a4a8e338bfee08a6d9119cf373830722dc1c45da"
+}

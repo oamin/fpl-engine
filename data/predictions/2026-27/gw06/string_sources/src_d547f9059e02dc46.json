@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:d547f9059e02dc46",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cjkgey07lq15o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 09 Oct 2026 14:02:46 GMT",
+  "published_at_utc": "2026-10-09T14:02:46Z",
+  "observed_at_utc": "2026-10-09T19:03:13Z",
+  "headline": "What reception awaits Man City at Anfield?",
+  "body": "Bus welcomes, banners and flags expected as Man City head to Liverpool on Sunday for their first game since they were found guilty of breaching Premier League rules.",
+  "player_ids": [],
+  "sha256": "6ee2eb08c6396b1471088beb8ee68e62481b3ae3226372231a4eea825ea16643"
+}

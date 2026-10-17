@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:kroupi.jr-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Bournemouth",
+  "player_ids": [
+    78
+  ],
+  "headline": "Kroupi.Jr out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Eli Kroupi is out with a foot injury.",
+  "sha256": "9d3d4b7c12a98fe7e1cad38aad36b4e384cc9eefd5ed37b77c486733a00a4874"
+}

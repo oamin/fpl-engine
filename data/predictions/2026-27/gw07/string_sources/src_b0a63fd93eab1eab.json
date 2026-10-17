@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:b0a63fd93eab1eab",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/videos/cqlyendmk7wyo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Sun, 11 Oct 2026 23:31:42 GMT",
+  "published_at_utc": "2026-10-11T23:31:42Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "'Call it a day with VAR' - Rooney on Palace's controversial goal",
+  "body": "Speaking on Match of the Day, Wayne Rooney says VAR made the wrong decision in awarding Crystal Palace their second goal, which saw the home side take the lead as they went on to beat Nottingham Forest 3-1 in the Premier League.",
+  "player_ids": [],
+  "sha256": "2a0062b2082a5422ab7cf1e9c92e6fd1aa57534446a89ca934f7543696715a93"
+}

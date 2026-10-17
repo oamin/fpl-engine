@@ -822,6 +822,9 @@ def collect(
 
     The decision score is the T−1h ``ep_next`` slot. A dry run names its own
     file and does not become that slot. The frozen holdout slate is not read.
+    When ``minutes_path`` is omitted, the compiled ``xmi_t1`` sheet is used
+    if that file exists. The priced weeks use that sheet and the T−1 Exchange
+    folder. An earlier pull is not a fallback.
     """
     if dry_run and decision_file is None:
         raise DeadlineError("a dry run names its capture")
@@ -829,9 +832,16 @@ def collect(
         raise DeadlineError("the decision capture is the T-1h slot")
     entry = json.loads(entry_path.read_text(encoding="utf-8"))
     logs = pd.read_csv(log_path)
-    from src.live.betfair_props import resolve_live_book
+    from src.live.t1_inputs import live_score_book
 
-    book = resolve_live_book(int(gw), live_path)
+    book = live_score_book(int(gw), live_path)
+    if minutes_path is None:
+        from src.live.t1_inputs import minutes_sheet, refuse_frozen
+
+        candidate = minutes_sheet(int(gw))
+        if candidate.is_file():
+            refuse_frozen(candidate)
+            minutes_path = candidate
     if book is not None and (trial_path is None or trial_path == TRIAL_META):
         meta_candidate = book.parent / "betfair_meta.json"
         if meta_candidate.is_file():
@@ -896,9 +906,7 @@ def collect(
             choice = load_ep_next(int(gw), path=Path(decision_file))  # type: ignore[arg-type]
         else:
             choice = load_ep_next(int(gw))
-        from src.live.betfair_props import discover_betfair_artifacts
-
-        artifacts = discover_betfair_artifacts(int(gw))
+        artifacts = None if book is None else book.parent
         scored = price_half(
             gw=int(gw),
             logs=logs,

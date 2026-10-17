@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:n\u00f8rgaard-doubt",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Everton",
+  "player_ids": [
+    21
+  ],
+  "headline": "N\u00f8rgaard doubt",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Christian Norgaard is a doubt with a groin.",
+  "sha256": "355b6e6ec29b8e1a398c28490a0ee33fb651e5c5e965e24773b37b744c0f4f5b"
+}

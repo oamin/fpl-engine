@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:b68ac1956328c31f",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cqev30d0dngno?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 16 Oct 2026 15:32:27 GMT",
+  "published_at_utc": "2026-10-16T15:32:27Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "'A bit early' for Rangers to put pressure on Celtic & Hearts - McInnes",
+  "body": "Derek McInnes dismissed the idea that Rangers could put pressure on Celtic and Hearts with a win against Dundee on Saturday evening.",
+  "player_ids": [],
+  "sha256": "608c8502f599604dd20ba9f86ab6a8f4ff5fb5269d8904045ab5aa7fef4f6ac9"
+}

@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:599fb8bf7c3d7926",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/iplayer/episode/m0032m77?at_mid=mSY9B0KXxo&at_campaign=The_Departed&at_medium=display_ad&at_campaign_type=owned&at_nation=NET&at_audience_id=SS&at_product=iplayer&at_brand=m0032m77&at_ptr_name=bbc&at_ptr_type=media&at_format=image&at_objective=consumption&at_link_title=The_Departed&at_bbc_team=BBC",
+  "clock": "http_last_modified",
+  "raw_published_at": "Tue, 06 Oct 2026 05:00:00 GMT",
+  "published_at_utc": "2026-10-06T05:00:00Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "Matt Damon and Leonardo DiCaprio star in a tense 2006 crime thriller",
+  "body": "Lies. Betrayal. Sacrifice. How far will you go to survive? Martin Scorsese's Oscar-winner",
+  "player_ids": [],
+  "sha256": "c4e75dd719fe7216a7f5a5ebfbdfe1ec09e33a0a6c8f05671f740c8501c48093"
+}

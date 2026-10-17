@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:mateo-joseph-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Leeds",
+  "player_ids": [
+    349
+  ],
+  "headline": "Mateo Joseph out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Mateo Joseph is out with a knee injury.",
+  "sha256": "281f8f234c30c131ba3202de62b00601db813a6b6bb7ab724be4a2b81680a6fa"
+}

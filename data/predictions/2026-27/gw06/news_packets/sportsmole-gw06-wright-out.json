@@ -1,0 +1,13 @@
+{
+  "packet_id": "sportsmole:gw06:wright-out",
+  "source": "sportsmole",
+  "url": "https://www.sportsmole.co.uk/football/man-city/injury-news/feature/premier-league-injury-list-every-out-and-doubtful-player-for-gw6_606575.html",
+  "published_at_utc": "2026-10-09T17:04:00Z",
+  "club": "Coventry City",
+  "player_ids": [
+    193
+  ],
+  "headline": "Wright out",
+  "body": "Sports Mole, 9 Oct 2026 18:04 BST: Haji Wright is out with a quad injury.",
+  "sha256": "c4b3bfc034a2a57de08ea7ceb01359143199ce088279542c0f7632457f53150f"
+}

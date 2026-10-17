@@ -1,0 +1,13 @@
+{
+  "packet_id": "pl_official:gw06:james-clear",
+  "source": "pl_official",
+  "url": "https://www.premierleague.com/en/news/4730320",
+  "published_at_utc": "2026-10-09T12:00:00Z",
+  "club": "Chelsea",
+  "player_ids": [
+    142
+  ],
+  "headline": "James available",
+  "body": "Premier League, 9 Oct 2026: Reece James has been passed fit.",
+  "sha256": "e9f154d3b88bb849c3560c02016ca9208817138c1d5dd6a34c2fac204543700e"
+}

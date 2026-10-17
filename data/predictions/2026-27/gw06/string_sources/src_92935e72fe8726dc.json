@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:92935e72fe8726dc",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/ckz65plq04nqo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Sat, 10 Oct 2026 08:27:28 GMT",
+  "published_at_utc": "2026-10-10T08:27:28Z",
+  "observed_at_utc": "2026-10-10T09:27:28Z",
+  "headline": "Raphinha's brilliant Barcelona start interrupted by injury concerns",
+  "body": "Raphinha will miss Barcelona's next two fixtures after returning from international break with an injury.",
+  "player_ids": [],
+  "sha256": "668bd30705b6723f312795c0e7aece870543713ddd5f42d5107e318fb6515219"
+}
