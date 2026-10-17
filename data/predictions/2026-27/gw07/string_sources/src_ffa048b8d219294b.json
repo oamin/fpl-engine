@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:ffa048b8d219294b",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cm0j07pdw95eo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 15 Oct 2026 08:30:04 GMT",
+  "published_at_utc": "2026-10-15T08:30:04Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "Why Souness rejected Barcelona when he left Liverpool",
+  "body": "Liverpool legend Graeme Souness reveals he rejected the chance to sign for Barcelona when he left the European champions.",
+  "player_ids": [],
+  "sha256": "60123d627615fd9015f903635e5d0811965bd1debfdb2e7985f01ed472f313d7"
+}

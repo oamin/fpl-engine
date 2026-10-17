@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:c34a2df51a963fd7",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cmr4yn3qyw2go?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 16 Oct 2026 16:01:49 GMT",
+  "published_at_utc": "2026-10-16T16:01:49Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "'Our roots are Man Utd' - but FC United ethos 'more important than ever'",
+  "body": "FC United are hoping for FA Cup success, 21 years after being formed as a supporter-owned club following the Glazer family takeover of Manchester United.",
+  "player_ids": [],
+  "sha256": "ba694304f3cf145a0f0b6d038c0f161ad38ebd57cda4cd1d0942ce854b70119c"
+}

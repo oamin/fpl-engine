@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:c5325f87adc3f5b4",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/videos/c61mvdy2mdx9o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Sun, 11 Oct 2026 18:59:04 GMT",
+  "published_at_utc": "2026-10-11T18:59:04Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "Hull continue good start with entertaining Everton draw",
+  "body": "Mohamed Belloumi scores a second-half leveller as Hull City and Everton continue their good starts to the season with an entertaining draw at MKM Stadium.",
+  "player_ids": [],
+  "sha256": "70199c8a3a562037fa7916d6c9520919382f8bb72ee25611b5d8ff2cb2cde1ee"
+}

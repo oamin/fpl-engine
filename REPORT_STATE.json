@@ -1,14 +1,17 @@
 {
-  "milestone": "gw6-realised",
-  "status": "recorded",
-  "summary": "Gameweek 6 finished points are stored in data/holdout/2026-27/player_gw/gw06.csv. The numagent wildcard eleven scored 56 with the captain counted twice. The untouched hold scored 51 and the van Ewijk to Silva path scored 48, so the week nets +5 vs hold and +8 vs 1FT. ep_next on that eleven was exact at 56. score_xp pool Spearman is 0.331 and clean-sheet Brier is 0.137. Stragent's Scarlett to Muniz eleven scored 49. Both freeze realised blocks and the session manifests are filled. ojaminFC's entry is refreshed through Gameweek 6. Forecast fields on the freeze rows are unchanged.",
-  "gemini": null,
+  "milestone": "gw7-stragent-lock",
+  "status": "locked",
+  "summary": "Gameweek 7 stragent is locked before the 2026-10-17T10:00:00Z deadline. Trawl wrote 195 string sources under gw07/string_sources/. The reply holds the Gameweek 6 fifteen, plays no chip, captains Haaland with Fernandes as vice, and rolls the free transfer (bank 6, FT 2 into Gameweek 8). The planned Davis-to-Robinson move was declined after Robinson's 75% ankle flag. Model gemini-4-argon-high on iteration stragent-gw6. Plan string_plans/gw07.json; ledger string_agent_freeze.jsonl; session gw07/session_stragent.json.",
+  "gemini": "bc-7f7dc6ee-0fa5-543f-9817-3489620259c0",
   "artifacts": [
-    "data/holdout/2026-27/player_gw/gw06.csv",
-    "data/predictions/2026-27/gw06/gw6_realised.json",
-    "reports/gw6_realised.md",
-    "data/predictions/2026-27/week_freeze.jsonl",
+    "data/predictions/2026-27/gw07/fpl_t1/bootstrap.json",
+    "data/predictions/2026-27/gw07/fpl_t1/fixtures.json",
+    "data/predictions/2026-27/gw07/string_sources/",
+    "data/predictions/2026-27/gw07/session_stragent.json",
+    "data/predictions/2026-27/string_plans/gw07.json",
+    "data/predictions/2026-27/string_plans/gw07_context.md",
+    "data/predictions/2026-27/string_plans/gw07_reply.json",
     "data/predictions/2026-27/string_agent_freeze.jsonl",
-    "data/entry/2632584.json"
+    "data/predictions/2026-27/string_plans/notebook.jsonl"
   ]
 }

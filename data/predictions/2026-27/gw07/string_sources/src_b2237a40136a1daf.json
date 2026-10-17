@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:b2237a40136a1daf",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cq62yn3r4nk7o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 16 Oct 2026 07:03:45 GMT",
+  "published_at_utc": "2026-10-16T07:03:45Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "EFL preview: Shining lights and dark nights",
+  "body": "BBC Sport picks out five things across the EFL that you should be keeping your eyes on this weekend.",
+  "player_ids": [],
+  "sha256": "b8320027685c7f87071954c054ad812efd27110118949388a004a39f97aac0f8"
+}

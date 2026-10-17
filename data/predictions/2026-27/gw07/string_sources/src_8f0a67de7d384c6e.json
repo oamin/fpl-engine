@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:8f0a67de7d384c6e",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cp3rl709p7xo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 17 Sep 2026 05:23:59 GMT",
+  "published_at_utc": "2026-09-17T05:23:59Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "A team that offered hope... then, four months later, Hamas attacked Israel",
+  "body": "Can the potential of a golden generation of Israel's footballers, in sport and society, be realised?",
+  "player_ids": [],
+  "sha256": "08082f682c53e550199a786e7a406aa2ea6d49872655221702d524addb1c6f2d"
+}

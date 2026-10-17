@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:0b5eb4c4723bda72",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/c615jw414vypo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 16 Oct 2026 10:24:57 GMT",
+  "published_at_utc": "2026-10-16T10:24:57Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "'Not about me' - Arbeloa dismisses future questions",
+  "body": "Fulham head coach Alvaro Arbeloa says the focus should not be on him as his side searches for a first Premier League win this season against Hull City this weekend.",
+  "player_ids": [],
+  "sha256": "67b8b2949c427093e0d2649cdf2c36a0dfd68d2bf2a60b31c60b7fb35d3c1551"
+}

@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:6550a935bbe15765",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cvgyxyxplkvo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Wed, 07 Oct 2026 19:45:58 GMT",
+  "published_at_utc": "2026-10-07T19:45:58Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "All done deals in September & October 2026",
+  "body": "Check out the significant signings and departures in the Premier League, Scottish Premiership, EFL and Women's Super League.",
+  "player_ids": [],
+  "sha256": "03b9cc937379800dc71c229056540594f52724e2c237cb2d193adcf4082abf88"
+}

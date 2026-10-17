@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:e79df00cd30d7559",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/videos/c6vgy2ll1zypo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Sun, 11 Oct 2026 18:59:19 GMT",
+  "published_at_utc": "2026-10-11T18:59:19Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "Doku delights as Manchester City cruise past 10-man Liverpool",
+  "body": "In their first match since being found guilty of breaching Premier League financial rules, Manchester City enjoyed a comfortable 3-0 win against Liverpool at Anfield to extend their perfect start to six matches, as they moved three points clear at the top of the Premier League.",
+  "player_ids": [],
+  "sha256": "ce20ce5f79a7ecdc4611bf1bb7350f49110a5cf72fdc3fbaea7f85a9f4945e7b"
+}

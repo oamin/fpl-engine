@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:a2f8caf3fcaf9812",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/videos/c6ly0jdndez9o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Sun, 11 Oct 2026 23:00:33 GMT",
+  "published_at_utc": "2026-10-11T23:00:33Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "Rooney gives verdict on Gravenberch red card",
+  "body": "Speaking on Match of the Day, Wayne Rooney and Toby Alderweireld discuss whether Ryan Gravenberch should have been sent off, after he received two yellow cards in Liverpool 3-0 defeat to Manchester City in the Premier League.",
+  "player_ids": [],
+  "sha256": "c64bf221719f3f3cf4c6532b32ca23df84f533b38cfd625b5df658e153e5666b"
+}

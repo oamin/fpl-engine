@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:cd1fd3619b8d6693",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cw98z1v08vg4o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 16 Oct 2026 09:14:05 GMT",
+  "published_at_utc": "2026-10-16T09:14:05Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "The England keeper set to face his dad at a World Cup",
+  "body": "Colin Gordon will be coaching Argentina at the World Cup, while son Chris will be playing for England.",
+  "player_ids": [],
+  "sha256": "40385d8e9c5c34ed9c702b09b7416d3bc18214afdab2dcdc8e25c7b1b81097d6"
+}

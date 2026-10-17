@@ -1,0 +1,14 @@
+{
+  "source_id": "guardian:b85e2098eeaf5606",
+  "source": "guardian",
+  "outlet_class": "press",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-teams-run-more-win-matches-distance-opta",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 16 Oct 2026 07:30:27 GMT",
+  "published_at_utc": "2026-10-16T07:30:27Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "Do Premier League teams really need to run more to win matches?",
+  "body": "Pundits regularly criticise teams for not running enough but is there a link between distance covered and results? By Opta Analyst It was like clockwork. Manchester United dropped points against Tottenham and critics were quick to question their effort and application, using the team’s physical statistics to make points. Speaking on Sky Sports, Jamie Redknapp said: “There’s a pattern I don’t really like when I watch teams, and that’s when – and the stats don’t lie – the other team runs more than you. In the Premier League right now, I feel there are a couple of non-negotiables: you’ve got to run more than the other team if you want to win, or at least get close enough that it doesn’t make that much of a difference. Tottenham ran five kilometres more than Manchester United.” Continue reading...",
+  "player_ids": [],
+  "sha256": "ace576cef0851726dd8b2b9198e04d0a898c177de4b2fbfd797f027303ee4cea"
+}

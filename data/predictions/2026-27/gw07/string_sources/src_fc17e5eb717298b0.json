@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:fc17e5eb717298b0",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cm2kev8w934do?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Tue, 13 Oct 2026 22:15:44 GMT",
+  "published_at_utc": "2026-10-13T22:15:44Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "'Unplayable' Stanway a free-scoring warrior for Lionesses",
+  "body": "Whatever the game, whatever the result, Georgia Stanway always seems to score for England.",
+  "player_ids": [],
+  "sha256": "2cc0a322a1889ff29c979667aa341a5d168a1b17f3e62c5248ced6a9882685f6"
+}

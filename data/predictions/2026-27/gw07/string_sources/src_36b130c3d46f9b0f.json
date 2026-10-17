@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:36b130c3d46f9b0f",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sounds/play/m0032shg?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 16 Oct 2026 14:52:00 GMT",
+  "published_at_utc": "2026-10-16T14:52:00Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "Football Daily",
+  "body": "John Murray, Ian Dennis & Ali Bruce-Ball lift the lid on life as 5 Live commentators.",
+  "player_ids": [],
+  "sha256": "cf4d69948d7efe95907c2de1d4a73e8ab13984be8853ae244017ec9e5b16e707"
+}

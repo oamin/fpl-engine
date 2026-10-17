@@ -1,0 +1,14 @@
+{
+  "source_id": "guardian:07962fae2507a50c",
+  "source": "guardian",
+  "outlet_class": "press",
+  "url": "https://www.theguardian.com/football/who-scored-blog/2026/oct/15/chelsea-premier-league-fun-team-sustainable-xabi-alonso-europe",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 15 Oct 2026 15:30:51 GMT",
+  "published_at_utc": "2026-10-15T15:30:51Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "Chelsea are the Premier League’s most fun team but is it sustainable?",
+  "body": "Xabi Alonso’s side are scoring and conceding at a remarkable rate. It’s great for neutrals but not necessarily the best way to qualify for Europe By WhoScored Watching Chelsea this season ought to come with a health warning. Goals arrive in abundance, leads are established before spectators have settled into their seats and clean sheets have become an alien concept. Xabi Alonso has transformed Chelsea into one of the Premier League’s most thrilling spectacles. They have scored 15 goals and conceded 13. That’s 4.7 goals per game in six matches. Chelsea are a neutral’s dream, but is it sustainable? They have scored 15 goals from an expected goals total of just 8.4, an over-performance of 6.6. Their 18.3% conversion rate is second only to Manchester City’s 19.1%, while eight of their 15 goals have come from shots with xG below 0.13. The five goals against Bournemouth last weekend came from an xG of just 0.75. Continue reading...",
+  "player_ids": [],
+  "sha256": "905987df5bd6290d11fa1366e723ce305a9de3d0aefe633af0797f604106dfbc"
+}

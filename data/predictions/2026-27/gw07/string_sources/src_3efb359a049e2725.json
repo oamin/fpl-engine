@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:3efb359a049e2725",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cd94713djgyo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Sat, 10 Oct 2026 15:42:13 GMT",
+  "published_at_utc": "2026-10-10T15:42:13Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "Manager ins and outs - 2026-27",
+  "body": "BBC Sport tracks all the manager ins and outs in the Premier League, Scottish Premiership, Women's Super League, English Football League and National League.",
+  "player_ids": [],
+  "sha256": "48ea9d6fa3f2b89d9e4ba063900950ab29f319fca673b5ef6ed73575b53f46df"
+}

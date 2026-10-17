@@ -20,13 +20,16 @@ The ledger starts at Gameweek 6. The published Gameweeks 1–5 total of 280 is t
 
 ## Stragent
 
-Ledger: `string_agent_freeze.jsonl`. Writer: `src/str_agent/freeze.py`. Plan: `string_plans/gw06.json`.
+Ledger: `string_agent_freeze.jsonl`. Writer: `src/str_agent/freeze.py`. Plans: `string_plans/gw06.json`, `string_plans/gw07.json`.
 
 | GW | Frozen | Deadline | Chip | Move | Captain | Vice | Realised XI+C |
 | --- | --- | --- | --- | --- | --- | --- | ---: |
 | 6 | 2026-10-10T09:37:55Z | 2026-10-10T10:00:00Z | none | Scarlett to Muniz | Fernandes `426` | Haaland `411` | 49 |
+| 7 | 2026-10-17T08:30:40Z | 2026-10-17T10:00:00Z | none | hold (roll FT) | Haaland `411` | Fernandes `426` |  |
 
-Bench order: Forster, Shaw, Calvert-Lewin, van Ewijk. Bank left 6 tenths. Plan sha256 `cafb5269f2cf375a12e753aa85489d363a4586ba4ee14c4baaefc666d14beccc`. The dossier for that plan is `gw06/string_sources/`. The morning run is the locked session file `gw06/session_stragent.json`. Its plan and context hashes are the ledger hashes. The notebook row for Gameweek 6 is in `string_plans/notebook.jsonl`.
+Bench order GW6: Forster, Shaw, Calvert-Lewin, van Ewijk. Bank left 6 tenths. Plan sha256 `cafb5269f2cf375a12e753aa85489d363a4586ba4ee14c4baaefc666d14beccc`. The dossier for that plan is `gw06/string_sources/`. The morning run is the locked session file `gw06/session_stragent.json`.
+
+Gameweek 7 held the fifteen, rolled the free transfer to two for Gameweek 8, and started Guéhi–Calafiori–van Ewijk with Haaland captain (vice Fernandes). Bench: Forster, Shaw, Muniz, Davis. Bank stays 6 tenths; carry_after free transfers 2. Plan sha256 `d73d1390d45809de` (full digest on the plan and session files). Model call `gemini-4-argon-high` on iteration `stragent-gw6`. Dossier `gw07/string_sources/` (195 notes). Session `gw07/session_stragent.json`. Slate `gw07/fpl_t1/`. Notebook row for Gameweek 7 is in `string_plans/notebook.jsonl`.
 
 ## Research plans
 
@@ -55,7 +58,7 @@ The numagent hash covers the rules, the points formula, the chip margins, the sq
 
 ## Next deadline
 
-Gameweek 6 is the only row in each ledger. The next row is appended by the session commands, one gameweek at a time, while the clock is before that deadline.
+Stragent has rows for Gameweeks 6 and 7. Numagent still has Gameweek 6 only. Later rows are appended by the session commands, one gameweek at a time, while the clock is before that deadline.
 
 ```bash
 python3 -m src.live.session --gw N --deadline <utc>

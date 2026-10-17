@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:b246429a4a162013",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cvj64l3xyzlyo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Wed, 30 Sep 2026 13:47:34 GMT",
+  "published_at_utc": "2026-09-30T13:47:34Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "How much money do clubs get for Nations League players?",
+  "body": "Our Ask Me Anything team look at what clubs are paid for releasing players for Nations League appearances.",
+  "player_ids": [],
+  "sha256": "96b1c7b94149b1e80fbc071a0f4881a20b9b5e328990765c288e4855936085e4"
+}

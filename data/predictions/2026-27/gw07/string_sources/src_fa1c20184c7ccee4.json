@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:fa1c20184c7ccee4",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cm4g189leelno?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 16 Oct 2026 13:59:12 GMT",
+  "published_at_utc": "2026-10-16T13:59:12Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "'I am telling you the truth' - Carrick on Martinez fallout",
+  "body": "Manchester United boss Michael Carrick says he is telling the truth about the club moving on from Lisandro Martinez's explosive post-match interview.",
+  "player_ids": [],
+  "sha256": "f877fc9f2391022e38ecd2e1c225affd2adeb9bf5f1a05d29d4632ae58576615"
+}

@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:a8c7b27abcdca883",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/videos/c8g47knxqvgdo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Sun, 11 Oct 2026 23:00:57 GMT",
+  "published_at_utc": "2026-10-11T23:00:57Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "How 'big star' Doku delivered for Man City in win at Liverpool",
+  "body": "Speaking on Match of the Day, Wayne Rooney and Toby Alderweireld analyse how Jeremy Doku changed the game in Manchester City's favour, after coming on as a substitute in his side's 3-0 win against Liverpool at Anfield.",
+  "player_ids": [],
+  "sha256": "4be74d410ca826b4343a9b82279bfdcae2edb049becf957f61566b8055a0ac36"
+}

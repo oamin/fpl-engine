@@ -1,0 +1,40 @@
+{
+  "gw": 7,
+  "hashes": {
+    "context_sha256": "7db255140bd99110ab9e666f1bdc29261f7cdcd550aa94182dae4981e1c331a8",
+    "plan_sha256": "d73d1390d45809de98bbb937785f2c36d3431db63d37c97ddcb611be0b5ec5b1"
+  },
+  "locked": true,
+  "model": {
+    "iteration_commit": "756491ed3d458fb19e595d46ae62cf5468836a6a",
+    "iteration_id": "stragent-gw6",
+    "locked_commit": "3837f20c8025fceb3fc88cfd3a9d87d3f5ee72ab",
+    "manager": "stragent",
+    "matches_registered": true,
+    "model_id": "gemini-4-argon-high",
+    "prompt_sha256": "89fc9d8850ec352c7515bbb97c5892b88e48d8065c1f63c41410a16d679287c1",
+    "source_sha256": "ae4de9a0ce5a0f784c353e0a8d809f52ed49c2f7fa0eb59cbe6e58f3d9fab10e"
+  },
+  "realised": null,
+  "steps": [
+    {
+      "name": "trawl",
+      "status": "ok",
+      "written": 1
+    },
+    {
+      "name": "context",
+      "prior_notes": true,
+      "status": "ok"
+    },
+    {
+      "name": "reply",
+      "status": "ok"
+    },
+    {
+      "gw": 7,
+      "name": "lock",
+      "status": "locked"
+    }
+  ]
+}

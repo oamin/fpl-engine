@@ -1,0 +1,187 @@
+{
+  "model_id": "gemini-4-argon-high",
+  "rationale": "We roll our single free transfer in Gameweek 7, cancelling last week's provisional plan to sell Leif Davis (305) for Fulham's Antonee Robinson (254) and keeping 6 tenths in the bank alongside two free transfers for Gameweek 8. Across the press and forum outlets in this week's dossier, Fulham are a clear team to avoid investing further in right now: BBC Sport ('Not about me' - Arbeloa dismisses future questions) reports that head coach Alvaro Arbeloa is still searching for a first Premier League win of the season against Hull City, while The Guardian ('Carrick includes Martinez in squad... football news – as it happened') highlights supporters fretting over Arbeloa's 'puzzling tactical choices' following Marco Silva's summer departure to Benfica. Meanwhile, Hull arrive at Craven Cottage unbeaten at home and fresh from a 2-2 draw against Everton in which Joe Gelhardt and Mohamed Belloumi both scored (BBC Sport, The Guardian), and r/FantasyPL's 'FPL Depression Bingo GW7' thread openly mocks managers relying on Fulham returns. We already carry Fulham exposure through Rodrigo Muniz (271), whose minutes have shrunk to 7, 13, and 10 (rolling average xmi 10.0), making a second Fulham outlay unwise. Just as importantly, selling Leif Davis (305) now would sacrifice a 90-minute defender (xmi 90.0) who sits at 99.1% progress toward a price rise on r/FantasyPL ('Tonight's Predicted Price Changes') right before Ipswich host Nottingham Forest—the Premier League's second-lowest scorers according to Sky Sports ('How Glasner is trying to solve Forest's scoring problem')—in Gameweek 8 and travel to Hull (FDR 2) in Gameweek 9. We can comfortably bench Davis for his trip to Manchester City in Gameweek 7 because Milan van Ewijk (175) is 100% fit (status a, chance 100) and returned to action supplying crosses in Frank Lampard's 4-1 rout of Newcastle United, Coventry's second consecutive league victory (The Guardian, BBC Sport, Premier League YouTube). Van Ewijk joins Marc Guéhi (388, home to Ipswich) and Riccardo Calafiori (8, away to goal-shy Nottingham Forest) in a three-man backline, while Luke Shaw (423)—flagged doubtful at 75% with an unspecified injury in the FPL bootstrap (xmi 61.2) and among the top 10 most sold players on r/FantasyPL (-27,480 net transfers)—provides first-sub cover alongside Muniz and Davis. Our five-man midfield starts in full: Rayan Cherki (399) is the number-one transfer target in the game on r/FantasyPL (+184,372 net transfers) after capping Manchester City's 3-0 win at Liverpool with a 'cracker' at Anfield (The Guardian) and now hosts Ipswich; Morgan Rogers (40, +77,311 net transfers) spears a Xabi Alonso Chelsea attack that has scored 15 goals in six matches with Jordan Henderson and Moisés Caicedo freeing Rogers, João Pedro, and Cole Palmer to flourish against an Everton defence that littered its draw at Hull with mistakes (The Guardian); Martin Ødegaard (15) visits Forest having created 12 chances without an assist yet across the opening six gameweeks according to r/FantasyPL's Prism scouting thread; Harvey Barnes (453, 90 minutes in each of his last three) hosts Aston Villa; and Bruno Fernandes (426, 90 minutes every week) leads Manchester United at Elland Road despite the dressing-room fallout from Lisandro Martínez's post-Atlético Madrid outburst (BBC Sport, Sky Sports). Up front in our 3-5-2, Dominic Calvert-Lewin (346, 90 minutes last time out) starts at home for newly extended Leeds boss Daniel Farke (r/PremierLeague, The Guardian) alongside Erling Haaland (411). While a thread on r/FantasyPL ('GW7 captain: Maresca says Haaland will need a rest') and WhatTheFPL's Team of the Week note the risk of an early substitution against Ipswich at the Etihad, Haaland just scored in the 3-0 win at Anfield (The Guardian, BBC Sport), leads r/FantasyPL's expected points captaincy model at 7.2 ahead of Pascal Groß (5.5) and Bukayo Saka (4.7), and takes the armband with 90-minute penalty-taker Bruno Fernandes (426) as vice-captain. Banking the transfer gives us two free transfers in Gameweek 8 to move Muniz (271, 54 tenths) to Sunderland's Brian Brobbey (552, 57 tenths)—trending in r/FantasyPL's Top 20 Net Transfers In (+20,136) ahead of Leeds at home (GW8) and Coventry away (GW9)—while rotating Davis (305) and van Ewijk (175) into the starting eleven for their favourable home fixtures.",
+  "notes": "Used FPL bootstrap injury flags (Shaw 75% doubtful, van Ewijk 100% available) and compile-base minutes (Muniz 7, 13, 10 mins, xmi 10.0; Davis and Guéhi 90 mins). Weighed BBC Sport and Guardian reports on Alvaro Arbeloa's winless Fulham, Oliver Glasner's goal-shy Nottingham Forest, Xabi Alonso's high-scoring Chelsea (Rogers), Coventry's 4-1 win over Newcastle (van Ewijk), Manchester City's 3-0 win at Anfield (Haaland, Cherki), and Leeds's contract agreement with Daniel Farke alongside r/FantasyPL transfer trends, price-change predictions (Davis 99.1%), and captaincy projections.",
+  "adjustments": "Rolled the GW7 free transfer instead of executing last week's planned Davis-to-Robinson swap, avoiding a winless Fulham side under Arbeloa and preserving Davis (99.1% to rise) for GW8 Forest (H) and GW9 Hull (A). With 2 FTs and 6 tenths in GW8, plan to replace 10-minute cameo forward Muniz (271) with starting striker Brian Brobbey (552) for Sunderland's GW8-9 run (Leeds home, Coventry away) while starting Davis against Forest.",
+  "decision": {
+    "chip_played": null,
+    "squad_15": [
+      "412",
+      "58",
+      "8",
+      "305",
+      "388",
+      "423",
+      "175",
+      "453",
+      "426",
+      "40",
+      "399",
+      "15",
+      "346",
+      "411",
+      "271"
+    ],
+    "starting_11": [
+      "412",
+      "388",
+      "8",
+      "175",
+      "399",
+      "426",
+      "40",
+      "15",
+      "453",
+      "411",
+      "346"
+    ],
+    "captain": "411",
+    "vice_captain": "426",
+    "bench_order": [
+      "58",
+      "423",
+      "271",
+      "305"
+    ],
+    "transfers_in": [],
+    "transfers_out": []
+  },
+  "horizon": [
+    {
+      "gw": 7,
+      "chip_played": null,
+      "squad_15": [
+        "412",
+        "58",
+        "8",
+        "305",
+        "388",
+        "423",
+        "175",
+        "453",
+        "426",
+        "40",
+        "399",
+        "15",
+        "346",
+        "411",
+        "271"
+      ],
+      "starting_11": [
+        "412",
+        "388",
+        "8",
+        "175",
+        "399",
+        "426",
+        "40",
+        "15",
+        "453",
+        "411",
+        "346"
+      ],
+      "captain": "411",
+      "vice_captain": "426",
+      "bench_order": [
+        "58",
+        "423",
+        "271",
+        "305"
+      ],
+      "transfers_in": [],
+      "transfers_out": []
+    },
+    {
+      "gw": 8,
+      "chip_played": null,
+      "squad_15": [
+        "412",
+        "58",
+        "8",
+        "305",
+        "388",
+        "423",
+        "175",
+        "453",
+        "426",
+        "40",
+        "399",
+        "15",
+        "346",
+        "411",
+        "552"
+      ],
+      "starting_11": [
+        "412",
+        "8",
+        "388",
+        "305",
+        "40",
+        "426",
+        "15",
+        "399",
+        "453",
+        "411",
+        "552"
+      ],
+      "captain": "411",
+      "vice_captain": "426",
+      "bench_order": [
+        "58",
+        "175",
+        "346",
+        "423"
+      ],
+      "transfers_in": [
+        "552"
+      ],
+      "transfers_out": [
+        "271"
+      ]
+    },
+    {
+      "gw": 9,
+      "chip_played": null,
+      "squad_15": [
+        "412",
+        "58",
+        "8",
+        "305",
+        "388",
+        "423",
+        "175",
+        "453",
+        "426",
+        "40",
+        "399",
+        "15",
+        "346",
+        "411",
+        "552"
+      ],
+      "starting_11": [
+        "412",
+        "388",
+        "305",
+        "175",
+        "399",
+        "453",
+        "40",
+        "426",
+        "15",
+        "411",
+        "552"
+      ],
+      "captain": "411",
+      "vice_captain": "399",
+      "bench_order": [
+        "58",
+        "346",
+        "8",
+        "423"
+      ],
+      "transfers_in": [],
+      "transfers_out": []
+    }
+  ]
+}

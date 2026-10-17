@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:83ef3268834a0d56",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/c3pwg7d11krqo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 16 Oct 2026 08:08:07 GMT",
+  "published_at_utc": "2026-10-16T08:08:07Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "The bitter local rivalry fuelled by a 22-year wait",
+  "body": "MK Dons will host Luton Town for the first time since 2004 on Saturday.",
+  "player_ids": [],
+  "sha256": "d049bf0e63d1631cef053d4e51390a5a3cfc3a7c51a5cee62ff29c755c17f518"
+}

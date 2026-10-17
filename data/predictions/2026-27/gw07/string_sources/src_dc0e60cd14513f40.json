@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:dc0e60cd14513f40",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/crgqwvnnyv30o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 15 Oct 2026 19:26:51 GMT",
+  "published_at_utc": "2026-10-15T19:26:51Z",
+  "observed_at_utc": "2026-10-17T08:22:45Z",
+  "headline": "Sutton's predictions v boxer & Ipswich fan Fabio Wardley",
+  "body": "BBC Sport football expert Chris Sutton takes on boxer and Ipswich fan Fabio Wardley, plus the BBC readers and AI with his predictions for this weekend's Premier League fixtures.",
+  "player_ids": [],
+  "sha256": "d789b2960c89d5c63642f4dae28e1c83cb003e3dab70c382d150f71c7dd15e72"
+}
