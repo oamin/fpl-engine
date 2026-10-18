@@ -1,7 +1,17 @@
 {
-  "milestone": "betfair-only",
-  "status": "research_only",
-  "summary": "The Odds API is removed from the live engines. Readers take gw_lines.csv only from a Betfair predictions folder. The frozen data/live/gw_lines.csv hash is unchanged. A missing Betfair folder does not open that file. Freeze odds_source odds_api is refused. Holdout verify still passes.",
-  "gemini": "bc-90156d5d-ce87-56ee-b772-011f4d43dbd0",
-  "artifacts": []
+  "updated": "2026-10-18",
+  "task": "club_expanding_gf_ga_2025_26",
+  "status": "done",
+  "clubs": ["Arsenal", "Liverpool", "Man City", "Chelsea"],
+  "season": "2025/26",
+  "source": "data/cache/merged_gw_2025_26.csv",
+  "outputs": {
+    "script": "scripts/plot_club_expanding_goals.py",
+    "report": "reports/club_expanding_gf_ga_2025_26.md",
+    "json": "reports/figures/club_expanding_gf_ga_2025_26.json",
+    "panel_png": "reports/figures/club_expanding_gf_ga_2025_26.png",
+    "overview_png": "reports/figures/club_expanding_mean_overview_2025_26.png",
+    "canvas": "https://cursor.com/canvas/store-04ce6534-50ed-465f-b222-29fbd42b54dc/af8325a3-f34d-404c-a013-a68bb50e1a0c"
+  },
+  "notes": "Expanding mean, sample sd, and median of match GF/GA by GW. Blank weeks forward-fill. Not a gated likelihood comparison."
 }
