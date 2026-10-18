@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-"""Expanding mean / sd / median GF and GA for four clubs, 2025/26.
+"""Expanding mean / sd / median / dispersion GF and GA for four clubs, 2025/26.
 
 Reads ``data/cache/merged_gw_2025_26.csv`` (one row per team–fixture), builds
 match-order expanding stats, aligns to GW1–38 with forward-fill on blanks,
 writes JSON + PNG figures under ``reports/figures/``.
+
+Dispersion is the index of dispersion: expanding sample variance / expanding
+mean (Fano factor). When the mean is 0 the ratio is set to 0.
 
 Clubs default: Arsenal, Liverpool, Man City, Chelsea.
 """
@@ -52,16 +55,32 @@ def load_team_matches(path: Path) -> dict[str, list[dict]]:
     return by_team
 
 
-def expanding(values: list[float]) -> tuple[list[float], list[float], list[float]]:
+def expanding(
+    values: list[float],
+) -> tuple[list[float], list[float], list[float], list[float]]:
     means: list[float] = []
     sds: list[float] = []
+    vars_: list[float] = []
     meds: list[float] = []
     for i in range(len(values)):
         window = values[: i + 1]
         means.append(statistics.fmean(window))
         meds.append(float(statistics.median(window)))
-        sds.append(0.0 if i == 0 else statistics.stdev(window))
-    return means, sds, meds
+        if i == 0:
+            sds.append(0.0)
+            vars_.append(0.0)
+        else:
+            sd = statistics.stdev(window)
+            sds.append(sd)
+            vars_.append(sd * sd)
+    return means, sds, vars_, meds
+
+
+def index_of_dispersion(variance: float, mean: float) -> float:
+    """Sample variance / mean. Zero mean with zero variance → 0."""
+    if mean <= 0.0:
+        return 0.0
+    return variance / mean
 
 
 def forward_fill(seq: list[float | None]) -> list[float]:
@@ -87,16 +106,20 @@ def club_series(matches: list[dict]) -> dict:
     for m in matches:
         gfs.append(float(m["gf"]))
         gas.append(float(m["ga"]))
-        mgf, sgf, medgf = expanding(gfs)
-        mga, sga, medga = expanding(gas)
+        mgf, sgf, vgf, medgf = expanding(gfs)
+        mga, sga, vga, medga = expanding(gas)
         i = len(gfs) - 1
         snap[m["gw"]] = {
             "exp_mean_gf": mgf[i],
             "exp_sd_gf": sgf[i],
+            "exp_var_gf": vgf[i],
             "exp_median_gf": medgf[i],
+            "exp_disp_gf": index_of_dispersion(vgf[i], mgf[i]),
             "exp_mean_ga": mga[i],
             "exp_sd_ga": sga[i],
+            "exp_var_ga": vga[i],
             "exp_median_ga": medga[i],
+            "exp_disp_ga": index_of_dispersion(vga[i], mga[i]),
         }
         gw_totals[m["gw"]]["gf"] += float(m["gf"])
         gw_totals[m["gw"]]["ga"] += float(m["ga"])
@@ -105,10 +128,14 @@ def club_series(matches: list[dict]) -> dict:
     series: dict[str, list] = {
         "exp_mean_gf": [],
         "exp_sd_gf": [],
+        "exp_var_gf": [],
         "exp_median_gf": [],
+        "exp_disp_gf": [],
         "exp_mean_ga": [],
         "exp_sd_ga": [],
+        "exp_var_ga": [],
         "exp_median_ga": [],
+        "exp_disp_ga": [],
         "mean_plus_sd_gf": [],
         "mean_minus_sd_gf": [],
         "mean_plus_sd_ga": [],
@@ -133,10 +160,14 @@ def club_series(matches: list[dict]) -> dict:
             for key in (
                 "exp_mean_gf",
                 "exp_sd_gf",
+                "exp_var_gf",
                 "exp_median_gf",
+                "exp_disp_gf",
                 "exp_mean_ga",
                 "exp_sd_ga",
+                "exp_var_ga",
                 "exp_median_ga",
+                "exp_disp_ga",
                 "mean_plus_sd_gf",
                 "mean_minus_sd_gf",
                 "mean_plus_sd_ga",
@@ -146,10 +177,14 @@ def club_series(matches: list[dict]) -> dict:
             continue
         series["exp_mean_gf"].append(round(last["exp_mean_gf"], 3))
         series["exp_sd_gf"].append(round(last["exp_sd_gf"], 3))
+        series["exp_var_gf"].append(round(last["exp_var_gf"], 3))
         series["exp_median_gf"].append(round(last["exp_median_gf"], 3))
+        series["exp_disp_gf"].append(round(last["exp_disp_gf"], 3))
         series["exp_mean_ga"].append(round(last["exp_mean_ga"], 3))
         series["exp_sd_ga"].append(round(last["exp_sd_ga"], 3))
+        series["exp_var_ga"].append(round(last["exp_var_ga"], 3))
         series["exp_median_ga"].append(round(last["exp_median_ga"], 3))
+        series["exp_disp_ga"].append(round(last["exp_disp_ga"], 3))
         series["mean_plus_sd_gf"].append(
             round(last["exp_mean_gf"] + last["exp_sd_gf"], 3)
         )
@@ -168,14 +203,22 @@ def club_series(matches: list[dict]) -> dict:
             continue
         series[key] = forward_fill(values)
 
+    final_mean_gf = statistics.fmean(gfs)
+    final_mean_ga = statistics.fmean(gas)
+    final_var_gf = statistics.stdev(gfs) ** 2
+    final_var_ga = statistics.stdev(gas) ** 2
     return {
         "n_matches": len(matches),
-        "final_mean_gf": round(statistics.fmean(gfs), 3),
-        "final_mean_ga": round(statistics.fmean(gas), 3),
+        "final_mean_gf": round(final_mean_gf, 3),
+        "final_mean_ga": round(final_mean_ga, 3),
         "final_median_gf": float(statistics.median(gfs)),
         "final_median_ga": float(statistics.median(gas)),
         "final_sd_gf": round(statistics.stdev(gfs), 3),
         "final_sd_ga": round(statistics.stdev(gas), 3),
+        "final_var_gf": round(final_var_gf, 3),
+        "final_var_ga": round(final_var_ga, 3),
+        "final_disp_gf": round(index_of_dispersion(final_var_gf, final_mean_gf), 3),
+        "final_disp_ga": round(index_of_dispersion(final_var_ga, final_mean_ga), 3),
         "blank_gws": [g for g in GWS if g not in snap],
         "series": series,
     }
@@ -288,8 +331,87 @@ def render_figures(payload: dict, out_dir: Path) -> None:
     overview = out_dir / "club_expanding_mean_overview_2025_26.png"
     fig2.savefig(overview, dpi=140)
     plt.close(fig2)
+
+    fig3, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 4.5), sharex=True)
+    for club, color in zip(clubs, colors):
+        s = payload["clubs"][club]["series"]
+        ax1.plot(gws, s["exp_disp_gf"], color=color, lw=2, label=club)
+        ax2.plot(gws, s["exp_disp_ga"], color=color, lw=2, label=club)
+    for ax, title in (
+        (ax1, "Goals for"),
+        (ax2, "Goals against"),
+    ):
+        ax.axhline(1.0, color="#888", lw=1.0, ls=":", label="Poisson (=1)")
+        ax.set_title(f"Expanding dispersion — {title}")
+        ax.set_xlabel("Gameweek")
+        ax.set_ylabel("Var / mean")
+        ax.grid(True, alpha=0.25)
+        ax.set_xticks(range(1, 39, 2))
+        ax.set_ylim(bottom=0)
+        # Deduplicate legend entries (Poisson line added once per axis)
+        handles, labels = ax.get_legend_handles_labels()
+        seen: dict[str, object] = {}
+        for h, lab in zip(handles, labels):
+            if lab not in seen:
+                seen[lab] = h
+        ax.legend(
+            list(seen.values()),
+            list(seen.keys()),
+            frameon=False,
+            fontsize=9,
+        )
+    fig3.suptitle(
+        "2025/26 — expanding dispersion (sample variance / mean)",
+        fontsize=13,
+    )
+    fig3.tight_layout(rect=[0, 0, 1, 0.95])
+    dispersion = out_dir / "club_expanding_dispersion_2025_26.png"
+    fig3.savefig(dispersion, dpi=140)
+    plt.close(fig3)
+
+    # Per-club dispersion panels (GF | GA)
+    fig4, axes = plt.subplots(len(clubs), 2, figsize=(14, 3.2 * len(clubs)), sharex=True)
+    if len(clubs) == 1:
+        axes = np.array([axes])
+    fig4.suptitle(
+        "2025/26 expanding dispersion (var / mean) by gameweek\n"
+        + " · ".join(clubs),
+        fontsize=14,
+        y=0.995,
+    )
+    for i, club in enumerate(clubs):
+        s = payload["clubs"][club]["series"]
+        blanks = [g for g, p in zip(gws, s["played"]) if not p]
+        for j, (key, color, title) in enumerate(
+            (
+                ("exp_disp_gf", "#01497c", "GF dispersion"),
+                ("exp_disp_ga", "#641220", "GA dispersion"),
+            )
+        ):
+            ax = axes[i, j]
+            ax.plot(x, s[key], color=color, lw=2, label="var / mean")
+            ax.axhline(1.0, color="#888", lw=1.0, ls=":", label="Poisson (=1)")
+            for b in blanks:
+                ax.axvline(b, color="#bbb", lw=0.8, ls=":")
+            if j == 0:
+                ax.set_ylabel(club)
+            ax.set_ylim(bottom=0)
+            ax.grid(True, alpha=0.25)
+            if i == 0:
+                ax.set_title(title)
+                ax.legend(loc="upper right", fontsize=8, frameon=False)
+    for ax in axes[-1]:
+        ax.set_xlabel("Gameweek")
+        ax.set_xticks(range(1, 39, 2))
+    fig4.tight_layout(rect=[0, 0.01, 1, 0.97])
+    disp_panel = out_dir / "club_expanding_dispersion_panel_2025_26.png"
+    fig4.savefig(disp_panel, dpi=140)
+    plt.close(fig4)
+
     print(f"wrote {panel}")
     print(f"wrote {overview}")
+    print(f"wrote {dispersion}")
+    print(f"wrote {disp_panel}")
 
 
 def main() -> None:
