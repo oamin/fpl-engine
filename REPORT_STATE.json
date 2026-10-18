@@ -1,11 +1,14 @@
 {
   "updated": "2026-10-18",
-  "task": "team_gf_ga_predictor_screen",
+  "task": "mc_shin_player_goals_2025_26",
   "status": "done",
   "outputs": {
-    "report": "reports/team_gf_ga_predictor_screen.md",
-    "json": "reports/figures/team_gf_ga_predictor_screen.json",
-    "script": "scripts/screen_team_gf_ga_predictors.py"
+    "module": "src/models/mc_shin_player_goals.py",
+    "report": "reports/mc_shin_player_goals_2025_26.md",
+    "summary_json": "reports/figures/mc_shin_player_goals_2025_26.json",
+    "plot": "reports/figures/mc_shin_player_goals_2025_26.png",
+    "match_csv": "data/processed/mc_shin_match_residuals_2025_26.csv",
+    "player_csv": "data/processed/mc_shin_player_residuals_2025_26.csv"
   },
-  "notes": "Leakage-free screen of team-level GF/GA predictors for pseudo-match FDR. Market attack/defend best for H=1; own expanding rates for H=5–8; opp roll3 GF/GA for unpriced fixture difficulty."
+  "notes": "2025/26 MC: opening Shin 1X2→λ→conditioned Poisson scorelines; player goals from expanding 2024/25-seeded xG shares. Residuals: match GD and player goals."
 }

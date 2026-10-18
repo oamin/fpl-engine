@@ -1,0 +1,324 @@
+{
+  "season": "2025/26",
+  "n_sims": 1000,
+  "use_nb_rates": true,
+  "n_fixtures": 380,
+  "n_player_rows": 11498,
+  "n_player_played": 11498,
+  "match": {
+    "mean_gd_resid": 0.0092,
+    "mae_gd_resid": 1.2168,
+    "rmse_gd_resid": 1.5068,
+    "corr_egd_act": 0.3892,
+    "mean_hg_resid": 0.1094,
+    "mean_ag_resid": 0.1002,
+    "mae_hg_resid": 0.9153,
+    "mae_ag_resid": 0.8393
+  },
+  "player_played": {
+    "mean_goal_resid": 0.0038,
+    "mae_goal_resid": 0.1461,
+    "rmse_goal_resid": 0.3022,
+    "corr_exp_act": 0.2571,
+    "sum_goals_act": 1009.0,
+    "sum_goals_exp": 965.3
+  },
+  "by_position": [
+    {
+      "position": "DEF",
+      "n": 3950,
+      "mean_resid": -0.0029,
+      "mae_resid": 0.0691,
+      "corr_exp_act": 0.0678
+    },
+    {
+      "position": "FWD",
+      "n": 1434,
+      "mean_resid": 0.0423,
+      "mae_resid": 0.3319,
+      "corr_exp_act": 0.1899
+    },
+    {
+      "position": "GKP",
+      "n": 767,
+      "mean_resid": -0.0128,
+      "mae_resid": 0.0128,
+      "corr_exp_act": null
+    },
+    {
+      "position": "MID",
+      "n": 5347,
+      "mean_resid": 0.0008,
+      "mae_resid": 0.1722,
+      "corr_exp_act": 0.1831
+    }
+  ],
+  "by_gw": [
+    {
+      "gw": 1,
+      "n": 10,
+      "mean_gd_resid": 0.255,
+      "mae_gd_resid": 1.2152,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 2,
+      "n": 10,
+      "mean_gd_resid": 0.2068,
+      "mae_gd_resid": 1.6568,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 3,
+      "n": 10,
+      "mean_gd_resid": -0.5312,
+      "mae_gd_resid": 1.5182,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 4,
+      "n": 10,
+      "mean_gd_resid": 0.2393,
+      "mae_gd_resid": 1.0553,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 5,
+      "n": 10,
+      "mean_gd_resid": -0.0163,
+      "mae_gd_resid": 0.7519,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 6,
+      "n": 10,
+      "mean_gd_resid": 0.0525,
+      "mae_gd_resid": 1.4919,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 7,
+      "n": 10,
+      "mean_gd_resid": 0.4589,
+      "mae_gd_resid": 0.7105,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 8,
+      "n": 10,
+      "mean_gd_resid": -0.1893,
+      "mae_gd_resid": 1.4867,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 9,
+      "n": 10,
+      "mean_gd_resid": -0.1264,
+      "mae_gd_resid": 1.471,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 10,
+      "n": 10,
+      "mean_gd_resid": 1.0571,
+      "mae_gd_resid": 1.2167,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 11,
+      "n": 10,
+      "mean_gd_resid": 1.4838,
+      "mae_gd_resid": 1.525,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 12,
+      "n": 10,
+      "mean_gd_resid": -0.5474,
+      "mae_gd_resid": 1.4428,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 13,
+      "n": 10,
+      "mean_gd_resid": -0.7539,
+      "mae_gd_resid": 1.2083,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 14,
+      "n": 10,
+      "mean_gd_resid": -0.4406,
+      "mae_gd_resid": 1.096,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 15,
+      "n": 10,
+      "mean_gd_resid": 0.3492,
+      "mae_gd_resid": 1.3032,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 16,
+      "n": 10,
+      "mean_gd_resid": 0.045,
+      "mae_gd_resid": 1.27,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 17,
+      "n": 10,
+      "mean_gd_resid": 0.1157,
+      "mae_gd_resid": 1.0005,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 18,
+      "n": 10,
+      "mean_gd_resid": -0.1437,
+      "mae_gd_resid": 0.9557,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 19,
+      "n": 10,
+      "mean_gd_resid": -0.4672,
+      "mae_gd_resid": 1.1454,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 20,
+      "n": 10,
+      "mean_gd_resid": 0.3114,
+      "mae_gd_resid": 1.1172,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 21,
+      "n": 10,
+      "mean_gd_resid": 0.1597,
+      "mae_gd_resid": 0.9239,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 22,
+      "n": 10,
+      "mean_gd_resid": 0.0494,
+      "mae_gd_resid": 1.3406,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 23,
+      "n": 10,
+      "mean_gd_resid": -0.3895,
+      "mae_gd_resid": 1.4351,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 24,
+      "n": 10,
+      "mean_gd_resid": -0.1698,
+      "mae_gd_resid": 1.2412,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 25,
+      "n": 10,
+      "mean_gd_resid": -0.4104,
+      "mae_gd_resid": 1.2078,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 26,
+      "n": 11,
+      "mean_gd_resid": -0.0675,
+      "mae_gd_resid": 1.1021,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 27,
+      "n": 10,
+      "mean_gd_resid": -0.9206,
+      "mae_gd_resid": 0.9968,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 28,
+      "n": 10,
+      "mean_gd_resid": 0.23,
+      "mae_gd_resid": 0.8746,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 29,
+      "n": 10,
+      "mean_gd_resid": -0.5271,
+      "mae_gd_resid": 1.4221,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 30,
+      "n": 10,
+      "mean_gd_resid": -0.218,
+      "mae_gd_resid": 0.9122,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 31,
+      "n": 8,
+      "mean_gd_resid": 0.1858,
+      "mae_gd_resid": 1.57,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 32,
+      "n": 10,
+      "mean_gd_resid": -0.1734,
+      "mae_gd_resid": 1.51,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 33,
+      "n": 13,
+      "mean_gd_resid": 0.2955,
+      "mae_gd_resid": 1.0005,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 34,
+      "n": 7,
+      "mean_gd_resid": -0.3557,
+      "mae_gd_resid": 1.2497,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 35,
+      "n": 10,
+      "mean_gd_resid": 0.6763,
+      "mae_gd_resid": 1.6063,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 36,
+      "n": 11,
+      "mean_gd_resid": 0.3488,
+      "mae_gd_resid": 0.7406,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 37,
+      "n": 10,
+      "mean_gd_resid": 0.2108,
+      "mae_gd_resid": 1.2742,
+      "corr_egd_act": null
+    },
+    {
+      "gw": 38,
+      "n": 10,
+      "mean_gd_resid": -0.1202,
+      "mae_gd_resid": 1.3952,
+      "corr_egd_act": null
+    }
+  ]
+}
