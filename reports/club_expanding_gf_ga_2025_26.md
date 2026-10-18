@@ -1,21 +1,30 @@
-# Club expanding GF / GA — 2025/26
+# Club expanding GF / GA — 2025/26 (seeded with 2024/25)
 
 Four clubs: Arsenal, Liverpool, Man City, Chelsea.
 
-Source: `data/cache/merged_gw_2025_26.csv`, one scored row per team–fixture, ordered by kickoff. Expanding mean, sample sd / variance, and median are match-order. Dispersion is the index of dispersion: **sample variance / mean** (Fano factor). A Poisson process sits at 1; below 1 is underdispersed, above 1 overdispersed. When the expanding mean is 0 the ratio is set to 0.
+Source: `data/cache/merged_gw_2025_26.csv`, one scored row per team–fixture, ordered by kickoff. Each club’s expanding window is **prepended with that club’s 38 scored matches from 2024/25** (`merged_gw_2024_25.csv`), so GW1 already sits on the prior season’s mean and dispersion instead of a 1-match spike.
+
+Expanding mean, sample sd / variance, and median are match-order on prior + current. Dispersion is **sample variance / mean** (Fano factor). A Poisson process sits at 1. When the expanding mean is 0 the ratio is set to 0.
 
 Series are plotted on GW1–38; blank weeks forward-fill the last expanding value (dotted verticals on the panel figures).
 
-## Season totals (38 matches)
+## 2024/25 prior (seed)
 
-| Club | Mean GF | SD GF | Median GF | Disp GF | Mean GA | SD GA | Median GA | Disp GA | Blank GWs |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
-| Arsenal | 1.87 | 1.21 | 2.0 | 0.79 | 0.71 | 0.84 | 0.5 | 0.98 | 31 |
-| Liverpool | 1.66 | 1.12 | 1.5 | 0.76 | 1.39 | 1.13 | 1.0 | 0.91 | — |
-| Man City | 2.03 | 1.28 | 2.0 | 0.81 | 0.92 | 1.00 | 1.0 | 1.08 | 31, 34 |
-| Chelsea | 1.53 | 1.18 | 1.0 | 0.91 | 1.37 | 1.03 | 1.0 | 0.77 | 34 |
+| Club | Mean GF | Disp GF | Mean GA | Disp GA |
+| --- | ---: | ---: | ---: | ---: |
+| Arsenal | 1.82 | 1.04 | 0.89 | 0.65 |
+| Liverpool | 2.26 | 0.61 | 1.08 | 1.02 |
+| Man City | 1.89 | 1.08 | 1.16 | 1.15 |
+| Chelsea | 1.68 | 1.29 | 1.13 | 0.77 |
 
-All four clubs finish underdispersed on GF (var/mean &lt; 1). Man City alone finishes slightly overdispersed on GA (1.08).
+## Seeded expanding totals at GW38 (prior + 2025/26)
+
+| Club | Mean GF | Median GF | Disp GF | Mean GA | Median GA | Disp GA | Blank GWs |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| Arsenal | 1.84 | 2.0 | 0.90 | 0.80 | 1.0 | 0.80 | 31 |
+| Liverpool | 1.96 | 2.0 | 0.71 | 1.24 | 1.0 | 0.97 | — |
+| Man City | 1.96 | 2.0 | 0.93 | 1.04 | 1.0 | 1.11 | 31, 34 |
+| Chelsea | 1.61 | 1.0 | 1.10 | 1.25 | 1.0 | 0.77 | 34 |
 
 ## Figures
 

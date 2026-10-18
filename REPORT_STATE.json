@@ -11,7 +11,9 @@
     "json": "reports/figures/club_expanding_gf_ga_2025_26.json",
     "panel_png": "reports/figures/club_expanding_gf_ga_2025_26.png",
     "overview_png": "reports/figures/club_expanding_mean_overview_2025_26.png",
+    "dispersion_png": "reports/figures/club_expanding_dispersion_2025_26.png",
+    "dispersion_panel_png": "reports/figures/club_expanding_dispersion_panel_2025_26.png",
     "canvas": "https://cursor.com/canvas/store-04ce6534-50ed-465f-b222-29fbd42b54dc/af8325a3-f34d-404c-a013-a68bb50e1a0c"
   },
-  "notes": "Expanding mean, sample sd, and median of match GF/GA by GW. Blank weeks forward-fill. Not a gated likelihood comparison."
+  "notes": "Expanding mean, sample sd/variance, median, and dispersion (var/mean) of match GF/GA by GW. Blank weeks forward-fill. Not a gated likelihood comparison."
 }

@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Expanding mean / sd / median / dispersion GF and GA for four clubs, 2025/26.
 
-Reads ``data/cache/merged_gw_2025_26.csv`` (one row per team–fixture), builds
-match-order expanding stats, aligns to GW1–38 with forward-fill on blanks,
-writes JSON + PNG figures under ``reports/figures/``.
+Reads ``data/cache/merged_gw_2025_26.csv`` and seeds each club's expanding
+window with that club's scored matches from ``merged_gw_2024_25.csv``, so the
+series opens at the 2024/25 season mean and dispersion instead of a 1-match
+spike. Aligns to GW1–38 with forward-fill on blanks; writes JSON + PNG figures
+under ``reports/figures/``.
 
 Dispersion is the index of dispersion: expanding sample variance / expanding
 mean (Fano factor). When the mean is 0 the ratio is set to 0.
@@ -22,6 +24,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CSV = ROOT / "data" / "cache" / "merged_gw_2025_26.csv"
+DEFAULT_PRIOR_CSV = ROOT / "data" / "cache" / "merged_gw_2024_25.csv"
 DEFAULT_OUT = ROOT / "reports" / "figures"
 DEFAULT_CLUBS = ("Arsenal", "Liverpool", "Man City", "Chelsea")
 GWS = list(range(1, 39))
@@ -53,6 +56,24 @@ def load_team_matches(path: Path) -> dict[str, list[dict]]:
     for team in by_team:
         by_team[team].sort(key=lambda m: (m["kickoff"], m["fixture"]))
     return by_team
+
+
+def season_moments(values: list[float]) -> dict[str, float | int]:
+    mean = statistics.fmean(values)
+    if len(values) < 2:
+        var = 0.0
+        sd = 0.0
+    else:
+        sd = statistics.stdev(values)
+        var = sd * sd
+    return {
+        "n": len(values),
+        "mean": round(mean, 3),
+        "sd": round(sd, 3),
+        "var": round(var, 3),
+        "median": float(statistics.median(values)),
+        "disp": round(index_of_dispersion(var, mean), 3),
+    }
 
 
 def expanding(
@@ -95,9 +116,20 @@ def forward_fill(seq: list[float | None]) -> list[float]:
     return out
 
 
-def club_series(matches: list[dict]) -> dict:
-    gfs: list[float] = []
-    gas: list[float] = []
+def club_series(matches: list[dict], prior_matches: list[dict]) -> dict:
+    """Expanding stats on prior season matches, then 2025/26 matches.
+
+    Snapshots are taken only after 2025/26 fixtures, so GW1 already sits on
+    the 2024/25 mean and dispersion rather than a single-match spike.
+    """
+    prior_gfs = [float(m["gf"]) for m in prior_matches]
+    prior_gas = [float(m["ga"]) for m in prior_matches]
+    if not prior_gfs:
+        raise SystemExit("prior season has no scored matches for club")
+
+    gfs = list(prior_gfs)
+    gas = list(prior_gas)
+    n_prior = len(prior_gfs)
     snap: dict[int, dict] = {}
     gw_totals: dict[int, dict[str, float]] = defaultdict(
         lambda: {"gf": 0.0, "ga": 0.0, "n": 0.0}
@@ -110,6 +142,9 @@ def club_series(matches: list[dict]) -> dict:
         mga, sga, vga, medga = expanding(gas)
         i = len(gfs) - 1
         snap[m["gw"]] = {
+            "n_total": i + 1,
+            "n_prior": n_prior,
+            "n_season": i + 1 - n_prior,
             "exp_mean_gf": mgf[i],
             "exp_sd_gf": sgf[i],
             "exp_var_gf": vgf[i],
@@ -145,6 +180,25 @@ def club_series(matches: list[dict]) -> dict:
         "played": [],
     }
     last: dict | None = None
+    # Before GW1: seed with pure prior so forward-fill before first played GW
+    # is the 2024/25 season totals (not zeros).
+    prior_mgf, prior_sgf, prior_vgf, prior_medgf = expanding(prior_gfs)
+    prior_mga, prior_sga, prior_vga, prior_medga = expanding(prior_gas)
+    i_p = n_prior - 1
+    seed = {
+        "exp_mean_gf": prior_mgf[i_p],
+        "exp_sd_gf": prior_sgf[i_p],
+        "exp_var_gf": prior_vgf[i_p],
+        "exp_median_gf": prior_medgf[i_p],
+        "exp_disp_gf": index_of_dispersion(prior_vgf[i_p], prior_mgf[i_p]),
+        "exp_mean_ga": prior_mga[i_p],
+        "exp_sd_ga": prior_sga[i_p],
+        "exp_var_ga": prior_vga[i_p],
+        "exp_median_ga": prior_medga[i_p],
+        "exp_disp_ga": index_of_dispersion(prior_vga[i_p], prior_mga[i_p]),
+    }
+    last = seed
+
     for g in GWS:
         if g in snap:
             last = snap[g]
@@ -156,25 +210,7 @@ def club_series(matches: list[dict]) -> dict:
             series["played"].append(False)
             series["gw_gf"].append(None)
             series["gw_ga"].append(None)
-        if last is None:
-            for key in (
-                "exp_mean_gf",
-                "exp_sd_gf",
-                "exp_var_gf",
-                "exp_median_gf",
-                "exp_disp_gf",
-                "exp_mean_ga",
-                "exp_sd_ga",
-                "exp_var_ga",
-                "exp_median_ga",
-                "exp_disp_ga",
-                "mean_plus_sd_gf",
-                "mean_minus_sd_gf",
-                "mean_plus_sd_ga",
-                "mean_minus_sd_ga",
-            ):
-                series[key].append(None)
-            continue
+        assert last is not None
         series["exp_mean_gf"].append(round(last["exp_mean_gf"], 3))
         series["exp_sd_gf"].append(round(last["exp_sd_gf"], 3))
         series["exp_var_gf"].append(round(last["exp_var_gf"], 3))
@@ -203,12 +239,20 @@ def club_series(matches: list[dict]) -> dict:
             continue
         series[key] = forward_fill(values)
 
+    # Season-only finals (2025/26 matches alone) plus seeded finals (prior+season).
+    season_gfs = [float(m["gf"]) for m in matches]
+    season_gas = [float(m["ga"]) for m in matches]
     final_mean_gf = statistics.fmean(gfs)
     final_mean_ga = statistics.fmean(gas)
     final_var_gf = statistics.stdev(gfs) ** 2
     final_var_ga = statistics.stdev(gas) ** 2
     return {
         "n_matches": len(matches),
+        "n_prior": n_prior,
+        "prior_2024_25": {
+            "gf": season_moments(prior_gfs),
+            "ga": season_moments(prior_gas),
+        },
         "final_mean_gf": round(final_mean_gf, 3),
         "final_mean_ga": round(final_mean_ga, 3),
         "final_median_gf": float(statistics.median(gfs)),
@@ -219,21 +263,37 @@ def club_series(matches: list[dict]) -> dict:
         "final_var_ga": round(final_var_ga, 3),
         "final_disp_gf": round(index_of_dispersion(final_var_gf, final_mean_gf), 3),
         "final_disp_ga": round(index_of_dispersion(final_var_ga, final_mean_ga), 3),
+        "season_only_mean_gf": round(statistics.fmean(season_gfs), 3),
+        "season_only_mean_ga": round(statistics.fmean(season_gas), 3),
         "blank_gws": [g for g in GWS if g not in snap],
         "series": series,
     }
 
 
-def build_payload(csv_path: Path, clubs: tuple[str, ...]) -> dict:
+def build_payload(
+    csv_path: Path, prior_csv: Path, clubs: tuple[str, ...]
+) -> dict:
     by_team = load_team_matches(csv_path)
+    by_prior = load_team_matches(prior_csv)
     missing = [c for c in clubs if c not in by_team]
     if missing:
         raise SystemExit(f"clubs not in sheet: {missing}; have {sorted(by_team)}")
+    missing_prior = [c for c in clubs if c not in by_prior]
+    if missing_prior:
+        raise SystemExit(
+            f"clubs not in prior sheet: {missing_prior}; have {sorted(by_prior)}"
+        )
     return {
         "season": "2025/26",
+        "prior_season": "2024/25",
+        "seed": "2024/25 match GF/GA prepended so expanding mean and "
+        "dispersion open at that season's totals",
         "source": str(csv_path.relative_to(ROOT)),
+        "prior_source": str(prior_csv.relative_to(ROOT)),
         "categories": [f"GW{g}" for g in GWS],
-        "clubs": {c: club_series(by_team[c]) for c in clubs},
+        "clubs": {
+            c: club_series(by_team[c], by_prior[c]) for c in clubs
+        },
     }
 
 
@@ -248,12 +308,13 @@ def render_figures(payload: dict, out_dir: Path) -> None:
     clubs = list(payload["clubs"].keys())
     gws = GWS
     x = np.array(gws)
+    seed_note = "seeded with 2024/25"
 
     fig, axes = plt.subplots(len(clubs), 2, figsize=(14, 4 * len(clubs)), sharex=True)
     if len(clubs) == 1:
         axes = np.array([axes])
     fig.suptitle(
-        "2025/26 expanding goals for / against by gameweek\n"
+        f"2025/26 expanding goals for / against by gameweek ({seed_note})\n"
         + " · ".join(clubs),
         fontsize=14,
         y=0.995,
@@ -312,8 +373,8 @@ def render_figures(payload: dict, out_dir: Path) -> None:
     fig.savefig(panel, dpi=140)
     plt.close(fig)
 
-    fig2, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 4.5), sharex=True)
     colors = ["#01497c", "#c1121f", "#2a9d8f", "#e9c46a"]
+    fig2, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 4.5), sharex=True)
     for club, color in zip(clubs, colors):
         s = payload["clubs"][club]["series"]
         ax1.plot(gws, s["exp_mean_gf"], color=color, lw=2, label=club)
@@ -326,7 +387,10 @@ def render_figures(payload: dict, out_dir: Path) -> None:
         ax.grid(True, alpha=0.25)
         ax.set_xticks(range(1, 39, 2))
         ax.legend(frameon=False, fontsize=9)
-    fig2.suptitle("2025/26 — four clubs expanding mean GF / GA", fontsize=13)
+    fig2.suptitle(
+        f"2025/26 — four clubs expanding mean GF / GA ({seed_note})",
+        fontsize=13,
+    )
     fig2.tight_layout(rect=[0, 0, 1, 0.95])
     overview = out_dir / "club_expanding_mean_overview_2025_26.png"
     fig2.savefig(overview, dpi=140)
@@ -348,7 +412,6 @@ def render_figures(payload: dict, out_dir: Path) -> None:
         ax.grid(True, alpha=0.25)
         ax.set_xticks(range(1, 39, 2))
         ax.set_ylim(bottom=0)
-        # Deduplicate legend entries (Poisson line added once per axis)
         handles, labels = ax.get_legend_handles_labels()
         seen: dict[str, object] = {}
         for h, lab in zip(handles, labels):
@@ -361,7 +424,7 @@ def render_figures(payload: dict, out_dir: Path) -> None:
             fontsize=9,
         )
     fig3.suptitle(
-        "2025/26 — expanding dispersion (sample variance / mean)",
+        f"2025/26 — expanding dispersion (var / mean, {seed_note})",
         fontsize=13,
     )
     fig3.tight_layout(rect=[0, 0, 1, 0.95])
@@ -369,12 +432,11 @@ def render_figures(payload: dict, out_dir: Path) -> None:
     fig3.savefig(dispersion, dpi=140)
     plt.close(fig3)
 
-    # Per-club dispersion panels (GF | GA)
     fig4, axes = plt.subplots(len(clubs), 2, figsize=(14, 3.2 * len(clubs)), sharex=True)
     if len(clubs) == 1:
         axes = np.array([axes])
     fig4.suptitle(
-        "2025/26 expanding dispersion (var / mean) by gameweek\n"
+        f"2025/26 expanding dispersion (var / mean, {seed_note})\n"
         + " · ".join(clubs),
         fontsize=14,
         y=0.995,
@@ -417,11 +479,12 @@ def render_figures(payload: dict, out_dir: Path) -> None:
 def main() -> None:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--csv", type=Path, default=DEFAULT_CSV)
+    p.add_argument("--prior-csv", type=Path, default=DEFAULT_PRIOR_CSV)
     p.add_argument("--out", type=Path, default=DEFAULT_OUT)
     p.add_argument("--clubs", nargs="+", default=list(DEFAULT_CLUBS))
     p.add_argument("--no-plot", action="store_true")
     args = p.parse_args()
-    payload = build_payload(args.csv, tuple(args.clubs))
+    payload = build_payload(args.csv, args.prior_csv, tuple(args.clubs))
     args.out.mkdir(parents=True, exist_ok=True)
     json_path = args.out / "club_expanding_gf_ga_2025_26.json"
     json_path.write_text(json.dumps(payload, indent=2) + "\n")
