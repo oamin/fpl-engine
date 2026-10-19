@@ -44,41 +44,71 @@ class ClubPathTest(unittest.TestCase):
         self.assertAlmostEqual(path.dfn, 1.0)
 
 
+def _toy_pool() -> pd.DataFrame:
+    rows = []
+    pid = 1
+    for pos, n, base in (
+        ("GKP", 2, 40),
+        ("DEF", 5, 45),
+        ("MID", 5, 60),
+        ("FWD", 3, 70),
+    ):
+        for i in range(n):
+            rows.append(
+                {
+                    "player_id": str(pid),
+                    "name": f"{pos}{i}",
+                    "team_norm": f"club{pid}",
+                    "position": pos,
+                    "value": base + i,
+                    "mc_score": 2.0 + 0.1 * i,
+                }
+            )
+            pid += 1
+    rows[-1]["mc_score"] = 12.0
+    rows[-1]["name"] = "Star"
+    rows[-1]["value"] = 140
+    # Extra midfielder to buy into.
+    rows.append(
+        {
+            "player_id": "99",
+            "name": "Upgrade",
+            "team_norm": "club99",
+            "position": "MID",
+            "value": 70,
+            "mc_score": 9.0,
+        }
+    )
+    return pd.DataFrame(rows)
+
+
 class XiCaptainMilpTest(unittest.TestCase):
     def test_prefers_premium_as_captain(self) -> None:
         from src.models.multistage_mc_milp import _pick_squad_xi_captain
 
-        # Build a minimal legal pool: 2 GKP, 5 DEF, 5 MID, 3 FWD from distinct clubs.
-        rows = []
-        pid = 1
-        for pos, n, base in (
-            ("GKP", 2, 40),
-            ("DEF", 5, 45),
-            ("MID", 5, 60),
-            ("FWD", 3, 70),
-        ):
-            for i in range(n):
-                rows.append(
-                    {
-                        "player_id": str(pid),
-                        "name": f"{pos}{i}",
-                        "team_norm": f"club{pid}",
-                        "position": pos,
-                        "value": base + i,
-                        "mc_score": 2.0 + 0.1 * i,
-                    }
-                )
-                pid += 1
-        # One standout forward worth captaining.
-        rows[-1]["mc_score"] = 12.0
-        rows[-1]["name"] = "Star"
-        rows[-1]["value"] = 140
-        df = pd.DataFrame(rows)
+        df = _toy_pool()
         picked = _pick_squad_xi_captain(df, "mc_score", time_limit=20.0)
-        self.assertEqual(picked["captain_id"], rows[-1]["player_id"])
+        star = df.loc[df["name"] == "Star", "player_id"].iloc[0]
+        self.assertEqual(picked["captain_id"], star)
         self.assertIn(picked["captain_id"], picked["xi_ids"])
         self.assertEqual(len(picked["squad"]), 15)
         self.assertEqual(len(picked["xi_ids"]), 11)
+
+    def test_ft_hold_when_bank_tight(self) -> None:
+        from src.models.multistage_mc_milp import _pick_squad_xi_captain_ft
+
+        df = _toy_pool()
+        from src.models.multistage_mc_milp import _pick_squad_xi_captain
+
+        base = _pick_squad_xi_captain(df, "mc_score", time_limit=20.0)
+        owned = {str(x) for x in base["squad"]["player_id"].tolist()}
+        # With 0 FT and max_hits=0, must hold.
+        held = _pick_squad_xi_captain_ft(
+            df, "mc_score", owned_ids=owned, ft=0, max_hits=0, time_limit=20.0
+        )
+        self.assertEqual(held["n_transfers"], 0)
+        self.assertEqual(held["hits"], 0)
+        self.assertEqual(set(held["squad"]["player_id"].astype(str)), owned)
 
 
 class AggregateTest(unittest.TestCase):

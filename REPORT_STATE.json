@@ -1,11 +1,11 @@
 {
   "updated": "2026-10-19",
-  "task": "multistage_captain_objective",
-  "status": "done_item_1a",
+  "task": "multistage_xi_captain_ft",
+  "status": "done_item_1b",
   "outputs": {
-    "report": "reports/multistage_captain_objective.md",
-    "xi_captain_freq": "data/predictions/2026-27/multistage_xi_captain/multistage_xi_captain_player_freq.csv",
+    "report": "reports/multistage_ft_path.md",
+    "freq": "data/predictions/2026-27/multistage_xi_captain_ft/multistage_xi_captain_ft_player_freq.csv",
     "module": "src/models/multistage_mc_milp.py"
   },
-  "notes": "xi_plus_captain MILP live. Same seed N=10: Haaland still ~#7; Saka takes 48% of captaincies. Transfers next."
+  "notes": "Path FT mode live. Mean 2.13 transfers / 0.67 hits per post-open snapshot. Haaland stick_rate 0.77, freq 0.64 (still ~#7). Item 1 complete; item 2 is minutes/role overlays."
 }

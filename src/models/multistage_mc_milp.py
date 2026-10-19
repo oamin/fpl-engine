@@ -25,10 +25,12 @@ Objective modes
 - ``squad_sum`` (original): maximise Σ score over the 15 (bench = full weight).
 - ``xi_plus_captain``: maximise Σ score over a legal XI **plus** one captain
   double (``c ≤ y ≤ x``), so premiums are valued as captain candidates.
+- ``xi_plus_captain_ft``: first snapshot free rebuild; later snapshots keep a
+  path squad under FT/hit cost (``V = XI + captain − 4·hits``).
 
 Share seeding is **off** in v1 (see module note below). Horizon-widening
-of bands is deferred to a later systematic screen. Chips off. Transfers
-are not yet in the objective (next lever). Not a gated likelihood promotion.
+of bands is deferred to a later systematic screen. Chips off.
+Not a gated likelihood promotion.
 """
 
 from __future__ import annotations
@@ -67,7 +69,10 @@ LOG_CSV = ROOT / "data" / "cache" / "player_gw_2026_27.csv"
 SEED_SHARES = False
 OBJECTIVE_SQUAD_SUM = "squad_sum"
 OBJECTIVE_XI_CAPTAIN = "xi_plus_captain"
-OBJECTIVES = (OBJECTIVE_SQUAD_SUM, OBJECTIVE_XI_CAPTAIN)
+OBJECTIVE_XI_CAPTAIN_FT = "xi_plus_captain_ft"
+OBJECTIVES = (OBJECTIVE_SQUAD_SUM, OBJECTIVE_XI_CAPTAIN, OBJECTIVE_XI_CAPTAIN_FT)
+# Path FT mode: allow this many hits beyond the free-transfer bank at a snapshot.
+MAX_HITS_SNAPSHOT = 2
 
 
 @dataclass
@@ -474,6 +479,12 @@ def run_strand(
     result = StrandResult(strand_id=strand_id)
     # Sampled λ by (home, away) for each GW — used when scoring that GW's pot.
     scenario_by_gw: dict[int, dict[tuple[str, str], tuple[float, float]]] = {}
+    owned_ids: set[str] | None = None
+    owned_frame: pd.DataFrame | None = None
+    ft_bank = 1
+    prev_snapshot_gw: int | None = None
+
+    from src.rules.fpl_2026 import advance_ft
 
     for gw in horizon_gws:
         week_fix = fixtures_gw.get(int(gw), [])
@@ -531,8 +542,45 @@ def run_strand(
         scored = scored.loc[np.isfinite(scored["mc_score"])]
         if len(scored) < 15 or scored["position"].nunique() < 4:
             continue
+
+        n_transfers = 0
+        hits = 0
+        ft_before = int(ft_bank)
         try:
-            if objective == OBJECTIVE_XI_CAPTAIN:
+            if objective == OBJECTIVE_XI_CAPTAIN_FT:
+                # Hold weeks between snapshots still roll the FT bank.
+                if prev_snapshot_gw is not None:
+                    for _gap in range(int(prev_snapshot_gw) + 1, int(gw)):
+                        ft_bank = advance_ft(ft_bank, 0)
+                    ft_before = int(ft_bank)
+                if owned_ids is None:
+                    picked = _pick_squad_xi_captain(
+                        scored, "mc_score", time_limit=milp_time_limit
+                    )
+                    # Opening rebuild is free (wildcard-like); bank starts at 1.
+                    n_transfers, hits = 0, 0
+                    ft_bank = 1
+                    obj_value = float(picked["objective"])
+                else:
+                    scored_ft = _merge_owned_into_scored(scored, owned_frame)
+                    picked = _pick_squad_xi_captain_ft(
+                        scored_ft,
+                        "mc_score",
+                        owned_ids=owned_ids,
+                        ft=ft_before,
+                        time_limit=milp_time_limit,
+                    )
+                    n_transfers = int(picked["n_transfers"])
+                    hits = int(picked["hits"])
+                    obj_value = float(picked["net_objective"])
+                    ft_bank = advance_ft(ft_before, n_transfers)
+                squad = picked["squad"]
+                captain_id = picked["captain_id"]
+                xi_ids = picked["xi_ids"]
+                owned_ids = {str(x) for x in squad["player_id"].tolist()}
+                owned_frame = squad.copy()
+                prev_snapshot_gw = int(gw)
+            elif objective == OBJECTIVE_XI_CAPTAIN:
                 picked = _pick_squad_xi_captain(
                     scored, "mc_score", time_limit=milp_time_limit
                 )
@@ -559,6 +607,10 @@ def run_strand(
                 "objective_value": float(obj_value),
                 "captain_id": captain_id,
                 "xi_ids": xi_ids,
+                "n_transfers": int(n_transfers),
+                "hits": int(hits),
+                "ft_before": int(ft_before),
+                "ft_after": int(ft_bank) if objective == OBJECTIVE_XI_CAPTAIN_FT else None,
             }
         )
     return result
@@ -570,6 +622,34 @@ def _candidate_frame(gw_df: pd.DataFrame, score_col: str) -> pd.DataFrame:
     if len(df) < 15:
         raise RuntimeError(f"Need ≥15 candidates, got {len(df)}")
     return df
+
+
+def _merge_owned_into_scored(
+    scored: pd.DataFrame, owned_frame: pd.DataFrame | None
+) -> pd.DataFrame:
+    """Keep owned players as candidates with updated scores when available."""
+    if owned_frame is None or owned_frame.empty:
+        return scored
+    out = scored.copy()
+    have = set(out["player_id"].astype(str))
+    extras = []
+    for row in owned_frame.itertuples(index=False):
+        pid = str(row.player_id)
+        if pid in have:
+            continue
+        extras.append(
+            {
+                "player_id": pid,
+                "name": getattr(row, "name", pid),
+                "team_norm": getattr(row, "team_norm", "owned"),
+                "position": getattr(row, "position", "MID"),
+                "value": getattr(row, "value", 45),
+                "mc_score": float(getattr(row, "mc_score", 0.0) or 0.0),
+            }
+        )
+    if extras:
+        out = pd.concat([out, pd.DataFrame(extras)], ignore_index=True)
+    return out
 
 
 def _pick_squad_fast(
@@ -617,13 +697,21 @@ def _pick_squad_fast(
 
 
 def _pick_squad_xi_captain(
-    gw_df: pd.DataFrame, score_col: str, *, time_limit: float = 12.0
+    gw_df: pd.DataFrame,
+    score_col: str,
+    *,
+    time_limit: float = 12.0,
+    owned_ids: set[str] | None = None,
+    n_transfers: int | None = None,
 ) -> dict[str, Any]:
     """Maximise XI score + captain double under FPL squad / formation rules.
 
     Decision variables (length 3n): squad ``x``, XI ``y``, captain ``c`` with
     ``c ≤ y ≤ x``. Objective ``Σ s·y + Σ s·c``. Bench is selected only to fill
     quotas and budget — it does not enter the objective.
+
+    When ``owned_ids`` and ``n_transfers`` are set, force exactly that many
+    buys (players not in the owned set).
     """
     from scipy.optimize import Bounds, LinearConstraint, milp
 
@@ -646,9 +734,9 @@ def _pick_squad_xi_captain(
     positions = df["position"].astype(str).to_numpy()
     clubs = df["team_norm"].astype(str).to_numpy()
     ids = df["player_id"].astype(str).to_numpy()
+    owned = {str(x) for x in (owned_ids or set())}
+    is_buy = np.array([pid not in owned for pid in ids], dtype=float)
 
-    # Layout: [x | y | c]
-    z = np.zeros(3 * n)
     constraints: list[LinearConstraint] = []
 
     # Budget and squad size on x.
@@ -667,6 +755,14 @@ def _pick_squad_xi_captain(
         row = np.zeros(3 * n)
         row[:n] = (clubs == club).astype(float)
         constraints.append(LinearConstraint(row, -np.inf, float(MAX_PER_CLUB)))
+
+    if n_transfers is not None:
+        if owned_ids is None:
+            raise ValueError("n_transfers requires owned_ids")
+        row = np.zeros(3 * n)
+        row[:n] = is_buy
+        k = float(n_transfers)
+        constraints.append(LinearConstraint(row, k, k))
 
     # XI size and formation bounds on y.
     ay_size = np.zeros(3 * n)
@@ -689,18 +785,15 @@ def _pick_squad_xi_captain(
     acap[2 * n :] = 1.0
     constraints.append(LinearConstraint(acap, 1.0, 1.0))
     for i in range(n):
-        # y_i - x_i ≤ 0
         row_yx = np.zeros(3 * n)
         row_yx[i] = -1.0
         row_yx[n + i] = 1.0
         constraints.append(LinearConstraint(row_yx, -np.inf, 0.0))
-        # c_i - y_i ≤ 0
         row_cy = np.zeros(3 * n)
         row_cy[n + i] = -1.0
         row_cy[2 * n + i] = 1.0
         constraints.append(LinearConstraint(row_cy, -np.inf, 0.0))
 
-    # Maximise Σ s y + Σ s c  → minimise negative.
     c_obj = np.zeros(3 * n)
     c_obj[n : 2 * n] = -scores
     c_obj[2 * n :] = -scores
@@ -726,12 +819,59 @@ def _pick_squad_xi_captain(
         )
     squad = df.iloc[chosen].copy()
     obj = float(scores[xi_idx].sum() + scores[cap_idx[0]])
+    n_buys = int(sum(1 for i in chosen if is_buy[i] > 0.5)) if owned else 0
     return {
         "squad": squad,
         "xi_ids": [str(ids[i]) for i in xi_idx],
         "captain_id": str(ids[cap_idx[0]]),
         "objective": obj,
+        "n_transfers": n_buys,
     }
+
+
+def _pick_squad_xi_captain_ft(
+    gw_df: pd.DataFrame,
+    score_col: str,
+    *,
+    owned_ids: set[str],
+    ft: int,
+    max_hits: int = MAX_HITS_SNAPSHOT,
+    time_limit: float = 8.0,
+) -> dict[str, Any]:
+    """Choose transfers maximising XI+captain − 4·hits given the FT bank."""
+    from src.rules.fpl_2026 import hit_cost
+
+    owned = {str(x) for x in owned_ids}
+    frame = gw_df
+    best: dict[str, Any] | None = None
+    best_v = -1e18
+    k_max = int(ft) + int(max_hits)
+    per_k = max(2.0, float(time_limit) / float(k_max + 1))
+    for k in range(0, k_max + 1):
+        try:
+            picked = _pick_squad_xi_captain(
+                frame,
+                score_col,
+                time_limit=per_k,
+                owned_ids=owned,
+                n_transfers=k,
+            )
+        except RuntimeError:
+            continue
+        hits = int(hit_cost(int(ft), k))
+        value = float(picked["objective"]) - float(hits)
+        if value > best_v:
+            best_v = value
+            best = {
+                **picked,
+                "n_transfers": k,
+                "hits": hits,
+                "ft_before": int(ft),
+                "net_objective": value,
+            }
+    if best is None:
+        raise RuntimeError("FT path MILP found no feasible transfer plan")
+    return best
 
 
 def aggregate_frequencies(
@@ -741,12 +881,19 @@ def aggregate_frequencies(
     counts: Counter[str] = Counter()
     cap_counts: Counter[str] = Counter()
     xi_counts: Counter[str] = Counter()
+    kept_counts: Counter[str] = Counter()
+    keep_denom: Counter[str] = Counter()
     n_squads = 0
     n_with_cap = 0
+    transfer_rows = 0
+    transfer_sum = 0
+    hits_sum = 0
     for s in strands:
+        prev_ids: set[str] | None = None
         for squad in s.squads:
             n_squads += 1
-            counts.update(squad["player_ids"])
+            ids = [str(x) for x in squad["player_ids"]]
+            counts.update(ids)
             xi = squad.get("xi_ids") or []
             if xi:
                 xi_counts.update(str(x) for x in xi)
@@ -754,12 +901,23 @@ def aggregate_frequencies(
             if cap:
                 n_with_cap += 1
                 cap_counts[str(cap)] += 1
+            if squad.get("n_transfers") is not None and prev_ids is not None:
+                transfer_rows += 1
+                transfer_sum += int(squad.get("n_transfers") or 0)
+                hits_sum += int(squad.get("hits") or 0)
+            if prev_ids is not None:
+                for pid in ids:
+                    keep_denom[pid] += 1
+                    if pid in prev_ids:
+                        kept_counts[pid] += 1
+            prev_ids = set(ids)
     meta = pool.set_index("player_id")
     rows = []
     for pid, n in counts.most_common():
         if pid not in meta.index:
             continue
         r = meta.loc[pid]
+        denom = keep_denom.get(pid, 0)
         rows.append(
             {
                 "player_id": pid,
@@ -775,12 +933,21 @@ def aggregate_frequencies(
                 "freq_captain": (
                     float(cap_counts.get(pid, 0)) / float(n_with_cap) if n_with_cap else 0.0
                 ),
+                "stick_rate": (
+                    float(kept_counts.get(pid, 0)) / float(denom) if denom else None
+                ),
             }
         )
     out = pd.DataFrame(rows)
     out.attrs["n_squads"] = n_squads
     out.attrs["n_strands"] = len(strands)
     out.attrs["n_with_captain"] = n_with_cap
+    out.attrs["mean_transfers"] = (
+        float(transfer_sum) / float(transfer_rows) if transfer_rows else None
+    )
+    out.attrs["mean_hits"] = (
+        float(hits_sum) / float(transfer_rows) if transfer_rows else None
+    )
     return out
 
 
@@ -864,6 +1031,8 @@ def run_multistage_trial(
         "gamma": float(gamma),
         "frequencies": freq.to_dict("records"),
         "top15_mean_freq": float(freq.head(15)["freq"].mean()) if len(freq) >= 15 else None,
+        "mean_transfers": freq.attrs.get("mean_transfers"),
+        "mean_hits": freq.attrs.get("mean_hits"),
         "strands_with_squads": sum(1 for s in strands if s.squads),
         "sample_strand_scorelines": strands[0].scorelines[:12] if strands else [],
     }
@@ -872,7 +1041,12 @@ def run_multistage_trial(
 def write_trial_outputs(result: dict[str, Any], *, out_dir: Path) -> dict[str, str]:
     out_dir.mkdir(parents=True, exist_ok=True)
     obj = str(result.get("objective") or OBJECTIVE_SQUAD_SUM)
-    stem = "multistage_xi_captain" if obj == OBJECTIVE_XI_CAPTAIN else "multistage_mc_milp"
+    if obj == OBJECTIVE_XI_CAPTAIN_FT:
+        stem = "multistage_xi_captain_ft"
+    elif obj == OBJECTIVE_XI_CAPTAIN:
+        stem = "multistage_xi_captain"
+    else:
+        stem = "multistage_mc_milp"
     json_path = out_dir / f"{stem}_trial.json"
     csv_path = out_dir / f"{stem}_player_freq.csv"
     report = ROOT / "reports" / f"{stem}_trial.md"
