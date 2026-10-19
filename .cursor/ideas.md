@@ -302,4 +302,8 @@ Noted 2026-10-09 ([entry 3271409](bc-90156d5d-ce87-56ee-b772-011f4d43dbd0)). Not
 
 ## Multistage MC + MILP frequency (trial opened 2026-10-19)
 
-Diagnostic only — not a gated likelihood comparison. `src/models/multistage_mc_milp.py` rolls coherent scoreline strands inside Opta λ bounds from GW(t+2:t+n), updates club rates, runs selectable-pool MILP at snapshots, ranks players by selection frequency. Next levers if kept: transfer-cost between snapshots, bank/FT state, priced t/t+1 blend, larger N, horizon to GW38. Do not promote on frequency alone.
+Diagnostic only — not a gated likelihood comparison. Basic v1: Opta `match_prediction` λ bands → scenario pot; frozen deadline `add_player_priors` shares × `xp_on_pot`; selectable MILP frequency.
+
+**Share seeding:** parked for v1. Not redundant with match λ (within-team allocation vs pot size), but a second noise axis. Open only after a calibration screen; do not widen share bands and match bands in the same step.
+
+Next levers: transfer-cost / bank / FT between snapshots; priced t/t+1 blend; systematic lead-time widening of λ (and later xmi/shares); larger N; GW38. Do not promote on frequency alone.

@@ -1,13 +1,11 @@
 {
   "updated": "2026-10-19",
-  "task": "multistage_mc_milp_trial",
+  "task": "multistage_mc_milp_basic_v1",
   "status": "done",
   "outputs": {
     "report": "reports/multistage_mc_milp_trial.md",
-    "json": "data/predictions/2026-27/multistage_mc_milp/multistage_mc_milp_trial.json",
-    "csv": "data/predictions/2026-27/multistage_mc_milp/multistage_player_freq.csv",
     "module": "src/models/multistage_mc_milp.py",
-    "tests": "tests/test_multistage_mc_milp.py"
+    "json": "data/predictions/2026-27/multistage_mc_milp/multistage_mc_milp_trial.json"
   },
-  "notes": "Trial: N coherent MC strands sample Opta-bound scorelines GW(t+2:t+n), update club rates, snapshot MILP on season selectable pool; player selection frequency = long-horizon stability. Demo N=20 GW8–19, 120 squads. Diagnostic only — not a gated promotion. Chips off."
+  "notes": "Basic cascade v1: Opta match_prediction λ bands (rank→GF/GA) → sampled scenario → deadline add_player_priors shares × xp_on_pot (score_xp v2) → selectable MILP frequency. Share seeding OFF (not redundant with λ for team pot, but second axis — defer). Horizon-widening bands deferred."
 }
