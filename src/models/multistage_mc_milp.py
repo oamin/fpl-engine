@@ -133,17 +133,23 @@ def sample_scoreline(
     lam_a_lo: float,
     lam_a_hi: float,
     rng: random.Random,
+    centre_blend: float = 0.5,
 ) -> tuple[int, int, float, float]:
-    """Sample λ inside predicted bounds, then Poisson goals."""
+    """Sample λ inside predicted bounds, then Poisson goals.
+
+    ``centre_blend`` in [0, 1] is the weight on the centreline λ; the rest is
+    a uniform draw on ``[lo, hi]``. Default 0.5 matches the cascade v1 shrink.
+    """
     lo_h, hi_h = min(lam_h_lo, lam_h_hi), max(lam_h_lo, lam_h_hi)
     lo_a, hi_a = min(lam_a_lo, lam_a_hi), max(lam_a_lo, lam_a_hi)
-    # Shrink band toward centre slightly so samples stay "within predicted bounds"
-    # without always hitting corners.
-    sh = lo_h + (hi_h - lo_h) * rng.random()
-    sa = lo_a + (hi_a - lo_a) * rng.random()
-    # Blend with mean λ so the strand stays near the Opta centre.
-    sh = 0.5 * float(lam_h) + 0.5 * sh
-    sa = 0.5 * float(lam_a) + 0.5 * sa
+    w = float(centre_blend)
+    if w < 0.0 or w > 1.0:
+        raise ValueError("centre_blend must be in [0, 1]")
+    # Uniform draw on the Opta corner band, then shrink toward centreline.
+    uh = lo_h + (hi_h - lo_h) * rng.random()
+    ua = lo_a + (hi_a - lo_a) * rng.random()
+    sh = w * float(lam_h) + (1.0 - w) * uh
+    sa = w * float(lam_a) + (1.0 - w) * ua
     gh = _poisson(rng, sh)
     ga = _poisson(rng, sa)
     # Soft clip: reject extreme outliers beyond ceil(hi)+2 once

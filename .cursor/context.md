@@ -84,6 +84,8 @@ Long-horizon diagnostic: N coherent Monte Carlo strands sample match scorelines 
 
 Captain objective (`xi_plus_captain`) and path FT/hit objective (`xi_plus_captain_ft`) landed as items 1a/1b. Item 2 — graded FPL availability overlay — scales `xmi`/shares/`exp_defcon_hit` by `chance_of_playing_*` / status (`src/models/minutes_overlay.py`). Default on for multistage CLI. On GW6 bootstrap: 19/180 scaled, 4 zeroed; doubtfuls drop in the FT cascade; Haaland/Saka barely move. Pen/set-piece role bump still deferred. See `reports/multistage_minutes_overlay.md`.
 
+Item 3 — match-band calibration (`src/eval/match_band_calibration.py`): LOSO sweep of `z_band` and MC `centre_blend` on four closed seasons. Player-GW log |Δ| ≤ 0.0008 vs baseline; MC cover_50 ~0.71 flat across the grid. **Keep `Z_BAND=1.0`, `centre_blend=0.5`.** Share seeding stays parked. See `reports/match_band_calibration.md`.
+
 ## Next
 
 `src/live/minutes_llm.py` is the minutes model. One completion covers the owned fifteen and every player who is doubtful, injured, suspended, unavailable, or given a chance below 100. Last observed minutes are context. A question, a missing id, minutes outside 0 to 90, or minutes above 0 for someone who cannot play writes no file. The scorer is not called from that module.

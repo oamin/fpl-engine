@@ -1,11 +1,11 @@
 {
   "updated": "2026-10-19",
-  "task": "multistage_minutes_overlay",
-  "status": "done_item_2",
+  "task": "match_band_calibration",
+  "status": "done_item_3_parked",
   "outputs": {
-    "report": "reports/multistage_minutes_overlay.md",
-    "module": "src/models/minutes_overlay.py",
-    "overlay_freq": "data/predictions/2026-27/multistage_ft_overlay/multistage_xi_captain_ft_overlay_player_freq.csv"
+    "report": "reports/match_band_calibration.md",
+    "json": "data/processed/match_band_calibration.json",
+    "module": "src/eval/match_band_calibration.py"
   },
-  "notes": "FPL availability overlay scales 19/180 pool players (4 zeroed). Doubtfuls drop in FT cascade; elite board barely moves. Pen role bump deferred. Item 3 next: match-band calibration."
+  "notes": "LOSO z_band×centre_blend screen: player Δlog max |Δ|=0.0008 (below +0.001 materiality). Keep Z_BAND=1.0, centre_blend=0.5. Share seeding still parked. Item 4 next: player G/A model."
 }
