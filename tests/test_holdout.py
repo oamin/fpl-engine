@@ -7,7 +7,14 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from src.eval.holdout import GROWING_CACHE, MANIFEST_PATH, ROOT, sha256_file, verify_freeze
+from src.eval.holdout import (
+    GROWING_CACHE,
+    MANIFEST_PATH,
+    OPTIONAL,
+    ROOT,
+    sha256_file,
+    verify_freeze,
+)
 
 
 class HoldoutFreezeTest(unittest.TestCase):
@@ -48,6 +55,12 @@ class HoldoutFreezeTest(unittest.TestCase):
         manifest["tracked"][key] = "0" * 64
         errors = verify_freeze(manifest)
         self.assertTrue(any(key in item for item in errors))
+
+    def test_removed_odds_api_files_do_not_fail_the_freeze(self) -> None:
+        self.assertNotIn("data/live/odds_api_meta.json", OPTIONAL)
+        self.assertNotIn("data/live/odds_api_trial.json", OPTIONAL)
+        manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+        self.assertEqual(verify_freeze(manifest), [])
 
     def test_an_absent_optional_file_is_skipped(self) -> None:
         manifest = {

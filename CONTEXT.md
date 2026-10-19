@@ -32,3 +32,7 @@ This file is the **superseded stage map** (stages 0–48 pot×share / climb era)
 | 14–48 | climb / repair / crowd / GW1–5 | `reports/stage_*.md`, `reports/SUPERSEDED.md` |
 
 Engine primary scorer is `score_xp_v2`. `score_xp` is superseded (historical climb replay / gate baseline only).
+
+## Odds
+
+Historical 1X2 is football-data.co.uk. Live 1X2 is Betfair Exchange. The Odds API is not called. See `.cursor/rules/odds-api-quota.mdc`.

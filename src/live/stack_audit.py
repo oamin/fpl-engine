@@ -1,12 +1,13 @@
-"""Pre-deadline sensitivity audit for the live three-part stack.
+"""Pre-deadline sensitivity audit for the live stack.
 
 Gemini 2026-10-08 (bc-90156d5d): KEEP as input sensitivity, DROP as accuracy.
-Arms compare Odds API lines vs Betfair, ± contextual minutes tags, ± outright
-κ=0.5 forecast. Higher expected points is not \"better performance\".
+The live book is Betfair only. Arms compare Exchange lines plus tags against
+the same lines with the outright forecast. Higher expected points is not
+better performance.
 
 Requires Mac-synced Betfair derived files under
-``data/predictions/2026-27/gw06/betfair_*/`` for the Exchange arms.
-Does not call the Odds API or Betfair. Does not touch ``data/live/`` freeze.
+``data/predictions/2026-27/gw06/betfair_*/``.
+Does not call Betfair. Does not touch the ``data/live/`` freeze.
 """
 
 from __future__ import annotations
@@ -38,7 +39,6 @@ from src.live.deadline import (
     reconstruct_purchases,
     resolve_holdings,
 )
-from src.live.lines import LINES_PATH
 from src.live.scorer import player_key, price_half
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -63,11 +63,10 @@ class ArmSpec:
 
 
 ARMS: tuple[ArmSpec, ...] = (
-    ArmSpec("arm0_baseline", "Odds API + rolling minutes + GW7 copy", False, False, False),
-    ArmSpec("arm1_tags", "Odds API + contextual tags + GW7 copy", True, False, False),
     ArmSpec("arm2_betfair", "Betfair lines + tags + GW7 copy", True, True, False),
     ArmSpec("arm3_full", "Betfair lines + tags + outright forecast", True, True, True),
 )
+BASELINE_KEY = "arm2_betfair"
 
 
 def _minute_map(
@@ -122,13 +121,12 @@ def run_arm(
     bootstrap_path: Path = BOOTSTRAP_PATH,
     fixtures_path: Path = FIXTURES_PATH,
     minutes_path: Path = MINUTES_PATH,
-    odds_api_lines: Path = LINES_PATH,
     betfair_dir: Path | None = DEFAULT_BETFAIR,
     capture_path: Path | None = DEFAULT_CAPTURE,
     empty_artifacts: Path | None = None,
 ) -> dict[str, Any]:
     """Price one arm. Returns a JSON-serialisable summary."""
-    if spec.use_betfair_lines and not betfair_ready(betfair_dir):
+    if not spec.use_betfair_lines or not betfair_ready(betfair_dir):
         return {
             "key": spec.key,
             "label": spec.label,
@@ -139,11 +137,16 @@ def run_arm(
     logs = pd.read_csv(log_path)
     bootstrap = json.loads(bootstrap_path.read_text(encoding="utf-8"))
     fixtures = json.loads(fixtures_path.read_text(encoding="utf-8"))
-    live_path = (
-        betfair_dir / "gw_lines.csv"  # type: ignore[operator]
-        if spec.use_betfair_lines
-        else odds_api_lines
-    )
+    live_path = betfair_dir / "gw_lines.csv"  # type: ignore[operator]
+    from src.live.lines import LINES_PATH
+
+    if live_path.resolve() == LINES_PATH.resolve():
+        return {
+            "key": spec.key,
+            "label": spec.label,
+            "skipped": True,
+            "reason": "frozen holdout slate is not a live book",
+        }
     odds = load_odds_frame(odds_path, live_path if live_path.is_file() else None)
     players = final_players(entry)
     purchases = reconstruct_purchases(entry, gameweek_values(logs, 1))
@@ -242,10 +245,9 @@ def run_audit(
     betfair_dir: Path | None = DEFAULT_BETFAIR,
     capture_path: Path | None = DEFAULT_CAPTURE,
     minutes_path: Path = MINUTES_PATH,
-    odds_api_lines: Path = LINES_PATH,
     gw: int = DECISION_GW,
 ) -> dict[str, Any]:
-    """Run all four arms and attach deltas vs arm0."""
+    """Run the Betfair arms and attach deltas against the lines-and-tags arm."""
     results: list[dict[str, Any]] = []
     with tempfile.TemporaryDirectory() as folder:
         empty = Path(folder)
@@ -255,18 +257,17 @@ def run_audit(
                     spec,
                     gw=gw,
                     minutes_path=minutes_path,
-                    odds_api_lines=odds_api_lines,
                     betfair_dir=betfair_dir,
                     capture_path=capture_path,
                     empty_artifacts=empty,
                 )
             )
     by_key = {row["key"]: row for row in results}
-    baseline = by_key.get("arm0_baseline") or {}
+    baseline = by_key.get(BASELINE_KEY) or {}
     base_owned = baseline.get("owned_gw6") or {}
     deltas = {}
     for row in results:
-        if row.get("skipped") or row["key"] == "arm0_baseline":
+        if row.get("skipped") or row["key"] == BASELINE_KEY:
             continue
         deltas[row["key"]] = {
             "owned_sum_delta": float(row["owned_gw6_sum"]) - float(baseline.get("owned_gw6_sum") or 0.0),
@@ -285,6 +286,7 @@ def run_audit(
         "betfair_dir": str(betfair_dir) if betfair_dir else None,
         "betfair_ready": betfair_ready(betfair_dir),
         "arms": results,
+        "deltas_vs_betfair": deltas,
         "deltas_vs_arm0": deltas,
         "note": (
             "Sensitivity only. Do not read higher xP as better performance. "
@@ -341,8 +343,10 @@ def render_report(payload: Mapping[str, Any]) -> str:
             f"| {arm['key']} | {by_gw.get(6, 0.0):.2f} | {by_gw.get(7, 0.0):.2f} | "
             f"{by_gw.get(8, 0.0):.2f} | {note} |"
         )
-    lines.extend(["", "## Deltas vs arm0 (not performance)", ""])
-    deltas = payload.get("deltas_vs_arm0") or {}
+    lines.extend(["", "## Deltas vs the Betfair-lines arm (not performance)", ""])
+    deltas = payload.get("deltas_vs_betfair")
+    if deltas is None:
+        deltas = payload.get("deltas_vs_arm0") or {}
     if not deltas:
         lines.append("No completed comparison arms yet.")
     for key, block in deltas.items():

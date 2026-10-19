@@ -1,16 +1,14 @@
 """Live 1X2 and 2.5 totals for the deadline.
 
-Pure Betfair Exchange from 2026-10-08: MATCH_ODDS and OVER_UNDER_25 only.
+Pure Betfair Exchange: MATCH_ODDS and OVER_UNDER_25 only.
 Fair decimal prices are the reciprocal of simplex-normalised back/lay mids,
-with tiered liquidity shrinkage (Gemini bc-e75c8209). Odds API and ESPN are
-not used on the live path. Frozen holdout files under ``data/live/`` are not
-overwritten by callers that pass a predictions path.
+with tiered liquidity shrinkage (Gemini bc-e75c8209). The frozen holdout
+file ``data/live/gw_lines.csv`` is never written.
 """
 
 from __future__ import annotations
 
 import json
-import os
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -41,23 +39,22 @@ COLUMNS = (
 )
 
 
+class FrozenSlateError(RuntimeError):
+    """``data/live/gw_lines.csv`` is the holdout slate and is not a live book."""
+
+
+def refuse_frozen_slate(path: Path) -> None:
+    """Raise when ``path`` is the frozen holdout 1X2 file."""
+    if Path(path).resolve() == LINES_PATH.resolve():
+        raise FrozenSlateError(
+            "data/live/gw_lines.csv is the frozen holdout slate. "
+            "Live lines are written only under a Betfair predictions folder."
+        )
+
+
 def loose_team(name: str) -> str:
     """Club key shared by the bootstrap name and the book name."""
     return norm_team(str(name).replace("&", " and "))
-
-
-def load_key() -> str:
-    """Odds API key (legacy). Empty when unset. Live lines do not call it."""
-    found = os.environ.get("ODDS_API_KEY", "").strip()
-    if found:
-        return found
-    path = ROOT / ".env"
-    if not path.is_file():
-        return ""
-    for line in path.read_text(encoding="utf-8").splitlines():
-        if line.startswith("ODDS_API_KEY="):
-            return line.split("=", 1)[1].strip().strip('"').strip("'")
-    return ""
 
 
 def _fd_date(iso_day: str) -> str:
@@ -130,7 +127,8 @@ def assemble(
     return rows
 
 
-def write_lines(rows: list[dict[str, Any]], path: Path = LINES_PATH) -> None:
+def write_lines(rows: list[dict[str, Any]], path: Path) -> None:
+    refuse_frozen_slate(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     frame = pd.DataFrame(rows, columns=list(COLUMNS))
     frame.to_csv(path, index=False)
@@ -146,18 +144,19 @@ def refresh_lines(
     fixtures: list[Mapping[str, Any]],
     team_names: Mapping[int, str],
     key: str | None = None,
-    lines_path: Path = LINES_PATH,
-    raw_path: Path = TRIAL_RAW,
-    meta_path: Path = TRIAL_META,
+    lines_path: Path,
+    raw_path: Path,
+    meta_path: Path,
     client: Any = None,
     espn_client: Any = None,
 ) -> dict[str, Any]:
     """Write the live CSV from Betfair only.
 
     ``key``, ``client``, and ``espn_client`` are accepted for call-site
-    compatibility and ignored. Odds API fallback is forbidden.
+    compatibility and ignored. The frozen holdout CSV is never the destination.
     """
     del key, client, espn_client  # pure Betfair; no bookmaker path
+    refuse_frozen_slate(lines_path)
     schedule = scheduled_fixtures(fixtures, team_names)
     app_key = load_secret("BETFAIR_APP_KEY")
     session = load_secret("BETFAIR_SESSION_TOKEN")
@@ -233,12 +232,29 @@ def refresh_lines(
     return {"rows": len(rows), "meta": meta, "quotes": quotes}
 
 
-def main() -> None:
+def main(argv: list[str] | None = None) -> None:
+    import argparse
+
     from src.live.fpl_snapshot import load
 
+    parser = argparse.ArgumentParser(
+        description="Write Betfair 1X2 lines into a predictions folder."
+    )
+    parser.add_argument("--out", type=Path, required=True)
+    args = parser.parse_args(argv)
+    out = Path(args.out)
+    lines_path = out / "gw_lines.csv"
+    refuse_frozen_slate(lines_path)
+    out.mkdir(parents=True, exist_ok=True)
     snap = load()
     names = {int(row["id"]): str(row["name"]) for row in snap["bootstrap"]["teams"]}
-    result = refresh_lines(fixtures=snap["fixtures"], team_names=names)
+    result = refresh_lines(
+        fixtures=snap["fixtures"],
+        team_names=names,
+        lines_path=lines_path,
+        raw_path=out / "betfair_trial.json",
+        meta_path=out / "betfair_meta.json",
+    )
     meta = result["meta"]
     print(
         f"lines {result['rows']}; betfair {meta.get('reason')}; "

@@ -41,7 +41,6 @@ from src.live.deadline import (
     resolve_holdings,
     team_names,
 )
-from src.live.lines import LINES_PATH
 from src.live.scorer import player_key, price_half
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -141,13 +140,10 @@ def export_deadline_scores(
     stamp = stamp or datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     entry = json.loads(ENTRY_PATH.read_text(encoding="utf-8"))
     logs = pd.read_csv(LOG_PATH)
-    from src.live.betfair_props import discover_betfair_artifacts
+    from src.live.betfair_props import betfair_gw_lines, discover_betfair_artifacts
 
     artifacts = discover_betfair_artifacts(int(gw))
-    live_lines = LINES_PATH if LINES_PATH.is_file() else None
-    if artifacts is not None and (artifacts / "gw_lines.csv").is_file():
-        live_lines = artifacts / "gw_lines.csv"
-    odds = load_odds_frame(ODDS_PATH, live_lines)
+    odds = load_odds_frame(ODDS_PATH, betfair_gw_lines(int(gw)))
     if bootstrap is None:
         bootstrap = json.loads(BOOTSTRAP_PATH.read_text(encoding="utf-8"))
     fixtures = json.loads(FIXTURES_PATH.read_text(encoding="utf-8"))

@@ -143,8 +143,8 @@ def validate_freeze_row(row: Mapping[str, Any], *, require_null_realised: bool =
     ):
         if not _is_sha256(prov[hash_key]):
             raise FreezeError(f"provenance.{hash_key} must be a 64-hex sha256")
-    if str(prov["odds_source"]) not in {"betfair", "odds_api", "none"}:
-        raise FreezeError("provenance.odds_source must be betfair|odds_api|none")
+    if str(prov["odds_source"]) not in {"betfair", "none"}:
+        raise FreezeError("provenance.odds_source must be betfair|none")
     decision = row["decision"]
     if not isinstance(decision, Mapping):
         raise FreezeError("decision must be an object")

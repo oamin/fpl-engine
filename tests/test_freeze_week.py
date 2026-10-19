@@ -112,6 +112,12 @@ class FreezeWeek(unittest.TestCase):
                     path,
                 )
 
+    def test_odds_api_source_is_refused(self) -> None:
+        row = _valid_row()
+        row["provenance"]["odds_source"] = "odds_api"
+        with self.assertRaises(fw.FreezeError):
+            fw.validate_freeze_row(row)
+
     def test_bad_squad_size_rejected(self) -> None:
         row = _valid_row()
         row["decision"]["squad_15"] = row["decision"]["squad_15"][:14]

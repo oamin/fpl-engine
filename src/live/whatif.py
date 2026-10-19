@@ -33,7 +33,6 @@ from src.live.deadline import (
     resolve_holdings,
     team_names,
 )
-from src.live.lines import LINES_PATH
 from src.live.scorer import (
     SCORE_COL,
     build_pool,
@@ -253,15 +252,17 @@ def build(
     bootstrap_path: Path = BOOTSTRAP_PATH,
     fixtures_path: Path = FIXTURES_PATH,
     minutes_path: Path = MINUTES_PATH,
-    live_path: Path | None = LINES_PATH,
+    live_path: Path | None = None,
     gw: int = DECISION_GW,
 ) -> WhatIf:
-    """Price the two paths. The Odds API is not called."""
+    """Price the two paths from the Betfair slate. The frozen holdout file is not read."""
+    from src.live.betfair_props import resolve_live_book
     from src.live.deadline import ODDS_PATH
 
     entry = json.loads(entry_path.read_text(encoding="utf-8"))
     logs = pd.read_csv(log_path)
-    odds = load_odds_frame(ODDS_PATH if odds_path is None else odds_path, live_path)
+    book = resolve_live_book(int(gw), live_path)
+    odds = load_odds_frame(ODDS_PATH if odds_path is None else odds_path, book)
     bootstrap = json.loads(bootstrap_path.read_text(encoding="utf-8"))
     fixtures = json.loads(fixtures_path.read_text(encoding="utf-8"))
     players = final_players(entry)
@@ -286,11 +287,6 @@ def build(
     from src.live.betfair_props import discover_betfair_artifacts
 
     artifacts = discover_betfair_artifacts(int(gw))
-    if artifacts is not None and (artifacts / "gw_lines.csv").is_file():
-        odds = load_odds_frame(
-            ODDS_PATH if odds_path is None else odds_path,
-            artifacts / "gw_lines.csv",
-        )
     scored = price_half(
         gw=int(gw),
         logs=logs,

@@ -139,6 +139,47 @@ class RefreshBetfairTest(unittest.TestCase):
         self.assertNotIn("odds_api", text)
 
 
+class FrozenSlateTest(unittest.TestCase):
+    def test_refresh_refuses_the_frozen_file(self) -> None:
+        from src.live.lines import LINES_PATH, FrozenSlateError, refresh_lines
+
+        with self.assertRaises(FrozenSlateError):
+            refresh_lines(
+                fixtures=[],
+                team_names={},
+                lines_path=LINES_PATH,
+                raw_path=LINES_PATH.parent / "betfair_trial.json",
+                meta_path=LINES_PATH.parent / "betfair_meta.json",
+            )
+
+    def test_a_missing_betfair_folder_does_not_open_the_frozen_slate(self) -> None:
+        from src.live import betfair_props as bp
+
+        with mock.patch.object(bp, "discover_betfair_artifacts", return_value=None):
+            self.assertIsNone(bp.betfair_gw_lines(6))
+        with mock.patch.object(bp, "discover_betfair_artifacts", return_value=bp.LIVE_DIR):
+            self.assertIsNone(bp.betfair_gw_lines(6))
+        seen: list[object] = []
+        from src.live.deadline import load_odds_frame
+
+        real = load_odds_frame
+
+        def spy(odds_path: Path, live_path: Path | None) -> object:
+            seen.append(live_path)
+            return real(odds_path, None)
+
+        with (
+            mock.patch("src.live.deadline.load_odds_frame", spy),
+            mock.patch.object(bp, "discover_betfair_artifacts", return_value=None),
+        ):
+            from src.live.deadline import collect
+
+            log = collect(live_path=None, trial_path=Path("/tmp/no-such-betfair-meta.json"))
+        self.assertIsNone(seen[0])
+        self.assertEqual(log.line_status, "missing_opening_line")
+        self.assertIsNone(log.chip)
+
+
 class LiveFileTest(unittest.TestCase):
     def test_a_complete_gameweek_still_chooses_no_chip(self) -> None:
         fixtures = json.loads(FIXTURES_PATH.read_text(encoding="utf-8"))

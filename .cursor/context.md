@@ -4,7 +4,7 @@ Updated: 2026-10-19. **Locked stack first.** Parked hypotheses: `.cursor/ideas.m
 
 ## Plan
 
-Pre-deadline squad advisor under 2026/27 rules. Cursor implements and screens; Gemini proposes formulae; the PI reads gated batches. A result needs the as-of audit and paired intervals on 2022-23…2025-26 (`write_gated_report`). Odds API calls need a cost estimate and PI approval (`.cursor/rules/odds-api-quota.mdc`). The live 2026/27 holdout is frozen — do not fit on it.
+Pre-deadline squad advisor under 2026/27 rules. Cursor implements and screens; Gemini proposes formulae; the PI reads gated batches. A result needs the as-of audit and paired intervals on 2022-23…2025-26 (`write_gated_report`). **Live 1X2 is Betfair Exchange only** — The Odds API is banned from engines (`.cursor/rules/odds-api-quota.mdc`). The live 2026/27 holdout is frozen — do not fit on it.
 
 ## Locked stack (use this)
 
@@ -42,7 +42,7 @@ Pre-deadline squad advisor under 2026/27 rules. Cursor implements and screens; G
 python -m src.live.numagent_live_pick --gw N
 ```
 
-Prefer `--from-snapshot` / existing odds JSON. Optional `--with-props` / `--fetch-odds` are quota-gated and not the locked default.
+Offline only: existing odds / Betfair snapshot JSON under `data/scratch/` or `data/predictions/…/betfair_*`. Do **not** call The Odds API. Classic live 1X2 readers take `gw_lines.csv` only from a Betfair predictions folder (`python3 -m src.live.betfair_lines`). Frozen `data/live/gw_lines.csv` is not a live book.
 
 ### Latest PI lock — GW7 (2026-10-17)
 
@@ -61,11 +61,12 @@ Hold 1.25, switch penalty 1.0, buy gate three prior appearances and xmi≥45. Em
 
 Full list: `.cursor/ideas.md` and `reports/LOCKED.md` §Parked.
 
-Highlights: anytime props as live default; share-SE all-minutes / scorers-only; minutes decay ρ=0.7; L4 risk/chase/window/beyond-t+2 form fills; L4 FT-DP / chip half-stop; L5 as strategiser; constant-K μ_post shrink; Betfair as live pot source on US cloud (geo-blocked — diagnostic / Mac worker only).
+Highlights: anytime props as live default; share-SE all-minutes / scorers-only; minutes decay ρ=0.7; L4 risk/chase/window/beyond-t+2 form fills; L4 FT-DP / chip half-stop; L5 as strategiser; constant-K μ_post shrink; Betfair pot source on US cloud (geo-blocked — Mac worker only).
 
 ## Rules still in force
 
 - Gates: as-of audit + four-season paired intervals before any claim
 - Holdout freeze hashes untouched
+- Odds API banned; live lines from Betfair folders only
 - Fewer comparisons; objective-function search parked; captain/chip sims deferred until a pre-registered likelihood arm asks
 - After a discrete sub-task: write `REPORT_STATE.json`

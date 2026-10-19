@@ -8,7 +8,7 @@ from pathlib import Path
 import pandas as pd
 
 from src.live.fpl_snapshot import fixture_counts, next_event, week_flags
-from src.live.odds import fetch_odds_api, load_odds_snapshot
+from src.live.odds import load_odds_snapshot
 from src.live.plan import captain_extra, live_xi
 from src.live.policy import FH_MARGIN, WC_MARGIN, WeekOutlook, recommend_chip
 from src.live.xmi import LiveInputError, apply_supplied_xmi, load_xmi
@@ -54,9 +54,13 @@ class XmiTest(unittest.TestCase):
 
 
 class OddsTest(unittest.TestCase):
-    def test_paid_endpoint_is_refused(self) -> None:
-        with self.assertRaises(LiveInputError):
-            fetch_odds_api()
+    def test_the_paid_endpoint_is_gone(self) -> None:
+        import src.live.odds as odds
+
+        self.assertFalse(hasattr(odds, "fetch_odds_api"))
+        source = Path(odds.__file__).read_text(encoding="utf-8")
+        self.assertNotIn("ODDS_API_KEY", source)
+        self.assertNotIn("the-odds-api", source)
 
     def test_missing_snapshot_is_refused(self) -> None:
         with self.assertRaises(LiveInputError):

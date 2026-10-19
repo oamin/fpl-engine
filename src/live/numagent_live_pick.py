@@ -1,13 +1,11 @@
 """One-shot Numagent live pick: xmi + book pots → L4 on held 15.
 
-Primary scorer is ``score_xp_v2`` (``score_xp`` superseded). Offline-friendly
-defaults (snapshot odds). Optional live Odds API pull is quota-aware
-(region=us only)::
+Primary scorer is ``score_xp_v2`` (``score_xp`` superseded). Offline only —
+pass ``--from-snapshot`` or rely on ``data/scratch/gwNN_odds_*.json``.
+The Odds API is banned (``.cursor/rules/odds-api-quota.mdc``); use Betfair
+folders for live 1X2. Does not touch HOLDOUT_FREEZE.
 
   python -m src.live.numagent_live_pick --gw 7
-  python -m src.live.numagent_live_pick --gw 7 --fetch-odds
-
-Does not touch HOLDOUT_FREEZE.
 """
 
 from __future__ import annotations
@@ -287,7 +285,12 @@ def fetch_odds_for_fixtures(
     *,
     with_props: bool = True,
 ) -> dict[str, Any]:
-    """Pull AH+OU+BTTS (+ anytime) for named home/away pairs. region=us."""
+    """Banned — The Odds API is not used (``.cursor/rules/odds-api-quota.mdc``)."""
+    raise RuntimeError(
+        "The Odds API is banned from live engines "
+        "(.cursor/rules/odds-api-quota.mdc). Use --from-snapshot or a Betfair folder."
+    )
+    _ = (fixtures, with_props)
     key = _load_odds_key()
     out: dict[str, Any] = {
         "ok": False,
@@ -618,7 +621,9 @@ def run_pick(
         odds_docs = [odds_doc]
     else:
         if odds_path is None or not odds_path.is_file():
-            raise FileNotFoundError("need --from-snapshot odds or --fetch-odds")
+            raise FileNotFoundError(
+                "need --from-snapshot odds JSON (Odds API banned; see odds-api-quota.mdc)"
+            )
         odds_docs.append(json.loads(odds_path.read_text(encoding="utf-8")))
         if use_l4 and odds_t1_path is not None and odds_t1_path.is_file():
             odds_docs.append(json.loads(odds_t1_path.read_text(encoding="utf-8")))
@@ -898,7 +903,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument(
         "--fetch-odds",
         action="store_true",
-        help="spend Odds API credits for t and t+1 fixtures (us region)",
+        help="banned — raises (Odds API removed; use --from-snapshot)",
     )
     ap.add_argument(
         "--l3-only",
@@ -912,9 +917,14 @@ def main(argv: list[str] | None = None) -> int:
     )
     ap.add_argument("--time-limit", type=float, default=90.0)
     args = ap.parse_args(argv)
+    if args.fetch_odds:
+        raise SystemExit(
+            "The Odds API is banned (.cursor/rules/odds-api-quota.mdc). "
+            "Pass --from-snapshot or place gwNN_odds_*.json under data/scratch/."
+        )
 
     snap = args.from_snapshot
-    if snap is None and not args.fetch_odds:
+    if snap is None:
         for cand in (
             SCRATCH / f"gw{int(args.gw):02d}_odds_bookie_depth2.json",
             SCRATCH / f"gw{int(args.gw):02d}_odds_full.json",

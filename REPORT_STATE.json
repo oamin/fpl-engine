@@ -1,12 +1,11 @@
 {
-  "milestone": "score-xp-v2-primary",
+  "milestone": "merge-numagent-to-main",
   "status": "complete",
-  "summary": "Promoted score_xp_v2 to engine primary scorer (protocol.primary_scorer, 2026-10-19). score_xp marked superseded for live/new work; kept as historical climb replay and gate baseline. Front docs, SUPERSEDED.md, and module docstrings updated.",
+  "summary": "Merged main (Betfair-only / Odds API ban) into Numagent branch; kept score_xp_v2 as primary and LOCKED front door. Ready to PR/merge onto main.",
   "gemini": "",
   "artifacts": [
-    "experiments/protocol.json",
     "reports/LOCKED.md",
-    "reports/SUPERSEDED.md",
-    ".cursor/context.md"
+    ".cursor/context.md",
+    "experiments/protocol.json"
   ]
 }

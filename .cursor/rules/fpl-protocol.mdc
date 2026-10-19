@@ -9,7 +9,7 @@ alwaysApply: true
 
 ## Roles
 
-- **PI (Ollie):** reads a batch report when a pre-registered set of methods has been run. Does not join the screen design. Approves only if a later step would break a published comparison or spend Odds API credits.
+- **PI (Ollie):** reads a batch report when a pre-registered set of methods has been run. Does not join the screen design. Approves only if a later step would break a published comparison.
 - **Co-PI (Gemini):** mathematical design and edge cases. Gemini may propose a formula. A Gemini sentence does not certify a result.
 - **Cursor:** implement, test, and run. One pre-registered comparison at a time, on the fixed protocol in `experiments/protocol.json`, judged on the player-GW likelihood.
 
@@ -38,4 +38,4 @@ After a discrete sub-task, write `REPORT_STATE.json` at the repo root. If a scri
 
 Solver, simulator, and backtest constraints come from `src/rules/fpl_2026.py` (2026/27 squad, transfers, chips, scoring). Do not copy those constants into a new module.
 
-Do not index `.venv/`, `data/raw/`, `__pycache__/`, or full-season CSV dumps. Odds API calls follow `.cursor/rules/odds-api-quota.mdc`.
+Do not index `.venv/`, `data/raw/`, `__pycache__/`, or full-season CSV dumps. The Odds API is not called. Live prices are Betfair Exchange. See `.cursor/rules/odds-api-quota.mdc`.
