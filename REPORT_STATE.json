@@ -1,12 +1,11 @@
 {
   "updated": "2026-10-19",
-  "task": "oracle_rank_cascade_2025_26",
-  "status": "done",
+  "task": "multistage_captain_objective",
+  "status": "done_item_1a",
   "outputs": {
-    "report": "reports/oracle_rank_cascade_2025_26.md",
-    "json": "data/processed/oracle_rank_cascade_2025_26.json",
-    "club_errors": "data/processed/oracle_rank_cascade_club_errors.csv",
-    "module": "src/eval/oracle_rank_cascade.py"
+    "report": "reports/multistage_captain_objective.md",
+    "xi_captain_freq": "data/predictions/2026-27/multistage_xi_captain/multistage_xi_captain_player_freq.csv",
+    "module": "src/models/multistage_mc_milp.py"
   },
-  "notes": "Oracle final ranks + prior-only OLS PASS vs flat/prior controls on match MSE and eligible player-GW log; oracle also slightly beats market Shin score_xp (+0.00384 log)."
+  "notes": "xi_plus_captain MILP live. Same seed N=10: Haaland still ~#7; Saka takes 48% of captaincies. Transfers next."
 }

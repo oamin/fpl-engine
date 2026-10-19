@@ -20,9 +20,15 @@ From decision gameweek ``t``, for each of ``N`` Monte Carlo strands:
 3. **MILP + frequency.** Selectable-pool squad MILP on discounted path
    xP; aggregate selection frequency across strands × snapshots.
 
+Objective modes
+---------------
+- ``squad_sum`` (original): maximise Σ score over the 15 (bench = full weight).
+- ``xi_plus_captain``: maximise Σ score over a legal XI **plus** one captain
+  double (``c ≤ y ≤ x``), so premiums are valued as captain candidates.
+
 Share seeding is **off** in v1 (see module note below). Horizon-widening
-of bands is deferred to a later systematic screen. Chips off. Not a gated
-likelihood promotion.
+of bands is deferred to a later systematic screen. Chips off. Transfers
+are not yet in the objective (next lever). Not a gated likelihood promotion.
 """
 
 from __future__ import annotations
@@ -59,6 +65,9 @@ LOG_CSV = ROOT / "data" / "cache" / "player_gw_2026_27.csv"
 # v1: do not sample shares. Match λ already moves team-level uncertainty;
 # share jitter is a second axis — open only after a calibration screen.
 SEED_SHARES = False
+OBJECTIVE_SQUAD_SUM = "squad_sum"
+OBJECTIVE_XI_CAPTAIN = "xi_plus_captain"
+OBJECTIVES = (OBJECTIVE_SQUAD_SUM, OBJECTIVE_XI_CAPTAIN)
 
 
 @dataclass
@@ -454,8 +463,11 @@ def run_strand(
     rng: random.Random,
     gamma: float = DEFAULT_GAMMA,
     milp_time_limit: float = 8.0,
+    objective: str = OBJECTIVE_SQUAD_SUM,
 ) -> StrandResult:
     """One coherent MC strand: Opta scenarios → score_xp pots → MILP."""
+    if objective not in OBJECTIVES:
+        raise ValueError(f"unknown objective: {objective!r}")
     paths = {
         c: ClubPath(att=p.att, dfn=p.dfn, n=p.n) for c, p in paths0.items()
     }
@@ -520,7 +532,21 @@ def run_strand(
         if len(scored) < 15 or scored["position"].nunique() < 4:
             continue
         try:
-            squad = _pick_squad_fast(scored, "mc_score", time_limit=milp_time_limit)
+            if objective == OBJECTIVE_XI_CAPTAIN:
+                picked = _pick_squad_xi_captain(
+                    scored, "mc_score", time_limit=milp_time_limit
+                )
+                squad = picked["squad"]
+                captain_id = picked["captain_id"]
+                xi_ids = picked["xi_ids"]
+                obj_value = picked["objective"]
+            else:
+                squad = _pick_squad_fast(
+                    scored, "mc_score", time_limit=milp_time_limit
+                )
+                captain_id = None
+                xi_ids = []
+                obj_value = float(squad["mc_score"].sum())
         except RuntimeError:
             continue
         result.squads.append(
@@ -529,23 +555,33 @@ def run_strand(
                 "player_ids": [str(x) for x in squad["player_id"].tolist()],
                 "names": [str(x) for x in squad["name"].tolist()],
                 "score_sum": float(squad["mc_score"].sum()),
+                "objective": objective,
+                "objective_value": float(obj_value),
+                "captain_id": captain_id,
+                "xi_ids": xi_ids,
             }
         )
     return result
 
 
+def _candidate_frame(gw_df: pd.DataFrame, score_col: str) -> pd.DataFrame:
+    df = gw_df.loc[np.isfinite(gw_df[score_col])].copy()
+    df = df.drop_duplicates("player_id", keep="first").reset_index(drop=True)
+    if len(df) < 15:
+        raise RuntimeError(f"Need ≥15 candidates, got {len(df)}")
+    return df
+
+
 def _pick_squad_fast(
     gw_df: pd.DataFrame, score_col: str, *, time_limit: float = 8.0
 ) -> pd.DataFrame:
+    """Maximise Σ score over a legal 15 (bench weighted equally)."""
     from scipy.optimize import Bounds, LinearConstraint, milp
 
     from src.rules.fpl_2026 import BUDGET_TENTHS as BUDGET
     from src.rules.fpl_2026 import MAX_PER_CLUB, SQUAD_QUOTA
 
-    df = gw_df.loc[np.isfinite(gw_df[score_col])].copy()
-    df = df.drop_duplicates("player_id", keep="first").reset_index(drop=True)
-    if len(df) < 15:
-        raise RuntimeError(f"Need ≥15 candidates, got {len(df)}")
+    df = _candidate_frame(gw_df, score_col)
     n = len(df)
     scores = df[score_col].to_numpy(float)
     values = pd.to_numeric(df["value"], errors="coerce").fillna(50.0).to_numpy(float)
@@ -580,16 +616,144 @@ def _pick_squad_fast(
     return df.iloc[chosen].copy()
 
 
+def _pick_squad_xi_captain(
+    gw_df: pd.DataFrame, score_col: str, *, time_limit: float = 12.0
+) -> dict[str, Any]:
+    """Maximise XI score + captain double under FPL squad / formation rules.
+
+    Decision variables (length 3n): squad ``x``, XI ``y``, captain ``c`` with
+    ``c ≤ y ≤ x``. Objective ``Σ s·y + Σ s·c``. Bench is selected only to fill
+    quotas and budget — it does not enter the objective.
+    """
+    from scipy.optimize import Bounds, LinearConstraint, milp
+
+    from src.rules.fpl_2026 import (
+        BUDGET_TENTHS as BUDGET,
+        MAX_DEF,
+        MAX_FWD,
+        MAX_MID,
+        MAX_PER_CLUB,
+        MIN_DEF,
+        MIN_FWD,
+        MIN_MID,
+        SQUAD_QUOTA,
+    )
+
+    df = _candidate_frame(gw_df, score_col)
+    n = len(df)
+    scores = df[score_col].to_numpy(float)
+    values = pd.to_numeric(df["value"], errors="coerce").fillna(50.0).to_numpy(float)
+    positions = df["position"].astype(str).to_numpy()
+    clubs = df["team_norm"].astype(str).to_numpy()
+    ids = df["player_id"].astype(str).to_numpy()
+
+    # Layout: [x | y | c]
+    z = np.zeros(3 * n)
+    constraints: list[LinearConstraint] = []
+
+    # Budget and squad size on x.
+    ax_budget = np.zeros(3 * n)
+    ax_budget[:n] = values
+    constraints.append(LinearConstraint(ax_budget, -np.inf, float(BUDGET)))
+    ax_size = np.zeros(3 * n)
+    ax_size[:n] = 1.0
+    constraints.append(LinearConstraint(ax_size, 15.0, 15.0))
+
+    for pos, need in SQUAD_QUOTA.items():
+        row = np.zeros(3 * n)
+        row[:n] = (positions == pos).astype(float)
+        constraints.append(LinearConstraint(row, float(need), float(need)))
+    for club in sorted(set(clubs.tolist())):
+        row = np.zeros(3 * n)
+        row[:n] = (clubs == club).astype(float)
+        constraints.append(LinearConstraint(row, -np.inf, float(MAX_PER_CLUB)))
+
+    # XI size and formation bounds on y.
+    ay_size = np.zeros(3 * n)
+    ay_size[n : 2 * n] = 1.0
+    constraints.append(LinearConstraint(ay_size, 11.0, 11.0))
+    gkp_y = np.zeros(3 * n)
+    gkp_y[n : 2 * n] = (positions == "GKP").astype(float)
+    constraints.append(LinearConstraint(gkp_y, 1.0, 1.0))
+    for pos, lo, hi in (
+        ("DEF", MIN_DEF, MAX_DEF),
+        ("MID", MIN_MID, MAX_MID),
+        ("FWD", MIN_FWD, MAX_FWD),
+    ):
+        row = np.zeros(3 * n)
+        row[n : 2 * n] = (positions == pos).astype(float)
+        constraints.append(LinearConstraint(row, float(lo), float(hi)))
+
+    # Exactly one captain; c_i ≤ y_i ≤ x_i.
+    acap = np.zeros(3 * n)
+    acap[2 * n :] = 1.0
+    constraints.append(LinearConstraint(acap, 1.0, 1.0))
+    for i in range(n):
+        # y_i - x_i ≤ 0
+        row_yx = np.zeros(3 * n)
+        row_yx[i] = -1.0
+        row_yx[n + i] = 1.0
+        constraints.append(LinearConstraint(row_yx, -np.inf, 0.0))
+        # c_i - y_i ≤ 0
+        row_cy = np.zeros(3 * n)
+        row_cy[n + i] = -1.0
+        row_cy[2 * n + i] = 1.0
+        constraints.append(LinearConstraint(row_cy, -np.inf, 0.0))
+
+    # Maximise Σ s y + Σ s c  → minimise negative.
+    c_obj = np.zeros(3 * n)
+    c_obj[n : 2 * n] = -scores
+    c_obj[2 * n :] = -scores
+
+    res = milp(
+        c=c_obj,
+        constraints=constraints,
+        bounds=Bounds(0, 1),
+        integrality=np.ones(3 * n, dtype=int),
+        options={"time_limit": float(time_limit)},
+    )
+    if not res.success or res.x is None:
+        raise RuntimeError(f"XI+captain MILP failed: {res.message}")
+    x = res.x[:n]
+    y = res.x[n : 2 * n]
+    c = res.x[2 * n :]
+    chosen = np.where(x > 0.5)[0]
+    xi_idx = np.where(y > 0.5)[0]
+    cap_idx = np.where(c > 0.5)[0]
+    if len(chosen) != 15 or len(xi_idx) != 11 or len(cap_idx) != 1:
+        raise RuntimeError(
+            f"Bad XI+captain solution: squad={len(chosen)} xi={len(xi_idx)} cap={len(cap_idx)}"
+        )
+    squad = df.iloc[chosen].copy()
+    obj = float(scores[xi_idx].sum() + scores[cap_idx[0]])
+    return {
+        "squad": squad,
+        "xi_ids": [str(ids[i]) for i in xi_idx],
+        "captain_id": str(ids[cap_idx[0]]),
+        "objective": obj,
+    }
+
+
 def aggregate_frequencies(
     strands: Sequence[StrandResult],
     pool: pd.DataFrame,
 ) -> pd.DataFrame:
     counts: Counter[str] = Counter()
+    cap_counts: Counter[str] = Counter()
+    xi_counts: Counter[str] = Counter()
     n_squads = 0
+    n_with_cap = 0
     for s in strands:
         for squad in s.squads:
             n_squads += 1
             counts.update(squad["player_ids"])
+            xi = squad.get("xi_ids") or []
+            if xi:
+                xi_counts.update(str(x) for x in xi)
+            cap = squad.get("captain_id")
+            if cap:
+                n_with_cap += 1
+                cap_counts[str(cap)] += 1
     meta = pool.set_index("player_id")
     rows = []
     for pid, n in counts.most_common():
@@ -605,11 +769,18 @@ def aggregate_frequencies(
                 "value": int(r["value"]),
                 "n_selected": int(n),
                 "freq": float(n) / float(n_squads) if n_squads else 0.0,
+                "n_xi": int(xi_counts.get(pid, 0)),
+                "freq_xi": float(xi_counts.get(pid, 0)) / float(n_squads) if n_squads else 0.0,
+                "n_captain": int(cap_counts.get(pid, 0)),
+                "freq_captain": (
+                    float(cap_counts.get(pid, 0)) / float(n_with_cap) if n_with_cap else 0.0
+                ),
             }
         )
     out = pd.DataFrame(rows)
     out.attrs["n_squads"] = n_squads
     out.attrs["n_strands"] = len(strands)
+    out.attrs["n_with_captain"] = n_with_cap
     return out
 
 
@@ -626,8 +797,11 @@ def run_multistage_trial(
     logs_path: Path | None = None,
     start_offset: int = 2,
     snapshot_every: int = 1,
+    objective: str = OBJECTIVE_SQUAD_SUM,
 ) -> dict[str, Any]:
     """Run N coherent strands and return frequency table + metadata."""
+    if objective not in OBJECTIVES:
+        raise ValueError(f"unknown objective: {objective!r}")
     team_names = {int(t["id"]): str(t["name"]) for t in bootstrap["teams"]}
     selectable = load_selectable_ids(pool_path or DEFAULT_POOL_JSON)
     logs = pd.read_csv(logs_path or LOG_CSV)
@@ -666,6 +840,7 @@ def run_multistage_trial(
                 league_gf=league_gf,
                 rng=strand_rng,
                 gamma=gamma,
+                objective=objective,
             )
         )
 
@@ -673,6 +848,7 @@ def run_multistage_trial(
     n_squads = int(freq.attrs.get("n_squads") or 0)
     return {
         "decision_gw": int(decision_gw),
+        "objective": objective,
         "horizon": {"start": start, "end": end, "gws": horizon_gws},
         "snapshot_gws": snapshot_gws,
         "n_strands": int(n_strands),
@@ -695,9 +871,11 @@ def run_multistage_trial(
 
 def write_trial_outputs(result: dict[str, Any], *, out_dir: Path) -> dict[str, str]:
     out_dir.mkdir(parents=True, exist_ok=True)
-    json_path = out_dir / "multistage_mc_milp_trial.json"
-    csv_path = out_dir / "multistage_player_freq.csv"
-    report = ROOT / "reports" / "multistage_mc_milp_trial.md"
+    obj = str(result.get("objective") or OBJECTIVE_SQUAD_SUM)
+    stem = "multistage_xi_captain" if obj == OBJECTIVE_XI_CAPTAIN else "multistage_mc_milp"
+    json_path = out_dir / f"{stem}_trial.json"
+    csv_path = out_dir / f"{stem}_player_freq.csv"
+    report = ROOT / "reports" / f"{stem}_trial.md"
 
     json_path.write_text(json.dumps(result, indent=2) + "\n")
     freq = result.get("frequencies") or []
@@ -709,7 +887,7 @@ def write_trial_outputs(result: dict[str, Any], *, out_dir: Path) -> dict[str, s
     lines = [
         "# Multistage MC + MILP — long-horizon selection frequency",
         "",
-        "Trial (diagnostic). Not a gated likelihood promotion. Chips off.",
+        f"Trial (diagnostic). Objective: **`{obj}`**. Not a gated likelihood promotion. Chips off.",
         "",
         "## Design",
         "",
@@ -721,7 +899,8 @@ def write_trial_outputs(result: dict[str, Any], *, out_dir: Path) -> dict[str, s
         f"- Player xP: frozen deadline shares/xmi/defcon (`add_player_priors`) × "
         f"scenario pot via `xp_on_pot` (score_xp v2). Share seeding: "
         f"**{result.get('seed_shares')}**.",
-        f"- Snapshots at GW {result['snapshot_gws']} → selectable-pool MILP.",
+        f"- Snapshots at GW {result['snapshot_gws']} → selectable-pool MILP "
+        f"(`{obj}`).",
         f"- Solved squads: **{result['n_squads_solved']}** · selectable "
         f"**{result['n_selectable']}** ({result.get('n_with_nonzero_share')} with "
         f"nonzero share) · seed {result['seed']}.",
@@ -730,17 +909,18 @@ def write_trial_outputs(result: dict[str, Any], *, out_dir: Path) -> dict[str, s
         "",
         "## Player stability (selection frequency)",
         "",
-        "| rank | id | name | team | pos | £ | freq | n |",
-        "|---:|---:|---|---|---|---:|---:|---:|",
+        "| rank | id | name | team | pos | £ | freq | xi | cap | n |",
+        "|---:|---:|---|---|---|---:|---:|---:|---:|---:|",
     ]
     for i, row in enumerate(freq[:40], start=1):
         lines.append(
             f"| {i} | {row['player_id']} | {row['name']} | {row['team_norm']} | "
             f"{row['position']} | {row['value']/10:.1f} | {row['freq']:.2f} | "
+            f"{row.get('freq_xi', 0):.2f} | {row.get('freq_captain', 0):.2f} | "
             f"{row['n_selected']} |"
         )
     if len(freq) > 40:
-        lines.append(f"| … | ({len(freq) - 40} more) | | | | | | |")
+        lines.append(f"| … | ({len(freq) - 40} more) | | | | | | | | |")
 
     lines += [
         "",
@@ -748,10 +928,11 @@ def write_trial_outputs(result: dict[str, Any], *, out_dir: Path) -> dict[str, s
         "",
         "High ``freq`` across strands × snapshots = appears in MILP squads "
         "under many coherent future paths → candidate for long-horizon hold. "
-        "Low freq = path-sensitive / avoid locking capital.",
+        "Under ``xi_plus_captain``, ``freq_captain`` is the share of solved "
+        "squads where that player is the named captain.",
         "",
         "```bash",
-        "PYTHONPATH=. python3 -m src.models.multistage_mc_milp --n 20",
+        f"PYTHONPATH=. python3 -m src.models.multistage_mc_milp --n 20 --objective {obj}",
         "```",
         "",
     ]
@@ -786,6 +967,12 @@ def main() -> None:
         default=ROOT / "data/predictions/2026-27/multistage_mc_milp",
     )
     p.add_argument("--logs", type=Path, default=LOG_CSV)
+    p.add_argument(
+        "--objective",
+        choices=list(OBJECTIVES),
+        default=OBJECTIVE_SQUAD_SUM,
+        help="squad_sum = equal 15; xi_plus_captain = XI + captain double",
+    )
     args = p.parse_args()
     bootstrap = json.loads(args.bootstrap.read_text())
     fixtures = json.loads(args.fixtures.read_text())
@@ -798,16 +985,22 @@ def main() -> None:
         seed=args.seed,
         snapshot_every=args.snapshot_every,
         logs_path=args.logs,
+        objective=args.objective,
     )
     paths = write_trial_outputs(result, out_dir=args.out)
     print(
         json.dumps(
             {
+                "objective": result.get("objective"),
                 "n_strands": result["n_strands"],
                 "n_squads_solved": result["n_squads_solved"],
                 "strands_with_squads": result["strands_with_squads"],
                 "top5": [
-                    {"name": r["name"], "freq": round(r["freq"], 3)}
+                    {
+                        "name": r["name"],
+                        "freq": round(r["freq"], 3),
+                        "freq_captain": round(r.get("freq_captain") or 0.0, 3),
+                    }
                     for r in (result["frequencies"] or [])[:5]
                 ],
                 **paths,
