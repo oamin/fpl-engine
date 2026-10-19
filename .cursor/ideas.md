@@ -307,3 +307,5 @@ Diagnostic only — not a gated likelihood comparison. Basic v1: Opta `match_pre
 **Share seeding:** parked for v1. Not redundant with match λ (within-team allocation vs pot size), but a second noise axis. Open only after a calibration screen; do not widen share bands and match bands in the same step.
 
 Next levers: transfer-cost / bank / FT between snapshots; priced t/t+1 blend; systematic lead-time widening of λ (and later xmi/shares); larger N; GW38. Do not promote on frequency alone.
+
+**Item 2 (2026-10-19):** graded FPL availability overlay is on the cascade by default (`src/models/minutes_overlay.py`). Pen / set-piece **role** bump stays parked — no clean pre-deadline taker prior on disk (same reason as the Understat penalty split above). Item 3 next: match-band calibration.
