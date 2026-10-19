@@ -1,0 +1,7 @@
+{
+  "gw": 7,
+  "status": "missed_predeadline",
+  "deadline": "2026-10-17T10:00:00Z",
+  "bootstrap_attempt": "bootstrap_20261019T145101Z.json",
+  "bootstrap_note": "Local gw06 bootstrap reused after FPL API 403; official_frame refused post-deadline stamp. No official_*.csv written."
+}

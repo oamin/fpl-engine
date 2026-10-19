@@ -1,0 +1,63 @@
+{
+  "decision": "promote_team_xa_xg",
+  "promote": true,
+  "assist_contrast": "score_xp_assist_team_xa_minus_score_xp",
+  "assist_interval": {
+    "mean": 0.0004096624092183958,
+    "lo": 0.0001294808800773385,
+    "hi": 0.000691097638358311,
+    "n_gws": {
+      "2022-23": 33,
+      "2023-24": 34,
+      "2024-25": 34,
+      "2025-26": 34
+    }
+  },
+  "primary_interval": {
+    "mean": 0.025974708251502387,
+    "lo": 0.019734402719354213,
+    "hi": 0.03225503161911328,
+    "n_gws": {
+      "2022-23": 33,
+      "2023-24": 34,
+      "2024-25": 34,
+      "2025-26": 34
+    }
+  },
+  "rho_summary": [
+    {
+      "season": "2022-23",
+      "n_eligible": 7686,
+      "mean_assist_rho": 0.6592828396864475,
+      "p10_assist_rho": 0.5225105738603728,
+      "p90_assist_rho": 0.75,
+      "mean_abs_xp_delta": 0.029732100939790278
+    },
+    {
+      "season": "2023-24",
+      "n_eligible": 7692,
+      "mean_assist_rho": 0.6363522745383975,
+      "p10_assist_rho": 0.5277035438896095,
+      "p90_assist_rho": 0.7670396744659207,
+      "mean_abs_xp_delta": 0.035941837335211106
+    },
+    {
+      "season": "2024-25",
+      "n_eligible": 7718,
+      "mean_assist_rho": 0.6625334736383065,
+      "p10_assist_rho": 0.5703764320785597,
+      "p90_assist_rho": 0.7755474452554744,
+      "mean_abs_xp_delta": 0.03268321400972112
+    },
+    {
+      "season": "2025-26",
+      "n_eligible": 7658,
+      "mean_assist_rho": 0.6255608743985955,
+      "p10_assist_rho": 0.5164345403899722,
+      "p90_assist_rho": 0.725253807106599,
+      "mean_abs_xp_delta": 0.03609892868334455
+    }
+  ],
+  "control_rho": 0.75,
+  "n_gws_logged": 270
+}

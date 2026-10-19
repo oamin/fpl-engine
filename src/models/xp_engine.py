@@ -359,7 +359,10 @@ def add_player_priors(
     out["share_xA"] = (out["exp_xA"] / out["exp_team_xa"].replace(0, np.nan)).clip(0, 1)
     out["share_xG"] = out["share_xG"].fillna(0.0)
     out["share_xA"] = out["share_xA"].fillna(0.0)
-    return out
+    # Published assist pot after the assist_pot screen (2026-10-19): ρ from
+    # shift-1 team xA/xG. Screens that need the old fixed 0.75 control call
+    # ``apply_lam_assist(..., mode="fixed")`` after this.
+    return apply_lam_assist(out, mode="team_xa_xg")
 
 
 def compute_xp(df: pd.DataFrame) -> pd.DataFrame:

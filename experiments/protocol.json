@@ -29,7 +29,7 @@
     "contrast": "score_xp_assist_team_xa_minus_score_xp",
     "promote_if": "paired interval strictly above zero on all four closed seasons",
     "fallback_if_not": "keep fixed 0.75",
-    "winner": null
+    "winner": "team_xa_xg"
   },
   "official_xp": {
     "historical_sheet": "Vaastav xP is not a benchmark and not a feature. The README says it is ep_this scraped after the gameweek, and the timing is uncertain.",

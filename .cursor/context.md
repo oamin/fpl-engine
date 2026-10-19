@@ -1,6 +1,6 @@
 # Architectural state
 
-Updated: 2026-10-09. Stage history is root `CONTEXT.md`. Parked hypotheses are `.cursor/ideas.md`. This file is the plan, the work already done, and the direction from here.
+Updated: 2026-10-19. Stage history is root `CONTEXT.md`. Parked hypotheses are `.cursor/ideas.md`. This file is the plan, the work already done, and the direction from here.
 
 ## Plan
 
@@ -13,6 +13,7 @@ Cursor writes and runs the code. Gemini may propose a formula. A result is writt
 ## Fixed
 
 - `score_xp` is the published score. Hold margin 1.25. Switch penalty 1.0. Buy gate: three prior appearances and expected minutes at least 45. A missing score is 0.
+- Assist pot: `lam_assist = ρ · lam_scored` with ρ from shift-1 `exp_team_xa / exp_team_xg` (clipped). Fixed ρ=0.75 lost the gated screen (`reports/assist_pot.md`).
 - The three-week value is the opening-price horizon. The current week keeps `score_xp`. A later week uses that fixture's opening 1X2 and the 2.5 total. A double stays one fixture. An owned player with one or two prior appearances keeps a past-only score capped at 6 and cannot be bought.
 - The published climb plays a chip only when a week map is passed. The empty map is the published path. `plan_half` is the half-season planner: Bench Boost on the best priced week still in the half, Free Hit margin 12 on that week alone, Wildcard margin 16 on the rebuilt eleven against the held eleven across the weeks that have their own opening line. A copied week adds nothing to that sum and nothing to the schedule. Those margins stay. `src/live/policy.py` is the earlier single-week rule and is called from tests. The deadline scorer calls `plan_half`.
 - A goalkeeper goal inside `compute_xp` is `GOAL_POINTS` from `src/rules/fpl_2026.py` (goalkeeper 6). The default formation list is `OFFICIAL_FORMATIONS`, including 5-2-3. The published Gameweeks 1–5 total of 280 used the played-only pool and the shorter formation list. It was not recomputed.
