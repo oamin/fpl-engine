@@ -1,11 +1,15 @@
 {
-  "updated": "2026-10-18",
-  "task": "team_gf_ga_predictor_screen",
+  "updated": "2026-10-19",
+  "task": "ffscout_selectable_pool",
   "status": "done",
   "outputs": {
-    "report": "reports/team_gf_ga_predictor_screen.md",
-    "json": "reports/figures/team_gf_ga_predictor_screen.json",
-    "script": "scripts/screen_team_gf_ga_predictors.py"
+    "report": "reports/selectable_pool_ffscout.md",
+    "pool_json": "data/predictions/2026-27/selectable_pool/selectable_pool.json",
+    "pool_csv": "data/predictions/2026-27/selectable_pool/selectable_pool.csv",
+    "ffscout_json": "data/predictions/2026-27/selectable_pool/ffscout_team_news.json",
+    "module_ffs": "src/live/ffscout_team_news.py",
+    "module_pool": "src/models/selectable_pool.py",
+    "tests": "tests/test_ffscout_selectable_pool.py"
   },
-  "notes": "Leakage-free screen of team-level GF/GA predictors for pseudo-match FDR. Market attack/defend best for H=1; own expanding rates for H=5–8; opp roll3 GF/GA for unpriced fixture difficulty."
+  "notes": "Public FFScout team-news has predicted XI / Out / Doubts / Banned only (no nailed/firm labels). firm/nailed_on := XI − Out − Banned − Doubts; firm_selection := XI − Out/Banned per club. Selectable pool = firm ∩ expanding mean minutes > 60 (apps ≥ 2). Wired into season_climb_ft._gw_pool and live scorer build_pool via selectable_ids. Live rebuild: 180 selectable, 20 clubs, 0 unmatched."
 }

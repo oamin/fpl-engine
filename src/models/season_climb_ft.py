@@ -220,11 +220,20 @@ def _gw_pool(
     gw: int,
     owned: set[str],
     early_scores: pd.DataFrame | None = None,
+    selectable_ids: set[str] | None = None,
 ) -> pd.DataFrame:
-    """Eligible buy pool + owned rows (roster-filled when odds-join dropped them)."""
+    """Eligible buy pool + owned rows (roster-filled when odds-join dropped them).
+
+    When ``selectable_ids`` is set (FFScout firm ∩ expanding minutes > 60),
+    only those players remain buy-eligible. Owned players are always kept.
+    """
     pool = feat.loc[feat["gw"] == gw].copy()
     pool["player_id"] = pool["player_id"].astype(str)
     pool = pool.drop_duplicates("player_id", keep="first")
+    if selectable_ids is not None:
+        from src.models.selectable_pool import apply_selectable_pool
+
+        pool = apply_selectable_pool(pool, selectable_ids)
     keep = pool["eligible"].astype(bool) | pool["player_id"].isin(owned)
     pool = pool.loc[keep].copy()
 
@@ -1005,11 +1014,15 @@ def run_ft_season(
     shadow_structural: bool = False,
     structural_2tx: bool = False,
     chip_policy: Callable[..., tuple[str | None, int | None]] | None = None,
+    selectable_ids: set[str] | None = None,
 ) -> pd.DataFrame:
     """``chips`` maps a gameweek to one chip name. None and {} play nothing.
 
     ``opening`` is a 15-man squad already owned at the first gameweek.
     That week is scored with no transfers. Later weeks use the normal rule.
+
+    ``selectable_ids`` restricts buys to the FFScout firm ∩ minutes pool
+    (short- and long-horizon transfer search). Owned players stay.
 
     ``horizon_scores(gw, pool, gws)`` returns a step-score map for that
     deadline. The default builds that map from opening prices already on
@@ -1055,7 +1068,9 @@ def run_ft_season(
             if clubs and not clubs.get(int(gw)):
                 continue
             owned = state.ids() if state else set()
-            pool = _gw_pool(feat, roster, gw, owned, early)
+            pool = _gw_pool(
+                feat, roster, gw, owned, early, selectable_ids=selectable_ids
+            )
             if clubs:
                 pool = apply_fixture_tags(pool, int(gw), clubs)
             if pool["position"].nunique() < 4:

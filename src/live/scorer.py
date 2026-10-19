@@ -171,10 +171,14 @@ def build_pool(
     shares: pd.DataFrame,
     minutes: Mapping[str, float],
     owned: set[str],
+    selectable_ids: set[str] | None = None,
 ) -> pd.DataFrame:
     """Eligible buyers plus every owned id. A missing share is zero.
 
     ``minutes`` is the live map. Rolling minutes on ``shares`` are ignored.
+
+    When ``selectable_ids`` is set (FFScout firm ∩ expanding minutes > 60),
+    only those players are buy-eligible for short-/long-horizon picks.
     """
     share_rows = (
         shares.drop_duplicates("player_id", keep="first").set_index("player_id")
@@ -184,6 +188,7 @@ def build_pool(
     rows: list[dict[str, Any]] = []
     for person in roster.itertuples(index=False):
         pid = str(person.player_id)
+        bare = pid.split(":")[-1]
         if not share_rows.empty and pid in share_rows.index:
             src = share_rows.loc[pid]
             share_xg = float(src["share_xG"])
@@ -197,6 +202,10 @@ def build_pool(
             n_prior = 0
         xmi = float(minutes.get(pid, 0.0))
         eligible = n_prior >= MIN_HISTORY and xmi >= ELIGIBLE_XMI
+        if selectable_ids is not None:
+            eligible = eligible and (
+                bare in selectable_ids or pid in selectable_ids
+            )
         if not eligible and pid not in owned:
             continue
         rows.append(
@@ -588,7 +597,21 @@ def price_half(
     names = {int(row["id"]): str(row["name"]) for row in bootstrap["teams"]}
     shares = deadline_shares(logs, int(gw))
     roster = roster_from_bootstrap(bootstrap)
-    pool = build_pool(roster, shares, minutes, set(state.ids()))
+    selectable_ids: set[str] | None = None
+    try:
+        from src.models.selectable_pool import load_selectable_ids
+
+        pool_path = (
+            Path(__file__).resolve().parents[2]
+            / "data/predictions/2026-27/selectable_pool/selectable_pool.json"
+        )
+        if pool_path.is_file():
+            selectable_ids = load_selectable_ids(pool_path)
+    except (OSError, ValueError, KeyError):
+        selectable_ids = None
+    pool = build_pool(
+        roster, shares, minutes, set(state.ids()), selectable_ids=selectable_ids
+    )
     pots = opening_pots_by_team_gw(odds, list(fixtures), names)
     end = half_end(int(gw))
     line_weeks = priced_gameweeks(fixtures, pots, names, int(gw), end, limit=3)

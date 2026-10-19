@@ -74,6 +74,12 @@ Chips were the following lever. The half-season planner is built, and the crowd 
 
 The build is now the live week. The historical formula is the inner call. Around it are the squad already owned, a minutes sheet, this week's line, and one chip decision for the half.
 
+## Done (recent)
+
+### FFScout selectable pool (2026-10-19)
+
+Public Fantasy Football Scout team-news is scraped for predicted XIs, Out, Doubts, and Banned. There are no published `nailed_on` / `firm` fields; we map firm/nailed := XI − Out − Banned − Doubts, and keep a per-club `firm_selection` (XI − Out/Banned). The selectable pool is firm players with expanding mean minutes > 60 (apps ≥ 2). Short- and long-horizon buys restrict to that pool via `selectable_ids` on `run_ft_season` / live `build_pool`. Snapshot: `data/predictions/2026-27/selectable_pool/`; report: `reports/selectable_pool_ffscout.md`.
+
 ## Next
 
 `src/live/minutes_llm.py` is the minutes model. One completion covers the owned fifteen and every player who is doubtful, injured, suspended, unavailable, or given a chance below 100. Last observed minutes are context. A question, a missing id, minutes outside 0 to 90, or minutes above 0 for someone who cannot play writes no file. The scorer is not called from that module.
