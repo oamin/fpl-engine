@@ -7,10 +7,14 @@ import unittest
 from src.models.season_climb_budget import BUDGET, MAX_PER_CLUB, SQUAD_QUOTA
 from src.models.season_climb_ft import HIT_COST, MAX_FT, advance_ft, sell_price
 from src.rules.fpl_2026 import (
+    ASSISTANT_MANAGER_POSITION,
     BUDGET_TENTHS,
     OFFICIAL_FORMATIONS,
     ChipWallet,
     captain_extra_points,
+    drop_assistant_managers,
+    is_assistant_manager_position,
+    normalize_position,
     validate_chip_map,
     bonus_points,
     cbi_bps,
@@ -188,6 +192,26 @@ class RulesTest(unittest.TestCase):
             bonus_points({"a": 10, "b": 10, "c": 10, "d": 4}),
             {"a": 3, "b": 3, "c": 3},
         )
+
+    def test_assistant_managers_dropped_not_mapped_to_mid(self) -> None:
+        import pandas as pd
+
+        self.assertEqual(ASSISTANT_MANAGER_POSITION, "AM")
+        self.assertTrue(is_assistant_manager_position("AM"))
+        self.assertTrue(is_assistant_manager_position("am"))
+        self.assertFalse(is_assistant_manager_position("MID"))
+        with self.assertRaises(ValueError):
+            normalize_position("AM")
+        frame = pd.DataFrame(
+            {
+                "position": ["MID", "AM", "GKP", "am"],
+                "name": ["Saka", "Pep", "Raya", "Arteta"],
+                "minutes": [90, 0, 90, 0],
+            }
+        )
+        out = drop_assistant_managers(frame)
+        self.assertEqual(list(out["name"]), ["Saka", "Raya"])
+        self.assertEqual(normalize_position("GK"), "GKP")
 
 
 if __name__ == "__main__":

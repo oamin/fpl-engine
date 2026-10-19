@@ -97,8 +97,7 @@ def _load_merged_enriched(season: str) -> pd.DataFrame:
         key = str(p).strip().upper()
         if key in ("GK", "GKP"):
             return "GKP"
-        if key in ("AM", "MID"):  # 2024/25 Vaastav AM → MID
-            return "MID"
+        # AM (Assistant Manager) already dropped in load_merged.
         return normalize_position(key)
 
     out["position"] = out["position"].map(_pos)

@@ -2,7 +2,7 @@
 
 At decision week t (as-of, GW < t only):
   team_actual[g] = Σ player total_points for the club in GW g
-                   (exclude assistant managers: 0 minutes + pts > 0)
+                   (exclude Vaastav ``AM`` Assistant Managers)
   team_mu        = expanding mean of team_actual over g < t
   team_se        = sample SD / √n   (diagnostic only — not in FDR)
 
@@ -46,19 +46,12 @@ MIN_HISTORY = 2  # need ≥2 GWs for a sample SD
 SE_FLOOR = 0.5
 
 
-def _is_assistant_manager_row(df: pd.DataFrame) -> pd.Series:
-    """2024/25 Assistant Managers: 0 minutes but positive FPL points."""
-    minutes = pd.to_numeric(df.get("minutes"), errors="coerce").fillna(0.0)
-    pts = pd.to_numeric(df.get("total_points"), errors="coerce").fillna(0.0)
-    return (minutes <= 0) & (pts > 0)
-
-
 def _team_gw_actuals(merged: pd.DataFrame) -> pd.DataFrame:
-    """Panel: gw, team (norm), pts — managers stripped."""
-    df = merged.copy()
-    n_drop = int(_is_assistant_manager_row(df).sum())
-    if n_drop:
-        df = df.loc[~_is_assistant_manager_row(df)].copy()
+    """Panel: gw, team (norm), pts — Assistant Managers stripped upstream."""
+    from src.rules.fpl_2026 import drop_assistant_managers
+
+    df = drop_assistant_managers(merged.copy())
+    n_drop = int(len(merged) - len(df))
     df["gw"] = pd.to_numeric(df["GW"], errors="coerce").astype(int)
     df["team"] = df["team"].astype(str).map(norm_team)
     df["pts"] = pd.to_numeric(df["total_points"], errors="coerce").fillna(0.0)
@@ -283,7 +276,7 @@ def write_report(summary: dict[str, Any], path: Path, *, lead: int, depth: int) 
         "",
         "Form at decision GW **t** (GW < t only): "
         "`team_actual[g] = Σ player total_points` that GW "
-        "(**assistant managers stripped**: 0 minutes + pts > 0); "
+        "(**Assistant Managers stripped**: Vaastav ``position=AM``); "
         "**`team_mu` = expanding mean** of those GW totals. "
         "`team_se = SD/√n` kept as diagnostic only. "
         f"**Locked FDR:** `fdr = team_mu_own(t) − team_mu_opp(t)` on fixtures "
@@ -371,7 +364,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     summary = summarise(df)
     summary["defs"] = {
-        "team_actual": "Σ player total_points by club GW; strip 0-min + pts>0 (assistant managers)",
+        "team_actual": "Σ player total_points by club GW; strip Vaastav AM Assistant Managers",
         "team_mu": "expanding mean of team_actual for GW < t",
         "team_se": "sample SD / √n — diagnostic only",
         "fdr": "team_mu_own(t) - team_mu_opp(t)  [LOCKED raw μ]",

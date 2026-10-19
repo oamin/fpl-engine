@@ -265,7 +265,7 @@ def player_mc_log(
         week["m"] = pd.to_numeric(week["minutes"], errors="coerce").fillna(0.0)
         week["sigma_m"] = 0.0
         week["player_id"] = week["element"].astype(str)
-        # Appearance pool only (matches score_gameweek); drops Vaastav AM stubs.
+        # Appearance pool only (matches score_gameweek).
         week = week.loc[week["m"] > 0].copy()
         if week.empty:
             continue
