@@ -1,15 +1,12 @@
 {
   "updated": "2026-10-19",
-  "task": "ffscout_selectable_pool",
+  "task": "ffscout_selectable_pool_season_projection",
   "status": "done",
   "outputs": {
     "report": "reports/selectable_pool_ffscout.md",
     "pool_json": "data/predictions/2026-27/selectable_pool/selectable_pool.json",
-    "pool_csv": "data/predictions/2026-27/selectable_pool/selectable_pool.csv",
-    "ffscout_json": "data/predictions/2026-27/selectable_pool/ffscout_team_news.json",
-    "module_ffs": "src/live/ffscout_team_news.py",
     "module_pool": "src/models/selectable_pool.py",
     "tests": "tests/test_ffscout_selectable_pool.py"
   },
-  "notes": "Public FFScout team-news has predicted XI / Out / Doubts / Banned only (no nailed/firm labels). firm/nailed_on := XI − Out − Banned − Doubts; firm_selection := XI − Out/Banned per club. Selectable pool = firm ∩ expanding mean minutes > 60 (apps ≥ 2). Wired into season_climb_ft._gw_pool and live scorer build_pool via selectable_ids. Live rebuild: 180 selectable, 20 clubs, 0 unmatched."
+  "notes": "Selectable pool is a sticky full-season projection (scope=season, horizon=full_season): as-of firm ∩ minutes>60 is frozen and reused for every GW in short- and long-horizon picks. Live climb/scorer/whatif/benchmark load it once via use_season_selectable_pool / load_season_selectable_ids. Not next-GW-only."
 }

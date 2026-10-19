@@ -78,7 +78,7 @@ The build is now the live week. The historical formula is the inner call. Around
 
 ### FFScout selectable pool (2026-10-19)
 
-Public Fantasy Football Scout team-news is scraped for predicted XIs, Out, Doubts, and Banned. There are no published `nailed_on` / `firm` fields; we map firm/nailed := XI − Out − Banned − Doubts, and keep a per-club `firm_selection` (XI − Out/Banned). The selectable pool is firm players with expanding mean minutes > 60 (apps ≥ 2). Short- and long-horizon buys restrict to that pool via `selectable_ids` on `run_ft_season` / live `build_pool`. Snapshot: `data/predictions/2026-27/selectable_pool/`; report: `reports/selectable_pool_ffscout.md`.
+Public Fantasy Football Scout team-news is scraped for predicted XIs, Out, Doubts, and Banned. There are no published `nailed_on` / `firm` fields; we map firm/nailed := XI − Out − Banned − Doubts, and keep a per-club `firm_selection` (XI − Out/Banned). The selectable pool is firm players with expanding mean minutes > 60 (apps ≥ 2). That set is a **sticky full-season projection** (`scope=season`), not next-GW-only: the same frozen `selectable_ids` apply on every remaining GW in short- and long-horizon plans until a deliberate rebuild. Live climb / scorer / whatif / benchmark load it once. Snapshot: `data/predictions/2026-27/selectable_pool/`; report: `reports/selectable_pool_ffscout.md`.
 
 ## Next
 

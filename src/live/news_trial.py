@@ -97,10 +97,20 @@ def run() -> dict[str, Any]:
     published_trace: list[dict[str, Any]] = []
     tagged_trace: list[dict[str, Any]] = []
     published = run_ft_season(
-        feat, {"xp": "score_xp"}, list(GWS), roster=roster, trace=published_trace
+        feat,
+        {"xp": "score_xp"},
+        list(GWS),
+        roster=roster,
+        trace=published_trace,
+        use_season_selectable_pool=True,
     )
     trial = run_ft_season(
-        tagged, {"xp": "score_xp"}, list(GWS), roster=roster, trace=tagged_trace
+        tagged,
+        {"xp": "score_xp"},
+        list(GWS),
+        roster=roster,
+        trace=tagged_trace,
+        use_season_selectable_pool=True,
     )
     if set(published["gw"].astype(int)) != set(GWS) or set(trial["gw"].astype(int)) != set(GWS):
         raise RuntimeError("a climb did not finish five weeks")
