@@ -1,11 +1,11 @@
 {
   "updated": "2026-10-19",
-  "task": "multistage_xi_captain_ft",
-  "status": "done_item_1b",
+  "task": "multistage_minutes_overlay",
+  "status": "done_item_2",
   "outputs": {
-    "report": "reports/multistage_ft_path.md",
-    "freq": "data/predictions/2026-27/multistage_xi_captain_ft/multistage_xi_captain_ft_player_freq.csv",
-    "module": "src/models/multistage_mc_milp.py"
+    "report": "reports/multistage_minutes_overlay.md",
+    "module": "src/models/minutes_overlay.py",
+    "overlay_freq": "data/predictions/2026-27/multistage_ft_overlay/multistage_xi_captain_ft_overlay_player_freq.csv"
   },
-  "notes": "Path FT mode live. Mean 2.13 transfers / 0.67 hits per post-open snapshot. Haaland stick_rate 0.77, freq 0.64 (still ~#7). Item 1 complete; item 2 is minutes/role overlays."
+  "notes": "FPL availability overlay scales 19/180 pool players (4 zeroed). Doubtfuls drop in FT cascade; elite board barely moves. Pen role bump deferred. Item 3 next: match-band calibration."
 }

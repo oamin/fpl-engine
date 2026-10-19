@@ -82,6 +82,8 @@ The build is now the live week. The historical formula is the inner call. Around
 
 Long-horizon diagnostic: N coherent Monte Carlo strands sample match scorelines inside Opta λ bounds for GW(t+2:t+n), update club attack/concede rates along each strand, and at snapshot GWs solve the squad MILP on the season selectable pool. Player selection frequency across strands × snapshots is the stability / long-term investment signal. Module `src/models/multistage_mc_milp.py`; report `reports/multistage_mc_milp_trial.md`. Not a gated promotion; chips off.
 
+Captain objective (`xi_plus_captain`) and path FT/hit objective (`xi_plus_captain_ft`) landed as items 1a/1b. Item 2 — graded FPL availability overlay — scales `xmi`/shares/`exp_defcon_hit` by `chance_of_playing_*` / status (`src/models/minutes_overlay.py`). Default on for multistage CLI. On GW6 bootstrap: 19/180 scaled, 4 zeroed; doubtfuls drop in the FT cascade; Haaland/Saka barely move. Pen/set-piece role bump still deferred. See `reports/multistage_minutes_overlay.md`.
+
 ## Next
 
 `src/live/minutes_llm.py` is the minutes model. One completion covers the owned fifteen and every player who is doubtful, injured, suspended, unavailable, or given a chance below 100. Last observed minutes are context. A question, a missing id, minutes outside 0 to 90, or minutes above 0 for someone who cannot play writes no file. The scorer is not called from that module.

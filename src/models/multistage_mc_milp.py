@@ -28,6 +28,10 @@ Objective modes
 - ``xi_plus_captain_ft``: first snapshot free rebuild; later snapshots keep a
   path squad under FT/hit cost (``V = XI + captain − 4·hits``).
 
+Optional **minutes overlay** (``--minutes-overlay``): scale xmi/shares by FPL
+``chance_of_playing_*`` / status so injured or doubtful pool players are not
+full-weight. Graded — not a second hard filter.
+
 Share seeding is **off** in v1 (see module note below). Horizon-widening
 of bands is deferred to a later systematic screen. Chips off.
 Not a gated likelihood promotion.
@@ -56,6 +60,7 @@ from src.models.opta_gf_ga_horizon import (
     pots_from_season_gf_ga,
     rank_gf_ga_profile,
 )
+from src.models.minutes_overlay import apply_availability_overlay, overlay_summary
 from src.models.selectable_pool import DEFAULT_POOL_JSON, load_selectable_ids
 from src.models.xp_engine import DEFCON_THRESH, add_player_priors
 from src.teams import norm_team
@@ -965,6 +970,7 @@ def run_multistage_trial(
     start_offset: int = 2,
     snapshot_every: int = 1,
     objective: str = OBJECTIVE_SQUAD_SUM,
+    minutes_overlay: bool = True,
 ) -> dict[str, Any]:
     """Run N coherent strands and return frequency table + metadata."""
     if objective not in OBJECTIVES:
@@ -974,6 +980,10 @@ def run_multistage_trial(
     logs = pd.read_csv(logs_path or LOG_CSV)
     shares = deadline_share_frame(logs, before_gw=int(decision_gw))
     pool = selectable_candidate_frame(bootstrap, selectable, shares)
+    overlay_meta: dict[str, Any] = {"overlay": False, "n": int(len(pool))}
+    if minutes_overlay:
+        pool = apply_availability_overlay(pool, bootstrap, prefer_next=True)
+        overlay_meta = overlay_summary(pool)
     if len(pool) < 15:
         raise RuntimeError("selectable pool too small for MILP")
     n_with_share = int((pool["share_xG"] + pool["share_xA"]).gt(0).sum())
@@ -1023,9 +1033,12 @@ def run_multistage_trial(
         "n_selectable": int(len(pool)),
         "n_with_nonzero_share": n_with_share,
         "seed_shares": SEED_SHARES,
+        "minutes_overlay": bool(minutes_overlay),
+        "overlay": overlay_meta,
         "scoring": (
             "Opta match_prediction λ bands → sampled scenario pot; "
             "deadline add_player_priors shares/xmi/defcon × xp_on_pot (score_xp v2)"
+            + ("; FPL availability overlay on xmi/shares" if minutes_overlay else "")
         ),
         "seed": int(seed),
         "gamma": float(gamma),
@@ -1047,6 +1060,8 @@ def write_trial_outputs(result: dict[str, Any], *, out_dir: Path) -> dict[str, s
         stem = "multistage_xi_captain"
     else:
         stem = "multistage_mc_milp"
+    if result.get("minutes_overlay"):
+        stem = f"{stem}_overlay"
     json_path = out_dir / f"{stem}_trial.json"
     csv_path = out_dir / f"{stem}_player_freq.csv"
     report = ROOT / "reports" / f"{stem}_trial.md"
@@ -1073,6 +1088,8 @@ def write_trial_outputs(result: dict[str, Any], *, out_dir: Path) -> dict[str, s
         f"- Player xP: frozen deadline shares/xmi/defcon (`add_player_priors`) × "
         f"scenario pot via `xp_on_pot` (score_xp v2). Share seeding: "
         f"**{result.get('seed_shares')}**.",
+        f"- Minutes overlay: **{result.get('minutes_overlay')}** "
+        f"({result.get('overlay')}).",
         f"- Snapshots at GW {result['snapshot_gws']} → selectable-pool MILP "
         f"(`{obj}`).",
         f"- Solved squads: **{result['n_squads_solved']}** · selectable "
@@ -1147,6 +1164,12 @@ def main() -> None:
         default=OBJECTIVE_SQUAD_SUM,
         help="squad_sum = equal 15; xi_plus_captain = XI + captain double",
     )
+    p.add_argument(
+        "--minutes-overlay",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Scale xmi/shares by FPL chance_of_playing / status (default on)",
+    )
     args = p.parse_args()
     bootstrap = json.loads(args.bootstrap.read_text())
     fixtures = json.loads(args.fixtures.read_text())
@@ -1160,6 +1183,7 @@ def main() -> None:
         snapshot_every=args.snapshot_every,
         logs_path=args.logs,
         objective=args.objective,
+        minutes_overlay=bool(args.minutes_overlay),
     )
     paths = write_trial_outputs(result, out_dir=args.out)
     print(

@@ -7,6 +7,7 @@ Trial (diagnostic). Objective: **`xi_plus_captain_ft`**. Not a gated likelihood 
 - Decision GW **6**; roll fixtures GW8–19.
 - **6** coherent strands: each fixture samples λ from **Opta rank→GF/GA bands** (`match_prediction`, e.g. 2nd vs 20th), Poisson scoreline, path rate update.
 - Player xP: frozen deadline shares/xmi/defcon (`add_player_priors`) × scenario pot via `xp_on_pot` (score_xp v2). Share seeding: **False**.
+- Minutes overlay: **False** ({'overlay': False, 'n': 180}).
 - Snapshots at GW [8, 10, 12, 14, 16, 18] → selectable-pool MILP (`xi_plus_captain_ft`).
 - Solved squads: **36** · selectable **180** (170 with nonzero share) · seed 7.
 
