@@ -51,10 +51,6 @@ MIN_POOL = 40
 SCORER = numagent_xp.SCORE_NAME  # score_xp_v2
 
 
-def _clip(x: float, lo: float, hi: float) -> float:
-    return float(min(hi, max(lo, x)))
-
-
 def load_prices(season: str) -> pd.DataFrame:
     path = PROCESSED / f"score_xp_{season.replace('-', '_')}.csv"
     prices = pd.read_csv(
