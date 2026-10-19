@@ -5,7 +5,7 @@ Optimises a legal 15 + starting XI + captain to maximise
     Σ_i μ_i · start_i  +  Σ_i μ_i · captain_i
 
 No ownership tilt, SE, transfers, chips, or multi-week horizon.
-Does not modify ``score_xp_v2``. Does not replace the published ``score_xp`` climb.
+Does not modify ``score_xp_v2`` (engine primary; ``score_xp`` superseded).
 """
 
 from __future__ import annotations

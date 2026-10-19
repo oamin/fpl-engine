@@ -1,9 +1,7 @@
 # Strategiser — layered build plan
 
-`score_xp_v2` is the absolute scorer and is **not** modified here.  
+`score_xp_v2` is the engine primary scorer and is **not** modified here. (`score_xp` superseded 2026-10-19.)  
 **Governing rule:** maximising expected points overrides everything on the default (neutral) posture. Path variation GW1→38 is enough for percentile uniqueness; do not cut μ for ownership optics on the default objective.
-
-Published `score_xp` free-transfer climb stays the frozen protocol baseline.
 
 **Architecture class (locked intent):** model-based planning — world model → rolling-horizon MILP → chip calendar → small parameter search. Not RL policy-from-scratch. Learning = &lt;10 named knobs tuned under a pre-registered eval, not unconstrained transfer policies.
 
@@ -11,15 +9,15 @@ Published `score_xp` free-transfer climb stays the frozen protocol baseline.
 
 | Layer | Name | Status | In | Out until later |
 | ---: | --- | --- | --- | --- |
-| **1** | Single-week joint MILP | ✅ | 15 + XI + captain on absolute μ | transfers, chips, horizon |
-| **2** | EB shrink → μ_post | ✅ locked | Same MILP on μ_post (`mode=constant`) | η·SE / ownership penalties |
-| **3** | Transfers + hits | ✅ | Held 15 → this-deadline transfers, FT bank, −4 hits | chips, multi-week horizon |
-| **4** | Rolling horizon | pending | 4–6 week receding MILP + terminal value | chips |
-| **5** | Chip + FT foresight | screened | Beam **K=8** locked; vs L4 inconclusive — L4 stays default | play thresholds |
+| **1** | Single-week joint MILP | ✅ | 15 + XI + captain on absolute μ | — |
+| **2** | μ_post | ✅ locked `mode=none` | μ_post ≡ `score_xp_v2` (identity) | η·SE / ownership / constant-K |
+| **3** | Transfers + hits | ✅ | Held 15 → this-deadline transfers, FT bank, −4 hits | chips |
+| **4** | Rolling horizon | ✅ **default** | μ_post priced, BOOKIE_DEPTH=2, γ=1, hard stop | chips; beyond-t+2 form fills parked |
+| **5** | Chip + FT foresight | screened | Beam **K=8** locked; vs L4 covers 0 — **not promoted** | play thresholds |
 | **6** | Scenarios / risk | pending | Correlated draws; CVaR/upside; 3 postures | RL policy |
-| **7** | Param search + sandbox | pending | Knob search in world-model sim (CRN); held-out real validate | — |
+| **7** | Param search + sandbox | parked | Knob search stays deferred per protocol | — |
 
-**Scrapped:** ownership tilt and η·SE penalty in the objective (default posture).
+**Scrapped / parked:** ownership tilt; η·SE; constant-K shrink; L4 risk/chase/window/beyond-form; L5 as default. Index: `reports/LOCKED.md`.
 
 ---
 
@@ -28,9 +26,9 @@ Published `score_xp` free-transfer climb stays the frozen protocol baseline.
 ### Layer 1 — single-week MILP
 `src/strategy/layer1_week.py` · audit `reports/strategy_layer1_audit.md`
 
-### Layer 2 — μ_post shrinkage
-Protocol `strategy_layer2_shrinkage` (2026-10-14): `mode=constant`.  
-Credibility `reports/se_credibility.md`. Weekly rebuild sanity `reports/shrink_climb.md` (Δ covers 0; does not overturn lock).
+### Layer 2 — μ_post
+Protocol `strategy_layer2_shrinkage` (revised 2026-10-16): **`mode=none`** — μ_post ≡ `score_xp_v2`.  
+Constant-K historical screen frozen in `reports/se_credibility.md` / `reports/shrink_climb.md` (superseded for decisions).
 
 ---
 
@@ -80,9 +78,9 @@ lock — motivates Layer 4 horizon / hold discipline.
 - **Beyond-t+2 D adapt** (`reports/layer4_mupost_beyond_d_adapt.md`): as-of amp / amp·ρ^k; both lose to A (−2.58 / −1.86) → **park**.
 - **Team-form terminal** (`reports/layer4_mupost_terminal.md`): same H=3 + hold credit; T−A **−3.27/GW** → **park**. Beyond form stays out of the MILP.
 
-**Locked decision board:** A hard-stop (priced t:t+2). Beyond form = diagnostic colour only (`src/strategy/team_form_diagnostic.py`).
+**Locked decision board:** A hard-stop on priced **t:t+1** (`BOOKIE_DEPTH=2`). Beyond form = diagnostic only (`src/strategy/team_form_diagnostic.py`).
 
-**Next:** L5 chip re-screen on priced H≤3 (horizon-MILP beam). Beyond-t+2 boards/terminals parked.
+**Next:** live shadow of L4; L5 chips only under a new pre-registered arm. Beyond-t+2 boards/terminals parked.
 
 ---
 
@@ -141,7 +139,7 @@ Same-fixture stack vs diversify **+0.55** [+0.26, +0.86] — keep as a stack dia
 
 | Item | Note |
 | --- | --- |
-| Multi-week σ_model for SE_total | Improves K later; L2 stays `constant` until a dated screen beats it |
+| Multi-week σ_model for SE_total | Improves L6 later; L2 stays `mode=none` until a dated screen beats identity |
 | **Correlated draws (started)** | `src/markets/correlated_draws.py` — match λ shocks + Dirichlet shares; tests green. Feeds L6 / horizon risk. Report `reports/correlated_draws.md` |
 | LLM news → minutes schema | Live path only; never chooses transfers |
 

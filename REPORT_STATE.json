@@ -1,11 +1,12 @@
 {
-  "milestone": "numagent-gw07-pi-lock",
+  "milestone": "score-xp-v2-primary",
   "status": "complete",
-  "summary": "PI locked GW7 selection: C Haaland, VC Mbeumo, bench Verbruggen→Murillo→Khalaili→Mainoo, 1 FT Davis→Affengruber. Stored data/predictions/2026-27/gw07/numagent_lock.json with score_xp_v2 + share_se_pos_prior + L4 BOOKIE_DEPTH=2 γ=1, props off, xmi/odds/board hashes and git HEAD.",
+  "summary": "Promoted score_xp_v2 to engine primary scorer (protocol.primary_scorer, 2026-10-19). score_xp marked superseded for live/new work; kept as historical climb replay and gate baseline. Front docs, SUPERSEDED.md, and module docstrings updated.",
   "gemini": "",
   "artifacts": [
-    "data/predictions/2026-27/gw07/numagent_lock.json",
-    "reports/numagent_live_pick_gw07.md",
-    "reports/score_xp_v2_share_se_pos_prior.md"
+    "experiments/protocol.json",
+    "reports/LOCKED.md",
+    "reports/SUPERSEDED.md",
+    ".cursor/context.md"
   ]
 }

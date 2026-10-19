@@ -172,8 +172,8 @@ def run() -> dict[str, Any]:
         "- `data/processed/score_xp_v2_gate_intervals.json`",
         "- `data/plots/score_xp_v2_closed_dlog.png`",
         "",
-        f"`{SCORE_NAME}` does **not** replace published `score_xp` in climbs until "
-        "a separate decision says so.",
+        f"**Promotion (2026-10-19):** `{SCORE_NAME}` is the engine primary scorer "
+        "(`protocol.primary_scorer`). `score_xp` is superseded.",
         "",
     ]
 

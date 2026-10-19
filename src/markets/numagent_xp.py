@@ -1,7 +1,7 @@
-"""``score_xp_v2`` — Numagent 2.0 primary player-GW score assembler.
+"""``score_xp_v2`` — engine primary player-GW score assembler.
 
-Does **not** replace published ``score_xp`` (climbs / protocol comparisons).
-Spec: ``reports/numagent_2_0_method.md``.
+Supersedes ``score_xp`` (protocol ``primary_scorer``, 2026-10-19).
+Spec: ``reports/numagent_2_0_method.md`` · index: ``reports/LOCKED.md``.
 """
 
 from __future__ import annotations

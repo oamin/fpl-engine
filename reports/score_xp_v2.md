@@ -1,7 +1,7 @@
 # `score_xp_v2` — comprehensive report (current form)
 
-**Status:** locked as Numagent 2.0’s **primary** player-GW scorer (2026-10-13; GKP saves multinomial locked 2026-10-14).  
-**Does not replace** published `score_xp` on free-transfer climbs or protocol comparisons.  
+**Status:** engine **primary** player-GW scorer (locked 2026-10-13; primary 2026-10-19; GKP saves multinomial locked 2026-10-14).  
+**`score_xp` superseded** — historical climbs / gate baseline only (`reports/SUPERSEDED.md`).  
 **Assembler:** `src/markets/numagent_xp.py` (`SCORE_NAME = "score_xp_v2"`).  
 **Scoring constants:** `src/rules/fpl_2026.py` (never duplicated elsewhere).  
 **Shorter method lock:** `reports/numagent_2_0_method.md`.  
@@ -328,7 +328,7 @@ Report: `reports/score_xp_v2_gate.md`.
 - Pool: minutes > 60, FD opening AH+OU, join to closed `score_xp` (`n_prior ≥ 3`), GW 5–38.
 - Minutes oracle; σ_m = 0; Gaussian log-score σ = 3.
 - **Δlog (`score_xp_v2` − `score_xp`):** **+0.0531** [+0.0453, +0.0609] over four seasons (27 568 player-fixtures).
-- Interval stays above zero. **Does not** replace published `score_xp`.
+- Interval stays above zero. **Promotion 2026-10-19:** this gate makes `score_xp_v2` primary; `score_xp` superseded.
 
 | Season | Mean Δlog | n | MAE v2 | MAE score_xp |
 | --- | ---: | ---: | ---: | ---: |
@@ -464,7 +464,7 @@ CS/GC/saves are structurally 0. Goals dominate predicted attack mass (~36% of FW
 - FDR- or λ_A-driven DefCon  
 - BPS-residual percentiles / decile maps / fixture top-3 MC inside xBonus  
 - Own goals, pens  
-- Replacing published `score_xp` on climbs without a separate decision  
+- Extending superseded `score_xp` climbs for new claims (replay-only)  
 - Fitting anything on frozen 2026/27 holdout  
 
 **Not out on live (wanted):** BTTS in the scoreline fit when priced; OU totals other than 2.5; AH lines beyond the usual ±0.5/±1 band. Historical FD screens stay AH+OU2.5, BTTS weight 0.

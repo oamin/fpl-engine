@@ -2,7 +2,15 @@
 
 Cursor chooses the next pre-registered comparison. The PI is not asked to pick. A result needs the as-of audit and paired intervals on all four closed seasons. One comparison at a time.
 
-## Procedure, locked 2026-10-07
+**Live stack is locked** — see `.cursor/context.md` and `reports/LOCKED.md`. Engine primary scorer is `score_xp_v2`; `score_xp` is superseded. This file is the **park log** and deferred ideas. Do not treat GW6 `ep_next` freeze notes or stage climbs below as the current path.
+
+## Active / next (sparse)
+
+- Live shadow of locked L4 + `score_xp_v2` (no new strategiser arm without a protocol entry).
+- Layer 5 chips only if a pre-registered likelihood / priced-path comparison asks.
+- Objective-function search stays parked.
+
+## Procedure, locked 2026-10-07 (historical freeze notes)
 
 The +34 season-total bar is retired. Stages 14–34, and the later climbs on that pool, are superseded. See `reports/SUPERSEDED.md`. Sharpe, ownership, and churn stay parked. Stage 13 (xP trailed expected points at horizon 8) and stage 18 (ridge tied xP under budget, −2) stay set aside.
 

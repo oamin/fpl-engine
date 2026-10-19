@@ -1,12 +1,13 @@
-"""One-shot Numagent 2.0 live pick: xmi + book pots (+ props) → L3 on held 15.
+"""One-shot Numagent live pick: xmi + book pots → L4 on held 15.
 
-Offline-friendly defaults (snapshot odds). Optional live Odds API pull is
-quota-aware (region=us only)::
+Primary scorer is ``score_xp_v2`` (``score_xp`` superseded). Offline-friendly
+defaults (snapshot odds). Optional live Odds API pull is quota-aware
+(region=us only)::
 
   python -m src.live.numagent_live_pick --gw 7
   python -m src.live.numagent_live_pick --gw 7 --fetch-odds
 
-Does not touch HOLDOUT_FREEZE or published score_xp climbs.
+Does not touch HOLDOUT_FREEZE.
 """
 
 from __future__ import annotations

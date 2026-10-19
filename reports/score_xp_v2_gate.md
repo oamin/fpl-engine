@@ -44,4 +44,4 @@ The interval stays **above zero**.
 - `data/processed/score_xp_v2_gate_intervals.json`
 - `data/plots/score_xp_v2_closed_dlog.png`
 
-`score_xp_v2` is Numagent 2.0’s primary scorer. It does **not** replace published `score_xp` in climbs or protocol comparisons.
+**Promotion (2026-10-19):** `score_xp_v2` is the engine primary scorer (`protocol.primary_scorer`). `score_xp` is superseded — this gate is the evidence. Historical climb modules that still read `score_xp` are replay-only.

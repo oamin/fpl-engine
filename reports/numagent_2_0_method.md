@@ -1,6 +1,8 @@
-# score_xp_v2 — Numagent 2.0 primary scorer
+# score_xp_v2 — engine primary scorer
 
-Locked: 2026-10-13. **`score_xp_v2` is Numagent 2.0’s primary player-GW score.** It does **not** replace published `score_xp` (free-transfer climbs and protocol comparisons stay on `score_xp`). This is the expected-points construction from market scorelines and appearance rates.
+Locked: 2026-10-13. **Promoted as engine primary 2026-10-19** (`protocol.primary_scorer`). **`score_xp` is superseded.** This is the expected-points construction from market scorelines and appearance rates.
+
+**Stack index:** [`LOCKED.md`](LOCKED.md) · live entry: `python -m src.live.numagent_live_pick` · strategiser default: L4 priced γ=1.
 
 **Comprehensive reference** (every component as implemented, position matrix, closed/pilot diagnostics): [`reports/score_xp_v2.md`](score_xp_v2.md).
 
@@ -247,7 +249,7 @@ GKP only; 0 for other positions and for `m ≤ 0`. Level prior (opponent/xGC not
 xP = xp_appear + xp_goals + xp_assists + xp_cs + xp_gc + xp_defcon + xp_bonus + xp_cards + xp_saves
 ```
 
-Appearance from the minutes oracle: `1{m_i > 0} + 1{m_i ≥ 60}`. If `m_i ≤ 0`, all terms are 0. Own goals and pens stay at 0. `score_xp_v2` is Numagent’s primary scorer; published climb `score_xp` is unchanged.
+Appearance from the minutes oracle: `1{m_i > 0} + 1{m_i ≥ 60}`. If `m_i ≤ 0`, all terms are 0. Own goals and pens stay at 0. `score_xp_v2` is the engine primary scorer; `score_xp` is superseded.
 
 ## Explicitly out
 
@@ -255,7 +257,7 @@ Appearance from the minutes oracle: `1{m_i > 0} + 1{m_i ≥ 60}`. If `m_i ≤ 0`
 - Season-unconditional goal shares that dilute injury blanks into the rate.
 - Allocating attack by `minutes / team_minutes`.
 - Matching historical FD openings to Odds API BTTS (not available on free historical). **Live** BTTS is wanted when priced — see scoreline §1.
-- Replacing published `score_xp` on climbs without a separate decision.
+- Extending superseded `score_xp` climbs for new claims (replay-only).
 - Linear `E[saves]/3` for GKP saves (stepped multinomial `E[⌊saves/3⌋]` is locked).
 - Opponent / xGC-driven saves rates (level expanding multinomial is the locked path for now).
 - Driving DefCon from FDR or λ_A / xGC (expanding residual `δ=μ−τ` with `σ` is the locked path).

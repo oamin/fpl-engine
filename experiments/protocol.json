@@ -18,6 +18,19 @@
   "comparisons": [
     ["score_xp", "score_exp_points"]
   ],
+  "comparisons_note": "Legacy procedure pair only. Engine primary scorer is score_xp_v2 (primary_scorer); score_xp is superseded.",
+  "primary_scorer": {
+    "locked": "2026-10-19",
+    "column": "score_xp_v2",
+    "assembler": "src/markets/numagent_xp.py",
+    "method": "reports/numagent_2_0_method.md",
+    "gate": "reports/score_xp_v2_gate.md",
+    "supersedes": "score_xp",
+    "score_xp_status": "superseded — kept for historical climb replay and as the gate baseline that lost to v2; do not use for new live work or new screens except as a named baseline",
+    "live_path": "src/live/numagent_live_pick.py",
+    "mu_post": "identity attach of score_xp_v2 (strategy_layer2_shrinkage mode=none)",
+    "any_later_change": "dated protocol update required"
+  },
   "score_xp_v2_share_history": {
     "locked": "2026-10-16",
     "rule": "player rG/rA and compositional shares for mu_post (= score_xp_v2) use the scored season only, GW < t",
@@ -37,14 +50,17 @@
   },
   "score_xp_v2_live_props": {
     "locked": "2026-10-16",
-    "revised": "lift-only — anytime is P(G≥1), not E[G]; do not cut baseline E[G]>1",
-    "role": "live GW goal mass: AH/OU/BTTS pot + anytime props as lift with team-pot cap",
+    "revised": "2026-10-17 — live default props OFF (GW7 PI lock); lift-only formula kept for optional --with-props",
+    "role": "optional live GW anytime overlay; default path is AH/OU/BTTS pots only",
+    "live_default": false,
+    "live_default_reason": "pot-cap / anytime lift distorted Chelsea attack shares (Rogers μ); PI lock props off",
     "base": "mu_post ≡ score_xp_v2 from Dixon–Coles M (AH+OU+BTTS when priced); G_team = α_G × xG_M",
-    "props": "anytime Yes → λ=−log(1−p); target max(baseline_i, λ) for covered m>0 (lift only; never cut baseline E[G]>λ)",
+    "props": "when enabled: anytime Yes → λ=−log(1−p); target max(baseline_i, λ) for covered m>0 (lift only; never cut baseline E[G]>λ)",
     "funding": "lift mass taken from uncovered baseline first; only then global scale if Σ>G_team",
     "cap": "Σ E[G]_i = G_team always",
     "assists": "no prop overlay",
     "helper": "src/markets/prop_shares.rescale_goal_shares via score_team_side(prop_p_by_player=…)",
+    "entrypoint": "src/live/numagent_live_pick.py use_props=False; opt-in --with-props",
     "any_later_change": "dated protocol update required"
   },
   "score_xp_v2_screen": {
@@ -59,8 +75,9 @@
     "metric": "gaussian_log_score on point mean",
     "se_role": "stability / reliability of the assembled mean, not predictive sigma for points",
     "locked": "2026-10-13",
-    "replaces_published_score_xp": false,
-    "role": "Numagent 2.0 primary scorer; published climb score remains score_xp"
+    "promoted_as_primary": "2026-10-19",
+    "replaces_published_score_xp": true,
+    "role": "engine primary scorer; score_xp superseded (gate Δ +0.0531 vs score_xp)"
   },
   "score_xp_v2_share_se_shrink": {
     "locked": "2026-10-16",
@@ -136,7 +153,7 @@
       "hi": -0.000407,
       "covers_zero": false,
       "vs_legacy_mean": -0.010316,
-      "verdict": "park_clear_lose — default share_se_shrink=False (raw shares); all_minutes prior also parked (DEF/GK leak)"
+      "verdict": "park_clear_lose vs raw; all_minutes also parked (DEF/GK leak). Superseded for defaults by score_xp_v2_share_se_pos_prior (promoted same day)."
     },
     "any_later_change": "dated protocol update required"
   },
@@ -1040,23 +1057,16 @@
     "winner": null
   },
   "live_primary": {
-    "from_gw": 6,
-    "primary": "ep_next",
-    "shadow": "score_xp",
-    "historical_score": "score_xp",
-    "min_weeks": 20,
-    "covers_zero": "undetermined",
-    "continue_to_gw": 38,
-    "wired": true,
-    "decision_capture": "t1_same_stamp",
-    "fallback": "none",
-    "gw6_chip": "logged_judgement",
-    "counts_toward_chip_rule": false,
+    "locked": "2026-10-19",
+    "from_gw": 7,
+    "primary": "score_xp_v2",
+    "shadow": null,
+    "historical_score": "score_xp_v2",
+    "supersedes_ep_next_freeze": "GW6 used captured ep_next as decision file (archived); Numagent live path from GW7 is score_xp_v2 via numagent_live_pick",
     "injury_flags": "minutes_file_zero_stays_zero",
     "manual_override": "logged_with_reason",
     "choose_after_seeing_scores": false,
-    "review_gw": 26,
-    "winner": null
+    "winner": "score_xp_v2"
   },
   "gw6_wildcard_judgement": {
     "intent": "wildcard",
