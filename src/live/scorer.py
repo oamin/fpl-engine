@@ -177,8 +177,9 @@ def build_pool(
 
     ``minutes`` is the live map. Rolling minutes on ``shares`` are ignored.
 
-    When ``selectable_ids`` is set (FFScout firm ∩ expanding minutes > 60),
-    only those players are buy-eligible for short-/long-horizon picks.
+    When ``selectable_ids`` is set (season-long FFScout firm ∩ minutes > 60),
+    only those players are buy-eligible for every week in the half-plan
+    horizon — the same frozen season projection, not a next-GW-only cut.
     """
     share_rows = (
         shares.drop_duplicates("player_id", keep="first").set_index("player_id")
@@ -597,18 +598,10 @@ def price_half(
     names = {int(row["id"]): str(row["name"]) for row in bootstrap["teams"]}
     shares = deadline_shares(logs, int(gw))
     roster = roster_from_bootstrap(bootstrap)
-    selectable_ids: set[str] | None = None
-    try:
-        from src.models.selectable_pool import load_selectable_ids
+    from src.models.selectable_pool import load_season_selectable_ids
 
-        pool_path = (
-            Path(__file__).resolve().parents[2]
-            / "data/predictions/2026-27/selectable_pool/selectable_pool.json"
-        )
-        if pool_path.is_file():
-            selectable_ids = load_selectable_ids(pool_path)
-    except (OSError, ValueError, KeyError):
-        selectable_ids = None
+    # Sticky full-season projection: one id set for every week in the half.
+    selectable_ids = load_season_selectable_ids(missing_ok=True)
     pool = build_pool(
         roster, shares, minutes, set(state.ids()), selectable_ids=selectable_ids
     )

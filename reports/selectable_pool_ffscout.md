@@ -1,4 +1,11 @@
-# Selectable pool — expanding minutes + FFScout firm
+# Season selectable pool — expanding minutes + FFScout firm
+
+## Season projection
+
+This pool is **not** next-gameweek-only. The as-of firm ∩ minutes cut is a **sticky full-season projection**: the same `selectable_ids` are the only buy candidates for every remaining GW in short-horizon and long-horizon squad selection. Plans do not re-scrape FFScout or re-gate minutes per future week. A deliberate rebuild refreshes the projection.
+
+- scope: `season` · season: `2026-27`
+- sticky: `True` · horizon: `full_season`
 
 ## FFScout availability
 
@@ -87,7 +94,7 @@ Fetched: `2026-10-19T09:39:02.415482+00:00` · clubs with firm XI match: **20** 
 
 ## Use
 
-Short- and long-horizon squad selection should restrict candidates to `selectable_ids` in `selectable_pool.json`.
+Live climb / half-plan / deadline paths load this season projection once and apply the same `selectable_ids` on every gameweek in the horizon. Owned players outside the pool may still be held; they are not buyable.
 
 ```bash
 PYTHONPATH=. python3 -m src.models.selectable_pool

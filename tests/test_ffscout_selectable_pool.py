@@ -7,7 +7,11 @@ import unittest
 import pandas as pd
 
 from src.live.ffscout_team_news import _norm_player, match_ffs_name_to_fpl, parse_team_news
-from src.models.selectable_pool import apply_selectable_pool, build_selectable_pool
+from src.models.selectable_pool import (
+    apply_selectable_pool,
+    build_selectable_pool,
+    load_season_selectable_ids,
+)
 
 
 class NormPlayerTest(unittest.TestCase):
@@ -194,6 +198,17 @@ class SelectablePoolFilterTest(unittest.TestCase):
         firm_ids = {str(p["player_id"]) for p in result["clubs"][0]["firm_players"]}
         self.assertEqual(firm_ids, {"1", "15"})
         self.assertIn("15", result["clubs"][0]["firm_selection_ids"])
+        self.assertEqual(result["scope"], "season")
+        self.assertTrue(result["projection"]["sticky"])
+        self.assertEqual(result["projection"]["horizon"], "full_season")
+
+    def test_season_load_missing_ok(self) -> None:
+        self.assertIsNone(
+            load_season_selectable_ids(
+                path=__import__("pathlib").Path("/tmp/no_such_season_pool.json"),
+                missing_ok=True,
+            )
+        )
 
 
 if __name__ == "__main__":

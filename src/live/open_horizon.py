@@ -91,6 +91,7 @@ def run() -> dict[str, Any]:
         roster=roster,
         trace=published_trace,
         opening=opening,
+        use_season_selectable_pool=True,
     )
     open_trace: list[dict[str, Any]] = []
     opened = run_ft_season(
@@ -102,6 +103,7 @@ def run() -> dict[str, Any]:
         opening=opening,
         horizon_scores=lookup,
         method_suffix="_open_h3",
+        use_season_selectable_pool=True,
     )
     gw3 = feat.loc[
         (feat["gw"] == 3) & feat["player_name"].astype(str).str.contains("João Pedro")

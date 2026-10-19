@@ -1,4 +1,4 @@
-"""Selectable player pool for short- and long-horizon squad picks.
+"""Season-long selectable player pool for short- and long-horizon squad picks.
 
 Filters (all required unless noted):
 
@@ -10,8 +10,14 @@ Filters (all required unless noted):
    when some XI names fail the minutes cut; only players passing (1)+(2) enter
    the selectable pool used by the solver / horizon.
 
-The pool is the only set that short- and long-horizon selection should
-consider.
+Season projection (not next-GW only)
+------------------------------------
+The built ``selectable_ids`` set is a **sticky full-season projection**: the
+as-of firm ∩ minutes cut is treated as the candidate universe for **every**
+remaining gameweek this season. Short-horizon (1–3 GW) and long-horizon
+(half / full season) squad selection reuse the same frozen id list; they do
+**not** re-scrape FFScout or re-gate minutes per future gameweek inside a
+plan. Refreshing the snapshot replaces the season projection deliberately.
 """
 
 from __future__ import annotations
@@ -30,6 +36,9 @@ from src.live.ffscout_team_news import (
 from src.teams import norm_team
 
 ROOT = Path(__file__).resolve().parents[2]
+SEASON = "2026-27"
+DEFAULT_POOL_DIR = ROOT / "data" / "predictions" / SEASON / "selectable_pool"
+DEFAULT_POOL_JSON = DEFAULT_POOL_DIR / "selectable_pool.json"
 POS_MAP = {1: "GKP", 2: "DEF", 3: "MID", 4: "FWD"}
 MIN_EXPANDING_MINUTES = 60.0
 MIN_APPS = 2
@@ -226,6 +235,19 @@ def build_selectable_pool(
     )
 
     return {
+        "scope": "season",
+        "season": SEASON,
+        "projection": {
+            "horizon": "full_season",
+            "sticky": True,
+            "as_of_only": True,
+            "meaning": (
+                "As-of firm ∩ expanding minutes > 60 is the projected "
+                "selectable universe for every remaining GW this season. "
+                "Short- and long-horizon plans reuse this frozen id set; "
+                "they do not re-filter firmness or minutes per future GW."
+            ),
+        },
         "rules": {
             "min_expanding_minutes": min_minutes,
             "min_apps": min_apps,
@@ -254,10 +276,24 @@ def build_selectable_pool(
 
 
 def load_selectable_ids(path: Path | None = None) -> set[str]:
-    """Load ``selectable_ids`` from a pool JSON (default live snapshot)."""
-    p = path or (ROOT / "data/predictions/2026-27/selectable_pool/selectable_pool.json")
+    """Load ``selectable_ids`` from the season pool JSON."""
+    p = path or DEFAULT_POOL_JSON
     raw = json.loads(p.read_text())
     return {str(x) for x in raw.get("selectable_ids") or []}
+
+
+def load_season_selectable_ids(
+    path: Path | None = None,
+    *,
+    missing_ok: bool = True,
+) -> set[str] | None:
+    """Load the sticky season projection, or ``None`` if absent and allowed."""
+    p = path or DEFAULT_POOL_JSON
+    if not p.is_file():
+        if missing_ok:
+            return None
+        raise FileNotFoundError(p)
+    return load_selectable_ids(p)
 
 
 def apply_selectable_pool(
@@ -267,11 +303,10 @@ def apply_selectable_pool(
     id_col: str = "player_id",
     eligible_col: str = "eligible",
 ) -> Any:
-    """Restrict buy eligibility to the FFScout+minutes pool.
+    """Restrict buy eligibility to the season-long FFScout+minutes pool.
 
+    The same id set is applied on every gameweek in a climb or half-plan.
     Owned players are kept by the climber's ``_gw_pool`` (eligible | owned).
-    Players outside the pool are marked ``eligible=False`` so short- and
-    long-horizon transfer search will not buy them.
     """
     if selectable_ids is None:
         return feat
@@ -318,8 +353,20 @@ def write_pool_outputs(
         for row in result["pool"]:
             w.writerow(row)
 
+    proj = result.get("projection") or {}
     lines = [
-        "# Selectable pool — expanding minutes + FFScout firm",
+        "# Season selectable pool — expanding minutes + FFScout firm",
+        "",
+        "## Season projection",
+        "",
+        "This pool is **not** next-gameweek-only. The as-of firm ∩ minutes cut is "
+        "a **sticky full-season projection**: the same `selectable_ids` are the "
+        "only buy candidates for every remaining GW in short-horizon and "
+        "long-horizon squad selection. Plans do not re-scrape FFScout or re-gate "
+        "minutes per future week. A deliberate rebuild refreshes the projection.",
+        "",
+        f"- scope: `{result.get('scope')}` · season: `{result.get('season')}`",
+        f"- sticky: `{proj.get('sticky')}` · horizon: `{proj.get('horizon')}`",
         "",
         "## FFScout availability",
         "",
@@ -378,8 +425,9 @@ def write_pool_outputs(
         "",
         "## Use",
         "",
-        "Short- and long-horizon squad selection should restrict candidates to "
-        "`selectable_ids` in `selectable_pool.json`.",
+        "Live climb / half-plan / deadline paths load this season projection once "
+        "and apply the same `selectable_ids` on every gameweek in the horizon. "
+        "Owned players outside the pool may still be held; they are not buyable.",
         "",
         "```bash",
         "PYTHONPATH=. python3 -m src.models.selectable_pool",

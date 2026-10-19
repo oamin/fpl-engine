@@ -211,7 +211,15 @@ def score_news_pool(
     scores = scored.step_scores.get(int(gw)) or {}
     shares = deadline_shares(logs, int(gw))
     roster = roster_from_bootstrap(boot)
-    pool = build_pool(roster, shares, minutes, set(state.ids()))
+    from src.models.selectable_pool import load_season_selectable_ids
+
+    pool = build_pool(
+        roster,
+        shares,
+        minutes,
+        set(state.ids()),
+        selectable_ids=load_season_selectable_ids(missing_ok=True),
+    )
     return pool, {str(pid): float(score) for pid, score in scores.items()}
 
 

@@ -304,7 +304,15 @@ def build(
     names = team_names(bootstrap)
     shares = deadline_shares(logs, int(gw))
     roster = roster_from_bootstrap(bootstrap)
-    pool = build_pool(roster, shares, minute_map, set(state.ids()))
+    from src.models.selectable_pool import load_season_selectable_ids
+
+    pool = build_pool(
+        roster,
+        shares,
+        minute_map,
+        set(state.ids()),
+        selectable_ids=load_season_selectable_ids(missing_ok=True),
+    )
     clubs = clubs_from_fixtures(fixtures, names, int(gw), int(gw) + 1)
     search = visible_weeks(line_weeks, scored.step_scores, clubs, set(pool["player_id"].astype(str)))
     if any(week not in line_weeks for week in search["future_gws"]):

@@ -354,7 +354,12 @@ def run() -> dict[str, Any]:
 
     trace: list[dict[str, Any]] = []
     weekly = run_ft_season(
-        feat, {"xp": "score_xp"}, list(GWS), roster=roster, trace=trace
+        feat,
+        {"xp": "score_xp"},
+        list(GWS),
+        roster=roster,
+        trace=trace,
+        use_season_selectable_pool=True,
     )
     if weekly.empty or set(weekly["gw"]) != set(GWS):
         raise RuntimeError(
@@ -381,6 +386,7 @@ def run() -> dict[str, Any]:
         roster=roster,
         trace=evolved_trace,
         opening=opening,
+        use_season_selectable_pool=True,
     )
     if evolved.empty or set(evolved["gw"].astype(int)) != set(GWS):
         raise RuntimeError(f"Opening-squad climb did not finish GW1–5 (rows={len(evolved)})")

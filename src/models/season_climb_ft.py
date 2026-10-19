@@ -224,8 +224,10 @@ def _gw_pool(
 ) -> pd.DataFrame:
     """Eligible buy pool + owned rows (roster-filled when odds-join dropped them).
 
-    When ``selectable_ids`` is set (FFScout firm ∩ expanding minutes > 60),
-    only those players remain buy-eligible. Owned players are always kept.
+    When ``selectable_ids`` is set (season-long FFScout firm ∩ minutes > 60),
+    that **same** frozen set is applied on this gameweek. The climber loads
+    the set once for the season; it does not re-filter per future GW.
+    Owned players are always kept.
     """
     pool = feat.loc[feat["gw"] == gw].copy()
     pool["player_id"] = pool["player_id"].astype(str)
@@ -1015,14 +1017,17 @@ def run_ft_season(
     structural_2tx: bool = False,
     chip_policy: Callable[..., tuple[str | None, int | None]] | None = None,
     selectable_ids: set[str] | None = None,
+    use_season_selectable_pool: bool = False,
 ) -> pd.DataFrame:
     """``chips`` maps a gameweek to one chip name. None and {} play nothing.
 
     ``opening`` is a 15-man squad already owned at the first gameweek.
     That week is scored with no transfers. Later weeks use the normal rule.
 
-    ``selectable_ids`` restricts buys to the FFScout firm ∩ minutes pool
-    (short- and long-horizon transfer search). Owned players stay.
+    ``selectable_ids`` restricts buys to the season-long FFScout firm ∩
+    minutes projection (same frozen set on every GW in the climb). Owned
+    players stay. ``use_season_selectable_pool`` loads that projection from
+    disk when ``selectable_ids`` is omitted (live 2026/27 paths).
 
     ``horizon_scores(gw, pool, gws)`` returns a step-score map for that
     deadline. The default builds that map from opening prices already on
@@ -1035,6 +1040,12 @@ def run_ft_season(
     """
     if chip_policy is not None and chips:
         raise RuntimeError("a chip policy replaces the week map")
+    if selectable_ids is None and use_season_selectable_pool:
+        from src.models.selectable_pool import load_season_selectable_ids
+
+        selectable_ids = load_season_selectable_ids(missing_ok=True)
+    # Freeze once: every GW in this climb reuses the same season projection.
+    season_pool_ids = set(selectable_ids) if selectable_ids is not None else None
     rows: list[dict[str, Any]] = []
     plan = {} if chip_policy is not None else validate_chip_map(chips)
     if roster is None:
@@ -1069,7 +1080,7 @@ def run_ft_season(
                 continue
             owned = state.ids() if state else set()
             pool = _gw_pool(
-                feat, roster, gw, owned, early, selectable_ids=selectable_ids
+                feat, roster, gw, owned, early, selectable_ids=season_pool_ids
             )
             if clubs:
                 pool = apply_fixture_tags(pool, int(gw), clubs)

@@ -1,4 +1,12 @@
 {
+  "scope": "season",
+  "season": "2026-27",
+  "projection": {
+    "horizon": "full_season",
+    "sticky": true,
+    "as_of_only": true,
+    "meaning": "As-of firm \u2229 expanding minutes > 60 is the projected selectable universe for every remaining GW this season. Short- and long-horizon plans reuse this frozen id set; they do not re-filter firmness or minutes per future GW."
+  },
   "rules": {
     "min_expanding_minutes": 60.0,
     "min_apps": 2,

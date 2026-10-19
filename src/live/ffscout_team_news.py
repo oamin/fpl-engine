@@ -21,6 +21,10 @@ Mapping used by the selectable pool
   still appear here as lower-conviction starters — pool eligibility still
   requires the firm/nailed flag above).
 
+The resulting firm set is projected as **sticky for the full season** (not
+next-GW only): horizon plans reuse the frozen selectable ids until a
+deliberate pool rebuild.
+
 YouTube / RSS mentions of FFScout in the string-agent trawl are titles only;
 they do not replace this page.
 """
