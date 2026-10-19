@@ -74,6 +74,10 @@ Chips were the following lever. The half-season planner is built, and the crowd 
 
 The build is now the live week. The historical formula is the inner call. Around it are the squad already owned, a minutes sheet, this week's line, and one chip decision for the half.
 
+### Multistage MC + MILP trial (2026-10-19)
+
+Long-horizon diagnostic: N coherent Monte Carlo strands sample match scorelines inside Opta λ bounds for GW(t+2:t+n), update club attack/concede rates along each strand, and at snapshot GWs solve the squad MILP on the season selectable pool. Player selection frequency across strands × snapshots is the stability / long-term investment signal. Module `src/models/multistage_mc_milp.py`; report `reports/multistage_mc_milp_trial.md`. Not a gated promotion; chips off.
+
 ## Next
 
 `src/live/minutes_llm.py` is the minutes model. One completion covers the owned fifteen and every player who is doubtful, injured, suspended, unavailable, or given a chance below 100. Last observed minutes are context. A question, a missing id, minutes outside 0 to 90, or minutes above 0 for someone who cannot play writes no file. The scorer is not called from that module.

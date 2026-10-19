@@ -299,3 +299,7 @@ Rejected 2026-10-09 ([gw15 rerun](bc-90156d5d-ce87-56ee-b772-011f4d43dbd0)). Set
 Noted 2026-10-09 ([entry 3271409](bc-90156d5d-ce87-56ee-b772-011f4d43dbd0)). Not built.
 
 `best_free_transfer` tries one sale. A team with two free transfers is compared with a one-transfer plan, so the wildcard gap is wider than a two-transfer search would leave it. Entry 3271409 has two. The Gameweek 6 gap on the 7 Oct file is 34.90 against that one-transfer plan. A second sale was not priced. Do not read 102.72 as the lead over the best no-chip move.
+
+## Multistage MC + MILP frequency (trial opened 2026-10-19)
+
+Diagnostic only — not a gated likelihood comparison. `src/models/multistage_mc_milp.py` rolls coherent scoreline strands inside Opta λ bounds from GW(t+2:t+n), updates club rates, runs selectable-pool MILP at snapshots, ranks players by selection frequency. Next levers if kept: transfer-cost between snapshots, bank/FT state, priced t/t+1 blend, larger N, horizon to GW38. Do not promote on frequency alone.

@@ -1,11 +1,13 @@
 {
-  "updated": "2026-10-18",
-  "task": "team_gf_ga_predictor_screen",
+  "updated": "2026-10-19",
+  "task": "multistage_mc_milp_trial",
   "status": "done",
   "outputs": {
-    "report": "reports/team_gf_ga_predictor_screen.md",
-    "json": "reports/figures/team_gf_ga_predictor_screen.json",
-    "script": "scripts/screen_team_gf_ga_predictors.py"
+    "report": "reports/multistage_mc_milp_trial.md",
+    "json": "data/predictions/2026-27/multistage_mc_milp/multistage_mc_milp_trial.json",
+    "csv": "data/predictions/2026-27/multistage_mc_milp/multistage_player_freq.csv",
+    "module": "src/models/multistage_mc_milp.py",
+    "tests": "tests/test_multistage_mc_milp.py"
   },
-  "notes": "Leakage-free screen of team-level GF/GA predictors for pseudo-match FDR. Market attack/defend best for H=1; own expanding rates for H=5–8; opp roll3 GF/GA for unpriced fixture difficulty."
+  "notes": "Trial: N coherent MC strands sample Opta-bound scorelines GW(t+2:t+n), update club rates, snapshot MILP on season selectable pool; player selection frequency = long-horizon stability. Demo N=20 GW8–19, 120 squads. Diagnostic only — not a gated promotion. Chips off."
 }
