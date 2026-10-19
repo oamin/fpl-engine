@@ -74,6 +74,10 @@ Chips were the following lever. The half-season planner is built, and the crowd 
 
 The build is now the live week. The historical formula is the inner call. Around it are the squad already owned, a minutes sheet, this week's line, and one chip decision for the half.
 
+### Horizon forecast uncertainty Stage 1 (2026-10-19)
+
+ChatGPT's Opta lead-time uncertainty proposal was screened on closed seasons (`reports/horizon_forecast_uncertainty.md`). Keep the match-vs-forecast noise split and empirical calibration; do not invent a %/GW penalty. Rolling expanding λ excess MSE rises only ~0.04 from H=1→8 (MSE≈1.45). Stage 2–3 strength drift / nested MC parked in `.cursor/ideas.md`. Opta ±MAE stays level uncertainty only.
+
 ## Next
 
 `src/live/minutes_llm.py` is the minutes model. One completion covers the owned fifteen and every player who is doubtful, injured, suspended, unavailable, or given a chance below 100. Last observed minutes are context. A question, a missing id, minutes outside 0 to 90, or minutes above 0 for someone who cannot play writes no file. The scorer is not called from that module.
