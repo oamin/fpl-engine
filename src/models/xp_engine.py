@@ -57,6 +57,13 @@ DEFCON_THRESH = {"DEF": 10.0, "MID": 12.0, "FWD": 12.0}
 # estimated from the season being scored.
 NEUTRAL_TEAM_XG = 1.40
 NEUTRAL_TEAM_XA = 1.05
+# Assist pot: λ_assist = ρ · λ_scored. The published control is a fixed ρ.
+# NEUTRAL_TEAM_XA / NEUTRAL_TEAM_XG equals this constant, so a missing team
+# prior falls back to the same scale.
+ASSIST_RHO_FIXED = 0.75
+ASSIST_RHO_LO = 0.35
+ASSIST_RHO_HI = 1.25
+ASSIST_POT_MODES = ("fixed", "team_xa_xg")
 # Empirical ~2.0 saves per GC for 60'+ GKs (25/26); 1 FPL pt per 3 saves.
 SAVES_PER_GC = 2.0
 # FWD goal under-projection: leakage-free position scale clipped to this band.
@@ -219,13 +226,53 @@ def add_market_pots(df: pd.DataFrame) -> pd.DataFrame:
     out["lam_scored"] = out["e_total"] * att / denom
     out["lam_scored"] = out["lam_scored"].fillna(out["e_total"] * 0.5).clip(0.2, 3.5)
 
-    # Assists pot: scale scored λ by typical xA/xG ratio (~0.7 of attack share channel)
-    out["lam_assist"] = (out["lam_scored"] * 0.75).clip(0.1, 3.0)
+    # Published control assist pot. After ``add_player_priors``, a screen may
+    # replace this with ``apply_lam_assist(..., mode="team_xa_xg")``.
+    out["assist_rho"] = ASSIST_RHO_FIXED
+    out["lam_assist"] = (out["lam_scored"] * ASSIST_RHO_FIXED).clip(0.1, 3.0)
 
     # Market CS proxy: favourite tilt + under (no direct CS odds on free feed).
     # Tuned to land near empirical CS base ~0.25; ranking-driven for IC.
     pnl = out["p_not_lose"].fillna(0.5)
     out["p_cs_mkt"] = np.clip(0.08 + 0.35 * pnl + 0.15 * p_u, 0.05, 0.55)
+    return out
+
+
+def assist_rho_team_xa_xg(
+    exp_team_xa: Any,
+    exp_team_xg: Any,
+) -> np.ndarray:
+    """Leakage-free team ρ = clip(exp_team_xa / exp_team_xg).
+
+    Uses the same shift-1 team priors as ``share_xA``. A missing or zero xG
+    prior falls back to ``ASSIST_RHO_FIXED`` (equal to the neutral xa/xg).
+    """
+    xa = np.asarray(pd.to_numeric(exp_team_xa, errors="coerce"), dtype=float)
+    xg = np.asarray(pd.to_numeric(exp_team_xg, errors="coerce"), dtype=float)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        rho = np.where(xg > 1e-9, xa / xg, ASSIST_RHO_FIXED)
+    rho = np.where(np.isfinite(rho), rho, ASSIST_RHO_FIXED)
+    return np.clip(rho, ASSIST_RHO_LO, ASSIST_RHO_HI)
+
+
+def apply_lam_assist(df: pd.DataFrame, *, mode: str = "fixed") -> pd.DataFrame:
+    """Set ``lam_assist = assist_rho · lam_scored``.
+
+    ``fixed`` keeps the published 0.75 control. ``team_xa_xg`` replaces ρ with
+    each row's shift-1 ``exp_team_xa / exp_team_xg`` (requires priors).
+    """
+    if mode not in ASSIST_POT_MODES:
+        raise ValueError(f"unknown assist pot mode: {mode!r}")
+    out = df.copy()
+    lam = pd.to_numeric(out["lam_scored"], errors="coerce").to_numpy(float)
+    if mode == "fixed":
+        rho = np.full(len(out), ASSIST_RHO_FIXED, dtype=float)
+    else:
+        if "exp_team_xa" not in out.columns or "exp_team_xg" not in out.columns:
+            raise KeyError("team_xa_xg assist pot needs exp_team_xa and exp_team_xg")
+        rho = assist_rho_team_xa_xg(out["exp_team_xa"], out["exp_team_xg"])
+    out["assist_rho"] = rho
+    out["lam_assist"] = np.clip(lam * rho, 0.1, 3.0)
     return out
 
 

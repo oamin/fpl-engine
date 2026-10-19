@@ -20,7 +20,7 @@ from typing import Any, Mapping
 import pandas as pd
 
 from src.markets.shin import shin_1x2, shin_pair
-from src.models.xp_engine import CS_PTS, GOAL_PTS, SAVES_PER_GC
+from src.models.xp_engine import ASSIST_RHO_FIXED, CS_PTS, GOAL_PTS, SAVES_PER_GC
 from src.teams import norm_team
 
 NEUTRAL_TOTAL = 2.45
@@ -51,6 +51,7 @@ def side_pot(
     under: float | None,
     *,
     is_home: bool,
+    assist_rho: float = ASSIST_RHO_FIXED,
 ) -> dict[str, float]:
     """Team λ and clean-sheet proxy for one side of a match."""
     p_home, p_draw, p_away = shin_1x2(home, draw, away)
@@ -68,12 +69,14 @@ def side_pot(
         att, other, p_win = away_att, home_att, p_away
     lam = e_total * 0.5 if denom <= 0 else e_total * att / denom
     lam = _clip(lam, 0.2, 3.5)
-    lam_assist = _clip(lam * 0.75, 0.1, 3.0)
+    rho = float(assist_rho) if math.isfinite(float(assist_rho)) else ASSIST_RHO_FIXED
+    lam_assist = _clip(lam * rho, 0.1, 3.0)
     p_not_lose = p_win + 0.5 * p_draw
     p_cs = _clip(0.08 + 0.35 * p_not_lose + 0.15 * p_under, 0.05, 0.55)
     return {
         "lam_scored": lam,
         "lam_assist": lam_assist,
+        "assist_rho": float(rho),
         "e_total": float(e_total),
         "p_cs_mkt": p_cs,
         "attack": float(att),
@@ -115,7 +118,8 @@ def strength_match_pots(
     e_total = lam_h + lam_a
     home = {
         "lam_scored": lam_h,
-        "lam_assist": _clip(lam_h * 0.75, 0.1, 3.0),
+        "lam_assist": _clip(lam_h * ASSIST_RHO_FIXED, 0.1, 3.0),
+        "assist_rho": ASSIST_RHO_FIXED,
         "e_total": e_total,
         "p_cs_mkt": _clip(0.90 * math.exp(-lam_a), 0.05, 0.55),
         "attack": lam_h,
@@ -123,7 +127,8 @@ def strength_match_pots(
     }
     away = {
         "lam_scored": lam_a,
-        "lam_assist": _clip(lam_a * 0.75, 0.1, 3.0),
+        "lam_assist": _clip(lam_a * ASSIST_RHO_FIXED, 0.1, 3.0),
+        "assist_rho": ASSIST_RHO_FIXED,
         "e_total": e_total,
         "p_cs_mkt": _clip(0.90 * math.exp(-lam_h), 0.04, 0.50),
         "attack": lam_a,
@@ -260,7 +265,12 @@ def prior_pots(history: pd.DataFrame, before_gw: int) -> dict[str, dict[str, flo
         lam_v = float(lam.mean())
         pots[str(club)] = {
             "lam_scored": lam_v,
-            "lam_assist": float(assist.mean()) if not assist.empty else _clip(lam_v * 0.75, 0.1, 3.0),
+            "lam_assist": (
+                float(assist.mean())
+                if not assist.empty
+                else _clip(lam_v * ASSIST_RHO_FIXED, 0.1, 3.0)
+            ),
+            "assist_rho": ASSIST_RHO_FIXED,
             "e_total": float(total.mean()) if not total.empty else lam_v * 2.0,
             "p_cs_mkt": float(cs.mean()) if not cs.empty else 0.25,
         }

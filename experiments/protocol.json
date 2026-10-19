@@ -18,6 +18,19 @@
   "comparisons": [
     ["score_xp", "score_exp_points"]
   ],
+  "assist_pot": {
+    "control": "fixed_0.75",
+    "candidate": "team_xa_xg",
+    "formula_control": "lam_assist = 0.75 * lam_scored",
+    "formula_candidate": "lam_assist = clip(exp_team_xa / exp_team_xg, 0.35, 1.25) * lam_scored",
+    "priors": "shift-1 team expanding xA and xG from add_player_priors",
+    "population": "eligible rows only: n_prior >= 3 and xmi >= 45",
+    "metric": "player-GW gaussian log score sigma=3",
+    "contrast": "score_xp_assist_team_xa_minus_score_xp",
+    "promote_if": "paired interval strictly above zero on all four closed seasons",
+    "fallback_if_not": "keep fixed 0.75",
+    "winner": null
+  },
   "official_xp": {
     "historical_sheet": "Vaastav xP is not a benchmark and not a feature. The README says it is ep_this scraped after the gameweek, and the timing is uncertain.",
     "live_only": "A test that reads official xP fails unless every row has a timezone-aware captured_at strictly before the canonical deadline for that gameweek.",
