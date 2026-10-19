@@ -1,11 +1,12 @@
 {
   "updated": "2026-10-19",
-  "task": "multistage_mc_milp_basic_v1",
+  "task": "oracle_rank_cascade_2025_26",
   "status": "done",
   "outputs": {
-    "report": "reports/multistage_mc_milp_trial.md",
-    "module": "src/models/multistage_mc_milp.py",
-    "json": "data/predictions/2026-27/multistage_mc_milp/multistage_mc_milp_trial.json"
+    "report": "reports/oracle_rank_cascade_2025_26.md",
+    "json": "data/processed/oracle_rank_cascade_2025_26.json",
+    "club_errors": "data/processed/oracle_rank_cascade_club_errors.csv",
+    "module": "src/eval/oracle_rank_cascade.py"
   },
-  "notes": "Basic cascade v1: Opta match_prediction λ bands (rank→GF/GA) → sampled scenario → deadline add_player_priors shares × xp_on_pot (score_xp v2) → selectable MILP frequency. Share seeding OFF (not redundant with λ for team pot, but second axis — defer). Horizon-widening bands deferred."
+  "notes": "Oracle final ranks + prior-only OLS PASS vs flat/prior controls on match MSE and eligible player-GW log; oracle also slightly beats market Shin score_xp (+0.00384 log)."
 }

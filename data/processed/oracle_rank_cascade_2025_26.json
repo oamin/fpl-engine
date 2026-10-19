@@ -1,0 +1,201 @@
+{
+  "kind": "oracle_rank_cascade_diagnostic",
+  "target": {
+    "season": "2025-26",
+    "code": "2526",
+    "e0": "E0_2526.csv",
+    "label": "2025/26"
+  },
+  "map_fit": {
+    "exclude": "E0_2526.csv",
+    "files": [
+      "E0_2223.csv",
+      "E0_2324.csv",
+      "E0_2425.csv"
+    ],
+    "n_rows": 60,
+    "ols_gf": [
+      83.16666666666666,
+      -2.4523809523809526
+    ],
+    "ols_ga": [
+      35.777192982456135,
+      2.060902255639098
+    ],
+    "mae_gf": 7.732539682539682,
+    "mae_ga": 6.7852046783625735,
+    "league_avg_gf": 57.416666666666664
+  },
+  "oracle_ranks": {
+    "arsenal": 1.0,
+    "man city": 2.0,
+    "man utd": 3.0,
+    "aston villa": 4.0,
+    "liverpool": 5.0,
+    "bournemouth": 6.0,
+    "sunderland": 7.0,
+    "brighton": 8.0,
+    "brentford": 9.0,
+    "chelsea": 10.0,
+    "fulham": 11.0,
+    "newcastle": 12.0,
+    "everton": 13.0,
+    "leeds": 14.0,
+    "crystal palace": 15.0,
+    "nottm forest": 16.0,
+    "spurs": 17.0,
+    "west ham": 18.0,
+    "burnley": 19.0,
+    "wolves": 20.0
+  },
+  "prior_ranks": {
+    "brighton": 8.0,
+    "nottm forest": 7.0,
+    "man utd": 15.0,
+    "man city": 3.0,
+    "chelsea": 4.0,
+    "bournemouth": 9.0,
+    "arsenal": 2.0,
+    "everton": 13.0,
+    "wolves": 16.0,
+    "spurs": 17.0,
+    "crystal palace": 12.0,
+    "liverpool": 1.0,
+    "brentford": 10.0,
+    "fulham": 11.0,
+    "aston villa": 6.0,
+    "newcastle": 5.0,
+    "west ham": 14.0,
+    "burnley": 18.0,
+    "leeds": 19.0,
+    "sunderland": 20.0
+  },
+  "promoted_assigned": {
+    "burnley": 18.0,
+    "leeds": 19.0,
+    "sunderland": 20.0
+  },
+  "club_season": {
+    "oracle": {
+      "mae_gf": 7.083333333333329,
+      "mae_ga": 7.752731829573935,
+      "rmse_gf": 9.097073487212572,
+      "rmse_ga": 8.930511234560417,
+      "corr_gf": 0.8489689001320012,
+      "corr_ga": 0.7916085934804612
+    },
+    "prior_rank": {
+      "mae_gf": 10.230952380952376,
+      "mae_ga": 8.78766917293233,
+      "rmse_gf": 12.02317537224447,
+      "rmse_ga": 11.45759954360368,
+      "corr_gf": 0.6595575120547419,
+      "corr_ga": 0.5744915903316788
+    },
+    "flat": {
+      "mae_gf": 10.316666666666663,
+      "mae_ga": 8.741666666666665,
+      "rmse_gf": 12.640488299288297,
+      "rmse_ga": 11.24197244456881,
+      "corr_gf": 0.0,
+      "corr_ga": 0.0
+    }
+  },
+  "match_lambda": {
+    "oracle": {
+      "n_fixtures": 380,
+      "n_sides": 760,
+      "mse": 1.2259063291866121,
+      "mae": 0.903330123271927,
+      "rmse": 1.1072065431465856,
+      "band_coverage": 0.2631578947368421,
+      "mean_lam": 1.5195076518083188,
+      "mean_goals": 1.375
+    },
+    "prior_rank": {
+      "n_fixtures": 380,
+      "n_sides": 760,
+      "mse": 1.2960115810211232,
+      "mae": 0.9326934898007959,
+      "rmse": 1.1384250440943062,
+      "band_coverage": 0.24868421052631579,
+      "mean_lam": 1.5195076518083188,
+      "mean_goals": 1.375
+    },
+    "flat": {
+      "n_fixtures": 380,
+      "n_sides": 760,
+      "mse": 1.2903162748293133,
+      "mae": 0.958509336206012,
+      "rmse": 1.1359208928571185,
+      "band_coverage": 0.1355263157894737,
+      "mean_lam": 1.5154418453541256,
+      "mean_goals": 1.375
+    }
+  },
+  "mc_calibration": {
+    "oracle": {
+      "n_strands": 40,
+      "n_sides": 760,
+      "mae_strand_mean": 0.9016447368421052,
+      "mae_centreline_lam": 0.903330123271927
+    },
+    "prior_rank": {
+      "n_strands": 40,
+      "n_sides": 760,
+      "mae_strand_mean": 0.9303947368421052,
+      "mae_centreline_lam": 0.932693489800796
+    },
+    "flat": {
+      "n_strands": 40,
+      "n_sides": 760,
+      "mae_strand_mean": 0.9421710526315789,
+      "mae_centreline_lam": 0.958509336206012
+    }
+  },
+  "player_gw": {
+    "oracle": {
+      "label": "oracle",
+      "n": 7444,
+      "mean_log": -2.5342699461054585,
+      "mean_xp": 3.171289518113947,
+      "mean_points": 3.0037614185921546,
+      "mae": 2.314467497366262,
+      "rmse": 3.049744946087816,
+      "bias": 0.16752809952179187
+    },
+    "prior_rank": {
+      "label": "prior_rank",
+      "n": 7444,
+      "mean_log": -2.5451032708344377,
+      "mean_xp": 3.165320798286895,
+      "mean_points": 3.0037614185921546,
+      "mae": 2.342754042558194,
+      "rmse": 3.0815489743487454,
+      "bias": 0.16155937969473994
+    },
+    "flat": {
+      "label": "flat",
+      "n": 7444,
+      "mean_log": -2.545541176151038,
+      "mean_xp": 3.1079399229221054,
+      "mean_points": 3.0037614185921546,
+      "mae": 2.3420274896194018,
+      "rmse": 3.082827659310297,
+      "bias": 0.10417850432995045
+    },
+    "market": {
+      "label": "market_shin_score_xp",
+      "n": 7444,
+      "mean_log": -2.5381118921104115,
+      "mean_xp": 3.3279722654408936,
+      "mean_points": 3.0037614185921546,
+      "mae": 2.374343381838404,
+      "rmse": 3.061061787072802,
+      "bias": 0.3242108468487385
+    }
+  },
+  "viable_vs_controls": true,
+  "oracle_minus_market_log": 0.003841946004953023,
+  "notes": "Oracle uses final 2025/26 ranks with prior-only OLS. Viable if oracle beats flat and is at least as good as prior-season ranks on match MSE and eligible player-GW log score. Market Shin score_xp is a reference, not a fail bar for this ceiling test."
+}

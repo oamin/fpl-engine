@@ -91,12 +91,11 @@ def _season_table(path: Path) -> list[dict[str, Any]]:
     return rows
 
 
-def rank_gf_ga_profile() -> dict[int, dict[str, float]]:
-    """Mean/sd of season GF/GA by finishing place (closed seasons)."""
+def _profile_from_files(fnames: list[str]) -> dict[int, dict[str, float]]:
     buckets: dict[int, dict[str, list[float]]] = defaultdict(
         lambda: {"gf": [], "ga": []}
     )
-    for _, fname in CLOSED:
+    for fname in fnames:
         for r in _season_table(CACHE / fname):
             buckets[int(r["rank"])]["gf"].append(float(r["gf"]))
             buckets[int(r["rank"])]["ga"].append(float(r["ga"]))
@@ -112,11 +111,82 @@ def rank_gf_ga_profile() -> dict[int, dict[str, float]]:
     return out
 
 
+def rank_gf_ga_profile() -> dict[int, dict[str, float]]:
+    """Mean/sd of season GF/GA by finishing place (closed seasons)."""
+    return _profile_from_files([fname for _, fname in CLOSED])
+
+
+def rank_gf_ga_profile_excluding(exclude_fname: str) -> dict[int, dict[str, float]]:
+    """Place profile fit on closed seasons other than ``exclude_fname``."""
+    fnames = [fname for _, fname in CLOSED if fname != exclude_fname]
+    if not fnames:
+        raise ValueError("no seasons left after exclude")
+    return _profile_from_files(fnames)
+
+
+def _ols_fit(xs: list[float], ys: list[float]) -> tuple[float, float, float]:
+    """Return (intercept, slope, MAE)."""
+    n = len(xs)
+    if n < 2:
+        raise ValueError("need at least two points for OLS")
+    xm = statistics.fmean(xs)
+    ym = statistics.fmean(ys)
+    denom = sum((x - xm) ** 2 for x in xs)
+    if denom <= 0:
+        raise ValueError("degenerate OLS design")
+    slope = sum((x - xm) * (y - ym) for x, y in zip(xs, ys, strict=True)) / denom
+    intercept = ym - slope * xm
+    mae = statistics.fmean(abs(y - (intercept + slope * x)) for x, y in zip(xs, ys, strict=True))
+    return float(intercept), float(slope), float(mae)
+
+
+def fit_rank_ols(fnames: list[str] | None = None) -> dict[str, Any]:
+    """OLS rank → season GF/GA on the listed E0 files (default: all closed)."""
+    files = fnames if fnames is not None else [fname for _, fname in CLOSED]
+    ranks: list[float] = []
+    gfs: list[float] = []
+    gas: list[float] = []
+    for fname in files:
+        for row in _season_table(CACHE / fname):
+            ranks.append(float(row["rank"]))
+            gfs.append(float(row["gf"]))
+            gas.append(float(row["ga"]))
+    a_gf, b_gf, mae_gf = _ols_fit(ranks, gfs)
+    a_ga, b_ga, mae_ga = _ols_fit(ranks, gas)
+    return {
+        "files": list(files),
+        "n_rows": len(ranks),
+        "ols_gf": (a_gf, b_gf),
+        "ols_ga": (a_ga, b_ga),
+        "mae_gf": mae_gf,
+        "mae_ga": mae_ga,
+    }
+
+
+def fit_rank_ols_excluding(exclude_fname: str) -> dict[str, Any]:
+    """OLS on closed seasons other than ``exclude_fname`` (oracle-map fit)."""
+    files = [fname for _, fname in CLOSED if fname != exclude_fname]
+    if len(files) < 2:
+        raise ValueError("need at least two prior seasons for the oracle map")
+    out = fit_rank_ols(files)
+    out["exclude"] = exclude_fname
+    return out
+
+
+def season_final_ranks(fname: str) -> dict[str, float]:
+    """``club_norm → finishing rank`` from one E0 season file."""
+    return {norm_team(r["team"]): float(r["rank"]) for r in _season_table(CACHE / fname)}
+
+
 def gf_ga_from_rank(
     rank: float,
     *,
     profile: dict[int, dict[str, float]] | None = None,
     method: str = "ols",
+    ols_gf: tuple[float, float] | None = None,
+    ols_ga: tuple[float, float] | None = None,
+    mae_gf: float | None = None,
+    mae_ga: float | None = None,
 ) -> dict[str, float]:
     """Season GF/GA + uncertainty bands for a predicted finishing place."""
     r = max(1.0, min(20.0, float(rank)))
@@ -134,15 +204,17 @@ def gf_ga_from_rank(
             sd_gf = (1 - w) * prof[lo]["sd_gf"] + w * prof[hi]["sd_gf"]
             sd_ga = (1 - w) * prof[lo]["sd_ga"] + w * prof[hi]["sd_ga"]
     else:
-        a_gf, b_gf = OLS_GF
-        a_ga, b_ga = OLS_GA
+        a_gf, b_gf = ols_gf if ols_gf is not None else OLS_GF
+        a_ga, b_ga = ols_ga if ols_ga is not None else OLS_GA
+        band_gf = float(mae_gf) if mae_gf is not None else OLS_MAE_GF
+        band_ga = float(mae_ga) if mae_ga is not None else OLS_MAE_GA
         gf = a_gf + b_gf * r
         ga = a_ga + b_ga * r
         # Blend OLS MAE with place-specific sd when available.
         lo = int(round(r))
         lo = min(20, max(1, lo))
-        sd_gf = max(OLS_MAE_GF, prof[lo]["sd_gf"] * 0.5)
-        sd_ga = max(OLS_MAE_GA, prof[lo]["sd_ga"] * 0.5)
+        sd_gf = max(band_gf, prof[lo]["sd_gf"] * 0.5)
+        sd_ga = max(band_ga, prof[lo]["sd_ga"] * 0.5)
 
     return {
         "rank": r,
@@ -217,6 +289,12 @@ def match_prediction(
     *,
     ranks: Mapping[str, float] | None = None,
     method: str = "ols",
+    profile: dict[int, dict[str, float]] | None = None,
+    ols_gf: tuple[float, float] | None = None,
+    ols_ga: tuple[float, float] | None = None,
+    mae_gf: float | None = None,
+    mae_ga: float | None = None,
+    league_gf: float | None = None,
 ) -> dict[str, Any]:
     """Full scoreline forecast for one fixture from Opta ranks."""
     if ranks is None:
@@ -226,10 +304,18 @@ def match_prediction(
     if h not in ranks or a not in ranks:
         missing = [c for c in (h, a) if c not in ranks]
         raise KeyError(f"missing Opta rank for {missing}")
-    profile = rank_gf_ga_profile()
-    lavg = league_avg_gf(profile)
-    home_rates = gf_ga_from_rank(ranks[h], profile=profile, method=method)
-    away_rates = gf_ga_from_rank(ranks[a], profile=profile, method=method)
+    prof = profile if profile is not None else rank_gf_ga_profile()
+    lavg = float(league_gf) if league_gf is not None else league_avg_gf(prof)
+    rate_kw = {
+        "profile": prof,
+        "method": method,
+        "ols_gf": ols_gf,
+        "ols_ga": ols_ga,
+        "mae_gf": mae_gf,
+        "mae_ga": mae_ga,
+    }
+    home_rates = gf_ga_from_rank(ranks[h], **rate_kw)
+    away_rates = gf_ga_from_rank(ranks[a], **rate_kw)
 
     pot_h, pot_a = pots_from_season_gf_ga(
         home_rates["gf"],
