@@ -9,7 +9,6 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from src.models.forecast_xp import xp_on_pot
 from src.models.opta_gf_ga_horizon import (
     bootstrap_shares,
     forecast_pots_from_opta_gf_ga,

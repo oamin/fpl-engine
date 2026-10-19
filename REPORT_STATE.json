@@ -1,16 +1,15 @@
 {
   "updated": "2026-10-19",
-  "task": "predict_gf_ga_from_rank_2026_27",
+  "task": "opta_gf_ga_long_horizon_match_xp",
   "status": "done",
-  "rank_sources": {
-    "opta": "2026-10-12 (SI 10-11 + YEP title flip)",
-    "betfair_E_rank": "2026-10-08 in-repo outrights_ranks.json"
-  },
-  "mapping": "OLS + rank-mean GF/GA by finishing place on 2022/23–2025/26 only",
+  "pipeline": "Opta rank → OLS GF/GA ±MAE → Dixon-Coles λ pots → xp_on_pot (player shares)",
   "outputs": {
-    "script": "scripts/predict_gf_ga_from_rank_2026_27.py",
-    "report": "reports/predict_gf_ga_from_rank_2026_27.md",
-    "csv": "data/processed/predict_gf_ga_from_rank_2026_27.csv",
-    "json": "reports/figures/predict_gf_ga_from_rank_2026_27.json"
-  }
+    "module": "src/models/opta_gf_ga_horizon.py",
+    "opta_ranks": "data/predictions/2026-27/opta_ranks_20261012.json",
+    "demo": "scripts/demo_opta_gf_ga_horizon_arsenal_fulham.py",
+    "report": "reports/opta_gf_ga_horizon_arsenal_fulham.md",
+    "json": "reports/figures/opta_gf_ga_horizon_arsenal_fulham.json",
+    "tests": "tests/test_opta_gf_ga_horizon.py"
+  },
+  "notes": "Unpriced-horizon drop-in beside forecast_pots_from_outrights. Demo GW18 Fulham-Arsenal and GW26 Arsenal-Fulham."
 }
