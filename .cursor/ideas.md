@@ -443,3 +443,20 @@ Trialled 2026-10-16 (`protocol.strategy_layer4_ft_dp`, `reports/layer4_ft_dp.md`
 ## L4 chip half-stopping (step 4)
 
 Trialled 2026-10-16 (`protocol.strategy_layer4_chip_stop`, `reports/layer4_chip_stop.md`). TC/BB leave-one-out DP τ(weeks_left); WC≥16 / FH≥12 vs none on L4 priced boards. **Parked:** chip_stop−l4 **−0.185/GW** [−2.15, +1.78] covers 0; plays TC8/FH7/BB5/WC3; hits 228 vs 284. Does not clear L4. Do not retune margins/τ on these seasons. L5 beam remains the joint chip search (also not promoted).
+
+## Pre-Numagent-2.0 cascade screens (2026-10-19)
+
+Cloud cascade levers run **before** Numagent 2.0 landed on main used
+`xp_on_pot` / `compute_xp` (Shin 1X2+OU pots), **not** `score_xp_v2`.
+Audit: `reports/cascade_pre_numagent2_audit.md`.
+
+Parked until rewired onto `numagent_xp.score_team_side`:
+
+- Multistage MC+MILP / captain / FT / minutes-overlay trials (reports that
+  say “score_xp v2” while calling `xp_on_pot` are mislabelled)
+- Match-band calibration, player G/A finish, expanding GF/GA rank tracker
+
+**Kept / aligned:** short-horizon scenario advisor rewritten on
+`score_xp_v2` + L1/L3 (`src/models/short_horizon_cascade.py`); mean layer
+matches L4 `project_week_score_xp_v2` (corr 1.0 on smoke). Decision
+`keep_scenario_advisor` on 2024-25 GW10/20.

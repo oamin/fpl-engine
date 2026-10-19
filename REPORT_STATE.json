@@ -1,13 +1,15 @@
 {
-  "milestone": "numagent-2-0-registered",
+  "milestone": "score-xp-v2-align-cascade",
   "status": "complete",
-  "summary": "Registered Numagent 2.0 in protocol (numagent_2_0) as the product on main; archived Numagent 1.0 (ep_next/score_xp live path). Odds API fetch restored for 2.0 pots. LOCKED.md / SUPERSEDED.md / context / method / rules updated.",
+  "summary": "Audited today's cascade/short-horizon work against Numagent 2.0. Pre-merge arms used xp_on_pot/compute_xp (legacy). Rewrote short_horizon_cascade on score_xp_v2 (numagent_xp + L1/L3); mean layer matches L4 projector (corr 1.0). keep_scenario_advisor on 2024-25 GW10/20. Legacy multistage/match-band/finish/rank screens parked until rewired.",
   "gemini": "",
   "artifacts": [
-    "experiments/protocol.json",
-    "reports/LOCKED.md",
-    "reports/SUPERSEDED.md",
+    "src/models/short_horizon_cascade.py",
+    "tests/test_short_horizon_v2.py",
+    "reports/cascade_pre_numagent2_audit.md",
+    "reports/short_horizon_scenario.md",
+    "data/processed/short_horizon_scenario.json",
     ".cursor/context.md",
-    "src/live/numagent_live_pick.py"
+    ".cursor/ideas.md"
   ]
 }

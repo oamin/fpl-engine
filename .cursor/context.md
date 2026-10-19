@@ -20,6 +20,19 @@ Pre-deadline squad advisor under 2026/27 rules. Cursor implements and screens; G
 
 **Numagent 1.0 and `score_xp` are superseded** (2026-10-19). Keep 1.0/`score_xp` only for historical climb replay and as the named gate baseline. New screens and the live path are Numagent 2.0 (`score_xp_v2` + L4).
 
+### Cascade / short-horizon alignment (2026-10-19)
+
+Today’s pre-merge cloud cascade work (multistage captain/FT/minutes,
+match-band, player finish, rank tracker, first short-horizon draft) scored
+with **`xp_on_pot` / `compute_xp`** — not Numagent 2.0. Audit:
+`reports/cascade_pre_numagent2_audit.md`. Those arms stay parked until
+rewired onto `numagent_xp`.
+
+**Aligned:** `src/models/short_horizon_cascade.py` — FD AH+OU → Dixon–Coles
+`M` → `score_team_side` (`score_xp_v2`); λ ±15% scenarios; path L1→L3.
+Mean layer corr vs L4 projector = 1.0. Screen decision
+`keep_scenario_advisor` (`reports/short_horizon_scenario.md`).
+
 ### Scorer defaults (live + historical assemble)
 
 - AH+OU (+ BTTS when priced live) → Dixon–Coles \(M\) → pots \(G=\alpha_G xG_M\), \(A=\alpha_A xG_M\)
