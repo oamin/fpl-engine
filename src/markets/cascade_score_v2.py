@@ -263,3 +263,89 @@ def score_pool_on_lam_pots(
     out["mc_score"] = totals
     out[SCORER] = totals
     return out
+
+
+def attach_rates_priors(
+    players: pd.DataFrame,
+    hist: pd.DataFrame,
+    *,
+    id_col: str = "element",
+    finish_g_col: str | None = None,
+    finish_a_col: str | None = None,
+) -> pd.DataFrame:
+    """Merge as-of rates/priors onto a player table; optional finish scales on rG/rA."""
+    rates = numagent_xp.player_rates_from_history(hist, id_col=id_col)
+    priors = numagent_xp.history_priors_for_xp(hist, id_col=id_col)
+    out = players.copy()
+    if not rates.empty:
+        out = out.merge(rates, on=id_col, how="left")
+    if not priors.empty:
+        out = out.merge(
+            priors.drop(columns=["position"], errors="ignore"),
+            on=id_col,
+            how="left",
+        )
+    for c, default in (
+        ("rG", 0.0),
+        ("drG", 0.0),
+        ("rA", 0.0),
+        ("drA", 0.0),
+        ("bonus_mu", 0.0),
+        ("bonus_se", 0.0),
+        ("card_mu", 0.0),
+        ("card_se", 0.0),
+        ("saves_mu", 0.0),
+        ("saves_se", 0.0),
+        ("defcon_mu", 0.0),
+        ("defcon_sig", numagent_xp.SIG_FLOOR),
+        ("defcon_n", 0),
+    ):
+        if c not in out.columns:
+            out[c] = default
+        else:
+            out[c] = pd.to_numeric(out[c], errors="coerce").fillna(default)
+    if finish_g_col and finish_g_col in out.columns:
+        scale = pd.to_numeric(out[finish_g_col], errors="coerce").fillna(1.0)
+        out["rG"] = out["rG"] * scale
+        out["drG"] = out["drG"] * scale
+    if finish_a_col and finish_a_col in out.columns:
+        scale = pd.to_numeric(out[finish_a_col], errors="coerce").fillna(1.0)
+        out["rA"] = out["rA"] * scale
+        out["drA"] = out["drA"] * scale
+    return out
+
+
+def score_fixture_sides_on_lams(
+    home_players: pd.DataFrame,
+    away_players: pd.DataFrame,
+    *,
+    lam_h: float,
+    lam_a: float,
+    alpha_g: float,
+    alpha_a: float,
+) -> pd.DataFrame:
+    """Score home and away player tables for one fixture λ pair."""
+    parts = []
+    if not home_players.empty:
+        h = score_club_side(
+            home_players,
+            lam_for=float(lam_h),
+            lam_against=float(lam_a),
+            alpha_g=alpha_g,
+            alpha_a=alpha_a,
+        )
+        h["side"] = "home"
+        parts.append(h)
+    if not away_players.empty:
+        a = score_club_side(
+            away_players,
+            lam_for=float(lam_a),
+            lam_against=float(lam_h),
+            alpha_g=alpha_g,
+            alpha_a=alpha_a,
+        )
+        a["side"] = "away"
+        parts.append(a)
+    if not parts:
+        return pd.DataFrame()
+    return pd.concat(parts, ignore_index=True)

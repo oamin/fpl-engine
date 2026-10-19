@@ -450,18 +450,19 @@ Cloud cascade levers run **before** Numagent 2.0 landed on main used
 `xp_on_pot` / `compute_xp` (Shin 1X2+OU pots), **not** `score_xp_v2`.
 Audit: `reports/cascade_pre_numagent2_audit.md`.
 
-Parked until rewired onto `numagent_xp.score_team_side`:
+**Rewired + rejudged on `score_xp_v2` (2026-10-19) — all three park:**
 
-- Multistage MC+MILP / captain / FT / minutes-overlay trials (reports that
-  say “score_xp v2” while calling `xp_on_pot` are mislabelled)
-- Match-band calibration, player G/A finish, expanding GF/GA rank tracker
+- **Match-band:** `change_defaults=False`; keep `z_band=1.0`,
+  `centre_blend=0.5`. Max |Δlog| 0.00047 < material bar 0.001.
+  Share seeding stays off. `reports/match_band_calibration.md`
+- **Player G/A finish:** `keep_share_times_lambda`. Finish−control
+  interval **−0.00187** [−0.00256, −0.00117] (lo < 0).
+  `reports/player_ga_finish.md`
+- **Rank tracker:** `keep_rank_map_park_tracker`. Does not beat
+  prior_rank on MSE all seasons; tracker−prior log interval covers 0
+  (−0.00618 [−0.0132, +0.00117]); gap closed negative. Keep OLS
+  rank→GF/GA map. `reports/rank_tracker.md`
 
-**Kept / aligned:** short-horizon scenario advisor rewritten on
-`score_xp_v2` + L1/L3 (`src/models/short_horizon_cascade.py`); mean layer
-matches L4 `project_week_score_xp_v2` (corr 1.0 on smoke). Decision
-`keep_scenario_advisor` on 2024-25 GW10/20.
-
-**Re-run 2026-10-19:** long-horizon Opta multistage + oracle-rank cascade
-now score through `cascade_score_v2` / `score_team_side`. Oracle viable;
-suite `reports/long_horizon_numagent2_rerun.md`. Match-band / player-finish /
-rank-tracker screens still legacy.
+**Kept / aligned earlier:** short-horizon scenario advisor; long-horizon
+Opta multistage + oracle-rank via `cascade_score_v2` (oracle viable;
+`reports/long_horizon_numagent2_rerun.md`).

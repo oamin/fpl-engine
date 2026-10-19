@@ -93,10 +93,15 @@ BONUS_BY_PLACE = (3, 2, 1)
 
 
 def normalize_position(position: str) -> str:
-    """Map ``GK`` onto ``GKP``. Other codes must already be GKP/DEF/MID/FWD."""
+    """Map ``GK`` onto ``GKP``. ``AM`` (Vaastav 2024/25) onto ``MID``.
+
+    Other codes must already be GKP/DEF/MID/FWD.
+    """
     key = str(position).strip().upper()
     if key == "GK":
         return "GKP"
+    if key == "AM":
+        return "MID"
     if key not in SQUAD_QUOTA:
         raise ValueError(f"unknown position: {position}")
     return key

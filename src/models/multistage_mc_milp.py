@@ -139,17 +139,20 @@ def sample_scoreline(
     lam_a_lo: float,
     lam_a_hi: float,
     rng: random.Random,
+    centre_blend: float = 0.5,
 ) -> tuple[int, int, float, float]:
-    """Sample λ inside predicted bounds, then Poisson goals."""
+    """Sample λ inside predicted bounds, then Poisson goals.
+
+    ``centre_blend`` ∈ [0, 1] weights the centreline λ vs a uniform draw
+    inside the predicted band (match-band calibration grid).
+    """
     lo_h, hi_h = min(lam_h_lo, lam_h_hi), max(lam_h_lo, lam_h_hi)
     lo_a, hi_a = min(lam_a_lo, lam_a_hi), max(lam_a_lo, lam_a_hi)
-    # Shrink band toward centre slightly so samples stay "within predicted bounds"
-    # without always hitting corners.
-    sh = lo_h + (hi_h - lo_h) * rng.random()
-    sa = lo_a + (hi_a - lo_a) * rng.random()
-    # Blend with mean λ so the strand stays near the Opta centre.
-    sh = 0.5 * float(lam_h) + 0.5 * sh
-    sa = 0.5 * float(lam_a) + 0.5 * sa
+    u_h = lo_h + (hi_h - lo_h) * rng.random()
+    u_a = lo_a + (hi_a - lo_a) * rng.random()
+    w = float(min(1.0, max(0.0, centre_blend)))
+    sh = w * float(lam_h) + (1.0 - w) * u_h
+    sa = w * float(lam_a) + (1.0 - w) * u_a
     gh = _poisson(rng, sh)
     ga = _poisson(rng, sa)
     # Soft clip: reject extreme outliers beyond ceil(hi)+2 once

@@ -35,14 +35,15 @@ from src.eval.oracle_rank_cascade import (
     GW_END,
     GW_START,
     MIN_HISTORY,
-    MIN_XMI,
+    MIN_MINUTES,
     SIGMA,
     _map_kwargs,
-    build_scored_season,
     match_lambda_scores,
 )
 from src.ingest.fpl_odds import load_football_data
-from src.models.forecast_xp import xp_on_pot
+from src.markets import numagent_xp
+from src.markets.cascade_score_v2 import SCORER, attach_rates_priors, score_fixture_sides_on_lams
+from src.markets.numagent_xp_pilot import load_merged
 from src.models.multistage_mc_milp import sample_scoreline
 from src.models.opta_gf_ga_horizon import (
     CACHE,
@@ -54,6 +55,9 @@ from src.models.opta_gf_ga_horizon import (
     _season_table,
 )
 from src.teams import norm_team
+
+# Eligibility: minutes oracle + history depth (Numagent 2.0 closed pool).
+MIN_XMI = MIN_MINUTES  # report alias; filter uses minutes > MIN_MINUTES
 
 ROOT = Path(__file__).resolve().parents[2]
 REPORTS = ROOT / "reports"
@@ -201,8 +205,9 @@ def mc_predictive(
     }
 
 
+
 def player_mc_log(
-    scored: pd.DataFrame,
+    merged: pd.DataFrame,
     ranks: dict[str, float],
     map_kw: dict[str, Any],
     *,
@@ -210,93 +215,110 @@ def player_mc_log(
     centre_blend: float,
     n_strands: int = N_MC,
     seed: int = MC_SEED,
+    alpha_g: float | None = None,
+    alpha_a: float | None = None,
 ) -> dict[str, Any]:
-    """Eligible player-GW log of mean xp_on_pot over MC λ samples."""
-    window = scored.loc[
-        (scored["gw"] >= GW_START)
-        & (scored["gw"] <= GW_END)
-        & (scored["n_prior"] >= MIN_HISTORY)
-        & (scored["xmi"] >= MIN_XMI)
-    ].copy()
+    """Eligible player-GW log of ``score_xp_v2`` at E[λ] under centre_blend.
+
+    Closed form of the MC-mean λ path: under ``sample_scoreline``,
+    ``E[λ] = w·centre + (1-w)·(lo+hi)/2``. Scoring once at that mean matches
+    infinite-strand mean-λ xP (attack linear in λ; CS uses the same proxy).
+    ``n_strands`` / ``seed`` kept for API compatibility; unused.
+    """
+    del n_strands, seed  # API compat with older callers / reports
+    if alpha_g is None or alpha_a is None:
+        ag, aa, _, _ = numagent_xp.load_alphas()
+        alpha_g = ag if alpha_g is None else alpha_g
+        alpha_a = aa if alpha_a is None else alpha_a
     kw = {**map_kw, "z_band": z_band}
-    # Cache fixture → list of (pot_home, pot_away) strand pots.
-    pot_cache: dict[tuple[str, str], list[tuple[dict[str, float], dict[str, float]]]] = {}
-    rng = random.Random(seed)
-
-    def _strands(home: str, away: str) -> list[tuple[dict[str, float], dict[str, float]]]:
-        key = (home, away)
-        if key in pot_cache:
-            return pot_cache[key]
-        pred = match_prediction(home, away, ranks=ranks, **kw)
-        out: list[tuple[dict[str, float], dict[str, float]]] = []
-        for _ in range(n_strands):
-            _, _, sh, sa = sample_scoreline(
-                pred["lam_home"],
-                pred["lam_away"],
-                lam_h_lo=pred["lam_home_lo"],
-                lam_h_hi=pred["lam_home_hi"],
-                lam_a_lo=pred["lam_away_lo"],
-                lam_a_hi=pred["lam_away_hi"],
-                rng=rng,
-                centre_blend=centre_blend,
-            )
-            # Rebuild pots from sampled λ (assist 0.75, CS from opp λ).
-            e_total = sh + sa
-            pot_h = {
-                "lam_scored": sh,
-                "lam_assist": max(0.1, min(3.0, sh * 0.75)),
-                "e_total": e_total,
-                "p_cs_mkt": max(0.05, min(0.55, 0.90 * math.exp(-sa))),
-            }
-            pot_a = {
-                "lam_scored": sa,
-                "lam_assist": max(0.1, min(3.0, sa * 0.75)),
-                "e_total": e_total,
-                "p_cs_mkt": max(0.04, min(0.50, 0.90 * math.exp(-sh))),
-            }
-            out.append((pot_h, pot_a))
-        pot_cache[key] = out
-        return out
-
+    w = float(min(1.0, max(0.0, centre_blend)))
     xp_vals: list[float] = []
     y_vals: list[float] = []
-    for row in window.itertuples(index=False):
-        club = str(row.team_norm)
-        opp = str(row.opp_norm)
-        if club not in ranks or opp not in ranks or not opp:
-            continue
-        is_home = bool(row.is_home)
-        home, away = (club, opp) if is_home else (opp, club)
+
+    # Cache match E[λ] by club pair — z_band/blend fixed for this call.
+    lam_cache: dict[tuple[str, str], tuple[float, float]] = {}
+
+    def _mean_lams(home: str, away: str) -> tuple[float, float] | None:
+        key = (home, away)
+        if key in lam_cache:
+            return lam_cache[key]
         try:
-            strands = _strands(home, away)
+            pred = match_prediction(home, away, ranks=ranks, **kw)
         except KeyError:
+            lam_cache[key] = None  # type: ignore[assignment]
+            return None
+        lo_h = min(pred["lam_home_lo"], pred["lam_home_hi"])
+        hi_h = max(pred["lam_home_lo"], pred["lam_home_hi"])
+        lo_a = min(pred["lam_away_lo"], pred["lam_away_hi"])
+        hi_a = max(pred["lam_away_lo"], pred["lam_away_hi"])
+        mean_h = w * float(pred["lam_home"]) + (1.0 - w) * 0.5 * (lo_h + hi_h)
+        mean_a = w * float(pred["lam_away"]) + (1.0 - w) * 0.5 * (lo_a + hi_a)
+        lam_cache[key] = (mean_h, mean_a)
+        return mean_h, mean_a
+
+    gws = sorted(int(g) for g in merged["GW"].unique() if GW_START <= int(g) <= GW_END)
+    for gw in gws:
+        hist = numagent_xp.asof_share_history(merged, before_gw=int(gw))
+        week = merged.loc[merged["GW"] == int(gw)].copy()
+        if week.empty:
             continue
-        xps = []
-        for pot_h, pot_a in strands:
-            pot = pot_h if is_home else pot_a
-            xp = xp_on_pot(
-                position=str(row.position),
-                xmi=float(row.xmi) if math.isfinite(float(row.xmi)) else 0.0,
-                share_xg=float(row.share_xG),
-                share_xa=float(row.share_xA),
-                exp_defcon_hit=(
-                    float(row.exp_defcon_hit) if math.isfinite(float(row.exp_defcon_hit)) else 0.0
-                ),
-                fwd_goal_scale=float(getattr(row, "fwd_goal_scale", 1.0) or 1.0),
-                pot=pot,
+        week["m"] = pd.to_numeric(week["minutes"], errors="coerce").fillna(0.0)
+        week["sigma_m"] = 0.0
+        week["player_id"] = week["element"].astype(str)
+        # Appearance pool only (matches score_gameweek); drops Vaastav AM stubs.
+        week = week.loc[week["m"] > 0].copy()
+        if week.empty:
+            continue
+        # Rates/priors once per GW — not once per fixture.
+        week = attach_rates_priors(week, hist)
+        apps = (
+            hist.loc[hist["minutes"] > 0].groupby("element")["GW"].nunique()
+            if len(hist)
+            else pd.Series(dtype=float)
+        )
+        week["n_prior"] = week["element"].map(apps).fillna(0) if len(apps) else 0
+        for _, g in week.groupby("fixture", sort=False):
+            homes = g.loc[g["was_home"].astype(bool)]
+            aways = g.loc[~g["was_home"].astype(bool)]
+            if homes.empty or aways.empty:
+                continue
+            home = norm_team(str(homes["team"].iloc[0]))
+            away = norm_team(str(aways["team"].iloc[0]))
+            if home not in ranks or away not in ranks:
+                continue
+            means = _mean_lams(home, away)
+            if means is None:
+                continue
+            mean_h, mean_a = means
+            scored = score_fixture_sides_on_lams(
+                homes,
+                aways,
+                lam_h=mean_h,
+                lam_a=mean_a,
+                alpha_g=float(alpha_g),
+                alpha_a=float(alpha_a),
             )
-            if math.isfinite(xp):
-                xps.append(xp)
-        if not xps:
-            continue
-        xp_vals.append(float(np.mean(xps)))
-        y_vals.append(float(row.total_points))
+            if scored.empty:
+                continue
+            if "total_points" not in scored.columns:
+                raise RuntimeError("score_fixture_sides_on_lams dropped total_points")
+            scored["minutes"] = pd.to_numeric(
+                scored.get("m", scored.get("minutes")), errors="coerce"
+            ).fillna(0.0)
+            if "n_prior" not in scored.columns:
+                scored["n_prior"] = scored["element"].map(apps).fillna(0) if len(apps) else 0
+            keep = scored.loc[
+                (scored["minutes"] > MIN_MINUTES) & (scored["n_prior"] >= MIN_HISTORY)
+            ]
+            for row in keep.itertuples(index=False):
+                xp = float(row.xp)
+                if not math.isfinite(xp):
+                    continue
+                xp_vals.append(xp)
+                y_vals.append(float(row.total_points))
+
     if not xp_vals:
-        return {
-            "z_band": float(z_band),
-            "centre_blend": float(centre_blend),
-            "n": 0,
-        }
+        return {"z_band": float(z_band), "centre_blend": float(centre_blend), "n": 0, "scorer": SCORER}
     y = np.asarray(y_vals, float)
     mu = np.asarray(xp_vals, float)
     log = gaussian_log_score(y, mu, SIGMA)
@@ -308,6 +330,7 @@ def player_mc_log(
         "mean_xp": float(mu.mean()),
         "mean_points": float(y.mean()),
         "mae": float(np.abs(y - mu).mean()),
+        "scorer": SCORER,
     }
 
 
@@ -325,7 +348,8 @@ def run_season(label: str, season: str, e0: str, code: str) -> dict[str, Any]:
     oracle_table = _season_table(CACHE / e0)
     ranks = {norm_team(r["team"]): float(r["rank"]) for r in oracle_table}
     fixtures = _fixtures(code)
-    scored = build_scored_season(season, code)
+    merged = load_merged(season)
+    alpha_g, alpha_a, _, _ = numagent_xp.load_alphas()
 
     season_cov = [season_band_coverage(oracle_table, ranks, ols, profile, z_band=z) for z in Z_GRID]
     # Centreline match MAE is independent of z; report once at baseline.
@@ -344,9 +368,16 @@ def run_season(label: str, season: str, e0: str, code: str) -> dict[str, Any]:
             # Player log only on the cross of interest: all z at baseline blend,
             # and all blends at baseline z (avoids 12× full player sweeps).
             if blend == BASELINE_BLEND or z == BASELINE_Z:
+                print(f"  player log z={z} blend={blend}…", flush=True)
                 player_rows.append(
                     player_mc_log(
-                        scored, ranks, map_kw, z_band=z, centre_blend=blend
+                        merged,
+                        ranks,
+                        map_kw,
+                        z_band=z,
+                        centre_blend=blend,
+                        alpha_g=alpha_g,
+                        alpha_a=alpha_a,
                     )
                 )
 
@@ -534,7 +565,7 @@ def write_report(payload: dict[str, Any], path: Path | None = None) -> Path:
         f"- Grid: `z ∈ {list(Z_GRID)}`, `blend ∈ {list(BLEND_GRID)}`.",
         "- Ranks: oracle final table; OLS / place profile LOSO on the other three closed seasons.",
         "- Primary: eligible player-GW Gaussian log of MC-mean cascade xP "
-        f"(GW{GW_START}–{GW_END}, n_prior≥{MIN_HISTORY}, xmi≥{MIN_XMI}, σ={SIGMA}).",
+        f"(GW{GW_START}–{GW_END}, n_prior≥{MIN_HISTORY}, minutes>{MIN_MINUTES}, `score_xp_v2`, σ={SIGMA}).",
         "- Secondary: season GF/GA residual coverage vs Gaussian nominal; "
         "MC strand-mean MAE; empirical 50/80% goal coverage; PIT.",
         "- Adopt a non-baseline knob only if the pre-registered rule below fires.",
@@ -610,7 +641,7 @@ def write_report(payload: dict[str, Any], path: Path | None = None) -> Path:
         "3. Player-GW log barely moves across the grid (|Δ| ≪ materiality). "
         "MC cover_50 sits ~0.71 for every knob — discrete Poisson dominates band width.",
         "4. Keep `Z_BAND=1.0` and `centre_blend=0.5`. Share seeding stays parked. "
-        "Item 4 next: player G/A model.",
+        "Scorer: Numagent 2.0 `score_xp_v2`. Item 4 next: player G/A finish.",
         "",
         "## Reproduce",
         "",
@@ -631,6 +662,7 @@ def run() -> dict[str, Any]:
     aggregate = _aggregate(results)
     payload = {
         "task": "match_band_calibration",
+        "scorer": SCORER,
         "seasons": [r["label"] for r in results],
         "n_mc": N_MC,
         "mc_seed": MC_SEED,

@@ -187,9 +187,11 @@ def gf_ga_from_rank(
     ols_ga: tuple[float, float] | None = None,
     mae_gf: float | None = None,
     mae_ga: float | None = None,
+    z_band: float | None = None,
 ) -> dict[str, float]:
     """Season GF/GA + uncertainty bands for a predicted finishing place."""
     r = max(1.0, min(20.0, float(rank)))
+    z = float(Z_BAND if z_band is None else z_band)
     prof = profile if profile is not None else rank_gf_ga_profile()
     if method == "rankmean":
         lo = int(math.floor(r))
@@ -220,13 +222,14 @@ def gf_ga_from_rank(
         "rank": r,
         "gf": float(gf),
         "ga": float(ga),
-        "gf_lo": float(gf - Z_BAND * sd_gf),
-        "gf_hi": float(gf + Z_BAND * sd_gf),
-        "ga_lo": float(max(0.0, ga - Z_BAND * sd_ga)),
-        "ga_hi": float(ga + Z_BAND * sd_ga),
+        "gf_lo": float(gf - z * sd_gf),
+        "gf_hi": float(gf + z * sd_gf),
+        "ga_lo": float(max(0.0, ga - z * sd_ga)),
+        "ga_hi": float(ga + z * sd_ga),
         "sd_gf": float(sd_gf),
         "sd_ga": float(sd_ga),
         "method": method,
+        "z_band": z,
     }
 
 
@@ -295,6 +298,7 @@ def match_prediction(
     mae_gf: float | None = None,
     mae_ga: float | None = None,
     league_gf: float | None = None,
+    z_band: float | None = None,
 ) -> dict[str, Any]:
     """Full scoreline forecast for one fixture from Opta ranks."""
     if ranks is None:
@@ -313,6 +317,7 @@ def match_prediction(
         "ols_ga": ols_ga,
         "mae_gf": mae_gf,
         "mae_ga": mae_ga,
+        "z_band": z_band,
     }
     home_rates = gf_ga_from_rank(ranks[h], **rate_kw)
     away_rates = gf_ga_from_rank(ranks[a], **rate_kw)

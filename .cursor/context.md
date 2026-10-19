@@ -33,11 +33,13 @@ Today’s pre-merge cloud cascade work initially scored with **`xp_on_pot` /
   `xi_plus_captain_ft` ± minutes overlay) via
   `src/markets/cascade_score_v2.py`
 - Oracle-rank cascade 2025/26 — **viable**; oracle − market log **+0.0187**
+- Match-band / player G/A finish / rank tracker — rewired + rejudged 2026-10-19
+  (all three **park** under `score_xp_v2`; keep baseline z=1.0 / blend=0.5,
+  share×λ rates, OLS rank→GF/GA map)
 
 Suite write-up: `reports/long_horizon_numagent2_rerun.md`.
-
-**Still legacy (`xp_on_pot` / `compute_xp`):** match-band calibration, player
-G/A finish, expanding GF/GA rank tracker — park until rewired.
+Screens: `reports/match_band_calibration.md`, `reports/player_ga_finish.md`,
+`reports/rank_tracker.md`.
 
 ### Scorer defaults (live + historical assemble)
 
