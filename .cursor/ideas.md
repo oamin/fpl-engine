@@ -315,3 +315,5 @@ Next levers: transfer-cost / bank / FT between snapshots; priced t/t+1 blend; sy
 **Item 4 (2026-10-19):** player finishing scales screened and parked. Candidate−control log +0.00079 [−0.00050, +0.00197] covers zero. Keep share×λ.
 
 **Item 5 (2026-10-19):** expanding GF/GA rank tracker screened and parked. Fails prior_rank on match MSE and player log; gap closed vs oracle−prior is negative. Keep Opta/OLS rank map for cascade pots. Transformative list 1–5 done. Share seeding and lead-time widening stay parked.
+
+**Short-horizon scenario (2026-10-19):** priced t:t+1 advisor layer kept (`src/models/short_horizon_cascade.py`). Path stick 0.90 vs indep overlap 0.24 on 2024-25 mid-season deadlines. Do not replace `score_xp` mean. Do not roll shares from sampled goals. Strand→t+2 Opta hand-off still open.

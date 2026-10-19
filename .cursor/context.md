@@ -90,6 +90,8 @@ Item 4 — player G/A finishing (`ga_mode=finish`): shift-1 `(ΣG+κ)/(ΣxG+κ)`
 
 Item 5 — rank tracker (expanding club GF/GA pots vs prior-rank / oracle). Does **not** beat prior_rank on match MSE or player log; closes a **negative** fraction of the oracle−prior gap. **Park.** Cascade transformative list (1–5) complete. See `reports/rank_tracker.md`.
 
+Short-horizon scenario layer (priced t:t+1): sample market λ ±15%, freeze deadline shares, path FT between weeks. On 2024-25 GW10/20/28: path stick **0.90** vs independent overlap **0.24**; mean |ΔxP| vs centreline ~0.21. **Keep as advisor** — does not replace published `score_xp`. Hand-off into t+2 Opta cascade deferred. See `reports/short_horizon_scenario.md`.
+
 ## Next
 
 `src/live/minutes_llm.py` is the minutes model. One completion covers the owned fifteen and every player who is doubtful, injured, suspended, unavailable, or given a chance below 100. Last observed minutes are context. A question, a missing id, minutes outside 0 to 90, or minutes above 0 for someone who cannot play writes no file. The scorer is not called from that module.

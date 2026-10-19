@@ -1,19 +1,11 @@
 {
   "updated": "2026-10-19",
-  "task": "rank_tracker",
-  "status": "done_item_5_parked_list_complete",
+  "task": "short_horizon_scenario",
+  "status": "done_keep_advisor",
   "outputs": {
-    "report": "reports/rank_tracker.md",
-    "json": "data/processed/rank_tracker_screen.json",
-    "module": "src/eval/rank_tracker.py"
+    "report": "reports/short_horizon_scenario.md",
+    "json": "data/processed/short_horizon_scenario.json",
+    "module": "src/models/short_horizon_cascade.py"
   },
-  "cascade_items": {
-    "1a_captain": "done",
-    "1b_ft_path": "done",
-    "2_minutes_overlay": "done_default_on",
-    "3_match_band": "parked_baseline",
-    "4_player_ga_finish": "parked_share_x_lambda",
-    "5_rank_tracker": "parked_keep_rank_map"
-  },
-  "notes": "Expanding GF/GA tracker loses to prior_rank on MSE and log (frac oracle-prior gap closed −0.14). Transformative cascade list 1–5 complete."
+  "notes": "Priced t:t+1 scenario+FT advisor: stick 0.90 vs indep overlap 0.24 (2024-25 GW10/20/28). Keep advisor; score_xp mean unchanged. t+2 Opta hand-off deferred."
 }

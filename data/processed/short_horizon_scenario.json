@@ -1,0 +1,109 @@
+{
+  "task": "short_horizon_scenario",
+  "decision": "keep_scenario_advisor",
+  "path_signal": true,
+  "mean_layer_quiet": true,
+  "summary": {
+    "season": "2024-25",
+    "decision_gws": [
+      10,
+      20,
+      28
+    ],
+    "n_ok": 3,
+    "mean_delta_v": -6.626633447338975,
+    "mean_stick": 0.8972222222222223,
+    "mean_hits": 2.1666666666666665,
+    "mean_abs_player_xp_delta_t": 0.2061906084213312
+  },
+  "indep_overlap_mean": 0.24444444444444446,
+  "per_deadline": [
+    {
+      "season": "2024-25",
+      "decision_gw": 10,
+      "next_gw": 11,
+      "n_strands": 8,
+      "seed": 7,
+      "gamma": 0.9,
+      "band": 0.15,
+      "n_pool": 103,
+      "n_fixtures_t": 10,
+      "n_fixtures_t1": 10,
+      "v_indep": 112.41673107027245,
+      "indep_overlap_t_t1": 0.4,
+      "mean_v_path": 109.91877297415641,
+      "std_v_path": 0.7818434704457696,
+      "delta_v_path_minus_indep": -2.4979580961160366,
+      "mean_transfers_t1": 1.0,
+      "mean_hits_t1": 0.0,
+      "mean_stick_rate": 0.9333333333333333,
+      "player_xp_delta_t": {
+        "mean_abs_player_delta": 0.1876593921137566,
+        "max_mean_abs_player_delta": 0.2008240529694543
+      },
+      "player_xp_delta_t1": {
+        "mean_abs_player_delta": 0.20342165806083604,
+        "max_mean_abs_player_delta": 0.21426117722188265
+      },
+      "notes": "Shares frozen at deadline before t. Market \u03bb \u00b1 band sampled; no share roll from scorelines. score_xp unpublished."
+    },
+    {
+      "season": "2024-25",
+      "decision_gw": 20,
+      "next_gw": 21,
+      "n_strands": 8,
+      "seed": 7,
+      "gamma": 0.9,
+      "band": 0.15,
+      "n_pool": 104,
+      "n_fixtures_t": 10,
+      "n_fixtures_t1": 10,
+      "v_indep": 121.37461412742081,
+      "indep_overlap_t_t1": 0.3333333333333333,
+      "mean_v_path": 117.1272123468595,
+      "std_v_path": 1.2387142995583855,
+      "delta_v_path_minus_indep": -4.247401780561319,
+      "mean_transfers_t1": 1.0,
+      "mean_hits_t1": 0.0,
+      "mean_stick_rate": 0.9333333333333333,
+      "player_xp_delta_t": {
+        "mean_abs_player_delta": 0.21000902894625512,
+        "max_mean_abs_player_delta": 0.21851956702240655
+      },
+      "player_xp_delta_t1": {
+        "mean_abs_player_delta": 0.189960320226278,
+        "max_mean_abs_player_delta": 0.21580817198102142
+      },
+      "notes": "Shares frozen at deadline before t. Market \u03bb \u00b1 band sampled; no share roll from scorelines. score_xp unpublished."
+    },
+    {
+      "season": "2024-25",
+      "decision_gw": 28,
+      "next_gw": 29,
+      "n_strands": 8,
+      "seed": 7,
+      "gamma": 0.9,
+      "band": 0.15,
+      "n_pool": 96,
+      "n_fixtures_t": 10,
+      "n_fixtures_t1": 8,
+      "v_indep": 114.92000475050665,
+      "indep_overlap_t_t1": 0.0,
+      "mean_v_path": 101.78546428516708,
+      "std_v_path": 2.7316584724472643,
+      "delta_v_path_minus_indep": -13.134540465339569,
+      "mean_transfers_t1": 2.625,
+      "mean_hits_t1": 6.5,
+      "mean_stick_rate": 0.8250000000000001,
+      "player_xp_delta_t": {
+        "mean_abs_player_delta": 0.22090340420398186,
+        "max_mean_abs_player_delta": 0.2584516228583535
+      },
+      "player_xp_delta_t1": {
+        "mean_abs_player_delta": 0.11360717767492247,
+        "max_mean_abs_player_delta": 0.11982195876120445
+      },
+      "notes": "Shares frozen at deadline before t. Market \u03bb \u00b1 band sampled; no share roll from scorelines. score_xp unpublished."
+    }
+  ]
+}

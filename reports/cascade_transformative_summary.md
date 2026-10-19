@@ -13,4 +13,6 @@ Ordered list after the oracle-rank ceiling test. Diagnostics unless noted gated.
 
 Still parked from earlier notes: pen/role bump, share seeding, lead-time %/GW widening, chips on strand.
 
-**Read:** Items 1–2 make the cascade honest (objective + availability). Items 3–5 do not move the player-GW likelihood enough to change pot/G·A/rank plumbing. Further lift needs a different player model family or a priced short-horizon blend — not more band knobs.
+**Read:** Items 1–2 make the cascade honest (objective + availability). Items 3–5 do not move the player-GW likelihood enough to change pot/G·A/rank plumbing.
+
+**Follow-on:** short-horizon scenario layer on priced t:t+1 kept as an advisor (`reports/short_horizon_scenario.md`) — path stick ≫ independent rebuilds; published mean `score_xp` unchanged. Opta hand-off from strands into t+2 still open.
