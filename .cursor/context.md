@@ -22,16 +22,22 @@ Pre-deadline squad advisor under 2026/27 rules. Cursor implements and screens; G
 
 ### Cascade / short-horizon alignment (2026-10-19)
 
-Today’s pre-merge cloud cascade work (multistage captain/FT/minutes,
-match-band, player finish, rank tracker, first short-horizon draft) scored
-with **`xp_on_pot` / `compute_xp`** — not Numagent 2.0. Audit:
-`reports/cascade_pre_numagent2_audit.md`. Those arms stay parked until
-rewired onto `numagent_xp`.
+Today’s pre-merge cloud cascade work initially scored with **`xp_on_pot` /
+`compute_xp`**. Audit: `reports/cascade_pre_numagent2_audit.md`.
 
-**Aligned:** `src/models/short_horizon_cascade.py` — FD AH+OU → Dixon–Coles
-`M` → `score_team_side` (`score_xp_v2`); λ ±15% scenarios; path L1→L3.
-Mean layer corr vs L4 projector = 1.0. Screen decision
-`keep_scenario_advisor` (`reports/short_horizon_scenario.md`).
+**Aligned + re-run on `score_xp_v2`:**
+
+- Short-horizon advisor — `src/models/short_horizon_cascade.py` (L4 corr 1.0;
+  `keep_scenario_advisor`)
+- Long-horizon Opta multistage (`squad_sum` / `xi_plus_captain` /
+  `xi_plus_captain_ft` ± minutes overlay) via
+  `src/markets/cascade_score_v2.py`
+- Oracle-rank cascade 2025/26 — **viable**; oracle − market log **+0.0187**
+
+Suite write-up: `reports/long_horizon_numagent2_rerun.md`.
+
+**Still legacy (`xp_on_pot` / `compute_xp`):** match-band calibration, player
+G/A finish, expanding GF/GA rank tracker — park until rewired.
 
 ### Scorer defaults (live + historical assemble)
 

@@ -460,3 +460,8 @@ Parked until rewired onto `numagent_xp.score_team_side`:
 `score_xp_v2` + L1/L3 (`src/models/short_horizon_cascade.py`); mean layer
 matches L4 `project_week_score_xp_v2` (corr 1.0 on smoke). Decision
 `keep_scenario_advisor` on 2024-25 GW10/20.
+
+**Re-run 2026-10-19:** long-horizon Opta multistage + oracle-rank cascade
+now score through `cascade_score_v2` / `score_team_side`. Oracle viable;
+suite `reports/long_horizon_numagent2_rerun.md`. Match-band / player-finish /
+rank-tracker screens still legacy.

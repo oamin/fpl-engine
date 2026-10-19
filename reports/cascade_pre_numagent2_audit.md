@@ -16,6 +16,8 @@ today uses the same assembler.
 | Rank tracker | `cursor/rank-tracker-cc3d` | `xp_on_pot` + `compute_xp` | **No** — legacy (parked) |
 | Short-horizon scenario | `cursor/short-horizon-scenario-cc3d` (pre-align) | `xp_on_pot` + Shin pots | **No** — superseded |
 | Short-horizon scenario | **this branch** `cursor/score-xp-v2-align-cc3d` | `numagent_xp.score_team_side` → `score_xp_v2` | **Yes** |
+| Multistage MC+MILP / captain / FT / overlay | **this branch** (rerun) | Opta λ → `cascade_score_v2` → `score_xp_v2` | **Yes** |
+| Oracle-rank cascade | **this branch** (rerun) | Opta λ → `score_team_side` | **Yes** (viable) |
 
 Reports under `reports/multistage_*` that say “score_xp v2” while naming
 `xp_on_pot` are **mislabelled**: that was the pre-2.0 share×λ formula, not
@@ -40,13 +42,18 @@ Locked in `experiments/protocol.json` → `numagent_2_0` / `primary_scorer`:
 - Path FT = L1 then L3
 - Mean-layer vs L4 projector correlation reported as a sanity check
 
+## Long-horizon suite re-run
+
+See `reports/long_horizon_numagent2_rerun.md` (2026-10-19). Multistage +
+oracle-rank now use `cascade_score_v2` / `score_team_side`.
+
 ## Still parked (do not re-run as live screens)
 
 Until rewired onto `numagent_xp`:
 
-- Multistage MC+MILP Opta cascade (`multistage_mc_milp` family)
 - Match-band / player-finish / rank-tracker likelihood screens that call
   `xp_on_pot` or `compute_xp` as the candidate score
 
 Any new screen must name `score_xp_v2` and import from
-`src/markets/numagent_xp.py` (or L4 `project_week_score_xp_v2`).
+`src/markets/numagent_xp.py` (or L4 `project_week_score_xp_v2` /
+`cascade_score_v2`).

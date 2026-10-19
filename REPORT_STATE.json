@@ -1,15 +1,18 @@
 {
-  "milestone": "score-xp-v2-align-cascade",
+  "milestone": "long-horizon-numagent2-rerun",
   "status": "complete",
-  "summary": "Audited today's cascade/short-horizon work against Numagent 2.0. Pre-merge arms used xp_on_pot/compute_xp (legacy). Rewrote short_horizon_cascade on score_xp_v2 (numagent_xp + L1/L3); mean layer matches L4 projector (corr 1.0). keep_scenario_advisor on 2024-25 GW10/20. Legacy multistage/match-band/finish/rank screens parked until rewired.",
+  "summary": "Rewired Opta multistage (squad_sum / xi_plus_captain / xi_plus_captain_ft ± minutes overlay) and oracle-rank cascade onto score_xp_v2 via cascade_score_v2. Reran diagnostics (N=12 strands; oracle PASS vs flat/prior, oracle−market log +0.0187). Match-band / player-finish / rank-tracker remain on xp_on_pot until rewired.",
   "gemini": "",
   "artifacts": [
-    "src/models/short_horizon_cascade.py",
-    "tests/test_short_horizon_v2.py",
-    "reports/cascade_pre_numagent2_audit.md",
-    "reports/short_horizon_scenario.md",
-    "data/processed/short_horizon_scenario.json",
-    ".cursor/context.md",
-    ".cursor/ideas.md"
+    "src/markets/cascade_score_v2.py",
+    "src/models/multistage_mc_milp.py",
+    "src/eval/oracle_rank_cascade.py",
+    "reports/long_horizon_numagent2_rerun.md",
+    "reports/oracle_rank_cascade_2025_26.md",
+    "reports/multistage_mc_milp_overlay_trial.md",
+    "reports/multistage_xi_captain_overlay_trial.md",
+    "reports/multistage_xi_captain_ft_overlay_trial.md",
+    "reports/multistage_xi_captain_ft_trial.md",
+    "data/processed/oracle_rank_cascade_2025_26.json"
   ]
 }
