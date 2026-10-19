@@ -56,15 +56,15 @@ Haaland remains a high-frequency captain candidate under `xi_plus_captain`
 (freq_captain ≈ 0.24). Overlay vs no-overlay FT boards stay close — overlay
 still useful plumbing, not a likelihood claim.
 
-## Still on legacy scorer (not re-run here)
+## Stage screens rejudged on `score_xp_v2` (2026-10-19)
 
-Calibration screens that still call `xp_on_pot` / `compute_xp`:
+| Screen | Decision | Headline |
+| --- | --- | --- |
+| Match-band | **park baseline** | `change_defaults=False`; keep `z=1.0`, `blend=0.5` (max \|Δlog\| 0.00047 < 0.001) |
+| Player G/A finish | **park** | `keep_share_times_lambda`; finish−v2 **−0.00187** [−0.00256, −0.00117] |
+| Rank tracker | **park** | `keep_rank_map_park_tracker`; fails prior MSE+log; gap closed −0.33 |
 
-- `src/eval/match_band_calibration.py`
-- `src/eval/rank_tracker.py`
-- `src/eval/player_ga_screen.py`
-
-Parked until rewired onto `cascade_score_v2` / `numagent_xp`.
+Reports: `match_band_calibration.md`, `player_ga_finish.md`, `rank_tracker.md`.
 
 ## Reproduce
 
@@ -75,4 +75,7 @@ PYTHONPATH=. python3 -m src.models.multistage_mc_milp --n 12 --objective xi_plus
 PYTHONPATH=. python3 -m src.models.multistage_mc_milp --n 12 --objective xi_plus_captain_ft --no-minutes-overlay \
   --out data/predictions/2026-27/multistage_ft_no_overlay
 PYTHONPATH=. python3 -m src.eval.oracle_rank_cascade
+PYTHONPATH=. python3 -m src.eval.match_band_calibration
+PYTHONPATH=. python3 -m src.eval.player_ga_screen
+PYTHONPATH=. python3 -m src.eval.rank_tracker
 ```
