@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:223-mateta-listed-out",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Crystal Palace",
+  "player_ids": [
+    223
+  ],
+  "headline": "Mateta listed out",
+  "body": "The Guardian team news, 16 Oct 2026: Mateta (Crystal Palace) injured / unavailable.",
+  "sha256": "b11faa6bdd990e8b4de1c51eeb699a06ba405ad1a6f8a0e6bac3fd51e085a50c"
+}

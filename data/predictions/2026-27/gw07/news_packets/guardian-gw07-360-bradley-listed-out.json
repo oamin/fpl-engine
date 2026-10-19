@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:360-bradley-listed-out",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Liverpool",
+  "player_ids": [
+    360
+  ],
+  "headline": "Bradley listed out",
+  "body": "The Guardian team news, 16 Oct 2026: Bradley (Liverpool) injured / unavailable.",
+  "sha256": "e37ed74ebac6ee295befcbeaa0e4afc9d4d13d397cb039c6ccee42fdb293124e"
+}

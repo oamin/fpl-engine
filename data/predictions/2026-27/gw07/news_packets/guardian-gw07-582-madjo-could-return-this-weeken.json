@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:582-madjo-could-return-this-weekend",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Aston Villa",
+  "player_ids": [
+    582
+  ],
+  "headline": "Madjo could return this weekend",
+  "body": "The Guardian team news, 16 Oct 2026: Madjo (Aston Villa) listed doubtful.",
+  "sha256": "7b252568d0252135504b04b35e98e589744f476c11f7eca0185a13009418fe7d"
+}

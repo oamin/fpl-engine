@@ -230,12 +230,13 @@ def priced_gameweeks(
     names: Mapping[int, str],
     start: int,
     end: int,
-    limit: int = 3,
+    limit: int = 2,
 ) -> list[int]:
     """Club weeks with a 1X2 for every side, in order, at most ``limit``.
 
-    A week with no clubs is skipped. The walk stops at the first club week
-    that is missing a 1X2. A later priced week is not used in its place.
+    Default ``limit=2`` matches live book depth (t and t+1). A week with no
+    clubs is skipped. The walk stops at the first club week that is missing a
+    1X2. A later priced week is not used in its place.
     """
     found: list[int] = []
     for gw in range(int(start), int(end) + 1):
@@ -591,7 +592,7 @@ def price_half(
     pool = build_pool(roster, shares, minutes, set(state.ids()))
     pots = opening_pots_by_team_gw(odds, list(fixtures), names)
     end = half_end(int(gw))
-    line_weeks = priced_gameweeks(fixtures, pots, names, int(gw), end, limit=3)
+    line_weeks = priced_gameweeks(fixtures, pots, names, int(gw), end, limit=2)
     if not line_weeks or int(line_weeks[0]) != int(gw):
         raise ScorerError(f"GW{int(gw)} is not fully priced")
 

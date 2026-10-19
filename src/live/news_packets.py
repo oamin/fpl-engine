@@ -2,7 +2,8 @@
 
 Gemini 2026-10-08 (bc-90156d5d): whitelist sources only; published_at must
 predate the deadline; cite-or-reject via ``news_tags.PacketDoc``. Numeric ``xmi`` compile is
-``compile_player_xmi`` / ``compile_high_profile_test`` (sidecar only).
+``compile_player_xmi`` / ``compile_xmi_from_numeric`` / ``compile_high_profile_test``
+(sidecar only; tag path remains default).
 
 Packets live under ``data/predictions/2026-27/gwNN/news_packets/*.json``.
 When that directory is empty, ``load_gameweek_packets`` synthesises docs from
@@ -435,7 +436,8 @@ def match_element_id(
             score = 100
         elif web and parts[-1] == web[-1]:
             score = 80 if first and parts[0] == first[0] else 40
-        elif second and parts[-1] == second[0]:
+        elif second and parts[-1] in {second[0], second[-1]}:
+            # Surname may be the last token of a compound second_name (Rúben Dias).
             score = 80 if first and parts[0] == first[0] else 40
         if score:
             scored.append((score, int(element["id"])))
@@ -451,7 +453,7 @@ def match_element_id(
 def _tag_one_packet(packet: NewsPacket, *, player_name: str) -> str:
     """Closed tag for a single packet. Negated injury lines do not count.
 
-    ``could return this weekend`` is logged ``50/50`` (half the prior), not ``ask``.
+    ``could return this weekend`` is logged ``50/50`` (half the prior), not ``none``.
     """
     from src.live.news_tags import SUPPORT, fold
 
@@ -474,10 +476,11 @@ def _tag_one_packet(packet: NewsPacket, *, player_name: str) -> str:
                 continue
             hits.add(tag)
             break
-    for tag in ("transferred", "injured", "benched", "firm_starter"):
+    # Override tags only for compile; firm_starter is diagnostic → none (rolling).
+    for tag in ("transferred", "injured", "benched"):
         if tag in hits:
             return tag
-    return "ask"
+    return "none"
 
 
 def classify_packets_deterministic(
@@ -487,12 +490,12 @@ def classify_packets_deterministic(
 ) -> tuple[str, list[str]]:
     """Map packet text to a closed tag via ``news_tags.SUPPORT`` phrases.
 
-    The latest ``published_at_utc`` wins, including ``ask``. An older injury
-    line does not outvote a later note that the player is available.
-    Within that packet: transferred > injured > benched > firm_starter.
+    The latest ``published_at_utc`` wins, including ``none`` (rolling default).
+    An older injury line does not outvote a later note that the player is available.
+    Within that packet: transferred > injured > benched; else none.
     """
     if not packets:
-        return "ask", []
+        return "none", []
     deciding = max(packets, key=lambda packet: (packet.published_at_utc, packet.packet_id))
     tag = _tag_one_packet(deciding, player_name=player_name)
     return tag, [deciding.packet_id]
@@ -534,8 +537,17 @@ def render_player_context(
     return "\n".join(lines) + "\n"
 
 
-def rolling_game_minutes(history: Sequence[float], window: int = 3) -> float | None:
+def rolling_game_minutes(
+    history: Sequence[float],
+    window: int = 3,
+    *,
+    rho: float = 1.0,
+) -> float | None:
     """Mean of the last ``window`` gameweek rows, including zeros.
+
+    ``rho=1`` is a flat mean (legacy default). ``rho<1`` is geometric decay
+    with the most recent row weight 1 and older rows ``rho^k``
+    (``protocol.score_xp_v2_minutes_decay``).
 
     A short history uses every row it has. An empty history returns None.
     """
@@ -543,7 +555,262 @@ def rolling_game_minutes(history: Sequence[float], window: int = 3) -> float | N
     if not rows:
         return None
     sample = rows[-int(window) :]
-    return sum(sample) / len(sample)
+    n = len(sample)
+    if n == 0:
+        return None
+    rho = float(rho)
+    if rho >= 1.0 - 1e-12:
+        return sum(sample) / n
+    # Chronological oldest→newest: newest gets rho^0.
+    weights = [rho ** (n - 1 - i) for i in range(n)]
+    wsum = sum(weights)
+    if wsum <= 0:
+        return sum(sample) / n
+    return sum(w * m for w, m in zip(weights, sample, strict=True)) / wsum
+
+
+def rolling_game_minutes_sigma(history: Sequence[float], window: int = 3) -> float:
+    """Sample SD of the last ``window`` gameweek rows, zeros included.
+
+    Needs at least two rows in the window; otherwise 0.
+    """
+    rows = [float(minutes) for minutes in history]
+    if not rows:
+        return 0.0
+    sample = rows[-int(window) :]
+    if len(sample) < 2:
+        return 0.0
+    mean = sum(sample) / len(sample)
+    var = sum((x - mean) ** 2 for x in sample) / (len(sample) - 1)
+    return float(var**0.5)
+
+
+def _sample_sigma(values: Sequence[float]) -> float:
+    if len(values) < 2:
+        return 0.0
+    mean = sum(values) / len(values)
+    var = sum((x - mean) ** 2 for x in values) / (len(values) - 1)
+    return float(var**0.5)
+
+
+def sigma_m_for_regime(
+    *,
+    tag: str,
+    xmi: float | None,
+    minutes: Sequence[float] | None,
+    prior: float | None = None,
+    window: int = 3,
+) -> float:
+    """Minutes uncertainty: tag sets the regime, history sets the spread.
+
+    - Hard zero ``xmi`` → σ = 0.
+    - ``50/50`` → mixture SD of {0, base} (regime is play-or-not).
+    - ``firm_starter`` → SD of ≥60′ apps in the window when ≥2 exist, else
+      full-window SD (zeros included).
+    - ``rolling avg`` / ``benched`` / other → SD of the same 3-GW window.
+    """
+    if xmi is None:
+        return 0.0
+    if float(xmi) <= 0.0:
+        return 0.0
+
+    series = [float(m) for m in (minutes or ())]
+    window = max(1, int(window))
+    hist = rolling_game_minutes_sigma(series, window=window)
+
+    if tag == "50/50":
+        base = 90.0 if prior is None else float(prior)
+        mu = 0.5 * base
+        # Two-point mixture: 0 or base with equal weight.
+        return float((0.5 * (0.0 - mu) ** 2 + 0.5 * (base - mu) ** 2) ** 0.5)
+
+    if tag == "firm_starter":
+        sample = series[-window:] if series else []
+        starts = [m for m in sample if m >= 60.0]
+        if len(starts) >= 2:
+            return _sample_sigma(starts)
+        return hist
+
+    return hist
+
+
+# Tags that replace the rolling default. ``none`` / ``firm_starter`` / empty → rolling.
+XMI_OVERRIDE_TAGS = frozenset({"injured", "transferred", "benched", "50/50"})
+
+# Predicted-XI blobs: need enough resolved names to trust the list.
+_XI_MARKER = re.compile(
+    r"(?:predicted|expected|likely)\s+(?:starting\s+)?"
+    r"(?:xi|eleven|line[\s-]?up|team)\s*[:\-–]\s*",
+    re.IGNORECASE,
+)
+_MIN_PREDICTED_XI = 9
+
+
+def extract_predicted_xi_names(text: str) -> list[str] | None:
+    """Pull player-name tokens from the last ``predicted XI: …`` list in ``text``.
+
+    Returns ``None`` when no marker is found or the list is too short to trust.
+    """
+    matches = list(_XI_MARKER.finditer(text or ""))
+    if not matches:
+        return None
+    blob = text[matches[-1].end() :]
+    # Stop before a new prose sentence when possible.
+    blob = re.split(r"\n\n|\.\s+(?=[A-Z][a-z]+\s+(?:says|said|was|is|has|may|could))", blob, maxsplit=1)[0]
+    names: list[str] = []
+    for part in re.split(r"[;,]", blob):
+        piece = part.strip()
+        piece = re.sub(r"^(?:and|&)\s+", "", piece, flags=re.IGNORECASE)
+        piece = piece.rstrip(".").strip()
+        if len(piece) < 2:
+            continue
+        if len(piece.split()) > 4:
+            continue
+        names.append(piece)
+    return names if len(names) >= 8 else None
+
+
+def resolve_predicted_xi(
+    packet: NewsPacket,
+    bootstrap: Mapping[str, Any],
+) -> tuple[int, ...] | None:
+    """Map a packet's predicted-XI name list to FPL ids at ``packet.club``.
+
+    Needs a club and at least ``_MIN_PREDICTED_XI`` unique resolutions.
+    """
+    club = (packet.club or "").strip()
+    if not club:
+        return None
+    names = extract_predicted_xi_names(f"{packet.headline}. {packet.body}")
+    if not names:
+        return None
+    elements = list(bootstrap.get("elements") or [])
+    team_names = {int(row["id"]): str(row["name"]) for row in bootstrap.get("teams") or []}
+    # Packet club may be short ("Man City") — accept exact bootstrap name only via
+    # match_element_id; also try short_name → name.
+    short_to_name = {
+        str(row.get("short_name") or ""): str(row["name"]) for row in bootstrap.get("teams") or []
+    }
+    club_key = club
+    if club not in team_names.values() and club in short_to_name:
+        club_key = short_to_name[club]
+    resolved: list[int] = []
+    seen: set[int] = set()
+    for name in names:
+        pid = match_element_id(name, club_key, elements, team_names)
+        if pid is None and club_key != club:
+            pid = match_element_id(name, club, elements, team_names)
+        if pid is None or pid in seen:
+            continue
+        seen.add(pid)
+        resolved.append(pid)
+    if len(resolved) < _MIN_PREDICTED_XI:
+        return None
+    return tuple(resolved)
+
+
+def predicted_lineup_roles(
+    packets: Sequence[NewsPacket],
+    bootstrap: Mapping[str, Any],
+) -> dict[int, tuple[str, str]]:
+    """Latest predicted XI per club → ``xi`` / ``rotated`` roles.
+
+    A player named in the latest XI for his club is ``xi``. A player who
+    appeared in an earlier predicted XI for that club but not the latest is
+    ``rotated`` (treated as benched). Squad mates never named in any predicted
+    XI are omitted (rolling default). Availability SUPPORT tags still beat
+    these roles inside ``compile_player_xmi``.
+    """
+    by_club: dict[str, list[tuple[str, str, tuple[int, ...]]]] = {}
+    for packet in packets:
+        xi = resolve_predicted_xi(packet, bootstrap)
+        if not xi:
+            continue
+        club = (packet.club or "").strip()
+        if not club:
+            continue
+        by_club.setdefault(club, []).append(
+            (packet.published_at_utc, packet.packet_id, xi)
+        )
+    roles: dict[int, tuple[str, str]] = {}
+    for _club, rows in by_club.items():
+        rows_sorted = sorted(rows, key=lambda row: (row[0], row[1]))
+        ever: set[int] = set()
+        for _ts, _pid, xi in rows_sorted:
+            ever.update(xi)
+        latest_ts, latest_id, latest_xi = rows_sorted[-1]
+        latest_set = set(latest_xi)
+        for pid in latest_xi:
+            roles[int(pid)] = ("xi", latest_id)
+        for pid in ever - latest_set:
+            # Earlier XI only — left out of the latest predicted side.
+            roles[int(pid)] = ("rotated", latest_id)
+    return roles
+
+
+def compile_xmi_from_numeric(
+    *,
+    player_id: int,
+    name: str,
+    position: str,
+    prior: float | None,
+    status: str | None,
+    chance: float | None,
+    p_start: float,
+    m_if_start: float,
+    m_if_bench: float = 0.0,
+    minutes: Sequence[float] | None = None,
+    cite: Sequence[str] | None = None,
+) -> dict[str, Any]:
+    """LLM / structured context → continuous minutes (live sidecar).
+
+    ``m = clip(p_start,0,1) · m_if_start + (1−p) · m_if_bench``, then hard FPL
+    flags force 0. Does not invent numbers from free text — caller supplies the
+    triple. Closed-season likelihood is not claimed without packet archives.
+
+    Pre-registered role: ``protocol.live_xmi_numeric_sidecar``.
+    """
+    series = list(minutes) if minutes is not None else []
+    p = float(min(1.0, max(0.0, float(p_start))))
+    m_xi = float(max(0.0, float(m_if_start)))
+    m_bn = float(max(0.0, float(m_if_bench)))
+    xmi = p * m_xi + (1.0 - p) * m_bn
+    tag = "numeric"
+    source = "llm_numeric"
+    if status in {"s", "u"} or chance == 0:
+        xmi = 0.0
+        tag = "injured"
+        source = "override:hard_flag"
+    # Mixture SD when p in (0,1); else regime from numeric point.
+    if source == "llm_numeric" and 0.0 < p < 1.0:
+        mu = xmi
+        sigma = float(
+            (p * (m_xi - mu) ** 2 + (1.0 - p) * (m_bn - mu) ** 2) ** 0.5
+        )
+    else:
+        sigma = sigma_m_for_regime(
+            tag="rolling avg" if xmi and xmi > 0 else "injured",
+            xmi=xmi,
+            minutes=series,
+            prior=prior,
+            window=3,
+        )
+    return {
+        "player_id": int(player_id),
+        "name": name,
+        "position": position,
+        "prior": prior,
+        "status": status,
+        "chance": chance,
+        "context_tag": tag,
+        "cited_packet_ids": list(cite or ()),
+        "xmi_source": source,
+        "p_start": p,
+        "m_if_start": m_xi,
+        "m_if_bench": m_bn,
+        "xmi_compiled": float(xmi),
+        "xmi_sigma": float(sigma),
+    }
 
 
 def compile_player_xmi(
@@ -556,43 +823,97 @@ def compile_player_xmi(
     chance: float | None,
     packets: Sequence[NewsPacket],
     minutes: Sequence[float] | None = None,
+    lineup_role: str | None = None,
+    lineup_packet_id: str | None = None,
 ) -> dict[str, Any]:
-    """Deterministic packet → tag → minutes (sidecar, not live CSV).
+    """Deterministic packet → minutes (sidecar, not live CSV).
 
-    A classifier ``ask`` is remapped to ``rolling avg`` and writes the last
-    three games' average. ``minutes`` is the gameweek series, zeros included.
-    With no series, the appearance prior is used instead.
+    **Default:** rolling mean of the last three gameweek rows (zeros included);
+    if the series is empty, the appearance ``prior``.
+
+    **Override** only for clearly flagged context: ``injured``, ``transferred``,
+    ``benched`` (known rotation), ``50/50`` (could-return). ``none`` (and any
+    non-override tag) keeps the rolling default — there is no ``ask``. Hard FPL
+    flags (suspended / unavailable / chance 0) always force 0.
+
+    **Predicted XI** (from ``predicted_lineup_roles``): ``lineup_role='xi'``
+    applies the firm-starter floor; ``'rotated'`` applies benched minutes when
+    the player left an earlier predicted XI. Availability SUPPORT tags beat
+    lineup roles. Do not attach full-XI packets via ``player_ids`` just to
+    drive classify — ``left out`` phrases about another name would leak.
+
+    ``xmi_sigma`` is the regime spread (3-GW history, or 50/50 mixture).
     """
     from src.live.news_tags import minutes_for_tag
 
-    tag, cited = classify_packets_deterministic(packets, player_name=name)
-    if tag == "50/50":
-        # News says he might play. Half the prior. A hard zero on the FPL
-        # flag (suspended, unavailable, chance 0) still wins.
-        if status in {"s", "u"} or chance == 0:
-            xmi: float | None = 0.0
-        else:
+    series = list(minutes) if minutes is not None else []
+    rolling = rolling_game_minutes(series)
+    default_xmi: float | None = rolling if rolling is not None else prior
+
+    context_tag, cited = classify_packets_deterministic(packets, player_name=name)
+
+    # Hard availability flags win before any tag.
+    if status in {"s", "u"} or chance == 0:
+        tag = (
+            "injured"
+            if context_tag in {None, "ask", "none", "firm_starter", "rolling avg"}
+            else context_tag
+        )
+        xmi: float | None = 0.0
+        source = "override:hard_flag"
+    elif context_tag in XMI_OVERRIDE_TAGS:
+        if context_tag == "50/50":
             base = 90.0 if prior is None else float(prior)
             xmi = 0.5 * base
-    elif tag == "ask":
-        series = list(minutes) if minutes is not None else []
-        xmi = rolling_game_minutes(series)
+            tag = "50/50"
+        else:
+            xmi = minutes_for_tag(context_tag, position, prior, chance, status)
+            tag = context_tag
+        source = f"override:{context_tag}"
+    elif lineup_role == "xi":
+        xmi = minutes_for_tag("firm_starter", position, prior, chance, status)
         if xmi is None:
-            xmi = prior
-        tag = "rolling avg"
+            xmi = 75.0
+        tag = "lineup_xi"
+        source = "lineup:xi"
+        if lineup_packet_id:
+            cited = [lineup_packet_id]
+    elif lineup_role == "rotated":
+        xmi = minutes_for_tag("benched", position, prior, chance, status)
+        if xmi is None:
+            xmi = 15.0
+        tag = "benched"
+        source = "lineup:rotated"
+        if lineup_packet_id:
+            cited = [lineup_packet_id]
     else:
-        xmi = minutes_for_tag(tag, position, prior, chance, status)
+        # none / firm_starter / empty → rolling default (no ask)
+        xmi = default_xmi
+        tag = "rolling avg"
+        source = "rolling"
+
+    sigma = sigma_m_for_regime(
+        tag=tag,
+        xmi=xmi,
+        minutes=series,
+        prior=prior,
+        window=3,
+    )
     return {
         "player_id": int(player_id),
         "name": name,
         "position": position,
         "tag": tag,
+        "context_tag": context_tag,
+        "xmi_source": source,
         "cited_packet_ids": cited,
         "prior": prior,
         "status": status,
         "chance": chance,
         "xmi_compiled": xmi,
+        "xmi_sigma": sigma,
         "n_packets": len(packets),
+        "lineup_role": lineup_role,
     }
 
 
@@ -616,6 +937,7 @@ def compile_high_profile_test(
         root=root,
         include_synthetic_fpl=True,
     )
+    lineup_roles = predicted_lineup_roles(packets, bootstrap)
     elements = {int(row["id"]): row for row in bootstrap.get("elements") or []}
     teams = {int(row["id"]): str(row["name"]) for row in bootstrap.get("teams") or []}
     hist = history or {}
@@ -634,6 +956,7 @@ def compile_high_profile_test(
         name = str(element.get("web_name") or pid)
         position = ELEMENT[int(element["element_type"])]
         club = teams.get(int(element["team"]), "")
+        role, role_pkt = lineup_roles.get(int(pid), (None, None))
         contexts.append(
             render_player_context(
                 player_id=int(pid),
@@ -657,12 +980,14 @@ def compile_high_profile_test(
                 chance=chance,
                 packets=mine,
                 minutes=list(hist.get(int(pid), [])),
+                lineup_role=role,
+                lineup_packet_id=role_pkt,
             )
         )
     return {
         "gw": int(gw),
         "deadline_utc": deadline_utc,
-        "compile": "news_tags.minutes_for_tag via SUPPORT phrases",
+        "compile": "SUPPORT phrases + predicted-XI lineup roles",
         "players": rows,
         "context_markdown": "\n".join(contexts),
     }

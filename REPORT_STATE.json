@@ -1,10 +1,11 @@
 {
-  "milestone": "betfair-t1-to-score",
-  "status": "filled",
-  "summary": "Anytime goalscorer for betfair_t1 is 12 runners. Delayed books have no per-runner stake, so the £250 floor is the market total and the 35% spread gate stays. Arsenal–Leeds has 11 names. Palace–Forest has Delap. The other Player To Score books are thin or wide. All 12 names attach to the bootstrap.",
-  "gemini": "bc-e75c8209-ffd3-590a-b610-d0e34e62bbee",
+  "milestone": "numagent-gw07-pi-lock",
+  "status": "complete",
+  "summary": "PI locked GW7 selection: C Haaland, VC Mbeumo, bench Verbruggen→Murillo→Khalaili→Mainoo, 1 FT Davis→Affengruber. Stored data/predictions/2026-27/gw07/numagent_lock.json with score_xp_v2 + share_se_pos_prior + L4 BOOKIE_DEPTH=2 γ=1, props off, xmi/odds/board hashes and git HEAD.",
+  "gemini": "",
   "artifacts": [
-    "src/live/betfair_props.py",
-    "data/predictions/2026-27/gw06/betfair_t1/betfair_to_score.json"
+    "data/predictions/2026-27/gw07/numagent_lock.json",
+    "reports/numagent_live_pick_gw07.md",
+    "reports/score_xp_v2_share_se_pos_prior.md"
   ]
 }

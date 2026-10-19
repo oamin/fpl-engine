@@ -1,0 +1,160 @@
+{
+  "sigma_from_xg": {
+    "n_sides": 3038,
+    "mean_xg": 1.4968615246775192,
+    "var_goals_minus_xg": 1.375203092781782,
+    "poisson_mean_xg": 1.4968615246775192,
+    "excess_var": -0.12165843189573722,
+    "sigma_from_overdispersion": 0.0,
+    "sigma_from_log_resid": 0.6887693716928903,
+    "log_resid_mean": -0.21247446406478068,
+    "note": "Overdispersion \u03c3 is 0 when Var(G\u2212xG) \u2264 E[xG] (common here). Log-residual SD mixes outcome noise with \u03bb error \u2014 upper bound only. Player co-movement needs \u03c3_idio; match-shock alone is not residual-scale."
+  },
+  "realised": {
+    "pooled": {
+      "n_atk_pairs": 31984,
+      "corr_atk_atk_resid": 0.06769745969130525,
+      "n_atk_gk_pairs": 14131,
+      "corr_atk_opp_gk_resid": -0.27644182563271774,
+      "resid_sd_minutes60": 3.1189313209961194
+    },
+    "by_season": [
+      {
+        "season": "2022-23",
+        "n_atk_pairs": 7957,
+        "corr_atk_atk_resid": 0.10313953498207595,
+        "n_atk_gk_pairs": 3532,
+        "corr_atk_opp_gk_resid": -0.3162324864713709
+      },
+      {
+        "season": "2023-24",
+        "n_atk_pairs": 8067,
+        "corr_atk_atk_resid": 0.07595785016836906,
+        "n_atk_gk_pairs": 3555,
+        "corr_atk_opp_gk_resid": -0.25781068940260377
+      },
+      {
+        "season": "2024-25",
+        "n_atk_pairs": 8318,
+        "corr_atk_atk_resid": 0.05917125263073946,
+        "n_atk_gk_pairs": 3573,
+        "corr_atk_opp_gk_resid": -0.268537299035109
+      },
+      {
+        "season": "2025-26",
+        "n_atk_pairs": 7642,
+        "corr_atk_atk_resid": 0.03157825305978418,
+        "n_atk_gk_pairs": 3471,
+        "corr_atk_opp_gk_resid": -0.26255318926125465
+      }
+    ],
+    "definition": "resid = total_points \u2212 score_xp_v2; minutes\u226560; unique element\u00d7fixture; attackers=MID/FWD"
+  },
+  "matched": {
+    "mode": "hetero_sigma_out",
+    "pos_sigma": {
+      "DEF": 2.90747685732439,
+      "FWD": 3.579669105458127,
+      "GKP": 2.664279548455586,
+      "MID": 2.935530286975103
+    },
+    "grid": [
+      {
+        "sigma_log_lam": 0.05,
+        "sigma_out_mid": 2.935530286975103,
+        "sigma_out_gkp": 2.664279548455586,
+        "corr_home_mids_xp": 0.0631070694905809,
+        "corr_home_m1_vs_away_gk": 0.08504559454006755,
+        "loss": 0.26136738156854655
+      },
+      {
+        "sigma_log_lam": 0.08,
+        "sigma_out_mid": 2.935530286975103,
+        "sigma_out_gkp": 2.664279548455586,
+        "corr_home_mids_xp": 0.07825684631635138,
+        "corr_home_m1_vs_away_gk": 0.07770427667465153,
+        "loss": 0.25095042420490055
+      },
+      {
+        "sigma_log_lam": 0.1,
+        "sigma_out_mid": 2.935530286975103,
+        "sigma_out_gkp": 2.664279548455586,
+        "corr_home_mids_xp": 0.09164045945516594,
+        "corr_home_m1_vs_away_gk": 0.07057397679037353,
+        "loss": 0.24141320150037607
+      },
+      {
+        "sigma_log_lam": 0.12,
+        "sigma_out_mid": 2.935530286975103,
+        "sigma_out_gkp": 2.664279548455586,
+        "corr_home_mids_xp": 0.10744633453249995,
+        "corr_home_m1_vs_away_gk": 0.06179826320656528,
+        "loss": 0.2303926884471531
+      },
+      {
+        "sigma_log_lam": 0.15,
+        "sigma_out_mid": 2.935530286975103,
+        "sigma_out_gkp": 2.664279548455586,
+        "corr_home_mids_xp": 0.1352357117533272,
+        "corr_home_m1_vs_away_gk": 0.04587366978667402,
+        "loss": 0.21233597266648913
+      },
+      {
+        "sigma_log_lam": 0.2,
+        "sigma_out_mid": 2.935530286975103,
+        "sigma_out_gkp": 2.664279548455586,
+        "corr_home_mids_xp": 0.19039893003916997,
+        "corr_home_m1_vs_away_gk": 0.013360281245831038,
+        "loss": 0.18302617312801955
+      },
+      {
+        "sigma_log_lam": 0.3,
+        "sigma_out_mid": 2.935530286975103,
+        "sigma_out_gkp": 2.664279548455586,
+        "corr_home_mids_xp": 0.311426442295418,
+        "corr_home_m1_vs_away_gk": -0.062174504217869735,
+        "loss": 0.15122478701382347
+      },
+      {
+        "sigma_log_lam": 0.4,
+        "sigma_out_mid": 2.935530286975103,
+        "sigma_out_gkp": 2.664279548455586,
+        "corr_home_mids_xp": 0.4160975119350033,
+        "corr_home_m1_vs_away_gk": -0.13603493577624148,
+        "loss": 0.16081078584174882
+      },
+      {
+        "sigma_log_lam": 0.5,
+        "sigma_out_mid": 2.935530286975103,
+        "sigma_out_gkp": 2.664279548455586,
+        "corr_home_mids_xp": 0.4944139384359842,
+        "corr_home_m1_vs_away_gk": -0.2007840333045788,
+        "loss": 0.19353515631219365
+      }
+    ],
+    "best": {
+      "sigma_log_lam": 0.3,
+      "sigma_out_mid": 2.935530286975103,
+      "sigma_out_gkp": 2.664279548455586,
+      "corr_home_mids_xp": 0.311426442295418,
+      "corr_home_m1_vs_away_gk": -0.062174504217869735,
+      "loss": 0.15122478701382347
+    },
+    "note": "Idio = position mean sigma_out (expanding residual SD). xp_se is not used. Marginal draw SD \u2248 sigma_out; coupling from \u03c3_\u03bb."
+  },
+  "recommended": {
+    "sigma_log_lam": 0.3,
+    "sigma_idio": 2.935530286975103,
+    "sigma_out_by_position": {
+      "DEF": 2.90747685732439,
+      "FWD": 3.579669105458127,
+      "GKP": 2.664279548455586,
+      "MID": 2.935530286975103
+    },
+    "source": "hetero_sigma_out_plus_matched_sigma_log_lam",
+    "dirichlet_shares_default": false,
+    "dirichlet_note": "Keep Dirichlet off for match-coupling calibration; enable later for within-team share risk",
+    "caveat": "Prefer per-player sigma_out from outcome_spread; sigma_idio is scalar fallback only. xp_se never enters draws."
+  },
+  "verdict": "Ship **\u03c3_log_lam=0.300** with per-player **\u03c3_out** (position means MID=2.94, GKP=2.66). Draw mid\u2013mid +0.311 vs realised +0.068 (|\u0394|=0.244); opp-GK -0.062 vs -0.276 (|\u0394|=0.214). Scalar fallback \u03c3_idio=2.94. xp_se stays shrink-only."
+}

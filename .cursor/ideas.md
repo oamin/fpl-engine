@@ -165,7 +165,7 @@ The clean fill is kept in 2023/24 only. Gameweeks 1–8 against Gameweeks 9–38
 The upper-tail reading was reviewed the same day and not added ([upper tail](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). A higher historical ceiling, conditional on a half-point score gap, is the haul arm already parked. Do not open a cut at 10, 12, or 15. Spread penalties stay parked.
 
 - Asian handicap, as a live-week pot only, after its own lock. Historical `score_xp` stays on the 1X2 and the 2.5 line. The free file has the handicap and no 3.5 line.
-- Player props, on the decision week only, in their own column. An Odds API call needs a cost estimate and the PI's approval. No market is discovered in a loop.
+- Player props → goal-share rescale is prototyped (`prop_shares.rescale_goal_shares`; live probe 2026-10-16). Still needs FPL id matching and wiring into live `score_xp_v2` t:t+2. No market discovery loop; region=`us` only; per-event odds (BTTS not on bulk `/odds`).
 - A season-rank weight on the copied tail only. Strength comes from season prices on a log scale, shrunk and clipped to about a 15% move in the team rate. It is idle on a week that already has a 1X2. It is not a 1–10 multiplier. The first Gameweek 6 call, once a line exists, still copies the third priced step flat.
 - An LLM guider with three outputs: minutes rows with a source, a search constraint, or a question back. The backend re-solves and reports the points cost. Ownership stays out of `score_xp`. A human pick of the constrained squad is logged and scored after the gameweek against the declined plan.
 
@@ -286,6 +286,8 @@ Gemini: DROP outright-derived ratings from the active decision horizon; keep unp
 
 Gemini: KEEP MATCH_ODDS+OU2.5; CHANGE TO_SCORE into imminent score_xp; CHANGE outrights into shrunk forecast_xp priors; DROP FGS, BTTS (diag), correct score, half-time from player scoring. Assists stay dropped.
 
+**PI (2026-10-14) — live `score_xp_v2` scoreline:** when wiring live weeks, **include BTTS in the Dixon–Coles fit whenever priced** (weight 0 only if missing). Also support **OU totals other than 2.5** (3.0, 3.5, …) and **AH lines as quoted** (±3, ±3.5, …), not only OU2.5 / small handicaps. Historical FD screens stay AH+OU2.5, BTTS off. Noted in `reports/score_xp_v2.md` §2.1.
+
 ## LightGBM reweighting during a climb
 
 Rejected 2026-10-02, with Gemini. Stage 24 already trained walk-forward trees on the xP parts. Spearman fell from 0.308 to about 0.24–0.25, and the climb trailed xP by 74 to 132. It is not a new label.
@@ -299,3 +301,137 @@ Rejected 2026-10-09 ([gw15 rerun](bc-90156d5d-ce87-56ee-b772-011f4d43dbd0)). Set
 Noted 2026-10-09 ([entry 3271409](bc-90156d5d-ce87-56ee-b772-011f4d43dbd0)). Not built.
 
 `best_free_transfer` tries one sale. A team with two free transfers is compared with a one-transfer plan, so the wildcard gap is wider than a two-transfer search would leave it. Entry 3271409 has two. The Gameweek 6 gap on the 7 Oct file is 34.90 against that one-transfer plan. A second sale was not priced. Do not read 102.72 as the lead over the best no-chip move.
+
+## Strategiser: ownership tilt and η·SE penalty
+
+Parked 2026-10-14. Ownership Layer 2 (`v = μ·(1−λ·own)`) scrapped — μ overrides EO optics. η·SE objective penalty (`v = μ − η·σ`) scrapped — double-counts estimation uncertainty. Replaced by EB shrink to μ_post before the MILP. Screen: `reports/se_credibility.md` (constant K beat none on log-score). **PI 2026-10-16:** constant-K **retired for decision boards** (`mode=none`; `mu_post` ≡ `score_xp_v2`). Do not reintroduce shrink or EO/η·SE without a new pre-registered screen.
+
+## SE-dependent and se_rescaled shrinkage arms
+
+Dropped 2026-10-14 after one pre-registered extra arm. `se` (player K) and `se_rescaled` (SE × walk-forward raw z-SD then SE-dependent K) both lose to `constant` on paired GW log-score (`se_rescaled − constant` −0.012). Tercile slopes still show SE information; do not reopen the family without a new dated protocol entry. Multi-week σ_model for SE_total stays pending separately.
+
+## Correlated draws: residual opp-GK coupling under resid-scale σ_out
+
+Updated 2026-10-14. Per-player `sigma_out` is built (`reports/outcome_spread.md`) and wired into draws. With position-mean σ_out (~2.7–3.6) + matched σ_λ=0.30, toy mid–mid corr is still high and atk–opp GK too weak vs realised (−0.06 vs −0.276). Next candidates if planning needs both width and CS anti-corr: (1) shared CS/attack factor with partial player loadings, (2) idio = σ_out after removing estimated match factor. Not a forecast gate.
+
+## Draw-based captain override (haul / CVaR)
+
+Parked 2026-10-15 after `protocol.fixture_planning_glue`. Captain by P(xp≥8) or top-20% CVaR vs argmax μ: both paired intervals cover 0 (`reports/fixture_planning_glue.md`). μ stays the captain rule for Layers 1–3. Same-fixture stack vs diversify cleared above 0 (+0.55) as a diagnostic only — not a MILP constraint. Reopen captain tails only with a new dated protocol arm.
+
+## L4 bookie path (t:t+2) + beyond arms A/B/C
+
+Trialled 2026-10-15 (`reports/layer4_bookie_trial.md`). Used cov **draw-mean as μ** (replaced `mu_post`) — wrong structure; all arms lost to L3. Parked. Correct structure is `strategy_layer4_mupost_priced`: week-t = L3 `mu_post`; look-ahead = projected point score on book pots; cov draws reserved for risk only. That path clears L3 (+2.90/GW under prior depth-3 boards). Do not reopen cov-as-μ without a new protocol lock.
+
+**Book depth lock 2026-10-16:** live Odds API prices ~t and t+1 only (~9d). `BOOKIE_DEPTH=2`. L3 = week t; L4 priced = t:t+1 hard-stop. Do not forecast weeks without book lines (t+2 and beyond stay out of the decision boards; calendar fills are strength-only and not the L4 default).
+
+## Share-SE shrink (≠ total xp_se EB)
+
+Tried 2026-10-16 (`protocol.score_xp_v2_share_se_shrink`). All-minutes prior leaked DEF/GK share — superseded. Scorers-only lost vs raw — parked. **Position×minutes prior** (`protocol.score_xp_v2_share_se_pos_prior`, 2026-10-17): `s0∝m·w(pos)` with locked per-90 weights — **promoted** Δ vs raw **+0.0195** [+0.0158, +0.0234]. Default `share_se_shrink=True`, `share_se_prior=position_minutes`. Van Hecke GW7 sanity: sG 37%→7%, μ 8.73→5.12.
+
+## Rate M0 / early-season n
+
+Tried 2026-10-16 (`protocol.score_xp_v2_rate_m0`). `r=G/(M+M0)`, `Δr=max(√G,c)/(M+M0)` with M0=270, c=0.25 — minutes pseudo-count + zero-event SE floor; same-season only; not position-prior soft shrink. **Promoted:** Δ vs raw MLE **+0.0037** [+0.0006, +0.0071]. Default `RATE_M0=270`, `RATE_SE_FLOOR=0.25`.
+
+## Minutes decay (ρ=0.7 last-3)
+
+Tried 2026-10-16 (`protocol.score_xp_v2_minutes_decay`). Predicted m with geometric decay vs flat last-3 on `score_xp_v2` (not oracle). **Inconclusive:** Δ **−0.0009** [−0.0026, +0.0007]. Park; keep flat ρ=1.
+
+## LLM numeric xmi sidecar
+
+Locked 2026-10-16 (`protocol.live_xmi_numeric_sidecar`): `compile_xmi_from_numeric(p_start, m_if_start, m_if_bench)`. Live-only until packet-archive shadow; tag→bucket remains default.
+
+## Beyond E: strength pots × γ_fill
+
+Tried 2026-10-16 (`protocol.strategy_layer4_mupost_beyond_e`). Fill weeks = strength-only `score_xp_v2` × γ_fill^{k+1} (0.9). **E−A inconclusive:** +0.097/GW [−1.87, +1.98]. Park; keep A hard-stop (no unpriced fills).
+
+## Beyond E_decay: strength×γ + minutes decay (combined 1+2)
+
+Tried 2026-10-16 (`protocol.strategy_layer4_mupost_beyond_e_decay`). Same fills as E plus last-3 minutes ρ=0.7 on t+1 and fills. **E_decay−A:** **−1.92/GW** [−4.05, +0.40] (all seasons mean ≤0 vs A; worse than E alone). Park; keep A + expanding minutes.
+
+## L4 risk-seeking mu_dec (cov SD + posterior SE)
+
+Trialled 2026-10-15 (`protocol.strategy_layer4_mupost_risk`, `reports/layer4_mupost_risk.md`). Mean boards = priced μ_post; MILP on `mu_dec = mu_post + 0.35 · (0.5 z(se_post) + 0.5 z(sd_cov))`. L4_risk−L3 **+1.48/GW** [−0.71, +3.86] **covers 0** → park as default. All four seasons ≥0 (2024-25 flipped to +0.29 vs mean-only −1.29) but pooled edge weaker than mean-only priced; more hits in 2022-23. Do not promote over priced μ_post. Reopen only with a new λ/posture protocol (e.g. chase dial), not by retuning on these totals.
+
+## L4 mu_post ± se_post (no cov)
+
+Quick trial 2026-10-15 (`protocol.strategy_layer4_mupost_se_pm`, `reports/layer4_mupost_se_pm.md`). `mu_dec = mu_post ± K·xp_se`. Both cover 0 vs L3 (+SE +0.88; −SE +2.05, lo −0.16). −SE closer than +SE but neither beats mean-only priced (+2.90). 2024-25 still negative on both. `se_post` is player estimation SE, not fixture covariance — intuition that it already embeds cov is not supported for this decision use. Parked.
+
+**Not tested:** `mu_dec = mu_post / se_post` (or any divide-by-SE board) on the t:t+2 MILP. SE entered only as (i) constant-K EB shrink (locked), (ii) ±se_post / z(se) risk additives (parked). Do not conflate with team-form μ/SE below.
+
+## Team-form FDR μ/SE (beyond t+2)
+
+Screened 2026-10-16 (`reports/team_form_fdr.md`). Expanding club Σ pts → form; FDR = form_own−form_opp on t+3…t+7. Raw-μ FDR Spearman **+0.352** (2024-25 **+0.399** after stripping assistant managers). μ/SE form weaker (+0.13 pooled; flat 2024-25). **Locked: raw μ only.** SE diagnostic. Park μ/SE form.
+
+## L4 beyond-t+2 arm D (team-form fill)
+
+Trialled 2026-10-16 (`protocol.strategy_layer4_mupost_beyond_d`, `reports/layer4_mupost_beyond_d.md`). Same structure as old B: mean(priced μ)×FDR scale, but FDR = locked raw expanding club form. γ=1, unconstrained hits. **D−A −2.27/GW [−4.02, −0.61]** — loses all four seasons. D−L3 inconclusive. Correlation of form with future margins does not make a useful MILP fill. **Park long-horizon fill; keep A hard-stop.** Do not retune amp/τ on these totals.
+
+## L4 beyond-t+2 D adaptive scales
+
+Trialled 2026-10-16 (`protocol.strategy_layer4_mupost_beyond_d_adapt`, `reports/layer4_mupost_beyond_d_adapt.md`). As-of OLS amp on y_rel~amp·tanh(FDR/τ); decay adds ρ^k grid. Median amp≈0.38–0.40, ρ≈0.95. **const−A −2.58/GW**; **decay−A −1.86/GW** — both clear lose. As-of tuning does not rescue the fill. **Park.** Do not retune ρ-grid / min_pairs on these totals.
+
+## L4 team-form terminal (no fill)
+
+Trialled 2026-10-16 (`protocol.strategy_layer4_mupost_terminal`, `reports/layer4_mupost_terminal.md`). Same priced H=3 as A; credit_i = amp·Σ tanh(FDR)·mean_priced_μ on squad x only. **T−A −3.27/GW [−5.02, −1.52]** — worse than fills. Form as hold-value still distorts transfers. **Park.** Keep A; move on inside priced window.
+
+## L4 windowed μ_post (W=3 / W=5)
+
+Trialled 2026-10-15 (`protocol.strategy_layer4_mupost_window`, `reports/layer4_mupost_window.md`). Expanding priced L4 clears L3 (+2.90). Windowed rates/priors/minutes + cohort moments on last W GWs, project t:t+2: **W3 −10.8/GW**, **W5 −7.1/GW** vs L3 (both intervals below 0); lose to expanding by −13.7 / −10.0. Short windows overfit noise. Parked — keep expanding.
+
+## L4 chase upside semi-SD (always-on)
+
+Trialled 2026-10-15 (`protocol.strategy_layer4_mupost_chase`, `reports/layer4_mupost_chase.md`). `mu_dec = mu_post + 0.35·z(cov upside semi-SD)`. Chase clears L3 (+2.34) but vs expanding −0.56 covers 0 — not a year-round upgrade. Better structure than full-SD/SE blend. Keep expanding default; reopen chase only behind a rank/weeks-left schedule (dated arm), not by retuning λ.
+
+## L4 adaptive λ from L3 cumulative gap
+
+Trialled 2026-10-15 (`protocol.strategy_layer4_mupost_posture`, `reports/layer4_mupost_posture.md`). Lockstep; gap = L3−L4 through t−1 only; λ via tanh. Adapt−L3 +0.97 covers 0; adapt−exp **−1.93** (below 0). Spent many weeks consolidating while ahead of L3. Feasible as-of; does not beat neutral expanding. Do not retune λ_max/scale on these totals.
+
+## L4 chase-only when behind L3
+
+Trialled 2026-10-15 (`protocol.strategy_layer4_mupost_chase_behind`, `reports/layer4_mupost_chase_behind.md`). Same gap dial; **λ_cons = 0**. Clears L3 (+2.85); vs expanding **−0.04** covers 0 (pooled −5). Mostly mirrors expanding when ahead; 2024-25 chases 67% and +0.36 vs exp. Optional live posture; not a default upgrade. Do not retune on these totals.
+
+## L4 beyond-t+2 on priced μ_post (A/B/C)
+
+Trialled 2026-10-15 (`protocol.strategy_layer4_mupost_beyond`, `reports/layer4_mupost_beyond.md`). A hard-stop clears L3 (+2.90). B FDR clears L3 (+2.51) but −0.39 vs A (covers 0); C decay weaker (+1.78 covers 0 vs L3). Keep A. B interesting on 2024-25 only — do not promote without a new dated arm.
+
+## L5 beam width K
+
+Screened 2026-10-15 (`reports/layer5_beam_k.md`): under myopic beam, K=2 +126 vs K=1; K≥8 saturated. **Re-locked 2026-10-16** after horizon-MILP K-grid vs L4 (`reports/layer5_vs_l4_k_rescreen.md`): K=8≡16 best pooled (+91); all cover 0. **PI: `DEFAULT_BEAM_K=8`.** Does not promote L5 over L4.
+
+## L5 vs L4 no-chip (Step 5)
+
+Trialled 2026-10-15 (`reports/layer5_vs_l4.md`). L5−L4 **−2.82/GW** [−5.48, +0.18] covers 0; pooled −350; every season negative. L5 burns chips early and takes more hits. **Not promoted** — L4 priced γ=1 stays default. Reopen only with a dated arm (e.g. chip opportunity-cost in beam, longer horizon, or chips-only when ahead).
+
+## L5 longer horizon (option 3 → chip calendar)
+
+Screened 2026-10-15. Root cause of L5 miss: myopic chip greed on short t:t+2 boards. **Option 3** boards depth=8 wired into L5 beam (`layer5_calendar_trial.py`). L5_cal−L4 **−2.41/GW** covers 0 — still burns chips early; **not promoted**. Mildly better than priced L5 (−2.82) but insufficient.
+
+**First-order (2026-10-15):** `reports/layer5_nochips_diagnose.md` — with chips locked, L5 beam was **−441** vs L4 (myopic `solve_week_transfers`); calendar under L4 only −176 (covers 0).
+
+**Fixed 2026-10-16:** L5 beam depth-0 none/TC/BB → `solve_horizon_transfers` (L4); later depths XI-only. Smoke beam-no_chips ≡ L4 priced.
+
+**Live-legal calendar (2026-10-16):** no FD beyond t+2. L4+strength-fill H=8 vs L4 priced: **−3.44/GW** lo<0 (pooled −426) — worse than leaked-FD −176. Park extending L4 with crude strength pots; hard-stop stays. Need a better beyond-t+2 signal before long boards.
+
+## L5 one-deadline chip argmax as “strategy”
+
+Rejected as the strategy engine 2026-10-15. Myopic chip-vs-none on a single L4 call cannot invent FT-banking → bench build → BB or early-WC vs save-for-blank. Architecture: Step 2 = thin TC/BB scoring only; Step 4 = joint outer beam (chip timing + transfer/FT path on multi-week priced μ). No play thresholds; no hand rules for WC week or BB-on-DGW.
+
+## L4 γ=0.9 time discount
+
+Superseded 2026-10-15 as priced-path default. γ=1 (undiscounted Σ over priced weeks) clears L3 harder (+3.56 vs +2.55) and drops an artificial knob (`reports/layer4_mupost_gamma1.md`). Do not restore γ&lt;1 without a dated arm. `season_climb_ft.GAMMA=0.9` remains for the legacy published climb only.
+
+## L4 max_hits=2 (artificial cap)
+
+Removed 2026-10-15. Default `DEFAULT_MAX_HITS = SQUAD_SIZE`; objective still `−HIT_COST·hits`. Re-screen priced path: L4−L3 **+2.55/GW** [+0.41, +4.64] (`reports/layer4_mupost_priced.md`). Do not restore a hit cap without a dated protocol arm. Older parked arms that hardcode `MAX_HITS=2` are frozen historical trials.
+
+## L4 fresh open (crowd template vs μ-wildcard)
+
+Trialled 2026-10-15 (`protocol.strategy_layer4_mupost_fresh_open`, `reports/layer4_mupost_fresh_open.md`). Same L3/L4 priced policies; open = shared GW1 crowd **template** hold (not μ_post WC). L4−L3 **+1.87/GW** [−0.35, +4.16] **covers 0** → inconclusive. Season shape flips vs μ-WC open: 2024-25 **+133** (was −40); 2025-26 +136; 2022-23 −39. Default L4 path stays μ-WC open. Shows L4−L3 is **path-seed sensitive** — do not claim the +2.90 edge is opening-invariant. Optional later: premium/next/third opens as dated arms, not retunes.
+
+## L4 FT bank DP (step 3)
+
+Trialled 2026-10-16 (`protocol.strategy_layer4_ft_dp`, `reports/layer4_ft_dp.md`). Leave-one-out DP on as-of one-/two-swap μ gains → τ(gw, bank); climb picks roll unless obj_ft−obj_roll ≥ τ, else ft vs hits by horizon obj. **Parked:** ft_dp−l4 **−0.58/GW** covers 0; hits **276** vs L4 **284** (budget/gate **64/48**); mean FT still **~1.06**; choices ft54/hit42/roll24. Thresholds look sensible (τ↓ in bank, 0 at cap) but do not create hoarding or cut hits toward controls. Do not retune τ on these seasons.
+
+## L4 chip half-stopping (step 4)
+
+Trialled 2026-10-16 (`protocol.strategy_layer4_chip_stop`, `reports/layer4_chip_stop.md`). TC/BB leave-one-out DP τ(weeks_left); WC≥16 / FH≥12 vs none on L4 priced boards. **Parked:** chip_stop−l4 **−0.185/GW** [−2.15, +1.78] covers 0; plays TC8/FH7/BB5/WC3; hits 228 vs 284. Does not clear L4. Do not retune margins/τ on these seasons. L5 beam remains the joint chip search (also not promoted).

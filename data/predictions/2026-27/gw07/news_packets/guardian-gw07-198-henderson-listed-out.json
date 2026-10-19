@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:198-henderson-listed-out",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Crystal Palace",
+  "player_ids": [
+    198
+  ],
+  "headline": "Henderson listed out",
+  "body": "The Guardian team news, 16 Oct 2026: Henderson (Crystal Palace) injured / unavailable.",
+  "sha256": "560d8621a5c36bcb31644dde8dc453a8d486951126cc4cf5e607236261df54f6"
+}

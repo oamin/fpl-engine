@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:274-butland-listed-out",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Hull City",
+  "player_ids": [
+    274
+  ],
+  "headline": "Butland listed out",
+  "body": "The Guardian team news, 16 Oct 2026: Butland (Hull City) injured / unavailable.",
+  "sha256": "2ac6be3aff90398fc4838e6c471825f42e6d5e3d533ef81e4726dfef3b6205ba"
+}

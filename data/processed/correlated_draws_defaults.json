@@ -1,0 +1,14 @@
+{
+  "sigma_log_lam": 0.3,
+  "sigma_idio": 2.935530286975103,
+  "sigma_out_by_position": {
+    "DEF": 2.90747685732439,
+    "FWD": 3.579669105458127,
+    "GKP": 2.664279548455586,
+    "MID": 2.935530286975103
+  },
+  "source": "hetero_sigma_out_plus_matched_sigma_log_lam",
+  "dirichlet_shares_default": false,
+  "dirichlet_note": "Keep Dirichlet off for match-coupling calibration; enable later for within-team share risk",
+  "caveat": "Prefer per-player sigma_out from outcome_spread; sigma_idio is scalar fallback only. xp_se never enters draws."
+}

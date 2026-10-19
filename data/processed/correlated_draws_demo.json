@@ -1,0 +1,83 @@
+{
+  "n_scenarios": 500,
+  "max_abs_mean_err_vs_point": 0.09001858476576174,
+  "corr_home_mids_total_xp": 0.11063477347891602,
+  "corr_home_mids_goal_xp": -0.10221754708570016,
+  "corr_home_m1_vs_away_gk": -0.671692559317704,
+  "summary": [
+    {
+      "player_id": "H_GK",
+      "side": "home",
+      "mu_point": 4.531385028867635,
+      "mu_draw": 4.545781581709157,
+      "sd_draw": 0.3556184704828025,
+      "mu_goals_draw": 0.2261544364211718
+    },
+    {
+      "player_id": "H_D",
+      "side": "home",
+      "mu_point": 6.321845695895115,
+      "mu_draw": 6.3329862836597055,
+      "sd_draw": 0.6186386497860996,
+      "mu_goals_draw": 1.119572883417522
+    },
+    {
+      "player_id": "H_M1",
+      "side": "home",
+      "mu_point": 9.951221869247311,
+      "mu_draw": 10.041240454013076,
+      "sd_draw": 1.1695626536355055,
+      "mu_goals_draw": 4.737860897679119
+    },
+    {
+      "player_id": "H_M2",
+      "side": "home",
+      "mu_point": 6.5359599454894335,
+      "mu_draw": 6.548912396217422,
+      "sd_draw": 0.8833345815367165,
+      "mu_goals_draw": 2.360963708657333
+    },
+    {
+      "player_id": "A_GK",
+      "side": "away",
+      "mu_point": 3.5174077344441987,
+      "mu_draw": 3.5226090119495974,
+      "sd_draw": 0.32769380816291216,
+      "mu_goals_draw": 0.14936676143139657
+    },
+    {
+      "player_id": "A_D",
+      "side": "away",
+      "mu_point": 4.829816067852601,
+      "mu_draw": 4.841592448522262,
+      "sd_draw": 0.458211532248753,
+      "mu_goals_draw": 0.7308718579107863
+    },
+    {
+      "player_id": "A_M1",
+      "side": "away",
+      "mu_point": 7.344805954676869,
+      "mu_draw": 7.349900965941536,
+      "sd_draw": 0.7535461838597813,
+      "mu_goals_draw": 3.0417726910703333
+    },
+    {
+      "player_id": "A_M2",
+      "side": "away",
+      "mu_point": 5.023148011017828,
+      "mu_draw": 5.0281958208599535,
+      "sd_draw": 0.5536892251988114,
+      "mu_goals_draw": 1.5179461801059342
+    }
+  ],
+  "meta": {
+    "n_scenarios": 500,
+    "sigma_log_lam": 0.12,
+    "dirichlet_shares": true,
+    "dirichlet_strength": 40.0,
+    "lam_h0": 1.7,
+    "lam_a0": 1.1,
+    "rho0": -0.05,
+    "seed": 0
+  }
+}

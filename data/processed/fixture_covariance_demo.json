@@ -1,0 +1,120 @@
+{
+  "n_scenarios": 500,
+  "corr_home_mids_xp": 0.5952794489370701,
+  "corr_home_m1_vs_away_gk": -0.7171833298134015,
+  "corr_home_fb_minutes": -0.9879956296274611,
+  "corr_home_fb_xp": -0.28221316448974104,
+  "mean_xp_fwd_when_home_blank": 2.2658193979089662,
+  "mean_xp_fwd_when_home_2plus": 8.191791900660492,
+  "mean_abs_err_vs_point": 0.3614342889456906,
+  "scoreline_mean_h": 1.66,
+  "scoreline_mean_a": 1.11,
+  "meta": {
+    "n_scenarios": 500,
+    "lam_h": 1.7,
+    "lam_a": 1.1,
+    "rho": -0.05,
+    "seed": 0,
+    "n_home_groups": 1,
+    "n_away_groups": 1
+  },
+  "summary": [
+    {
+      "player_id": "H_GK",
+      "side": "home",
+      "mu_point": 4.354218299194449,
+      "mu_draw": 4.28216026252506,
+      "sd_draw": 2.211981914609891,
+      "mean_minutes": 86.93152244736677
+    },
+    {
+      "player_id": "H_D1",
+      "side": "home",
+      "mu_point": 6.182414517069893,
+      "mu_draw": 4.928705502595435,
+      "sd_draw": 3.22632040598501,
+      "mean_minutes": 67.78706455147136
+    },
+    {
+      "player_id": "H_D2",
+      "side": "home",
+      "mu_point": 1.1521975958910133,
+      "mu_draw": 1.7967201343982555,
+      "sd_draw": 1.9509756695978944,
+      "mean_minutes": 35.14659318235725
+    },
+    {
+      "player_id": "H_M1",
+      "side": "home",
+      "mu_point": 7.118030114644428,
+      "mu_draw": 6.907451598537222,
+      "sd_draw": 3.591401431980555,
+      "mean_minutes": 83.16781111861273
+    },
+    {
+      "player_id": "H_M2",
+      "side": "home",
+      "mu_point": 5.00465306100934,
+      "mu_draw": 4.545173488050545,
+      "sd_draw": 2.4581377852132364,
+      "mean_minutes": 68.47974090212435
+    },
+    {
+      "player_id": "H_F",
+      "side": "home",
+      "mu_point": 5.928879712918608,
+      "mu_draw": 5.8639324084004585,
+      "sd_draw": 3.005270625463157,
+      "mean_minutes": 79.37161724633168
+    },
+    {
+      "player_id": "A_GK",
+      "side": "away",
+      "mu_point": 3.402629762418351,
+      "mu_draw": 3.4179279069495117,
+      "sd_draw": 1.9340880760162869,
+      "mean_minutes": 86.92916749961624
+    },
+    {
+      "player_id": "A_D1",
+      "side": "away",
+      "mu_point": 4.814287683145824,
+      "mu_draw": 3.898826524711534,
+      "sd_draw": 2.6793823139913653,
+      "mean_minutes": 69.07475126390842
+    },
+    {
+      "player_id": "A_D2",
+      "side": "away",
+      "mu_point": 0.738161692637349,
+      "mu_draw": 1.2076850412473672,
+      "sd_draw": 1.477800203077049,
+      "mean_minutes": 33.78166389506824
+    },
+    {
+      "player_id": "A_M1",
+      "side": "away",
+      "mu_point": 5.447128215246416,
+      "mu_draw": 5.339597780713419,
+      "sd_draw": 2.779299261240882,
+      "mean_minutes": 83.56301282995506
+    },
+    {
+      "player_id": "A_M2",
+      "side": "away",
+      "mu_point": 4.031086470602962,
+      "mu_draw": 3.9169521622092693,
+      "sd_draw": 2.047960554562899,
+      "mean_minutes": 69.9578780338734
+    },
+    {
+      "player_id": "A_F",
+      "side": "away",
+      "mu_point": 4.65808530522237,
+      "mu_draw": 4.668054394833249,
+      "sd_draw": 2.473977854381896,
+      "mean_minutes": 78.6827154137573
+    }
+  ],
+  "verdict": "Sparse FB minutes corr -0.99 (ok). Attack\u2013opp GK -0.72 (ok). Home mids +0.60 (ok). Fixture path induces the right qualitative couplings without a dense \u03a3."
+}

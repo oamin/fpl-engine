@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:432-mainoo-could-return-this-weekend",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Man Utd",
+  "player_ids": [
+    432
+  ],
+  "headline": "Mainoo could return this weekend",
+  "body": "The Guardian team news, 16 Oct 2026: Mainoo (Man Utd) listed doubtful.",
+  "sha256": "52d283fed19351a0a131017aa6d300b19b26014bb3c6dbb45a4262b70401351a"
+}

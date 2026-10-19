@@ -72,7 +72,9 @@ class MinutesTest(unittest.TestCase):
         self.assertEqual(minutes_for_tag("benched", "GKP", 90, None, "a"), 0.0)
         self.assertEqual(minutes_for_tag("benched", "DEF", 90, None, "a"), 15.0)
         self.assertIsNone(minutes_for_tag("ask", "GKP", 90, None, "a"))
+        self.assertIsNone(minutes_for_tag("none", "GKP", 90, None, "a"))
         self.assertIsNone(minutes_for_tag(None, "GKP", 90, None, "a"))
+        self.assertEqual(minutes_for_tag("50/50", "MID", 80, None, "a"), 40.0)
 
     def test_unavailable_forces_zero(self) -> None:
         self.assertEqual(minutes_for_tag("firm_starter", "DEF", 90, 100, "u"), 0.0)
@@ -172,7 +174,8 @@ class CompletionTest(unittest.TestCase):
         self.assertEqual(decision.tag, "transferred")
         self.assertEqual(decision.xmi, 0.0)
 
-    def test_the_same_article_can_name_the_other_goalkeeper_as_a_starter(self) -> None:
+    def test_firm_starter_is_not_an_llm_override_tag(self) -> None:
+        """Affirmative starter tags are rejected; rolling default covers them."""
         docs = [
             PacketDoc(
                 "bbc-como-2026-09-01",
@@ -180,30 +183,31 @@ class CompletionTest(unittest.TestCase):
                 "Emiliano Martinez started Chelsea's match against Brighton.",
             )
         ]
-        decision = accept_tag(
-            {"player_id": 28, "gw": 3, "tag": "firm_starter", "doc_ids": ["bbc-como-2026-09-01"], "note": ""},
-            docs,
-            position="GKP",
-            prior=90,
-            status=None,
-            chance=None,
-            name="Martinez",
-        )
-        self.assertEqual(decision.xmi, 90.0)
         with self.assertRaises(NewsTagError):
             accept_tag(
-                {"player_id": 140, "gw": 3, "tag": "firm_starter", "doc_ids": ["bbc-como-2026-09-01"], "note": ""},
+                {"player_id": 28, "gw": 3, "tag": "firm_starter", "doc_ids": ["bbc-como-2026-09-01"], "note": ""},
                 docs,
                 position="GKP",
                 prior=90,
                 status=None,
                 chance=None,
-                name="Sánchez",
+                name="Martinez",
             )
+        transferred = accept_tag(
+            {"player_id": 140, "gw": 3, "tag": "transferred", "doc_ids": ["bbc-como-2026-09-01"], "note": ""},
+            docs,
+            position="GKP",
+            prior=90,
+            status=None,
+            chance=None,
+            name="Sánchez",
+        )
+        self.assertEqual(transferred.tag, "transferred")
+        self.assertEqual(transferred.xmi, 0.0)
 
-    def test_ask_leaves_the_minutes_unchanged(self) -> None:
+    def test_none_leaves_the_minutes_unchanged(self) -> None:
         decision = accept_tag(
-            {"player_id": 140, "gw": 2, "tag": "ask", "doc_ids": [], "note": "deal only"},
+            {"player_id": 140, "gw": 2, "tag": "none", "doc_ids": [], "note": "deal only"},
             [],
             position="GKP",
             prior=90,
@@ -212,7 +216,17 @@ class CompletionTest(unittest.TestCase):
             name="Sánchez",
         )
         self.assertIsNone(decision.xmi)
-        self.assertEqual(decision.tag, "ask")
+        self.assertEqual(decision.tag, "none")
+        legacy = accept_tag(
+            {"player_id": 140, "gw": 2, "tag": "ask", "doc_ids": [], "note": "legacy"},
+            [],
+            position="GKP",
+            prior=90,
+            status=None,
+            chance=None,
+            name="Sánchez",
+        )
+        self.assertEqual(legacy.tag, "none")
 
     def test_a_fenced_array_parses(self) -> None:
         parsed = parse_tag_response('```json\n[{"player_id": 140, "gw": 2}]\n```')
@@ -267,7 +281,7 @@ class MergeTest(unittest.TestCase):
                 "team": "CHE",
             },
             (140, 2): {
-                "decision": TagDecision(140, 2, "ask", None, "llm", "deal only", 90),
+                "decision": TagDecision(140, 2, "none", None, "llm", "deal only", 90),
                 "name": "Sánchez",
                 "position": "GKP",
                 "team": "CHE",
@@ -287,7 +301,7 @@ class MergeTest(unittest.TestCase):
         self.assertEqual(rows[(3, 140)]["source"], "fpl")
         self.assertEqual(rows[(3, 140)]["llm_tag"], "transferred")
         self.assertEqual(rows[(2, 140)]["source"], "llm")
-        self.assertEqual(rows[(2, 140)]["tag"], "ask")
+        self.assertEqual(rows[(2, 140)]["tag"], "none")
         self.assertIsNone(rows[(2, 140)]["xmi"])
         self.assertNotIn((140, 2), rows)
 

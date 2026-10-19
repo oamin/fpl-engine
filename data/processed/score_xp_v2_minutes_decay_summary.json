@@ -1,0 +1,55 @@
+{
+  "treatment": "score_xp_v2_min_decay",
+  "baseline": "score_xp_v2_min_flat",
+  "rho": 0.7,
+  "window": 3,
+  "formula": "m\u0302=\u03a3 \u03c1^{n-1-i} m_{t-n+i} / \u03a3 \u03c1^{n-1-i}; n\u22643; \u03c1=0.7; rates/priors/share-SE/M0 unchanged",
+  "seasons": [
+    {
+      "season": "2022-23",
+      "n_rows": 6937,
+      "n_gws": 33,
+      "mean_d_log": -0.0008547255258225263,
+      "mae_flat": 2.395137244883407,
+      "mae_dec": 2.397016864935044
+    },
+    {
+      "season": "2023-24",
+      "n_rows": 6992,
+      "n_gws": 34,
+      "mean_d_log": 0.0006545609079794736,
+      "mae_flat": 2.4575081747269976,
+      "mae_dec": 2.4548551762288833
+    },
+    {
+      "season": "2024-25",
+      "n_rows": 6931,
+      "n_gws": 34,
+      "mean_d_log": -0.0005471681511004719,
+      "mae_flat": 2.3998255483248756,
+      "mae_dec": 2.402273369955881
+    },
+    {
+      "season": "2025-26",
+      "n_rows": 6892,
+      "n_gws": 34,
+      "mean_d_log": -0.002732216391659729,
+      "mae_flat": 2.538773507690972,
+      "mae_dec": 2.539668925649127
+    }
+  ],
+  "cluster_interval": {
+    "mean": -0.0008699995995162082,
+    "lo": -0.0026031304629215396,
+    "hi": 0.000722829393693678,
+    "n_gws": {
+      "2022-23": 33,
+      "2023-24": 34,
+      "2024-25": 34,
+      "2025-26": 34
+    }
+  },
+  "promote_if": "paired interval lo > 0 on four closed seasons",
+  "covers_zero": true,
+  "verdict": "inconclusive"
+}

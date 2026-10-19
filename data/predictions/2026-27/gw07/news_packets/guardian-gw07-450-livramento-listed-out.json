@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:450-livramento-listed-out",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Newcastle",
+  "player_ids": [
+    450
+  ],
+  "headline": "Livramento listed out",
+  "body": "The Guardian team news, 16 Oct 2026: Livramento (Newcastle) injured / unavailable.",
+  "sha256": "49d16760699e06cfe326853612cccf6d0eaa0866536de03e210ab55a038309e7"
+}

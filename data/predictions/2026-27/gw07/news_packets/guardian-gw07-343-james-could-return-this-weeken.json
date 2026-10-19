@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:343-james-could-return-this-weekend",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Leeds",
+  "player_ids": [
+    343
+  ],
+  "headline": "James could return this weekend",
+  "body": "The Guardian team news, 16 Oct 2026: James (Leeds) listed doubtful.",
+  "sha256": "97ed5b036361e7b1146500ee13993c31c2acb3d75952afb8846e3a83af154e98"
+}

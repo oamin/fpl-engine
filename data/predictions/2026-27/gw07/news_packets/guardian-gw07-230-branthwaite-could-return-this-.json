@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:230-branthwaite-could-return-this-weekend",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Everton",
+  "player_ids": [
+    230
+  ],
+  "headline": "Branthwaite could return this weekend",
+  "body": "The Guardian team news, 16 Oct 2026: Branthwaite (Everton) listed doubtful.",
+  "sha256": "e3c86fddadb9035e9c943c4c278707c4ec0b6e42a11b51929cefda97770c7022"
+}

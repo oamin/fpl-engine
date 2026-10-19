@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:415-dorgu-listed-out",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Man Utd",
+  "player_ids": [
+    415
+  ],
+  "headline": "Dorgu listed out",
+  "body": "The Guardian team news, 16 Oct 2026: Dorgu (Man Utd) injured / unavailable.",
+  "sha256": "1a33cae0bfa5361ea4a0f3091406e53068f2def2939f44f198a5ad7925307f62"
+}

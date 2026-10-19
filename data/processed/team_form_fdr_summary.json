@@ -1,0 +1,157 @@
+{
+  "n": 10536,
+  "vs_pts_margin": {
+    "pearson": 0.3487964689854506,
+    "spearman": 0.3515197925634651
+  },
+  "vs_pts": {
+    "pearson": 0.2947693283578405,
+    "spearman": 0.30770604583929784
+  },
+  "mu_vs_pts": {
+    "pearson": 0.25981148644461355,
+    "spearman": 0.2529551836271883
+  },
+  "by_lead": [
+    {
+      "lead": 3,
+      "n": 2266,
+      "pearson_margin": 0.34183506303423816,
+      "spearman_margin": 0.34486097227449597,
+      "mean_pts": 45.732568402471315
+    },
+    {
+      "lead": 4,
+      "n": 2186,
+      "pearson_margin": 0.3401401439538923,
+      "spearman_margin": 0.3456520639664201,
+      "mean_pts": 45.83028362305581
+    },
+    {
+      "lead": 5,
+      "n": 2108,
+      "pearson_margin": 0.3525801032624614,
+      "spearman_margin": 0.3570568835065372,
+      "mean_pts": 45.93738140417457
+    },
+    {
+      "lead": 6,
+      "n": 2028,
+      "pearson_margin": 0.36128657409509346,
+      "spearman_margin": 0.3625323998002486,
+      "mean_pts": 46.11341222879685
+    },
+    {
+      "lead": 7,
+      "n": 1948,
+      "pearson_margin": 0.3492614640084051,
+      "spearman_margin": 0.3472278806280686,
+      "mean_pts": 46.20841889117043
+    }
+  ],
+  "by_season": [
+    {
+      "season": "2022-23",
+      "n": 2736,
+      "pearson_margin": 0.36587713001618566,
+      "spearman_margin": 0.37277508053723873
+    },
+    {
+      "season": "2023-24",
+      "n": 2600,
+      "pearson_margin": 0.35896030147238184,
+      "spearman_margin": 0.3731664157808918
+    },
+    {
+      "season": "2024-25",
+      "n": 2600,
+      "pearson_margin": 0.39859480323536617,
+      "spearman_margin": 0.3993775967264365
+    },
+    {
+      "season": "2025-26",
+      "n": 2600,
+      "pearson_margin": 0.2522572524726144,
+      "spearman_margin": 0.24233084628206153
+    }
+  ],
+  "deciles": [
+    {
+      "n": 1054,
+      "fdr_mean": -18.589497165959898,
+      "margin_mean": -24.516129032258064,
+      "pts_mean": 35.68406072106262
+    },
+    {
+      "n": 1054,
+      "fdr_mean": -11.093966154353257,
+      "margin_mean": -16.550284629981025,
+      "pts_mean": 37.129981024667934
+    },
+    {
+      "n": 1053,
+      "fdr_mean": -6.933513652966956,
+      "margin_mean": -10.835707502374168,
+      "pts_mean": 40.91737891737892
+    },
+    {
+      "n": 1056,
+      "fdr_mean": -3.8086874178430286,
+      "margin_mean": -2.961174242424242,
+      "pts_mean": 43.78598484848485
+    },
+    {
+      "n": 1059,
+      "fdr_mean": -1.1811992395098645,
+      "margin_mean": 0.31633616619452315,
+      "pts_mean": 44.97922568460812
+    },
+    {
+      "n": 1047,
+      "fdr_mean": 1.2039063941174273,
+      "margin_mean": -0.39923591212989495,
+      "pts_mean": 44.629417382999044
+    },
+    {
+      "n": 1052,
+      "fdr_mean": 3.8140436437663863,
+      "margin_mean": 3.0513307984790874,
+      "pts_mean": 46.793726235741445
+    },
+    {
+      "n": 1054,
+      "fdr_mean": 6.935189636218411,
+      "margin_mean": 10.831119544592031,
+      "pts_mean": 51.75521821631879
+    },
+    {
+      "n": 1053,
+      "fdr_mean": 11.096239626484648,
+      "margin_mean": 16.560303893637226,
+      "pts_mean": 53.679962013295345
+    },
+    {
+      "n": 1054,
+      "fdr_mean": 18.589497165959898,
+      "margin_mean": 24.516129032258064,
+      "pts_mean": 60.200189753320686
+    }
+  ],
+  "defs": {
+    "team_actual": "\u03a3 player total_points by club GW; strip 0-min + pts>0 (assistant managers)",
+    "team_mu": "expanding mean of team_actual for GW < t",
+    "team_se": "sample SD / \u221an \u2014 diagnostic only",
+    "fdr": "team_mu_own(t) - team_mu_opp(t)  [LOCKED raw \u03bc]",
+    "outcome": "team_actual at target; margin = own - opp",
+    "lead": 3,
+    "depth": 5,
+    "window": "t+3 \u2026 t+7",
+    "min_history": 2,
+    "seasons": [
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26"
+    ]
+  }
+}

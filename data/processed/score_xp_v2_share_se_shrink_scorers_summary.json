@@ -1,0 +1,73 @@
+{
+  "treatment": "score_xp_v2_share_se_scorers",
+  "baseline": "score_xp_v2",
+  "legacy": "score_xp_v2_share_se_all_minutes",
+  "formula": "s0=m/\u03a3m on s>0 only; zeros stay 0; \u03c4\u00b2=median(\u0394s\u00b2); K=\u03c4\u00b2/(\u03c4\u00b2+\u0394s\u00b2); s\u0303=Ks+(1\u2212K)s0; renormalise",
+  "seasons": [
+    {
+      "season": "2022-23",
+      "n_rows": 6937,
+      "n_gws": 33,
+      "mean_d_log": -0.005493025144904843,
+      "mean_d_log_vs_legacy": -0.012711804210303745,
+      "mae_raw": 2.294681271426593,
+      "mae_scorers": 2.3239516632941615,
+      "mae_legacy": 2.296691675959049
+    },
+    {
+      "season": "2023-24",
+      "n_rows": 6992,
+      "n_gws": 34,
+      "mean_d_log": -0.007184762879112577,
+      "mean_d_log_vs_legacy": -0.0099442602113249,
+      "mae_raw": 2.3302992969530734,
+      "mae_scorers": 2.3644079879173745,
+      "mae_legacy": 2.354673501512619
+    },
+    {
+      "season": "2024-25",
+      "n_rows": 6931,
+      "n_gws": 34,
+      "mean_d_log": 0.0009447261596838692,
+      "mean_d_log_vs_legacy": -0.006910881810891399,
+      "mae_raw": 2.2710943622692765,
+      "mae_scorers": 2.2961302345596053,
+      "mae_legacy": 2.2973210048340276
+    },
+    {
+      "season": "2025-26",
+      "n_rows": 6900,
+      "n_gws": 34,
+      "mean_d_log": -0.002645020290735052,
+      "mean_d_log_vs_legacy": -0.011767762818657148,
+      "mae_raw": 2.3840978812698626,
+      "mae_scorers": 2.3965333698396907,
+      "mae_legacy": 2.3751506890908907
+    }
+  ],
+  "cluster_interval": {
+    "mean": -0.003580457541684649,
+    "lo": -0.006613020682207464,
+    "hi": -0.0004072598805116551,
+    "n_gws": {
+      "2022-23": 33,
+      "2023-24": 34,
+      "2024-25": 34,
+      "2025-26": 34
+    }
+  },
+  "cluster_interval_vs_legacy": {
+    "mean": -0.010316061507627563,
+    "lo": -0.013371746796431905,
+    "hi": -0.007239285706025697,
+    "n_gws": {
+      "2022-23": 33,
+      "2023-24": 34,
+      "2024-25": 34,
+      "2025-26": 34
+    }
+  },
+  "promote_if": "paired interval lo > 0 on four closed seasons vs raw; else if hi<0 set share_se_shrink=False; if covers 0 keep positive_share default only if not worse than legacy on diagnostic",
+  "covers_zero": false,
+  "verdict": "park_clear_lose"
+}

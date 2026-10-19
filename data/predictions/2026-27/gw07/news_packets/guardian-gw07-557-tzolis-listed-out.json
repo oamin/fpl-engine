@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:557-tzolis-listed-out",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Arsenal",
+  "player_ids": [
+    557
+  ],
+  "headline": "Tzolis listed out",
+  "body": "The Guardian team news, 16 Oct 2026: Tzolis (Arsenal) injured / unavailable.",
+  "sha256": "7d3d7b91da749e15b132a853e1eb957f081ea2042869c0b9eb57b11e25e8efc5"
+}

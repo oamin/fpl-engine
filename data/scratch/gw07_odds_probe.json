@@ -1,0 +1,241 @@
+{
+  "ok": true,
+  "fetched_at": "2026-10-16T13:43:33.229174+00:00",
+  "region": "us",
+  "match_markets": "spreads,totals,btts",
+  "prop_market": "player_goal_scorer_anytime",
+  "remaining_before": "416",
+  "remaining_after": "409",
+  "matches": [
+    {
+      "lam_h": 1.3951333967473116,
+      "lam_a": 1.5139375351155548,
+      "rho": -0.24999864779673397,
+      "e_total": 2.9090709318628667,
+      "fitted": {
+        "p_ah": 0.1598702833259323,
+        "p_over_25": 0.5561326087139252,
+        "p_btts": 0.6154762782560491
+      },
+      "targets": {
+        "p_ah": 0.15556788087998366,
+        "p_over_25": 0.5253316406081856,
+        "p_btts": 0.6582853447975926
+      },
+      "residual": {
+        "p_ah": 0.00430240244594865,
+        "p_over_25": 0.030800968105739623,
+        "p_btts": -0.04280906654154348
+      },
+      "sse": 0.0027998264812159925,
+      "success": true,
+      "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+      "p_cs_home": 0.22004184743264124,
+      "p_cs_away": 0.24779997845125928,
+      "p_home_win": 0.32131706515024216,
+      "home": "Brentford",
+      "away": "Liverpool",
+      "id": "8f1945e7272bc7e89016439f5ab321c7",
+      "ah_line": -1.5,
+      "ou_point": 2.5,
+      "has_btts": true,
+      "w_btts": 1.0,
+      "n_ah_books": 1,
+      "n_ou_books": 2,
+      "n_btts_books": 6,
+      "xg_home": 1.3944011255325197,
+      "xg_away": 1.5127460236718244,
+      "xcs_home": 0.22004184743264124,
+      "xcs_away": 0.24779997845125928,
+      "ok": true,
+      "days": 1.01
+    },
+    {
+      "lam_h": 1.6579243382706068,
+      "lam_a": 1.207434726052749,
+      "rho": 0.09919572037884176,
+      "e_total": 2.8653590643233557,
+      "fitted": {
+        "p_ah": 0.10719053287853626,
+        "p_over_25": 0.5459789854975036,
+        "p_btts": 0.556154122913096
+      },
+      "targets": {
+        "p_ah": 0.10719606745705779,
+        "p_over_25": 0.5459699137514509,
+        "p_btts": 0.5561704832974581
+      },
+      "residual": {
+        "p_ah": -5.534578521523836e-06,
+        "p_over_25": 9.071746052691232e-06,
+        "p_btts": -1.6360384362146263e-05
+      },
+      "sse": 3.805903123325919e-10,
+      "success": true,
+      "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+      "p_cs_home": 0.2989632191445171,
+      "p_cs_away": 0.19053405418401598,
+      "p_home_win": 0.4903703598550839,
+      "home": "Fulham",
+      "away": "Hull City",
+      "id": "7895f97f2f9577f3b13287a3d086859d",
+      "ah_line": -2.5,
+      "ou_point": 2.5,
+      "has_btts": true,
+      "w_btts": 1.0,
+      "n_ah_books": 1,
+      "n_ou_books": 8,
+      "n_btts_books": 6,
+      "xg_home": 1.6558937282469797,
+      "xg_away": 1.2071298029757132,
+      "xcs_home": 0.2989632191445171,
+      "xcs_away": 0.19053405418401598,
+      "ok": true,
+      "days": 1.01
+    }
+  ],
+  "props": {
+    "Brentford v Liverpool": {
+      "ok": true,
+      "n_players": 46,
+      "top": [
+        {
+          "player": "Igor Thiago Nascimento Rodrigues",
+          "decimal_yes": 2.1716666666666664,
+          "p_anytime": 0.46047582501918655,
+          "n_books": 6
+        },
+        {
+          "player": "Callum Wilson",
+          "decimal_yes": 2.6300000000000003,
+          "p_anytime": 0.38022813688212925,
+          "n_books": 3
+        },
+        {
+          "player": "Alexander Isak",
+          "decimal_yes": 2.725,
+          "p_anytime": 0.36697247706422015,
+          "n_books": 4
+        },
+        {
+          "player": "Kevin Schade",
+          "decimal_yes": 3.285,
+          "p_anytime": 0.30441400304414,
+          "n_books": 4
+        },
+        {
+          "player": "Lewis Koumas",
+          "decimal_yes": 3.3249999999999997,
+          "p_anytime": 0.30075187969924816,
+          "n_books": 6
+        },
+        {
+          "player": "Jayden Danns",
+          "decimal_yes": 3.4749999999999996,
+          "p_anytime": 0.2877697841726619,
+          "n_books": 2
+        },
+        {
+          "player": "Cody Gakpo",
+          "decimal_yes": 3.5875,
+          "p_anytime": 0.2787456445993031,
+          "n_books": 4
+        },
+        {
+          "player": "Bradley Barcola",
+          "decimal_yes": 3.733333333333333,
+          "p_anytime": 0.2678571428571429,
+          "n_books": 6
+        },
+        {
+          "player": "Jaidon Anthony",
+          "decimal_yes": 3.766666666666667,
+          "p_anytime": 0.2654867256637168,
+          "n_books": 6
+        },
+        {
+          "player": "Fabio Carvalho",
+          "decimal_yes": 3.8000000000000003,
+          "p_anytime": 0.2631578947368421,
+          "n_books": 3
+        },
+        {
+          "player": "Federico Chiesa",
+          "decimal_yes": 3.9,
+          "p_anytime": 0.25641025641025644,
+          "n_books": 2
+        },
+        {
+          "player": "Gustavo Nunes Fernandes Gomes",
+          "decimal_yes": 3.983333333333334,
+          "p_anytime": 0.2510460251046025,
+          "n_books": 3
+        }
+      ],
+      "rescale_demo": {
+        "ok": true,
+        "G_team": 1.338625080511219,
+        "players": [
+          {
+            "name": "Igor Thiago Nascimento Rodrigues",
+            "s_baseline": 0.18947368421052632,
+            "eg_baseline": 0.2536342257810731,
+            "p_anytime": 0.46047582501918655,
+            "s_rescaled": 0.21970417983382234,
+            "eg_rescaled": 0.29410152541870177
+          },
+          {
+            "name": "Callum Wilson",
+            "s_baseline": 0.18947368421052632,
+            "eg_baseline": 0.2536342257810731,
+            "p_anytime": 0.38022813688212925,
+            "s_rescaled": 0.17033353698826223,
+            "eg_rescaled": 0.22801274466467322
+          },
+          {
+            "name": "Alexander Isak",
+            "s_baseline": 0.18947368421052632,
+            "eg_baseline": 0.2536342257810731,
+            "p_anytime": 0.36697247706422015,
+            "s_rescaled": 0.16279874031574357,
+            "eg_rescaled": 0.21792647686228728
+          },
+          {
+            "name": "Kevin Schade",
+            "s_baseline": 0.18947368421052632,
+            "eg_baseline": 0.2536342257810731,
+            "p_anytime": 0.30441400304414,
+            "s_rescaled": 0.12924474423467297,
+            "eg_rescaled": 0.173010256156791
+          },
+          {
+            "name": "Lewis Koumas",
+            "s_baseline": 0.18947368421052632,
+            "eg_baseline": 0.2536342257810731,
+            "p_anytime": 0.30075187969924816,
+            "s_rescaled": 0.12737515191474466,
+            "eg_rescaled": 0.1705075729870038
+          },
+          {
+            "name": "RollingReturner",
+            "s_baseline": 0.052631578947368425,
+            "eg_baseline": 0.07045395160585363,
+            "p_anytime": 0.4144282425172679,
+            "s_rescaled": 0.19054364671275426,
+            "eg_rescaled": 0.25506650442176193
+          }
+        ],
+        "diag": {
+          "G_team": 1.338625080511219,
+          "covered": 1.338625080511219,
+          "residual": 0.0,
+          "n_props": 6,
+          "covered_sum_raw": 2.8086297028163587
+        }
+      }
+    }
+  },
+  "estimated_credits": 7,
+  "last_cost_odds": "4+3",
+  "reason": "live"
+}

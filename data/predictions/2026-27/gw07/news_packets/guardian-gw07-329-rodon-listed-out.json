@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:329-rodon-listed-out",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Leeds",
+  "player_ids": [
+    329
+  ],
+  "headline": "Rodon listed out",
+  "body": "The Guardian team news, 16 Oct 2026: Rodon (Leeds) injured / unavailable.",
+  "sha256": "f8d40c38ec89eb64ce461f7fb874ee0e47e796fefea18029bb2da27272cec020"
+}

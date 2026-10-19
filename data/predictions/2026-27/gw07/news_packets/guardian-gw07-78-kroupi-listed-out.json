@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:78-kroupi-listed-out",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Bournemouth",
+  "player_ids": [
+    78
+  ],
+  "headline": "Kroupi listed out",
+  "body": "The Guardian team news, 16 Oct 2026: Kroupi (Bournemouth) injured / unavailable.",
+  "sha256": "98e7535d9d50de46ce88e88f5b36d717cbd51ac376b55db26ae9ac6a5cd56345"
+}

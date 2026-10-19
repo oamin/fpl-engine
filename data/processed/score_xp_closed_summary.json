@@ -1,0 +1,34 @@
+{
+  "seasons": [
+    {
+      "season": "2022-23",
+      "n": 24182,
+      "gw_min": 4,
+      "gw_max": 38,
+      "path": "data/processed/score_xp_2022_23.csv"
+    },
+    {
+      "season": "2023-24",
+      "n": 27138,
+      "gw_min": 4,
+      "gw_max": 38,
+      "path": "data/processed/score_xp_2023_24.csv"
+    },
+    {
+      "season": "2024-25",
+      "n": 24937,
+      "gw_min": 4,
+      "gw_max": 38,
+      "path": "data/processed/score_xp_2024_25.csv"
+    },
+    {
+      "season": "2025-26",
+      "n": 27238,
+      "gw_min": 2,
+      "gw_max": 38,
+      "path": "data/processed/score_xp_2025_26.csv"
+    }
+  ],
+  "n_total": 103495,
+  "stacked": "data/processed/score_xp_closed.csv"
+}

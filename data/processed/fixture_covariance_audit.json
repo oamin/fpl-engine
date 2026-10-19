@@ -1,0 +1,194 @@
+{
+  "defs": {
+    "min_hist_gw": 8,
+    "corr_max": -0.7,
+    "n_fixtures_per_season": 24,
+    "n_scenarios": 120,
+    "note": "Diagnostic only; not write_gated_report / not a \u03bc screen"
+  },
+  "asof_all_passed": true,
+  "mechanism_pass": true,
+  "seasons": [
+    {
+      "season": "2022-23",
+      "skipped": false,
+      "asof_passed": true,
+      "asof_n_club_checks": 5,
+      "minutes_oos": {
+        "n_pair_discoveries": 1502,
+        "n_pairs_evaluated": 83,
+        "frac_oos_neg": 0.7951807228915663,
+        "median_oos_corr": -0.469922462348091,
+        "mean_oos_corr": -0.37539487693277884,
+        "p10_oos_corr": -0.8679232292395224
+      },
+      "mc_draws": {
+        "n_fixtures": 24,
+        "n_scenarios": 120,
+        "n_pairs_tested": 45,
+        "n_pairs_draw_min_lt_-0.2": 45,
+        "frac_pairs_ok": 1.0,
+        "draw_pair_minutes": {
+          "n": 45,
+          "median": -0.9999859386961754,
+          "mean": -0.9965002868515532,
+          "frac_neg": 1.0
+        },
+        "draw_atk_opp_gk": {
+          "n": 23,
+          "median": -0.40526427393501596,
+          "mean": -0.3794634020253556,
+          "frac_neg": 0.9565217391304348
+        },
+        "draw_home_mids": {
+          "n": 24,
+          "median": 0.29775981712347727,
+          "mean": 0.30548455400968805,
+          "frac_neg": 0.041666666666666664
+        }
+      },
+      "realised_resid": {
+        "n_atk_pairs": 7957,
+        "n_atk_gk_pairs": 3532,
+        "corr_atk_atk": 0.10313953498207595,
+        "corr_atk_gk": -0.3162324864713709
+      }
+    },
+    {
+      "season": "2023-24",
+      "skipped": false,
+      "asof_passed": true,
+      "asof_n_club_checks": 5,
+      "minutes_oos": {
+        "n_pair_discoveries": 1663,
+        "n_pairs_evaluated": 87,
+        "frac_oos_neg": 0.7816091954022989,
+        "median_oos_corr": -0.4957504082144583,
+        "mean_oos_corr": -0.4199200040307218,
+        "p10_oos_corr": -0.9946554033656999
+      },
+      "mc_draws": {
+        "n_fixtures": 24,
+        "n_scenarios": 120,
+        "n_pairs_tested": 57,
+        "n_pairs_draw_min_lt_-0.2": 57,
+        "frac_pairs_ok": 1.0,
+        "draw_pair_minutes": {
+          "n": 57,
+          "median": -0.9999999999999999,
+          "mean": -0.9967025897293862,
+          "frac_neg": 1.0
+        },
+        "draw_atk_opp_gk": {
+          "n": 24,
+          "median": -0.48712608445328465,
+          "mean": -0.46911880824437197,
+          "frac_neg": 0.9583333333333334
+        },
+        "draw_home_mids": {
+          "n": 24,
+          "median": 0.3194033164167428,
+          "mean": 0.298330173125413,
+          "frac_neg": 0.041666666666666664
+        }
+      },
+      "realised_resid": {
+        "n_atk_pairs": 8067,
+        "n_atk_gk_pairs": 3555,
+        "corr_atk_atk": 0.07595785016836906,
+        "corr_atk_gk": -0.25781068940260377
+      }
+    },
+    {
+      "season": "2024-25",
+      "skipped": false,
+      "asof_passed": true,
+      "asof_n_club_checks": 5,
+      "minutes_oos": {
+        "n_pair_discoveries": 1527,
+        "n_pairs_evaluated": 82,
+        "frac_oos_neg": 0.8292682926829268,
+        "median_oos_corr": -0.5240217373347809,
+        "mean_oos_corr": -0.4666840331199816,
+        "p10_oos_corr": -0.9996484360007999
+      },
+      "mc_draws": {
+        "n_fixtures": 24,
+        "n_scenarios": 120,
+        "n_pairs_tested": 58,
+        "n_pairs_draw_min_lt_-0.2": 58,
+        "frac_pairs_ok": 1.0,
+        "draw_pair_minutes": {
+          "n": 58,
+          "median": -1.0,
+          "mean": -0.9962655127347636,
+          "frac_neg": 1.0
+        },
+        "draw_atk_opp_gk": {
+          "n": 24,
+          "median": -0.5170199558058135,
+          "mean": -0.48500868373119727,
+          "frac_neg": 1.0
+        },
+        "draw_home_mids": {
+          "n": 24,
+          "median": 0.23300219152545543,
+          "mean": 0.24639285643937,
+          "frac_neg": 0.08333333333333333
+        }
+      },
+      "realised_resid": {
+        "n_atk_pairs": 8318,
+        "n_atk_gk_pairs": 3573,
+        "corr_atk_atk": 0.05917125263073946,
+        "corr_atk_gk": -0.268537299035109
+      }
+    },
+    {
+      "season": "2025-26",
+      "skipped": false,
+      "asof_passed": true,
+      "asof_n_club_checks": 5,
+      "minutes_oos": {
+        "n_pair_discoveries": 1756,
+        "n_pairs_evaluated": 90,
+        "frac_oos_neg": 0.8222222222222222,
+        "median_oos_corr": -0.5184300933303229,
+        "mean_oos_corr": -0.48350723543923846,
+        "p10_oos_corr": -0.9853490398152563
+      },
+      "mc_draws": {
+        "n_fixtures": 24,
+        "n_scenarios": 120,
+        "n_pairs_tested": 69,
+        "n_pairs_draw_min_lt_-0.2": 69,
+        "frac_pairs_ok": 1.0,
+        "draw_pair_minutes": {
+          "n": 69,
+          "median": -1.0,
+          "mean": -0.998470337022395,
+          "frac_neg": 1.0
+        },
+        "draw_atk_opp_gk": {
+          "n": 24,
+          "median": -0.4310836791122099,
+          "mean": -0.41576617333059557,
+          "frac_neg": 0.9583333333333334
+        },
+        "draw_home_mids": {
+          "n": 24,
+          "median": 0.2811737777338143,
+          "mean": 0.26160513852630557,
+          "frac_neg": 0.08333333333333333
+        }
+      },
+      "realised_resid": {
+        "n_atk_pairs": 7642,
+        "n_atk_gk_pairs": 3471,
+        "corr_atk_atk": 0.03157825305978418,
+        "corr_atk_gk": -0.26255318926125465
+      }
+    }
+  ],
+  "verdict": "As-of checks PASS on 4 seasons. OOS minutes: median frac neg 81%, median corr -0.51. MC competition pairs with draw min corr < \u22120.2: 100% (mean across seasons). MC attack\u2013opp GK median corr -0.46 (want negative). Mechanism audit: **PASS** \u2014 proceed toward planning glue."
+}

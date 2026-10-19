@@ -1,0 +1,714 @@
+{
+  "decision_gw": 20,
+  "bookie_depth": 3,
+  "lead": 3,
+  "depth": 5,
+  "n_manager_rows_dropped": 0,
+  "form": [
+    {
+      "team": "arsenal",
+      "n_gw": 19,
+      "team_mu": 57.68421052631579,
+      "team_se": 4.606156972576731,
+      "team_sd": 20.07777276154722
+    },
+    {
+      "team": "aston villa",
+      "n_gw": 19,
+      "team_mu": 46.21052631578947,
+      "team_se": 4.17285781956101,
+      "team_sd": 18.189065541229926
+    },
+    {
+      "team": "bournemouth",
+      "n_gw": 19,
+      "team_mu": 46.1578947368421,
+      "team_se": 3.250068067568565,
+      "team_sd": 14.166718266159899
+    },
+    {
+      "team": "brentford",
+      "n_gw": 19,
+      "team_mu": 46.421052631578945,
+      "team_se": 4.649917178080056,
+      "team_sd": 20.26851907508479
+    },
+    {
+      "team": "brighton",
+      "n_gw": 19,
+      "team_mu": 42.89473684210526,
+      "team_se": 3.4816937607321354,
+      "team_sd": 15.17635125538746
+    },
+    {
+      "team": "burnley",
+      "n_gw": 19,
+      "team_mu": 40.10526315789474,
+      "team_se": 3.863076628047178,
+      "team_sd": 16.838760632811514
+    },
+    {
+      "team": "chelsea",
+      "n_gw": 19,
+      "team_mu": 51.473684210526315,
+      "team_se": 4.721710724927823,
+      "team_sd": 20.58145989059256
+    },
+    {
+      "team": "crystal palace",
+      "n_gw": 19,
+      "team_mu": 48.421052631578945,
+      "team_se": 4.374511360831622,
+      "team_sd": 19.068052949235636
+    },
+    {
+      "team": "everton",
+      "n_gw": 19,
+      "team_mu": 48.36842105263158,
+      "team_se": 4.986068618746895,
+      "team_sd": 21.733769234677148
+    },
+    {
+      "team": "fulham",
+      "n_gw": 19,
+      "team_mu": 45.1578947368421,
+      "team_se": 3.390960772177813,
+      "team_sd": 14.780855327433738
+    },
+    {
+      "team": "leeds",
+      "n_gw": 19,
+      "team_mu": 43.31578947368421,
+      "team_se": 3.9485378384745387,
+      "team_sd": 17.211277412657044
+    },
+    {
+      "team": "liverpool",
+      "n_gw": 19,
+      "team_mu": 48.78947368421053,
+      "team_se": 3.4931670539042354,
+      "team_sd": 15.22636218087426
+    },
+    {
+      "team": "man city",
+      "n_gw": 19,
+      "team_mu": 58.0,
+      "team_se": 4.787288236044573,
+      "team_sd": 20.867305634519386
+    },
+    {
+      "team": "man utd",
+      "n_gw": 19,
+      "team_mu": 46.05263157894737,
+      "team_se": 4.0185779715605685,
+      "team_sd": 17.516575274771185
+    },
+    {
+      "team": "newcastle",
+      "n_gw": 19,
+      "team_mu": 47.1578947368421,
+      "team_se": 3.536991781850998,
+      "team_sd": 15.417389741222362
+    },
+    {
+      "team": "nottm forest",
+      "n_gw": 19,
+      "team_mu": 37.89473684210526,
+      "team_se": 4.955294136732227,
+      "team_sd": 21.599626377535397
+    },
+    {
+      "team": "spurs",
+      "n_gw": 19,
+      "team_mu": 48.0,
+      "team_se": 5.274899184203312,
+      "team_sd": 22.992752481307377
+    },
+    {
+      "team": "sunderland",
+      "n_gw": 19,
+      "team_mu": 47.21052631578947,
+      "team_se": 4.198704163343413,
+      "team_sd": 18.301727141837432
+    },
+    {
+      "team": "west ham",
+      "n_gw": 19,
+      "team_mu": 36.1578947368421,
+      "team_se": 3.683583906611229,
+      "team_sd": 16.056369998971114
+    },
+    {
+      "team": "wolves",
+      "n_gw": 19,
+      "team_mu": 28.94736842105263,
+      "team_se": 2.0569006438185315,
+      "team_sd": 8.965822043308728
+    }
+  ],
+  "fixtures": [
+    {
+      "target_gw": 23,
+      "lead": 3,
+      "home": "bournemouth",
+      "away": "liverpool",
+      "fdr_home": -2.631578947368425,
+      "fdr_away": 2.631578947368425,
+      "team_mu_home": 46.1578947368421,
+      "team_mu_away": 48.78947368421053,
+      "priced_window": false
+    },
+    {
+      "target_gw": 23,
+      "lead": 3,
+      "home": "newcastle",
+      "away": "aston villa",
+      "fdr_home": 0.9473684210526301,
+      "fdr_away": -0.9473684210526301,
+      "team_mu_home": 47.1578947368421,
+      "team_mu_away": 46.21052631578947,
+      "priced_window": false
+    },
+    {
+      "target_gw": 23,
+      "lead": 3,
+      "home": "burnley",
+      "away": "spurs",
+      "fdr_home": -7.89473684210526,
+      "fdr_away": 7.89473684210526,
+      "team_mu_home": 40.10526315789474,
+      "team_mu_away": 48.0,
+      "priced_window": false
+    },
+    {
+      "target_gw": 23,
+      "lead": 3,
+      "home": "west ham",
+      "away": "sunderland",
+      "fdr_home": -11.05263157894737,
+      "fdr_away": 11.05263157894737,
+      "team_mu_home": 36.1578947368421,
+      "team_mu_away": 47.21052631578947,
+      "priced_window": false
+    },
+    {
+      "target_gw": 23,
+      "lead": 3,
+      "home": "brentford",
+      "away": "nottm forest",
+      "fdr_home": 8.526315789473685,
+      "fdr_away": -8.526315789473685,
+      "team_mu_home": 46.421052631578945,
+      "team_mu_away": 37.89473684210526,
+      "priced_window": false
+    },
+    {
+      "target_gw": 23,
+      "lead": 3,
+      "home": "everton",
+      "away": "leeds",
+      "fdr_home": 5.05263157894737,
+      "fdr_away": -5.05263157894737,
+      "team_mu_home": 48.36842105263158,
+      "team_mu_away": 43.31578947368421,
+      "priced_window": false
+    },
+    {
+      "target_gw": 23,
+      "lead": 3,
+      "home": "fulham",
+      "away": "brighton",
+      "fdr_home": 2.2631578947368425,
+      "fdr_away": -2.2631578947368425,
+      "team_mu_home": 45.1578947368421,
+      "team_mu_away": 42.89473684210526,
+      "priced_window": false
+    },
+    {
+      "target_gw": 23,
+      "lead": 3,
+      "home": "man city",
+      "away": "wolves",
+      "fdr_home": 29.05263157894737,
+      "fdr_away": -29.05263157894737,
+      "team_mu_home": 58.0,
+      "team_mu_away": 28.94736842105263,
+      "priced_window": false
+    },
+    {
+      "target_gw": 23,
+      "lead": 3,
+      "home": "arsenal",
+      "away": "man utd",
+      "fdr_home": 11.631578947368418,
+      "fdr_away": -11.631578947368418,
+      "team_mu_home": 57.68421052631579,
+      "team_mu_away": 46.05263157894737,
+      "priced_window": false
+    },
+    {
+      "target_gw": 23,
+      "lead": 3,
+      "home": "crystal palace",
+      "away": "chelsea",
+      "fdr_home": -3.05263157894737,
+      "fdr_away": 3.05263157894737,
+      "team_mu_home": 48.421052631578945,
+      "team_mu_away": 51.473684210526315,
+      "priced_window": false
+    },
+    {
+      "target_gw": 24,
+      "lead": 4,
+      "home": "sunderland",
+      "away": "burnley",
+      "fdr_home": 7.105263157894733,
+      "fdr_away": -7.105263157894733,
+      "team_mu_home": 47.21052631578947,
+      "team_mu_away": 40.10526315789474,
+      "priced_window": false
+    },
+    {
+      "target_gw": 24,
+      "lead": 4,
+      "home": "nottm forest",
+      "away": "crystal palace",
+      "fdr_home": -10.526315789473685,
+      "fdr_away": 10.526315789473685,
+      "team_mu_home": 37.89473684210526,
+      "team_mu_away": 48.421052631578945,
+      "priced_window": false
+    },
+    {
+      "target_gw": 24,
+      "lead": 4,
+      "home": "aston villa",
+      "away": "brentford",
+      "fdr_home": -0.21052631578947256,
+      "fdr_away": 0.21052631578947256,
+      "team_mu_home": 46.21052631578947,
+      "team_mu_away": 46.421052631578945,
+      "priced_window": false
+    },
+    {
+      "target_gw": 24,
+      "lead": 4,
+      "home": "chelsea",
+      "away": "west ham",
+      "fdr_home": 15.315789473684212,
+      "fdr_away": -15.315789473684212,
+      "team_mu_home": 51.473684210526315,
+      "team_mu_away": 36.1578947368421,
+      "priced_window": false
+    },
+    {
+      "target_gw": 24,
+      "lead": 4,
+      "home": "spurs",
+      "away": "man city",
+      "fdr_home": -10.0,
+      "fdr_away": 10.0,
+      "team_mu_home": 48.0,
+      "team_mu_away": 58.0,
+      "priced_window": false
+    },
+    {
+      "target_gw": 24,
+      "lead": 4,
+      "home": "man utd",
+      "away": "fulham",
+      "fdr_home": 0.8947368421052673,
+      "fdr_away": -0.8947368421052673,
+      "team_mu_home": 46.05263157894737,
+      "team_mu_away": 45.1578947368421,
+      "priced_window": false
+    },
+    {
+      "target_gw": 24,
+      "lead": 4,
+      "home": "liverpool",
+      "away": "newcastle",
+      "fdr_home": 1.6315789473684248,
+      "fdr_away": -1.6315789473684248,
+      "team_mu_home": 48.78947368421053,
+      "team_mu_away": 47.1578947368421,
+      "priced_window": false
+    },
+    {
+      "target_gw": 24,
+      "lead": 4,
+      "home": "wolves",
+      "away": "bournemouth",
+      "fdr_home": -17.210526315789473,
+      "fdr_away": 17.210526315789473,
+      "team_mu_home": 28.94736842105263,
+      "team_mu_away": 46.1578947368421,
+      "priced_window": false
+    },
+    {
+      "target_gw": 24,
+      "lead": 4,
+      "home": "brighton",
+      "away": "everton",
+      "fdr_home": -5.473684210526322,
+      "fdr_away": 5.473684210526322,
+      "team_mu_home": 42.89473684210526,
+      "team_mu_away": 48.36842105263158,
+      "priced_window": false
+    },
+    {
+      "target_gw": 24,
+      "lead": 4,
+      "home": "leeds",
+      "away": "arsenal",
+      "fdr_home": -14.368421052631575,
+      "fdr_away": 14.368421052631575,
+      "team_mu_home": 43.31578947368421,
+      "team_mu_away": 57.68421052631579,
+      "priced_window": false
+    },
+    {
+      "target_gw": 25,
+      "lead": 5,
+      "home": "bournemouth",
+      "away": "aston villa",
+      "fdr_home": -0.05263157894736992,
+      "fdr_away": 0.05263157894736992,
+      "team_mu_home": 46.1578947368421,
+      "team_mu_away": 46.21052631578947,
+      "priced_window": false
+    },
+    {
+      "target_gw": 25,
+      "lead": 5,
+      "home": "newcastle",
+      "away": "brentford",
+      "fdr_home": 0.7368421052631575,
+      "fdr_away": -0.7368421052631575,
+      "team_mu_home": 47.1578947368421,
+      "team_mu_away": 46.421052631578945,
+      "priced_window": false
+    },
+    {
+      "target_gw": 25,
+      "lead": 5,
+      "home": "burnley",
+      "away": "west ham",
+      "fdr_home": 3.947368421052637,
+      "fdr_away": -3.947368421052637,
+      "team_mu_home": 40.10526315789474,
+      "team_mu_away": 36.1578947368421,
+      "priced_window": false
+    },
+    {
+      "target_gw": 25,
+      "lead": 5,
+      "home": "man utd",
+      "away": "spurs",
+      "fdr_home": -1.94736842105263,
+      "fdr_away": 1.94736842105263,
+      "team_mu_home": 46.05263157894737,
+      "team_mu_away": 48.0,
+      "priced_window": false
+    },
+    {
+      "target_gw": 25,
+      "lead": 5,
+      "home": "wolves",
+      "away": "chelsea",
+      "fdr_home": -22.526315789473685,
+      "fdr_away": 22.526315789473685,
+      "team_mu_home": 28.94736842105263,
+      "team_mu_away": 51.473684210526315,
+      "priced_window": false
+    },
+    {
+      "target_gw": 25,
+      "lead": 5,
+      "home": "liverpool",
+      "away": "man city",
+      "fdr_home": -9.210526315789473,
+      "fdr_away": 9.210526315789473,
+      "team_mu_home": 48.78947368421053,
+      "team_mu_away": 58.0,
+      "priced_window": false
+    },
+    {
+      "target_gw": 25,
+      "lead": 5,
+      "home": "fulham",
+      "away": "everton",
+      "fdr_home": -3.2105263157894797,
+      "fdr_away": 3.2105263157894797,
+      "team_mu_home": 45.1578947368421,
+      "team_mu_away": 48.36842105263158,
+      "priced_window": false
+    },
+    {
+      "target_gw": 25,
+      "lead": 5,
+      "home": "brighton",
+      "away": "crystal palace",
+      "fdr_home": -5.526315789473685,
+      "fdr_away": 5.526315789473685,
+      "team_mu_home": 42.89473684210526,
+      "team_mu_away": 48.421052631578945,
+      "priced_window": false
+    },
+    {
+      "target_gw": 25,
+      "lead": 5,
+      "home": "leeds",
+      "away": "nottm forest",
+      "fdr_home": 5.421052631578952,
+      "fdr_away": -5.421052631578952,
+      "team_mu_home": 43.31578947368421,
+      "team_mu_away": 37.89473684210526,
+      "priced_window": false
+    },
+    {
+      "target_gw": 25,
+      "lead": 5,
+      "home": "arsenal",
+      "away": "sunderland",
+      "fdr_home": 10.473684210526315,
+      "fdr_away": -10.473684210526315,
+      "team_mu_home": 57.68421052631579,
+      "team_mu_away": 47.21052631578947,
+      "priced_window": false
+    },
+    {
+      "target_gw": 26,
+      "lead": 6,
+      "home": "sunderland",
+      "away": "liverpool",
+      "fdr_home": -1.5789473684210549,
+      "fdr_away": 1.5789473684210549,
+      "team_mu_home": 47.21052631578947,
+      "team_mu_away": 48.78947368421053,
+      "priced_window": false
+    },
+    {
+      "target_gw": 26,
+      "lead": 6,
+      "home": "nottm forest",
+      "away": "wolves",
+      "fdr_home": 8.94736842105263,
+      "fdr_away": -8.94736842105263,
+      "team_mu_home": 37.89473684210526,
+      "team_mu_away": 28.94736842105263,
+      "priced_window": false
+    },
+    {
+      "target_gw": 26,
+      "lead": 6,
+      "home": "aston villa",
+      "away": "brighton",
+      "fdr_home": 3.3157894736842124,
+      "fdr_away": -3.3157894736842124,
+      "team_mu_home": 46.21052631578947,
+      "team_mu_away": 42.89473684210526,
+      "priced_window": false
+    },
+    {
+      "target_gw": 26,
+      "lead": 6,
+      "home": "west ham",
+      "away": "man utd",
+      "fdr_home": -9.894736842105267,
+      "fdr_away": 9.894736842105267,
+      "team_mu_home": 36.1578947368421,
+      "team_mu_away": 46.05263157894737,
+      "priced_window": false
+    },
+    {
+      "target_gw": 26,
+      "lead": 6,
+      "home": "chelsea",
+      "away": "leeds",
+      "fdr_home": 8.157894736842103,
+      "fdr_away": -8.157894736842103,
+      "team_mu_home": 51.473684210526315,
+      "team_mu_away": 43.31578947368421,
+      "priced_window": false
+    },
+    {
+      "target_gw": 26,
+      "lead": 6,
+      "home": "brentford",
+      "away": "arsenal",
+      "fdr_home": -11.263157894736842,
+      "fdr_away": 11.263157894736842,
+      "team_mu_home": 46.421052631578945,
+      "team_mu_away": 57.68421052631579,
+      "priced_window": false
+    },
+    {
+      "target_gw": 26,
+      "lead": 6,
+      "home": "everton",
+      "away": "bournemouth",
+      "fdr_home": 2.2105263157894797,
+      "fdr_away": -2.2105263157894797,
+      "team_mu_home": 48.36842105263158,
+      "team_mu_away": 46.1578947368421,
+      "priced_window": false
+    },
+    {
+      "target_gw": 26,
+      "lead": 6,
+      "home": "spurs",
+      "away": "newcastle",
+      "fdr_home": 0.8421052631578974,
+      "fdr_away": -0.8421052631578974,
+      "team_mu_home": 48.0,
+      "team_mu_away": 47.1578947368421,
+      "priced_window": false
+    },
+    {
+      "target_gw": 26,
+      "lead": 6,
+      "home": "wolves",
+      "away": "arsenal",
+      "fdr_home": -28.736842105263158,
+      "fdr_away": 28.736842105263158,
+      "team_mu_home": 28.94736842105263,
+      "team_mu_away": 57.68421052631579,
+      "priced_window": false
+    },
+    {
+      "target_gw": 26,
+      "lead": 6,
+      "home": "man city",
+      "away": "fulham",
+      "fdr_home": 12.842105263157897,
+      "fdr_away": -12.842105263157897,
+      "team_mu_home": 58.0,
+      "team_mu_away": 45.1578947368421,
+      "priced_window": false
+    },
+    {
+      "target_gw": 26,
+      "lead": 6,
+      "home": "crystal palace",
+      "away": "burnley",
+      "fdr_home": 8.315789473684205,
+      "fdr_away": -8.315789473684205,
+      "team_mu_home": 48.421052631578945,
+      "team_mu_away": 40.10526315789474,
+      "priced_window": false
+    },
+    {
+      "target_gw": 27,
+      "lead": 7,
+      "home": "sunderland",
+      "away": "fulham",
+      "fdr_home": 2.05263157894737,
+      "fdr_away": -2.05263157894737,
+      "team_mu_home": 47.21052631578947,
+      "team_mu_away": 45.1578947368421,
+      "priced_window": false
+    },
+    {
+      "target_gw": 27,
+      "lead": 7,
+      "home": "nottm forest",
+      "away": "liverpool",
+      "fdr_home": -10.894736842105267,
+      "fdr_away": 10.894736842105267,
+      "team_mu_home": 37.89473684210526,
+      "team_mu_away": 48.78947368421053,
+      "priced_window": false
+    },
+    {
+      "target_gw": 27,
+      "lead": 7,
+      "home": "aston villa",
+      "away": "leeds",
+      "fdr_home": 2.89473684210526,
+      "fdr_away": -2.89473684210526,
+      "team_mu_home": 46.21052631578947,
+      "team_mu_away": 43.31578947368421,
+      "priced_window": false
+    },
+    {
+      "target_gw": 27,
+      "lead": 7,
+      "home": "west ham",
+      "away": "bournemouth",
+      "fdr_home": -10.0,
+      "fdr_away": 10.0,
+      "team_mu_home": 36.1578947368421,
+      "team_mu_away": 46.1578947368421,
+      "priced_window": false
+    },
+    {
+      "target_gw": 27,
+      "lead": 7,
+      "home": "chelsea",
+      "away": "burnley",
+      "fdr_home": 11.368421052631575,
+      "fdr_away": -11.368421052631575,
+      "team_mu_home": 51.473684210526315,
+      "team_mu_away": 40.10526315789474,
+      "priced_window": false
+    },
+    {
+      "target_gw": 27,
+      "lead": 7,
+      "home": "brentford",
+      "away": "brighton",
+      "fdr_home": 3.526315789473685,
+      "fdr_away": -3.526315789473685,
+      "team_mu_home": 46.421052631578945,
+      "team_mu_away": 42.89473684210526,
+      "priced_window": false
+    },
+    {
+      "target_gw": 27,
+      "lead": 7,
+      "home": "everton",
+      "away": "man utd",
+      "fdr_home": 2.3157894736842124,
+      "fdr_away": -2.3157894736842124,
+      "team_mu_home": 48.36842105263158,
+      "team_mu_away": 46.05263157894737,
+      "priced_window": false
+    },
+    {
+      "target_gw": 27,
+      "lead": 7,
+      "home": "spurs",
+      "away": "arsenal",
+      "fdr_home": -9.684210526315788,
+      "fdr_away": 9.684210526315788,
+      "team_mu_home": 48.0,
+      "team_mu_away": 57.68421052631579,
+      "priced_window": false
+    },
+    {
+      "target_gw": 27,
+      "lead": 7,
+      "home": "man city",
+      "away": "newcastle",
+      "fdr_home": 10.842105263157897,
+      "fdr_away": -10.842105263157897,
+      "team_mu_home": 58.0,
+      "team_mu_away": 47.1578947368421,
+      "priced_window": false
+    },
+    {
+      "target_gw": 27,
+      "lead": 7,
+      "home": "crystal palace",
+      "away": "wolves",
+      "fdr_home": 19.473684210526315,
+      "fdr_away": -19.473684210526315,
+      "team_mu_home": 48.421052631578945,
+      "team_mu_away": 28.94736842105263,
+      "priced_window": false
+    }
+  ],
+  "note": "diagnostic only \u2014 not a MILP board or terminal",
+  "season": "2025-26"
+}

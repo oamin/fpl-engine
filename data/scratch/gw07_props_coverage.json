@@ -1,0 +1,3489 @@
+{
+  "ok": true,
+  "fetched_at": "2026-10-16T14:45:26.591049+00:00",
+  "region": "us",
+  "prop_market": "player_goal_scorer_anytime",
+  "matches": [
+    {
+      "id": "764e6513cb3f348881503df70ccb90e0",
+      "home": "Everton",
+      "away": "Chelsea",
+      "commence_time": "2026-10-17T11:30:00Z",
+      "http": 200,
+      "last_cost": "1",
+      "ok": true,
+      "available": true,
+      "n_players": 44,
+      "n_bookmakers_with_market": 5,
+      "market_keys": [
+        "player_goal_scorer_anytime"
+      ],
+      "top": [
+        {
+          "player": "Joao Pedro Junqueira de Jesus",
+          "decimal_yes": 2.4059999999999997,
+          "p_anytime": 0.4156275976724855,
+          "n_books": 5
+        },
+        {
+          "player": "Emanuel Emegha",
+          "decimal_yes": 2.6,
+          "p_anytime": 0.3846153846153846,
+          "n_books": 2
+        },
+        {
+          "player": "Danny Welbeck",
+          "decimal_yes": 2.665,
+          "p_anytime": 0.37523452157598497,
+          "n_books": 2
+        },
+        {
+          "player": "Cole Palmer",
+          "decimal_yes": 2.8560000000000003,
+          "p_anytime": 0.35014005602240894,
+          "n_books": 5
+        },
+        {
+          "player": "Morgan Rogers",
+          "decimal_yes": 3.1,
+          "p_anytime": 0.3225806451612903,
+          "n_books": 5
+        },
+        {
+          "player": "Thierno Barry",
+          "decimal_yes": 3.15,
+          "p_anytime": 0.31746031746031744,
+          "n_books": 5
+        },
+        {
+          "player": "Estevao Oliveira Goncalves",
+          "decimal_yes": 3.45,
+          "p_anytime": 0.2898550724637681,
+          "n_books": 1
+        },
+        {
+          "player": "Braiden Graham",
+          "decimal_yes": 3.4749999999999996,
+          "p_anytime": 0.2877697841726619,
+          "n_books": 2
+        }
+      ],
+      "all": [
+        {
+          "player": "Joao Pedro Junqueira de Jesus",
+          "decimal_yes": 2.4059999999999997,
+          "p_anytime": 0.4156275976724855,
+          "n_books": 5
+        },
+        {
+          "player": "Emanuel Emegha",
+          "decimal_yes": 2.6,
+          "p_anytime": 0.3846153846153846,
+          "n_books": 2
+        },
+        {
+          "player": "Danny Welbeck",
+          "decimal_yes": 2.665,
+          "p_anytime": 0.37523452157598497,
+          "n_books": 2
+        },
+        {
+          "player": "Cole Palmer",
+          "decimal_yes": 2.8560000000000003,
+          "p_anytime": 0.35014005602240894,
+          "n_books": 5
+        },
+        {
+          "player": "Morgan Rogers",
+          "decimal_yes": 3.1,
+          "p_anytime": 0.3225806451612903,
+          "n_books": 5
+        },
+        {
+          "player": "Thierno Barry",
+          "decimal_yes": 3.15,
+          "p_anytime": 0.31746031746031744,
+          "n_books": 5
+        },
+        {
+          "player": "Estevao Oliveira Goncalves",
+          "decimal_yes": 3.45,
+          "p_anytime": 0.2898550724637681,
+          "n_books": 1
+        },
+        {
+          "player": "Braiden Graham",
+          "decimal_yes": 3.4749999999999996,
+          "p_anytime": 0.2877697841726619,
+          "n_books": 2
+        },
+        {
+          "player": "Jamie Jermaine Bynoe-Gittens",
+          "decimal_yes": 3.75,
+          "p_anytime": 0.26666666666666666,
+          "n_books": 1
+        },
+        {
+          "player": "Kiernan Dewsbury-Hall",
+          "decimal_yes": 3.776,
+          "p_anytime": 0.2648305084745763,
+          "n_books": 5
+        },
+        {
+          "player": "Tyrique George",
+          "decimal_yes": 4.7,
+          "p_anytime": 0.2127659574468085,
+          "n_books": 2
+        },
+        {
+          "player": "Geovany Tcherno Quenda",
+          "decimal_yes": 4.75,
+          "p_anytime": 0.21052631578947367,
+          "n_books": 2
+        },
+        {
+          "player": "Brennan Johnson",
+          "decimal_yes": 4.8100000000000005,
+          "p_anytime": 0.20790020790020788,
+          "n_books": 5
+        },
+        {
+          "player": "Pedro Neto",
+          "decimal_yes": 5.1,
+          "p_anytime": 0.19607843137254904,
+          "n_books": 5
+        },
+        {
+          "player": "Jack Grealish",
+          "decimal_yes": 5.34,
+          "p_anytime": 0.18726591760299627,
+          "n_books": 5
+        },
+        {
+          "player": "Tyler Dibling",
+          "decimal_yes": 5.675,
+          "p_anytime": 0.1762114537444934,
+          "n_books": 2
+        },
+        {
+          "player": "Carlos Alcaraz",
+          "decimal_yes": 6.5,
+          "p_anytime": 0.15384615384615385,
+          "n_books": 1
+        },
+        {
+          "player": "Aaron Anselmino",
+          "decimal_yes": 7.0,
+          "p_anytime": 0.14285714285714285,
+          "n_books": 1
+        },
+        {
+          "player": "Valentin Barco",
+          "decimal_yes": 7.5,
+          "p_anytime": 0.13333333333333333,
+          "n_books": 2
+        },
+        {
+          "player": "James Garner",
+          "decimal_yes": 8.55,
+          "p_anytime": 0.11695906432748537,
+          "n_books": 5
+        },
+        {
+          "player": "Reece James",
+          "decimal_yes": 8.625,
+          "p_anytime": 0.11594202898550725,
+          "n_books": 2
+        },
+        {
+          "player": "Harrison Armstrong",
+          "decimal_yes": 9.35,
+          "p_anytime": 0.10695187165775401,
+          "n_books": 5
+        },
+        {
+          "player": "Hayden Hackney",
+          "decimal_yes": 10.0,
+          "p_anytime": 0.1,
+          "n_books": 2
+        },
+        {
+          "player": "Moises Caicedo",
+          "decimal_yes": 10.4,
+          "p_anytime": 0.09615384615384615,
+          "n_books": 5
+        },
+        {
+          "player": "Christian Norgaard",
+          "decimal_yes": 11.0,
+          "p_anytime": 0.09090909090909091,
+          "n_books": 2
+        },
+        {
+          "player": "Jordan Henderson",
+          "decimal_yes": 11.15,
+          "p_anytime": 0.08968609865470852,
+          "n_books": 5
+        },
+        {
+          "player": "Michael Keane",
+          "decimal_yes": 11.4,
+          "p_anytime": 0.08771929824561403,
+          "n_books": 5
+        },
+        {
+          "player": "Jarrad Branthwaite",
+          "decimal_yes": 12.0,
+          "p_anytime": 0.08333333333333333,
+          "n_books": 5
+        },
+        {
+          "player": "Merlin Rohl",
+          "decimal_yes": 12.0,
+          "p_anytime": 0.08333333333333333,
+          "n_books": 2
+        },
+        {
+          "player": "Romeo Lavia",
+          "decimal_yes": 12.0,
+          "p_anytime": 0.08333333333333333,
+          "n_books": 3
+        },
+        {
+          "player": "James Tarkowski",
+          "decimal_yes": 12.6,
+          "p_anytime": 0.07936507936507936,
+          "n_books": 5
+        },
+        {
+          "player": "Mahdi Nicoll-Jazuli",
+          "decimal_yes": 13.0,
+          "p_anytime": 0.07692307692307693,
+          "n_books": 2
+        },
+        {
+          "player": "Ainsley Maitland-Niles",
+          "decimal_yes": 13.1,
+          "p_anytime": 0.07633587786259542,
+          "n_books": 5
+        },
+        {
+          "player": "Jake O'Brien",
+          "decimal_yes": 14.5,
+          "p_anytime": 0.06896551724137931,
+          "n_books": 2
+        },
+        {
+          "player": "Pep Chavarria",
+          "decimal_yes": 14.6,
+          "p_anytime": 0.0684931506849315,
+          "n_books": 5
+        },
+        {
+          "player": "Marco Palestra",
+          "decimal_yes": 15.5,
+          "p_anytime": 0.06451612903225806,
+          "n_books": 2
+        },
+        {
+          "player": "Joshua Kofi Acheampong",
+          "decimal_yes": 15.9,
+          "p_anytime": 0.06289308176100629,
+          "n_books": 5
+        },
+        {
+          "player": "Maxence Lacroix",
+          "decimal_yes": 16.3,
+          "p_anytime": 0.06134969325153374,
+          "n_books": 5
+        },
+        {
+          "player": "No Scorer",
+          "decimal_yes": 17.0,
+          "p_anytime": 0.058823529411764705,
+          "n_books": 2
+        },
+        {
+          "player": "Levi Colwill",
+          "decimal_yes": 17.9,
+          "p_anytime": 0.0558659217877095,
+          "n_books": 5
+        },
+        {
+          "player": "Malo Gusto",
+          "decimal_yes": 18.0,
+          "p_anytime": 0.05555555555555555,
+          "n_books": 2
+        },
+        {
+          "player": "Wesley Fofana",
+          "decimal_yes": 22.5,
+          "p_anytime": 0.044444444444444446,
+          "n_books": 4
+        },
+        {
+          "player": "Jorrel Hato",
+          "decimal_yes": 23.0,
+          "p_anytime": 0.043478260869565216,
+          "n_books": 2
+        },
+        {
+          "player": "Vitaliy Mykolenko",
+          "decimal_yes": 25.5,
+          "p_anytime": 0.0392156862745098,
+          "n_books": 4
+        }
+      ]
+    },
+    {
+      "id": "8f1945e7272bc7e89016439f5ab321c7",
+      "home": "Brentford",
+      "away": "Liverpool",
+      "commence_time": "2026-10-17T14:00:00Z",
+      "http": 200,
+      "last_cost": "1",
+      "ok": true,
+      "available": true,
+      "n_players": 46,
+      "n_bookmakers_with_market": 6,
+      "market_keys": [
+        "player_goal_scorer_anytime"
+      ],
+      "top": [
+        {
+          "player": "Igor Thiago Nascimento Rodrigues",
+          "decimal_yes": 2.1766666666666667,
+          "p_anytime": 0.4594180704441041,
+          "n_books": 6
+        },
+        {
+          "player": "Callum Wilson",
+          "decimal_yes": 2.6300000000000003,
+          "p_anytime": 0.38022813688212925,
+          "n_books": 3
+        },
+        {
+          "player": "Alexander Isak",
+          "decimal_yes": 2.705,
+          "p_anytime": 0.36968576709796674,
+          "n_books": 4
+        },
+        {
+          "player": "Lewis Koumas",
+          "decimal_yes": 3.276666666666667,
+          "p_anytime": 0.3051881993896236,
+          "n_books": 6
+        },
+        {
+          "player": "Kevin Schade",
+          "decimal_yes": 3.285,
+          "p_anytime": 0.30441400304414,
+          "n_books": 4
+        },
+        {
+          "player": "Jayden Danns",
+          "decimal_yes": 3.425,
+          "p_anytime": 0.29197080291970806,
+          "n_books": 2
+        },
+        {
+          "player": "Cody Gakpo",
+          "decimal_yes": 3.55,
+          "p_anytime": 0.28169014084507044,
+          "n_books": 4
+        },
+        {
+          "player": "Bradley Barcola",
+          "decimal_yes": 3.6999999999999997,
+          "p_anytime": 0.2702702702702703,
+          "n_books": 6
+        }
+      ],
+      "all": [
+        {
+          "player": "Igor Thiago Nascimento Rodrigues",
+          "decimal_yes": 2.1766666666666667,
+          "p_anytime": 0.4594180704441041,
+          "n_books": 6
+        },
+        {
+          "player": "Callum Wilson",
+          "decimal_yes": 2.6300000000000003,
+          "p_anytime": 0.38022813688212925,
+          "n_books": 3
+        },
+        {
+          "player": "Alexander Isak",
+          "decimal_yes": 2.705,
+          "p_anytime": 0.36968576709796674,
+          "n_books": 4
+        },
+        {
+          "player": "Lewis Koumas",
+          "decimal_yes": 3.276666666666667,
+          "p_anytime": 0.3051881993896236,
+          "n_books": 6
+        },
+        {
+          "player": "Kevin Schade",
+          "decimal_yes": 3.285,
+          "p_anytime": 0.30441400304414,
+          "n_books": 4
+        },
+        {
+          "player": "Jayden Danns",
+          "decimal_yes": 3.425,
+          "p_anytime": 0.29197080291970806,
+          "n_books": 2
+        },
+        {
+          "player": "Cody Gakpo",
+          "decimal_yes": 3.55,
+          "p_anytime": 0.28169014084507044,
+          "n_books": 4
+        },
+        {
+          "player": "Bradley Barcola",
+          "decimal_yes": 3.6999999999999997,
+          "p_anytime": 0.2702702702702703,
+          "n_books": 6
+        },
+        {
+          "player": "Jaidon Anthony",
+          "decimal_yes": 3.7583333333333333,
+          "p_anytime": 0.2660753880266075,
+          "n_books": 6
+        },
+        {
+          "player": "Federico Chiesa",
+          "decimal_yes": 3.7750000000000004,
+          "p_anytime": 0.2649006622516556,
+          "n_books": 2
+        },
+        {
+          "player": "Fabio Carvalho",
+          "decimal_yes": 3.8000000000000003,
+          "p_anytime": 0.2631578947368421,
+          "n_books": 3
+        },
+        {
+          "player": "Gustavo Nunes Fernandes Gomes",
+          "decimal_yes": 3.966666666666667,
+          "p_anytime": 0.25210084033613445,
+          "n_books": 3
+        },
+        {
+          "player": "Dango Ouattara",
+          "decimal_yes": 4.3625,
+          "p_anytime": 0.22922636103151864,
+          "n_books": 4
+        },
+        {
+          "player": "Victor Munoz",
+          "decimal_yes": 4.363333333333333,
+          "p_anytime": 0.2291825821237586,
+          "n_books": 6
+        },
+        {
+          "player": "Rio Ngumoha",
+          "decimal_yes": 4.375,
+          "p_anytime": 0.22857142857142856,
+          "n_books": 4
+        },
+        {
+          "player": "Keane Lewis-Potter",
+          "decimal_yes": 4.591666666666667,
+          "p_anytime": 0.2177858439201452,
+          "n_books": 6
+        },
+        {
+          "player": "Mikkel Damsgaard",
+          "decimal_yes": 4.8,
+          "p_anytime": 0.20833333333333334,
+          "n_books": 4
+        },
+        {
+          "player": "Florian Wirtz",
+          "decimal_yes": 4.966666666666667,
+          "p_anytime": 0.20134228187919462,
+          "n_books": 6
+        },
+        {
+          "player": "Dominik Szoboszlai",
+          "decimal_yes": 5.66,
+          "p_anytime": 0.17667844522968199,
+          "n_books": 5
+        },
+        {
+          "player": "Treymaurice Nyoni",
+          "decimal_yes": 6.325,
+          "p_anytime": 0.15810276679841898,
+          "n_books": 2
+        },
+        {
+          "player": "Alexis Mac Allister",
+          "decimal_yes": 6.883333333333333,
+          "p_anytime": 0.14527845036319614,
+          "n_books": 6
+        },
+        {
+          "player": "Trey Nyoni",
+          "decimal_yes": 7.333333333333333,
+          "p_anytime": 0.13636363636363638,
+          "n_books": 3
+        },
+        {
+          "player": "Mamadou Sangare",
+          "decimal_yes": 7.4,
+          "p_anytime": 0.13513513513513511,
+          "n_books": 4
+        },
+        {
+          "player": "Mathias Jensen",
+          "decimal_yes": 7.875,
+          "p_anytime": 0.12698412698412698,
+          "n_books": 6
+        },
+        {
+          "player": "James McConnell",
+          "decimal_yes": 7.9125,
+          "p_anytime": 0.12638230647709323,
+          "n_books": 4
+        },
+        {
+          "player": "Vitaly Janelt",
+          "decimal_yes": 9.450000000000001,
+          "p_anytime": 0.10582010582010581,
+          "n_books": 6
+        },
+        {
+          "player": "Yehor Yarmoliuk",
+          "decimal_yes": 9.525,
+          "p_anytime": 0.10498687664041995,
+          "n_books": 6
+        },
+        {
+          "player": "Ryan Gravenberch",
+          "decimal_yes": 9.6,
+          "p_anytime": 0.10416666666666667,
+          "n_books": 1
+        },
+        {
+          "player": "Jeremie Frimpong",
+          "decimal_yes": 10.725,
+          "p_anytime": 0.09324009324009325,
+          "n_books": 4
+        },
+        {
+          "player": "Virgil van Dijk",
+          "decimal_yes": 11.200000000000001,
+          "p_anytime": 0.08928571428571427,
+          "n_books": 6
+        },
+        {
+          "player": "El Hadji Diouf",
+          "decimal_yes": 12.15,
+          "p_anytime": 0.0823045267489712,
+          "n_books": 6
+        },
+        {
+          "player": "Milos Kerkez",
+          "decimal_yes": 13.25,
+          "p_anytime": 0.07547169811320754,
+          "n_books": 6
+        },
+        {
+          "player": "Nathan Collins",
+          "decimal_yes": 13.25,
+          "p_anytime": 0.07547169811320754,
+          "n_books": 4
+        },
+        {
+          "player": "Ronald Araujo",
+          "decimal_yes": 13.625,
+          "p_anytime": 0.07339449541284404,
+          "n_books": 6
+        },
+        {
+          "player": "Rico Henry",
+          "decimal_yes": 14.0,
+          "p_anytime": 0.07142857142857142,
+          "n_books": 3
+        },
+        {
+          "player": "Jannik Schuster",
+          "decimal_yes": 14.4,
+          "p_anytime": 0.06944444444444445,
+          "n_books": 5
+        },
+        {
+          "player": "Aaron Hickey",
+          "decimal_yes": 15.0,
+          "p_anytime": 0.06666666666666667,
+          "n_books": 4
+        },
+        {
+          "player": "Sepp van den Berg",
+          "decimal_yes": 15.666666666666666,
+          "p_anytime": 0.06382978723404256,
+          "n_books": 6
+        },
+        {
+          "player": "Michael Kayode",
+          "decimal_yes": 15.958333333333334,
+          "p_anytime": 0.06266318537859007,
+          "n_books": 6
+        },
+        {
+          "player": "Kristoffer Ajer",
+          "decimal_yes": 16.0,
+          "p_anytime": 0.0625,
+          "n_books": 6
+        },
+        {
+          "player": "Konstantinos Tsimikas",
+          "decimal_yes": 16.0625,
+          "p_anytime": 0.0622568093385214,
+          "n_books": 4
+        },
+        {
+          "player": "Jeremy Jacquet",
+          "decimal_yes": 16.083333333333332,
+          "p_anytime": 0.062176165803108814,
+          "n_books": 6
+        },
+        {
+          "player": "Wataru Endo",
+          "decimal_yes": 16.75,
+          "p_anytime": 0.05970149253731343,
+          "n_books": 3
+        },
+        {
+          "player": "Luke Chambers",
+          "decimal_yes": 18.0,
+          "p_anytime": 0.05555555555555555,
+          "n_books": 2
+        },
+        {
+          "player": "No Scorer",
+          "decimal_yes": 19.0,
+          "p_anytime": 0.05263157894736842,
+          "n_books": 2
+        },
+        {
+          "player": "Joe Gomez",
+          "decimal_yes": 19.625,
+          "p_anytime": 0.050955414012738856,
+          "n_books": 4
+        }
+      ]
+    },
+    {
+      "id": "7895f97f2f9577f3b13287a3d086859d",
+      "home": "Fulham",
+      "away": "Hull City",
+      "commence_time": "2026-10-17T14:00:00Z",
+      "http": 200,
+      "last_cost": "1",
+      "ok": true,
+      "available": true,
+      "n_players": 49,
+      "n_bookmakers_with_market": 6,
+      "market_keys": [
+        "player_goal_scorer_anytime"
+      ],
+      "top": [
+        {
+          "player": "Jonah Kusi-Asare",
+          "decimal_yes": 2.0,
+          "p_anytime": 0.5,
+          "n_books": 1
+        },
+        {
+          "player": "Gonzalo Garcia",
+          "decimal_yes": 2.44,
+          "p_anytime": 0.4098360655737705,
+          "n_books": 6
+        },
+        {
+          "player": "Rodrigo Muniz",
+          "decimal_yes": 2.566666666666667,
+          "p_anytime": 0.3896103896103896,
+          "n_books": 3
+        },
+        {
+          "player": "Josh King",
+          "decimal_yes": 2.886,
+          "p_anytime": 0.3465003465003465,
+          "n_books": 5
+        },
+        {
+          "player": "Joshua King",
+          "decimal_yes": 3.15,
+          "p_anytime": 0.31746031746031744,
+          "n_books": 1
+        },
+        {
+          "player": "Cesar Palacios",
+          "decimal_yes": 3.26,
+          "p_anytime": 0.3067484662576687,
+          "n_books": 4
+        },
+        {
+          "player": "Emile Smith-Rowe",
+          "decimal_yes": 3.6375,
+          "p_anytime": 0.274914089347079,
+          "n_books": 4
+        },
+        {
+          "player": "Oliver McBurnie",
+          "decimal_yes": 3.65,
+          "p_anytime": 0.273972602739726,
+          "n_books": 6
+        }
+      ],
+      "all": [
+        {
+          "player": "Jonah Kusi-Asare",
+          "decimal_yes": 2.0,
+          "p_anytime": 0.5,
+          "n_books": 1
+        },
+        {
+          "player": "Gonzalo Garcia",
+          "decimal_yes": 2.44,
+          "p_anytime": 0.4098360655737705,
+          "n_books": 6
+        },
+        {
+          "player": "Rodrigo Muniz",
+          "decimal_yes": 2.566666666666667,
+          "p_anytime": 0.3896103896103896,
+          "n_books": 3
+        },
+        {
+          "player": "Josh King",
+          "decimal_yes": 2.886,
+          "p_anytime": 0.3465003465003465,
+          "n_books": 5
+        },
+        {
+          "player": "Joshua King",
+          "decimal_yes": 3.15,
+          "p_anytime": 0.31746031746031744,
+          "n_books": 1
+        },
+        {
+          "player": "Cesar Palacios",
+          "decimal_yes": 3.26,
+          "p_anytime": 0.3067484662576687,
+          "n_books": 4
+        },
+        {
+          "player": "Emile Smith-Rowe",
+          "decimal_yes": 3.6375,
+          "p_anytime": 0.274914089347079,
+          "n_books": 4
+        },
+        {
+          "player": "Oliver McBurnie",
+          "decimal_yes": 3.65,
+          "p_anytime": 0.273972602739726,
+          "n_books": 6
+        },
+        {
+          "player": "Kevin Santos Lopes de Macedo",
+          "decimal_yes": 3.716666666666667,
+          "p_anytime": 0.26905829596412556,
+          "n_books": 3
+        },
+        {
+          "player": "Chibuzo Nwoko",
+          "decimal_yes": 4.2,
+          "p_anytime": 0.23809523809523808,
+          "n_books": 1
+        },
+        {
+          "player": "Joe Gelhardt",
+          "decimal_yes": 4.2625,
+          "p_anytime": 0.2346041055718475,
+          "n_books": 4
+        },
+        {
+          "player": "Oscar Bobb",
+          "decimal_yes": 4.408333333333333,
+          "p_anytime": 0.22684310018903592,
+          "n_books": 6
+        },
+        {
+          "player": "Robinio Vaz",
+          "decimal_yes": 4.45,
+          "p_anytime": 0.2247191011235955,
+          "n_books": 2
+        },
+        {
+          "player": "Ilyas Ansah",
+          "decimal_yes": 4.5,
+          "p_anytime": 0.2222222222222222,
+          "n_books": 1
+        },
+        {
+          "player": "Alex Iwobi",
+          "decimal_yes": 4.583333333333333,
+          "p_anytime": 0.2181818181818182,
+          "n_books": 6
+        },
+        {
+          "player": "Kieran Dowell",
+          "decimal_yes": 4.75,
+          "p_anytime": 0.21052631578947367,
+          "n_books": 1
+        },
+        {
+          "player": "Mohamed Bachir Belloumi",
+          "decimal_yes": 4.75,
+          "p_anytime": 0.21052631578947367,
+          "n_books": 6
+        },
+        {
+          "player": "Mohamed-Ali Cho",
+          "decimal_yes": 4.9,
+          "p_anytime": 0.2040816326530612,
+          "n_books": 1
+        },
+        {
+          "player": "Ryan Sessegnon",
+          "decimal_yes": 5.625,
+          "p_anytime": 0.17777777777777778,
+          "n_books": 6
+        },
+        {
+          "player": "Sorba Thomas",
+          "decimal_yes": 5.6499999999999995,
+          "p_anytime": 0.1769911504424779,
+          "n_books": 6
+        },
+        {
+          "player": "Elliot Stroud",
+          "decimal_yes": 5.6625,
+          "p_anytime": 0.17660044150110377,
+          "n_books": 4
+        },
+        {
+          "player": "Shea Charles",
+          "decimal_yes": 6.433333333333334,
+          "p_anytime": 0.15544041450777202,
+          "n_books": 6
+        },
+        {
+          "player": "Oscar Zambrano",
+          "decimal_yes": 7.15,
+          "p_anytime": 0.13986013986013984,
+          "n_books": 2
+        },
+        {
+          "player": "Tom Cairney",
+          "decimal_yes": 7.375,
+          "p_anytime": 0.13559322033898305,
+          "n_books": 2
+        },
+        {
+          "player": "Manuel Angel Moran Ibanez",
+          "decimal_yes": 8.65,
+          "p_anytime": 0.11560693641618497,
+          "n_books": 3
+        },
+        {
+          "player": "Matt Crooks",
+          "decimal_yes": 8.7,
+          "p_anytime": 0.1149425287356322,
+          "n_books": 5
+        },
+        {
+          "player": "Hugo Larsson",
+          "decimal_yes": 9.083333333333334,
+          "p_anytime": 0.11009174311926605,
+          "n_books": 3
+        },
+        {
+          "player": "Abdulkadir Omur",
+          "decimal_yes": 10.133333333333333,
+          "p_anytime": 0.09868421052631579,
+          "n_books": 3
+        },
+        {
+          "player": "Harrison Reed",
+          "decimal_yes": 10.4,
+          "p_anytime": 0.09615384615384615,
+          "n_books": 4
+        },
+        {
+          "player": "Sander Berge",
+          "decimal_yes": 10.491666666666667,
+          "p_anytime": 0.09531374106433677,
+          "n_books": 6
+        },
+        {
+          "player": "Antonee Robinson",
+          "decimal_yes": 11.0,
+          "p_anytime": 0.09090909090909091,
+          "n_books": 4
+        },
+        {
+          "player": "Timothy Castagne",
+          "decimal_yes": 11.375,
+          "p_anytime": 0.08791208791208792,
+          "n_books": 6
+        },
+        {
+          "player": "Calvin Bassey",
+          "decimal_yes": 11.5,
+          "p_anytime": 0.08695652173913043,
+          "n_books": 6
+        },
+        {
+          "player": "Joachim Andersen",
+          "decimal_yes": 12.375,
+          "p_anytime": 0.08080808080808081,
+          "n_books": 4
+        },
+        {
+          "player": "Nobel Mendy",
+          "decimal_yes": 12.375,
+          "p_anytime": 0.08080808080808081,
+          "n_books": 2
+        },
+        {
+          "player": "Regan Slater",
+          "decimal_yes": 12.708333333333334,
+          "p_anytime": 0.07868852459016393,
+          "n_books": 6
+        },
+        {
+          "player": "Hidemasa Morita",
+          "decimal_yes": 12.8,
+          "p_anytime": 0.078125,
+          "n_books": 5
+        },
+        {
+          "player": "David Affengruber",
+          "decimal_yes": 14.0,
+          "p_anytime": 0.07142857142857142,
+          "n_books": 6
+        },
+        {
+          "player": "Kenny Tete",
+          "decimal_yes": 14.375,
+          "p_anytime": 0.06956521739130435,
+          "n_books": 4
+        },
+        {
+          "player": "Jorge Cuenca Barreno",
+          "decimal_yes": 14.466666666666667,
+          "p_anytime": 0.06912442396313365,
+          "n_books": 3
+        },
+        {
+          "player": "No Scorer",
+          "decimal_yes": 15.0,
+          "p_anytime": 0.06666666666666667,
+          "n_books": 2
+        },
+        {
+          "player": "Semi Ajayi",
+          "decimal_yes": 15.5,
+          "p_anytime": 0.06451612903225806,
+          "n_books": 6
+        },
+        {
+          "player": "John Egan",
+          "decimal_yes": 16.083333333333332,
+          "p_anytime": 0.062176165803108814,
+          "n_books": 6
+        },
+        {
+          "player": "Patrick McNair",
+          "decimal_yes": 16.5,
+          "p_anytime": 0.06060606060606061,
+          "n_books": 2
+        },
+        {
+          "player": "Lucas Herrington",
+          "decimal_yes": 16.9375,
+          "p_anytime": 0.05904059040590406,
+          "n_books": 4
+        },
+        {
+          "player": "Ryan Giles",
+          "decimal_yes": 18.583333333333332,
+          "p_anytime": 0.053811659192825115,
+          "n_books": 6
+        },
+        {
+          "player": "Christos Mouzakitis",
+          "decimal_yes": 19.75,
+          "p_anytime": 0.05063291139240506,
+          "n_books": 3
+        },
+        {
+          "player": "Brooke Norton-Cuffy",
+          "decimal_yes": 20.916666666666668,
+          "p_anytime": 0.04780876494023904,
+          "n_books": 3
+        },
+        {
+          "player": "Lewie Coyle",
+          "decimal_yes": 23.791666666666668,
+          "p_anytime": 0.04203152364273205,
+          "n_books": 6
+        }
+      ]
+    },
+    {
+      "id": "bf2142d1ca76ba2fc9e61afce80f86c0",
+      "home": "Manchester City",
+      "away": "Ipswich Town",
+      "commence_time": "2026-10-17T14:00:00Z",
+      "http": 200,
+      "last_cost": "1",
+      "ok": true,
+      "available": true,
+      "n_players": 44,
+      "n_bookmakers_with_market": 5,
+      "market_keys": [
+        "player_goal_scorer_anytime"
+      ],
+      "top": [
+        {
+          "player": "Erling Braut Haaland",
+          "decimal_yes": 1.486,
+          "p_anytime": 0.6729475100942126,
+          "n_books": 5
+        },
+        {
+          "player": "Antoine Semenyo",
+          "decimal_yes": 2.6740000000000004,
+          "p_anytime": 0.37397157816005977,
+          "n_books": 5
+        },
+        {
+          "player": "Phil Foden",
+          "decimal_yes": 3.0325,
+          "p_anytime": 0.3297609233305853,
+          "n_books": 4
+        },
+        {
+          "player": "Rayan Cherki",
+          "decimal_yes": 3.075,
+          "p_anytime": 0.3252032520325203,
+          "n_books": 4
+        },
+        {
+          "player": "Iliman-Cheikh Ndiaye",
+          "decimal_yes": 3.12,
+          "p_anytime": 0.3205128205128205,
+          "n_books": 5
+        },
+        {
+          "player": "Allan Andrade Elias",
+          "decimal_yes": 3.25,
+          "p_anytime": 0.3076923076923077,
+          "n_books": 3
+        },
+        {
+          "player": "Jeremy Doku",
+          "decimal_yes": 3.375,
+          "p_anytime": 0.2962962962962963,
+          "n_books": 4
+        },
+        {
+          "player": "Ryan McAidoo",
+          "decimal_yes": 3.8,
+          "p_anytime": 0.2631578947368421,
+          "n_books": 2
+        }
+      ],
+      "all": [
+        {
+          "player": "Erling Braut Haaland",
+          "decimal_yes": 1.486,
+          "p_anytime": 0.6729475100942126,
+          "n_books": 5
+        },
+        {
+          "player": "Antoine Semenyo",
+          "decimal_yes": 2.6740000000000004,
+          "p_anytime": 0.37397157816005977,
+          "n_books": 5
+        },
+        {
+          "player": "Phil Foden",
+          "decimal_yes": 3.0325,
+          "p_anytime": 0.3297609233305853,
+          "n_books": 4
+        },
+        {
+          "player": "Rayan Cherki",
+          "decimal_yes": 3.075,
+          "p_anytime": 0.3252032520325203,
+          "n_books": 4
+        },
+        {
+          "player": "Iliman-Cheikh Ndiaye",
+          "decimal_yes": 3.12,
+          "p_anytime": 0.3205128205128205,
+          "n_books": 5
+        },
+        {
+          "player": "Allan Andrade Elias",
+          "decimal_yes": 3.25,
+          "p_anytime": 0.3076923076923077,
+          "n_books": 3
+        },
+        {
+          "player": "Jeremy Doku",
+          "decimal_yes": 3.375,
+          "p_anytime": 0.2962962962962963,
+          "n_books": 4
+        },
+        {
+          "player": "Ryan McAidoo",
+          "decimal_yes": 3.8,
+          "p_anytime": 0.2631578947368421,
+          "n_books": 2
+        },
+        {
+          "player": "Enzo Fernandez",
+          "decimal_yes": 3.8249999999999997,
+          "p_anytime": 0.26143790849673204,
+          "n_books": 4
+        },
+        {
+          "player": "Rayan Ait Nouri",
+          "decimal_yes": 4.0,
+          "p_anytime": 0.25,
+          "n_books": 2
+        },
+        {
+          "player": "Zian Flemming",
+          "decimal_yes": 4.366666666666667,
+          "p_anytime": 0.22900763358778622,
+          "n_books": 3
+        },
+        {
+          "player": "Emersonn Correia da Silva",
+          "decimal_yes": 4.92,
+          "p_anytime": 0.2032520325203252,
+          "n_books": 5
+        },
+        {
+          "player": "Chuba Akpom",
+          "decimal_yes": 5.066666666666666,
+          "p_anytime": 0.19736842105263158,
+          "n_books": 3
+        },
+        {
+          "player": "Niko O'Reilly",
+          "decimal_yes": 5.36,
+          "p_anytime": 0.18656716417910446,
+          "n_books": 5
+        },
+        {
+          "player": "Jack Clarke",
+          "decimal_yes": 6.0,
+          "p_anytime": 0.16666666666666666,
+          "n_books": 3
+        },
+        {
+          "player": "Daizen Maeda",
+          "decimal_yes": 6.333333333333333,
+          "p_anytime": 0.15789473684210528,
+          "n_books": 3
+        },
+        {
+          "player": "Jaden Philogene-Bidace",
+          "decimal_yes": 6.4,
+          "p_anytime": 0.15625,
+          "n_books": 5
+        },
+        {
+          "player": "Elliot Anderson",
+          "decimal_yes": 6.85,
+          "p_anytime": 0.14598540145985403,
+          "n_books": 5
+        },
+        {
+          "player": "Abdul Fatawu Issahaku",
+          "decimal_yes": 7.7,
+          "p_anytime": 0.12987012987012986,
+          "n_books": 5
+        },
+        {
+          "player": "Sindre Walle Egeli",
+          "decimal_yes": 7.75,
+          "p_anytime": 0.12903225806451613,
+          "n_books": 2
+        },
+        {
+          "player": "Mateo Kovacic",
+          "decimal_yes": 7.875,
+          "p_anytime": 0.12698412698412698,
+          "n_books": 2
+        },
+        {
+          "player": "Josko Gvardiol",
+          "decimal_yes": 8.166666666666666,
+          "p_anytime": 0.12244897959183675,
+          "n_books": 3
+        },
+        {
+          "player": "Ayyoub Bouaddi",
+          "decimal_yes": 8.2,
+          "p_anytime": 0.12195121951219513,
+          "n_books": 5
+        },
+        {
+          "player": "Kasey McAteer",
+          "decimal_yes": 8.25,
+          "p_anytime": 0.12121212121212122,
+          "n_books": 2
+        },
+        {
+          "player": "Marc Guehi",
+          "decimal_yes": 9.0,
+          "p_anytime": 0.1111111111111111,
+          "n_books": 5
+        },
+        {
+          "player": "Vitor Reis",
+          "decimal_yes": 9.583333333333334,
+          "p_anytime": 0.10434782608695652,
+          "n_books": 3
+        },
+        {
+          "player": "Rico Lewis",
+          "decimal_yes": 9.625,
+          "p_anytime": 0.1038961038961039,
+          "n_books": 2
+        },
+        {
+          "player": "Ruben Dias",
+          "decimal_yes": 11.15,
+          "p_anytime": 0.08968609865470852,
+          "n_books": 5
+        },
+        {
+          "player": "Jack Taylor",
+          "decimal_yes": 13.5,
+          "p_anytime": 0.07407407407407407,
+          "n_books": 2
+        },
+        {
+          "player": "Marcelino Ignacio Nunez Espinoza",
+          "decimal_yes": 13.5,
+          "p_anytime": 0.07407407407407407,
+          "n_books": 2
+        },
+        {
+          "player": "Matheus Luiz Nunes",
+          "decimal_yes": 13.6,
+          "p_anytime": 0.07352941176470588,
+          "n_books": 5
+        },
+        {
+          "player": "Leif Davis",
+          "decimal_yes": 14.1,
+          "p_anytime": 0.07092198581560284,
+          "n_books": 5
+        },
+        {
+          "player": "Abdukodir Khusanov",
+          "decimal_yes": 17.125,
+          "p_anytime": 0.058394160583941604,
+          "n_books": 4
+        },
+        {
+          "player": "Abdoul Guemissongui Ouattara",
+          "decimal_yes": 17.9,
+          "p_anytime": 0.0558659217877095,
+          "n_books": 5
+        },
+        {
+          "player": "Exequiel Palacios",
+          "decimal_yes": 18.1,
+          "p_anytime": 0.055248618784530384,
+          "n_books": 5
+        },
+        {
+          "player": "Sasa Lukic",
+          "decimal_yes": 20.4,
+          "p_anytime": 0.04901960784313726,
+          "n_books": 5
+        },
+        {
+          "player": "Azor Matusiwa",
+          "decimal_yes": 21.5,
+          "p_anytime": 0.046511627906976744,
+          "n_books": 3
+        },
+        {
+          "player": "Florentino Luis",
+          "decimal_yes": 22.0,
+          "p_anytime": 0.045454545454545456,
+          "n_books": 4
+        },
+        {
+          "player": "Cedric Kipre",
+          "decimal_yes": 23.0,
+          "p_anytime": 0.043478260869565216,
+          "n_books": 2
+        },
+        {
+          "player": "Dara O'Shea",
+          "decimal_yes": 25.9,
+          "p_anytime": 0.03861003861003861,
+          "n_books": 5
+        },
+        {
+          "player": "No Scorer",
+          "decimal_yes": 26.0,
+          "p_anytime": 0.038461538461538464,
+          "n_books": 2
+        },
+        {
+          "player": "Darnell Furlong",
+          "decimal_yes": 27.5,
+          "p_anytime": 0.03636363636363636,
+          "n_books": 2
+        },
+        {
+          "player": "Jacob Greaves",
+          "decimal_yes": 28.875,
+          "p_anytime": 0.03463203463203463,
+          "n_books": 4
+        },
+        {
+          "player": "Issa Diop",
+          "decimal_yes": 29.0,
+          "p_anytime": 0.034482758620689655,
+          "n_books": 5
+        }
+      ]
+    },
+    {
+      "id": "d1bbbdcd3d430e70091b518369b559cf",
+      "home": "Newcastle United",
+      "away": "Aston Villa",
+      "commence_time": "2026-10-17T16:30:00Z",
+      "http": 200,
+      "last_cost": "1",
+      "ok": true,
+      "available": true,
+      "n_players": 45,
+      "n_bookmakers_with_market": 5,
+      "market_keys": [
+        "player_goal_scorer_anytime"
+      ],
+      "top": [
+        {
+          "player": "William Osula",
+          "decimal_yes": 2.55,
+          "p_anytime": 0.3921568627450981,
+          "n_books": 2
+        },
+        {
+          "player": "Tammy Abraham",
+          "decimal_yes": 2.6999999999999997,
+          "p_anytime": 0.3703703703703704,
+          "n_books": 3
+        },
+        {
+          "player": "Brian Madjo",
+          "decimal_yes": 2.7,
+          "p_anytime": 0.37037037037037035,
+          "n_books": 2
+        },
+        {
+          "player": "Nicolas Jackson",
+          "decimal_yes": 2.71,
+          "p_anytime": 0.36900369003690037,
+          "n_books": 5
+        },
+        {
+          "player": "Yoane Wissa",
+          "decimal_yes": 2.9699999999999998,
+          "p_anytime": 0.3367003367003367,
+          "n_books": 5
+        },
+        {
+          "player": "Matias Fernandez Pardo",
+          "decimal_yes": 3.3200000000000003,
+          "p_anytime": 0.3012048192771084,
+          "n_books": 5
+        },
+        {
+          "player": "Harvey Barnes",
+          "decimal_yes": 3.3899999999999997,
+          "p_anytime": 0.2949852507374632,
+          "n_books": 5
+        },
+        {
+          "player": "Emiliano Buendia Stati",
+          "decimal_yes": 3.63,
+          "p_anytime": 0.27548209366391185,
+          "n_books": 5
+        }
+      ],
+      "all": [
+        {
+          "player": "William Osula",
+          "decimal_yes": 2.55,
+          "p_anytime": 0.3921568627450981,
+          "n_books": 2
+        },
+        {
+          "player": "Tammy Abraham",
+          "decimal_yes": 2.6999999999999997,
+          "p_anytime": 0.3703703703703704,
+          "n_books": 3
+        },
+        {
+          "player": "Brian Madjo",
+          "decimal_yes": 2.7,
+          "p_anytime": 0.37037037037037035,
+          "n_books": 2
+        },
+        {
+          "player": "Nicolas Jackson",
+          "decimal_yes": 2.71,
+          "p_anytime": 0.36900369003690037,
+          "n_books": 5
+        },
+        {
+          "player": "Yoane Wissa",
+          "decimal_yes": 2.9699999999999998,
+          "p_anytime": 0.3367003367003367,
+          "n_books": 5
+        },
+        {
+          "player": "Matias Fernandez Pardo",
+          "decimal_yes": 3.3200000000000003,
+          "p_anytime": 0.3012048192771084,
+          "n_books": 5
+        },
+        {
+          "player": "Harvey Barnes",
+          "decimal_yes": 3.3899999999999997,
+          "p_anytime": 0.2949852507374632,
+          "n_books": 5
+        },
+        {
+          "player": "Emiliano Buendia Stati",
+          "decimal_yes": 3.63,
+          "p_anytime": 0.27548209366391185,
+          "n_books": 5
+        },
+        {
+          "player": "Johan Manzambi",
+          "decimal_yes": 4.05,
+          "p_anytime": 0.2469135802469136,
+          "n_books": 5
+        },
+        {
+          "player": "Alejandro Garnacho",
+          "decimal_yes": 4.2,
+          "p_anytime": 0.23809523809523808,
+          "n_books": 2
+        },
+        {
+          "player": "Bazoumana Toure",
+          "decimal_yes": 4.275,
+          "p_anytime": 0.23391812865497075,
+          "n_books": 2
+        },
+        {
+          "player": "Anthony Elanga",
+          "decimal_yes": 4.675000000000001,
+          "p_anytime": 0.213903743315508,
+          "n_books": 2
+        },
+        {
+          "player": "Ibrahim Mbaye",
+          "decimal_yes": 4.783333333333333,
+          "p_anytime": 0.20905923344947736,
+          "n_books": 3
+        },
+        {
+          "player": "Jacob Ramsey",
+          "decimal_yes": 4.925,
+          "p_anytime": 0.20304568527918782,
+          "n_books": 2
+        },
+        {
+          "player": "Alysson Edward",
+          "decimal_yes": 5.125,
+          "p_anytime": 0.1951219512195122,
+          "n_books": 2
+        },
+        {
+          "player": "John McGinn",
+          "decimal_yes": 5.14,
+          "p_anytime": 0.19455252918287938,
+          "n_books": 5
+        },
+        {
+          "player": "Ross Barkley",
+          "decimal_yes": 5.233333333333333,
+          "p_anytime": 0.19108280254777069,
+          "n_books": 3
+        },
+        {
+          "player": "Jacob Murphy",
+          "decimal_yes": 5.625,
+          "p_anytime": 0.17777777777777778,
+          "n_books": 4
+        },
+        {
+          "player": "Joelinton",
+          "decimal_yes": 5.8125,
+          "p_anytime": 0.17204301075268819,
+          "n_books": 4
+        },
+        {
+          "player": "Joseph Willock",
+          "decimal_yes": 6.166666666666667,
+          "p_anytime": 0.16216216216216214,
+          "n_books": 3
+        },
+        {
+          "player": "George Hemmings",
+          "decimal_yes": 6.5,
+          "p_anytime": 0.15384615384615385,
+          "n_books": 2
+        },
+        {
+          "player": "Matteo Ruggeri",
+          "decimal_yes": 8.0,
+          "p_anytime": 0.125,
+          "n_books": 1
+        },
+        {
+          "player": "Leon Goretzka",
+          "decimal_yes": 8.416666666666666,
+          "p_anytime": 0.11881188118811882,
+          "n_books": 3
+        },
+        {
+          "player": "Aladji Bamba",
+          "decimal_yes": 9.0,
+          "p_anytime": 0.1111111111111111,
+          "n_books": 2
+        },
+        {
+          "player": "Modou Cisse",
+          "decimal_yes": 9.0,
+          "p_anytime": 0.1111111111111111,
+          "n_books": 1
+        },
+        {
+          "player": "Sean Steur",
+          "decimal_yes": 9.333333333333334,
+          "p_anytime": 0.10714285714285714,
+          "n_books": 3
+        },
+        {
+          "player": "Malick Thiaw",
+          "decimal_yes": 11.5,
+          "p_anytime": 0.08695652173913043,
+          "n_books": 5
+        },
+        {
+          "player": "Joao Victor Gomes da Silva",
+          "decimal_yes": 11.8,
+          "p_anytime": 0.0847457627118644,
+          "n_books": 5
+        },
+        {
+          "player": "Lewis Hall",
+          "decimal_yes": 12.0,
+          "p_anytime": 0.08333333333333333,
+          "n_books": 5
+        },
+        {
+          "player": "Matty Cash",
+          "decimal_yes": 12.2,
+          "p_anytime": 0.0819672131147541,
+          "n_books": 5
+        },
+        {
+          "player": "Lewis Miley",
+          "decimal_yes": 12.8,
+          "p_anytime": 0.078125,
+          "n_books": 5
+        },
+        {
+          "player": "Taylor Harwood-Bellis",
+          "decimal_yes": 13.5,
+          "p_anytime": 0.07407407407407407,
+          "n_books": 3
+        },
+        {
+          "player": "Fabian Schar",
+          "decimal_yes": 14.0,
+          "p_anytime": 0.07142857142857142,
+          "n_books": 2
+        },
+        {
+          "player": "Amar Dedic",
+          "decimal_yes": 14.5,
+          "p_anytime": 0.06896551724137931,
+          "n_books": 5
+        },
+        {
+          "player": "Tyrone Mings",
+          "decimal_yes": 15.0,
+          "p_anytime": 0.06666666666666667,
+          "n_books": 5
+        },
+        {
+          "player": "Boubacar Kamara",
+          "decimal_yes": 15.4,
+          "p_anytime": 0.06493506493506493,
+          "n_books": 5
+        },
+        {
+          "player": "Dan Burn",
+          "decimal_yes": 15.5,
+          "p_anytime": 0.06451612903225806,
+          "n_books": 2
+        },
+        {
+          "player": "Pau Torres",
+          "decimal_yes": 17.333333333333332,
+          "p_anytime": 0.057692307692307696,
+          "n_books": 3
+        },
+        {
+          "player": "Sven Botman",
+          "decimal_yes": 17.4,
+          "p_anytime": 0.0574712643678161,
+          "n_books": 5
+        },
+        {
+          "player": "No Scorer",
+          "decimal_yes": 18.0,
+          "p_anytime": 0.05555555555555555,
+          "n_books": 2
+        },
+        {
+          "player": "Lamare Bogarde",
+          "decimal_yes": 18.5,
+          "p_anytime": 0.05405405405405406,
+          "n_books": 2
+        },
+        {
+          "player": "Aaron Wan-Bissaka",
+          "decimal_yes": 20.0,
+          "p_anytime": 0.05,
+          "n_books": 5
+        },
+        {
+          "player": "Victor Lindelof",
+          "decimal_yes": 20.4,
+          "p_anytime": 0.04901960784313726,
+          "n_books": 5
+        },
+        {
+          "player": "Valentino Livramento",
+          "decimal_yes": 20.5,
+          "p_anytime": 0.04878048780487805,
+          "n_books": 2
+        },
+        {
+          "player": "Miodrag Pivas",
+          "decimal_yes": 21.0,
+          "p_anytime": 0.047619047619047616,
+          "n_books": 2
+        }
+      ]
+    },
+    {
+      "id": "dfd5d6648be46426e418801584d46a68",
+      "home": "Bournemouth",
+      "away": "Sunderland",
+      "commence_time": "2026-10-18T13:00:00Z",
+      "http": 200,
+      "last_cost": "1",
+      "ok": true,
+      "available": true,
+      "n_players": 47,
+      "n_bookmakers_with_market": 6,
+      "market_keys": [
+        "player_goal_scorer_anytime"
+      ],
+      "top": [
+        {
+          "player": "Alvaro Daniel Rodriguez Munoz",
+          "decimal_yes": 3.065,
+          "p_anytime": 0.3262642740619902,
+          "n_books": 4
+        },
+        {
+          "player": "Francisco Evanilson de Lima Barbosa",
+          "decimal_yes": 3.078333333333333,
+          "p_anytime": 0.32485110990795885,
+          "n_books": 6
+        },
+        {
+          "player": "Brian Brobbey",
+          "decimal_yes": 3.095,
+          "p_anytime": 0.32310177705977383,
+          "n_books": 4
+        },
+        {
+          "player": "Wilson Isidor",
+          "decimal_yes": 3.28,
+          "p_anytime": 0.3048780487804878,
+          "n_books": 6
+        },
+        {
+          "player": "Daniel Jebbison",
+          "decimal_yes": 3.2900000000000005,
+          "p_anytime": 0.30395136778115495,
+          "n_books": 3
+        },
+        {
+          "player": "Rayan Vitor",
+          "decimal_yes": 3.5,
+          "p_anytime": 0.2857142857142857,
+          "n_books": 6
+        },
+        {
+          "player": "Juan Riquelme Angulo Caicedo",
+          "decimal_yes": 3.6333333333333333,
+          "p_anytime": 0.27522935779816515,
+          "n_books": 3
+        },
+        {
+          "player": "Marcus Tavernier",
+          "decimal_yes": 3.6666666666666665,
+          "p_anytime": 0.27272727272727276,
+          "n_books": 6
+        }
+      ],
+      "all": [
+        {
+          "player": "Alvaro Daniel Rodriguez Munoz",
+          "decimal_yes": 3.065,
+          "p_anytime": 0.3262642740619902,
+          "n_books": 4
+        },
+        {
+          "player": "Francisco Evanilson de Lima Barbosa",
+          "decimal_yes": 3.078333333333333,
+          "p_anytime": 0.32485110990795885,
+          "n_books": 6
+        },
+        {
+          "player": "Brian Brobbey",
+          "decimal_yes": 3.095,
+          "p_anytime": 0.32310177705977383,
+          "n_books": 4
+        },
+        {
+          "player": "Wilson Isidor",
+          "decimal_yes": 3.28,
+          "p_anytime": 0.3048780487804878,
+          "n_books": 6
+        },
+        {
+          "player": "Daniel Jebbison",
+          "decimal_yes": 3.2900000000000005,
+          "p_anytime": 0.30395136778115495,
+          "n_books": 3
+        },
+        {
+          "player": "Rayan Vitor",
+          "decimal_yes": 3.5,
+          "p_anytime": 0.2857142857142857,
+          "n_books": 6
+        },
+        {
+          "player": "Juan Riquelme Angulo Caicedo",
+          "decimal_yes": 3.6333333333333333,
+          "p_anytime": 0.27522935779816515,
+          "n_books": 3
+        },
+        {
+          "player": "Marcus Tavernier",
+          "decimal_yes": 3.6666666666666665,
+          "p_anytime": 0.27272727272727276,
+          "n_books": 6
+        },
+        {
+          "player": "Justin Kluivert",
+          "decimal_yes": 3.8166666666666664,
+          "p_anytime": 0.26200873362445415,
+          "n_books": 3
+        },
+        {
+          "player": "David Brooks",
+          "decimal_yes": 4.57,
+          "p_anytime": 0.2188183807439825,
+          "n_books": 5
+        },
+        {
+          "player": "Ben Doak",
+          "decimal_yes": 4.6000000000000005,
+          "p_anytime": 0.21739130434782605,
+          "n_books": 3
+        },
+        {
+          "player": "Chemsdine Talbi",
+          "decimal_yes": 4.616666666666666,
+          "p_anytime": 0.21660649819494587,
+          "n_books": 3
+        },
+        {
+          "player": "Ben Gannondoak",
+          "decimal_yes": 4.733333333333333,
+          "p_anytime": 0.2112676056338028,
+          "n_books": 3
+        },
+        {
+          "player": "Amine Adli",
+          "decimal_yes": 4.75,
+          "p_anytime": 0.21052631578947367,
+          "n_books": 2
+        },
+        {
+          "player": "Enzo Le Fee",
+          "decimal_yes": 4.925,
+          "p_anytime": 0.20304568527918782,
+          "n_books": 6
+        },
+        {
+          "player": "Nilson David Angulo Ramirez",
+          "decimal_yes": 5.1499999999999995,
+          "p_anytime": 0.19417475728155342,
+          "n_books": 6
+        },
+        {
+          "player": "Ryan Christie",
+          "decimal_yes": 5.183333333333334,
+          "p_anytime": 0.19292604501607716,
+          "n_books": 6
+        },
+        {
+          "player": "Malick Martin Fofana",
+          "decimal_yes": 5.216666666666667,
+          "p_anytime": 0.19169329073482427,
+          "n_books": 6
+        },
+        {
+          "player": "Jocelin Ta Bi",
+          "decimal_yes": 5.883333333333333,
+          "p_anytime": 0.16997167138810199,
+          "n_books": 3
+        },
+        {
+          "player": "Christopher Rigg",
+          "decimal_yes": 6.033333333333334,
+          "p_anytime": 0.16574585635359113,
+          "n_books": 3
+        },
+        {
+          "player": "Habib Diarra",
+          "decimal_yes": 6.5,
+          "p_anytime": 0.15384615384615385,
+          "n_books": 2
+        },
+        {
+          "player": "Thomas Meunier",
+          "decimal_yes": 6.612500000000001,
+          "p_anytime": 0.15122873345935725,
+          "n_books": 4
+        },
+        {
+          "player": "Ben Winterburn",
+          "decimal_yes": 7.0,
+          "p_anytime": 0.14285714285714285,
+          "n_books": 1
+        },
+        {
+          "player": "Alan Browne",
+          "decimal_yes": 7.5,
+          "p_anytime": 0.13333333333333333,
+          "n_books": 2
+        },
+        {
+          "player": "Trai Hume",
+          "decimal_yes": 8.091666666666667,
+          "p_anytime": 0.12358393408856848,
+          "n_books": 6
+        },
+        {
+          "player": "Alex Toth",
+          "decimal_yes": 8.133333333333333,
+          "p_anytime": 0.12295081967213116,
+          "n_books": 3
+        },
+        {
+          "player": "Tyler Adams",
+          "decimal_yes": 9.75,
+          "p_anytime": 0.10256410256410256,
+          "n_books": 6
+        },
+        {
+          "player": "Juanlu Sanchez",
+          "decimal_yes": 10.275,
+          "p_anytime": 0.097323600973236,
+          "n_books": 4
+        },
+        {
+          "player": "Granit Xhaka",
+          "decimal_yes": 11.383333333333333,
+          "p_anytime": 0.08784773060029283,
+          "n_books": 6
+        },
+        {
+          "player": "Jules Ahoka",
+          "decimal_yes": 11.533333333333333,
+          "p_anytime": 0.08670520231213873,
+          "n_books": 3
+        },
+        {
+          "player": "Nordi Mukiele",
+          "decimal_yes": 11.75,
+          "p_anytime": 0.0851063829787234,
+          "n_books": 6
+        },
+        {
+          "player": "Lewis Cook",
+          "decimal_yes": 12.4,
+          "p_anytime": 0.08064516129032258,
+          "n_books": 5
+        },
+        {
+          "player": "Jenson Jones",
+          "decimal_yes": 12.5,
+          "p_anytime": 0.08,
+          "n_books": 1
+        },
+        {
+          "player": "Adrien Truffert",
+          "decimal_yes": 12.708333333333334,
+          "p_anytime": 0.07868852459016393,
+          "n_books": 6
+        },
+        {
+          "player": "No Scorer",
+          "decimal_yes": 13.0,
+          "p_anytime": 0.07692307692307693,
+          "n_books": 2
+        },
+        {
+          "player": "Antonio Joao Pereira Albuquerque Tavares Silva",
+          "decimal_yes": 13.208333333333334,
+          "p_anytime": 0.07570977917981073,
+          "n_books": 6
+        },
+        {
+          "player": "Noah Sadiki",
+          "decimal_yes": 14.166666666666666,
+          "p_anytime": 0.07058823529411765,
+          "n_books": 6
+        },
+        {
+          "player": "Dayann Methalie",
+          "decimal_yes": 14.3125,
+          "p_anytime": 0.06986899563318777,
+          "n_books": 4
+        },
+        {
+          "player": "Omar Alderete",
+          "decimal_yes": 14.625,
+          "p_anytime": 0.06837606837606838,
+          "n_books": 6
+        },
+        {
+          "player": "Bafode Diakite",
+          "decimal_yes": 15.0,
+          "p_anytime": 0.06666666666666667,
+          "n_books": 3
+        },
+        {
+          "player": "Veljko Milosavljevic",
+          "decimal_yes": 18.5,
+          "p_anytime": 0.05405405405405406,
+          "n_books": 2
+        },
+        {
+          "player": "James Hill",
+          "decimal_yes": 19.916666666666668,
+          "p_anytime": 0.0502092050209205,
+          "n_books": 6
+        },
+        {
+          "player": "Kevin Danso",
+          "decimal_yes": 20.041666666666668,
+          "p_anytime": 0.04989604989604989,
+          "n_books": 6
+        },
+        {
+          "player": "Luke O'Nien",
+          "decimal_yes": 20.833333333333332,
+          "p_anytime": 0.048,
+          "n_books": 3
+        },
+        {
+          "player": "Julio Soler",
+          "decimal_yes": 21.25,
+          "p_anytime": 0.047058823529411764,
+          "n_books": 3
+        },
+        {
+          "player": "Reinildo Mandava",
+          "decimal_yes": 22.791666666666668,
+          "p_anytime": 0.043875685557586835,
+          "n_books": 6
+        },
+        {
+          "player": "Adam Smith",
+          "decimal_yes": 24.458333333333332,
+          "p_anytime": 0.040885860306643956,
+          "n_books": 6
+        }
+      ]
+    },
+    {
+      "id": "9fc08b390a49c4434f7cf631a0bb88fb",
+      "home": "Brighton and Hove Albion",
+      "away": "Crystal Palace",
+      "commence_time": "2026-10-18T13:00:00Z",
+      "http": 200,
+      "last_cost": "1",
+      "ok": true,
+      "available": true,
+      "n_players": 49,
+      "n_bookmakers_with_market": 6,
+      "market_keys": [
+        "player_goal_scorer_anytime"
+      ],
+      "top": [
+        {
+          "player": "Charalampos Kostoulas",
+          "decimal_yes": 2.1483333333333334,
+          "p_anytime": 0.4654771140418929,
+          "n_books": 6
+        },
+        {
+          "player": "Promise Oluwatobi Emmanuel David",
+          "decimal_yes": 2.31,
+          "p_anytime": 0.4329004329004329,
+          "n_books": 3
+        },
+        {
+          "player": "Georginio Rutter",
+          "decimal_yes": 2.3166666666666664,
+          "p_anytime": 0.43165467625899284,
+          "n_books": 3
+        },
+        {
+          "player": "Jean-Philippe Mateta",
+          "decimal_yes": 3.1300000000000003,
+          "p_anytime": 0.3194888178913738,
+          "n_books": 3
+        },
+        {
+          "player": "Femi Azeez",
+          "decimal_yes": 3.175,
+          "p_anytime": 0.31496062992125984,
+          "n_books": 2
+        },
+        {
+          "player": "Ibrahim Osman",
+          "decimal_yes": 3.1999999999999997,
+          "p_anytime": 0.3125,
+          "n_books": 3
+        },
+        {
+          "player": "Diego Alexander Gomez Amarilla",
+          "decimal_yes": 3.2616666666666667,
+          "p_anytime": 0.3065917220235054,
+          "n_books": 6
+        },
+        {
+          "player": "Zadok Yohanna",
+          "decimal_yes": 3.3,
+          "p_anytime": 0.30303030303030304,
+          "n_books": 2
+        }
+      ],
+      "all": [
+        {
+          "player": "Charalampos Kostoulas",
+          "decimal_yes": 2.1483333333333334,
+          "p_anytime": 0.4654771140418929,
+          "n_books": 6
+        },
+        {
+          "player": "Promise Oluwatobi Emmanuel David",
+          "decimal_yes": 2.31,
+          "p_anytime": 0.4329004329004329,
+          "n_books": 3
+        },
+        {
+          "player": "Georginio Rutter",
+          "decimal_yes": 2.3166666666666664,
+          "p_anytime": 0.43165467625899284,
+          "n_books": 3
+        },
+        {
+          "player": "Jean-Philippe Mateta",
+          "decimal_yes": 3.1300000000000003,
+          "p_anytime": 0.3194888178913738,
+          "n_books": 3
+        },
+        {
+          "player": "Femi Azeez",
+          "decimal_yes": 3.175,
+          "p_anytime": 0.31496062992125984,
+          "n_books": 2
+        },
+        {
+          "player": "Ibrahim Osman",
+          "decimal_yes": 3.1999999999999997,
+          "p_anytime": 0.3125,
+          "n_books": 3
+        },
+        {
+          "player": "Diego Alexander Gomez Amarilla",
+          "decimal_yes": 3.2616666666666667,
+          "p_anytime": 0.3065917220235054,
+          "n_books": 6
+        },
+        {
+          "player": "Zadok Yohanna",
+          "decimal_yes": 3.3,
+          "p_anytime": 0.30303030303030304,
+          "n_books": 2
+        },
+        {
+          "player": "Jorgen Strand Larsen",
+          "decimal_yes": 3.4250000000000003,
+          "p_anytime": 0.291970802919708,
+          "n_books": 6
+        },
+        {
+          "player": "Edward Nketiah",
+          "decimal_yes": 3.5925000000000002,
+          "p_anytime": 0.278357689631176,
+          "n_books": 4
+        },
+        {
+          "player": "Malick Junior Yalcouye",
+          "decimal_yes": 3.6333333333333333,
+          "p_anytime": 0.27522935779816515,
+          "n_books": 3
+        },
+        {
+          "player": "Jack Hinshelwood",
+          "decimal_yes": 3.6666666666666665,
+          "p_anytime": 0.27272727272727276,
+          "n_books": 3
+        },
+        {
+          "player": "Matthew O'Riley",
+          "decimal_yes": 3.9499999999999997,
+          "p_anytime": 0.25316455696202533,
+          "n_books": 3
+        },
+        {
+          "player": "Nehemiah Oriola",
+          "decimal_yes": 3.975,
+          "p_anytime": 0.25157232704402516,
+          "n_books": 2
+        },
+        {
+          "player": "Yasin Ayari",
+          "decimal_yes": 3.983333333333333,
+          "p_anytime": 0.25104602510460255,
+          "n_books": 6
+        },
+        {
+          "player": "Ismaila Sarr",
+          "decimal_yes": 4.046,
+          "p_anytime": 0.24715768660405338,
+          "n_books": 5
+        },
+        {
+          "player": "Maxim de Cuyper",
+          "decimal_yes": 4.13,
+          "p_anytime": 0.24213075060532688,
+          "n_books": 6
+        },
+        {
+          "player": "Pascal Gross",
+          "decimal_yes": 4.483333333333333,
+          "p_anytime": 0.22304832713754646,
+          "n_books": 6
+        },
+        {
+          "player": "Jose Maria Andres Baixauli",
+          "decimal_yes": 4.8,
+          "p_anytime": 0.20833333333333334,
+          "n_books": 1
+        },
+        {
+          "player": "Zavier Gozo",
+          "decimal_yes": 5.35,
+          "p_anytime": 0.1869158878504673,
+          "n_books": 2
+        },
+        {
+          "player": "Dario Osorio",
+          "decimal_yes": 5.7,
+          "p_anytime": 0.17543859649122806,
+          "n_books": 4
+        },
+        {
+          "player": "Yeremy Pino",
+          "decimal_yes": 6.25,
+          "p_anytime": 0.16,
+          "n_books": 1
+        },
+        {
+          "player": "Yeremi Pino",
+          "decimal_yes": 6.42,
+          "p_anytime": 0.1557632398753894,
+          "n_books": 5
+        },
+        {
+          "player": "Luka Vuskovic",
+          "decimal_yes": 7.333333333333333,
+          "p_anytime": 0.13636363636363638,
+          "n_books": 6
+        },
+        {
+          "player": "Dwight McNeil",
+          "decimal_yes": 7.533333333333334,
+          "p_anytime": 0.1327433628318584,
+          "n_books": 3
+        },
+        {
+          "player": "Anan Khalaili",
+          "decimal_yes": 8.049999999999999,
+          "p_anytime": 0.12422360248447206,
+          "n_books": 6
+        },
+        {
+          "player": "Ferdi Kadioglu",
+          "decimal_yes": 8.066666666666666,
+          "p_anytime": 0.12396694214876033,
+          "n_books": 6
+        },
+        {
+          "player": "Daichi Kamada",
+          "decimal_yes": 8.450000000000001,
+          "p_anytime": 0.11834319526627217,
+          "n_books": 6
+        },
+        {
+          "player": "Pascal Struijk",
+          "decimal_yes": 8.5,
+          "p_anytime": 0.11764705882352941,
+          "n_books": 1
+        },
+        {
+          "player": "Jaouen Hadjam",
+          "decimal_yes": 8.983333333333333,
+          "p_anytime": 0.11131725417439704,
+          "n_books": 3
+        },
+        {
+          "player": "Mats Wieffer",
+          "decimal_yes": 9.0,
+          "p_anytime": 0.1111111111111111,
+          "n_books": 2
+        },
+        {
+          "player": "Quinten Timber",
+          "decimal_yes": 9.625,
+          "p_anytime": 0.1038961038961039,
+          "n_books": 6
+        },
+        {
+          "player": "Lewis Dunk",
+          "decimal_yes": 10.066666666666666,
+          "p_anytime": 0.09933774834437087,
+          "n_books": 6
+        },
+        {
+          "player": "Joao Pedro Costinha",
+          "decimal_yes": 10.375,
+          "p_anytime": 0.0963855421686747,
+          "n_books": 4
+        },
+        {
+          "player": "Cheick Oumar Doucoure",
+          "decimal_yes": 10.4,
+          "p_anytime": 0.09615384615384615,
+          "n_books": 1
+        },
+        {
+          "player": "Michael Svoboda",
+          "decimal_yes": 11.266666666666666,
+          "p_anytime": 0.08875739644970415,
+          "n_books": 3
+        },
+        {
+          "player": "Ben Chilwell",
+          "decimal_yes": 12.333333333333334,
+          "p_anytime": 0.08108108108108107,
+          "n_books": 3
+        },
+        {
+          "player": "Olivier Boscagli",
+          "decimal_yes": 12.75,
+          "p_anytime": 0.0784313725490196,
+          "n_books": 6
+        },
+        {
+          "player": "Oscar Mingueza",
+          "decimal_yes": 12.9375,
+          "p_anytime": 0.07729468599033816,
+          "n_books": 4
+        },
+        {
+          "player": "Caleb Kporha",
+          "decimal_yes": 13.5,
+          "p_anytime": 0.07407407407407407,
+          "n_books": 2
+        },
+        {
+          "player": "Adam Wharton",
+          "decimal_yes": 14.375,
+          "p_anytime": 0.06956521739130435,
+          "n_books": 6
+        },
+        {
+          "player": "Jefferson Lerma",
+          "decimal_yes": 14.708333333333334,
+          "p_anytime": 0.06798866855524079,
+          "n_books": 6
+        },
+        {
+          "player": "Tyrick Mitchell",
+          "decimal_yes": 14.958333333333334,
+          "p_anytime": 0.06685236768802229,
+          "n_books": 6
+        },
+        {
+          "player": "Will Hughes",
+          "decimal_yes": 17.083333333333332,
+          "p_anytime": 0.05853658536585366,
+          "n_books": 3
+        },
+        {
+          "player": "No Scorer",
+          "decimal_yes": 19.0,
+          "p_anytime": 0.05263157894736842,
+          "n_books": 2
+        },
+        {
+          "player": "Chris Richards",
+          "decimal_yes": 19.916666666666668,
+          "p_anytime": 0.0502092050209205,
+          "n_books": 6
+        },
+        {
+          "player": "Jaydee Canvot",
+          "decimal_yes": 22.041666666666668,
+          "p_anytime": 0.04536862003780718,
+          "n_books": 6
+        },
+        {
+          "player": "Honest Ahanor",
+          "decimal_yes": 25.4375,
+          "p_anytime": 0.03931203931203931,
+          "n_books": 4
+        },
+        {
+          "player": "Takehiro Tomiyasu",
+          "decimal_yes": 27.25,
+          "p_anytime": 0.03669724770642202,
+          "n_books": 3
+        }
+      ]
+    },
+    {
+      "id": "676b3b0b609e9cf565da450786618d26",
+      "home": "Leeds United",
+      "away": "Manchester United",
+      "commence_time": "2026-10-18T13:00:00Z",
+      "http": 200,
+      "last_cost": "1",
+      "ok": true,
+      "available": true,
+      "n_players": 46,
+      "n_bookmakers_with_market": 6,
+      "market_keys": [
+        "player_goal_scorer_anytime"
+      ],
+      "top": [
+        {
+          "player": "Dominic Calvert-Lewin",
+          "decimal_yes": 2.4250000000000003,
+          "p_anytime": 0.41237113402061853,
+          "n_books": 6
+        },
+        {
+          "player": "Benjamin Sesko",
+          "decimal_yes": 2.52,
+          "p_anytime": 0.3968253968253968,
+          "n_books": 2
+        },
+        {
+          "player": "Lukas Nmecha",
+          "decimal_yes": 2.78,
+          "p_anytime": 0.3597122302158274,
+          "n_books": 3
+        },
+        {
+          "player": "Noah Okafor",
+          "decimal_yes": 3.1783333333333332,
+          "p_anytime": 0.3146303093864709,
+          "n_books": 6
+        },
+        {
+          "player": "Bryan Mbeumo",
+          "decimal_yes": 3.5549999999999997,
+          "p_anytime": 0.2812939521800282,
+          "n_books": 6
+        },
+        {
+          "player": "Bruno Fernandes",
+          "decimal_yes": 3.5583333333333336,
+          "p_anytime": 0.2810304449648712,
+          "n_books": 6
+        },
+        {
+          "player": "Matheus Cunha",
+          "decimal_yes": 3.625,
+          "p_anytime": 0.27586206896551724,
+          "n_books": 6
+        },
+        {
+          "player": "Daniel James",
+          "decimal_yes": 3.7,
+          "p_anytime": 0.27027027027027023,
+          "n_books": 2
+        }
+      ],
+      "all": [
+        {
+          "player": "Dominic Calvert-Lewin",
+          "decimal_yes": 2.4250000000000003,
+          "p_anytime": 0.41237113402061853,
+          "n_books": 6
+        },
+        {
+          "player": "Benjamin Sesko",
+          "decimal_yes": 2.52,
+          "p_anytime": 0.3968253968253968,
+          "n_books": 2
+        },
+        {
+          "player": "Lukas Nmecha",
+          "decimal_yes": 2.78,
+          "p_anytime": 0.3597122302158274,
+          "n_books": 3
+        },
+        {
+          "player": "Noah Okafor",
+          "decimal_yes": 3.1783333333333332,
+          "p_anytime": 0.3146303093864709,
+          "n_books": 6
+        },
+        {
+          "player": "Bryan Mbeumo",
+          "decimal_yes": 3.5549999999999997,
+          "p_anytime": 0.2812939521800282,
+          "n_books": 6
+        },
+        {
+          "player": "Bruno Fernandes",
+          "decimal_yes": 3.5583333333333336,
+          "p_anytime": 0.2810304449648712,
+          "n_books": 6
+        },
+        {
+          "player": "Matheus Cunha",
+          "decimal_yes": 3.625,
+          "p_anytime": 0.27586206896551724,
+          "n_books": 6
+        },
+        {
+          "player": "Daniel James",
+          "decimal_yes": 3.7,
+          "p_anytime": 0.27027027027027023,
+          "n_books": 2
+        },
+        {
+          "player": "Joshua Zirkzee",
+          "decimal_yes": 3.7875,
+          "p_anytime": 0.264026402640264,
+          "n_books": 4
+        },
+        {
+          "player": "Marcus Rashford",
+          "decimal_yes": 3.87,
+          "p_anytime": 0.25839793281653745,
+          "n_books": 5
+        },
+        {
+          "player": "Jean Matteo Bahoya",
+          "decimal_yes": 3.966666666666667,
+          "p_anytime": 0.25210084033613445,
+          "n_books": 3
+        },
+        {
+          "player": "Patrick Dorgu",
+          "decimal_yes": 4.449999999999999,
+          "p_anytime": 0.22471910112359555,
+          "n_books": 2
+        },
+        {
+          "player": "Shea Lacey",
+          "decimal_yes": 4.516666666666667,
+          "p_anytime": 0.22140221402214022,
+          "n_books": 3
+        },
+        {
+          "player": "Brendan Aaronson",
+          "decimal_yes": 4.6375,
+          "p_anytime": 0.21563342318059298,
+          "n_books": 4
+        },
+        {
+          "player": "Jack Fletcher",
+          "decimal_yes": 4.75,
+          "p_anytime": 0.21052631578947367,
+          "n_books": 1
+        },
+        {
+          "player": "Amad Diallo",
+          "decimal_yes": 4.816666666666666,
+          "p_anytime": 0.20761245674740486,
+          "n_books": 6
+        },
+        {
+          "player": "Anton Stach",
+          "decimal_yes": 4.825,
+          "p_anytime": 0.20725388601036268,
+          "n_books": 6
+        },
+        {
+          "player": "Mason Mount",
+          "decimal_yes": 6.2,
+          "p_anytime": 0.16129032258064516,
+          "n_books": 3
+        },
+        {
+          "player": "Ao Tanaka",
+          "decimal_yes": 6.266666666666667,
+          "p_anytime": 0.1595744680851064,
+          "n_books": 6
+        },
+        {
+          "player": "Sean Longstaff",
+          "decimal_yes": 6.6499999999999995,
+          "p_anytime": 0.15037593984962408,
+          "n_books": 3
+        },
+        {
+          "player": "Manuel Ugarte",
+          "decimal_yes": 8.0,
+          "p_anytime": 0.125,
+          "n_books": 1
+        },
+        {
+          "player": "Youri Tielemans",
+          "decimal_yes": 8.083333333333334,
+          "p_anytime": 0.12371134020618556,
+          "n_books": 6
+        },
+        {
+          "player": "Tyler Fletcher",
+          "decimal_yes": 8.25,
+          "p_anytime": 0.12121212121212122,
+          "n_books": 3
+        },
+        {
+          "player": "Joe Rodon",
+          "decimal_yes": 9.0,
+          "p_anytime": 0.1111111111111111,
+          "n_books": 1
+        },
+        {
+          "player": "Jayden Bogle",
+          "decimal_yes": 9.533333333333333,
+          "p_anytime": 0.1048951048951049,
+          "n_books": 6
+        },
+        {
+          "player": "Andrey Santos",
+          "decimal_yes": 9.9875,
+          "p_anytime": 0.10012515644555695,
+          "n_books": 4
+        },
+        {
+          "player": "James Justin",
+          "decimal_yes": 10.816666666666668,
+          "p_anytime": 0.09244992295839752,
+          "n_books": 6
+        },
+        {
+          "player": "Jaka Bijol",
+          "decimal_yes": 11.25,
+          "p_anytime": 0.08888888888888889,
+          "n_books": 3
+        },
+        {
+          "player": "Kobbie Mainoo",
+          "decimal_yes": 12.133333333333333,
+          "p_anytime": 0.08241758241758242,
+          "n_books": 6
+        },
+        {
+          "player": "Iliya Gruev",
+          "decimal_yes": 12.916666666666666,
+          "p_anytime": 0.07741935483870968,
+          "n_books": 3
+        },
+        {
+          "player": "Harry Maguire",
+          "decimal_yes": 13.208333333333334,
+          "p_anytime": 0.07570977917981073,
+          "n_books": 6
+        },
+        {
+          "player": "Tarik Muharemovic",
+          "decimal_yes": 13.416666666666666,
+          "p_anytime": 0.07453416149068323,
+          "n_books": 6
+        },
+        {
+          "player": "Ethan Ampadu",
+          "decimal_yes": 13.541666666666666,
+          "p_anytime": 0.07384615384615385,
+          "n_books": 6
+        },
+        {
+          "player": "Melvin Bard",
+          "decimal_yes": 14.75,
+          "p_anytime": 0.06779661016949153,
+          "n_books": 3
+        },
+        {
+          "player": "Nico Elvedi",
+          "decimal_yes": 15.25,
+          "p_anytime": 0.06557377049180328,
+          "n_books": 6
+        },
+        {
+          "player": "Gabriel Gudmundsson",
+          "decimal_yes": 16.083333333333332,
+          "p_anytime": 0.062176165803108814,
+          "n_books": 6
+        },
+        {
+          "player": "Matthijs de Ligt",
+          "decimal_yes": 16.583333333333332,
+          "p_anytime": 0.06030150753768845,
+          "n_books": 3
+        },
+        {
+          "player": "Harry Amass",
+          "decimal_yes": 16.625,
+          "p_anytime": 0.06015037593984962,
+          "n_books": 2
+        },
+        {
+          "player": "Diogo Dalot",
+          "decimal_yes": 16.75,
+          "p_anytime": 0.05970149253731343,
+          "n_books": 6
+        },
+        {
+          "player": "No Scorer",
+          "decimal_yes": 17.0,
+          "p_anytime": 0.058823529411764705,
+          "n_books": 2
+        },
+        {
+          "player": "Lisandro Martinez",
+          "decimal_yes": 17.458333333333332,
+          "p_anytime": 0.057279236276849645,
+          "n_books": 6
+        },
+        {
+          "player": "Jayden Lienou",
+          "decimal_yes": 18.0,
+          "p_anytime": 0.05555555555555555,
+          "n_books": 2
+        },
+        {
+          "player": "Ayden Heaven",
+          "decimal_yes": 21.166666666666668,
+          "p_anytime": 0.047244094488188976,
+          "n_books": 3
+        },
+        {
+          "player": "Luke Shaw",
+          "decimal_yes": 21.35,
+          "p_anytime": 0.046838407494145196,
+          "n_books": 5
+        },
+        {
+          "player": "Leny Yoro",
+          "decimal_yes": 21.95,
+          "p_anytime": 0.04555808656036447,
+          "n_books": 5
+        },
+        {
+          "player": "Noussair Mazraoui",
+          "decimal_yes": 25.166666666666668,
+          "p_anytime": 0.03973509933774834,
+          "n_books": 3
+        }
+      ]
+    },
+    {
+      "id": "f696a248965373d9071dc0662e5c58a8",
+      "home": "Nottingham Forest",
+      "away": "Arsenal",
+      "commence_time": "2026-10-18T15:30:00Z",
+      "http": 200,
+      "last_cost": "1",
+      "ok": true,
+      "available": true,
+      "n_players": 44,
+      "n_bookmakers_with_market": 6,
+      "market_keys": [
+        "player_goal_scorer_anytime"
+      ],
+      "top": [
+        {
+          "player": "Christos Tzolis",
+          "decimal_yes": 2.3,
+          "p_anytime": 0.4347826086956522,
+          "n_books": 1
+        },
+        {
+          "player": "Viktor Gyokeres",
+          "decimal_yes": 2.5325,
+          "p_anytime": 0.3948667324777887,
+          "n_books": 4
+        },
+        {
+          "player": "Kai Havertz",
+          "decimal_yes": 2.5533333333333332,
+          "p_anytime": 0.391644908616188,
+          "n_books": 6
+        },
+        {
+          "player": "Igor Jesus Maciel da Cruz",
+          "decimal_yes": 2.9,
+          "p_anytime": 0.3448275862068966,
+          "n_books": 1
+        },
+        {
+          "player": "Bukayo Saka",
+          "decimal_yes": 2.955,
+          "p_anytime": 0.338409475465313,
+          "n_books": 6
+        },
+        {
+          "player": "Eberechi Eze",
+          "decimal_yes": 3.8333333333333335,
+          "p_anytime": 0.2608695652173913,
+          "n_books": 6
+        },
+        {
+          "player": "Noni Madueke",
+          "decimal_yes": 4.0125,
+          "p_anytime": 0.24922118380062305,
+          "n_books": 4
+        },
+        {
+          "player": "Max Dowman",
+          "decimal_yes": 4.033333333333333,
+          "p_anytime": 0.24793388429752067,
+          "n_books": 3
+        }
+      ],
+      "all": [
+        {
+          "player": "Christos Tzolis",
+          "decimal_yes": 2.3,
+          "p_anytime": 0.4347826086956522,
+          "n_books": 1
+        },
+        {
+          "player": "Viktor Gyokeres",
+          "decimal_yes": 2.5325,
+          "p_anytime": 0.3948667324777887,
+          "n_books": 4
+        },
+        {
+          "player": "Kai Havertz",
+          "decimal_yes": 2.5533333333333332,
+          "p_anytime": 0.391644908616188,
+          "n_books": 6
+        },
+        {
+          "player": "Igor Jesus Maciel da Cruz",
+          "decimal_yes": 2.9,
+          "p_anytime": 0.3448275862068966,
+          "n_books": 1
+        },
+        {
+          "player": "Bukayo Saka",
+          "decimal_yes": 2.955,
+          "p_anytime": 0.338409475465313,
+          "n_books": 6
+        },
+        {
+          "player": "Eberechi Eze",
+          "decimal_yes": 3.8333333333333335,
+          "p_anytime": 0.2608695652173913,
+          "n_books": 6
+        },
+        {
+          "player": "Noni Madueke",
+          "decimal_yes": 4.0125,
+          "p_anytime": 0.24922118380062305,
+          "n_books": 4
+        },
+        {
+          "player": "Max Dowman",
+          "decimal_yes": 4.033333333333333,
+          "p_anytime": 0.24793388429752067,
+          "n_books": 3
+        },
+        {
+          "player": "Morgan Gibbs-White",
+          "decimal_yes": 4.383333333333333,
+          "p_anytime": 0.2281368821292776,
+          "n_books": 6
+        },
+        {
+          "player": "Liam Delap",
+          "decimal_yes": 4.466666666666666,
+          "p_anytime": 0.2238805970149254,
+          "n_books": 6
+        },
+        {
+          "player": "Mikel Merino",
+          "decimal_yes": 4.483333333333333,
+          "p_anytime": 0.22304832713754646,
+          "n_books": 3
+        },
+        {
+          "player": "Chris Wood",
+          "decimal_yes": 4.5,
+          "p_anytime": 0.2222222222222222,
+          "n_books": 3
+        },
+        {
+          "player": "Martin Odegaard",
+          "decimal_yes": 4.791666666666667,
+          "p_anytime": 0.20869565217391303,
+          "n_books": 6
+        },
+        {
+          "player": "Arnaud Kalimuendo",
+          "decimal_yes": 4.8500000000000005,
+          "p_anytime": 0.20618556701030927,
+          "n_books": 3
+        },
+        {
+          "player": "Bruno Guimar\u00e3es",
+          "decimal_yes": 5.82,
+          "p_anytime": 0.1718213058419244,
+          "n_books": 5
+        },
+        {
+          "player": "Dan Ndoye",
+          "decimal_yes": 6.3999999999999995,
+          "p_anytime": 0.15625,
+          "n_books": 6
+        },
+        {
+          "player": "Callum Hudson-Odoi",
+          "decimal_yes": 7.0625,
+          "p_anytime": 0.1415929203539823,
+          "n_books": 4
+        },
+        {
+          "player": "Declan Rice",
+          "decimal_yes": 7.291666666666667,
+          "p_anytime": 0.13714285714285715,
+          "n_books": 6
+        },
+        {
+          "player": "Martin Zubimendi Ibanez",
+          "decimal_yes": 8.1125,
+          "p_anytime": 0.12326656394453003,
+          "n_books": 4
+        },
+        {
+          "player": "James McAtee",
+          "decimal_yes": 9.133333333333333,
+          "p_anytime": 0.10948905109489052,
+          "n_books": 6
+        },
+        {
+          "player": "Magalhaes Gabriel",
+          "decimal_yes": 9.316666666666666,
+          "p_anytime": 0.10733452593917711,
+          "n_books": 6
+        },
+        {
+          "player": "Riccardo Calafiori",
+          "decimal_yes": 9.516666666666667,
+          "p_anytime": 0.10507880910683011,
+          "n_books": 6
+        },
+        {
+          "player": "Myles Lewis-Skelly",
+          "decimal_yes": 9.716666666666667,
+          "p_anytime": 0.10291595197255575,
+          "n_books": 6
+        },
+        {
+          "player": "Piero Hincapie",
+          "decimal_yes": 10.25,
+          "p_anytime": 0.0975609756097561,
+          "n_books": 2
+        },
+        {
+          "player": "Daniel Munoz",
+          "decimal_yes": 11.216666666666667,
+          "p_anytime": 0.08915304606240713,
+          "n_books": 6
+        },
+        {
+          "player": "William Saliba",
+          "decimal_yes": 11.5,
+          "p_anytime": 0.08695652173913043,
+          "n_books": 2
+        },
+        {
+          "player": "Jurrien Timber",
+          "decimal_yes": 11.74,
+          "p_anytime": 0.08517887563884156,
+          "n_books": 5
+        },
+        {
+          "player": "No Scorer",
+          "decimal_yes": 12.0,
+          "p_anytime": 0.08333333333333333,
+          "n_books": 2
+        },
+        {
+          "player": "Ibrahim Sangare",
+          "decimal_yes": 12.8125,
+          "p_anytime": 0.07804878048780488,
+          "n_books": 4
+        },
+        {
+          "player": "Ben White",
+          "decimal_yes": 12.833333333333334,
+          "p_anytime": 0.07792207792207792,
+          "n_books": 6
+        },
+        {
+          "player": "Ryan Yates",
+          "decimal_yes": 13.166666666666666,
+          "p_anytime": 0.0759493670886076,
+          "n_books": 3
+        },
+        {
+          "player": "Nicolas Dominguez",
+          "decimal_yes": 13.333333333333334,
+          "p_anytime": 0.075,
+          "n_books": 3
+        },
+        {
+          "player": "Ezri Konsa",
+          "decimal_yes": 13.416666666666666,
+          "p_anytime": 0.07453416149068323,
+          "n_books": 6
+        },
+        {
+          "player": "Neco Williams",
+          "decimal_yes": 14.458333333333334,
+          "p_anytime": 0.06916426512968299,
+          "n_books": 6
+        },
+        {
+          "player": "Xaver Schlager",
+          "decimal_yes": 15.333333333333334,
+          "p_anytime": 0.06521739130434782,
+          "n_books": 6
+        },
+        {
+          "player": "Nicolo Savona",
+          "decimal_yes": 17.0,
+          "p_anytime": 0.058823529411764705,
+          "n_books": 2
+        },
+        {
+          "player": "Cristhian Mosquera",
+          "decimal_yes": 20.916666666666668,
+          "p_anytime": 0.04780876494023904,
+          "n_books": 3
+        },
+        {
+          "player": "Ousmane Diomande",
+          "decimal_yes": 22.5,
+          "p_anytime": 0.044444444444444446,
+          "n_books": 5
+        },
+        {
+          "player": "Murillo Santiago Costa dos Santos",
+          "decimal_yes": 23.583333333333332,
+          "p_anytime": 0.04240282685512368,
+          "n_books": 6
+        },
+        {
+          "player": "Luca Netz",
+          "decimal_yes": 24.333333333333332,
+          "p_anytime": 0.04109589041095891,
+          "n_books": 3
+        },
+        {
+          "player": "Jair Cunha",
+          "decimal_yes": 26.25,
+          "p_anytime": 0.0380952380952381,
+          "n_books": 4
+        },
+        {
+          "player": "Ola Aina",
+          "decimal_yes": 28.375,
+          "p_anytime": 0.03524229074889868,
+          "n_books": 4
+        },
+        {
+          "player": "Nikola Milenkovic",
+          "decimal_yes": 28.666666666666668,
+          "p_anytime": 0.03488372093023256,
+          "n_books": 3
+        },
+        {
+          "player": "Marli Salmon",
+          "decimal_yes": 29.0,
+          "p_anytime": 0.034482758620689655,
+          "n_books": 1
+        }
+      ]
+    },
+    {
+      "id": "9baaf4e48b041cfef04e70e42532502e",
+      "home": "Tottenham Hotspur",
+      "away": "Coventry City",
+      "commence_time": "2026-10-19T19:00:00Z",
+      "http": 200,
+      "last_cost": "1",
+      "ok": true,
+      "available": true,
+      "n_players": 53,
+      "n_bookmakers_with_market": 6,
+      "market_keys": [
+        "player_goal_scorer_anytime"
+      ],
+      "top": [
+        {
+          "player": "Richarlison de Andrade",
+          "decimal_yes": 1.7,
+          "p_anytime": 0.5882352941176471,
+          "n_books": 1
+        },
+        {
+          "player": "Dominic Solanke",
+          "decimal_yes": 2.2966666666666664,
+          "p_anytime": 0.4354136429608128,
+          "n_books": 6
+        },
+        {
+          "player": "Xavi Simons",
+          "decimal_yes": 2.4,
+          "p_anytime": 0.4166666666666667,
+          "n_books": 1
+        },
+        {
+          "player": "Haji Wright",
+          "decimal_yes": 2.5,
+          "p_anytime": 0.4,
+          "n_books": 1
+        },
+        {
+          "player": "Omar Marmoush",
+          "decimal_yes": 2.5780000000000003,
+          "p_anytime": 0.3878975950349107,
+          "n_books": 5
+        },
+        {
+          "player": "Wilson Odobert",
+          "decimal_yes": 2.75,
+          "p_anytime": 0.36363636363636365,
+          "n_books": 1
+        },
+        {
+          "player": "James Maddison",
+          "decimal_yes": 2.964,
+          "p_anytime": 0.33738191632928477,
+          "n_books": 5
+        },
+        {
+          "player": "Mathys Tel",
+          "decimal_yes": 3.0260000000000002,
+          "p_anytime": 0.33046926635822865,
+          "n_books": 5
+        }
+      ],
+      "all": [
+        {
+          "player": "Richarlison de Andrade",
+          "decimal_yes": 1.7,
+          "p_anytime": 0.5882352941176471,
+          "n_books": 1
+        },
+        {
+          "player": "Dominic Solanke",
+          "decimal_yes": 2.2966666666666664,
+          "p_anytime": 0.4354136429608128,
+          "n_books": 6
+        },
+        {
+          "player": "Xavi Simons",
+          "decimal_yes": 2.4,
+          "p_anytime": 0.4166666666666667,
+          "n_books": 1
+        },
+        {
+          "player": "Haji Wright",
+          "decimal_yes": 2.5,
+          "p_anytime": 0.4,
+          "n_books": 1
+        },
+        {
+          "player": "Omar Marmoush",
+          "decimal_yes": 2.5780000000000003,
+          "p_anytime": 0.3878975950349107,
+          "n_books": 5
+        },
+        {
+          "player": "Wilson Odobert",
+          "decimal_yes": 2.75,
+          "p_anytime": 0.36363636363636365,
+          "n_books": 1
+        },
+        {
+          "player": "James Maddison",
+          "decimal_yes": 2.964,
+          "p_anytime": 0.33738191632928477,
+          "n_books": 5
+        },
+        {
+          "player": "Mathys Tel",
+          "decimal_yes": 3.0260000000000002,
+          "p_anytime": 0.33046926635822865,
+          "n_books": 5
+        },
+        {
+          "player": "Mohammed Kudus",
+          "decimal_yes": 3.2583333333333333,
+          "p_anytime": 0.3069053708439898,
+          "n_books": 6
+        },
+        {
+          "player": "Dejan Kulusevski",
+          "decimal_yes": 3.2900000000000005,
+          "p_anytime": 0.30395136778115495,
+          "n_books": 3
+        },
+        {
+          "player": "Luca Williams-Barnett",
+          "decimal_yes": 3.3833333333333333,
+          "p_anytime": 0.2955665024630542,
+          "n_books": 3
+        },
+        {
+          "player": "Savio Moreira de Oliveira",
+          "decimal_yes": 3.4299999999999997,
+          "p_anytime": 0.2915451895043732,
+          "n_books": 5
+        },
+        {
+          "player": "Taiwo Awoniyi",
+          "decimal_yes": 3.63,
+          "p_anytime": 0.27548209366391185,
+          "n_books": 5
+        },
+        {
+          "player": "Ellis Simms",
+          "decimal_yes": 3.8,
+          "p_anytime": 0.2631578947368421,
+          "n_books": 5
+        },
+        {
+          "player": "Conor Gallagher",
+          "decimal_yes": 4.0,
+          "p_anytime": 0.25,
+          "n_books": 6
+        },
+        {
+          "player": "Sidiki Cherif",
+          "decimal_yes": 4.18,
+          "p_anytime": 0.23923444976076558,
+          "n_books": 5
+        },
+        {
+          "player": "Brandon Thomas-Asante",
+          "decimal_yes": 4.241666666666666,
+          "p_anytime": 0.23575638506876231,
+          "n_books": 6
+        },
+        {
+          "player": "Mateus Fernandes",
+          "decimal_yes": 4.470000000000001,
+          "p_anytime": 0.22371364653243844,
+          "n_books": 5
+        },
+        {
+          "player": "Lucas Bergvall",
+          "decimal_yes": 5.266666666666667,
+          "p_anytime": 0.189873417721519,
+          "n_books": 6
+        },
+        {
+          "player": "Sandro Tonali",
+          "decimal_yes": 5.333333333333333,
+          "p_anytime": 0.1875,
+          "n_books": 6
+        },
+        {
+          "player": "Yann Gboho",
+          "decimal_yes": 5.6,
+          "p_anytime": 0.17857142857142858,
+          "n_books": 4
+        },
+        {
+          "player": "Ephron Mason-Clark",
+          "decimal_yes": 5.633333333333333,
+          "p_anytime": 0.1775147928994083,
+          "n_books": 6
+        },
+        {
+          "player": "Jack Rudoni",
+          "decimal_yes": 5.8999999999999995,
+          "p_anytime": 0.16949152542372883,
+          "n_books": 6
+        },
+        {
+          "player": "Loum Tchaouna",
+          "decimal_yes": 5.9875,
+          "p_anytime": 0.16701461377870563,
+          "n_books": 4
+        },
+        {
+          "player": "Rodrigo Bentancur",
+          "decimal_yes": 6.05,
+          "p_anytime": 0.1652892561983471,
+          "n_books": 2
+        },
+        {
+          "player": "Victor Torp",
+          "decimal_yes": 6.25,
+          "p_anytime": 0.16,
+          "n_books": 5
+        },
+        {
+          "player": "Tatsuhiro Sakamoto",
+          "decimal_yes": 6.470000000000001,
+          "p_anytime": 0.1545595054095827,
+          "n_books": 5
+        },
+        {
+          "player": "Gustavo Hamer",
+          "decimal_yes": 6.625,
+          "p_anytime": 0.1509433962264151,
+          "n_books": 4
+        },
+        {
+          "player": "Josh Eccles",
+          "decimal_yes": 7.0,
+          "p_anytime": 0.14285714285714285,
+          "n_books": 1
+        },
+        {
+          "player": "Mickey van de Ven",
+          "decimal_yes": 7.458333333333333,
+          "p_anytime": 0.1340782122905028,
+          "n_books": 6
+        },
+        {
+          "player": "Pedro Porro",
+          "decimal_yes": 7.625,
+          "p_anytime": 0.13114754098360656,
+          "n_books": 4
+        },
+        {
+          "player": "Archie Gray",
+          "decimal_yes": 8.983333333333333,
+          "p_anytime": 0.11131725417439704,
+          "n_books": 6
+        },
+        {
+          "player": "Aurele Amenda",
+          "decimal_yes": 9.0,
+          "p_anytime": 0.1111111111111111,
+          "n_books": 1
+        },
+        {
+          "player": "Luke Woolfenden",
+          "decimal_yes": 9.0,
+          "p_anytime": 0.1111111111111111,
+          "n_books": 1
+        },
+        {
+          "player": "Malachi Hardy",
+          "decimal_yes": 11.5,
+          "p_anytime": 0.08695652173913043,
+          "n_books": 1
+        },
+        {
+          "player": "Andrew Robertson",
+          "decimal_yes": 11.559999999999999,
+          "p_anytime": 0.08650519031141869,
+          "n_books": 5
+        },
+        {
+          "player": "Bobby Thomas",
+          "decimal_yes": 11.833333333333334,
+          "p_anytime": 0.08450704225352113,
+          "n_books": 6
+        },
+        {
+          "player": "Ogochukwu Onyeka Frank",
+          "decimal_yes": 12.7,
+          "p_anytime": 0.07874015748031496,
+          "n_books": 5
+        },
+        {
+          "player": "Caleb Yirenkyi",
+          "decimal_yes": 13.0,
+          "p_anytime": 0.07692307692307693,
+          "n_books": 6
+        },
+        {
+          "player": "Marcos Senesi",
+          "decimal_yes": 13.45,
+          "p_anytime": 0.07434944237918216,
+          "n_books": 5
+        },
+        {
+          "player": "Tosin Adarabioyo",
+          "decimal_yes": 13.75,
+          "p_anytime": 0.07272727272727272,
+          "n_books": 4
+        },
+        {
+          "player": "Ben Davies",
+          "decimal_yes": 13.875,
+          "p_anytime": 0.07207207207207207,
+          "n_books": 4
+        },
+        {
+          "player": "Jake Bidwell",
+          "decimal_yes": 13.875,
+          "p_anytime": 0.07207207207207207,
+          "n_books": 2
+        },
+        {
+          "player": "Matt Grimes",
+          "decimal_yes": 14.208333333333334,
+          "p_anytime": 0.07038123167155425,
+          "n_books": 6
+        },
+        {
+          "player": "Iyenoma Destiny Udogie",
+          "decimal_yes": 14.333333333333334,
+          "p_anytime": 0.06976744186046512,
+          "n_books": 6
+        },
+        {
+          "player": "No Scorer",
+          "decimal_yes": 18.0,
+          "p_anytime": 0.05555555555555555,
+          "n_books": 2
+        },
+        {
+          "player": "Ethan Pinnock",
+          "decimal_yes": 18.166666666666668,
+          "p_anytime": 0.055045871559633024,
+          "n_books": 6
+        },
+        {
+          "player": "Kaine Kesler",
+          "decimal_yes": 18.5,
+          "p_anytime": 0.05405405405405406,
+          "n_books": 2
+        },
+        {
+          "player": "Jay Dasilva",
+          "decimal_yes": 19.291666666666668,
+          "p_anytime": 0.05183585313174946,
+          "n_books": 6
+        },
+        {
+          "player": "Stephen Mfuni",
+          "decimal_yes": 20.041666666666668,
+          "p_anytime": 0.04989604989604989,
+          "n_books": 6
+        },
+        {
+          "player": "Kaine Hayden",
+          "decimal_yes": 21.0,
+          "p_anytime": 0.047619047619047616,
+          "n_books": 1
+        },
+        {
+          "player": "Milan van Ewijk",
+          "decimal_yes": 23.75,
+          "p_anytime": 0.042105263157894736,
+          "n_books": 6
+        },
+        {
+          "player": "Joel Latibeaudiere",
+          "decimal_yes": 23.9375,
+          "p_anytime": 0.04177545691906005,
+          "n_books": 4
+        }
+      ]
+    }
+  ],
+  "remaining_before": "409",
+  "n_weekend": 10,
+  "estimated_credits": 10,
+  "remaining_after": "399",
+  "last_costs": "1+1+1+1+1+1+1+1+1+1",
+  "n_with_props": 10,
+  "n_empty": 0,
+  "n_failed": 0,
+  "reason": "live"
+}

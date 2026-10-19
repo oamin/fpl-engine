@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:170-emegha-listed-out",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Chelsea",
+  "player_ids": [
+    170
+  ],
+  "headline": "Emegha listed out",
+  "body": "The Guardian team news, 16 Oct 2026: Emegha (Chelsea) injured / unavailable.",
+  "sha256": "f77fd77d141383bd807ed7bf12cbf81033bc7b57b20a041c6d127e4d730a6ada"
+}

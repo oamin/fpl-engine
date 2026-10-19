@@ -629,42 +629,47 @@ def _world() -> tuple[dict, list, pd.DataFrame, pd.DataFrame]:
 
 class PriceHalfTest(unittest.TestCase):
     def test_two_priced_weeks_copy_onto_the_third_slot(self) -> None:
+        """Bookie depth = 2 (t, t+1); later half-plan slots copy the last line."""
         bootstrap, fixtures, odds, logs = _world()
         owned = [player_key(i) for i in range(1, 16)]
         state = SquadState(purchase={pid: 50 for pid in owned}, bank=0, ft=1)
         minutes = {pid: 90.0 for pid in owned}
-        result = price_half(
-            gw=6,
-            logs=logs,
-            odds=odds,
-            fixtures=fixtures,
-            bootstrap=bootstrap,
-            state=state,
-            minutes=minutes,
-            played={1: "triple_captain"},
-        )
-        self.assertEqual(result.line_weeks, (6, 7))
-        self.assertEqual(result.horizon_weeks, (6, 7, 8))
-        self.assertEqual(result.step_scores[8], result.step_scores[7])
-        self.assertIn("GW8 repeats GW7 and has no 1X2 of its own", result.copy_note)
-        self.assertIsNotNone(result.plan)
+        with tempfile.TemporaryDirectory() as folder:
+            # Empty artifacts dir: do not pick up live Betfair outrights from disk.
+            result = price_half(
+                gw=6,
+                logs=logs,
+                odds=odds,
+                fixtures=fixtures,
+                bootstrap=bootstrap,
+                state=state,
+                minutes=minutes,
+                played={1: "triple_captain"},
+                artifacts_dir=Path(folder),
+            )
+            self.assertEqual(result.line_weeks, (6, 7))
+            self.assertEqual(result.horizon_weeks, (6, 7, 8))
+            self.assertEqual(result.step_scores[8], result.step_scores[7])
+            self.assertIn("GW8 repeats GW7 and has no 1X2 of its own", result.copy_note)
+            self.assertIsNotNone(result.plan)
 
-        zeroed = dict(minutes)
-        zeroed[player_key(8)] = 0.0
-        quieter = price_half(
-            gw=6,
-            logs=logs,
-            odds=odds,
-            fixtures=fixtures,
-            bootstrap=bootstrap,
-            state=state,
-            minutes=zeroed,
-            played={1: "triple_captain"},
-        )
-        self.assertLess(
-            quieter.step_scores[6][player_key(8)],
-            result.step_scores[6][player_key(8)],
-        )
+            zeroed = dict(minutes)
+            zeroed[player_key(8)] = 0.0
+            quieter = price_half(
+                gw=6,
+                logs=logs,
+                odds=odds,
+                fixtures=fixtures,
+                bootstrap=bootstrap,
+                state=state,
+                minutes=zeroed,
+                played={1: "triple_captain"},
+                artifacts_dir=Path(folder),
+            )
+            self.assertLess(
+                quieter.step_scores[6][player_key(8)],
+                result.step_scores[6][player_key(8)],
+            )
 
     def test_to_score_and_outrights_enter_score_and_forecast(self) -> None:
         """Betfair anytime rates move GW6 score_xp; outrights move unpriced GW8."""

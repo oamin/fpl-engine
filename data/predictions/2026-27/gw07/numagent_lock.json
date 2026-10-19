@@ -1,0 +1,249 @@
+{
+  "kind": "numagent_live_lock",
+  "gw": 7,
+  "season": "2026-27",
+  "deadline_utc": "2026-10-17T10:00:00Z",
+  "locked_at_utc": "2026-10-17T08:20:39Z",
+  "entry_id": 2632584,
+  "team_name": "ojaminFC",
+  "status": "locked",
+  "note": "PI locked selection into FPL. Captain Haaland; vice Mbeumo (PI override \u2014 solver does not emit VC). Bench auto-sub order = backup GK then outfield by \u03bc (Murillo, Khalaili, Mainoo).",
+  "decision": {
+    "chip_played": null,
+    "transfers": {
+      "n": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "sold": [
+        "Davis"
+      ],
+      "bought": [
+        "Affengruber"
+      ]
+    },
+    "formation": "1-3-4-3",
+    "squad_15": [
+      1,
+      40,
+      173,
+      183,
+      249,
+      650,
+      411,
+      426,
+      427,
+      449,
+      464,
+      109,
+      472,
+      588,
+      432
+    ],
+    "starting_11": [
+      1,
+      40,
+      173,
+      183,
+      249,
+      650,
+      411,
+      426,
+      427,
+      449,
+      464
+    ],
+    "captain": 411,
+    "captain_name": "Haaland",
+    "vice_captain": 427,
+    "vice_captain_name": "Mbeumo",
+    "bench_order": [
+      109,
+      472,
+      588,
+      432
+    ],
+    "xi": [
+      {
+        "element": 1,
+        "name": "Raya",
+        "position": "GKP",
+        "club": "Arsenal",
+        "mu_post": 4.429516261941459,
+        "captain": false
+      },
+      {
+        "element": 40,
+        "name": "Rogers",
+        "position": "MID",
+        "club": "Chelsea",
+        "mu_post": 4.7090043269088415,
+        "captain": false
+      },
+      {
+        "element": 173,
+        "name": "Thomas",
+        "position": "DEF",
+        "club": "Coventry City",
+        "mu_post": 3.737013294647966,
+        "captain": false
+      },
+      {
+        "element": 183,
+        "name": "Rudoni",
+        "position": "MID",
+        "club": "Coventry City",
+        "mu_post": 3.444497811570555,
+        "captain": false
+      },
+      {
+        "element": 249,
+        "name": "Barry",
+        "position": "FWD",
+        "club": "Everton",
+        "mu_post": 4.434243079033403,
+        "captain": false
+      },
+      {
+        "element": 650,
+        "name": "Affengruber",
+        "position": "DEF",
+        "club": "Fulham",
+        "mu_post": 5.616154314045758,
+        "captain": false
+      },
+      {
+        "element": 411,
+        "name": "Haaland",
+        "position": "FWD",
+        "club": "Man City",
+        "mu_post": 7.310729791526466,
+        "captain": true
+      },
+      {
+        "element": 426,
+        "name": "B.Fernandes",
+        "position": "MID",
+        "club": "Man Utd",
+        "mu_post": 4.986881274152293,
+        "captain": false
+      },
+      {
+        "element": 427,
+        "name": "Mbeumo",
+        "position": "MID",
+        "club": "Man Utd",
+        "mu_post": 5.148556925338255,
+        "captain": false
+      },
+      {
+        "element": 449,
+        "name": "Hall",
+        "position": "DEF",
+        "club": "Newcastle",
+        "mu_post": 5.078504727123441,
+        "captain": false
+      },
+      {
+        "element": 464,
+        "name": "Wissa",
+        "position": "FWD",
+        "club": "Newcastle",
+        "mu_post": 4.755936177709849,
+        "captain": false
+      }
+    ],
+    "bench": [
+      {
+        "element": 109,
+        "name": "Verbruggen",
+        "position": "GKP",
+        "club": "Brighton",
+        "mu_post": 4.405122777267667
+      },
+      {
+        "element": 472,
+        "name": "Murillo",
+        "position": "DEF",
+        "club": "Nott'm Forest",
+        "mu_post": 3.29842327039369
+      },
+      {
+        "element": 588,
+        "name": "Khalaili",
+        "position": "DEF",
+        "club": "Crystal Palace",
+        "mu_post": 2.7716636877507956
+      },
+      {
+        "element": 432,
+        "name": "Mainoo",
+        "position": "MID",
+        "club": "Man Utd",
+        "mu_post": 1.9724755394572997
+      }
+    ],
+    "bank_after_tenths": 0,
+    "ft_after": 1,
+    "horizon_objective": 123.04818407028782,
+    "week0_objective": 60.96176777552475
+  },
+  "model": {
+    "primary_solver": "L4",
+    "scorer": "score_xp_v2",
+    "scorer_defaults": {
+      "share_se_shrink": true,
+      "share_se_prior": "position_minutes",
+      "rate_m0": 270,
+      "rate_se_floor": 0.25,
+      "props": false
+    },
+    "protocol_promotions": [
+      "score_xp_v2 (locked 2026-10-13)",
+      "score_xp_v2_rate_m0 (promoted 2026-10-16)",
+      "score_xp_v2_share_se_pos_prior (promoted 2026-10-17) \u2014 \u0394 +0.0195 [+0.0158, +0.0234]",
+      "strategy_layer4_mupost_priced BOOKIE_DEPTH=2 \u03b3=1 (L4 default)"
+    ],
+    "parked_or_off": [
+      "anytime prop overlay (default off; pot-cap distorted Chelsea shares)",
+      "share_se all_minutes / scorers-only priors"
+    ],
+    "minutes": {
+      "week_t": "news_packets compile + predicted_lineup_roles \u2192 data/scratch/gw07_xmi_probe.csv",
+      "week_t1": "rolling3 only (L4 as-of law)"
+    },
+    "odds": {
+      "source": "snapshot",
+      "path": "data/scratch/gw07_odds_bookie_depth2.json",
+      "sha256": "5c5b6777eead3704dd2ecc78d072b3194e8b580977c7c5cf6fb9da0a8bf53a6a",
+      "markets": "AH+OU+BTTS (no anytime)",
+      "region": "us",
+      "n_fixtures_t": 10,
+      "n_fixtures_t1": 10
+    },
+    "alpha_g": 0.9601357082273113,
+    "alpha_a": 0.9050042408821035,
+    "layer4": {
+      "gamma": 1.0,
+      "bookie_depth": 2,
+      "hard_stop": true,
+      "terminal": false
+    }
+  },
+  "artifacts": {
+    "numagent_pick_json": "data/predictions/2026-27/gw07/numagent_pick.json",
+    "numagent_pick_sha256": "98a6bf72330e0031044a5d1144c053c91b5b9aad5e6f879a7ce39384575ed218",
+    "report": "reports/numagent_live_pick_gw07.md",
+    "board_t": "/Users/oliveramin/Desktop/fpl-engine/data/predictions/2026-27/gw07/numagent_board_20261017T080834Z.csv",
+    "board_t_sha256": "d6d047e63d2ff48bddfe2d350c191cbb2daa7078a81a8da660153c8d49ae4923",
+    "board_t1": "/Users/oliveramin/Desktop/fpl-engine/data/predictions/2026-27/gw07/numagent_board_t1_20261017T080834Z.csv",
+    "board_t1_sha256": "d5d0bf8310c253b0a1a71e98dd34557b1ce3f12e082cd650178a823fc8427a20",
+    "xmi": "data/scratch/gw07_xmi_probe.csv",
+    "xmi_sha256": "e28f2e8b42f6dce2a21cc4c8f15d31463c9def59fa7e032efd869285b2f404ba",
+    "share_se_pos_prior_report": "reports/score_xp_v2_share_se_pos_prior.md"
+  },
+  "git": {
+    "commit": "ef86ac233dd2b63353bd794e7bb9142eed2c616c",
+    "branch": "cursor/betfair-t1-3493",
+    "note": "Working tree may contain uncommitted lock/scorer changes at freeze time."
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:521-kulusevski-could-return-this-weekend",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Spurs",
+  "player_ids": [
+    521
+  ],
+  "headline": "Kulusevski could return this weekend",
+  "body": "The Guardian team news, 16 Oct 2026: Kulusevski (Spurs) listed doubtful.",
+  "sha256": "40dc3246585c37be6ec000b45b371d529cb05a0244c12c866b5feffc563214fd"
+}

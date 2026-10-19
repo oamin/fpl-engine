@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:635-larsson-could-return-this-weekend",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Fulham",
+  "player_ids": [
+    635
+  ],
+  "headline": "Larsson could return this weekend",
+  "body": "The Guardian team news, 16 Oct 2026: Larsson (Fulham) listed doubtful.",
+  "sha256": "48782b809702bcb09d7f3b174e139e3e09d269bfda56bfd975c188b42c4702c9"
+}

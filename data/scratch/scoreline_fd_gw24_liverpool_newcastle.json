@@ -1,0 +1,219 @@
+{
+  "season": "2025-26",
+  "gw": 24,
+  "match": "Liverpool vs Newcastle",
+  "date": "2026-01-31",
+  "result": {
+    "home": 4,
+    "away": 1
+  },
+  "source": "football-data opening Avg* (E0_2526)",
+  "markets_available": [
+    "AH",
+    "OU2.5"
+  ],
+  "markets_missing": [
+    "BTTS"
+  ],
+  "opening": {
+    "ah_line": -0.75,
+    "AvgAHH": 1.97,
+    "AvgAHA": 1.82,
+    "Avg>2.5": 1.61,
+    "Avg<2.5": 2.24,
+    "AvgH": 1.77,
+    "AvgD": 3.99,
+    "AvgA": 4.12
+  },
+  "fair_targets": {
+    "p_ah": 0.47788814157453324,
+    "p_over_25": 0.593244557983874,
+    "p_btts": null
+  },
+  "fit": {
+    "lam_h": 1.8818078223464305,
+    "lam_a": 1.1924677331844125,
+    "rho": 0.0035140646525002135,
+    "e_total": 3.0742755555308428,
+    "fitted": {
+      "p_ah": 0.4778862505414654,
+      "p_over_25": 0.5932431406648084,
+      "p_btts": 0.5900726561654416
+    },
+    "targets": {
+      "p_ah": 0.47788814157453324,
+      "p_over_25": 0.593244557983874,
+      "p_btts": 0.5
+    },
+    "residual": {
+      "p_ah": -1.8910330678578724e-06,
+      "p_over_25": -1.4173190655553114e-06,
+      "p_btts": 0.09007265616544158
+    },
+    "sse": 5.584799397318537e-12,
+    "success": true,
+    "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+    "p_cs_home": 0.30347145270566245,
+    "p_cs_away": 0.1523144991528032,
+    "p_home_win": 0.5351640374144857
+  },
+  "moments": {
+    "xg_home": 1.877603650361291,
+    "xg_away": 1.1921852621697906,
+    "xcs_home": 0.30347145270566245,
+    "xcs_away": 0.1523144991528032,
+    "xgc_home": 0.36922165172375276,
+    "xgc_away": 0.6959286237726415
+  },
+  "top_scorelines": [
+    {
+      "home_goals": 1,
+      "away_goals": 1,
+      "tail_home": false,
+      "tail_away": false,
+      "p": 0.10336
+    },
+    {
+      "home_goals": 2,
+      "away_goals": 1,
+      "tail_home": false,
+      "tail_away": false,
+      "p": 0.09759
+    },
+    {
+      "home_goals": 1,
+      "away_goals": 0,
+      "tail_home": false,
+      "tail_away": false,
+      "p": 0.08735
+    },
+    {
+      "home_goals": 2,
+      "away_goals": 0,
+      "tail_home": false,
+      "tail_away": false,
+      "p": 0.08184
+    },
+    {
+      "home_goals": 1,
+      "away_goals": 2,
+      "tail_home": false,
+      "tail_away": false,
+      "p": 0.06184
+    },
+    {
+      "home_goals": 3,
+      "away_goals": 1,
+      "tail_home": false,
+      "tail_away": false,
+      "p": 0.06122
+    },
+    {
+      "home_goals": 2,
+      "away_goals": 2,
+      "tail_home": false,
+      "tail_away": false,
+      "p": 0.05819
+    },
+    {
+      "home_goals": 0,
+      "away_goals": 1,
+      "tail_home": false,
+      "tail_away": false,
+      "p": 0.05548
+    },
+    {
+      "home_goals": 3,
+      "away_goals": 0,
+      "tail_home": false,
+      "tail_away": false,
+      "p": 0.05134
+    },
+    {
+      "home_goals": 0,
+      "away_goals": 0,
+      "tail_home": false,
+      "tail_away": false,
+      "p": 0.04586
+    },
+    {
+      "home_goals": 3,
+      "away_goals": 2,
+      "tail_home": false,
+      "tail_away": false,
+      "p": 0.0365
+    },
+    {
+      "home_goals": 0,
+      "away_goals": 2,
+      "tail_home": false,
+      "tail_away": false,
+      "p": 0.03286
+    }
+  ],
+  "matrix": [
+    [
+      0.04586,
+      0.05548,
+      0.03286,
+      0.01306,
+      0.00389,
+      0.00093,
+      0.00022
+    ],
+    [
+      0.08735,
+      0.10336,
+      0.06184,
+      0.02458,
+      0.00733,
+      0.00175,
+      0.00042
+    ],
+    [
+      0.08184,
+      0.09759,
+      0.05819,
+      0.02313,
+      0.0069,
+      0.00164,
+      0.00039
+    ],
+    [
+      0.05134,
+      0.06122,
+      0.0365,
+      0.01451,
+      0.00433,
+      0.00103,
+      0.00025
+    ],
+    [
+      0.02415,
+      0.0288,
+      0.01717,
+      0.00683,
+      0.00203,
+      0.00049,
+      0.00012
+    ],
+    [
+      0.00909,
+      0.01084,
+      0.00646,
+      0.00257,
+      0.00077,
+      0.00018,
+      4e-05
+    ],
+    [
+      0.00384,
+      0.00458,
+      0.00273,
+      0.00109,
+      0.00032,
+      8e-05,
+      2e-05
+    ]
+  ]
+}

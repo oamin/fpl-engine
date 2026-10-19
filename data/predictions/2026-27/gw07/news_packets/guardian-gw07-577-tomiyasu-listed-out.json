@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:577-tomiyasu-listed-out",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Crystal Palace",
+  "player_ids": [
+    577
+  ],
+  "headline": "Tomiyasu listed out",
+  "body": "The Guardian team news, 16 Oct 2026: Tomiyasu (Crystal Palace) injured / unavailable.",
+  "sha256": "800b18dd18c8eaef6a4fcf216db81f51e7e35bc9df58d4d82b493eb0ab1f4abb"
+}

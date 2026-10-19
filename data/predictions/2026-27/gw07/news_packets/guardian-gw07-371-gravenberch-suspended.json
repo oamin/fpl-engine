@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:371-gravenberch-suspended",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Liverpool",
+  "player_ids": [
+    371
+  ],
+  "headline": "Gravenberch suspended",
+  "body": "The Guardian team news, 16 Oct 2026: Gravenberch (Liverpool) suspended.",
+  "sha256": "ebd3225018e53f8fcccdb6e82a1455eb5a004b783060d2b70634d36a8270fd9d"
+}

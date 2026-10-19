@@ -1,0 +1,159 @@
+{
+  "n_checks": 27,
+  "n_pass": 27,
+  "passed": true,
+  "checks": [
+    {
+      "name": "gw1_no_wc_fh",
+      "pass": true,
+      "detail": "available=('bench_boost', 'triple_captain')"
+    },
+    {
+      "name": "gw1_tc_bb_ok",
+      "pass": true,
+      "detail": "available=('bench_boost', 'triple_captain')"
+    },
+    {
+      "name": "one_chip_per_week",
+      "pass": true,
+      "detail": "after TC available=()"
+    },
+    {
+      "name": "h1_tc_spent",
+      "pass": true,
+      "detail": "GW10=('wildcard', 'free_hit', 'bench_boost')"
+    },
+    {
+      "name": "h2_tc_fresh",
+      "pass": true,
+      "detail": "GW20=('wildcard', 'free_hit', 'bench_boost', 'triple_captain')"
+    },
+    {
+      "name": "h2_has_full_set",
+      "pass": true,
+      "detail": "GW20=('wildcard', 'free_hit', 'bench_boost', 'triple_captain')"
+    },
+    {
+      "name": "h2_wc_once",
+      "pass": true,
+      "detail": "GW25=('free_hit', 'bench_boost', 'triple_captain')"
+    },
+    {
+      "name": "fh_adjacent_blocked",
+      "pass": true,
+      "detail": "GW20 after H1 FH=('wildcard', 'bench_boost', 'triple_captain')"
+    },
+    {
+      "name": "fh_h2_later_ok",
+      "pass": true,
+      "detail": "GW21=('wildcard', 'free_hit', 'bench_boost', 'triple_captain')"
+    },
+    {
+      "name": "wc_zero_hits",
+      "pass": true,
+      "detail": "hits=0"
+    },
+    {
+      "name": "fh_ft_preserved",
+      "pass": true,
+      "detail": "ft_after=2"
+    },
+    {
+      "name": "none_ordinary_hit",
+      "pass": true,
+      "detail": "hits=8"
+    },
+    {
+      "name": "tc_captain_x3",
+      "pass": true,
+      "detail": "tc=3 none=2"
+    },
+    {
+      "name": "actions_prefix_none",
+      "pass": true,
+      "detail": "actions=('none', 'wildcard', 'free_hit', 'bench_boost', 'triple_captain')"
+    },
+    {
+      "name": "validate_legal_map",
+      "pass": true,
+      "detail": "ok"
+    },
+    {
+      "name": "score_none_identity",
+      "pass": true,
+      "detail": "obj=30.0"
+    },
+    {
+      "name": "score_tc_ge_none",
+      "pass": true,
+      "detail": "tc=35.0 none=30.0"
+    },
+    {
+      "name": "score_bb_adds_bench",
+      "pass": true,
+      "detail": "bb=35.0 bench_mu=5.0"
+    },
+    {
+      "name": "score_hits_subtract",
+      "pass": true,
+      "detail": "obj=26.0"
+    },
+    {
+      "name": "fh_commit_is_rebuild",
+      "pass": true,
+      "detail": "commit=('b0', 'b1')\u2026"
+    },
+    {
+      "name": "fh_next_reverts",
+      "pass": true,
+      "detail": "next_ids0=a0 bank=50"
+    },
+    {
+      "name": "fh_ft_and_hits",
+      "pass": true,
+      "detail": "ft=2 hits=0"
+    },
+    {
+      "name": "fh_wallet_spent",
+      "pass": true,
+      "detail": "avail=('wildcard', 'bench_boost', 'triple_captain')"
+    },
+    {
+      "name": "wc_next_keeps_rebuild",
+      "pass": true,
+      "detail": "bank=40"
+    },
+    {
+      "name": "wc_ft_preserved",
+      "pass": true,
+      "detail": "ft=2 hits=0"
+    },
+    {
+      "name": "none_keeps_moves",
+      "pass": true,
+      "detail": "ids0=b0"
+    },
+    {
+      "name": "none_ft_rolls",
+      "pass": true,
+      "detail": "ft=1 hits=0"
+    }
+  ],
+  "defs": {
+    "chips": [
+      "wildcard",
+      "free_hit",
+      "bench_boost",
+      "triple_captain"
+    ],
+    "free_transfer_chips": [
+      "free_hit",
+      "wildcard"
+    ],
+    "margins": "report-only; no play thresholds",
+    "inner_l4": "priced mu_post; gamma=1; unconstrained hits",
+    "step": 3,
+    "step_2": "TC/BB commit-week scoring identity",
+    "step_3": "WC keeps rebuild; FH reverts; FT preserved under both"
+  }
+}

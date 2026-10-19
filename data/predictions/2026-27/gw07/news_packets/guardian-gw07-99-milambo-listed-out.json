@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:99-milambo-listed-out",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Brentford",
+  "player_ids": [
+    99
+  ],
+  "headline": "Milambo listed out",
+  "body": "The Guardian team news, 16 Oct 2026: Milambo (Brentford) injured / unavailable.",
+  "sha256": "43f1ca32ccf941e043172de1f55efde93aa56f43793f64d655b4a784f46db2a0"
+}

@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:516-bentancur-suspended",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Spurs",
+  "player_ids": [
+    516
+  ],
+  "headline": "Bentancur suspended",
+  "body": "The Guardian team news, 16 Oct 2026: Bentancur (Spurs) suspended.",
+  "sha256": "f63205bc6eca3178d61ddf10fca3b4007259bad1ede10c5221dfae1f5d932712"
+}

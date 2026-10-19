@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:36-maatsen-listed-out",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Aston Villa",
+  "player_ids": [
+    36
+  ],
+  "headline": "Maatsen listed out",
+  "body": "The Guardian team news, 16 Oct 2026: Maatsen (Aston Villa) injured / unavailable.",
+  "sha256": "be1fdb722c288b2eb68d77bb6a2162cdae632a84588470d37d8fedd3726d5ab3"
+}

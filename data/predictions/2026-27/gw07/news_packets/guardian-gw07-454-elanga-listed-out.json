@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:454-elanga-listed-out",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Newcastle",
+  "player_ids": [
+    454
+  ],
+  "headline": "Elanga listed out",
+  "body": "The Guardian team news, 16 Oct 2026: Elanga (Newcastle) injured / unavailable.",
+  "sha256": "029f0b000846f13c961b9ca70c1d10bf545cdae3f98be0fc877beb833e848f99"
+}

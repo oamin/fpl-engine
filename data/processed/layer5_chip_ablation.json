@@ -1,0 +1,7023 @@
+{
+  "by_arm": {
+    "no_chips": {
+      "by_season": [
+        {
+          "season": "2022-23",
+          "l4_pts": 2038.0,
+          "arm_pts": 1916.0,
+          "d_pts": -122.0,
+          "chip_weeks": 0,
+          "hits": 72
+        },
+        {
+          "season": "2023-24",
+          "l4_pts": 1946.0,
+          "arm_pts": 1825.0,
+          "d_pts": -121.0,
+          "chip_weeks": 0,
+          "hits": 88
+        },
+        {
+          "season": "2024-25",
+          "l4_pts": 2029.0,
+          "arm_pts": 2003.0,
+          "d_pts": -26.0,
+          "chip_weeks": 0,
+          "hits": 104
+        },
+        {
+          "season": "2025-26",
+          "l4_pts": 2014.0,
+          "arm_pts": 1842.0,
+          "d_pts": -172.0,
+          "chip_weeks": 0,
+          "hits": 60
+        }
+      ],
+      "total_d": -441.0,
+      "total_arm": 7586.0,
+      "total_l4": 8027.0,
+      "paired_gw_interval": {
+        "mean": -3.556451612903226,
+        "lo": -5.638104838709677,
+        "hi": -1.6528225806451617,
+        "n_gws": {
+          "2022-23": 31,
+          "2023-24": 31,
+          "2024-25": 31,
+          "2025-26": 31
+        },
+        "covers_zero": false,
+        "by_season_mean": {
+          "2022-23": -3.935483870967742,
+          "2023-24": -3.903225806451613,
+          "2024-25": -0.8387096774193549,
+          "2025-26": -5.548387096774194
+        }
+      },
+      "chip_weeks": 0,
+      "hits": 324
+    },
+    "tc": {
+      "by_season": [
+        {
+          "season": "2022-23",
+          "l4_pts": 2038.0,
+          "arm_pts": 1930.0,
+          "d_pts": -108.0,
+          "chip_weeks": 2,
+          "hits": 72
+        },
+        {
+          "season": "2023-24",
+          "l4_pts": 1946.0,
+          "arm_pts": 1848.0,
+          "d_pts": -98.0,
+          "chip_weeks": 2,
+          "hits": 88
+        },
+        {
+          "season": "2024-25",
+          "l4_pts": 2029.0,
+          "arm_pts": 2016.0,
+          "d_pts": -13.0,
+          "chip_weeks": 2,
+          "hits": 104
+        },
+        {
+          "season": "2025-26",
+          "l4_pts": 2014.0,
+          "arm_pts": 1872.0,
+          "d_pts": -142.0,
+          "chip_weeks": 2,
+          "hits": 60
+        }
+      ],
+      "total_d": -361.0,
+      "total_arm": 7666.0,
+      "total_l4": 8027.0,
+      "paired_gw_interval": {
+        "mean": -2.911290322580645,
+        "lo": -5.008266129032258,
+        "hi": -0.8629032258064516,
+        "n_gws": {
+          "2022-23": 31,
+          "2023-24": 31,
+          "2024-25": 31,
+          "2025-26": 31
+        },
+        "covers_zero": false,
+        "by_season_mean": {
+          "2022-23": -3.4838709677419355,
+          "2023-24": -3.161290322580645,
+          "2024-25": -0.41935483870967744,
+          "2025-26": -4.580645161290323
+        }
+      },
+      "chip_weeks": 8,
+      "hits": 324
+    },
+    "bb": {
+      "by_season": [
+        {
+          "season": "2022-23",
+          "l4_pts": 2038.0,
+          "arm_pts": 1927.0,
+          "d_pts": -111.0,
+          "chip_weeks": 2,
+          "hits": 72
+        },
+        {
+          "season": "2023-24",
+          "l4_pts": 1946.0,
+          "arm_pts": 1835.0,
+          "d_pts": -111.0,
+          "chip_weeks": 1,
+          "hits": 88
+        },
+        {
+          "season": "2024-25",
+          "l4_pts": 2029.0,
+          "arm_pts": 2024.0,
+          "d_pts": -5.0,
+          "chip_weeks": 2,
+          "hits": 104
+        },
+        {
+          "season": "2025-26",
+          "l4_pts": 2014.0,
+          "arm_pts": 1868.0,
+          "d_pts": -146.0,
+          "chip_weeks": 2,
+          "hits": 60
+        }
+      ],
+      "total_d": -373.0,
+      "total_arm": 7654.0,
+      "total_l4": 8027.0,
+      "paired_gw_interval": {
+        "mean": -3.0080645161290325,
+        "lo": -5.153830645161291,
+        "hi": -1.0159274193548389,
+        "n_gws": {
+          "2022-23": 31,
+          "2023-24": 31,
+          "2024-25": 31,
+          "2025-26": 31
+        },
+        "covers_zero": false,
+        "by_season_mean": {
+          "2022-23": -3.5806451612903225,
+          "2023-24": -3.5806451612903225,
+          "2024-25": -0.16129032258064516,
+          "2025-26": -4.709677419354839
+        }
+      },
+      "chip_weeks": 7,
+      "hits": 324
+    },
+    "wc": {
+      "by_season": [
+        {
+          "season": "2022-23",
+          "l4_pts": 2038.0,
+          "arm_pts": 1781.0,
+          "d_pts": -257.0,
+          "chip_weeks": 2,
+          "hits": 96
+        },
+        {
+          "season": "2023-24",
+          "l4_pts": 1946.0,
+          "arm_pts": 1801.0,
+          "d_pts": -145.0,
+          "chip_weeks": 2,
+          "hits": 96
+        },
+        {
+          "season": "2024-25",
+          "l4_pts": 2029.0,
+          "arm_pts": 1958.0,
+          "d_pts": -71.0,
+          "chip_weeks": 2,
+          "hits": 100
+        },
+        {
+          "season": "2025-26",
+          "l4_pts": 2014.0,
+          "arm_pts": 1789.0,
+          "d_pts": -225.0,
+          "chip_weeks": 2,
+          "hits": 76
+        }
+      ],
+      "total_d": -698.0,
+      "total_arm": 7329.0,
+      "total_l4": 8027.0,
+      "paired_gw_interval": {
+        "mean": -5.629032258064516,
+        "lo": -7.952822580645161,
+        "hi": -3.224798387096775,
+        "n_gws": {
+          "2022-23": 31,
+          "2023-24": 31,
+          "2024-25": 31,
+          "2025-26": 31
+        },
+        "covers_zero": false,
+        "by_season_mean": {
+          "2022-23": -8.290322580645162,
+          "2023-24": -4.67741935483871,
+          "2024-25": -2.2903225806451615,
+          "2025-26": -7.258064516129032
+        }
+      },
+      "chip_weeks": 8,
+      "hits": 368
+    },
+    "fh": {
+      "by_season": [
+        {
+          "season": "2022-23",
+          "l4_pts": 2038.0,
+          "arm_pts": 1947.0,
+          "d_pts": -91.0,
+          "chip_weeks": 2,
+          "hits": 80
+        },
+        {
+          "season": "2023-24",
+          "l4_pts": 1946.0,
+          "arm_pts": 1867.0,
+          "d_pts": -79.0,
+          "chip_weeks": 2,
+          "hits": 84
+        },
+        {
+          "season": "2024-25",
+          "l4_pts": 2029.0,
+          "arm_pts": 1911.0,
+          "d_pts": -118.0,
+          "chip_weeks": 2,
+          "hits": 76
+        },
+        {
+          "season": "2025-26",
+          "l4_pts": 2014.0,
+          "arm_pts": 1859.0,
+          "d_pts": -155.0,
+          "chip_weeks": 2,
+          "hits": 60
+        }
+      ],
+      "total_d": -443.0,
+      "total_arm": 7584.0,
+      "total_l4": 8027.0,
+      "paired_gw_interval": {
+        "mean": -3.5725806451612905,
+        "lo": -5.750806451612903,
+        "hi": -1.2981854838709679,
+        "n_gws": {
+          "2022-23": 31,
+          "2023-24": 31,
+          "2024-25": 31,
+          "2025-26": 31
+        },
+        "covers_zero": false,
+        "by_season_mean": {
+          "2022-23": -2.935483870967742,
+          "2023-24": -2.5483870967741935,
+          "2024-25": -3.806451612903226,
+          "2025-26": -5.0
+        }
+      },
+      "chip_weeks": 8,
+      "hits": 300
+    }
+  },
+  "weeks": [
+    {
+      "season": "2022-23",
+      "gw": 8,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 49.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2022-23",
+      "gw": 9,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 55.0,
+      "hit_points": 4,
+      "n_transfers": 3
+    },
+    {
+      "season": "2022-23",
+      "gw": 10,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 65.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 11,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 45.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 12,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 46.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 13,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 61.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 14,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 56.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 15,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 56.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 16,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 52.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 17,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 85.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 18,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 40.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2022-23",
+      "gw": 19,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 77.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 20,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 62.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2022-23",
+      "gw": 21,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 57.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 22,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 80.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 23,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 45.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 24,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 54.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 25,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 118.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 26,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 28.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2022-23",
+      "gw": 27,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 102.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 28,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 40.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 29,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 109.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 30,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 65.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 31,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 55.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 32,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 60.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 33,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 55.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2022-23",
+      "gw": 34,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 127.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 35,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 40.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 36,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 133.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 37,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 74.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 38,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 47.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2022-23",
+      "gw": 8,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 49.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2022-23",
+      "gw": 9,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 69.0,
+      "hit_points": 0,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 10,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 69.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 11,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 45.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 12,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 30.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2022-23",
+      "gw": 13,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 55.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 14,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 47.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 15,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 74.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 16,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 52.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 17,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 64.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 18,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 54.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 19,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 48.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 20,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 71.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 21,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 56.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 22,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 72.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 23,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 53.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 24,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 49.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 25,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 94.0,
+      "hit_points": 12,
+      "n_transfers": 4
+    },
+    {
+      "season": "2022-23",
+      "gw": 26,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 62.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 27,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 82.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 28,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 41.0,
+      "hit_points": 12,
+      "n_transfers": 4
+    },
+    {
+      "season": "2022-23",
+      "gw": 29,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 110.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 30,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 72.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 31,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 41.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 32,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 62.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2022-23",
+      "gw": 33,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 42.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 34,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 97.0,
+      "hit_points": 16,
+      "n_transfers": 5
+    },
+    {
+      "season": "2022-23",
+      "gw": 35,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 44.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 36,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 108.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 37,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 56.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 38,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 48.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 8,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 49.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2022-23",
+      "gw": 9,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 69.0,
+      "hit_points": 0,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 10,
+      "arm": "tc",
+      "chip": "triple_captain",
+      "pts_net": 75.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 11,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 45.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 12,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 30.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2022-23",
+      "gw": 13,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 55.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 14,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 47.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 15,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 74.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 16,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 52.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 17,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 64.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 18,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 54.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 19,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 48.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 20,
+      "arm": "tc",
+      "chip": "triple_captain",
+      "pts_net": 79.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 21,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 56.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 22,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 72.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 23,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 53.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 24,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 49.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 25,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 94.0,
+      "hit_points": 12,
+      "n_transfers": 4
+    },
+    {
+      "season": "2022-23",
+      "gw": 26,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 62.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 27,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 82.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 28,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 41.0,
+      "hit_points": 12,
+      "n_transfers": 4
+    },
+    {
+      "season": "2022-23",
+      "gw": 29,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 110.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 30,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 72.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 31,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 41.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 32,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 62.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2022-23",
+      "gw": 33,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 42.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 34,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 97.0,
+      "hit_points": 16,
+      "n_transfers": 5
+    },
+    {
+      "season": "2022-23",
+      "gw": 35,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 44.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 36,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 108.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 37,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 56.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 38,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 48.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 8,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 49.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2022-23",
+      "gw": 9,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 69.0,
+      "hit_points": 0,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 10,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 69.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 11,
+      "arm": "bb",
+      "chip": "bench_boost",
+      "pts_net": 52.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 12,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 30.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2022-23",
+      "gw": 13,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 55.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 14,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 47.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 15,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 74.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 16,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 52.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 17,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 64.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 18,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 54.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 19,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 48.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 20,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 71.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 21,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 56.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 22,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 72.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 23,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 53.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 24,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 49.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 25,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 94.0,
+      "hit_points": 12,
+      "n_transfers": 4
+    },
+    {
+      "season": "2022-23",
+      "gw": 26,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 62.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 27,
+      "arm": "bb",
+      "chip": "bench_boost",
+      "pts_net": 86.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 28,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 41.0,
+      "hit_points": 12,
+      "n_transfers": 4
+    },
+    {
+      "season": "2022-23",
+      "gw": 29,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 110.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 30,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 72.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 31,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 41.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 32,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 62.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2022-23",
+      "gw": 33,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 42.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 34,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 97.0,
+      "hit_points": 16,
+      "n_transfers": 5
+    },
+    {
+      "season": "2022-23",
+      "gw": 35,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 44.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 36,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 108.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 37,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 56.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 38,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 48.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 8,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 49.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2022-23",
+      "gw": 9,
+      "arm": "wc",
+      "chip": "wildcard",
+      "pts_net": 60.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2022-23",
+      "gw": 10,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 45.0,
+      "hit_points": 0,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 11,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 36.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 12,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 55.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2022-23",
+      "gw": 13,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 65.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 14,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 26.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 15,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 71.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 16,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 29.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 17,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 49.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 18,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 34.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 19,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 31.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 20,
+      "arm": "wc",
+      "chip": "wildcard",
+      "pts_net": 89.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2022-23",
+      "gw": 21,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 44.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 22,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 79.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 23,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 54.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 24,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 53.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 25,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 101.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2022-23",
+      "gw": 26,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 58.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 27,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 81.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 28,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 33.0,
+      "hit_points": 24,
+      "n_transfers": 7
+    },
+    {
+      "season": "2022-23",
+      "gw": 29,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 104.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 30,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 68.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 31,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 25.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 32,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 65.0,
+      "hit_points": 16,
+      "n_transfers": 5
+    },
+    {
+      "season": "2022-23",
+      "gw": 33,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 30.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 34,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 108.0,
+      "hit_points": 16,
+      "n_transfers": 5
+    },
+    {
+      "season": "2022-23",
+      "gw": 35,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 44.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 36,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 105.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 37,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 51.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 38,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 39.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 8,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 49.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2022-23",
+      "gw": 9,
+      "arm": "fh",
+      "chip": "free_hit",
+      "pts_net": 60.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2022-23",
+      "gw": 10,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 74.0,
+      "hit_points": 0,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 11,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 46.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 12,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 40.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 13,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 58.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 14,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 50.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 15,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 64.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 16,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 54.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 17,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 71.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 18,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 58.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 19,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 57.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 20,
+      "arm": "fh",
+      "chip": "free_hit",
+      "pts_net": 89.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2022-23",
+      "gw": 21,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 45.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 22,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 66.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2022-23",
+      "gw": 23,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 63.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 24,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 35.0,
+      "hit_points": 12,
+      "n_transfers": 4
+    },
+    {
+      "season": "2022-23",
+      "gw": 25,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 95.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2022-23",
+      "gw": 26,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 71.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 27,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 78.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 28,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 45.0,
+      "hit_points": 16,
+      "n_transfers": 5
+    },
+    {
+      "season": "2022-23",
+      "gw": 29,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 107.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 30,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 62.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 31,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 33.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 32,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 49.0,
+      "hit_points": 12,
+      "n_transfers": 4
+    },
+    {
+      "season": "2022-23",
+      "gw": 33,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 61.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 34,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 110.0,
+      "hit_points": 12,
+      "n_transfers": 4
+    },
+    {
+      "season": "2022-23",
+      "gw": 35,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 49.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 36,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 92.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2022-23",
+      "gw": 37,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 70.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2022-23",
+      "gw": 38,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 46.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 8,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 60.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2023-24",
+      "gw": 9,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 89.0,
+      "hit_points": 4,
+      "n_transfers": 3
+    },
+    {
+      "season": "2023-24",
+      "gw": 10,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 55.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 11,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 39.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 12,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 47.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 13,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 34.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 14,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 79.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 15,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 40.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 16,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 73.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 17,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 45.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 18,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 52.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 19,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 35.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 20,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 76.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 21,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 51.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 22,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 73.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 23,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 61.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 24,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 63.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 25,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 78.0,
+      "hit_points": 12,
+      "n_transfers": 4
+    },
+    {
+      "season": "2023-24",
+      "gw": 26,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 48.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2023-24",
+      "gw": 27,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 70.0,
+      "hit_points": 20,
+      "n_transfers": 6
+    },
+    {
+      "season": "2023-24",
+      "gw": 28,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 84.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 29,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 21.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 30,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 75.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 31,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 49.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 32,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 67.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 33,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 65.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 34,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 95.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 35,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 68.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 36,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 78.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 37,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 91.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 38,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 85.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 8,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 60.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2023-24",
+      "gw": 9,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 72.0,
+      "hit_points": 0,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 10,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 55.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 11,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 35.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 12,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 53.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 13,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 46.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 14,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 54.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 15,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 55.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 16,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 56.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 17,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 46.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 18,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 31.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2023-24",
+      "gw": 19,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 23.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 20,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 69.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 21,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 58.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 22,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 59.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 23,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 60.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 24,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 72.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2023-24",
+      "gw": 25,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 63.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2023-24",
+      "gw": 26,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 71.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 27,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 83.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 28,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 72.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 29,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 29.0,
+      "hit_points": 12,
+      "n_transfers": 4
+    },
+    {
+      "season": "2023-24",
+      "gw": 30,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 78.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 31,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 53.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 32,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 44.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 33,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 56.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 34,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 86.0,
+      "hit_points": 20,
+      "n_transfers": 6
+    },
+    {
+      "season": "2023-24",
+      "gw": 35,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 60.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 36,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 61.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 37,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 84.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2023-24",
+      "gw": 38,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 81.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 8,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 60.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2023-24",
+      "gw": 9,
+      "arm": "tc",
+      "chip": "triple_captain",
+      "pts_net": 79.0,
+      "hit_points": 0,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 10,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 55.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 11,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 35.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 12,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 53.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 13,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 46.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 14,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 54.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 15,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 55.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 16,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 56.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 17,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 46.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 18,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 31.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2023-24",
+      "gw": 19,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 23.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 20,
+      "arm": "tc",
+      "chip": "triple_captain",
+      "pts_net": 85.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 21,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 58.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 22,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 59.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 23,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 60.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 24,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 72.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2023-24",
+      "gw": 25,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 63.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2023-24",
+      "gw": 26,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 71.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 27,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 83.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 28,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 72.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 29,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 29.0,
+      "hit_points": 12,
+      "n_transfers": 4
+    },
+    {
+      "season": "2023-24",
+      "gw": 30,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 78.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 31,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 53.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 32,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 44.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 33,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 56.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 34,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 86.0,
+      "hit_points": 20,
+      "n_transfers": 6
+    },
+    {
+      "season": "2023-24",
+      "gw": 35,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 60.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 36,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 61.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 37,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 84.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2023-24",
+      "gw": 38,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 81.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 8,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 60.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2023-24",
+      "gw": 9,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 72.0,
+      "hit_points": 0,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 10,
+      "arm": "bb",
+      "chip": "bench_boost",
+      "pts_net": 65.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 11,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 35.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 12,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 53.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 13,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 46.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 14,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 54.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 15,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 55.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 16,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 56.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 17,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 46.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 18,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 31.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2023-24",
+      "gw": 19,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 23.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 20,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 69.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 21,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 58.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 22,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 59.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 23,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 60.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 24,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 72.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2023-24",
+      "gw": 25,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 63.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2023-24",
+      "gw": 26,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 71.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 27,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 83.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 28,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 72.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 29,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 29.0,
+      "hit_points": 12,
+      "n_transfers": 4
+    },
+    {
+      "season": "2023-24",
+      "gw": 30,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 78.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 31,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 53.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 32,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 44.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 33,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 56.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 34,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 86.0,
+      "hit_points": 20,
+      "n_transfers": 6
+    },
+    {
+      "season": "2023-24",
+      "gw": 35,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 60.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 36,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 61.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 37,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 84.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2023-24",
+      "gw": 38,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 81.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 8,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 60.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2023-24",
+      "gw": 9,
+      "arm": "wc",
+      "chip": "wildcard",
+      "pts_net": 76.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2023-24",
+      "gw": 10,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 55.0,
+      "hit_points": 0,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 11,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 48.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 12,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 54.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 13,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 44.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 14,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 75.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 15,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 46.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 16,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 61.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 17,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 48.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 18,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 43.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 19,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 41.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 20,
+      "arm": "wc",
+      "chip": "wildcard",
+      "pts_net": 70.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2023-24",
+      "gw": 21,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 61.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 22,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 50.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2023-24",
+      "gw": 23,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 51.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 24,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 54.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2023-24",
+      "gw": 25,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 48.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2023-24",
+      "gw": 26,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 66.0,
+      "hit_points": 12,
+      "n_transfers": 4
+    },
+    {
+      "season": "2023-24",
+      "gw": 27,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 46.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 28,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 45.0,
+      "hit_points": 12,
+      "n_transfers": 4
+    },
+    {
+      "season": "2023-24",
+      "gw": 29,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 25.0,
+      "hit_points": 12,
+      "n_transfers": 4
+    },
+    {
+      "season": "2023-24",
+      "gw": 30,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 78.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 31,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 59.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 32,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 55.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 33,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 41.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 34,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 103.0,
+      "hit_points": 12,
+      "n_transfers": 4
+    },
+    {
+      "season": "2023-24",
+      "gw": 35,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 73.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 36,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 58.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 37,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 87.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2023-24",
+      "gw": 38,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 80.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 8,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 60.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2023-24",
+      "gw": 9,
+      "arm": "fh",
+      "chip": "free_hit",
+      "pts_net": 76.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2023-24",
+      "gw": 10,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 63.0,
+      "hit_points": 0,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 11,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 35.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 12,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 47.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 13,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 35.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 14,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 69.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 15,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 50.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 16,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 58.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 17,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 45.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 18,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 43.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 19,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 43.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 20,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 77.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 21,
+      "arm": "fh",
+      "chip": "free_hit",
+      "pts_net": 94.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2023-24",
+      "gw": 22,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 69.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2023-24",
+      "gw": 23,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 55.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 24,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 70.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2023-24",
+      "gw": 25,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 64.0,
+      "hit_points": 12,
+      "n_transfers": 4
+    },
+    {
+      "season": "2023-24",
+      "gw": 26,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 66.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 27,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 81.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 28,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 55.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2023-24",
+      "gw": 29,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 29.0,
+      "hit_points": 12,
+      "n_transfers": 4
+    },
+    {
+      "season": "2023-24",
+      "gw": 30,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 66.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 31,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 39.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 32,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 46.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 33,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 66.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 34,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 91.0,
+      "hit_points": 20,
+      "n_transfers": 6
+    },
+    {
+      "season": "2023-24",
+      "gw": 35,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 58.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 36,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 63.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2023-24",
+      "gw": 37,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 81.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2023-24",
+      "gw": 38,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 73.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 8,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 68.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2024-25",
+      "gw": 9,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 64.0,
+      "hit_points": 4,
+      "n_transfers": 3
+    },
+    {
+      "season": "2024-25",
+      "gw": 10,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 51.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 11,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 50.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2024-25",
+      "gw": 12,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 70.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 13,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 83.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 14,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 74.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 15,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 63.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 16,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 43.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 17,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 75.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 18,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 58.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2024-25",
+      "gw": 19,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 92.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 20,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 77.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 21,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 78.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 22,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 43.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 23,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 59.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2024-25",
+      "gw": 24,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 101.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 25,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 109.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 26,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 70.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 27,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 40.0,
+      "hit_points": 12,
+      "n_transfers": 4
+    },
+    {
+      "season": "2024-25",
+      "gw": 28,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 55.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 29,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 64.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2024-25",
+      "gw": 30,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 46.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 31,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 33.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2024-25",
+      "gw": 32,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 111.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2024-25",
+      "gw": 33,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 69.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2024-25",
+      "gw": 34,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 84.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 35,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 45.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 36,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 49.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 37,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 39.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 38,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 66.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 8,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 68.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2024-25",
+      "gw": 9,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 62.0,
+      "hit_points": 0,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 10,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 54.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 11,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 50.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 12,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 64.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2024-25",
+      "gw": 13,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 61.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 14,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 94.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 15,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 46.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 16,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 41.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 17,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 89.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 18,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 61.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 19,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 86.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 20,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 70.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 21,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 68.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 22,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 44.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 23,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 62.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 24,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 108.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 25,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 88.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2024-25",
+      "gw": 26,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 81.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 27,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 56.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 28,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 79.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 29,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 44.0,
+      "hit_points": 16,
+      "n_transfers": 5
+    },
+    {
+      "season": "2024-25",
+      "gw": 30,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 33.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2024-25",
+      "gw": 31,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 45.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2024-25",
+      "gw": 32,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 107.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 33,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 83.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 34,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 71.0,
+      "hit_points": 24,
+      "n_transfers": 7
+    },
+    {
+      "season": "2024-25",
+      "gw": 35,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 39.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2024-25",
+      "gw": 36,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 37.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 37,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 47.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 38,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 65.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 8,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 68.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2024-25",
+      "gw": 9,
+      "arm": "tc",
+      "chip": "triple_captain",
+      "pts_net": 68.0,
+      "hit_points": 0,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 10,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 54.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 11,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 50.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 12,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 64.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2024-25",
+      "gw": 13,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 61.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 14,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 94.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 15,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 46.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 16,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 41.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 17,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 89.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 18,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 61.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 19,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 86.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 20,
+      "arm": "tc",
+      "chip": "triple_captain",
+      "pts_net": 77.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 21,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 68.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 22,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 44.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 23,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 62.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 24,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 108.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 25,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 88.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2024-25",
+      "gw": 26,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 81.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 27,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 56.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 28,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 79.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 29,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 44.0,
+      "hit_points": 16,
+      "n_transfers": 5
+    },
+    {
+      "season": "2024-25",
+      "gw": 30,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 33.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2024-25",
+      "gw": 31,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 45.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2024-25",
+      "gw": 32,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 107.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 33,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 83.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 34,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 71.0,
+      "hit_points": 24,
+      "n_transfers": 7
+    },
+    {
+      "season": "2024-25",
+      "gw": 35,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 39.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2024-25",
+      "gw": 36,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 37.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 37,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 47.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 38,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 65.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 8,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 68.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2024-25",
+      "gw": 9,
+      "arm": "bb",
+      "chip": "bench_boost",
+      "pts_net": 65.0,
+      "hit_points": 0,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 10,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 54.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 11,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 50.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 12,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 64.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2024-25",
+      "gw": 13,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 61.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 14,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 94.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 15,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 46.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 16,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 41.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 17,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 89.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 18,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 61.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 19,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 86.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 20,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 70.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 21,
+      "arm": "bb",
+      "chip": "bench_boost",
+      "pts_net": 86.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 22,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 44.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 23,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 62.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 24,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 108.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 25,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 88.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2024-25",
+      "gw": 26,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 81.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 27,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 56.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 28,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 79.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 29,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 44.0,
+      "hit_points": 16,
+      "n_transfers": 5
+    },
+    {
+      "season": "2024-25",
+      "gw": 30,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 33.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2024-25",
+      "gw": 31,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 45.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2024-25",
+      "gw": 32,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 107.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 33,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 83.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 34,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 71.0,
+      "hit_points": 24,
+      "n_transfers": 7
+    },
+    {
+      "season": "2024-25",
+      "gw": 35,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 39.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2024-25",
+      "gw": 36,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 37.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 37,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 47.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 38,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 65.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 8,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 68.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2024-25",
+      "gw": 9,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 62.0,
+      "hit_points": 0,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 10,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 54.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 11,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 50.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 12,
+      "arm": "wc",
+      "chip": "wildcard",
+      "pts_net": 62.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2024-25",
+      "gw": 13,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 83.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 14,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 92.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 15,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 47.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2024-25",
+      "gw": 16,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 53.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 17,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 90.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 18,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 61.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 19,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 84.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 20,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 63.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 21,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 73.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 22,
+      "arm": "wc",
+      "chip": "wildcard",
+      "pts_net": 45.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2024-25",
+      "gw": 23,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 60.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 24,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 129.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 25,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 84.0,
+      "hit_points": 12,
+      "n_transfers": 4
+    },
+    {
+      "season": "2024-25",
+      "gw": 26,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 58.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 27,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 55.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 28,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 66.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 29,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 45.0,
+      "hit_points": 16,
+      "n_transfers": 5
+    },
+    {
+      "season": "2024-25",
+      "gw": 30,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 42.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 31,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 29.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 32,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 99.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 33,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 57.0,
+      "hit_points": 12,
+      "n_transfers": 4
+    },
+    {
+      "season": "2024-25",
+      "gw": 34,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 62.0,
+      "hit_points": 20,
+      "n_transfers": 6
+    },
+    {
+      "season": "2024-25",
+      "gw": 35,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 35.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2024-25",
+      "gw": 36,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 47.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 37,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 43.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 38,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 60.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 8,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 68.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2024-25",
+      "gw": 9,
+      "arm": "fh",
+      "chip": "free_hit",
+      "pts_net": 69.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2024-25",
+      "gw": 10,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 47.0,
+      "hit_points": 0,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 11,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 58.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 12,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 64.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 13,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 54.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 14,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 70.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 15,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 45.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2024-25",
+      "gw": 16,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 37.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 17,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 58.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 18,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 60.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 19,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 99.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 20,
+      "arm": "fh",
+      "chip": "free_hit",
+      "pts_net": 71.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2024-25",
+      "gw": 21,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 69.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 22,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 49.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 23,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 59.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 24,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 117.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 25,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 104.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 26,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 74.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 27,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 50.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 28,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 61.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 29,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 53.0,
+      "hit_points": 12,
+      "n_transfers": 4
+    },
+    {
+      "season": "2024-25",
+      "gw": 30,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 32.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 31,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 27.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 32,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 97.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 33,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 60.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2024-25",
+      "gw": 34,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 74.0,
+      "hit_points": 16,
+      "n_transfers": 5
+    },
+    {
+      "season": "2024-25",
+      "gw": 35,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 42.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2024-25",
+      "gw": 36,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 50.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 37,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 37.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2024-25",
+      "gw": 38,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 56.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 8,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 162.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2025-26",
+      "gw": 9,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 79.0,
+      "hit_points": 4,
+      "n_transfers": 3
+    },
+    {
+      "season": "2025-26",
+      "gw": 10,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 89.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 11,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 35.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 12,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 34.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 13,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 46.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2025-26",
+      "gw": 14,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 71.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2025-26",
+      "gw": 15,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 41.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 16,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 62.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 17,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 80.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 18,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 55.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 19,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 46.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 20,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 79.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 21,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 69.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 22,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 49.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 23,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 40.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2025-26",
+      "gw": 24,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 59.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 25,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 70.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 26,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 77.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 27,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 38.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 28,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 67.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 29,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 71.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2025-26",
+      "gw": 30,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 60.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 31,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 53.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2025-26",
+      "gw": 32,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 67.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2025-26",
+      "gw": 33,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 74.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 34,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 69.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 35,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 82.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 36,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 90.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 37,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 56.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 38,
+      "arm": "l4",
+      "chip": "none",
+      "pts_net": 44.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2025-26",
+      "gw": 8,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 162.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2025-26",
+      "gw": 9,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 81.0,
+      "hit_points": 0,
+      "n_transfers": 2
+    },
+    {
+      "season": "2025-26",
+      "gw": 10,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 75.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 11,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 38.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 12,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 42.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 13,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 28.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 14,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 79.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2025-26",
+      "gw": 15,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 45.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 16,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 58.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2025-26",
+      "gw": 17,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 83.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 18,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 50.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 19,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 32.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 20,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 85.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 21,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 60.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 22,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 49.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 23,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 47.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2025-26",
+      "gw": 24,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 61.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 25,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 74.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 26,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 57.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 27,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 35.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 28,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 78.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 29,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 50.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 30,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 50.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 31,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 34.0,
+      "hit_points": 12,
+      "n_transfers": 4
+    },
+    {
+      "season": "2025-26",
+      "gw": 32,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 52.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 33,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 68.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2025-26",
+      "gw": 34,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 54.0,
+      "hit_points": 16,
+      "n_transfers": 5
+    },
+    {
+      "season": "2025-26",
+      "gw": 35,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 56.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 36,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 77.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2025-26",
+      "gw": 37,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 58.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 38,
+      "arm": "no_chips",
+      "chip": "none",
+      "pts_net": 24.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2025-26",
+      "gw": 8,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 162.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2025-26",
+      "gw": 9,
+      "arm": "tc",
+      "chip": "triple_captain",
+      "pts_net": 105.0,
+      "hit_points": 0,
+      "n_transfers": 2
+    },
+    {
+      "season": "2025-26",
+      "gw": 10,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 75.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 11,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 38.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 12,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 42.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 13,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 28.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 14,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 79.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2025-26",
+      "gw": 15,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 45.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 16,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 58.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2025-26",
+      "gw": 17,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 83.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 18,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 50.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 19,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 32.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 20,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 85.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 21,
+      "arm": "tc",
+      "chip": "triple_captain",
+      "pts_net": 66.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 22,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 49.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 23,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 47.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2025-26",
+      "gw": 24,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 61.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 25,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 74.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 26,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 57.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 27,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 35.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 28,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 78.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 29,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 50.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 30,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 50.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 31,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 34.0,
+      "hit_points": 12,
+      "n_transfers": 4
+    },
+    {
+      "season": "2025-26",
+      "gw": 32,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 52.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 33,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 68.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2025-26",
+      "gw": 34,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 54.0,
+      "hit_points": 16,
+      "n_transfers": 5
+    },
+    {
+      "season": "2025-26",
+      "gw": 35,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 56.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 36,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 77.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2025-26",
+      "gw": 37,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 58.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 38,
+      "arm": "tc",
+      "chip": "none",
+      "pts_net": 24.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2025-26",
+      "gw": 8,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 162.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2025-26",
+      "gw": 9,
+      "arm": "bb",
+      "chip": "bench_boost",
+      "pts_net": 93.0,
+      "hit_points": 0,
+      "n_transfers": 2
+    },
+    {
+      "season": "2025-26",
+      "gw": 10,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 75.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 11,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 38.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 12,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 42.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 13,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 28.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 14,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 79.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2025-26",
+      "gw": 15,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 45.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 16,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 58.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2025-26",
+      "gw": 17,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 83.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 18,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 50.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 19,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 32.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 20,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 85.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 21,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 60.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 22,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 49.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 23,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 47.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2025-26",
+      "gw": 24,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 61.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 25,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 74.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 26,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 57.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 27,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 35.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 28,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 78.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 29,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 50.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 30,
+      "arm": "bb",
+      "chip": "bench_boost",
+      "pts_net": 64.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 31,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 34.0,
+      "hit_points": 12,
+      "n_transfers": 4
+    },
+    {
+      "season": "2025-26",
+      "gw": 32,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 52.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 33,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 68.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2025-26",
+      "gw": 34,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 54.0,
+      "hit_points": 16,
+      "n_transfers": 5
+    },
+    {
+      "season": "2025-26",
+      "gw": 35,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 56.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 36,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 77.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2025-26",
+      "gw": 37,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 58.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 38,
+      "arm": "bb",
+      "chip": "none",
+      "pts_net": 24.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2025-26",
+      "gw": 8,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 162.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2025-26",
+      "gw": 9,
+      "arm": "wc",
+      "chip": "wildcard",
+      "pts_net": 78.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2025-26",
+      "gw": 10,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 76.0,
+      "hit_points": 0,
+      "n_transfers": 2
+    },
+    {
+      "season": "2025-26",
+      "gw": 11,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 28.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2025-26",
+      "gw": 12,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 60.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 13,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 40.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 14,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 89.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2025-26",
+      "gw": 15,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 47.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 16,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 59.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 17,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 75.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 18,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 50.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 19,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 35.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 20,
+      "arm": "wc",
+      "chip": "wildcard",
+      "pts_net": 58.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2025-26",
+      "gw": 21,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 75.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 22,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 40.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 23,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 40.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2025-26",
+      "gw": 24,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 50.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 25,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 61.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 26,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 73.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 27,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 43.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 28,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 49.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 29,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 45.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 30,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 39.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 31,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 23.0,
+      "hit_points": 24,
+      "n_transfers": 7
+    },
+    {
+      "season": "2025-26",
+      "gw": 32,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 36.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 33,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 73.0,
+      "hit_points": 12,
+      "n_transfers": 4
+    },
+    {
+      "season": "2025-26",
+      "gw": 34,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 44.0,
+      "hit_points": 12,
+      "n_transfers": 4
+    },
+    {
+      "season": "2025-26",
+      "gw": 35,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 55.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 36,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 82.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2025-26",
+      "gw": 37,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 69.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 38,
+      "arm": "wc",
+      "chip": "none",
+      "pts_net": 35.0,
+      "hit_points": 12,
+      "n_transfers": 4
+    },
+    {
+      "season": "2025-26",
+      "gw": 8,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 162.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2025-26",
+      "gw": 9,
+      "arm": "fh",
+      "chip": "free_hit",
+      "pts_net": 78.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2025-26",
+      "gw": 10,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 76.0,
+      "hit_points": 0,
+      "n_transfers": 2
+    },
+    {
+      "season": "2025-26",
+      "gw": 11,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 58.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 12,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 39.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 13,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 27.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2025-26",
+      "gw": 14,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 75.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    },
+    {
+      "season": "2025-26",
+      "gw": 15,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 49.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 16,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 82.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 17,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 85.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 18,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 50.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 19,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 39.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 20,
+      "arm": "fh",
+      "chip": "free_hit",
+      "pts_net": 58.0,
+      "hit_points": 0,
+      "n_transfers": 0
+    },
+    {
+      "season": "2025-26",
+      "gw": 21,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 57.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 22,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 49.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 23,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 47.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2025-26",
+      "gw": 24,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 61.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 25,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 74.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 26,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 57.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 27,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 35.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 28,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 78.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 29,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 50.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 30,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 50.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 31,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 34.0,
+      "hit_points": 12,
+      "n_transfers": 4
+    },
+    {
+      "season": "2025-26",
+      "gw": 32,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 52.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 33,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 68.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2025-26",
+      "gw": 34,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 54.0,
+      "hit_points": 16,
+      "n_transfers": 5
+    },
+    {
+      "season": "2025-26",
+      "gw": 35,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 56.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 36,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 77.0,
+      "hit_points": 4,
+      "n_transfers": 2
+    },
+    {
+      "season": "2025-26",
+      "gw": 37,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 58.0,
+      "hit_points": 0,
+      "n_transfers": 1
+    },
+    {
+      "season": "2025-26",
+      "gw": 38,
+      "arm": "fh",
+      "chip": "none",
+      "pts_net": 24.0,
+      "hit_points": 8,
+      "n_transfers": 3
+    }
+  ],
+  "defs": {
+    "beam_K": 2,
+    "calendar_depth": 8,
+    "arms": {
+      "no_chips": [
+        "none"
+      ],
+      "tc": [
+        "none",
+        "triple_captain"
+      ],
+      "bb": [
+        "bench_boost",
+        "none"
+      ],
+      "wc": [
+        "none",
+        "wildcard"
+      ],
+      "fh": [
+        "free_hit",
+        "none"
+      ]
+    },
+    "role": "diagnostic ablation \u2014 not promote"
+  }
+}

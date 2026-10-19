@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:19-zubimendi-could-return-this-weekend",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Arsenal",
+  "player_ids": [
+    19
+  ],
+  "headline": "Zubimendi could return this weekend",
+  "body": "The Guardian team news, 16 Oct 2026: Zubimendi (Arsenal) listed doubtful.",
+  "sha256": "3c14907c2e2fbf1c8103ad333217a39a7ca9aeec5737c87931c841b197fd1531"
+}
