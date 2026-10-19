@@ -22,6 +22,10 @@ Cursor writes and runs the code. Gemini may propose a formula. A result is writt
 
 ## Done
 
+### Assist pot team xA/xG (2026-10-19)
+
+Pre-registered `team_xa_xg` vs fixed ρ=0.75 on eligible player-GW log score. Candidate−control interval [+0.00013, +0.00069] stays above zero on all four closed seasons. Promoted into `add_player_priors`. See `reports/assist_pot.md`. GW7 had no pre-deadline capture; `data/predictions/2026-27/gw07/slot_missed.json` marks the miss for the as-of existence check only.
+
 ### Betfair live lines (2026-10-08)
 
 Pure Exchange MATCH_ODDS + OVER_UNDER_25 wired into `refresh_lines` (Odds API/ESPN off the live path). Live pull blocked on US cloud geo (HTTP 403); needs MacBook private worker. See `reports/betfair_lines_20261008.md`.

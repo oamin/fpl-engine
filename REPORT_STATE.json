@@ -1,11 +1,12 @@
 {
-  "updated": "2026-10-18",
-  "task": "team_gf_ga_predictor_screen",
+  "updated": "2026-10-19",
+  "task": "assist_pot_team_xa_xg",
   "status": "done",
   "outputs": {
-    "report": "reports/team_gf_ga_predictor_screen.md",
-    "json": "reports/figures/team_gf_ga_predictor_screen.json",
-    "script": "scripts/screen_team_gf_ga_predictors.py"
+    "report": "reports/assist_pot.md",
+    "json": "data/processed/assist_pot_screen.json",
+    "logscore": "data/processed/assist_pot_logscore.csv",
+    "module": "src/eval/assist_pot.py"
   },
-  "notes": "Leakage-free screen of team-level GF/GA predictors for pseudo-match FDR. Market attack/defend best for H=1; own expanding rates for H=5–8; opp roll3 GF/GA for unpriced fixture difficulty."
+  "notes": "Promoted lam_assist = clip(exp_team_xa/exp_team_xg) * lam_scored after gated screen beat fixed 0.75 (mean +0.00041, interval above zero)."
 }
