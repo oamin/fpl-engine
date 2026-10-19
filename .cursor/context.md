@@ -1,6 +1,6 @@
 # Architectural state
 
-Updated: 2026-10-09. Stage history is root `CONTEXT.md`. Parked hypotheses are `.cursor/ideas.md`. This file is the plan, the work already done, and the direction from here.
+Updated: 2026-10-19. Stage history is root `CONTEXT.md`. Parked hypotheses are `.cursor/ideas.md`. This file is the plan, the work already done, and the direction from here.
 
 ## Plan
 
@@ -20,6 +20,10 @@ Cursor writes and runs the code. Gemini may propose a formula. A result is writt
 - Solver constants live in `src/rules/fpl_2026.py`. Historical targets are Vaastav `total_points` for that season, not a 2026/27 rescore.
 
 ## Done
+
+### Oracle-rank cascade diagnostic 2025/26 (2026-10-19)
+
+Final 2025/26 ranks as oracle; rank→GF/GA OLS on 2022/23–2024/25 only; cascade pots × shares. **PASS** vs flat and prior-season-rank controls on match MSE and eligible player-GW log. Oracle also slightly beats market Shin `score_xp` (+0.00384 log). Ceiling test only — not a live method. See `reports/oracle_rank_cascade_2025_26.md`.
 
 ### Betfair live lines (2026-10-08)
 
