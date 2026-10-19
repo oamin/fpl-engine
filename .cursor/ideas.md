@@ -368,7 +368,7 @@ Quick trial 2026-10-15 (`protocol.strategy_layer4_mupost_se_pm`, `reports/layer4
 
 ## Team-form FDR μ/SE (beyond t+2)
 
-Screened 2026-10-16 (`reports/team_form_fdr.md`). Expanding club Σ pts → form; FDR = form_own−form_opp on t+3…t+7. Raw-μ FDR Spearman **+0.352** (2024-25 **+0.399** after stripping assistant managers). μ/SE form weaker (+0.13 pooled; flat 2024-25). **Locked: raw μ only.** SE diagnostic. Park μ/SE form.
+Screened 2026-10-16 (`reports/team_form_fdr.md`). Expanding club Σ pts → form; FDR = form_own−form_opp on t+3…t+7. Raw-μ FDR Spearman **+0.352** (2024-25 **+0.399** after stripping Assistant Managers). μ/SE form weaker (+0.13 pooled; flat 2024-25). **Locked: raw μ only.** SE diagnostic. Park μ/SE form. Vaastav 2024/25 ``position=AM`` is Assistant Manager — drop via `drop_assistant_managers` in every backtest loader; never map to MID.
 
 ## L4 beyond-t+2 arm D (team-form fill)
 
