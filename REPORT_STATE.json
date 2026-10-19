@@ -1,15 +1,16 @@
 {
   "updated": "2026-10-19",
-  "task": "season_final_g_ga_variance",
+  "task": "predict_gf_ga_from_rank_2026_27",
   "status": "done",
-  "seasons": ["2022/23", "2023/24", "2024/25", "2025/26"],
-  "excluded": "2026/27 live holdout (incomplete)",
-  "outputs": {
-    "script": "scripts/season_final_g_ga_variance.py",
-    "report": "reports/season_final_g_ga_variance.md",
-    "csv": "data/processed/season_final_g_ga_variance.csv",
-    "json": "reports/figures/season_final_g_ga_variance.json",
-    "plot": "reports/figures/season_final_g_ga_variance.png"
+  "rank_sources": {
+    "opta": "2026-10-12 (SI 10-11 + YEP title flip)",
+    "betfair_E_rank": "2026-10-08 in-repo outrights_ranks.json"
   },
-  "notes": "Final league rank vs GF/GA totals and match-level variance/dispersion. GF/GA track the table; raw var_GF partly tracks via mean; Fano dispersion does not."
+  "mapping": "OLS + rank-mean GF/GA by finishing place on 2022/23–2025/26 only",
+  "outputs": {
+    "script": "scripts/predict_gf_ga_from_rank_2026_27.py",
+    "report": "reports/predict_gf_ga_from_rank_2026_27.md",
+    "csv": "data/processed/predict_gf_ga_from_rank_2026_27.csv",
+    "json": "reports/figures/predict_gf_ga_from_rank_2026_27.json"
+  }
 }

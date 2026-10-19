@@ -1,0 +1,706 @@
+{
+  "mapping": {
+    "train_seasons": [
+      "2022/23",
+      "2023/24",
+      "2024/25",
+      "2025/26"
+    ],
+    "fit_on_2026_27": false,
+    "ols_gf": {
+      "intercept": 79.896,
+      "slope": -2.264,
+      "r2": 0.67,
+      "mae": 7.29,
+      "formula": "GF \u2248 79.9 -2.26\u00b7rank"
+    },
+    "ols_ga": {
+      "intercept": 36.297,
+      "slope": 1.888,
+      "r2": 0.6153,
+      "mae": 6.77,
+      "formula": "GA \u2248 36.3 +1.89\u00b7rank"
+    },
+    "loso_mae": [
+      {
+        "holdout": "2022/23",
+        "mae_gf": 9.7,
+        "mae_ga": 6.97
+      },
+      {
+        "holdout": "2023/24",
+        "mae_gf": 9.8,
+        "mae_ga": 9.57
+      },
+      {
+        "holdout": "2024/25",
+        "mae_gf": 6.43,
+        "mae_ga": 5.43
+      },
+      {
+        "holdout": "2025/26",
+        "mae_gf": 6.83,
+        "mae_ga": 6.9
+      }
+    ],
+    "mean_mae_loso_gf": 8.19,
+    "mean_mae_loso_ga": 7.22,
+    "rank_profile": {
+      "1": {
+        "mean_gf": 86.75,
+        "mean_ga": 33.75,
+        "sd_gf": 11.35,
+        "sd_ga": 5.74,
+        "n": 4
+      },
+      "2": {
+        "mean_gf": 81.25,
+        "mean_ga": 35.25,
+        "sd_gf": 10.14,
+        "sd_ga": 5.8,
+        "n": 4
+      },
+      "3": {
+        "mean_gf": 71.25,
+        "mean_ga": 44.5,
+        "sd_gf": 11.53,
+        "sd_ga": 3.87,
+        "n": 4
+      },
+      "4": {
+        "mean_gf": 66.0,
+        "mean_ga": 46.5,
+        "sd_gf": 8.33,
+        "sd_ga": 11.7,
+        "n": 4
+      },
+      "5": {
+        "mean_gf": 70.0,
+        "mean_ga": 52.0,
+        "sd_gf": 5.6,
+        "sd_ga": 6.63,
+        "n": 4
+      },
+      "6": {
+        "mean_gf": 66.25,
+        "mean_ga": 55.25,
+        "sd_gf": 9.74,
+        "sd_ga": 5.32,
+        "n": 4
+      },
+      "7": {
+        "mean_gf": 59.0,
+        "mean_ga": 50.5,
+        "sd_gf": 18.53,
+        "sd_ga": 7.72,
+        "n": 4
+      },
+      "8": {
+        "mean_gf": 61.25,
+        "mean_ga": 56.5,
+        "sd_gf": 8.22,
+        "sd_ga": 7.33,
+        "n": 4
+      },
+      "9": {
+        "mean_gf": 57.75,
+        "mean_ga": 54.5,
+        "sd_gf": 2.06,
+        "sd_ga": 13.3,
+        "n": 4
+      },
+      "10": {
+        "mean_gf": 59.0,
+        "mean_ga": 55.0,
+        "sd_gf": 4.83,
+        "sd_ga": 2.94,
+        "n": 4
+      },
+      "11": {
+        "mean_gf": 49.0,
+        "mean_ga": 54.0,
+        "sd_gf": 6.98,
+        "sd_ga": 5.72,
+        "n": 4
+      },
+      "12": {
+        "mean_gf": 45.5,
+        "mean_ga": 51.0,
+        "sd_gf": 7.59,
+        "sd_ga": 3.27,
+        "n": 4
+      },
+      "13": {
+        "mean_gf": 43.5,
+        "mean_ga": 54.75,
+        "sd_gf": 9.68,
+        "sd_ga": 9.98,
+        "n": 4
+      },
+      "14": {
+        "mean_gf": 48.0,
+        "mean_ga": 58.5,
+        "sd_gf": 5.48,
+        "sd_ga": 3.51,
+        "n": 4
+      },
+      "15": {
+        "mean_gf": 43.0,
+        "mean_ga": 60.25,
+        "sd_gf": 5.48,
+        "sd_ga": 9.36,
+        "n": 4
+      },
+      "16": {
+        "mean_gf": 49.0,
+        "mean_ga": 63.25,
+        "sd_gf": 8.08,
+        "sd_ga": 8.34,
+        "n": 4
+      },
+      "17": {
+        "mean_gf": 48.75,
+        "mean_ga": 61.5,
+        "sd_gf": 12.26,
+        "sd_ga": 5.26,
+        "n": 4
+      },
+      "18": {
+        "mean_gf": 45.5,
+        "mean_ga": 74.5,
+        "sd_gf": 8.74,
+        "sd_ga": 9.54,
+        "n": 4
+      },
+      "19": {
+        "mean_gf": 40.75,
+        "mean_ga": 78.25,
+        "sd_gf": 5.25,
+        "sd_ga": 2.87,
+        "n": 4
+      },
+      "20": {
+        "mean_gf": 31.0,
+        "mean_ga": 82.75,
+        "sd_gf": 5.23,
+        "sd_ga": 16.07,
+        "n": 4
+      }
+    }
+  },
+  "rank_sources": {
+    "betfair": {
+      "path": "data/predictions/2026-27/gw06/betfair_20261008/outrights_ranks.json",
+      "as_of": "2026-10-08",
+      "field": "E_rank"
+    },
+    "opta": {
+      "as_of": "2026-10-12",
+      "note": "Opta via SI 2026-10-11 full table; YEP 2026-10-12 title flip (City 78.43, Arsenal 77.17)."
+    }
+  },
+  "predictions_betfair": [
+    {
+      "club": "Arsenal",
+      "club_norm": "arsenal",
+      "source": "betfair_E_rank_20261008",
+      "pred_rank_E": 2.063,
+      "pred_rank_ord": 1,
+      "pred_gf_rankmean": 80.6,
+      "pred_ga_rankmean": 35.8,
+      "pred_gd_rankmean": 44.8,
+      "pred_gf_ols": 75.2,
+      "pred_ga_ols": 40.2,
+      "pred_gd_ols": 35.0
+    },
+    {
+      "club": "Liverpool",
+      "club_norm": "liverpool",
+      "source": "betfair_E_rank_20261008",
+      "pred_rank_E": 4.305,
+      "pred_rank_ord": 2,
+      "pred_gf_rankmean": 67.2,
+      "pred_ga_rankmean": 48.2,
+      "pred_gd_rankmean": 19.0,
+      "pred_gf_ols": 70.1,
+      "pred_ga_ols": 44.4,
+      "pred_gd_ols": 25.7
+    },
+    {
+      "club": "Chelsea",
+      "club_norm": "chelsea",
+      "source": "betfair_E_rank_20261008",
+      "pred_rank_E": 5.133,
+      "pred_rank_ord": 3,
+      "pred_gf_rankmean": 69.5,
+      "pred_ga_rankmean": 52.4,
+      "pred_gd_rankmean": 17.1,
+      "pred_gf_ols": 68.3,
+      "pred_ga_ols": 46.0,
+      "pred_gd_ols": 22.3
+    },
+    {
+      "club": "Man Utd",
+      "club_norm": "man utd",
+      "source": "betfair_E_rank_20261008",
+      "pred_rank_E": 6.561,
+      "pred_rank_ord": 4,
+      "pred_gf_rankmean": 62.2,
+      "pred_ga_rankmean": 52.6,
+      "pred_gd_rankmean": 9.6,
+      "pred_gf_ols": 65.0,
+      "pred_ga_ols": 48.7,
+      "pred_gd_ols": 16.4
+    },
+    {
+      "club": "Brighton",
+      "club_norm": "brighton",
+      "source": "betfair_E_rank_20261008",
+      "pred_rank_E": 7.513,
+      "pred_rank_ord": 5,
+      "pred_gf_rankmean": 60.2,
+      "pred_ga_rankmean": 53.6,
+      "pred_gd_rankmean": 6.6,
+      "pred_gf_ols": 62.9,
+      "pred_ga_ols": 50.5,
+      "pred_gd_ols": 12.4
+    },
+    {
+      "club": "Brentford",
+      "club_norm": "brentford",
+      "source": "betfair_E_rank_20261008",
+      "pred_rank_E": 8.264,
+      "pred_rank_ord": 6,
+      "pred_gf_rankmean": 60.3,
+      "pred_ga_rankmean": 56.0,
+      "pred_gd_rankmean": 4.4,
+      "pred_gf_ols": 61.2,
+      "pred_ga_ols": 51.9,
+      "pred_gd_ols": 9.3
+    },
+    {
+      "club": "Man City",
+      "club_norm": "man city",
+      "source": "betfair_E_rank_20261008",
+      "pred_rank_E": 8.979,
+      "pred_rank_ord": 7,
+      "pred_gf_rankmean": 57.8,
+      "pred_ga_rankmean": 54.5,
+      "pred_gd_rankmean": 3.3,
+      "pred_gf_ols": 59.6,
+      "pred_ga_ols": 53.3,
+      "pred_gd_ols": 6.3
+    },
+    {
+      "club": "Leeds",
+      "club_norm": "leeds",
+      "source": "betfair_E_rank_20261008",
+      "pred_rank_E": 10.48,
+      "pred_rank_ord": 8,
+      "pred_gf_rankmean": 54.2,
+      "pred_ga_rankmean": 54.5,
+      "pred_gd_rankmean": -0.3,
+      "pred_gf_ols": 56.2,
+      "pred_ga_ols": 56.1,
+      "pred_gd_ols": 0.1
+    },
+    {
+      "club": "Aston Villa",
+      "club_norm": "aston villa",
+      "source": "betfair_E_rank_20261008",
+      "pred_rank_E": 10.508,
+      "pred_rank_ord": 9,
+      "pred_gf_rankmean": 53.9,
+      "pred_ga_rankmean": 54.5,
+      "pred_gd_rankmean": -0.6,
+      "pred_gf_ols": 56.1,
+      "pred_ga_ols": 56.1,
+      "pred_gd_ols": -0.0
+    },
+    {
+      "club": "Everton",
+      "club_norm": "everton",
+      "source": "betfair_E_rank_20261008",
+      "pred_rank_E": 10.986,
+      "pred_rank_ord": 10,
+      "pred_gf_rankmean": 49.1,
+      "pred_ga_rankmean": 54.0,
+      "pred_gd_rankmean": -4.9,
+      "pred_gf_ols": 55.0,
+      "pred_ga_ols": 57.0,
+      "pred_gd_ols": -2.0
+    },
+    {
+      "club": "Tottenham",
+      "club_norm": "spurs",
+      "source": "betfair_E_rank_20261008",
+      "pred_rank_E": 11.27,
+      "pred_rank_ord": 11,
+      "pred_gf_rankmean": 48.1,
+      "pred_ga_rankmean": 53.2,
+      "pred_gd_rankmean": -5.1,
+      "pred_gf_ols": 54.4,
+      "pred_ga_ols": 57.6,
+      "pred_gd_ols": -3.2
+    },
+    {
+      "club": "Newcastle",
+      "club_norm": "newcastle",
+      "source": "betfair_E_rank_20261008",
+      "pred_rank_E": 12.361,
+      "pred_rank_ord": 12,
+      "pred_gf_rankmean": 44.8,
+      "pred_ga_rankmean": 52.4,
+      "pred_gd_rankmean": -7.6,
+      "pred_gf_ols": 51.9,
+      "pred_ga_ols": 59.6,
+      "pred_gd_ols": -7.7
+    },
+    {
+      "club": "Nottm Forest",
+      "club_norm": "nottm forest",
+      "source": "betfair_E_rank_20261008",
+      "pred_rank_E": 12.566,
+      "pred_rank_ord": 13,
+      "pred_gf_rankmean": 44.4,
+      "pred_ga_rankmean": 53.1,
+      "pred_gd_rankmean": -8.8,
+      "pred_gf_ols": 51.4,
+      "pred_ga_ols": 60.0,
+      "pred_gd_ols": -8.6
+    },
+    {
+      "club": "Sunderland",
+      "club_norm": "sunderland",
+      "source": "betfair_E_rank_20261008",
+      "pred_rank_E": 13.074,
+      "pred_rank_ord": 14,
+      "pred_gf_rankmean": 43.8,
+      "pred_ga_rankmean": 55.0,
+      "pred_gd_rankmean": -11.2,
+      "pred_gf_ols": 50.3,
+      "pred_ga_ols": 61.0,
+      "pred_gd_ols": -10.7
+    },
+    {
+      "club": "Fulham",
+      "club_norm": "fulham",
+      "source": "betfair_E_rank_20261008",
+      "pred_rank_E": 13.655,
+      "pred_rank_ord": 15,
+      "pred_gf_rankmean": 46.4,
+      "pred_ga_rankmean": 57.2,
+      "pred_gd_rankmean": -10.8,
+      "pred_gf_ols": 49.0,
+      "pred_ga_ols": 62.1,
+      "pred_gd_ols": -13.1
+    },
+    {
+      "club": "Crystal Palace",
+      "club_norm": "crystal palace",
+      "source": "betfair_E_rank_20261008",
+      "pred_rank_E": 13.958,
+      "pred_rank_ord": 16,
+      "pred_gf_rankmean": 47.8,
+      "pred_ga_rankmean": 58.3,
+      "pred_gd_rankmean": -10.5,
+      "pred_gf_ols": 48.3,
+      "pred_ga_ols": 62.7,
+      "pred_gd_ols": -14.4
+    },
+    {
+      "club": "Ipswich",
+      "club_norm": "ipswich",
+      "source": "betfair_E_rank_20261008",
+      "pred_rank_E": 14.834,
+      "pred_rank_ord": 17,
+      "pred_gf_rankmean": 43.8,
+      "pred_ga_rankmean": 60.0,
+      "pred_gd_rankmean": -16.1,
+      "pred_gf_ols": 46.3,
+      "pred_ga_ols": 64.3,
+      "pred_gd_ols": -18.0
+    },
+    {
+      "club": "Hull",
+      "club_norm": "hull",
+      "source": "betfair_E_rank_20261008",
+      "pred_rank_E": 15.749,
+      "pred_rank_ord": 18,
+      "pred_gf_rankmean": 47.5,
+      "pred_ga_rankmean": 62.5,
+      "pred_gd_rankmean": -15.0,
+      "pred_gf_ols": 44.2,
+      "pred_ga_ols": 66.0,
+      "pred_gd_ols": -21.8
+    },
+    {
+      "club": "Coventry",
+      "club_norm": "coventry",
+      "source": "betfair_E_rank_20261008",
+      "pred_rank_E": 16.456,
+      "pred_rank_ord": 19,
+      "pred_gf_rankmean": 48.9,
+      "pred_ga_rankmean": 62.5,
+      "pred_gd_rankmean": -13.6,
+      "pred_gf_ols": 42.6,
+      "pred_ga_ols": 67.4,
+      "pred_gd_ols": -24.7
+    },
+    {
+      "club": "Bournemouth",
+      "club_norm": "bournemouth",
+      "source": "betfair_E_rank_20261008",
+      "pred_rank_E": 18.5,
+      "pred_rank_ord": 20,
+      "pred_gf_rankmean": 43.1,
+      "pred_ga_rankmean": 76.4,
+      "pred_gd_rankmean": -33.2,
+      "pred_gf_ols": 38.0,
+      "pred_ga_ols": 71.2,
+      "pred_gd_ols": -33.2
+    }
+  ],
+  "predictions_opta": [
+    {
+      "club": "Man City",
+      "source": "opta_yep_2026_10_12",
+      "pred_rank": 1,
+      "pred_pts": 78.43,
+      "pred_gf_rankmean": 86.8,
+      "pred_ga_rankmean": 33.8,
+      "pred_gd_rankmean": 53.0,
+      "pred_gf_ols": 77.6,
+      "pred_ga_ols": 38.2,
+      "pred_gd_ols": 39.4
+    },
+    {
+      "club": "Arsenal",
+      "source": "opta_yep_2026_10_12",
+      "pred_rank": 2,
+      "pred_pts": 77.17,
+      "pred_gf_rankmean": 81.2,
+      "pred_ga_rankmean": 35.2,
+      "pred_gd_rankmean": 46.0,
+      "pred_gf_ols": 75.4,
+      "pred_ga_ols": 40.1,
+      "pred_gd_ols": 35.3
+    },
+    {
+      "club": "Brighton",
+      "source": "opta_yep_2026_10_12",
+      "pred_rank": 3,
+      "pred_pts": 63.24,
+      "pred_gf_rankmean": 71.2,
+      "pred_ga_rankmean": 44.5,
+      "pred_gd_rankmean": 26.8,
+      "pred_gf_ols": 73.1,
+      "pred_ga_ols": 42.0,
+      "pred_gd_ols": 31.1
+    },
+    {
+      "club": "Liverpool",
+      "source": "opta_yep_2026_10_12",
+      "pred_rank": 4,
+      "pred_pts": 61.19,
+      "pred_gf_rankmean": 66.0,
+      "pred_ga_rankmean": 46.5,
+      "pred_gd_rankmean": 19.5,
+      "pred_gf_ols": 70.8,
+      "pred_ga_ols": 43.9,
+      "pred_gd_ols": 27.0
+    },
+    {
+      "club": "Chelsea",
+      "source": "opta_yep_2026_10_12",
+      "pred_rank": 5,
+      "pred_pts": 56.54,
+      "pred_gf_rankmean": 70.0,
+      "pred_ga_rankmean": 52.0,
+      "pred_gd_rankmean": 18.0,
+      "pred_gf_ols": 68.6,
+      "pred_ga_ols": 45.7,
+      "pred_gd_ols": 22.8
+    },
+    {
+      "club": "Brentford",
+      "source": "opta_yep_2026_10_12",
+      "pred_rank": 6,
+      "pred_pts": 54.0,
+      "pred_gf_rankmean": 66.2,
+      "pred_ga_rankmean": 55.2,
+      "pred_gd_rankmean": 11.0,
+      "pred_gf_ols": 66.3,
+      "pred_ga_ols": 47.6,
+      "pred_gd_ols": 18.7
+    },
+    {
+      "club": "Newcastle",
+      "source": "opta_yep_2026_10_12",
+      "pred_rank": 7,
+      "pred_pts": 53.09,
+      "pred_gf_rankmean": 59.0,
+      "pred_ga_rankmean": 50.5,
+      "pred_gd_rankmean": 8.5,
+      "pred_gf_ols": 64.0,
+      "pred_ga_ols": 49.5,
+      "pred_gd_ols": 14.5
+    },
+    {
+      "club": "Everton",
+      "source": "opta_yep_2026_10_12",
+      "pred_rank": 8,
+      "pred_pts": 53.04,
+      "pred_gf_rankmean": 61.2,
+      "pred_ga_rankmean": 56.5,
+      "pred_gd_rankmean": 4.8,
+      "pred_gf_ols": 61.8,
+      "pred_ga_ols": 51.4,
+      "pred_gd_ols": 10.4
+    },
+    {
+      "club": "Man United",
+      "source": "opta_yep_2026_10_12",
+      "pred_rank": 9,
+      "pred_pts": 51.9,
+      "pred_gf_rankmean": 57.8,
+      "pred_ga_rankmean": 54.5,
+      "pred_gd_rankmean": 3.2,
+      "pred_gf_ols": 59.5,
+      "pred_ga_ols": 53.3,
+      "pred_gd_ols": 6.2
+    },
+    {
+      "club": "Aston Villa",
+      "source": "opta_yep_2026_10_12",
+      "pred_rank": 10,
+      "pred_pts": 51.43,
+      "pred_gf_rankmean": 59.0,
+      "pred_ga_rankmean": 55.0,
+      "pred_gd_rankmean": 4.0,
+      "pred_gf_ols": 57.3,
+      "pred_ga_ols": 55.2,
+      "pred_gd_ols": 2.1
+    },
+    {
+      "club": "Leeds",
+      "source": "opta_yep_2026_10_12",
+      "pred_rank": 11,
+      "pred_pts": 51.13,
+      "pred_gf_rankmean": 49.0,
+      "pred_ga_rankmean": 54.0,
+      "pred_gd_rankmean": -5.0,
+      "pred_gf_ols": 55.0,
+      "pred_ga_ols": 57.1,
+      "pred_gd_ols": -2.1
+    },
+    {
+      "club": "Hull",
+      "source": "opta_yep_2026_10_12",
+      "pred_rank": 12,
+      "pred_pts": 45.69,
+      "pred_gf_rankmean": 45.5,
+      "pred_ga_rankmean": 51.0,
+      "pred_gd_rankmean": -5.5,
+      "pred_gf_ols": 52.7,
+      "pred_ga_ols": 59.0,
+      "pred_gd_ols": -6.2
+    },
+    {
+      "club": "Ipswich",
+      "source": "opta_yep_2026_10_12",
+      "pred_rank": 13,
+      "pred_pts": 45.56,
+      "pred_gf_rankmean": 43.5,
+      "pred_ga_rankmean": 54.8,
+      "pred_gd_rankmean": -11.2,
+      "pred_gf_ols": 50.5,
+      "pred_ga_ols": 60.8,
+      "pred_gd_ols": -10.4
+    },
+    {
+      "club": "Crystal Palace",
+      "source": "opta_yep_2026_10_12",
+      "pred_rank": 14,
+      "pred_pts": 45.0,
+      "pred_gf_rankmean": 48.0,
+      "pred_ga_rankmean": 58.5,
+      "pred_gd_rankmean": -10.5,
+      "pred_gf_ols": 48.2,
+      "pred_ga_ols": 62.7,
+      "pred_gd_ols": -14.5
+    },
+    {
+      "club": "Bournemouth",
+      "source": "opta_yep_2026_10_12",
+      "pred_rank": 15,
+      "pred_pts": 44.86,
+      "pred_gf_rankmean": 43.0,
+      "pred_ga_rankmean": 60.2,
+      "pred_gd_rankmean": -17.2,
+      "pred_gf_ols": 45.9,
+      "pred_ga_ols": 64.6,
+      "pred_gd_ols": -18.7
+    },
+    {
+      "club": "Nott'm Forest",
+      "source": "opta_yep_2026_10_12",
+      "pred_rank": 16,
+      "pred_pts": 44.07,
+      "pred_gf_rankmean": 49.0,
+      "pred_ga_rankmean": 63.2,
+      "pred_gd_rankmean": -14.2,
+      "pred_gf_ols": 43.7,
+      "pred_ga_ols": 66.5,
+      "pred_gd_ols": -22.8
+    },
+    {
+      "club": "Tottenham",
+      "source": "opta_yep_2026_10_12",
+      "pred_rank": 17,
+      "pred_pts": 43.95,
+      "pred_gf_rankmean": 48.8,
+      "pred_ga_rankmean": 61.5,
+      "pred_gd_rankmean": -12.8,
+      "pred_gf_ols": 41.4,
+      "pred_ga_ols": 68.4,
+      "pred_gd_ols": -27.0
+    },
+    {
+      "club": "Sunderland",
+      "source": "opta_yep_2026_10_12",
+      "pred_rank": 18,
+      "pred_pts": 42.18,
+      "pred_gf_rankmean": 45.5,
+      "pred_ga_rankmean": 74.5,
+      "pred_gd_rankmean": -29.0,
+      "pred_gf_ols": 39.1,
+      "pred_ga_ols": 70.3,
+      "pred_gd_ols": -31.1
+    },
+    {
+      "club": "Coventry",
+      "source": "opta_yep_2026_10_12",
+      "pred_rank": 19,
+      "pred_pts": 39.63,
+      "pred_gf_rankmean": 40.8,
+      "pred_ga_rankmean": 78.2,
+      "pred_gd_rankmean": -37.5,
+      "pred_gf_ols": 36.9,
+      "pred_ga_ols": 72.2,
+      "pred_gd_ols": -35.3
+    },
+    {
+      "club": "Fulham",
+      "source": "opta_yep_2026_10_12",
+      "pred_rank": 20,
+      "pred_pts": 38.26,
+      "pred_gf_rankmean": 31.0,
+      "pred_ga_rankmean": 82.8,
+      "pred_gd_rankmean": -51.8,
+      "pred_gf_ols": 34.6,
+      "pred_ga_ols": 74.1,
+      "pred_gd_ols": -39.4
+    }
+  ]
+}
