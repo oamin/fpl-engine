@@ -5,55 +5,58 @@ Trial (diagnostic). Not a gated likelihood promotion. Chips off.
 ## Design
 
 - Decision GW **6**; roll fixtures GW8–19.
-- **20** coherent Monte Carlo strands: each GW samples scorelines inside Opta λ bounds, updates club GF/GA path.
-- Snapshots at GW [8, 10, 12, 14, 16, 18]: score season selectable pool (`xp_on_pot` on path pots) → squad MILP.
-- Solved squads: **120** · selectable **180** · seed 7.
+- **8** coherent strands: each fixture samples λ from **Opta rank→GF/GA bands** (`match_prediction`, e.g. 2nd vs 20th), Poisson scoreline, path rate update.
+- Player xP: frozen deadline shares/xmi/defcon (`add_player_priors`) × scenario pot via `xp_on_pot` (score_xp v2). Share seeding: **False**.
+- Snapshots at GW [8, 11, 14, 17] → selectable-pool MILP.
+- Solved squads: **32** · selectable **180** (170 with nonzero share) · seed 7.
+
+Scoring: `Opta match_prediction λ bands → sampled scenario pot; deadline add_player_priors shares/xmi/defcon × xp_on_pot (score_xp v2)`
 
 ## Player stability (selection frequency)
 
 | rank | id | name | team | pos | £ | freq | n |
 |---:|---:|---|---|---|---:|---:|---:|
-| 1 | 115 | De Cuyper | brighton | DEF | 5.0 | 0.72 | 87 |
-| 2 | 305 | Davis | ipswich | DEF | 4.0 | 0.70 | 84 |
-| 3 | 12 | Saka | arsenal | MID | 9.6 | 0.70 | 84 |
-| 4 | 427 | Mbeumo | man utd | MID | 7.9 | 0.64 | 77 |
-| 5 | 366 | Wirtz | liverpool | MID | 7.3 | 0.63 | 76 |
-| 6 | 249 | Barry | everton | FWD | 5.7 | 0.62 | 75 |
-| 7 | 411 | Haaland | man city | FWD | 15.6 | 0.59 | 71 |
-| 8 | 464 | Wissa | newcastle | FWD | 6.2 | 0.48 | 58 |
-| 9 | 106 | Thiago | brentford | FWD | 7.8 | 0.44 | 53 |
-| 10 | 109 | Verbruggen | brighton | GKP | 4.5 | 0.42 | 51 |
-| 11 | 40 | Rogers | chelsea | MID | 7.8 | 0.42 | 50 |
-| 12 | 449 | Hall | newcastle | DEF | 5.3 | 0.41 | 49 |
-| 13 | 426 | B.Fernandes | man utd | MID | 11.9 | 0.39 | 47 |
-| 14 | 124 | Groß | brighton | MID | 5.9 | 0.32 | 38 |
-| 15 | 588 | Khalaili | crystal palace | DEF | 5.0 | 0.30 | 36 |
-| 16 | 330 | Bogle | leeds | DEF | 4.6 | 0.30 | 36 |
-| 17 | 388 | Guéhi | man city | DEF | 6.0 | 0.29 | 35 |
-| 18 | 86 | Lewis-Potter | brentford | MID | 5.5 | 0.29 | 35 |
-| 19 | 88 | Kayode | brentford | DEF | 4.6 | 0.27 | 32 |
-| 20 | 8 | Calafiori | arsenal | DEF | 5.9 | 0.27 | 32 |
-| 21 | 279 | Ajayi | hull | DEF | 4.2 | 0.24 | 29 |
-| 22 | 68 | Tavernier | bournemouth | MID | 6.1 | 0.23 | 28 |
-| 23 | 176 | Dasilva | coventry | DEF | 4.0 | 0.23 | 27 |
-| 24 | 165 | João Pedro | chelsea | FWD | 7.7 | 0.22 | 26 |
-| 25 | 567 | Horníček | newcastle | GKP | 5.0 | 0.21 | 25 |
-| 26 | 112 | Van Hecke | spurs | DEF | 4.9 | 0.21 | 25 |
-| 27 | 346 | Calvert-Lewin | leeds | FWD | 6.0 | 0.21 | 25 |
-| 28 | 566 | Silva | bournemouth | DEF | 5.0 | 0.20 | 24 |
-| 29 | 204 | Mitchell | crystal palace | DEF | 4.5 | 0.20 | 24 |
-| 30 | 183 | Rudoni | coventry | MID | 4.9 | 0.20 | 24 |
-| 31 | 350 | A.Becker | liverpool | GKP | 5.5 | 0.16 | 19 |
-| 32 | 37 | Lindelöf | aston villa | DEF | 4.5 | 0.15 | 18 |
-| 33 | 597 | Suzuki | aston villa | GKP | 5.0 | 0.15 | 18 |
-| 34 | 591 | Enciso | ipswich | MID | 5.5 | 0.15 | 18 |
-| 35 | 529 | Roefs | sunderland | GKP | 4.9 | 0.15 | 18 |
-| 36 | 15 | Ødegaard | arsenal | MID | 6.8 | 0.15 | 18 |
-| 37 | 154 | Palmer | chelsea | MID | 9.7 | 0.14 | 17 |
-| 38 | 542 | E.Le Fée | sunderland | MID | 5.7 | 0.14 | 17 |
-| 39 | 82 | Kelleher | brentford | GKP | 5.0 | 0.14 | 17 |
-| 40 | 173 | Thomas | coventry | DEF | 4.0 | 0.13 | 16 |
-| … | (36 more) | | | | | | |
+| 1 | 249 | Barry | everton | FWD | 5.7 | 0.78 | 25 |
+| 2 | 449 | Hall | newcastle | DEF | 5.3 | 0.75 | 24 |
+| 3 | 12 | Saka | arsenal | MID | 9.6 | 0.75 | 24 |
+| 4 | 566 | Silva | bournemouth | DEF | 5.0 | 0.72 | 23 |
+| 5 | 40 | Rogers | chelsea | MID | 7.8 | 0.72 | 23 |
+| 6 | 464 | Wissa | newcastle | FWD | 6.2 | 0.66 | 21 |
+| 7 | 427 | Mbeumo | man utd | MID | 7.9 | 0.62 | 20 |
+| 8 | 411 | Haaland | man city | FWD | 15.6 | 0.59 | 19 |
+| 9 | 115 | De Cuyper | brighton | DEF | 5.0 | 0.56 | 18 |
+| 10 | 68 | Tavernier | bournemouth | MID | 6.1 | 0.41 | 13 |
+| 11 | 305 | Davis | ipswich | DEF | 4.0 | 0.41 | 13 |
+| 12 | 124 | Groß | brighton | MID | 5.9 | 0.41 | 13 |
+| 13 | 165 | João Pedro | chelsea | FWD | 7.7 | 0.34 | 11 |
+| 14 | 384 | Donnarumma | man city | GKP | 5.5 | 0.34 | 11 |
+| 15 | 109 | Verbruggen | brighton | GKP | 4.5 | 0.34 | 11 |
+| 16 | 200 | Lacroix | chelsea | DEF | 5.9 | 0.31 | 10 |
+| 17 | 41 | Buendía | aston villa | MID | 5.9 | 0.31 | 10 |
+| 18 | 426 | B.Fernandes | man utd | MID | 11.9 | 0.28 | 9 |
+| 19 | 588 | Khalaili | crystal palace | DEF | 5.0 | 0.28 | 9 |
+| 20 | 173 | Thomas | coventry | DEF | 4.0 | 0.25 | 8 |
+| 21 | 542 | E.Le Fée | sunderland | MID | 5.7 | 0.25 | 8 |
+| 22 | 183 | Rudoni | coventry | MID | 4.9 | 0.25 | 8 |
+| 23 | 286 | Belloumi | hull | MID | 5.1 | 0.25 | 8 |
+| 24 | 154 | Palmer | chelsea | MID | 9.7 | 0.22 | 7 |
+| 25 | 346 | Calvert-Lewin | leeds | FWD | 6.0 | 0.22 | 7 |
+| 26 | 388 | Guéhi | man city | DEF | 6.0 | 0.22 | 7 |
+| 27 | 567 | Horníček | newcastle | GKP | 5.0 | 0.22 | 7 |
+| 28 | 597 | Suzuki | aston villa | GKP | 5.0 | 0.19 | 6 |
+| 29 | 229 | Tarkowski | everton | DEF | 6.2 | 0.19 | 6 |
+| 30 | 8 | Calafiori | arsenal | DEF | 5.9 | 0.19 | 6 |
+| 31 | 335 | Stach | leeds | MID | 6.0 | 0.19 | 6 |
+| 32 | 334 | Muharemović | leeds | DEF | 5.0 | 0.16 | 5 |
+| 33 | 385 | Trafford | leeds | GKP | 5.0 | 0.16 | 5 |
+| 34 | 82 | Kelleher | brentford | GKP | 5.0 | 0.16 | 5 |
+| 35 | 350 | A.Becker | liverpool | GKP | 5.5 | 0.16 | 5 |
+| 36 | 15 | Ødegaard | arsenal | MID | 6.8 | 0.16 | 5 |
+| 37 | 330 | Bogle | leeds | DEF | 4.6 | 0.16 | 5 |
+| 38 | 1 | Raya | arsenal | GKP | 6.1 | 0.16 | 5 |
+| 39 | 60 | Hill | bournemouth | DEF | 5.5 | 0.12 | 4 |
+| 40 | 230 | Branthwaite | everton | DEF | 5.5 | 0.12 | 4 |
+| … | (21 more) | | | | | | |
 
 ## Read
 

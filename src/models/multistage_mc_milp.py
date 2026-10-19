@@ -1,22 +1,28 @@
-"""Long-horizon multistage MC strands + MILP selection frequency.
+"""Long-horizon multistage MC cascade + MILP selection frequency.
 
-Trial design (not a gated likelihood promotion)
-----------------------------------------------
+Basic version (v1) — matches the Opta → score_xp cascade
+-------------------------------------------------------
 From decision gameweek ``t``, for each of ``N`` Monte Carlo strands:
 
-1. At every future GW ``g ∈ {t+2, …, t+n}``, for each fixture sample a
-   scoreline from the Opta-derived λ bounds (Poisson, clipped to the
-   predicted lam band). Sampled goals update that strand's club GF/GA path
-   so later weeks stay coherent with earlier rolls.
-2. At each snapshot GW on the strand, score the season-long selectable
-   pool with ``xp_on_pot`` on the path-implied pots and solve the squad
-   MILP (``pick_squad``).
-3. Aggregate how often each player is selected across strands × snapshots
-   → stability / long-horizon investment signal.
+1. **Match scenario (GW t+2…t+n).** For each fixture, take Opta predicted
+   ranks → season GF/GA (±MAE bands) → match λ via Dixon–Coles
+   (``match_prediction``). Sample λ inside those bands, then Poisson
+   scorelines. Example: Arsenal (rank 2) vs Fulham (rank 20) uses 2nd vs
+   20th GF/GA inference, not a flat prior. Sampled goals update the
+   strand's club rates so later weeks stay coherent.
 
-The imminent week ``t`` / ``t+1`` stays on the priced path (not rolled here).
-Chips are not modelled. 2026/27 holdout is not fit; Opta rank→GF/GA bands
-come from closed-season OLS already in ``opta_gf_ga_horizon``.
+2. **Player xP (score_xp v2 mechanics).** At each snapshot, freeze
+   deadline ``share_xG`` / ``share_xA`` / ``xmi`` / ``exp_defcon_hit`` from
+   ``add_player_priors`` (as-of ``t``) and score with ``xp_on_pot`` on the
+   path pots — same composition as live forecast steps
+   (``share × λ`` + appearance / CS / defcon / saves).
+
+3. **MILP + frequency.** Selectable-pool squad MILP on discounted path
+   xP; aggregate selection frequency across strands × snapshots.
+
+Share seeding is **off** in v1 (see module note below). Horizon-widening
+of bands is deferred to a later systematic screen. Chips off. Not a gated
+likelihood promotion.
 """
 
 from __future__ import annotations
@@ -32,7 +38,7 @@ from typing import Any, Mapping, Sequence
 import numpy as np
 import pandas as pd
 
-from src.models.forecast_xp import xp_on_pot
+from src.models.forecast_xp import _clip, xp_on_pot
 from src.models.opta_gf_ga_horizon import (
     N_MATCHES,
     gf_ga_from_rank,
@@ -43,11 +49,16 @@ from src.models.opta_gf_ga_horizon import (
     rank_gf_ga_profile,
 )
 from src.models.selectable_pool import DEFAULT_POOL_JSON, load_selectable_ids
+from src.models.xp_engine import DEFCON_THRESH, add_player_priors
 from src.teams import norm_team
 
 ROOT = Path(__file__).resolve().parents[2]
 POS_MAP = {1: "GKP", 2: "DEF", 3: "MID", 4: "FWD"}
 DEFAULT_GAMMA = 0.9
+LOG_CSV = ROOT / "data" / "cache" / "player_gw_2026_27.csv"
+# v1: do not sample shares. Match λ already moves team-level uncertainty;
+# share jitter is a second axis — open only after a calibration screen.
+SEED_SHARES = False
 
 
 @dataclass
@@ -204,47 +215,118 @@ def path_match_pots(
     }
 
 
-def bootstrap_candidate_frame(
+def _defcon_hit_col(frame: pd.DataFrame) -> pd.Series:
+    thr = frame["position"].map(DEFCON_THRESH)
+    raw = pd.to_numeric(frame.get("defcon_raw", frame.get("defcon")), errors="coerce")
+    return (frame["position"].isin(DEFCON_THRESH) & (raw.fillna(0) >= thr)).astype(float)
+
+
+def deadline_share_frame(
+    logs: pd.DataFrame,
+    *,
+    before_gw: int,
+) -> pd.DataFrame:
+    """Frozen score_xp-v2 shares / xmi / defcon as-of ``before_gw`` (no lookahead)."""
+    hist = logs.loc[pd.to_numeric(logs["gw"], errors="coerce") < int(before_gw)].copy()
+    if hist.empty:
+        raise RuntimeError(f"no log rows before GW{before_gw}")
+    hist["player_id"] = hist["player_id"].astype(str)
+    hist["gw"] = pd.to_numeric(hist["gw"], errors="coerce").astype(int)
+    hist["date"] = hist["date"].astype(str)
+    hist["team_norm"] = hist["team_norm"].map(lambda n: norm_team(str(n)))
+    hist["position"] = hist["position"].astype(str)
+    for col in ("minutes", "xG", "xA", "total_points", "defcon_raw", "defcon"):
+        if col not in hist.columns:
+            hist[col] = 0.0
+        hist[col] = pd.to_numeric(hist[col], errors="coerce").fillna(0.0)
+    hist["defcon_hit"] = _defcon_hit_col(hist)
+    hist["fixture_id"] = hist["date"] + ":" + hist["team_norm"]
+
+    last = (
+        hist.sort_values(["player_id", "gw", "date"], kind="mergesort")
+        .groupby("player_id", as_index=False)
+        .tail(1)
+    )
+    stubs = last.copy()
+    stubs["gw"] = int(before_gw)
+    stubs["date"] = "2099-01-01"
+    stubs["minutes"] = 0.0
+    stubs["xG"] = 0.0
+    stubs["xA"] = 0.0
+    stubs["total_points"] = 0.0
+    stubs["defcon_hit"] = 0.0
+    stubs["defcon_raw"] = 0.0
+    stubs["fixture_id"] = "2099-01-01:" + stubs["team_norm"]
+
+    clubs = stubs.drop_duplicates("team_norm")
+    ghosts = clubs.copy()
+    ghosts["player_id"] = ghosts["team_norm"].map(lambda c: f"__team__:{c}")
+    ghosts["minutes"] = 90.0
+    ghosts["position"] = "MID"
+
+    frame = pd.concat([hist, stubs, ghosts], ignore_index=True)
+    priors = add_player_priors(frame)
+    kept = priors.loc[
+        (priors["gw"] == int(before_gw))
+        & ~priors["player_id"].astype(str).str.startswith("__team__:")
+    ].copy()
+    return kept.drop_duplicates("player_id", keep="first").reset_index(drop=True)
+
+
+def selectable_candidate_frame(
     bootstrap: Mapping[str, Any],
     selectable_ids: set[str],
+    shares: pd.DataFrame,
 ) -> pd.DataFrame:
-    """Selectable players with share proxies from bootstrap season xG."""
+    """Selectable pool joined to frozen deadline shares (score_xp v2 inputs)."""
     teams = {int(t["id"]): norm_team(t["name"]) for t in bootstrap["teams"]}
-    elements = [el for el in bootstrap["elements"] if str(el["id"]) in selectable_ids]
-    # Team xG totals for share
-    team_xg: dict[str, float] = defaultdict(float)
-    team_xa: dict[str, float] = defaultdict(float)
-    for el in elements:
-        club = teams[int(el["team"])]
-        team_xg[club] += float(el.get("expected_goals") or 0.0)
-        team_xa[club] += float(el.get("expected_assists") or 0.0)
-
+    share_ix = shares.drop_duplicates("player_id").set_index("player_id")
     rows = []
-    for el in elements:
+    for el in bootstrap["elements"]:
+        pid = str(el["id"])
+        if pid not in selectable_ids:
+            continue
         club = teams[int(el["team"])]
-        xg = float(el.get("expected_goals") or 0.0)
-        xa = float(el.get("expected_assists") or 0.0)
-        share_xg = xg / team_xg[club] if team_xg[club] > 1e-9 else 0.0
-        share_xa = xa / team_xa[club] if team_xa[club] > 1e-9 else 0.0
-        starts = max(int(el.get("starts") or 0), 1)
-        minutes = float(el.get("minutes") or 0.0)
-        xmi = minutes / starts if starts else 0.0
+        if pid in share_ix.index:
+            src = share_ix.loc[pid]
+            share_xg = float(src["share_xG"])
+            share_xa = float(src["share_xA"])
+            xmi = float(src["xmi"]) if "xmi" in src.index else 0.0
+            defcon = float(src["exp_defcon_hit"]) if "exp_defcon_hit" in src.index else 0.0
+        else:
+            share_xg = share_xa = xmi = defcon = 0.0
         rows.append(
             {
-                "player_id": str(el["id"]),
+                "player_id": pid,
                 "name": el.get("web_name"),
                 "position": POS_MAP.get(int(el["element_type"]), "MID"),
                 "team_norm": club,
                 "value": int(el.get("now_cost") or 50),
                 "xmi": float(min(90.0, max(0.0, xmi))),
-                "share_xG": float(min(0.55, max(0.0, share_xg))),
-                "share_xA": float(min(0.55, max(0.0, share_xa))),
-                "exp_defcon_hit": 0.15 if int(el["element_type"]) in {2, 3} else 0.05,
+                "share_xG": float(min(1.0, max(0.0, share_xg))),
+                "share_xA": float(min(1.0, max(0.0, share_xa))),
+                "exp_defcon_hit": float(max(0.0, defcon)),
                 "fwd_goal_scale": 1.0,
                 "eligible": True,
             }
         )
     return pd.DataFrame(rows)
+
+
+def pot_from_sampled_lam(lam_scored: float, lam_opp: float) -> dict[str, float]:
+    """Build an xp_on_pot-compatible pot from a sampled match scenario λ."""
+    lam = _clip(float(lam_scored), 0.2, 3.5)
+    opp = _clip(float(lam_opp), 0.05, 3.5)
+    e_total = lam + opp
+    return {
+        "lam_scored": lam,
+        "lam_assist": _clip(lam * 0.75, 0.1, 3.0),
+        "e_total": float(e_total),
+        "p_cs_mkt": _clip(0.90 * math.exp(-opp), 0.05, 0.55),
+        "attack": lam,
+        "threat": opp,
+        "source": "opta_mc_scenario",
+    }
 
 
 def score_pool_on_pots(
@@ -286,13 +368,78 @@ def pots_for_gw_from_paths(
     gw: int,
     *,
     league_gf: float,
+    scenario_lams: Mapping[tuple[str, str], tuple[float, float]] | None = None,
 ) -> dict[tuple[int, str], list[dict[str, float]]]:
+    """Path-mean pots, overridden by this strand's sampled λ when present."""
     pots: dict[tuple[int, str], list[dict[str, float]]] = defaultdict(list)
     for fx in fixtures:
-        pred = path_match_pots(paths, fx["home"], fx["away"], league_gf=league_gf)
-        pots[(int(gw), fx["home"])].append(pred["pot_home"])
-        pots[(int(gw), fx["away"])].append(pred["pot_away"])
+        key = (fx["home"], fx["away"])
+        if scenario_lams is not None and key in scenario_lams:
+            sh, sa = scenario_lams[key]
+            pot_h = pot_from_sampled_lam(sh, sa)
+            pot_a = pot_from_sampled_lam(sa, sh)
+        else:
+            pred = path_match_pots(paths, fx["home"], fx["away"], league_gf=league_gf)
+            pot_h, pot_a = pred["pot_home"], pred["pot_away"]
+        pots[(int(gw), fx["home"])].append(pot_h)
+        pots[(int(gw), fx["away"])].append(pot_a)
     return dict(pots)
+
+
+def sample_opta_scenario(
+    home: str,
+    away: str,
+    *,
+    paths: Mapping[str, ClubPath],
+    league_gf: float,
+    rng: random.Random,
+) -> dict[str, Any]:
+    """Sample λ from Opta rank→GF/GA bands (match-specific), then scoreline.
+
+    Falls back to path ±15% only if a club is missing from Opta ranks.
+    """
+    try:
+        pred = match_prediction(home, away)
+        # Light blend toward path rates after early rolls (coherence), still
+        # anchored on Opta mean/bands for the fixture quality (1st vs 20th).
+        path_pred = path_match_pots(paths, home, away, league_gf=league_gf)
+        lam_h = 0.7 * pred["lam_home"] + 0.3 * path_pred["lam_home"]
+        lam_a = 0.7 * pred["lam_away"] + 0.3 * path_pred["lam_away"]
+        lo_h, hi_h = pred["lam_home_lo"], pred["lam_home_hi"]
+        lo_a, hi_a = pred["lam_away_lo"], pred["lam_away_hi"]
+        home_rank = pred["home_rank"]
+        away_rank = pred["away_rank"]
+    except KeyError:
+        path_pred = path_match_pots(paths, home, away, league_gf=league_gf)
+        lam_h = path_pred["lam_home"]
+        lam_a = path_pred["lam_away"]
+        lo_h, hi_h = path_pred["lam_home_lo"], path_pred["lam_home_hi"]
+        lo_a, hi_a = path_pred["lam_away_lo"], path_pred["lam_away_hi"]
+        home_rank = away_rank = None
+
+    gh, ga, sh, sa = sample_scoreline(
+        lam_h,
+        lam_a,
+        lam_h_lo=lo_h,
+        lam_h_hi=hi_h,
+        lam_a_lo=lo_a,
+        lam_a_hi=hi_a,
+        rng=rng,
+    )
+    return {
+        "home": home,
+        "away": away,
+        "home_rank": home_rank,
+        "away_rank": away_rank,
+        "hg": gh,
+        "ag": ga,
+        "lam_h": sh,
+        "lam_a": sa,
+        "lam_h_lo": lo_h,
+        "lam_h_hi": hi_h,
+        "lam_a_lo": lo_a,
+        "lam_a_hi": hi_a,
+    }
 
 
 def run_strand(
@@ -308,70 +455,64 @@ def run_strand(
     gamma: float = DEFAULT_GAMMA,
     milp_time_limit: float = 8.0,
 ) -> StrandResult:
-    """One coherent MC strand: sample scores, update paths, MILP at snapshots."""
+    """One coherent MC strand: Opta scenarios → score_xp pots → MILP."""
     paths = {
         c: ClubPath(att=p.att, dfn=p.dfn, n=p.n) for c, p in paths0.items()
     }
     result = StrandResult(strand_id=strand_id)
+    # Sampled λ by (home, away) for each GW — used when scoring that GW's pot.
+    scenario_by_gw: dict[int, dict[tuple[str, str], tuple[float, float]]] = {}
+
     for gw in horizon_gws:
         week_fix = fixtures_gw.get(int(gw), [])
+        scenario_by_gw[int(gw)] = {}
         for fx in week_fix:
             if fx["home"] not in paths or fx["away"] not in paths:
                 continue
-            # Prefer Opta band corners when available; else path ±15%
-            try:
-                pred = match_prediction(fx["home"], fx["away"])
-                lam_h, lam_a = pred["lam_home"], pred["lam_away"]
-                # After updates, blend Opta centre with path centre
-                path_pred = path_match_pots(
-                    paths, fx["home"], fx["away"], league_gf=league_gf
-                )
-                lam_h = 0.5 * lam_h + 0.5 * path_pred["lam_home"]
-                lam_a = 0.5 * lam_a + 0.5 * path_pred["lam_away"]
-                lo_h, hi_h = pred["lam_home_lo"], pred["lam_home_hi"]
-                lo_a, hi_a = pred["lam_away_lo"], pred["lam_away_hi"]
-            except KeyError:
-                path_pred = path_match_pots(
-                    paths, fx["home"], fx["away"], league_gf=league_gf
-                )
-                lam_h = path_pred["lam_home"]
-                lam_a = path_pred["lam_away"]
-                lo_h, hi_h = path_pred["lam_home_lo"], path_pred["lam_home_hi"]
-                lo_a, hi_a = path_pred["lam_away_lo"], path_pred["lam_away_hi"]
-
-            gh, ga, sh, sa = sample_scoreline(
-                lam_h,
-                lam_a,
-                lam_h_lo=lo_h,
-                lam_h_hi=hi_h,
-                lam_a_lo=lo_a,
-                lam_a_hi=hi_a,
+            sc = sample_opta_scenario(
+                fx["home"],
+                fx["away"],
+                paths=paths,
+                league_gf=league_gf,
                 rng=rng,
             )
-            paths[fx["home"]].observe(gh, ga)
-            paths[fx["away"]].observe(ga, gh)
+            paths[fx["home"]].observe(sc["hg"], sc["ag"])
+            paths[fx["away"]].observe(sc["ag"], sc["hg"])
+            scenario_by_gw[int(gw)][(fx["home"], fx["away"])] = (
+                float(sc["lam_h"]),
+                float(sc["lam_a"]),
+            )
             result.scorelines.append(
                 {
                     "gw": int(gw),
                     "home": fx["home"],
                     "away": fx["away"],
-                    "hg": gh,
-                    "ag": ga,
-                    "lam_h": round(sh, 3),
-                    "lam_a": round(sa, 3),
+                    "home_rank": sc["home_rank"],
+                    "away_rank": sc["away_rank"],
+                    "hg": sc["hg"],
+                    "ag": sc["ag"],
+                    "lam_h": round(sc["lam_h"], 3),
+                    "lam_a": round(sc["lam_a"], 3),
                 }
             )
 
         if int(gw) not in set(int(x) for x in snapshot_gws):
             continue
 
-        # Pots for remaining horizon from current path state
+        # Remaining horizon: this GW uses sampled scenario λ; later GWs use
+        # path-updated Opta-style rates (mean path, not re-sampled here).
         remaining = [g for g in horizon_gws if int(g) >= int(gw)]
         pots: dict[tuple[int, str], list[dict[str, float]]] = {}
         for g2 in remaining:
             pots.update(
                 pots_for_gw_from_paths(
-                    paths, fixtures_gw.get(int(g2), []), int(g2), league_gf=league_gf
+                    paths,
+                    fixtures_gw.get(int(g2), []),
+                    int(g2),
+                    league_gf=league_gf,
+                    scenario_lams=scenario_by_gw.get(int(g2))
+                    if int(g2) == int(gw)
+                    else None,
                 )
             )
         scored = score_pool_on_pots(pool, pots, gws=remaining, gamma=gamma)
@@ -379,8 +520,6 @@ def run_strand(
         if len(scored) < 15 or scored["position"].nunique() < 4:
             continue
         try:
-            # Temporarily lower milp time via monkeypatch options — pick_squad
-            # hardcodes 20s; call scipy here for tighter limit on MC volume.
             squad = _pick_squad_fast(scored, "mc_score", time_limit=milp_time_limit)
         except RuntimeError:
             continue
@@ -484,15 +623,19 @@ def run_multistage_trial(
     seed: int = 7,
     gamma: float = DEFAULT_GAMMA,
     pool_path: Path | None = None,
+    logs_path: Path | None = None,
     start_offset: int = 2,
     snapshot_every: int = 1,
 ) -> dict[str, Any]:
     """Run N coherent strands and return frequency table + metadata."""
     team_names = {int(t["id"]): str(t["name"]) for t in bootstrap["teams"]}
     selectable = load_selectable_ids(pool_path or DEFAULT_POOL_JSON)
-    pool = bootstrap_candidate_frame(bootstrap, selectable)
+    logs = pd.read_csv(logs_path or LOG_CSV)
+    shares = deadline_share_frame(logs, before_gw=int(decision_gw))
+    pool = selectable_candidate_frame(bootstrap, selectable, shares)
     if len(pool) < 15:
         raise RuntimeError("selectable pool too small for MILP")
+    n_with_share = int((pool["share_xG"] + pool["share_xA"]).gt(0).sum())
 
     start = int(decision_gw) + int(start_offset)
     end = int(horizon_end)
@@ -535,6 +678,12 @@ def run_multistage_trial(
         "n_strands": int(n_strands),
         "n_squads_solved": n_squads,
         "n_selectable": int(len(pool)),
+        "n_with_nonzero_share": n_with_share,
+        "seed_shares": SEED_SHARES,
+        "scoring": (
+            "Opta match_prediction λ bands → sampled scenario pot; "
+            "deadline add_player_priors shares/xmi/defcon × xp_on_pot (score_xp v2)"
+        ),
         "seed": int(seed),
         "gamma": float(gamma),
         "frequencies": freq.to_dict("records"),
@@ -566,12 +715,18 @@ def write_trial_outputs(result: dict[str, Any], *, out_dir: Path) -> dict[str, s
         "",
         f"- Decision GW **{result['decision_gw']}**; roll fixtures "
         f"GW{result['horizon']['start']}–{result['horizon']['end']}.",
-        f"- **{result['n_strands']}** coherent Monte Carlo strands: each GW "
-        "samples scorelines inside Opta λ bounds, updates club GF/GA path.",
-        f"- Snapshots at GW {result['snapshot_gws']}: score season selectable "
-        "pool (`xp_on_pot` on path pots) → squad MILP.",
+        f"- **{result['n_strands']}** coherent strands: each fixture samples λ "
+        "from **Opta rank→GF/GA bands** (`match_prediction`, e.g. 2nd vs 20th), "
+        "Poisson scoreline, path rate update.",
+        f"- Player xP: frozen deadline shares/xmi/defcon (`add_player_priors`) × "
+        f"scenario pot via `xp_on_pot` (score_xp v2). Share seeding: "
+        f"**{result.get('seed_shares')}**.",
+        f"- Snapshots at GW {result['snapshot_gws']} → selectable-pool MILP.",
         f"- Solved squads: **{result['n_squads_solved']}** · selectable "
-        f"**{result['n_selectable']}** · seed {result['seed']}.",
+        f"**{result['n_selectable']}** ({result.get('n_with_nonzero_share')} with "
+        f"nonzero share) · seed {result['seed']}.",
+        "",
+        f"Scoring: `{result.get('scoring')}`",
         "",
         "## Player stability (selection frequency)",
         "",
@@ -630,6 +785,7 @@ def main() -> None:
         type=Path,
         default=ROOT / "data/predictions/2026-27/multistage_mc_milp",
     )
+    p.add_argument("--logs", type=Path, default=LOG_CSV)
     args = p.parse_args()
     bootstrap = json.loads(args.bootstrap.read_text())
     fixtures = json.loads(args.fixtures.read_text())
@@ -641,6 +797,7 @@ def main() -> None:
         n_strands=args.n,
         seed=args.seed,
         snapshot_every=args.snapshot_every,
+        logs_path=args.logs,
     )
     paths = write_trial_outputs(result, out_dir=args.out)
     print(
