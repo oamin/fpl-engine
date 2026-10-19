@@ -1,0 +1,584 @@
+"""Item 5 — rank tracker: expanding GF/GA strength vs prior-rank / oracle.
+
+Replaces fixed finishing ranks with leakage-free expanding club GF/GA
+rates as the cascade pot source. Controls reuse the oracle-rank cascade
+arms (prior-season ranks, flat 10.5, final-table oracle).
+
+Pre-registered:
+  - Candidate: as-of expanding mean GF/GA → Dixon–Coles match pots
+  - Beat **prior_rank** on match MSE *and* eligible player-GW log
+  - If most of the oracle−prior player-log gap remains, stop (ceiling)
+
+Four closed seasons. 2026/27 unused. Not a live Opta replacement until
+the interval clears.
+"""
+
+from __future__ import annotations
+
+import json
+from collections import defaultdict
+from pathlib import Path
+from typing import Any
+
+import numpy as np
+import pandas as pd
+
+from src.eval.gates import (
+    CLOSED_SEASONS,
+    cluster_interval,
+    comparison_key,
+    gaussian_log_score,
+    load_protocol,
+    run_asof_audit,
+    write_gated_report,
+)
+from src.eval.oracle_rank_cascade import (
+    GW_END,
+    GW_START,
+    MIN_HISTORY,
+    MIN_XMI,
+    SIGMA,
+    _map_kwargs,
+    _prepare,
+    flat_ranks,
+    match_lambda_scores,
+    prior_season_ranks,
+)
+from src.ingest.fpl_odds import join_players_to_fixtures, load_football_data, load_player_logs
+from src.models.forecast_xp import xp_on_pot
+from src.models.opta_gf_ga_horizon import (
+    CACHE,
+    CLOSED,
+    HOME_ADV,
+    N_MATCHES,
+    fit_rank_ols_excluding,
+    league_avg_gf,
+    match_prediction,
+    pots_from_season_gf_ga,
+    rank_gf_ga_profile_excluding,
+    season_final_ranks,
+    _season_table,
+)
+from src.models.xp_engine import add_market_pots, add_player_priors, compute_xp
+from src.teams import norm_team
+
+ROOT = Path(__file__).resolve().parents[2]
+REPORTS = ROOT / "reports"
+PROCESSED = ROOT / "data" / "processed"
+
+SEASONS = [
+    ("2022-23", "E0_2223.csv", "2223", "E0_2122.csv"),
+    ("2023-24", "E0_2324.csv", "2324", "E0_2223.csv"),
+    ("2024-25", "E0_2425.csv", "2425", "E0_2324.csv"),
+    ("2025-26", "E0_2526.csv", "2526", "E0_2425.csv"),
+]
+
+# Neutral per-match rates before a club has history this season.
+NEUTRAL_GF_PM = 1.35
+NEUTRAL_GA_PM = 1.35
+
+TRACKER_COL = "score_xp_rank_tracker"
+PRIOR_COL = "score_xp_prior_rank"
+ORACLE_COL = "score_xp_oracle_rank"
+CONTROL_PUB = "score_xp"
+
+
+def _fixtures_frame(code: str) -> pd.DataFrame:
+    fixtures = load_football_data(code=code)
+    if "home_goals" not in fixtures.columns and "FTHG" in fixtures.columns:
+        fixtures = fixtures.rename(columns={"FTHG": "home_goals", "FTAG": "away_goals"})
+    return fixtures
+
+
+def expanding_match_pots(e0_fname: str) -> list[dict[str, Any]]:
+    """As-of expanding GF/GA → match pots for every E0 fixture (chronological)."""
+    path = CACHE / e0_fname
+    import csv
+
+    rows_raw: list[dict[str, Any]] = []
+    with path.open(newline="", encoding="utf-8-sig") as f:
+        for row in csv.DictReader(f):
+            if not row.get("FTHG"):
+                continue
+            rows_raw.append(row)
+    # football-data files are chronological.
+    gf_sum: dict[str, float] = defaultdict(float)
+    ga_sum: dict[str, float] = defaultdict(float)
+    n_played: dict[str, int] = defaultdict(int)
+    out: list[dict[str, Any]] = []
+    for row in rows_raw:
+        home = norm_team(row["HomeTeam"])
+        away = norm_team(row["AwayTeam"])
+        hg, ag = int(row["FTHG"]), int(row["FTAG"])
+
+        def rate(club: str) -> tuple[float, float]:
+            n = n_played[club]
+            if n <= 0:
+                return NEUTRAL_GF_PM * N_MATCHES, NEUTRAL_GA_PM * N_MATCHES
+            return (gf_sum[club] / n) * N_MATCHES, (ga_sum[club] / n) * N_MATCHES
+
+        h_gf, h_ga = rate(home)
+        a_gf, a_ga = rate(away)
+        pot_h, pot_a = pots_from_season_gf_ga(
+            h_gf, h_ga, a_gf, a_ga, league_gf=(NEUTRAL_GF_PM * N_MATCHES), home_adv=HOME_ADV
+        )
+        out.append(
+            {
+                "home": home,
+                "away": away,
+                "date": row.get("Date") or row.get("date") or "",
+                "goals_h": float(hg),
+                "goals_a": float(ag),
+                "lam_h": pot_h["lam_scored"],
+                "lam_a": pot_a["lam_scored"],
+                "pot_home": pot_h,
+                "pot_away": pot_a,
+                "h_gf": h_gf,
+                "h_ga": h_ga,
+                "a_gf": a_gf,
+                "a_ga": a_ga,
+            }
+        )
+        gf_sum[home] += hg
+        ga_sum[home] += ag
+        n_played[home] += 1
+        gf_sum[away] += ag
+        ga_sum[away] += hg
+        n_played[away] += 1
+    return out
+
+
+def _match_mse(rows: list[dict[str, Any]]) -> dict[str, float]:
+    err = []
+    for r in rows:
+        err.append(r["lam_h"] - r["goals_h"])
+        err.append(r["lam_a"] - r["goals_a"])
+    arr = np.asarray(err, float)
+    return {
+        "n_sides": int(len(arr)),
+        "mse": float(np.mean(arr**2)),
+        "mae": float(np.mean(np.abs(arr))),
+        "rmse": float(np.sqrt(np.mean(arr**2))),
+    }
+
+
+def _static_rank_match(
+    fixtures: pd.DataFrame,
+    ranks: dict[str, float],
+    map_kw: dict[str, Any],
+) -> dict[str, Any]:
+    return match_lambda_scores(fixtures, ranks, map_kw)
+
+
+def _player_logs_for_pots(
+    scored: pd.DataFrame,
+    pot_lookup: dict[tuple[str, str], dict[str, Any]],
+    *,
+    label: str,
+) -> dict[str, Any]:
+    window = scored.loc[
+        (scored["gw"] >= GW_START)
+        & (scored["gw"] <= GW_END)
+        & (scored["n_prior"] >= MIN_HISTORY)
+        & (scored["xmi"] >= MIN_XMI)
+    ].copy()
+    xp_vals: list[float] = []
+    y_vals: list[float] = []
+    for row in window.itertuples(index=False):
+        club = str(row.team_norm)
+        opp = str(row.opp_norm)
+        if not club or not opp:
+            continue
+        is_home = bool(row.is_home)
+        home, away = (club, opp) if is_home else (opp, club)
+        pot_row = pot_lookup.get((home, away))
+        if pot_row is None:
+            # Try swapped key only if needed — should not happen for is_home.
+            continue
+        pot = pot_row["pot_home"] if is_home else pot_row["pot_away"]
+        import math
+
+        xp = xp_on_pot(
+            position=str(row.position),
+            xmi=float(row.xmi) if math.isfinite(float(row.xmi)) else 0.0,
+            share_xg=float(row.share_xG),
+            share_xa=float(row.share_xA),
+            exp_defcon_hit=(
+                float(row.exp_defcon_hit) if math.isfinite(float(row.exp_defcon_hit)) else 0.0
+            ),
+            fwd_goal_scale=float(getattr(row, "fwd_goal_scale", 1.0) or 1.0),
+            pot=pot,
+        )
+        if not math.isfinite(xp):
+            continue
+        xp_vals.append(xp)
+        y_vals.append(float(row.total_points))
+    if not xp_vals:
+        return {"label": label, "n": 0, "mean_log": float("nan")}
+    y = np.asarray(y_vals, float)
+    mu = np.asarray(xp_vals, float)
+    log = gaussian_log_score(y, mu, SIGMA)
+    return {
+        "label": label,
+        "n": int(len(y)),
+        "mean_log": float(log.mean()),
+        "mae": float(np.abs(y - mu).mean()),
+        "mean_xp": float(mu.mean()),
+        "mean_points": float(y.mean()),
+    }
+
+
+def _gw_deltas(
+    scored: pd.DataFrame,
+    tracker_lookup: dict[tuple[str, str], dict[str, Any]],
+    prior_lookup: dict[tuple[str, str], dict[str, Any]],
+    season: str,
+) -> list[dict[str, Any]]:
+    """Per-GW mean log(tracker) − log(prior) on eligible rows."""
+    import math
+
+    window = scored.loc[
+        (scored["gw"] >= GW_START)
+        & (scored["gw"] <= GW_END)
+        & (scored["n_prior"] >= MIN_HISTORY)
+        & (scored["xmi"] >= MIN_XMI)
+    ].copy()
+    rows: list[dict[str, Any]] = []
+    for gw, block in window.groupby("gw", sort=True):
+        dlogs = []
+        for row in block.itertuples(index=False):
+            club = str(row.team_norm)
+            opp = str(row.opp_norm)
+            if not club or not opp:
+                continue
+            is_home = bool(row.is_home)
+            home, away = (club, opp) if is_home else (opp, club)
+            t = tracker_lookup.get((home, away))
+            p = prior_lookup.get((home, away))
+            if t is None or p is None:
+                continue
+            pot_t = t["pot_home"] if is_home else t["pot_away"]
+            pot_p = p["pot_home"] if is_home else p["pot_away"]
+            kwargs = dict(
+                position=str(row.position),
+                xmi=float(row.xmi) if math.isfinite(float(row.xmi)) else 0.0,
+                share_xg=float(row.share_xG),
+                share_xa=float(row.share_xA),
+                exp_defcon_hit=(
+                    float(row.exp_defcon_hit) if math.isfinite(float(row.exp_defcon_hit)) else 0.0
+                ),
+                fwd_goal_scale=float(getattr(row, "fwd_goal_scale", 1.0) or 1.0),
+            )
+            xt = xp_on_pot(**kwargs, pot=pot_t)
+            xp = xp_on_pot(**kwargs, pot=pot_p)
+            y = float(row.total_points)
+            if not (math.isfinite(xt) and math.isfinite(xp)):
+                continue
+            lt = float(gaussian_log_score(np.array([y]), np.array([xt]), SIGMA)[0])
+            lp = float(gaussian_log_score(np.array([y]), np.array([xp]), SIGMA)[0])
+            dlogs.append(lt - lp)
+        if dlogs:
+            rows.append(
+                {
+                    "season": season,
+                    "gw": int(gw),
+                    "comparison": comparison_key(TRACKER_COL, PRIOR_COL),
+                    "n_rows": len(dlogs),
+                    "delta": float(np.mean(dlogs)),
+                }
+            )
+    return rows
+
+
+def _static_pot_lookup(
+    fixtures: pd.DataFrame,
+    ranks: dict[str, float],
+    map_kw: dict[str, Any],
+) -> dict[tuple[str, str], dict[str, Any]]:
+    lookup: dict[tuple[str, str], dict[str, Any]] = {}
+    for _, fx in fixtures.iterrows():
+        home = norm_team(fx.get("home_norm") or fx.get("HomeTeam") or "")
+        away = norm_team(fx.get("away_norm") or fx.get("AwayTeam") or "")
+        if home not in ranks or away not in ranks:
+            continue
+        pred = match_prediction(home, away, ranks=ranks, **map_kw)
+        lookup[(home, away)] = {
+            "pot_home": pred["pot_home"],
+            "pot_away": pred["pot_away"],
+            "lam_h": pred["lam_home"],
+            "lam_a": pred["lam_away"],
+        }
+    return lookup
+
+
+def build_scored(season: str, code: str) -> pd.DataFrame:
+    players = load_player_logs(season=season)
+    fixtures = load_football_data(code=code)
+    joined, _, _ = join_players_to_fixtures(players, fixtures, retain_sheet_rows=True)
+    frame = _prepare(joined)
+    frame = add_market_pots(frame)
+    frame = add_player_priors(frame)
+    frame = compute_xp(frame)
+    return frame
+
+
+def run_season(
+    season: str,
+    e0: str,
+    code: str,
+    prior_e0: str,
+) -> dict[str, Any]:
+    ols = fit_rank_ols_excluding(e0)
+    profile = rank_gf_ga_profile_excluding(e0)
+    map_kw = _map_kwargs(ols, profile)
+    oracle_table = _season_table(CACHE / e0)
+    oracle = {norm_team(r["team"]): float(r["rank"]) for r in oracle_table}
+    # Prior file may be missing for 2022-23 if 21/22 not cached — fall back.
+    if (CACHE / prior_e0).exists():
+        prior = prior_season_ranks(set(oracle), prior_fname=prior_e0)
+    else:
+        prior = flat_ranks(set(oracle), rank=10.5)
+    flat = flat_ranks(set(oracle))
+
+    fixtures = _fixtures_frame(code)
+    tracker_rows = expanding_match_pots(e0)
+    tracker_lookup = {(r["home"], r["away"]): r for r in tracker_rows}
+    # Align match MSE rows for tracker.
+    tracker_mse = _match_mse(tracker_rows)
+    prior_m = _static_rank_match(fixtures, prior, map_kw)
+    oracle_m = _static_rank_match(fixtures, oracle, map_kw)
+    flat_m = _static_rank_match(fixtures, flat, map_kw)
+
+    scored = build_scored(season, code)
+    prior_lookup = _static_pot_lookup(fixtures, prior, map_kw)
+    oracle_lookup = _static_pot_lookup(fixtures, oracle, map_kw)
+
+    player = {
+        "tracker": _player_logs_for_pots(scored, tracker_lookup, label="tracker"),
+        "prior_rank": _player_logs_for_pots(scored, prior_lookup, label="prior_rank"),
+        "oracle": _player_logs_for_pots(scored, oracle_lookup, label="oracle"),
+        "market": {
+            "label": "market_shin_score_xp",
+            "n": int(
+                (
+                    (scored["gw"] >= GW_START)
+                    & (scored["gw"] <= GW_END)
+                    & (scored["n_prior"] >= MIN_HISTORY)
+                    & (scored["xmi"] >= MIN_XMI)
+                ).sum()
+            ),
+            "mean_log": float(
+                gaussian_log_score(
+                    scored.loc[
+                        (scored["gw"] >= GW_START)
+                        & (scored["gw"] <= GW_END)
+                        & (scored["n_prior"] >= MIN_HISTORY)
+                        & (scored["xmi"] >= MIN_XMI),
+                        "total_points",
+                    ].to_numpy(float),
+                    scored.loc[
+                        (scored["gw"] >= GW_START)
+                        & (scored["gw"] <= GW_END)
+                        & (scored["n_prior"] >= MIN_HISTORY)
+                        & (scored["xmi"] >= MIN_XMI),
+                        "xp",
+                    ].to_numpy(float),
+                    SIGMA,
+                ).mean()
+            ),
+        },
+    }
+    gw_rows = _gw_deltas(scored, tracker_lookup, prior_lookup, season)
+    return {
+        "season": season,
+        "match": {
+            "tracker": tracker_mse,
+            "prior_rank": prior_m,
+            "oracle": oracle_m,
+            "flat": flat_m,
+        },
+        "player": player,
+        "gw_deltas": gw_rows,
+        "oracle_minus_prior_log": float(
+            player["oracle"]["mean_log"] - player["prior_rank"]["mean_log"]
+        ),
+        "tracker_minus_prior_log": float(
+            player["tracker"]["mean_log"] - player["prior_rank"]["mean_log"]
+        ),
+        "tracker_minus_prior_mse": float(prior_m["mse"] - tracker_mse["mse"]),
+    }
+
+
+def run() -> dict[str, Any]:
+    protocol = load_protocol()
+    audit = run_asof_audit()
+    per_season = []
+    all_gw: list[dict[str, Any]] = []
+    for season, e0, code, prior_e0 in SEASONS:
+        print(f"season {season}…", flush=True)
+        res = run_season(season, e0, code, prior_e0)
+        per_season.append(res)
+        all_gw.extend(res["gw_deltas"])
+
+    # Also need score_xp − exp_points for write_gated_report protocol pair.
+    # Reuse honest_pool primary by building quick deltas from market scores already
+    # available — pull from existing processed if present, else compute thin.
+    from src.eval.honest_pool import build_season as build_honest, logscore_rows
+
+    primary_rows: list[dict[str, Any]] = []
+    codes = protocol["season_codes"]
+    for season in CLOSED_SEASONS:
+        frame = build_honest(season, str(codes[season]), protocol)
+        primary_rows.extend(logscore_rows(frame, protocol))
+
+    primary_key = comparison_key("score_xp", "score_exp_points")
+    tracker_key = comparison_key(TRACKER_COL, PRIOR_COL)
+
+    def _iv(rows: list[dict[str, Any]], key: str) -> dict[str, Any]:
+        by_season: dict[str, np.ndarray] = {}
+        for season in CLOSED_SEASONS:
+            deltas = [
+                float(r["delta"])
+                for r in rows
+                if r.get("comparison") == key and r["season"] == season
+            ]
+            by_season[season] = np.asarray(deltas, dtype=float)
+        return cluster_interval(
+            by_season,
+            seasons=CLOSED_SEASONS,
+            n_boot=int(protocol["bootstrap"]),
+            seed=int(protocol["seed"]),
+        )
+
+    intervals = {
+        "seasons": list(CLOSED_SEASONS),
+        "min_gws": int(protocol["min_gws_per_season"]),
+        "comparisons": {
+            primary_key: _iv(primary_rows, primary_key),
+            tracker_key: _iv(all_gw, tracker_key),
+        },
+    }
+    tracker_iv = intervals["comparisons"][tracker_key]
+
+    # Decision rules (locked).
+    beat_prior_mse = all(
+        r["match"]["tracker"]["mse"] < r["match"]["prior_rank"]["mse"] for r in per_season
+    )
+    beat_prior_log = float(tracker_iv["lo"]) > 0.0
+    # Gap closed: mean tracker−prior / mean oracle−prior on player log.
+    gap_or = np.mean([r["oracle_minus_prior_log"] for r in per_season])
+    gap_tr = np.mean([r["tracker_minus_prior_log"] for r in per_season])
+    frac_closed = float(gap_tr / gap_or) if abs(gap_or) > 1e-9 else float("nan")
+    closes_most = bool(frac_closed >= 0.5) if np.isfinite(frac_closed) else False
+
+    promote = bool(beat_prior_mse and beat_prior_log)
+    if promote and not closes_most:
+        decision = "beat_prior_but_ceiling_thin_stop"
+    elif promote:
+        decision = "promote_expanding_tracker"
+    else:
+        decision = "keep_rank_map_park_tracker"
+
+    payload = {
+        "task": "rank_tracker",
+        "decision": decision,
+        "promote": promote,
+        "beat_prior_mse_all_seasons": beat_prior_mse,
+        "beat_prior_log_interval": beat_prior_log,
+        "frac_oracle_prior_gap_closed": frac_closed,
+        "closes_most_of_ceiling": closes_most,
+        "tracker_interval": tracker_iv,
+        "primary_interval": intervals["comparisons"][primary_key],
+        "per_season": [
+            {
+                "season": r["season"],
+                "match_mse": {
+                    "tracker": r["match"]["tracker"]["mse"],
+                    "prior_rank": r["match"]["prior_rank"]["mse"],
+                    "oracle": r["match"]["oracle"]["mse"],
+                    "flat": r["match"]["flat"]["mse"],
+                },
+                "player_log": {
+                    k: v.get("mean_log") for k, v in r["player"].items()
+                },
+                "tracker_minus_prior_log": r["tracker_minus_prior_log"],
+                "oracle_minus_prior_log": r["oracle_minus_prior_log"],
+            }
+            for r in per_season
+        ],
+    }
+    PROCESSED.mkdir(parents=True, exist_ok=True)
+    (PROCESSED / "rank_tracker_screen.json").write_text(
+        json.dumps(payload, indent=2, default=str) + "\n", encoding="utf-8"
+    )
+    pd.DataFrame(all_gw).to_csv(PROCESSED / "rank_tracker_logscore.csv", index=False)
+
+    lines = [
+        "# Item 5 — Rank tracker (expanding GF/GA)",
+        "",
+        "Pre-registered. Candidate: leakage-free expanding club GF/GA → Dixon–Coles "
+        "match pots (no finishing ranks). Controls: prior-season ranks and final-table "
+        "oracle via the existing OLS rank→GF/GA map.",
+        "",
+        "Pass: beat prior_rank on match MSE in every closed season **and** eligible "
+        "player-GW log interval (tracker − prior) strictly above zero. If that passes "
+        "but <50% of the oracle−prior log gap closes, stop (ceiling thin).",
+        "",
+        "## Decision",
+        "",
+        f"**{decision}**",
+        "",
+        f"- Beat prior MSE all seasons: **{beat_prior_mse}**",
+        f"- Beat prior log (interval lo>0): **{beat_prior_log}** "
+        f"({tracker_iv['mean']:+.5f} [{tracker_iv['lo']:+.5f}, {tracker_iv['hi']:+.5f}])",
+        f"- Fraction of oracle−prior log gap closed: **{frac_closed:.3f}** "
+        f"(≥0.5? {closes_most})",
+        "",
+        "## Per season",
+        "",
+        "| season | MSE tracker | MSE prior | MSE oracle | log tracker | log prior | log oracle |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: |",
+    ]
+    for r in payload["per_season"]:
+        lines.append(
+            f"| {r['season']} | {r['match_mse']['tracker']:.3f} | "
+            f"{r['match_mse']['prior_rank']:.3f} | {r['match_mse']['oracle']:.3f} | "
+            f"{r['player_log']['tracker']:.5f} | {r['player_log']['prior_rank']:.5f} | "
+            f"{r['player_log']['oracle']:.5f} |"
+        )
+    lines += [
+        "",
+        "## Outputs",
+        "",
+        "- `data/processed/rank_tracker_screen.json`",
+        "- `data/processed/rank_tracker_logscore.csv`",
+        "",
+        "Reproduce: `PYTHONPATH=. python3 -m src.eval.rank_tracker`.",
+        "",
+    ]
+    write_gated_report(REPORTS / "rank_tracker.md", audit, intervals, lines)
+    return payload
+
+
+def main() -> None:
+    out = run()
+    print(
+        json.dumps(
+            {
+                k: out[k]
+                for k in (
+                    "decision",
+                    "promote",
+                    "beat_prior_mse_all_seasons",
+                    "beat_prior_log_interval",
+                    "frac_oracle_prior_gap_closed",
+                )
+            },
+            indent=2,
+            default=str,
+        )
+    )
+
+
+if __name__ == "__main__":
+    main()

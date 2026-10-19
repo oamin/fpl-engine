@@ -1,11 +1,19 @@
 {
   "updated": "2026-10-19",
-  "task": "player_ga_finish",
-  "status": "done_item_4_parked",
+  "task": "rank_tracker",
+  "status": "done_item_5_parked_list_complete",
   "outputs": {
-    "report": "reports/player_ga_finish.md",
-    "json": "data/processed/player_ga_screen.json",
-    "module": "src/eval/player_ga_screen.py"
+    "report": "reports/rank_tracker.md",
+    "json": "data/processed/rank_tracker_screen.json",
+    "module": "src/eval/rank_tracker.py"
   },
-  "notes": "Player finish scales vs share×λ: mean +0.00079, interval covers zero. Keep share×λ. Item 5 next: rank tracker."
+  "cascade_items": {
+    "1a_captain": "done",
+    "1b_ft_path": "done",
+    "2_minutes_overlay": "done_default_on",
+    "3_match_band": "parked_baseline",
+    "4_player_ga_finish": "parked_share_x_lambda",
+    "5_rank_tracker": "parked_keep_rank_map"
+  },
+  "notes": "Expanding GF/GA tracker loses to prior_rank on MSE and log (frac oracle-prior gap closed −0.14). Transformative cascade list 1–5 complete."
 }

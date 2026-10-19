@@ -312,4 +312,6 @@ Next levers: transfer-cost / bank / FT between snapshots; priced t/t+1 blend; sy
 
 **Item 3 (2026-10-19):** match-band calibration screened and parked. `z_band` / `centre_blend` do not move eligible player-GW log materially (|Δ| ≤ 0.0008); MC goal cover_50 is ~0.71 for every knob (Poisson dominates). Keep `Z_BAND=1.0` and `centre_blend=0.5`. Do not open share seeding off this batch. Lead-time %/GW widening stays parked.
 
-**Item 4 (2026-10-19):** player finishing scales screened and parked. Candidate−control log +0.00079 [−0.00050, +0.00197] covers zero. Keep share×λ. Item 5 next: rank tracker.
+**Item 4 (2026-10-19):** player finishing scales screened and parked. Candidate−control log +0.00079 [−0.00050, +0.00197] covers zero. Keep share×λ.
+
+**Item 5 (2026-10-19):** expanding GF/GA rank tracker screened and parked. Fails prior_rank on match MSE and player log; gap closed vs oracle−prior is negative. Keep Opta/OLS rank map for cascade pots. Transformative list 1–5 done. Share seeding and lead-time widening stay parked.

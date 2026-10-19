@@ -1,0 +1,101 @@
+{
+  "task": "rank_tracker",
+  "decision": "keep_rank_map_park_tracker",
+  "promote": false,
+  "beat_prior_mse_all_seasons": false,
+  "beat_prior_log_interval": false,
+  "frac_oracle_prior_gap_closed": -0.13646730619146857,
+  "closes_most_of_ceiling": false,
+  "tracker_interval": {
+    "mean": -0.0021563258281276573,
+    "lo": -0.007362352967521179,
+    "hi": 0.003140361222220292,
+    "n_gws": {
+      "2022-23": 33,
+      "2023-24": 34,
+      "2024-25": 34,
+      "2025-26": 34
+    }
+  },
+  "primary_interval": {
+    "mean": 0.015305621921945354,
+    "lo": 0.01295155277980016,
+    "hi": 0.01747868684462922,
+    "n_gws": {
+      "2022-23": 33,
+      "2023-24": 34,
+      "2024-25": 34,
+      "2025-26": 34
+    }
+  },
+  "per_season": [
+    {
+      "season": "2022-23",
+      "match_mse": {
+        "tracker": 1.7272706546824943,
+        "prior_rank": 1.7177757986473414,
+        "oracle": 1.4997137965412752,
+        "flat": 1.7177757986473414
+      },
+      "player_log": {
+        "tracker": -2.54865515194205,
+        "prior_rank": -2.5562143929565213,
+        "oracle": -2.5354137946052533,
+        "market": -2.5359508980014285
+      },
+      "tracker_minus_prior_log": 0.007559241014471141,
+      "oracle_minus_prior_log": 0.020800598351268018
+    },
+    {
+      "season": "2023-24",
+      "match_mse": {
+        "tracker": 1.7242230679312007,
+        "prior_rank": 1.5533312346038857,
+        "oracle": 1.5276896861883347,
+        "flat": 1.7919800700470885
+      },
+      "player_log": {
+        "tracker": -2.546139493338378,
+        "prior_rank": -2.535108446296451,
+        "oracle": -2.529606441821713,
+        "market": -2.5355032063919514
+      },
+      "tracker_minus_prior_log": -0.011031047041926811,
+      "oracle_minus_prior_log": 0.0055020044747382535
+    },
+    {
+      "season": "2024-25",
+      "match_mse": {
+        "tracker": 1.5806350100955326,
+        "prior_rank": 1.4149389889845816,
+        "oracle": 1.3370716123940358,
+        "flat": 1.525410703293321
+      },
+      "player_log": {
+        "tracker": -2.51603803012316,
+        "prior_rank": -2.5120395441725885,
+        "oracle": -2.4987249574237316,
+        "market": -2.508067881697712
+      },
+      "tracker_minus_prior_log": -0.0039984859505715065,
+      "oracle_minus_prior_log": 0.013314586748856883
+    },
+    {
+      "season": "2025-26",
+      "match_mse": {
+        "tracker": 1.474099034974483,
+        "prior_rank": 1.2960115810211232,
+        "oracle": 1.2259063291866121,
+        "flat": 1.2903162748293133
+      },
+      "player_log": {
+        "tracker": -2.54451782463943,
+        "prior_rank": -2.5451032708344377,
+        "oracle": -2.5342699461054585,
+        "market": -2.5381118921104115
+      },
+      "tracker_minus_prior_log": 0.0005854461950076661,
+      "oracle_minus_prior_log": 0.010833324728979132
+    }
+  ]
+}
