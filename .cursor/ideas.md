@@ -299,3 +299,11 @@ Rejected 2026-10-09 ([gw15 rerun](bc-90156d5d-ce87-56ee-b772-011f4d43dbd0)). Set
 Noted 2026-10-09 ([entry 3271409](bc-90156d5d-ce87-56ee-b772-011f4d43dbd0)). Not built.
 
 `best_free_transfer` tries one sale. A team with two free transfers is compared with a one-transfer plan, so the wildcard gap is wider than a two-transfer search would leave it. Entry 3271409 has two. The Gameweek 6 gap on the 7 Oct file is 34.90 against that one-transfer plan. A second sale was not priced. Do not read 102.72 as the lead over the best no-chip move.
+
+## Opta / long-horizon strength drift (ChatGPT Stage 2–3)
+
+Parked 2026-10-19 after Stage 1 screen (`reports/horizon_forecast_uncertainty.md`).
+
+Worth keeping from the proposal: separate match noise from forecast uncertainty; calibrate lead growth from as-of errors; no arbitrary %/GW inflation; league-wide params first.
+
+Not opening yet: random-walk / mean-reverting attack–defence drift, nested MC (sample λ then score), team-specific q_A/q_D. Rolling expanding λ excess MSE rises only ~0.04 from H=1→8 against MSE≈1.45 (mostly Poisson). Freeze-after-GW6 bins are unbalanced. Keep Opta rank→GF/GA ±MAE as *level* uncertainty. Revisit if mid-season Opta snaps or liquid long-horizon markets exist.

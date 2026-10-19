@@ -1,11 +1,11 @@
 {
-  "updated": "2026-10-18",
-  "task": "team_gf_ga_predictor_screen",
+  "updated": "2026-10-19",
+  "task": "horizon_forecast_uncertainty_stage1",
   "status": "done",
   "outputs": {
-    "report": "reports/team_gf_ga_predictor_screen.md",
-    "json": "reports/figures/team_gf_ga_predictor_screen.json",
-    "script": "scripts/screen_team_gf_ga_predictors.py"
+    "report": "reports/horizon_forecast_uncertainty.md",
+    "json": "reports/figures/horizon_forecast_uncertainty.json",
+    "script": "scripts/screen_horizon_forecast_uncertainty.py"
   },
-  "notes": "Leakage-free screen of team-level GF/GA predictors for pseudo-match FDR. Market attack/defend best for H=1; own expanding rates for H=5–8; opp roll3 GF/GA for unpriced fixture difficulty."
+  "notes": "Reviewed ChatGPT Opta lead-time uncertainty proposal. Kept Stage 1 empirical screen; parked Stage 2–3. Rolling expanding λ: excess MSE slope ~0.006/GW, Δ(H8−H1)~0.04 vs MSE~1.45 — statistically positive, not material. No arbitrary %/GW penalty. Keep Opta ±MAE as level uncertainty only."
 }
