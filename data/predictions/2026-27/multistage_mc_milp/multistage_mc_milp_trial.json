@@ -20,12 +20,14 @@
   },
   "snapshot_gws": [
     8,
-    11,
+    10,
+    12,
     14,
-    17
+    16,
+    18
   ],
-  "n_strands": 8,
-  "n_squads_solved": 32,
+  "n_strands": 20,
+  "n_squads_solved": 120,
   "n_selectable": 180,
   "n_with_nonzero_share": 170,
   "seed_shares": false,
@@ -34,40 +36,22 @@
   "gamma": 0.9,
   "frequencies": [
     {
-      "player_id": "249",
-      "name": "Barry",
-      "team_norm": "everton",
-      "position": "FWD",
-      "value": 57,
-      "n_selected": 25,
-      "freq": 0.78125
-    },
-    {
-      "player_id": "449",
-      "name": "Hall",
-      "team_norm": "newcastle",
-      "position": "DEF",
-      "value": 53,
-      "n_selected": 24,
-      "freq": 0.75
-    },
-    {
       "player_id": "12",
       "name": "Saka",
       "team_norm": "arsenal",
       "position": "MID",
       "value": 96,
-      "n_selected": 24,
-      "freq": 0.75
+      "n_selected": 107,
+      "freq": 0.8916666666666667
     },
     {
-      "player_id": "566",
-      "name": "Silva",
-      "team_norm": "bournemouth",
-      "position": "DEF",
-      "value": 50,
-      "n_selected": 23,
-      "freq": 0.71875
+      "player_id": "249",
+      "name": "Barry",
+      "team_norm": "everton",
+      "position": "FWD",
+      "value": 57,
+      "n_selected": 97,
+      "freq": 0.8083333333333333
     },
     {
       "player_id": "40",
@@ -75,35 +59,17 @@
       "team_norm": "chelsea",
       "position": "MID",
       "value": 78,
-      "n_selected": 23,
-      "freq": 0.71875
+      "n_selected": 88,
+      "freq": 0.7333333333333333
     },
     {
-      "player_id": "464",
-      "name": "Wissa",
+      "player_id": "449",
+      "name": "Hall",
       "team_norm": "newcastle",
-      "position": "FWD",
-      "value": 62,
-      "n_selected": 21,
-      "freq": 0.65625
-    },
-    {
-      "player_id": "427",
-      "name": "Mbeumo",
-      "team_norm": "man utd",
-      "position": "MID",
-      "value": 79,
-      "n_selected": 20,
-      "freq": 0.625
-    },
-    {
-      "player_id": "411",
-      "name": "Haaland",
-      "team_norm": "man city",
-      "position": "FWD",
-      "value": 156,
-      "n_selected": 19,
-      "freq": 0.59375
+      "position": "DEF",
+      "value": 53,
+      "n_selected": 79,
+      "freq": 0.6583333333333333
     },
     {
       "player_id": "115",
@@ -111,53 +77,44 @@
       "team_norm": "brighton",
       "position": "DEF",
       "value": 50,
-      "n_selected": 18,
-      "freq": 0.5625
+      "n_selected": 78,
+      "freq": 0.65
     },
     {
-      "player_id": "68",
-      "name": "Tavernier",
+      "player_id": "566",
+      "name": "Silva",
       "team_norm": "bournemouth",
-      "position": "MID",
-      "value": 61,
-      "n_selected": 13,
-      "freq": 0.40625
-    },
-    {
-      "player_id": "305",
-      "name": "Davis",
-      "team_norm": "ipswich",
       "position": "DEF",
-      "value": 40,
-      "n_selected": 13,
-      "freq": 0.40625
+      "value": 50,
+      "n_selected": 76,
+      "freq": 0.6333333333333333
     },
     {
-      "player_id": "124",
-      "name": "Gro\u00df",
-      "team_norm": "brighton",
-      "position": "MID",
-      "value": 59,
-      "n_selected": 13,
-      "freq": 0.40625
-    },
-    {
-      "player_id": "165",
-      "name": "Jo\u00e3o Pedro",
-      "team_norm": "chelsea",
+      "player_id": "464",
+      "name": "Wissa",
+      "team_norm": "newcastle",
       "position": "FWD",
-      "value": 77,
-      "n_selected": 11,
-      "freq": 0.34375
+      "value": 62,
+      "n_selected": 76,
+      "freq": 0.6333333333333333
     },
     {
-      "player_id": "384",
-      "name": "Donnarumma",
+      "player_id": "427",
+      "name": "Mbeumo",
+      "team_norm": "man utd",
+      "position": "MID",
+      "value": 79,
+      "n_selected": 73,
+      "freq": 0.6083333333333333
+    },
+    {
+      "player_id": "411",
+      "name": "Haaland",
       "team_norm": "man city",
-      "position": "GKP",
-      "value": 55,
-      "n_selected": 11,
-      "freq": 0.34375
+      "position": "FWD",
+      "value": 156,
+      "n_selected": 67,
+      "freq": 0.5583333333333333
     },
     {
       "player_id": "109",
@@ -165,143 +122,8 @@
       "team_norm": "brighton",
       "position": "GKP",
       "value": 45,
-      "n_selected": 11,
-      "freq": 0.34375
-    },
-    {
-      "player_id": "200",
-      "name": "Lacroix",
-      "team_norm": "chelsea",
-      "position": "DEF",
-      "value": 59,
-      "n_selected": 10,
-      "freq": 0.3125
-    },
-    {
-      "player_id": "41",
-      "name": "Buend\u00eda",
-      "team_norm": "aston villa",
-      "position": "MID",
-      "value": 59,
-      "n_selected": 10,
-      "freq": 0.3125
-    },
-    {
-      "player_id": "426",
-      "name": "B.Fernandes",
-      "team_norm": "man utd",
-      "position": "MID",
-      "value": 119,
-      "n_selected": 9,
-      "freq": 0.28125
-    },
-    {
-      "player_id": "588",
-      "name": "Khalaili",
-      "team_norm": "crystal palace",
-      "position": "DEF",
-      "value": 50,
-      "n_selected": 9,
-      "freq": 0.28125
-    },
-    {
-      "player_id": "173",
-      "name": "Thomas",
-      "team_norm": "coventry",
-      "position": "DEF",
-      "value": 40,
-      "n_selected": 8,
-      "freq": 0.25
-    },
-    {
-      "player_id": "542",
-      "name": "E.Le F\u00e9e",
-      "team_norm": "sunderland",
-      "position": "MID",
-      "value": 57,
-      "n_selected": 8,
-      "freq": 0.25
-    },
-    {
-      "player_id": "183",
-      "name": "Rudoni",
-      "team_norm": "coventry",
-      "position": "MID",
-      "value": 49,
-      "n_selected": 8,
-      "freq": 0.25
-    },
-    {
-      "player_id": "286",
-      "name": "Belloumi",
-      "team_norm": "hull",
-      "position": "MID",
-      "value": 51,
-      "n_selected": 8,
-      "freq": 0.25
-    },
-    {
-      "player_id": "154",
-      "name": "Palmer",
-      "team_norm": "chelsea",
-      "position": "MID",
-      "value": 97,
-      "n_selected": 7,
-      "freq": 0.21875
-    },
-    {
-      "player_id": "346",
-      "name": "Calvert-Lewin",
-      "team_norm": "leeds",
-      "position": "FWD",
-      "value": 60,
-      "n_selected": 7,
-      "freq": 0.21875
-    },
-    {
-      "player_id": "388",
-      "name": "Gu\u00e9hi",
-      "team_norm": "man city",
-      "position": "DEF",
-      "value": 60,
-      "n_selected": 7,
-      "freq": 0.21875
-    },
-    {
-      "player_id": "567",
-      "name": "Horn\u00ed\u010dek",
-      "team_norm": "newcastle",
-      "position": "GKP",
-      "value": 50,
-      "n_selected": 7,
-      "freq": 0.21875
-    },
-    {
-      "player_id": "597",
-      "name": "Suzuki",
-      "team_norm": "aston villa",
-      "position": "GKP",
-      "value": 50,
-      "n_selected": 6,
-      "freq": 0.1875
-    },
-    {
-      "player_id": "229",
-      "name": "Tarkowski",
-      "team_norm": "everton",
-      "position": "DEF",
-      "value": 62,
-      "n_selected": 6,
-      "freq": 0.1875
-    },
-    {
-      "player_id": "8",
-      "name": "Calafiori",
-      "team_norm": "arsenal",
-      "position": "DEF",
-      "value": 59,
-      "n_selected": 6,
-      "freq": 0.1875
+      "n_selected": 61,
+      "freq": 0.5083333333333333
     },
     {
       "player_id": "335",
@@ -309,26 +131,80 @@
       "team_norm": "leeds",
       "position": "MID",
       "value": 60,
-      "n_selected": 6,
-      "freq": 0.1875
+      "n_selected": 53,
+      "freq": 0.44166666666666665
     },
     {
-      "player_id": "334",
-      "name": "Muharemovi\u0107",
+      "player_id": "305",
+      "name": "Davis",
+      "team_norm": "ipswich",
+      "position": "DEF",
+      "value": 40,
+      "n_selected": 48,
+      "freq": 0.4
+    },
+    {
+      "player_id": "346",
+      "name": "Calvert-Lewin",
       "team_norm": "leeds",
+      "position": "FWD",
+      "value": 60,
+      "n_selected": 48,
+      "freq": 0.4
+    },
+    {
+      "player_id": "588",
+      "name": "Khalaili",
+      "team_norm": "crystal palace",
       "position": "DEF",
       "value": 50,
-      "n_selected": 5,
-      "freq": 0.15625
+      "n_selected": 45,
+      "freq": 0.375
     },
     {
-      "player_id": "385",
-      "name": "Trafford",
-      "team_norm": "leeds",
-      "position": "GKP",
-      "value": 50,
-      "n_selected": 5,
-      "freq": 0.15625
+      "player_id": "68",
+      "name": "Tavernier",
+      "team_norm": "bournemouth",
+      "position": "MID",
+      "value": 61,
+      "n_selected": 43,
+      "freq": 0.35833333333333334
+    },
+    {
+      "player_id": "124",
+      "name": "Gro\u00df",
+      "team_norm": "brighton",
+      "position": "MID",
+      "value": 59,
+      "n_selected": 42,
+      "freq": 0.35
+    },
+    {
+      "player_id": "426",
+      "name": "B.Fernandes",
+      "team_norm": "man utd",
+      "position": "MID",
+      "value": 119,
+      "n_selected": 40,
+      "freq": 0.3333333333333333
+    },
+    {
+      "player_id": "200",
+      "name": "Lacroix",
+      "team_norm": "chelsea",
+      "position": "DEF",
+      "value": 59,
+      "n_selected": 38,
+      "freq": 0.31666666666666665
+    },
+    {
+      "player_id": "165",
+      "name": "Jo\u00e3o Pedro",
+      "team_norm": "chelsea",
+      "position": "FWD",
+      "value": 77,
+      "n_selected": 29,
+      "freq": 0.24166666666666667
     },
     {
       "player_id": "82",
@@ -336,26 +212,26 @@
       "team_norm": "brentford",
       "position": "GKP",
       "value": 50,
-      "n_selected": 5,
-      "freq": 0.15625
+      "n_selected": 29,
+      "freq": 0.24166666666666667
     },
     {
-      "player_id": "350",
-      "name": "A.Becker",
-      "team_norm": "liverpool",
-      "position": "GKP",
-      "value": 55,
-      "n_selected": 5,
-      "freq": 0.15625
+      "player_id": "388",
+      "name": "Gu\u00e9hi",
+      "team_norm": "man city",
+      "position": "DEF",
+      "value": 60,
+      "n_selected": 28,
+      "freq": 0.23333333333333334
     },
     {
-      "player_id": "15",
-      "name": "\u00d8degaard",
+      "player_id": "8",
+      "name": "Calafiori",
       "team_norm": "arsenal",
-      "position": "MID",
-      "value": 68,
-      "n_selected": 5,
-      "freq": 0.15625
+      "position": "DEF",
+      "value": 59,
+      "n_selected": 26,
+      "freq": 0.21666666666666667
     },
     {
       "player_id": "330",
@@ -363,44 +239,62 @@
       "team_norm": "leeds",
       "position": "DEF",
       "value": 46,
-      "n_selected": 5,
-      "freq": 0.15625
+      "n_selected": 26,
+      "freq": 0.21666666666666667
     },
     {
-      "player_id": "1",
-      "name": "Raya",
-      "team_norm": "arsenal",
+      "player_id": "41",
+      "name": "Buend\u00eda",
+      "team_norm": "aston villa",
+      "position": "MID",
+      "value": 59,
+      "n_selected": 23,
+      "freq": 0.19166666666666668
+    },
+    {
+      "player_id": "384",
+      "name": "Donnarumma",
+      "team_norm": "man city",
       "position": "GKP",
-      "value": 61,
-      "n_selected": 5,
-      "freq": 0.15625
-    },
-    {
-      "player_id": "60",
-      "name": "Hill",
-      "team_norm": "bournemouth",
-      "position": "DEF",
       "value": 55,
-      "n_selected": 4,
-      "freq": 0.125
+      "n_selected": 23,
+      "freq": 0.19166666666666668
     },
     {
-      "player_id": "230",
-      "name": "Branthwaite",
-      "team_norm": "everton",
+      "player_id": "567",
+      "name": "Horn\u00ed\u010dek",
+      "team_norm": "newcastle",
+      "position": "GKP",
+      "value": 50,
+      "n_selected": 22,
+      "freq": 0.18333333333333332
+    },
+    {
+      "player_id": "183",
+      "name": "Rudoni",
+      "team_norm": "coventry",
+      "position": "MID",
+      "value": 49,
+      "n_selected": 22,
+      "freq": 0.18333333333333332
+    },
+    {
+      "player_id": "15",
+      "name": "\u00d8degaard",
+      "team_norm": "arsenal",
+      "position": "MID",
+      "value": 68,
+      "n_selected": 22,
+      "freq": 0.18333333333333332
+    },
+    {
+      "player_id": "173",
+      "name": "Thomas",
+      "team_norm": "coventry",
       "position": "DEF",
-      "value": 55,
-      "n_selected": 4,
-      "freq": 0.125
-    },
-    {
-      "player_id": "552",
-      "name": "Brobbey",
-      "team_norm": "sunderland",
-      "position": "FWD",
-      "value": 57,
-      "n_selected": 4,
-      "freq": 0.125
+      "value": 40,
+      "n_selected": 21,
+      "freq": 0.175
     },
     {
       "player_id": "356",
@@ -408,44 +302,17 @@
       "team_norm": "liverpool",
       "position": "DEF",
       "value": 65,
-      "n_selected": 4,
-      "freq": 0.125
+      "n_selected": 20,
+      "freq": 0.16666666666666666
     },
     {
-      "player_id": "4",
-      "name": "Gabriel",
-      "team_norm": "arsenal",
-      "position": "DEF",
-      "value": 80,
-      "n_selected": 4,
-      "freq": 0.125
-    },
-    {
-      "player_id": "591",
-      "name": "Enciso",
-      "team_norm": "ipswich",
+      "player_id": "286",
+      "name": "Belloumi",
+      "team_norm": "hull",
       "position": "MID",
-      "value": 55,
-      "n_selected": 3,
-      "freq": 0.09375
-    },
-    {
-      "player_id": "91",
-      "name": "Pinnock",
-      "team_norm": "coventry",
-      "position": "DEF",
-      "value": 45,
-      "n_selected": 3,
-      "freq": 0.09375
-    },
-    {
-      "player_id": "472",
-      "name": "Murillo",
-      "team_norm": "nottm forest",
-      "position": "DEF",
-      "value": 55,
-      "n_selected": 3,
-      "freq": 0.09375
+      "value": 51,
+      "n_selected": 19,
+      "freq": 0.15833333333333333
     },
     {
       "player_id": "106",
@@ -453,62 +320,53 @@
       "team_norm": "brentford",
       "position": "FWD",
       "value": 78,
-      "n_selected": 3,
-      "freq": 0.09375
+      "n_selected": 18,
+      "freq": 0.15
     },
     {
-      "player_id": "57",
-      "name": "Petrovi\u0107",
-      "team_norm": "bournemouth",
-      "position": "GKP",
-      "value": 45,
-      "n_selected": 3,
-      "freq": 0.09375
+      "player_id": "542",
+      "name": "E.Le F\u00e9e",
+      "team_norm": "sunderland",
+      "position": "MID",
+      "value": 57,
+      "n_selected": 18,
+      "freq": 0.15
     },
     {
-      "player_id": "316",
-      "name": "Emersonn",
-      "team_norm": "ipswich",
-      "position": "FWD",
-      "value": 55,
-      "n_selected": 2,
-      "freq": 0.0625
+      "player_id": "154",
+      "name": "Palmer",
+      "team_norm": "chelsea",
+      "position": "MID",
+      "value": 97,
+      "n_selected": 17,
+      "freq": 0.14166666666666666
     },
     {
-      "player_id": "226",
-      "name": "Pickford",
-      "team_norm": "everton",
-      "position": "GKP",
-      "value": 55,
-      "n_selected": 2,
-      "freq": 0.0625
-    },
-    {
-      "player_id": "110",
-      "name": "Rushworth",
-      "team_norm": "coventry",
-      "position": "GKP",
-      "value": 45,
-      "n_selected": 2,
-      "freq": 0.0625
-    },
-    {
-      "player_id": "166",
-      "name": "N.Jackson",
-      "team_norm": "aston villa",
-      "position": "FWD",
-      "value": 65,
-      "n_selected": 2,
-      "freq": 0.0625
-    },
-    {
-      "player_id": "447",
-      "name": "Botman",
-      "team_norm": "newcastle",
+      "player_id": "4",
+      "name": "Gabriel",
+      "team_norm": "arsenal",
       "position": "DEF",
-      "value": 50,
-      "n_selected": 2,
-      "freq": 0.0625
+      "value": 80,
+      "n_selected": 17,
+      "freq": 0.14166666666666666
+    },
+    {
+      "player_id": "591",
+      "name": "Enciso",
+      "team_norm": "ipswich",
+      "position": "MID",
+      "value": 55,
+      "n_selected": 16,
+      "freq": 0.13333333333333333
+    },
+    {
+      "player_id": "350",
+      "name": "A.Becker",
+      "team_norm": "liverpool",
+      "position": "GKP",
+      "value": 55,
+      "n_selected": 16,
+      "freq": 0.13333333333333333
     },
     {
       "player_id": "412",
@@ -516,8 +374,116 @@
       "team_norm": "man utd",
       "position": "GKP",
       "value": 49,
-      "n_selected": 2,
-      "freq": 0.0625
+      "n_selected": 14,
+      "freq": 0.11666666666666667
+    },
+    {
+      "player_id": "60",
+      "name": "Hill",
+      "team_norm": "bournemouth",
+      "position": "DEF",
+      "value": 55,
+      "n_selected": 13,
+      "freq": 0.10833333333333334
+    },
+    {
+      "player_id": "334",
+      "name": "Muharemovi\u0107",
+      "team_norm": "leeds",
+      "position": "DEF",
+      "value": 50,
+      "n_selected": 11,
+      "freq": 0.09166666666666666
+    },
+    {
+      "player_id": "529",
+      "name": "Roefs",
+      "team_norm": "sunderland",
+      "position": "GKP",
+      "value": 49,
+      "n_selected": 11,
+      "freq": 0.09166666666666666
+    },
+    {
+      "player_id": "447",
+      "name": "Botman",
+      "team_norm": "newcastle",
+      "position": "DEF",
+      "value": 50,
+      "n_selected": 11,
+      "freq": 0.09166666666666666
+    },
+    {
+      "player_id": "236",
+      "name": "Dewsbury-Hall",
+      "team_norm": "everton",
+      "position": "MID",
+      "value": 66,
+      "n_selected": 10,
+      "freq": 0.08333333333333333
+    },
+    {
+      "player_id": "110",
+      "name": "Rushworth",
+      "team_norm": "coventry",
+      "position": "GKP",
+      "value": 45,
+      "n_selected": 9,
+      "freq": 0.075
+    },
+    {
+      "player_id": "1",
+      "name": "Raya",
+      "team_norm": "arsenal",
+      "position": "GKP",
+      "value": 61,
+      "n_selected": 9,
+      "freq": 0.075
+    },
+    {
+      "player_id": "597",
+      "name": "Suzuki",
+      "team_norm": "aston villa",
+      "position": "GKP",
+      "value": 50,
+      "n_selected": 8,
+      "freq": 0.06666666666666667
+    },
+    {
+      "player_id": "226",
+      "name": "Pickford",
+      "team_norm": "everton",
+      "position": "GKP",
+      "value": 55,
+      "n_selected": 8,
+      "freq": 0.06666666666666667
+    },
+    {
+      "player_id": "472",
+      "name": "Murillo",
+      "team_norm": "nottm forest",
+      "position": "DEF",
+      "value": 55,
+      "n_selected": 8,
+      "freq": 0.06666666666666667
+    },
+    {
+      "player_id": "259",
+      "name": "Diop",
+      "team_norm": "ipswich",
+      "position": "DEF",
+      "value": 40,
+      "n_selected": 8,
+      "freq": 0.06666666666666667
+    },
+    {
+      "player_id": "229",
+      "name": "Tarkowski",
+      "team_norm": "everton",
+      "position": "DEF",
+      "value": 62,
+      "n_selected": 7,
+      "freq": 0.058333333333333334
     },
     {
       "player_id": "569",
@@ -525,17 +491,116 @@
       "team_norm": "fulham",
       "position": "FWD",
       "value": 60,
-      "n_selected": 1,
-      "freq": 0.03125
+      "n_selected": 7,
+      "freq": 0.058333333333333334
     },
     {
-      "player_id": "45",
-      "name": "McGinn",
+      "player_id": "385",
+      "name": "Trafford",
+      "team_norm": "leeds",
+      "position": "GKP",
+      "value": 50,
+      "n_selected": 7,
+      "freq": 0.058333333333333334
+    },
+    {
+      "player_id": "552",
+      "name": "Brobbey",
+      "team_norm": "sunderland",
+      "position": "FWD",
+      "value": 57,
+      "n_selected": 7,
+      "freq": 0.058333333333333334
+    },
+    {
+      "player_id": "57",
+      "name": "Petrovi\u0107",
+      "team_norm": "bournemouth",
+      "position": "GKP",
+      "value": 45,
+      "n_selected": 7,
+      "freq": 0.058333333333333334
+    },
+    {
+      "player_id": "504",
+      "name": "Vuskovic",
+      "team_norm": "brighton",
+      "position": "DEF",
+      "value": 50,
+      "n_selected": 7,
+      "freq": 0.058333333333333334
+    },
+    {
+      "player_id": "496",
+      "name": "Kinsky",
+      "team_norm": "spurs",
+      "position": "GKP",
+      "value": 45,
+      "n_selected": 6,
+      "freq": 0.05
+    },
+    {
+      "player_id": "230",
+      "name": "Branthwaite",
+      "team_norm": "everton",
+      "position": "DEF",
+      "value": 55,
+      "n_selected": 5,
+      "freq": 0.041666666666666664
+    },
+    {
+      "player_id": "166",
+      "name": "N.Jackson",
       "team_norm": "aston villa",
-      "position": "MID",
+      "position": "FWD",
+      "value": 65,
+      "n_selected": 5,
+      "freq": 0.041666666666666664
+    },
+    {
+      "player_id": "533",
+      "name": "Mukiele",
+      "team_norm": "sunderland",
+      "position": "DEF",
       "value": 54,
-      "n_selected": 1,
-      "freq": 0.03125
+      "n_selected": 5,
+      "freq": 0.041666666666666664
+    },
+    {
+      "player_id": "91",
+      "name": "Pinnock",
+      "team_norm": "coventry",
+      "position": "DEF",
+      "value": 45,
+      "n_selected": 4,
+      "freq": 0.03333333333333333
+    },
+    {
+      "player_id": "572",
+      "name": "Tzolakis",
+      "team_norm": "hull",
+      "position": "GKP",
+      "value": 47,
+      "n_selected": 4,
+      "freq": 0.03333333333333333
+    },
+    {
+      "player_id": "199",
+      "name": "Benitez",
+      "team_norm": "crystal palace",
+      "position": "GKP",
+      "value": 45,
+      "n_selected": 4,
+      "freq": 0.03333333333333333
+    },
+    {
+      "player_id": "316",
+      "name": "Emersonn",
+      "team_norm": "ipswich",
+      "position": "FWD",
+      "value": 55,
+      "n_selected": 3,
+      "freq": 0.025
     },
     {
       "player_id": "87",
@@ -543,8 +608,89 @@
       "team_norm": "brentford",
       "position": "DEF",
       "value": 45,
-      "n_selected": 1,
-      "freq": 0.03125
+      "n_selected": 3,
+      "freq": 0.025
+    },
+    {
+      "player_id": "45",
+      "name": "McGinn",
+      "team_norm": "aston villa",
+      "position": "MID",
+      "value": 54,
+      "n_selected": 2,
+      "freq": 0.016666666666666666
+    },
+    {
+      "player_id": "295",
+      "name": "McBurnie",
+      "team_norm": "hull",
+      "position": "FWD",
+      "value": 55,
+      "n_selected": 2,
+      "freq": 0.016666666666666666
+    },
+    {
+      "player_id": "202",
+      "name": "Richards",
+      "team_norm": "crystal palace",
+      "position": "DEF",
+      "value": 49,
+      "n_selected": 2,
+      "freq": 0.016666666666666666
+    },
+    {
+      "player_id": "204",
+      "name": "Mitchell",
+      "team_norm": "crystal palace",
+      "position": "DEF",
+      "value": 45,
+      "n_selected": 2,
+      "freq": 0.016666666666666666
+    },
+    {
+      "player_id": "332",
+      "name": "Justin",
+      "team_norm": "leeds",
+      "position": "DEF",
+      "value": 45,
+      "n_selected": 2,
+      "freq": 0.016666666666666666
+    },
+    {
+      "player_id": "112",
+      "name": "Van Hecke",
+      "team_norm": "spurs",
+      "position": "DEF",
+      "value": 49,
+      "n_selected": 2,
+      "freq": 0.016666666666666666
+    },
+    {
+      "player_id": "258",
+      "name": "Castagne",
+      "team_norm": "fulham",
+      "position": "DEF",
+      "value": 45,
+      "n_selected": 2,
+      "freq": 0.016666666666666666
+    },
+    {
+      "player_id": "268",
+      "name": "King",
+      "team_norm": "fulham",
+      "position": "MID",
+      "value": 56,
+      "n_selected": 2,
+      "freq": 0.016666666666666666
+    },
+    {
+      "player_id": "37",
+      "name": "Lindel\u00f6f",
+      "team_norm": "aston villa",
+      "position": "DEF",
+      "value": 45,
+      "n_selected": 2,
+      "freq": 0.016666666666666666
     },
     {
       "player_id": "86",
@@ -553,38 +699,92 @@
       "position": "MID",
       "value": 55,
       "n_selected": 1,
-      "freq": 0.03125
+      "freq": 0.008333333333333333
     },
     {
-      "player_id": "236",
-      "name": "Dewsbury-Hall",
-      "team_norm": "everton",
+      "player_id": "453",
+      "name": "Barnes",
+      "team_norm": "newcastle",
       "position": "MID",
-      "value": 66,
+      "value": 61,
       "n_selected": 1,
-      "freq": 0.03125
+      "freq": 0.008333333333333333
     },
     {
-      "player_id": "259",
-      "name": "Diop",
+      "player_id": "250",
+      "name": "Leno",
+      "team_norm": "fulham",
+      "position": "GKP",
+      "value": 45,
+      "n_selected": 1,
+      "freq": 0.008333333333333333
+    },
+    {
+      "player_id": "467",
+      "name": "Sels",
+      "team_norm": "nottm forest",
+      "position": "GKP",
+      "value": 50,
+      "n_selected": 1,
+      "freq": 0.008333333333333333
+    },
+    {
+      "player_id": "26",
+      "name": "Havertz",
+      "team_norm": "arsenal",
+      "position": "FWD",
+      "value": 76,
+      "n_selected": 1,
+      "freq": 0.008333333333333333
+    },
+    {
+      "player_id": "279",
+      "name": "Ajayi",
+      "team_norm": "hull",
+      "position": "DEF",
+      "value": 42,
+      "n_selected": 1,
+      "freq": 0.008333333333333333
+    },
+    {
+      "player_id": "304",
+      "name": "O'Shea",
       "team_norm": "ipswich",
       "position": "DEF",
       "value": 40,
       "n_selected": 1,
-      "freq": 0.03125
+      "freq": 0.008333333333333333
     },
     {
-      "player_id": "295",
-      "name": "McBurnie",
-      "team_norm": "hull",
-      "position": "FWD",
-      "value": 55,
+      "player_id": "399",
+      "name": "Cherki",
+      "team_norm": "man city",
+      "position": "MID",
+      "value": 78,
       "n_selected": 1,
-      "freq": 0.03125
+      "freq": 0.008333333333333333
+    },
+    {
+      "player_id": "650",
+      "name": "Affengruber",
+      "team_norm": "fulham",
+      "position": "DEF",
+      "value": 45,
+      "n_selected": 1,
+      "freq": 0.008333333333333333
+    },
+    {
+      "player_id": "176",
+      "name": "Dasilva",
+      "team_norm": "coventry",
+      "position": "DEF",
+      "value": 40,
+      "n_selected": 1,
+      "freq": 0.008333333333333333
     }
   ],
-  "top15_mean_freq": 0.5604166666666667,
-  "strands_with_squads": 8,
+  "top15_mean_freq": 0.5772222222222222,
+  "strands_with_squads": 20,
   "sample_strand_scorelines": [
     {
       "gw": 8,

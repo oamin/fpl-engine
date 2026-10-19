@@ -1,62 +1,84 @@
 player_id,name,team_norm,position,value,n_selected,freq
-249,Barry,everton,FWD,57,25,0.78125
-449,Hall,newcastle,DEF,53,24,0.75
-12,Saka,arsenal,MID,96,24,0.75
-566,Silva,bournemouth,DEF,50,23,0.71875
-40,Rogers,chelsea,MID,78,23,0.71875
-464,Wissa,newcastle,FWD,62,21,0.65625
-427,Mbeumo,man utd,MID,79,20,0.625
-411,Haaland,man city,FWD,156,19,0.59375
-115,De Cuyper,brighton,DEF,50,18,0.5625
-68,Tavernier,bournemouth,MID,61,13,0.40625
-305,Davis,ipswich,DEF,40,13,0.40625
-124,Groß,brighton,MID,59,13,0.40625
-165,João Pedro,chelsea,FWD,77,11,0.34375
-384,Donnarumma,man city,GKP,55,11,0.34375
-109,Verbruggen,brighton,GKP,45,11,0.34375
-200,Lacroix,chelsea,DEF,59,10,0.3125
-41,Buendía,aston villa,MID,59,10,0.3125
-426,B.Fernandes,man utd,MID,119,9,0.28125
-588,Khalaili,crystal palace,DEF,50,9,0.28125
-173,Thomas,coventry,DEF,40,8,0.25
-542,E.Le Fée,sunderland,MID,57,8,0.25
-183,Rudoni,coventry,MID,49,8,0.25
-286,Belloumi,hull,MID,51,8,0.25
-154,Palmer,chelsea,MID,97,7,0.21875
-346,Calvert-Lewin,leeds,FWD,60,7,0.21875
-388,Guéhi,man city,DEF,60,7,0.21875
-567,Horníček,newcastle,GKP,50,7,0.21875
-597,Suzuki,aston villa,GKP,50,6,0.1875
-229,Tarkowski,everton,DEF,62,6,0.1875
-8,Calafiori,arsenal,DEF,59,6,0.1875
-335,Stach,leeds,MID,60,6,0.1875
-334,Muharemović,leeds,DEF,50,5,0.15625
-385,Trafford,leeds,GKP,50,5,0.15625
-82,Kelleher,brentford,GKP,50,5,0.15625
-350,A.Becker,liverpool,GKP,55,5,0.15625
-15,Ødegaard,arsenal,MID,68,5,0.15625
-330,Bogle,leeds,DEF,46,5,0.15625
-1,Raya,arsenal,GKP,61,5,0.15625
-60,Hill,bournemouth,DEF,55,4,0.125
-230,Branthwaite,everton,DEF,55,4,0.125
-552,Brobbey,sunderland,FWD,57,4,0.125
-356,Virgil,liverpool,DEF,65,4,0.125
-4,Gabriel,arsenal,DEF,80,4,0.125
-591,Enciso,ipswich,MID,55,3,0.09375
-91,Pinnock,coventry,DEF,45,3,0.09375
-472,Murillo,nottm forest,DEF,55,3,0.09375
-106,Thiago,brentford,FWD,78,3,0.09375
-57,Petrović,bournemouth,GKP,45,3,0.09375
-316,Emersonn,ipswich,FWD,55,2,0.0625
-226,Pickford,everton,GKP,55,2,0.0625
-110,Rushworth,coventry,GKP,45,2,0.0625
-166,N.Jackson,aston villa,FWD,65,2,0.0625
-447,Botman,newcastle,DEF,50,2,0.0625
-412,Lammens,man utd,GKP,49,2,0.0625
-569,Gonzalo,fulham,FWD,60,1,0.03125
-45,McGinn,aston villa,MID,54,1,0.03125
-87,Ajer,brentford,DEF,45,1,0.03125
-86,Lewis-Potter,brentford,MID,55,1,0.03125
-236,Dewsbury-Hall,everton,MID,66,1,0.03125
-259,Diop,ipswich,DEF,40,1,0.03125
-295,McBurnie,hull,FWD,55,1,0.03125
+12,Saka,arsenal,MID,96,107,0.8916666666666667
+249,Barry,everton,FWD,57,97,0.8083333333333333
+40,Rogers,chelsea,MID,78,88,0.7333333333333333
+449,Hall,newcastle,DEF,53,79,0.6583333333333333
+115,De Cuyper,brighton,DEF,50,78,0.65
+566,Silva,bournemouth,DEF,50,76,0.6333333333333333
+464,Wissa,newcastle,FWD,62,76,0.6333333333333333
+427,Mbeumo,man utd,MID,79,73,0.6083333333333333
+411,Haaland,man city,FWD,156,67,0.5583333333333333
+109,Verbruggen,brighton,GKP,45,61,0.5083333333333333
+335,Stach,leeds,MID,60,53,0.44166666666666665
+305,Davis,ipswich,DEF,40,48,0.4
+346,Calvert-Lewin,leeds,FWD,60,48,0.4
+588,Khalaili,crystal palace,DEF,50,45,0.375
+68,Tavernier,bournemouth,MID,61,43,0.35833333333333334
+124,Groß,brighton,MID,59,42,0.35
+426,B.Fernandes,man utd,MID,119,40,0.3333333333333333
+200,Lacroix,chelsea,DEF,59,38,0.31666666666666665
+165,João Pedro,chelsea,FWD,77,29,0.24166666666666667
+82,Kelleher,brentford,GKP,50,29,0.24166666666666667
+388,Guéhi,man city,DEF,60,28,0.23333333333333334
+8,Calafiori,arsenal,DEF,59,26,0.21666666666666667
+330,Bogle,leeds,DEF,46,26,0.21666666666666667
+41,Buendía,aston villa,MID,59,23,0.19166666666666668
+384,Donnarumma,man city,GKP,55,23,0.19166666666666668
+567,Horníček,newcastle,GKP,50,22,0.18333333333333332
+183,Rudoni,coventry,MID,49,22,0.18333333333333332
+15,Ødegaard,arsenal,MID,68,22,0.18333333333333332
+173,Thomas,coventry,DEF,40,21,0.175
+356,Virgil,liverpool,DEF,65,20,0.16666666666666666
+286,Belloumi,hull,MID,51,19,0.15833333333333333
+106,Thiago,brentford,FWD,78,18,0.15
+542,E.Le Fée,sunderland,MID,57,18,0.15
+154,Palmer,chelsea,MID,97,17,0.14166666666666666
+4,Gabriel,arsenal,DEF,80,17,0.14166666666666666
+591,Enciso,ipswich,MID,55,16,0.13333333333333333
+350,A.Becker,liverpool,GKP,55,16,0.13333333333333333
+412,Lammens,man utd,GKP,49,14,0.11666666666666667
+60,Hill,bournemouth,DEF,55,13,0.10833333333333334
+334,Muharemović,leeds,DEF,50,11,0.09166666666666666
+529,Roefs,sunderland,GKP,49,11,0.09166666666666666
+447,Botman,newcastle,DEF,50,11,0.09166666666666666
+236,Dewsbury-Hall,everton,MID,66,10,0.08333333333333333
+110,Rushworth,coventry,GKP,45,9,0.075
+1,Raya,arsenal,GKP,61,9,0.075
+597,Suzuki,aston villa,GKP,50,8,0.06666666666666667
+226,Pickford,everton,GKP,55,8,0.06666666666666667
+472,Murillo,nottm forest,DEF,55,8,0.06666666666666667
+259,Diop,ipswich,DEF,40,8,0.06666666666666667
+229,Tarkowski,everton,DEF,62,7,0.058333333333333334
+569,Gonzalo,fulham,FWD,60,7,0.058333333333333334
+385,Trafford,leeds,GKP,50,7,0.058333333333333334
+552,Brobbey,sunderland,FWD,57,7,0.058333333333333334
+57,Petrović,bournemouth,GKP,45,7,0.058333333333333334
+504,Vuskovic,brighton,DEF,50,7,0.058333333333333334
+496,Kinsky,spurs,GKP,45,6,0.05
+230,Branthwaite,everton,DEF,55,5,0.041666666666666664
+166,N.Jackson,aston villa,FWD,65,5,0.041666666666666664
+533,Mukiele,sunderland,DEF,54,5,0.041666666666666664
+91,Pinnock,coventry,DEF,45,4,0.03333333333333333
+572,Tzolakis,hull,GKP,47,4,0.03333333333333333
+199,Benitez,crystal palace,GKP,45,4,0.03333333333333333
+316,Emersonn,ipswich,FWD,55,3,0.025
+87,Ajer,brentford,DEF,45,3,0.025
+45,McGinn,aston villa,MID,54,2,0.016666666666666666
+295,McBurnie,hull,FWD,55,2,0.016666666666666666
+202,Richards,crystal palace,DEF,49,2,0.016666666666666666
+204,Mitchell,crystal palace,DEF,45,2,0.016666666666666666
+332,Justin,leeds,DEF,45,2,0.016666666666666666
+112,Van Hecke,spurs,DEF,49,2,0.016666666666666666
+258,Castagne,fulham,DEF,45,2,0.016666666666666666
+268,King,fulham,MID,56,2,0.016666666666666666
+37,Lindelöf,aston villa,DEF,45,2,0.016666666666666666
+86,Lewis-Potter,brentford,MID,55,1,0.008333333333333333
+453,Barnes,newcastle,MID,61,1,0.008333333333333333
+250,Leno,fulham,GKP,45,1,0.008333333333333333
+467,Sels,nottm forest,GKP,50,1,0.008333333333333333
+26,Havertz,arsenal,FWD,76,1,0.008333333333333333
+279,Ajayi,hull,DEF,42,1,0.008333333333333333
+304,O'Shea,ipswich,DEF,40,1,0.008333333333333333
+399,Cherki,man city,MID,78,1,0.008333333333333333
+650,Affengruber,fulham,DEF,45,1,0.008333333333333333
+176,Dasilva,coventry,DEF,40,1,0.008333333333333333
