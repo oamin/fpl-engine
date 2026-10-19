@@ -315,9 +315,21 @@ def add_player_priors(
     return out
 
 
-def compute_xp(df: pd.DataFrame) -> pd.DataFrame:
-    """Vectorized xP: FPL-aligned appearance, FWD goal cal, BPS + deductions."""
+def compute_xp(df: pd.DataFrame, *, ga_mode: str = "share") -> pd.DataFrame:
+    """Vectorized xP: FPL-aligned appearance, FWD goal cal, BPS + deductions.
+
+    ``ga_mode``:
+      - ``share`` (default): ``e = share · λ``, then position FWD goal scale.
+      - ``finish``: multiply by player finishing scales from
+        ``src.models.player_ga.add_finish_scales`` (skips FWD position scale).
+    """
+    if ga_mode not in ("share", "finish"):
+        raise ValueError(f"unknown ga_mode {ga_mode!r}")
     out = df.copy()
+    if ga_mode == "finish":
+        from src.models.player_ga import add_finish_scales
+
+        out = add_finish_scales(out)
     xmi = out["xmi"].to_numpy(float)
     pos = out["position"]
 
@@ -332,6 +344,9 @@ def compute_xp(df: pd.DataFrame) -> pd.DataFrame:
     # Shares already minute-adjusted vs team; do not apply play_scale again.
     e_goals = out["share_xG"].to_numpy(float) * out["lam_scored"].to_numpy(float)
     e_assists = out["share_xA"].to_numpy(float) * out["lam_assist"].to_numpy(float)
+    if ga_mode == "finish":
+        e_goals = e_goals * out["finish_g"].to_numpy(float)
+        e_assists = e_assists * out["finish_a"].to_numpy(float)
 
     xp_goals = e_goals * goal_pts
     xp_assists = e_assists * 3.0
@@ -362,9 +377,13 @@ def compute_xp(df: pd.DataFrame) -> pd.DataFrame:
     out["xp_cs"] = xp_cs
     out["xp_defcon"] = xp_defcon
     out["xp_saves"] = xp_saves
+    out["ga_mode"] = ga_mode
 
-    # Leakage-free FWD goal scale, then rebuild BPS + total.
-    out = _apply_fwd_goal_calibration(out)
+    # Leakage-free FWD goal scale (share mode only), then rebuild BPS + total.
+    if ga_mode == "share":
+        out = _apply_fwd_goal_calibration(out)
+    else:
+        out["fwd_goal_scale"] = 1.0
     xp_goals = out["xp_goals"].to_numpy(float)
     xp_assists = out["xp_assists"].to_numpy(float)
     xp_cs = out["xp_cs"].to_numpy(float)

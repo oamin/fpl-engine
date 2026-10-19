@@ -1,0 +1,6 @@
+{
+  "gw": 7,
+  "slot": "missed",
+  "deadline": "2026-10-17T10:00:00Z",
+  "note": "Pre-deadline capture window closed with no t1/t24 snapshot. This marker only satisfies the as-of audit existence check. It is not a decision capture; live paths that require slot_t1.json stay blocked."
+}

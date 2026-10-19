@@ -1,11 +1,11 @@
 {
   "updated": "2026-10-19",
-  "task": "match_band_calibration",
-  "status": "done_item_3_parked",
+  "task": "player_ga_finish",
+  "status": "done_item_4_parked",
   "outputs": {
-    "report": "reports/match_band_calibration.md",
-    "json": "data/processed/match_band_calibration.json",
-    "module": "src/eval/match_band_calibration.py"
+    "report": "reports/player_ga_finish.md",
+    "json": "data/processed/player_ga_screen.json",
+    "module": "src/eval/player_ga_screen.py"
   },
-  "notes": "LOSO z_band×centre_blend screen: player Δlog max |Δ|=0.0008 (below +0.001 materiality). Keep Z_BAND=1.0, centre_blend=0.5. Share seeding still parked. Item 4 next: player G/A model."
+  "notes": "Player finish scales vs share×λ: mean +0.00079, interval covers zero. Keep share×λ. Item 5 next: rank tracker."
 }

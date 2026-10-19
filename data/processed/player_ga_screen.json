@@ -1,0 +1,67 @@
+{
+  "task": "player_ga_finish",
+  "decision": "keep_share_times_lambda",
+  "promote": false,
+  "finish_contrast": "score_xp_finish_minus_score_xp",
+  "finish_interval": {
+    "mean": 0.0007869765654688686,
+    "lo": -0.0004953621796786676,
+    "hi": 0.0019668894489673493,
+    "n_gws": {
+      "2022-23": 33,
+      "2023-24": 34,
+      "2024-25": 34,
+      "2025-26": 34
+    }
+  },
+  "primary_interval": {
+    "mean": 0.025974708251502387,
+    "lo": 0.019734402719354213,
+    "hi": 0.03225503161911328,
+    "n_gws": {
+      "2022-23": 33,
+      "2023-24": 34,
+      "2024-25": 34,
+      "2025-26": 34
+    }
+  },
+  "finish_summary": [
+    {
+      "season": "2022-23",
+      "n_eligible": 7686,
+      "mean_finish_g": 1.1309037155975712,
+      "mean_finish_a": 1.1712419815578612,
+      "p10_finish_g": 0.8683130869823235,
+      "p90_finish_g": 1.4,
+      "mean_abs_xp_delta": 0.1221878094710857
+    },
+    {
+      "season": "2023-24",
+      "n_eligible": 7692,
+      "mean_finish_g": 0.993736131630206,
+      "mean_finish_a": 1.0669915926614784,
+      "p10_finish_g": 0.7221086512113436,
+      "p90_finish_g": 1.346153846153846,
+      "mean_abs_xp_delta": 0.11637631738430677
+    },
+    {
+      "season": "2024-25",
+      "n_eligible": 7718,
+      "mean_finish_g": 0.9836458707670142,
+      "mean_finish_a": 1.061612253090322,
+      "p10_finish_g": 0.7117437722419929,
+      "p90_finish_g": 1.3157894736842104,
+      "mean_abs_xp_delta": 0.12101991834518827
+    },
+    {
+      "season": "2025-26",
+      "n_eligible": 7658,
+      "mean_finish_g": 0.987682776944452,
+      "mean_finish_a": 1.0748078225766928,
+      "p10_finish_g": 0.7142857142857143,
+      "p90_finish_g": 1.3274336283185841,
+      "mean_abs_xp_delta": 0.11071762756897799
+    }
+  ],
+  "n_gws_logged": 270
+}
