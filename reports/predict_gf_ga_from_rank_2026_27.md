@@ -17,57 +17,59 @@ No newer full 1–20 table was found after 12 Oct in open press; club-level snip
 - OLS: `GA ≈ 36.3 +1.89·rank` (R²=0.6153, MAE=6.77)
 - Leave-one-season-out MAE (rank-mean profile): GF **8.19**, GA **7.22** goals/season
 
-Primary predictor below = **historical mean GF/GA at that finishing place** (interpolated for fractional Betfair E[rank]).
+Headline Pred GF/GA use the **OLS** map (monotonic in rank). Rank-mean profile is also stored (can be non-monotonic with only four seasons).
+
+Note: Betfair `E_rank` prices Man City mid-table because of elevated relegation risk on the Exchange; Opta assumes no sporting sanction.
 
 ## Opta predicted table → GF / GA (2026-10-12)
 
 | Rk | Club | Pred pts | Pred GF | Pred GA | Pred GD |
 |---:|---|---:|---:|---:|---:|
-| 1 | Man City | 78 | 87 | 34 | +53 |
-| 2 | Arsenal | 77 | 81 | 35 | +46 |
-| 3 | Brighton | 63 | 71 | 44 | +27 |
-| 4 | Liverpool | 61 | 66 | 46 | +20 |
-| 5 | Chelsea | 57 | 70 | 52 | +18 |
-| 6 | Brentford | 54 | 66 | 55 | +11 |
-| 7 | Newcastle | 53 | 59 | 50 | +8 |
-| 8 | Everton | 53 | 61 | 56 | +5 |
-| 9 | Man United | 52 | 58 | 54 | +3 |
-| 10 | Aston Villa | 51 | 59 | 55 | +4 |
-| 11 | Leeds | 51 | 49 | 54 | -5 |
-| 12 | Hull | 46 | 46 | 51 | -6 |
-| 13 | Ipswich | 46 | 44 | 55 | -11 |
-| 14 | Crystal Palace | 45 | 48 | 58 | -10 |
-| 15 | Bournemouth | 45 | 43 | 60 | -17 |
-| 16 | Nott'm Forest | 44 | 49 | 63 | -14 |
-| 17 | Tottenham | 44 | 49 | 62 | -13 |
-| 18 | Sunderland | 42 | 46 | 74 | -29 |
-| 19 | Coventry | 40 | 41 | 78 | -38 |
-| 20 | Fulham | 38 | 31 | 83 | -52 |
+| 1 | Man City | 78 | 78 | 38 | +39 |
+| 2 | Arsenal | 77 | 75 | 40 | +35 |
+| 3 | Brighton | 63 | 73 | 42 | +31 |
+| 4 | Liverpool | 61 | 71 | 44 | +27 |
+| 5 | Chelsea | 57 | 69 | 46 | +23 |
+| 6 | Brentford | 54 | 66 | 48 | +19 |
+| 7 | Newcastle | 53 | 64 | 50 | +14 |
+| 8 | Everton | 53 | 62 | 51 | +10 |
+| 9 | Man United | 52 | 60 | 53 | +6 |
+| 10 | Aston Villa | 51 | 57 | 55 | +2 |
+| 11 | Leeds | 51 | 55 | 57 | -2 |
+| 12 | Hull | 46 | 53 | 59 | -6 |
+| 13 | Ipswich | 46 | 50 | 61 | -10 |
+| 14 | Crystal Palace | 45 | 48 | 63 | -14 |
+| 15 | Bournemouth | 45 | 46 | 65 | -19 |
+| 16 | Nott'm Forest | 44 | 44 | 66 | -23 |
+| 17 | Tottenham | 44 | 41 | 68 | -27 |
+| 18 | Sunderland | 42 | 39 | 70 | -31 |
+| 19 | Coventry | 40 | 37 | 72 | -35 |
+| 20 | Fulham | 38 | 35 | 74 | -39 |
 
 ## Betfair E[rank] → GF / GA (2026-10-08)
 
 | Ord | Club | E[rank] | Pred GF | Pred GA | Pred GD |
 |---:|---|---:|---:|---:|---:|
-| 1 | Arsenal | 2.06 | 81 | 36 | +45 |
-| 2 | Liverpool | 4.30 | 67 | 48 | +19 |
-| 3 | Chelsea | 5.13 | 70 | 52 | +17 |
-| 4 | Man Utd | 6.56 | 62 | 53 | +10 |
-| 5 | Brighton | 7.51 | 60 | 54 | +7 |
-| 6 | Brentford | 8.26 | 60 | 56 | +4 |
-| 7 | Man City | 8.98 | 58 | 54 | +3 |
-| 8 | Leeds | 10.48 | 54 | 54 | -0 |
-| 9 | Aston Villa | 10.51 | 54 | 54 | -1 |
-| 10 | Everton | 10.99 | 49 | 54 | -5 |
-| 11 | Tottenham | 11.27 | 48 | 53 | -5 |
-| 12 | Newcastle | 12.36 | 45 | 52 | -8 |
-| 13 | Nottm Forest | 12.57 | 44 | 53 | -9 |
-| 14 | Sunderland | 13.07 | 44 | 55 | -11 |
-| 15 | Fulham | 13.65 | 46 | 57 | -11 |
-| 16 | Crystal Palace | 13.96 | 48 | 58 | -10 |
-| 17 | Ipswich | 14.83 | 44 | 60 | -16 |
-| 18 | Hull | 15.75 | 48 | 62 | -15 |
-| 19 | Coventry | 16.46 | 49 | 62 | -14 |
-| 20 | Bournemouth | 18.50 | 43 | 76 | -33 |
+| 1 | Arsenal | 2.06 | 75 | 40 | +35 |
+| 2 | Liverpool | 4.30 | 70 | 44 | +26 |
+| 3 | Chelsea | 5.13 | 68 | 46 | +22 |
+| 4 | Man Utd | 6.56 | 65 | 49 | +16 |
+| 5 | Brighton | 7.51 | 63 | 50 | +12 |
+| 6 | Brentford | 8.26 | 61 | 52 | +9 |
+| 7 | Man City | 8.98 | 60 | 53 | +6 |
+| 8 | Leeds | 10.48 | 56 | 56 | +0 |
+| 9 | Aston Villa | 10.51 | 56 | 56 | -0 |
+| 10 | Everton | 10.99 | 55 | 57 | -2 |
+| 11 | Tottenham | 11.27 | 54 | 58 | -3 |
+| 12 | Newcastle | 12.36 | 52 | 60 | -8 |
+| 13 | Nottm Forest | 12.57 | 51 | 60 | -9 |
+| 14 | Sunderland | 13.07 | 50 | 61 | -11 |
+| 15 | Fulham | 13.65 | 49 | 62 | -13 |
+| 16 | Crystal Palace | 13.96 | 48 | 63 | -14 |
+| 17 | Ipswich | 14.83 | 46 | 64 | -18 |
+| 18 | Hull | 15.75 | 44 | 66 | -22 |
+| 19 | Coventry | 16.46 | 43 | 67 | -25 |
+| 20 | Bournemouth | 18.50 | 38 | 71 | -33 |
 
 ## Historical GF/GA by finishing place (train mean)
 
