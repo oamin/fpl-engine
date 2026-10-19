@@ -122,5 +122,6 @@ Negative ρ for GF means better (lower) table rank ↔ more goals scored. Positi
 
 - `data/processed/season_final_g_ga_variance.csv`
 - `reports/figures/season_final_g_ga_variance.json`
+- `reports/figures/season_final_g_ga_variance.png`
 
 Reproduce: `python3 scripts/season_final_g_ga_variance.py`
