@@ -1,5 +1,6 @@
-# Strategiser — layered build plan
+# Strategiser — Numagent 2.0 layered build plan
 
+Part of **Numagent 2.0** (`protocol.numagent_2_0`; supersedes Numagent 1.0).  
 `score_xp_v2` is the engine primary scorer and is **not** modified here. (`score_xp` superseded 2026-10-19.)  
 **Governing rule:** maximising expected points overrides everything on the default (neutral) posture. Path variation GW1→38 is enough for percentile uniqueness; do not cut μ for ownership optics on the default objective.
 

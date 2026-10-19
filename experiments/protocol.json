@@ -18,14 +18,57 @@
   "comparisons": [
     ["score_xp", "score_exp_points"]
   ],
-  "comparisons_note": "Legacy procedure pair only. Engine primary scorer is score_xp_v2 (primary_scorer); score_xp is superseded.",
+  "comparisons_note": "Legacy procedure pair only. Engine primary scorer is score_xp_v2 under Numagent 2.0; score_xp / Numagent 1.0 are superseded.",
+  "numagent_2_0": {
+    "locked": "2026-10-19",
+    "product": "Numagent 2.0",
+    "status": "current — supersedes Numagent 1.0 on main",
+    "supersedes": "numagent_1_0",
+    "index": "reports/LOCKED.md",
+    "method": "reports/numagent_2_0_method.md",
+    "scorer": "score_xp_v2",
+    "scorer_assembler": "src/markets/numagent_xp.py",
+    "strategiser_default": "L4 μ_post priced BOOKIE_DEPTH=2 γ=1",
+    "strategiser_modules": {
+      "L1": "src/strategy/layer1_week.py",
+      "L2": "src/strategy/decision_value.py (mode=none identity)",
+      "L3": "src/strategy/layer3_week.py",
+      "L4": "src/strategy/layer4_week.py / layer4_mupost_priced"
+    },
+    "live_entrypoint": "src/live/numagent_live_pick.py",
+    "live_odds": "Odds API AH+OU+BTTS (region=us) via --fetch-odds or snapshot; optional --with-props (default off)",
+    "minutes": "news packets + predicted_lineup_roles → xmi",
+    "pi_lock_example": "data/predictions/2026-27/gw07/numagent_lock.json",
+    "not": "ep_next freeze decision; score_xp climb as live path; Betfair-only ban of Odds API for Numagent pots",
+    "any_later_change": "dated protocol update required"
+  },
+  "numagent_1_0": {
+    "superseded": "2026-10-19",
+    "product": "Numagent 1.0",
+    "status": "superseded — do not use for live or new screens",
+    "role": "GW6-era numeric path: captured ep_next as decision score; score_xp shadow/historical; wildcard_plan / plan_half on opening pots; classic gw_lines",
+    "decision_capture": "slot_t1 / ep_next same-stamp (live_primary archive)",
+    "scorer": "score_xp (and ep_next for live XI/captain)",
+    "entrypoints": [
+      "src/live/wildcard_plan.py",
+      "src/live/deadline.py",
+      "src/live/whatif.py"
+    ],
+    "reports": [
+      "reports/live_dry_run_gw6.md",
+      "reports/wildcard_plan_gw6_dry_run.md",
+      "reports/numagent_3271409_gw6.md"
+    ],
+    "replaced_by": "numagent_2_0"
+  },
   "primary_scorer": {
     "locked": "2026-10-19",
+    "product": "Numagent 2.0",
     "column": "score_xp_v2",
     "assembler": "src/markets/numagent_xp.py",
     "method": "reports/numagent_2_0_method.md",
     "gate": "reports/score_xp_v2_gate.md",
-    "supersedes": "score_xp",
+    "supersedes": ["score_xp", "numagent_1_0"],
     "score_xp_status": "superseded — kept for historical climb replay and as the gate baseline that lost to v2; do not use for new live work or new screens except as a named baseline",
     "live_path": "src/live/numagent_live_pick.py",
     "mu_post": "identity attach of score_xp_v2 (strategy_layer2_shrinkage mode=none)",
@@ -1058,11 +1101,13 @@
   },
   "live_primary": {
     "locked": "2026-10-19",
+    "product": "Numagent 2.0",
     "from_gw": 7,
     "primary": "score_xp_v2",
     "shadow": null,
     "historical_score": "score_xp_v2",
-    "supersedes_ep_next_freeze": "GW6 used captured ep_next as decision file (archived); Numagent live path from GW7 is score_xp_v2 via numagent_live_pick",
+    "supersedes": "numagent_1_0",
+    "supersedes_ep_next_freeze": "GW6 Numagent 1.0 used captured ep_next; from GW7 Numagent 2.0 is score_xp_v2 via numagent_live_pick",
     "injury_flags": "minutes_file_zero_stays_zero",
     "manual_override": "logged_with_reason",
     "choose_after_seeing_scores": false,

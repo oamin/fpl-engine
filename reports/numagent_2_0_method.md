@@ -1,6 +1,9 @@
-# score_xp_v2 — engine primary scorer
+# Numagent 2.0 — `score_xp_v2` method lock
 
-Locked: 2026-10-13. **Promoted as engine primary 2026-10-19** (`protocol.primary_scorer`). **`score_xp` is superseded.** This is the expected-points construction from market scorelines and appearance rates.
+**Product:** Numagent 2.0 (`protocol.numagent_2_0`) — **supersedes Numagent 1.0** on main.  
+Locked scorer: 2026-10-13. **Promoted as engine primary 2026-10-19** (`protocol.primary_scorer`). **`score_xp` and Numagent 1.0 are superseded.**
+
+This is the expected-points construction from market scorelines and appearance rates (Odds API AH+OU+BTTS live; FD AH+OU historically).
 
 **Stack index:** [`LOCKED.md`](LOCKED.md) · live entry: `python -m src.live.numagent_live_pick` · strategiser default: L4 priced γ=1.
 

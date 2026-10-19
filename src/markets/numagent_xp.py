@@ -1,6 +1,6 @@
-"""``score_xp_v2`` — engine primary player-GW score assembler.
+"""``score_xp_v2`` — Numagent 2.0 primary player-GW score assembler.
 
-Supersedes ``score_xp`` (protocol ``primary_scorer``, 2026-10-19).
+Part of ``protocol.numagent_2_0`` (supersedes Numagent 1.0 and ``score_xp``).
 Spec: ``reports/numagent_2_0_method.md`` · index: ``reports/LOCKED.md``.
 """
 

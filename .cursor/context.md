@@ -1,12 +1,12 @@
 # Architectural state
 
-Updated: 2026-10-19. **Locked stack first.** Parked hypotheses: `.cursor/ideas.md`. Stage 0–48 archaeology: root `CONTEXT.md` and `reports/SUPERSEDED.md`. Canonical index of wins: `reports/LOCKED.md`.
+Updated: 2026-10-19. **Numagent 2.0** is the product on main (`protocol.numagent_2_0`) — **supersedes Numagent 1.0**. Parked hypotheses: `.cursor/ideas.md`. Stage archaeology: root `CONTEXT.md` and `reports/SUPERSEDED.md`. Canonical index: `reports/LOCKED.md`.
 
 ## Plan
 
-Pre-deadline squad advisor under 2026/27 rules. Cursor implements and screens; Gemini proposes formulae; the PI reads gated batches. A result needs the as-of audit and paired intervals on 2022-23…2025-26 (`write_gated_report`). **Live 1X2 is Betfair Exchange only** — The Odds API is banned from engines (`.cursor/rules/odds-api-quota.mdc`). The live 2026/27 holdout is frozen — do not fit on it.
+Pre-deadline squad advisor under 2026/27 rules. Cursor implements and screens; Gemini proposes formulae; the PI reads gated batches. A result needs the as-of audit and paired intervals on 2022-23…2025-26 (`write_gated_report`). **Numagent 2.0 pots** use The Odds API (AH+OU+BTTS; quota-aware — `.cursor/rules/odds-api-quota.mdc`). Classic climb `gw_lines` may use Betfair. The live 2026/27 holdout is frozen — do not fit on it.
 
-## Locked stack (use this)
+## Locked stack — Numagent 2.0
 
 | Layer | What | Status | Entry |
 | --- | --- | --- | --- |
@@ -18,7 +18,7 @@ Pre-deadline squad advisor under 2026/27 rules. Cursor implements and screens; G
 | **Horizon** | L4 μ_post priced, `BOOKIE_DEPTH=2`, γ=1 | **strategiser default** | `src/strategy/layer4_week.py` · `reports/layer4_mupost_gamma1.md` |
 | **Live pick** | `numagent_live_pick` (props **off**) | GW7 PI lock | `src/live/numagent_live_pick.py` |
 
-**`score_xp` is superseded** (2026-10-19). Keep it only for historical climb replay and as the named gate baseline that lost to v2. New screens and the live path use `score_xp_v2`.
+**Numagent 1.0 and `score_xp` are superseded** (2026-10-19). Keep 1.0/`score_xp` only for historical climb replay and as the named gate baseline. New screens and the live path are Numagent 2.0 (`score_xp_v2` + L4).
 
 ### Scorer defaults (live + historical assemble)
 
@@ -40,9 +40,10 @@ Pre-deadline squad advisor under 2026/27 rules. Cursor implements and screens; G
 
 ```
 python -m src.live.numagent_live_pick --gw N
+python -m src.live.numagent_live_pick --gw N --fetch-odds   # Odds API, region=us
 ```
 
-Offline only: existing odds / Betfair snapshot JSON under `data/scratch/` or `data/predictions/…/betfair_*`. Do **not** call The Odds API. Classic live 1X2 readers take `gw_lines.csv` only from a Betfair predictions folder (`python3 -m src.live.betfair_lines`). Frozen `data/live/gw_lines.csv` is not a live book.
+Prefer `--from-snapshot` / `data/scratch/gwNN_odds_*.json` when the book is already pulled. `--fetch-odds` refreshes AH+OU+BTTS for Dixon–Coles pots (props off unless `--with-props`). Classic climb `gw_lines` readers may still use Betfair folders; frozen `data/live/gw_lines.csv` is not a live book.
 
 ### Latest PI lock — GW7 (2026-10-17)
 
@@ -67,6 +68,6 @@ Highlights: anytime props as live default; share-SE all-minutes / scorers-only; 
 
 - Gates: as-of audit + four-season paired intervals before any claim
 - Holdout freeze hashes untouched
-- Odds API banned; live lines from Betfair folders only
+- Odds API: estimate cost first; region=`us`; prefer snapshots (quota rule)
 - Fewer comparisons; objective-function search parked; captain/chip sims deferred until a pre-registered likelihood arm asks
 - After a discrete sub-task: write `REPORT_STATE.json`

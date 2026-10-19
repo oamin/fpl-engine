@@ -1,6 +1,6 @@
 # FPL Engine — archive index
 
-**Current architecture:** Numagent 2.0 — see [`.cursor/context.md`](.cursor/context.md) and [`reports/LOCKED.md`](reports/LOCKED.md).
+**Current architecture:** **Numagent 2.0** (`protocol.numagent_2_0`) — supersedes Numagent 1.0. See [`.cursor/context.md`](.cursor/context.md) and [`reports/LOCKED.md`](reports/LOCKED.md).
 
 This file is the **superseded stage map** (stages 0–48 pot×share / climb era). Those modules and reports stay in the repo as evidence. They are not the live scorer or strategiser.
 
@@ -35,4 +35,4 @@ Engine primary scorer is `score_xp_v2`. `score_xp` is superseded (historical cli
 
 ## Odds
 
-Historical 1X2 is football-data.co.uk. Live 1X2 is Betfair Exchange. The Odds API is not called. See `.cursor/rules/odds-api-quota.mdc`.
+Historical screens: football-data.co.uk. **Numagent / `score_xp_v2` live pots:** The Odds API (AH+OU+BTTS; see `.cursor/rules/odds-api-quota.mdc`). Classic `gw_lines` path may use Betfair Exchange folders.

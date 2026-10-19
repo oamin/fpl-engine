@@ -1,7 +1,7 @@
 # `score_xp_v2` — comprehensive report (current form)
 
-**Status:** engine **primary** player-GW scorer (locked 2026-10-13; primary 2026-10-19; GKP saves multinomial locked 2026-10-14).  
-**`score_xp` superseded** — historical climbs / gate baseline only (`reports/SUPERSEDED.md`).  
+**Status:** **Numagent 2.0** primary player-GW scorer (locked 2026-10-13; primary 2026-10-19; GKP saves multinomial locked 2026-10-14). Product: `protocol.numagent_2_0` (supersedes Numagent 1.0).  
+**`score_xp` / Numagent 1.0 superseded** — historical climbs / gate baseline only (`reports/SUPERSEDED.md`).  
 **Assembler:** `src/markets/numagent_xp.py` (`SCORE_NAME = "score_xp_v2"`).  
 **Scoring constants:** `src/rules/fpl_2026.py` (never duplicated elsewhere).  
 **Shorter method lock:** `reports/numagent_2_0_method.md`.  

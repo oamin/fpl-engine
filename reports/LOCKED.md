@@ -1,6 +1,17 @@
 # Locked & promoted — Numagent 2.0
 
-Front door for what won. Everything else in `reports/` is evidence, screen history, or parked arms. Do not treat stage_* / GW1–5 / stragent trial notes as the live path.
+**Product on main:** Numagent 2.0 (`protocol.numagent_2_0`). **Supersedes Numagent 1.0** (ep_next freeze / `score_xp` live path). Front door for what won. Everything else in `reports/` is evidence, screen history, or parked arms.
+
+| | Numagent 1.0 (superseded) | **Numagent 2.0 (current)** |
+| --- | --- | --- |
+| Live score | captured `ep_next` | **`score_xp_v2`** |
+| Historical / climb score | `score_xp` | `score_xp_v2` (primary); `score_xp` gate baseline only |
+| Pots | opening 1X2 / Betfair `gw_lines` | **Odds API AH+OU+BTTS** (snapshots or `--fetch-odds`) |
+| Transfers | `wildcard_plan` / climb search | **L3 → L4** μ_post priced |
+| Entry | `deadline` / `wildcard_plan` | **`numagent_live_pick`** |
+| Protocol | `numagent_1_0` | **`numagent_2_0`** |
+
+Do not treat stage_* / GW1–5 / stragent / GW6 `ep_next` dry runs as the live path.
 
 ## Live decision
 
@@ -9,10 +20,11 @@ Front door for what won. Everything else in `reports/` is evidence, screen histo
 | **GW7 PI lock** | `data/predictions/2026-27/gw07/numagent_lock.json` |
 | Pick report | `reports/numagent_live_pick_gw07.md` |
 | Live entrypoint | `python -m src.live.numagent_live_pick --gw N` |
+| Odds refresh | `… --fetch-odds` (region=`us`; quota rule) |
 
-## Scorer (`score_xp_v2` — engine primary)
+## Scorer (`score_xp_v2` — Numagent 2.0 primary)
 
-**`score_xp` superseded 2026-10-19** (`protocol.primary_scorer`). Gate that justified the promotion: vs `score_xp` Δ **+0.0531** [+0.0453, +0.0609].
+**`score_xp` superseded 2026-10-19** (`protocol.primary_scorer`). Gate: vs `score_xp` Δ **+0.0531** [+0.0453, +0.0609].
 
 | Lock | Date | Report | Δ / note |
 | --- | --- | --- | --- |
@@ -21,10 +33,11 @@ Front door for what won. Everything else in `reports/` is evidence, screen histo
 | Share-SE position×minutes | 2026-10-17 | `score_xp_v2_share_se_pos_prior.md` | +0.0195 [+0.0158, +0.0234] |
 | Same-season shares | 2026-10-16 | protocol `score_xp_v2_share_history` | no prior-season fill |
 | Live α refresh | 2026-10-16 | protocol `score_xp_v2_alphas` | prior + live counts |
+| Live pots (Odds API) | 2026-10-16 | protocol `score_xp_v2_live_props` + quota rule | AH+OU+BTTS; props default **off** |
 
 Assembler: `src/markets/numagent_xp.py`. Defaults: `share_se_shrink=True`, `share_se_prior=position_minutes`, props **off**.
 
-## Strategiser
+## Strategiser (Numagent 2.0)
 
 | Lock | Date | Report | Note |
 | --- | --- | --- | --- |
@@ -35,7 +48,7 @@ Assembler: `src/markets/numagent_xp.py`. Defaults: `share_se_shrink=True`, `shar
 | Planning glue (captain=μ) | 2026-10-15 | `fixture_planning_glue.md` | haul/CVaR cover 0 |
 | L5 beam K=8 | 2026-10-16 | `layer5_vs_l4_k_rescreen.md` | width only; L4 stays default |
 
-Roadmap (status table kept current): `strategy_layers.md`.
+Roadmap: `strategy_layers.md`.
 
 ## Parked screens (clear lose or cover 0)
 
@@ -50,6 +63,7 @@ Roadmap (status table kept current): `strategy_layers.md`.
 | L4 FT-DP, chip half-stop | `layer4_ft_dp.md`, `layer4_chip_stop.md` |
 | L5 as strategiser | `layer5_vs_l4.md`, `layer5_vs_l4_rescreen.md` |
 
-## Superseded scorer
+## Superseded
 
-`score_xp` — historical climbs and the gate baseline only. See `SUPERSEDED.md`. Do not use for new live work or new screens except as a named baseline against `score_xp_v2`.
+- **Numagent 1.0** — `protocol.numagent_1_0` / `SUPERSEDED.md`
+- **`score_xp`** — historical climbs and gate baseline only

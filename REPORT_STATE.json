@@ -1,11 +1,13 @@
 {
-  "milestone": "merge-numagent-to-main",
+  "milestone": "numagent-2-0-registered",
   "status": "complete",
-  "summary": "Merged main (Betfair-only / Odds API ban) into Numagent branch; kept score_xp_v2 as primary and LOCKED front door. Ready to PR/merge onto main.",
+  "summary": "Registered Numagent 2.0 in protocol (numagent_2_0) as the product on main; archived Numagent 1.0 (ep_next/score_xp live path). Odds API fetch restored for 2.0 pots. LOCKED.md / SUPERSEDED.md / context / method / rules updated.",
   "gemini": "",
   "artifacts": [
+    "experiments/protocol.json",
     "reports/LOCKED.md",
+    "reports/SUPERSEDED.md",
     ".cursor/context.md",
-    "experiments/protocol.json"
+    "src/live/numagent_live_pick.py"
   ]
 }
