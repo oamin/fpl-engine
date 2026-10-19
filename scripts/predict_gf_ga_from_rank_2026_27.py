@@ -4,9 +4,9 @@
 Mapping fitted on closed seasons only (2022/23–2025/26). Does not fit on
 the live 2026/27 holdout.
 
-Sources for 2026/27 ranks:
-  - Betfair Exchange outrights → E[rank] (repo snapshot 2026-10-08)
-  - Opta supercomputer predicted table (2026-10-12, public press)
+Primary source for 2026/27 ranks: Opta supercomputer predicted table
+(2026-10-12 public press). Opta does not publish season GF/GA; we map
+rank → GF/GA from closed seasons. Betfair E[rank] is optional side output only.
 
 Writes:
   data/processed/predict_gf_ga_from_rank_2026_27.csv
@@ -329,15 +329,15 @@ def main() -> None:
                 "club": r["club"],
                 "opta_rank": r["pred_rank"],
                 "opta_pts": r["pred_pts"],
-                "pred_gf": r["pred_gf_rankmean"],
-                "pred_ga": r["pred_ga_rankmean"],
-                "pred_gd": r["pred_gd_rankmean"],
-                "pred_gf_ols": r["pred_gf_ols"],
-                "pred_ga_ols": r["pred_ga_ols"],
+                "pred_gf": r["pred_gf_ols"],
+                "pred_ga": r["pred_ga_ols"],
+                "pred_gd": r["pred_gd_ols"],
+                "pred_gf_rankmean": r["pred_gf_rankmean"],
+                "pred_ga_rankmean": r["pred_ga_rankmean"],
                 "betfair_E_rank": b.get("pred_rank_E"),
                 "betfair_ord": b.get("pred_rank_ord"),
-                "betfair_pred_gf": b.get("pred_gf_rankmean"),
-                "betfair_pred_ga": b.get("pred_ga_rankmean"),
+                "betfair_pred_gf": b.get("pred_gf_ols"),
+                "betfair_pred_ga": b.get("pred_ga_ols"),
             }
         )
     csv_path = PROCESSED / "predict_gf_ga_from_rank_2026_27.csv"
@@ -376,8 +376,11 @@ def main() -> None:
         f"GF **{payload['mapping']['mean_mae_loso_gf']}**, "
         f"GA **{payload['mapping']['mean_mae_loso_ga']}** goals/season",
         "",
-        "Primary predictor below = **historical mean GF/GA at that finishing place** "
-        "(interpolated for fractional Betfair E[rank]).",
+        "Headline Pred GF/GA use the **OLS** map (monotonic in rank). "
+        "Rank-mean profile is also stored (can be non-monotonic with only four seasons).",
+        "",
+        "Note: Betfair `E_rank` prices Man City mid-table because of elevated "
+        "relegation risk on the Exchange; Opta assumes no sporting sanction.",
         "",
         "## Opta predicted table → GF / GA (2026-10-12)",
         "",
@@ -387,8 +390,8 @@ def main() -> None:
     for r in opta_rows:
         lines.append(
             f"| {r['pred_rank']} | {r['club']} | {r['pred_pts']:.0f} | "
-            f"{r['pred_gf_rankmean']:.0f} | {r['pred_ga_rankmean']:.0f} | "
-            f"{r['pred_gd_rankmean']:+.0f} |"
+            f"{r['pred_gf_ols']:.0f} | {r['pred_ga_ols']:.0f} | "
+            f"{r['pred_gd_ols']:+.0f} |"
         )
 
     lines += [
@@ -401,8 +404,8 @@ def main() -> None:
     for r in bf_out:
         lines.append(
             f"| {r['pred_rank_ord']} | {r['club']} | {r['pred_rank_E']:.2f} | "
-            f"{r['pred_gf_rankmean']:.0f} | {r['pred_ga_rankmean']:.0f} | "
-            f"{r['pred_gd_rankmean']:+.0f} |"
+            f"{r['pred_gf_ols']:.0f} | {r['pred_ga_ols']:.0f} | "
+            f"{r['pred_gd_ols']:+.0f} |"
         )
 
     lines += [
