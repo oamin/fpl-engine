@@ -58,6 +58,7 @@ Screens: `reports/match_band_calibration.md`, `reports/player_ga_finish.md`,
 
 ### Scorer defaults (live + historical assemble)
 
+- **Decomposed match layer:** `match_outcome_probs` (bookie AH/OU/BTTS → \(M\)) and `match_outcome_roll` (draw inside \(M\)) — `src/markets/match_outcome.py` · `reports/MATCH_OUTCOME.md`. Call-site rewire pending.
 - AH+OU (+ BTTS when priced live) → Dixon–Coles \(M\) → pots \(G=\alpha_G xG_M\), \(A=\alpha_A xG_M\)
 - α from `fpl_score_rates` (2025/26 prior + live counts; refresh after each completed GW)
 - Same-season-only \(rG/rA\) (no prior-season share fill); RATE_M0=270

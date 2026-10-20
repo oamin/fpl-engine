@@ -1,33 +1,22 @@
 {
-  "milestone": "cascade-player-pool-short-long",
+  "milestone": "score-xp-v2-match-outcome-probs-roll",
   "status": "complete",
-  "summary": "Aligned plan: confirm score_xp_v2 checklist before cascade path-V. Named cascade_short (priced t:t+1) and cascade_long (Opta t+2…). Shared player_pool (FFScout ∩ minutes) wired into short attach_prices_and_cap; long already used the snapshot via player_pool API.",
+  "summary": "First score_xp_v2 decomposition cut: match_outcome_probs (AH/OU/BTTS → Dixon–Coles M) and match_outcome_roll (categorical scoreline from M). Documented; call sites not yet rewired.",
   "gemini": "",
   "decisions": {
-    "sequence": {
-      "decision": "v2_checklist_then_cascade",
-      "checklist": "reports/SCORE_XP_V2_CHECKLIST.md"
+    "match_outcome_probs": {
+      "decision": "bookie_ah_ou_btts_to_M",
+      "btts_missing": "weight_0"
     },
-    "branches": {
-      "cascade_short": "src/models/cascade_short.py",
-      "cascade_long": "src/models/cascade_long.py",
-      "shared_pool": "src/models/player_pool.py"
-    },
-    "player_pool": {
-      "decision": "ship_shared_ffscout_pool",
-      "snapshot": "data/predictions/2026-27/selectable_pool/selectable_pool.json",
-      "short_wired": true,
-      "long_wired": true
+    "match_outcome_roll": {
+      "decision": "categorical_from_M",
+      "not": "independent_poisson_outside_M"
     }
   },
   "artifacts": [
-    "src/models/player_pool.py",
-    "src/models/cascade_short.py",
-    "src/models/cascade_long.py",
-    "reports/SCORE_XP_V2_CHECKLIST.md",
-    "reports/CASCADE_PLAN.md",
-    "reports/CASCADE_CONTRACT.md",
-    "reports/selectable_pool_ffscout.md",
-    "tests/test_player_pool.py"
+    "src/markets/match_outcome.py",
+    "tests/test_match_outcome.py",
+    "reports/MATCH_OUTCOME.md",
+    "reports/SCORE_XP_V2_CHECKLIST.md"
   ]
 }
