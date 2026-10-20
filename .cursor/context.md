@@ -10,8 +10,8 @@ Updated: 2026-10-20. **Numagent 2.0** is the product on main (`protocol.numagent
 | **2. Archive Numagent 1.0 / `score_xp` in-place** | **done** | Index [`reports/ARCHIVE_NUMAGENT_1_0.md`](../reports/ARCHIVE_NUMAGENT_1_0.md); protocol roles; GW6 entrypoint docstrings; leftover PRs #59/#60/#69/#71/#72 **closed**. Modules stay importable for the gate baseline. |
 | **3. Decompose v2 for cascade** | **done** | [`CASCADE_CONTRACT.md`](../reports/CASCADE_CONTRACT.md); `src/strategy/layer4_mu_inject.py` (`pools_from_mu_boards` → `solve_horizon_transfers`). Long-horizon λ→xP stays `cascade_score_v2`. |
 | **4. Cascade rebuild plan** | **done** | [`CASCADE_PLAN.md`](../reports/CASCADE_PLAN.md): **cascade_short** / **cascade_long**, shared [`player_pool`](../src/models/player_pool.py). Scorer gate: [`SCORE_XP_V2_CHECKLIST.md`](../reports/SCORE_XP_V2_CHECKLIST.md) — confirm before path-V screens. |
-| **5. cascade_short generative** | **done** | `protocol.cascade_short_generative` locked 2026-10-20 (PR #96): scenario `k∼M`→lineup→attack→CS/GC from roll; soft priors = `score_xp_v2` helpers; firm XI deferred. |
-| **6. cascade_long Opta generative** | **in progress** | `protocol.cascade_long_match_outcome`: Opta rank→GF/GA→λ→`M`→`k∼M`; player stack = cascade_short generative **without props**. |
+| **5. cascade_short generative** | **done** | `protocol.cascade_short_generative` locked 2026-10-20 (PR #96 / #97): centreline `M`→`k∼M` (**no λ ±15% jitter**)→lineup→attack→CS/GC; soft priors = `score_xp_v2` helpers; firm XI deferred. |
+| **6. cascade_long Opta generative** | **done** | `protocol.cascade_long_match_outcome`: Opta place→GF/GA±MAE→`M`→`k∼M` (no ClubPath λ blend, no λ % jitter); player stack = cascade_short generative **without props**. |
 
 ## Plan
 
@@ -28,7 +28,8 @@ Pre-deadline squad advisor under 2026/27 rules. Cursor implements and screens; G
 | **Transfers** | L3 single-deadline | locked | `src/strategy/layer3_week.py` |
 | **Horizon** | L4 μ_post priced, `BOOKIE_DEPTH=2`, γ=1 | **strategiser default** | `src/strategy/layer4_week.py` · `reports/layer4_mupost_gamma1.md` |
 | **Live pick** | `numagent_live_pick` (props **off**) | GW7 PI lock | `src/live/numagent_live_pick.py` |
-| **cascade_short** | priced t:t+1 generative scenarios | locked 2026-10-20 | `cascade_short` / `short_horizon_generative` · `protocol.cascade_short_generative` |
+| **cascade_short** | priced t:t+1 generative: centreline `M`→`k∼M` (no λ jitter) | locked 2026-10-20 | `cascade_short` / `short_horizon_generative` · `protocol.cascade_short_generative` |
+| **cascade_long** | Opta place→GF/GA±MAE→`M`→`k∼M`; generative xP, props off | locked 2026-10-20 | `cascade_long` / `multistage_mc_milp` · `protocol.cascade_long_match_outcome` |
 
 **Numagent 1.0 and `score_xp` are superseded** (2026-10-19). Keep 1.0/`score_xp` only for historical climb replay and as the named gate baseline. New screens and the live path are Numagent 2.0 (`score_xp_v2` + L4).
 
@@ -40,13 +41,14 @@ Today’s pre-merge cloud cascade work initially scored with **`xp_on_pot` /
 **Aligned + re-run on `score_xp_v2`:**
 
 - Short-horizon advisor — `src/models/short_horizon_cascade.py` (L4 corr 1.0;
-  `keep_scenario_advisor`). Priced scenario strands: generative
-  `k∼M` → lineup cov → attack dice → CS/GC from rolled GA; soft priors =
-  locked `score_xp_v2` DefCon/bonus/cards/saves helpers (`short_horizon_generative`;
-  firm XI later; bonus-from-roll parked). Mean layer stays `score_team_side`.
+  `keep_scenario_advisor`). Priced scenario strands: centreline `M` →
+  categorical `k∼M` (**λ Uniform±15% retired**) → lineup cov → attack dice →
+  CS/GC from rolled GA; soft priors = locked `score_xp_v2` helpers
+  (`short_horizon_generative`; firm XI later; bonus-from-roll parked). Mean
+  layer stays `score_team_side`.
 - Long-horizon Opta multistage (`squad_sum` / `xi_plus_captain` /
   `xi_plus_captain_ft` ± minutes overlay) via
-  `src/markets/cascade_score_v2.py`
+  `src/markets/cascade_score_v2.py` — Opta place GF/GA ±MAE → `M` → `k∼M`
 - Oracle-rank cascade 2025/26 — **viable**; oracle − market log **+0.0187**
 - Match-band / player G/A finish / rank tracker — rewired + rejudged 2026-10-19
   (all three **park** under `score_xp_v2`; keep baseline z=1.0 / blend=0.5,
