@@ -1,7 +1,8 @@
 """Match Odds API anytime-scorer props to FPL element ids and side moments.
 
 Used by the live t:t+1 path: BTTS-on Dixon–Coles moments supply xG/xCS/xGC;
-matched P(anytime) lifts goal shares via ``prop_shares.rescale_goal_shares``.
+matched P(anytime) shapes goal ``π`` via ``prop_shares.prop_goal_pi``
+(``M`` still sets ``G_team``; assists unchanged).
 """
 
 from __future__ import annotations

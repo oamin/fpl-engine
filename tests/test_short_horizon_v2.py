@@ -17,6 +17,9 @@ class ScorerIdentity(unittest.TestCase):
         self.assertEqual(sh.SCORER, "score_xp_v2")
         self.assertEqual(sh.SCORER, numagent_xp.SCORE_NAME)
 
+    def test_scenario_default_is_generative(self) -> None:
+        self.assertTrue(sh.DEFAULT_GENERATIVE_ATTACK)
+
 
 class SampleMoments(unittest.TestCase):
     def test_sample_rebuilds_dixon_coles_moments(self) -> None:

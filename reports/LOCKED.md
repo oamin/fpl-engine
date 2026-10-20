@@ -34,6 +34,7 @@ Do not treat stage_* / GW1–5 / stragent / GW6 `ep_next` dry runs as the live p
 | Same-season shares | 2026-10-16 | protocol `score_xp_v2_share_history` | no prior-season fill |
 | Live α refresh | 2026-10-16 | protocol `score_xp_v2_alphas` | prior + live counts |
 | Live pots (Odds API) | 2026-10-16 | protocol `score_xp_v2_live_props` + quota rule | AH+OU+BTTS; props default **off** |
+| Props formula | 2026-10-20 | `score_xp_v2_live_props` | **π from props, level from M**; assists no overlay; lift-only parked |
 
 Assembler: `src/markets/numagent_xp.py`. Defaults: `share_se_shrink=True`, `share_se_prior=position_minutes`, props **off**.
 
@@ -59,7 +60,8 @@ Roadmap: `strategy_layers.md`.
 | Share-SE all-minutes | `score_xp_v2_share_se_shrink.md` (superseded; DEF/GK leak) |
 | Share-SE scorers-only | `score_xp_v2_share_se_shrink_scorers.md` |
 | Minutes decay ρ=0.7 | `score_xp_v2_minutes_decay.md` |
-| Anytime props as live default | pot-cap distorted Chelsea shares (GW7) |
+| Anytime props as live default | pot-cap distorted Chelsea shares (GW7); re-screen under row-1 before promoting |
+| Lift-only / hard absolute λ replace | disagree with scoreline rolls from M; superseded by props-shape |
 | L4 cov-as-μ bookie | `layer4_bookie_trial.md` |
 | L4 risk / ±SE / window / chase / posture / beyond form / E | `layer4_mupost_*.md` |
 | L4 FT-DP, chip half-stop | `layer4_ft_dp.md`, `layer4_chip_stop.md` |
@@ -75,6 +77,19 @@ Contract: [`CASCADE_CONTRACT.md`](CASCADE_CONTRACT.md). Plan: [`CASCADE_PLAN.md`
 | Shared buy universe | `src/models/player_pool.py` (FFScout ∩ minutes) |
 | L4 μ inject | `src/strategy/layer4_mu_inject.py` |
 | Long λ→xP | `src/markets/cascade_score_v2.py` |
+
+### cascade_short generative (locked 2026-10-20)
+
+Protocol: `cascade_short_generative`. Entry: `src/models/cascade_short.py` → `short_horizon_cascade`.
+
+| Layer | Method |
+| --- | --- |
+| Mean / independent E[V] | `score_team_side` (moment xCS/xGC) |
+| Scenario strands (default on) | λ ±15% → `k ∼ M` → lineup cov → attack dice → CS/GC from rolled GA |
+| Soft priors | DefCon `P(hit)`, bonus/cards own-rate, GKP saves multinomial — via `history_priors_for_xp` / same helpers as `score_xp_v2` |
+| Deferred | firm XI / news override; bonus-from-roll |
+
+Modules: `short_horizon_generative`, `match_outcome`, `lineup_roll`, `attack_roll`, `defence_roll`, `player_attack`, `prop_shares`.
 
 ## Superseded
 

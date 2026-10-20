@@ -101,13 +101,15 @@ This is the expected-points construction from market scorelines and appearance r
    ΔE / E = sqrt( (Δs / s)² + (ΔG_team / G_team)² )
    ```
 
-7b. **Live props overlay** (PI 2026-10-16; **lift-only**) — `prop_shares.rescale_goal_shares`
+7b. **Live props overlay** (PI 2026-10-20; **props shape, M levels**) — `prop_shares.prop_goal_pi`
 
    - Base live μ (`mu_post` ≡ `score_xp_v2`) from AH/OU/**BTTS** → M → `G_team = α_G × xG_M`.
-   - Anytime markets quote **P(G≥1)**, not E[G]. Poisson would force `E[G]=λ=−log(1−p)`, which can **cut** a star whose baseline share already has E[G]>1. So props are a **lift**, not a hard replace:
-     target `max(baseline_i, λ(p_i))` for covered `m>0` players.
-   - Extra mass is taken from **uncovered** teammates first (props win on the margin without shrinking a Haaland baseline). Only if that is not enough and Σ would exceed `G_team`, scale everyone.
-   - Assists: no prop overlay (US books thin).
+   - Anytime markets quote **P(G≥1)**. Convert `λ=−log(1−p)` and use it as a **relative weight**, not an absolute `E[G]` pin:
+     - covered: `w_i = λ(p_i)`; uncovered: `w_i = sG_i · G_team`
+     - `π_i = w_i / Σw`, then `E[G_i] = π_i · G_team`
+   - Short-horizon: same `π`, allocate rolled `k ∼ M` as `E[G_i|k] = π_i · k` (`player_attack_on_roll`).
+   - Live default remains **off** (`--with-props` opt-in); formula supersedes lift-only.
+   - Assists: **no** prop overlay (locked).
 
 8. **Defence from M** (simple, fixed position rates — no player shares)
 

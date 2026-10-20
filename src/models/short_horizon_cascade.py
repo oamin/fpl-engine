@@ -6,8 +6,12 @@ Architecture (does **not** replace published ``score_xp_v2`` / L4 mean path):
    opening AH+OU Dixon–Coles moments → ``numagent_xp.score_team_side``
    (``SCORE_NAME = score_xp_v2``). Same assembler as L4 ``project_week_score_xp_v2``.
 2. **Scenario layer** — sample ``λ_H``, ``λ_A`` inside ±15% of the FD fit,
-   rebuild ``M`` (ρ held), re-score with the **same** frozen rates/minutes.
-   Shares do not roll from sampled scorelines.
+   rebuild ``M`` (ρ held), then **generative** scoring on each priced fixture:
+   ``k ∼ M`` → lineup minutes cov → scorer/assist dice (α empties) → CS/GC
+   from the rolled scoreline (``defence_roll``; no moment xCS/xGC). Soft
+   terms (DefCon, bonus, cards, saves) stay expanding-mean priors. Firm XI
+   override deferred. Toggle ``generative_attack=False`` to fall back to
+   closed-form ``score_team_side`` on sampled moments.
 3. **Path FT (default)** — L1 free rebuild at ``t``, then L3 transfers+hits at
    ``t+1`` with FT bank 1 (wildcard-like open → banked FT).
 4. **L4 inject (optional)** — ``scored_weeks_to_l4_pools`` maps scored boards
@@ -32,6 +36,10 @@ import pandas as pd
 from src.markets import numagent_xp
 from src.markets.numagent_xp_pilot import _asof_alphas
 from src.markets.scoreline import build_matrix, team_moments
+from src.markets.short_horizon_generative import (
+    hist_by_team_norm,
+    score_week_generative,
+)
 from src.models.player_pool import filter_board_to_pool, load_player_pool_ids
 from src.strategy.layer1_week import solve_week
 from src.strategy.layer3_week import held_from_frame, solve_week_transfers
@@ -55,6 +63,9 @@ DEFAULT_GAMMA = 0.9
 POOL_CAP_PER_POS = 30
 MIN_POOL = 40
 SCORER = numagent_xp.SCORE_NAME  # score_xp_v2
+# Scenario strands on priced t:t+1 use generative attack by default.
+DEFAULT_GENERATIVE_ATTACK = True
+DEFAULT_LINEUP_COV = True
 
 
 def load_prices(season: str) -> pd.DataFrame:
@@ -359,6 +370,58 @@ def mean_player_xp_delta(
     }
 
 
+def _lam_overrides_from_moments(
+    moment_ov: Mapping[int, Mapping[str, float]],
+) -> dict[int, dict[str, float]]:
+    """Keep λ draws for generative rolls (moments also carry xg/xcs/xgc)."""
+    out: dict[int, dict[str, float]] = {}
+    for fx_id, mom in moment_ov.items():
+        out[int(fx_id)] = {
+            "lam_h": float(mom["lam_h"]),
+            "lam_a": float(mom["lam_a"]),
+        }
+    return out
+
+
+def score_week_scenario(
+    side_table: pd.DataFrame,
+    fixture_fits: Sequence[Mapping[str, Any]],
+    *,
+    alpha_g: float,
+    alpha_a: float,
+    moment_overrides: Mapping[int, Mapping[str, float]] | None = None,
+    generative_attack: bool = DEFAULT_GENERATIVE_ATTACK,
+    lineup_cov: bool = DEFAULT_LINEUP_COV,
+    hist_by_team: Mapping[str, pd.DataFrame] | None = None,
+    rng: Any | None = None,
+) -> pd.DataFrame:
+    """Score one scenario week: generative attack (default) or mean-layer moments."""
+    if generative_attack:
+        lam_ov = (
+            _lam_overrides_from_moments(moment_overrides)
+            if moment_overrides is not None
+            else None
+        )
+        gen_rng = rng if rng is not None else np.random.default_rng(0)
+        return score_week_generative(
+            side_table,
+            fixture_fits,
+            alpha_g=alpha_g,
+            alpha_a=alpha_a,
+            rng=gen_rng,
+            hist_by_team=hist_by_team,
+            lineup_cov=lineup_cov,
+            lam_overrides=lam_ov,
+        )
+    return score_week_on_fixture_moments(
+        side_table,
+        fixture_fits,
+        alpha_g=alpha_g,
+        alpha_a=alpha_a,
+        moment_overrides=moment_overrides,
+    )
+
+
 def run_decision(
     season: str,
     decision_gw: int,
@@ -368,6 +431,8 @@ def run_decision(
     gamma: float = DEFAULT_GAMMA,
     band: float = MARKET_BAND,
     time_limit: float = 8.0,
+    generative_attack: bool = DEFAULT_GENERATIVE_ATTACK,
+    lineup_cov: bool = DEFAULT_LINEUP_COV,
 ) -> dict[str, Any]:
     """One deadline: independent E[V] vs scenario path V on t and t+1 (score_xp_v2)."""
     t = int(decision_gw)
@@ -398,6 +463,8 @@ def run_decision(
     if side_table.empty:
         raise RuntimeError(f"empty as-of roster before GW{t}")
 
+    team_hist = hist_by_team_norm(hist) if generative_attack else {}
+
     # Cross-check mean layer against L4 projector (same assembler).
     proj_t, n_fx_t = project_week_score_xp_v2(
         hist,
@@ -411,6 +478,7 @@ def run_decision(
     if proj_t.empty:
         raise RuntimeError(f"project_week_score_xp_v2 empty for GW{t}")
 
+    # Mean / independent boards stay closed-form score_team_side.
     scored_t = attach_prices_and_cap(
         score_week_on_fixture_moments(
             side_table, fits_t, alpha_g=alpha_g, alpha_a=alpha_a
@@ -454,19 +522,28 @@ def run_decision(
         sample_ov_t.append(ov_t)
         sample_ov_t1.append(ov_t1)
 
-        board_t = score_week_on_fixture_moments(
+        gen_rng = np.random.default_rng(int(seed) * 1_000_003 + int(s_i) * 97 + 13)
+        board_t = score_week_scenario(
             side_table,
             fits_t,
             alpha_g=alpha_g,
             alpha_a=alpha_a,
             moment_overrides=ov_t,
+            generative_attack=generative_attack,
+            lineup_cov=lineup_cov,
+            hist_by_team=team_hist,
+            rng=gen_rng,
         )
-        board_t1 = score_week_on_fixture_moments(
+        board_t1 = score_week_scenario(
             side_table,
             fits_t1,
             alpha_g=alpha_g,
             alpha_a=alpha_a,
             moment_overrides=ov_t1,
+            generative_attack=generative_attack,
+            lineup_cov=lineup_cov,
+            hist_by_team=team_hist,
+            rng=gen_rng,
         )
         st = attach_prices_and_cap(board_t, prices, season=season, decision_gw=t)
         pick_t = solve_week(st, mu_col=SCORER, time_limit=time_limit)
@@ -531,12 +608,24 @@ def run_decision(
     else:
         corr = float("nan")
 
+    scenario_note = (
+        "generative k∼M → lineup cov → attack dice (α empties) → "
+        "CS/GC from rolled GA; DefCon/bonus/cards/saves from expanding means; "
+        "firm XI later"
+        if generative_attack
+        else f"closed-form score_team_side ({SCORER}) on sampled moments"
+    )
     return {
         "season": season,
         "decision_gw": t,
         "next_gw": t1,
         "scorer": SCORER,
         "assembler": "src/markets/numagent_xp.py",
+        "scenario_scorer": (
+            "short_horizon_generative" if generative_attack else "score_team_side"
+        ),
+        "generative_attack": bool(generative_attack),
+        "lineup_cov": bool(lineup_cov),
         "n_strands": int(n_strands),
         "seed": int(seed),
         "gamma": float(gamma),
@@ -562,8 +651,10 @@ def run_decision(
         "strands": strand_rows,
         "notes": (
             "Rates/minutes frozen at GW < t (same-season only). "
-            "FD AH+OU → Dixon–Coles M; λ ± band sampled; score_team_side "
-            f"({SCORER}). Path: L1 then L3. Does not replace L4 mean path."
+            "FD AH+OU → Dixon–Coles M; λ ± band sampled. "
+            f"Mean layer: score_team_side ({SCORER}). "
+            f"Scenario strands: {scenario_note}. "
+            "Path: L1 then L3. Does not replace L4 mean path."
         ),
     }
 
@@ -574,6 +665,8 @@ def run_screen(
     decision_gws: Sequence[int] = (10, 20, 28),
     n_strands: int = DEFAULT_N,
     seed: int = DEFAULT_SEED,
+    generative_attack: bool = DEFAULT_GENERATIVE_ATTACK,
+    lineup_cov: bool = DEFAULT_LINEUP_COV,
 ) -> dict[str, Any]:
     """Multi-deadline diagnostic on one closed season."""
     rows = []
@@ -581,7 +674,14 @@ def run_screen(
         print(f"{season} GW{gw} ({SCORER})…", flush=True)
         try:
             rows.append(
-                run_decision(season, int(gw), n_strands=n_strands, seed=seed)
+                run_decision(
+                    season,
+                    int(gw),
+                    n_strands=n_strands,
+                    seed=seed,
+                    generative_attack=generative_attack,
+                    lineup_cov=lineup_cov,
+                )
             )
         except Exception as exc:  # noqa: BLE001 — diagnostic continues
             rows.append(
@@ -624,6 +724,11 @@ def run_screen(
     return {
         "task": "short_horizon_scenario",
         "scorer": SCORER,
+        "scenario_scorer": (
+            "short_horizon_generative" if generative_attack else "score_team_side"
+        ),
+        "generative_attack": bool(generative_attack),
+        "lineup_cov": bool(lineup_cov),
         "decision": decision,
         "path_signal": path_signal,
         "mean_layer_quiet": mean_layer_quiet,
@@ -644,10 +749,13 @@ def write_report(payload: dict[str, Any], path: Path | None = None) -> Path:
     lines = [
         "# Short-horizon scenario layer (priced t : t+1) — Numagent 2.0",
         "",
-        f"Advisor layer on market-priced weeks. Scorer: **`{SCORER}`** "
-        "(`src/markets/numagent_xp.py`). Does **not** replace the published "
-        "L4 mean path. Rates frozen at the deadline; λ sampled inside ±15% of "
-        "FD Dixon–Coles fits; path FT via L1 → L3.",
+        f"Advisor layer on market-priced weeks. Mean scorer: **`{SCORER}`** "
+        "(`src/markets/numagent_xp.py`). Scenario strands: "
+        f"**`{payload.get('scenario_scorer', 'short_horizon_generative')}`** "
+        f"(generative_attack={payload.get('generative_attack')}, "
+        f"lineup_cov={payload.get('lineup_cov')}). Does **not** replace the "
+        "published L4 mean path. Rates frozen at the deadline; λ sampled "
+        "inside ±15% of FD Dixon–Coles fits; path FT via L1 → L3.",
         "",
         "## Decision",
         "",
@@ -662,7 +770,8 @@ def write_report(payload: dict[str, Any], path: Path | None = None) -> Path:
         "## Summary",
         "",
         f"| season | {s['season']} |",
-        f"| scorer | {s.get('scorer', SCORER)} |",
+        f"| mean scorer | {s.get('scorer', SCORER)} |",
+        f"| scenario scorer | {payload.get('scenario_scorer')} |",
         f"| deadlines ok | {s['n_ok']} / {len(payload.get('per_deadline') or [])} |",
         f"| mean ΔV (path − indep) | {s['mean_delta_v']:+.3f} |",
         f"| mean stick (path) | {s['mean_stick']:.3f} |",
@@ -691,11 +800,14 @@ def write_report(payload: dict[str, Any], path: Path | None = None) -> Path:
         "## Mechanics (aligned to Numagent 2.0)",
         "",
         "1. Scoreline: FD opening AH+OU → Dixon–Coles `M` (`scoreline.build_matrix`).",
-        "2. Team pots: `α_G/α_A × xG_M`; defence from `xCS` / `xGC` on the same `M`.",
+        "2. Mean layer: team pots `α_G/α_A × xG_M`; defence from `xCS` / `xGC`; "
+        "`numagent_xp.score_team_side` → `score_xp_v2`.",
         "3. Player rates: same-season GW `< t` only (`asof_share_history` + RATE_M0).",
-        "4. Assembler: `numagent_xp.score_team_side` → `score_xp_v2` (share-SE shrink on).",
-        "5. Scenario: sample λ ±15%; rebuild `M`; freeze rates; do not replace mean μ.",
-        "6. Path: L1 free rebuild at t, L3 FT/hits at t+1.",
+        "4. Scenario (priced t:t+1): sample λ ±15%; rebuild `M`; then "
+        "`k ∼ M` → lineup minutes cov → scorer/assist dice → CS/GC from "
+        "rolled GA (`defence_roll`). DefCon/bonus/cards/saves from expanding "
+        "means (bonus-from-roll parked). Firm XI override deferred.",
+        "5. Path: L1 free rebuild at t, L3 FT/hits at t+1.",
         "",
         "## Reproduce",
         "",

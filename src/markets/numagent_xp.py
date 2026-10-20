@@ -13,15 +13,13 @@ import numpy as np
 import pandas as pd
 
 from src.markets import fpl_score_rates, scoreline
-from src.markets.prop_shares import rescale_goal_shares
+from src.markets.player_attack import player_attack_from_m
 from src.rules.fpl_2026 import (
     APPEARANCE_60,
     APPEARANCE_UNDER_60,
-    ASSIST_POINTS,
     CS_POINTS,
     DEFCON_POINTS,
     DEFCON_THRESHOLD,
-    GOAL_POINTS,
     GOALS_CONCEDED_DEDUCTION,
     MINUTES_FOR_APPEARANCE_BONUS,
     normalize_position,
@@ -310,8 +308,9 @@ def score_team_side(
     correlated-draw sampler (must be length n and sum ≈ 1 on the playing set).
 
     Optional ``prop_p_by_player``: FPL id (or ``player_id`` string) → fair
-    P(anytime scorer). When set, goal shares are rescaled so covered players
-    take precedence over rolling pot share (``prop_shares.rescale_goal_shares``).
+    P(anytime scorer). When set, goal shares are **shaped** by props
+    (``prop_shares.prop_goal_pi`` / row-1); ``M`` still sets ``G_team``.
+    Assists never take a prop overlay.
 
     Optional ``share_se_shrink``: shrink ``sG``/``sA`` toward a share prior using
     share SE (``shrink_shares_by_se``) before props / expectations.
@@ -400,47 +399,58 @@ def score_team_side(
             "prior_support": g_diag.get("prior_support", float("nan")),
         }
 
-    g_team = float(alpha_g) * float(xg)
-    a_team = float(alpha_a) * float(xg)
-    # Pot relative SE: α only unless caller passes xG uncertainty later.
-    rel_g = abs(d_alpha_g / alpha_g) if alpha_g else 0.0
-    rel_a = abs(d_alpha_a / alpha_a) if alpha_a else 0.0
-    d_g_team = abs(g_team) * rel_g
-    d_a_team = abs(a_team) * rel_a
-
-    prop_diag: dict[str, float] | None = None
+    # Optional anytime props → row-index map (m>0 only).
+    prop_p: dict[int, float] | None = None
     if prop_p_by_player:
         id_col = "player_id" if "player_id" in out.columns else "element"
         if id_col not in out.columns:
             raise ValueError("prop_p_by_player needs player_id or element column")
         lookup = {str(k).split(":")[-1]: float(v) for k, v in prop_p_by_player.items()}
-        prop_p: dict[int, float] = {}
+        prop_p = {}
         for i, raw in enumerate(out[id_col].tolist()):
             if m[i] <= 0:
-                continue  # do not pin pot mass onto unavailable players
+                continue  # do not put prop mass on unavailable players
             key = str(raw).split(":")[-1]
             if key in lookup:
                 prop_p[i] = lookup[key]
-        if prop_p:
-            sG, prop_diag = rescale_goal_shares(sG, G_team=g_team, prop_p=prop_p)
-            dsG = np.zeros(n)  # prop pin replaces share SE for covered mass
+        if not prop_p:
+            prop_p = None
 
-    eG = sG * g_team
-    eA = sA * a_team
-    dE_G = np.zeros(n)
-    dE_A = np.zeros(n)
-    for i in range(n):
-        if eG[i] > 0 and sG[i] > 0:
-            dE_G[i] = eG[i] * math.sqrt((dsG[i] / sG[i]) ** 2 + rel_g**2)
-        if eA[i] > 0 and sA[i] > 0:
-            dE_A[i] = eA[i] * math.sqrt((dsA[i] / sA[i]) ** 2 + rel_a**2)
+    # M-dependent attack (pots × shares; props shape π when present).
+    pots, attack, prop_diag = player_attack_from_m(
+        sG,
+        sA,
+        xg=float(xg),
+        alpha_g=float(alpha_g),
+        alpha_a=float(alpha_a),
+        d_alpha_g=float(d_alpha_g),
+        d_alpha_a=float(d_alpha_a),
+        dsG=dsG,
+        dsA=dsA,
+        positions=pos.tolist(),
+        prop_p=prop_p,
+    )
+    # Reflect props-shaped goal shares on the output board.
+    if prop_diag is not None:
+        sG = np.asarray(attack.E_G, dtype=float)
+        g_tmp = float(pots.G_team)
+        if g_tmp > 0:
+            sG = sG / g_tmp
+        dsG = np.zeros(n)
+    g_team = float(pots.G_team)
+    a_team = float(pots.A_team)
+    eG = np.asarray(attack.E_G, dtype=float)
+    eA = np.asarray(attack.E_A, dtype=float)
+    dE_G = np.asarray(attack.dE_G, dtype=float)
+    dE_A = np.asarray(attack.dE_A, dtype=float)
+    assert attack.xp_goals is not None and attack.xp_assists is not None
+    assert attack.d_xp_goals is not None and attack.d_xp_assists is not None
+    xp_goals = np.asarray(attack.xp_goals, dtype=float)
+    xp_assists = np.asarray(attack.xp_assists, dtype=float)
+    d_xp_goals = np.asarray(attack.d_xp_goals, dtype=float)
+    d_xp_assists = np.asarray(attack.d_xp_assists, dtype=float)
 
     xp_appear = np.array([appearance_xp(mi) for mi in m], dtype=float)
-    goal_pts = np.array([float(GOAL_POINTS[normalize_position(p)]) for p in pos], dtype=float)
-    xp_goals = eG * goal_pts
-    d_xp_goals = dE_G * goal_pts
-    xp_assists = eA * float(ASSIST_POINTS)
-    d_xp_assists = dE_A * float(ASSIST_POINTS)
 
     xp_cs = np.zeros(n)
     d_xp_cs = np.zeros(n)

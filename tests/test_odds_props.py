@@ -11,7 +11,6 @@ import pandas as pd
 
 from src.live.odds_props import match_anytime_props, side_moments_from_fit
 from src.markets import numagent_xp
-from src.markets.prop_shares import anytime_p_to_lambda
 
 ROOT = Path(__file__).resolve().parents[1]
 BOOT = ROOT / "data" / "predictions" / "2026-27" / "gw06" / "bootstrap_20261007T220914Z.json"
@@ -70,7 +69,7 @@ class OddsPropsTest(unittest.TestCase):
         base = numagent_xp.score_team_side(
             players, xg=xg, xcs=0.25, xgc=0.4, alpha_g=alpha_g, alpha_a=0.90
         )
-        lifted = numagent_xp.score_team_side(
+        shaped = numagent_xp.score_team_side(
             players,
             xg=xg,
             xcs=0.25,
@@ -79,15 +78,15 @@ class OddsPropsTest(unittest.TestCase):
             alpha_a=0.90,
             prop_p_by_player={"4": 0.40, "1": 0.45},
         )
-        self.assertGreater(float(lifted.iloc[3]["E_G"]), float(base.iloc[3]["E_G"]))
+        # Returner with strong prop gains share mass vs tiny baseline rate.
+        self.assertGreater(float(shaped.iloc[3]["E_G"]), float(base.iloc[3]["E_G"]))
         g_team = alpha_g * xg
-        # Lift-only: returner moves toward λ(p); may sit below λ if team pot scaled.
-        self.assertGreaterEqual(
-            float(lifted.iloc[3]["E_G"]),
-            min(float(base.iloc[3]["E_G"]) * 1.5, anytime_p_to_lambda(0.40) * 0.5),
+        self.assertAlmostEqual(float(shaped["E_G"].sum()), g_team, places=4)
+        # Assists unchanged by props (same A_team × sA).
+        self.assertAlmostEqual(
+            float(shaped["E_A"].sum()), float(base["E_A"].sum()), places=4
         )
-        self.assertAlmostEqual(float(lifted["E_G"].sum()), g_team, places=4)
-        self.assertIn("prop_covered", lifted.columns)
+        self.assertIn("prop_covered", shaped.columns)
 
     @unittest.skipUnless(PROBE.is_file(), "probe snapshot missing")
     def test_probe_snapshot_match_rate(self) -> None:

@@ -10,6 +10,7 @@ Updated: 2026-10-20. **Numagent 2.0** is the product on main (`protocol.numagent
 | **2. Archive Numagent 1.0 / `score_xp` in-place** | **done** | Index [`reports/ARCHIVE_NUMAGENT_1_0.md`](../reports/ARCHIVE_NUMAGENT_1_0.md); protocol roles; GW6 entrypoint docstrings; leftover PRs #59/#60/#69/#71/#72 **closed**. Modules stay importable for the gate baseline. |
 | **3. Decompose v2 for cascade** | **done** | [`CASCADE_CONTRACT.md`](../reports/CASCADE_CONTRACT.md); `src/strategy/layer4_mu_inject.py` (`pools_from_mu_boards` → `solve_horizon_transfers`). Long-horizon λ→xP stays `cascade_score_v2`. |
 | **4. Cascade rebuild plan** | **done** | [`CASCADE_PLAN.md`](../reports/CASCADE_PLAN.md): **cascade_short** / **cascade_long**, shared [`player_pool`](../src/models/player_pool.py). Scorer gate: [`SCORE_XP_V2_CHECKLIST.md`](../reports/SCORE_XP_V2_CHECKLIST.md) — confirm before path-V screens. |
+| **5. cascade_short generative** | **done** | `protocol.cascade_short_generative` locked 2026-10-20 (PR #96): scenario `k∼M`→lineup→attack→CS/GC from roll; soft priors = `score_xp_v2` helpers; firm XI deferred. |
 
 ## Plan
 
@@ -26,6 +27,7 @@ Pre-deadline squad advisor under 2026/27 rules. Cursor implements and screens; G
 | **Transfers** | L3 single-deadline | locked | `src/strategy/layer3_week.py` |
 | **Horizon** | L4 μ_post priced, `BOOKIE_DEPTH=2`, γ=1 | **strategiser default** | `src/strategy/layer4_week.py` · `reports/layer4_mupost_gamma1.md` |
 | **Live pick** | `numagent_live_pick` (props **off**) | GW7 PI lock | `src/live/numagent_live_pick.py` |
+| **cascade_short** | priced t:t+1 generative scenarios | locked 2026-10-20 | `cascade_short` / `short_horizon_generative` · `protocol.cascade_short_generative` |
 
 **Numagent 1.0 and `score_xp` are superseded** (2026-10-19). Keep 1.0/`score_xp` only for historical climb replay and as the named gate baseline. New screens and the live path are Numagent 2.0 (`score_xp_v2` + L4).
 
@@ -37,7 +39,10 @@ Today’s pre-merge cloud cascade work initially scored with **`xp_on_pot` /
 **Aligned + re-run on `score_xp_v2`:**
 
 - Short-horizon advisor — `src/models/short_horizon_cascade.py` (L4 corr 1.0;
-  `keep_scenario_advisor`)
+  `keep_scenario_advisor`). Priced scenario strands: generative
+  `k∼M` → lineup cov → attack dice → CS/GC from rolled GA; soft priors =
+  locked `score_xp_v2` DefCon/bonus/cards/saves helpers (`short_horizon_generative`;
+  firm XI later; bonus-from-roll parked). Mean layer stays `score_team_side`.
 - Long-horizon Opta multistage (`squad_sum` / `xi_plus_captain` /
   `xi_plus_captain_ft` ± minutes overlay) via
   `src/markets/cascade_score_v2.py`
@@ -59,11 +64,12 @@ Screens: `reports/match_band_calibration.md`, `reports/player_ga_finish.md`,
 ### Scorer defaults (live + historical assemble)
 
 - **Decomposed match layer:** `match_outcome_probs` (bookie AH/OU/BTTS → \(M\)) and `match_outcome_roll` (draw inside \(M\)) — `src/markets/match_outcome.py` · `reports/MATCH_OUTCOME.md`. Call-site rewire pending.
+- **Decomposed player attack:** `player_attack_from_m` — \(G=\alpha_G xG_M\), \(A=\alpha_A xG_M\), \(E[G_i]=sG_i G\), \(E[A_i]=sA_i A\) — `src/markets/player_attack.py` · `reports/PLAYER_ATTACK.md` (Saka GW20 walkthrough). Shares stay in `numagent_xp`.
 - AH+OU (+ BTTS when priced live) → Dixon–Coles \(M\) → pots \(G=\alpha_G xG_M\), \(A=\alpha_A xG_M\)
 - α from `fpl_score_rates` (2025/26 prior + live counts; refresh after each completed GW)
 - Same-season-only \(rG/rA\) (no prior-season share fill); RATE_M0=270
 - Minutes: packet/tags → `xmi`; predicted-XI roles (`lineup:xi` / `lineup:rotated`)
-- Share-SE shrink on; prior `position_minutes`; **anytime props off** by default
+- Share-SE shrink on; prior `position_minutes`; **anytime props off** by default; formula = **props shape π, M levels** (assists no overlay; lift-only parked)
 - xCS / xGC additive from the same matrix; saves / DefCon / bonus / cards as in `reports/score_xp_v2.md`
 - Gate vs `score_xp` (oracle minutes, GW5–38, m>60): Δ **+0.0531** [+0.0453, +0.0609] — `reports/score_xp_v2_gate.md`
 

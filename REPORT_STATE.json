@@ -1,22 +1,23 @@
 {
-  "milestone": "score-xp-v2-match-outcome-probs-roll",
+  "milestone": "cascade-short-generative-locked",
   "status": "complete",
-  "summary": "First score_xp_v2 decomposition cut: match_outcome_probs (AH/OU/BTTS → Dixon–Coles M) and match_outcome_roll (categorical scoreline from M). Documented; call sites not yet rewired.",
+  "summary": "cascade_short generative stack locked (protocol.cascade_short_generative): mean score_team_side; scenario k∼M → lineup cov → attack dice → CS/GC from rolled GA; soft priors via score_xp_v2 DefCon/bonus/cards/saves helpers. Firm XI and bonus-from-roll deferred. PR #96 green — mark ready / merge to main.",
   "gemini": "",
   "decisions": {
-    "match_outcome_probs": {
-      "decision": "bookie_ah_ou_btts_to_M",
-      "btts_missing": "weight_0"
-    },
-    "match_outcome_roll": {
-      "decision": "categorical_from_M",
-      "not": "independent_poisson_outside_M"
+    "cascade_short_generative": {
+      "locked": "2026-10-20",
+      "protocol": "cascade_short_generative",
+      "pr": 96,
+      "deferred": ["firm_xi", "bonus_from_roll"]
     }
   },
   "artifacts": [
-    "src/markets/match_outcome.py",
-    "tests/test_match_outcome.py",
-    "reports/MATCH_OUTCOME.md",
-    "reports/SCORE_XP_V2_CHECKLIST.md"
+    "reports/LOCKED.md",
+    "reports/CASCADE_CONTRACT.md",
+    "experiments/protocol.json",
+    "src/markets/short_horizon_generative.py",
+    "src/markets/defence_roll.py",
+    "src/models/short_horizon_cascade.py",
+    "src/models/cascade_short.py"
   ]
 }
