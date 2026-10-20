@@ -20,6 +20,33 @@ Pre-deadline squad advisor under 2026/27 rules. Cursor implements and screens; G
 
 **Numagent 1.0 and `score_xp` are superseded** (2026-10-19). Keep 1.0/`score_xp` only for historical climb replay and as the named gate baseline. New screens and the live path are Numagent 2.0 (`score_xp_v2` + L4).
 
+### Cascade / short-horizon alignment (2026-10-19)
+
+Today’s pre-merge cloud cascade work initially scored with **`xp_on_pot` /
+`compute_xp`**. Audit: `reports/cascade_pre_numagent2_audit.md`.
+
+**Aligned + re-run on `score_xp_v2`:**
+
+- Short-horizon advisor — `src/models/short_horizon_cascade.py` (L4 corr 1.0;
+  `keep_scenario_advisor`)
+- Long-horizon Opta multistage (`squad_sum` / `xi_plus_captain` /
+  `xi_plus_captain_ft` ± minutes overlay) via
+  `src/markets/cascade_score_v2.py`
+- Oracle-rank cascade 2025/26 — **viable**; oracle − market log **+0.0187**
+- Match-band / player G/A finish / rank tracker — rewired + rejudged 2026-10-19
+  (all three **park** under `score_xp_v2`; keep baseline z=1.0 / blend=0.5,
+  share×λ rates, OLS rank→GF/GA map)
+
+Suite write-up: `reports/long_horizon_numagent2_rerun.md`.
+Screens: `reports/match_band_calibration.md`, `reports/player_ga_finish.md`,
+`reports/rank_tracker.md`.
+
+**Missed-screen follow-up (2026-10-20)** — all park / plumbing-only:
+
+- Share seeding — `keep_frozen_shares` (Δlog **−0.0131** [−0.0158, −0.0103])
+- Assist α_A = team xA/xG — `keep_pooled_alpha_a` (Δlog **−0.00175** [−0.00255, −0.00097]); legacy `score_xp` promote does not transfer
+- Priced→Opta strand hand-off — `plumbing_only_no_likelihood_arm` (`reports/strand_handoff_smoke.md`)
+
 ### Scorer defaults (live + historical assemble)
 
 - AH+OU (+ BTTS when priced live) → Dixon–Coles \(M\) → pots \(G=\alpha_G xG_M\), \(A=\alpha_A xG_M\)

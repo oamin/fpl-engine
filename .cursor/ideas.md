@@ -368,7 +368,7 @@ Quick trial 2026-10-15 (`protocol.strategy_layer4_mupost_se_pm`, `reports/layer4
 
 ## Team-form FDR μ/SE (beyond t+2)
 
-Screened 2026-10-16 (`reports/team_form_fdr.md`). Expanding club Σ pts → form; FDR = form_own−form_opp on t+3…t+7. Raw-μ FDR Spearman **+0.352** (2024-25 **+0.399** after stripping assistant managers). μ/SE form weaker (+0.13 pooled; flat 2024-25). **Locked: raw μ only.** SE diagnostic. Park μ/SE form.
+Screened 2026-10-16 (`reports/team_form_fdr.md`). Expanding club Σ pts → form; FDR = form_own−form_opp on t+3…t+7. Raw-μ FDR Spearman **+0.352** (2024-25 **+0.399** after stripping Assistant Managers). μ/SE form weaker (+0.13 pooled; flat 2024-25). **Locked: raw μ only.** SE diagnostic. Park μ/SE form. Vaastav 2024/25 ``position=AM`` is Assistant Manager — drop via `drop_assistant_managers` in every backtest loader; never map to MID.
 
 ## L4 beyond-t+2 arm D (team-form fill)
 
@@ -443,3 +443,38 @@ Trialled 2026-10-16 (`protocol.strategy_layer4_ft_dp`, `reports/layer4_ft_dp.md`
 ## L4 chip half-stopping (step 4)
 
 Trialled 2026-10-16 (`protocol.strategy_layer4_chip_stop`, `reports/layer4_chip_stop.md`). TC/BB leave-one-out DP τ(weeks_left); WC≥16 / FH≥12 vs none on L4 priced boards. **Parked:** chip_stop−l4 **−0.185/GW** [−2.15, +1.78] covers 0; plays TC8/FH7/BB5/WC3; hits 228 vs 284. Does not clear L4. Do not retune margins/τ on these seasons. L5 beam remains the joint chip search (also not promoted).
+
+## Pre-Numagent-2.0 cascade screens (2026-10-19)
+
+Cloud cascade levers run **before** Numagent 2.0 landed on main used
+`xp_on_pot` / `compute_xp` (Shin 1X2+OU pots), **not** `score_xp_v2`.
+Audit: `reports/cascade_pre_numagent2_audit.md`.
+
+**Rewired + rejudged on `score_xp_v2` (2026-10-19) — all three park:**
+
+- **Match-band:** `change_defaults=False`; keep `z_band=1.0`,
+  `centre_blend=0.5`. Max |Δlog| 0.00047 < material bar 0.001.
+  Share seeding stays off. `reports/match_band_calibration.md`
+- **Player G/A finish:** `keep_share_times_lambda`. Finish−control
+  interval **−0.00187** [−0.00256, −0.00117] (lo < 0).
+  `reports/player_ga_finish.md`
+- **Rank tracker:** `keep_rank_map_park_tracker`. Does not beat
+  prior_rank on MSE all seasons; tracker−prior log interval covers 0
+  (−0.00618 [−0.0132, +0.00117]); gap closed negative. Keep OLS
+  rank→GF/GA map. `reports/rank_tracker.md`
+
+**Missed opens rejudged 2026-10-20 (v2):**
+
+- **Share seeding:** `keep_frozen_shares`. MC rate-draw E[xP] − frozen
+  **−0.0131** [−0.0158, −0.0103]. `SEED_SHARES=False` stays.
+  `reports/share_seed_screen.md`
+- **Assist α_A = team xA/xG:** `keep_pooled_alpha_a`. Δlog **−0.00175**
+  [−0.00255, −0.00097]. Legacy `score_xp` team-xA/xG promote does **not**
+  transfer. `reports/assist_alpha_screen.md`
+- **Priced→Opta strand hand-off:** plumbing smoke only — register a
+  path-V / player-log arm before promote.
+  `reports/strand_handoff_smoke.md`
+
+**Kept / aligned earlier:** short-horizon scenario advisor; long-horizon
+Opta multistage + oracle-rank via `cascade_score_v2` (oracle viable;
+`reports/long_horizon_numagent2_rerun.md`).

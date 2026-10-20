@@ -28,6 +28,7 @@ FPL_GW_URL = (
     "data/{season}/gws/merged_gw.csv"
 )
 
+# AM (2024/25 Assistant Manager) intentionally omitted — not a playing position.
 POS_MAP = {"GK": "GKP", "GKP": "GKP", "DEF": "DEF", "MID": "MID", "FWD": "FWD"}
 SEASON = "2025-26"
 FD_CODE = "2526"

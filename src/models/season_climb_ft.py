@@ -78,7 +78,11 @@ FALLBACK_SCORE_COLS = ("score_xp", "score_exp_points")
 
 def load_vaastav_roster(season: str) -> pd.DataFrame:
     """Full Vaastav player×GW grid (survives odds-join drops in feat)."""
-    raw = pd.read_csv(CACHE / f"merged_gw_{season.replace('-', '_')}.csv")
+    from src.rules.fpl_2026 import drop_assistant_managers
+
+    raw = drop_assistant_managers(
+        pd.read_csv(CACHE / f"merged_gw_{season.replace('-', '_')}.csv")
+    )
     pos = raw["position"].astype(str).replace({"GK": "GKP"})
     out = pd.DataFrame(
         {

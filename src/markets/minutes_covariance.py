@@ -53,6 +53,9 @@ def load_merged(path: Path | str | None = None, *, season: str | None = None) ->
     missing = need - set(df.columns)
     if missing:
         raise ValueError(f"merged_gw missing columns: {sorted(missing)}")
+    from src.rules.fpl_2026 import drop_assistant_managers
+
+    df = drop_assistant_managers(df)
     df["minutes"] = pd.to_numeric(df["minutes"], errors="coerce").fillna(0.0)
     df["element"] = pd.to_numeric(df["element"], errors="coerce").astype(int)
     df["fixture"] = pd.to_numeric(df["fixture"], errors="coerce")

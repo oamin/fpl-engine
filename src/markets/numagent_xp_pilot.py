@@ -110,6 +110,9 @@ def load_merged(season: str = SEASON) -> pd.DataFrame:
     df["fixture"] = pd.to_numeric(df["fixture"], errors="coerce").astype(int)
     df["minutes"] = pd.to_numeric(df["minutes"], errors="coerce").fillna(0.0)
     df["total_points"] = pd.to_numeric(df["total_points"], errors="coerce").fillna(0.0)
+    from src.rules.fpl_2026 import drop_assistant_managers
+
+    df = drop_assistant_managers(df)
     df["team_n"] = df["team"].map(norm_team)
     df["date_iso"] = (
         pd.to_datetime(df["kickoff_time"], utc=True).dt.tz_convert(None).dt.date

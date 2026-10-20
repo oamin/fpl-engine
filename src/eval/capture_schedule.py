@@ -188,10 +188,12 @@ def deadlines_from_events(events: list[dict[str, Any]]) -> dict[str, str]:
 
 
 def has_capture(root: Path, gw: int) -> bool:
-    """True when this gameweek already has an official snapshot."""
+    """True when this gameweek already has an official or Numagent lock snapshot."""
     directory = root / "data" / "predictions" / SEASON / f"gw{int(gw):02d}"
     if not directory.is_dir():
         return False
+    if (directory / "numagent_lock.json").is_file():
+        return True
     return any(directory.glob("official_*.csv")) or any(directory.glob("slot_*.json"))
 
 
@@ -200,12 +202,13 @@ def missing_capture_gws(
     now: datetime,
     deadlines: dict[str, str],
     *,
-    live_from: int = 6,
+    live_from: int = 7,
 ) -> list[int]:
     """Gameweeks whose capture window has closed and which have no snapshot.
 
     ``now`` is the clock of the check. A capture file's own timestamp still
-    comes from the response Date header.
+    comes from the response Date header. Default ``live_from`` is Numagent 2.0
+    product start (GW7); pass 6 only for the archived ep_next-era bar.
     """
     close_minutes = int(T1_MINUTES[0])
     missing: list[int] = []

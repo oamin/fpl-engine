@@ -1,0 +1,181 @@
+player_id,name,team,position,ffs_status,mean_minutes,n_apps,now_cost,status
+1,Raya,Arsenal,GKP,firm,90.0,5,61,a
+8,Calafiori,Arsenal,DEF,firm,83.2,5,59,a
+4,Gabriel,Arsenal,DEF,firm,90.0,5,80,a
+31,Konsa,Arsenal,DEF,firm,93.67,3,46,d
+10,White,Arsenal,DEF,firm,78.75,4,55,d
+13,Rice,Arsenal,MID,firm,82.2,5,74,d
+12,Saka,Arsenal,MID,firm,83.2,5,96,a
+15,Ødegaard,Arsenal,MID,firm,75.4,5,68,a
+26,Havertz,Arsenal,FWD,firm,87.4,5,76,d
+597,Suzuki,Aston Villa,GKP,firm,90.0,4,50,a
+32,Cash,Aston Villa,DEF,firm,98.67,3,44,a
+37,Lindelöf,Aston Villa,DEF,firm,90.0,5,45,a
+34,Pau,Aston Villa,DEF,firm,62.33,3,44,i
+41,Buendía,Aston Villa,MID,firm,80.2,5,59,a
+54,Gomes,Aston Villa,MID,firm,64.5,2,55,a
+47,Kamara,Aston Villa,MID,firm,88.6,5,50,a
+45,McGinn,Aston Villa,MID,firm,86.8,5,54,a
+166,N.Jackson,Aston Villa,FWD,firm,71.5,4,65,a
+57,Petrović,Bournemouth,GKP,firm,90.0,5,45,a
+60,Hill,Bournemouth,DEF,firm,90.0,5,55,a
+566,Silva,Bournemouth,DEF,firm,90.0,5,50,a
+64,Smith,Bournemouth,DEF,firm,86.8,5,45,a
+61,Truffert,Bournemouth,DEF,firm,90.0,5,54,a
+73,Adams,Bournemouth,MID,firm,93.0,3,50,a
+70,Kluivert,Bournemouth,MID,firm,73.5,4,60,i
+67,Rayan,Bournemouth,MID,firm,86.8,5,63,a
+68,Tavernier,Bournemouth,MID,firm,84.8,5,61,a
+79,Evanilson,Bournemouth,FWD,firm,84.8,5,60,a
+82,Kelleher,Brentford,GKP,firm,90.0,5,50,a
+87,Ajer,Brentford,DEF,firm,90.0,5,45,a
+88,Kayode,Brentford,DEF,firm,73.5,4,46,a
+105,Anthony,Brentford,MID,firm,89.0,3,59,a
+86,Lewis-Potter,Brentford,MID,firm,81.2,5,55,a
+106,Thiago,Brentford,FWD,firm,88.4,5,78,a
+109,Verbruggen,Brighton,GKP,firm,90.0,5,45,a
+114,Boscagli,Brighton,DEF,firm,87.4,5,45,a
+115,De Cuyper,Brighton,DEF,firm,84.6,5,50,a
+116,Dunk,Brighton,DEF,firm,90.0,4,45,d
+113,F.Kadıoğlu,Brighton,DEF,firm,83.0,4,44,a
+504,Vuskovic,Brighton,DEF,firm,87.4,5,50,a
+129,Ayari,Brighton,MID,firm,83.25,4,54,a
+127,Gomez,Brighton,MID,firm,86.6,5,50,a
+124,Groß,Brighton,MID,firm,90.0,5,59,a
+138,Kostoulas,Brighton,FWD,firm,88.25,4,56,a
+151,Acheampong,Chelsea,DEF,firm,110.5,2,45,a
+149,Colwill,Chelsea,DEF,firm,85.25,4,48,a
+200,Lacroix,Chelsea,DEF,firm,91.0,4,59,a
+156,Neto,Chelsea,MID,firm,83.0,4,65,a
+154,Palmer,Chelsea,MID,firm,88.4,5,97,d
+40,Rogers,Chelsea,MID,firm,87.4,5,78,a
+165,João Pedro,Chelsea,FWD,firm,90.0,4,77,d
+110,Rushworth,Coventry,GKP,firm,90.0,5,45,a
+176,Dasilva,Coventry,DEF,firm,88.8,5,40,a
+91,Pinnock,Coventry,DEF,firm,94.0,3,45,a
+173,Thomas,Coventry,DEF,firm,87.4,5,40,a
+175,van Ewijk,Coventry,DEF,firm,90.0,4,40,d
+184,Grimes,Coventry,MID,firm,88.6,5,49,a
+183,Rudoni,Coventry,MID,firm,74.25,4,49,a
+575,Yirenkyi,Coventry,MID,firm,88.33,3,48,a
+194,Thomas-Asante,Coventry,FWD,firm,113.5,2,50,a
+199,Benitez,Crystal Palace,GKP,firm,90.0,2,45,a
+203,Canvot,Crystal Palace,DEF,firm,90.0,4,48,a
+588,Khalaili,Crystal Palace,DEF,firm,94.75,4,50,d
+204,Mitchell,Crystal Palace,DEF,firm,83.8,5,45,a
+202,Richards,Crystal Palace,DEF,firm,90.0,5,49,a
+214,Kamada,Crystal Palace,MID,firm,88.2,5,50,a
+644,Timber,Crystal Palace,MID,firm,84.33,3,50,a
+210,Wharton,Crystal Palace,MID,firm,87.2,5,54,a
+211,Yeremy,Crystal Palace,MID,firm,76.75,4,55,a
+222,Strand Larsen,Crystal Palace,FWD,firm,99.33,3,60,a
+226,Pickford,Everton,GKP,firm,90.0,5,55,a
+230,Branthwaite,Everton,DEF,firm,90.0,5,55,a
+649,Maitland-Niles,Everton,DEF,firm,88.5,2,45,a
+233,Mykolenko,Everton,DEF,firm,90.0,5,46,d
+229,Tarkowski,Everton,DEF,firm,90.0,5,62,a
+244,Armstrong,Everton,MID,firm,89.2,5,50,a
+236,Dewsbury-Hall,Everton,MID,firm,90.0,5,66,a
+239,Garner,Everton,MID,firm,82.0,4,60,a
+209,Johnson,Everton,MID,firm,79.33,3,59,a
+249,Barry,Everton,FWD,firm,83.4,5,57,a
+250,Leno,Fulham,GKP,firm,90.0,5,45,a
+650,Affengruber,Fulham,DEF,firm,90.0,2,45,a
+257,Bassey,Fulham,DEF,firm,90.0,5,45,a
+258,Castagne,Fulham,DEF,firm,81.6,5,45,a
+254,Robinson,Fulham,DEF,firm,85.8,5,45,a
+265,Berge,Fulham,MID,firm,87.25,4,49,a
+264,Bobb,Fulham,MID,firm,68.6,5,55,a
+580,Charles,Fulham,MID,firm,101.0,3,50,a
+261,Iwobi,Fulham,MID,firm,81.6,5,54,a
+268,King,Fulham,MID,firm,85.0,5,56,a
+569,Gonzalo,Fulham,FWD,firm,85.0,5,60,a
+572,Tzolakis,Hull,GKP,firm,90.0,5,47,a
+279,Ajayi,Hull,DEF,firm,84.6,5,42,a
+280,Coyle,Hull,DEF,firm,69.6,5,40,a
+277,Egan,Hull,DEF,firm,87.4,5,41,a
+282,Giles,Hull,DEF,firm,88.8,5,40,a
+286,Belloumi,Hull,MID,firm,78.8,5,51,a
+290,Slater,Hull,MID,firm,87.4,5,45,a
+295,McBurnie,Hull,FWD,firm,88.2,5,55,a
+305,Davis,Ipswich,DEF,firm,90.0,5,40,a
+259,Diop,Ipswich,DEF,firm,90.0,5,40,a
+304,O'Shea,Ipswich,DEF,firm,90.0,5,40,a
+313,Clarke,Ipswich,MID,firm,85.0,2,54,a
+591,Enciso,Ipswich,MID,firm,82.6,5,55,a
+315,Fatawu,Ipswich,MID,firm,70.4,5,54,s
+267,Lukić,Ipswich,MID,firm,80.0,5,49,a
+619,Palacios,Ipswich,MID,firm,91.67,3,50,a
+316,Emersonn,Ipswich,FWD,firm,63.4,5,55,a
+385,Trafford,Leeds,GKP,firm,90.0,5,50,a
+330,Bogle,Leeds,DEF,firm,73.0,5,46,a
+598,Elvedi,Leeds,DEF,firm,108.67,3,45,a
+331,Gudmundsson,Leeds,DEF,firm,84.0,3,45,a
+332,Justin,Leeds,DEF,firm,90.0,5,45,a
+334,Muharemović,Leeds,DEF,firm,90.0,5,50,a
+338,Ampadu,Leeds,MID,firm,90.0,5,54,a
+336,Okafor,Leeds,MID,firm,74.75,4,58,a
+335,Stach,Leeds,MID,firm,89.4,5,60,a
+345,Tanaka,Leeds,MID,firm,85.0,3,49,a
+346,Calvert-Lewin,Leeds,FWD,firm,83.8,5,60,a
+350,A.Becker,Liverpool,GKP,firm,90.0,5,55,a
+579,Araujo,Liverpool,DEF,firm,94.67,3,54,a
+362,Jacquet,Liverpool,DEF,firm,83.0,5,50,d
+358,Kerkez,Liverpool,DEF,firm,96.25,4,53,a
+356,Virgil,Liverpool,DEF,firm,90.0,5,65,a
+627,Barcola,Liverpool,MID,firm,84.0,2,80,a
+372,Mac Allister,Liverpool,MID,firm,102.0,3,54,a
+377,Munoz,Liverpool,MID,firm,85.67,3,65,a
+366,Wirtz,Liverpool,MID,firm,80.4,5,73,a
+384,Donnarumma,Man City,GKP,firm,90.0,5,55,a
+388,Guéhi,Man City,DEF,firm,90.0,5,60,a
+389,Matheus N.,Man City,DEF,firm,106.5,2,59,a
+387,O'Reilly,Man City,DEF,firm,81.5,2,63,d
+390,Rúben,Man City,DEF,firm,90.0,5,55,a
+481,Anderson,Man City,MID,firm,82.6,5,63,a
+399,Cherki,Man City,MID,firm,75.5,4,78,a
+155,Enzo,Man City,MID,firm,90.33,3,69,a
+237,Ndiaye,Man City,MID,firm,96.25,4,58,a
+397,Semenyo,Man City,MID,firm,90.0,5,84,d
+411,Haaland,Man City,FWD,firm,90.0,5,156,a
+412,Lammens,Man Utd,GKP,firm,90.0,5,49,a
+417,Dalot,Man Utd,DEF,firm,86.5,4,49,a
+418,Maguire,Man Utd,DEF,firm,90.0,5,48,a
+426,B.Fernandes,Man Utd,MID,firm,90.0,5,119,a
+428,Cunha,Man Utd,MID,firm,81.4,5,79,a
+427,Mbeumo,Man Utd,MID,firm,90.0,5,79,a
+567,Horníček,Newcastle,GKP,firm,90.0,5,50,a
+447,Botman,Newcastle,DEF,firm,90.0,5,50,a
+593,Dedić,Newcastle,DEF,firm,81.75,4,45,i
+449,Hall,Newcastle,DEF,firm,89.8,5,53,a
+445,Thiaw,Newcastle,DEF,firm,90.0,5,50,a
+453,Barnes,Newcastle,MID,firm,90.0,5,61,a
+457,J.Murphy,Newcastle,MID,firm,90.5,2,59,a
+634,Fernandez-Pardo,Newcastle,FWD,firm,78.5,2,60,a
+464,Wissa,Newcastle,FWD,firm,88.2,5,62,a
+467,Sels,Nott'm Forest,GKP,firm,90.0,5,50,a
+581,Diomande,Nott'm Forest,DEF,firm,81.5,2,54,a
+474,Jair Cunha,Nott'm Forest,DEF,firm,90.0,4,45,a
+472,Murillo,Nott'm Forest,DEF,firm,89.8,5,55,a
+201,Muñoz,Nott'm Forest,DEF,firm,85.67,3,54,a
+469,N.Williams,Nott'm Forest,DEF,firm,90.0,5,50,a
+486,McAtee,Nott'm Forest,MID,firm,83.2,5,55,a
+483,Ndoye,Nott'm Forest,MID,firm,63.2,5,55,a
+558,Schlager,Nott'm Forest,MID,firm,94.0,4,50,a
+167,Delap,Nott'm Forest,FWD,firm,92.33,3,56,a
+496,Kinsky,Spurs,GKP,firm,90.0,5,45,a
+112,Van Hecke,Spurs,DEF,firm,90.0,5,49,d
+503,Van de Ven,Spurs,DEF,firm,90.0,4,50,a
+519,Gallagher,Spurs,MID,firm,67.0,2,53,a
+522,Gray,Spurs,MID,firm,102.33,3,49,a
+455,Tonali,Spurs,MID,firm,85.4,5,53,a
+526,Solanke,Spurs,FWD,firm,85.0,2,58,a
+529,Roefs,Sunderland,GKP,firm,90.0,5,49,a
+534,Hume,Sunderland,DEF,firm,103.0,2,43,a
+533,Mukiele,Sunderland,DEF,firm,90.0,4,54,a
+536,Reinildo,Sunderland,DEF,firm,90.0,4,44,a
+542,E.Le Fée,Sunderland,MID,firm,87.6,5,57,a
+551,N.Angulo,Sunderland,MID,firm,62.6,5,50,a
+545,Sadiki,Sunderland,MID,firm,82.0,5,49,a
+544,Xhaka,Sunderland,MID,firm,90.0,5,55,a
+552,Brobbey,Sunderland,FWD,firm,79.8,5,57,d

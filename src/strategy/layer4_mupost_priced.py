@@ -56,8 +56,7 @@ def _pos_norm(p: object) -> str:
     key = str(p).strip().upper()
     if key in ("GK", "GKP"):
         return "GKP"
-    if key == "AM":
-        return "MID"
+    # AM (Assistant Manager) already dropped in load_merged.
     return normalize_position(key)
 
 
