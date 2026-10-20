@@ -393,6 +393,9 @@ def _failures_paths() -> list[str]:
         LIVE_COVERS_ZERO,
         LIVE_INJURY_FLAGS,
         LIVE_MANUAL_OVERRIDE,
+        LIVE_DECISION_CAPTURE,
+        LIVE_ENTRYPOINT,
+        LIVE_HISTORICAL_SCORE,
         LIVE_PRIMARY,
         LIVE_PRIMARY_FROM_GW,
         LIVE_PRIMARY_WIRED,
@@ -490,11 +493,11 @@ def _failures_paths() -> list[str]:
         if list(loso.get("contrasts") or []) != list(contrast_keys()):
             failures.append("the leave-one-season-out contrast list does not match the lock")
         if live.get("primary") != LIVE_PRIMARY:
-            failures.append("the live primary is not ep_next")
+            failures.append("the live primary is not score_xp_v2")
         if live.get("shadow") != LIVE_SHADOW:
-            failures.append("score_xp is not the live shadow")
-        if live.get("historical_score") != SCORE_COLUMN:
-            failures.append("the published historical score is not score_xp")
+            failures.append("the live shadow is not null under Numagent 2.0")
+        if live.get("historical_score") != LIVE_HISTORICAL_SCORE:
+            failures.append("the published historical score is not score_xp_v2")
         if live.get("winner") is not None:
             failures.append("the live primary declared a winner")
         if live.get("wired") is not LIVE_PRIMARY_WIRED:
@@ -504,19 +507,27 @@ def _failures_paths() -> list[str]:
         if int(live.get("continue_to_gw") or 0) != LIVE_CONTINUE_TO_GW:
             failures.append("the live test does not continue through gameweek 38")
         if int(live.get("from_gw") or 0) != LIVE_PRIMARY_FROM_GW:
-            failures.append("the live primary does not start at gameweek 6")
+            failures.append("the live primary does not start at gameweek 7")
         if int(live.get("min_weeks") or 0) != MIN_LIVE_WEEKS:
             failures.append("promotion does not wait for 20 live weeks")
+        na = protocol.get("numagent_2_0") or {}
+        if na.get("scorer") != LIVE_PRIMARY:
+            failures.append("numagent_2_0 does not lock score_xp_v2")
+        if str(na.get("live_entrypoint") or "") != LIVE_ENTRYPOINT:
+            failures.append("numagent_2_0 live entrypoint is not numagent_live_pick")
+        if not (ROOT / "src" / "live" / "numagent_live_pick.py").is_file():
+            failures.append("numagent_live_pick is missing")
+        # Archived Numagent 1.0 scorer still prices score_xp beside ep_next.
         import src.live.scorer as live_scorer
 
         if live_scorer.SCORE_COL != SCORE_COLUMN:
-            failures.append("the live scorer no longer prices score_xp")
+            failures.append("the archived live scorer no longer prices score_xp")
         if "live_choice" not in inspect.getsource(live_scorer.plan_deadline):
-            failures.append("the live plan does not read the ep_next choice")
+            failures.append("the archived live plan does not read the ep_next choice")
         import src.live.deadline as live_deadline
 
         if "choice=" not in inspect.getsource(live_deadline.collect):
-            failures.append("the deadline does not pass the ep_next choice")
+            failures.append("the archived deadline does not pass the ep_next choice")
         eligible = protocol.get("eligibility") or {}
         if eligible.get("winner") is not None:
             failures.append("the eligibility rule declared a winner")
@@ -530,8 +541,11 @@ def _failures_paths() -> list[str]:
             failures.append("the eligible pool is not the primary post-hoc result")
         if eligible.get("all_weeks") != "sensitivity":
             failures.append("the all-weeks pool is not the sensitivity")
-        if live.get("decision_capture") != "t1_same_stamp" or live.get("choose_after_seeing_scores") is not False:
-            failures.append("the decision capture is not the same-stamp t1 pair")
+        if (
+            live.get("decision_capture") != LIVE_DECISION_CAPTURE
+            or live.get("choose_after_seeing_scores") is not False
+        ):
+            failures.append("the decision capture is not the numagent_lock file")
         if live.get("fallback") != LIVE_CAPTURE_FALLBACK:
             failures.append("an earlier capture is a fallback")
         if live.get("gw6_chip") != GW6_SUBMITTED_CHIP:
@@ -563,8 +577,9 @@ def _failures_paths() -> list[str]:
     from src.eval.capture_schedule import missing_capture_gws
     from src.eval.provenance import load_deadlines
 
+    live_from = int((protocol.get("live_primary") or {}).get("from_gw") or 7)
     missing = missing_capture_gws(
-        ROOT, datetime.now(timezone.utc), load_deadlines()
+        ROOT, datetime.now(timezone.utc), load_deadlines(), live_from=live_from
     )
     if missing:
         failures.append(

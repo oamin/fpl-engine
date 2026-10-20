@@ -1245,12 +1245,20 @@
     "primary": "score_xp_v2",
     "shadow": null,
     "historical_score": "score_xp_v2",
+    "wired": true,
+    "covers_zero": "undetermined",
+    "continue_to_gw": 38,
+    "min_weeks": 20,
+    "decision_capture": "numagent_lock",
+    "fallback": "none",
+    "gw6_chip": "logged_judgement",
+    "counts_toward_chip_rule": false,
     "supersedes": "numagent_1_0",
     "supersedes_ep_next_freeze": "GW6 Numagent 1.0 used captured ep_next; from GW7 Numagent 2.0 is score_xp_v2 via numagent_live_pick",
     "injury_flags": "minutes_file_zero_stays_zero",
     "manual_override": "logged_with_reason",
     "choose_after_seeing_scores": false,
-    "winner": "score_xp_v2"
+    "winner": null
   },
   "gw6_wildcard_judgement": {
     "intent": "wildcard",
