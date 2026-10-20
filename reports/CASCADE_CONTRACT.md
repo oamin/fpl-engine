@@ -1,20 +1,24 @@
 # Cascade contract — Numagent 2.0 surfaces
 
-**Product:** Numagent 2.0 (`score_xp_v2`). **Archive:** `ARCHIVE_NUMAGENT_1_0.md`.
+**Product:** Numagent 2.0 (`score_xp_v2`). **Archive:** `ARCHIVE_NUMAGENT_1_0.md`.  
+**Plan:** `CASCADE_PLAN.md`. **Scorer checklist:** `SCORE_XP_V2_CHECKLIST.md`.
 
-Cascade must not re-enter the live Odds/FD board factory. It consumes the
-thin surfaces below.
+Two branches, one principle: **cascade_short** (priced t:t+1) and
+**cascade_long** (Opta t+2…). Neither re-enters the live Odds/FD board factory
+for scenario MILP — they consume the surfaces below.
 
 ## Surfaces
 
 | Surface | Module | Cascade calls |
 | --- | --- | --- |
+| **player_pool** | `src/models/player_pool.py` | FFScout ∩ minutes; shared sticky ids |
 | Rates / α / shares (as-of) | `src/markets/numagent_xp.py` | freeze priors before scenario draws |
-| Match → side moments | FD AH+OU or Opta λ → Dixon–Coles | short: FD ±15%; long: Opta bands |
-| Player xP | `numagent_xp.score_team_side` via `src/markets/cascade_score_v2.py` | only λ→xP bridge for long horizon |
-| Transfers (single week) | `src/strategy/layer3_week.py` | short-horizon t / t+1 |
+| Match → side moments | FD/Odds or Opta λ → Dixon–Coles | short: priced; long: Opta bands |
+| Player xP | `numagent_xp.score_team_side` via `cascade_score_v2` | λ→xP bridge |
+| Transfers (single week) | `src/strategy/layer3_week.py` | cascade_short t / t+1 |
 | Horizon path MILP | `src/strategy/layer4_week.solve_horizon_transfers` | **μ injected**, not projected |
 | μ injection | `src/strategy/layer4_mu_inject.py` | `pools_from_mu_boards` → L4 |
+| Branch entries | `cascade_short.py` / `cascade_long.py` | thin public surfaces |
 
 ## Locked principles
 

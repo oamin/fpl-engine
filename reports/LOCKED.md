@@ -65,7 +65,14 @@ Roadmap: `strategy_layers.md`.
 
 ## Cascade surfaces
 
-Contract: [`CASCADE_CONTRACT.md`](CASCADE_CONTRACT.md). Rebuild plan: [`CASCADE_PLAN.md`](CASCADE_PLAN.md). μ injection for L4 (no Odds/FD factory): `src/strategy/layer4_mu_inject.py`. Long-horizon λ→xP: `src/markets/cascade_score_v2.py`.
+Contract: [`CASCADE_CONTRACT.md`](CASCADE_CONTRACT.md). Plan: [`CASCADE_PLAN.md`](CASCADE_PLAN.md). Scorer checklist: [`SCORE_XP_V2_CHECKLIST.md`](SCORE_XP_V2_CHECKLIST.md).
+
+| | |
+| --- | --- |
+| Branches | `cascade_short` (priced t:t+1) · `cascade_long` (Opta t+2…) |
+| Shared buy universe | `src/models/player_pool.py` (FFScout ∩ minutes) |
+| L4 μ inject | `src/strategy/layer4_mu_inject.py` |
+| Long λ→xP | `src/markets/cascade_score_v2.py` |
 
 ## Superseded
 
