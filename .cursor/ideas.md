@@ -4,6 +4,16 @@ Cursor chooses the next pre-registered comparison. The PI is not asked to pick. 
 
 **Numagent 2.0 is locked on main** — see `.cursor/context.md` and `reports/LOCKED.md` (`protocol.numagent_2_0`). Engine primary scorer is `score_xp_v2`. Numagent 1.0 and `score_xp` are **archived in-place** (`reports/ARCHIVE_NUMAGENT_1_0.md`). This file is the **park log**. Everything from “Procedure, locked 2026-10-07” downward is **Numagent 1.0 / stage archaeology** — not instructions for the live path.
 
+## Parked — cascade generative MC-mean vs mean layer (2026-10-20 overnight)
+
+`cascade_viability_batch` B1/B2: player-GW log of N_MC=6 generative mean xP
+**clearly loses** to centreline `score_team_side` on the same `M`
+(short Δ≈−0.089; long Δ≈−0.090; intervals wholly below 0). B3 short_gen vs
+long_gen inconclusive. Integrity A/D green; FT+cap smoke OK without λ jitter.
+Do **not** promote generative scenario xP as a mean forecast until a better
+aggregator (or path-V-only use) is designed. Report:
+`reports/cascade_short_long_viability_results.md`.
+
 ## Rejected — artificial λ Uniform(±15%) on cascade_short (2026-10-20)
 
 Agent-era scenario spice (`MARKET_BAND=0.15`): multiply fitted λ by
