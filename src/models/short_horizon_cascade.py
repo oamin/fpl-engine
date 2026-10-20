@@ -32,6 +32,7 @@ import pandas as pd
 from src.markets import numagent_xp
 from src.markets.numagent_xp_pilot import _asof_alphas
 from src.markets.scoreline import build_matrix, team_moments
+from src.models.player_pool import filter_board_to_pool, load_player_pool_ids
 from src.strategy.layer1_week import solve_week
 from src.strategy.layer3_week import held_from_frame, solve_week_transfers
 from src.strategy.layer4_bookie_path import _fd_index, _load_merged_enriched, _schedule
@@ -265,16 +266,26 @@ def attach_prices_and_cap(
     season: str,
     decision_gw: int,
     force_ids: Sequence[str] | None = None,
+    selectable_ids: set[str] | None = None,
+    apply_player_pool: bool = True,
 ) -> pd.DataFrame:
-    """L4-style price attach + per-position cap for MILP size.
+    """L4-style price attach + shared player_pool filter + per-position cap.
 
-    ``force_ids`` (e.g. owned squad) are always kept even under the top-N cap.
+    ``force_ids`` (e.g. owned squad) are always kept even under the pool cut
+    and the top-N cap. Buy universe defaults to the sticky FFScout ∩ minutes
+    ``player_pool`` snapshot (same set as cascade_long).
     """
     if board.empty:
         return board
     out = _attach_store_ids(board, prices, decision_gw, season)
     out["mu_post"] = pd.to_numeric(out[SCORER], errors="coerce").fillna(0.0)
     force = {str(x) for x in (force_ids or ())}
+    if apply_player_pool:
+        ids = selectable_ids
+        if ids is None:
+            ids = load_player_pool_ids(missing_ok=True)
+        if ids:
+            out = filter_board_to_pool(out, ids, force_ids=force)
     # Cap MILP: highest μ within each position, then re-attach forced ids.
     if len(out) > 100:
         parts = []

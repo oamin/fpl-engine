@@ -64,7 +64,7 @@ from src.models.opta_gf_ga_horizon import (
     rank_gf_ga_profile,
 )
 from src.models.minutes_overlay import apply_availability_overlay, overlay_summary
-from src.models.selectable_pool import DEFAULT_POOL_JSON, load_selectable_ids
+from src.models.player_pool import POOL_JSON as DEFAULT_POOL_JSON, load_player_pool_ids
 from src.teams import norm_team
 
 
@@ -887,7 +887,7 @@ def run_multistage_trial(
     if objective not in OBJECTIVES:
         raise ValueError(f"unknown objective: {objective!r}")
     team_names = {int(t["id"]): str(t["name"]) for t in bootstrap["teams"]}
-    selectable = load_selectable_ids(pool_path or DEFAULT_POOL_JSON)
+    selectable = load_player_pool_ids(pool_path or DEFAULT_POOL_JSON)
     logs = pd.read_csv(logs_path or LOG_CSV)
     pool = build_frozen_pool(
         bootstrap,
