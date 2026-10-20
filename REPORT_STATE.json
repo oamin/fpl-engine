@@ -1,29 +1,24 @@
 {
-  "milestone": "repo-cleanup-step2-archive-numagent-1-0",
+  "milestone": "repo-cleanup-step3-v2-decompose-l4-mu",
   "status": "complete",
-  "summary": "Step 2: archived Numagent 1.0 / score_xp in-place. Added reports/ARCHIVE_NUMAGENT_1_0.md; strengthened protocol roles; bannered ideas/context; docstringed GW6 entrypoints; closed leftover PRs #59/#60/#69/#71/#72. Modules stay importable for gates and v2 baseline.",
+  "summary": "Step 3: decomposed Numagent 2.0 for cascade. Added layer4_mu_inject (pools_from_mu_boards → solve_horizon_transfers) and reports/CASCADE_CONTRACT.md. L4 MILP stays column-agnostic; priced/Odds factories stay the live default path.",
   "gemini": "",
   "decisions": {
-    "archive_style": {
-      "decision": "in_place_index_no_mass_move",
-      "index": "reports/ARCHIVE_NUMAGENT_1_0.md"
+    "l4_injection": {
+      "decision": "add_layer4_mu_inject",
+      "module": "src/strategy/layer4_mu_inject.py",
+      "does_not_change": ["solve_horizon_transfers", "project_week_score_xp_v2", "numagent_live_pick"]
     },
-    "keep_importable": {
-      "decision": "retain_score_xp_modules",
-      "reason": "as-of audit + score_xp_v2_gate baseline"
-    },
-    "close_leftover_prs": {
-      "decision": "close_do_not_merge",
-      "closed_prs": [59, 60, 69, 71, 72]
+    "cascade_contract": {
+      "decision": "document_surfaces",
+      "index": "reports/CASCADE_CONTRACT.md"
     }
   },
   "artifacts": [
-    "reports/ARCHIVE_NUMAGENT_1_0.md",
-    "reports/SUPERSEDED.md",
+    "src/strategy/layer4_mu_inject.py",
+    "tests/test_layer4_mu_inject.py",
+    "reports/CASCADE_CONTRACT.md",
     "reports/LOCKED.md",
-    "experiments/protocol.json",
-    ".cursor/context.md",
-    ".cursor/ideas.md",
-    "CONTEXT.md"
+    ".cursor/context.md"
   ]
 }
