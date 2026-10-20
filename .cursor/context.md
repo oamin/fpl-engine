@@ -9,7 +9,7 @@ Updated: 2026-10-20. **Numagent 2.0** is the product on main (`protocol.numagent
 | **1. Freeze product on main** | **done** | #88 (+ #89) merged to `main`. Pre-v2 cascade PR forest #73–#87 **closed** (do not re-open onto main). |
 | **2. Archive Numagent 1.0 / `score_xp` in-place** | **done** | Index [`reports/ARCHIVE_NUMAGENT_1_0.md`](../reports/ARCHIVE_NUMAGENT_1_0.md); protocol roles; GW6 entrypoint docstrings; leftover PRs #59/#60/#69/#71/#72 **closed**. Modules stay importable for the gate baseline. |
 | **3. Decompose v2 for cascade** | **done** | [`CASCADE_CONTRACT.md`](../reports/CASCADE_CONTRACT.md); `src/strategy/layer4_mu_inject.py` (`pools_from_mu_boards` → `solve_horizon_transfers`). Long-horizon λ→xP stays `cascade_score_v2`. |
-| 4. One cascade branch + plan | next | Short/long horizons off current main; selective replay only. |
+| **4. Cascade rebuild plan** | **done (plan tip)** | [`CASCADE_PLAN.md`](../reports/CASCADE_PLAN.md) on `cursor/cascade-rebuild-plan-cc3d`. Parked screens stay parked. Next comparison: short L4-inject path V vs L1→L3 (register before totals). Helper: `scored_weeks_to_l4_pools`. |
 
 ## Plan
 

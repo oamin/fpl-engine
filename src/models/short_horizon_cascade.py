@@ -8,8 +8,12 @@ Architecture (does **not** replace published ``score_xp_v2`` / L4 mean path):
 2. **Scenario layer** — sample ``λ_H``, ``λ_A`` inside ±15% of the FD fit,
    rebuild ``M`` (ρ held), re-score with the **same** frozen rates/minutes.
    Shares do not roll from sampled scorelines.
-3. **Path FT** — L1 free rebuild at ``t``, then L3 transfers+hits at ``t+1``
-   with FT bank 1 (wildcard-like open → banked FT).
+3. **Path FT (default)** — L1 free rebuild at ``t``, then L3 transfers+hits at
+   ``t+1`` with FT bank 1 (wildcard-like open → banked FT).
+4. **L4 inject (optional)** — ``scored_weeks_to_l4_pools`` maps scored boards
+   into ``solve_horizon_transfers`` via ``layer4_mu_inject`` (no FD factory).
+   Default advisor stays L1→L3 until a gated path-V screen clears — see
+   ``reports/CASCADE_PLAN.md``.
 
 Diagnostic only until a path-V screen clears. Historical FD openings only
 (no Odds API in this screen). Long-horizon Opta cascade stays at t+2….
@@ -31,6 +35,7 @@ from src.markets.scoreline import build_matrix, team_moments
 from src.strategy.layer1_week import solve_week
 from src.strategy.layer3_week import held_from_frame, solve_week_transfers
 from src.strategy.layer4_bookie_path import _fd_index, _load_merged_enriched, _schedule
+from src.strategy.layer4_mu_inject import pools_from_mu_boards
 from src.strategy.layer4_mupost_priced import (
     _attach_store_ids,
     _mean_minutes_asof,
@@ -284,6 +289,26 @@ def attach_prices_and_cap(
                 capped = pd.concat([capped, extra], ignore_index=True)
         out = capped.drop_duplicates("player_id", keep="first")
     return out.reset_index(drop=True)
+
+
+def scored_weeks_to_l4_pools(
+    week0_pool: pd.DataFrame,
+    *scored_weeks: pd.DataFrame,
+) -> list[pd.DataFrame]:
+    """Map priced/scenario scored boards onto L4 pools (μ inject).
+
+    ``week0_pool`` supplies universe / prices / club meta. Each scored week
+    needs ``element`` and ``score_xp_v2`` (or ``mu_post``). Does not call
+    ``project_week_score_xp_v2`` or Odds.
+    """
+    if not scored_weeks:
+        raise ValueError("need at least one scored week board")
+    boards: list[pd.DataFrame] = []
+    for board in scored_weeks:
+        if board is None or board.empty:
+            raise ValueError("scored week board is empty")
+        boards.append(board)
+    return pools_from_mu_boards(week0_pool, boards, out_col="mu_post")
 
 
 def mean_player_xp_delta(

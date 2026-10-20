@@ -62,6 +62,30 @@ class CentrelineMatchesBuild(unittest.TestCase):
             self.assertAlmostEqual(mom[k], again[k], places=12)
 
 
+class L4InjectAdapter(unittest.TestCase):
+    def test_scored_weeks_to_l4_pools(self) -> None:
+        import pandas as pd
+
+        week0 = pd.DataFrame(
+            {
+                "element": [1, 2],
+                "player_id": ["s:1", "s:2"],
+                "position": ["MID", "FWD"],
+                "club": ["a", "b"],
+                "value": [50, 60],
+                "mu_post": [1.0, 2.0],
+                "score_xp_v2": [1.0, 2.0],
+                "xp_se": [0.1, 0.2],
+            }
+        )
+        t0 = pd.DataFrame({"element": [1, 2], "score_xp_v2": [3.0, 4.0]})
+        t1 = pd.DataFrame({"element": [1, 2], "mu_post": [5.0, 6.0]})
+        pools = sh.scored_weeks_to_l4_pools(week0, t0, t1)
+        self.assertEqual(len(pools), 2)
+        self.assertAlmostEqual(float(pools[0].set_index("element").loc[1, "mu_post"]), 3.0)
+        self.assertAlmostEqual(float(pools[1].set_index("element").loc[2, "mu_post"]), 6.0)
+
+
 def math_isfinite(x: float) -> bool:
     return bool(np.isfinite(x))
 
