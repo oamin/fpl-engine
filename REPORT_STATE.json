@@ -1,23 +1,20 @@
 {
-  "milestone": "cascade-short-generative-locked",
-  "status": "complete",
-  "summary": "cascade_short generative stack locked (protocol.cascade_short_generative): mean score_team_side; scenario k∼M → lineup cov → attack dice → CS/GC from rolled GA; soft priors via score_xp_v2 DefCon/bonus/cards/saves helpers. Firm XI and bonus-from-roll deferred. PR #96 green — mark ready / merge to main.",
+  "milestone": "cascade-long-m-from-opta",
+  "status": "in_progress",
+  "summary": "cascade_long t+2… scorelines now draw k∼M from Opta rank→GF/GA→λ (match_outcome_probs_from_lambdas + match_outcome_roll). Independent Poisson retired. Player xP remains mean score_team_side; generative attack on long strands deferred.",
   "gemini": "",
   "decisions": {
-    "cascade_short_generative": {
-      "locked": "2026-10-20",
-      "protocol": "cascade_short_generative",
-      "pr": 96,
-      "deferred": ["firm_xi", "bonus_from_roll"]
+    "cascade_long_match_outcome": {
+      "decision": "k_from_M_via_opta_lambda",
+      "rank_map": "ols_locked",
+      "player_generative": "deferred"
     }
   },
   "artifacts": [
-    "reports/LOCKED.md",
-    "reports/CASCADE_CONTRACT.md",
+    "src/models/multistage_mc_milp.py",
+    "src/models/cascade_long.py",
     "experiments/protocol.json",
-    "src/markets/short_horizon_generative.py",
-    "src/markets/defence_roll.py",
-    "src/models/short_horizon_cascade.py",
-    "src/models/cascade_short.py"
+    "reports/LOCKED.md",
+    "tests/test_multistage_mc_milp.py"
   ]
 }

@@ -145,6 +145,24 @@
     ],
     "any_later_change": "dated protocol update required"
   },
+  "cascade_long_match_outcome": {
+    "locked": "2026-10-20",
+    "role": "long-horizon t+2… match scoreline distribution M",
+    "rank_map": "Opta place → season GF/GA via locked OLS (protocol keep_rank_map; opta_gf_ga_horizon)",
+    "bands": "±MAE GF/GA (z_band=1.0); centre_blend=0.5 for λ sample inside bands",
+    "lambda": "pots_from_season_gf_ga / match_prediction; blend 0.7 Opta + 0.3 ClubPath",
+    "M": "match_outcome_probs_from_lambdas(λ_h, λ_a, ρ=0)",
+    "scoreline": "match_outcome_roll — k∼M (replaces independent Poisson)",
+    "player_xp": "mean score_team_side on scenario λ moments (cascade_score_v2); generative attack deferred",
+    "scope": "cascade_long / multistage_mc_milp",
+    "modules": [
+      "src/models/opta_gf_ga_horizon.py",
+      "src/models/multistage_mc_milp.py",
+      "src/markets/match_outcome.py",
+      "src/markets/cascade_score_v2.py"
+    ],
+    "any_later_change": "dated protocol update required"
+  },
   "score_xp_v2_screen": {
     "score_column": "score_xp_v2",
     "baseline": "score_xp",

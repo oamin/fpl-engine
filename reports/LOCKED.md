@@ -91,6 +91,17 @@ Protocol: `cascade_short_generative`. Entry: `src/models/cascade_short.py` → `
 
 Modules: `short_horizon_generative`, `match_outcome`, `lineup_roll`, `attack_roll`, `defence_roll`, `player_attack`, `prop_shares`.
 
+### cascade_long match outcome (locked 2026-10-20)
+
+Protocol: `cascade_long_match_outcome`. Entry: `cascade_long` → `multistage_mc_milp`.
+
+| Step | Method |
+| --- | --- |
+| Rank → GF/GA | Locked OLS on closed-season place history (`opta_gf_ga_horizon`) |
+| λ | `match_prediction` bands; 0.7 Opta + 0.3 ClubPath blend |
+| M / scoreline | `match_outcome_probs_from_lambdas` → `match_outcome_roll` (`k ∼ M`) |
+| Player xP | Mean `cascade_score_v2` / `score_team_side` (generative attack deferred) |
+
 ## Superseded
 
 - **Numagent 1.0** — `protocol.numagent_1_0` / `SUPERSEDED.md` / **[`ARCHIVE_NUMAGENT_1_0.md`](ARCHIVE_NUMAGENT_1_0.md)** (in-place keep-list)

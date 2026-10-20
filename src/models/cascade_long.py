@@ -1,14 +1,16 @@
-"""Cascade long branch — Opta-derived match λ for t+2 … t+n.
+"""Cascade long branch — Opta-derived ``M`` for t+2 … t+n.
 
-Same scoring principle as ``cascade_short`` (``score_xp_v2`` via
-``cascade_score_v2`` / ``score_team_side``), different match inputs:
+Same player scorer as ``cascade_short`` (``score_xp_v2`` via
+``cascade_score_v2`` / ``score_team_side``). Match inputs differ:
 
-- Opta predicted ranks → season GF/GA (±MAE) → Dixon–Coles λ → ClubPath roll.
+- Opta predicted ranks → season GF/GA (±MAE from closed-season place
+  history) → match λ → Dixon–Coles ``M`` → ``k ∼ M`` (``match_outcome_roll``)
+  → ClubPath rate update.
 
 Buy universe: shared ``player_pool`` (FFScout firm ∩ expanding minutes).
 
 Implementation entry: ``src.models.multistage_mc_milp``. See
-``reports/CASCADE_PLAN.md``.
+``reports/CASCADE_PLAN.md`` / ``protocol.cascade_long_match_outcome``.
 """
 
 from __future__ import annotations

@@ -11,6 +11,7 @@ Updated: 2026-10-20. **Numagent 2.0** is the product on main (`protocol.numagent
 | **3. Decompose v2 for cascade** | **done** | [`CASCADE_CONTRACT.md`](../reports/CASCADE_CONTRACT.md); `src/strategy/layer4_mu_inject.py` (`pools_from_mu_boards` → `solve_horizon_transfers`). Long-horizon λ→xP stays `cascade_score_v2`. |
 | **4. Cascade rebuild plan** | **done** | [`CASCADE_PLAN.md`](../reports/CASCADE_PLAN.md): **cascade_short** / **cascade_long**, shared [`player_pool`](../src/models/player_pool.py). Scorer gate: [`SCORE_XP_V2_CHECKLIST.md`](../reports/SCORE_XP_V2_CHECKLIST.md) — confirm before path-V screens. |
 | **5. cascade_short generative** | **done** | `protocol.cascade_short_generative` locked 2026-10-20 (PR #96): scenario `k∼M`→lineup→attack→CS/GC from roll; soft priors = `score_xp_v2` helpers; firm XI deferred. |
+| **6. cascade_long M from Opta** | **in progress** | `protocol.cascade_long_match_outcome`: Opta rank→GF/GA→λ→`M`→`k∼M` (replaces independent Poisson). Player generative on long strands deferred. |
 
 ## Plan
 

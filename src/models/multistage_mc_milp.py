@@ -5,15 +5,19 @@ Numagent 2.0 scoring (locked ``score_xp_v2``)
 From decision gameweek ``t``, for each of ``N`` Monte Carlo strands:
 
 1. **Match scenario (GW t+2…t+n).** For each fixture, take Opta predicted
-   ranks → season GF/GA (±MAE bands) → match λ via Dixon–Coles
-   (``match_prediction``). Sample λ inside those bands, then Poisson
-   scorelines. Sampled goals update the strand's club rates so later
-   weeks stay coherent.
+   ranks → season GF/GA (±MAE bands from closed-season place history) →
+   match λ (``match_prediction`` / path blend). Sample λ inside those
+   bands, build Dixon–Coles ``M`` from the sampled λ
+   (``match_outcome_probs_from_lambdas``), then ``k ∼ M``
+   (``match_outcome_roll``). Sampled goals update the strand's club rates
+   so later weeks stay coherent.
 
 2. **Player xP (``score_xp_v2``).** At each snapshot, freeze same-season
    as-of rates / priors / rolling minutes (``numagent_xp``) and score
    each club side with ``score_team_side`` on Dixon–Coles moments from
-   the scenario λ pair — not ``xp_on_pot`` / share×λ.
+   the scenario λ pair — not ``xp_on_pot`` / share×λ. Generative
+   attack/defence on long strands stays deferred (cascade_short owns that
+   for priced t:t+1).
 
 3. **MILP + frequency.** Selectable-pool squad MILP on discounted path
    xP; aggregate selection frequency across strands × snapshots.
@@ -53,6 +57,10 @@ from src.markets.cascade_score_v2 import (
     SCORER as SCORE_XP_V2,
     build_frozen_pool,
     score_pool_on_lam_pots,
+)
+from src.markets.match_outcome import (
+    match_outcome_probs_from_lambdas,
+    match_outcome_roll,
 )
 from src.models.opta_gf_ga_horizon import (
     N_MATCHES,
@@ -117,17 +125,26 @@ class StrandResult:
     squads: list[dict[str, Any]] = field(default_factory=list)
 
 
-def _poisson(rng: random.Random, lam: float) -> int:
-    # Knuth for small λ; normal approx avoided — PL λ are small.
-    lam = max(0.05, float(lam))
-    L = math.exp(-lam)
-    k = 0
-    p = 1.0
-    while True:
-        k += 1
-        p *= rng.random()
-        if p <= L:
-            return k - 1
+def sample_match_lams(
+    lam_h: float,
+    lam_a: float,
+    *,
+    lam_h_lo: float,
+    lam_h_hi: float,
+    lam_a_lo: float,
+    lam_a_hi: float,
+    rng: random.Random,
+    centre_blend: float = 0.5,
+) -> tuple[float, float]:
+    """Sample λ inside Opta/path predicted bands (match-band centre_blend)."""
+    lo_h, hi_h = min(lam_h_lo, lam_h_hi), max(lam_h_lo, lam_h_hi)
+    lo_a, hi_a = min(lam_a_lo, lam_a_hi), max(lam_a_lo, lam_a_hi)
+    u_h = lo_h + (hi_h - lo_h) * rng.random()
+    u_a = lo_a + (hi_a - lo_a) * rng.random()
+    w = float(min(1.0, max(0.0, centre_blend)))
+    sh = max(1e-6, w * float(lam_h) + (1.0 - w) * u_h)
+    sa = max(1e-6, w * float(lam_a) + (1.0 - w) * u_a)
+    return sh, sa
 
 
 def sample_scoreline(
@@ -140,27 +157,27 @@ def sample_scoreline(
     lam_a_hi: float,
     rng: random.Random,
     centre_blend: float = 0.5,
+    rho: float = 0.0,
 ) -> tuple[int, int, float, float]:
-    """Sample λ inside predicted bounds, then Poisson goals.
+    """Sample λ inside predicted bands, build ``M``, then ``k ∼ M``.
 
-    ``centre_blend`` ∈ [0, 1] weights the centreline λ vs a uniform draw
-    inside the predicted band (match-band calibration grid).
+    Match outcome distribution comes from Opta rank → GF/GA → λ (caller),
+    not independent Poissons. ``rho`` defaults to 0 on the long path
+    (no AH/OU fit); Dixon–Coles low-score mass stays available if set.
     """
-    lo_h, hi_h = min(lam_h_lo, lam_h_hi), max(lam_h_lo, lam_h_hi)
-    lo_a, hi_a = min(lam_a_lo, lam_a_hi), max(lam_a_lo, lam_a_hi)
-    u_h = lo_h + (hi_h - lo_h) * rng.random()
-    u_a = lo_a + (hi_a - lo_a) * rng.random()
-    w = float(min(1.0, max(0.0, centre_blend)))
-    sh = w * float(lam_h) + (1.0 - w) * u_h
-    sa = w * float(lam_a) + (1.0 - w) * u_a
-    gh = _poisson(rng, sh)
-    ga = _poisson(rng, sa)
-    # Soft clip: reject extreme outliers beyond ceil(hi)+2 once
-    if gh > math.ceil(hi_h) + 2:
-        gh = int(round(sh))
-    if ga > math.ceil(hi_a) + 2:
-        ga = int(round(sa))
-    return gh, ga, sh, sa
+    sh, sa = sample_match_lams(
+        lam_h,
+        lam_a,
+        lam_h_lo=lam_h_lo,
+        lam_h_hi=lam_h_hi,
+        lam_a_lo=lam_a_lo,
+        lam_a_hi=lam_a_hi,
+        rng=rng,
+        centre_blend=centre_blend,
+    )
+    probs = match_outcome_probs_from_lambdas(sh, sa, float(rho))
+    roll = match_outcome_roll(probs, rng)
+    return int(roll.goals_home), int(roll.goals_away), float(sh), float(sa)
 
 
 def init_paths_from_opta(
@@ -311,9 +328,9 @@ def sample_opta_scenario(
     league_gf: float,
     rng: random.Random,
 ) -> dict[str, Any]:
-    """Sample λ from Opta rank→GF/GA bands (match-specific), then scoreline.
+    """Sample λ from Opta rank→GF/GA bands, build ``M``, roll scoreline.
 
-    Falls back to path ±15% only if a club is missing from Opta ranks.
+    Falls back to path ±15% bands only if a club is missing from Opta ranks.
     """
     try:
         pred = match_prediction(home, away)
@@ -1009,7 +1026,7 @@ def write_trial_outputs(result: dict[str, Any], *, out_dir: Path) -> dict[str, s
         f"GW{result['horizon']['start']}–{result['horizon']['end']}.",
         f"- **{result['n_strands']}** coherent strands: each fixture samples λ "
         "from **Opta rank→GF/GA bands** (`match_prediction`, e.g. 2nd vs 20th), "
-        "Poisson scoreline, path rate update.",
+        "builds Dixon–Coles `M`, rolls `k ∼ M`, path rate update.",
         f"- Player xP: **`{result.get('scorer', SCORE_XP_V2)}`** via "
         "`numagent_xp.score_team_side` on Dixon–Coles moments from scenario λ; "
         f"same-season as-of rates frozen at decision GW. Share seeding: "
