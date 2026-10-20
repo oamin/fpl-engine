@@ -1,20 +1,19 @@
 {
-  "milestone": "cascade-long-m-from-opta",
+  "milestone": "cascade-long-generative-parity",
   "status": "in_progress",
-  "summary": "cascade_long t+2… scorelines now draw k∼M from Opta rank→GF/GA→λ (match_outcome_probs_from_lambdas + match_outcome_roll). Independent Poisson retired. Player xP remains mean score_team_side; generative attack on long strands deferred.",
+  "summary": "cascade_long player xP now matches cascade_short generative stack (lineup→attack→CS/GC→soft priors) with props forced off. Opta rank→GF/GA→λ→M scorelines unchanged. PR #97.",
   "gemini": "",
   "decisions": {
-    "cascade_long_match_outcome": {
-      "decision": "k_from_M_via_opta_lambda",
-      "rank_map": "ols_locked",
-      "player_generative": "deferred"
+    "cascade_long_player_xp": {
+      "decision": "generative_parity_props_off",
+      "props": false,
+      "protocol": "cascade_long_match_outcome"
     }
   },
   "artifacts": [
+    "src/markets/cascade_score_v2.py",
+    "src/markets/short_horizon_generative.py",
     "src/models/multistage_mc_milp.py",
-    "src/models/cascade_long.py",
-    "experiments/protocol.json",
-    "reports/LOCKED.md",
-    "tests/test_multistage_mc_milp.py"
+    "tests/test_cascade_long_generative.py"
   ]
 }

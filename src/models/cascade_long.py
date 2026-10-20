@@ -1,11 +1,11 @@
 """Cascade long branch — Opta-derived ``M`` for t+2 … t+n.
 
-Same player scorer as ``cascade_short`` (``score_xp_v2`` via
-``cascade_score_v2`` / ``score_team_side``). Match inputs differ:
+Same generative player stack as ``cascade_short`` (lineup → attack dice →
+CS/GC from rolled GA → soft priors), **without player props** (unavailable
+beyond priced weeks). Match inputs:
 
 - Opta predicted ranks → season GF/GA (±MAE from closed-season place
-  history) → match λ → Dixon–Coles ``M`` → ``k ∼ M`` (``match_outcome_roll``)
-  → ClubPath rate update.
+  history) → match λ → Dixon–Coles ``M`` → ``k ∼ M`` → ClubPath update.
 
 Buy universe: shared ``player_pool`` (FFScout firm ∩ expanding minutes).
 

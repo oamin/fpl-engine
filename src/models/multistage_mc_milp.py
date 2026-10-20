@@ -12,12 +12,11 @@ From decision gameweek ``t``, for each of ``N`` Monte Carlo strands:
    (``match_outcome_roll``). Sampled goals update the strand's club rates
    so later weeks stay coherent.
 
-2. **Player xP (``score_xp_v2``).** At each snapshot, freeze same-season
-   as-of rates / priors / rolling minutes (``numagent_xp``) and score
-   each club side with ``score_team_side`` on Dixon–Coles moments from
-   the scenario λ pair — not ``xp_on_pot`` / share×λ. Generative
-   attack/defence on long strands stays deferred (cascade_short owns that
-   for priced t:t+1).
+2. **Player xP (``score_xp_v2`` generative).** Same stack as cascade_short
+   at each snapshot: lineup cov → attack dice → CS/GC from rolled GA →
+   soft priors (DefCon/bonus/cards/saves). **No player props** (unavailable
+   beyond priced weeks). Future weeks in the remaining horizon get a
+   scratch ``k ∼ M`` from path λ for valuation only (ClubPath unchanged).
 
 3. **MILP + frequency.** Selectable-pool squad MILP on discounted path
    xP; aggregate selection frequency across strands × snapshots.
@@ -56,12 +55,15 @@ from src.markets import numagent_xp
 from src.markets.cascade_score_v2 import (
     SCORER as SCORE_XP_V2,
     build_frozen_pool,
+    normalize_live_history,
+    score_pool_generative_on_scenarios,
     score_pool_on_lam_pots,
 )
 from src.markets.match_outcome import (
     match_outcome_probs_from_lambdas,
     match_outcome_roll,
 )
+from src.markets.short_horizon_generative import hist_by_team_norm
 from src.models.opta_gf_ga_horizon import (
     N_MATCHES,
     gf_ga_from_rank,
@@ -92,6 +94,9 @@ OBJECTIVE_XI_CAPTAIN_FT = "xi_plus_captain_ft"
 OBJECTIVES = (OBJECTIVE_SQUAD_SUM, OBJECTIVE_XI_CAPTAIN, OBJECTIVE_XI_CAPTAIN_FT)
 # Path FT mode: allow this many hits beyond the free-transfer bank at a snapshot.
 MAX_HITS_SNAPSHOT = 2
+# Scenario player scoring matches cascade_short generative (props off).
+DEFAULT_GENERATIVE_ATTACK = True
+DEFAULT_LINEUP_COV = True
 
 
 @dataclass
@@ -376,6 +381,53 @@ def sample_opta_scenario(
     }
 
 
+def _scenarios_for_remaining(
+    *,
+    remaining: Sequence[int],
+    snapshot_gw: int,
+    fixtures_gw: Mapping[int, list[dict[str, str]]],
+    rolled: Mapping[int, list[dict[str, Any]]],
+    paths: Mapping[str, ClubPath],
+    league_gf: float,
+    rng: random.Random,
+) -> dict[int, list[dict[str, Any]]]:
+    """Current GW: stored Opta rolls. Later GWs: scratch k∼M from path λ."""
+    out: dict[int, list[dict[str, Any]]] = {}
+    for g in remaining:
+        g_i = int(g)
+        if g_i == int(snapshot_gw) and g_i in rolled:
+            out[g_i] = list(rolled[g_i])
+            continue
+        rows: list[dict[str, Any]] = []
+        for fx in fixtures_gw.get(g_i, []):
+            if fx["home"] not in paths or fx["away"] not in paths:
+                continue
+            pred = path_match_pots(
+                paths, fx["home"], fx["away"], league_gf=league_gf
+            )
+            gh, ga, sh, sa = sample_scoreline(
+                pred["lam_home"],
+                pred["lam_away"],
+                lam_h_lo=pred["lam_home_lo"],
+                lam_h_hi=pred["lam_home_hi"],
+                lam_a_lo=pred["lam_away_lo"],
+                lam_a_hi=pred["lam_away_hi"],
+                rng=rng,
+            )
+            rows.append(
+                {
+                    "home": fx["home"],
+                    "away": fx["away"],
+                    "hg": gh,
+                    "ag": ga,
+                    "lam_h": sh,
+                    "lam_a": sa,
+                }
+            )
+        out[g_i] = rows
+    return out
+
+
 def run_strand(
     *,
     strand_id: int,
@@ -391,6 +443,9 @@ def run_strand(
     objective: str = OBJECTIVE_SQUAD_SUM,
     alpha_g: float | None = None,
     alpha_a: float | None = None,
+    hist_by_team: Mapping[str, pd.DataFrame] | None = None,
+    generative_attack: bool = DEFAULT_GENERATIVE_ATTACK,
+    lineup_cov: bool = DEFAULT_LINEUP_COV,
 ) -> StrandResult:
     """One coherent MC strand: Opta scenarios → score_xp_v2 → MILP."""
     if objective not in OBJECTIVES:
@@ -403,8 +458,8 @@ def run_strand(
         c: ClubPath(att=p.att, dfn=p.dfn, n=p.n) for c, p in paths0.items()
     }
     result = StrandResult(strand_id=strand_id)
-    # Sampled λ by (home, away) for each GW — used when scoring that GW's pot.
-    scenario_by_gw: dict[int, dict[tuple[str, str], tuple[float, float]]] = {}
+    # Full rolled scenarios by GW (hg/ag/lam) for generative player scoring.
+    rolled_by_gw: dict[int, list[dict[str, Any]]] = {}
     owned_ids: set[str] | None = None
     owned_frame: pd.DataFrame | None = None
     ft_bank = 1
@@ -414,7 +469,7 @@ def run_strand(
 
     for gw in horizon_gws:
         week_fix = fixtures_gw.get(int(gw), [])
-        scenario_by_gw[int(gw)] = {}
+        rolled_by_gw[int(gw)] = []
         for fx in week_fix:
             if fx["home"] not in paths or fx["away"] not in paths:
                 continue
@@ -427,10 +482,7 @@ def run_strand(
             )
             paths[fx["home"]].observe(sc["hg"], sc["ag"])
             paths[fx["away"]].observe(sc["ag"], sc["hg"])
-            scenario_by_gw[int(gw)][(fx["home"], fx["away"])] = (
-                float(sc["lam_h"]),
-                float(sc["lam_a"]),
-            )
+            rolled_by_gw[int(gw)].append(sc)
             result.scorelines.append(
                 {
                     "gw": int(gw),
@@ -448,30 +500,56 @@ def run_strand(
         if int(gw) not in set(int(x) for x in snapshot_gws):
             continue
 
-        # Remaining horizon: this GW uses sampled scenario λ; later GWs use
-        # path-updated Opta-style rates (mean path, not re-sampled here).
         remaining = [g for g in horizon_gws if int(g) >= int(gw)]
-        pots: dict[tuple[int, str], list[dict[str, float]]] = {}
-        for g2 in remaining:
-            pots.update(
-                pots_for_gw_from_paths(
-                    paths,
-                    fixtures_gw.get(int(g2), []),
-                    int(g2),
-                    league_gf=league_gf,
-                    scenario_lams=scenario_by_gw.get(int(g2))
-                    if int(g2) == int(gw)
-                    else None,
-                )
+        if generative_attack:
+            scenarios = _scenarios_for_remaining(
+                remaining=remaining,
+                snapshot_gw=int(gw),
+                fixtures_gw=fixtures_gw,
+                rolled=rolled_by_gw,
+                paths=paths,
+                league_gf=league_gf,
+                rng=rng,
             )
-        scored = score_pool_on_pots(
-            pool,
-            pots,
-            gws=remaining,
-            gamma=gamma,
-            alpha_g=alpha_g,
-            alpha_a=alpha_a,
-        )
+            scored = score_pool_generative_on_scenarios(
+                pool,
+                scenarios,
+                gws=remaining,
+                alpha_g=float(alpha_g),
+                alpha_a=float(alpha_a),
+                rng=rng,
+                hist_by_team=hist_by_team,
+                gamma=gamma,
+                lineup_cov=lineup_cov,
+            )
+        else:
+            # Mean-layer fallback (pre-generative diagnostic).
+            scenario_lams = {
+                (str(sc["home"]), str(sc["away"])): (
+                    float(sc["lam_h"]),
+                    float(sc["lam_a"]),
+                )
+                for sc in rolled_by_gw.get(int(gw), [])
+            }
+            pots: dict[tuple[int, str], list[dict[str, float]]] = {}
+            for g2 in remaining:
+                pots.update(
+                    pots_for_gw_from_paths(
+                        paths,
+                        fixtures_gw.get(int(g2), []),
+                        int(g2),
+                        league_gf=league_gf,
+                        scenario_lams=scenario_lams if int(g2) == int(gw) else None,
+                    )
+                )
+            scored = score_pool_on_pots(
+                pool,
+                pots,
+                gws=remaining,
+                gamma=gamma,
+                alpha_g=alpha_g,
+                alpha_a=alpha_a,
+            )
         scored = scored.loc[np.isfinite(scored["mc_score"])]
         if len(scored) < 15 or scored["position"].nunique() < 4:
             continue
@@ -899,6 +977,8 @@ def run_multistage_trial(
     snapshot_every: int = 1,
     objective: str = OBJECTIVE_SQUAD_SUM,
     minutes_overlay: bool = True,
+    generative_attack: bool = DEFAULT_GENERATIVE_ATTACK,
+    lineup_cov: bool = DEFAULT_LINEUP_COV,
 ) -> dict[str, Any]:
     """Run N coherent strands and return frequency table + metadata."""
     if objective not in OBJECTIVES:
@@ -906,6 +986,12 @@ def run_multistage_trial(
     team_names = {int(t["id"]): str(t["name"]) for t in bootstrap["teams"]}
     selectable = load_player_pool_ids(pool_path or DEFAULT_POOL_JSON)
     logs = pd.read_csv(logs_path or LOG_CSV)
+    hist = numagent_xp.asof_share_history(
+        normalize_live_history(logs),
+        before_gw=int(decision_gw),
+        season="2026-27",
+    )
+    team_hist = hist_by_team_norm(hist) if generative_attack else {}
     pool = build_frozen_pool(
         bootstrap,
         selectable,
@@ -954,16 +1040,31 @@ def run_multistage_trial(
                 objective=objective,
                 alpha_g=alpha_g,
                 alpha_a=alpha_a,
+                hist_by_team=team_hist,
+                generative_attack=generative_attack,
+                lineup_cov=lineup_cov,
             )
         )
 
     freq = aggregate_frequencies(strands, pool)
     n_squads = int(freq.attrs.get("n_squads") or 0)
+    scenario_note = (
+        "generative lineup→attack→CS/GC (no props); soft priors from score_xp_v2 helpers"
+        if generative_attack
+        else f"mean score_team_side ({SCORE_XP_V2}) on scenario λ moments"
+    )
     return {
         "decision_gw": int(decision_gw),
         "objective": objective,
         "scorer": SCORE_XP_V2,
-        "assembler": "src/markets/numagent_xp.py",
+        "assembler": (
+            "src/markets/short_horizon_generative.py"
+            if generative_attack
+            else "src/markets/numagent_xp.py"
+        ),
+        "generative_attack": bool(generative_attack),
+        "lineup_cov": bool(lineup_cov),
+        "props": False,
         "horizon": {"start": start, "end": end, "gws": horizon_gws},
         "snapshot_gws": snapshot_gws,
         "n_strands": int(n_strands),
@@ -977,9 +1078,10 @@ def run_multistage_trial(
         "alpha_g": float(alpha_g),
         "alpha_a": float(alpha_a),
         "scoring": (
-            "Opta match_prediction λ bands → Dixon–Coles M → "
-            f"numagent_xp.score_team_side ({SCORE_XP_V2}); "
-            "same-season as-of rates/priors/rolling m frozen at decision GW"
+            "Opta match_prediction λ bands → Dixon–Coles M → k∼M; "
+            f"{scenario_note}; "
+            "same-season as-of rates/priors/rolling m frozen at decision GW; "
+            "props off"
             + ("; FPL availability overlay on m" if minutes_overlay else "")
         ),
         "seed": int(seed),
@@ -1027,6 +1129,7 @@ def write_trial_outputs(result: dict[str, Any], *, out_dir: Path) -> dict[str, s
         f"- **{result['n_strands']}** coherent strands: each fixture samples λ "
         "from **Opta rank→GF/GA bands** (`match_prediction`, e.g. 2nd vs 20th), "
         "builds Dixon–Coles `M`, rolls `k ∼ M`, path rate update.",
+        f"- Player xP: **{result.get('scoring', '')}**",
         f"- Player xP: **`{result.get('scorer', SCORE_XP_V2)}`** via "
         "`numagent_xp.score_team_side` on Dixon–Coles moments from scenario λ; "
         f"same-season as-of rates frozen at decision GW. Share seeding: "

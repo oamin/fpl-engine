@@ -28,7 +28,7 @@ decision GW t
 │   └── path: scored_weeks_to_l4_pools → L4 (screen before promote)
 └── cascade_long  t+2 … t+n
     ├── Opta ranks → GF/GA (±MAE) → λ → M → k∼M → ClubPath.observe
-    ├── cascade_score_v2 on pool (mean score_team_side)
+    ├── generative player xP (= cascade_short; props off)
     ├── MILP frequency (squad_sum | xi_plus_captain | xi_plus_captain_ft)
     └── optional priced→Opta hand-off (plumbing until path-V)
 ```

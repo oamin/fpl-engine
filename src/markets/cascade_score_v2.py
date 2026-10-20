@@ -1,8 +1,9 @@
 """Long-horizon cascade scoring on Numagent 2.0 (``score_xp_v2``).
 
-Opta / path scenarios still sample match λ; player xP uses the locked
-assembler ``numagent_xp.score_team_side`` with same-season as-of rates —
-not ``xp_on_pot`` / ``add_player_priors`` shares.
+Opta / path scenarios sample match λ and roll ``k ∼ M``. Player xP on
+scenario strands matches cascade_short generative (lineup → attack dice →
+CS/GC from roll → soft priors) **without** player props (unavailable on
+t+2…). Mean-layer helpers remain for diagnostics / fallbacks.
 """
 
 from __future__ import annotations
@@ -14,6 +15,7 @@ import pandas as pd
 
 from src.markets import numagent_xp
 from src.markets.scoreline import build_matrix, team_moments
+from src.markets.short_horizon_generative import score_fixture_generative
 from src.teams import norm_team
 
 SCORER = numagent_xp.SCORE_NAME
@@ -349,3 +351,75 @@ def score_fixture_sides_on_lams(
     if not parts:
         return pd.DataFrame()
     return pd.concat(parts, ignore_index=True)
+
+
+def score_pool_generative_on_scenarios(
+    pool: pd.DataFrame,
+    scenarios_by_gw: Mapping[int, Sequence[Mapping[str, Any]]],
+    *,
+    gws: Sequence[int],
+    alpha_g: float,
+    alpha_a: float,
+    rng: Any,
+    hist_by_team: Mapping[str, pd.DataFrame] | None = None,
+    gamma: float = 0.9,
+    lineup_cov: bool = True,
+    rho: float = 0.0,
+) -> pd.DataFrame:
+    """Discounted multi-GW generative xP (cascade_short stack, no props).
+
+    Each scenario mapping needs ``home``, ``away``, ``lam_h``, ``lam_a``, and
+    preferably rolled ``hg`` / ``ag``. Missing goals trigger a fresh ``k ∼ M``
+    draw from the fixture λ (scratch valuation; does not update ClubPath).
+    """
+    out = pool.copy()
+    if "team_n" not in out.columns and "team_norm" in out.columns:
+        out["team_n"] = out["team_norm"].map(lambda t: norm_team(str(t)))
+    totals = np.zeros(len(out), dtype=float)
+    pid_to_idx = {str(p): i for i, p in enumerate(out["player_id"].astype(str))}
+
+    for h, gw in enumerate(gws):
+        disc = float(gamma) ** h
+        for sc in scenarios_by_gw.get(int(gw), ()) or ():
+            home = str(sc["home"])
+            away = str(sc["away"])
+            home_n = norm_team(home)
+            away_n = norm_team(away)
+            home_club = out.loc[out["team_norm"].map(norm_team) == home_n].copy()
+            away_club = out.loc[out["team_norm"].map(norm_team) == away_n].copy()
+            if home_club.empty and away_club.empty:
+                continue
+            gh = sc.get("hg", sc.get("goals_home"))
+            ga = sc.get("ag", sc.get("goals_away"))
+            home_xp, away_xp, _meta = score_fixture_generative(
+                home_club,
+                away_club,
+                lam_h=float(sc["lam_h"]),
+                lam_a=float(sc["lam_a"]),
+                rho=float(sc.get("rho", rho) or 0.0),
+                alpha_g=float(alpha_g),
+                alpha_a=float(alpha_a),
+                rng=rng,
+                home_hist=(hist_by_team or {}).get(home_n),
+                away_hist=(hist_by_team or {}).get(away_n),
+                home_props=None,
+                away_props=None,
+                lineup_cov=lineup_cov,
+                goals_home=None if gh is None else int(gh),
+                goals_away=None if ga is None else int(ga),
+            )
+            for scored in (home_xp, away_xp):
+                if scored is None or scored.empty:
+                    continue
+                for i in range(len(scored)):
+                    if "player_id" in scored.columns:
+                        pid = str(scored.iloc[i]["player_id"])
+                    else:
+                        pid = str(int(scored.iloc[i]["element"]))
+                    idx = pid_to_idx.get(pid)
+                    if idx is None:
+                        continue
+                    totals[idx] += disc * float(scored.iloc[i]["xp"])
+    out["mc_score"] = totals
+    out[SCORER] = totals
+    return out

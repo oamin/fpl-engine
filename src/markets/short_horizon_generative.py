@@ -348,10 +348,26 @@ def score_fixture_generative(
     home_props: Mapping[int, float] | None = None,
     away_props: Mapping[int, float] | None = None,
     lineup_cov: bool = True,
+    goals_home: int | None = None,
+    goals_away: int | None = None,
 ) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, Any]]:
-    """One generative path for both sides of a priced fixture."""
+    """One generative path for both sides of a fixture.
+
+    Scoreline: use ``goals_home`` / ``goals_away`` when already rolled
+    (cascade_long Opta path); otherwise ``k ∼ M`` from λ. Props optional —
+    cascade_long always passes ``None`` (unavailable beyond priced weeks).
+    """
     probs = match_outcome_probs_from_lambdas(lam_h, lam_a, rho)
-    roll = match_outcome_roll(probs, rng)
+    if goals_home is None or goals_away is None:
+        roll = match_outcome_roll(probs, rng)
+        gh, ga = int(roll.goals_home), int(roll.goals_away)
+        roll_p = float(roll.p)
+    else:
+        gh, ga = int(goals_home), int(goals_away)
+        n = probs.matrix.shape[0]
+        i, j = min(gh, n - 1), min(ga, n - 1)
+        mass = float(probs.matrix.sum())
+        roll_p = float(probs.matrix[i, j] / mass) if mass > 0 else 0.0
     g_home = float(alpha_g) * float(probs.moments["xg_home"])
     g_away = float(alpha_g) * float(probs.moments["xg_away"])
 
@@ -371,10 +387,10 @@ def score_fixture_generative(
             home_c, hist=home_hist, rng=rng, lineup_cov=lineup_cov
         )
         home_att = roll_side_attack(
-            home_dice, roll.goals_home, rng, team="home", lineup=home_lineup
+            home_dice, gh, rng, team="home", lineup=home_lineup
         )
         home_xp = xp_board_from_side_roll(
-            home_c, attack=home_att, lineup=home_lineup, goals_against=roll.goals_away
+            home_c, attack=home_att, lineup=home_lineup, goals_against=ga
         )
 
     if away_dice is None or away_c.empty:
@@ -385,22 +401,22 @@ def score_fixture_generative(
             away_c, hist=away_hist, rng=rng, lineup_cov=lineup_cov
         )
         away_att = roll_side_attack(
-            away_dice, roll.goals_away, rng, team="away", lineup=away_lineup
+            away_dice, ga, rng, team="away", lineup=away_lineup
         )
         away_xp = xp_board_from_side_roll(
-            away_c, attack=away_att, lineup=away_lineup, goals_against=roll.goals_home
+            away_c, attack=away_att, lineup=away_lineup, goals_against=gh
         )
 
     meta = {
-        "goals_home": roll.goals_home,
-        "goals_away": roll.goals_away,
-        "p": roll.p,
+        "goals_home": gh,
+        "goals_away": ga,
+        "p": roll_p,
         "lam_h": float(lam_h),
         "lam_a": float(lam_a),
-        "home_cs": int(roll.goals_away) == 0,
-        "away_cs": int(roll.goals_home) == 0,
-        "home_ga": int(roll.goals_away),
-        "away_ga": int(roll.goals_home),
+        "home_cs": ga == 0,
+        "away_cs": gh == 0,
+        "home_ga": ga,
+        "away_ga": gh,
         "n_home_scorers": 0 if home_att is None else len(home_att.scorers),
         "n_away_scorers": 0 if away_att is None else len(away_att.scorers),
     }
