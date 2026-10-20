@@ -1,7 +1,11 @@
 {
-  "task": "cascade_long Opta-rank GF/GA baseline (no ClubPath lambda blend)",
-  "status": "implemented",
+  "task": "Opta place → player rolls trial Man City v Fulham",
+  "status": "done",
   "branch": "cursor/cascade-long-m-from-opta-cc3d",
-  "protocol": "cascade_long_match_outcome",
-  "change": "Every fixture samples season GF/GA inside Opta place +/-MAE bands via sample_match_from_opta_ranks, then M->k~M. Removed 0.7/0.3 Opta+path blend; ClubPath unused for lambda (KeyError fallback only)."
+  "n": 2000,
+  "mean_scoreline": [2.926, 0.5785],
+  "p_cs_home": 0.5705,
+  "top_mean_xp": ["Haaland 6.86", "Cherki 6.72", "Semenyo 6.57"],
+  "artifact": "reports/opta_player_roll_mancity_fulham.json",
+  "module": "src/markets/opta_player_roll_trial.py"
 }
