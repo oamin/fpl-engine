@@ -4,7 +4,9 @@
 
 **Current product is Numagent 2.0** (`protocol.numagent_2_0`). Index: `reports/LOCKED.md`.
 
-Numagent 1.0 was the GW6-era numeric path: live XI/captain from captured **`ep_next`**, shadow/`climb` on **`score_xp`**, `wildcard_plan` / `deadline` / `whatif` on opening pots. Protocol archive: `numagent_1_0`. Example reports: `live_dry_run_gw6.md`, `wildcard_plan_gw6_dry_run.md`, `numagent_3271409_gw6.md`.
+**In-place archive index:** [`ARCHIVE_NUMAGENT_1_0.md`](ARCHIVE_NUMAGENT_1_0.md) (path list + what must stay importable).
+
+Numagent 1.0 was the GW6-era numeric path: live XI/captain from captured **`ep_next`**, shadow/`climb` on **`score_xp`**, `wildcard_plan` / `deadline` / `whatif` on opening pots. Protocol archive: `numagent_1_0`.
 
 Do not use 1.0 for live picks or new screens. Stragent remains a separate string agent, not Numagent.
 
@@ -12,9 +14,9 @@ Do not use 1.0 for live picks or new screens. Stragent remains a separate string
 
 **Engine primary is `score_xp_v2` (Numagent 2.0).** Protocol: `primary_scorer` / `score_xp_v2_screen.replaces_published_score_xp=true`.
 
-`score_xp` remains importable for historical free-transfer climb replay and as the named baseline in `reports/score_xp_v2_gate.md` (v2 − score_xp **+0.0531** [+0.0453, +0.0609]). Do not extend `score_xp` climbs, and do not use it for live picks or new screens except as that named baseline.
+`score_xp` remains importable for historical free-transfer climb replay and as the named baseline in `reports/score_xp_v2_gate.md` (v2 − score_xp **+0.0531** [+0.0453, +0.0609]). Do not extend `score_xp` climbs, and do not use it for live picks or new screens except as that named baseline. Full keep-list: [`ARCHIVE_NUMAGENT_1_0.md`](ARCHIVE_NUMAGENT_1_0.md).
 
-Assembler: `src/markets/numagent_xp.py`.
+Assembler for the **current** product: `src/markets/numagent_xp.py`.
 
 ---
 

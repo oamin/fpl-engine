@@ -1,4 +1,7 @@
-"""Logged wildcard judgement for one live deadline.
+"""Archived Numagent 1.0 wildcard judgement — not the live product path.
+
+**Archive:** ``reports/ARCHIVE_NUMAGENT_1_0.md``. Live path is L3/L4 under
+``numagent_live_pick``.
 
 The solver maximises the discounted sum of the fifteen. The decision number
 is the discounted XI plus captain on those same scores. ``score_xp`` is not

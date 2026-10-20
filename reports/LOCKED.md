@@ -65,5 +65,5 @@ Roadmap: `strategy_layers.md`.
 
 ## Superseded
 
-- **Numagent 1.0** — `protocol.numagent_1_0` / `SUPERSEDED.md`
-- **`score_xp`** — historical climbs and gate baseline only
+- **Numagent 1.0** — `protocol.numagent_1_0` / `SUPERSEDED.md` / **[`ARCHIVE_NUMAGENT_1_0.md`](ARCHIVE_NUMAGENT_1_0.md)** (in-place keep-list)
+- **`score_xp`** — historical climbs and gate baseline only (same archive index)

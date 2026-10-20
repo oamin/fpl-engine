@@ -7,8 +7,8 @@ Updated: 2026-10-20. **Numagent 2.0** is the product on main (`protocol.numagent
 | Step | Status | Note |
 | --- | --- | --- |
 | **1. Freeze product on main** | **done** | #88 (+ #89) merged to `main`. Pre-v2 cascade PR forest #73–#87 **closed** (do not re-open onto main). |
-| 2. Archive Numagent 1.0 / `score_xp` in-place | next | Docs + protocol roles; keep gate baseline. Leave GW6-era open PRs (#71/#72 and older) for that pass. |
-| 3. Decompose v2 for cascade | pending | Injectable μ for L4; cascade adapter is the only λ→xP bridge. |
+| **2. Archive Numagent 1.0 / `score_xp` in-place** | **done** | Index [`reports/ARCHIVE_NUMAGENT_1_0.md`](../reports/ARCHIVE_NUMAGENT_1_0.md); protocol roles; GW6 entrypoint docstrings; leftover PRs #59/#60/#69/#71/#72 **closed**. Modules stay importable for the gate baseline. |
+| 3. Decompose v2 for cascade | next | Injectable μ for L4; cascade adapter is the only λ→xP bridge. |
 | 4. One cascade branch + plan | pending | Short/long horizons off post-#88 main; selective replay only. |
 
 ## Plan

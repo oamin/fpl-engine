@@ -7,6 +7,7 @@ This file is the **superseded stage map** (stages 0–48 pot×share / climb era)
 | Era | What to read |
 | --- | --- |
 | **Live / locked** | `.cursor/context.md`, `reports/LOCKED.md`, `reports/numagent_2_0_method.md`, `reports/strategy_layers.md` |
+| Numagent 1.0 / `score_xp` archive | `reports/ARCHIVE_NUMAGENT_1_0.md` (in-place keep-list) |
 | Parked hypotheses | `.cursor/ideas.md` |
 | Superseded climbs | `reports/SUPERSEDED.md` |
 | Protocol | `experiments/protocol.json` |
