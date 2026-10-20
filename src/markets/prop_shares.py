@@ -1,19 +1,20 @@
-"""Rescale team goal shares from player anytime-scorer props.
+"""Props shape goal shares; ``M`` sets the team goal level.
 
-Live GW rule (PI 2026-10-16, lift-only):
+Live GW rule (PI 2026-10-20 — **row 1** / props-shape):
 
-Anytime markets quote **P(to score)** = P(G≥1), not E[G]. Poisson would
-force E[G]=λ=−log(1−p), which can cut a star with baseline E[G]>1. So props
-**lift** depressed baselines; they do not replace a higher share-based mean.
+Anytime markets quote **P(to score)** = P(G≥1). Convert to a Poisson mean
+``λ = −log(1−p)`` and use it as a **relative intensity**, not an absolute
+``E[G]`` pin:
 
-1. ``G_team = α_G × xG_M`` from AH/OU/BTTS is binding (Σ E[G] = G).
-2. Baseline E[G]_i = s_i × G_team.
-3. Covered players target ``max(baseline_i, λ(p_i))``. Extra mass is taken
-   from **uncovered** teammates first (props precedence on the margin).
-4. If lifts still cannot be funded (uncovered exhausted) and Σ would exceed G,
-   scale all players by ``G / Σ``.
+1. ``G_team = α_G × xG_M`` from AH/OU/BTTS (or a rolled ``k`` from ``M``)
+   is the **only** level.
+2. Weight ``w_i = λ(p_i)`` when player ``i`` is covered and ``m>0``;
+   else ``w_i =`` baseline ``E[G]_i = s_i × G_team``.
+3. ``π_i = w_i / Σ w``, then ``E[G]_i = π_i × G_team`` (mean path) or
+   ``E[G_i | k] = π_i × k`` (short-horizon roll).
 
-Assists unchanged.
+Assists: **no** prop overlay (locked). Lift-only / hard absolute replace are
+parked — both fight a mean pot and disagree with scoreline rolls from ``M``.
 """
 
 from __future__ import annotations
@@ -32,14 +33,18 @@ def anytime_p_to_lambda(p: float) -> float:
     return float(-math.log(1.0 - p))
 
 
-def rescale_goal_shares(
+def prop_goal_pi(
     sG: np.ndarray,
     *,
     G_team: float,
     prop_p: Mapping[int, float],
     eps: float = 1e-12,
 ) -> tuple[np.ndarray, dict[str, float]]:
-    """Lift-only prop overlay; returns shares summing to 1 with Σ E[G]=G_team."""
+    """Build compositional goal shares ``π`` from props + baseline.
+
+    Covered indices use ``λ(p)`` as weight; uncovered keep baseline
+    ``s × G_team``. Returns ``π`` with ``Σ π = 1`` (or zeros if empty).
+    """
     s = np.asarray(sG, dtype=float).copy()
     n = s.size
     empty = {
@@ -50,10 +55,14 @@ def rescale_goal_shares(
         "prop_scale": 1.0,
         "capped": False,
         "n_lifted": 0,
-        "mode": "lift_only",
+        "mode": "props_shape_m_level",
+        "sum_w": 0.0,
+        "sum_w_covered": 0.0,
+        "sum_w_uncovered": 0.0,
     }
     if n == 0:
         return s, empty
+
     s = np.maximum(s, 0.0)
     if s.sum() <= eps:
         s[:] = 1.0 / n
@@ -61,89 +70,78 @@ def rescale_goal_shares(
         s /= s.sum()
 
     G = float(max(0.0, G_team))
-    eg = s * G
+    baseline_eg = s * G
+
     covered_idx = sorted(int(i) for i in prop_p if 0 <= int(i) < n)
     if not covered_idx or G <= eps:
-        return s, {**empty, "G_team": G, "residual": G}
+        return s, {**empty, "G_team": G, "residual": G, "sum_w": float(baseline_eg.sum())}
 
-    target = eg.copy()
+    w = baseline_eg.copy()
     for i in covered_idx:
-        lam = anytime_p_to_lambda(float(prop_p[i]))
-        if lam > target[i]:
-            target[i] = lam
+        w[i] = anytime_p_to_lambda(float(prop_p[i]))
 
-    need = float(np.maximum(target - eg, 0.0).sum())
-    n_lifted = int(np.sum(target > eg + eps))
+    sum_w = float(w.sum())
+    if sum_w <= eps:
+        return s, {**empty, "G_team": G, "residual": G, "n_props": len(covered_idx)}
 
-    if need <= eps:
-        # No lift — keep baseline (props did not raise anyone).
-        return s, {
-            "G_team": G,
-            "covered": float(eg[covered_idx].sum()),
-            "residual": float(G - eg[covered_idx].sum()),
-            "n_props": len(covered_idx),
-            "prop_scale": 1.0,
-            "capped": False,
-            "n_lifted": 0,
-            "mode": "lift_only",
-        }
-
+    pi = w / sum_w
+    covered_mass = float((pi[covered_idx] * G).sum())
     uncovered = np.ones(n, dtype=bool)
     uncovered[covered_idx] = False
-    pool = float(eg[uncovered].sum()) if uncovered.any() else 0.0
+    sum_w_cov = float(w[covered_idx].sum())
+    sum_w_unc = float(w[uncovered].sum()) if uncovered.any() else 0.0
+    # "capped" only as a diagnostic: raw covered λ-mass exceeds the pot.
+    capped = sum_w_cov > G + eps
+    prop_scale = float(G / sum_w) if sum_w > eps else 1.0
 
-    eg_out = eg.copy()
-    prop_scale = 1.0
-    capped = False
-
-    if pool >= need - eps:
-        # Fund lifts entirely from uncovered baseline mass.
-        eg_out[covered_idx] = target[covered_idx]
-        if pool > eps:
-            shrink = (pool - need) / pool
-            eg_out[uncovered] = eg[uncovered] * shrink
-        else:
-            eg_out[uncovered] = 0.0
-    elif pool > eps:
-        # Partial lifts: drain uncovered, allocate pool ∝ need.
-        eg_out[uncovered] = 0.0
-        eg_out[covered_idx] = eg[covered_idx]
-        needs = np.maximum(target - eg, 0.0)
-        eg_out += needs * (pool / float(needs.sum()))
-    else:
-        # No uncovered mass (all covered or zero baseline elsewhere): apply
-        # targets then pot-cap so Σ ≤ G_team.
-        eg_out = target.copy()
-        raw = float(eg_out.sum())
-        if raw > G + eps:
-            prop_scale = G / raw
-            eg_out *= prop_scale
-            capped = True
-
-    total = float(eg_out.sum())
-    if total <= eps:
-        return s, {
-            "G_team": G,
-            "covered": 0.0,
-            "residual": G,
-            "n_props": len(covered_idx),
-            "prop_scale": prop_scale,
-            "capped": capped,
-            "n_lifted": n_lifted,
-            "mode": "lift_only",
-        }
-    eg_out = eg_out * (G / total)
-    out = eg_out / G
-    covered_mass = float(eg_out[covered_idx].sum())
-    return out, {
+    return pi, {
         "G_team": G,
         "covered": covered_mass,
         "residual": float(max(0.0, G - covered_mass)),
         "n_props": len(covered_idx),
-        "prop_scale": float(prop_scale),
+        "prop_scale": prop_scale,
         "capped": capped,
-        "n_lifted": n_lifted,
-        "mode": "lift_only",
-        "need": need,
-        "uncovered_pool": pool,
+        "n_lifted": 0,  # retired; kept for column compat
+        "mode": "props_shape_m_level",
+        "sum_w": sum_w,
+        "sum_w_covered": sum_w_cov,
+        "sum_w_uncovered": sum_w_unc,
     }
+
+
+def rescale_goal_shares(
+    sG: np.ndarray,
+    *,
+    G_team: float,
+    prop_p: Mapping[int, float],
+    eps: float = 1e-12,
+) -> tuple[np.ndarray, dict[str, float]]:
+    """Props shape ``π``; caller multiplies by ``G_team`` (or rolled ``k``).
+
+    Name kept for live call sites. Semantics: **props_shape_m_level**
+    (not lift-only).
+    """
+    return prop_goal_pi(sG, G_team=G_team, prop_p=prop_p, eps=eps)
+
+
+def allocate_goals_with_pi(
+    goals_for: int | float,
+    pi: np.ndarray,
+    *,
+    eps: float = 1e-12,
+) -> np.ndarray:
+    """Short-horizon / roll path: ``E[G_i | k] = k · π_i``.
+
+    ``goals_for`` is the integer (or expected) team goals from a draw of ``M``.
+    ``π`` must already be compositional (from ``prop_goal_pi`` or baseline shares).
+    """
+    pi_a = np.asarray(pi, dtype=float)
+    if pi_a.size == 0:
+        return pi_a
+    k = float(max(0.0, goals_for))
+    s = np.maximum(pi_a, 0.0)
+    total = float(s.sum())
+    if total <= eps:
+        return np.zeros_like(s)
+    s = s / total
+    return s * k

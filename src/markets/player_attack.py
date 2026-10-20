@@ -8,7 +8,12 @@ Second cut of the ``score_xp_v2`` decomposition (after ``match_outcome``):
 
 Shares ``sG`` / ``sA`` are **not** built here — they come from same-season
 appearance rates × minutes (``numagent_xp`` weights / share-SE shrink). This
-module only multiplies shares by the M-derived pots.
+module multiplies shares by the M-derived pots.
+
+Optional **anytime props** (goals only): props **shape** ``π`` via
+``prop_shares.prop_goal_pi``; ``M`` still sets the level
+(``E[G_i] = π_i · G_team``, or ``π_i · k`` on a scoreline roll). Assists
+never take a prop overlay.
 
 FPL point conversion (MID goals = 5, assists = 3, …) is optional and sits
 beside the expectations so callers can inspect raw ``E[G]`` / ``E[A]``
@@ -19,10 +24,11 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass
-from typing import Sequence
+from typing import Mapping, Sequence
 
 import numpy as np
 
+from src.markets.prop_shares import allocate_goals_with_pi, prop_goal_pi
 from src.rules.fpl_2026 import ASSIST_POINTS, GOAL_POINTS, normalize_position
 
 
@@ -185,8 +191,13 @@ def player_attack_from_m(
     dsG: np.ndarray | Sequence[float] | None = None,
     dsA: np.ndarray | Sequence[float] | None = None,
     positions: Sequence[object] | None = None,
-) -> tuple[TeamAttackPots, PlayerAttackExpectations]:
+    prop_p: Mapping[int, float] | None = None,
+) -> tuple[TeamAttackPots, PlayerAttackExpectations, dict[str, float] | None]:
     """One-shot: ``xG_M`` + α + shares → pots and player attack expectations.
+
+    Optional ``prop_p``: row-index → fair P(anytime scorer). Reshapes goal
+    shares only (``props_shape_m_level``); assists unchanged. When set,
+    goal-share SEs are cleared (prop shape replaces rate SE for ``sG``).
 
     When ``positions`` is set, also fills FPL ``xp_goals`` / ``xp_assists``.
     """
@@ -198,7 +209,31 @@ def player_attack_from_m(
         d_alpha_a=d_alpha_a,
         d_xg=d_xg,
     )
-    exp = player_attack_expectations(sG, sA, pots, dsG=dsG, dsA=dsA)
+    sG_use = np.asarray(sG, dtype=float)
+    dsG_use = dsG
+    prop_diag: dict[str, float] | None = None
+    if prop_p:
+        sG_use, prop_diag = prop_goal_pi(sG_use, G_team=pots.G_team, prop_p=prop_p)
+        dsG_use = np.zeros(sG_use.size)
+    exp = player_attack_expectations(sG_use, sA, pots, dsG=dsG_use, dsA=dsA)
     if positions is not None:
         exp = attack_xp_from_expectations(exp, positions)
-    return pots, exp
+    return pots, exp, prop_diag
+
+
+def player_attack_on_roll(
+    pi_g: np.ndarray | Sequence[float],
+    sA: np.ndarray | Sequence[float],
+    *,
+    goals_for: int | float,
+    a_team: float,
+) -> tuple[np.ndarray, np.ndarray]:
+    """Short-horizon: allocate rolled ``goals_for`` with goal ``π``; assists use ``A_team``.
+
+    ``pi_g`` is compositional (baseline ``sG`` or props-shaped). Assists stay
+    share × pot (no prop). Returns ``(E_G, E_A)`` for that roll's mean allocation.
+    """
+    eG = allocate_goals_with_pi(goals_for, np.asarray(pi_g, dtype=float))
+    sA_a = np.asarray(sA, dtype=float)
+    eA = sA_a * float(a_team)
+    return eG, eA

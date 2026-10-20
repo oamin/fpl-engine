@@ -13,8 +13,7 @@ import numpy as np
 import pandas as pd
 
 from src.markets import fpl_score_rates, scoreline
-from src.markets.player_attack import player_attack_from_m, team_attack_pots
-from src.markets.prop_shares import rescale_goal_shares
+from src.markets.player_attack import player_attack_from_m
 from src.rules.fpl_2026 import (
     APPEARANCE_60,
     APPEARANCE_UNDER_60,
@@ -309,8 +308,9 @@ def score_team_side(
     correlated-draw sampler (must be length n and sum ≈ 1 on the playing set).
 
     Optional ``prop_p_by_player``: FPL id (or ``player_id`` string) → fair
-    P(anytime scorer). When set, goal shares are rescaled so covered players
-    take precedence over rolling pot share (``prop_shares.rescale_goal_shares``).
+    P(anytime scorer). When set, goal shares are **shaped** by props
+    (``prop_shares.prop_goal_pi`` / row-1); ``M`` still sets ``G_team``.
+    Assists never take a prop overlay.
 
     Optional ``share_se_shrink``: shrink ``sG``/``sA`` toward a share prior using
     share SE (``shrink_shares_by_se``) before props / expectations.
@@ -399,35 +399,25 @@ def score_team_side(
             "prior_support": g_diag.get("prior_support", float("nan")),
         }
 
-    # M-dependent attack pots (G_team / A_team) — see player_attack.py.
-    # Props need G_team before share rescale, so form pots first.
-    pots_pre = team_attack_pots(
-        float(xg),
-        alpha_g=float(alpha_g),
-        alpha_a=float(alpha_a),
-        d_alpha_g=float(d_alpha_g),
-        d_alpha_a=float(d_alpha_a),
-    )
-    g_team = float(pots_pre.G_team)
-
-    prop_diag: dict[str, float] | None = None
+    # Optional anytime props → row-index map (m>0 only).
+    prop_p: dict[int, float] | None = None
     if prop_p_by_player:
         id_col = "player_id" if "player_id" in out.columns else "element"
         if id_col not in out.columns:
             raise ValueError("prop_p_by_player needs player_id or element column")
         lookup = {str(k).split(":")[-1]: float(v) for k, v in prop_p_by_player.items()}
-        prop_p: dict[int, float] = {}
+        prop_p = {}
         for i, raw in enumerate(out[id_col].tolist()):
             if m[i] <= 0:
-                continue  # do not pin pot mass onto unavailable players
+                continue  # do not put prop mass on unavailable players
             key = str(raw).split(":")[-1]
             if key in lookup:
                 prop_p[i] = lookup[key]
-        if prop_p:
-            sG, prop_diag = rescale_goal_shares(sG, G_team=g_team, prop_p=prop_p)
-            dsG = np.zeros(n)  # prop pin replaces share SE for covered mass
+        if not prop_p:
+            prop_p = None
 
-    pots, attack = player_attack_from_m(
+    # M-dependent attack (pots × shares; props shape π when present).
+    pots, attack, prop_diag = player_attack_from_m(
         sG,
         sA,
         xg=float(xg),
@@ -438,7 +428,15 @@ def score_team_side(
         dsG=dsG,
         dsA=dsA,
         positions=pos.tolist(),
+        prop_p=prop_p,
     )
+    # Reflect props-shaped goal shares on the output board.
+    if prop_diag is not None:
+        sG = np.asarray(attack.E_G, dtype=float)
+        g_tmp = float(pots.G_team)
+        if g_tmp > 0:
+            sG = sG / g_tmp
+        dsG = np.zeros(n)
     g_team = float(pots.G_team)
     a_team = float(pots.A_team)
     eG = np.asarray(attack.E_G, dtype=float)

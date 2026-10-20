@@ -10,20 +10,35 @@ Upstream: [`MATCH_OUTCOME.md`](MATCH_OUTCOME.md) builds the Dixon–Coles grid `
 | --- | --- |
 | `G_team = α_G · xG_M`, `A_team = α_A · xG_M` | Fitting `M` |
 | `E[G_i] = sG_i · G_team`, `E[A_i] = sA_i · A_team` | Building `rG`/`rA` or shares |
+| Optional anytime **props → π** (goals only) | Absolute `λ` pin / lift-only |
 | Optional FPL `xp_goals` / `xp_assists` | Appearance, CS, GC, DefCon, bonus |
 
 Shares stay in `numagent_xp` (rates × minutes → weights → share-SE shrink). The assembler `score_team_side` calls this module for the attack block only.
+
+### Anytime props (row 1 — locked formula; live default still **off**)
+
+Props **shape** goal shares; `M` **levels** them:
+
+```
+w_i = λ(p_i) if covered else sG_i · G_team
+π_i = w_i / Σ w
+E[G_i] = π_i · G_team          # mean path
+E[G_i | k] = π_i · k           # short-horizon roll (player_attack_on_roll)
+```
+
+Assists: **no** prop overlay (locked). Lift-only and hard absolute replace are parked.
 
 ## API
 
 ```python
 from src.markets.player_attack import player_attack_from_m
 
-pots, exp = player_attack_from_m(
+pots, exp, prop_diag = player_attack_from_m(
     sG, sA,
     xg=xg_m,           # E[goals for] from M
     alpha_g=0.96, alpha_a=0.90,
     positions=["MID"], # optional → xp_goals / xp_assists
+    prop_p={0: 0.45},  # optional row-index → P(anytime)
 )
 # pots.G_team, pots.A_team
 # exp.E_G, exp.E_A  ← player xG / xA in the score_xp_v2 sense

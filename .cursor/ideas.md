@@ -173,7 +173,8 @@ The clean fill is kept in 2023/24 only. Gameweeks 1–8 against Gameweeks 9–38
 The upper-tail reading was reviewed the same day and not added ([upper tail](bc-7121b96b-db3a-552d-ade8-335c01d37eda)). A higher historical ceiling, conditional on a half-point score gap, is the haul arm already parked. Do not open a cut at 10, 12, or 15. Spread penalties stay parked.
 
 - Asian handicap, as a live-week pot only, after its own lock. Historical `score_xp` stays on the 1X2 and the 2.5 line. The free file has the handicap and no 3.5 line.
-- Player props → goal-share rescale is prototyped (`prop_shares.rescale_goal_shares`; live probe 2026-10-16). Still needs FPL id matching and wiring into live `score_xp_v2` t:t+2. No market discovery loop; region=`us` only; per-event odds (BTTS not on bulk `/odds`).
+- Player props → goal-share rescale: **formula locked 2026-10-20** as props-shape π / M-levels (`prop_goal_pi`); lift-only and hard absolute λ replace parked. Live default still **off**. Assists no overlay locked. Short-horizon uses same π on rolls (`allocate_goals_with_pi` / `player_attack_on_roll`).
+- ~~Lift-only anytime overlay~~ — parked 2026-10-20 (fought mean pot; disagreed with scoreline rolls).
 - A season-rank weight on the copied tail only. Strength comes from season prices on a log scale, shrunk and clipped to about a 15% move in the team rate. It is idle on a week that already has a 1X2. It is not a 1–10 multiplier. The first Gameweek 6 call, once a line exists, still copies the third priced step flat.
 - An LLM guider with three outputs: minutes rows with a source, a search constraint, or a question back. The backend re-solves and reports the points cost. Ownership stays out of `score_xp`. A human pick of the constrained squad is logged and scored after the gameweek against the declined plan.
 

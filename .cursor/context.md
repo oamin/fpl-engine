@@ -64,7 +64,7 @@ Screens: `reports/match_band_calibration.md`, `reports/player_ga_finish.md`,
 - α from `fpl_score_rates` (2025/26 prior + live counts; refresh after each completed GW)
 - Same-season-only \(rG/rA\) (no prior-season share fill); RATE_M0=270
 - Minutes: packet/tags → `xmi`; predicted-XI roles (`lineup:xi` / `lineup:rotated`)
-- Share-SE shrink on; prior `position_minutes`; **anytime props off** by default
+- Share-SE shrink on; prior `position_minutes`; **anytime props off** by default; formula = **props shape π, M levels** (assists no overlay; lift-only parked)
 - xCS / xGC additive from the same matrix; saves / DefCon / bonus / cards as in `reports/score_xp_v2.md`
 - Gate vs `score_xp` (oracle minutes, GW5–38, m>60): Δ **+0.0531** [+0.0453, +0.0609] — `reports/score_xp_v2_gate.md`
 

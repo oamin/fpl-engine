@@ -26,6 +26,7 @@ See `reports/MATCH_OUTCOME.md` · `reports/PLAYER_ATTACK.md`. Match call sites n
 | Same-season shares only | 2026-10-16 | `score_xp_v2_share_history` |
 | α_G / α_A pooled prior+live | 2026-10-16 | `score_xp_v2_alphas` |
 | Live anytime props **off** | 2026-10-17 | `score_xp_v2_live_props` |
+| Props formula = shape π, M levels | 2026-10-20 | `prop_goal_pi` / `player_attack_from_m`; assists no overlay |
 | L2 μ_post ≡ score_xp_v2 | 2026-10-16 | shrink `mode=none` |
 | L3 / L4 γ=1 BOOKIE_DEPTH=2 | 2026-10-15/16 | strategiser default |
 

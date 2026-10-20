@@ -51,7 +51,7 @@ class PlayerAttackExpectations(unittest.TestCase):
         xg = 2.078965854134929
         alpha_g, alpha_a = 0.9601357082273113, 0.9050042408821035
         sG, sA = 0.13088690920638033, 0.15853528405420997
-        pots, exp = player_attack_from_m(
+        pots, exp, prop_diag = player_attack_from_m(
             [sG],
             [sA],
             xg=xg,
@@ -59,6 +59,7 @@ class PlayerAttackExpectations(unittest.TestCase):
             alpha_a=alpha_a,
             positions=["MID"],
         )
+        self.assertIsNone(prop_diag)
         self.assertAlmostEqual(pots.G_team, alpha_g * xg, places=10)
         self.assertAlmostEqual(float(exp.E_G[0]), sG * pots.G_team, places=10)
         self.assertAlmostEqual(float(exp.E_A[0]), sA * pots.A_team, places=10)

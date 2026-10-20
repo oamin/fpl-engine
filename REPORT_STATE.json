@@ -1,36 +1,24 @@
 {
-  "milestone": "score-xp-v2-player-attack-from-m",
+  "milestone": "score-xp-v2-props-shape-m-level",
   "status": "complete",
-  "summary": "Second score_xp_v2 decomposition cut: player_attack_from_m (xG_M × α × shares → E[G]/E[A]). score_team_side attack block delegates here. Worked example: Saka Arsenal away Bournemouth GW20 2025/26.",
+  "summary": "Anytime props: row-1 formula locked — props shape π (λ as relative weight), M sets level (E[G]=π·G_team or π·k on rolls). Assists no overlay locked. Lift-only / hard absolute replace parked. Live default still off. Hooked via player_attack_from_m.",
   "gemini": "",
   "decisions": {
-    "player_attack_from_m": {
-      "decision": "pots_times_shares",
-      "E_G": "sG * alpha_G * xG_M",
-      "E_A": "sA * alpha_A * xG_M",
-      "shares": "remain_in_numagent_xp"
-    },
-    "defence_from_m": {
-      "decision": "still_in_assembler",
-      "next": "extract_cs_gc"
+    "props": {
+      "decision": "props_shape_m_level",
+      "weight_covered": "lambda(p)=−log(1−p)",
+      "weight_uncovered": "sG * G_team",
+      "level": "G_team from M (mean) or k from match_outcome_roll",
+      "assists": "no_overlay_locked",
+      "live_default": false,
+      "parked": ["lift_only", "hard_absolute_replace"]
     }
   },
   "artifacts": [
+    "src/markets/prop_shares.py",
     "src/markets/player_attack.py",
-    "tests/test_player_attack.py",
+    "tests/test_prop_shares.py",
     "reports/PLAYER_ATTACK.md",
-    "reports/SCORE_XP_V2_CHECKLIST.md",
-    "reports/MATCH_OUTCOME.md"
-  ],
-  "example": {
-    "player": "Bukayo Saka",
-    "fixture": "Bournemouth vs Arsenal (A), GW20 2025-26",
-    "xg_m": 2.079,
-    "G_team": 1.996,
-    "A_team": 1.881,
-    "sG": 0.131,
-    "sA": 0.159,
-    "E_G": 0.261,
-    "E_A": 0.298
-  }
+    "experiments/protocol.json"
+  ]
 }
