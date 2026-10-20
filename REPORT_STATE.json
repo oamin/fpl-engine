@@ -1,19 +1,18 @@
 {
-  "milestone": "cascade-long-generative-parity",
-  "status": "in_progress",
-  "summary": "cascade_long player xP now matches cascade_short generative stack (lineup→attack→CS/GC→soft priors) with props forced off. Opta rank→GF/GA→λ→M scorelines unchanged. PR #97.",
+  "milestone": "path-evolution-trial",
+  "status": "complete",
+  "summary": "Quick trial (N=40, GW8–19): path-only ClubPath (Opta seed + n0=4, no fixture Opta re-anchor) grows cross-strand λ SD 0→0.41 and Arsenal att SD 0.29→0.47. Current opta_blend keeps λ SD flat (~0.04–0.08) and att SD shrinks — Opta re-anchor suppresses horizon fan-out. n0=0 wipes seed on match 1.",
   "gemini": "",
   "decisions": {
-    "cascade_long_player_xp": {
-      "decision": "generative_parity_props_off",
-      "props": false,
-      "protocol": "cascade_long_match_outcome"
+    "path_evolution": {
+      "trial": "prefer_path_only_with_n0",
+      "n0_suggested": 4,
+      "avoid": ["fixture_opta_blend", "z_h_inflation", "n0_equals_0"]
     }
   },
   "artifacts": [
-    "src/markets/cascade_score_v2.py",
-    "src/markets/short_horizon_generative.py",
-    "src/models/multistage_mc_milp.py",
-    "tests/test_cascade_long_generative.py"
+    "src/models/path_evolution_trial.py",
+    "reports/path_evolution_trial.md",
+    "data/processed/path_evolution_trial.json"
   ]
 }
