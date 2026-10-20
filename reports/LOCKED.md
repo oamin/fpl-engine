@@ -63,6 +63,10 @@ Roadmap: `strategy_layers.md`.
 | L4 FT-DP, chip half-stop | `layer4_ft_dp.md`, `layer4_chip_stop.md` |
 | L5 as strategiser | `layer5_vs_l4.md`, `layer5_vs_l4_rescreen.md` |
 
+## Cascade surfaces
+
+Contract: [`CASCADE_CONTRACT.md`](CASCADE_CONTRACT.md). μ injection for L4 (no Odds/FD factory): `src/strategy/layer4_mu_inject.py`. Long-horizon λ→xP: `src/markets/cascade_score_v2.py`.
+
 ## Superseded
 
 - **Numagent 1.0** — `protocol.numagent_1_0` / `SUPERSEDED.md` / **[`ARCHIVE_NUMAGENT_1_0.md`](ARCHIVE_NUMAGENT_1_0.md)** (in-place keep-list)
