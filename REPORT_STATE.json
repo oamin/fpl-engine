@@ -1,10 +1,16 @@
 {
-  "task": "lock cascade short/long centreline M → k∼M; retire λ ±15% jitter",
+  "task": "cascade_short_long_viability_batch",
   "status": "done",
-  "branch": "cursor/cascade-long-m-from-opta-cc3d",
-  "MARKET_BAND": 0.0,
-  "contaminated_trial": "reports/multistage_xi_captain_ft_short_long_trial.md",
-  "protocol": ["cascade_short_generative", "cascade_long_match_outcome"],
-  "parked": "ideas.md lambda_uniform_band",
-  "merge": "resolved REPORT_STATE vs base club-expanding for PR #97"
+  "elapsed_s": 1352.0085895061493,
+  "errors": [],
+  "report": "/workspace/reports/cascade_short_long_viability_results.md",
+  "state": "/workspace/data/processed/cascade_viability/batch_state.json",
+  "verdicts": {
+    "short_gen_minus_short_mean": "clearly_loses",
+    "long_gen_minus_long_mean": "clearly_loses",
+    "short_gen_minus_long_gen": "does_not_clearly_lose"
+  },
+  "A_passed": true,
+  "C_passed": true,
+  "D_passed": true
 }
