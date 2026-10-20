@@ -23,7 +23,7 @@ decision GW t
 │   ├── live book / hist FD → Dixon–Coles λ (± band)
 │   ├── freeze as-of rates (GW < t)
 │   ├── mean: score_team_side → μ boards (pool-filtered)
-│   ├── scenario: k∼M → lineup cov → attack dice (firm XI later)
+│   ├── scenario: k∼M → lineup cov → attack dice; CS/GC from rolled GA (firm XI later)
 │   ├── mean: L1 / L3
 │   └── path: scored_weeks_to_l4_pools → L4 (screen before promote)
 └── cascade_long  t+2 … t+n

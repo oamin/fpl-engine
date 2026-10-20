@@ -126,9 +126,10 @@
   },
   "cascade_short_generative": {
     "locked": "2026-10-20",
-    "role": "priced short-horizon t:t+1 scenario attack path",
-    "mean_layer": "score_team_side / score_xp_v2 (unchanged)",
-    "scenario": "sample λ ±15% of FD Dixon–Coles; match_outcome_roll; lineup_roll competitor pairs; attack_roll scorer≠assister with α_G/α_A empties",
+    "role": "priced short-horizon t:t+1 scenario attack + defence path",
+    "mean_layer": "score_team_side / score_xp_v2 (unchanged; moment xCS/xGC)",
+    "scenario": "sample λ ±15% of FD Dixon–Coles; match_outcome_roll; lineup_roll competitor pairs; attack_roll scorer≠assister with α_G/α_A empties; defence_roll CS/GC from rolled GA",
+    "defence": "CS = (GA==0) with ≥60'; GC = −⌊GA/2⌋ for GKP/DEF who played — no separate xCS/xGC on scenario strands",
     "scope": "cascade_short / short_horizon_cascade scenario strands only",
     "firm_xi": "deferred — news/firm XI override later",
     "default": true,
@@ -136,6 +137,7 @@
     "modules": [
       "src/markets/short_horizon_generative.py",
       "src/markets/attack_roll.py",
+      "src/markets/defence_roll.py",
       "src/markets/lineup_roll.py",
       "src/markets/match_outcome.py"
     ],

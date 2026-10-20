@@ -66,6 +66,41 @@ class FixtureGenerative(unittest.TestCase):
         self.assertIn("goals_home", meta)
         self.assertGreaterEqual(int(meta["goals_home"]), 0)
 
+    def test_cs_gc_match_rolled_scoreline(self) -> None:
+        """Defence xP is the rolled GA, not moment xCS/xGC."""
+        home = self._club("Arsenal", ["A1"], [1])
+        home["position"] = ["DEF"]
+        away = self._club("Everton", ["E1"], [2])
+        away["position"] = ["DEF"]
+        # Extreme λ so scoreline is usually 1–0-ish but we assert consistency.
+        for seed in range(20):
+            h_xp, a_xp, meta = score_fixture_generative(
+                home,
+                away,
+                lam_h=2.0,
+                lam_a=1.0,
+                rho=0.0,
+                alpha_g=0.96,
+                alpha_a=0.90,
+                rng=np.random.default_rng(seed),
+                lineup_cov=False,
+            )
+            ga_h = int(meta["goals_away"])
+            ga_a = int(meta["goals_home"])
+            self.assertEqual(int(h_xp.iloc[0]["goals_against"]), ga_h)
+            self.assertEqual(int(a_xp.iloc[0]["goals_against"]), ga_a)
+            self.assertEqual(bool(h_xp.iloc[0]["clean_sheet"]), ga_h == 0)
+            self.assertEqual(bool(a_xp.iloc[0]["clean_sheet"]), ga_a == 0)
+            self.assertEqual(int(h_xp.iloc[0]["gc_bins"]), ga_h // 2)
+            if ga_h == 0:
+                self.assertAlmostEqual(float(h_xp.iloc[0]["xp_cs"]), 4.0)
+                self.assertAlmostEqual(float(h_xp.iloc[0]["xp_gc"]), 0.0)
+            else:
+                self.assertAlmostEqual(float(h_xp.iloc[0]["xp_cs"]), 0.0)
+                self.assertAlmostEqual(
+                    float(h_xp.iloc[0]["xp_gc"]), -float(ga_h // 2)
+                )
+
     def test_score_week_generative_aggregates(self) -> None:
         side = pd.concat(
             [

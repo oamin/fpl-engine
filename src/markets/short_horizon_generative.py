@@ -5,7 +5,8 @@ Per fixture path:
 1. ``k ∼ M`` (``match_outcome_roll`` from priced / FD λ).
 2. Lineup world (minutes-corr competitor pairs; firm XI override later).
 3. Scorer / assist dice (``π`` props-shape or shares; ``ρ`` assists; α empties).
-4. Defence from the **rolled** scoreline (CS if GA=0; GC = ⌊GA/2⌋).
+4. Defence from the **rolled** scoreline (``defence_roll``: CS if GA=0;
+   GC = ⌊GA/2⌋) — no separate xCS / xGC moments on scenario strands.
 
 Mean-layer boards stay on ``score_team_side``; cascade_short **scenario**
 strands use this path when ``generative_attack=True`` (default).
@@ -20,6 +21,7 @@ import numpy as np
 import pandas as pd
 
 from src.markets.attack_roll import build_side_dice, roll_side_attack
+from src.markets.defence_roll import xp_defence_on_roll
 from src.markets.lineup_roll import (
     START_GATE,
     LineupWorld,
@@ -35,10 +37,8 @@ from src.rules.fpl_2026 import (
     APPEARANCE_60,
     APPEARANCE_UNDER_60,
     ASSIST_POINTS,
-    CS_POINTS,
     DEFCON_THRESHOLD,
     GOAL_POINTS,
-    GOALS_CONCEDED_DEDUCTION,
     MINUTES_FOR_APPEARANCE_BONUS,
     normalize_position,
 )
@@ -199,25 +199,14 @@ def xp_board_from_side_roll(
     xp_appear = np.array([_appearance_xp(float(m)) for m in minutes])
     xp_goals = np.zeros(n)
     xp_assists = np.zeros(n)
-    xp_cs = np.zeros(n)
-    xp_gc = np.zeros(n)
-    ga = int(max(0, goals_against))
-    cs = 1.0 if ga == 0 else 0.0
-    xgc = float(ga // 2)
-
     for i, name in enumerate(names):
         g = float(goals.get(name, 0))
         a = float(assists.get(name, 0))
         xp_goals[i] = g * float(GOAL_POINTS[pos[i]])
         xp_assists[i] = a * float(ASSIST_POINTS)
-        m = float(minutes[i])
-        if m <= 0:
-            continue
-        cs_pts = float(CS_POINTS[pos[i]])
-        if m >= MINUTES_FOR_APPEARANCE_BONUS and cs_pts:
-            xp_cs[i] = cs * cs_pts
-        if pos[i] in ("GKP", "DEF"):
-            xp_gc[i] = float(GOALS_CONCEDED_DEDUCTION) * xgc
+
+    # CS / GC are the rolled scoreline (opp goals), not moment xCS / xGC.
+    xp_cs, xp_gc, defence = xp_defence_on_roll(pos, minutes, goals_against)
 
     def col(name: str, default: float = 0.0) -> np.ndarray:
         if name in out.columns:
@@ -260,6 +249,9 @@ def xp_board_from_side_roll(
     out["xp"] = xp
     out["score_xp_v2"] = xp
     out["xp_se"] = 0.0
+    out["goals_against"] = int(defence.goals_against)
+    out["clean_sheet"] = bool(defence.clean_sheet)
+    out["gc_bins"] = int(defence.gc_bins)
     out["E_G"] = np.array([float(goals.get(nm, 0)) for nm in names])
     out["E_A"] = np.array([float(assists.get(nm, 0)) for nm in names])
     return out
@@ -350,6 +342,10 @@ def score_fixture_generative(
         "p": roll.p,
         "lam_h": float(lam_h),
         "lam_a": float(lam_a),
+        "home_cs": int(roll.goals_away) == 0,
+        "away_cs": int(roll.goals_home) == 0,
+        "home_ga": int(roll.goals_away),
+        "away_ga": int(roll.goals_home),
         "n_home_scorers": 0 if home_att is None else len(home_att.scorers),
         "n_away_scorers": 0 if away_att is None else len(away_att.scorers),
     }

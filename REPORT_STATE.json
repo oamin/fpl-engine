@@ -1,23 +1,19 @@
 {
-  "milestone": "cascade-short-generative-t-t1",
+  "milestone": "cascade-short-defence-from-roll",
   "status": "complete",
-  "summary": "Priced short-horizon t:t+1 scenario strands use generative attack (k∼M → lineup minutes cov → scorer/assist dice with α empties). Mean layer stays score_team_side. Firm XI / news override deferred. Default generative_attack=True on cascade_short.",
+  "summary": "cascade_short scenario CS/GC come from the rolled scoreline (defence_roll): CS if GA=0 (≥60'), GC=−⌊GA/2⌋ for GKP/DEF who played. No separate xCS/xGC moments on generative strands; mean layer unchanged.",
   "gemini": "",
   "decisions": {
-    "cascade_short_scenario": {
-      "decision": "generative_attack_default_on",
-      "mean_layer": "score_team_side",
-      "scenario": "short_horizon_generative",
-      "firm_xi": "deferred",
-      "protocol": "cascade_short_generative"
+    "cascade_short_defence": {
+      "decision": "cs_gc_from_rolled_scoreline",
+      "module": "src/markets/defence_roll.py",
+      "mean_layer": "moment xCS/xGC via score_team_side"
     }
   },
   "artifacts": [
+    "src/markets/defence_roll.py",
     "src/markets/short_horizon_generative.py",
-    "src/models/short_horizon_cascade.py",
-    "src/models/cascade_short.py",
-    "tests/test_short_horizon_generative.py",
-    "experiments/protocol.json",
-    "reports/CASCADE_PLAN.md"
+    "tests/test_defence_roll.py",
+    "experiments/protocol.json"
   ]
 }

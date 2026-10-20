@@ -1,8 +1,9 @@
 """Cascade short branch — priced horizon t : t+1.
 
 Mean layer matches ``cascade_long`` (``score_xp_v2`` / ``score_team_side``).
-Scenario strands on priced weeks use generative attack
-(``short_horizon_generative``: ``k ∼ M`` → lineup cov → scorer/assist dice).
+Scenario strands on priced weeks use generative scoring
+(``short_horizon_generative``: ``k ∼ M`` → lineup cov → scorer/assist dice →
+CS/GC from rolled GA via ``defence_roll``).
 
 Match inputs:
 

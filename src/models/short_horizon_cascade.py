@@ -6,8 +6,9 @@ Architecture (does **not** replace published ``score_xp_v2`` / L4 mean path):
    opening AH+OU Dixon–Coles moments → ``numagent_xp.score_team_side``
    (``SCORE_NAME = score_xp_v2``). Same assembler as L4 ``project_week_score_xp_v2``.
 2. **Scenario layer** — sample ``λ_H``, ``λ_A`` inside ±15% of the FD fit,
-   rebuild ``M`` (ρ held), then **generative** attack on each priced fixture:
-   ``k ∼ M`` → lineup minutes cov → scorer/assist dice (α empties). Firm XI
+   rebuild ``M`` (ρ held), then **generative** scoring on each priced fixture:
+   ``k ∼ M`` → lineup minutes cov → scorer/assist dice (α empties) → CS/GC
+   from the rolled scoreline (``defence_roll``; no moment xCS/xGC). Firm XI
    override deferred. Toggle ``generative_attack=False`` to fall back to
    closed-form ``score_team_side`` on sampled moments.
 3. **Path FT (default)** — L1 free rebuild at ``t``, then L3 transfers+hits at
@@ -607,7 +608,8 @@ def run_decision(
         corr = float("nan")
 
     scenario_note = (
-        "generative k∼M → lineup cov → attack dice (α empties); firm XI later"
+        "generative k∼M → lineup cov → attack dice (α empties) → "
+        "CS/GC from rolled GA; firm XI later"
         if generative_attack
         else f"closed-form score_team_side ({SCORER}) on sampled moments"
     )
@@ -800,8 +802,8 @@ def write_report(payload: dict[str, Any], path: Path | None = None) -> Path:
         "`numagent_xp.score_team_side` → `score_xp_v2`.",
         "3. Player rates: same-season GW `< t` only (`asof_share_history` + RATE_M0).",
         "4. Scenario (priced t:t+1): sample λ ±15%; rebuild `M`; then "
-        "`k ∼ M` → lineup minutes cov → scorer/assist dice "
-        "(`short_horizon_generative`). Firm XI override deferred.",
+        "`k ∼ M` → lineup minutes cov → scorer/assist dice → CS/GC from "
+        "rolled GA (`defence_roll`). Firm XI override deferred.",
         "5. Path: L1 free rebuild at t, L3 FT/hits at t+1.",
         "",
         "## Reproduce",
