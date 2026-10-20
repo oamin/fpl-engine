@@ -1,24 +1,23 @@
 {
-  "milestone": "score-xp-v2-props-shape-m-level",
+  "milestone": "cascade-short-generative-t-t1",
   "status": "complete",
-  "summary": "Anytime props: row-1 formula locked — props shape π (λ as relative weight), M sets level (E[G]=π·G_team or π·k on rolls). Assists no overlay locked. Lift-only / hard absolute replace parked. Live default still off. Hooked via player_attack_from_m.",
+  "summary": "Priced short-horizon t:t+1 scenario strands use generative attack (k∼M → lineup minutes cov → scorer/assist dice with α empties). Mean layer stays score_team_side. Firm XI / news override deferred. Default generative_attack=True on cascade_short.",
   "gemini": "",
   "decisions": {
-    "props": {
-      "decision": "props_shape_m_level",
-      "weight_covered": "lambda(p)=−log(1−p)",
-      "weight_uncovered": "sG * G_team",
-      "level": "G_team from M (mean) or k from match_outcome_roll",
-      "assists": "no_overlay_locked",
-      "live_default": false,
-      "parked": ["lift_only", "hard_absolute_replace"]
+    "cascade_short_scenario": {
+      "decision": "generative_attack_default_on",
+      "mean_layer": "score_team_side",
+      "scenario": "short_horizon_generative",
+      "firm_xi": "deferred",
+      "protocol": "cascade_short_generative"
     }
   },
   "artifacts": [
-    "src/markets/prop_shares.py",
-    "src/markets/player_attack.py",
-    "tests/test_prop_shares.py",
-    "reports/PLAYER_ATTACK.md",
-    "experiments/protocol.json"
+    "src/markets/short_horizon_generative.py",
+    "src/models/short_horizon_cascade.py",
+    "src/models/cascade_short.py",
+    "tests/test_short_horizon_generative.py",
+    "experiments/protocol.json",
+    "reports/CASCADE_PLAN.md"
   ]
 }

@@ -158,9 +158,9 @@ def roll_side_attack(
     team: str = "",
     lineup: LineupWorld | None = None,
 ) -> SideAttackRoll:
+    """Allocate ``goals_for`` match goals with α_G / α_A empty mass."""
     if lineup is not None:
         dice = dice_for_lineup(dice, lineup)
-    """Allocate ``goals_for`` match goals with α_G / α_A empty mass."""
     k = int(max(0, goals_for))
     events: list[GoalEvent] = []
     scorers: list[str] = []

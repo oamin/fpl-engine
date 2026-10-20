@@ -1,10 +1,13 @@
 """Cascade short branch — priced horizon t : t+1.
 
-Same scoring principle as ``cascade_long`` (``score_xp_v2`` / ``score_team_side``),
-different match inputs:
+Mean layer matches ``cascade_long`` (``score_xp_v2`` / ``score_team_side``).
+Scenario strands on priced weeks use generative attack
+(``short_horizon_generative``: ``k ∼ M`` → lineup cov → scorer/assist dice).
+
+Match inputs:
 
 - **Historical screens:** football-data AH+OU Dixon–Coles λ (± band scenarios).
-- **Live:** Odds API AH+OU+BTTS (via live pick / snapshots; not this module's pull).
+- **Live:** book prices (Betfair / live pick snapshots; not this module's pull).
 
 Buy universe: shared ``player_pool`` (FFScout firm ∩ expanding minutes).
 

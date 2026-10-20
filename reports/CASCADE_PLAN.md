@@ -7,7 +7,7 @@ Two branches, **same principle** (`score_xp_v2` / `score_team_side`), **differen
 
 | Branch | Module | Horizon | Match source | Buy universe |
 | --- | --- | --- | --- | --- |
-| **cascade_short** | `src/models/cascade_short.py` → `short_horizon_cascade` | t : t+1 | Live Odds (live) / FD AH+OU (hist screens) | **player_pool** |
+| **cascade_short** | `src/models/cascade_short.py` → `short_horizon_cascade` | t : t+1 | Live book (live) / FD AH+OU (hist); scenario = generative `k∼M`→lineup→dice | **player_pool** |
 | **cascade_long** | `src/models/cascade_long.py` → `multistage_mc_milp` | t+2 … t+n | Opta ranks → GF/GA → λ → ClubPath | **player_pool** |
 
 Shared **player_pool**: FFScout firm ∩ expanding minutes > 60 — `src/models/player_pool.py` (snapshot under `data/predictions/2026-27/selectable_pool/`). Sticky for the season; both branches load the same ids.
@@ -20,9 +20,10 @@ Shared **player_pool**: FFScout firm ∩ expanding minutes > 60 — `src/models/
 decision GW t
 ├── player_pool (FFScout ∩ minutes) ── sticky season ids
 ├── cascade_short  t : t+1
-│   ├── live Odds / hist FD → Dixon–Coles λ (± band)
+│   ├── live book / hist FD → Dixon–Coles λ (± band)
 │   ├── freeze as-of rates (GW < t)
-│   ├── score_team_side → μ boards (pool-filtered)
+│   ├── mean: score_team_side → μ boards (pool-filtered)
+│   ├── scenario: k∼M → lineup cov → attack dice (firm XI later)
 │   ├── mean: L1 / L3
 │   └── path: scored_weeks_to_l4_pools → L4 (screen before promote)
 └── cascade_long  t+2 … t+n
