@@ -1129,11 +1129,10 @@ def write_trial_outputs(result: dict[str, Any], *, out_dir: Path) -> dict[str, s
         f"- **{result['n_strands']}** coherent strands: each fixture samples λ "
         "from **Opta rank→GF/GA bands** (`match_prediction`, e.g. 2nd vs 20th), "
         "builds Dixon–Coles `M`, rolls `k ∼ M`, path rate update.",
-        f"- Player xP: **{result.get('scoring', '')}**",
-        f"- Player xP: **`{result.get('scorer', SCORE_XP_V2)}`** via "
-        "`numagent_xp.score_team_side` on Dixon–Coles moments from scenario λ; "
-        f"same-season as-of rates frozen at decision GW. Share seeding: "
-        f"**{result.get('seed_shares')}**.",
+        f"- Player xP: **{result.get('scoring', '')}** "
+        f"(props={result.get('props', False)}; "
+        f"generative={result.get('generative_attack')}). "
+        f"Share seeding: **{result.get('seed_shares')}**.",
         f"- Minutes overlay: **{result.get('minutes_overlay')}** "
         f"({result.get('overlay')}).",
         f"- Snapshots at GW {result['snapshot_gws']} → selectable-pool MILP "
