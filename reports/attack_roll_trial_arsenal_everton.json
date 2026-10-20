@@ -1,0 +1,704 @@
+{
+  "fixture": {
+    "home": "Arsenal",
+    "away": "Everton",
+    "source": "data/scratch/gw08_odds_full.json",
+    "before_gw": 6,
+    "lam_h": 2.048416475819365,
+    "lam_a": 0.6793357307440191,
+    "rho": -0.24999744788285586,
+    "xg_home": 2.0416468086991215,
+    "xg_away": 0.679327731995733,
+    "G_team_home": 1.960258004620361,
+    "G_team_away": 0.6522468130781762,
+    "alpha_g": 0.9601357082273113,
+    "alpha_a": 0.9050042408821035
+  },
+  "props_match": {
+    "n_matched": 33,
+    "n_unmatched": 0,
+    "unmatched_sample": [],
+    "home_covered": 17,
+    "away_covered": 11
+  },
+  "dice": {
+    "home": {
+      "alpha_g": 0.9601357082273113,
+      "alpha_a": 0.9050042408821035,
+      "n": 19,
+      "top_pi": [
+        {
+          "player": "Gy\u00f6keres",
+          "pi": 0.1338109993485092,
+          "rho": 0.0067405973710062215
+        },
+        {
+          "player": "Havertz",
+          "pi": 0.11806676524880279,
+          "rho": 0.05973563877064135
+        },
+        {
+          "player": "Saka",
+          "pi": 0.10046946609301705,
+          "rho": 0.06310325739501958
+        },
+        {
+          "player": "Eze",
+          "pi": 0.08221638905078832,
+          "rho": 0.006334689931546366
+        },
+        {
+          "player": "Tzolis",
+          "pi": 0.08059461847301234,
+          "rho": 0.2135246284524151
+        },
+        {
+          "player": "\u00d8degaard",
+          "pi": 0.06734189185756745,
+          "rho": 0.05652492554302911
+        },
+        {
+          "player": "Merino",
+          "pi": 0.06319472166604095,
+          "rho": 0.01169481218131637
+        },
+        {
+          "player": "Dowman",
+          "pi": 0.06319472166604095,
+          "rho": 0.0021927772839968195
+        }
+      ],
+      "prop": {
+        "G_team": 1.960258004620361,
+        "covered": 1.9602580046203613,
+        "residual": 0.0,
+        "n_props": 17,
+        "prop_scale": 0.40564964914452295,
+        "capped": true,
+        "n_lifted": 0,
+        "mode": "props_shape_m_level",
+        "sum_w": 4.832391717222882,
+        "sum_w_covered": 4.832391717222883,
+        "sum_w_uncovered": 0.0
+      }
+    },
+    "away": {
+      "alpha_g": 0.9601357082273113,
+      "alpha_a": 0.9050042408821035,
+      "n": 16,
+      "top_pi": [
+        {
+          "player": "Barry",
+          "pi": 0.1775093070544258,
+          "rho": 0.061707396071501795
+        },
+        {
+          "player": "Dewsbury-Hall",
+          "pi": 0.1336660869461958,
+          "rho": 0.06468280510639601
+        },
+        {
+          "player": "Johnson",
+          "pi": 0.12877801497096894,
+          "rho": 0.04887145274705476
+        },
+        {
+          "player": "Grealish",
+          "pi": 0.10888026025915287,
+          "rho": 0.030424874994489978
+        },
+        {
+          "player": "Dibling",
+          "pi": 0.09431637147508871,
+          "rho": 0.00574958267612409
+        },
+        {
+          "player": "Garner",
+          "pi": 0.06145818742255666,
+          "rho": 0.061328881878656955
+        },
+        {
+          "player": "George",
+          "pi": 0.059218930588455676,
+          "rho": 0.03952838089835312
+        },
+        {
+          "player": "Tarkowski",
+          "pi": 0.05653605195324517,
+          "rho": 0.2519920214279982
+        }
+      ],
+      "prop": {
+        "G_team": 0.6522468130781762,
+        "covered": 0.6136214543279583,
+        "residual": 0.038625358750217886,
+        "n_props": 11,
+        "prop_scale": 0.46069730500531386,
+        "capped": true,
+        "n_lifted": 0,
+        "mode": "props_shape_m_level",
+        "sum_w": 1.4157816987243999,
+        "sum_w_covered": 1.3319406205792335,
+        "sum_w_uncovered": 0.0838410781451661
+      }
+    },
+    "empty_tokens": {
+      "goal": "\u2205_G",
+      "assist": "\u2205_A"
+    }
+  },
+  "n_paths": 12,
+  "seed": 0,
+  "scoreline_freq": {
+    "2-0": 5,
+    "3-1": 2,
+    "1-1": 2,
+    "3-3": 1,
+    "2-1": 1,
+    "4-1": 1
+  },
+  "scorer_freq": {
+    "Arsenal:Saka": 3,
+    "Arsenal:Gy\u00f6keres": 3,
+    "Everton:Dewsbury-Hall": 3,
+    "Arsenal:Tzolis": 3,
+    "Everton:Grealish": 3,
+    "Arsenal:Dowman": 3,
+    "Arsenal:Havertz": 3,
+    "Arsenal:Merino": 2,
+    "Arsenal:Lewis-Skelly": 2,
+    "Arsenal:Eze": 2,
+    "Arsenal:Konsa": 1,
+    "Everton:Barry": 1
+  },
+  "paths": [
+    {
+      "scoreline": "3-3",
+      "p_cell": 0.004892805158432742,
+      "home": {
+        "team": "Arsenal",
+        "goals_for": 3,
+        "events": [
+          {
+            "scorer": "Konsa",
+            "assister": "White"
+          },
+          {
+            "scorer": "Saka",
+            "assister": "Gabriel"
+          },
+          {
+            "scorer": "Gy\u00f6keres",
+            "assister": "\u2205_A"
+          }
+        ],
+        "scorers": [
+          "Konsa",
+          "Saka",
+          "Gy\u00f6keres"
+        ],
+        "assisters": [
+          "White",
+          "Gabriel"
+        ],
+        "n_fpl_goals": 3,
+        "n_fpl_assists": 2
+      },
+      "away": {
+        "team": "Everton",
+        "goals_for": 3,
+        "events": [
+          {
+            "scorer": "Dewsbury-Hall",
+            "assister": "Armstrong"
+          },
+          {
+            "scorer": "Dewsbury-Hall",
+            "assister": "\u2205_A"
+          },
+          {
+            "scorer": "Barry",
+            "assister": "Johnson"
+          }
+        ],
+        "scorers": [
+          "Dewsbury-Hall",
+          "Dewsbury-Hall",
+          "Barry"
+        ],
+        "assisters": [
+          "Armstrong",
+          "Johnson"
+        ],
+        "n_fpl_goals": 3,
+        "n_fpl_assists": 2
+      }
+    },
+    {
+      "scoreline": "3-1",
+      "p_cell": 0.06361217672054856,
+      "home": {
+        "team": "Arsenal",
+        "goals_for": 3,
+        "events": [
+          {
+            "scorer": "Tzolis",
+            "assister": "Saka"
+          },
+          {
+            "scorer": "Gy\u00f6keres",
+            "assister": "Calafiori"
+          },
+          {
+            "scorer": "Tzolis",
+            "assister": "Rice"
+          }
+        ],
+        "scorers": [
+          "Tzolis",
+          "Gy\u00f6keres",
+          "Tzolis"
+        ],
+        "assisters": [
+          "Saka",
+          "Calafiori",
+          "Rice"
+        ],
+        "n_fpl_goals": 3,
+        "n_fpl_assists": 3
+      },
+      "away": {
+        "team": "Everton",
+        "goals_for": 1,
+        "events": [
+          {
+            "scorer": "Grealish",
+            "assister": "Garner"
+          }
+        ],
+        "scorers": [
+          "Grealish"
+        ],
+        "assisters": [
+          "Garner"
+        ],
+        "n_fpl_goals": 1,
+        "n_fpl_assists": 1
+      }
+    },
+    {
+      "scoreline": "2-0",
+      "p_cell": 0.13713831012687916,
+      "home": {
+        "team": "Arsenal",
+        "goals_for": 2,
+        "events": [
+          {
+            "scorer": "J.Timber",
+            "assister": "Calafiori"
+          },
+          {
+            "scorer": "Dowman",
+            "assister": "Havertz"
+          }
+        ],
+        "scorers": [
+          "J.Timber",
+          "Dowman"
+        ],
+        "assisters": [
+          "Calafiori",
+          "Havertz"
+        ],
+        "n_fpl_goals": 2,
+        "n_fpl_assists": 2
+      },
+      "away": {
+        "team": "Everton",
+        "goals_for": 0,
+        "events": [],
+        "scorers": [],
+        "assisters": [],
+        "n_fpl_goals": 0,
+        "n_fpl_assists": 0
+      }
+    },
+    {
+      "scoreline": "1-1",
+      "p_cell": 0.11370095511895408,
+      "home": {
+        "team": "Arsenal",
+        "goals_for": 1,
+        "events": [
+          {
+            "scorer": "Merino",
+            "assister": "Rice"
+          }
+        ],
+        "scorers": [
+          "Merino"
+        ],
+        "assisters": [
+          "Rice"
+        ],
+        "n_fpl_goals": 1,
+        "n_fpl_assists": 1
+      },
+      "away": {
+        "team": "Everton",
+        "goals_for": 1,
+        "events": [
+          {
+            "scorer": "\u2205_G",
+            "assister": null
+          }
+        ],
+        "scorers": [],
+        "assisters": [],
+        "n_fpl_goals": 0,
+        "n_fpl_assists": 0
+      }
+    },
+    {
+      "scoreline": "2-0",
+      "p_cell": 0.13713831012687916,
+      "home": {
+        "team": "Arsenal",
+        "goals_for": 2,
+        "events": [
+          {
+            "scorer": "\u2205_G",
+            "assister": null
+          },
+          {
+            "scorer": "Dowman",
+            "assister": "Merino"
+          }
+        ],
+        "scorers": [
+          "Dowman"
+        ],
+        "assisters": [
+          "Merino"
+        ],
+        "n_fpl_goals": 1,
+        "n_fpl_assists": 1
+      },
+      "away": {
+        "team": "Everton",
+        "goals_for": 0,
+        "events": [],
+        "scorers": [],
+        "assisters": [],
+        "n_fpl_goals": 0,
+        "n_fpl_assists": 0
+      }
+    },
+    {
+      "scoreline": "2-0",
+      "p_cell": 0.13713831012687916,
+      "home": {
+        "team": "Arsenal",
+        "goals_for": 2,
+        "events": [
+          {
+            "scorer": "Dowman",
+            "assister": "Rice"
+          },
+          {
+            "scorer": "Gabriel",
+            "assister": "Tzolis"
+          }
+        ],
+        "scorers": [
+          "Dowman",
+          "Gabriel"
+        ],
+        "assisters": [
+          "Rice",
+          "Tzolis"
+        ],
+        "n_fpl_goals": 2,
+        "n_fpl_assists": 2
+      },
+      "away": {
+        "team": "Everton",
+        "goals_for": 0,
+        "events": [],
+        "scorers": [],
+        "assisters": [],
+        "n_fpl_goals": 0,
+        "n_fpl_assists": 0
+      }
+    },
+    {
+      "scoreline": "3-1",
+      "p_cell": 0.06361217672054856,
+      "home": {
+        "team": "Arsenal",
+        "goals_for": 3,
+        "events": [
+          {
+            "scorer": "Havertz",
+            "assister": "White"
+          },
+          {
+            "scorer": "Havertz",
+            "assister": "Bruno G."
+          },
+          {
+            "scorer": "Bruno G.",
+            "assister": "\u00d8degaard"
+          }
+        ],
+        "scorers": [
+          "Havertz",
+          "Havertz",
+          "Bruno G."
+        ],
+        "assisters": [
+          "White",
+          "Bruno G.",
+          "\u00d8degaard"
+        ],
+        "n_fpl_goals": 3,
+        "n_fpl_assists": 3
+      },
+      "away": {
+        "team": "Everton",
+        "goals_for": 1,
+        "events": [
+          {
+            "scorer": "Dewsbury-Hall",
+            "assister": "Mykolenko"
+          }
+        ],
+        "scorers": [
+          "Dewsbury-Hall"
+        ],
+        "assisters": [
+          "Mykolenko"
+        ],
+        "n_fpl_goals": 1,
+        "n_fpl_assists": 1
+      }
+    },
+    {
+      "scoreline": "1-1",
+      "p_cell": 0.11370095511895408,
+      "home": {
+        "team": "Arsenal",
+        "goals_for": 1,
+        "events": [
+          {
+            "scorer": "Merino",
+            "assister": "\u00d8degaard"
+          }
+        ],
+        "scorers": [
+          "Merino"
+        ],
+        "assisters": [
+          "\u00d8degaard"
+        ],
+        "n_fpl_goals": 1,
+        "n_fpl_assists": 1
+      },
+      "away": {
+        "team": "Everton",
+        "goals_for": 1,
+        "events": [
+          {
+            "scorer": "George",
+            "assister": "Maitland-Niles"
+          }
+        ],
+        "scorers": [
+          "George"
+        ],
+        "assisters": [
+          "Maitland-Niles"
+        ],
+        "n_fpl_goals": 1,
+        "n_fpl_assists": 1
+      }
+    },
+    {
+      "scoreline": "2-0",
+      "p_cell": 0.13713831012687916,
+      "home": {
+        "team": "Arsenal",
+        "goals_for": 2,
+        "events": [
+          {
+            "scorer": "Lewis-Skelly",
+            "assister": "Havertz"
+          },
+          {
+            "scorer": "Saka",
+            "assister": "Tzolis"
+          }
+        ],
+        "scorers": [
+          "Lewis-Skelly",
+          "Saka"
+        ],
+        "assisters": [
+          "Havertz",
+          "Tzolis"
+        ],
+        "n_fpl_goals": 2,
+        "n_fpl_assists": 2
+      },
+      "away": {
+        "team": "Everton",
+        "goals_for": 0,
+        "events": [],
+        "scorers": [],
+        "assisters": [],
+        "n_fpl_goals": 0,
+        "n_fpl_assists": 0
+      }
+    },
+    {
+      "scoreline": "2-1",
+      "p_cell": 0.09316295412304337,
+      "home": {
+        "team": "Arsenal",
+        "goals_for": 2,
+        "events": [
+          {
+            "scorer": "Gy\u00f6keres",
+            "assister": "Calafiori"
+          },
+          {
+            "scorer": "Tzolis",
+            "assister": "Saka"
+          }
+        ],
+        "scorers": [
+          "Gy\u00f6keres",
+          "Tzolis"
+        ],
+        "assisters": [
+          "Calafiori",
+          "Saka"
+        ],
+        "n_fpl_goals": 2,
+        "n_fpl_assists": 2
+      },
+      "away": {
+        "team": "Everton",
+        "goals_for": 1,
+        "events": [
+          {
+            "scorer": "Grealish",
+            "assister": "Tarkowski"
+          }
+        ],
+        "scorers": [
+          "Grealish"
+        ],
+        "assisters": [
+          "Tarkowski"
+        ],
+        "n_fpl_goals": 1,
+        "n_fpl_assists": 1
+      }
+    },
+    {
+      "scoreline": "4-1",
+      "p_cell": 0.03257605771427617,
+      "home": {
+        "team": "Arsenal",
+        "goals_for": 4,
+        "events": [
+          {
+            "scorer": "Havertz",
+            "assister": "Tzolis"
+          },
+          {
+            "scorer": "Lewis-Skelly",
+            "assister": "Saka"
+          },
+          {
+            "scorer": "Eze",
+            "assister": "Calafiori"
+          },
+          {
+            "scorer": "Saka",
+            "assister": "Havertz"
+          }
+        ],
+        "scorers": [
+          "Havertz",
+          "Lewis-Skelly",
+          "Eze",
+          "Saka"
+        ],
+        "assisters": [
+          "Tzolis",
+          "Saka",
+          "Calafiori",
+          "Havertz"
+        ],
+        "n_fpl_goals": 4,
+        "n_fpl_assists": 4
+      },
+      "away": {
+        "team": "Everton",
+        "goals_for": 1,
+        "events": [
+          {
+            "scorer": "Grealish",
+            "assister": "Armstrong"
+          }
+        ],
+        "scorers": [
+          "Grealish"
+        ],
+        "assisters": [
+          "Armstrong"
+        ],
+        "n_fpl_goals": 1,
+        "n_fpl_assists": 1
+      }
+    },
+    {
+      "scoreline": "2-0",
+      "p_cell": 0.13713831012687916,
+      "home": {
+        "team": "Arsenal",
+        "goals_for": 2,
+        "events": [
+          {
+            "scorer": "White",
+            "assister": "\u2205_A"
+          },
+          {
+            "scorer": "Eze",
+            "assister": "Calafiori"
+          }
+        ],
+        "scorers": [
+          "White",
+          "Eze"
+        ],
+        "assisters": [
+          "Calafiori"
+        ],
+        "n_fpl_goals": 2,
+        "n_fpl_assists": 1
+      },
+      "away": {
+        "team": "Everton",
+        "goals_for": 0,
+        "events": [],
+        "scorers": [],
+        "assisters": [],
+        "n_fpl_goals": 0,
+        "n_fpl_assists": 0
+      }
+    }
+  ]
+}
