@@ -4,6 +4,12 @@ Cursor chooses the next pre-registered comparison. The PI is not asked to pick. 
 
 **Numagent 2.0 is locked on main** — see `.cursor/context.md` and `reports/LOCKED.md` (`protocol.numagent_2_0`). Engine primary scorer is `score_xp_v2`. Numagent 1.0 and `score_xp` are **archived in-place** (`reports/ARCHIVE_NUMAGENT_1_0.md`). This file is the **park log**. Everything from “Procedure, locked 2026-10-07” downward is **Numagent 1.0 / stage archaeology** — not instructions for the live path.
 
+## Parked — cascade_short bonus-from-roll (2026-10-20)
+
+Scenario soft terms stay expanding-mean `bonus_mu` / `card_mu` / DefCon / saves.
+Tying bonus to the rolled scoreline (BPS proxy from G/A/CS) is possible later but
+parked as overkill until a path-V screen asks for it (`protocol.cascade_short_generative`).
+
 ## Active / next (sparse)
 
 - Live shadow of locked L4 + `score_xp_v2` (no new strategiser arm without a protocol entry).

@@ -7,6 +7,8 @@ Per fixture path:
 3. Scorer / assist dice (``π`` props-shape or shares; ``ρ`` assists; α empties).
 4. Defence from the **rolled** scoreline (``defence_roll``: CS if GA=0;
    GC = ⌊GA/2⌋) — no separate xCS / xGC moments on scenario strands.
+5. Soft priors from **expanding means** (not the roll): DefCon, bonus, cards,
+   saves. Bonus-from-roll is parked as overkill for now.
 
 Mean-layer boards stay on ``score_team_side``; cascade_short **scenario**
 strands use this path when ``generative_attack=True`` (default).
@@ -33,6 +35,7 @@ from src.markets.match_outcome import (
     match_outcome_probs_from_lambdas,
     match_outcome_roll,
 )
+from src.markets.numagent_xp import SIG_FLOOR, defcon_xp, saves_xp
 from src.rules.fpl_2026 import (
     APPEARANCE_60,
     APPEARANCE_UNDER_60,
@@ -174,6 +177,66 @@ def competitor_pairs_for_club(
     return select_disjoint_pairs(ids, table)
 
 
+def xp_soft_priors_expanding(
+    club: pd.DataFrame,
+    *,
+    positions: Sequence[str],
+    minutes: np.ndarray,
+) -> dict[str, np.ndarray]:
+    """DefCon / bonus / cards / saves from expanding means (not the roll).
+
+    Same priors as ``score_team_side``: ``*_mu`` columns on the as-of side
+    table, gated by the path's minutes world. Bonus-from-scoreline is parked.
+    """
+    n = len(minutes)
+    if club.empty or n == 0:
+        z = np.zeros(0, dtype=float)
+        return {
+            "xp_defcon": z,
+            "xp_bonus": z,
+            "xp_cards": z,
+            "xp_saves": z,
+        }
+
+    def col(name: str, default: float = 0.0) -> np.ndarray:
+        if name in club.columns:
+            return pd.to_numeric(club[name], errors="coerce").fillna(default).to_numpy(float)
+        return np.full(n, default)
+
+    playing = minutes > 0
+    xp_bonus = np.where(playing, col("bonus_mu"), 0.0)
+    xp_cards = np.where(playing, col("card_mu"), 0.0)
+
+    dc_mu = col("defcon_mu")
+    dc_sig = col("defcon_sig", SIG_FLOOR)
+    dc_n = col("defcon_n").astype(int)
+    xp_defcon = np.zeros(n)
+    for i, p in enumerate(positions):
+        tau = float(DEFCON_THRESHOLD.get(p, 0) or 0)
+        xp_defcon[i], _, _ = defcon_xp(
+            dc_mu[i], dc_sig[i], int(dc_n[i]), tau, float(minutes[i])
+        )
+
+    saves_mu = col("saves_mu")
+    saves_se = col("saves_se")
+    sigma_m = col("sigma_m", 0.0)
+    xp_saves = np.zeros(n)
+    for i, p in enumerate(positions):
+        xp_saves[i], _ = saves_xp(
+            saves_mu[i],
+            saves_se[i],
+            float(minutes[i]),
+            float(sigma_m[i]),
+            position=str(p),
+        )
+    return {
+        "xp_defcon": xp_defcon,
+        "xp_bonus": xp_bonus,
+        "xp_cards": xp_cards,
+        "xp_saves": xp_saves,
+    }
+
+
 def xp_board_from_side_roll(
     club: pd.DataFrame,
     *,
@@ -181,7 +244,11 @@ def xp_board_from_side_roll(
     lineup: LineupWorld,
     goals_against: int,
 ) -> pd.DataFrame:
-    """Map one side's generative draws onto per-player xP components."""
+    """Map one side's generative draws onto per-player xP components.
+
+    Roll-dependent: goals, assists, CS, GC (and appearance from minutes world).
+    Expanding-mean priors: DefCon, bonus, cards, saves.
+    """
     if club.empty:
         return club.copy()
     out = club.copy()
@@ -207,25 +274,11 @@ def xp_board_from_side_roll(
 
     # CS / GC are the rolled scoreline (opp goals), not moment xCS / xGC.
     xp_cs, xp_gc, defence = xp_defence_on_roll(pos, minutes, goals_against)
-
-    def col(name: str, default: float = 0.0) -> np.ndarray:
-        if name in out.columns:
-            return pd.to_numeric(out[name], errors="coerce").fillna(default).to_numpy(float)
-        return np.full(n, default)
-
-    playing = minutes > 0
-    xp_bonus = np.where(playing, col("bonus_mu"), 0.0)
-    xp_cards = np.where(playing, col("card_mu"), 0.0)
-    xp_defcon = np.zeros(n)
-    if "defcon_mu" in out.columns:
-        from src.markets.numagent_xp import defcon_xp
-
-        dc_mu = col("defcon_mu")
-        dc_sig = col("defcon_sig", 0.5)
-        dc_n = col("defcon_n").astype(int)
-        for i, p in enumerate(pos):
-            tau = float(DEFCON_THRESHOLD.get(p, 0) or 0)
-            xp_defcon[i], _, _ = defcon_xp(dc_mu[i], dc_sig[i], int(dc_n[i]), tau, minutes[i])
+    soft = xp_soft_priors_expanding(out, positions=pos, minutes=minutes)
+    xp_defcon = soft["xp_defcon"]
+    xp_bonus = soft["xp_bonus"]
+    xp_cards = soft["xp_cards"]
+    xp_saves = soft["xp_saves"]
 
     xp = (
         xp_appear
@@ -236,6 +289,7 @@ def xp_board_from_side_roll(
         + xp_defcon
         + xp_bonus
         + xp_cards
+        + xp_saves
     )
     out["m"] = minutes
     out["xp_appear"] = xp_appear
@@ -246,6 +300,7 @@ def xp_board_from_side_roll(
     out["xp_defcon"] = xp_defcon
     out["xp_bonus"] = xp_bonus
     out["xp_cards"] = xp_cards
+    out["xp_saves"] = xp_saves
     out["xp"] = xp
     out["score_xp_v2"] = xp
     out["xp_se"] = 0.0

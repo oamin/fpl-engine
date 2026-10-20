@@ -8,7 +8,8 @@ Architecture (does **not** replace published ``score_xp_v2`` / L4 mean path):
 2. **Scenario layer** — sample ``λ_H``, ``λ_A`` inside ±15% of the FD fit,
    rebuild ``M`` (ρ held), then **generative** scoring on each priced fixture:
    ``k ∼ M`` → lineup minutes cov → scorer/assist dice (α empties) → CS/GC
-   from the rolled scoreline (``defence_roll``; no moment xCS/xGC). Firm XI
+   from the rolled scoreline (``defence_roll``; no moment xCS/xGC). Soft
+   terms (DefCon, bonus, cards, saves) stay expanding-mean priors. Firm XI
    override deferred. Toggle ``generative_attack=False`` to fall back to
    closed-form ``score_team_side`` on sampled moments.
 3. **Path FT (default)** — L1 free rebuild at ``t``, then L3 transfers+hits at
@@ -609,7 +610,8 @@ def run_decision(
 
     scenario_note = (
         "generative k∼M → lineup cov → attack dice (α empties) → "
-        "CS/GC from rolled GA; firm XI later"
+        "CS/GC from rolled GA; DefCon/bonus/cards/saves from expanding means; "
+        "firm XI later"
         if generative_attack
         else f"closed-form score_team_side ({SCORER}) on sampled moments"
     )
@@ -803,7 +805,8 @@ def write_report(payload: dict[str, Any], path: Path | None = None) -> Path:
         "3. Player rates: same-season GW `< t` only (`asof_share_history` + RATE_M0).",
         "4. Scenario (priced t:t+1): sample λ ±15%; rebuild `M`; then "
         "`k ∼ M` → lineup minutes cov → scorer/assist dice → CS/GC from "
-        "rolled GA (`defence_roll`). Firm XI override deferred.",
+        "rolled GA (`defence_roll`). DefCon/bonus/cards/saves from expanding "
+        "means (bonus-from-roll parked). Firm XI override deferred.",
         "5. Path: L1 free rebuild at t, L3 FT/hits at t+1.",
         "",
         "## Reproduce",

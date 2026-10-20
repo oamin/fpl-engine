@@ -11,6 +11,7 @@ from src.markets.short_horizon_generative import (
     score_fixture_generative,
     score_week_generative,
     trivial_lineup,
+    xp_soft_priors_expanding,
 )
 from src.models import short_horizon_cascade as sh
 
@@ -22,6 +23,92 @@ class TrivialLineup(unittest.TestCase):
         self.assertFalse(bool(world.eligible[1]))
         self.assertFalse(bool(world.eligible[2]))
         self.assertEqual(world.pair_choices, ())
+
+
+class SoftPriorsExpanding(unittest.TestCase):
+    def test_bonus_cards_saves_from_mu_not_roll(self) -> None:
+        club = pd.DataFrame(
+            {
+                "bonus_mu": [0.4, 0.0],
+                "card_mu": [-0.2, 0.0],
+                "saves_mu": [1.5, 0.0],
+                "saves_se": [0.1, 0.0],
+                "defcon_mu": [0.0, 0.0],
+                "defcon_sig": [0.5, 0.5],
+                "defcon_n": [5, 5],
+                "sigma_m": [0.0, 0.0],
+            }
+        )
+        minutes = np.array([90.0, 0.0])
+        soft = xp_soft_priors_expanding(
+            club, positions=["GKP", "MID"], minutes=minutes
+        )
+        self.assertAlmostEqual(float(soft["xp_bonus"][0]), 0.4)
+        self.assertAlmostEqual(float(soft["xp_cards"][0]), -0.2)
+        self.assertGreater(float(soft["xp_saves"][0]), 0.0)
+        # Benched: soft priors zeroed by minutes gate.
+        self.assertAlmostEqual(float(soft["xp_bonus"][1]), 0.0)
+        self.assertAlmostEqual(float(soft["xp_saves"][1]), 0.0)
+
+    def test_soft_priors_independent_of_goals_against(self) -> None:
+        """Changing rolled GA must not move DefCon/bonus/cards/saves."""
+        home = pd.DataFrame(
+            {
+                "element": [1],
+                "name": ["Keeper"],
+                "position": ["GKP"],
+                "team": ["Home"],
+                "team_n": ["Home"],
+                "m": [90.0],
+                "sG": [0.0],
+                "sA": [0.0],
+                "bonus_mu": [0.3],
+                "card_mu": [-0.1],
+                "saves_mu": [1.2],
+                "saves_se": [0.2],
+                "defcon_mu": [0.0],
+                "defcon_sig": [0.5],
+                "defcon_n": [5],
+                "sigma_m": [0.0],
+            }
+        )
+        away = home.copy()
+        away["element"] = [2]
+        away["name"] = ["AwayK"]
+        away["team"] = ["Away"]
+        away["team_n"] = ["Away"]
+        softs = []
+        for seed in (0, 1, 2, 3, 4):
+            h_xp, _, meta = score_fixture_generative(
+                home,
+                away,
+                lam_h=1.5,
+                lam_a=1.5,
+                rho=0.0,
+                alpha_g=0.96,
+                alpha_a=0.90,
+                rng=np.random.default_rng(seed),
+                lineup_cov=False,
+            )
+            softs.append(
+                (
+                    float(h_xp.iloc[0]["xp_bonus"]),
+                    float(h_xp.iloc[0]["xp_cards"]),
+                    float(h_xp.iloc[0]["xp_saves"]),
+                    float(h_xp.iloc[0]["xp_defcon"]),
+                    int(meta["goals_away"]),
+                )
+            )
+        # Soft columns identical across rolls; GA may vary.
+        bonus = {s[0] for s in softs}
+        cards = {s[1] for s in softs}
+        saves = {s[2] for s in softs}
+        defcon = {s[3] for s in softs}
+        self.assertEqual(len(bonus), 1)
+        self.assertEqual(len(cards), 1)
+        self.assertEqual(len(saves), 1)
+        self.assertEqual(len(defcon), 1)
+        self.assertAlmostEqual(softs[0][0], 0.3)
 
 
 class FixtureGenerative(unittest.TestCase):

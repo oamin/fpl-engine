@@ -1,19 +1,18 @@
 {
-  "milestone": "cascade-short-defence-from-roll",
+  "milestone": "cascade-short-soft-priors-expanding",
   "status": "complete",
-  "summary": "cascade_short scenario CS/GC come from the rolled scoreline (defence_roll): CS if GA=0 (≥60'), GC=−⌊GA/2⌋ for GKP/DEF who played. No separate xCS/xGC moments on generative strands; mean layer unchanged.",
+  "summary": "cascade_short generative soft terms (DefCon, bonus, cards, saves) come from as-of expanding means, gated by lineup minutes — not from the rolled scoreline. Saves wired via saves_xp. Bonus-from-roll parked as overkill.",
   "gemini": "",
   "decisions": {
-    "cascade_short_defence": {
-      "decision": "cs_gc_from_rolled_scoreline",
-      "module": "src/markets/defence_roll.py",
-      "mean_layer": "moment xCS/xGC via score_team_side"
+    "cascade_short_soft_priors": {
+      "decision": "expanding_means",
+      "components": ["xp_defcon", "xp_bonus", "xp_cards", "xp_saves"],
+      "parked": ["bonus_from_roll"]
     }
   },
   "artifacts": [
-    "src/markets/defence_roll.py",
     "src/markets/short_horizon_generative.py",
-    "tests/test_defence_roll.py",
+    "tests/test_short_horizon_generative.py",
     "experiments/protocol.json"
   ]
 }
