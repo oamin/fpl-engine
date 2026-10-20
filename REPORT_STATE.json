@@ -1,7 +1,7 @@
 {
   "milestone": "cascade-v2-open-screens",
   "status": "complete",
-  "summary": "Ran the three highest-value missed v2 screens from the long-horizon audit. Share seeding and team-xA/xG α_A both park (intervals strictly below 0). Priced→Opta strand hand-off shipped as plumbing smoke only (no likelihood arm).",
+  "summary": "Open screens parked (share seed, assist α_A). Strand hand-off plumbing only. As-of audit realigned to Numagent 2.0 live_primary (score_xp_v2 from GW7, numagent_lock capture) so #89 gates can pass.",
   "gemini": "",
   "decisions": {
     "share_seed": {
@@ -19,17 +19,22 @@
       "decision": "plumbing_only_no_likelihood_arm",
       "mean_abs_att_shift": 0.5316,
       "season_gw": "2024-25 GW10"
+    },
+    "asof_audit_numagent_2_0": {
+      "decision": "realign_gates_to_score_xp_v2_from_gw7",
+      "promote": true,
+      "note": "Protocol already locked Numagent 2.0; decision_spec/gates/capture still expected ep_next from GW6."
     }
   },
   "artifacts": [
     "src/eval/share_seed_screen.py",
     "src/eval/assist_alpha_screen.py",
     "src/models/strand_handoff.py",
+    "src/eval/decision_spec.py",
+    "src/eval/gates.py",
+    "src/eval/capture_schedule.py",
     "reports/share_seed_screen.md",
     "reports/assist_alpha_screen.md",
-    "reports/strand_handoff_smoke.md",
-    "data/processed/share_seed_screen.json",
-    "data/processed/assist_alpha_screen.json",
-    "data/processed/strand_handoff_smoke.json"
+    "reports/strand_handoff_smoke.md"
   ]
 }
