@@ -3,7 +3,18 @@
 Confirm these before opening new cascade comparisons. Product lock:
 `protocol.numagent_2_0` / `reports/LOCKED.md`.
 
-## Locked (treat as optimised for cascade)
+## Decomposition in progress
+
+| Component | Status | Module |
+| --- | --- | --- |
+| **`match_outcome_probs`** | **defined** | `src/markets/match_outcome.py` — bookie AH/OU/(BTTS) → `M` |
+| **`match_outcome_roll`** | **defined** | same — categorical draw from `M` |
+| Player rates / shares / α | locked (below) | `numagent_xp` |
+| Assembler `score_team_side` | locked | `numagent_xp` |
+
+See `reports/MATCH_OUTCOME.md`. Call sites not fully rewired yet.
+
+## Locked (assembler / rates — still current)
 
 | Component | Lock | Evidence |
 | --- | --- | --- |

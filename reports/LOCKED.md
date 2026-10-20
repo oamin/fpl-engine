@@ -37,6 +37,8 @@ Do not treat stage_* / GW1–5 / stragent / GW6 `ep_next` dry runs as the live p
 
 Assembler: `src/markets/numagent_xp.py`. Defaults: `share_se_shrink=True`, `share_se_prior=position_minutes`, props **off**.
 
+**Match layer (decomposition):** `match_outcome_probs` / `match_outcome_roll` — `src/markets/match_outcome.py` · [`MATCH_OUTCOME.md`](MATCH_OUTCOME.md).
+
 ## Strategiser (Numagent 2.0)
 
 | Lock | Date | Report | Note |
