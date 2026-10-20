@@ -1,6 +1,15 @@
 # Architectural state
 
-Updated: 2026-10-19. **Numagent 2.0** is the product on main (`protocol.numagent_2_0`) — **supersedes Numagent 1.0**. Parked hypotheses: `.cursor/ideas.md`. Stage archaeology: root `CONTEXT.md` and `reports/SUPERSEDED.md`. Canonical index: `reports/LOCKED.md`.
+Updated: 2026-10-20. **Numagent 2.0** is the product on main (`protocol.numagent_2_0`) — **supersedes Numagent 1.0**. Parked hypotheses: `.cursor/ideas.md`. Stage archaeology: root `CONTEXT.md` and `reports/SUPERSEDED.md`. Canonical index: `reports/LOCKED.md`.
+
+## Repo freeze sequence (2026-10-20)
+
+| Step | Status | Note |
+| --- | --- | --- |
+| **1. Freeze product on main** | **done** | #88 (+ #89) merged to `main`. Pre-v2 cascade PR forest #73–#87 **closed** (do not re-open onto main). |
+| **2. Archive Numagent 1.0 / `score_xp` in-place** | **done** | Index [`reports/ARCHIVE_NUMAGENT_1_0.md`](../reports/ARCHIVE_NUMAGENT_1_0.md); protocol roles; GW6 entrypoint docstrings; leftover PRs #59/#60/#69/#71/#72 **closed**. Modules stay importable for the gate baseline. |
+| 3. Decompose v2 for cascade | next | Injectable μ for L4; cascade adapter is the only λ→xP bridge. |
+| 4. One cascade branch + plan | pending | Short/long horizons off post-#88 main; selective replay only. |
 
 ## Plan
 

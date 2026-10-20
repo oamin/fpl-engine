@@ -1,4 +1,7 @@
-"""Deadline scores for one live half.
+"""Archived Numagent 1.0 deadline scorer — not the live product path.
+
+**Archive:** ``reports/ARCHIVE_NUMAGENT_1_0.md``. Live picks use
+``src.live.numagent_live_pick`` + ``score_xp_v2``.
 
 ``xp_on_pot`` is the one-match formula, the same components as ``compute_xp``.
 This module chooses the inputs. Minutes come from the file, and a zero stays
@@ -12,7 +15,8 @@ adds nothing.
 The formula is not changed here. A missing minutes file never reaches this
 module: the caller records ``missing_minutes`` and does not plan a chip.
 When a captured ``ep_next`` map is passed, that map chooses the squad and
-``score_xp`` stays on the shadow log.
+``score_xp`` stays on the shadow log. Kept importable for the as-of audit
+and the v2 gate baseline.
 """
 
 from __future__ import annotations
