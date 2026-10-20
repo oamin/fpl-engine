@@ -1,18 +1,23 @@
 {
-  "milestone": "cascade-short-soft-priors-expanding",
+  "milestone": "cascade-short-generative-locked",
   "status": "complete",
-  "summary": "cascade_short generative soft terms (DefCon, bonus, cards, saves) come from as-of expanding means, gated by lineup minutes — not from the rolled scoreline. Saves wired via saves_xp. Bonus-from-roll parked as overkill.",
+  "summary": "cascade_short generative stack locked (protocol.cascade_short_generative): mean score_team_side; scenario k∼M → lineup cov → attack dice → CS/GC from rolled GA; soft priors via score_xp_v2 DefCon/bonus/cards/saves helpers. Firm XI and bonus-from-roll deferred. PR #96 green — mark ready / merge to main.",
   "gemini": "",
   "decisions": {
-    "cascade_short_soft_priors": {
-      "decision": "expanding_means",
-      "components": ["xp_defcon", "xp_bonus", "xp_cards", "xp_saves"],
-      "parked": ["bonus_from_roll"]
+    "cascade_short_generative": {
+      "locked": "2026-10-20",
+      "protocol": "cascade_short_generative",
+      "pr": 96,
+      "deferred": ["firm_xi", "bonus_from_roll"]
     }
   },
   "artifacts": [
+    "reports/LOCKED.md",
+    "reports/CASCADE_CONTRACT.md",
+    "experiments/protocol.json",
     "src/markets/short_horizon_generative.py",
-    "tests/test_short_horizon_generative.py",
-    "experiments/protocol.json"
+    "src/markets/defence_roll.py",
+    "src/models/short_horizon_cascade.py",
+    "src/models/cascade_short.py"
   ]
 }

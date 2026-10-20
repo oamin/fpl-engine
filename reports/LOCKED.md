@@ -78,6 +78,19 @@ Contract: [`CASCADE_CONTRACT.md`](CASCADE_CONTRACT.md). Plan: [`CASCADE_PLAN.md`
 | L4 μ inject | `src/strategy/layer4_mu_inject.py` |
 | Long λ→xP | `src/markets/cascade_score_v2.py` |
 
+### cascade_short generative (locked 2026-10-20)
+
+Protocol: `cascade_short_generative`. Entry: `src/models/cascade_short.py` → `short_horizon_cascade`.
+
+| Layer | Method |
+| --- | --- |
+| Mean / independent E[V] | `score_team_side` (moment xCS/xGC) |
+| Scenario strands (default on) | λ ±15% → `k ∼ M` → lineup cov → attack dice → CS/GC from rolled GA |
+| Soft priors | DefCon `P(hit)`, bonus/cards own-rate, GKP saves multinomial — via `history_priors_for_xp` / same helpers as `score_xp_v2` |
+| Deferred | firm XI / news override; bonus-from-roll |
+
+Modules: `short_horizon_generative`, `match_outcome`, `lineup_roll`, `attack_roll`, `defence_roll`, `player_attack`, `prop_shares`.
+
 ## Superseded
 
 - **Numagent 1.0** — `protocol.numagent_1_0` / `SUPERSEDED.md` / **[`ARCHIVE_NUMAGENT_1_0.md`](ARCHIVE_NUMAGENT_1_0.md)** (in-place keep-list)
