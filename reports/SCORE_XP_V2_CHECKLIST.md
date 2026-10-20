@@ -9,10 +9,12 @@ Confirm these before opening new cascade comparisons. Product lock:
 | --- | --- | --- |
 | **`match_outcome_probs`** | **defined** | `src/markets/match_outcome.py` — bookie AH/OU/(BTTS) → `M` |
 | **`match_outcome_roll`** | **defined** | same — categorical draw from `M` |
-| Player rates / shares / α | locked (below) | `numagent_xp` |
-| Assembler `score_team_side` | locked | `numagent_xp` |
+| **Player attack from `M`** | **defined** | `src/markets/player_attack.py` — `xG_M`×α×shares → `E[G]`/`E[A]` |
+| Player rates / shares / α | locked (below) | `numagent_xp` (shares stay M-independent) |
+| Defence from `M` (CS / GC) | still in assembler | next cut |
+| Assembler `score_team_side` | locked; attack delegates | `numagent_xp` |
 
-See `reports/MATCH_OUTCOME.md`. Call sites not fully rewired yet.
+See `reports/MATCH_OUTCOME.md` · `reports/PLAYER_ATTACK.md`. Match call sites not fully rewired yet.
 
 ## Locked (assembler / rates — still current)
 

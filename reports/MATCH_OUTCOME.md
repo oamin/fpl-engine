@@ -37,8 +37,12 @@ roll = match_outcome_roll(probs, random.Random(0))
 # roll.goals_home, roll.goals_away, roll.p
 ```
 
+## Downstream
+
+Player xG / xA from side `xG_M` × shares: [`PLAYER_ATTACK.md`](PLAYER_ATTACK.md)
+(`src/markets/player_attack.py`).
+
 ## Not yet rewired
 
 Live pick / short-horizon still call `fit_scoreline` / λ±band paths directly.
-Next decomposition step: route those call sites through this module, then
-revisit cascade short/long rolls.
+Route those call sites through this module, then revisit cascade short/long rolls.

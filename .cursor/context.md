@@ -59,6 +59,7 @@ Screens: `reports/match_band_calibration.md`, `reports/player_ga_finish.md`,
 ### Scorer defaults (live + historical assemble)
 
 - **Decomposed match layer:** `match_outcome_probs` (bookie AH/OU/BTTS → \(M\)) and `match_outcome_roll` (draw inside \(M\)) — `src/markets/match_outcome.py` · `reports/MATCH_OUTCOME.md`. Call-site rewire pending.
+- **Decomposed player attack:** `player_attack_from_m` — \(G=\alpha_G xG_M\), \(A=\alpha_A xG_M\), \(E[G_i]=sG_i G\), \(E[A_i]=sA_i A\) — `src/markets/player_attack.py` · `reports/PLAYER_ATTACK.md` (Saka GW20 walkthrough). Shares stay in `numagent_xp`.
 - AH+OU (+ BTTS when priced live) → Dixon–Coles \(M\) → pots \(G=\alpha_G xG_M\), \(A=\alpha_A xG_M\)
 - α from `fpl_score_rates` (2025/26 prior + live counts; refresh after each completed GW)
 - Same-season-only \(rG/rA\) (no prior-season share fill); RATE_M0=270
