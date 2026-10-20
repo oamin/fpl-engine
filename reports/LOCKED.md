@@ -65,7 +65,7 @@ Roadmap: `strategy_layers.md`.
 
 ## Cascade surfaces
 
-Contract: [`CASCADE_CONTRACT.md`](CASCADE_CONTRACT.md). μ injection for L4 (no Odds/FD factory): `src/strategy/layer4_mu_inject.py`. Long-horizon λ→xP: `src/markets/cascade_score_v2.py`.
+Contract: [`CASCADE_CONTRACT.md`](CASCADE_CONTRACT.md). Rebuild plan: [`CASCADE_PLAN.md`](CASCADE_PLAN.md). μ injection for L4 (no Odds/FD factory): `src/strategy/layer4_mu_inject.py`. Long-horizon λ→xP: `src/markets/cascade_score_v2.py`.
 
 ## Superseded
 

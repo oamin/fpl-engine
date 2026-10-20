@@ -1,24 +1,28 @@
 {
-  "milestone": "repo-cleanup-step3-v2-decompose-l4-mu",
+  "milestone": "repo-cleanup-step4-cascade-rebuild-plan",
   "status": "complete",
-  "summary": "Step 3: decomposed Numagent 2.0 for cascade. Added layer4_mu_inject (pools_from_mu_boards → solve_horizon_transfers) and reports/CASCADE_CONTRACT.md. L4 MILP stays column-agnostic; priced/Odds factories stay the live default path.",
+  "summary": "Step 4 plan tip: CASCADE_PLAN.md on cascade-rebuild-plan branch. Documents short/long architecture, what not to replay, and the next pre-registered comparison (L4-inject path V vs L1→L3). Added scored_weeks_to_l4_pools helper; default advisor unchanged.",
   "gemini": "",
   "decisions": {
-    "l4_injection": {
-      "decision": "add_layer4_mu_inject",
-      "module": "src/strategy/layer4_mu_inject.py",
-      "does_not_change": ["solve_horizon_transfers", "project_week_score_xp_v2", "numagent_live_pick"]
+    "no_replay_parks": {
+      "decision": "keep_v2_parks",
+      "arms": ["share_seed", "assist_alpha", "match_band", "player_finish", "rank_tracker"]
     },
-    "cascade_contract": {
-      "decision": "document_surfaces",
-      "index": "reports/CASCADE_CONTRACT.md"
+    "next_comparison": {
+      "decision": "register_before_run",
+      "arm": "short_l4_inject_path_v_vs_l1_l3",
+      "status": "queued_not_run"
+    },
+    "l4_helper": {
+      "decision": "ship_scored_weeks_to_l4_pools",
+      "default_advisor": "l1_then_l3"
     }
   },
   "artifacts": [
-    "src/strategy/layer4_mu_inject.py",
-    "tests/test_layer4_mu_inject.py",
+    "reports/CASCADE_PLAN.md",
     "reports/CASCADE_CONTRACT.md",
-    "reports/LOCKED.md",
+    "src/models/short_horizon_cascade.py",
+    "tests/test_short_horizon_v2.py",
     ".cursor/context.md"
   ]
 }
