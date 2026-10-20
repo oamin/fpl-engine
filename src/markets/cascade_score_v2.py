@@ -366,10 +366,12 @@ def score_pool_generative_on_scenarios(
     lineup_cov: bool = True,
     rho: float = 0.0,
 ) -> pd.DataFrame:
-    """Discounted multi-GW generative xP (cascade_short stack, no props).
+    """Discounted multi-GW generative xP (cascade_short stack).
 
     Each scenario mapping needs ``home``, ``away``, ``lam_h``, ``lam_a``, and
-    preferably rolled ``hg`` / ``ag``. Missing goals trigger a fresh ``k ∼ M``
+    preferably rolled ``hg`` / ``ag``. Optional ``home_props`` / ``away_props``
+    (element id → P(anytime)) are used on priced cascade_short weeks; Opta
+    long weeks leave them unset. Missing goals trigger a fresh ``k ∼ M``
     draw from the fixture λ (scratch valuation; does not update ClubPath).
     """
     out = pool.copy()
@@ -391,6 +393,8 @@ def score_pool_generative_on_scenarios(
                 continue
             gh = sc.get("hg", sc.get("goals_home"))
             ga = sc.get("ag", sc.get("goals_away"))
+            home_props = sc.get("home_props")
+            away_props = sc.get("away_props")
             home_xp, away_xp, _meta = score_fixture_generative(
                 home_club,
                 away_club,
@@ -402,8 +406,8 @@ def score_pool_generative_on_scenarios(
                 rng=rng,
                 home_hist=(hist_by_team or {}).get(home_n),
                 away_hist=(hist_by_team or {}).get(away_n),
-                home_props=None,
-                away_props=None,
+                home_props=home_props if isinstance(home_props, Mapping) else None,
+                away_props=away_props if isinstance(away_props, Mapping) else None,
                 lineup_cov=lineup_cov,
                 goals_home=None if gh is None else int(gh),
                 goals_away=None if ga is None else int(ga),

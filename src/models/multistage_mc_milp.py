@@ -59,6 +59,7 @@ from src.markets.cascade_score_v2 import (
     score_pool_generative_on_scenarios,
     score_pool_on_lam_pots,
 )
+from src.live.odds_props import match_anytime_props
 from src.markets.match_outcome import (
     match_outcome_probs_from_lambdas,
     match_outcome_roll,
@@ -74,6 +75,7 @@ from src.models.opta_gf_ga_horizon import (
     rank_gf_ga_profile,
     sample_match_from_opta_ranks,
 )
+from src.models.short_horizon_cascade import MARKET_BAND, sample_fixture_moments
 from src.models.minutes_overlay import apply_availability_overlay, overlay_summary
 from src.models.player_pool import POOL_JSON as DEFAULT_POOL_JSON, load_player_pool_ids
 from src.teams import norm_team
@@ -390,6 +392,122 @@ def sample_opta_scenario(
     }
 
 
+def load_priced_week_fits(
+    odds_path: Path,
+    bootstrap: Mapping[str, Any],
+    *,
+    gw: int = 8,
+) -> list[dict[str, Any]]:
+    """Load cascade_short priced fits (+ anytime props) for one GW."""
+    raw = json.loads(Path(odds_path).read_text(encoding="utf-8"))
+    props_root = raw.get("props") or {}
+    out: list[dict[str, Any]] = []
+    for m in raw.get("matches") or []:
+        home = str(m.get("home") or "")
+        away = str(m.get("away") or "")
+        if not home or not away:
+            continue
+        label = f"{home} v {away}"
+        home_props: dict[int, float] = {}
+        away_props: dict[int, float] = {}
+        prop_block = props_root.get(label) or {}
+        prop_rows = prop_block.get("all") if isinstance(prop_block, Mapping) else None
+        n_matched = 0
+        if prop_rows:
+            matched = match_anytime_props(
+                prop_rows, home=home, away=away, bootstrap=bootstrap
+            )
+            n_matched = int(matched.get("n_matched") or 0)
+            for row in matched.get("rows") or []:
+                pid = int(row["element"])
+                p = float(row["p_anytime"])
+                if row.get("side") == "home":
+                    home_props[pid] = p
+                else:
+                    away_props[pid] = p
+        out.append(
+            {
+                "gw": int(gw),
+                "home": norm_team(home),
+                "away": norm_team(away),
+                "home_raw": home,
+                "away_raw": away,
+                "lam_h": float(m["lam_h"]),
+                "lam_a": float(m["lam_a"]),
+                "rho": float(m.get("rho") or 0.0),
+                "home_props": home_props,
+                "away_props": away_props,
+                "n_props_matched": n_matched,
+                "source": "cascade_short_priced",
+            }
+        )
+    return out
+
+
+def sample_priced_scenario(
+    fit: Mapping[str, Any],
+    rng: random.Random,
+    *,
+    band: float = MARKET_BAND,
+) -> dict[str, Any]:
+    """cascade_short match roll: priced λ ±band → ``M`` → ``k ∼ M``."""
+    sampled = sample_fixture_moments(fit, rng, band=band)
+    sh = float(sampled["lam_h"])
+    sa = float(sampled["lam_a"])
+    rho = float(fit.get("rho") or 0.0)
+    probs = match_outcome_probs_from_lambdas(sh, sa, rho)
+    roll = match_outcome_roll(probs, rng)
+    return {
+        "home": norm_team(str(fit["home"])),
+        "away": norm_team(str(fit["away"])),
+        "home_rank": None,
+        "away_rank": None,
+        "hg": int(roll.goals_home),
+        "ag": int(roll.goals_away),
+        "lam_h": sh,
+        "lam_a": sa,
+        "rho": rho,
+        "source": "cascade_short_priced",
+        "home_props": dict(fit.get("home_props") or {}),
+        "away_props": dict(fit.get("away_props") or {}),
+    }
+
+
+def _priced_index(
+    priced_by_gw: Mapping[int, Sequence[Mapping[str, Any]]] | None,
+) -> dict[int, dict[tuple[str, str], Mapping[str, Any]]]:
+    out: dict[int, dict[tuple[str, str], Mapping[str, Any]]] = {}
+    if not priced_by_gw:
+        return out
+    for gw, fits in priced_by_gw.items():
+        idx: dict[tuple[str, str], Mapping[str, Any]] = {}
+        for fit in fits:
+            key = (norm_team(str(fit["home"])), norm_team(str(fit["away"])))
+            idx[key] = fit
+        out[int(gw)] = idx
+    return out
+
+
+def sample_week_scenario(
+    home: str,
+    away: str,
+    *,
+    gw: int,
+    priced_index: Mapping[int, Mapping[tuple[str, str], Mapping[str, Any]]],
+    paths: Mapping[str, ClubPath],
+    league_gf: float,
+    rng: random.Random,
+) -> dict[str, Any]:
+    """Priced cascade_short when a fit exists; else Opta cascade_long."""
+    key = (norm_team(home), norm_team(away))
+    fit = (priced_index.get(int(gw)) or {}).get(key)
+    if fit is not None:
+        return sample_priced_scenario(fit, rng)
+    return sample_opta_scenario(
+        home, away, paths=paths, league_gf=league_gf, rng=rng
+    )
+
+
 def _scenarios_for_remaining(
     *,
     remaining: Sequence[int],
@@ -399,8 +517,11 @@ def _scenarios_for_remaining(
     paths: Mapping[str, ClubPath],
     league_gf: float,
     rng: random.Random,
+    priced_index: Mapping[int, Mapping[tuple[str, str], Mapping[str, Any]]]
+    | None = None,
 ) -> dict[int, list[dict[str, Any]]]:
-    """Current GW: stored Opta rolls. Later GWs: scratch k∼M from Opta ranks."""
+    """Current GW: stored rolls. Later GWs: scratch short (priced) or Opta."""
+    pidx = priced_index or {}
     out: dict[int, list[dict[str, Any]]] = {}
     for g in remaining:
         g_i = int(g)
@@ -412,9 +533,11 @@ def _scenarios_for_remaining(
             if fx["home"] not in paths or fx["away"] not in paths:
                 continue
             rows.append(
-                sample_opta_scenario(
+                sample_week_scenario(
                     fx["home"],
                     fx["away"],
+                    gw=g_i,
+                    priced_index=pidx,
                     paths=paths,
                     league_gf=league_gf,
                     rng=rng,
@@ -442,8 +565,9 @@ def run_strand(
     hist_by_team: Mapping[str, pd.DataFrame] | None = None,
     generative_attack: bool = DEFAULT_GENERATIVE_ATTACK,
     lineup_cov: bool = DEFAULT_LINEUP_COV,
+    priced_by_gw: Mapping[int, Sequence[Mapping[str, Any]]] | None = None,
 ) -> StrandResult:
-    """One coherent MC strand: Opta scenarios → score_xp_v2 → MILP."""
+    """One coherent MC strand: short/Opta scenarios → score_xp_v2 → MILP."""
     if objective not in OBJECTIVES:
         raise ValueError(f"unknown objective: {objective!r}")
     if alpha_g is None or alpha_a is None:
@@ -453,6 +577,7 @@ def run_strand(
     paths = {
         c: ClubPath(att=p.att, dfn=p.dfn, n=p.n) for c, p in paths0.items()
     }
+    priced_index = _priced_index(priced_by_gw)
     result = StrandResult(strand_id=strand_id)
     # Full rolled scenarios by GW (hg/ag/lam) for generative player scoring.
     rolled_by_gw: dict[int, list[dict[str, Any]]] = {}
@@ -469,9 +594,11 @@ def run_strand(
         for fx in week_fix:
             if fx["home"] not in paths or fx["away"] not in paths:
                 continue
-            sc = sample_opta_scenario(
+            sc = sample_week_scenario(
                 fx["home"],
                 fx["away"],
+                gw=int(gw),
+                priced_index=priced_index,
                 paths=paths,
                 league_gf=league_gf,
                 rng=rng,
@@ -484,8 +611,9 @@ def run_strand(
                     "gw": int(gw),
                     "home": fx["home"],
                     "away": fx["away"],
-                    "home_rank": sc["home_rank"],
-                    "away_rank": sc["away_rank"],
+                    "source": sc.get("source", "cascade_long_opta"),
+                    "home_rank": sc.get("home_rank"),
+                    "away_rank": sc.get("away_rank"),
                     "hg": sc["hg"],
                     "ag": sc["ag"],
                     "lam_h": round(sc["lam_h"], 3),
@@ -506,6 +634,7 @@ def run_strand(
                 paths=paths,
                 league_gf=league_gf,
                 rng=rng,
+                priced_index=priced_index,
             )
             scored = score_pool_generative_on_scenarios(
                 pool,
@@ -975,6 +1104,9 @@ def run_multistage_trial(
     minutes_overlay: bool = True,
     generative_attack: bool = DEFAULT_GENERATIVE_ATTACK,
     lineup_cov: bool = DEFAULT_LINEUP_COV,
+    priced_odds_path: Path | None = None,
+    priced_gw: int = 8,
+    use_priced_short: bool = True,
 ) -> dict[str, Any]:
     """Run N coherent strands and return frequency table + metadata."""
     if objective not in OBJECTIVES:
@@ -1014,6 +1146,25 @@ def run_multistage_trial(
         g for i, g in enumerate(horizon_gws) if i % max(1, int(snapshot_every)) == 0
     ]
 
+    priced_by_gw: dict[int, list[dict[str, Any]]] = {}
+    priced_meta: dict[str, Any] = {"gws": [], "n_fits": 0, "n_props_matched": 0}
+    default_odds = ROOT / "data/scratch/gw08_odds_full.json"
+    odds_path = Path(priced_odds_path) if priced_odds_path else default_odds
+    if (
+        use_priced_short
+        and odds_path.is_file()
+        and int(priced_gw) in set(horizon_gws)
+    ):
+        fits = load_priced_week_fits(odds_path, bootstrap, gw=int(priced_gw))
+        if fits:
+            priced_by_gw[int(priced_gw)] = fits
+            priced_meta = {
+                "gws": [int(priced_gw)],
+                "n_fits": len(fits),
+                "n_props_matched": int(sum(f.get("n_props_matched", 0) for f in fits)),
+                "odds_path": str(odds_path),
+            }
+
     profile = rank_gf_ga_profile()
     league_gf = league_avg_gf(profile)
     paths0 = init_paths_from_opta()
@@ -1039,15 +1190,23 @@ def run_multistage_trial(
                 hist_by_team=team_hist,
                 generative_attack=generative_attack,
                 lineup_cov=lineup_cov,
+                priced_by_gw=priced_by_gw,
             )
         )
 
     freq = aggregate_frequencies(strands, pool)
     n_squads = int(freq.attrs.get("n_squads") or 0)
+    props_on = bool(priced_by_gw) and generative_attack
     scenario_note = (
-        "generative lineup→attack→CS/GC (no props); soft priors from score_xp_v2 helpers"
+        "generative lineup→attack→CS/GC; soft priors from score_xp_v2 helpers"
         if generative_attack
         else f"mean score_team_side ({SCORE_XP_V2}) on scenario λ moments"
+    )
+    short_note = (
+        f"GW{priced_meta['gws'][0]} cascade_short priced λ±{MARKET_BAND:.0%}→M→k"
+        f" (props matched={priced_meta['n_props_matched']}); "
+        if priced_by_gw
+        else ""
     )
     return {
         "decision_gw": int(decision_gw),
@@ -1060,7 +1219,8 @@ def run_multistage_trial(
         ),
         "generative_attack": bool(generative_attack),
         "lineup_cov": bool(lineup_cov),
-        "props": False,
+        "props": props_on,
+        "priced": priced_meta,
         "horizon": {"start": start, "end": end, "gws": horizon_gws},
         "snapshot_gws": snapshot_gws,
         "n_strands": int(n_strands),
@@ -1074,10 +1234,10 @@ def run_multistage_trial(
         "alpha_g": float(alpha_g),
         "alpha_a": float(alpha_a),
         "scoring": (
-            "Opta match_prediction λ bands → Dixon–Coles M → k∼M; "
+            f"{short_note}"
+            "GW≥t+2 Opta place→GF/GA±MAE→M→k∼M; "
             f"{scenario_note}; "
-            "same-season as-of rates/priors/rolling m frozen at decision GW; "
-            "props off"
+            "same-season as-of rates/priors/rolling m frozen at decision GW"
             + ("; FPL availability overlay on m" if minutes_overlay else "")
         ),
         "seed": int(seed),
@@ -1122,9 +1282,9 @@ def write_trial_outputs(result: dict[str, Any], *, out_dir: Path) -> dict[str, s
         "",
         f"- Decision GW **{result['decision_gw']}**; roll fixtures "
         f"GW{result['horizon']['start']}–{result['horizon']['end']}.",
-        f"- **{result['n_strands']}** coherent strands: each fixture samples λ "
-        "from **Opta rank→GF/GA bands** (`match_prediction`, e.g. 2nd vs 20th), "
-        "builds Dixon–Coles `M`, rolls `k ∼ M`, path rate update.",
+        f"- **{result['n_strands']}** coherent strands: priced weeks use "
+        f"**cascade_short** (`priced`={result.get('priced')}); unpriced weeks "
+        "use **cascade_long** Opta place→GF/GA±MAE → `M` → `k ∼ M`.",
         f"- Player xP: **{result.get('scoring', '')}** "
         f"(props={result.get('props', False)}; "
         f"generative={result.get('generative_attack')}). "
@@ -1211,6 +1371,18 @@ def main() -> None:
         default=True,
         help="Scale xmi/shares by FPL chance_of_playing / status (default on)",
     )
+    p.add_argument(
+        "--priced-odds",
+        type=Path,
+        default=ROOT / "data/scratch/gw08_odds_full.json",
+        help="cascade_short priced odds JSON (GW --priced-gw)",
+    )
+    p.add_argument("--priced-gw", type=int, default=8)
+    p.add_argument(
+        "--no-priced",
+        action="store_true",
+        help="Disable cascade_short priced week (Opta for all horizon GWs)",
+    )
     args = p.parse_args()
     bootstrap = json.loads(args.bootstrap.read_text())
     fixtures = json.loads(args.fixtures.read_text())
@@ -1225,6 +1397,9 @@ def main() -> None:
         logs_path=args.logs,
         objective=args.objective,
         minutes_overlay=bool(args.minutes_overlay),
+        priced_odds_path=args.priced_odds,
+        priced_gw=args.priced_gw,
+        use_priced_short=not bool(args.no_priced),
     )
     paths = write_trial_outputs(result, out_dir=args.out)
     print(
