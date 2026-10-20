@@ -76,32 +76,55 @@ class CaptureScheduleTest(unittest.TestCase):
         self.assertIsNone(choose_slot(datetime(2026, 10, 7, 8, 19, tzinfo=timezone.utc), deadline))
 
     def test_a_closed_window_without_a_file_fails(self) -> None:
-        payload = _payload("2026-10-10T10:00:00Z")
+        # Numagent 2.0 requires captures from GW7; a closed GW7 without a file fails.
+        payload = {
+            "events": [
+                {
+                    "id": 6,
+                    "deadline_time": "2026-10-10T10:00:00Z",
+                    "is_current": True,
+                    "is_next": False,
+                    "finished": True,
+                },
+                {
+                    "id": 7,
+                    "deadline_time": "2026-10-17T10:00:00Z",
+                    "is_current": False,
+                    "is_next": True,
+                    "finished": False,
+                },
+            ],
+            "elements": [{"id": 7, "ep_next": 4.5, "ep_this": 9.9}],
+        }
 
         def opener(*_args: object, **_kwargs: object) -> _Response:
-            return _Response(payload, "Sat, 10 Oct 2026 09:50:00 GMT")
+            return _Response(payload, "Sat, 17 Oct 2026 09:50:00 GMT")
 
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             with self.assertRaises(RuntimeError) as raised:
                 run(opener, root)
-            self.assertIn("6", str(raised.exception))
-            directory = root / "data" / "predictions" / SEASON / "gw06"
+            self.assertIn("7", str(raised.exception))
+            directory = root / "data" / "predictions" / SEASON / "gw07"
             directory.mkdir(parents=True)
-            (directory / "official_existing.csv").write_text("captured\n", encoding="utf-8")
+            (directory / "numagent_lock.json").write_text("{}", encoding="utf-8")
             self.assertEqual(run(opener, root), 0)
 
-    def test_gameweeks_before_six_are_not_required(self) -> None:
+    def test_gameweeks_before_seven_are_not_required(self) -> None:
         deadlines = {
-            "5": "2026-10-03T10:00:00Z",
             "6": "2026-10-10T10:00:00Z",
+            "7": "2026-10-17T10:00:00Z",
         }
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            after = datetime(2026, 10, 10, 12, 0, tzinfo=timezone.utc)
-            self.assertEqual(missing_capture_gws(root, after, deadlines), [6])
-            still_open = datetime(2026, 10, 7, 8, 19, tzinfo=timezone.utc)
+            after = datetime(2026, 10, 17, 12, 0, tzinfo=timezone.utc)
+            self.assertEqual(missing_capture_gws(root, after, deadlines), [7])
+            still_open = datetime(2026, 10, 14, 8, 19, tzinfo=timezone.utc)
             self.assertEqual(missing_capture_gws(root, still_open, deadlines), [])
+            # Archived ep_next-era bar still asks from GW6 when live_from=6.
+            self.assertEqual(
+                missing_capture_gws(root, after, deadlines, live_from=6), [6, 7]
+            )
 
     def test_outside_the_window_writes_nothing(self) -> None:
         payload = _payload("2026-10-10T10:00:00Z")

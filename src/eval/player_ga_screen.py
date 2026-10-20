@@ -34,7 +34,6 @@ from src.markets import numagent_xp
 from src.markets.cascade_score_v2 import SCORER, attach_rates_priors
 from src.markets.numagent_xp_pilot import load_fd_moments, load_merged, score_gameweek
 from src.models.player_ga import add_finish_scales
-from src.teams import norm_team
 
 ROOT = Path(__file__).resolve().parents[2]
 REPORTS = ROOT / "reports"

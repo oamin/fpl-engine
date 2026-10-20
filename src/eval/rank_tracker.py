@@ -56,7 +56,6 @@ from src.models.opta_gf_ga_horizon import (
     match_prediction,
     pots_from_season_gf_ga,
     rank_gf_ga_profile_excluding,
-    season_final_ranks,
     _season_table,
 )
 from src.teams import norm_team

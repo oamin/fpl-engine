@@ -1,46 +1,40 @@
 {
-  "milestone": "cascade-screens-score-xp-v2",
+  "milestone": "cascade-v2-open-screens",
   "status": "complete",
-  "summary": "Rewired and reran match-band, player G/A finish, and expanding GF/GA rank tracker on score_xp_v2. All three park: keep z_band=1.0 / centre_blend=0.5; keep share×λ rates (finish interval lo<0); keep OLS rank→GF/GA map (tracker fails prior MSE+log). Threaded z_band through gf_ga_from_rank/match_prediction; AM→MID in normalize_position; analytic E[λ] for match-band player log.",
+  "summary": "Open screens parked (share seed, assist α_A). Strand hand-off plumbing only. As-of audit realigned to Numagent 2.0 live_primary (score_xp_v2 from GW7, numagent_lock capture) so #89 gates can pass.",
   "gemini": "",
   "decisions": {
-    "match_band": {
-      "change_defaults": false,
-      "adopt_z_band": 1.0,
-      "adopt_centre_blend": 0.5,
-      "max_abs_player_delta": 0.00047,
-      "material_log_bar": 0.001
-    },
-    "player_ga_finish": {
-      "decision": "keep_share_times_lambda",
+    "share_seed": {
+      "decision": "keep_frozen_shares",
       "promote": false,
-      "finish_interval": {
-        "mean": -0.00187,
-        "lo": -0.00256,
-        "hi": -0.00117
-      }
+      "interval": {"mean": -0.01306, "lo": -0.01584, "hi": -0.01033},
+      "n_mc": 20
     },
-    "rank_tracker": {
-      "decision": "keep_rank_map_park_tracker",
+    "assist_alpha": {
+      "decision": "keep_pooled_alpha_a",
       "promote": false,
-      "beat_prior_mse_all_seasons": false,
-      "beat_prior_log_interval": false,
-      "frac_oracle_prior_gap_closed": -0.325
+      "interval": {"mean": -0.00175, "lo": -0.00255, "hi": -0.00097}
+    },
+    "strand_handoff": {
+      "decision": "plumbing_only_no_likelihood_arm",
+      "mean_abs_att_shift": 0.5316,
+      "season_gw": "2024-25 GW10"
+    },
+    "asof_audit_numagent_2_0": {
+      "decision": "realign_gates_to_score_xp_v2_from_gw7",
+      "promote": true,
+      "note": "Protocol already locked Numagent 2.0; decision_spec/gates/capture still expected ep_next from GW6."
     }
   },
   "artifacts": [
-    "src/markets/cascade_score_v2.py",
-    "src/models/opta_gf_ga_horizon.py",
-    "src/rules/fpl_2026.py",
-    "src/eval/match_band_calibration.py",
-    "src/eval/player_ga_screen.py",
-    "src/eval/rank_tracker.py",
-    "reports/match_band_calibration.md",
-    "reports/player_ga_finish.md",
-    "reports/rank_tracker.md",
-    "data/processed/match_band_calibration.json",
-    "data/processed/player_ga_screen.json",
-    "data/processed/rank_tracker_screen.json"
-  ],
-  "notes": "As-of audit currently fails on Numagent 2.0 live_primary lock drift (winner=score_xp_v2) and missing GW7 capture; closed-season screens soft-passed interval gate only. Fix gates/decision_spec for v2 live lock separately."
+    "src/eval/share_seed_screen.py",
+    "src/eval/assist_alpha_screen.py",
+    "src/models/strand_handoff.py",
+    "src/eval/decision_spec.py",
+    "src/eval/gates.py",
+    "src/eval/capture_schedule.py",
+    "reports/share_seed_screen.md",
+    "reports/assist_alpha_screen.md",
+    "reports/strand_handoff_smoke.md"
+  ]
 }

@@ -19,14 +19,14 @@ from typing import Any, Mapping, Sequence
 
 from src.eval.decision_spec import (
     LIVE_CONTINUE_TO_GW,
-    LIVE_PRIMARY_FROM_GW,
+    LIVE_FREEZE_BAR_FROM_GW,
     LIVE_REVIEW_GW,
     MIN_LIVE_WEEKS,
 )
 
 ROOT = Path(__file__).resolve().parents[2]
 LEDGER = ROOT / "data" / "predictions" / "2026-27" / "week_freeze.jsonl"
-BAR_START_GW = int(LIVE_PRIMARY_FROM_GW)
+BAR_START_GW = int(LIVE_FREEZE_BAR_FROM_GW)
 BAR_END_GW = BAR_START_GW + int(MIN_LIVE_WEEKS) - 1  # GW6..GW25 inclusive
 
 REQUIRED_TOP = (
