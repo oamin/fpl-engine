@@ -1,0 +1,729 @@
+{
+  "n": 5000,
+  "seed": 0,
+  "with_lineup_cov": {
+    "label": "lineup_cov ON",
+    "scoreline": [
+      [
+        "2-0",
+        652
+      ],
+      [
+        "1-1",
+        592
+      ],
+      [
+        "1-0",
+        542
+      ],
+      [
+        "2-1",
+        497
+      ],
+      [
+        "0-0",
+        453
+      ],
+      [
+        "3-0",
+        445
+      ],
+      [
+        "3-1",
+        303
+      ],
+      [
+        "4-0",
+        230
+      ],
+      [
+        "4-1",
+        168
+      ],
+      [
+        "2-2",
+        164
+      ],
+      [
+        "1-2",
+        163
+      ],
+      [
+        "0-1",
+        108
+      ],
+      [
+        "5-0",
+        100
+      ],
+      [
+        "3-2",
+        96
+      ],
+      [
+        "0-2",
+        76
+      ],
+      [
+        "4-2",
+        73
+      ],
+      [
+        "5-1",
+        63
+      ],
+      [
+        "6-0",
+        42
+      ],
+      [
+        "2-3",
+        41
+      ],
+      [
+        "1-3",
+        39
+      ],
+      [
+        "3-3",
+        27
+      ],
+      [
+        "6-1",
+        26
+      ],
+      [
+        "5-2",
+        21
+      ],
+      [
+        "0-3",
+        16
+      ],
+      [
+        "4-3",
+        12
+      ],
+      [
+        "1-4",
+        12
+      ],
+      [
+        "2-4",
+        10
+      ],
+      [
+        "6-2",
+        10
+      ],
+      [
+        "6-3",
+        5
+      ],
+      [
+        "5-3",
+        5
+      ],
+      [
+        "4-4",
+        3
+      ],
+      [
+        "0-4",
+        2
+      ],
+      [
+        "3-4",
+        2
+      ],
+      [
+        "3-5",
+        1
+      ],
+      [
+        "0-5",
+        1
+      ]
+    ],
+    "scorers": [
+      [
+        "Arsenal:Havertz",
+        1637
+      ],
+      [
+        "Arsenal:Saka",
+        1222
+      ],
+      [
+        "Arsenal:Tzolis",
+        1090
+      ],
+      [
+        "Arsenal:\u00d8degaard",
+        829
+      ],
+      [
+        "Arsenal:Rice",
+        780
+      ],
+      [
+        "Everton:Barry",
+        724
+      ],
+      [
+        "Arsenal:Gy\u00f6keres",
+        616
+      ],
+      [
+        "Arsenal:Gabriel",
+        555
+      ],
+      [
+        "Everton:Dewsbury-Hall",
+        550
+      ],
+      [
+        "Everton:Johnson",
+        538
+      ],
+      [
+        "Arsenal:Konsa",
+        481
+      ],
+      [
+        "Arsenal:Calafiori",
+        436
+      ],
+      [
+        "Arsenal:Bruno G.",
+        393
+      ],
+      [
+        "Arsenal:Eze",
+        392
+      ],
+      [
+        "Arsenal:Merino",
+        366
+      ],
+      [
+        "Everton:Grealish",
+        263
+      ],
+      [
+        "Arsenal:White",
+        252
+      ],
+      [
+        "Arsenal:J.Timber",
+        245
+      ],
+      [
+        "Everton:Armstrong",
+        224
+      ],
+      [
+        "Everton:Branthwaite",
+        222
+      ]
+    ],
+    "assists": [
+      [
+        "Arsenal:Rice",
+        2612
+      ],
+      [
+        "Arsenal:Tzolis",
+        1604
+      ],
+      [
+        "Arsenal:Calafiori",
+        1424
+      ],
+      [
+        "Everton:Armstrong",
+        1006
+      ],
+      [
+        "Everton:Tarkowski",
+        867
+      ],
+      [
+        "Arsenal:Saka",
+        497
+      ],
+      [
+        "Arsenal:Havertz",
+        486
+      ],
+      [
+        "Arsenal:\u00d8degaard",
+        454
+      ],
+      [
+        "Arsenal:White",
+        379
+      ],
+      [
+        "Arsenal:Konsa",
+        345
+      ],
+      [
+        "Arsenal:Gabriel",
+        311
+      ],
+      [
+        "Everton:Dewsbury-Hall",
+        209
+      ],
+      [
+        "Everton:Garner",
+        177
+      ],
+      [
+        "Everton:Barry",
+        176
+      ],
+      [
+        "Arsenal:Bruno G.",
+        169
+      ]
+    ],
+    "gyok_eligible": 0.2564,
+    "havertz_eligible": 0.7436,
+    "both_eligible": 0.0,
+    "both_scored": 0.0,
+    "pairs": {
+      "home": [
+        {
+          "a": "Calafiori",
+          "b": "Hincapie",
+          "corr": -0.9996737023310452
+        },
+        {
+          "a": "Eze",
+          "b": "Tzolis",
+          "corr": -0.9995135613199859
+        },
+        {
+          "a": "J.Timber",
+          "b": "White",
+          "corr": -0.97267509220121
+        },
+        {
+          "a": "Lewis-Skelly",
+          "b": "Bruno G.",
+          "corr": -0.9069241112725986
+        },
+        {
+          "a": "\u00d8degaard",
+          "b": "Merino",
+          "corr": -0.8068454916825842
+        },
+        {
+          "a": "Saka",
+          "b": "Zubimendi",
+          "corr": -0.5374495946411315
+        },
+        {
+          "a": "Gy\u00f6keres",
+          "b": "Havertz",
+          "corr": -0.42597852519521806
+        }
+      ],
+      "away": [
+        {
+          "a": "Garner",
+          "b": "Hackney",
+          "corr": -0.9809122375779803
+        },
+        {
+          "a": "George",
+          "b": "Dibling",
+          "corr": -0.9176434719487236
+        },
+        {
+          "a": "Grealish",
+          "b": "R\u00f6hl",
+          "corr": -0.7789277914360462
+        }
+      ],
+      "home_table_n": 20,
+      "away_table_n": 23
+    }
+  },
+  "without_lineup_cov": {
+    "label": "lineup_cov OFF",
+    "scoreline": [
+      [
+        "2-0",
+        716
+      ],
+      [
+        "1-1",
+        549
+      ],
+      [
+        "1-0",
+        511
+      ],
+      [
+        "3-0",
+        462
+      ],
+      [
+        "2-1",
+        459
+      ],
+      [
+        "0-0",
+        453
+      ],
+      [
+        "3-1",
+        327
+      ],
+      [
+        "4-0",
+        243
+      ],
+      [
+        "2-2",
+        177
+      ],
+      [
+        "4-1",
+        163
+      ],
+      [
+        "1-2",
+        154
+      ],
+      [
+        "0-1",
+        106
+      ],
+      [
+        "3-2",
+        100
+      ],
+      [
+        "5-0",
+        95
+      ],
+      [
+        "5-1",
+        72
+      ],
+      [
+        "0-2",
+        71
+      ],
+      [
+        "4-2",
+        57
+      ],
+      [
+        "6-0",
+        48
+      ],
+      [
+        "2-3",
+        46
+      ],
+      [
+        "1-3",
+        39
+      ],
+      [
+        "6-1",
+        29
+      ],
+      [
+        "5-2",
+        26
+      ],
+      [
+        "3-3",
+        22
+      ],
+      [
+        "4-3",
+        18
+      ],
+      [
+        "0-3",
+        16
+      ],
+      [
+        "6-2",
+        9
+      ],
+      [
+        "2-4",
+        6
+      ],
+      [
+        "6-3",
+        6
+      ],
+      [
+        "5-3",
+        4
+      ],
+      [
+        "3-4",
+        4
+      ],
+      [
+        "1-4",
+        4
+      ],
+      [
+        "4-4",
+        2
+      ],
+      [
+        "0-4",
+        2
+      ],
+      [
+        "1-6",
+        1
+      ],
+      [
+        "3-5",
+        1
+      ],
+      [
+        "4-6",
+        1
+      ],
+      [
+        "5-4",
+        1
+      ]
+    ],
+    "scorers": [
+      [
+        "Arsenal:Gy\u00f6keres",
+        1334
+      ],
+      [
+        "Arsenal:Havertz",
+        1168
+      ],
+      [
+        "Arsenal:Saka",
+        972
+      ],
+      [
+        "Arsenal:Eze",
+        831
+      ],
+      [
+        "Arsenal:Tzolis",
+        804
+      ],
+      [
+        "Arsenal:\u00d8degaard",
+        707
+      ],
+      [
+        "Arsenal:Dowman",
+        664
+      ],
+      [
+        "Arsenal:Merino",
+        651
+      ],
+      [
+        "Everton:Barry",
+        573
+      ],
+      [
+        "Everton:Johnson",
+        464
+      ],
+      [
+        "Arsenal:Bruno G.",
+        459
+      ],
+      [
+        "Everton:Dewsbury-Hall",
+        427
+      ],
+      [
+        "Arsenal:Rice",
+        373
+      ],
+      [
+        "Everton:Grealish",
+        358
+      ],
+      [
+        "Arsenal:Zubimendi",
+        358
+      ],
+      [
+        "Arsenal:Calafiori",
+        305
+      ],
+      [
+        "Everton:Dibling",
+        302
+      ],
+      [
+        "Arsenal:Gabriel",
+        277
+      ],
+      [
+        "Arsenal:J.Timber",
+        268
+      ],
+      [
+        "Arsenal:Lewis-Skelly",
+        248
+      ]
+    ],
+    "assists": [
+      [
+        "Arsenal:Rice",
+        1959
+      ],
+      [
+        "Arsenal:Tzolis",
+        1862
+      ],
+      [
+        "Arsenal:Calafiori",
+        1470
+      ],
+      [
+        "Everton:Armstrong",
+        875
+      ],
+      [
+        "Everton:Tarkowski",
+        739
+      ],
+      [
+        "Arsenal:Saka",
+        562
+      ],
+      [
+        "Arsenal:White",
+        537
+      ],
+      [
+        "Arsenal:Havertz",
+        526
+      ],
+      [
+        "Arsenal:\u00d8degaard",
+        479
+      ],
+      [
+        "Arsenal:Konsa",
+        271
+      ],
+      [
+        "Arsenal:Gabriel",
+        250
+      ],
+      [
+        "Arsenal:Lewis-Skelly",
+        245
+      ],
+      [
+        "Arsenal:Bruno G.",
+        213
+      ],
+      [
+        "Everton:Garner",
+        199
+      ],
+      [
+        "Everton:Dewsbury-Hall",
+        175
+      ]
+    ],
+    "gyok_eligible": 0.0,
+    "havertz_eligible": 0.0,
+    "both_eligible": 0.0,
+    "both_scored": 0.051,
+    "pairs": {
+      "home": [
+        {
+          "a": "Calafiori",
+          "b": "Hincapie",
+          "corr": -0.9996737023310452
+        },
+        {
+          "a": "Eze",
+          "b": "Tzolis",
+          "corr": -0.9995135613199859
+        },
+        {
+          "a": "J.Timber",
+          "b": "White",
+          "corr": -0.97267509220121
+        },
+        {
+          "a": "Lewis-Skelly",
+          "b": "Bruno G.",
+          "corr": -0.9069241112725986
+        },
+        {
+          "a": "\u00d8degaard",
+          "b": "Merino",
+          "corr": -0.8068454916825842
+        },
+        {
+          "a": "Saka",
+          "b": "Zubimendi",
+          "corr": -0.5374495946411315
+        },
+        {
+          "a": "Gy\u00f6keres",
+          "b": "Havertz",
+          "corr": -0.42597852519521806
+        }
+      ],
+      "away": [
+        {
+          "a": "Garner",
+          "b": "Hackney",
+          "corr": -0.9809122375779803
+        },
+        {
+          "a": "George",
+          "b": "Dibling",
+          "corr": -0.9176434719487236
+        },
+        {
+          "a": "Grealish",
+          "b": "R\u00f6hl",
+          "corr": -0.7789277914360462
+        }
+      ],
+      "home_table_n": 20,
+      "away_table_n": 23
+    }
+  },
+  "fixture": {
+    "home": "Arsenal",
+    "away": "Everton",
+    "source": "data/scratch/gw08_odds_full.json",
+    "before_gw": 6,
+    "lam_h": 2.048416475819365,
+    "lam_a": 0.6793357307440191,
+    "rho": -0.24999744788285586,
+    "xg_home": 2.0416468086991215,
+    "xg_away": 0.679327731995733,
+    "G_team_home": 1.960258004620361,
+    "G_team_away": 0.6522468130781762,
+    "alpha_g": 0.9601357082273113,
+    "alpha_a": 0.9050042408821035
+  }
+}

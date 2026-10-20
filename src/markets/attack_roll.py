@@ -16,7 +16,8 @@ from typing import Any, Mapping, Sequence
 
 import numpy as np
 
-from src.markets.prop_shares import anytime_p_to_lambda, prop_goal_pi
+from src.markets.lineup_roll import LineupWorld, gate_dice_weights
+from src.markets.prop_shares import prop_goal_pi
 
 
 EMPTY_G = "∅_G"
@@ -135,13 +136,30 @@ def _categorical(rng: Any, weights: np.ndarray) -> int:
     return int(np.asarray(rng.choice(len(p), p=p)))
 
 
+def dice_for_lineup(dice: SideAttackDice, world: LineupWorld) -> SideAttackDice:
+    """Renormalise ``π`` / ``ρ`` onto lineup-eligible players (m ≥ gate)."""
+    pi = gate_dice_weights(dice.pi, world.eligible)
+    rho = gate_dice_weights(dice.rho, world.eligible)
+    return SideAttackDice(
+        names=list(dice.names),
+        pi=pi,
+        rho=rho,
+        alpha_g=dice.alpha_g,
+        alpha_a=dice.alpha_a,
+        prop_diag=dict(dice.prop_diag),
+    )
+
+
 def roll_side_attack(
     dice: SideAttackDice,
     goals_for: int,
     rng: Any,
     *,
     team: str = "",
+    lineup: LineupWorld | None = None,
 ) -> SideAttackRoll:
+    if lineup is not None:
+        dice = dice_for_lineup(dice, lineup)
     """Allocate ``goals_for`` match goals with α_G / α_A empty mass."""
     k = int(max(0, goals_for))
     events: list[GoalEvent] = []

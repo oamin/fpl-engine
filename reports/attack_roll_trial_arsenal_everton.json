@@ -149,27 +149,160 @@
   },
   "n_paths": 12,
   "seed": 0,
+  "lineup_cov": true,
+  "competitor_pairs": {
+    "home": [
+      {
+        "a": "Calafiori",
+        "b": "Hincapie",
+        "corr": -0.9996737023310452
+      },
+      {
+        "a": "Eze",
+        "b": "Tzolis",
+        "corr": -0.9995135613199859
+      },
+      {
+        "a": "J.Timber",
+        "b": "White",
+        "corr": -0.97267509220121
+      },
+      {
+        "a": "Lewis-Skelly",
+        "b": "Bruno G.",
+        "corr": -0.9069241112725986
+      },
+      {
+        "a": "\u00d8degaard",
+        "b": "Merino",
+        "corr": -0.8068454916825842
+      },
+      {
+        "a": "Saka",
+        "b": "Zubimendi",
+        "corr": -0.5374495946411315
+      },
+      {
+        "a": "Rice",
+        "b": "Havertz",
+        "corr": -0.45910956911431133
+      }
+    ],
+    "away": [
+      {
+        "a": "Garner",
+        "b": "Hackney",
+        "corr": -0.9809122375779803
+      },
+      {
+        "a": "George",
+        "b": "Dibling",
+        "corr": -0.9176434719487236
+      },
+      {
+        "a": "Grealish",
+        "b": "R\u00f6hl",
+        "corr": -0.7789277914360462
+      }
+    ],
+    "home_table_n": 23,
+    "away_table_n": 32
+  },
   "scoreline_freq": {
-    "2-0": 5,
-    "3-1": 2,
-    "1-1": 2,
+    "2-0": 2,
+    "4-0": 2,
     "3-3": 1,
+    "4-1": 1,
+    "3-1": 1,
+    "1-1": 1,
+    "4-2": 1,
     "2-1": 1,
-    "4-1": 1
+    "1-0": 1,
+    "1-3": 1
   },
   "scorer_freq": {
-    "Arsenal:Saka": 3,
-    "Arsenal:Gy\u00f6keres": 3,
+    "Arsenal:\u00d8degaard": 7,
+    "Arsenal:Tzolis": 4,
+    "Everton:Barry": 4,
+    "Arsenal:Havertz": 4,
     "Everton:Dewsbury-Hall": 3,
-    "Arsenal:Tzolis": 3,
-    "Everton:Grealish": 3,
-    "Arsenal:Dowman": 3,
-    "Arsenal:Havertz": 3,
-    "Arsenal:Merino": 2,
-    "Arsenal:Lewis-Skelly": 2,
-    "Arsenal:Eze": 2,
-    "Arsenal:Konsa": 1,
-    "Everton:Barry": 1
+    "Arsenal:Merino": 3,
+    "Arsenal:J.Timber": 2,
+    "Arsenal:Konsa": 2,
+    "Everton:Armstrong": 1,
+    "Arsenal:Eze": 1,
+    "Everton:Dibling": 1,
+    "Arsenal:White": 1,
+    "Everton:Garner": 1,
+    "Arsenal:Bruno G.": 1,
+    "Everton:Grealish": 1,
+    "Everton:Branthwaite": 1,
+    "Arsenal:Saka": 1,
+    "Arsenal:Gabriel": 1,
+    "Arsenal:Calafiori": 1,
+    "Arsenal:Lewis-Skelly": 1
+  },
+  "assist_freq": {
+    "Arsenal:Calafiori": 7,
+    "Arsenal:Tzolis": 5,
+    "Everton:Armstrong": 4,
+    "Arsenal:Rice": 3,
+    "Arsenal:Gabriel": 3,
+    "Everton:Tarkowski": 2,
+    "Arsenal:White": 2,
+    "Everton:Pickford": 1,
+    "Arsenal:\u00d8degaard": 1,
+    "Arsenal:Havertz": 1,
+    "Everton:Mykolenko": 1,
+    "Everton:Grealish": 1,
+    "Arsenal:Bruno G.": 1,
+    "Everton:Barry": 1,
+    "Arsenal:Saka": 1,
+    "Everton:Garner": 1
+  },
+  "eligible_freq": {
+    "Arsenal:Raya": 12,
+    "Arsenal:Gabriel": 12,
+    "Arsenal:Konsa": 12,
+    "Everton:Pickford": 12,
+    "Everton:Johnson": 12,
+    "Everton:Tarkowski": 12,
+    "Everton:Branthwaite": 12,
+    "Everton:Mykolenko": 12,
+    "Everton:Armstrong": 12,
+    "Everton:Dewsbury-Hall": 12,
+    "Everton:Barry": 12,
+    "Everton:Garner": 10,
+    "Arsenal:Tzolis": 9,
+    "Arsenal:Calafiori": 9,
+    "Arsenal:\u00d8degaard": 7,
+    "Everton:George": 7,
+    "Everton:R\u00f6hl": 7,
+    "Arsenal:White": 7,
+    "Arsenal:Lewis-Skelly": 7,
+    "Arsenal:Havertz": 7
+  },
+  "pair_winner_freq": {
+    "Everton:Garner/Hackney\u2192Garner": 10,
+    "Arsenal:Eze/Tzolis\u2192Tzolis": 9,
+    "Arsenal:Calafiori/Hincapie\u2192Calafiori": 9,
+    "Arsenal:\u00d8degaard/Merino\u2192\u00d8degaard": 7,
+    "Everton:George/Dibling\u2192George": 7,
+    "Everton:Grealish/R\u00f6hl\u2192R\u00f6hl": 7,
+    "Arsenal:J.Timber/White\u2192White": 7,
+    "Arsenal:Lewis-Skelly/Bruno G.\u2192Lewis-Skelly": 7,
+    "Arsenal:Rice/Havertz\u2192Havertz": 7,
+    "Arsenal:Saka/Zubimendi\u2192Saka": 7,
+    "Arsenal:J.Timber/White\u2192J.Timber": 5,
+    "Arsenal:Lewis-Skelly/Bruno G.\u2192Bruno G.": 5,
+    "Arsenal:Saka/Zubimendi\u2192Zubimendi": 5,
+    "Arsenal:Rice/Havertz\u2192Rice": 5,
+    "Arsenal:\u00d8degaard/Merino\u2192Merino": 5,
+    "Everton:George/Dibling\u2192Dibling": 5,
+    "Everton:Grealish/R\u00f6hl\u2192Grealish": 5,
+    "Arsenal:Calafiori/Hincapie\u2192Hincapie": 3,
+    "Arsenal:Eze/Tzolis\u2192Eze": 3,
+    "Everton:Garner/Hackney\u2192Hackney": 2
   },
   "paths": [
     {
@@ -180,25 +313,25 @@
         "goals_for": 3,
         "events": [
           {
-            "scorer": "Konsa",
-            "assister": "White"
+            "scorer": "Tzolis",
+            "assister": "Rice"
           },
           {
-            "scorer": "Saka",
+            "scorer": "J.Timber",
             "assister": "Gabriel"
           },
           {
-            "scorer": "Gy\u00f6keres",
+            "scorer": "Tzolis",
             "assister": "\u2205_A"
           }
         ],
         "scorers": [
-          "Konsa",
-          "Saka",
-          "Gy\u00f6keres"
+          "Tzolis",
+          "J.Timber",
+          "Tzolis"
         ],
         "assisters": [
-          "White",
+          "Rice",
           "Gabriel"
         ],
         "n_fpl_goals": 3,
@@ -213,77 +346,108 @@
             "assister": "Armstrong"
           },
           {
-            "scorer": "Dewsbury-Hall",
+            "scorer": "Armstrong",
             "assister": "\u2205_A"
           },
           {
             "scorer": "Barry",
-            "assister": "Johnson"
+            "assister": "Pickford"
           }
         ],
         "scorers": [
           "Dewsbury-Hall",
-          "Dewsbury-Hall",
+          "Armstrong",
           "Barry"
         ],
         "assisters": [
           "Armstrong",
-          "Johnson"
+          "Pickford"
         ],
         "n_fpl_goals": 3,
         "n_fpl_assists": 2
-      }
-    },
-    {
-      "scoreline": "3-1",
-      "p_cell": 0.06361217672054856,
-      "home": {
-        "team": "Arsenal",
-        "goals_for": 3,
-        "events": [
-          {
-            "scorer": "Tzolis",
-            "assister": "Saka"
-          },
-          {
-            "scorer": "Gy\u00f6keres",
-            "assister": "Calafiori"
-          },
-          {
-            "scorer": "Tzolis",
-            "assister": "Rice"
-          }
-        ],
-        "scorers": [
-          "Tzolis",
-          "Gy\u00f6keres",
-          "Tzolis"
-        ],
-        "assisters": [
-          "Saka",
-          "Calafiori",
-          "Rice"
-        ],
-        "n_fpl_goals": 3,
-        "n_fpl_assists": 3
       },
-      "away": {
-        "team": "Everton",
-        "goals_for": 1,
-        "events": [
+      "home_lineup": {
+        "eligible": [
+          "J.Timber",
+          "Hincapie",
+          "Raya",
+          "Gabriel",
+          "\u00d8degaard",
+          "Rice",
+          "Zubimendi",
+          "Konsa",
+          "Tzolis",
+          "Bruno G."
+        ],
+        "pair_choices": [
           {
-            "scorer": "Grealish",
-            "assister": "Garner"
+            "winner": "Hincapie",
+            "loser": "Calafiori",
+            "pair": "Calafiori/Hincapie"
+          },
+          {
+            "winner": "Tzolis",
+            "loser": "Eze",
+            "pair": "Eze/Tzolis"
+          },
+          {
+            "winner": "J.Timber",
+            "loser": "White",
+            "pair": "J.Timber/White"
+          },
+          {
+            "winner": "Bruno G.",
+            "loser": "Lewis-Skelly",
+            "pair": "Lewis-Skelly/Bruno G."
+          },
+          {
+            "winner": "\u00d8degaard",
+            "loser": "Merino",
+            "pair": "\u00d8degaard/Merino"
+          },
+          {
+            "winner": "Zubimendi",
+            "loser": "Saka",
+            "pair": "Saka/Zubimendi"
+          },
+          {
+            "winner": "Rice",
+            "loser": "Havertz",
+            "pair": "Rice/Havertz"
           }
+        ]
+      },
+      "away_lineup": {
+        "eligible": [
+          "Pickford",
+          "Johnson",
+          "Tarkowski",
+          "Branthwaite",
+          "Mykolenko",
+          "George",
+          "Garner",
+          "Armstrong",
+          "Dewsbury-Hall",
+          "R\u00f6hl",
+          "Barry"
         ],
-        "scorers": [
-          "Grealish"
-        ],
-        "assisters": [
-          "Garner"
-        ],
-        "n_fpl_goals": 1,
-        "n_fpl_assists": 1
+        "pair_choices": [
+          {
+            "winner": "Garner",
+            "loser": "Hackney",
+            "pair": "Garner/Hackney"
+          },
+          {
+            "winner": "George",
+            "loser": "Dibling",
+            "pair": "George/Dibling"
+          },
+          {
+            "winner": "R\u00f6hl",
+            "loser": "Grealish",
+            "pair": "Grealish/R\u00f6hl"
+          }
+        ]
       }
     },
     {
@@ -293,176 +457,157 @@
         "team": "Arsenal",
         "goals_for": 2,
         "events": [
+          {
+            "scorer": "Tzolis",
+            "assister": "Gabriel"
+          },
+          {
+            "scorer": "Konsa",
+            "assister": "Calafiori"
+          }
+        ],
+        "scorers": [
+          "Tzolis",
+          "Konsa"
+        ],
+        "assisters": [
+          "Gabriel",
+          "Calafiori"
+        ],
+        "n_fpl_goals": 2,
+        "n_fpl_assists": 2
+      },
+      "away": {
+        "team": "Everton",
+        "goals_for": 0,
+        "events": [],
+        "scorers": [],
+        "assisters": [],
+        "n_fpl_goals": 0,
+        "n_fpl_assists": 0
+      },
+      "home_lineup": {
+        "eligible": [
+          "Raya",
+          "Gabriel",
+          "Calafiori",
+          "White",
+          "Lewis-Skelly",
+          "Zubimendi",
+          "Havertz",
+          "Merino",
+          "Konsa",
+          "Tzolis"
+        ],
+        "pair_choices": [
+          {
+            "winner": "Calafiori",
+            "loser": "Hincapie",
+            "pair": "Calafiori/Hincapie"
+          },
+          {
+            "winner": "Tzolis",
+            "loser": "Eze",
+            "pair": "Eze/Tzolis"
+          },
+          {
+            "winner": "White",
+            "loser": "J.Timber",
+            "pair": "J.Timber/White"
+          },
+          {
+            "winner": "Lewis-Skelly",
+            "loser": "Bruno G.",
+            "pair": "Lewis-Skelly/Bruno G."
+          },
+          {
+            "winner": "Merino",
+            "loser": "\u00d8degaard",
+            "pair": "\u00d8degaard/Merino"
+          },
+          {
+            "winner": "Zubimendi",
+            "loser": "Saka",
+            "pair": "Saka/Zubimendi"
+          },
+          {
+            "winner": "Havertz",
+            "loser": "Rice",
+            "pair": "Rice/Havertz"
+          }
+        ]
+      },
+      "away_lineup": {
+        "eligible": [
+          "Pickford",
+          "Johnson",
+          "Tarkowski",
+          "Branthwaite",
+          "Mykolenko",
+          "George",
+          "Hackney",
+          "Armstrong",
+          "Dewsbury-Hall",
+          "R\u00f6hl",
+          "Barry"
+        ],
+        "pair_choices": [
+          {
+            "winner": "Hackney",
+            "loser": "Garner",
+            "pair": "Garner/Hackney"
+          },
+          {
+            "winner": "George",
+            "loser": "Dibling",
+            "pair": "George/Dibling"
+          },
+          {
+            "winner": "R\u00f6hl",
+            "loser": "Grealish",
+            "pair": "Grealish/R\u00f6hl"
+          }
+        ]
+      }
+    },
+    {
+      "scoreline": "4-1",
+      "p_cell": 0.03257605771427617,
+      "home": {
+        "team": "Arsenal",
+        "goals_for": 4,
+        "events": [
+          {
+            "scorer": "Tzolis",
+            "assister": "\u00d8degaard"
+          },
+          {
+            "scorer": "\u00d8degaard",
+            "assister": "Havertz"
+          },
           {
             "scorer": "J.Timber",
             "assister": "Calafiori"
           },
           {
-            "scorer": "Dowman",
-            "assister": "Havertz"
-          }
-        ],
-        "scorers": [
-          "J.Timber",
-          "Dowman"
-        ],
-        "assisters": [
-          "Calafiori",
-          "Havertz"
-        ],
-        "n_fpl_goals": 2,
-        "n_fpl_assists": 2
-      },
-      "away": {
-        "team": "Everton",
-        "goals_for": 0,
-        "events": [],
-        "scorers": [],
-        "assisters": [],
-        "n_fpl_goals": 0,
-        "n_fpl_assists": 0
-      }
-    },
-    {
-      "scoreline": "1-1",
-      "p_cell": 0.11370095511895408,
-      "home": {
-        "team": "Arsenal",
-        "goals_for": 1,
-        "events": [
-          {
-            "scorer": "Merino",
-            "assister": "Rice"
-          }
-        ],
-        "scorers": [
-          "Merino"
-        ],
-        "assisters": [
-          "Rice"
-        ],
-        "n_fpl_goals": 1,
-        "n_fpl_assists": 1
-      },
-      "away": {
-        "team": "Everton",
-        "goals_for": 1,
-        "events": [
-          {
-            "scorer": "\u2205_G",
-            "assister": null
-          }
-        ],
-        "scorers": [],
-        "assisters": [],
-        "n_fpl_goals": 0,
-        "n_fpl_assists": 0
-      }
-    },
-    {
-      "scoreline": "2-0",
-      "p_cell": 0.13713831012687916,
-      "home": {
-        "team": "Arsenal",
-        "goals_for": 2,
-        "events": [
-          {
-            "scorer": "\u2205_G",
-            "assister": null
-          },
-          {
-            "scorer": "Dowman",
-            "assister": "Merino"
-          }
-        ],
-        "scorers": [
-          "Dowman"
-        ],
-        "assisters": [
-          "Merino"
-        ],
-        "n_fpl_goals": 1,
-        "n_fpl_assists": 1
-      },
-      "away": {
-        "team": "Everton",
-        "goals_for": 0,
-        "events": [],
-        "scorers": [],
-        "assisters": [],
-        "n_fpl_goals": 0,
-        "n_fpl_assists": 0
-      }
-    },
-    {
-      "scoreline": "2-0",
-      "p_cell": 0.13713831012687916,
-      "home": {
-        "team": "Arsenal",
-        "goals_for": 2,
-        "events": [
-          {
-            "scorer": "Dowman",
-            "assister": "Rice"
-          },
-          {
-            "scorer": "Gabriel",
+            "scorer": "Havertz",
             "assister": "Tzolis"
           }
         ],
         "scorers": [
-          "Dowman",
-          "Gabriel"
+          "Tzolis",
+          "\u00d8degaard",
+          "J.Timber",
+          "Havertz"
         ],
         "assisters": [
-          "Rice",
+          "\u00d8degaard",
+          "Havertz",
+          "Calafiori",
           "Tzolis"
         ],
-        "n_fpl_goals": 2,
-        "n_fpl_assists": 2
-      },
-      "away": {
-        "team": "Everton",
-        "goals_for": 0,
-        "events": [],
-        "scorers": [],
-        "assisters": [],
-        "n_fpl_goals": 0,
-        "n_fpl_assists": 0
-      }
-    },
-    {
-      "scoreline": "3-1",
-      "p_cell": 0.06361217672054856,
-      "home": {
-        "team": "Arsenal",
-        "goals_for": 3,
-        "events": [
-          {
-            "scorer": "Havertz",
-            "assister": "White"
-          },
-          {
-            "scorer": "Havertz",
-            "assister": "Bruno G."
-          },
-          {
-            "scorer": "Bruno G.",
-            "assister": "\u00d8degaard"
-          }
-        ],
-        "scorers": [
-          "Havertz",
-          "Havertz",
-          "Bruno G."
-        ],
-        "assisters": [
-          "White",
-          "Bruno G.",
-          "\u00d8degaard"
-        ],
-        "n_fpl_goals": 3,
-        "n_fpl_assists": 3
+        "n_fpl_goals": 4,
+        "n_fpl_assists": 4
       },
       "away": {
         "team": "Everton",
@@ -481,6 +626,220 @@
         ],
         "n_fpl_goals": 1,
         "n_fpl_assists": 1
+      },
+      "home_lineup": {
+        "eligible": [
+          "J.Timber",
+          "Raya",
+          "Gabriel",
+          "Calafiori",
+          "Lewis-Skelly",
+          "\u00d8degaard",
+          "Zubimendi",
+          "Havertz",
+          "Konsa",
+          "Tzolis"
+        ],
+        "pair_choices": [
+          {
+            "winner": "Calafiori",
+            "loser": "Hincapie",
+            "pair": "Calafiori/Hincapie"
+          },
+          {
+            "winner": "Tzolis",
+            "loser": "Eze",
+            "pair": "Eze/Tzolis"
+          },
+          {
+            "winner": "J.Timber",
+            "loser": "White",
+            "pair": "J.Timber/White"
+          },
+          {
+            "winner": "Lewis-Skelly",
+            "loser": "Bruno G.",
+            "pair": "Lewis-Skelly/Bruno G."
+          },
+          {
+            "winner": "\u00d8degaard",
+            "loser": "Merino",
+            "pair": "\u00d8degaard/Merino"
+          },
+          {
+            "winner": "Zubimendi",
+            "loser": "Saka",
+            "pair": "Saka/Zubimendi"
+          },
+          {
+            "winner": "Havertz",
+            "loser": "Rice",
+            "pair": "Rice/Havertz"
+          }
+        ]
+      },
+      "away_lineup": {
+        "eligible": [
+          "Pickford",
+          "Johnson",
+          "Tarkowski",
+          "Branthwaite",
+          "Mykolenko",
+          "Grealish",
+          "Garner",
+          "Armstrong",
+          "Dewsbury-Hall",
+          "Dibling",
+          "Barry"
+        ],
+        "pair_choices": [
+          {
+            "winner": "Garner",
+            "loser": "Hackney",
+            "pair": "Garner/Hackney"
+          },
+          {
+            "winner": "Dibling",
+            "loser": "George",
+            "pair": "George/Dibling"
+          },
+          {
+            "winner": "Grealish",
+            "loser": "R\u00f6hl",
+            "pair": "Grealish/R\u00f6hl"
+          }
+        ]
+      }
+    },
+    {
+      "scoreline": "3-1",
+      "p_cell": 0.06361217672054856,
+      "home": {
+        "team": "Arsenal",
+        "goals_for": 3,
+        "events": [
+          {
+            "scorer": "\u2205_G",
+            "assister": null
+          },
+          {
+            "scorer": "\u2205_G",
+            "assister": null
+          },
+          {
+            "scorer": "Eze",
+            "assister": "Rice"
+          }
+        ],
+        "scorers": [
+          "Eze"
+        ],
+        "assisters": [
+          "Rice"
+        ],
+        "n_fpl_goals": 1,
+        "n_fpl_assists": 1
+      },
+      "away": {
+        "team": "Everton",
+        "goals_for": 1,
+        "events": [
+          {
+            "scorer": "Dibling",
+            "assister": "Grealish"
+          }
+        ],
+        "scorers": [
+          "Dibling"
+        ],
+        "assisters": [
+          "Grealish"
+        ],
+        "n_fpl_goals": 1,
+        "n_fpl_assists": 1
+      },
+      "home_lineup": {
+        "eligible": [
+          "Raya",
+          "Saka",
+          "Gabriel",
+          "Calafiori",
+          "White",
+          "Lewis-Skelly",
+          "Rice",
+          "Eze",
+          "Merino",
+          "Konsa"
+        ],
+        "pair_choices": [
+          {
+            "winner": "Calafiori",
+            "loser": "Hincapie",
+            "pair": "Calafiori/Hincapie"
+          },
+          {
+            "winner": "Eze",
+            "loser": "Tzolis",
+            "pair": "Eze/Tzolis"
+          },
+          {
+            "winner": "White",
+            "loser": "J.Timber",
+            "pair": "J.Timber/White"
+          },
+          {
+            "winner": "Lewis-Skelly",
+            "loser": "Bruno G.",
+            "pair": "Lewis-Skelly/Bruno G."
+          },
+          {
+            "winner": "Merino",
+            "loser": "\u00d8degaard",
+            "pair": "\u00d8degaard/Merino"
+          },
+          {
+            "winner": "Saka",
+            "loser": "Zubimendi",
+            "pair": "Saka/Zubimendi"
+          },
+          {
+            "winner": "Rice",
+            "loser": "Havertz",
+            "pair": "Rice/Havertz"
+          }
+        ]
+      },
+      "away_lineup": {
+        "eligible": [
+          "Pickford",
+          "Johnson",
+          "Tarkowski",
+          "Branthwaite",
+          "Mykolenko",
+          "Grealish",
+          "Garner",
+          "Armstrong",
+          "Dewsbury-Hall",
+          "Dibling",
+          "Barry"
+        ],
+        "pair_choices": [
+          {
+            "winner": "Garner",
+            "loser": "Hackney",
+            "pair": "Garner/Hackney"
+          },
+          {
+            "winner": "Dibling",
+            "loser": "George",
+            "pair": "George/Dibling"
+          },
+          {
+            "winner": "Grealish",
+            "loser": "R\u00f6hl",
+            "pair": "Grealish/R\u00f6hl"
+          }
+        ]
       }
     },
     {
@@ -491,15 +850,15 @@
         "goals_for": 1,
         "events": [
           {
-            "scorer": "Merino",
-            "assister": "\u00d8degaard"
+            "scorer": "White",
+            "assister": "Rice"
           }
         ],
         "scorers": [
-          "Merino"
+          "White"
         ],
         "assisters": [
-          "\u00d8degaard"
+          "Rice"
         ],
         "n_fpl_goals": 1,
         "n_fpl_assists": 1
@@ -509,55 +868,248 @@
         "goals_for": 1,
         "events": [
           {
-            "scorer": "George",
-            "assister": "Maitland-Niles"
+            "scorer": "Garner",
+            "assister": "Tarkowski"
           }
         ],
         "scorers": [
-          "George"
+          "Garner"
         ],
         "assisters": [
-          "Maitland-Niles"
+          "Tarkowski"
         ],
         "n_fpl_goals": 1,
         "n_fpl_assists": 1
+      },
+      "home_lineup": {
+        "eligible": [
+          "Hincapie",
+          "Raya",
+          "Gabriel",
+          "White",
+          "Lewis-Skelly",
+          "Rice",
+          "Eze",
+          "Zubimendi",
+          "Merino",
+          "Konsa"
+        ],
+        "pair_choices": [
+          {
+            "winner": "Hincapie",
+            "loser": "Calafiori",
+            "pair": "Calafiori/Hincapie"
+          },
+          {
+            "winner": "Eze",
+            "loser": "Tzolis",
+            "pair": "Eze/Tzolis"
+          },
+          {
+            "winner": "White",
+            "loser": "J.Timber",
+            "pair": "J.Timber/White"
+          },
+          {
+            "winner": "Lewis-Skelly",
+            "loser": "Bruno G.",
+            "pair": "Lewis-Skelly/Bruno G."
+          },
+          {
+            "winner": "Merino",
+            "loser": "\u00d8degaard",
+            "pair": "\u00d8degaard/Merino"
+          },
+          {
+            "winner": "Zubimendi",
+            "loser": "Saka",
+            "pair": "Saka/Zubimendi"
+          },
+          {
+            "winner": "Rice",
+            "loser": "Havertz",
+            "pair": "Rice/Havertz"
+          }
+        ]
+      },
+      "away_lineup": {
+        "eligible": [
+          "Pickford",
+          "Johnson",
+          "Tarkowski",
+          "Branthwaite",
+          "Mykolenko",
+          "Grealish",
+          "George",
+          "Garner",
+          "Armstrong",
+          "Dewsbury-Hall",
+          "Barry"
+        ],
+        "pair_choices": [
+          {
+            "winner": "Garner",
+            "loser": "Hackney",
+            "pair": "Garner/Hackney"
+          },
+          {
+            "winner": "George",
+            "loser": "Dibling",
+            "pair": "George/Dibling"
+          },
+          {
+            "winner": "Grealish",
+            "loser": "R\u00f6hl",
+            "pair": "Grealish/R\u00f6hl"
+          }
+        ]
       }
     },
     {
-      "scoreline": "2-0",
-      "p_cell": 0.13713831012687916,
+      "scoreline": "4-2",
+      "p_cell": 0.011065039986043572,
       "home": {
         "team": "Arsenal",
-        "goals_for": 2,
+        "goals_for": 4,
         "events": [
           {
-            "scorer": "Lewis-Skelly",
-            "assister": "Havertz"
+            "scorer": "Havertz",
+            "assister": "Bruno G."
           },
           {
-            "scorer": "Saka",
-            "assister": "Tzolis"
+            "scorer": "Bruno G.",
+            "assister": "Calafiori"
+          },
+          {
+            "scorer": "Merino",
+            "assister": "Calafiori"
+          },
+          {
+            "scorer": "Merino",
+            "assister": "Calafiori"
           }
         ],
         "scorers": [
-          "Lewis-Skelly",
-          "Saka"
+          "Havertz",
+          "Bruno G.",
+          "Merino",
+          "Merino"
         ],
         "assisters": [
-          "Havertz",
-          "Tzolis"
+          "Bruno G.",
+          "Calafiori",
+          "Calafiori",
+          "Calafiori"
+        ],
+        "n_fpl_goals": 4,
+        "n_fpl_assists": 4
+      },
+      "away": {
+        "team": "Everton",
+        "goals_for": 2,
+        "events": [
+          {
+            "scorer": "Grealish",
+            "assister": "Barry"
+          },
+          {
+            "scorer": "Branthwaite",
+            "assister": "Armstrong"
+          }
+        ],
+        "scorers": [
+          "Grealish",
+          "Branthwaite"
+        ],
+        "assisters": [
+          "Barry",
+          "Armstrong"
         ],
         "n_fpl_goals": 2,
         "n_fpl_assists": 2
       },
-      "away": {
-        "team": "Everton",
-        "goals_for": 0,
-        "events": [],
-        "scorers": [],
-        "assisters": [],
-        "n_fpl_goals": 0,
-        "n_fpl_assists": 0
+      "home_lineup": {
+        "eligible": [
+          "Raya",
+          "Saka",
+          "Gabriel",
+          "Calafiori",
+          "White",
+          "Havertz",
+          "Merino",
+          "Konsa",
+          "Tzolis",
+          "Bruno G."
+        ],
+        "pair_choices": [
+          {
+            "winner": "Calafiori",
+            "loser": "Hincapie",
+            "pair": "Calafiori/Hincapie"
+          },
+          {
+            "winner": "Tzolis",
+            "loser": "Eze",
+            "pair": "Eze/Tzolis"
+          },
+          {
+            "winner": "White",
+            "loser": "J.Timber",
+            "pair": "J.Timber/White"
+          },
+          {
+            "winner": "Bruno G.",
+            "loser": "Lewis-Skelly",
+            "pair": "Lewis-Skelly/Bruno G."
+          },
+          {
+            "winner": "Merino",
+            "loser": "\u00d8degaard",
+            "pair": "\u00d8degaard/Merino"
+          },
+          {
+            "winner": "Saka",
+            "loser": "Zubimendi",
+            "pair": "Saka/Zubimendi"
+          },
+          {
+            "winner": "Havertz",
+            "loser": "Rice",
+            "pair": "Rice/Havertz"
+          }
+        ]
+      },
+      "away_lineup": {
+        "eligible": [
+          "Pickford",
+          "Johnson",
+          "Tarkowski",
+          "Branthwaite",
+          "Mykolenko",
+          "Grealish",
+          "George",
+          "Garner",
+          "Armstrong",
+          "Dewsbury-Hall",
+          "Barry"
+        ],
+        "pair_choices": [
+          {
+            "winner": "Garner",
+            "loser": "Hackney",
+            "pair": "Garner/Hackney"
+          },
+          {
+            "winner": "George",
+            "loser": "Dibling",
+            "pair": "George/Dibling"
+          },
+          {
+            "winner": "Grealish",
+            "loser": "R\u00f6hl",
+            "pair": "Grealish/R\u00f6hl"
+          }
+        ]
       }
     },
     {
@@ -568,21 +1120,21 @@
         "goals_for": 2,
         "events": [
           {
-            "scorer": "Gy\u00f6keres",
-            "assister": "Calafiori"
+            "scorer": "Saka",
+            "assister": "Tzolis"
           },
           {
-            "scorer": "Tzolis",
-            "assister": "Saka"
+            "scorer": "Konsa",
+            "assister": "Calafiori"
           }
         ],
         "scorers": [
-          "Gy\u00f6keres",
-          "Tzolis"
+          "Saka",
+          "Konsa"
         ],
         "assisters": [
-          "Calafiori",
-          "Saka"
+          "Tzolis",
+          "Calafiori"
         ],
         "n_fpl_goals": 2,
         "n_fpl_assists": 2
@@ -592,76 +1144,364 @@
         "goals_for": 1,
         "events": [
           {
-            "scorer": "Grealish",
+            "scorer": "Barry",
             "assister": "Tarkowski"
           }
         ],
         "scorers": [
-          "Grealish"
+          "Barry"
         ],
         "assisters": [
           "Tarkowski"
         ],
         "n_fpl_goals": 1,
         "n_fpl_assists": 1
+      },
+      "home_lineup": {
+        "eligible": [
+          "J.Timber",
+          "Raya",
+          "Saka",
+          "Gabriel",
+          "Calafiori",
+          "Lewis-Skelly",
+          "\u00d8degaard",
+          "Havertz",
+          "Konsa",
+          "Tzolis"
+        ],
+        "pair_choices": [
+          {
+            "winner": "Calafiori",
+            "loser": "Hincapie",
+            "pair": "Calafiori/Hincapie"
+          },
+          {
+            "winner": "Tzolis",
+            "loser": "Eze",
+            "pair": "Eze/Tzolis"
+          },
+          {
+            "winner": "J.Timber",
+            "loser": "White",
+            "pair": "J.Timber/White"
+          },
+          {
+            "winner": "Lewis-Skelly",
+            "loser": "Bruno G.",
+            "pair": "Lewis-Skelly/Bruno G."
+          },
+          {
+            "winner": "\u00d8degaard",
+            "loser": "Merino",
+            "pair": "\u00d8degaard/Merino"
+          },
+          {
+            "winner": "Saka",
+            "loser": "Zubimendi",
+            "pair": "Saka/Zubimendi"
+          },
+          {
+            "winner": "Havertz",
+            "loser": "Rice",
+            "pair": "Rice/Havertz"
+          }
+        ]
+      },
+      "away_lineup": {
+        "eligible": [
+          "Pickford",
+          "Johnson",
+          "Tarkowski",
+          "Branthwaite",
+          "Mykolenko",
+          "George",
+          "Garner",
+          "Armstrong",
+          "Dewsbury-Hall",
+          "R\u00f6hl",
+          "Barry"
+        ],
+        "pair_choices": [
+          {
+            "winner": "Garner",
+            "loser": "Hackney",
+            "pair": "Garner/Hackney"
+          },
+          {
+            "winner": "George",
+            "loser": "Dibling",
+            "pair": "George/Dibling"
+          },
+          {
+            "winner": "R\u00f6hl",
+            "loser": "Grealish",
+            "pair": "Grealish/R\u00f6hl"
+          }
+        ]
       }
     },
     {
-      "scoreline": "4-1",
-      "p_cell": 0.03257605771427617,
+      "scoreline": "4-0",
+      "p_cell": 0.04795281072379097,
       "home": {
         "team": "Arsenal",
         "goals_for": 4,
         "events": [
           {
+            "scorer": "\u00d8degaard",
+            "assister": "Gabriel"
+          },
+          {
             "scorer": "Havertz",
             "assister": "Tzolis"
           },
           {
-            "scorer": "Lewis-Skelly",
+            "scorer": "Gabriel",
             "assister": "Saka"
           },
           {
-            "scorer": "Eze",
-            "assister": "Calafiori"
-          },
-          {
-            "scorer": "Saka",
-            "assister": "Havertz"
+            "scorer": "\u00d8degaard",
+            "assister": "White"
           }
         ],
         "scorers": [
+          "\u00d8degaard",
           "Havertz",
-          "Lewis-Skelly",
-          "Eze",
-          "Saka"
+          "Gabriel",
+          "\u00d8degaard"
         ],
         "assisters": [
+          "Gabriel",
           "Tzolis",
           "Saka",
-          "Calafiori",
-          "Havertz"
+          "White"
         ],
         "n_fpl_goals": 4,
         "n_fpl_assists": 4
       },
       "away": {
         "team": "Everton",
-        "goals_for": 1,
+        "goals_for": 0,
+        "events": [],
+        "scorers": [],
+        "assisters": [],
+        "n_fpl_goals": 0,
+        "n_fpl_assists": 0
+      },
+      "home_lineup": {
+        "eligible": [
+          "Hincapie",
+          "Raya",
+          "Saka",
+          "Gabriel",
+          "White",
+          "\u00d8degaard",
+          "Havertz",
+          "Konsa",
+          "Tzolis",
+          "Bruno G."
+        ],
+        "pair_choices": [
+          {
+            "winner": "Hincapie",
+            "loser": "Calafiori",
+            "pair": "Calafiori/Hincapie"
+          },
+          {
+            "winner": "Tzolis",
+            "loser": "Eze",
+            "pair": "Eze/Tzolis"
+          },
+          {
+            "winner": "White",
+            "loser": "J.Timber",
+            "pair": "J.Timber/White"
+          },
+          {
+            "winner": "Bruno G.",
+            "loser": "Lewis-Skelly",
+            "pair": "Lewis-Skelly/Bruno G."
+          },
+          {
+            "winner": "\u00d8degaard",
+            "loser": "Merino",
+            "pair": "\u00d8degaard/Merino"
+          },
+          {
+            "winner": "Saka",
+            "loser": "Zubimendi",
+            "pair": "Saka/Zubimendi"
+          },
+          {
+            "winner": "Havertz",
+            "loser": "Rice",
+            "pair": "Rice/Havertz"
+          }
+        ]
+      },
+      "away_lineup": {
+        "eligible": [
+          "Pickford",
+          "Johnson",
+          "Tarkowski",
+          "Branthwaite",
+          "Mykolenko",
+          "Garner",
+          "Armstrong",
+          "Dewsbury-Hall",
+          "R\u00f6hl",
+          "Dibling",
+          "Barry"
+        ],
+        "pair_choices": [
+          {
+            "winner": "Garner",
+            "loser": "Hackney",
+            "pair": "Garner/Hackney"
+          },
+          {
+            "winner": "Dibling",
+            "loser": "George",
+            "pair": "George/Dibling"
+          },
+          {
+            "winner": "R\u00f6hl",
+            "loser": "Grealish",
+            "pair": "Grealish/R\u00f6hl"
+          }
+        ]
+      }
+    },
+    {
+      "scoreline": "4-0",
+      "p_cell": 0.04795281072379097,
+      "home": {
+        "team": "Arsenal",
+        "goals_for": 4,
         "events": [
           {
-            "scorer": "Grealish",
-            "assister": "Armstrong"
+            "scorer": "Calafiori",
+            "assister": "Tzolis"
+          },
+          {
+            "scorer": "\u00d8degaard",
+            "assister": "Tzolis"
+          },
+          {
+            "scorer": "Lewis-Skelly",
+            "assister": "\u2205_A"
+          },
+          {
+            "scorer": "\u00d8degaard",
+            "assister": "Calafiori"
           }
         ],
         "scorers": [
-          "Grealish"
+          "Calafiori",
+          "\u00d8degaard",
+          "Lewis-Skelly",
+          "\u00d8degaard"
         ],
         "assisters": [
-          "Armstrong"
+          "Tzolis",
+          "Tzolis",
+          "Calafiori"
         ],
-        "n_fpl_goals": 1,
-        "n_fpl_assists": 1
+        "n_fpl_goals": 4,
+        "n_fpl_assists": 3
+      },
+      "away": {
+        "team": "Everton",
+        "goals_for": 0,
+        "events": [],
+        "scorers": [],
+        "assisters": [],
+        "n_fpl_goals": 0,
+        "n_fpl_assists": 0
+      },
+      "home_lineup": {
+        "eligible": [
+          "Raya",
+          "Gabriel",
+          "Calafiori",
+          "White",
+          "Lewis-Skelly",
+          "\u00d8degaard",
+          "Zubimendi",
+          "Havertz",
+          "Konsa",
+          "Tzolis"
+        ],
+        "pair_choices": [
+          {
+            "winner": "Calafiori",
+            "loser": "Hincapie",
+            "pair": "Calafiori/Hincapie"
+          },
+          {
+            "winner": "Tzolis",
+            "loser": "Eze",
+            "pair": "Eze/Tzolis"
+          },
+          {
+            "winner": "White",
+            "loser": "J.Timber",
+            "pair": "J.Timber/White"
+          },
+          {
+            "winner": "Lewis-Skelly",
+            "loser": "Bruno G.",
+            "pair": "Lewis-Skelly/Bruno G."
+          },
+          {
+            "winner": "\u00d8degaard",
+            "loser": "Merino",
+            "pair": "\u00d8degaard/Merino"
+          },
+          {
+            "winner": "Zubimendi",
+            "loser": "Saka",
+            "pair": "Saka/Zubimendi"
+          },
+          {
+            "winner": "Havertz",
+            "loser": "Rice",
+            "pair": "Rice/Havertz"
+          }
+        ]
+      },
+      "away_lineup": {
+        "eligible": [
+          "Pickford",
+          "Johnson",
+          "Tarkowski",
+          "Branthwaite",
+          "Mykolenko",
+          "George",
+          "Hackney",
+          "Armstrong",
+          "Dewsbury-Hall",
+          "R\u00f6hl",
+          "Barry"
+        ],
+        "pair_choices": [
+          {
+            "winner": "Hackney",
+            "loser": "Garner",
+            "pair": "Garner/Hackney"
+          },
+          {
+            "winner": "George",
+            "loser": "Dibling",
+            "pair": "George/Dibling"
+          },
+          {
+            "winner": "R\u00f6hl",
+            "loser": "Grealish",
+            "pair": "Grealish/R\u00f6hl"
+          }
+        ]
       }
     },
     {
@@ -672,22 +1512,134 @@
         "goals_for": 2,
         "events": [
           {
-            "scorer": "White",
+            "scorer": "Havertz",
             "assister": "\u2205_A"
           },
           {
-            "scorer": "Eze",
-            "assister": "Calafiori"
+            "scorer": "\u00d8degaard",
+            "assister": "\u2205_A"
           }
         ],
         "scorers": [
-          "White",
-          "Eze"
+          "Havertz",
+          "\u00d8degaard"
+        ],
+        "assisters": [],
+        "n_fpl_goals": 2,
+        "n_fpl_assists": 0
+      },
+      "away": {
+        "team": "Everton",
+        "goals_for": 0,
+        "events": [],
+        "scorers": [],
+        "assisters": [],
+        "n_fpl_goals": 0,
+        "n_fpl_assists": 0
+      },
+      "home_lineup": {
+        "eligible": [
+          "J.Timber",
+          "Raya",
+          "Saka",
+          "Gabriel",
+          "Calafiori",
+          "\u00d8degaard",
+          "Havertz",
+          "Konsa",
+          "Tzolis",
+          "Bruno G."
+        ],
+        "pair_choices": [
+          {
+            "winner": "Calafiori",
+            "loser": "Hincapie",
+            "pair": "Calafiori/Hincapie"
+          },
+          {
+            "winner": "Tzolis",
+            "loser": "Eze",
+            "pair": "Eze/Tzolis"
+          },
+          {
+            "winner": "J.Timber",
+            "loser": "White",
+            "pair": "J.Timber/White"
+          },
+          {
+            "winner": "Bruno G.",
+            "loser": "Lewis-Skelly",
+            "pair": "Lewis-Skelly/Bruno G."
+          },
+          {
+            "winner": "\u00d8degaard",
+            "loser": "Merino",
+            "pair": "\u00d8degaard/Merino"
+          },
+          {
+            "winner": "Saka",
+            "loser": "Zubimendi",
+            "pair": "Saka/Zubimendi"
+          },
+          {
+            "winner": "Havertz",
+            "loser": "Rice",
+            "pair": "Rice/Havertz"
+          }
+        ]
+      },
+      "away_lineup": {
+        "eligible": [
+          "Pickford",
+          "Johnson",
+          "Tarkowski",
+          "Branthwaite",
+          "Mykolenko",
+          "Grealish",
+          "Garner",
+          "Armstrong",
+          "Dewsbury-Hall",
+          "Dibling",
+          "Barry"
+        ],
+        "pair_choices": [
+          {
+            "winner": "Garner",
+            "loser": "Hackney",
+            "pair": "Garner/Hackney"
+          },
+          {
+            "winner": "Dibling",
+            "loser": "George",
+            "pair": "George/Dibling"
+          },
+          {
+            "winner": "Grealish",
+            "loser": "R\u00f6hl",
+            "pair": "Grealish/R\u00f6hl"
+          }
+        ]
+      }
+    },
+    {
+      "scoreline": "1-0",
+      "p_cell": 0.11115689675689777,
+      "home": {
+        "team": "Arsenal",
+        "goals_for": 1,
+        "events": [
+          {
+            "scorer": "\u00d8degaard",
+            "assister": "White"
+          }
+        ],
+        "scorers": [
+          "\u00d8degaard"
         ],
         "assisters": [
-          "Calafiori"
+          "White"
         ],
-        "n_fpl_goals": 2,
+        "n_fpl_goals": 1,
         "n_fpl_assists": 1
       },
       "away": {
@@ -698,6 +1650,222 @@
         "assisters": [],
         "n_fpl_goals": 0,
         "n_fpl_assists": 0
+      },
+      "home_lineup": {
+        "eligible": [
+          "Raya",
+          "Saka",
+          "Gabriel",
+          "Calafiori",
+          "White",
+          "\u00d8degaard",
+          "Rice",
+          "Eze",
+          "Konsa",
+          "Bruno G."
+        ],
+        "pair_choices": [
+          {
+            "winner": "Calafiori",
+            "loser": "Hincapie",
+            "pair": "Calafiori/Hincapie"
+          },
+          {
+            "winner": "Eze",
+            "loser": "Tzolis",
+            "pair": "Eze/Tzolis"
+          },
+          {
+            "winner": "White",
+            "loser": "J.Timber",
+            "pair": "J.Timber/White"
+          },
+          {
+            "winner": "Bruno G.",
+            "loser": "Lewis-Skelly",
+            "pair": "Lewis-Skelly/Bruno G."
+          },
+          {
+            "winner": "\u00d8degaard",
+            "loser": "Merino",
+            "pair": "\u00d8degaard/Merino"
+          },
+          {
+            "winner": "Saka",
+            "loser": "Zubimendi",
+            "pair": "Saka/Zubimendi"
+          },
+          {
+            "winner": "Rice",
+            "loser": "Havertz",
+            "pair": "Rice/Havertz"
+          }
+        ]
+      },
+      "away_lineup": {
+        "eligible": [
+          "Pickford",
+          "Johnson",
+          "Tarkowski",
+          "Branthwaite",
+          "Mykolenko",
+          "George",
+          "Garner",
+          "Armstrong",
+          "Dewsbury-Hall",
+          "R\u00f6hl",
+          "Barry"
+        ],
+        "pair_choices": [
+          {
+            "winner": "Garner",
+            "loser": "Hackney",
+            "pair": "Garner/Hackney"
+          },
+          {
+            "winner": "George",
+            "loser": "Dibling",
+            "pair": "George/Dibling"
+          },
+          {
+            "winner": "R\u00f6hl",
+            "loser": "Grealish",
+            "pair": "Grealish/R\u00f6hl"
+          }
+        ]
+      }
+    },
+    {
+      "scoreline": "1-3",
+      "p_cell": 0.006996368107309325,
+      "home": {
+        "team": "Arsenal",
+        "goals_for": 1,
+        "events": [
+          {
+            "scorer": "Merino",
+            "assister": "\u2205_A"
+          }
+        ],
+        "scorers": [
+          "Merino"
+        ],
+        "assisters": [],
+        "n_fpl_goals": 1,
+        "n_fpl_assists": 0
+      },
+      "away": {
+        "team": "Everton",
+        "goals_for": 3,
+        "events": [
+          {
+            "scorer": "Barry",
+            "assister": "Garner"
+          },
+          {
+            "scorer": "Barry",
+            "assister": "Armstrong"
+          },
+          {
+            "scorer": "Dewsbury-Hall",
+            "assister": "Armstrong"
+          }
+        ],
+        "scorers": [
+          "Barry",
+          "Barry",
+          "Dewsbury-Hall"
+        ],
+        "assisters": [
+          "Garner",
+          "Armstrong",
+          "Armstrong"
+        ],
+        "n_fpl_goals": 3,
+        "n_fpl_assists": 3
+      },
+      "home_lineup": {
+        "eligible": [
+          "J.Timber",
+          "Raya",
+          "Saka",
+          "Gabriel",
+          "Calafiori",
+          "Lewis-Skelly",
+          "Rice",
+          "Merino",
+          "Konsa",
+          "Tzolis"
+        ],
+        "pair_choices": [
+          {
+            "winner": "Calafiori",
+            "loser": "Hincapie",
+            "pair": "Calafiori/Hincapie"
+          },
+          {
+            "winner": "Tzolis",
+            "loser": "Eze",
+            "pair": "Eze/Tzolis"
+          },
+          {
+            "winner": "J.Timber",
+            "loser": "White",
+            "pair": "J.Timber/White"
+          },
+          {
+            "winner": "Lewis-Skelly",
+            "loser": "Bruno G.",
+            "pair": "Lewis-Skelly/Bruno G."
+          },
+          {
+            "winner": "Merino",
+            "loser": "\u00d8degaard",
+            "pair": "\u00d8degaard/Merino"
+          },
+          {
+            "winner": "Saka",
+            "loser": "Zubimendi",
+            "pair": "Saka/Zubimendi"
+          },
+          {
+            "winner": "Rice",
+            "loser": "Havertz",
+            "pair": "Rice/Havertz"
+          }
+        ]
+      },
+      "away_lineup": {
+        "eligible": [
+          "Pickford",
+          "Johnson",
+          "Tarkowski",
+          "Branthwaite",
+          "Mykolenko",
+          "Garner",
+          "Armstrong",
+          "Dewsbury-Hall",
+          "R\u00f6hl",
+          "Dibling",
+          "Barry"
+        ],
+        "pair_choices": [
+          {
+            "winner": "Garner",
+            "loser": "Hackney",
+            "pair": "Garner/Hackney"
+          },
+          {
+            "winner": "Dibling",
+            "loser": "George",
+            "pair": "George/Dibling"
+          },
+          {
+            "winner": "R\u00f6hl",
+            "loser": "Grealish",
+            "pair": "Grealish/R\u00f6hl"
+          }
+        ]
       }
     }
   ]

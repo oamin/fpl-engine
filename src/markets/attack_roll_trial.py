@@ -21,6 +21,11 @@ import pandas as pd
 from src.live.odds_props import match_anytime_props
 from src.markets import numagent_xp as nx
 from src.markets.attack_roll import EMPTY_A, EMPTY_G, build_side_dice, roll_side_attack
+from src.markets.lineup_roll import (
+    minutes_corr_pairs,
+    roll_lineup_world,
+    select_disjoint_pairs,
+)
 from src.markets.match_outcome import match_outcome_probs_from_lambdas, match_outcome_roll
 from src.markets.numagent_xp_pilot import norm_team
 from src.markets.prop_shares import anytime_p_to_lambda
@@ -158,7 +163,13 @@ def _side_frame(
     return board
 
 
-def run_trial(*, n_paths: int = 12, seed: int = 0, before_gw: int = 6) -> dict[str, Any]:
+def run_trial(
+    *,
+    n_paths: int = 12,
+    seed: int = 0,
+    before_gw: int = 6,
+    lineup_cov: bool = True,
+) -> dict[str, Any]:
     odds = json.loads(ODDS.read_text(encoding="utf-8"))
     match = next(m for m in odds["matches"] if m.get("home") == "Arsenal" and m.get("away") == "Everton")
     props_raw = odds["props"]["Arsenal v Everton"]["all"]
@@ -206,27 +217,98 @@ def run_trial(*, n_paths: int = 12, seed: int = 0, before_gw: int = 6) -> dict[s
         prop_p=prop_map(away_board) or None,
     )
 
+    def _pairs_for(board: pd.DataFrame, team: str):
+        club_hist = history[
+            (history["team_norm"] == norm_team(team)) & (history["gw"] < before_gw)
+        ]
+        table = minutes_corr_pairs(club_hist)
+        return select_disjoint_pairs(board["player_id"].tolist(), table), table
+
+    home_pairs, home_pair_table = _pairs_for(home_board, "Arsenal")
+    away_pairs, away_pair_table = _pairs_for(away_board, "Everton")
+
     rng = random.Random(seed)
     np_rng = np.random.default_rng(seed)
     paths = []
     score_hist: Counter[str] = Counter()
     scorer_hist: Counter[str] = Counter()
+    assist_hist: Counter[str] = Counter()
+    eligible_hist: Counter[str] = Counter()
+    pair_winner_hist: Counter[str] = Counter()
     for _ in range(int(n_paths)):
         roll = match_outcome_roll(probs, rng)
-        home_att = roll_side_attack(home_dice, roll.goals_home, np_rng, team="Arsenal")
-        away_att = roll_side_attack(away_dice, roll.goals_away, np_rng, team="Everton")
+        home_lineup = away_lineup = None
+        if lineup_cov:
+            home_lineup = roll_lineup_world(
+                mean_m=home_board["m"].to_numpy(float),
+                names=home_board["player_name"].tolist(),
+                pairs=home_pairs,
+                rng=rng,
+            )
+            away_lineup = roll_lineup_world(
+                mean_m=away_board["m"].to_numpy(float),
+                names=away_board["player_name"].tolist(),
+                pairs=away_pairs,
+                rng=rng,
+            )
+            for name, ok in zip(home_dice.names, home_lineup.eligible):
+                if ok:
+                    eligible_hist[f"Arsenal:{name}"] += 1
+            for name, ok in zip(away_dice.names, away_lineup.eligible):
+                if ok:
+                    eligible_hist[f"Everton:{name}"] += 1
+            for w, _lo, lab in home_lineup.pair_choices:
+                pair_winner_hist[f"Arsenal:{lab}→{w}"] += 1
+            for w, _lo, lab in away_lineup.pair_choices:
+                pair_winner_hist[f"Everton:{lab}→{w}"] += 1
+        home_att = roll_side_attack(
+            home_dice, roll.goals_home, np_rng, team="Arsenal", lineup=home_lineup
+        )
+        away_att = roll_side_attack(
+            away_dice, roll.goals_away, np_rng, team="Everton", lineup=away_lineup
+        )
         label = f"{roll.goals_home}-{roll.goals_away}"
         score_hist[label] += 1
         for s in home_att.scorers:
             scorer_hist[f"Arsenal:{s}"] += 1
         for s in away_att.scorers:
             scorer_hist[f"Everton:{s}"] += 1
+        for a in home_att.assisters:
+            assist_hist[f"Arsenal:{a}"] += 1
+        for a in away_att.assisters:
+            assist_hist[f"Everton:{a}"] += 1
         paths.append(
             {
                 "scoreline": label,
                 "p_cell": roll.p,
                 "home": home_att.as_dict(),
                 "away": away_att.as_dict(),
+                "home_lineup": None
+                if home_lineup is None
+                else {
+                    "eligible": [
+                        n
+                        for n, ok in zip(home_dice.names, home_lineup.eligible)
+                        if ok
+                    ],
+                    "pair_choices": [
+                        {"winner": w, "loser": lo, "pair": lab}
+                        for w, lo, lab in home_lineup.pair_choices
+                    ],
+                },
+                "away_lineup": None
+                if away_lineup is None
+                else {
+                    "eligible": [
+                        n
+                        for n, ok in zip(away_dice.names, away_lineup.eligible)
+                        if ok
+                    ],
+                    "pair_choices": [
+                        {"winner": w, "loser": lo, "pair": lab}
+                        for w, lo, lab in away_lineup.pair_choices
+                    ],
+                },
             }
         )
 
@@ -276,8 +358,32 @@ def run_trial(*, n_paths: int = 12, seed: int = 0, before_gw: int = 6) -> dict[s
         },
         "n_paths": n_paths,
         "seed": seed,
+        "lineup_cov": bool(lineup_cov),
+        "competitor_pairs": {
+            "home": [
+                {
+                    "a": p.name_i,
+                    "b": p.name_j,
+                    "corr": p.corr,
+                }
+                for p in home_pairs
+            ],
+            "away": [
+                {
+                    "a": p.name_i,
+                    "b": p.name_j,
+                    "corr": p.corr,
+                }
+                for p in away_pairs
+            ],
+            "home_table_n": int(len(home_pair_table)) if home_pair_table is not None else 0,
+            "away_table_n": int(len(away_pair_table)) if away_pair_table is not None else 0,
+        },
         "scoreline_freq": dict(score_hist.most_common()),
-        "scorer_freq": dict(scorer_hist.most_common(12)),
+        "scorer_freq": dict(scorer_hist.most_common(20)),
+        "assist_freq": dict(assist_hist.most_common(20)),
+        "eligible_freq": dict(eligible_hist.most_common(20)),
+        "pair_winner_freq": dict(pair_winner_hist.most_common(20)),
         "paths": paths,
     }
     return payload
@@ -294,13 +400,19 @@ def _print_trial(doc: dict[str, Any]) -> None:
     print(
         f"Props matched: {doc['props_match']['n_matched']}  "
         f"home covered={doc['props_match']['home_covered']}  "
-        f"away covered={doc['props_match']['away_covered']}"
+        f"away covered={doc['props_match']['away_covered']}  "
+        f"lineup_cov={doc.get('lineup_cov')}"
     )
-    print("\nArsenal top π (goal dice):")
+    if doc.get("competitor_pairs"):
+        print("\nCompetitor pairs (Arsenal):")
+        for p in doc["competitor_pairs"]["home"]:
+            print(f"  {p['a']} ↔ {p['b']}  corr={p['corr']:+.3f}")
+    print("\nArsenal top π (goal dice, pre-lineup):")
     for r in doc["dice"]["home"]["top_pi"][:6]:
         print(f"  {r['player']:20s}  π={r['pi']:.3f}  ρ={r['rho']:.3f}")
-    print(f"\n{doc['n_paths']} paths (seed={doc['seed']}):")
-    for i, path in enumerate(doc["paths"], 1):
+    n_show = min(12, int(doc["n_paths"]))
+    print(f"\nFirst {n_show} of {doc['n_paths']} paths (seed={doc['seed']}):")
+    for i, path in enumerate(doc["paths"][:n_show], 1):
         h = path["home"]
         a = path["away"]
         hev = ", ".join(
@@ -311,10 +423,17 @@ def _print_trial(doc: dict[str, Any]) -> None:
             f"{e['scorer']}" + (f"←{e['assister']}" if e["assister"] else "")
             for e in a["events"]
         ) or "—"
-        print(f"  [{i:02d}] {path['scoreline']:5s}  ARS: {hev}")
+        mutex = ""
+        if path.get("home_lineup") and path["home_lineup"].get("pair_choices"):
+            mutex = " | " + ", ".join(
+                f"{c['winner']}▶{c['loser']}" for c in path["home_lineup"]["pair_choices"][:3]
+            )
+        print(f"  [{i:02d}] {path['scoreline']:5s}  ARS: {hev}{mutex}")
         print(f"         {'':5s}  EVE: {aev}")
-    print("\nScoreline freq:", doc["scoreline_freq"])
-    print("Top FPL scorers:", doc["scorer_freq"])
+    print("\nScoreline freq:", dict(list(doc["scoreline_freq"].items())[:8]))
+    print("Top FPL scorers:", dict(list(doc["scorer_freq"].items())[:10]))
+    if doc.get("pair_winner_freq"):
+        print("Pair winners:", dict(list(doc["pair_winner_freq"].items())[:8]))
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -323,12 +442,22 @@ def main(argv: list[str] | None = None) -> None:
     p.add_argument("--seed", type=int, default=0)
     p.add_argument("--before-gw", type=int, default=6)
     p.add_argument(
+        "--no-lineup-cov",
+        action="store_true",
+        help="disable minutes-covariance lineup worlds",
+    )
+    p.add_argument(
         "--out",
         type=Path,
         default=ROOT / "reports" / "attack_roll_trial_arsenal_everton.json",
     )
     args = p.parse_args(argv)
-    doc = run_trial(n_paths=args.n, seed=args.seed, before_gw=args.before_gw)
+    doc = run_trial(
+        n_paths=args.n,
+        seed=args.seed,
+        before_gw=args.before_gw,
+        lineup_cov=not args.no_lineup_cov,
+    )
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(doc, indent=2), encoding="utf-8")
     _print_trial(doc)
