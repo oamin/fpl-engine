@@ -40,9 +40,9 @@ Today’s pre-merge cloud cascade work initially scored with **`xp_on_pot` /
 
 - Short-horizon advisor — `src/models/short_horizon_cascade.py` (L4 corr 1.0;
   `keep_scenario_advisor`). Priced scenario strands: generative
-  `k∼M` → lineup cov → attack dice → CS/GC from rolled GA; DefCon/bonus/
-  cards/saves from expanding means (`short_horizon_generative`; firm XI later;
-  bonus-from-roll parked). Mean layer stays `score_team_side` (moment xCS/xGC).
+  `k∼M` → lineup cov → attack dice → CS/GC from rolled GA; soft priors =
+  locked `score_xp_v2` DefCon/bonus/cards/saves helpers (`short_horizon_generative`;
+  firm XI later; bonus-from-roll parked). Mean layer stays `score_team_side`.
 - Long-horizon Opta multistage (`squad_sum` / `xi_plus_captain` /
   `xi_plus_captain_ft` ± minutes overlay) via
   `src/markets/cascade_score_v2.py`
