@@ -41,6 +41,12 @@ Suite write-up: `reports/long_horizon_numagent2_rerun.md`.
 Screens: `reports/match_band_calibration.md`, `reports/player_ga_finish.md`,
 `reports/rank_tracker.md`.
 
+**Missed-screen follow-up (2026-10-20)** — all park / plumbing-only:
+
+- Share seeding — `keep_frozen_shares` (Δlog **−0.0131** [−0.0158, −0.0103])
+- Assist α_A = team xA/xG — `keep_pooled_alpha_a` (Δlog **−0.00175** [−0.00255, −0.00097]); legacy `score_xp` promote does not transfer
+- Priced→Opta strand hand-off — `plumbing_only_no_likelihood_arm` (`reports/strand_handoff_smoke.md`)
+
 ### Scorer defaults (live + historical assemble)
 
 - AH+OU (+ BTTS when priced live) → Dixon–Coles \(M\) → pots \(G=\alpha_G xG_M\), \(A=\alpha_A xG_M\)

@@ -1,0 +1,41 @@
+{
+  "task": "strand_handoff_smoke",
+  "season": "2024-25",
+  "decision_gw": 10,
+  "n_strands": 4,
+  "band": 0.15,
+  "n_priced_fixtures": 10,
+  "strands": [
+    {
+      "strand": 0,
+      "n_priced": 6,
+      "n_clubs_touched": 12,
+      "mean_abs_att_shift": 0.5717017543859649,
+      "mean_path_n": 1.0
+    },
+    {
+      "strand": 1,
+      "n_priced": 6,
+      "n_clubs_touched": 12,
+      "mean_abs_att_shift": 0.4900175438596491,
+      "mean_path_n": 1.0
+    },
+    {
+      "strand": 2,
+      "n_priced": 6,
+      "n_clubs_touched": 12,
+      "mean_abs_att_shift": 0.4900175438596491,
+      "mean_path_n": 1.0
+    },
+    {
+      "strand": 3,
+      "n_priced": 6,
+      "n_clubs_touched": 12,
+      "mean_abs_att_shift": 0.5744736842105264,
+      "mean_path_n": 1.0
+    }
+  ],
+  "mean_abs_att_shift": 0.5315526315789474,
+  "decision": "plumbing_only_no_likelihood_arm",
+  "note": "Hand-off updates ClubPath from priced \u03bb samples before Opta t+2\u2026 rolls. Not a promote screen \u2014 register a path-V / player-log comparison before claiming value."
+}

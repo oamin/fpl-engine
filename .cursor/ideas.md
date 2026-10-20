@@ -463,6 +463,18 @@ Audit: `reports/cascade_pre_numagent2_audit.md`.
   (−0.00618 [−0.0132, +0.00117]); gap closed negative. Keep OLS
   rank→GF/GA map. `reports/rank_tracker.md`
 
+**Missed opens rejudged 2026-10-20 (v2):**
+
+- **Share seeding:** `keep_frozen_shares`. MC rate-draw E[xP] − frozen
+  **−0.0131** [−0.0158, −0.0103]. `SEED_SHARES=False` stays.
+  `reports/share_seed_screen.md`
+- **Assist α_A = team xA/xG:** `keep_pooled_alpha_a`. Δlog **−0.00175**
+  [−0.00255, −0.00097]. Legacy `score_xp` team-xA/xG promote does **not**
+  transfer. `reports/assist_alpha_screen.md`
+- **Priced→Opta strand hand-off:** plumbing smoke only — register a
+  path-V / player-log arm before promote.
+  `reports/strand_handoff_smoke.md`
+
 **Kept / aligned earlier:** short-horizon scenario advisor; long-horizon
 Opta multistage + oracle-rank via `cascade_score_v2` (oracle viable;
 `reports/long_horizon_numagent2_rerun.md`).
