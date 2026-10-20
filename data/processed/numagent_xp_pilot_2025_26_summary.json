@@ -1,0 +1,36 @@
+{
+  "season": "2025-26",
+  "pilot": true,
+  "gated": false,
+  "pool": "minutes > 60",
+  "minutes_policy": "actual minutes, sigma_m=0",
+  "odds": "football-data opening AH+OU (BTTS weight 0)",
+  "sigma_log_score": 3.0,
+  "n_player_fixture": 7502,
+  "n_gameweeks": 37,
+  "gw_range": [
+    2,
+    38
+  ],
+  "mean_d_log_all": 0.0047191543264932054,
+  "ci95_all": [
+    -0.015213440951473145,
+    0.021553848529114805
+  ],
+  "mean_d_log_gw5_38": 0.017329869460091466,
+  "ci95_gw5_38": [
+    0.002005509863132051,
+    0.031795438732937394
+  ],
+  "row_mae_numagent": 2.3777912869054747,
+  "row_mae_score_xp": 2.346775103724826,
+  "row_bias_numagent": -0.1375589614344377,
+  "row_bias_score_xp": -0.31966599798173023,
+  "cover_1se": 0.10850439882697947,
+  "cover_2se": 0.24926686217008798,
+  "mean_xp_se": 0.522358816883797,
+  "positive_delta": "numagent higher log-score than score_xp",
+  "n_pool_rows_no_fd": 20,
+  "n_pool_rows_with_fd": 7710,
+  "n_joined_score_xp": 7502
+}

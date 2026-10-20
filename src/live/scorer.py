@@ -1,4 +1,7 @@
-"""Deadline scores for one live half.
+"""Archived Numagent 1.0 deadline scorer — not the live product path.
+
+**Archive:** ``reports/ARCHIVE_NUMAGENT_1_0.md``. Live picks use
+``src.live.numagent_live_pick`` + ``score_xp_v2``.
 
 ``xp_on_pot`` is the one-match formula, the same components as ``compute_xp``.
 This module chooses the inputs. Minutes come from the file, and a zero stays
@@ -12,7 +15,8 @@ adds nothing.
 The formula is not changed here. A missing minutes file never reaches this
 module: the caller records ``missing_minutes`` and does not plan a chip.
 When a captured ``ep_next`` map is passed, that map chooses the squad and
-``score_xp`` stays on the shadow log.
+``score_xp`` stays on the shadow log. Kept importable for the as-of audit
+and the v2 gate baseline.
 """
 
 from __future__ import annotations
@@ -230,12 +234,13 @@ def priced_gameweeks(
     names: Mapping[int, str],
     start: int,
     end: int,
-    limit: int = 3,
+    limit: int = 2,
 ) -> list[int]:
     """Club weeks with a 1X2 for every side, in order, at most ``limit``.
 
-    A week with no clubs is skipped. The walk stops at the first club week
-    that is missing a 1X2. A later priced week is not used in its place.
+    Default ``limit=2`` matches live book depth (t and t+1). A week with no
+    clubs is skipped. The walk stops at the first club week that is missing a
+    1X2. A later priced week is not used in its place.
     """
     found: list[int] = []
     for gw in range(int(start), int(end) + 1):
@@ -591,7 +596,7 @@ def price_half(
     pool = build_pool(roster, shares, minutes, set(state.ids()))
     pots = opening_pots_by_team_gw(odds, list(fixtures), names)
     end = half_end(int(gw))
-    line_weeks = priced_gameweeks(fixtures, pots, names, int(gw), end, limit=3)
+    line_weeks = priced_gameweeks(fixtures, pots, names, int(gw), end, limit=2)
     if not line_weeks or int(line_weeks[0]) != int(gw):
         raise ScorerError(f"GW{int(gw)} is not fully priced")
 

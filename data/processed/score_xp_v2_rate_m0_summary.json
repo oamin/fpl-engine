@@ -1,0 +1,55 @@
+{
+  "treatment": "score_xp_v2_rate_m0",
+  "baseline": "score_xp_v2",
+  "m0": 270.0,
+  "rate_se_floor": 0.25,
+  "formula": "r=G/(M+M0); \u0394r=max(\u221aG,c)/(M+M0); M0=270; c=0.25; same for A; same-season GW<t only",
+  "seasons": [
+    {
+      "season": "2022-23",
+      "n_rows": 6937,
+      "n_gws": 33,
+      "mean_d_log": 0.006600127044458199,
+      "mae_raw": 2.3028610820270417,
+      "mae_m0": 2.296691675959049
+    },
+    {
+      "season": "2023-24",
+      "n_rows": 6992,
+      "n_gws": 34,
+      "mean_d_log": 0.002560444481967844,
+      "mae_raw": 2.3407519030605934,
+      "mae_m0": 2.354673501512619
+    },
+    {
+      "season": "2024-25",
+      "n_rows": 6931,
+      "n_gws": 34,
+      "mean_d_log": -0.0006818369186417932,
+      "mae_raw": 2.268369668280376,
+      "mae_m0": 2.2973210048340276
+    },
+    {
+      "season": "2025-26",
+      "n_rows": 6892,
+      "n_gws": 34,
+      "mean_d_log": 0.006345947946430667,
+      "mae_raw": 2.3764164369164344,
+      "mae_m0": 2.3711786458541613
+    }
+  ],
+  "cluster_interval": {
+    "mean": 0.003684733924435918,
+    "lo": 0.0005712757914004947,
+    "hi": 0.007052750357412044,
+    "n_gws": {
+      "2022-23": 33,
+      "2023-24": 34,
+      "2024-25": 34,
+      "2025-26": 34
+    }
+  },
+  "promote_if": "paired interval lo > 0 on four closed seasons",
+  "covers_zero": false,
+  "verdict": "promote"
+}

@@ -1,0 +1,71 @@
+{
+  "gw": 7,
+  "deadline_utc": "2026-10-17T10:00:00Z",
+  "matches": [
+    [
+      "Everton",
+      "Chelsea"
+    ],
+    [
+      "Brentford",
+      "Liverpool"
+    ],
+    [
+      "Fulham",
+      "Hull City"
+    ],
+    [
+      "Man City",
+      "Ipswich Town"
+    ],
+    [
+      "Newcastle",
+      "Aston Villa"
+    ],
+    [
+      "Bournemouth",
+      "Sunderland"
+    ],
+    [
+      "Brighton",
+      "Crystal Palace"
+    ],
+    [
+      "Leeds",
+      "Man Utd"
+    ],
+    [
+      "Nott'm Forest",
+      "Arsenal"
+    ],
+    [
+      "Spurs",
+      "Coventry City"
+    ]
+  ],
+  "n_cases": 667,
+  "n_focus": 213,
+  "clubs": [
+    "Arsenal",
+    "Aston Villa",
+    "Bournemouth",
+    "Brentford",
+    "Brighton",
+    "Chelsea",
+    "Coventry City",
+    "Crystal Palace",
+    "Everton",
+    "Fulham",
+    "Hull City",
+    "Ipswich Town",
+    "Leeds",
+    "Liverpool",
+    "Man City",
+    "Man Utd",
+    "Newcastle",
+    "Nott'm Forest",
+    "Spurs",
+    "Sunderland"
+  ],
+  "refreshed_at": "2026-10-17T06:35:15.066588+00:00"
+}

@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:617-cho-listed-out",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Hull City",
+  "player_ids": [
+    617
+  ],
+  "headline": "Cho listed out",
+  "body": "The Guardian team news, 16 Oct 2026: Cho (Hull City) injured / unavailable.",
+  "sha256": "e662108851065b364fa3d6c45c6d927825370783a1ccb9b0cc60e3962d815d4b"
+}

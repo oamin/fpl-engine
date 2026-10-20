@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:94-schade-could-return-this-weekend",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Brentford",
+  "player_ids": [
+    94
+  ],
+  "headline": "Schade could return this weekend",
+  "body": "The Guardian team news, 16 Oct 2026: Schade (Brentford) listed doubtful.",
+  "sha256": "fa6fa2813af772e81a8f38d9c85e3d0e86f6d65a15761eee60a90a90ccc13397"
+}

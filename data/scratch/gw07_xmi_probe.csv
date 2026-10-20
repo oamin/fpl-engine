@@ -1,0 +1,668 @@
+player_id,gw,xmi,tag,source
+1,7,90,rolling avg,rolling
+2,7,0,rolling avg,rolling
+3,7,0,rolling avg,rolling
+4,7,90,rolling avg,rolling
+5,7,43.6667,rolling avg,rolling
+6,7,0,injured,override:hard_flag
+7,7,35.6667,rolling avg,rolling
+8,7,87,rolling avg,rolling
+9,7,0,injured,override:hard_flag
+10,7,35.6667,rolling avg,rolling
+11,7,0,injured,override:injured
+12,7,86.6667,rolling avg,rolling
+13,7,86.6667,rolling avg,rolling
+14,7,8.66667,rolling avg,rolling
+15,7,81.6667,rolling avg,rolling
+16,7,30,rolling avg,rolling
+17,7,12,rolling avg,rolling
+18,7,0,transferred,override:hard_flag
+19,7,6.5,50/50,override:50/50
+20,7,3,rolling avg,rolling
+22,7,0,transferred,override:hard_flag
+23,7,0,transferred,override:hard_flag
+24,7,0,injured,override:hard_flag
+25,7,14.6667,rolling avg,rolling
+26,7,80.6667,rolling avg,rolling
+27,7,0,transferred,override:hard_flag
+31,7,90,rolling avg,rolling
+452,7,43.6667,rolling avg,rolling
+557,7,0,injured,override:hard_flag
+29,7,0,rolling avg,rolling
+30,7,0,transferred,override:hard_flag
+32,7,45,rolling avg,rolling
+33,7,81.6667,rolling avg,rolling
+34,7,8,rolling avg,rolling
+35,7,0,rolling avg,rolling
+36,7,0,injured,override:hard_flag
+37,7,90,rolling avg,rolling
+38,7,0,rolling avg,rolling
+39,7,0,transferred,override:hard_flag
+41,7,71.6667,rolling avg,rolling
+44,7,0,transferred,override:hard_flag
+45,7,87.6667,rolling avg,rolling
+46,7,18,injured,override:injured
+47,7,87.6667,rolling avg,rolling
+48,7,0,injured,override:hard_flag
+49,7,0,transferred,override:hard_flag
+50,7,0,rolling avg,rolling
+51,7,10.5,50/50,override:50/50
+52,7,16.3333,rolling avg,rolling
+53,7,61,rolling avg,rolling
+54,7,58.3333,rolling avg,rolling
+55,7,0,transferred,override:hard_flag
+56,7,15.6667,rolling avg,rolling
+160,7,0,rolling avg,rolling
+166,7,74,rolling avg,rolling
+582,7,0,50/50,override:50/50
+596,7,0,injured,override:hard_flag
+597,7,90,rolling avg,rolling
+606,7,0,rolling avg,rolling
+607,7,0,transferred,override:hard_flag
+611,7,60,rolling avg,rolling
+618,7,0,rolling avg,rolling
+630,7,0,rolling avg,rolling
+631,7,19.6667,rolling avg,rolling
+667,7,0,rolling avg,rolling
+57,7,90,rolling avg,rolling
+58,7,0,rolling avg,rolling
+59,7,0,transferred,override:hard_flag
+60,7,90,rolling avg,rolling
+61,7,87.6667,rolling avg,rolling
+62,7,0,rolling avg,rolling
+63,7,0,injured,override:hard_flag
+64,7,78.3333,rolling avg,rolling
+65,7,0,injured,override:hard_flag
+66,7,2,rolling avg,rolling
+67,7,86,rolling avg,rolling
+68,7,76,rolling avg,rolling
+69,7,0,injured,override:hard_flag
+70,7,21.6667,rolling avg,rolling
+71,7,13.3333,rolling avg,rolling
+72,7,18.3333,rolling avg,rolling
+73,7,86,rolling avg,rolling
+74,7,22.3333,rolling avg,rolling
+75,7,56.6667,rolling avg,rolling
+76,7,0.666667,rolling avg,rolling
+77,7,0,rolling avg,rolling
+78,7,0,injured,override:hard_flag
+79,7,90,rolling avg,rolling
+80,7,0,transferred,override:hard_flag
+81,7,6.33333,rolling avg,rolling
+566,7,90,rolling avg,rolling
+573,7,6,rolling avg,rolling
+608,7,5,rolling avg,rolling
+615,7,0,rolling avg,rolling
+82,7,90,rolling avg,rolling
+83,7,0,rolling avg,rolling
+84,7,0,injured,override:injured
+85,7,0,rolling avg,rolling
+86,7,68.3333,rolling avg,rolling
+87,7,90,rolling avg,rolling
+88,7,59,rolling avg,rolling
+89,7,0,rolling avg,rolling
+90,7,45.3333,rolling avg,rolling
+92,7,0,rolling avg,rolling
+93,7,37.5,50/50,override:50/50
+94,7,38.5,50/50,override:50/50
+95,7,20.6667,rolling avg,rolling
+96,7,29,injured,override:injured
+97,7,7.66667,rolling avg,rolling
+98,7,90,rolling avg,rolling
+99,7,0,injured,override:hard_flag
+100,7,1,rolling avg,rolling
+102,7,64.3333,rolling avg,rolling
+103,7,0,injured,override:hard_flag
+105,7,74.3333,rolling avg,rolling
+106,7,90,rolling avg,rolling
+107,7,0,injured,override:hard_flag
+108,7,1.66667,rolling avg,rolling
+565,7,49.6667,rolling avg,rolling
+620,7,43,rolling avg,rolling
+657,7,0,rolling avg,rolling
+660,7,0,rolling avg,rolling
+661,7,0,rolling avg,rolling
+109,7,90,rolling avg,rolling
+111,7,0,rolling avg,rolling
+113,7,85,rolling avg,rolling
+114,7,78,rolling avg,rolling
+115,7,82.3333,rolling avg,rolling
+116,7,40,rolling avg,rolling
+117,7,0,rolling avg,rolling
+118,7,0,transferred,override:hard_flag
+119,7,14,rolling avg,rolling
+120,7,1.33333,rolling avg,rolling
+121,7,0,injured,override:hard_flag
+122,7,0,injured,override:hard_flag
+123,7,0,rolling avg,rolling
+124,7,90,rolling avg,rolling
+125,7,5.33333,rolling avg,rolling
+126,7,3.33333,rolling avg,rolling
+127,7,85,rolling avg,rolling
+128,7,0,transferred,override:hard_flag
+129,7,89,rolling avg,rolling
+130,7,0,injured,override:hard_flag
+132,7,0,transferred,override:hard_flag
+133,7,0,transferred,override:hard_flag
+134,7,0,rolling avg,rolling
+135,7,0,injured,override:hard_flag
+137,7,0,injured,override:hard_flag
+138,7,72.3333,rolling avg,rolling
+139,7,0,injured,override:hard_flag
+328,7,38.25,injured,override:injured
+504,7,85.6667,rolling avg,rolling
+594,7,0,rolling avg,rolling
+600,7,4,rolling avg,rolling
+605,7,30.3333,rolling avg,rolling
+614,7,0.666667,rolling avg,rolling
+624,7,0,transferred,override:hard_flag
+639,7,66.3333,rolling avg,rolling
+652,7,0,injured,override:hard_flag
+658,7,0,rolling avg,rolling
+28,7,90,rolling avg,rolling
+40,7,87.6667,rolling avg,rolling
+101,7,60,rolling avg,rolling
+136,7,29.6667,rolling avg,rolling
+140,7,0,transferred,override:hard_flag
+141,7,0,transferred,override:hard_flag
+142,7,0,injured,override:hard_flag
+143,7,0,transferred,override:hard_flag
+144,7,26.3333,rolling avg,rolling
+145,7,51.6667,rolling avg,rolling
+146,7,0,transferred,override:hard_flag
+148,7,15,rolling avg,rolling
+149,7,90,rolling avg,rolling
+150,7,0,transferred,override:hard_flag
+151,7,36.3333,rolling avg,rolling
+152,7,6,rolling avg,rolling
+154,7,89,rolling avg,rolling
+156,7,84.3333,rolling avg,rolling
+157,7,4.33333,rolling avg,rolling
+158,7,0,injured,override:hard_flag
+159,7,23.6667,rolling avg,rolling
+161,7,28.6667,rolling avg,rolling
+163,7,0,transferred,override:hard_flag
+164,7,6.33333,rolling avg,rolling
+165,7,53.6667,rolling avg,rolling
+168,7,0,transferred,override:hard_flag
+169,7,0,rolling avg,rolling
+170,7,0,injured,override:hard_flag
+200,7,61.3333,rolling avg,rolling
+560,7,0,rolling avg,rolling
+561,7,0,rolling avg,rolling
+568,7,35.6667,rolling avg,rolling
+583,7,75,rolling avg,rolling
+662,7,1.5,rolling avg,rolling
+91,7,90,rolling avg,rolling
+104,7,58,rolling avg,rolling
+110,7,90,rolling avg,rolling
+171,7,0,transferred,override:hard_flag
+172,7,0,rolling avg,rolling
+173,7,90,rolling avg,rolling
+174,7,0,transferred,override:hard_flag
+175,7,60,rolling avg,rolling
+176,7,90,rolling avg,rolling
+177,7,0,injured,override:injured
+178,7,0,rolling avg,rolling
+179,7,0.333333,rolling avg,rolling
+180,7,0,injured,override:hard_flag
+181,7,0,transferred,override:hard_flag
+182,7,0,injured,override:hard_flag
+183,7,75.6667,rolling avg,rolling
+184,7,85,rolling avg,rolling
+185,7,9.66667,rolling avg,rolling
+186,7,54.6667,rolling avg,rolling
+187,7,0,injured,override:hard_flag
+188,7,4.33333,rolling avg,rolling
+189,7,0,rolling avg,rolling
+190,7,15,rolling avg,rolling
+191,7,0,transferred,override:hard_flag
+192,7,0,transferred,override:hard_flag
+193,7,0,injured,override:hard_flag
+194,7,65.6667,rolling avg,rolling
+195,7,9.33333,rolling avg,rolling
+196,7,0,transferred,override:hard_flag
+197,7,0,transferred,override:hard_flag
+492,7,17.3333,rolling avg,rolling
+575,7,61.3333,rolling avg,rolling
+584,7,0,rolling avg,rolling
+599,7,35.6667,rolling avg,rolling
+623,7,0,rolling avg,rolling
+655,7,0,rolling avg,rolling
+656,7,32.3333,rolling avg,rolling
+42,7,0,rolling avg,rolling
+153,7,0,injured,override:hard_flag
+198,7,0,injured,override:injured
+199,7,90,rolling avg,rolling
+202,7,90,rolling avg,rolling
+203,7,60,rolling avg,rolling
+204,7,85.3333,rolling avg,rolling
+205,7,0,transferred,override:hard_flag
+206,7,0,injured,override:hard_flag
+207,7,0,rolling avg,rolling
+208,7,5,rolling avg,rolling
+210,7,85.3333,rolling avg,rolling
+211,7,66.3333,rolling avg,rolling
+212,7,4.33333,rolling avg,rolling
+213,7,40.6667,rolling avg,rolling
+214,7,87.3333,rolling avg,rolling
+215,7,0,transferred,override:hard_flag
+216,7,0,transferred,override:hard_flag
+217,7,0,transferred,override:hard_flag
+218,7,0,rolling avg,rolling
+219,7,0,transferred,override:hard_flag
+220,7,0,transferred,override:hard_flag
+221,7,0,rolling avg,rolling
+222,7,82,rolling avg,rolling
+223,7,0,injured,override:hard_flag
+224,7,5,rolling avg,rolling
+225,7,0,transferred,override:hard_flag
+241,7,0.333333,rolling avg,rolling
+555,7,0,rolling avg,rolling
+577,7,0,injured,override:hard_flag
+588,7,90,rolling avg,rolling
+595,7,2,rolling avg,rolling
+633,7,36,rolling avg,rolling
+643,7,0,injured,override:hard_flag
+644,7,90,rolling avg,rolling
+647,7,0,rolling avg,rolling
+21,7,0,50/50,override:50/50
+209,7,68,rolling avg,rolling
+226,7,90,rolling avg,rolling
+227,7,0,rolling avg,rolling
+228,7,0,rolling avg,rolling
+229,7,90,rolling avg,rolling
+230,7,45,50/50,override:50/50
+231,7,30,rolling avg,rolling
+232,7,9.33333,rolling avg,rolling
+233,7,30,50/50,override:50/50
+234,7,0,transferred,override:hard_flag
+235,7,0,transferred,override:hard_flag
+236,7,90,rolling avg,rolling
+238,7,62.6667,rolling avg,rolling
+239,7,90,rolling avg,rolling
+242,7,33,rolling avg,rolling
+243,7,1.33333,rolling avg,rolling
+244,7,85.6667,rolling avg,rolling
+245,7,9.33333,rolling avg,rolling
+246,7,0,rolling avg,rolling
+247,7,9.33333,rolling avg,rolling
+248,7,0,transferred,override:hard_flag
+249,7,88.3333,rolling avg,rolling
+649,7,80.3333,rolling avg,rolling
+654,7,0,rolling avg,rolling
+250,7,90,rolling avg,rolling
+251,7,0,rolling avg,rolling
+252,7,0,transferred,override:hard_flag
+253,7,3.33333,rolling avg,rolling
+254,7,45,injured,override:injured
+255,7,0,rolling avg,rolling
+256,7,39,rolling avg,rolling
+257,7,90,rolling avg,rolling
+258,7,53.6667,rolling avg,rolling
+261,7,77.3333,rolling avg,rolling
+262,7,5.33333,rolling avg,rolling
+263,7,17,rolling avg,rolling
+264,7,69,rolling avg,rolling
+265,7,85.3333,rolling avg,rolling
+266,7,0,injured,override:injured
+268,7,76.6667,rolling avg,rolling
+269,7,30,rolling avg,rolling
+270,7,0,rolling avg,rolling
+271,7,12.3333,rolling avg,rolling
+272,7,0,rolling avg,rolling
+569,7,80.3333,rolling avg,rolling
+570,7,6.33333,rolling avg,rolling
+580,7,83.3333,rolling avg,rolling
+610,7,0,transferred,override:hard_flag
+626,7,0,rolling avg,rolling
+635,7,4.83333,50/50,override:50/50
+636,7,6.33333,rolling avg,rolling
+650,7,90,rolling avg,rolling
+240,7,30.3333,rolling avg,rolling
+273,7,0,rolling avg,rolling
+274,7,0,injured,override:hard_flag
+275,7,0,transferred,override:hard_flag
+276,7,0,transferred,override:hard_flag
+277,7,85.6667,rolling avg,rolling
+278,7,0,injured,override:hard_flag
+279,7,90,rolling avg,rolling
+280,7,87,rolling avg,rolling
+281,7,0,transferred,override:hard_flag
+282,7,81,rolling avg,rolling
+283,7,0,transferred,override:hard_flag
+284,7,0,rolling avg,rolling
+285,7,0,rolling avg,rolling
+286,7,55.6667,rolling avg,rolling
+287,7,0,transferred,override:hard_flag
+288,7,0,rolling avg,rolling
+289,7,59,rolling avg,rolling
+290,7,80.3333,rolling avg,rolling
+291,7,0,injured,override:hard_flag
+292,7,0,rolling avg,rolling
+293,7,0,transferred,override:hard_flag
+294,7,0,rolling avg,rolling
+295,7,87,rolling avg,rolling
+296,7,0,transferred,override:hard_flag
+297,7,0,injured,override:hard_flag
+298,7,0,transferred,override:hard_flag
+299,7,0,transferred,override:hard_flag
+340,7,23.6667,rolling avg,rolling
+556,7,0,injured,override:hard_flag
+563,7,5,rolling avg,rolling
+572,7,90,rolling avg,rolling
+574,7,0,rolling avg,rolling
+576,7,28.3333,rolling avg,rolling
+585,7,40.3333,rolling avg,rolling
+586,7,0,injured,override:hard_flag
+589,7,0,injured,override:hard_flag
+617,7,0,injured,override:hard_flag
+632,7,0,injured,override:hard_flag
+637,7,8,rolling avg,rolling
+638,7,2.66667,rolling avg,rolling
+642,7,59,rolling avg,rolling
+645,7,0,rolling avg,rolling
+259,7,90,rolling avg,rolling
+267,7,79.3333,rolling avg,rolling
+300,7,60,rolling avg,rolling
+301,7,0,rolling avg,rolling
+302,7,0,rolling avg,rolling
+303,7,0,rolling avg,rolling
+304,7,90,rolling avg,rolling
+305,7,90,rolling avg,rolling
+306,7,29,rolling avg,rolling
+307,7,0,transferred,override:hard_flag
+308,7,0,rolling avg,rolling
+309,7,0,rolling avg,rolling
+310,7,0,rolling avg,rolling
+311,7,0,transferred,override:hard_flag
+312,7,0,rolling avg,rolling
+313,7,51.3333,rolling avg,rolling
+314,7,0,transferred,override:hard_flag
+315,7,42.3333,rolling avg,rolling
+316,7,70.6667,rolling avg,rolling
+317,7,0,transferred,override:hard_flag
+318,7,38,rolling avg,rolling
+319,7,0,transferred,override:hard_flag
+320,7,9.33333,rolling avg,rolling
+321,7,3,rolling avg,rolling
+322,7,0,transferred,override:hard_flag
+323,7,0,rolling avg,rolling
+324,7,0,rolling avg,rolling
+554,7,0,transferred,override:hard_flag
+562,7,41,rolling avg,rolling
+564,7,30,rolling avg,rolling
+571,7,30.6667,rolling avg,rolling
+591,7,77.6667,rolling avg,rolling
+592,7,60.6667,rolling avg,rolling
+602,7,0,transferred,override:hard_flag
+619,7,65.6667,rolling avg,rolling
+640,7,18.3333,rolling avg,rolling
+260,7,12.3333,rolling avg,rolling
+326,7,0,transferred,override:hard_flag
+327,7,1.33333,rolling avg,rolling
+329,7,0,injured,override:hard_flag
+330,7,77.6667,rolling avg,rolling
+331,7,84,rolling avg,rolling
+332,7,86,rolling avg,rolling
+333,7,0,transferred,override:hard_flag
+334,7,90,rolling avg,rolling
+335,7,89,rolling avg,rolling
+336,7,72,rolling avg,rolling
+337,7,19.6667,rolling avg,rolling
+338,7,90,rolling avg,rolling
+339,7,0.666667,rolling avg,rolling
+341,7,0,transferred,override:hard_flag
+342,7,0,transferred,override:hard_flag
+343,7,5,50/50,override:50/50
+344,7,0,rolling avg,rolling
+345,7,69.3333,rolling avg,rolling
+346,7,85.6667,rolling avg,rolling
+347,7,12.3333,rolling avg,rolling
+348,7,0,transferred,override:hard_flag
+349,7,0,injured,override:hard_flag
+385,7,90,rolling avg,rolling
+598,7,88.3333,rolling avg,rolling
+603,7,0,rolling avg,rolling
+604,7,0,rolling avg,rolling
+625,7,0,rolling avg,rolling
+629,7,0,rolling avg,rolling
+641,7,6,rolling avg,rolling
+648,7,1.66667,rolling avg,rolling
+350,7,90,rolling avg,rolling
+351,7,0,rolling avg,rolling
+352,7,0,rolling avg,rolling
+353,7,0,transferred,override:hard_flag
+354,7,0,injured,override:hard_flag
+355,7,0,rolling avg,rolling
+356,7,90,rolling avg,rolling
+357,7,11,rolling avg,rolling
+358,7,75,rolling avg,rolling
+359,7,0.666667,rolling avg,rolling
+360,7,0,injured,override:hard_flag
+361,7,0,rolling avg,rolling
+362,7,89,rolling avg,rolling
+363,7,0,injured,override:hard_flag
+364,7,15,rolling avg,rolling
+365,7,0,transferred,override:hard_flag
+366,7,75,rolling avg,rolling
+367,7,10,injured,override:injured
+368,7,28.3333,50/50,override:50/50
+369,7,11,rolling avg,rolling
+370,7,0.666667,rolling avg,rolling
+371,7,0,injured,override:hard_flag
+372,7,70,rolling avg,rolling
+373,7,0,transferred,override:hard_flag
+374,7,0,rolling avg,rolling
+375,7,14.3333,rolling avg,rolling
+376,7,0,injured,override:hard_flag
+377,7,55.6667,rolling avg,rolling
+378,7,0,rolling avg,rolling
+379,7,14.1667,injured,override:injured
+380,7,0,injured,override:hard_flag
+381,7,27.6667,rolling avg,rolling
+382,7,0,rolling avg,rolling
+383,7,0,transferred,override:hard_flag
+579,7,78.3333,rolling avg,rolling
+627,7,76.3333,rolling avg,rolling
+155,7,83.3333,lineup_xi,lineup:xi
+237,7,65,lineup_xi,lineup:xi
+384,7,90,lineup_xi,lineup:xi
+386,7,0,rolling avg,rolling
+387,7,65,lineup_xi,lineup:xi
+388,7,90,lineup_xi,lineup:xi
+389,7,90,lineup_xi,lineup:xi
+390,7,90,lineup_xi,lineup:xi
+391,7,15,benched,lineup:rotated
+392,7,0,rolling avg,rolling
+393,7,15,benched,lineup:rotated
+394,7,0,transferred,override:hard_flag
+395,7,0,rolling avg,rolling
+396,7,0,rolling avg,rolling
+397,7,90,lineup_xi,lineup:xi
+398,7,65,lineup_xi,lineup:xi
+399,7,15,benched,override:benched
+400,7,15,benched,lineup:rotated
+402,7,0,injured,override:hard_flag
+404,7,0,transferred,override:hard_flag
+406,7,0,rolling avg,rolling
+407,7,0,transferred,override:hard_flag
+408,7,0,transferred,override:hard_flag
+409,7,0,transferred,override:hard_flag
+410,7,0,transferred,override:hard_flag
+411,7,86.3333,lineup_xi,lineup:xi
+481,7,15,benched,lineup:rotated
+587,7,0,rolling avg,rolling
+616,7,65,lineup_xi,lineup:xi
+621,7,0,rolling avg,rolling
+622,7,0,rolling avg,rolling
+628,7,3.33333,rolling avg,rolling
+653,7,0,rolling avg,rolling
+43,7,71.3333,rolling avg,rolling
+131,7,10.3333,rolling avg,rolling
+162,7,0,rolling avg,rolling
+325,7,0,rolling avg,rolling
+412,7,90,rolling avg,rolling
+413,7,0,transferred,override:hard_flag
+414,7,0,injured,override:hard_flag
+415,7,0,injured,override:hard_flag
+416,7,0,injured,override:injured
+417,7,70.3333,rolling avg,rolling
+418,7,90,rolling avg,rolling
+419,7,90,rolling avg,rolling
+420,7,19.3333,rolling avg,rolling
+421,7,0.333333,rolling avg,rolling
+422,7,0,injured,override:injured
+423,7,28.8333,50/50,override:50/50
+424,7,0,rolling avg,rolling
+425,7,0,transferred,override:hard_flag
+426,7,90,rolling avg,rolling
+427,7,90,rolling avg,rolling
+428,7,90,rolling avg,rolling
+429,7,53,rolling avg,rolling
+430,7,3.33333,rolling avg,rolling
+431,7,19.3333,rolling avg,rolling
+432,7,43.1667,50/50,override:50/50
+433,7,0,injured,override:hard_flag
+434,7,0,rolling avg,rolling
+435,7,0,rolling avg,rolling
+436,7,0,transferred,override:hard_flag
+437,7,0,rolling avg,rolling
+438,7,0,rolling avg,rolling
+439,7,0,injured,override:hard_flag
+440,7,17,rolling avg,rolling
+441,7,0,transferred,override:hard_flag
+405,7,36,rolling avg,rolling
+442,7,0,rolling avg,rolling
+443,7,0,rolling avg,rolling
+444,7,0,injured,override:hard_flag
+445,7,90,rolling avg,rolling
+446,7,8,rolling avg,rolling
+447,7,90,rolling avg,rolling
+448,7,0.333333,rolling avg,rolling
+449,7,90,rolling avg,rolling
+450,7,0,injured,override:hard_flag
+451,7,0,transferred,override:hard_flag
+453,7,90,rolling avg,rolling
+454,7,0,injured,override:hard_flag
+456,7,0,injured,override:hard_flag
+457,7,68,rolling avg,rolling
+458,7,10.3333,rolling avg,rolling
+459,7,75.6667,rolling avg,rolling
+460,7,58.6667,rolling avg,rolling
+461,7,13.3333,50/50,override:50/50
+462,7,45.3333,rolling avg,rolling
+463,7,0,transferred,override:hard_flag
+464,7,85.6667,rolling avg,rolling
+465,7,4,rolling avg,rolling
+466,7,0,transferred,override:hard_flag
+559,7,4.33333,rolling avg,rolling
+567,7,90,rolling avg,rolling
+593,7,29.3333,rolling avg,rolling
+609,7,0,transferred,override:hard_flag
+634,7,73.3333,rolling avg,rolling
+659,7,0,rolling avg,rolling
+663,7,0,rolling avg,rolling
+664,7,0,rolling avg,rolling
+665,7,0,rolling avg,rolling
+666,7,0,rolling avg,rolling
+167,7,83.6667,rolling avg,rolling
+201,7,87.3333,rolling avg,rolling
+467,7,90,rolling avg,rolling
+468,7,0,rolling avg,rolling
+469,7,90,rolling avg,rolling
+470,7,0,transferred,override:hard_flag
+471,7,0,injured,override:injured
+472,7,90,rolling avg,rolling
+473,7,57.3333,rolling avg,rolling
+474,7,30,rolling avg,rolling
+475,7,0,injured,override:hard_flag
+476,7,0,rolling avg,rolling
+477,7,0,transferred,override:hard_flag
+478,7,2.33333,rolling avg,rolling
+479,7,0,transferred,override:hard_flag
+480,7,45,50/50,override:50/50
+482,7,6,rolling avg,rolling
+483,7,67.6667,rolling avg,rolling
+484,7,0,transferred,override:hard_flag
+485,7,0,transferred,override:hard_flag
+486,7,84.3333,rolling avg,rolling
+487,7,0,rolling avg,rolling
+488,7,13,rolling avg,rolling
+489,7,0,rolling avg,rolling
+490,7,12,rolling avg,rolling
+491,7,0,injured,override:hard_flag
+493,7,2.33333,rolling avg,rolling
+558,7,81.6667,rolling avg,rolling
+581,7,84,rolling avg,rolling
+590,7,0,rolling avg,rolling
+112,7,90,rolling avg,rolling
+147,7,1.66667,rolling avg,rolling
+401,7,63.3333,rolling avg,rolling
+403,7,90,rolling avg,rolling
+455,7,87.6667,rolling avg,rolling
+494,7,0,transferred,override:hard_flag
+495,7,0,rolling avg,rolling
+496,7,90,rolling avg,rolling
+497,7,0,rolling avg,rolling
+498,7,29.3333,rolling avg,rolling
+499,7,0,injured,override:hard_flag
+500,7,0,transferred,override:hard_flag
+502,7,60,rolling avg,rolling
+503,7,65.3333,rolling avg,rolling
+505,7,0,transferred,override:hard_flag
+506,7,24.3333,rolling avg,rolling
+507,7,0,transferred,override:hard_flag
+508,7,0,rolling avg,rolling
+509,7,0,rolling avg,rolling
+510,7,0,rolling avg,rolling
+511,7,0,transferred,override:hard_flag
+512,7,45.6667,rolling avg,rolling
+513,7,0,injured,override:hard_flag
+514,7,9,rolling avg,rolling
+515,7,17.6667,rolling avg,rolling
+516,7,0,injured,override:hard_flag
+517,7,0,injured,override:hard_flag
+518,7,0,transferred,override:hard_flag
+519,7,26.3333,rolling avg,rolling
+520,7,32.6667,rolling avg,rolling
+521,7,0,50/50,override:hard_flag
+522,7,81.6667,rolling avg,rolling
+523,7,0,transferred,override:hard_flag
+524,7,0,rolling avg,rolling
+525,7,36,rolling avg,rolling
+526,7,72.3333,rolling avg,rolling
+527,7,0,benched,override:hard_flag
+528,7,0,transferred,override:hard_flag
+578,7,0,injured,override:hard_flag
+601,7,0,rolling avg,rolling
+501,7,90,rolling avg,rolling
+529,7,90,rolling avg,rolling
+530,7,0,transferred,override:hard_flag
+531,7,0,rolling avg,rolling
+532,7,0,injured,override:hard_flag
+533,7,90,rolling avg,rolling
+534,7,33.6667,rolling avg,rolling
+535,7,0,rolling avg,rolling
+536,7,54,rolling avg,rolling
+537,7,0,transferred,override:hard_flag
+538,7,0,transferred,override:hard_flag
+539,7,0,rolling avg,rolling
+540,7,0,transferred,override:hard_flag
+541,7,46.5,injured,override:injured
+542,7,86.6667,rolling avg,rolling
+543,7,0,rolling avg,rolling
+544,7,90,rolling avg,rolling
+545,7,82.3333,rolling avg,rolling
+546,7,0,transferred,override:hard_flag
+547,7,0,injured,override:hard_flag
+548,7,0,rolling avg,rolling
+549,7,0,rolling avg,rolling
+550,7,5.66667,rolling avg,rolling
+551,7,66.6667,rolling avg,rolling
+552,7,60,rolling avg,rolling
+553,7,22,injured,override:injured
+612,7,35.6667,rolling avg,rolling
+613,7,0,rolling avg,rolling
+646,7,33.3333,rolling avg,rolling
+651,7,3,rolling avg,rolling

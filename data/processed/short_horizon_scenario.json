@@ -1,0 +1,96 @@
+{
+  "task": "short_horizon_scenario",
+  "scorer": "score_xp_v2",
+  "decision": "keep_scenario_advisor",
+  "path_signal": true,
+  "mean_layer_quiet": true,
+  "summary": {
+    "season": "2024-25",
+    "scorer": "score_xp_v2",
+    "decision_gws": [
+      10,
+      20
+    ],
+    "n_ok": 2,
+    "mean_delta_v": -4.904022128395823,
+    "mean_stick": 0.9333333333333333,
+    "mean_hits": 0.0,
+    "mean_abs_player_xp_delta_t": 0.09363511493153032,
+    "mean_layer_vs_l4_corr": 1.0
+  },
+  "indep_overlap_mean": 0.33333333333333337,
+  "per_deadline": [
+    {
+      "season": "2024-25",
+      "decision_gw": 10,
+      "next_gw": 11,
+      "scorer": "score_xp_v2",
+      "assembler": "src/markets/numagent_xp.py",
+      "n_strands": 4,
+      "seed": 7,
+      "gamma": 0.9,
+      "band": 0.15,
+      "alpha_g": 0.9731800766283525,
+      "alpha_a": 0.8850574712643678,
+      "n_pool_t": 117,
+      "n_pool_t1": 117,
+      "n_fixtures_t": 10,
+      "n_fixtures_t1": 10,
+      "n_proj_fixtures_t": 10,
+      "mean_layer_vs_l4_corr": 1.0,
+      "v_indep": 124.51551761880961,
+      "indep_overlap_t_t1": 0.4666666666666667,
+      "mean_v_path": 121.34087910525727,
+      "std_v_path": 1.4852480514646793,
+      "delta_v_path_minus_indep": -3.1746385135523383,
+      "mean_transfers_t1": 1.0,
+      "mean_hits_t1": 0.0,
+      "mean_stick_rate": 0.9333333333333333,
+      "player_xp_delta_t": {
+        "mean_abs_player_delta": 0.09605507551948951,
+        "max_mean_abs_player_delta": 0.10702915162843556
+      },
+      "player_xp_delta_t1": {
+        "mean_abs_player_delta": 0.09219878707493825,
+        "max_mean_abs_player_delta": 0.10254858830875865
+      },
+      "notes": "Rates/minutes frozen at GW < t (same-season only). FD AH+OU \u2192 Dixon\u2013Coles M; \u03bb \u00b1 band sampled; score_team_side (score_xp_v2). Path: L1 then L3. Does not replace L4 mean path."
+    },
+    {
+      "season": "2024-25",
+      "decision_gw": 20,
+      "next_gw": 21,
+      "scorer": "score_xp_v2",
+      "assembler": "src/markets/numagent_xp.py",
+      "n_strands": 4,
+      "seed": 7,
+      "gamma": 0.9,
+      "band": 0.15,
+      "alpha_g": 0.9750445632798574,
+      "alpha_a": 0.8841354723707665,
+      "n_pool_t": 117,
+      "n_pool_t1": 117,
+      "n_fixtures_t": 10,
+      "n_fixtures_t1": 10,
+      "n_proj_fixtures_t": 10,
+      "mean_layer_vs_l4_corr": 1.0,
+      "v_indep": 127.83649591576969,
+      "indep_overlap_t_t1": 0.2,
+      "mean_v_path": 121.20309017253038,
+      "std_v_path": 1.758728711865265,
+      "delta_v_path_minus_indep": -6.633405743239308,
+      "mean_transfers_t1": 1.0,
+      "mean_hits_t1": 0.0,
+      "mean_stick_rate": 0.9333333333333333,
+      "player_xp_delta_t": {
+        "mean_abs_player_delta": 0.09121515434357111,
+        "max_mean_abs_player_delta": 0.09899284232000222
+      },
+      "player_xp_delta_t1": {
+        "mean_abs_player_delta": 0.08790001566101494,
+        "max_mean_abs_player_delta": 0.0967230915456843
+      },
+      "notes": "Rates/minutes frozen at GW < t (same-season only). FD AH+OU \u2192 Dixon\u2013Coles M; \u03bb \u00b1 band sampled; score_team_side (score_xp_v2). Path: L1 then L3. Does not replace L4 mean path."
+    }
+  ]
+}

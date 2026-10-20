@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:9-hincapie-listed-out",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Arsenal",
+  "player_ids": [
+    9
+  ],
+  "headline": "Hincapie listed out",
+  "body": "The Guardian team news, 16 Oct 2026: Hincapie (Arsenal) injured / unavailable.",
+  "sha256": "21b0283cb074b287b2644415ec0b99a5b46ee827d961afd58adc9edf88cc2af1"
+}

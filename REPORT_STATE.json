@@ -1,11 +1,10 @@
 {
-  "updated": "2026-10-18",
-  "task": "team_gf_ga_predictor_screen",
+  "task": "lock cascade short/long centreline M → k∼M; retire λ ±15% jitter",
   "status": "done",
-  "outputs": {
-    "report": "reports/team_gf_ga_predictor_screen.md",
-    "json": "reports/figures/team_gf_ga_predictor_screen.json",
-    "script": "scripts/screen_team_gf_ga_predictors.py"
-  },
-  "notes": "Leakage-free screen of team-level GF/GA predictors for pseudo-match FDR. Market attack/defend best for H=1; own expanding rates for H=5–8; opp roll3 GF/GA for unpriced fixture difficulty."
+  "branch": "cursor/cascade-long-m-from-opta-cc3d",
+  "MARKET_BAND": 0.0,
+  "contaminated_trial": "reports/multistage_xi_captain_ft_short_long_trial.md",
+  "protocol": ["cascade_short_generative", "cascade_long_match_outcome"],
+  "parked": "ideas.md lambda_uniform_band",
+  "merge": "resolved REPORT_STATE vs base club-expanding for PR #97"
 }

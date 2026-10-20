@@ -1,0 +1,770 @@
+[
+  {
+    "season": "2022-23",
+    "gw": 10,
+    "mode": "constant",
+    "n_pool": 212,
+    "l1_objective_mu": 83.9224677222783,
+    "l2": {
+      "n_squad": 15,
+      "n_xi": 11,
+      "captain_id": "2022-23:318",
+      "formation": "1-3-4-3",
+      "objective": 69.75502046491553,
+      "xi_mu": 60.11078424842981,
+      "captain_mu": 9.644236216485728,
+      "cost": 975,
+      "status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+      "mode": "constant",
+      "abs_xi_mu": 70.99699547183675,
+      "abs_captain_mu": 12.494726604642617,
+      "abs_objective": 83.49172207647938,
+      "post_objective": 69.75502046491553,
+      "mean_se_xi": 1.2974350668707122,
+      "moments": {
+        "DEF": {
+          "prior": 3.060812526476934,
+          "tau2": 1.179663839713304,
+          "sigma_model2": 4.575694195815151,
+          "n": 271,
+          "mean_se2": 0.5124399615340002,
+          "k_constant": 0.1882102518725364
+        },
+        "FWD": {
+          "prior": 4.544072939751596,
+          "tau2": 2.490864542244611,
+          "sigma_model2": 10.92212314140557,
+          "n": 70,
+          "mean_se2": 1.392148653016389,
+          "k_constant": 0.16824326947099483
+        },
+        "GKP": {
+          "prior": 2.8067403231099948,
+          "tau2": 0.4721338353683483,
+          "sigma_model2": 4.097110229078668,
+          "n": 74,
+          "mean_se2": 0.12224917048354635,
+          "k_constant": 0.10063615393347919
+        },
+        "MID": {
+          "prior": 3.5803988564001274,
+          "tau2": 1.548193657710131,
+          "sigma_model2": 7.450833826920872,
+          "n": 311,
+          "mean_se2": 0.9617374415148727,
+          "k_constant": 0.15542919335906608
+        }
+      }
+    },
+    "xi_overlap": 9,
+    "abs_mu_delta": -0.43074564579892183,
+    "checks": [
+      {
+        "name": "squad_size",
+        "pass": true,
+        "detail": "n=15"
+      },
+      {
+        "name": "xi_size",
+        "pass": true,
+        "detail": "n=11"
+      },
+      {
+        "name": "squad_legal",
+        "pass": true,
+        "detail": "cost=975"
+      },
+      {
+        "name": "xi_legal",
+        "pass": true,
+        "detail": "form=(3, 4, 3)"
+      },
+      {
+        "name": "budget",
+        "pass": true,
+        "detail": "975 \u2264 1000"
+      },
+      {
+        "name": "club_cap",
+        "pass": true,
+        "detail": "{'chelsea': 3, 'man city': 3, 'aston villa': 1, 'crystal palace': 1, 'everton': 1, 'leeds': 1, 'man utd': 1, 'spurs': 1, 'wolves': 1, 'nottm forest': 1, 'bournemouth': 1}"
+      },
+      {
+        "name": "quota",
+        "pass": true,
+        "detail": "{'DEF': 5, 'MID': 5, 'FWD': 3, 'GKP': 2}"
+      },
+      {
+        "name": "xi_subset_squad",
+        "pass": true,
+        "detail": "extra=set()"
+      },
+      {
+        "name": "captain_in_xi",
+        "pass": true,
+        "detail": "2022-23:318"
+      },
+      {
+        "name": "captain_is_max_mu_in_xi",
+        "pass": true,
+        "detail": "cap=2022-23:318 top=2022-23:318 \u03bc=9.6442"
+      },
+      {
+        "name": "objective_identity",
+        "pass": true,
+        "detail": "obj=69.755020 xi+cap=69.755020"
+      },
+      {
+        "name": "no_duplicate_squad",
+        "pass": true,
+        "detail": ""
+      },
+      {
+        "name": "post_objective_identity",
+        "pass": true,
+        "detail": "obj=69.755020"
+      }
+    ],
+    "pass": true
+  },
+  {
+    "season": "2023-24",
+    "gw": 15,
+    "mode": "constant",
+    "n_pool": 208,
+    "l1_objective_mu": 80.075102861859,
+    "l2": {
+      "n_squad": 15,
+      "n_xi": 11,
+      "captain_id": "2023-24:308",
+      "formation": "1-3-5-2",
+      "objective": 68.2908227762759,
+      "xi_mu": 61.12592031375679,
+      "captain_mu": 7.164902462519117,
+      "cost": 978,
+      "status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+      "mode": "constant",
+      "abs_xi_mu": 71.17582496130433,
+      "abs_captain_mu": 8.899277900554672,
+      "abs_objective": 80.075102861859,
+      "post_objective": 68.2908227762759,
+      "mean_se_xi": 1.099835032416232,
+      "moments": {
+        "DEF": {
+          "prior": 2.902815201726162,
+          "tau2": 1.058315818870223,
+          "sigma_model2": 5.945591997377653,
+          "n": 786,
+          "mean_se2": 0.3955705439325911,
+          "k_constant": 0.14302573334972382
+        },
+        "FWD": {
+          "prior": 4.413135899352608,
+          "tau2": 2.1763995047230518,
+          "sigma_model2": 8.183024505928532,
+          "n": 215,
+          "mean_se2": 1.0733751422730224,
+          "k_constant": 0.1903645358946335
+        },
+        "GKP": {
+          "prior": 2.6664063532807543,
+          "tau2": 0.5154053167205757,
+          "sigma_model2": 2.704157823616624,
+          "n": 201,
+          "mean_se2": 0.09771683217809853,
+          "k_constant": 0.15536985753113086
+        },
+        "MID": {
+          "prior": 3.6272481499734717,
+          "tau2": 1.8412564338894901,
+          "sigma_model2": 5.764333333507404,
+          "n": 836,
+          "mean_se2": 0.9026969997430085,
+          "k_constant": 0.21640742540562447
+        }
+      }
+    },
+    "xi_overlap": 11,
+    "abs_mu_delta": 0.0,
+    "checks": [
+      {
+        "name": "squad_size",
+        "pass": true,
+        "detail": "n=15"
+      },
+      {
+        "name": "xi_size",
+        "pass": true,
+        "detail": "n=11"
+      },
+      {
+        "name": "squad_legal",
+        "pass": true,
+        "detail": "cost=978"
+      },
+      {
+        "name": "xi_legal",
+        "pass": true,
+        "detail": "form=(3, 5, 2)"
+      },
+      {
+        "name": "budget",
+        "pass": true,
+        "detail": "978 \u2264 1000"
+      },
+      {
+        "name": "club_cap",
+        "pass": true,
+        "detail": "{'arsenal': 3, 'wolves': 3, 'liverpool': 2, 'newcastle': 2, 'burnley': 1, 'crystal palace': 1, 'man city': 1, 'sheffield utd': 1, 'spurs': 1}"
+      },
+      {
+        "name": "quota",
+        "pass": true,
+        "detail": "{'MID': 5, 'DEF': 5, 'FWD': 3, 'GKP': 2}"
+      },
+      {
+        "name": "xi_subset_squad",
+        "pass": true,
+        "detail": "extra=set()"
+      },
+      {
+        "name": "captain_in_xi",
+        "pass": true,
+        "detail": "2023-24:308"
+      },
+      {
+        "name": "captain_is_max_mu_in_xi",
+        "pass": true,
+        "detail": "cap=2023-24:308 top=2023-24:308 \u03bc=7.1649"
+      },
+      {
+        "name": "objective_identity",
+        "pass": true,
+        "detail": "obj=68.290823 xi+cap=68.290823"
+      },
+      {
+        "name": "no_duplicate_squad",
+        "pass": true,
+        "detail": ""
+      },
+      {
+        "name": "post_objective_identity",
+        "pass": true,
+        "detail": "obj=68.290823"
+      }
+    ],
+    "pass": true
+  },
+  {
+    "season": "2024-25",
+    "gw": 20,
+    "mode": "constant",
+    "n_pool": 200,
+    "l1_objective_mu": 85.8825581175717,
+    "l2": {
+      "n_squad": 15,
+      "n_xi": 11,
+      "captain_id": "2024-25:328",
+      "formation": "1-3-5-2",
+      "objective": 73.63966106626961,
+      "xi_mu": 64.42376852906948,
+      "captain_mu": 9.21589253720013,
+      "cost": 998,
+      "status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+      "mode": "constant",
+      "abs_xi_mu": 74.73640483087813,
+      "abs_captain_mu": 11.146153286693574,
+      "abs_objective": 85.8825581175717,
+      "post_objective": 73.63966106626961,
+      "mean_se_xi": 1.1696105592475468,
+      "moments": {
+        "DEF": {
+          "prior": 2.757515102942659,
+          "tau2": 0.9093041659769047,
+          "sigma_model2": 5.745457579967207,
+          "n": 1155,
+          "mean_se2": 0.38087826055945173,
+          "k_constant": 0.12924256572769038
+        },
+        "FWD": {
+          "prior": 4.752607588037464,
+          "tau2": 1.7279719673860978,
+          "sigma_model2": 9.950044270927105,
+          "n": 310,
+          "mean_se2": 1.0205304867408558,
+          "k_constant": 0.13607635620041725
+        },
+        "GKP": {
+          "prior": 2.550319258145627,
+          "tau2": 0.4970891819638575,
+          "sigma_model2": 4.8393796215874145,
+          "n": 294,
+          "mean_se2": 0.08525504998236827,
+          "k_constant": 0.09168471050768782
+        },
+        "MID": {
+          "prior": 3.610688724470299,
+          "tau2": 2.3558020043164554,
+          "sigma_model2": 5.657052447311925,
+          "n": 1286,
+          "mean_se2": 0.8112661545299675,
+          "k_constant": 0.2669730060888269
+        }
+      }
+    },
+    "xi_overlap": 11,
+    "abs_mu_delta": 0.0,
+    "checks": [
+      {
+        "name": "squad_size",
+        "pass": true,
+        "detail": "n=15"
+      },
+      {
+        "name": "xi_size",
+        "pass": true,
+        "detail": "n=11"
+      },
+      {
+        "name": "squad_legal",
+        "pass": true,
+        "detail": "cost=998"
+      },
+      {
+        "name": "xi_legal",
+        "pass": true,
+        "detail": "form=(3, 5, 2)"
+      },
+      {
+        "name": "budget",
+        "pass": true,
+        "detail": "998 \u2264 1000"
+      },
+      {
+        "name": "club_cap",
+        "pass": true,
+        "detail": "{'aston villa': 2, 'bournemouth': 2, 'ipswich': 2, 'liverpool': 2, 'man city': 2, 'chelsea': 1, 'everton': 1, 'fulham': 1, 'leicester': 1, 'newcastle': 1}"
+      },
+      {
+        "name": "quota",
+        "pass": true,
+        "detail": "{'MID': 5, 'DEF': 5, 'FWD': 3, 'GKP': 2}"
+      },
+      {
+        "name": "xi_subset_squad",
+        "pass": true,
+        "detail": "extra=set()"
+      },
+      {
+        "name": "captain_in_xi",
+        "pass": true,
+        "detail": "2024-25:328"
+      },
+      {
+        "name": "captain_is_max_mu_in_xi",
+        "pass": true,
+        "detail": "cap=2024-25:328 top=2024-25:328 \u03bc=9.2159"
+      },
+      {
+        "name": "objective_identity",
+        "pass": true,
+        "detail": "obj=73.639661 xi+cap=73.639661"
+      },
+      {
+        "name": "no_duplicate_squad",
+        "pass": true,
+        "detail": ""
+      },
+      {
+        "name": "post_objective_identity",
+        "pass": true,
+        "detail": "obj=73.639661"
+      }
+    ],
+    "pass": true
+  },
+  {
+    "season": "2025-26",
+    "gw": 10,
+    "mode": "constant",
+    "n_pool": 204,
+    "l1_objective_mu": 81.11142525827259,
+    "l2": {
+      "n_squad": 15,
+      "n_xi": 11,
+      "captain_id": "2025-26:430",
+      "formation": "1-5-2-3",
+      "objective": 69.19399902719789,
+      "xi_mu": 61.654098491916244,
+      "captain_mu": 7.5399005352816495,
+      "cost": 934,
+      "status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+      "mode": "constant",
+      "abs_xi_mu": 71.48824769103284,
+      "abs_captain_mu": 8.81766432880324,
+      "abs_objective": 80.30591201983609,
+      "post_objective": 69.19399902719789,
+      "mean_se_xi": 1.2293452142641377,
+      "moments": {
+        "DEF": {
+          "prior": 3.636659169750455,
+          "tau2": 1.2938831732459382,
+          "sigma_model2": 7.717896877871294,
+          "n": 387,
+          "mean_se2": 0.5774206934446521,
+          "k_constant": 0.13493128444304497
+        },
+        "FWD": {
+          "prior": 4.502659353458564,
+          "tau2": 2.9485383472172932,
+          "sigma_model2": 11.287386907961693,
+          "n": 92,
+          "mean_se2": 1.2404466153138376,
+          "k_constant": 0.19051870631507392
+        },
+        "GKP": {
+          "prior": 2.7813151013170754,
+          "tau2": 0.46606038867222094,
+          "sigma_model2": 1.648880977187599,
+          "n": 98,
+          "mean_se2": 0.15508201343093525,
+          "k_constant": 0.20531083200466269
+        },
+        "MID": {
+          "prior": 3.8405600398073467,
+          "tau2": 1.0595854298245242,
+          "sigma_model2": 5.2504810830150435,
+          "n": 414,
+          "mean_se2": 1.0108309170050869,
+          "k_constant": 0.1447343635091754
+        }
+      }
+    },
+    "xi_overlap": 7,
+    "abs_mu_delta": -0.8055132384365038,
+    "checks": [
+      {
+        "name": "squad_size",
+        "pass": true,
+        "detail": "n=15"
+      },
+      {
+        "name": "xi_size",
+        "pass": true,
+        "detail": "n=11"
+      },
+      {
+        "name": "squad_legal",
+        "pass": true,
+        "detail": "cost=934"
+      },
+      {
+        "name": "xi_legal",
+        "pass": true,
+        "detail": "form=(5, 2, 3)"
+      },
+      {
+        "name": "budget",
+        "pass": true,
+        "detail": "934 \u2264 1000"
+      },
+      {
+        "name": "club_cap",
+        "pass": true,
+        "detail": "{'arsenal': 3, 'bournemouth': 2, 'brighton': 2, 'crystal palace': 2, 'liverpool': 2, 'sunderland': 2, 'man city': 1, 'newcastle': 1}"
+      },
+      {
+        "name": "quota",
+        "pass": true,
+        "detail": "{'DEF': 5, 'MID': 5, 'FWD': 3, 'GKP': 2}"
+      },
+      {
+        "name": "xi_subset_squad",
+        "pass": true,
+        "detail": "extra=set()"
+      },
+      {
+        "name": "captain_in_xi",
+        "pass": true,
+        "detail": "2025-26:430"
+      },
+      {
+        "name": "captain_is_max_mu_in_xi",
+        "pass": true,
+        "detail": "cap=2025-26:430 top=2025-26:430 \u03bc=7.5399"
+      },
+      {
+        "name": "objective_identity",
+        "pass": true,
+        "detail": "obj=69.193999 xi+cap=69.193999"
+      },
+      {
+        "name": "no_duplicate_squad",
+        "pass": true,
+        "detail": ""
+      },
+      {
+        "name": "post_objective_identity",
+        "pass": true,
+        "detail": "obj=69.193999"
+      }
+    ],
+    "pass": true
+  },
+  {
+    "season": "2025-26",
+    "gw": 25,
+    "mode": "constant",
+    "n_pool": 198,
+    "l1_objective_mu": 75.88020392113157,
+    "l2": {
+      "n_squad": 15,
+      "n_xi": 11,
+      "captain_id": "2025-26:5",
+      "formation": "1-3-4-3",
+      "objective": 66.2899112203272,
+      "xi_mu": 59.42320550701791,
+      "captain_mu": 6.866705713309281,
+      "cost": 1000,
+      "status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+      "mode": "constant",
+      "abs_xi_mu": 67.61624581690837,
+      "abs_captain_mu": 7.900347527870533,
+      "abs_objective": 75.51659334477891,
+      "post_objective": 66.2899112203272,
+      "mean_se_xi": 0.8073595627159843,
+      "moments": {
+        "DEF": {
+          "prior": 3.6355869451932445,
+          "tau2": 1.2003214793712202,
+          "sigma_model2": 6.739126429675968,
+          "n": 1588,
+          "mean_se2": 0.38398541218512044,
+          "k_constant": 0.1442098990940807
+        },
+        "FWD": {
+          "prior": 4.21064318273219,
+          "tau2": 2.098087222291189,
+          "sigma_model2": 7.827903699324481,
+          "n": 385,
+          "mean_se2": 0.753527865719493,
+          "k_constant": 0.19645896637021792
+        },
+        "GKP": {
+          "prior": 2.719801645978586,
+          "tau2": 0.47161307176141326,
+          "sigma_model2": 4.127093978646724,
+          "n": 396,
+          "mean_se2": 0.07214728240612726,
+          "k_constant": 0.10096933840307944
+        },
+        "MID": {
+          "prior": 3.9214011233929114,
+          "tau2": 0.836953914988194,
+          "sigma_model2": 5.81349980945233,
+          "n": 1675,
+          "mean_se2": 0.6737403428954268,
+          "k_constant": 0.11427249295875383
+        }
+      }
+    },
+    "xi_overlap": 8,
+    "abs_mu_delta": -0.3636105763526558,
+    "checks": [
+      {
+        "name": "squad_size",
+        "pass": true,
+        "detail": "n=15"
+      },
+      {
+        "name": "xi_size",
+        "pass": true,
+        "detail": "n=11"
+      },
+      {
+        "name": "squad_legal",
+        "pass": true,
+        "detail": "cost=1000"
+      },
+      {
+        "name": "xi_legal",
+        "pass": true,
+        "detail": "form=(3, 4, 3)"
+      },
+      {
+        "name": "budget",
+        "pass": true,
+        "detail": "1000 \u2264 1000"
+      },
+      {
+        "name": "club_cap",
+        "pass": true,
+        "detail": "{'arsenal': 3, 'man utd': 3, 'leeds': 2, 'newcastle': 2, 'brighton': 1, 'man city': 1, 'sunderland': 1, 'spurs': 1, 'liverpool': 1}"
+      },
+      {
+        "name": "quota",
+        "pass": true,
+        "detail": "{'DEF': 5, 'MID': 5, 'FWD': 3, 'GKP': 2}"
+      },
+      {
+        "name": "xi_subset_squad",
+        "pass": true,
+        "detail": "extra=set()"
+      },
+      {
+        "name": "captain_in_xi",
+        "pass": true,
+        "detail": "2025-26:5"
+      },
+      {
+        "name": "captain_is_max_mu_in_xi",
+        "pass": true,
+        "detail": "cap=2025-26:5 top=2025-26:5 \u03bc=6.8667"
+      },
+      {
+        "name": "objective_identity",
+        "pass": true,
+        "detail": "obj=66.289911 xi+cap=66.289911"
+      },
+      {
+        "name": "no_duplicate_squad",
+        "pass": true,
+        "detail": ""
+      },
+      {
+        "name": "post_objective_identity",
+        "pass": true,
+        "detail": "obj=66.289911"
+      }
+    ],
+    "pass": true
+  },
+  {
+    "season": "2025-26",
+    "gw": 30,
+    "mode": "constant",
+    "n_pool": 200,
+    "l1_objective_mu": 75.18880101002722,
+    "l2": {
+      "n_squad": 15,
+      "n_xi": 11,
+      "captain_id": "2025-26:430",
+      "formation": "1-3-4-3",
+      "objective": 66.4051912826654,
+      "xi_mu": 59.93927666783681,
+      "captain_mu": 6.465914614828593,
+      "cost": 993,
+      "status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+      "mode": "constant",
+      "abs_xi_mu": 67.64488393119268,
+      "abs_captain_mu": 7.296011202382633,
+      "abs_objective": 74.94089513357531,
+      "post_objective": 66.4051912826654,
+      "mean_se_xi": 0.8222877275308005,
+      "moments": {
+        "DEF": {
+          "prior": 3.630845124339195,
+          "tau2": 1.1462463311132385,
+          "sigma_model2": 6.504553790064449,
+          "n": 1979,
+          "mean_se2": 0.3497351297424494,
+          "k_constant": 0.14327120563357423
+        },
+        "FWD": {
+          "prior": 4.19195278661046,
+          "tau2": 1.8800018118650281,
+          "sigma_model2": 8.009657451528799,
+          "n": 482,
+          "mean_se2": 0.6862837666221683,
+          "k_constant": 0.17776209710371188
+        },
+        "GKP": {
+          "prior": 2.7153496718784793,
+          "tau2": 0.45131199898584246,
+          "sigma_model2": 4.495111217739507,
+          "n": 498,
+          "mean_se2": 0.06440014377288446,
+          "k_constant": 0.09006743333713679
+        },
+        "MID": {
+          "prior": 3.945706397937014,
+          "tau2": 0.8196764285228368,
+          "sigma_model2": 5.599107437965866,
+          "n": 2098,
+          "mean_se2": 0.615118546919591,
+          "k_constant": 0.11653224346137335
+        }
+      }
+    },
+    "xi_overlap": 10,
+    "abs_mu_delta": -0.24790587645190953,
+    "checks": [
+      {
+        "name": "squad_size",
+        "pass": true,
+        "detail": "n=15"
+      },
+      {
+        "name": "xi_size",
+        "pass": true,
+        "detail": "n=11"
+      },
+      {
+        "name": "squad_legal",
+        "pass": true,
+        "detail": "cost=993"
+      },
+      {
+        "name": "xi_legal",
+        "pass": true,
+        "detail": "form=(3, 4, 3)"
+      },
+      {
+        "name": "budget",
+        "pass": true,
+        "detail": "993 \u2264 1000"
+      },
+      {
+        "name": "club_cap",
+        "pass": true,
+        "detail": "{'liverpool': 3, 'chelsea': 2, 'leeds': 2, 'man utd': 2, 'arsenal': 1, 'brentford': 1, 'burnley': 1, 'fulham': 1, 'man city': 1, 'sunderland': 1}"
+      },
+      {
+        "name": "quota",
+        "pass": true,
+        "detail": "{'DEF': 5, 'MID': 5, 'FWD': 3, 'GKP': 2}"
+      },
+      {
+        "name": "xi_subset_squad",
+        "pass": true,
+        "detail": "extra=set()"
+      },
+      {
+        "name": "captain_in_xi",
+        "pass": true,
+        "detail": "2025-26:430"
+      },
+      {
+        "name": "captain_is_max_mu_in_xi",
+        "pass": true,
+        "detail": "cap=2025-26:430 top=2025-26:430 \u03bc=6.4659"
+      },
+      {
+        "name": "objective_identity",
+        "pass": true,
+        "detail": "obj=66.405191 xi+cap=66.405191"
+      },
+      {
+        "name": "no_duplicate_squad",
+        "pass": true,
+        "detail": ""
+      },
+      {
+        "name": "post_objective_identity",
+        "pass": true,
+        "detail": "obj=66.405191"
+      }
+    ],
+    "pass": true
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:297-gyabi-listed-out",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Hull City",
+  "player_ids": [
+    297
+  ],
+  "headline": "Gyabi listed out",
+  "body": "The Guardian team news, 16 Oct 2026: Gyabi (Hull City) injured / unavailable.",
+  "sha256": "d105a0881c7c49878fc7404f6dc180f5aac11a0bbff8c5213fa3dffc01fa939a"
+}

@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:423-shaw-could-return-this-weekend",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Man Utd",
+  "player_ids": [
+    423
+  ],
+  "headline": "Shaw could return this weekend",
+  "body": "The Guardian team news, 16 Oct 2026: Shaw (Man Utd) listed doubtful.",
+  "sha256": "3b0c9966984a8cd6d20159bc61b82a488cf9dd6144479e33fc85cecc088f804c"
+}

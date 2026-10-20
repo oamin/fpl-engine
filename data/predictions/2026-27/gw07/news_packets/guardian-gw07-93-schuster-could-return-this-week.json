@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:93-schuster-could-return-this-weekend",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Brentford",
+  "player_ids": [
+    93
+  ],
+  "headline": "Schuster could return this weekend",
+  "body": "The Guardian team news, 16 Oct 2026: Schuster (Brentford) listed doubtful.",
+  "sha256": "fba13ded70fd407bdbc9ee3b91345ae725c8987f6179f0b672c99f10f0fcc23c"
+}

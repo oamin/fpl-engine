@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:130-wieffer-listed-out",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Brighton",
+  "player_ids": [
+    130
+  ],
+  "headline": "Wieffer listed out",
+  "body": "The Guardian team news, 16 Oct 2026: Wieffer (Brighton) injured / unavailable.",
+  "sha256": "6d6d51e6e292f408e6a07c88510c3894724e05ce8b1e872afb73304cff7e362a"
+}

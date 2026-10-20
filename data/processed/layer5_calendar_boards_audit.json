@@ -1,0 +1,73 @@
+{
+  "passed": true,
+  "n_pass": 8,
+  "n_checks": 8,
+  "checks": [
+    {
+      "name": "H_ge_3",
+      "pass": true,
+      "detail": "H=8"
+    },
+    {
+      "name": "H_reaches_or_stops",
+      "pass": true,
+      "detail": "H=8 depth=8"
+    },
+    {
+      "name": "week0_first",
+      "pass": true,
+      "detail": "gws=(12, 13, 14, 15, 16, 17, 18, 19)"
+    },
+    {
+      "name": "asof_hist",
+      "pass": true,
+      "detail": "hist_max=11"
+    },
+    {
+      "name": "sources_tagged",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "aligned_universe",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no_bookie_beyond_t2",
+      "pass": true,
+      "detail": "violations=[] sources={12: 'week0', 13: 'fd_priced', 14: 'fd_priced', 15: 'strength_fill', 16: 'strength_fill', 17: 'strength_fill', 18: 'strength_fill', 19: 'strength_fill'}"
+    },
+    {
+      "name": "beyond_is_strength",
+      "pass": true,
+      "detail": "beyond={15: 'strength_fill', 16: 'strength_fill', 17: 'strength_fill', 18: 'strength_fill', 19: 'strength_fill'}"
+    }
+  ],
+  "horizon": {
+    "gws": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "H": 8,
+    "source_by_gw": {
+      "12": "week0",
+      "13": "fd_priced",
+      "14": "fd_priced",
+      "15": "strength_fill",
+      "16": "strength_fill",
+      "17": "strength_fill",
+      "18": "strength_fill",
+      "19": "strength_fill"
+    },
+    "n_fd_fixtures": 20,
+    "n_fill_fixtures": 50,
+    "bookie_depth": 3
+  }
+}

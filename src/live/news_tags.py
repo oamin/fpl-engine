@@ -15,7 +15,10 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Any, Mapping, Sequence
 
+# Diagnostic / deterministic tags. LLM decision tags are CONTEXT_TAGS only.
 TAGS = ("firm_starter", "injured", "transferred", "benched")
+# LLM emits these; ``none`` means keep the rolling minutes default (no ask).
+CONTEXT_TAGS = ("injured", "transferred", "benched", "50/50", "none")
 BULK_LIMIT = 10
 SUPPORT = {
     "transferred": ("joined", "loan", "sold", "permanently", "returned to"),
@@ -113,7 +116,7 @@ def fpl_record(
 
 
 def tag_from_fpl(record: Mapping[str, Any]) -> str:
-    """The tag for a dated FPL line. An unclear line is ask."""
+    """The tag for a dated FPL line. Unclear → ``none`` (rolling default)."""
     news = str(record.get("news") or "").lower()
     status = str(record.get("status") or "")
     chance = record.get("chance")
@@ -125,7 +128,7 @@ def tag_from_fpl(record: Mapping[str, Any]) -> str:
         return "injured"
     if status == "d" or (chance is not None and 0 < float(chance) < 100):
         return "injured"
-    return "ask"
+    return "none"
 
 
 def prior_minutes(history: Sequence[float]) -> float | None:
@@ -149,8 +152,13 @@ def minutes_for_tag(
     A suspended or unavailable player, or a chance of 0, is 0 even if the
     tag said otherwise. A firm starter stays in the range 65 to 90.
     """
-    if tag in {None, "ask"}:
+    if tag in {None, "ask", "none"}:
         return None
+    if tag == "50/50":
+        base = 90.0 if prior is None else float(prior)
+        if status in {"s", "u"} or chance == 0:
+            return 0.0
+        return 0.5 * base
     if tag not in TAGS:
         raise NewsTagError(f"unknown tag {tag}")
     if status in {"s", "u"} or chance == 0:
@@ -186,15 +194,17 @@ def build_tag_prompt(
         "Do not use memory of who played, of a later transfer, or of the score.",
         "Return a JSON array and nothing else. One object per case.",
         '{"player_id": number, "gw": number, "tag": string, "doc_ids": [string], "note": string}.',
-        "tag is firm_starter, injured, transferred, benched, or ask.",
-        "firm_starter means the documents say he started or is the regular starter.",
+        "tag is injured, transferred, benched, 50/50, or none.",
         "injured means the documents say he is hurt, suspended, or doubtful.",
         "transferred means the documents say he has left the club.",
         "benched means he is still at the club and the documents say he was left out.",
+        "50/50 means the documents say he could return this weekend (play-or-not).",
+        "none means no clear contextual override — rolling minutes will be used.",
+        "Do not use ask. Do not use firm_starter (rolling already encodes recent starts).",
         "If the documents say he has joined another club, transferred wins over benched.",
         "A deal that is agreed, or a player who is set to sign, is not a transfer and not a bench.",
-        "If the documents do not establish one tag, return ask and an empty doc_ids list.",
-        "A tag other than ask must cite doc_ids from that packet only.",
+        "If the documents do not establish an override, return none and an empty doc_ids list.",
+        "A tag other than none must cite doc_ids from that packet only.",
         "",
     ]
     for case in cases:
@@ -244,10 +254,10 @@ def accept_tag(
     gw = int(proposal["gw"])
     tag = str(proposal.get("tag") or "")
     note = str(proposal.get("note") or "")
-    if tag == "ask":
-        return TagDecision(player_id, gw, "ask", None, "llm", note, prior)
-    if tag not in TAGS:
-        raise NewsTagError(f"unknown tag {tag}")
+    if tag in {"ask", "none"}:
+        return TagDecision(player_id, gw, "none", None, "llm", note, prior)
+    if tag not in {"injured", "transferred", "benched", "50/50"}:
+        raise NewsTagError(f"unknown or non-override tag {tag}")
     raw_ids = proposal.get("doc_ids")
     if not isinstance(raw_ids, list) or not raw_ids:
         raise NewsTagError("a tag needs a document from the packet")
@@ -258,10 +268,16 @@ def accept_tag(
         if key not in by_id:
             raise NewsTagError(f"{key} is not in the packet")
         cited.append(by_id[key])
-    if not _cited_supports(tag, cited, name):
+    if tag == "50/50":
+        folded = " ".join(fold(doc.text) for doc in cited)
+        if (
+            "could return" not in folded
+            and "return this weekend" not in folded
+            and not any(word in folded for word in SUPPORT["injured"])
+        ):
+            raise NewsTagError("the cited text does not support 50/50")
+    elif not _cited_supports(tag, cited, name):
         raise NewsTagError("the cited text does not support the tag")
-    if tag == "firm_starter" and (status in {"s", "u", "i"} or chance == 0):
-        raise NewsTagError("a ruled-out player cannot be a firm starter")
     xmi = minutes_for_tag(tag, position, prior, chance, status)
     return TagDecision(player_id, gw, tag, xmi, "llm", note, prior)
 

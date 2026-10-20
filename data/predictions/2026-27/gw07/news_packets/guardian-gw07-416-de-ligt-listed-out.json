@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:416-de-ligt-listed-out",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Man Utd",
+  "player_ids": [
+    416
+  ],
+  "headline": "De Ligt listed out",
+  "body": "The Guardian team news, 16 Oct 2026: De Ligt (Man Utd) injured / unavailable.",
+  "sha256": "b1f4240d93e3b508f770ae1db0bb31bd74f45902b408a933c2bc650d0ed70091"
+}

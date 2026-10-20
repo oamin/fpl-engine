@@ -46,14 +46,20 @@ T1_MINUTES = (15, 180)
 SHUFFLE_SEED = 0
 LIVE_COVERS_ZERO = "undetermined"
 LIVE_CONTINUE_TO_GW = 38
-LIVE_PRIMARY = "ep_next"
-LIVE_SHADOW = "score_xp"
-LIVE_PRIMARY_FROM_GW = 6
+# Numagent 2.0 product lock (protocol.live_primary / numagent_2_0).
+# Numagent 1.0 used ep_next from GW6; archived under protocol.numagent_1_0.
+LIVE_PRIMARY = "score_xp_v2"
+LIVE_SHADOW = None
+LIVE_HISTORICAL_SCORE = "score_xp_v2"
+LIVE_PRIMARY_FROM_GW = 7
 LIVE_PRIMARY_WIRED = True
-# One decision run, inside the T-1h window. That run's stamp is the pair.
-# An earlier file is not a fallback, and the two scores are not compared first.
-LIVE_DECISION_CAPTURE = "t1_same_stamp"
+# GW6 week_freeze ledger start (ep_next-era bar). Not the product from_gw.
+LIVE_FREEZE_BAR_FROM_GW = 6
+# PI lock file under data/predictions/<season>/gwNN/numagent_lock.json.
+# An earlier board CSV is not a fallback.
+LIVE_DECISION_CAPTURE = "numagent_lock"
 LIVE_CAPTURE_FALLBACK = "none"
+LIVE_ENTRYPOINT = "src/live/numagent_live_pick.py"
 # A logged judgement. It is not a chip-rule result and it does not count.
 GW6_SUBMITTED_CHIP = "logged_judgement"
 GW6_CHIP_COUNTS = False

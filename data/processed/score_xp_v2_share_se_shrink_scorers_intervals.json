@@ -1,0 +1,52 @@
+{
+  "seasons": [
+    "2022-23",
+    "2023-24",
+    "2024-25",
+    "2025-26"
+  ],
+  "min_gws": 20,
+  "comparisons": {
+    "score_xp_minus_score_exp_points": {
+      "mean": 0.015305621921945354,
+      "lo": 0.01295155277980016,
+      "hi": 0.01747868684462922,
+      "n_gws": {
+        "2022-23": 33,
+        "2023-24": 34,
+        "2024-25": 34,
+        "2025-26": 34
+      },
+      "incomplete_seasons": {},
+      "n_rows": 102315
+    },
+    "score_xp_v2_share_se_scorers_minus_score_xp_v2": {
+      "mean": -0.003580457541684649,
+      "lo": -0.006613020682207464,
+      "hi": -0.0004072598805116551,
+      "n_gws": {
+        "2022-23": 33,
+        "2023-24": 34,
+        "2024-25": 34,
+        "2025-26": 34
+      },
+      "incomplete_seasons": {},
+      "n_rows": 27760
+    },
+    "score_xp_v2_share_se_scorers_minus_score_xp_v2_share_se_all_minutes": {
+      "mean": -0.010316061507627563,
+      "lo": -0.013371746796431905,
+      "hi": -0.007239285706025697,
+      "n_gws": {
+        "2022-23": 33,
+        "2023-24": 34,
+        "2024-25": 34,
+        "2025-26": 34
+      },
+      "incomplete_seasons": {},
+      "n_rows": 27760,
+      "note": "diagnostic only \u2014 promote gate is vs raw"
+    }
+  },
+  "screen": "score_xp_v2_share_se_shrink_scorers"
+}

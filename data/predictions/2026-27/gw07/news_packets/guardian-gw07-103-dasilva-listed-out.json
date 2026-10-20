@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:103-dasilva-listed-out",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Brentford",
+  "player_ids": [
+    103
+  ],
+  "headline": "Dasilva listed out",
+  "body": "The Guardian team news, 16 Oct 2026: Dasilva (Brentford) injured / unavailable.",
+  "sha256": "46387e6733c89b00cad4c8bf309ee079988142f18cc2cf5545bd8e9fb0fe39e2"
+}

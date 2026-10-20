@@ -8,6 +8,7 @@ from src.live.news_packets import (
     NewsPacket,
     compile_player_xmi,
     packets_for_player,
+    predicted_lineup_roles,
     render_player_context,
 )
 from src.str_agent.sources import StringSource, render_source
@@ -47,10 +48,12 @@ def packets_markdown(
     packets: Sequence[NewsPacket],
     minutes: Mapping[int, Sequence[float]] | None = None,
     string_sources: Sequence[StringSource] | None = None,
+    bootstrap: Mapping[str, Any] | None = None,
 ) -> str:
     """Press packets, open-outlet quotes, then a minutes footnote."""
     history = minutes or {}
     notes = list(string_sources or [])
+    lineup_roles = predicted_lineup_roles(packets, bootstrap) if bootstrap else {}
     blocks: list[str] = []
     for pid in focus_ids:
         meta = directory.get(int(pid))
@@ -71,6 +74,7 @@ def packets_markdown(
         if extra:
             quoted = "\n".join(render_source(note) for note in extra)
             block = block.rstrip() + "\n\n#### Forums, video, and other outlets\n" + quoted + "\n"
+        role, role_pkt = lineup_roles.get(int(pid), (None, None))
         compiled = compile_player_xmi(
             player_id=int(pid),
             name=str(meta.get("name") or pid),
@@ -80,6 +84,8 @@ def packets_markdown(
             chance=meta.get("chance"),
             packets=packets_for_player(packets, int(pid)),
             minutes=list(history.get(int(pid), [])),
+            lineup_role=role,
+            lineup_packet_id=role_pkt,
         )
         xmi = compiled["xmi_compiled"]
         xmi_text = "none" if xmi is None else f"{float(xmi):.1f}"

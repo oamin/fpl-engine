@@ -1,10 +1,32 @@
 # Superseded reports
 
+## Numagent 1.0 (superseded 2026-10-19)
+
+**Current product is Numagent 2.0** (`protocol.numagent_2_0`). Index: `reports/LOCKED.md`.
+
+**In-place archive index:** [`ARCHIVE_NUMAGENT_1_0.md`](ARCHIVE_NUMAGENT_1_0.md) (path list + what must stay importable).
+
+Numagent 1.0 was the GW6-era numeric path: live XI/captain from captured **`ep_next`**, shadow/`climb` on **`score_xp`**, `wildcard_plan` / `deadline` / `whatif` on opening pots. Protocol archive: `numagent_1_0`.
+
+Do not use 1.0 for live picks or new screens. Stragent remains a separate string agent, not Numagent.
+
+## Scorer — `score_xp` (superseded 2026-10-19)
+
+**Engine primary is `score_xp_v2` (Numagent 2.0).** Protocol: `primary_scorer` / `score_xp_v2_screen.replaces_published_score_xp=true`.
+
+`score_xp` remains importable for historical free-transfer climb replay and as the named baseline in `reports/score_xp_v2_gate.md` (v2 − score_xp **+0.0531** [+0.0453, +0.0609]). Do not extend `score_xp` climbs, and do not use it for live picks or new screens except as that named baseline. Full keep-list: [`ARCHIVE_NUMAGENT_1_0.md`](ARCHIVE_NUMAGENT_1_0.md).
+
+Assembler for the **current** product: `src/markets/numagent_xp.py`.
+
+---
+
+## Stage climbs 14–34
+
 Stages 14–34, and the later climbs that used the same pool, are not the current comparison.
 
 The buy pool in those runs kept the players who played the gameweek being scored, and the odds path preferred closing prices. The free-transfer climb on that pool was not rerun. Do not cite those totals as the scoreboard.
 
-The current comparison is `reports/procedure_audit.md`. It is written only by `write_gated_report`.
+The procedure audit (`reports/procedure_audit.md`) is historical gate evidence for the old `score_xp` vs expected-points pair. New player-score screens use `score_xp_v2`.
 
 The published Gameweeks 1–5 total of 280 is a historical record of that question. It used the played-only pool and the shorter formation list. It was not recomputed.
 

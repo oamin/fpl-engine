@@ -1,0 +1,118 @@
+{
+  "defs": {
+    "min_hist_gw": 8,
+    "n_scenarios": 100,
+    "haul_threshold_pts": 8.0,
+    "cvar_top_frac": 0.2,
+    "captain_mult": 2,
+    "min_cand_m": 45.0,
+    "max_fixtures": null,
+    "protocol_locked": "2026-10-15"
+  },
+  "asof_all_passed": true,
+  "audit": {
+    "passed": true,
+    "failures": [],
+    "engine_asof": {
+      "passed": true,
+      "failures": []
+    }
+  },
+  "seasons": [
+    {
+      "season": "2022-23",
+      "skipped": false,
+      "asof_passed": true,
+      "n_fixtures_scored": 306,
+      "n_fixtures_fd_lambda": 320,
+      "n_gws": 31,
+      "frac_disagree_haul": 0.17320261437908496,
+      "frac_disagree_cvar": 0.21568627450980393,
+      "mean_d_haul": 0.010357026486058735,
+      "mean_d_cvar": 0.492919983242564,
+      "mean_d_stack": 0.6580796443699669,
+      "n_fixture_rows": 306
+    },
+    {
+      "season": "2023-24",
+      "skipped": false,
+      "asof_passed": true,
+      "n_fixtures_scored": 310,
+      "n_fixtures_fd_lambda": 279,
+      "n_gws": 31,
+      "frac_disagree_haul": 0.20967741935483872,
+      "frac_disagree_cvar": 0.23225806451612904,
+      "mean_d_haul": 0.239489184650475,
+      "mean_d_cvar": -0.12924781311878097,
+      "mean_d_stack": 0.502032107677269,
+      "n_fixture_rows": 310
+    },
+    {
+      "season": "2024-25",
+      "skipped": false,
+      "asof_passed": true,
+      "n_fixtures_scored": 310,
+      "n_fixtures_fd_lambda": 310,
+      "n_gws": 31,
+      "frac_disagree_haul": 0.17096774193548386,
+      "frac_disagree_cvar": 0.19032258064516128,
+      "mean_d_haul": -0.060720104268491386,
+      "mean_d_cvar": -0.15826001955034213,
+      "mean_d_stack": 0.5718719452590421,
+      "n_fixture_rows": 310
+    },
+    {
+      "season": "2025-26",
+      "skipped": false,
+      "asof_passed": true,
+      "n_fixtures_scored": 298,
+      "n_fixtures_fd_lambda": 309,
+      "n_gws": 31,
+      "frac_disagree_haul": 0.28523489932885904,
+      "frac_disagree_cvar": 0.3288590604026846,
+      "mean_d_haul": -0.31264720942140295,
+      "mean_d_cvar": -0.31226318484383,
+      "mean_d_stack": 0.4690127077223852,
+      "n_fixture_rows": 298
+    }
+  ],
+  "verdict_prefix": "Planning-glue screen complete.",
+  "intervals": {
+    "captain_haul_minus_captain_mu": {
+      "mean": -0.030880275638340168,
+      "lo": -0.3127738972497037,
+      "hi": 0.2866413705022575,
+      "n_gws": {
+        "2022-23": 31,
+        "2023-24": 31,
+        "2024-25": 31,
+        "2025-26": 31
+      },
+      "incomplete_seasons": {}
+    },
+    "captain_cvar_minus_captain_mu": {
+      "mean": -0.026712758567597233,
+      "lo": -0.3563096692733791,
+      "hi": 0.2765394260757163,
+      "n_gws": {
+        "2022-23": 31,
+        "2023-24": 31,
+        "2024-25": 31,
+        "2025-26": 31
+      },
+      "incomplete_seasons": {}
+    },
+    "stack_same_minus_diversify": {
+      "mean": 0.5502491012571656,
+      "lo": 0.2618840842177536,
+      "hi": 0.8551186985057954,
+      "n_gws": {
+        "2022-23": 31,
+        "2023-24": 31,
+        "2024-25": 31,
+        "2025-26": 31
+      },
+      "incomplete_seasons": {}
+    }
+  }
+}

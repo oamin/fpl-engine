@@ -1,0 +1,203 @@
+{
+  "defs": {
+    "mu": "score_xp_v2 non-shrunk",
+    "blank": "points\u22642.0",
+    "haul": "points\u226510.0",
+    "pool": "minutes\u226560, n_out\u22653"
+  },
+  "gaussian": {
+    "n": 22358,
+    "mu_bias": 0.0932573168092338,
+    "mu_mae": 2.323232933113511,
+    "z_sd": 1.3195689603067686,
+    "coverage_1sd": 0.7348600053672064,
+    "coverage_2sd": 0.9211915198139369,
+    "gaussian_mean_p_blank": 0.32917294544793213,
+    "realised_blank_rate": 0.5754987029251275,
+    "gaussian_mean_p_haul": 0.04007207255192677,
+    "realised_haul_rate": 0.05971017085606942,
+    "blank_brier_gaussian": 0.29482307194513785,
+    "haul_brier_gaussian": 0.05642742099145234
+  },
+  "blank_rates": {
+    "n": 22358,
+    "brier": 0.25587826879188685,
+    "base_rate": 0.5754987029251275,
+    "pred_mean": 0.5723895942048944,
+    "bins": [
+      {
+        "bin": "(-0.001, 0.333]",
+        "n": 3178,
+        "pred_mean": 0.24678404731340575,
+        "realised_rate": 0.47608558842039017
+      },
+      {
+        "bin": "(0.333, 0.4]",
+        "n": 1626,
+        "pred_mean": 0.381717509970065,
+        "realised_rate": 0.479089790897909
+      },
+      {
+        "bin": "(0.4, 0.471]",
+        "n": 1913,
+        "pred_mean": 0.44079366941253095,
+        "realised_rate": 0.5065342394145321
+      },
+      {
+        "bin": "(0.471, 0.516]",
+        "n": 2228,
+        "pred_mean": 0.4978146549499176,
+        "realised_rate": 0.5556552962298025
+      },
+      {
+        "bin": "(0.516, 0.571]",
+        "n": 2371,
+        "pred_mean": 0.5493363830456379,
+        "realised_rate": 0.542387178405736
+      },
+      {
+        "bin": "(0.571, 0.625]",
+        "n": 2244,
+        "pred_mean": 0.6033318922250902,
+        "realised_rate": 0.5918003565062389
+      },
+      {
+        "bin": "(0.625, 0.667]",
+        "n": 2361,
+        "pred_mean": 0.658925652352263,
+        "realised_rate": 0.6031342651418891
+      },
+      {
+        "bin": "(0.667, 0.75]",
+        "n": 2654,
+        "pred_mean": 0.7238417320512064,
+        "realised_rate": 0.6345139412207988
+      },
+      {
+        "bin": "(0.75, 0.833]",
+        "n": 1791,
+        "pred_mean": 0.8017253095549707,
+        "realised_rate": 0.6867671691792295
+      },
+      {
+        "bin": "(0.833, 1.0]",
+        "n": 1992,
+        "pred_mean": 0.9393182986999276,
+        "realised_rate": 0.7108433734939759
+      }
+    ]
+  },
+  "haul_rates": {
+    "n": 22358,
+    "brier": 0.059979253319302435,
+    "base_rate": 0.05971017085606942,
+    "pred_mean": 0.060387530562493956,
+    "bins": [
+      {
+        "bin": "(-0.001, 0.0476]",
+        "n": 13482,
+        "pred_mean": 0.0031939443808883332,
+        "realised_rate": 0.0435395341937398
+      },
+      {
+        "bin": "(0.0476, 0.08]",
+        "n": 2206,
+        "pred_mean": 0.06473985463384657,
+        "realised_rate": 0.0643699002719855
+      },
+      {
+        "bin": "(0.08, 0.125]",
+        "n": 2623,
+        "pred_mean": 0.10378795227259055,
+        "realised_rate": 0.06976744186046512
+      },
+      {
+        "bin": "(0.125, 0.188]",
+        "n": 1861,
+        "pred_mean": 0.15633455185083617,
+        "realised_rate": 0.09457281031703385
+      },
+      {
+        "bin": "(0.188, 0.8]",
+        "n": 2186,
+        "pred_mean": 0.2749739849247148,
+        "realised_rate": 0.11299176578225069
+      }
+    ]
+  },
+  "mixture": {
+    "n": 22358,
+    "n_draw": 200,
+    "gaussian_mean_bias": 0.09397346147658016,
+    "gaussian_mae_vs_y": 2.3249126480332607,
+    "gaussian_blank_rate_pred": 0.32923204222202346,
+    "gaussian_haul_rate_pred": 0.04001923248948922,
+    "gaussian_blank_brier": 0.2955021468825476,
+    "gaussian_haul_brier": 0.05652801458091064,
+    "mixture_mean_bias": 0.9044317523082981,
+    "mixture_mae_vs_y": 2.3096710422730338,
+    "mixture_blank_rate_pred": 0.6836975579211021,
+    "mixture_haul_rate_pred": 0.07565144467304767,
+    "mixture_blank_brier": 0.2558043854548708,
+    "mixture_haul_brier": 0.06222728218087486,
+    "realised_blank_rate": 0.5754987029251275,
+    "realised_haul_rate": 0.05971017085606942,
+    "empirical_blank_rate_mean": 0.5723895942048944,
+    "empirical_haul_rate_mean": 0.060387530562493956
+  },
+  "by_season": [
+    {
+      "season": "2022-23",
+      "n": 5542,
+      "mu_bias": 0.12154845136377444,
+      "z_sd": 1.24298259858726,
+      "coverage_1sd": 0.7343919162757128,
+      "blank_brier_rates": 0.2560940571243261,
+      "haul_brier_rates": 0.05951158800966265,
+      "mixture_blank_brier": 0.2527084852038975,
+      "gaussian_blank_brier": 0.3014903193792855,
+      "mixture_haul_brier": 0.061152647961024896,
+      "gaussian_haul_brier": 0.05617685402381812
+    },
+    {
+      "season": "2023-24",
+      "n": 5651,
+      "mu_bias": 0.08340454131008332,
+      "z_sd": 1.409002199568789,
+      "coverage_1sd": 0.7384533710847637,
+      "blank_brier_rates": 0.24839943886957536,
+      "haul_brier_rates": 0.060336567260815356,
+      "mixture_blank_brier": 0.24557458856839498,
+      "gaussian_blank_brier": 0.29986421429835425,
+      "mixture_haul_brier": 0.06268579012564147,
+      "gaussian_haul_brier": 0.05762604848699346
+    },
+    {
+      "season": "2024-25",
+      "n": 5587,
+      "mu_bias": 0.1067396808078468,
+      "z_sd": 1.3403598900826503,
+      "coverage_1sd": 0.7350993377483444,
+      "blank_brier_rates": 0.2502982027000697,
+      "haul_brier_rates": 0.05464315777042875,
+      "mixture_blank_brier": 0.25228694290316805,
+      "gaussian_blank_brier": 0.2938110971899051,
+      "mixture_haul_brier": 0.05721853857168427,
+      "gaussian_haul_brier": 0.05163405673885806
+    },
+    {
+      "season": "2025-26",
+      "n": 5578,
+      "mu_bias": 0.06162637363680358,
+      "z_sd": 1.2783462027032937,
+      "coverage_1sd": 0.7314449623520975,
+      "blank_brier_rates": 0.26882964889364125,
+      "haul_brier_rates": 0.06542661543728229,
+      "mixture_blank_brier": 0.2711682950878451,
+      "gaussian_blank_brier": 0.2881842820007171,
+      "mixture_haul_brier": 0.06852666726425242,
+      "gaussian_haul_brier": 0.060975578164216566
+    }
+  ],
+  "verdict": "Raw \u03bc bias +0.09 pts; z-SD 1.32 (off target \u2014 \u03c3_out mis-scaled). Empirical blank_rate Brier 0.2559 vs Gaussian-implied 0.2948 (rates win). Empirical haul_rate Brier 0.0600 vs Gaussian-implied 0.0564 (Gaussian competitive). Mixture vs Gaussian blank Brier \u0394 -0.0397; haul \u0394 +0.0057 (mixture helps tails)."
+}

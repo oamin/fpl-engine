@@ -16,10 +16,15 @@ from collections import Counter
 from types import MappingProxyType
 from typing import Mapping
 
+import pandas as pd
+
 # --- squad -----------------------------------------------------------------
 
 SQUAD_SIZE = 15
 SQUAD_QUOTA = MappingProxyType({"GKP": 2, "DEF": 5, "MID": 5, "FWD": 3})
+# Vaastav 2024/25 sheet code for club Assistant Managers (not a playing position).
+# Drop these rows from every historical backtest; never map them onto MID.
+ASSISTANT_MANAGER_POSITION = "AM"
 BUDGET_M = 100.0
 BUDGET_TENTHS = 1000  # Vaastav / FPL API store price in tenths of £m
 MAX_PER_CLUB = 3
@@ -92,11 +97,41 @@ TACKLED_BPS = 0  # "tackled" deduction removed
 BONUS_BY_PLACE = (3, 2, 1)
 
 
+def is_assistant_manager_position(position: object) -> bool:
+    """True for Vaastav 2024/25 Assistant Manager rows (``AM``)."""
+    return str(position).strip().upper() == ASSISTANT_MANAGER_POSITION
+
+
+def drop_assistant_managers(
+    frame: pd.DataFrame, *, position_col: str = "position"
+) -> pd.DataFrame:
+    """Remove Assistant Manager rows from a player-GW sheet.
+
+    2024/25 Vaastav encodes club managers as ``position=AM`` (0 minutes). They
+    are not FPL outfield/GK players and must not enter backtests or shares.
+    """
+    if frame.empty or position_col not in frame.columns:
+        return frame
+    mask = frame[position_col].map(is_assistant_manager_position)
+    if not bool(mask.any()):
+        return frame
+    return frame.loc[~mask].copy()
+
+
 def normalize_position(position: str) -> str:
-    """Map ``GK`` onto ``GKP``. Other codes must already be GKP/DEF/MID/FWD."""
+    """Map ``GK`` onto ``GKP``. Other codes must already be GKP/DEF/MID/FWD.
+
+    ``AM`` (Assistant Manager) is not a playing position — callers must drop
+    those rows via ``drop_assistant_managers`` before normalizing.
+    """
     key = str(position).strip().upper()
     if key == "GK":
         return "GKP"
+    if key == ASSISTANT_MANAGER_POSITION:
+        raise ValueError(
+            "assistant manager (AM) is not a playing position; "
+            "drop via drop_assistant_managers before normalize_position"
+        )
     if key not in SQUAD_QUOTA:
         raise ValueError(f"unknown position: {position}")
     return key

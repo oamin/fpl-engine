@@ -1,0 +1,19 @@
+{
+  "sent": true,
+  "ok": true,
+  "reason": "betfair",
+  "detail": "",
+  "source": "betfair",
+  "n_events": 20,
+  "n_markets": 40,
+  "tiers": {
+    "tier1": 8,
+    "tier2": 2,
+    "tier3_neutral": 7,
+    "tier3_wide": 2,
+    "tier3_unquoted": 1
+  },
+  "remaining": "",
+  "last": "",
+  "used": ""
+}

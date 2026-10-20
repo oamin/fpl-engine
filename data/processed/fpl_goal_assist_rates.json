@@ -1,0 +1,53 @@
+{
+  "schema": "fpl_goal_assist_rates.v1",
+  "description": "FPL award scalings \u03b1_G = player_goals/match_goals and \u03b1_A = assists/match_goals. Prior = cleaned 2025/26. Live season updates continually: after each completed GW, add clean live counts to the prior and refresh pooled \u03b1.",
+  "method": {
+    "drop_if": "player_goals > match_goals on a fixture-side",
+    "uncertainty": "bootstrap over matches on prior; binomial SE on pooled",
+    "pool": "add prior counts to live-to-date counts after every completed GW",
+    "live_update": "required \u2014 recompute pooled \u03b1_G and \u03b1_A continuously during 2026/27",
+    "share_history": "player shares stay same-season only; \u03b1 is the only prior-season blend"
+  },
+  "prior": {
+    "season": "2025-26",
+    "source": "data/cache/merged_gw_2025_26.csv",
+    "n_bugged_sides_dropped": 3,
+    "n_matches": 380,
+    "match_goals": 1038.0,
+    "player_goals": 998.0,
+    "assists": 937.0,
+    "player_g_per_match_g": 0.9614643545279383,
+    "a_per_match_g": 0.9026974951830443,
+    "player_g_per_match_g_se": 0.006120109044092268,
+    "player_g_per_match_g_ci95_lo": 0.9491682896077361,
+    "player_g_per_match_g_ci95_hi": 0.9728951374468459,
+    "a_per_match_g_se": 0.009474398599038402,
+    "a_per_match_g_ci95_lo": 0.8835611494192255,
+    "a_per_match_g_ci95_hi": 0.9203457017648158,
+    "n_bootstrap": 4000
+  },
+  "live": {
+    "season": "2026-27",
+    "source": "data/cache/player_gw_2026_27.csv",
+    "fd_source": "data/cache/E0_2627.csv",
+    "before_gw": null,
+    "through_gw": 5,
+    "n_bugged_sides_dropped": 0,
+    "n_matches": 50,
+    "match_goals": 141.0,
+    "player_goals": 134.0,
+    "assists": 130.0,
+    "player_g_per_match_g": 0.950354609929078,
+    "a_per_match_g": 0.9219858156028369
+  },
+  "pooled": {
+    "match_goals": 1179.0,
+    "player_goals": 1132.0,
+    "assists": 1067.0,
+    "player_g_per_match_g": 0.9601357082273113,
+    "a_per_match_g": 0.9050042408821035,
+    "player_g_per_match_g_se_binomial": 0.005697724350743669,
+    "a_per_match_g_se_binomial": 0.008539265435089658,
+    "includes_live": true
+  }
+}

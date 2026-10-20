@@ -1,4 +1,6 @@
-"""Two Gameweek 6 paths for the stored squad.
+"""Archived Numagent 1.0 Gameweek 6 path contrast — not the live product path.
+
+**Archive:** ``reports/ARCHIVE_NUMAGENT_1_0.md``.
 
 The wildcard path is one rebuild. The hold path is one free-transfer
 search. Both use the priced weeks only. A later week that repeats the

@@ -1,0 +1,64 @@
+{
+  "gated": false,
+  "pre_register": "numagent_xp_minus_score_xp (not yet in protocol.comparisons)",
+  "pool": "minutes > 60; join to score_xp (n_prior>=3 from closed rebuild)",
+  "minutes_policy": "actual minutes, sigma_m=0",
+  "odds": "football-data opening AH+OU (BTTS weight 0)",
+  "gw_window": [
+    5,
+    38
+  ],
+  "sigma_log_score": 3.0,
+  "n_player_fixture": 27568,
+  "seasons": [
+    {
+      "season": "2022-23",
+      "n_rows": 6864,
+      "n_gws": 33,
+      "mean_d_log": 0.07683589543221937,
+      "mae_num": 2.2852476133714674,
+      "mae_sxp": 2.2724119273216568
+    },
+    {
+      "season": "2023-24",
+      "n_rows": 6956,
+      "n_gws": 34,
+      "mean_d_log": 0.04349740777769903,
+      "mae_num": 2.3199394518833403,
+      "mae_sxp": 2.293877148817526
+    },
+    {
+      "season": "2024-25",
+      "n_rows": 6892,
+      "n_gws": 34,
+      "mean_d_log": 0.030553597308732187,
+      "mae_num": 2.254219128522518,
+      "mae_sxp": 2.239488130320133
+    },
+    {
+      "season": "2025-26",
+      "n_rows": 6856,
+      "n_gws": 34,
+      "mean_d_log": 0.06221694035557316,
+      "mae_num": 2.363738554374938,
+      "mae_sxp": 2.374650776260096
+    }
+  ],
+  "cluster_interval": {
+    "mean": 0.053101442179936204,
+    "lo": 0.0452846756454834,
+    "hi": 0.06089620244899177,
+    "n_gws": {
+      "2022-23": 33,
+      "2023-24": 34,
+      "2024-25": 34,
+      "2025-26": 34
+    }
+  },
+  "positive_delta": "numagent higher log-score than score_xp",
+  "next_for_gate": [
+    "run_asof_audit on the scoring feature path",
+    "pre-register comparison without breaking COMPARISONS requirement",
+    "write_gated_report with protocol intervals + this cluster interval"
+  ]
+}

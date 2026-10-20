@@ -1,0 +1,66 @@
+{
+  "task": "assist_alpha_v2",
+  "scorer": "score_xp_v2",
+  "decision": "keep_pooled_alpha_a",
+  "promote": false,
+  "contrast": "score_xp_v2_assist_team_xa_minus_score_xp_v2",
+  "assist_interval": {
+    "mean": -0.0017547502077723686,
+    "lo": -0.002548518278341064,
+    "hi": -0.0009660599703511698,
+    "n_gws": {
+      "2022-23": 33,
+      "2023-24": 34,
+      "2024-25": 34,
+      "2025-26": 34
+    }
+  },
+  "primary_interval": {
+    "mean": 0.015305621921945354,
+    "lo": 0.01295155277980016,
+    "hi": 0.01747868684462922,
+    "n_gws": {
+      "2022-23": 33,
+      "2023-24": 34,
+      "2024-25": 34,
+      "2025-26": 34
+    }
+  },
+  "summary": [
+    {
+      "season": "2022-23",
+      "n_eligible": 7330,
+      "mean_assist_rho": 0.6809374874715064,
+      "mean_alpha_a_control": 0.8548319326978132,
+      "mean_abs_xp_delta": 0.10921034685513321
+    },
+    {
+      "season": "2023-24",
+      "n_eligible": 7128,
+      "mean_assist_rho": 0.6368701036070519,
+      "mean_alpha_a_control": 0.8716818227888105,
+      "mean_abs_xp_delta": 0.12265098534985233
+    },
+    {
+      "season": "2024-25",
+      "n_eligible": 6897,
+      "mean_assist_rho": 0.6603574874605294,
+      "mean_alpha_a_control": 0.8778283494871787,
+      "mean_abs_xp_delta": 0.1020900789654256
+    },
+    {
+      "season": "2025-26",
+      "n_eligible": 6847,
+      "mean_assist_rho": 0.6261670648442994,
+      "mean_alpha_a_control": 0.9087858514820621,
+      "mean_abs_xp_delta": 0.12080447411956399
+    }
+  ],
+  "n_gws_logged": 135,
+  "rho_clip": [
+    0.35,
+    1.25
+  ],
+  "audit_soft_pass": true,
+  "audit_error": "refusing report: as-of audit has not passed (the live primary is not ep_next; score_xp is not the live shadow; the published historical score is not score_xp; the live primary declared a winner; the live primary wiring flag does not match the lock; a live interval that covers zero is not undetermined; the live test does not continue through gameweek 38; the live primary does not start at gameweek 6; promotion does not wait for 20 live weeks; the decision capture is not the same-stamp t1 pair; an earlier capture is a fallback; the gameweek 6 chip is not the logged judgement; the gameweek 6 chip counts toward a chip rule; no pre-deadline capture for gameweeks 7)"
+}

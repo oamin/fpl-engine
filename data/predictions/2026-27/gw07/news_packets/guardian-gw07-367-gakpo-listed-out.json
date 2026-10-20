@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:367-gakpo-listed-out",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Liverpool",
+  "player_ids": [
+    367
+  ],
+  "headline": "Gakpo listed out",
+  "body": "The Guardian team news, 16 Oct 2026: Gakpo (Liverpool) injured / unavailable.",
+  "sha256": "1ecb02064e3c18ba150c3fbd33317dca2eb9cbee0310ee9c946221dd41efdcaa"
+}

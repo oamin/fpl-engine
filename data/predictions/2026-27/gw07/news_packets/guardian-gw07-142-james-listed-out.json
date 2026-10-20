@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:142-james-listed-out",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Chelsea",
+  "player_ids": [
+    142
+  ],
+  "headline": "James listed out",
+  "body": "The Guardian team news, 16 Oct 2026: James (Chelsea) injured / unavailable.",
+  "sha256": "d5f51199d23cbd35a6aeeb67b6bf8df121be869d4e2310cdc67f7276a2ff1659"
+}

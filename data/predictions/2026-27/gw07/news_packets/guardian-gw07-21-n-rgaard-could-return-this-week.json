@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:21-n-rgaard-could-return-this-weekend",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Everton",
+  "player_ids": [
+    21
+  ],
+  "headline": "N\u00f8rgaard could return this weekend",
+  "body": "The Guardian team news, 16 Oct 2026: N\u00f8rgaard (Everton) listed doubtful.",
+  "sha256": "93ddeec0bb04341310ac7d5804f4ee13d29b3bb57fd8e905a138ea38d894201d"
+}

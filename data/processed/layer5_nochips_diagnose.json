@@ -1,0 +1,5150 @@
+{
+  "baseline": "l4_priced",
+  "by_arm_vs_baseline": {
+    "l4_calendar": {
+      "by_season": [
+        {
+          "season": "2022-23",
+          "baseline_pts": 2038.0,
+          "arm_pts": 1984.0,
+          "d_pts": -54.0
+        },
+        {
+          "season": "2023-24",
+          "baseline_pts": 1946.0,
+          "arm_pts": 1914.0,
+          "d_pts": -32.0
+        },
+        {
+          "season": "2024-25",
+          "baseline_pts": 2029.0,
+          "arm_pts": 1984.0,
+          "d_pts": -45.0
+        },
+        {
+          "season": "2025-26",
+          "baseline_pts": 2014.0,
+          "arm_pts": 1969.0,
+          "d_pts": -45.0
+        }
+      ],
+      "total_d": -176.0,
+      "paired_gw_interval": {
+        "mean": -1.4193548387096775,
+        "lo": -3.3153225806451614,
+        "hi": 0.5806451612903226,
+        "n_gws": {
+          "2022-23": 31,
+          "2023-24": 31,
+          "2024-25": 31,
+          "2025-26": 31
+        },
+        "covers_zero": true,
+        "by_season_mean": {
+          "2022-23": -1.7419354838709677,
+          "2023-24": -1.032258064516129,
+          "2024-25": -1.4516129032258065,
+          "2025-26": -1.4516129032258065
+        }
+      }
+    },
+    "beam_priced": {
+      "by_season": [
+        {
+          "season": "2022-23",
+          "baseline_pts": 2038.0,
+          "arm_pts": 1916.0,
+          "d_pts": -122.0
+        },
+        {
+          "season": "2023-24",
+          "baseline_pts": 1946.0,
+          "arm_pts": 1825.0,
+          "d_pts": -121.0
+        },
+        {
+          "season": "2024-25",
+          "baseline_pts": 2029.0,
+          "arm_pts": 2003.0,
+          "d_pts": -26.0
+        },
+        {
+          "season": "2025-26",
+          "baseline_pts": 2014.0,
+          "arm_pts": 1842.0,
+          "d_pts": -172.0
+        }
+      ],
+      "total_d": -441.0,
+      "paired_gw_interval": {
+        "mean": -3.556451612903226,
+        "lo": -5.638104838709677,
+        "hi": -1.6528225806451617,
+        "n_gws": {
+          "2022-23": 31,
+          "2023-24": 31,
+          "2024-25": 31,
+          "2025-26": 31
+        },
+        "covers_zero": false,
+        "by_season_mean": {
+          "2022-23": -3.935483870967742,
+          "2023-24": -3.903225806451613,
+          "2024-25": -0.8387096774193549,
+          "2025-26": -5.548387096774194
+        }
+      }
+    },
+    "beam_calendar": {
+      "by_season": [
+        {
+          "season": "2022-23",
+          "baseline_pts": 2038.0,
+          "arm_pts": 1916.0,
+          "d_pts": -122.0
+        },
+        {
+          "season": "2023-24",
+          "baseline_pts": 1946.0,
+          "arm_pts": 1825.0,
+          "d_pts": -121.0
+        },
+        {
+          "season": "2024-25",
+          "baseline_pts": 2029.0,
+          "arm_pts": 2003.0,
+          "d_pts": -26.0
+        },
+        {
+          "season": "2025-26",
+          "baseline_pts": 2014.0,
+          "arm_pts": 1842.0,
+          "d_pts": -172.0
+        }
+      ],
+      "total_d": -441.0,
+      "paired_gw_interval": {
+        "mean": -3.556451612903226,
+        "lo": -5.638104838709677,
+        "hi": -1.6528225806451617,
+        "n_gws": {
+          "2022-23": 31,
+          "2023-24": 31,
+          "2024-25": 31,
+          "2025-26": 31
+        },
+        "covers_zero": false,
+        "by_season_mean": {
+          "2022-23": -3.935483870967742,
+          "2023-24": -3.903225806451613,
+          "2024-25": -0.8387096774193549,
+          "2025-26": -5.548387096774194
+        }
+      }
+    }
+  },
+  "season_totals": [
+    {
+      "season": "2022-23",
+      "l4_priced": 2038.0,
+      "l4_calendar": 1984.0,
+      "beam_priced": 1916.0,
+      "beam_calendar": 1916.0
+    },
+    {
+      "season": "2023-24",
+      "l4_priced": 1946.0,
+      "l4_calendar": 1914.0,
+      "beam_priced": 1825.0,
+      "beam_calendar": 1825.0
+    },
+    {
+      "season": "2024-25",
+      "l4_priced": 2029.0,
+      "l4_calendar": 1984.0,
+      "beam_priced": 2003.0,
+      "beam_calendar": 2003.0
+    },
+    {
+      "season": "2025-26",
+      "l4_priced": 2014.0,
+      "l4_calendar": 1969.0,
+      "beam_priced": 1842.0,
+      "beam_calendar": 1842.0
+    }
+  ],
+  "weeks": [
+    {
+      "season": "2022-23",
+      "gw": 8,
+      "arm": "l4_priced",
+      "phase": "wildcard",
+      "pts_net": 49.0,
+      "hit_points": 0,
+      "n_transfers": 0,
+      "H": 0.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 9,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 55.0,
+      "hit_points": 4,
+      "n_transfers": 3,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 10,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 65.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 11,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 45.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 12,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 46.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 13,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 61.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 14,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 56.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 15,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 56.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 16,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 52.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 17,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 85.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 18,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 40.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 19,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 77.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 20,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 62.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 21,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 57.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 22,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 80.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 23,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 45.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 24,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 54.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 25,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 118.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 26,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 28.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 27,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 102.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 28,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 40.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 29,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 109.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 30,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 65.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 31,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 55.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 32,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 60.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 33,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 55.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 34,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 127.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 35,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 40.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 36,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 133.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 37,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 74.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 2.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 38,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 47.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 1.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 8,
+      "arm": "l4_calendar",
+      "phase": "wildcard",
+      "pts_net": 49.0,
+      "hit_points": 0,
+      "n_transfers": 0,
+      "H": 0.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 9,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 61.0,
+      "hit_points": 12,
+      "n_transfers": 5,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 10,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 56.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 11,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 35.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 12,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 42.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 13,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 51.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 14,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 65.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 15,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 53.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 16,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 47.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 17,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 80.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 18,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 46.0,
+      "hit_points": 12,
+      "n_transfers": 4,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 19,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 69.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 20,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 73.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 21,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 52.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 22,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 73.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 23,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 53.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 24,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 47.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 25,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 88.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 26,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 39.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 27,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 90.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 28,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 46.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 29,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 92.0,
+      "hit_points": 12,
+      "n_transfers": 4,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 30,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 60.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 31,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 66.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 32,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 50.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 7.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 33,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 67.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 6.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 34,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 139.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 5.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 35,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 55.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 4.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 36,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 102.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 37,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 75.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 2.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 38,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 63.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 1.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 8,
+      "arm": "beam_priced",
+      "phase": "wildcard",
+      "pts_net": 49.0,
+      "hit_points": 0,
+      "n_transfers": 0,
+      "H": NaN
+    },
+    {
+      "season": "2022-23",
+      "gw": 9,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 69.0,
+      "hit_points": 0,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 10,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 69.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 11,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 45.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 12,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 30.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 13,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 55.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 14,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 47.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 15,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 74.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 16,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 52.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 17,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 64.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 18,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 54.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 19,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 48.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 20,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 71.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 21,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 56.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 22,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 72.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 23,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 53.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 24,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 49.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 25,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 94.0,
+      "hit_points": 12,
+      "n_transfers": 4,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 26,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 62.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 27,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 82.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 28,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 41.0,
+      "hit_points": 12,
+      "n_transfers": 4,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 29,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 110.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 30,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 72.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 31,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 41.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 32,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 62.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 33,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 42.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 34,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 97.0,
+      "hit_points": 16,
+      "n_transfers": 5,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 35,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 44.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 36,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 108.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 37,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 56.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 2.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 38,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 48.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 1.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 8,
+      "arm": "beam_calendar",
+      "phase": "wildcard",
+      "pts_net": 49.0,
+      "hit_points": 0,
+      "n_transfers": 0,
+      "H": NaN
+    },
+    {
+      "season": "2022-23",
+      "gw": 9,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 69.0,
+      "hit_points": 0,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 10,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 69.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 11,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 45.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 12,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 30.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 13,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 55.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 14,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 47.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 15,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 74.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 16,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 52.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 17,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 64.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 18,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 54.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 19,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 48.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 20,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 71.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 21,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 56.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 22,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 72.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 23,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 53.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 24,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 49.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 25,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 94.0,
+      "hit_points": 12,
+      "n_transfers": 4,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 26,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 62.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 27,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 82.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 28,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 41.0,
+      "hit_points": 12,
+      "n_transfers": 4,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 29,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 110.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 30,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 72.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 31,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 41.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 32,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 62.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 7.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 33,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 42.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 6.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 34,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 97.0,
+      "hit_points": 16,
+      "n_transfers": 5,
+      "H": 5.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 35,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 44.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 4.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 36,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 108.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 37,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 56.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 2.0
+    },
+    {
+      "season": "2022-23",
+      "gw": 38,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 48.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 1.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 8,
+      "arm": "l4_priced",
+      "phase": "wildcard",
+      "pts_net": 60.0,
+      "hit_points": 0,
+      "n_transfers": 0,
+      "H": 0.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 9,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 89.0,
+      "hit_points": 4,
+      "n_transfers": 3,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 10,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 55.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 11,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 39.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 12,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 47.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 13,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 34.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 14,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 79.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 15,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 40.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 16,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 73.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 17,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 45.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 18,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 52.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 19,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 35.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 20,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 76.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 21,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 51.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 22,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 73.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 23,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 61.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 24,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 63.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 25,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 78.0,
+      "hit_points": 12,
+      "n_transfers": 4,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 26,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 48.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 27,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 70.0,
+      "hit_points": 20,
+      "n_transfers": 6,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 28,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 84.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 29,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 21.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 30,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 75.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 31,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 49.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 32,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 67.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 33,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 65.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 34,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 95.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 35,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 68.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 36,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 78.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 37,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 91.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 2.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 38,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 85.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 1.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 8,
+      "arm": "l4_calendar",
+      "phase": "wildcard",
+      "pts_net": 60.0,
+      "hit_points": 0,
+      "n_transfers": 0,
+      "H": 0.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 9,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 68.0,
+      "hit_points": 8,
+      "n_transfers": 4,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 10,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 47.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 11,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 37.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 12,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 57.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 13,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 43.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 14,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 70.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 15,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 38.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 16,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 64.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 17,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 43.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 18,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 54.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 19,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 39.0,
+      "hit_points": 12,
+      "n_transfers": 4,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 20,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 71.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 21,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 44.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 22,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 57.0,
+      "hit_points": 12,
+      "n_transfers": 4,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 23,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 60.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 24,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 66.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 25,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 66.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 26,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 54.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 27,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 76.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 28,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 66.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 29,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 14.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 30,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 69.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 31,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 86.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 32,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 52.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 7.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 33,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 64.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 6.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 34,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 114.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 5.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 35,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 75.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 4.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 36,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 89.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 37,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 92.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 2.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 38,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 79.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 1.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 8,
+      "arm": "beam_priced",
+      "phase": "wildcard",
+      "pts_net": 60.0,
+      "hit_points": 0,
+      "n_transfers": 0,
+      "H": NaN
+    },
+    {
+      "season": "2023-24",
+      "gw": 9,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 72.0,
+      "hit_points": 0,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 10,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 55.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 11,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 35.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 12,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 53.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 13,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 46.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 14,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 54.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 15,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 55.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 16,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 56.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 17,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 46.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 18,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 31.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 19,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 23.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 20,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 69.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 21,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 58.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 22,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 59.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 23,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 60.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 24,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 72.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 25,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 63.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 26,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 71.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 27,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 83.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 28,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 72.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 29,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 29.0,
+      "hit_points": 12,
+      "n_transfers": 4,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 30,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 78.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 31,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 53.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 32,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 44.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 33,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 56.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 34,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 86.0,
+      "hit_points": 20,
+      "n_transfers": 6,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 35,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 60.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 36,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 61.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 37,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 84.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 2.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 38,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 81.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 1.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 8,
+      "arm": "beam_calendar",
+      "phase": "wildcard",
+      "pts_net": 60.0,
+      "hit_points": 0,
+      "n_transfers": 0,
+      "H": NaN
+    },
+    {
+      "season": "2023-24",
+      "gw": 9,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 72.0,
+      "hit_points": 0,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 10,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 55.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 11,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 35.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 12,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 53.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 13,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 46.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 14,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 54.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 15,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 55.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 16,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 56.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 17,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 46.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 18,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 31.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 19,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 23.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 20,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 69.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 21,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 58.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 22,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 59.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 23,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 60.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 24,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 72.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 25,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 63.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 26,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 71.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 27,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 83.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 28,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 72.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 29,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 29.0,
+      "hit_points": 12,
+      "n_transfers": 4,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 30,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 78.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 31,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 53.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 32,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 44.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 7.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 33,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 56.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 6.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 34,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 86.0,
+      "hit_points": 20,
+      "n_transfers": 6,
+      "H": 5.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 35,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 60.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 4.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 36,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 61.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 37,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 84.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 2.0
+    },
+    {
+      "season": "2023-24",
+      "gw": 38,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 81.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 1.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 8,
+      "arm": "l4_priced",
+      "phase": "wildcard",
+      "pts_net": 68.0,
+      "hit_points": 0,
+      "n_transfers": 0,
+      "H": 0.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 9,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 64.0,
+      "hit_points": 4,
+      "n_transfers": 3,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 10,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 51.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 11,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 50.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 12,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 70.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 13,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 83.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 14,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 74.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 15,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 63.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 16,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 43.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 17,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 75.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 18,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 58.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 19,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 92.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 20,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 77.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 21,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 78.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 22,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 43.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 23,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 59.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 24,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 101.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 25,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 109.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 26,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 70.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 27,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 40.0,
+      "hit_points": 12,
+      "n_transfers": 4,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 28,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 55.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 29,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 64.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 30,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 46.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 31,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 33.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 32,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 111.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 33,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 69.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 34,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 84.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 35,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 45.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 36,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 49.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 37,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 39.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 2.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 38,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 66.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 1.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 8,
+      "arm": "l4_calendar",
+      "phase": "wildcard",
+      "pts_net": 68.0,
+      "hit_points": 0,
+      "n_transfers": 0,
+      "H": 0.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 9,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 64.0,
+      "hit_points": 4,
+      "n_transfers": 3,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 10,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 43.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 11,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 54.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 12,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 76.0,
+      "hit_points": 0,
+      "n_transfers": 0,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 13,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 87.0,
+      "hit_points": 0,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 14,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 68.0,
+      "hit_points": 12,
+      "n_transfers": 4,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 15,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 48.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 16,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 49.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 17,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 80.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 18,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 52.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 19,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 92.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 20,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 59.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 21,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 76.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 22,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 43.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 23,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 60.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 24,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 119.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 25,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 93.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 26,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 65.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 27,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 57.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 28,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 52.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 29,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 44.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 30,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 55.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 31,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 46.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 32,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 69.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 7.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 33,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 71.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 6.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 34,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 72.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 5.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 35,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 52.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 4.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 36,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 59.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 37,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 38.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 2.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 38,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 73.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 1.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 8,
+      "arm": "beam_priced",
+      "phase": "wildcard",
+      "pts_net": 68.0,
+      "hit_points": 0,
+      "n_transfers": 0,
+      "H": NaN
+    },
+    {
+      "season": "2024-25",
+      "gw": 9,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 62.0,
+      "hit_points": 0,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 10,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 54.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 11,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 50.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 12,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 64.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 13,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 61.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 14,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 94.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 15,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 46.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 16,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 41.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 17,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 89.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 18,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 61.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 19,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 86.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 20,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 70.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 21,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 68.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 22,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 44.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 23,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 62.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 24,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 108.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 25,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 88.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 26,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 81.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 27,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 56.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 28,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 79.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 29,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 44.0,
+      "hit_points": 16,
+      "n_transfers": 5,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 30,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 33.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 31,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 45.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 32,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 107.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 33,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 83.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 34,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 71.0,
+      "hit_points": 24,
+      "n_transfers": 7,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 35,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 39.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 36,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 37.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 37,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 47.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 2.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 38,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 65.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 1.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 8,
+      "arm": "beam_calendar",
+      "phase": "wildcard",
+      "pts_net": 68.0,
+      "hit_points": 0,
+      "n_transfers": 0,
+      "H": NaN
+    },
+    {
+      "season": "2024-25",
+      "gw": 9,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 62.0,
+      "hit_points": 0,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 10,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 54.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 11,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 50.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 12,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 64.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 13,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 61.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 14,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 94.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 15,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 46.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 16,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 41.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 17,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 89.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 18,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 61.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 19,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 86.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 20,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 70.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 21,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 68.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 22,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 44.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 23,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 62.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 24,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 108.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 25,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 88.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 26,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 81.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 27,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 56.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 28,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 79.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 29,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 44.0,
+      "hit_points": 16,
+      "n_transfers": 5,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 30,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 33.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 31,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 45.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 8.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 32,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 107.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 7.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 33,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 83.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 6.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 34,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 71.0,
+      "hit_points": 24,
+      "n_transfers": 7,
+      "H": 5.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 35,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 39.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 4.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 36,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 37.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 37,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 47.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 2.0
+    },
+    {
+      "season": "2024-25",
+      "gw": 38,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 65.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 1.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 8,
+      "arm": "l4_priced",
+      "phase": "wildcard",
+      "pts_net": 162.0,
+      "hit_points": 0,
+      "n_transfers": 0,
+      "H": 0.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 9,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 79.0,
+      "hit_points": 4,
+      "n_transfers": 3,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 10,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 89.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 11,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 35.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 12,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 34.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 13,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 46.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 14,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 71.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 15,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 41.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 16,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 62.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 17,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 80.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 18,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 55.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 19,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 46.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 20,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 79.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 21,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 69.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 22,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 49.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 23,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 40.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 24,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 59.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 25,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 70.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 26,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 77.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 27,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 38.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 28,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 67.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 29,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 71.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 30,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 60.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 31,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 53.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 32,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 67.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 33,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 74.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 34,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 69.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 35,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 82.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 36,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 90.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 37,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 56.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 2.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 38,
+      "arm": "l4_priced",
+      "phase": "horizon",
+      "pts_net": 44.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 1.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 8,
+      "arm": "l4_calendar",
+      "phase": "wildcard",
+      "pts_net": 162.0,
+      "hit_points": 0,
+      "n_transfers": 0,
+      "H": 0.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 9,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 73.0,
+      "hit_points": 12,
+      "n_transfers": 5,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 10,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 80.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 11,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 42.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 12,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 42.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 13,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 55.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 14,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 53.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 15,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 52.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 16,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 57.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 17,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 87.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 18,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 56.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 19,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 44.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 20,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 68.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 21,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 69.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 22,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 47.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 23,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 45.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 24,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 60.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 25,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 70.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 26,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 67.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 27,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 45.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 28,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 72.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 29,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 67.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 30,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 48.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 31,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 54.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 32,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 66.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 7.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 33,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 80.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 6.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 34,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 51.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 5.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 35,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 58.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 4.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 36,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 90.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 37,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 74.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 2.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 38,
+      "arm": "l4_calendar",
+      "phase": "horizon",
+      "pts_net": 35.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 1.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 8,
+      "arm": "beam_priced",
+      "phase": "wildcard",
+      "pts_net": 162.0,
+      "hit_points": 0,
+      "n_transfers": 0,
+      "H": NaN
+    },
+    {
+      "season": "2025-26",
+      "gw": 9,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 81.0,
+      "hit_points": 0,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 10,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 75.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 11,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 38.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 12,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 42.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 13,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 28.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 14,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 79.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 15,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 45.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 16,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 58.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 17,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 83.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 18,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 50.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 19,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 32.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 20,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 85.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 21,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 60.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 22,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 49.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 23,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 47.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 24,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 61.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 25,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 74.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 26,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 57.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 27,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 35.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 28,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 78.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 29,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 50.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 30,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 50.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 31,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 34.0,
+      "hit_points": 12,
+      "n_transfers": 4,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 32,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 52.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 33,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 68.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 34,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 54.0,
+      "hit_points": 16,
+      "n_transfers": 5,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 35,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 56.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 36,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 77.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 37,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 58.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 2.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 38,
+      "arm": "beam_priced",
+      "phase": "beam",
+      "pts_net": 24.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 1.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 8,
+      "arm": "beam_calendar",
+      "phase": "wildcard",
+      "pts_net": 162.0,
+      "hit_points": 0,
+      "n_transfers": 0,
+      "H": NaN
+    },
+    {
+      "season": "2025-26",
+      "gw": 9,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 81.0,
+      "hit_points": 0,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 10,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 75.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 11,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 38.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 12,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 42.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 13,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 28.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 14,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 79.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 15,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 45.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 16,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 58.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 17,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 83.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 18,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 50.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 19,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 32.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 20,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 85.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 21,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 60.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 22,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 49.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 23,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 47.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 24,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 61.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 25,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 74.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 26,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 57.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 27,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 35.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 28,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 78.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 29,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 50.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 30,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 50.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 31,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 34.0,
+      "hit_points": 12,
+      "n_transfers": 4,
+      "H": 8.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 32,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 52.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 7.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 33,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 68.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 6.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 34,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 54.0,
+      "hit_points": 16,
+      "n_transfers": 5,
+      "H": 5.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 35,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 56.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 4.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 36,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 77.0,
+      "hit_points": 4,
+      "n_transfers": 2,
+      "H": 3.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 37,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 58.0,
+      "hit_points": 0,
+      "n_transfers": 1,
+      "H": 2.0
+    },
+    {
+      "season": "2025-26",
+      "gw": 38,
+      "arm": "beam_calendar",
+      "phase": "beam",
+      "pts_net": 24.0,
+      "hit_points": 8,
+      "n_transfers": 3,
+      "H": 1.0
+    }
+  ],
+  "defs": {
+    "role": "first-order no_chips confound \u2014 not promote",
+    "beam_K": 2,
+    "calendar_depth": 8,
+    "arms": [
+      "l4_priced",
+      "l4_calendar",
+      "beam_priced",
+      "beam_calendar"
+    ],
+    "ablation_aborted": true
+  }
+}

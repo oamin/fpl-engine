@@ -25,7 +25,7 @@ def write_stage0() -> None:
 
 ## Kept
 - `.env.example`, `.gitignore`, `.venv`, `uv.lock`
-- `.cursor/rules/odds-api-quota.mdc` (The Odds API is not called)
+- `.cursor/rules/odds-api-quota.mdc` (quota discipline; Numagent may fetch)
 - `data/cache/odds_snapshot.json` (historical snapshot only; no bookmaker re-fetch)
 
 ## New layout

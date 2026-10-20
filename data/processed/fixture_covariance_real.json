@@ -1,0 +1,183 @@
+{
+  "mode": "real",
+  "home_team": "Liverpool",
+  "away_team": "Arsenal",
+  "n_scenarios": 400,
+  "n_home_players": 15,
+  "n_away_players": 15,
+  "n_home_groups": 1,
+  "n_away_groups": 2,
+  "competition_pairs": [
+    {
+      "side": "home",
+      "a": "Milos Kerkez",
+      "b": "Andrew Robertson",
+      "positions": "DEF/DEF",
+      "hist_corr": -0.9983103793927746,
+      "draw_minutes_corr": -0.9999891179035099,
+      "draw_xp_corr": 0.06134068890643222
+    },
+    {
+      "side": "away",
+      "a": "Bukayo Saka",
+      "b": "Noni Madueke",
+      "positions": "MID/MID",
+      "hist_corr": -0.8303106957894034,
+      "draw_minutes_corr": -1.0,
+      "draw_xp_corr": -0.18571886566999718
+    },
+    {
+      "side": "away",
+      "a": "Gabriel Martinelli Silva",
+      "b": "Leandro Trossard",
+      "positions": "MID/MID",
+      "hist_corr": -0.749649155712075,
+      "draw_minutes_corr": -1.0,
+      "draw_xp_corr": -0.14244145921915044
+    }
+  ],
+  "corr_home_mids_xp": 0.31605400889078816,
+  "home_mid_names": [
+    "Dominik Szoboszlai",
+    "Ryan Gravenberch"
+  ],
+  "corr_home_attack_vs_away_gk": -0.5009140925162696,
+  "attack_name": "Dominik Szoboszlai",
+  "away_gk_name": "David Raya Mart\u00edn",
+  "mean_abs_err_vs_point": 0.5247207518768454,
+  "scoreline_mean_h": 1.53,
+  "scoreline_mean_a": 1.3375,
+  "meta": {
+    "n_scenarios": 400,
+    "lam_h": 1.6,
+    "lam_a": 1.2,
+    "rho": -0.05,
+    "seed": 0,
+    "n_home_groups": 1,
+    "n_away_groups": 2
+  },
+  "summary": [
+    {
+      "player_id": "Virgil van Dijk",
+      "side": "home",
+      "mu_point": 5.054276909484967,
+      "mu_draw": 4.86999141714015,
+      "sd_draw": 2.547773549984749,
+      "mean_minutes": 86.24904021156428
+    },
+    {
+      "player_id": "Dominik Szoboszlai",
+      "side": "home",
+      "mu_point": 4.684950298620686,
+      "mu_draw": 4.449515620703753,
+      "sd_draw": 1.8094822903992955,
+      "mean_minutes": 78.91932913091563
+    },
+    {
+      "player_id": "Declan Rice",
+      "side": "away",
+      "mu_point": 4.51437567146002,
+      "mu_draw": 4.213260407587117,
+      "sd_draw": 1.4679992239997777,
+      "mean_minutes": 75.65347783103618
+    },
+    {
+      "player_id": "Gabriel dos Santos Magalh\u00e3es",
+      "side": "away",
+      "mu_point": 4.6051027306908505,
+      "mu_draw": 3.7840790754369755,
+      "sd_draw": 2.7177369850493758,
+      "mean_minutes": 65.61521943104599
+    },
+    {
+      "player_id": "Bukayo Saka",
+      "side": "away",
+      "mu_point": 2.772731991668907,
+      "mu_draw": 3.7399928010236785,
+      "sd_draw": 2.0364819480028378,
+      "mean_minutes": 58.160328630578846
+    },
+    {
+      "player_id": "Ryan Gravenberch",
+      "side": "home",
+      "mu_point": 4.1895832885297395,
+      "mu_draw": 3.734425494652695,
+      "sd_draw": 1.703480285949189,
+      "mean_minutes": 73.62858708454931
+    },
+    {
+      "player_id": "Hugo Ekitik\u00e9",
+      "side": "home",
+      "mu_point": 3.3882686644166147,
+      "mu_draw": 3.6274290302936563,
+      "sd_draw": 2.3814173891034747,
+      "mean_minutes": 47.96767863556173
+    },
+    {
+      "player_id": "Florian Wirtz",
+      "side": "home",
+      "mu_point": 3.907036786292838,
+      "mu_draw": 3.1699874074203627,
+      "sd_draw": 1.9405681930129985,
+      "mean_minutes": 59.218084678983466
+    },
+    {
+      "player_id": "Mohamed Salah",
+      "side": "home",
+      "mu_point": 2.9814057904291387,
+      "mu_draw": 3.152607267089875,
+      "sd_draw": 2.126134033753312,
+      "mean_minutes": 52.4707691708649
+    },
+    {
+      "player_id": "Mart\u00edn Zubimendi Ib\u00e1\u00f1ez",
+      "side": "away",
+      "mu_point": 3.4090225330234967,
+      "mu_draw": 3.1335520530988443,
+      "sd_draw": 1.3265536138295893,
+      "mean_minutes": 74.1825484768717
+    },
+    {
+      "player_id": "Viktor Gy\u00f6keres",
+      "side": "away",
+      "mu_point": 2.483249261993745,
+      "mu_draw": 3.1240679276433605,
+      "sd_draw": 1.9728283850770636,
+      "mean_minutes": 58.35591847529793
+    },
+    {
+      "player_id": "Cody Gakpo",
+      "side": "home",
+      "mu_point": 3.813313971995267,
+      "mu_draw": 3.1190639279749393,
+      "sd_draw": 1.6410199920893647,
+      "mean_minutes": 66.00040153604654
+    }
+  ],
+  "home_groups": [
+    {
+      "names": [
+        "Milos Kerkez",
+        "Andrew Robertson"
+      ],
+      "corr": -0.9983103793927746
+    }
+  ],
+  "away_groups": [
+    {
+      "names": [
+        "Bukayo Saka",
+        "Noni Madueke"
+      ],
+      "corr": -0.8303106957894034
+    },
+    {
+      "names": [
+        "Gabriel Martinelli Silva",
+        "Leandro Trossard"
+      ],
+      "corr": -0.749649155712075
+    }
+  ],
+  "verdict": "Liverpool vs Arsenal: 3 competition pairs (3 with draw minutes corr < \u22120.2). Home mids xP +0.32; attack\u2013opp GK -0.50. Real groups + M path produce fixture-specific minutes and scoreline coupling."
+}

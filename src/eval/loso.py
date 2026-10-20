@@ -696,8 +696,8 @@ def run() -> None:
         raise RuntimeError("a winner is already named")
     if list(loso.get("contrasts") or []) != list(contrast_keys()):
         raise RuntimeError("the contrast list does not match the lock")
-    if live.get("primary") != LIVE_PRIMARY or live.get("shadow") != LIVE_SHADOW:
-        raise RuntimeError("the live primary is not the locked pair")
+    if live.get("primary") != LIVE_PRIMARY or live.get("shadow") is not LIVE_SHADOW:
+        raise RuntimeError("the live primary is not the locked Numagent 2.0 pair")
     if live.get("wired") is not LIVE_PRIMARY_WIRED:
         raise RuntimeError("the live wiring flag does not match the lock")
     if int(loso["bootstrap"]) != LOSO_BOOTSTRAP or int(loso["seed"]) != LOSO_SEED:

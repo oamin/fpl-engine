@@ -1,0 +1,63 @@
+{
+  "n_rows": 27562,
+  "n_with_prior3": 22358,
+  "by_position": [
+    {
+      "position": "DEF",
+      "n": 8611,
+      "mean_sigma_out": 2.90747685732439,
+      "median_sigma_out": 2.7773160164927138,
+      "mean_p90": 6.425026129369411,
+      "mean_blank_rate": 0.6251102093410591,
+      "mean_haul_rate": 0.03741593871899909
+    },
+    {
+      "position": "FWD",
+      "n": 2113,
+      "mean_sigma_out": 3.579669105458127,
+      "median_sigma_out": 3.5155107287945873,
+      "mean_p90": 8.415428300993847,
+      "mean_blank_rate": 0.5729842365383062,
+      "mean_haul_rate": 0.08996087439846799
+    },
+    {
+      "position": "GKP",
+      "n": 2252,
+      "mean_sigma_out": 2.664279548455586,
+      "median_sigma_out": 2.6873524368815733,
+      "mean_p90": 6.633126110124334,
+      "mean_blank_rate": 0.5450841400676308,
+      "mean_haul_rate": 0.04422555369622781
+    },
+    {
+      "position": "MID",
+      "n": 9382,
+      "mean_sigma_out": 2.935530286975103,
+      "median_sigma_out": 2.888060584727362,
+      "mean_p90": 6.947228735877212,
+      "mean_blank_rate": 0.5304218033851443,
+      "mean_haul_rate": 0.07869030968653493
+    }
+  ],
+  "mid_mu_band_contrast": {
+    "mu_band": [
+      3.5,
+      5.5
+    ],
+    "low_sigma_mean": 2.159266293024838,
+    "high_sigma_mean": 4.984977219803675,
+    "low_realised_sd": 3.262095765663053,
+    "high_realised_sd": 3.422422481798571,
+    "n_low": 814,
+    "n_high": 814
+  },
+  "defs": {
+    "resid": "total_points \u2212 score_xp_v2",
+    "eligible": "minutes\u226560",
+    "blank_threshold": 2.0,
+    "haul_threshold": 10.0,
+    "n_full": 6,
+    "mu": "score_xp_v2 (non-shrunk)",
+    "note": "xp_se untouched; sigma_out / rates are draws-only"
+  }
+}

@@ -1,4 +1,7 @@
-"""One live deadline for the squad already in the stored entry.
+"""Archived Numagent 1.0 deadline collector — not the live product path.
+
+**Archive:** ``reports/ARCHIVE_NUMAGENT_1_0.md``. Live picks use
+``src.live.numagent_live_pick``.
 
 Purchase price is the Gameweek 1 value for a player still held, and the
 transfer ``in_cost`` for a later buy. The site's selling price is what a
@@ -9,6 +12,7 @@ last observed minutes and is labelled ``no_news``.
 Gameweek 6 is not priced when its opening 1X2 is missing. A priced line
 with a minutes file is scored by ``src.live.scorer`` and planned once.
 This module does not invent a team rate, and it does not call the published climb.
+Kept importable because the as-of audit still inspects ``choice=``.
 """
 
 from __future__ import annotations

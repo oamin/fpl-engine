@@ -1,0 +1,1087 @@
+{
+  "season": "2025-26",
+  "corr_max": -0.7,
+  "n_groups": 54,
+  "groups": [
+    {
+      "team": "Arsenal",
+      "elements": [
+        1,
+        24
+      ],
+      "names": [
+        "David Raya Mart\u00edn",
+        "Christian N\u00f8rgaard"
+      ],
+      "positions": [
+        "GK",
+        "MID"
+      ],
+      "mean_minutes": [
+        87.63157894736842,
+        2.6578947368421053
+      ],
+      "min_pair_corr": -0.856063143993934
+    },
+    {
+      "team": "Arsenal",
+      "elements": [
+        16,
+        18
+      ],
+      "names": [
+        "Bukayo Saka",
+        "Noni Madueke"
+      ],
+      "positions": [
+        "MID",
+        "MID"
+      ],
+      "mean_minutes": [
+        58.36842105263158,
+        31.710526315789473
+      ],
+      "min_pair_corr": -0.8303106957894034
+    },
+    {
+      "team": "Arsenal",
+      "elements": [
+        19,
+        20
+      ],
+      "names": [
+        "Gabriel Martinelli Silva",
+        "Leandro Trossard"
+      ],
+      "positions": [
+        "MID",
+        "MID"
+      ],
+      "mean_minutes": [
+        28.026315789473685,
+        52.55263157894737
+      ],
+      "min_pair_corr": -0.749649155712075
+    },
+    {
+      "team": "Aston Villa",
+      "elements": [
+        32,
+        33
+      ],
+      "names": [
+        "Emiliano Mart\u00ednez Romero",
+        "Marco Bizot"
+      ],
+      "positions": [
+        "GK",
+        "GK"
+      ],
+      "mean_minutes": [
+        74.60526315789474,
+        15.394736842105264
+      ],
+      "min_pair_corr": -0.9999999999999998
+    },
+    {
+      "team": "Aston Villa",
+      "elements": [
+        37,
+        39
+      ],
+      "names": [
+        "Lucas Digne",
+        "Ian Maatsen"
+      ],
+      "positions": [
+        "DEF",
+        "DEF"
+      ],
+      "mean_minutes": [
+        48.473684210526315,
+        41.8421052631579
+      ],
+      "min_pair_corr": -0.9968772374935158
+    },
+    {
+      "team": "Aston Villa",
+      "elements": [
+        42,
+        47
+      ],
+      "names": [
+        "Andr\u00e9s Garc\u00eda",
+        "Morgan Rogers"
+      ],
+      "positions": [
+        "DEF",
+        "MID"
+      ],
+      "mean_minutes": [
+        2.1842105263157894,
+        86.3157894736842
+      ],
+      "min_pair_corr": -0.8554604478676308
+    },
+    {
+      "team": "Aston Villa",
+      "elements": [
+        54,
+        699
+      ],
+      "names": [
+        "John McGinn",
+        "Douglas Luiz Soares de Paulo"
+      ],
+      "positions": [
+        "MID",
+        "MID"
+      ],
+      "mean_minutes": [
+        56.21052631578947,
+        15.763157894736842
+      ],
+      "min_pair_corr": -0.7469406943395239
+    },
+    {
+      "team": "Bournemouth",
+      "elements": [
+        82,
+        807
+      ],
+      "names": [
+        "Antoine Semenyo",
+        "Rayan Vitor Simpl\u00edcio Rocha"
+      ],
+      "positions": [
+        "MID",
+        "MID"
+      ],
+      "mean_minutes": [
+        47.36842105263158,
+        29.210526315789473
+      ],
+      "min_pair_corr": -0.7986730996502689
+    },
+    {
+      "team": "Bournemouth",
+      "elements": [
+        77,
+        685
+      ],
+      "names": [
+        "James Hill",
+        "Bafod\u00e9 Diakit\u00e9"
+      ],
+      "positions": [
+        "DEF",
+        "DEF"
+      ],
+      "mean_minutes": [
+        55.31578947368421,
+        33.55263157894737
+      ],
+      "min_pair_corr": -0.7620952790658679
+    },
+    {
+      "team": "Bournemouth",
+      "elements": [
+        84,
+        697
+      ],
+      "names": [
+        "Marcus Tavernier",
+        "Amine Adli"
+      ],
+      "positions": [
+        "MID",
+        "MID"
+      ],
+      "mean_minutes": [
+        71.89473684210526,
+        28.263157894736842
+      ],
+      "min_pair_corr": -0.7488434859878407
+    },
+    {
+      "team": "Brighton",
+      "elements": [
+        143,
+        146
+      ],
+      "names": [
+        "Olivier Boscagli",
+        "Lewis Dunk"
+      ],
+      "positions": [
+        "DEF",
+        "DEF"
+      ],
+      "mean_minutes": [
+        21.026315789473685,
+        74.65789473684211
+      ],
+      "min_pair_corr": -0.8368681741672122
+    },
+    {
+      "team": "Brighton",
+      "elements": [
+        152,
+        173
+      ],
+      "names": [
+        "Jo\u00ebl Veltman",
+        "Mats Wieffer"
+      ],
+      "positions": [
+        "DEF",
+        "MID"
+      ],
+      "mean_minutes": [
+        27.55263157894737,
+        50.026315789473685
+      ],
+      "min_pair_corr": -0.7181813220288116
+    },
+    {
+      "team": "Burnley",
+      "elements": [
+        192,
+        195
+      ],
+      "names": [
+        "Quilindschy Hartman",
+        "Lucas Pires Silva"
+      ],
+      "positions": [
+        "DEF",
+        "DEF"
+      ],
+      "mean_minutes": [
+        48.026315789473685,
+        36.973684210526315
+      ],
+      "min_pair_corr": -0.9175942021354276
+    },
+    {
+      "team": "Burnley",
+      "elements": [
+        193,
+        205
+      ],
+      "names": [
+        "Bashir Humphreys",
+        "Josh Cullen"
+      ],
+      "positions": [
+        "DEF",
+        "MID"
+      ],
+      "mean_minutes": [
+        41.421052631578945,
+        39.81578947368421
+      ],
+      "min_pair_corr": -0.8250230135158951
+    },
+    {
+      "team": "Chelsea",
+      "elements": [
+        220,
+        221
+      ],
+      "names": [
+        "Robert Lynch S\u00e1nchez",
+        "Filip J\u00f6rgensen"
+      ],
+      "positions": [
+        "GK",
+        "GK"
+      ],
+      "mean_minutes": [
+        80.0,
+        9.947368421052632
+      ],
+      "min_pair_corr": -0.9999452760039149
+    },
+    {
+      "team": "Chelsea",
+      "elements": [
+        249,
+        250
+      ],
+      "names": [
+        "Jo\u00e3o Pedro Junqueira de Jesus",
+        "Liam Delap"
+      ],
+      "positions": [
+        "FWD",
+        "FWD"
+      ],
+      "mean_minutes": [
+        69.94736842105263,
+        28.736842105263158
+      ],
+      "min_pair_corr": -0.721962533052278
+    },
+    {
+      "team": "Crystal Palace",
+      "elements": [
+        283,
+        654
+      ],
+      "names": [
+        "Jean-Philippe Mateta",
+        "J\u00f8rgen Strand Larsen"
+      ],
+      "positions": [
+        "FWD",
+        "FWD"
+      ],
+      "mean_minutes": [
+        58.1578947368421,
+        23.736842105263158
+      ],
+      "min_pair_corr": -0.878161070079676
+    },
+    {
+      "team": "Crystal Palace",
+      "elements": [
+        257,
+        262
+      ],
+      "names": [
+        "Maxence Lacroix",
+        "Chadi Riad Dnanou"
+      ],
+      "positions": [
+        "DEF",
+        "DEF"
+      ],
+      "mean_minutes": [
+        81.1842105263158,
+        14.473684210526315
+      ],
+      "min_pair_corr": -0.7794173123817214
+    },
+    {
+      "team": "Crystal Palace",
+      "elements": [
+        261,
+        276
+      ],
+      "names": [
+        "Chris Richards",
+        "Justin Devenny"
+      ],
+      "positions": [
+        "DEF",
+        "MID"
+      ],
+      "mean_minutes": [
+        74.34210526315789,
+        20.657894736842106
+      ],
+      "min_pair_corr": -0.7269276478957584
+    },
+    {
+      "team": "Crystal Palace",
+      "elements": [
+        256,
+        263
+      ],
+      "names": [
+        "Daniel Mu\u00f1oz Mej\u00eda",
+        "Nathaniel Clyne"
+      ],
+      "positions": [
+        "DEF",
+        "DEF"
+      ],
+      "mean_minutes": [
+        63.1578947368421,
+        15.578947368421053
+      ],
+      "min_pair_corr": -0.713775138968504
+    },
+    {
+      "team": "Everton",
+      "elements": [
+        310,
+        311
+      ],
+      "names": [
+        "Thierno Barry",
+        "Norberto Bercique Gomes Betuncal"
+      ],
+      "positions": [
+        "FWD",
+        "FWD"
+      ],
+      "mean_minutes": [
+        49.94736842105263,
+        40.81578947368421
+      ],
+      "min_pair_corr": -0.9694610075320195
+    },
+    {
+      "team": "Fulham",
+      "elements": [
+        318,
+        321
+      ],
+      "names": [
+        "Calvin Bassey",
+        "Jorge Cuenca Barreno"
+      ],
+      "positions": [
+        "DEF",
+        "DEF"
+      ],
+      "mean_minutes": [
+        66.63157894736842,
+        24.605263157894736
+      ],
+      "min_pair_corr": -0.9224893578537093
+    },
+    {
+      "team": "Fulham",
+      "elements": [
+        325,
+        335
+      ],
+      "names": [
+        "Emile Smith Rowe",
+        "Josh King"
+      ],
+      "positions": [
+        "MID",
+        "MID"
+      ],
+      "mean_minutes": [
+        50.23684210526316,
+        33.94736842105263
+      ],
+      "min_pair_corr": -0.9086747466544416
+    },
+    {
+      "team": "Fulham",
+      "elements": [
+        319,
+        322
+      ],
+      "names": [
+        "Timothy Castagne",
+        "Kenny Tete"
+      ],
+      "positions": [
+        "DEF",
+        "DEF"
+      ],
+      "mean_minutes": [
+        48.36842105263158,
+        47.13157894736842
+      ],
+      "min_pair_corr": -0.8954162979796736
+    },
+    {
+      "team": "Fulham",
+      "elements": [
+        316,
+        328
+      ],
+      "names": [
+        "Antonee Robinson",
+        "Ryan Sessegnon"
+      ],
+      "positions": [
+        "DEF",
+        "MID"
+      ],
+      "mean_minutes": [
+        39.13157894736842,
+        47.78947368421053
+      ],
+      "min_pair_corr": -0.8374298444709896
+    },
+    {
+      "team": "Fulham",
+      "elements": [
+        337,
+        338
+      ],
+      "names": [
+        "Ra\u00fal Jim\u00e9nez Rodr\u00edguez",
+        "Rodrigo Muniz Carvalho"
+      ],
+      "positions": [
+        "FWD",
+        "FWD"
+      ],
+      "mean_minutes": [
+        57.44736842105263,
+        25.973684210526315
+      ],
+      "min_pair_corr": -0.819036593055751
+    },
+    {
+      "team": "Fulham",
+      "elements": [
+        317,
+        320
+      ],
+      "names": [
+        "Joachim Andersen",
+        "Issa Diop"
+      ],
+      "positions": [
+        "DEF",
+        "DEF"
+      ],
+      "mean_minutes": [
+        75.84210526315789,
+        21.36842105263158
+      ],
+      "min_pair_corr": -0.7608935125132599
+    },
+    {
+      "team": "Leeds",
+      "elements": [
+        341,
+        665
+      ],
+      "names": [
+        "Karl Darlow",
+        "Lucas Estella Perri"
+      ],
+      "positions": [
+        "GK",
+        "GK"
+      ],
+      "mean_minutes": [
+        52.10526315789474,
+        37.89473684210526
+      ],
+      "min_pair_corr": -1.0
+    },
+    {
+      "team": "Liverpool",
+      "elements": [
+        371,
+        372
+      ],
+      "names": [
+        "Milos Kerkez",
+        "Andrew Robertson"
+      ],
+      "positions": [
+        "DEF",
+        "DEF"
+      ],
+      "mean_minutes": [
+        59.23684210526316,
+        30.657894736842106
+      ],
+      "min_pair_corr": -0.9983103793927746
+    },
+    {
+      "team": "Liverpool",
+      "elements": [
+        366,
+        367
+      ],
+      "names": [
+        "Alisson Becker",
+        "Giorgi Mamardashvili"
+      ],
+      "positions": [
+        "GK",
+        "GK"
+      ],
+      "mean_minutes": [
+        61.578947368421055,
+        22.81578947368421
+      ],
+      "min_pair_corr": -0.871983269564114
+    },
+    {
+      "team": "Man City",
+      "elements": [
+        409,
+        736
+      ],
+      "names": [
+        "John Stones",
+        "Gianluigi Donnarumma"
+      ],
+      "positions": [
+        "DEF",
+        "GK"
+      ],
+      "mean_minutes": [
+        11.473684210526315,
+        80.52631578947368
+      ],
+      "min_pair_corr": -0.9221302876912204
+    },
+    {
+      "team": "Man City",
+      "elements": [
+        406,
+        408
+      ],
+      "names": [
+        "Abdukodir Khusanov",
+        "R\u00faben dos Santos Gato Alves Dias"
+      ],
+      "positions": [
+        "DEF",
+        "DEF"
+      ],
+      "mean_minutes": [
+        37.55263157894737,
+        56.28947368421053
+      ],
+      "min_pair_corr": -0.8439480829963492
+    },
+    {
+      "team": "Man City",
+      "elements": [
+        421,
+        423
+      ],
+      "names": [
+        "Rodrigo 'Rodri' Hernandez Cascante",
+        "Nico Gonz\u00e1lez Iglesias"
+      ],
+      "positions": [
+        "MID",
+        "MID"
+      ],
+      "mean_minutes": [
+        39.73684210526316,
+        41.078947368421055
+      ],
+      "min_pair_corr": -0.8152883691337007
+    },
+    {
+      "team": "Man City",
+      "elements": [
+        407,
+        410
+      ],
+      "names": [
+        "Matheus Nunes",
+        "Rico Lewis"
+      ],
+      "positions": [
+        "DEF",
+        "DEF"
+      ],
+      "mean_minutes": [
+        75.28947368421052,
+        10.552631578947368
+      ],
+      "min_pair_corr": -0.7977095457657228
+    },
+    {
+      "team": "Man Utd",
+      "elements": [
+        431,
+        733
+      ],
+      "names": [
+        "Altay Bay\u0131nd\u0131r",
+        "Senne Lammens"
+      ],
+      "positions": [
+        "GK",
+        "GK"
+      ],
+      "mean_minutes": [
+        14.210526315789474,
+        75.78947368421052
+      ],
+      "min_pair_corr": -1.0
+    },
+    {
+      "team": "Newcastle",
+      "elements": [
+        469,
+        674
+      ],
+      "names": [
+        "Nick Pope",
+        "Aaron Ramsdale"
+      ],
+      "positions": [
+        "GK",
+        "GK"
+      ],
+      "mean_minutes": [
+        63.578947368421055,
+        26.394736842105264
+      ],
+      "min_pair_corr": -0.9999922666708062
+    },
+    {
+      "team": "Nott'm Forest",
+      "elements": [
+        506,
+        511
+      ],
+      "names": [
+        "Murillo Costa dos Santos",
+        "Felipe Rodrigues da Silva"
+      ],
+      "positions": [
+        "DEF",
+        "DEF"
+      ],
+      "mean_minutes": [
+        56.05263157894737,
+        35.26315789473684
+      ],
+      "min_pair_corr": -0.8996606764448923
+    },
+    {
+      "team": "Nott'm Forest",
+      "elements": [
+        426,
+        505
+      ],
+      "names": [
+        "James McAtee",
+        "Nikola Milenkovi\u0107"
+      ],
+      "positions": [
+        "MID",
+        "DEF"
+      ],
+      "mean_minutes": [
+        7.578947368421052,
+        88.8157894736842
+      ],
+      "min_pair_corr": -0.7616962166800199
+    },
+    {
+      "team": "Nott'm Forest",
+      "elements": [
+        502,
+        715
+      ],
+      "names": [
+        "Matz Sels",
+        "John Victor Maciel Furtado"
+      ],
+      "positions": [
+        "GK",
+        "GK"
+      ],
+      "mean_minutes": [
+        70.1842105263158,
+        11.5
+      ],
+      "min_pair_corr": -0.729783681499629
+    },
+    {
+      "team": "Spurs",
+      "elements": [
+        565,
+        567
+      ],
+      "names": [
+        "Guglielmo Vicario",
+        "Anton\u00edn Kinsk\u00fd"
+      ],
+      "positions": [
+        "GK",
+        "GK"
+      ],
+      "mean_minutes": [
+        73.42105263157895,
+        16.57894736842105
+      ],
+      "min_pair_corr": -1.0
+    },
+    {
+      "team": "Spurs",
+      "elements": [
+        582,
+        796
+      ],
+      "names": [
+        "Mohammed Kudus",
+        "Conor Gallagher"
+      ],
+      "positions": [
+        "MID",
+        "MID"
+      ],
+      "mean_minutes": [
+        40.39473684210526,
+        31.13157894736842
+      ],
+      "min_pair_corr": -0.7626435646022921
+    },
+    {
+      "team": "Spurs",
+      "elements": [
+        585,
+        596
+      ],
+      "names": [
+        "Rodrigo Bentancur",
+        "Dominic Solanke-Mitchell"
+      ],
+      "positions": [
+        "MID",
+        "FWD"
+      ],
+      "mean_minutes": [
+        49.473684210526315,
+        26.236842105263158
+      ],
+      "min_pair_corr": -0.7008379851206654
+    },
+    {
+      "team": "Sunderland",
+      "elements": [
+        535,
+        552
+      ],
+      "names": [
+        "Dennis Cirkin",
+        "Noah Sadiki"
+      ],
+      "positions": [
+        "DEF",
+        "MID"
+      ],
+      "mean_minutes": [
+        8.394736842105264,
+        76.07894736842105
+      ],
+      "min_pair_corr": -0.7080365970834401
+    },
+    {
+      "team": "Sunderland",
+      "elements": [
+        560,
+        730
+      ],
+      "names": [
+        "Wilson Isidor",
+        "Brian Brobbey"
+      ],
+      "positions": [
+        "FWD",
+        "FWD"
+      ],
+      "mean_minutes": [
+        30.210526315789473,
+        50.526315789473685
+      ],
+      "min_pair_corr": -0.7078211557319936
+    },
+    {
+      "team": "West Ham",
+      "elements": [
+        600,
+        679
+      ],
+      "names": [
+        "Alphonse Areola",
+        "Mads Hermansen"
+      ],
+      "positions": [
+        "GK",
+        "GK"
+      ],
+      "mean_minutes": [
+        47.36842105263158,
+        42.63157894736842
+      ],
+      "min_pair_corr": -0.9999999999999998
+    },
+    {
+      "team": "West Ham",
+      "elements": [
+        603,
+        608
+      ],
+      "names": [
+        "El Hadji Malick Diouf",
+        "Ollie Scarles"
+      ],
+      "positions": [
+        "DEF",
+        "DEF"
+      ],
+      "mean_minutes": [
+        71.21052631578948,
+        17.263157894736842
+      ],
+      "min_pair_corr": -0.9740608734474577
+    },
+    {
+      "team": "West Ham",
+      "elements": [
+        610,
+        659
+      ],
+      "names": [
+        "Aaron Wan-Bissaka",
+        "Kyle Walker-Peters"
+      ],
+      "positions": [
+        "DEF",
+        "DEF"
+      ],
+      "mean_minutes": [
+        54.73684210526316,
+        36.26315789473684
+      ],
+      "min_pair_corr": -0.9731202871735319
+    },
+    {
+      "team": "West Ham",
+      "elements": [
+        605,
+        791
+      ],
+      "names": [
+        "Maximilian Kilman",
+        "Valent\u00edn Castellanos"
+      ],
+      "positions": [
+        "DEF",
+        "FWD"
+      ],
+      "mean_minutes": [
+        41.026315789473685,
+        36.421052631578945
+      ],
+      "min_pair_corr": -0.8311380885838953
+    },
+    {
+      "team": "West Ham",
+      "elements": [
+        612,
+        613
+      ],
+      "names": [
+        "Lucas Tolentino Coelho de Lima",
+        "Tom\u00e1\u0161 Sou\u010dek"
+      ],
+      "positions": [
+        "MID",
+        "MID"
+      ],
+      "mean_minutes": [
+        39.81578947368421,
+        57.63157894736842
+      ],
+      "min_pair_corr": -0.7343105137151126
+    },
+    {
+      "team": "Wolves",
+      "elements": [
+        633,
+        682
+      ],
+      "names": [
+        "Hugo Bueno L\u00f3pez",
+        "David M\u00f8ller Wolfe"
+      ],
+      "positions": [
+        "DEF",
+        "DEF"
+      ],
+      "mean_minutes": [
+        62.078947368421055,
+        27.42105263157895
+      ],
+      "min_pair_corr": -0.964514694747769
+    },
+    {
+      "team": "Wolves",
+      "elements": [
+        627,
+        628
+      ],
+      "names": [
+        "Sam Johnstone",
+        "Jos\u00e9 Malheiro de S\u00e1"
+      ],
+      "positions": [
+        "GK",
+        "GK"
+      ],
+      "mean_minutes": [
+        28.42105263157895,
+        54.473684210526315
+      ],
+      "min_pair_corr": -0.8412444993533735
+    },
+    {
+      "team": "Wolves",
+      "elements": [
+        631,
+        636
+      ],
+      "names": [
+        "Emmanuel Agbadou",
+        "Santiago Ignacio Bueno"
+      ],
+      "positions": [
+        "DEF",
+        "DEF"
+      ],
+      "mean_minutes": [
+        28.94736842105263,
+        67.15789473684211
+      ],
+      "min_pair_corr": -0.7641076680160904
+    },
+    {
+      "team": "Wolves",
+      "elements": [
+        654,
+        817
+      ],
+      "names": [
+        "J\u00f8rgen Strand Larsen",
+        "Adam Armstrong"
+      ],
+      "positions": [
+        "FWD",
+        "FWD"
+      ],
+      "mean_minutes": [
+        36.81578947368421,
+        30.026315789473685
+      ],
+      "min_pair_corr": -0.7407478197272717
+    },
+    {
+      "team": "Wolves",
+      "elements": [
+        648,
+        749
+      ],
+      "names": [
+        "Marshall Munetsi",
+        "Mateus Man\u00e9"
+      ],
+      "positions": [
+        "MID",
+        "FWD"
+      ],
+      "mean_minutes": [
+        22.94736842105263,
+        47.026315789473685
+      ],
+      "min_pair_corr": -0.7280412606442644
+    }
+  ]
+}

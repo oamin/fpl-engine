@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:586-mendy-listed-out",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Hull City",
+  "player_ids": [
+    586
+  ],
+  "headline": "Mendy listed out",
+  "body": "The Guardian team news, 16 Oct 2026: Mendy (Hull City) injured / unavailable.",
+  "sha256": "61d6d5cbfeb32e63c8ef1890dd0478d43e7aa1e6a637a9dbcc14266eb30926bd"
+}

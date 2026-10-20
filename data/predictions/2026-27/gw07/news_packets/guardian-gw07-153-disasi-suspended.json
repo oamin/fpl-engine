@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:153-disasi-suspended",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Crystal Palace",
+  "player_ids": [
+    153
+  ],
+  "headline": "Disasi suspended",
+  "body": "The Guardian team news, 16 Oct 2026: Disasi (Crystal Palace) suspended.",
+  "sha256": "75ed7fa7ed3018f9bffb803c16ab08cc8a1570a282e1966d2f17f174ccdadca5"
+}

@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:121-mitoma-listed-out",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Brighton",
+  "player_ids": [
+    121
+  ],
+  "headline": "Mitoma listed out",
+  "body": "The Guardian team news, 16 Oct 2026: Mitoma (Brighton) injured / unavailable.",
+  "sha256": "5e94f4743428a4a26306df913021c2bf0e6bd49cdf131e18e26034614a77e85f"
+}

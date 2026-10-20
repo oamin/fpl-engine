@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw07:399-cherki-left-out-of-predicted-starting-xi",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/man-city-xi-vs-ipswich-confirmed-team-news-predicted-lineup-injury-latest-premier-league-b1301072.html",
+  "published_at_utc": "2026-10-17T06:40:00Z",
+  "club": "Man City",
+  "player_ids": [
+    399
+  ],
+  "headline": "Cherki left out of predicted starting XI",
+  "body": "The Standard, 17 Oct 2026: Rayan Cherki was taken off at half-time against PSG and may make way here, with Phil Foden waiting for a chance. Cherki left out of the predicted starting XI (Foden preferred). Predicted XI: Donnarumma; Nunes, Dias, Guehi, O\u2019Reilly; Bouaddi, Fernandez; Semenyo, Foden, Ndiaye; Haaland.",
+  "sha256": "421a4f345c7791a26a56ac77329870c92014c596da54c3a79e8dc7f4f60fa0c8"
+}

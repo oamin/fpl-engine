@@ -1,0 +1,70 @@
+{
+  "task": "player_ga_finish",
+  "scorer": "score_xp_v2",
+  "decision": "keep_share_times_lambda",
+  "promote": false,
+  "finish_contrast": "score_xp_v2_finish_minus_score_xp_v2",
+  "finish_interval": {
+    "mean": -0.0018659979700872647,
+    "lo": -0.002564731020874543,
+    "hi": -0.0011666363831814583,
+    "n_gws": {
+      "2022-23": 33,
+      "2023-24": 34,
+      "2024-25": 34,
+      "2025-26": 34
+    }
+  },
+  "primary_interval": {
+    "mean": 0.015305621921945354,
+    "lo": 0.01295155277980016,
+    "hi": 0.01747868684462922,
+    "n_gws": {
+      "2022-23": 33,
+      "2023-24": 34,
+      "2024-25": 34,
+      "2025-26": 34
+    }
+  },
+  "finish_summary": [
+    {
+      "season": "2022-23",
+      "n_eligible": 7330,
+      "mean_finish_g": 1.1300667827267112,
+      "mean_finish_a": 1.1738584576950433,
+      "p10_finish_g": 0.8665736567701455,
+      "p90_finish_g": 1.4,
+      "mean_abs_xp_delta": 0.08024759370780027
+    },
+    {
+      "season": "2023-24",
+      "n_eligible": 7128,
+      "mean_finish_g": 0.9990904059168673,
+      "mean_finish_a": 1.069638979177886,
+      "p10_finish_g": 0.7272727272727273,
+      "p90_finish_g": 1.3559322033898304,
+      "mean_abs_xp_delta": 0.06853829005141643
+    },
+    {
+      "season": "2024-25",
+      "n_eligible": 6897,
+      "mean_finish_g": 0.9845552917426953,
+      "mean_finish_a": 1.0624385147891122,
+      "p10_finish_g": 0.7092198581560284,
+      "p90_finish_g": 1.3157894736842104,
+      "mean_abs_xp_delta": 0.05419608329299049
+    },
+    {
+      "season": "2025-26",
+      "n_eligible": 6847,
+      "mean_finish_g": 0.9890969261279091,
+      "mean_finish_a": 1.0750970591687512,
+      "p10_finish_g": 0.7194244604316546,
+      "p90_finish_g": 1.3333333333333333,
+      "mean_abs_xp_delta": 0.05341403299773945
+    }
+  ],
+  "n_gws_logged": 135,
+  "audit_soft_pass": true,
+  "audit_error": "refusing report: as-of audit has not passed (live_primary Numagent 2.0 lock drift / missing GW7 capture)"
+}

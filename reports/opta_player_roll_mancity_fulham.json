@@ -1,0 +1,716 @@
+{
+  "n": 2000,
+  "seed": 0,
+  "props": false,
+  "lineup_cov": true,
+  "centre_blend": 0.5,
+  "before_gw": 6,
+  "fixture": {
+    "home": "Man City",
+    "away": "Fulham",
+    "home_rank": 1.0,
+    "away_rank": 20.0,
+    "source": "opta_place_gf_ga",
+    "lam_home_centre": 2.9113250338389403,
+    "lam_away_centre": 0.5738600224887882,
+    "lam_home_lo": 2.3517257336825343,
+    "lam_home_hi": 3.5,
+    "lam_away_lo": 0.3726914434068343,
+    "lam_away_hi": 0.8178817254718087,
+    "home_season_gf_centre": 77.632,
+    "home_season_ga_centre": 38.184999999999995,
+    "away_season_gf_centre": 34.61600000000001,
+    "away_season_ga_centre": 74.05699999999999,
+    "mean_sampled_lam_h": 2.913498104277619,
+    "mean_sampled_lam_a": 0.5740255093604031,
+    "alpha_g": 0.9601357082273113,
+    "alpha_a": 0.9050042408821035,
+    "n_home_players": 17,
+    "n_away_players": 19
+  },
+  "mean_scoreline": [
+    2.926,
+    0.5785
+  ],
+  "p_cs_home": 0.5705,
+  "p_cs_away": 0.056,
+  "scoreline_freq": {
+    "2-0": 276,
+    "3-0": 255,
+    "4-0": 186,
+    "1-0": 171,
+    "2-1": 153,
+    "3-1": 133,
+    "5-0": 112,
+    "4-1": 104,
+    "6-0": 87,
+    "1-1": 77,
+    "5-1": 58,
+    "6-1": 55,
+    "0-0": 54,
+    "2-2": 40,
+    "0-1": 40,
+    "3-2": 38,
+    "4-2": 32,
+    "1-2": 27,
+    "6-2": 21,
+    "5-2": 17,
+    "0-2": 12,
+    "4-3": 9,
+    "2-3": 7,
+    "6-3": 6,
+    "3-3": 6,
+    "5-3": 6,
+    "0-3": 6,
+    "1-3": 5,
+    "4-4": 2,
+    "2-4": 2,
+    "1-4": 1,
+    "3-4": 1,
+    "5-4": 1
+  },
+  "top_scorers": [
+    [
+      "Man City:Haaland",
+      2228
+    ],
+    [
+      "Man City:Cherki",
+      1225
+    ],
+    [
+      "Man City:Semenyo",
+      940
+    ],
+    [
+      "Fulham:King",
+      572
+    ],
+    [
+      "Man City:Gu\u00e9hi",
+      469
+    ],
+    [
+      "Man City:Enzo",
+      420
+    ],
+    [
+      "Man City:Gvardiol",
+      361
+    ],
+    [
+      "Fulham:Gonzalo",
+      343
+    ],
+    [
+      "Fulham:Palacios",
+      151
+    ],
+    [
+      "Fulham:Kevin",
+      7
+    ],
+    [
+      "Fulham:Bassey",
+      6
+    ],
+    [
+      "Fulham:Larsson",
+      6
+    ],
+    [
+      "Fulham:Affengruber",
+      4
+    ],
+    [
+      "Fulham:Andersen",
+      4
+    ],
+    [
+      "Fulham:Charles",
+      4
+    ],
+    [
+      "Fulham:Iwobi",
+      2
+    ],
+    [
+      "Fulham:Berge",
+      2
+    ],
+    [
+      "Fulham:Robinson",
+      2
+    ],
+    [
+      "Fulham:Castagne",
+      1
+    ],
+    [
+      "Fulham:Sessegnon",
+      1
+    ]
+  ],
+  "top_assisters": [
+    [
+      "Man City:Semenyo",
+      1100
+    ],
+    [
+      "Man City:Gvardiol",
+      755
+    ],
+    [
+      "Man City:Cherki",
+      722
+    ],
+    [
+      "Man City:Ndiaye",
+      655
+    ],
+    [
+      "Man City:Gu\u00e9hi",
+      480
+    ],
+    [
+      "Man City:Anderson",
+      444
+    ],
+    [
+      "Fulham:Bassey",
+      354
+    ],
+    [
+      "Man City:Haaland",
+      268
+    ],
+    [
+      "Man City:Enzo",
+      258
+    ],
+    [
+      "Fulham:Castagne",
+      251
+    ],
+    [
+      "Man City:R\u00faben",
+      182
+    ],
+    [
+      "Man City:Foden",
+      78
+    ],
+    [
+      "Man City:Matheus N.",
+      76
+    ],
+    [
+      "Fulham:Iwobi",
+      62
+    ],
+    [
+      "Fulham:Charles",
+      62
+    ],
+    [
+      "Fulham:Bobb",
+      53
+    ],
+    [
+      "Fulham:Gonzalo",
+      45
+    ],
+    [
+      "Fulham:Berge",
+      41
+    ],
+    [
+      "Man City:Khusanov",
+      31
+    ],
+    [
+      "Fulham:Robinson",
+      31
+    ]
+  ],
+  "top_mean_xp": [
+    [
+      "Man City:Haaland",
+      6.858
+    ],
+    [
+      "Man City:Cherki",
+      6.716
+    ],
+    [
+      "Man City:Semenyo",
+      6.5705
+    ],
+    [
+      "Man City:Gu\u00e9hi",
+      6.286
+    ],
+    [
+      "Man City:Gvardiol",
+      5.44
+    ],
+    [
+      "Man City:R\u00faben",
+      4.432
+    ],
+    [
+      "Man City:Donnarumma",
+      4.1845
+    ],
+    [
+      "Man City:Ndiaye",
+      3.553
+    ],
+    [
+      "Man City:Enzo",
+      3.273
+    ],
+    [
+      "Man City:Anderson",
+      3.2365
+    ],
+    [
+      "Fulham:King",
+      2.982
+    ],
+    [
+      "Man City:Matheus N.",
+      2.5965
+    ],
+    [
+      "Fulham:Gonzalo",
+      2.2265
+    ],
+    [
+      "Man City:Khusanov",
+      1.723
+    ],
+    [
+      "Fulham:Palacios",
+      1.5705
+    ],
+    [
+      "Fulham:Bassey",
+      1.537
+    ],
+    [
+      "Fulham:Charles",
+      1.1725
+    ],
+    [
+      "Fulham:Bobb",
+      1.129
+    ],
+    [
+      "Fulham:Iwobi",
+      1.0845
+    ],
+    [
+      "Fulham:Berge",
+      1.0755
+    ],
+    [
+      "Man City:Doku",
+      1.0
+    ],
+    [
+      "Man City:McAidoo",
+      1.0
+    ],
+    [
+      "Man City:Bouaddi",
+      1.0
+    ],
+    [
+      "Fulham:Smith Rowe",
+      1.0
+    ],
+    [
+      "Fulham:Leno",
+      0.9955
+    ]
+  ],
+  "sample_paths": [
+    {
+      "scoreline": "3-0",
+      "lam_h": 2.9268703479792206,
+      "lam_a": 0.5900667629234283,
+      "home_season_gf": 80.14283529761761,
+      "away_season_gf": 34.036966824256865,
+      "top_home_xp": [
+        {
+          "player_name": "Cherki",
+          "xp": 14.0,
+          "E_G": 1.0,
+          "E_A": 2.0
+        },
+        {
+          "player_name": "Haaland",
+          "xp": 9.0,
+          "E_G": 1.0,
+          "E_A": 1.0
+        },
+        {
+          "player_name": "Semenyo",
+          "xp": 8.0,
+          "E_G": 1.0,
+          "E_A": 0.0
+        }
+      ],
+      "top_away_xp": [
+        {
+          "player_name": "Iwobi",
+          "xp": 2.0,
+          "E_G": 0.0,
+          "E_A": 0.0
+        },
+        {
+          "player_name": "Berge",
+          "xp": 2.0,
+          "E_G": 0.0,
+          "E_A": 0.0
+        },
+        {
+          "player_name": "King",
+          "xp": 2.0,
+          "E_G": 0.0,
+          "E_A": 0.0
+        }
+      ]
+    },
+    {
+      "scoreline": "2-2",
+      "lam_h": 2.889509922013035,
+      "lam_a": 0.589102536074009,
+      "home_season_gf": 80.53953111928668,
+      "away_season_gf": 34.41292039565029,
+      "top_home_xp": [
+        {
+          "player_name": "Cherki",
+          "xp": 7.0,
+          "E_G": 1.0,
+          "E_A": 0.0
+        },
+        {
+          "player_name": "Semenyo",
+          "xp": 7.0,
+          "E_G": 1.0,
+          "E_A": 0.0
+        },
+        {
+          "player_name": "Haaland",
+          "xp": 5.0,
+          "E_G": 0.0,
+          "E_A": 1.0
+        }
+      ],
+      "top_away_xp": [
+        {
+          "player_name": "King",
+          "xp": 7.0,
+          "E_G": 1.0,
+          "E_A": 0.0
+        },
+        {
+          "player_name": "Gonzalo",
+          "xp": 6.0,
+          "E_G": 1.0,
+          "E_A": 0.0
+        },
+        {
+          "player_name": "Bassey",
+          "xp": 4.0,
+          "E_G": 0.0,
+          "E_A": 1.0
+        }
+      ]
+    },
+    {
+      "scoreline": "4-2",
+      "lam_h": 2.970266629864671,
+      "lam_a": 0.5487616374230446,
+      "home_season_gf": 75.37987909705242,
+      "away_season_gf": 32.71051011960496,
+      "top_home_xp": [
+        {
+          "player_name": "Semenyo",
+          "xp": 10.0,
+          "E_G": 1.0,
+          "E_A": 1.0
+        },
+        {
+          "player_name": "Haaland",
+          "xp": 10.0,
+          "E_G": 2.0,
+          "E_A": 0.0
+        },
+        {
+          "player_name": "Cherki",
+          "xp": 8.0,
+          "E_G": 0.0,
+          "E_A": 2.0
+        }
+      ],
+      "top_away_xp": [
+        {
+          "player_name": "King",
+          "xp": 7.0,
+          "E_G": 1.0,
+          "E_A": 0.0
+        },
+        {
+          "player_name": "Palacios",
+          "xp": 7.0,
+          "E_G": 1.0,
+          "E_A": 0.0
+        },
+        {
+          "player_name": "Berge",
+          "xp": 5.0,
+          "E_G": 0.0,
+          "E_A": 1.0
+        }
+      ]
+    },
+    {
+      "scoreline": "6-0",
+      "lam_h": 3.0236588357914367,
+      "lam_a": 0.5609959378159514,
+      "home_season_gf": 77.46091093174839,
+      "away_season_gf": 36.493932591135334,
+      "top_home_xp": [
+        {
+          "player_name": "Semenyo",
+          "xp": 19.0,
+          "E_G": 2.0,
+          "E_A": 2.0
+        },
+        {
+          "player_name": "Haaland",
+          "xp": 18.0,
+          "E_G": 4.0,
+          "E_A": 0.0
+        },
+        {
+          "player_name": "Gvardiol",
+          "xp": 12.0,
+          "E_G": 0.0,
+          "E_A": 2.0
+        }
+      ],
+      "top_away_xp": [
+        {
+          "player_name": "Berge",
+          "xp": 2.0,
+          "E_G": 0.0,
+          "E_A": 0.0
+        },
+        {
+          "player_name": "King",
+          "xp": 2.0,
+          "E_G": 0.0,
+          "E_A": 0.0
+        },
+        {
+          "player_name": "Palacios",
+          "xp": 2.0,
+          "E_G": 0.0,
+          "E_A": 0.0
+        }
+      ]
+    },
+    {
+      "scoreline": "4-1",
+      "lam_h": 2.7549056315332563,
+      "lam_a": 0.5492428812520173,
+      "home_season_gf": 75.75872968483094,
+      "away_season_gf": 31.824908997490105,
+      "top_home_xp": [
+        {
+          "player_name": "Semenyo",
+          "xp": 11.0,
+          "E_G": 0.0,
+          "E_A": 3.0
+        },
+        {
+          "player_name": "Haaland",
+          "xp": 10.0,
+          "E_G": 2.0,
+          "E_A": 0.0
+        },
+        {
+          "player_name": "Gu\u00e9hi",
+          "xp": 8.0,
+          "E_G": 1.0,
+          "E_A": 0.0
+        }
+      ],
+      "top_away_xp": [
+        {
+          "player_name": "Berge",
+          "xp": 2.0,
+          "E_G": 0.0,
+          "E_A": 0.0
+        },
+        {
+          "player_name": "King",
+          "xp": 2.0,
+          "E_G": 0.0,
+          "E_A": 0.0
+        },
+        {
+          "player_name": "Palacios",
+          "xp": 2.0,
+          "E_G": 0.0,
+          "E_A": 0.0
+        }
+      ]
+    },
+    {
+      "scoreline": "6-0",
+      "lam_h": 2.9173884660567624,
+      "lam_a": 0.5029489523219481,
+      "home_season_gf": 75.33544545278733,
+      "away_season_gf": 32.50610275707366,
+      "top_home_xp": [
+        {
+          "player_name": "Gu\u00e9hi",
+          "xp": 18.0,
+          "E_G": 1.0,
+          "E_A": 2.0
+        },
+        {
+          "player_name": "Cherki",
+          "xp": 13.0,
+          "E_G": 2.0,
+          "E_A": 0.0
+        },
+        {
+          "player_name": "Enzo",
+          "xp": 11.0,
+          "E_G": 1.0,
+          "E_A": 1.0
+        }
+      ],
+      "top_away_xp": [
+        {
+          "player_name": "Berge",
+          "xp": 2.0,
+          "E_G": 0.0,
+          "E_A": 0.0
+        },
+        {
+          "player_name": "King",
+          "xp": 2.0,
+          "E_G": 0.0,
+          "E_A": 0.0
+        },
+        {
+          "player_name": "Palacios",
+          "xp": 2.0,
+          "E_G": 0.0,
+          "E_A": 0.0
+        }
+      ]
+    },
+    {
+      "scoreline": "3-0",
+      "lam_h": 3.0373252092094067,
+      "lam_a": 0.5285287534006439,
+      "home_season_gf": 80.15014528808479,
+      "away_season_gf": 32.79851070338847,
+      "top_home_xp": [
+        {
+          "player_name": "Gvardiol",
+          "xp": 12.0,
+          "E_G": 0.0,
+          "E_A": 2.0
+        },
+        {
+          "player_name": "Gu\u00e9hi",
+          "xp": 9.0,
+          "E_G": 0.0,
+          "E_A": 1.0
+        },
+        {
+          "player_name": "Cherki",
+          "xp": 8.0,
+          "E_G": 1.0,
+          "E_A": 0.0
+        }
+      ],
+      "top_away_xp": [
+        {
+          "player_name": "Iwobi",
+          "xp": 2.0,
+          "E_G": 0.0,
+          "E_A": 0.0
+        },
+        {
+          "player_name": "Berge",
+          "xp": 2.0,
+          "E_G": 0.0,
+          "E_A": 0.0
+        },
+        {
+          "player_name": "King",
+          "xp": 2.0,
+          "E_G": 0.0,
+          "E_A": 0.0
+        }
+      ]
+    },
+    {
+      "scoreline": "3-2",
+      "lam_h": 3.0101327574377823,
+      "lam_a": 0.5359022306090918,
+      "home_season_gf": 76.55472434344804,
+      "away_season_gf": 33.58957672797982,
+      "top_home_xp": [
+        {
+          "player_name": "Cherki",
+          "xp": 12.0,
+          "E_G": 2.0,
+          "E_A": 0.0
+        },
+        {
+          "player_name": "Enzo",
+          "xp": 7.0,
+          "E_G": 1.0,
+          "E_A": 0.0
+        },
+        {
+          "player_name": "Gu\u00e9hi",
+          "xp": 7.0,
+          "E_G": 0.0,
+          "E_A": 2.0
+        }
+      ],
+      "top_away_xp": [
+        {
+          "player_name": "King",
+          "xp": 7.0,
+          "E_G": 1.0,
+          "E_A": 0.0
+        },
+        {
+          "player_name": "Palacios",
+          "xp": 7.0,
+          "E_G": 1.0,
+          "E_A": 0.0
+        },
+        {
+          "player_name": "Iwobi",
+          "xp": 5.0,
+          "E_G": 0.0,
+          "E_A": 1.0
+        }
+      ]
+    }
+  ]
+}

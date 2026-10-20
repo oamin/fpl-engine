@@ -108,12 +108,15 @@ def compile_news_table(
     gw: int = GW,
 ) -> pd.DataFrame:
     """One row per element. ``xmi`` is the packet compile, not the stored file."""
+    from src.live.news_packets import predicted_lineup_roles
+
     packets = load_gameweek_packets(
         gw,
         deadline_utc=deadline_utc,
         bootstrap=bootstrap,
         include_synthetic_fpl=True,
     )
+    lineup_roles = predicted_lineup_roles(packets, bootstrap)
     by_player: dict[int, list] = {}
     for packet in packets:
         for pid in packet.player_ids:
@@ -128,6 +131,7 @@ def compile_news_table(
             chance = None if chance_raw is None else float(chance_raw)
         except (TypeError, ValueError):
             chance = None
+        role, role_pkt = lineup_roles.get(pid, (None, None))
         compiled = compile_player_xmi(
             player_id=pid,
             name=str(element.get("web_name") or pid),
@@ -137,6 +141,8 @@ def compile_news_table(
             chance=chance,
             packets=by_player.get(pid, []),
             minutes=series,
+            lineup_role=role,
+            lineup_packet_id=role_pkt,
         )
         xmi = compiled["xmi_compiled"]
         rows.append(

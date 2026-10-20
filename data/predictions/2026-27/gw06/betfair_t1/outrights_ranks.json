@@ -1,0 +1,173 @@
+[
+  {
+    "club": "Arsenal",
+    "club_norm": "arsenal",
+    "p_win": 0.6558758984392592,
+    "p_top6": 1.1124708011071913,
+    "p_rel": 0.0,
+    "E_rank": 2.032372304682223,
+    "strength": 0.8913292310860818
+  },
+  {
+    "club": "Liverpool",
+    "club_norm": "liverpool",
+    "p_win": 0.07324303599834725,
+    "p_top6": 0.9532770005006442,
+    "p_rel": 0.0,
+    "E_rank": 4.154054887999805,
+    "strength": 0.6679942223158101
+  },
+  {
+    "club": "Chelsea",
+    "club_norm": "chelsea",
+    "p_win": 0.04685133046505849,
+    "p_top6": 0.8658568888156788,
+    "p_rel": 0.0,
+    "E_rank": 4.932590898079393,
+    "strength": 0.5860430633600638
+  },
+  {
+    "club": "Man Utd",
+    "club_norm": "man utd",
+    "p_win": 0.017542009778777713,
+    "p_top6": 0.6891347394138096,
+    "p_rel": 0.0,
+    "E_rank": 6.43429605535319,
+    "strength": 0.42796883627861154
+  },
+  {
+    "club": "Brighton",
+    "club_norm": "brighton",
+    "p_win": 0.024569709348536486,
+    "p_top6": 0.5646216933519109,
+    "p_rel": 0.0,
+    "E_rank": 7.409317325139104,
+    "strength": 0.3253350184064101
+  },
+  {
+    "club": "Brentford",
+    "club_norm": "brentford",
+    "p_win": 0.009609970574460834,
+    "p_top6": 0.5055269099172407,
+    "p_rel": 0.0,
+    "E_rank": 7.926954808938691,
+    "strength": 0.27084686221697984
+  },
+  {
+    "club": "Man City",
+    "club_norm": "man city",
+    "p_win": 0.16508679609480847,
+    "p_top6": 0.653667451519365,
+    "p_rel": 0.35958015308179303,
+    "E_rank": 8.6997278389251,
+    "strength": 0.1895023327447264
+  },
+  {
+    "club": "Leeds",
+    "club_norm": "leeds",
+    "p_win": 0.002783840682284289,
+    "p_top6": 0.23781598154246278,
+    "p_rel": 0.052466821523935586,
+    "E_rank": 10.456388376280994,
+    "strength": 0.004590697233579539
+  },
+  {
+    "club": "Aston Villa",
+    "club_norm": "aston villa",
+    "p_win": 0.0,
+    "p_top6": 0.2435276739331147,
+    "p_rel": 0.05961796649491676,
+    "E_rank": 10.4691043739995,
+    "strength": 0.003252171157947415
+  },
+  {
+    "club": "Everton",
+    "club_norm": "everton",
+    "p_win": 0.0,
+    "p_top6": 0.17410085989858146,
+    "p_rel": 0.0521705857083896,
+    "E_rank": 10.972387220770075,
+    "strength": -0.049724970607376365
+  },
+  {
+    "club": "Tottenham",
+    "club_norm": "spurs",
+    "p_win": 0.003278311290407307,
+    "p_top6": 0.0,
+    "p_rel": 0.0,
+    "E_rank": 11.96393857580552,
+    "strength": -0.15409879745321256
+  },
+  {
+    "club": "Newcastle",
+    "club_norm": "newcastle",
+    "p_win": 0.0,
+    "p_top6": 0.0,
+    "p_rel": 0.05140969574561663,
+    "E_rank": 12.359867870219317,
+    "strength": -0.19577556528624385
+  },
+  {
+    "club": "Bournemouth",
+    "club_norm": "bournemouth",
+    "p_win": 0.0,
+    "p_top6": 0.0,
+    "p_rel": 0.06712541412760999,
+    "E_rank": 12.46987789889327,
+    "strength": -0.20735556830455468
+  },
+  {
+    "club": "Sunderland",
+    "club_norm": "sunderland",
+    "p_win": 0.0,
+    "p_top6": 0.0,
+    "p_rel": 0.17424098037874797,
+    "E_rank": 13.219686862651235,
+    "strength": -0.28628282764749846
+  },
+  {
+    "club": "Fulham",
+    "club_norm": "fulham",
+    "p_win": 0.0,
+    "p_top6": 0.0,
+    "p_rel": 0.2432645822066486,
+    "E_rank": 13.70285207544654,
+    "strength": -0.3371423237312147
+  },
+  {
+    "club": "Crystal Palace",
+    "club_norm": "crystal palace",
+    "p_win": 0.0,
+    "p_top6": 0.0,
+    "p_rel": 0.2912264060848913,
+    "E_rank": 14.03858484259424,
+    "strength": -0.37248261500991997
+  },
+  {
+    "club": "Ipswich",
+    "club_norm": "ipswich",
+    "p_win": 0.0,
+    "p_top6": 0.0,
+    "p_rel": 0.42290977465261315,
+    "E_rank": 14.960368422568292,
+    "strength": -0.46951246553350445
+  },
+  {
+    "club": "Hull",
+    "club_norm": "hull",
+    "p_win": 0.0011590973280599692,
+    "p_top6": 0.0,
+    "p_rel": 0.557329445748166,
+    "E_rank": 15.888556049628503,
+    "strength": -0.5672164262766846
+  },
+  {
+    "club": "Coventry",
+    "club_norm": "coventry",
+    "p_win": 0.0,
+    "p_top6": 0.0,
+    "p_rel": 0.6686581742466716,
+    "E_rank": 16.680607219726703,
+    "strength": -0.6505902336554424
+  }
+]

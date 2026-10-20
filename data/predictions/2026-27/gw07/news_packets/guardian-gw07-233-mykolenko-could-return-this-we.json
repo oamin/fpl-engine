@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:233-mykolenko-could-return-this-weekend",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Everton",
+  "player_ids": [
+    233
+  ],
+  "headline": "Mykolenko could return this weekend",
+  "body": "The Guardian team news, 16 Oct 2026: Mykolenko (Everton) listed doubtful.",
+  "sha256": "e048487aa9d200441021f5414bd41429fce049b2f41996b5c46d29d7a25bfec9"
+}

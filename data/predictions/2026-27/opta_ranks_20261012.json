@@ -1,0 +1,27 @@
+{
+  "source": "Opta supercomputer",
+  "as_of": "2026-10-12",
+  "note": "SI 2026-10-11 full table; YEP 2026-10-12 title flip (City 1st). Publishes place/points only — no season GF/GA.",
+  "clubs": [
+    {"rank": 1, "club": "Man City", "pred_pts": 78.43},
+    {"rank": 2, "club": "Arsenal", "pred_pts": 77.17},
+    {"rank": 3, "club": "Brighton", "pred_pts": 63.24},
+    {"rank": 4, "club": "Liverpool", "pred_pts": 61.19},
+    {"rank": 5, "club": "Chelsea", "pred_pts": 56.54},
+    {"rank": 6, "club": "Brentford", "pred_pts": 54.0},
+    {"rank": 7, "club": "Newcastle", "pred_pts": 53.09},
+    {"rank": 8, "club": "Everton", "pred_pts": 53.04},
+    {"rank": 9, "club": "Man United", "pred_pts": 51.9},
+    {"rank": 10, "club": "Aston Villa", "pred_pts": 51.43},
+    {"rank": 11, "club": "Leeds", "pred_pts": 51.13},
+    {"rank": 12, "club": "Hull", "pred_pts": 45.69},
+    {"rank": 13, "club": "Ipswich", "pred_pts": 45.56},
+    {"rank": 14, "club": "Crystal Palace", "pred_pts": 45.0},
+    {"rank": 15, "club": "Bournemouth", "pred_pts": 44.86},
+    {"rank": 16, "club": "Nott'm Forest", "pred_pts": 44.07},
+    {"rank": 17, "club": "Tottenham", "pred_pts": 43.95},
+    {"rank": 18, "club": "Sunderland", "pred_pts": 42.18},
+    {"rank": 19, "club": "Coventry", "pred_pts": 39.63},
+    {"rank": 20, "club": "Fulham", "pred_pts": 38.26}
+  ]
+}

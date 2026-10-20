@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw07:480-gibbs-white-could-return-this-weekend",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/16/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-16T18:07:00Z",
+  "club": "Nott'm Forest",
+  "player_ids": [
+    480
+  ],
+  "headline": "Gibbs-White could return this weekend",
+  "body": "The Guardian team news, 16 Oct 2026: Gibbs-White (Nott'm Forest) listed doubtful.",
+  "sha256": "24d57c3dada29f5d7ae4f0741fa67ab22e43b2d13967627c7946a6c37154d297"
+}
