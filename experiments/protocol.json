@@ -1375,6 +1375,29 @@
     "module": "src/models/strand_handoff.py",
     "report": "reports/strand_handoff_smoke.md",
     "status": "plumbing_only_no_likelihood_arm",
-    "note": "Priced FD λ samples update ClubPath before Opta t+2…; register path-V/log screen before promote"
+    "note": "Priced centreline M→k∼M observe on ClubPath before Opta t+2…; likelihood via cascade_viability_batch B3"
+  },
+  "cascade_viability_batch": {
+    "locked": "2026-10-20",
+    "role": "overnight integrity + likelihood + FT/captain sanity for short→long",
+    "module": "src/eval/cascade_viability_batch.py",
+    "report": "reports/cascade_short_long_viability_results.md",
+    "design": "reports/cascade_short_long_viability_audits.md",
+    "gw_start": 8,
+    "gw_end": 28,
+    "n_mc": 6,
+    "sigma": 3.0,
+    "seasons": ["2022-23", "2023-24", "2024-25", "2025-26"],
+    "arms": {
+      "A": "integrity (as-of, no λ jitter, k∈M, routing, MILP units)",
+      "B1": "short_gen − short_mean (FD centreline)",
+      "B2": "long_gen − long_mean (oracle-rank Opta map; diagnostic ranks)",
+      "B3": "short_gen − long_gen (priced info vs Opta-only)",
+      "C": "xi_plus_captain_ft + xi_plus_captain N=12 smoke (not path-V promote)",
+      "D": "unit regression + contaminated banner"
+    },
+    "metric": "gaussian_log_score on point mean; paired treatment−baseline by GW then cluster_interval",
+    "lambda_jitter": false,
+    "any_later_change": "dated protocol update required"
   }
 }
