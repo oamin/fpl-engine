@@ -85,7 +85,7 @@ Protocol: `cascade_short_generative`. Entry: `src/models/cascade_short.py` → `
 | Layer | Method |
 | --- | --- |
 | Mean / independent E[V] | `score_team_side` (moment xCS/xGC) |
-| Scenario strands (default on) | λ ±15% → `k ∼ M` → lineup cov → attack dice → CS/GC from rolled GA |
+| Scenario strands (default on) | centreline `M` → `k ∼ M` (no λ jitter) → lineup cov → attack dice → CS/GC from rolled GA |
 | Soft priors | DefCon `P(hit)`, bonus/cards own-rate, GKP saves multinomial — via `history_priors_for_xp` / same helpers as `score_xp_v2` |
 | Deferred | firm XI / news override; bonus-from-roll |
 

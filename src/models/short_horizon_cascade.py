@@ -5,13 +5,13 @@ Architecture (does **not** replace published ``score_xp_v2`` / L4 mean path):
 1. **Mean layer** — frozen as-of rates (same-season GW ``< t``) + football-data
    opening AH+OU Dixon–Coles moments → ``numagent_xp.score_team_side``
    (``SCORE_NAME = score_xp_v2``). Same assembler as L4 ``project_week_score_xp_v2``.
-2. **Scenario layer** — sample ``λ_H``, ``λ_A`` inside ±15% of the FD fit,
-   rebuild ``M`` (ρ held), then **generative** scoring on each priced fixture:
-   ``k ∼ M`` → lineup minutes cov → scorer/assist dice (α empties) → CS/GC
-   from the rolled scoreline (``defence_roll``; no moment xCS/xGC). Soft
-   terms (DefCon, bonus, cards, saves) stay expanding-mean priors. Firm XI
-   override deferred. Toggle ``generative_attack=False`` to fall back to
-   closed-form ``score_team_side`` on sampled moments.
+2. **Scenario layer (locked)** — book / FD fit → centreline Dixon–Coles ``M``
+   → ``k ∼ M`` (categorical over every cell). **No λ jitter.** Then lineup
+   minutes cov → scorer/assist dice (α empties) → CS/GC from the rolled
+   scoreline (``defence_roll``; no moment xCS/xGC). Soft terms (DefCon,
+   bonus, cards, saves) stay expanding-mean priors. Firm XI override
+   deferred. Toggle ``generative_attack=False`` falls back to closed-form
+   ``score_team_side`` on centreline moments.
 3. **Path FT (default)** — L1 free rebuild at ``t``, then L3 transfers+hits at
    ``t+1`` with FT bank 1 (wildcard-like open → banked FT).
 4. **L4 inject (optional)** — ``scored_weeks_to_l4_pools`` maps scored boards
@@ -56,7 +56,9 @@ ROOT = Path(__file__).resolve().parents[2]
 PROCESSED = ROOT / "data" / "processed"
 REPORTS = ROOT / "reports"
 
-MARKET_BAND = 0.15
+# Retired 2026-10-20: artificial Uniform(1±band) λ jitter. Locked scenario
+# path is centreline M → k∼M. Do not raise without a dated protocol change.
+MARKET_BAND = 0.0
 DEFAULT_N = 8
 DEFAULT_SEED = 7
 DEFAULT_GAMMA = 0.9
@@ -138,13 +140,20 @@ def sample_fixture_moments(
     *,
     band: float = MARKET_BAND,
 ) -> dict[str, float]:
-    """Perturb FD λ ±band, rebuild Dixon–Coles M, return side moments."""
+    """Centreline Dixon–Coles moments from the fitted λ (no λ jitter).
+
+    ``band`` is retired (default 0). Non-zero values remain only for legacy
+    callers; locked cascade_short strands must use ``band=0`` / centreline.
+    ``rng`` is unused when ``band==0`` (kept for call-site compatibility).
+    """
     lh = float(fit["lam_h"])
     la = float(fit["lam_a"])
     rho = float(fit.get("rho", 0.0) or 0.0)
-    lh_s = lh * rng.uniform(1.0 - band, 1.0 + band)
-    la_s = la * rng.uniform(1.0 - band, 1.0 + band)
-    mom = moments_from_lams(max(lh_s, 1e-6), max(la_s, 1e-6), rho)
+    w = float(band)
+    if w > 0.0:
+        lh = lh * rng.uniform(1.0 - w, 1.0 + w)
+        la = la * rng.uniform(1.0 - w, 1.0 + w)
+    mom = moments_from_lams(max(lh, 1e-6), max(la, 1e-6), rho)
     return {
         "xg_home": mom["xg_home"],
         "xcs_home": mom["xcs_home"],
@@ -152,8 +161,8 @@ def sample_fixture_moments(
         "xg_away": mom["xg_away"],
         "xcs_away": mom["xcs_away"],
         "xgc_away": mom["xgc_away"],
-        "lam_h": lh_s,
-        "lam_a": la_s,
+        "lam_h": float(max(lh, 1e-6)),
+        "lam_a": float(max(la, 1e-6)),
     }
 
 
@@ -513,14 +522,27 @@ def run_decision(
     sample_ov_t1: list[dict[int, dict[str, float]]] = []
 
     for s_i in range(int(n_strands)):
-        ov_t: dict[int, dict[str, float]] = {}
-        ov_t1: dict[int, dict[str, float]] = {}
-        for fit in fits_t:
-            ov_t[int(fit["fixture"])] = sample_fixture_moments(fit, rng, band=band)
-        for fit in fits_t1:
-            ov_t1[int(fit["fixture"])] = sample_fixture_moments(fit, rng, band=band)
-        sample_ov_t.append(ov_t)
-        sample_ov_t1.append(ov_t1)
+        # Locked: centreline λ → M → k∼M. No artificial λ band.
+        # Strand diversity comes from the categorical roll (+ lineup/attack RNG).
+        ov_t: dict[int, dict[str, float]] | None = None
+        ov_t1: dict[int, dict[str, float]] | None = None
+        if float(band) > 0.0:
+            # Legacy escape hatch only — not the locked cascade_short path.
+            ov_t = {}
+            ov_t1 = {}
+            for fit in fits_t:
+                ov_t[int(fit["fixture"])] = sample_fixture_moments(
+                    fit, rng, band=band
+                )
+            for fit in fits_t1:
+                ov_t1[int(fit["fixture"])] = sample_fixture_moments(
+                    fit, rng, band=band
+                )
+            sample_ov_t.append(ov_t)
+            sample_ov_t1.append(ov_t1)
+        else:
+            sample_ov_t.append({})
+            sample_ov_t1.append({})
 
         gen_rng = np.random.default_rng(int(seed) * 1_000_003 + int(s_i) * 97 + 13)
         board_t = score_week_scenario(
@@ -754,8 +776,9 @@ def write_report(payload: dict[str, Any], path: Path | None = None) -> Path:
         f"**`{payload.get('scenario_scorer', 'short_horizon_generative')}`** "
         f"(generative_attack={payload.get('generative_attack')}, "
         f"lineup_cov={payload.get('lineup_cov')}). Does **not** replace the "
-        "published L4 mean path. Rates frozen at the deadline; λ sampled "
-        "inside ±15% of FD Dixon–Coles fits; path FT via L1 → L3.",
+        "published L4 mean path. Rates frozen at the deadline; scenario "
+        "strands use centreline FD Dixon–Coles `M` → `k ∼ M` (no λ jitter); "
+        "path FT via L1 → L3.",
         "",
         "## Decision",
         "",
@@ -803,8 +826,8 @@ def write_report(payload: dict[str, Any], path: Path | None = None) -> Path:
         "2. Mean layer: team pots `α_G/α_A × xG_M`; defence from `xCS` / `xGC`; "
         "`numagent_xp.score_team_side` → `score_xp_v2`.",
         "3. Player rates: same-season GW `< t` only (`asof_share_history` + RATE_M0).",
-        "4. Scenario (priced t:t+1): sample λ ±15%; rebuild `M`; then "
-        "`k ∼ M` → lineup minutes cov → scorer/assist dice → CS/GC from "
+        "4. Scenario (priced t:t+1): centreline `M` → `k ∼ M` (no λ jitter); "
+        "then lineup minutes cov → scorer/assist dice → CS/GC from "
         "rolled GA (`defence_roll`). DefCon/bonus/cards/saves from expanding "
         "means (bonus-from-roll parked). Firm XI override deferred.",
         "5. Path: L1 free rebuild at t, L3 FT/hits at t+1.",

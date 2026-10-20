@@ -4,6 +4,14 @@ Cursor chooses the next pre-registered comparison. The PI is not asked to pick. 
 
 **Numagent 2.0 is locked on main** — see `.cursor/context.md` and `reports/LOCKED.md` (`protocol.numagent_2_0`). Engine primary scorer is `score_xp_v2`. Numagent 1.0 and `score_xp` are **archived in-place** (`reports/ARCHIVE_NUMAGENT_1_0.md`). This file is the **park log**. Everything from “Procedure, locked 2026-10-07” downward is **Numagent 1.0 / stage archaeology** — not instructions for the live path.
 
+## Rejected — artificial λ Uniform(±15%) on cascade_short (2026-10-20)
+
+Agent-era scenario spice (`MARKET_BAND=0.15`): multiply fitted λ by
+`Uniform(0.85,1.15)` before rebuilding `M`. Never PI-approved. Locked path is
+book/FD (or Opta) centreline → `M` → categorical `k ∼ M`. Outcome noise is the
+roll over `M`, not a second invented λ axis. Contaminated diagnostic:
+`reports/multistage_xi_captain_ft_short_long_trial.md` (GW8 used ±15%).
+
 ## Parked — cascade_short bonus-from-roll (2026-10-20)
 
 Scenario soft terms stay expanding-mean `bonus_mu` / `card_mu` / DefCon / saves.

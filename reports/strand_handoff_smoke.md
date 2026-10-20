@@ -1,6 +1,6 @@
 # Strand hand-off smoke (priced → Opta)
 
-Plumbing only. Short-horizon FD λ samples (±15%) update Opta-initialised `ClubPath` rates before the long-horizon roll continues.
+Plumbing only. Short-horizon centreline `M` → `k ∼ M` (no λ jitter) updates Opta-initialised `ClubPath` rates before the long-horizon roll continues.
 
 - Season / GW: **2024-25** / **10**
 - Priced fixtures: **10**

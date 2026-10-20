@@ -1,5 +1,9 @@
 # Multistage MC + MILP — cascade_short GW8 + cascade_long GW9–19
 
+> **CONTAMINATED (2026-10-20).** GW8 priced scenarios used retired artificial
+> λ Uniform(±15%) jitter. Do not cite frequencies as a locked cascade result.
+> Re-run after `MARKET_BAND=0` / centreline `M` → `k ∼ M` lock.
+
 Diagnostic: generative FT+captain (no chips). Wall-clock ≈ **6.0 min** (N=12).
 
 Trial (diagnostic). Objective: **`xi_plus_captain_ft`**. Not a gated likelihood promotion. Chips off.

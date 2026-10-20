@@ -14,9 +14,11 @@ from src.models.multistage_mc_milp import (
     StrandResult,
     aggregate_frequencies,
     sample_match_lams,
+    sample_priced_scenario,
     sample_scoreline,
 )
 from src.models import cascade_long as cl
+from src.models.short_horizon_cascade import MARKET_BAND
 
 
 class CascadeLongIdentity(unittest.TestCase):
@@ -24,6 +26,40 @@ class CascadeLongIdentity(unittest.TestCase):
         self.assertEqual(cl.BRANCH, "cascade_long")
         self.assertEqual(cl.HORIZON, "t+2:t+n")
         self.assertEqual(cl.MATCH_SOURCE, "opta_rank_gf_ga")
+
+
+class PricedCentrelineRoll(unittest.TestCase):
+    def test_market_band_retired(self) -> None:
+        self.assertEqual(MARKET_BAND, 0.0)
+
+    def test_priced_roll_uses_centreline_lambda(self) -> None:
+        fit = {
+            "home": "arsenal",
+            "away": "everton",
+            "lam_h": 2.05,
+            "lam_a": 0.68,
+            "rho": -0.2,
+            "home_props": {},
+            "away_props": {},
+        }
+        rng = random.Random(0)
+        sc = sample_priced_scenario(fit, rng)
+        self.assertAlmostEqual(sc["lam_h"], 2.05)
+        self.assertAlmostEqual(sc["lam_a"], 0.68)
+        self.assertEqual(sc["source"], "cascade_short_priced")
+        self.assertGreaterEqual(sc["hg"], 0)
+        self.assertGreaterEqual(sc["ag"], 0)
+
+    def test_priced_rejects_lambda_jitter(self) -> None:
+        fit = {
+            "home": "arsenal",
+            "away": "everton",
+            "lam_h": 2.0,
+            "lam_a": 1.0,
+            "rho": 0.0,
+        }
+        with self.assertRaises(ValueError):
+            sample_priced_scenario(fit, random.Random(0), band=0.15)
 
 
 class SampleScorelineTest(unittest.TestCase):

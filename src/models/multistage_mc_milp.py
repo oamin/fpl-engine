@@ -75,7 +75,7 @@ from src.models.opta_gf_ga_horizon import (
     rank_gf_ga_profile,
     sample_match_from_opta_ranks,
 )
-from src.models.short_horizon_cascade import MARKET_BAND, sample_fixture_moments
+from src.models.short_horizon_cascade import MARKET_BAND
 from src.models.minutes_overlay import apply_availability_overlay, overlay_summary
 from src.models.player_pool import POOL_JSON as DEFAULT_POOL_JSON, load_player_pool_ids
 from src.teams import norm_team
@@ -450,10 +450,17 @@ def sample_priced_scenario(
     *,
     band: float = MARKET_BAND,
 ) -> dict[str, Any]:
-    """cascade_short match roll: priced λ ±band → ``M`` → ``k ∼ M``."""
-    sampled = sample_fixture_moments(fit, rng, band=band)
-    sh = float(sampled["lam_h"])
-    sa = float(sampled["lam_a"])
+    """cascade_short match roll: priced centreline λ → ``M`` → ``k ∼ M``.
+
+    ``band`` is retired (must be 0 on the locked path). Diversity is the
+    categorical draw over ``M``, not artificial λ jitter.
+    """
+    if float(band) != 0.0:
+        raise ValueError(
+            "priced λ jitter is retired (band must be 0); use centreline M → k∼M"
+        )
+    sh = float(fit["lam_h"])
+    sa = float(fit["lam_a"])
     rho = float(fit.get("rho") or 0.0)
     probs = match_outcome_probs_from_lambdas(sh, sa, rho)
     roll = match_outcome_roll(probs, rng)
@@ -1203,8 +1210,8 @@ def run_multistage_trial(
         else f"mean score_team_side ({SCORE_XP_V2}) on scenario λ moments"
     )
     short_note = (
-        f"GW{priced_meta['gws'][0]} cascade_short priced λ±{MARKET_BAND:.0%}→M→k"
-        f" (props matched={priced_meta['n_props_matched']}); "
+        f"GW{priced_meta['gws'][0]} cascade_short priced centreline M→k∼M"
+        f" (props matched={priced_meta['n_props_matched']}; no λ jitter); "
         if priced_by_gw
         else ""
     )

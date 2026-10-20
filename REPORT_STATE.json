@@ -1,14 +1,9 @@
 {
-  "task": "xi_plus_captain_ft GW8-19 short+long generative N=12",
+  "task": "lock cascade short/long centreline M → k∼M; retire λ ±15% jitter",
   "status": "done",
-  "wall_clock_s": 359,
-  "n_strands": 12,
-  "n_squads_solved": 72,
-  "priced_gw": 8,
-  "props_matched": 330,
-  "top5": ["Tarkowski 0.90", "Hall 0.88", "Groß 0.85", "Van Hecke 0.79", "Dasilva 0.79"],
-  "mean_transfers": 3.63,
-  "mean_hits": 6.53,
-  "artifact": "data/predictions/2026-27/multistage_ft_short_long/multistage_xi_captain_ft_trial.json",
-  "report": "reports/multistage_xi_captain_ft_short_long_trial.md"
+  "branch": "cursor/cascade-long-m-from-opta-cc3d",
+  "MARKET_BAND": 0.0,
+  "contaminated_trial": "reports/multistage_xi_captain_ft_short_long_trial.md",
+  "protocol": ["cascade_short_generative", "cascade_long_match_outcome"],
+  "parked": "ideas.md lambda_uniform_band"
 }

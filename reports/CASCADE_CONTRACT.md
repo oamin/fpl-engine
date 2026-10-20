@@ -27,7 +27,7 @@ for scenario MILP — they consume the surfaces below.
 2. **Shares** — `SEED_SHARES = False` until a gated screen promotes otherwise (parked 2026-10-20).
 3. **Short horizon (t : t+1)** — priced FD (or live book) λ; frozen as-of rates.
    - **Mean layer:** `score_team_side` (moment xCS/xGC); may cross-check `project_week_score_xp_v2`.
-   - **Scenario strands (default):** λ ±15% → `k ∼ M` → lineup cov → attack dice → CS/GC from rolled GA; soft priors = locked `score_xp_v2` DefCon/bonus/cards/saves helpers (`protocol.cascade_short_generative`). Firm XI deferred; bonus-from-roll parked.
+   - **Scenario strands (default):** centreline book/FD `M` → `k ∼ M` (categorical; **no λ jitter**) → lineup cov → attack dice → CS/GC from rolled GA; soft priors = locked `score_xp_v2` DefCon/bonus/cards/saves helpers (`protocol.cascade_short_generative`). Firm XI deferred; bonus-from-roll parked. Artificial λ Uniform(±15%) **retired**.
    - Path FT uses injected μ + L3/L4, not a second call into the priced factory.
 4. **Long horizon (t+2…)** — every fixture baselines from Opta place → GF/GA (±MAE) → λ → Dixon–Coles `M` → `k ∼ M` (1st vs 20th keep distinct rates; no ClubPath λ blend) → generative player xP equivalent to cascade_short (**props off**) via `score_pool_generative_on_scenarios` (`protocol.cascade_long_match_outcome`).
 5. **Hand-off** — priced weeks may `observe` onto `ClubPath` before Opta roll (`strand_handoff`); plumbing only — ClubPath is unused for long-horizon λ.
