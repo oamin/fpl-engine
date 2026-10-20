@@ -1,18 +1,7 @@
 {
-  "milestone": "path-evolution-trial",
-  "status": "complete",
-  "summary": "Quick trial (N=40, GW8–19): path-only ClubPath (Opta seed + n0=4, no fixture Opta re-anchor) grows cross-strand λ SD 0→0.41 and Arsenal att SD 0.29→0.47. Current opta_blend keeps λ SD flat (~0.04–0.08) and att SD shrinks — Opta re-anchor suppresses horizon fan-out. n0=0 wipes seed on match 1.",
-  "gemini": "",
-  "decisions": {
-    "path_evolution": {
-      "trial": "prefer_path_only_with_n0",
-      "n0_suggested": 4,
-      "avoid": ["fixture_opta_blend", "z_h_inflation", "n0_equals_0"]
-    }
-  },
-  "artifacts": [
-    "src/models/path_evolution_trial.py",
-    "reports/path_evolution_trial.md",
-    "data/processed/path_evolution_trial.json"
-  ]
+  "task": "cascade_long Opta-rank GF/GA baseline (no ClubPath lambda blend)",
+  "status": "implemented",
+  "branch": "cursor/cascade-long-m-from-opta-cc3d",
+  "protocol": "cascade_long_match_outcome",
+  "change": "Every fixture samples season GF/GA inside Opta place +/-MAE bands via sample_match_from_opta_ranks, then M->k~M. Removed 0.7/0.3 Opta+path blend; ClubPath unused for lambda (KeyError fallback only)."
 }

@@ -29,8 +29,8 @@ for scenario MILP — they consume the surfaces below.
    - **Mean layer:** `score_team_side` (moment xCS/xGC); may cross-check `project_week_score_xp_v2`.
    - **Scenario strands (default):** λ ±15% → `k ∼ M` → lineup cov → attack dice → CS/GC from rolled GA; soft priors = locked `score_xp_v2` DefCon/bonus/cards/saves helpers (`protocol.cascade_short_generative`). Firm XI deferred; bonus-from-roll parked.
    - Path FT uses injected μ + L3/L4, not a second call into the priced factory.
-4. **Long horizon (t+2…)** — Opta ranks → GF/GA (±MAE) → λ → Dixon–Coles `M` → `k ∼ M` → `ClubPath.observe` → generative player xP equivalent to cascade_short (**props off**) via `score_pool_generative_on_scenarios` (`protocol.cascade_long_match_outcome`).
-5. **Hand-off** — priced weeks may `observe` onto `ClubPath` before Opta roll (`strand_handoff`); plumbing until a path-V / player-log arm is registered.
+4. **Long horizon (t+2…)** — every fixture baselines from Opta place → GF/GA (±MAE) → λ → Dixon–Coles `M` → `k ∼ M` (1st vs 20th keep distinct rates; no ClubPath λ blend) → generative player xP equivalent to cascade_short (**props off**) via `score_pool_generative_on_scenarios` (`protocol.cascade_long_match_outcome`).
+5. **Hand-off** — priced weeks may `observe` onto `ClubPath` before Opta roll (`strand_handoff`); plumbing only — ClubPath is unused for long-horizon λ.
 6. **L4** — solver is column-agnostic (`mu_col`). Priced live default stays `build_mupost_priced_horizon` / live Odds boards. Cascade builds μ DataFrames and calls `pools_from_mu_boards`.
 
 ## Do not

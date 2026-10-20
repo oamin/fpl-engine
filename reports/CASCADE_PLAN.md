@@ -8,7 +8,7 @@ Two branches, **same principle** (`score_xp_v2` / `score_team_side`), **differen
 | Branch | Module | Horizon | Match source | Buy universe |
 | --- | --- | --- | --- | --- |
 | **cascade_short** | `src/models/cascade_short.py` → `short_horizon_cascade` | t : t+1 | Live book (live) / FD AH+OU (hist); scenario = generative `k∼M`→lineup→dice | **player_pool** |
-| **cascade_long** | `src/models/cascade_long.py` → `multistage_mc_milp` | t+2 … t+n | Opta ranks → GF/GA → λ → `M` → `k∼M` → ClubPath | **player_pool** |
+| **cascade_long** | `src/models/cascade_long.py` → `multistage_mc_milp` | t+2 … t+n | Opta place → GF/GA ±bands → λ → `M` → `k∼M` (no path blend) | **player_pool** |
 
 Shared **player_pool**: FFScout firm ∩ expanding minutes > 60 — `src/models/player_pool.py` (snapshot under `data/predictions/2026-27/selectable_pool/`). Sticky for the season; both branches load the same ids.
 
@@ -27,7 +27,7 @@ decision GW t
 │   ├── mean: L1 / L3
 │   └── path: scored_weeks_to_l4_pools → L4 (screen before promote)
 └── cascade_long  t+2 … t+n
-    ├── Opta ranks → GF/GA (±MAE) → λ → M → k∼M → ClubPath.observe
+    ├── Opta place → GF/GA (±MAE) → λ → M → k∼M  (rank baseline every fixture)
     ├── generative player xP (= cascade_short; props off)
     ├── MILP frequency (squad_sum | xi_plus_captain | xi_plus_captain_ft)
     └── optional priced→Opta hand-off (plumbing until path-V)

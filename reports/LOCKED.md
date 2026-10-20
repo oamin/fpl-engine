@@ -98,7 +98,7 @@ Protocol: `cascade_long_match_outcome`. Entry: `cascade_long` → `multistage_mc
 | Step | Method |
 | --- | --- |
 | Rank → GF/GA | Locked OLS on closed-season place history (`opta_gf_ga_horizon`) |
-| λ | `match_prediction` bands; 0.7 Opta + 0.3 ClubPath blend |
+| λ | Opta place → GF/GA ±MAE → `sample_match_from_opta_ranks` (no ClubPath blend) |
 | M / scoreline | `match_outcome_probs_from_lambdas` → `match_outcome_roll` (`k ∼ M`) |
 | Player xP | Same generative stack as cascade_short (lineup → dice → CS/GC → soft priors); **props off** |
 

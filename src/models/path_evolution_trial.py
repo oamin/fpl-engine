@@ -1,14 +1,15 @@
-"""Quick trial: Opta-blend vs natural path-only ClubPath evolution.
+"""Quick trial: Opta-rank baseline vs path-only ClubPath evolution.
 
 No MILP. Compares cross-strand λ / rate fan-out by horizon step.
 
 Modes
 -----
-- ``opta_blend`` — current ``sample_opta_scenario`` (0.7 Opta + 0.3 path;
-  Opta MAE bands forever).
-- ``path_only`` — Opta seeds ClubPath with prior strength ``n0``; each
+- ``opta_blend`` — locked ``sample_opta_scenario``: every fixture rolls from
+  Opta place → GF/GA ±MAE → λ → ``M`` (no ClubPath blend). Name kept for
+  the trial artifact.
+- ``path_only`` — exploratory: Opta seeds ClubPath with prior ``n0``; each
   fixture uses path λ only (lo=hi=centre), rolls ``k ∼ M``, observes.
-  No per-fixture Opta re-anchor, no ±15% / z(h).
+  Rejected for cascade_long λ.
 
 Reproduce
 ---------

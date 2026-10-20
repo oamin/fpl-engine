@@ -4,19 +4,19 @@ Numagent 2.0 scoring (locked ``score_xp_v2``)
 --------------------------------------------
 From decision gameweek ``t``, for each of ``N`` Monte Carlo strands:
 
-1. **Match scenario (GW t+2…t+n).** For each fixture, take Opta predicted
-   ranks → season GF/GA (±MAE bands from closed-season place history) →
-   match λ (``match_prediction`` / path blend). Sample λ inside those
-   bands, build Dixon–Coles ``M`` from the sampled λ
-   (``match_outcome_probs_from_lambdas``), then ``k ∼ M``
-   (``match_outcome_roll``). Sampled goals update the strand's club rates
-   so later weeks stay coherent.
+1. **Match scenario (GW t+2…t+n).** Every fixture baselines from Opta
+   predicted place → season GF/GA (±MAE bands) → match λ. 1st place
+   rolls from 1st-place GF/GA rates; 20th from 20th. Sample GF/GA inside
+   the rank bands (``sample_match_from_opta_ranks``), build Dixon–Coles
+   ``M`` (``match_outcome_probs_from_lambdas``), then ``k ∼ M``
+   (``match_outcome_roll``). No ClubPath blend on λ — Opta ranks stay
+   the centreline for the whole horizon.
 
 2. **Player xP (``score_xp_v2`` generative).** Same stack as cascade_short
    at each snapshot: lineup cov → attack dice → CS/GC from rolled GA →
    soft priors (DefCon/bonus/cards/saves). **No player props** (unavailable
-   beyond priced weeks). Future weeks in the remaining horizon get a
-   scratch ``k ∼ M`` from path λ for valuation only (ClubPath unchanged).
+   beyond priced weeks). Future weeks in the remaining horizon scratch
+   ``k ∼ M`` from the same Opta-rank baseline (ClubPath unused for λ).
 
 3. **MILP + frequency.** Selectable-pool squad MILP on discounted path
    xP; aggregate selection frequency across strands × snapshots.
@@ -72,6 +72,7 @@ from src.models.opta_gf_ga_horizon import (
     match_prediction,
     pots_from_season_gf_ga,
     rank_gf_ga_profile,
+    sample_match_from_opta_ranks,
 )
 from src.models.minutes_overlay import apply_availability_overlay, overlay_summary
 from src.models.player_pool import POOL_JSON as DEFAULT_POOL_JSON, load_player_pool_ids
@@ -332,39 +333,47 @@ def sample_opta_scenario(
     paths: Mapping[str, ClubPath],
     league_gf: float,
     rng: random.Random,
+    centre_blend: float = 0.5,
 ) -> dict[str, Any]:
-    """Sample λ from Opta rank→GF/GA bands, build ``M``, roll scoreline.
+    """Baseline roll: Opta place → GF/GA ± bands → λ → ``M`` → ``k ∼ M``.
 
-    Falls back to path ±15% bands only if a club is missing from Opta ranks.
+    Rank 1 always draws from 1st-place GF/GA rates; rank 20 from 20th.
+    ``ClubPath`` is unused for λ (kept only as KeyError fallback).
     """
     try:
-        pred = match_prediction(home, away)
-        # Light blend toward path rates after early rolls (coherence), still
-        # anchored on Opta mean/bands for the fixture quality (1st vs 20th).
-        path_pred = path_match_pots(paths, home, away, league_gf=league_gf)
-        lam_h = 0.7 * pred["lam_home"] + 0.3 * path_pred["lam_home"]
-        lam_a = 0.7 * pred["lam_away"] + 0.3 * path_pred["lam_away"]
-        lo_h, hi_h = pred["lam_home_lo"], pred["lam_home_hi"]
-        lo_a, hi_a = pred["lam_away_lo"], pred["lam_away_hi"]
-        home_rank = pred["home_rank"]
-        away_rank = pred["away_rank"]
+        draw = sample_match_from_opta_ranks(
+            home,
+            away,
+            rng,
+            centre_blend=centre_blend,
+            league_gf=league_gf,
+        )
+        # λ already sampled inside rank GF/GA bands — roll k∼M at that λ.
+        sh = float(draw["lam_home"])
+        sa = float(draw["lam_away"])
+        probs = match_outcome_probs_from_lambdas(sh, sa, 0.0)
+        roll = match_outcome_roll(probs, rng)
+        gh, ga = int(roll.goals_home), int(roll.goals_away)
+        lo_h, hi_h = float(draw["lam_home_lo"]), float(draw["lam_home_hi"])
+        lo_a, hi_a = float(draw["lam_away_lo"]), float(draw["lam_away_hi"])
+        home_rank = draw["home_rank"]
+        away_rank = draw["away_rank"]
     except KeyError:
         path_pred = path_match_pots(paths, home, away, league_gf=league_gf)
-        lam_h = path_pred["lam_home"]
-        lam_a = path_pred["lam_away"]
+        gh, ga, sh, sa = sample_scoreline(
+            path_pred["lam_home"],
+            path_pred["lam_away"],
+            lam_h_lo=path_pred["lam_home_lo"],
+            lam_h_hi=path_pred["lam_home_hi"],
+            lam_a_lo=path_pred["lam_away_lo"],
+            lam_a_hi=path_pred["lam_away_hi"],
+            rng=rng,
+            centre_blend=centre_blend,
+        )
         lo_h, hi_h = path_pred["lam_home_lo"], path_pred["lam_home_hi"]
         lo_a, hi_a = path_pred["lam_away_lo"], path_pred["lam_away_hi"]
         home_rank = away_rank = None
 
-    gh, ga, sh, sa = sample_scoreline(
-        lam_h,
-        lam_a,
-        lam_h_lo=lo_h,
-        lam_h_hi=hi_h,
-        lam_a_lo=lo_a,
-        lam_a_hi=hi_a,
-        rng=rng,
-    )
     return {
         "home": home,
         "away": away,
@@ -391,7 +400,7 @@ def _scenarios_for_remaining(
     league_gf: float,
     rng: random.Random,
 ) -> dict[int, list[dict[str, Any]]]:
-    """Current GW: stored Opta rolls. Later GWs: scratch k∼M from path λ."""
+    """Current GW: stored Opta rolls. Later GWs: scratch k∼M from Opta ranks."""
     out: dict[int, list[dict[str, Any]]] = {}
     for g in remaining:
         g_i = int(g)
@@ -402,27 +411,14 @@ def _scenarios_for_remaining(
         for fx in fixtures_gw.get(g_i, []):
             if fx["home"] not in paths or fx["away"] not in paths:
                 continue
-            pred = path_match_pots(
-                paths, fx["home"], fx["away"], league_gf=league_gf
-            )
-            gh, ga, sh, sa = sample_scoreline(
-                pred["lam_home"],
-                pred["lam_away"],
-                lam_h_lo=pred["lam_home_lo"],
-                lam_h_hi=pred["lam_home_hi"],
-                lam_a_lo=pred["lam_away_lo"],
-                lam_a_hi=pred["lam_away_hi"],
-                rng=rng,
-            )
             rows.append(
-                {
-                    "home": fx["home"],
-                    "away": fx["away"],
-                    "hg": gh,
-                    "ag": ga,
-                    "lam_h": sh,
-                    "lam_a": sa,
-                }
+                sample_opta_scenario(
+                    fx["home"],
+                    fx["away"],
+                    paths=paths,
+                    league_gf=league_gf,
+                    rng=rng,
+                )
             )
         out[g_i] = rows
     return out

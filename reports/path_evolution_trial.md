@@ -2,8 +2,8 @@
 
 Diagnostic (no MILP, no likelihood gate). Compares cross-strand fan-out of match λ and a tracked club's attack rate under:
 
-1. **opta_blend** — current cascade_long (`0.7 Opta + 0.3 path`, Opta bands).
-2. **path_only** — Opta seeds `ClubPath` with prior `n0`; fixtures use path λ only; `k ∼ M`; observe. No fixture-level Opta re-anchor.
+1. **opta_blend** — now the locked Opta-rank baseline (`sample_match_from_opta_ranks`; no path λ blend). Legacy name kept for the trial artifact.
+2. **path_only** — exploratory only: Opta seeds `ClubPath` with prior `n0`; fixtures use path λ only; `k ∼ M`; observe. Rejected for cascade_long λ.
 
 - decision_gw=6 · horizon GW8–19
 - n_strands=40 · seed=7 · n0=4.0 · track=arsenal
