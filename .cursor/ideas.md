@@ -54,10 +54,10 @@ top-15; Jaccard≈0.25. Not live-comparable / not gated. Report:
 
 ## Noted — mean vs path per-GW residual (2026-10-21)
 
-`cascade_mean_path_gw_resid` on **2025-26** GW8–19 (N=12): held mean XI from
-priced t:t+1 vs strand-mean held path XIs. Residual = FD μ XI pred − actual
-(no autosub). Mean sum actual **615** > path **587**; path residual MAE
-tighter (**13** vs **24**). Same μ board on both compositions. Diagnostic only.
+`cascade_mean_path_gw_resid` on **2025-26** GW8–19 (N=12): semi-oracle pool
+(m>60 @ GW t), minutes-oracle boards, autosub+VC actuals. Held mean XI vs
+strand-mean held path XIs. Path sum actual **624** > mean **605**; path resid
+MAE **8.9** vs mean **23.1**. Diagnostic only.
 Report: `reports/cascade_mean_path_gw_resid.md`.
 
 ## Noted — historical rate baseline for cascade (2026-10-21)

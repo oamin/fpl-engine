@@ -1,10 +1,15 @@
 {
+  "semi_oracle_pool": true,
+  "min_oracle_minutes": 60.0,
+  "minutes_oracle_boards": true,
+  "autosub_actuals": true,
   "n_gws": 12,
-  "mean_resid_bias": 20.430442672002318,
-  "path_resid_bias": 10.570980741673944,
-  "mean_resid_mae": 23.672626646127853,
-  "path_resid_mae": 13.081495704057202,
-  "mean_actual_sum": 615.0,
-  "path_actual_sum": 586.7499999999999,
-  "path_minus_mean_actual_sum": -28.25
+  "mean_resid_bias": 23.134698401485227,
+  "path_resid_bias": 4.032419203560264,
+  "mean_resid_mae": 23.134698401485227,
+  "path_resid_mae": 8.87911257725915,
+  "mean_actual_sum": 605.0,
+  "path_actual_sum": 624.3333333333334,
+  "path_minus_mean_actual_sum": 19.33333333333334,
+  "mean_autosubs_sum": 14
 }

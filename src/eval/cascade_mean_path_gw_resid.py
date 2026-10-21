@@ -1,15 +1,17 @@
-"""Per-GW residual: mean MILP XI vs stable cascade path XI (one closed season).
+"""Per-GW residual: mean MILP vs stable cascade path (minutes oracle + autosub).
 
 Protocol: ``cascade_mean_path_gw_resid`` (diagnostic).
 
-For each horizon GW after a single decision:
-  - **Mean:** locked ``xi_plus_captain`` from priced t:t+1 mean boards (held).
-  - **Path (stable):** strand-mean of held path XIs from ``xi_plus_captain_ft``
-    (N strands; squad updates only at snapshots, held between).
+Upgrades vs first cut:
+  - **Semi-oracle pool** at decision GW ``t``: only players with actual
+    minutes ``> 60`` in GW ``t``.
+  - **Minutes oracle** on boards: actual ``m``, ``σ_m=0`` for the scored GW
+    (mean solve on priced t:t+1 and residual preds).
+  - **Bench autosub + VC** when banking actual points (``bank_squad_gw`` law).
 
-At each GW report predicted XI points (FD centreline ``score_xp_v2`` on that
-week's board), actual FPL points (planned XI + captain, no autosub), and
-residual = pred − actual.
+Arms (unchanged structure):
+  - **Mean:** ``xi_plus_captain`` on priced t:t+1 mean boards; held.
+  - **Path:** strand-mean of held ``xi_plus_captain_ft`` lineups.
 
   PYTHONPATH=. python3 -m src.eval.cascade_mean_path_gw_resid
   PYTHONPATH=. python3 -m src.eval.cascade_mean_path_gw_resid --season 2025-26 --n 12
@@ -39,8 +41,6 @@ from src.eval.cascade_mc_vs_mean_hist import (
     _build_hist_pool,
     _fd_priced_by_gw,
     _hist_fixtures_by_gw,
-    _mean_board,
-    run_mean_arm,
 )
 from src.markets import numagent_xp
 from src.markets.numagent_xp_pilot import _asof_alphas, load_merged
@@ -49,6 +49,7 @@ from src.models.multistage_mc_milp import (
     DEFAULT_GAMMA,
     DEFAULT_LINEUP_COV,
     OBJECTIVE_XI_CAPTAIN_FT,
+    _pick_squad_xi_captain,
     init_paths_from_opta,
     run_strand,
 )
@@ -57,12 +58,23 @@ from src.models.opta_gf_ga_horizon import (
     rank_gf_ga_profile_excluding,
     season_final_ranks,
 )
-from src.models.short_horizon_cascade import build_frozen_side_table, load_prices
+from src.models.season_climb import apply_autosubs, ordered_bench
+from src.models.short_horizon_cascade import (
+    attach_prices_and_cap,
+    build_frozen_side_table,
+    centreline_fixture_fits,
+    fixtures_for_gw,
+    load_prices,
+    score_week_on_fixture_moments,
+)
+from src.rules.fpl_2026 import normalize_position
 from src.strategy.layer4_bookie_path import _fd_index, _load_merged_enriched
+from src.teams import norm_team
 
 ROOT = Path(__file__).resolve().parents[2]
 REPORT_MD = ROOT / "reports" / "cascade_mean_path_gw_resid.md"
 STATE_JSON = ROOT / "data/processed/cascade_mean_path_gw_resid" / "state.json"
+MIN_ORACLE_MINUTES = 60.0
 
 
 def _out_dir(season: str) -> Path:
@@ -88,69 +100,181 @@ def _element_from_pid(pid: str) -> int | None:
         return None
 
 
-def _points_by_element(merged_gw: pd.DataFrame) -> dict[int, float]:
-    out: dict[int, float] = {}
-    if merged_gw is None or merged_gw.empty:
-        return out
-    for row in merged_gw.itertuples(index=False):
-        try:
-            eid = int(row.element)
-        except (TypeError, ValueError):
-            continue
-        out[eid] = float(getattr(row, "total_points", 0.0) or 0.0)
+def _pid_variants(pid: str, season: str) -> set[str]:
+    """Match both ``430`` and ``2025-26:430`` id forms."""
+    out = {str(pid)}
+    eid = _element_from_pid(pid)
+    if eid is not None:
+        out.add(str(eid))
+        out.add(f"{season}:{eid}")
     return out
 
 
-def _xi_actual(pts: dict[int, float], xi_ids: list[str], captain_id: str | None) -> float:
-    total = 0.0
-    for pid in xi_ids:
-        eid = _element_from_pid(pid)
-        if eid is not None:
-            total += float(pts.get(eid, 0.0))
-    if captain_id:
-        ce = _element_from_pid(captain_id)
-        if ce is not None:
-            total += float(pts.get(ce, 0.0))
-    return float(total)
+def semi_oracle_elements(
+    merged: pd.DataFrame, gw: int, *, min_minutes: float = MIN_ORACLE_MINUTES
+) -> set[int]:
+    """Players with actual minutes > ``min_minutes`` in GW ``gw``."""
+    g = merged.loc[pd.to_numeric(merged["GW"], errors="coerce") == int(gw)]
+    if g.empty:
+        return set()
+    mins = pd.to_numeric(g["minutes"], errors="coerce").fillna(0.0)
+    keep = g.loc[mins > float(min_minutes), "element"]
+    return {int(x) for x in pd.to_numeric(keep, errors="coerce").dropna().astype(int)}
 
 
-def _mu_by_element(board: pd.DataFrame) -> dict[int, float]:
-    out: dict[int, float] = {}
-    if board is None or board.empty:
-        return out
-    col = "score_xp_v2" if "score_xp_v2" in board.columns else "mu_post"
-    for row in board.itertuples(index=False):
-        eid = None
-        if hasattr(row, "element") and pd.notna(row.element):
-            try:
-                eid = int(row.element)
-            except (TypeError, ValueError):
-                eid = None
-        if eid is None and hasattr(row, "player_id"):
-            eid = _element_from_pid(str(row.player_id))
-        if eid is None:
-            continue
-        out[eid] = float(getattr(row, col, 0.0) or 0.0)
+def apply_minutes_oracle(
+    side: pd.DataFrame, merged: pd.DataFrame, gw: int
+) -> pd.DataFrame:
+    """Overwrite ``m`` / ``xmi`` with actual minutes; ``σ_m=0``."""
+    out = side.copy()
+    g = merged.loc[pd.to_numeric(merged["GW"], errors="coerce") == int(gw)]
+    by_el = {
+        int(r.element): float(r.minutes or 0.0)
+        for r in g.itertuples(index=False)
+        if pd.notna(r.element)
+    }
+    m = []
+    for eid in pd.to_numeric(out["element"], errors="coerce"):
+        if pd.isna(eid):
+            m.append(0.0)
+        else:
+            m.append(float(by_el.get(int(eid), 0.0)))
+    out["m"] = m
+    out["xmi"] = m
+    out["sigma_m"] = 0.0
     return out
 
 
-def _xi_pred(mu: dict[int, float], xi_ids: list[str], captain_id: str | None) -> float:
-    total = 0.0
-    for pid in xi_ids:
-        eid = _element_from_pid(pid)
-        if eid is not None:
-            total += float(mu.get(eid, 0.0))
-    if captain_id:
-        ce = _element_from_pid(captain_id)
-        if ce is not None:
-            total += float(mu.get(ce, 0.0))
-    return float(total)
+def _mean_board_oracle(
+    side: pd.DataFrame,
+    merged: pd.DataFrame,
+    enriched: pd.DataFrame,
+    fd: pd.DataFrame,
+    prices: pd.DataFrame,
+    *,
+    season: str,
+    decision_gw: int,
+    gw: int,
+    alpha_g: float,
+    alpha_a: float,
+    pool_ids: set[str],
+) -> pd.DataFrame:
+    oracle_side = apply_minutes_oracle(side, merged, gw)
+    fits = centreline_fixture_fits(fixtures_for_gw(enriched, gw), fd)
+    if not fits:
+        return pd.DataFrame()
+    board = score_week_on_fixture_moments(
+        oracle_side, fits, alpha_g=alpha_g, alpha_a=alpha_a
+    )
+    if board.empty:
+        return board
+    return attach_prices_and_cap(
+        board,
+        prices,
+        season=season,
+        decision_gw=decision_gw,
+        selectable_ids=pool_ids,
+        apply_player_pool=False,
+    )
+
+
+def run_mean_arm_oracle(
+    *,
+    side: pd.DataFrame,
+    merged: pd.DataFrame,
+    enriched: pd.DataFrame,
+    fd: pd.DataFrame,
+    prices: pd.DataFrame,
+    season: str,
+    decision_gw: int,
+    priced_gws: list[int],
+    alpha_g: float,
+    alpha_a: float,
+    pool_ids: set[str],
+    gamma: float = DEFAULT_GAMMA,
+) -> dict[str, Any]:
+    """xi+captain MILP on discounted minutes-oracle mean boards (t:t+1)."""
+    t0 = _now()
+    if len(priced_gws) < 1:
+        raise RuntimeError("no priced GWs for mean arm")
+    boards: list[pd.DataFrame] = []
+    for gw in priced_gws[:2]:
+        b = _mean_board_oracle(
+            side,
+            merged,
+            enriched,
+            fd,
+            prices,
+            season=season,
+            decision_gw=decision_gw,
+            gw=int(gw),
+            alpha_g=alpha_g,
+            alpha_a=alpha_a,
+            pool_ids=pool_ids,
+        )
+        if b.empty:
+            raise RuntimeError(f"empty mean board GW{gw}")
+        boards.append(b)
+
+    base = boards[0].copy()
+    base["mc_score"] = pd.to_numeric(base["score_xp_v2"], errors="coerce").fillna(0.0)
+    if len(boards) > 1:
+        b1 = boards[1].set_index(pd.to_numeric(boards[1]["element"], errors="coerce"))
+        add = []
+        for eid in pd.to_numeric(base["element"], errors="coerce"):
+            if eid in b1.index:
+                row = b1.loc[eid]
+                if isinstance(row, pd.DataFrame):
+                    row = row.iloc[0]
+                add.append(float(row["score_xp_v2"]) * float(gamma))
+            else:
+                add.append(0.0)
+        base["mc_score"] = base["mc_score"] + np.asarray(add, float)
+
+    def _club_key(row: pd.Series) -> str:
+        for key in ("team_norm", "club", "team"):
+            if key in row.index and pd.notna(row[key]):
+                s = str(row[key]).strip()
+                if s and s.lower() != "nan":
+                    return norm_team(s)
+        return "unk"
+
+    base["team_norm"] = [_club_key(row) for _, row in base.iterrows()]
+    if "name" not in base.columns:
+        base["name"] = base["player_id"].astype(str)
+    if "position" in base.columns:
+        base["position"] = base["position"].map(
+            lambda p: normalize_position(str(p)) if pd.notna(p) else "MID"
+        )
+    picked = _pick_squad_xi_captain(base, "mc_score", time_limit=20.0)
+    squad = picked["squad"]
+    return {
+        "elapsed_s": _now() - t0,
+        "priced_gws": list(priced_gws[:2]),
+        "objective": "xi_plus_captain",
+        "objective_value": float(picked["objective"]),
+        "captain_id": picked["captain_id"],
+        "xi_ids": list(picked["xi_ids"]),
+        "player_ids": [str(x) for x in squad["player_id"].tolist()],
+        "squad": [
+            {
+                "player_id": str(r.player_id),
+                "name": str(r.name),
+                "position": str(r.position),
+                "team_norm": str(getattr(r, "team_norm", "")),
+                "mc_score": float(r.mc_score),
+                "in_xi": str(r.player_id) in set(picked["xi_ids"]),
+                "captain": str(r.player_id) == str(picked["captain_id"]),
+            }
+            for r in squad.itertuples(index=False)
+        ],
+    }
 
 
 def _held_lineups(
     strand_squads: list[dict[str, Any]], horizon_gws: list[int]
 ) -> dict[int, dict[str, Any]]:
-    """Map each horizon GW → held XI/captain from the latest snapshot ≤ GW."""
+    """Map each horizon GW → held 15 + XI/captain from latest snapshot ≤ GW."""
     by_snap = {int(s["gw"]): s for s in strand_squads if s.get("xi_ids")}
     snaps = sorted(by_snap)
     out: dict[int, dict[str, Any]] = {}
@@ -165,6 +289,7 @@ def _held_lineups(
         if cur is None:
             continue
         out[int(gw)] = {
+            "player_ids": list(cur.get("player_ids") or []),
             "xi_ids": list(cur["xi_ids"]),
             "captain_id": cur.get("captain_id"),
             "snapshot_gw": int(cur["gw"]),
@@ -230,11 +355,212 @@ def run_path_strands(
     }
 
 
+def _squad_frame_for_bank(
+    *,
+    player_ids: list[str],
+    xi_ids: list[str],
+    captain_id: str | None,
+    board: pd.DataFrame,
+    merged_gw: pd.DataFrame,
+    season: str,
+    pool: pd.DataFrame | None = None,
+) -> pd.DataFrame:
+    """Build a 15-row frame for autosub banking (μ, minutes, points, position)."""
+    mu_col = "score_xp_v2" if "score_xp_v2" in board.columns else "mc_score"
+    board_by: dict[str, pd.Series] = {}
+    for row in board.itertuples(index=False):
+        pid = str(getattr(row, "player_id", ""))
+        for v in _pid_variants(pid, season):
+            board_by[v] = row
+        eid = getattr(row, "element", None)
+        if eid is not None and pd.notna(eid):
+            board_by[str(int(eid))] = row
+            board_by[f"{season}:{int(eid)}"] = row
+
+    pts_by: dict[int, tuple[float, float]] = {}
+    pos_by: dict[int, str] = {}
+    name_by: dict[int, str] = {}
+    for row in merged_gw.itertuples(index=False):
+        try:
+            eid = int(row.element)
+        except (TypeError, ValueError):
+            continue
+        pts_by[eid] = (float(row.minutes or 0.0), float(row.total_points or 0.0))
+        pos_by[eid] = normalize_position(str(row.position)) if pd.notna(row.position) else "MID"
+        name_by[eid] = str(row.name)
+
+    pool_pos: dict[str, str] = {}
+    pool_name: dict[str, str] = {}
+    if pool is not None and not pool.empty:
+        for row in pool.itertuples(index=False):
+            pid = str(row.player_id)
+            pool_pos[pid] = normalize_position(str(row.position))
+            pool_name[pid] = str(getattr(row, "name", pid))
+            for v in _pid_variants(pid, season):
+                pool_pos[v] = pool_pos[pid]
+                pool_name[v] = pool_name[pid]
+
+    rows: list[dict[str, Any]] = []
+    for pid in player_ids:
+        eid = _element_from_pid(pid)
+        mins, pts = pts_by.get(eid, (0.0, 0.0)) if eid is not None else (0.0, 0.0)
+        br = None
+        for v in _pid_variants(pid, season):
+            if v in board_by:
+                br = board_by[v]
+                break
+        mu = float(getattr(br, mu_col, 0.0) or 0.0) if br is not None else 0.0
+        pos = pos_by.get(eid) if eid is not None else None
+        if pos is None:
+            for v in _pid_variants(pid, season):
+                if v in pool_pos:
+                    pos = pool_pos[v]
+                    break
+        if pos is None and br is not None and hasattr(br, "position"):
+            pos = normalize_position(str(br.position))
+        if pos is None:
+            pos = "MID"
+        name = name_by.get(eid) if eid is not None else None
+        if name is None:
+            for v in _pid_variants(pid, season):
+                if v in pool_name:
+                    name = pool_name[v]
+                    break
+        rows.append(
+            {
+                "player_id": str(pid),
+                "name": name or str(pid),
+                "position": pos,
+                "mu": mu,
+                "minutes": mins,
+                "total_points": pts,
+                "in_xi": any(
+                    str(pid) in _pid_variants(x, season) or x in _pid_variants(pid, season)
+                    for x in xi_ids
+                ),
+                "captain": bool(
+                    captain_id
+                    and (
+                        str(pid) in _pid_variants(str(captain_id), season)
+                        or str(captain_id) in _pid_variants(pid, season)
+                    )
+                ),
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def bank_locked_actual(
+    squad_df: pd.DataFrame,
+    *,
+    xi_ids: list[str],
+    captain_id: str | None,
+    season: str,
+) -> dict[str, Any]:
+    """Actual points for a locked XI with FPL autosubs + VC if captain blanks."""
+    if squad_df.empty or not xi_ids:
+        return {"actual": 0.0, "n_autosubs": 0, "n_blank_intended": 0}
+
+    # Resolve XI rows (id-form flexible).
+    xi_set: set[str] = set()
+    for x in xi_ids:
+        xi_set |= _pid_variants(str(x), season)
+    xi = squad_df.loc[squad_df["player_id"].astype(str).isin(xi_set)].copy()
+    if len(xi) < 11:
+        # fall back: match by element
+        want = {_element_from_pid(x) for x in xi_ids}
+        want.discard(None)
+        xi = squad_df.loc[
+            squad_df["player_id"].map(_element_from_pid).isin(want)
+        ].copy()
+    if len(xi) > 11:
+        xi = xi.drop_duplicates("player_id", keep="first").head(11)
+
+    n_blank = int((pd.to_numeric(xi["minutes"], errors="coerce").fillna(0.0) <= 0).sum())
+    bench = ordered_bench(squad_df, xi, "mu")
+    final_xi, n_subs = apply_autosubs(xi, bench, minutes_col="minutes")
+
+    pts = pd.to_numeric(final_xi["total_points"], errors="coerce").fillna(0.0)
+    pts_sum = float(pts.sum())
+
+    # Captain / VC on *intended* XI by μ; VC doubles if captain blanked.
+    xi_mu = pd.to_numeric(xi["mu"], errors="coerce").fillna(0.0)
+    order = xi_mu.sort_values(ascending=False, kind="mergesort")
+    if captain_id:
+        cap_id = str(captain_id)
+    elif len(order):
+        cap_id = str(xi.loc[order.index[0], "player_id"])
+    else:
+        cap_id = ""
+    vc_id = (
+        str(xi.loc[order.index[1], "player_id"])
+        if len(order) > 1
+        else cap_id
+    )
+    squad_mins = {
+        str(r.player_id): float(r.minutes or 0.0) for r in squad_df.itertuples(index=False)
+    }
+    squad_pts = {
+        str(r.player_id): float(r.total_points or 0.0)
+        for r in squad_df.itertuples(index=False)
+    }
+    # id-flexible lookup
+    def _lookup(pid: str, table: dict[str, float]) -> float:
+        for v in _pid_variants(pid, season):
+            if v in table:
+                return float(table[v])
+        return 0.0
+
+    if _lookup(cap_id, squad_mins) > 0:
+        cap_extra = _lookup(cap_id, squad_pts)
+    elif _lookup(vc_id, squad_mins) > 0:
+        cap_extra = _lookup(vc_id, squad_pts)
+    else:
+        cap_extra = 0.0
+
+    return {
+        "actual": pts_sum + float(cap_extra),
+        "n_autosubs": int(n_subs),
+        "n_blank_intended": n_blank,
+        "captain_id": cap_id,
+        "vice_id": vc_id,
+    }
+
+
+def _xi_pred_from_board(
+    board: pd.DataFrame, xi_ids: list[str], captain_id: str | None, season: str
+) -> float:
+    col = "score_xp_v2" if "score_xp_v2" in board.columns else "mu_post"
+    mu: dict[str, float] = {}
+    for row in board.itertuples(index=False):
+        val = float(getattr(row, col, 0.0) or 0.0)
+        pid = str(getattr(row, "player_id", ""))
+        for v in _pid_variants(pid, season):
+            mu[v] = val
+        eid = getattr(row, "element", None)
+        if eid is not None and pd.notna(eid):
+            mu[str(int(eid))] = val
+            mu[f"{season}:{int(eid)}"] = val
+    total = 0.0
+    for pid in xi_ids:
+        for v in _pid_variants(str(pid), season):
+            if v in mu:
+                total += mu[v]
+                break
+    if captain_id:
+        for v in _pid_variants(str(captain_id), season):
+            if v in mu:
+                total += mu[v]
+                break
+    return float(total)
+
+
 def per_gw_residuals(
     *,
     mean: dict[str, Any],
     path: dict[str, Any],
     side: pd.DataFrame,
+    pool: pd.DataFrame,
     enriched: pd.DataFrame,
     fd: pd.DataFrame,
     prices: pd.DataFrame,
@@ -248,10 +574,12 @@ def per_gw_residuals(
 ) -> list[dict[str, Any]]:
     mean_xi = list(mean.get("xi_ids") or [])
     mean_cap = mean.get("captain_id")
+    mean_15 = list(mean.get("player_ids") or [s["player_id"] for s in mean.get("squad") or []])
     rows: list[dict[str, Any]] = []
     for gw in horizon_gws:
-        board = _mean_board(
+        board = _mean_board_oracle(
             side,
+            merged,
             enriched,
             fd,
             prices,
@@ -262,23 +590,45 @@ def per_gw_residuals(
             alpha_a=alpha_a,
             pool_ids=pool_ids,
         )
-        mu = _mu_by_element(board)
         gw_rows = merged.loc[pd.to_numeric(merged["GW"], errors="coerce") == int(gw)]
-        pts = _points_by_element(gw_rows)
 
-        mean_pred = _xi_pred(mu, mean_xi, mean_cap)
-        mean_act = _xi_actual(pts, mean_xi, mean_cap)
+        mean_pred = _xi_pred_from_board(board, mean_xi, mean_cap, season)
+        mean_squad = _squad_frame_for_bank(
+            player_ids=mean_15,
+            xi_ids=mean_xi,
+            captain_id=mean_cap,
+            board=board,
+            merged_gw=gw_rows,
+            season=season,
+            pool=pool,
+        )
+        mean_bank = bank_locked_actual(
+            mean_squad, xi_ids=mean_xi, captain_id=mean_cap, season=season
+        )
 
         path_preds: list[float] = []
         path_acts: list[float] = []
+        path_subs: list[int] = []
         for st in path.get("strands") or []:
             held = (st.get("held") or {}).get(int(gw))
             if not held:
                 continue
             xi = list(held["xi_ids"])
             cap = held.get("captain_id")
-            path_preds.append(_xi_pred(mu, xi, cap))
-            path_acts.append(_xi_actual(pts, xi, cap))
+            pids = list(held.get("player_ids") or xi)
+            path_preds.append(_xi_pred_from_board(board, xi, cap, season))
+            sdf = _squad_frame_for_bank(
+                player_ids=pids,
+                xi_ids=xi,
+                captain_id=cap,
+                board=board,
+                merged_gw=gw_rows,
+                season=season,
+                pool=pool,
+            )
+            bank = bank_locked_actual(sdf, xi_ids=xi, captain_id=cap, season=season)
+            path_acts.append(float(bank["actual"]))
+            path_subs.append(int(bank["n_autosubs"]))
         if not path_preds:
             continue
         path_pred = float(np.mean(path_preds))
@@ -287,14 +637,17 @@ def per_gw_residuals(
             {
                 "gw": int(gw),
                 "mean_pred": mean_pred,
-                "mean_actual": mean_act,
-                "mean_resid": mean_pred - mean_act,
+                "mean_actual": float(mean_bank["actual"]),
+                "mean_resid": mean_pred - float(mean_bank["actual"]),
+                "mean_n_autosubs": int(mean_bank["n_autosubs"]),
+                "mean_n_blank_intended": int(mean_bank["n_blank_intended"]),
                 "path_pred": path_pred,
                 "path_actual": path_act,
                 "path_resid": path_pred - path_act,
-                "delta_actual_path_minus_mean": path_act - mean_act,
+                "path_mean_autosubs": float(np.mean(path_subs)) if path_subs else 0.0,
+                "delta_actual_path_minus_mean": path_act - float(mean_bank["actual"]),
                 "delta_resid_path_minus_mean": (path_pred - path_act)
-                - (mean_pred - mean_act),
+                - (mean_pred - float(mean_bank["actual"])),
                 "n_path_strands": len(path_preds),
                 "n_board": int(len(board)),
             }
@@ -305,34 +658,39 @@ def per_gw_residuals(
 def write_report(state: dict[str, Any], out_dir: Path) -> None:
     rows = state.get("per_gw") or []
     lines = [
-        "# Mean vs stable cascade path — per-GW residual (actual)",
+        "# Mean vs stable cascade path — per-GW residual (oracle minutes + autosub)",
         "",
         f"Protocol: `cascade_mean_path_gw_resid` · season **{state['season']}** · "
         f"decision GW{state['decision_gw']} → horizon "
         f"{state['horizon_start']}–{state['horizon_end']} · "
         f"N={state['n_strands']} · seed={state['seed']}",
         "",
-        "**Diagnostic.** Mean XI is locked from priced t:t+1 MILP and held. "
-        "Path actual/pred are **strand means** of held `xi_plus_captain_ft` "
-        "lineups (stable cascade path). Pred = FD centreline `score_xp_v2` on "
-        "that GW's board for the planned XI (+ captain). Actual = Vaastav "
-        "`total_points` on the planned XI (+ captain), no autosub. "
-        "Residual = pred − actual.",
+        "**Diagnostic.**",
+        f"- **Semi-oracle pool** at GW{state['decision_gw']}: actual minutes "
+        f"> {MIN_ORACLE_MINUTES:.0f} (n={state.get('n_pool')}).",
+        "- **Minutes oracle** on boards: actual `m`, `σ_m=0` for the scored GW.",
+        "- **Actuals:** locked XI + FPL bench autosub + VC if captain blanks.",
+        "- Mean XI locked from priced t:t+1 MILP and held; path = strand-mean "
+        "of held `xi_plus_captain_ft` lineups.",
+        "- Pred = oracle-minutes FD `score_xp_v2` on planned XI (+ captain).",
+        "- Residual = pred − actual.",
         "",
-        f"- As-of freeze: GW `< {state['decision_gw']}` (rates use historical baseline)",
+        f"- As-of rates/priors: GW `< {state['decision_gw']}` "
+        "(historical rate baseline); minutes on boards are oracle per score GW",
         f"- Snapshots: {state['snapshot_gws']}",
         f"- Priced mean weeks: {state['priced_gws']}",
         f"- Wall: {state['elapsed_s']:.1f}s",
         "",
         "## Per GW",
         "",
-        "| GW | mean pred | mean actual | mean resid | path pred | path actual | path resid | path−mean actual |",
-        "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+        "| GW | mean pred | mean actual | mean resid | mean autosubs | path pred | path actual | path resid | path−mean actual |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
     ]
     for r in rows:
         lines.append(
             f"| {r['gw']} | {r['mean_pred']:.1f} | {r['mean_actual']:.1f} | "
-            f"{r['mean_resid']:.1f} | {r['path_pred']:.1f} | {r['path_actual']:.1f} | "
+            f"{r['mean_resid']:.1f} | {r.get('mean_n_autosubs', 0)} | "
+            f"{r['path_pred']:.1f} | {r['path_actual']:.1f} | "
             f"{r['path_resid']:.1f} | {r['delta_actual_path_minus_mean']:.1f} |"
         )
     if rows:
@@ -391,7 +749,9 @@ def main(argv: list[str] | None = None) -> int:
 
     print(
         f"[resid] season={season} decision={decision_gw} "
-        f"horizon={start}-{horizon_end} N={args.n}",
+        f"horizon={start}-{horizon_end} N={args.n} "
+        f"(semi-oracle pool m>{MIN_ORACLE_MINUTES:.0f} @ GW{decision_gw}; "
+        "minutes oracle boards; autosub actuals)",
         flush=True,
     )
     t_all = _now()
@@ -414,8 +774,33 @@ def main(argv: list[str] | None = None) -> int:
     team_hist = hist_by_team_norm(hist)
 
     pool = _build_hist_pool(hist, prices, decision_gw=decision_gw, season=season)
+    oracle_els = semi_oracle_elements(merged, decision_gw)
+    if len(oracle_els) < 15:
+        raise RuntimeError(
+            f"semi-oracle pool too small at GW{decision_gw}: {len(oracle_els)}"
+        )
+    pool = pool.loc[
+        pd.to_numeric(pool["element"], errors="coerce").isin(oracle_els)
+    ].copy()
+    # Semi-oracle minutes freeze on the pool (actual m at GW t) for generative.
+    gw_t = merged.loc[pd.to_numeric(merged["GW"], errors="coerce") == decision_gw]
+    m_t = {
+        int(r.element): float(r.minutes or 0.0)
+        for r in gw_t.itertuples(index=False)
+        if pd.notna(r.element)
+    }
+    pool["m"] = [
+        float(m_t.get(int(e), 0.0))
+        for e in pd.to_numeric(pool["element"], errors="coerce").fillna(-1)
+    ]
+    pool["xmi"] = pool["m"]
+    pool["sigma_m"] = 0.0
     pool_ids = set(pool["player_id"].astype(str))
-    print(f"[resid] pool={len(pool)}", flush=True)
+    print(
+        f"[resid] pool={len(pool)} (semi-oracle m>{MIN_ORACLE_MINUTES:.0f} "
+        f"@ GW{decision_gw}; from {len(oracle_els)} GW players)",
+        flush=True,
+    )
 
     fixtures_gw = _hist_fixtures_by_gw(enriched, start=start, end=horizon_end)
     horizon_gws = sorted(fixtures_gw)
@@ -435,10 +820,15 @@ def main(argv: list[str] | None = None) -> int:
         season=season,
         historical_rate_baseline=True,
     )
+    # Selection side also restricted to semi-oracle elements.
+    side = side.loc[
+        pd.to_numeric(side["element"], errors="coerce").isin(oracle_els)
+    ].copy()
 
-    print("[resid] mean arm…", flush=True)
-    mean = run_mean_arm(
+    print("[resid] mean arm (minutes-oracle boards)…", flush=True)
+    mean = run_mean_arm_oracle(
         side=side,
+        merged=merged,
         enriched=enriched,
         fd=fd,
         prices=prices,
@@ -476,11 +866,12 @@ def main(argv: list[str] | None = None) -> int:
         flush=True,
     )
 
-    print("[resid] scoring per-GW residuals…", flush=True)
+    print("[resid] scoring per-GW residuals (oracle boards + autosub)…", flush=True)
     per_gw = per_gw_residuals(
         mean=mean,
         path=path,
         side=side,
+        pool=pool,
         enriched=enriched,
         fd=fd,
         prices=prices,
@@ -493,7 +884,6 @@ def main(argv: list[str] | None = None) -> int:
         pool_ids=pool_ids,
     )
 
-    # Slim path for state (drop full held maps duplication — keep squads).
     path_slim = {
         "elapsed_s": path["elapsed_s"],
         "n_strands": path["n_strands"],
@@ -504,20 +894,28 @@ def main(argv: list[str] | None = None) -> int:
         ],
     }
 
-    summary = {}
+    summary: dict[str, Any] = {
+        "semi_oracle_pool": True,
+        "min_oracle_minutes": MIN_ORACLE_MINUTES,
+        "minutes_oracle_boards": True,
+        "autosub_actuals": True,
+    }
     if per_gw:
-        summary = {
-            "n_gws": len(per_gw),
-            "mean_resid_bias": float(np.mean([r["mean_resid"] for r in per_gw])),
-            "path_resid_bias": float(np.mean([r["path_resid"] for r in per_gw])),
-            "mean_resid_mae": float(np.mean([abs(r["mean_resid"]) for r in per_gw])),
-            "path_resid_mae": float(np.mean([abs(r["path_resid"]) for r in per_gw])),
-            "mean_actual_sum": float(np.sum([r["mean_actual"] for r in per_gw])),
-            "path_actual_sum": float(np.sum([r["path_actual"] for r in per_gw])),
-            "path_minus_mean_actual_sum": float(
-                np.sum([r["delta_actual_path_minus_mean"] for r in per_gw])
-            ),
-        }
+        summary.update(
+            {
+                "n_gws": len(per_gw),
+                "mean_resid_bias": float(np.mean([r["mean_resid"] for r in per_gw])),
+                "path_resid_bias": float(np.mean([r["path_resid"] for r in per_gw])),
+                "mean_resid_mae": float(np.mean([abs(r["mean_resid"]) for r in per_gw])),
+                "path_resid_mae": float(np.mean([abs(r["path_resid"]) for r in per_gw])),
+                "mean_actual_sum": float(np.sum([r["mean_actual"] for r in per_gw])),
+                "path_actual_sum": float(np.sum([r["path_actual"] for r in per_gw])),
+                "path_minus_mean_actual_sum": float(
+                    np.sum([r["delta_actual_path_minus_mean"] for r in per_gw])
+                ),
+                "mean_autosubs_sum": int(sum(r.get("mean_n_autosubs", 0) for r in per_gw)),
+            }
+        )
 
     state = {
         "task": "cascade_mean_path_gw_resid",
@@ -531,12 +929,17 @@ def main(argv: list[str] | None = None) -> int:
         "snapshot_gws": snapshot_gws,
         "priced_gws": priced_gws,
         "n_pool": int(len(pool)),
+        "semi_oracle_gw": decision_gw,
+        "min_oracle_minutes": MIN_ORACLE_MINUTES,
+        "minutes_oracle_boards": True,
+        "autosub_actuals": True,
         "ranks": "oracle_post_gw38",
         "gf_ga_profile": "loso_prior_seasons",
         "mean": {
             "elapsed_s": mean.get("elapsed_s"),
             "captain_id": mean.get("captain_id"),
             "xi_ids": mean.get("xi_ids"),
+            "player_ids": mean.get("player_ids"),
             "objective_value": mean.get("objective_value"),
         },
         "path": path_slim,
