@@ -1456,7 +1456,12 @@ def main() -> None:
     p.add_argument("--horizon-end", type=int, default=19)
     p.add_argument("--n", type=int, default=12, help="Number of MC strands")
     p.add_argument("--seed", type=int, default=7)
-    p.add_argument("--snapshot-every", type=int, default=2)
+    p.add_argument(
+        "--snapshot-every",
+        type=int,
+        default=1,
+        help="Transfer decision every N horizon GWs (default 1 = all GWs)",
+    )
     p.add_argument(
         "--bootstrap",
         type=Path,

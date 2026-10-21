@@ -1,7 +1,11 @@
 {
-  "task": "path_max_hits_unconstrained",
+  "task": "path_snapshot_every_gw",
   "status": "done",
-  "change": "MAX_HITS_SNAPSHOT: 2 → SQUAD_SIZE (align with L3/L4; PI did not specify a hit cap)",
-  "module": "src/models/multistage_mc_milp.py",
-  "note": "Prior path resid / FT-PE transfer counts were under the artificial max_hits=2; do not cite as unconstrained"
+  "change": "SNAPSHOT_EVERY: 2 → 1 (transfer decision every horizon GW; no forced hold)",
+  "modules": [
+    "src/eval/cascade_mc_vs_mean_hist.py",
+    "src/eval/cascade_pathv_gen_vs_mean.py",
+    "src/models/multistage_mc_milp.py"
+  ],
+  "note": "Prior path resid / FT-PE / hist-MC runs used every-2; re-run before citing FT strategy"
 }

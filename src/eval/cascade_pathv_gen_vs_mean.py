@@ -27,7 +27,7 @@ SEED = 7
 DECISION_GW = 6
 HORIZON_END = 19
 PRICED_GW = 8
-SNAPSHOT_EVERY = 2
+SNAPSHOT_EVERY = 1
 
 
 def _now() -> float:

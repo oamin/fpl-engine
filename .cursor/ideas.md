@@ -540,6 +540,13 @@ L3/L4 went to `SQUAD_SIZE`. Aligned to `SQUAD_SIZE`; PI did not specify a hit
 cap. Prior path resid / FT-PE diagnostics used the old cap — do not cite their
 transfer counts as unconstrained-hit behaviour.
 
+## Path snapshot_every=2 (forced hold)
+
+Removed 2026-10-21. Default is now **every horizon GW** (`SNAPSHOT_EVERY=1`).
+Every-2 forced the path to hold on odd weeks, so FT strategy could be
+unexecutable week-to-week. Prior resid / FT-PE / hist-MC path totals used
+every-2 — re-run before citing transfer behaviour.
+
 ## L4 fresh open (crowd template vs μ-wildcard)
 
 Trialled 2026-10-15 (`protocol.strategy_layer4_mupost_fresh_open`, `reports/layer4_mupost_fresh_open.md`). Same L3/L4 priced policies; open = shared GW1 crowd **template** hold (not μ_post WC). L4−L3 **+1.87/GW** [−0.35, +4.16] **covers 0** → inconclusive. Season shape flips vs μ-WC open: 2024-25 **+133** (was −40); 2025-26 +136; 2022-23 −39. Default L4 path stays μ-WC open. Shows L4−L3 is **path-seed sensitive** — do not claim the +2.90 edge is opening-invariant. Optional later: premium/next/third opens as dated arms, not retunes.

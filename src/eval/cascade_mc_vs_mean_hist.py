@@ -78,7 +78,8 @@ DEFAULT_SEASON = "2025-26"
 DECISION_GW = 6
 HORIZON_END = 19
 START_OFFSET = 2
-SNAPSHOT_EVERY = 2
+# Every horizon GW is a transfer decision (no forced hold between snapshots).
+SNAPSHOT_EVERY = 1
 N_STRANDS = 12
 SEED = 7
 MIN_MINUTES = 60.0
