@@ -69,6 +69,14 @@ shares ≈OK when the side scores). Assists miss ≈ **pot** (≈0.72) **and** f
 `sA` on the hot μ tail (share factor ≈0.85). Do not chase goal-share retunes
 for this bias first. Report: `reports/top_mid_fwd_ga_mismatch.md`.
 
+## Rejected — LOSO xG-quartile FD pot rescale (2026-10-21)
+
+`score_xp_v2_xg_strata_recal`: candidate multiplies FD `xg` by LOSO quartile
+`mean(goals)/mean(xg)` (xcs/xgc/α unchanged). Player-GW log Δ **−0.00096**
+[−0.00164, −0.00029] → **`keep_raw_fd_xg`**. Do not revive as a premium tax or
+α shrink on top fixtures. Residual mean bias stays a selection / path issue.
+Report: `reports/xg_strata_recal_screen.md`.
+
 ## Noted — historical rate baseline for cascade (2026-10-21)
 
 `score_xp_v2_rate_baseline_prior`: season start = player prior (all prior

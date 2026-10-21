@@ -166,23 +166,30 @@ def calibrate_fd(fd: pd.DataFrame, fit: dict[str, Any]) -> pd.DataFrame:
     return out
 
 
+# Fixed absolute bands for the secondary diagnostic table only (not the LOSO map).
+_DIAG_XG_EDGES = (0.0, 1.05, 1.35, 1.75, 5.0)
+_DIAG_XG_LABELS = ("q1_low", "q2", "q3", "q4_high")
+
+
 def _pot_strata(sides: pd.DataFrame, xg_col: str = "xg") -> list[dict[str, Any]]:
-    """goals/xg by xG quartile and by |AH| (home line, side-aware)."""
+    """goals/xg by fixed xG bands and by AH favouritism (side-aware)."""
     df = sides.copy()
     df["xg_use"] = pd.to_numeric(df[xg_col], errors="coerce")
     df["goals"] = pd.to_numeric(df["goals"], errors="coerce")
     df = df.dropna(subset=["xg_use", "goals"])
     rows: list[dict[str, Any]] = []
-    try:
-        df["xg_q"] = pd.qcut(df["xg_use"], N_BINS, duplicates="drop")
-    except ValueError:
-        df["xg_q"] = "all"
-    for label, g in df.groupby("xg_q", observed=True):
+    df["xg_band"] = pd.cut(
+        df["xg_use"],
+        bins=list(_DIAG_XG_EDGES),
+        labels=list(_DIAG_XG_LABELS),
+        include_lowest=True,
+    )
+    for label, g in df.groupby("xg_band", observed=True):
         mx = float(g["xg_use"].mean())
         mg = float(g["goals"].mean())
         rows.append(
             {
-                "stratum": "xg_quartile",
+                "stratum": "xg_fixed",
                 "band": str(label),
                 "n": int(len(g)),
                 "mean_xg": mx,
@@ -546,16 +553,24 @@ def run() -> dict[str, Any]:
         "",
         "## Secondary — side-row goals/xg (diagnostic)",
         "",
-        "Pooled across seasons. Not a promote gate.",
+        "Pooled across seasons. Fixed absolute xG bands for display "
+        f"({list(_DIAG_XG_EDGES)}). Not a promote gate.",
         "",
     ]
     if not strata_df.empty:
-        for stratum in ("xg_quartile", "ah_band"):
+        for stratum, title, order in (
+            ("xg_fixed", "xg_band (fixed)", list(_DIAG_XG_LABELS)),
+            (
+                "ah_band",
+                "ah_band",
+                ["big_dog", "dog", "even", "fav", "big_fav"],
+            ),
+        ):
             sub = strata_df.loc[strata_df["stratum"] == stratum]
             if sub.empty:
                 continue
             lines += [
-                f"### {stratum}",
+                f"### {title}",
                 "",
                 "| arm | band | n | mean xG | mean goals | goals/xG |",
                 "| --- | --- | ---: | ---: | ---: | ---: |",
@@ -575,11 +590,16 @@ def run() -> dict[str, Any]:
                 .reset_index()
             )
             agg["ratio"] = agg["mean_goals"] / agg["mean_xg"]
-            for r in agg.itertuples(index=False):
-                lines.append(
-                    f"| {r.arm} | {r.band} | {int(r.n)} | {r.mean_xg:.3f} | "
-                    f"{r.mean_goals:.3f} | {r.ratio:.3f} |"
-                )
+            for arm in ("raw", "calibrated"):
+                for band in order:
+                    hit = agg.loc[(agg["arm"] == arm) & (agg["band"] == band)]
+                    if hit.empty:
+                        continue
+                    r = hit.iloc[0]
+                    lines.append(
+                        f"| {arm} | {band} | {int(r['n'])} | {r['mean_xg']:.3f} | "
+                        f"{r['mean_goals']:.3f} | {r['ratio']:.3f} |"
+                    )
             lines.append("")
 
     lines += [

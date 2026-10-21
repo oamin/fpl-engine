@@ -1,23 +1,16 @@
 {
-  "task": "top_mid_fwd_ga_mismatch_dig",
-  "status": "done_diagnostic",
-  "season": "2025-26",
-  "window": "GW8-19",
-  "setup": "full-side minutes-oracle score_team_side; as-of rates/α at GW6; top=xp decile MID+FWD",
-  "alpha_g": 0.9597,
-  "alpha_a": 0.9194,
-  "headline": {
-    "top_goals_over_EG": 0.851,
-    "top_assists_over_EA": 0.612,
-    "rest_goals_over_EG": 0.888,
-    "rest_assists_over_EA": 0.842
+  "task": "score_xp_v2_xg_strata_recal",
+  "status": "done_rejected",
+  "decision": "keep_raw_fd_xg",
+  "promote": false,
+  "protocol": "score_xp_v2_xg_strata_recal",
+  "module": "src/eval/xg_strata_recal_screen.py",
+  "contrast": "score_xp_v2_xg_strata_minus_score_xp_v2",
+  "interval": {
+    "mean": -0.00096,
+    "lo": -0.00164,
+    "hi": -0.00029
   },
-  "decomposition_pool_relative": {
-    "goals_pot_team_pool_over_G_team": 0.823,
-    "goals_share_factor": 1.034,
-    "assists_pot_team_pool_over_A_team": 0.717,
-    "assists_share_factor": 0.854
-  },
-  "verdict": "Goals miss on top MID+FWD is mostly fat pots on their fixtures (shares OK when team scores). Assists miss is pot short plus over-concentrated sA on the hot μ tail.",
-  "report": "reports/top_mid_fwd_ga_mismatch.md"
+  "report": "reports/xg_strata_recal_screen.md",
+  "note": "LOSO xG-quartile rescale clearly loses on player-GW log; keep raw FD xG"
 }
