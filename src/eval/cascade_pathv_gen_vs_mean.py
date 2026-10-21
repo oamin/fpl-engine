@@ -94,8 +94,6 @@ def _run_arm(*, generative: bool, out: Path) -> dict[str, Any]:
         }
         for r in freqs[:15]
     ]
-    cap1 = float(freqs[0].get("freq_captain") or 0.0) if freqs else None
-    # top captain by freq_captain
     if freqs:
         by_cap = sorted(freqs, key=lambda r: float(r.get("freq_captain") or 0), reverse=True)
         cap_top = {
