@@ -4,11 +4,11 @@ Protocol: `cascade_lineup_off_tt1` · N_MC=20 · σ=3.0 · decision GW8–27 · 
 
 Treatment: generative MC-mean with **`lineup_cov=False`** (as-of mean minutes; scoreline → attack → CS/GC only).  
 Baseline: `score_team_side` on the same FD centreline fits.  
-Diagnostic: same gen with `lineup_cov=True` (joint historical pairs).
+Diagnostic: same gen with `lineup_cov=True` (club matchday resample).
 
 - As-of audit: **True**
 - Decision-GW pairs: 80
-- Wall: 2661.8s
+- Wall: 3158.3s
 
 ## Primary — gen_off − mean
 
@@ -17,13 +17,13 @@ Diagnostic: same gen with `lineup_cov=True` (joint historical pairs).
 
 ## Diagnostic — gen_on − gen_off (does lineup roll hurt?)
 
-- Δ: **+0.0162** [+0.0116, +0.0209]
+- Δ: **+0.0092** [+0.0048, +0.0141]
 - Verdict: **clearly_wins**
 
 ## Diagnostic — gen_on − mean (current lineup stack vs mean)
 
-- Δ: **-0.0043** [-0.0096, +0.0010]
-- Verdict: **does_not_clearly_lose**
+- Δ: **-0.0114** [-0.0167, -0.0060]
+- Verdict: **clearly_loses**
 
 Artifacts: `data/processed/cascade_lineup_off/`
 
