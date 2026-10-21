@@ -191,6 +191,8 @@ def sample_scoreline(
 
 def init_paths_from_opta(
     ranks: Mapping[str, float] | None = None,
+    *,
+    profile: Mapping[int, Mapping[str, float]] | None = None,
 ) -> dict[str, ClubPath]:
     opta = load_opta_ranks() if ranks is None else None
     rank_map = (
@@ -198,10 +200,10 @@ def init_paths_from_opta(
         if ranks is None
         else {norm_team(k): float(v) for k, v in ranks.items()}
     )
-    profile = rank_gf_ga_profile()
+    prof = rank_gf_ga_profile() if profile is None else profile
     paths: dict[str, ClubPath] = {}
     for club, rk in rank_map.items():
-        rates = gf_ga_from_rank(rk, profile=profile, method="ols")
+        rates = gf_ga_from_rank(rk, profile=prof, method="ols")
         paths[club] = ClubPath(
             att=float(rates["gf"]) / N_MATCHES,
             dfn=float(rates["ga"]) / N_MATCHES,
@@ -337,10 +339,14 @@ def sample_opta_scenario(
     league_gf: float,
     rng: random.Random,
     centre_blend: float = 0.5,
+    ranks: Mapping[str, float] | None = None,
+    profile: Mapping[int, Mapping[str, float]] | None = None,
 ) -> dict[str, Any]:
-    """Baseline roll: Opta place → GF/GA ± bands → λ → ``M`` → ``k ∼ M``.
+    """Baseline roll: place → GF/GA ± bands → λ → ``M`` → ``k ∼ M``.
 
     Rank 1 always draws from 1st-place GF/GA rates; rank 20 from 20th.
+    Pass ``ranks`` / ``profile`` for closed-season oracle + LOSO bands;
+    defaults keep the live Opta JSON path.
     ``ClubPath`` is unused for λ (kept only as KeyError fallback).
     """
     try:
@@ -348,6 +354,8 @@ def sample_opta_scenario(
             home,
             away,
             rng,
+            ranks=ranks,
+            profile=profile,
             centre_blend=centre_blend,
             league_gf=league_gf,
         )
@@ -390,6 +398,9 @@ def sample_opta_scenario(
         "lam_h_hi": hi_h,
         "lam_a_lo": lo_a,
         "lam_a_hi": hi_a,
+        "source": (
+            "cascade_long_oracle_rank" if ranks is not None else "cascade_long_opta"
+        ),
     }
 
 
@@ -505,14 +516,22 @@ def sample_week_scenario(
     paths: Mapping[str, ClubPath],
     league_gf: float,
     rng: random.Random,
+    ranks: Mapping[str, float] | None = None,
+    profile: Mapping[int, Mapping[str, float]] | None = None,
 ) -> dict[str, Any]:
-    """Priced cascade_short when a fit exists; else Opta cascade_long."""
+    """Priced cascade_short when a fit exists; else Opta / oracle cascade_long."""
     key = (norm_team(home), norm_team(away))
     fit = (priced_index.get(int(gw)) or {}).get(key)
     if fit is not None:
         return sample_priced_scenario(fit, rng)
     return sample_opta_scenario(
-        home, away, paths=paths, league_gf=league_gf, rng=rng
+        home,
+        away,
+        paths=paths,
+        league_gf=league_gf,
+        rng=rng,
+        ranks=ranks,
+        profile=profile,
     )
 
 
@@ -527,8 +546,10 @@ def _scenarios_for_remaining(
     rng: random.Random,
     priced_index: Mapping[int, Mapping[tuple[str, str], Mapping[str, Any]]]
     | None = None,
+    ranks: Mapping[str, float] | None = None,
+    profile: Mapping[int, Mapping[str, float]] | None = None,
 ) -> dict[int, list[dict[str, Any]]]:
-    """Current GW: stored rolls. Later GWs: scratch short (priced) or Opta."""
+    """Current GW: stored rolls. Later GWs: scratch short (priced) or Opta/oracle."""
     pidx = priced_index or {}
     out: dict[int, list[dict[str, Any]]] = {}
     for g in remaining:
@@ -549,6 +570,8 @@ def _scenarios_for_remaining(
                     paths=paths,
                     league_gf=league_gf,
                     rng=rng,
+                    ranks=ranks,
+                    profile=profile,
                 )
             )
         out[g_i] = rows
@@ -574,6 +597,8 @@ def run_strand(
     generative_attack: bool = DEFAULT_GENERATIVE_ATTACK,
     lineup_cov: bool = DEFAULT_LINEUP_COV,
     priced_by_gw: Mapping[int, Sequence[Mapping[str, Any]]] | None = None,
+    ranks: Mapping[str, float] | None = None,
+    profile: Mapping[int, Mapping[str, float]] | None = None,
 ) -> StrandResult:
     """One coherent MC strand: short/Opta scenarios → score_xp_v2 → MILP."""
     if objective not in OBJECTIVES:
@@ -610,6 +635,8 @@ def run_strand(
                 paths=paths,
                 league_gf=league_gf,
                 rng=rng,
+                ranks=ranks,
+                profile=profile,
             )
             paths[fx["home"]].observe(sc["hg"], sc["ag"])
             paths[fx["away"]].observe(sc["ag"], sc["hg"])
@@ -643,6 +670,8 @@ def run_strand(
                 league_gf=league_gf,
                 rng=rng,
                 priced_index=priced_index,
+                ranks=ranks,
+                profile=profile,
             )
             scored = score_pool_generative_on_scenarios(
                 pool,

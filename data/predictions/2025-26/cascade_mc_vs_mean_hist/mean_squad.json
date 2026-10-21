@@ -1,0 +1,160 @@
+{
+  "elapsed_s": 0.34639596939086914,
+  "priced_gws": [
+    8,
+    9
+  ],
+  "objective": "xi_plus_captain",
+  "objective_value": 142.0337810127956,
+  "captain_id": "2025-26:430",
+  "xi_ids": [
+    "2025-26:565",
+    "2025-26:72",
+    "2025-26:373",
+    "2025-26:226",
+    "2025-26:241",
+    "2025-26:449",
+    "2025-26:660",
+    "2025-26:82",
+    "2025-26:430",
+    "2025-26:249",
+    "2025-26:661"
+  ],
+  "squad": [
+    {
+      "player_id": "2025-26:565",
+      "name": "Guglielmo Vicario",
+      "position": "GKP",
+      "team_norm": "spurs",
+      "mc_score": 8.518414456154014,
+      "in_xi": true,
+      "captain": false
+    },
+    {
+      "player_id": "2025-26:33",
+      "name": "Marco Bizot",
+      "position": "GKP",
+      "team_norm": "aston villa",
+      "mc_score": 0.20881218234493723,
+      "in_xi": false,
+      "captain": false
+    },
+    {
+      "player_id": "2025-26:72",
+      "name": "Marcos Senesi Bar\u00f3n",
+      "position": "DEF",
+      "team_norm": "bournemouth",
+      "mc_score": 11.485655287937444,
+      "in_xi": true,
+      "captain": false
+    },
+    {
+      "player_id": "2025-26:373",
+      "name": "Virgil van Dijk",
+      "position": "DEF",
+      "team_norm": "liverpool",
+      "mc_score": 10.0981557518178,
+      "in_xi": true,
+      "captain": false
+    },
+    {
+      "player_id": "2025-26:226",
+      "name": "Trevoh Chalobah",
+      "position": "DEF",
+      "team_norm": "chelsea",
+      "mc_score": 10.445581971783849,
+      "in_xi": true,
+      "captain": false
+    },
+    {
+      "player_id": "2025-26:569",
+      "name": "Cristian Romero",
+      "position": "DEF",
+      "team_norm": "spurs",
+      "mc_score": 7.993740876782178,
+      "in_xi": false,
+      "captain": false
+    },
+    {
+      "player_id": "2025-26:532",
+      "name": "Trai Hume",
+      "position": "DEF",
+      "team_norm": "sunderland",
+      "mc_score": 3.7681265820117673,
+      "in_xi": false,
+      "captain": false
+    },
+    {
+      "player_id": "2025-26:241",
+      "name": "Mois\u00e9s Caicedo Corozo",
+      "position": "MID",
+      "team_norm": "chelsea",
+      "mc_score": 12.2422216591977,
+      "in_xi": true,
+      "captain": false
+    },
+    {
+      "player_id": "2025-26:449",
+      "name": "Bruno Borges Fernandes",
+      "position": "MID",
+      "team_norm": "man utd",
+      "mc_score": 11.549793203742517,
+      "in_xi": true,
+      "captain": false
+    },
+    {
+      "player_id": "2025-26:660",
+      "name": "Anton Stach",
+      "position": "MID",
+      "team_norm": "leeds",
+      "mc_score": 10.431502258577083,
+      "in_xi": true,
+      "captain": false
+    },
+    {
+      "player_id": "2025-26:82",
+      "name": "Antoine Semenyo",
+      "position": "MID",
+      "team_norm": "bournemouth",
+      "mc_score": 10.57258004041708,
+      "in_xi": true,
+      "captain": false
+    },
+    {
+      "player_id": "2025-26:166",
+      "name": "Yasin Ayari",
+      "position": "MID",
+      "team_norm": "brighton",
+      "mc_score": 7.870133501626427,
+      "in_xi": false,
+      "captain": false
+    },
+    {
+      "player_id": "2025-26:430",
+      "name": "Erling Haaland",
+      "position": "FWD",
+      "team_norm": "man city",
+      "mc_score": 15.15003829471721,
+      "in_xi": true,
+      "captain": true
+    },
+    {
+      "player_id": "2025-26:249",
+      "name": "Jo\u00e3o Pedro Junqueira de Jesus",
+      "position": "FWD",
+      "team_norm": "chelsea",
+      "mc_score": 13.774197409997548,
+      "in_xi": true,
+      "captain": false
+    },
+    {
+      "player_id": "2025-26:661",
+      "name": "Hugo Ekitik\u00e9",
+      "position": "FWD",
+      "team_norm": "liverpool",
+      "mc_score": 12.615602383736157,
+      "in_xi": true,
+      "captain": false
+    }
+  ]
+}

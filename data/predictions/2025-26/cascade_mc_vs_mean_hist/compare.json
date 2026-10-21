@@ -1,0 +1,51 @@
+{
+  "top_n": 15,
+  "jaccard_top_vs_mean15": 0.30434782608695654,
+  "n_mean_in_path_top": 7,
+  "mean_in_path_top": [
+    {
+      "player_id": "2025-26:226",
+      "name": "Trevoh Chalobah"
+    },
+    {
+      "player_id": "2025-26:430",
+      "name": "Erling Haaland"
+    },
+    {
+      "player_id": "2025-26:449",
+      "name": "Bruno Borges Fernandes"
+    },
+    {
+      "player_id": "2025-26:660",
+      "name": "Anton Stach"
+    },
+    {
+      "player_id": "2025-26:661",
+      "name": "Hugo Ekitik\u00e9"
+    },
+    {
+      "player_id": "2025-26:72",
+      "name": "Marcos Senesi Bar\u00f3n"
+    },
+    {
+      "player_id": "2025-26:82",
+      "name": "Antoine Semenyo"
+    }
+  ],
+  "path_top_captain": {
+    "player_id": "2025-26:36",
+    "name": "Matty Cash",
+    "freq_captain": 0.5138888888888888
+  },
+  "mean_captain_id": "2025-26:430",
+  "mean_captain_in_path_top": true,
+  "mean_xi_in_path_top": [
+    "2025-26:226",
+    "2025-26:430",
+    "2025-26:449",
+    "2025-26:660",
+    "2025-26:661",
+    "2025-26:72",
+    "2025-26:82"
+  ]
+}
