@@ -2,14 +2,14 @@
 
 Protocol: ``cascade_mean_path_gw_resid`` (diagnostic).
 
-Upgrades vs first cut:
-  - **Semi-oracle pool** at decision GW ``t``: only players with actual
-    minutes ``> 60`` in GW ``t``.
-  - **Minutes oracle** on boards: actual ``m``, ``σ_m=0`` for the scored GW
-    (mean solve on priced t:t+1 and residual preds).
-  - **Bench autosub + VC** when banking actual points (``bank_squad_gw`` law).
+  - **Full-side shares:** attack pots/shares built on the full minutes-oracle
+    club (mean boards) / as-of share roster (path generative).
+  - **Semi-oracle buy filter** at decision GW ``t``: only players with actual
+    minutes ``> 60`` in GW ``t`` may be bought (applied *after* scoring).
+  - **Minutes oracle** on residual/mean boards: actual ``m``, ``σ_m=0``.
+  - **Bench autosub + VC** when banking actuals.
 
-Arms (unchanged structure):
+Arms:
   - **Mean:** ``xi_plus_captain`` on priced t:t+1 mean boards; held.
   - **Path:** strand-mean of held ``xi_plus_captain_ft`` lineups.
 
@@ -159,6 +159,11 @@ def _mean_board_oracle(
     alpha_a: float,
     pool_ids: set[str],
 ) -> pd.DataFrame:
+    """Minutes-oracle board on the **full** side; buy-filter to ``pool_ids``.
+
+    Shares / attack pots are built on everyone with actual minutes that GW.
+    Semi-oracle pool is applied only after scoring (selection filter).
+    """
     oracle_side = apply_minutes_oracle(side, merged, gw)
     fits = centreline_fixture_fits(fixtures_for_gw(enriched, gw), fd)
     if not fits:
@@ -168,14 +173,16 @@ def _mean_board_oracle(
     )
     if board.empty:
         return board
-    return attach_prices_and_cap(
+    board = attach_prices_and_cap(
         board,
         prices,
         season=season,
         decision_gw=decision_gw,
         selectable_ids=pool_ids,
-        apply_player_pool=False,
+        apply_player_pool=True,
+        force_ids=None,
     )
+    return board
 
 
 def run_mean_arm_oracle(
@@ -312,7 +319,9 @@ def run_path_strands(
     snapshot_gws: list[int],
     n_strands: int,
     seed: int,
+    selectable_ids: set[str] | None = None,
 ) -> dict[str, Any]:
+    """Path strands. ``pool`` is the share/scoring roster; ``selectable_ids`` is the buy filter."""
     paths0 = init_paths_from_opta(ranks, profile=profile)
     rng = random.Random(int(seed))
     strands: list[dict[str, Any]] = []
@@ -339,6 +348,7 @@ def run_path_strands(
             priced_by_gw=priced_by_gw,
             ranks=ranks,
             profile=profile,
+            selectable_ids=selectable_ids,
         )
         strands.append(
             {
@@ -666,9 +676,12 @@ def write_report(state: dict[str, Any], out_dir: Path) -> None:
         f"N={state['n_strands']} · seed={state['seed']}",
         "",
         "**Diagnostic.**",
-        f"- **Semi-oracle pool** at GW{state['decision_gw']}: actual minutes "
-        f"> {MIN_ORACLE_MINUTES:.0f} (n={state.get('n_pool')}).",
-        "- **Minutes oracle** on boards: actual `m`, `σ_m=0` for the scored GW.",
+        f"- **Shares** on the full minutes-oracle side / as-of share roster "
+        f"(n_share={state.get('n_share_roster')}).",
+        f"- **Buy filter (semi-oracle)** at GW{state['decision_gw']}: actual "
+        f"minutes > {MIN_ORACLE_MINUTES:.0f} (n_buy={state.get('n_buy_pool')}).",
+        "- **Minutes oracle** on residual/mean boards: actual `m`, `σ_m=0` "
+        "for the scored GW (no GW(t+n) foresight in path generative minutes).",
         "- **Actuals:** locked XI + FPL bench autosub + VC if captain blanks.",
         "- Mean XI locked from priced t:t+1 MILP and held; path = strand-mean "
         "of held `xi_plus_captain_ft` lineups.",
@@ -750,7 +763,7 @@ def main(argv: list[str] | None = None) -> int:
     print(
         f"[resid] season={season} decision={decision_gw} "
         f"horizon={start}-{horizon_end} N={args.n} "
-        f"(semi-oracle pool m>{MIN_ORACLE_MINUTES:.0f} @ GW{decision_gw}; "
+        f"(full-side shares; semi-oracle buy m>{MIN_ORACLE_MINUTES:.0f} @ GW{decision_gw}; "
         "minutes oracle boards; autosub actuals)",
         flush=True,
     )
@@ -773,32 +786,55 @@ def main(argv: list[str] | None = None) -> int:
     alpha_g, alpha_a = _asof_alphas(hist)
     team_hist = hist_by_team_norm(hist)
 
-    pool = _build_hist_pool(hist, prices, decision_gw=decision_gw, season=season)
+    # Share/scoring roster: as-of hist pool (not cut to GW-t m>60).
+    score_pool = _build_hist_pool(
+        hist, prices, decision_gw=decision_gw, season=season
+    )
     oracle_els = semi_oracle_elements(merged, decision_gw)
     if len(oracle_els) < 15:
         raise RuntimeError(
             f"semi-oracle pool too small at GW{decision_gw}: {len(oracle_els)}"
         )
-    pool = pool.loc[
-        pd.to_numeric(pool["element"], errors="coerce").isin(oracle_els)
+    # Buy filter only: actual m>60 at decision GW t.
+    buy_pool = score_pool.loc[
+        pd.to_numeric(score_pool["element"], errors="coerce").isin(oracle_els)
     ].copy()
-    # Semi-oracle minutes freeze on the pool (actual m at GW t) for generative.
+    if len(buy_pool) < 15:
+        raise RuntimeError(f"buy pool too small after semi-oracle cut: {len(buy_pool)}")
+    pool_ids = set(buy_pool["player_id"].astype(str))
+    pool_ids |= {
+        str(int(e))
+        for e in pd.to_numeric(buy_pool["element"], errors="coerce").dropna().astype(int)
+    }
+
+    # Path generative minutes: as-of m on the share roster (no GW(t+n) foresight).
+    # Buy-eligible rows may use GW-t actual minutes (semi-oracle at t only).
     gw_t = merged.loc[pd.to_numeric(merged["GW"], errors="coerce") == decision_gw]
     m_t = {
         int(r.element): float(r.minutes or 0.0)
         for r in gw_t.itertuples(index=False)
         if pd.notna(r.element)
     }
-    pool["m"] = [
-        float(m_t.get(int(e), 0.0))
-        for e in pd.to_numeric(pool["element"], errors="coerce").fillna(-1)
+    # Keep as-of m on share roster; overlay GW-t actual only for buy-eligible els.
+    if "m" not in score_pool.columns:
+        score_pool["m"] = pd.to_numeric(
+            score_pool["xmi"] if "xmi" in score_pool.columns else 0.0,
+            errors="coerce",
+        ).fillna(0.0)
+    score_pool["m"] = [
+        float(m_t[int(e)]) if int(e) in oracle_els and int(e) in m_t else float(m)
+        for e, m in zip(
+            pd.to_numeric(score_pool["element"], errors="coerce").fillna(-1),
+            pd.to_numeric(score_pool["m"], errors="coerce").fillna(0.0),
+            strict=True,
+        )
     ]
-    pool["xmi"] = pool["m"]
-    pool["sigma_m"] = 0.0
-    pool_ids = set(pool["player_id"].astype(str))
+    score_pool["xmi"] = score_pool["m"]
+    score_pool["sigma_m"] = 0.0
     print(
-        f"[resid] pool={len(pool)} (semi-oracle m>{MIN_ORACLE_MINUTES:.0f} "
-        f"@ GW{decision_gw}; from {len(oracle_els)} GW players)",
+        f"[resid] share_roster={len(score_pool)} buy_pool={len(buy_pool)} "
+        f"(semi-oracle buy m>{MIN_ORACLE_MINUTES:.0f} @ GW{decision_gw}; "
+        f"{len(oracle_els)} GW players)",
         flush=True,
     )
 
@@ -813,6 +849,7 @@ def main(argv: list[str] | None = None) -> int:
     if len(priced_gws) < 1:
         raise RuntimeError("no FD priced fits in horizon head")
 
+    # Full side for mean-board shares (minutes oracle applied per score GW).
     side, _, _ = build_frozen_side_table(
         hist,
         alpha_g=alpha_g,
@@ -820,12 +857,8 @@ def main(argv: list[str] | None = None) -> int:
         season=season,
         historical_rate_baseline=True,
     )
-    # Selection side also restricted to semi-oracle elements.
-    side = side.loc[
-        pd.to_numeric(side["element"], errors="coerce").isin(oracle_els)
-    ].copy()
 
-    print("[resid] mean arm (minutes-oracle boards)…", flush=True)
+    print("[resid] mean arm (full-side shares → buy filter)…", flush=True)
     mean = run_mean_arm_oracle(
         side=side,
         merged=merged,
@@ -844,9 +877,9 @@ def main(argv: list[str] | None = None) -> int:
         flush=True,
     )
 
-    print("[resid] path arm…", flush=True)
+    print("[resid] path arm (full share roster → buy filter)…", flush=True)
     path = run_path_strands(
-        pool=pool,
+        pool=score_pool,
         fixtures_gw=fixtures_gw,
         priced_by_gw=priced_by_gw,
         ranks=ranks,
@@ -859,6 +892,7 @@ def main(argv: list[str] | None = None) -> int:
         snapshot_gws=snapshot_gws,
         n_strands=int(args.n),
         seed=int(args.seed),
+        selectable_ids=pool_ids,
     )
     print(
         f"[resid] path done strands_with_squads={path['strands_with_squads']} "
@@ -871,7 +905,7 @@ def main(argv: list[str] | None = None) -> int:
         mean=mean,
         path=path,
         side=side,
-        pool=pool,
+        pool=buy_pool,
         enriched=enriched,
         fd=fd,
         prices=prices,
@@ -895,10 +929,13 @@ def main(argv: list[str] | None = None) -> int:
     }
 
     summary: dict[str, Any] = {
-        "semi_oracle_pool": True,
+        "full_side_shares": True,
+        "semi_oracle_buy_filter": True,
         "min_oracle_minutes": MIN_ORACLE_MINUTES,
         "minutes_oracle_boards": True,
         "autosub_actuals": True,
+        "n_share_roster": int(len(score_pool)),
+        "n_buy_pool": int(len(buy_pool)),
     }
     if per_gw:
         summary.update(
@@ -928,8 +965,11 @@ def main(argv: list[str] | None = None) -> int:
         "seed": int(args.seed),
         "snapshot_gws": snapshot_gws,
         "priced_gws": priced_gws,
-        "n_pool": int(len(pool)),
+        "n_share_roster": int(len(score_pool)),
+        "n_buy_pool": int(len(buy_pool)),
+        "n_pool": int(len(buy_pool)),
         "semi_oracle_gw": decision_gw,
+        "full_side_shares": True,
         "min_oracle_minutes": MIN_ORACLE_MINUTES,
         "minutes_oracle_boards": True,
         "autosub_actuals": True,

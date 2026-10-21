@@ -1,15 +1,18 @@
 {
-  "semi_oracle_pool": true,
+  "full_side_shares": true,
+  "semi_oracle_buy_filter": true,
   "min_oracle_minutes": 60.0,
   "minutes_oracle_boards": true,
   "autosub_actuals": true,
+  "n_share_roster": 159,
+  "n_buy_pool": 126,
   "n_gws": 12,
-  "mean_resid_bias": 23.134698401485227,
-  "path_resid_bias": 4.032419203560264,
-  "mean_resid_mae": 23.134698401485227,
-  "path_resid_mae": 8.87911257725915,
-  "mean_actual_sum": 605.0,
-  "path_actual_sum": 624.3333333333334,
-  "path_minus_mean_actual_sum": 19.33333333333334,
-  "mean_autosubs_sum": 14
+  "mean_resid_bias": 12.651685075970923,
+  "path_resid_bias": 1.0617404631845673,
+  "mean_resid_mae": 14.919903823134044,
+  "path_resid_mae": 11.09552371273046,
+  "mean_actual_sum": 647.0,
+  "path_actual_sum": 646.4166666666667,
+  "path_minus_mean_actual_sum": -0.5833333333333464,
+  "mean_autosubs_sum": 6
 }

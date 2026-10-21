@@ -599,8 +599,14 @@ def run_strand(
     priced_by_gw: Mapping[int, Sequence[Mapping[str, Any]]] | None = None,
     ranks: Mapping[str, float] | None = None,
     profile: Mapping[int, Mapping[str, float]] | None = None,
+    selectable_ids: set[str] | None = None,
 ) -> StrandResult:
-    """One coherent MC strand: short/Opta scenarios → score_xp_v2 → MILP."""
+    """One coherent MC strand: short/Opta scenarios → score_xp_v2 → MILP.
+
+    ``selectable_ids``: when set, generative/mean scores may use the full
+    ``pool`` for club share context, but MILP only buys from this id set
+    (owned players are always kept under FT objectives).
+    """
     if objective not in OBJECTIVES:
         raise ValueError(f"unknown objective: {objective!r}")
     if alpha_g is None or alpha_a is None:
@@ -611,6 +617,7 @@ def run_strand(
         c: ClubPath(att=p.att, dfn=p.dfn, n=p.n) for c, p in paths0.items()
     }
     priced_index = _priced_index(priced_by_gw)
+    buy_ids = {str(x) for x in selectable_ids} if selectable_ids is not None else None
     result = StrandResult(strand_id=strand_id)
     # Full rolled scenarios by GW (hg/ag/lam) for generative player scoring.
     rolled_by_gw: dict[int, list[dict[str, Any]]] = {}
@@ -713,6 +720,11 @@ def run_strand(
                 alpha_a=alpha_a,
             )
         scored = scored.loc[np.isfinite(scored["mc_score"])]
+        if buy_ids is not None:
+            force = set(owned_ids or ())
+            scored = scored.loc[
+                scored["player_id"].astype(str).isin(buy_ids | force)
+            ].copy()
         if len(scored) < 15 or scored["position"].nunique() < 4:
             continue
 

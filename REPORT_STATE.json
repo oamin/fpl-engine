@@ -6,19 +6,22 @@
   "season": "2025-26",
   "n": 12,
   "settings": {
-    "semi_oracle_pool": "actual m>60 at decision GW t",
+    "full_side_shares": true,
+    "semi_oracle_buy_filter": "actual m>60 at decision GW t",
     "minutes_oracle_boards": true,
-    "autosub_actuals": true
+    "autosub_actuals": true,
+    "n_share_roster": 159,
+    "n_buy_pool": 126
   },
   "summary": {
-    "mean_actual_sum": 605.0,
-    "path_actual_sum": 624.33,
-    "mean_resid_bias": 23.13,
-    "path_resid_bias": 4.03,
-    "mean_resid_mae": 23.13,
-    "path_resid_mae": 8.88,
-    "mean_autosubs_sum": 14
+    "mean_actual_sum": 647.0,
+    "path_actual_sum": 646.42,
+    "mean_resid_bias": 12.65,
+    "path_resid_bias": 1.06,
+    "mean_resid_mae": 14.92,
+    "path_resid_mae": 11.10,
+    "mean_autosubs_sum": 6
   },
   "report": "reports/cascade_mean_path_gw_resid.md",
-  "note": "v2 after PI ask: autosub + minutes oracle + semi-oracle pool"
+  "note": "v3: full-side shares; semi-oracle is buy filter only (fixes ~1.65x pot absorption)"
 }

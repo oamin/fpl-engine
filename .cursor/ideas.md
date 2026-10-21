@@ -54,10 +54,11 @@ top-15; Jaccard≈0.25. Not live-comparable / not gated. Report:
 
 ## Noted — mean vs path per-GW residual (2026-10-21)
 
-`cascade_mean_path_gw_resid` on **2025-26** GW8–19 (N=12): semi-oracle pool
-(m>60 @ GW t), minutes-oracle boards, autosub+VC actuals. Held mean XI vs
-strand-mean held path XIs. Path sum actual **624** > mean **605**; path resid
-MAE **8.9** vs mean **23.1**. Diagnostic only.
+`cascade_mean_path_gw_resid` on **2025-26** GW8–19 (N=12): full-side shares
+(buy filter = semi-oracle m>60 @ GW t only), minutes-oracle boards, autosub+VC.
+Bugfix: cutting the roster before share renormalisation handed the full
+`G_team` pot to ~60% of scorers (~1.65× E[G]). After fix: mean/path sum actual
+≈**647/646**; resid bias **+12.7 / +1.1**. Diagnostic only.
 Report: `reports/cascade_mean_path_gw_resid.md`.
 
 ## Noted — historical rate baseline for cascade (2026-10-21)
