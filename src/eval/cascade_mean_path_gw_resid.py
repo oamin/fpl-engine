@@ -320,6 +320,7 @@ def run_path_strands(
     n_strands: int,
     seed: int,
     selectable_ids: set[str] | None = None,
+    ft_pe_nu: float = 0.0,
 ) -> dict[str, Any]:
     """Path strands. ``pool`` is the share/scoring roster; ``selectable_ids`` is the buy filter."""
     paths0 = init_paths_from_opta(ranks, profile=profile)
@@ -349,6 +350,7 @@ def run_path_strands(
             ranks=ranks,
             profile=profile,
             selectable_ids=selectable_ids,
+            ft_pe_nu=float(ft_pe_nu),
         )
         strands.append(
             {

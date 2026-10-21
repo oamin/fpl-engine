@@ -1497,6 +1497,23 @@
     "seed": 7,
     "any_later_change": "dated protocol update required"
   },
+  "cascade_ft_pe_path": {
+    "locked": "2026-10-21",
+    "status": "queued",
+    "role": "path FT objective with potential energy on ft_after vs current XI+cap−hits",
+    "module": "src/eval/cascade_ft_pe_path.py",
+    "report": "reports/cascade_ft_pe_path.md",
+    "season": "2025-26",
+    "setup": "same as cascade_mean_path_gw_resid path arm (full-side shares, semi-oracle buy, generative attack, snapshots every 2)",
+    "control": "xi_plus_captain_ft: V = S − hit_pts (ft_pe_nu=0)",
+    "candidate": "V = S − hit_pts + U(ft_after); U(b)=ν·φ(b); φ concave in bank; ν=2.0 locked a priori (=HIT_COST/2); φ(b)=Σ_{i=1..b}(1−(i−1)/(2·MAX_FT))",
+    "n": 12,
+    "seed": 7,
+    "metric": "diagnostic: mean transfers / paid / hit pts; path actual sum; path resid bias — not a four-season promote gate",
+    "promote_rule": "none this batch; report PE effect on FT burn and whether path actual clearly worsens",
+    "not": "retune ν on resid; four-season climb; L4 ft_dp thresholds revive",
+    "any_later_change": "dated protocol update required"
+  },
   "cascade_mean_path_gw_resid": {
     "locked": "2026-10-21",
     "revised": "2026-10-21 — full-side shares; semi-oracle is buy filter only; minutes-oracle boards; autosub+VC",

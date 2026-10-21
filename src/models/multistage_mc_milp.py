@@ -97,6 +97,25 @@ OBJECTIVE_XI_CAPTAIN_FT = "xi_plus_captain_ft"
 OBJECTIVES = (OBJECTIVE_SQUAD_SUM, OBJECTIVE_XI_CAPTAIN, OBJECTIVE_XI_CAPTAIN_FT)
 # Path FT mode: allow this many hits beyond the free-transfer bank at a snapshot.
 MAX_HITS_SNAPSHOT = 2
+# Potential energy on ft_after: U(b)=ν·φ(b). Default 0 = legacy objective.
+# Locked trial value lives in protocol.cascade_ft_pe_path (ν=HIT_COST/2).
+DEFAULT_FT_PE_NU = 0.0
+
+
+def ft_bank_potential(bank: int, *, nu: float, max_ft: int | None = None) -> float:
+    """Concave potential energy of an FT bank.
+
+    ``φ(b) = Σ_{i=1..b} (1 − (i−1)/(2·MAX_FT))`` so marginal value falls toward
+    the cap (unused grant waste). ``U = ν · φ``. ``ν≤0`` or ``b≤0`` → 0.
+    """
+    from src.rules.fpl_2026 import MAX_FT as _MAX_FT
+
+    if float(nu) <= 0.0 or int(bank) <= 0:
+        return 0.0
+    m = int(_MAX_FT if max_ft is None else max_ft)
+    b = min(int(bank), m)
+    phi = sum(1.0 - (i - 1) / (2.0 * float(m)) for i in range(1, b + 1))
+    return float(nu) * float(phi)
 # Scenario player scoring matches cascade_short generative (props off).
 DEFAULT_GENERATIVE_ATTACK = True
 # Align with cascade_short: freeze as-of mean minutes on gen paths (PI 2026-10-21).
@@ -600,12 +619,16 @@ def run_strand(
     ranks: Mapping[str, float] | None = None,
     profile: Mapping[int, Mapping[str, float]] | None = None,
     selectable_ids: set[str] | None = None,
+    ft_pe_nu: float = DEFAULT_FT_PE_NU,
 ) -> StrandResult:
     """One coherent MC strand: short/Opta scenarios → score_xp_v2 → MILP.
 
     ``selectable_ids``: when set, generative/mean scores may use the full
     ``pool`` for club share context, but MILP only buys from this id set
     (owned players are always kept under FT objectives).
+
+    ``ft_pe_nu``: potential-energy weight on ``ft_after`` for
+    ``xi_plus_captain_ft`` (0 = legacy ``S − hit_pts``).
     """
     if objective not in OBJECTIVES:
         raise ValueError(f"unknown objective: {objective!r}")
@@ -754,6 +777,7 @@ def run_strand(
                         owned_ids=owned_ids,
                         ft=ft_before,
                         time_limit=milp_time_limit,
+                        ft_pe_nu=float(ft_pe_nu),
                     )
                     n_transfers = int(picked["n_transfers"])
                     hits = int(picked["hits"])
@@ -1022,9 +1046,14 @@ def _pick_squad_xi_captain_ft(
     ft: int,
     max_hits: int = MAX_HITS_SNAPSHOT,
     time_limit: float = 8.0,
+    ft_pe_nu: float = DEFAULT_FT_PE_NU,
 ) -> dict[str, Any]:
-    """Choose transfers maximising XI+captain − 4·hits given the FT bank."""
-    from src.rules.fpl_2026 import hit_cost
+    """Choose transfers maximising S − hit_pts + U(ft_after).
+
+    Legacy control is ``ft_pe_nu=0`` (``S − hit_pts`` only). With ``ft_pe_nu>0``,
+    unused bank has potential energy via :func:`ft_bank_potential`.
+    """
+    from src.rules.fpl_2026 import advance_ft, hit_cost
 
     owned = {str(x) for x in owned_ids}
     frame = gw_df
@@ -1032,6 +1061,7 @@ def _pick_squad_xi_captain_ft(
     best_v = -1e18
     k_max = int(ft) + int(max_hits)
     per_k = max(2.0, float(time_limit) / float(k_max + 1))
+    nu = float(ft_pe_nu)
     for k in range(0, k_max + 1):
         try:
             picked = _pick_squad_xi_captain(
@@ -1044,7 +1074,9 @@ def _pick_squad_xi_captain_ft(
         except RuntimeError:
             continue
         hits = int(hit_cost(int(ft), k))
-        value = float(picked["objective"]) - float(hits)
+        ft_after = int(advance_ft(int(ft), int(k)))
+        pe = ft_bank_potential(ft_after, nu=nu)
+        value = float(picked["objective"]) - float(hits) + float(pe)
         if value > best_v:
             best_v = value
             best = {
@@ -1052,6 +1084,9 @@ def _pick_squad_xi_captain_ft(
                 "n_transfers": k,
                 "hits": hits,
                 "ft_before": int(ft),
+                "ft_after": ft_after,
+                "ft_pe": float(pe),
+                "ft_pe_nu": nu,
                 "net_objective": value,
             }
     if best is None:
