@@ -1496,5 +1496,25 @@
     "n": 12,
     "seed": 7,
     "any_later_change": "dated protocol update required"
+  },
+  "cascade_mean_path_gw_resid": {
+    "locked": "2026-10-21",
+    "status": "done_diagnostic",
+    "result": "2025-26 GW8–19 N=12: mean sum actual 615 > path 587; mean resid bias +20.4 MAE 23.7 vs path +10.6 MAE 13.1 (same FD μ board on each XI); ~95s",
+    "role": "per-GW residual mean XI vs stable cascade path XI (strand-mean held lineups) against actual points",
+    "module": "src/eval/cascade_mean_path_gw_resid.py",
+    "report": "reports/cascade_mean_path_gw_resid.md",
+    "season": "2025-26",
+    "decision_gw": 6,
+    "horizon": "8-19",
+    "mean": "locked xi_plus_captain from priced t:t+1; held all horizon GWs",
+    "path": "N=12 xi_plus_captain_ft strands; held XI between snapshots; strand-mean pred/actual",
+    "pred": "FD centreline score_xp_v2 on that GW board for planned XI (+captain)",
+    "actual": "Vaastav total_points on planned XI (+captain); no autosub",
+    "residual": "pred - actual",
+    "not": "gated; autosub; live Opta; four-season",
+    "n": 12,
+    "seed": 7,
+    "any_later_change": "dated protocol update required"
   }
 }

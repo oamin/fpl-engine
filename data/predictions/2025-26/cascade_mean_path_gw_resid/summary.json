@@ -1,0 +1,10 @@
+{
+  "n_gws": 12,
+  "mean_resid_bias": 20.430442672002318,
+  "path_resid_bias": 10.570980741673944,
+  "mean_resid_mae": 23.672626646127853,
+  "path_resid_mae": 13.081495704057202,
+  "mean_actual_sum": 615.0,
+  "path_actual_sum": 586.7499999999999,
+  "path_minus_mean_actual_sum": -28.25
+}
