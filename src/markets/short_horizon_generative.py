@@ -3,7 +3,8 @@
 Per fixture path:
 
 1. ``k ∼ M`` (``match_outcome_roll`` from priced / FD λ).
-2. Lineup world (minutes-corr competitor pairs; firm XI override later).
+2. Lineup world: frozen as-of mean minutes by default (``lineup_cov=False``);
+   matchday/pair rolls parked.
 3. Scorer / assist dice (``π`` props-shape or shares; ``ρ`` assists; α empties).
 4. Defence from the **rolled** scoreline (``defence_roll``: CS if GA=0;
    GC = ⌊GA/2⌋) — no separate xCS / xGC moments on scenario strands.
@@ -28,6 +29,7 @@ from src.markets.lineup_roll import (
     START_GATE,
     LineupWorld,
     minutes_corr_pairs,
+    roll_club_gw_lineup,
     roll_lineup_world,
     select_disjoint_pairs,
 )
@@ -160,6 +162,8 @@ def competitor_pairs_for_club(
 ) -> list:
     if hist is None or hist.empty or club.empty:
         return []
+    from src.markets.lineup_roll import minutes_panel
+
     idc = _id_col(club)
     name_h = "player_name" if "player_name" in hist.columns else "name"
     id_h = "element" if "element" in hist.columns else ("player_id" if "player_id" in hist.columns else idc)
@@ -173,8 +177,9 @@ def competitor_pairs_for_club(
     if gw_col != "gw":
         h = h.rename(columns={gw_col: "gw"})
     table = minutes_corr_pairs(h, id_col=id_h, name_col=name_h)
+    panel = minutes_panel(h, id_col=id_h, gw_col="gw")
     ids = club[idc].astype(int).tolist()
-    return select_disjoint_pairs(ids, table)
+    return select_disjoint_pairs(ids, table, panel=panel)
 
 
 def xp_soft_priors_expanding(
@@ -322,15 +327,8 @@ def _roll_or_trivial_lineup(
     mean_m = club["m"].to_numpy(float)
     if not lineup_cov:
         return trivial_lineup(mean_m)
-    pairs = competitor_pairs_for_club(hist, club)
-    if not pairs:
-        return trivial_lineup(mean_m)
-    return roll_lineup_world(
-        mean_m=mean_m,
-        names=club[_name_col(club)].astype(str),
-        pairs=pairs,
-        rng=rng,
-    )
+    # Club matchday resample — full GW minutes vector, no corr threshold.
+    return roll_club_gw_lineup(club, hist, rng, id_col_club=_id_col(club))
 
 
 def score_fixture_generative(

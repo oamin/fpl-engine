@@ -1,10 +1,12 @@
 {
-  "task": "lock cascade short/long centreline M → k∼M; retire λ ±15% jitter",
+  "task": "lock_lineup_cov_false_live_layers",
   "status": "done",
-  "branch": "cursor/cascade-long-m-from-opta-cc3d",
-  "MARKET_BAND": 0.0,
-  "contaminated_trial": "reports/multistage_xi_captain_ft_short_long_trial.md",
-  "protocol": ["cascade_short_generative", "cascade_long_match_outcome"],
-  "parked": "ideas.md lambda_uniform_band",
-  "merge": "resolved REPORT_STATE vs base club-expanding for PR #97"
+  "DEFAULT_LINEUP_COV": false,
+  "live_layers": {
+    "pool": "FFScout firm ∩ sticky minutes gate — WHO",
+    "minutes": "as-of m / live xmi (+ optional availability overlay) — frozen on gen paths",
+    "scenario": "k∼M → attack → CS/GC"
+  },
+  "report": "reports/cascade_live_minutes_layers.md",
+  "parked": ["club_matchday_minutes_resample", "corr_threshold_competitor_pairs"]
 }

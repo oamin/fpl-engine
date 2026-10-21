@@ -44,7 +44,7 @@ class CascadeLongDefaults(unittest.TestCase):
     def test_generative_default_on_props_off(self) -> None:
         self.assertEqual(cl.MATCH_SOURCE, "opta_rank_gf_ga")
         self.assertTrue(ms.DEFAULT_GENERATIVE_ATTACK)
-        self.assertTrue(ms.DEFAULT_LINEUP_COV)
+        self.assertFalse(ms.DEFAULT_LINEUP_COV)
 
 
 class PreRolledScoreline(unittest.TestCase):

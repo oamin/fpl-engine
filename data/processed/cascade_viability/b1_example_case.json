@@ -1,0 +1,26 @@
+{
+  "season": "2022-23",
+  "gw": 8,
+  "fixture": 80,
+  "match": "Wolves vs Man City",
+  "note": "Demo uses Random(SEED+i) per MC draw on this fixture alone. Overnight B1 used one Random(7) advancing across all fixtures/GWs/seasons, so exact xP numbers differ; structure matches.",
+  "alpha_g": 0.9314285714285714,
+  "alpha_a": 0.8571428571428571,
+  "lam": [
+    0.7939958903529393,
+    2.371061635859254
+  ],
+  "seed0_meta": {
+    "goals_home": 0,
+    "goals_away": 3,
+    "p": 0.09378000724784677,
+    "lam_h": 0.7939958903529393,
+    "lam_a": 2.371061635859254,
+    "home_cs": false,
+    "away_cs": true,
+    "home_ga": 3,
+    "away_ga": 0,
+    "n_home_scorers": 0,
+    "n_away_scorers": 3
+  }
+}

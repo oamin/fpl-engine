@@ -4,6 +4,16 @@ Cursor chooses the next pre-registered comparison. The PI is not asked to pick. 
 
 **Numagent 2.0 is locked on main** — see `.cursor/context.md` and `reports/LOCKED.md` (`protocol.numagent_2_0`). Engine primary scorer is `score_xp_v2`. Numagent 1.0 and `score_xp` are **archived in-place** (`reports/ARCHIVE_NUMAGENT_1_0.md`). This file is the **park log**. Everything from “Procedure, locked 2026-10-07” downward is **Numagent 1.0 / stage archaeology** — not instructions for the live path.
 
+## Parked — cascade generative MC-mean vs mean layer (2026-10-20 overnight)
+
+`cascade_viability_batch` B1/B2: player-GW log of N_MC=6 generative mean xP
+**clearly loses** to centreline `score_team_side` on the same `M`
+(short Δ≈−0.089; long Δ≈−0.090; intervals wholly below 0). B3 short_gen vs
+long_gen inconclusive. Integrity A/D green; FT+cap smoke OK without λ jitter.
+Do **not** promote generative scenario xP as a mean forecast until a better
+aggregator (or path-V-only use) is designed. Report:
+`reports/cascade_short_long_viability_results.md`.
+
 ## Rejected — artificial λ Uniform(±15%) on cascade_short (2026-10-20)
 
 Agent-era scenario spice (`MARKET_BAND=0.15`): multiply fitted λ by
@@ -17,6 +27,38 @@ roll over `M`, not a second invented λ axis. Contaminated diagnostic:
 Scenario soft terms stay expanding-mean `bonus_mu` / `card_mu` / DefCon / saves.
 Tying bonus to the rolled scoreline (BPS proxy from G/A/CS) is possible later but
 parked as overkill until a path-V screen asks for it (`protocol.cascade_short_generative`).
+
+## Parked — mean t:t+1 vs short gen as mean forecast (2026-10-21)
+
+`cascade_short_mean_tt1_vs_gen` N_MC=20: gen MC-mean on decision GW(t:t+1)
+**clearly loses** vs mean boards on the same fits
+(Δ≈−0.054 [−0.060, −0.048], 80 decision-GW pairs). Product-horizon reframing
+does not rescue gen-as-mean. Report: `reports/cascade_short_mean_tt1_vs_gen.md`.
+
+## Noted — path-V gen vs mean MILP diagnostic (2026-10-21)
+
+`cascade_pathv_gen_vs_mean_milp` N=20 FT+cap: both arms solve (120 squads).
+Gen hits≈7.2 / xfers≈3.8; mean-layer hits≈1.6 / xfers≈2.4; top-15 Jaccard≈0.36.
+Strategy policies diverge — generative strands are not a no-op vs μ boards.
+Not a gated path-V promote. Report: `reports/cascade_pathv_gen_vs_mean.md`.
+
+## Parked — lineup_cov=False / freeze minutes (2026-10-21)
+
+`cascade_lineup_off_tt1`: gen with frozen mean minutes **clearly loses** to mean
+(Δ≈−0.021). Diagnostic: gen with joint pair lineup beat gen_off (Δ≈+0.016).
+Report: `reports/cascade_lineup_off_tt1.md` (pair-threshold stack; superseded).
+
+## Parked — club matchday / pair minutes rolls (2026-10-21)
+
+PI: freeze as-of mean minutes on gen paths. `DEFAULT_LINEUP_COV=False`.
+Matchday resample and corr-pair joints parked. Live: FFScout = **pool
+eligibility** (WHO); minutes = as-of m / xmi (+ optional availability overlay),
+not an FFScout-driven minutes MC.
+
+## Active — club matchday minutes (superseded same day)
+
+Matchday gen_on−mean clearly_loses (−0.011); gen_off−mean (−0.021). Kept as
+diagnostic only — default is now lineup_cov=False.
 
 ## Active / next (sparse)
 

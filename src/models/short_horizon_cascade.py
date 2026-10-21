@@ -67,7 +67,9 @@ MIN_POOL = 40
 SCORER = numagent_xp.SCORE_NAME  # score_xp_v2
 # Scenario strands on priced t:t+1 use generative attack by default.
 DEFAULT_GENERATIVE_ATTACK = True
-DEFAULT_LINEUP_COV = True
+# Frozen as-of mean minutes on gen paths (PI 2026-10-21). Club matchday /
+# pair-corr rolls parked — they did not beat mean and add unsigned knobs.
+DEFAULT_LINEUP_COV = False
 
 
 def load_prices(season: str) -> pd.DataFrame:
