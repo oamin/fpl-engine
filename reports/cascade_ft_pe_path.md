@@ -11,16 +11,16 @@ Protocol: `cascade_ft_pe_path` · season **2025-26** · decision GW6 → 8–19 
 
 φ(b) = Σᵢ₌₁..b (1 − (i−1)/(2·MAX_FT)): φ(1)=1.00, φ(2)=1.90, φ(3)=2.70, φ(4)=3.40, φ(5)=4.00
 
-W≈7.18 for H=12, γ=0.9. Under the joint plan PE is terminal leftover-bank value; mid-horizon banking is already priced via future XI scores.
+W≈12.00 for H=12, γ=1.0. Under the joint plan PE is terminal leftover-bank value; mid-horizon banking is already priced via future XI scores.
 
-Wall: 164.7s
+Wall: 100.8s
 
 ## Transfer behaviour (mean over strands; excl. opening free rebuild)
 
 | arm | transfers | free used | paid | hit pts | mean terminal ft |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| control | 17.08 | 11.00 | 6.08 | 24.3 | 1.00 |
-| candidate | 17.08 | 11.00 | 6.08 | 24.3 | 1.00 |
+| control | 27.00 | 11.00 | 16.00 | 64.0 | 1.00 |
+| candidate | 27.00 | 11.00 | 16.00 | 64.0 | 1.00 |
 | Δ (cand−ctrl) | +0.00 |  | +0.00 | +0.0 | +0.00 |
 
 ### Per GW (candidate joint schedule)
@@ -28,28 +28,28 @@ Wall: 164.7s
 | GW | transfers | free | paid | hit pts | mean ft_after |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 9 | 1.58 | 1.00 | 0.58 | 2.3 | 1.00 |
-| 10 | 2.25 | 1.00 | 1.25 | 5.0 | 1.00 |
-| 11 | 2.08 | 1.00 | 1.08 | 4.3 | 1.00 |
-| 12 | 2.17 | 1.00 | 1.17 | 4.7 | 1.00 |
-| 13 | 1.83 | 1.00 | 0.83 | 3.3 | 1.00 |
-| 14 | 1.25 | 1.00 | 0.25 | 1.0 | 1.00 |
-| 15 | 1.33 | 1.00 | 0.33 | 1.3 | 1.00 |
-| 16 | 1.25 | 1.00 | 0.25 | 1.0 | 1.00 |
-| 17 | 1.33 | 1.00 | 0.33 | 1.3 | 1.00 |
-| 18 | 1.00 | 1.00 | 0.00 | 0.0 | 1.00 |
-| 19 | 1.00 | 1.00 | 0.00 | 0.0 | 1.00 |
+| 10 | 2.33 | 1.00 | 1.33 | 5.3 | 1.00 |
+| 11 | 3.08 | 1.00 | 2.08 | 8.3 | 1.00 |
+| 12 | 2.75 | 1.00 | 1.75 | 7.0 | 1.00 |
+| 13 | 2.50 | 1.00 | 1.50 | 6.0 | 1.00 |
+| 14 | 2.50 | 1.00 | 1.50 | 6.0 | 1.00 |
+| 15 | 2.50 | 1.00 | 1.50 | 6.0 | 1.00 |
+| 16 | 2.33 | 1.00 | 1.33 | 5.3 | 1.00 |
+| 17 | 2.92 | 1.00 | 1.92 | 7.7 | 1.00 |
+| 18 | 2.58 | 1.00 | 1.58 | 6.3 | 1.00 |
+| 19 | 1.92 | 1.00 | 0.92 | 3.7 | 1.00 |
 
 ## Path residual vs actual (oracle minutes + autosub)
 
 | arm | sum actual | resid bias | MAE |
 | --- | ---: | ---: | ---: |
-| control | 641.0 | -2.31 | 8.72 |
-| candidate | 641.2 | -2.35 | 8.76 |
-| Δ | +0.2 | -0.04 |  |
+| control | 630.7 | -3.11 | 8.64 |
+| candidate | 630.8 | -3.08 | 8.62 |
+| Δ | +0.1 | +0.02 |  |
 
 ## Decision
 
-**`keep_watching_pe_small`** — under the joint plan, terminal PE (ν=2) barely moves transfer behaviour; path actual Δ=+0.2.
+**`keep_watching_pe_small`** — under the joint plan, terminal PE (ν=2) barely moves transfer behaviour; path actual Δ=+0.1.
 
 Prior myopic-snapshot PE screen is superseded by this joint-plan retest.
 

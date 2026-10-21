@@ -221,11 +221,11 @@ def score_pool_on_lam_pots(
     pots: Mapping[tuple[int, str], list[dict[str, float]]],
     *,
     gws: Sequence[int],
-    gamma: float = 0.9,
+    gamma: float = 1.0,
     alpha_g: float | None = None,
     alpha_a: float | None = None,
 ) -> pd.DataFrame:
-    """Discounted multi-GW ``score_xp_v2`` for MILP from scenario λ pots.
+    """Multi-GW ``score_xp_v2`` for MILP from scenario λ pots (γ=1 default).
 
     Each pot must carry ``lam_scored`` and ``threat`` (opp λ), as produced by
     ``pot_from_sampled_lam`` / path pots.
@@ -386,11 +386,11 @@ def score_pool_generative_on_scenarios(
     alpha_a: float,
     rng: Any,
     hist_by_team: Mapping[str, pd.DataFrame] | None = None,
-    gamma: float = 0.9,
+    gamma: float = 1.0,
     lineup_cov: bool = True,
     rho: float = 0.0,
 ) -> pd.DataFrame:
-    """Discounted multi-GW generative xP (cascade_short stack).
+    """Multi-GW generative xP (cascade_short stack; γ=1 default).
 
     Each scenario mapping needs ``home``, ``away``, ``lam_h``, ``lam_a``, and
     preferably rolled ``hg`` / ``ag``. Optional ``home_props`` / ``away_props``

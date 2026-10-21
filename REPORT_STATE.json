@@ -1,14 +1,13 @@
 {
-  "task": "cascade_ft_pe_path_joint_retest",
-  "status": "done_diagnostic",
-  "decision": "keep_watching_pe_small",
-  "change": "Retest FT potential energy under joint path plan; also force spend-FT-before-hits in path MILP",
-  "result": "2025-26 N=12: candidate ≡ control on transfers/paid/hits; terminal ft=1 both; path actual +0.2; PE inert",
+  "task": "cascade_gamma_1",
+  "status": "done",
+  "change": "Remove season_climb γ=0.9 from cascade defaults; lock undiscounted γ=1.0; re-ran FT PE under γ=1 (still inert)",
   "modules": [
-    "src/models/path_transfer_plan.py",
-    "src/eval/cascade_ft_pe_path.py",
-    "reports/cascade_ft_pe_path.md"
+    "src/models/multistage_mc_milp.py",
+    "src/models/short_horizon_cascade.py",
+    "src/markets/cascade_score_v2.py"
   ],
-  "protocol": "cascade_ft_pe_path",
-  "report": "reports/cascade_ft_pe_path.md"
+  "protocol": "cascade_gamma",
+  "pe_retest": "cand≡ctrl; transfers/strand 27 paid 16 under γ=1",
+  "note": "season_climb_ft.GAMMA=0.9 left for legacy published climb only"
 }

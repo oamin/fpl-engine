@@ -71,12 +71,15 @@ for this bias first. Report: `reports/top_mid_fwd_ga_mismatch.md`.
 
 ## Noted — path FT potential energy (2026-10-21)
 
-`cascade_ft_pe_path` **joint-plan retest**: terminal `U(f_H)=ν·φ·W` (ν=2,
-W=Σγ^h) vs joint schedule without PE — **inert** (transfers/paid/hits identical;
-terminal ft=1 both arms; actual +0.2). Mid-horizon banking is already priced by
-future XI scores. Prior myopic-snapshot PE (−0.33 paid) is superseded. Do not
-inflate ν. Park unless a continuation-value form is pre-registered.
+`cascade_ft_pe_path` joint-plan retest under **γ=1**: PE still inert
+(cand≡ctrl; more aggressive transfer counts without discount). Do not inflate ν.
 Report: `reports/cascade_ft_pe_path.md`.
+
+## Noted — cascade γ=0.9 removed (2026-10-21)
+
+Climb leftover `DEFAULT_GAMMA=0.9` had crept into multistage/cascade without a
+cascade screen. Locked `cascade_gamma=1` (undiscounted). Leave
+`season_climb_ft.GAMMA=0.9` for the legacy published climb only.
 
 ## Noted — historical rate baseline for cascade (2026-10-21)
 

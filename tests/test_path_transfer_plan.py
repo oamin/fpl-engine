@@ -89,7 +89,7 @@ class JointPlanTest(unittest.TestCase):
         self.assertIn(star_id, set(cands["player_id"].astype(str)))
         S = score_matrix_for_candidates(cands, pool, S_pool, gws)
         plan = pick_path_transfer_plan(
-            cands, S, gws, gamma=0.95, ft_pe_nu=0.0, time_limit=60.0
+            cands, S, gws, gamma=1.0, ft_pe_nu=0.0, time_limit=60.0
         )
         weeks = {int(w["gw"]): w for w in plan["weeks"]}
         self.assertEqual(sorted(weeks), gws)

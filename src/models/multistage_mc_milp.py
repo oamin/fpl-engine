@@ -88,7 +88,9 @@ def _clip(x: float, lo: float, hi: float) -> float:
 
 ROOT = Path(__file__).resolve().parents[2]
 POS_MAP = {1: "GKP", 2: "DEF", 3: "MID", 4: "FWD"}
-DEFAULT_GAMMA = 0.9
+# Undiscounted path objective. γ=0.9 was climb leftover contamination — not a
+# cascade lock. L4 priced boards already screened γ=1 over γ=0.9.
+DEFAULT_GAMMA = 1.0
 LOG_CSV = ROOT / "data" / "cache" / "player_gw_2026_27.csv"
 # v1: do not sample shares. Match λ already moves team-level uncertainty;
 # share jitter is a second axis — open only after a calibration screen.
