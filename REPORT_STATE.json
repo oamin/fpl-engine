@@ -1,12 +1,11 @@
 {
-  "task": "lock_lineup_cov_false_live_layers",
-  "status": "done",
-  "DEFAULT_LINEUP_COV": false,
-  "live_layers": {
-    "pool": "FFScout firm ∩ sticky minutes gate — WHO",
-    "minutes": "as-of m / live xmi (+ optional availability overlay) — frozen on gen paths",
-    "scenario": "k∼M → attack → CS/GC"
-  },
-  "report": "reports/cascade_live_minutes_layers.md",
-  "parked": ["club_matchday_minutes_resample", "corr_threshold_competitor_pairs"]
+  "task": "park_top_mu_pot_residual_digs",
+  "status": "parked",
+  "reason": "path residual vs actual already small (~+1.1); PI stops further MID+FWD G/A / stratified pot digs for mean-XI bias",
+  "related": [
+    "cascade_mean_path_gw_resid",
+    "top_mid_fwd_ga_mismatch",
+    "score_xp_v2_xg_strata_recal"
+  ],
+  "note": "Mean +12 is selection on hot μ tail; keep raw FD xG; assist-structure deferred until a separate likelihood ask"
 }

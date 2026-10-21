@@ -93,9 +93,31 @@
   },
   "score_xp_v2_share_history": {
     "locked": "2026-10-16",
-    "rule": "player rG/rA and compositional shares for mu_post (= score_xp_v2) use the scored season only, GW < t",
-    "no_prior_season_fill": true,
+    "revised": "2026-10-21 — cascade/hist paths use score_xp_v2_rate_baseline_prior for rG/rA; asof_share_history remains same-season for soft priors / minutes",
+    "rule": "asof history for minutes/soft priors is scored season only, GW < t; attack rG/rA on cascade paths use prior+season baseline (see score_xp_v2_rate_baseline_prior)",
+    "no_prior_season_fill": "soft_priors_and_minutes_only — attack rates on cascade use prior + same-season update, not raw same-season-only rates",
     "helper": "src/markets/numagent_xp.asof_share_history",
+    "any_later_change": "dated protocol update required"
+  },
+  "score_xp_v2_rate_baseline_prior": {
+    "locked": "2026-10-21",
+    "revised": "2026-10-21 — within-season update: prior counts + same-season GW < t appearances",
+    "status": "cascade_default",
+    "role": "attack rG/rA: start season at prior (player name key, else positional); update each completed GW with same-season appearance G/A/M",
+    "module": "src/markets/rate_baseline.py",
+    "wired": [
+      "src/models/short_horizon_cascade.build_frozen_side_table",
+      "src/markets/cascade_score_v2.build_frozen_pool",
+      "src/markets/cascade_score_v2.attach_rates_priors"
+    ],
+    "formula": {
+      "player_prior": "r = (G0+Gs)/(M0+Ms+RATE_M0); G0/M0 from all prior closed seasons",
+      "positional_prior": "r = (κ·r_pos+Gs)/(κ+Ms) with κ=RATE_M0 when no player prior",
+      "hist": "same-season asof_share_history (GW < t); empty hist = pure prior (season start / live bootstrap)"
+    },
+    "not": "share-seed MC jitter (keep_frozen_shares); does not concatenate prior rows into asof_share_history",
+    "motive": "same-season-only rG collapses early (Matty Cash sG=1.0 Villa GW1–5) and poisons path-frequency captains",
+    "promote_to_score_xp_v2_gate": "deferred — cascade/hist on; full closed-season likelihood screen before flipping published mu_post boards",
     "any_later_change": "dated protocol update required"
   },
   "score_xp_v2_alphas": {
@@ -1456,6 +1478,71 @@
     "baseline": "xi_plus_captain_ft + generative_attack=False (mean score_team_side on scenario λ), N=20 same seeds/horizon",
     "metric": "diagnostic: squads solved, mean hits/transfers, captain concentration, top-freq overlap — not a gated path-V promote",
     "note": "Strategy-layer smoke matching PI aim; full four-season realised path-V gate deferred.",
+    "any_later_change": "dated protocol update required"
+  },
+  "cascade_mc_vs_mean_hist": {
+    "locked": "2026-10-21",
+    "status": "done_diagnostic",
+    "result": "2025-26 N=12: path 72 squads; Jaccard top15∩mean15=0.30; 7/15 mean in path-top; mean cap Haaland in path-top; path top-cap Cash 0.51; hits≈6.1; ~90s",
+    "role": "one closed-season diagnostic: path-frequency MILP vs priced mean MILP (strategy emergence)",
+    "module": "src/eval/cascade_mc_vs_mean_hist.py",
+    "report": "reports/cascade_mc_vs_mean_hist.md",
+    "season": "2025-26",
+    "treatment": "N=12 xi_plus_captain_ft strands; FD short on priced GW8–9; oracle post-GW38 ranks + LOSO prior GF/GA±bands for GW10–19; generative attack; freq aggregate",
+    "baseline": "single xi_plus_captain MILP on discounted FD mean boards GW8+γ·GW9 only (hard stop)",
+    "metric": "top-15 freq Jaccard vs mean-15; mean picks in path-top; captain overlap — not gated / not live-comparable",
+    "pool": "as-of minutes>60 (n_apps≥2); no FFScout",
+    "not": "live Opta ranks; four-season gate; realised path-V climb",
+    "n": 12,
+    "seed": 7,
+    "any_later_change": "dated protocol update required"
+  },
+  "cascade_mean_path_gw_resid": {
+    "locked": "2026-10-21",
+    "revised": "2026-10-21 — full-side shares; semi-oracle is buy filter only; minutes-oracle boards; autosub+VC",
+    "status": "done_diagnostic",
+    "result": "2025-26 GW8–19 N=12 after share fix: mean/path sum actual ≈647/646; mean resid bias +12.7 MAE 14.9; path +1.1 MAE 11.1; ~95s",
+    "role": "per-GW residual mean XI vs stable cascade path XI (strand-mean held lineups) against actual points",
+    "module": "src/eval/cascade_mean_path_gw_resid.py",
+    "report": "reports/cascade_mean_path_gw_resid.md",
+    "season": "2025-26",
+    "decision_gw": 6,
+    "horizon": "8-19",
+    "shares": "full minutes-oracle club side (mean boards) / as-of share roster (path generative) — not cut to buy pool before share renormalisation",
+    "pool": "semi-oracle buy filter only: actual minutes > 60 in decision GW t",
+    "minutes": "oracle on residual/mean boards (actual m, σ_m=0 per scored GW); path generative uses as-of m with GW-t overlay on buy-eligible only",
+    "mean": "locked xi_plus_captain from priced t:t+1 oracle-minute boards; held all horizon GWs",
+    "path": "N=12 xi_plus_captain_ft strands; selectable_ids=buy filter; held 15+XI between snapshots; strand-mean pred/actual",
+    "pred": "FD centreline score_xp_v2 with minutes oracle on planned XI (+captain)",
+    "actual": "locked XI + FPL bench autosub + VC if captain blanks",
+    "residual": "pred - actual",
+    "bugfix": "incomplete buy roster must not absorb full G_team/A_team (was ~1.65× E[G] inflation)",
+    "not": "gated; live Opta; four-season; full future-minute oracle inside generative multi-GW scores",
+    "n": 12,
+    "seed": 7,
+    "any_later_change": "dated protocol update required"
+  },
+  "score_xp_v2_xg_strata_recal": {
+    "locked": "2026-10-21",
+    "status": "done_rejected",
+    "decision": "keep_raw_fd_xg",
+    "promote": false,
+    "role": "stratified FD centreline pot calibration — LOSO xG-quartile rescale of attack pots",
+    "module": "src/eval/xg_strata_recal_screen.py",
+    "report": "reports/xg_strata_recal_screen.md",
+    "control": "score_xp_v2 with raw FD AH+OU centreline xG",
+    "candidate": "same scorer; xG' = xG · scale(bin) where scale_k = mean(goals)/mean(xg) on other three closed seasons' FD side-rows; quartile edges from training xG only; xcs/xgc and α_G/α_A unchanged",
+    "population": "eligible n_prior≥3, minutes>60, gw_start–gw_end, four closed seasons",
+    "metric": "player-GW Gaussian log score σ=3; cluster_interval over GW deltas",
+    "promote_rule": "promote only if candidate−control interval lo > 0; else keep raw FD xG",
+    "interval": {
+      "mean": -0.00096,
+      "lo": -0.00164,
+      "hi": -0.00029
+    },
+    "secondary": "side-row pot ratios goals/xg by fixed xG bands and AH favouritism (diagnostic, not a gate)",
+    "not": "premium tax; α shrink on top fixtures; 2026-27 holdout; assist-share retune",
+    "note": "Clearly loses on player-GW log; keep raw FD xG. Side-row strata flatten under LOSO scales but likelihood does not improve.",
     "any_later_change": "dated protocol update required"
   }
 }

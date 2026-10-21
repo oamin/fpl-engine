@@ -183,6 +183,13 @@ def build_frozen_pool(
     frame["share_xG"] = 0.0
     frame["share_xA"] = 0.0
     frame["exp_defcon_hit"] = 0.0
+    # Season-start priors (player prior else positional). Live bootstrap has no
+    # same-season hist here; hist paths update via ``attach_rates_priors`` /
+    # ``build_frozen_side_table``.
+    if "name" in frame.columns and season:
+        from src.markets.rate_baseline import apply_historical_rate_baseline
+
+        frame = apply_historical_rate_baseline(frame, season=str(season), hist=None)
     return frame.reset_index(drop=True)
 
 
@@ -274,8 +281,15 @@ def attach_rates_priors(
     id_col: str = "element",
     finish_g_col: str | None = None,
     finish_a_col: str | None = None,
+    season: str | None = None,
+    historical_rate_baseline: bool = True,
 ) -> pd.DataFrame:
-    """Merge as-of rates/priors onto a player table; optional finish scales on rG/rA."""
+    """Merge as-of rates/priors onto a player table; optional finish scales on rG/rA.
+
+    When ``historical_rate_baseline`` is True, overwrite ``rG``/``rA`` with
+    prior rates at season start (player else positional), then update with
+    same-season appearance counts in ``hist`` (GW ``< t``).
+    """
     rates = numagent_xp.player_rates_from_history(hist, id_col=id_col)
     priors = numagent_xp.history_priors_for_xp(hist, id_col=id_col)
     out = players.copy()
@@ -314,6 +328,16 @@ def attach_rates_priors(
         scale = pd.to_numeric(out[finish_a_col], errors="coerce").fillna(1.0)
         out["rA"] = out["rA"] * scale
         out["drA"] = out["drA"] * scale
+    if historical_rate_baseline and "name" in out.columns:
+        from src.markets.rate_baseline import apply_historical_rate_baseline
+
+        season_key = season
+        if season_key is None and "season" in hist.columns and len(hist):
+            season_key = str(hist["season"].iloc[0]).replace("_", "-")
+        if season_key:
+            out = apply_historical_rate_baseline(
+                out, season=str(season_key), hist=hist
+            )
     return out
 
 
