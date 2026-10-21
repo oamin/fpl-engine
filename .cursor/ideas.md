@@ -42,6 +42,16 @@ Gen hits≈7.2 / xfers≈3.8; mean-layer hits≈1.6 / xfers≈2.4; top-15 Jaccar
 Strategy policies diverge — generative strands are not a no-op vs μ boards.
 Not a gated path-V promote. Report: `reports/cascade_pathv_gen_vs_mean.md`.
 
+## Parked — path-V C2 FT path vs weekly rebuild (2026-10-21)
+
+`cascade_pathv_c2_ft_vs_rebuild` (gated, four closed seasons, GW8–38):
+`ft_path` (WC open + FT/hits) **clearly loses** to weekly free rebuild on
+locked μ_post boards — Δ **−9.15/GW** [−11.78, −6.38]; pooled −1134 pts;
+hit points 100–140/season (~1 hit/GW). Hit rate pathological vs viability
+ladder. Do **not** open C3 short→long vs L4 until a saner FT policy (hit
+controls / FT-DP) is re-screened. Report:
+`reports/cascade_pathv_c2_ft_vs_rebuild.md`.
+
 ## Parked — lineup_cov=False / freeze minutes (2026-10-21)
 
 `cascade_lineup_off_tt1`: gen with frozen mean minutes **clearly loses** to mean

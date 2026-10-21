@@ -1460,7 +1460,8 @@
   },
   "cascade_pathv_c2_ft_vs_rebuild": {
     "locked": "2026-10-21",
-    "status": "registered",
+    "status": "done_park_clearly_loses",
+    "result": "2026-10-21: Δ −9.15/GW [−11.78, −6.38]; hit pts ~100–140/season; park FT path vs weekly rebuild",
     "role": "cascade viability C2: gated path-V — FT path vs weekly free rebuild",
     "ladder": "cascade_short_long_viability_audits C2",
     "module": "src/eval/cascade_pathv_c2_ft_vs_rebuild.py",

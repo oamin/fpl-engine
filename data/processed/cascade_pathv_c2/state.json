@@ -1,0 +1,87 @@
+{
+  "task": "cascade_pathv_c2_ft_vs_rebuild",
+  "verdict": "park_clearly_loses",
+  "elapsed_s": 15.848294973373413,
+  "defs": {
+    "locked": "2026-10-21",
+    "gw_start": 8,
+    "gw_end": 38,
+    "time_limit": 20.0,
+    "max_hits": 15,
+    "boards": "locked score_xp_v2 \u03bc_post (mode=none) from score_xp_v2_closed \u2014 transfer-rule claim; generative parked after B1/B2 clearly_lose",
+    "seed": 0,
+    "n_boot": 1000
+  },
+  "by_season": [
+    {
+      "season": "2022-23",
+      "n_gw": 31,
+      "ft_pts": 1968.0,
+      "rebuild_pts": 2251.0,
+      "d_pts": -283.0,
+      "ft_hits": 136,
+      "ft_transfers": 65,
+      "mean_hits_per_gw": 1.096774193548387,
+      "mean_ft_bank": 1.0
+    },
+    {
+      "season": "2023-24",
+      "n_gw": 31,
+      "ft_pts": 1834.0,
+      "rebuild_pts": 2090.0,
+      "d_pts": -256.0,
+      "ft_hits": 140,
+      "ft_transfers": 66,
+      "mean_hits_per_gw": 1.1290322580645162,
+      "mean_ft_bank": 1.0
+    },
+    {
+      "season": "2024-25",
+      "n_gw": 31,
+      "ft_pts": 1960.0,
+      "rebuild_pts": 2249.0,
+      "d_pts": -289.0,
+      "ft_hits": 120,
+      "ft_transfers": 61,
+      "mean_hits_per_gw": 0.967741935483871,
+      "mean_ft_bank": 1.0
+    },
+    {
+      "season": "2025-26",
+      "n_gw": 31,
+      "ft_pts": 1849.0,
+      "rebuild_pts": 2155.0,
+      "d_pts": -306.0,
+      "ft_hits": 100,
+      "ft_transfers": 56,
+      "mean_hits_per_gw": 0.8064516129032258,
+      "mean_ft_bank": 1.0
+    }
+  ],
+  "total_ft": 7611.0,
+  "total_rebuild": 8745.0,
+  "total_d": -1134.0,
+  "total_ft_hits": 496,
+  "paired_gw_interval": {
+    "mean": -9.14516129032258,
+    "lo": -11.782661290322581,
+    "hi": -6.37883064516129,
+    "n_gws": {
+      "2022-23": 31,
+      "2023-24": 31,
+      "2024-25": 31,
+      "2025-26": 31
+    },
+    "covers_zero": false,
+    "clearly_loses": true,
+    "clearly_wins": false,
+    "by_season_mean": {
+      "2022-23": -9.129032258064516,
+      "2023-24": -8.258064516129032,
+      "2024-25": -9.32258064516129,
+      "2025-26": -9.870967741935484
+    }
+  },
+  "report": "/workspace/reports/cascade_pathv_c2_ft_vs_rebuild.md",
+  "intervals": "/workspace/data/processed/cascade_pathv_c2_intervals.json"
+}

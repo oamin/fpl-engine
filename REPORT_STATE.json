@@ -1,12 +1,20 @@
 {
-  "task": "lock_lineup_cov_false_live_layers",
-  "status": "done",
-  "DEFAULT_LINEUP_COV": false,
-  "live_layers": {
-    "pool": "FFScout firm ∩ sticky minutes gate — WHO",
-    "minutes": "as-of m / live xmi (+ optional availability overlay) — frozen on gen paths",
-    "scenario": "k∼M → attack → CS/GC"
+  "task": "cascade_pathv_c2_ft_vs_rebuild",
+  "status": "done_park_clearly_loses",
+  "protocol": "cascade_pathv_c2_ft_vs_rebuild",
+  "locked": "2026-10-21",
+  "verdict": "park_clearly_loses",
+  "metric": "ft_path_minus_weekly_rebuild",
+  "interval": {
+    "mean": -9.14516129032258,
+    "lo": -11.782661290322581,
+    "hi": -6.37883064516129,
+    "n_gws_per_season": 31
   },
-  "report": "reports/cascade_live_minutes_layers.md",
-  "parked": ["club_matchday_minutes_resample", "corr_threshold_competitor_pairs"]
+  "pooled_d_pts": -1134.0,
+  "total_ft_hit_pts": 496,
+  "elapsed_s": 15.8,
+  "report": "reports/cascade_pathv_c2_ft_vs_rebuild.md",
+  "intervals_json": "data/processed/cascade_pathv_c2_intervals.json",
+  "next": "C3 deferred; FT hit controls / FT-DP before reopening path-V promote"
 }
