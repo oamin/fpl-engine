@@ -1,23 +1,12 @@
 {
-  "task": "cascade_lineup_off_tt1_matchday",
+  "task": "lock_lineup_cov_false_live_layers",
   "status": "done",
-  "lineup_stack": "club_matchday_resample",
-  "primary_gen_off_minus_mean": {
-    "delta": -0.0206,
-    "interval": [-0.0243, -0.0170],
-    "verdict": "clearly_loses"
+  "DEFAULT_LINEUP_COV": false,
+  "live_layers": {
+    "pool": "FFScout firm ∩ sticky minutes gate — WHO",
+    "minutes": "as-of m / live xmi (+ optional availability overlay) — frozen on gen paths",
+    "scenario": "k∼M → attack → CS/GC"
   },
-  "diagnostic_gen_on_minus_gen_off": {
-    "delta": 0.0092,
-    "interval": [0.0048, 0.0141],
-    "verdict": "clearly_wins"
-  },
-  "diagnostic_gen_on_minus_mean": {
-    "delta": -0.0114,
-    "interval": [-0.0167, -0.0060],
-    "verdict": "clearly_loses"
-  },
-  "note": "No CORR_THRESH. Matchday resample beats freeze minutes; still loses to mean. Prior pair-joint gen_on was closer to mean (−0.004).",
-  "elapsed_s": 3158.3,
-  "report": "reports/cascade_lineup_off_tt1.md"
+  "report": "reports/cascade_live_minutes_layers.md",
+  "parked": ["club_matchday_minutes_resample", "corr_threshold_competitor_pairs"]
 }

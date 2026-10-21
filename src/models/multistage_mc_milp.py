@@ -99,7 +99,8 @@ OBJECTIVES = (OBJECTIVE_SQUAD_SUM, OBJECTIVE_XI_CAPTAIN, OBJECTIVE_XI_CAPTAIN_FT
 MAX_HITS_SNAPSHOT = 2
 # Scenario player scoring matches cascade_short generative (props off).
 DEFAULT_GENERATIVE_ATTACK = True
-DEFAULT_LINEUP_COV = True
+# Align with cascade_short: freeze as-of mean minutes on gen paths (PI 2026-10-21).
+DEFAULT_LINEUP_COV = False
 
 
 @dataclass

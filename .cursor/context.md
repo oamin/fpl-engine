@@ -15,6 +15,7 @@ Updated: 2026-10-20. **Numagent 2.0** is the product on main (`protocol.numagent
 | **7. Cascade viability overnight** | **done** | `cascade_viability_batch` A/D green; C FT+cap smoke OK; B1/B2 gen MC-mean **clearly_loses** vs centreline mean (Δ≈−0.09); B3 inconclusive. Gen-as-mean **parked** — `reports/cascade_short_long_viability_results.md`. |
 | **8. Mean t:t+1 vs short gen** | **done** | N_MC=20 product horizon: still **clearly_loses** (Δ≈−0.054). `reports/cascade_short_mean_tt1_vs_gen.md`. |
 | **9. Path-V gen vs mean MILP** | **done (diagnostic)** | FT+cap N=20: both solve; gen hits≈7.2 vs mean≈1.6; top-15 Jaccard≈0.36. Not a path-V promote. `reports/cascade_pathv_gen_vs_mean.md`. |
+| **10. Minutes on gen paths** | **locked** | `DEFAULT_LINEUP_COV=False` — freeze as-of mean / live xmi. FFScout = pool WHO only. `reports/cascade_live_minutes_layers.md`. |
 
 ## Plan
 

@@ -3,7 +3,8 @@
 Per fixture path:
 
 1. ``k ∼ M`` (``match_outcome_roll`` from priced / FD λ).
-2. Lineup world: club matchday resample (one as-of GW → all minutes; no corr threshold).
+2. Lineup world: frozen as-of mean minutes by default (``lineup_cov=False``);
+   matchday/pair rolls parked.
 3. Scorer / assist dice (``π`` props-shape or shares; ``ρ`` assists; α empties).
 4. Defence from the **rolled** scoreline (``defence_roll``: CS if GA=0;
    GC = ⌊GA/2⌋) — no separate xCS / xGC moments on scenario strands.
