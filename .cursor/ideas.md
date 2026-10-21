@@ -61,6 +61,14 @@ Bugfix: cutting the roster before share renormalisation handed the full
 ≈**647/646**; resid bias **+12.7 / +1.1**. Diagnostic only.
 Report: `reports/cascade_mean_path_gw_resid.md`.
 
+## Noted — top MID+FWD G/A mismatch (2026-10-21)
+
+On the same oracle boards, top xp-decile MID+FWD: goals/E[G]≈**0.85**,
+assists/E[A]≈**0.61**. Pool-relative: goals miss ≈ **pot** (team_pool/G_team≈0.82;
+shares ≈OK when the side scores). Assists miss ≈ **pot** (≈0.72) **and** fat
+`sA` on the hot μ tail (share factor ≈0.85). Do not chase goal-share retunes
+for this bias first. Report: `reports/top_mid_fwd_ga_mismatch.md`.
+
 ## Noted — historical rate baseline for cascade (2026-10-21)
 
 `score_xp_v2_rate_baseline_prior`: season start = player prior (all prior

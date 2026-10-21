@@ -1,27 +1,23 @@
 {
-  "task": "cascade_mean_path_gw_resid",
+  "task": "top_mid_fwd_ga_mismatch_dig",
   "status": "done_diagnostic",
-  "protocol": "cascade_mean_path_gw_resid",
-  "module": "src/eval/cascade_mean_path_gw_resid.py",
   "season": "2025-26",
-  "n": 12,
-  "settings": {
-    "full_side_shares": true,
-    "semi_oracle_buy_filter": "actual m>60 at decision GW t",
-    "minutes_oracle_boards": true,
-    "autosub_actuals": true,
-    "n_share_roster": 159,
-    "n_buy_pool": 126
+  "window": "GW8-19",
+  "setup": "full-side minutes-oracle score_team_side; as-of rates/α at GW6; top=xp decile MID+FWD",
+  "alpha_g": 0.9597,
+  "alpha_a": 0.9194,
+  "headline": {
+    "top_goals_over_EG": 0.851,
+    "top_assists_over_EA": 0.612,
+    "rest_goals_over_EG": 0.888,
+    "rest_assists_over_EA": 0.842
   },
-  "summary": {
-    "mean_actual_sum": 647.0,
-    "path_actual_sum": 646.42,
-    "mean_resid_bias": 12.65,
-    "path_resid_bias": 1.06,
-    "mean_resid_mae": 14.92,
-    "path_resid_mae": 11.10,
-    "mean_autosubs_sum": 6
+  "decomposition_pool_relative": {
+    "goals_pot_team_pool_over_G_team": 0.823,
+    "goals_share_factor": 1.034,
+    "assists_pot_team_pool_over_A_team": 0.717,
+    "assists_share_factor": 0.854
   },
-  "report": "reports/cascade_mean_path_gw_resid.md",
-  "note": "v3: full-side shares; semi-oracle is buy filter only (fixes ~1.65x pot absorption)"
+  "verdict": "Goals miss on top MID+FWD is mostly fat pots on their fixtures (shares OK when team scores). Assists miss is pot short plus over-concentrated sA on the hot μ tail.",
+  "report": "reports/top_mid_fwd_ga_mismatch.md"
 }
