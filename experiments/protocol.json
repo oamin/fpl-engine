@@ -1422,8 +1422,10 @@
   },
   "cascade_lineup_off_tt1": {
     "locked": "2026-10-21",
-    "status": "running",
+    "status": "done",
     "role": "trial: freeze minutes (lineup_cov=False) on short gen vs mean",
+    "verdict_primary": "gen_off clearly_loses to mean (Δ≈−0.021)",
+    "verdict_diagnostic": "gen_on clearly_wins vs gen_off (Δ≈+0.016); lineup roll helps likelihood",
     "module": "src/eval/cascade_lineup_off_tt1.py",
     "report": "reports/cascade_lineup_off_tt1.md",
     "treatment": "generative MC-mean N_MC=20 with lineup_cov=False (mean minutes; k∼M→attack→CS/GC)",

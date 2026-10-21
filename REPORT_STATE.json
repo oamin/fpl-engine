@@ -1,17 +1,23 @@
 {
-  "task": "cascade_pathv_gen_vs_mean_milp",
+  "task": "cascade_lineup_off_tt1",
   "status": "done",
-  "passed_smoke": true,
-  "n": 20,
-  "top15_jaccard": 0.364,
-  "gen": {"n_squads": 120, "mean_hits": 7.16, "mean_transfers": 3.79, "elapsed_s": 599.4},
-  "mean": {"n_squads": 120, "mean_hits": 1.64, "mean_transfers": 2.39, "elapsed_s": 466.1},
-  "elapsed_s": 1065.6,
-  "report": "reports/cascade_pathv_gen_vs_mean.md",
-  "prior": {
-    "task": "cascade_short_mean_tt1_vs_gen",
-    "verdict": "clearly_loses",
-    "delta": -0.0539,
-    "report": "reports/cascade_short_mean_tt1_vs_gen.md"
-  }
+  "primary": {
+    "comparison": "gen_off_minus_mean",
+    "delta": -0.0206,
+    "interval": [-0.0243, -0.0170],
+    "verdict": "clearly_loses"
+  },
+  "diagnostic_on_minus_off": {
+    "delta": 0.0162,
+    "interval": [0.0116, 0.0209],
+    "verdict": "clearly_wins"
+  },
+  "diagnostic_on_minus_mean": {
+    "delta": -0.0043,
+    "interval": [-0.0096, 0.0010],
+    "verdict": "does_not_clearly_lose"
+  },
+  "elapsed_s": 2661.8,
+  "report": "reports/cascade_lineup_off_tt1.md",
+  "note": "Freezing minutes hurts gen vs joint lineup_cov; keep lineup roll on for likelihood."
 }

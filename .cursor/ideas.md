@@ -42,15 +42,13 @@ Gen hits≈7.2 / xfers≈3.8; mean-layer hits≈1.6 / xfers≈2.4; top-15 Jaccar
 Strategy policies diverge — generative strands are not a no-op vs μ boards.
 Not a gated path-V promote. Report: `reports/cascade_pathv_gen_vs_mean.md`.
 
-## Active — lineup_cov=False trial (2026-10-21)
+## Parked — lineup_cov=False / freeze minutes (2026-10-21)
 
-PI: rolling squad/minutes may be overkill. Running `cascade_lineup_off_tt1`
-(gen with frozen mean minutes vs mean; diagnostic gen_on vs gen_off).
-
-## Noted — joint historical lineup pairs (2026-10-21)
-
-`P_SUB_ON` retired; joint `(m_i,m_j)` resample is the current `lineup_cov=True`
-stack. Under trial vs lineup_off.
+`cascade_lineup_off_tt1`: gen with frozen mean minutes **clearly loses** to mean
+(Δ≈−0.021). Diagnostic: gen with joint lineup **clearly beats** gen_off
+(Δ≈+0.016). Freezing minutes is not a free lunch on likelihood — keep
+`lineup_cov=True` (joint historical pairs) for now. Report:
+`reports/cascade_lineup_off_tt1.md`.
 
 ## Active / next (sparse)
 
