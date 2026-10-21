@@ -1399,5 +1399,17 @@
     "metric": "gaussian_log_score on point mean; paired treatment−baseline by GW then cluster_interval",
     "lambda_jitter": false,
     "any_later_change": "dated protocol update required"
+  },
+  "cascade_short_mean_tt1_vs_gen": {
+    "locked": null,
+    "status": "queued",
+    "queued": "2026-10-21",
+    "role": "product-horizon fair screen: mean boards on t:t+1 vs short generative",
+    "baseline": "score_team_side on FD centreline M for GW(t) and GW(t+1)",
+    "treatment": "cascade_short generative k∼M→lineup→attack→CS/GC on priced t:t+1 (MC-mean or path as locked at run)",
+    "metric": "player-GW gaussian_log_score; paired Δ by GW then cluster_interval on CLOSED_SEASONS",
+    "window": "GW8–28 (or as locked); weeks with FD fits for both t and t+1",
+    "note": "Distinct from cascade_viability_batch B1 (same-GW aggregator). Lock before totals.",
+    "any_later_change": "dated protocol update required"
   }
 }

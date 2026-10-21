@@ -1,16 +1,12 @@
 {
-  "task": "cascade_short_long_viability_batch",
+  "task": "b1_inspect_and_queue_mean_tt1",
   "status": "done",
-  "elapsed_s": 1352.0085895061493,
-  "errors": [],
-  "report": "/workspace/reports/cascade_short_long_viability_results.md",
-  "state": "/workspace/data/processed/cascade_viability/batch_state.json",
-  "verdicts": {
-    "short_gen_minus_short_mean": "clearly_loses",
-    "long_gen_minus_long_mean": "clearly_loses",
-    "short_gen_minus_long_gen": "does_not_clearly_lose"
+  "example": {
+    "season": "2022-23",
+    "gw": 8,
+    "match": "Wolves vs Man City",
+    "report": "reports/cascade_viability_b1_example.md"
   },
-  "A_passed": true,
-  "C_passed": true,
-  "D_passed": true
+  "queued": "cascade_short_mean_tt1_vs_gen",
+  "note": "B1 same-GW aggregator clarified; next arm = mean t:t+1 vs short gen (protocol stub, unlocked)."
 }

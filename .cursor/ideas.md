@@ -28,8 +28,18 @@ Scenario soft terms stay expanding-mean `bonus_mu` / `card_mu` / DefCon / saves.
 Tying bonus to the rolled scoreline (BPS proxy from G/A/CS) is possible later but
 parked as overkill until a path-V screen asks for it (`protocol.cascade_short_generative`).
 
+## Queued — mean t:t+1 vs short cascade generative (2026-10-21)
+
+PI ask after B1 debrief: overnight B1 was same-GW aggregator (gen MC-mean vs
+`score_team_side` on one centreline `M`). Next pre-registered arm should compare
+**mean-layer boards for GW(t) and GW(t+1)** vs **short cascade generative on
+the priced t:t+1 window** (product-shaped horizon), player-GW log on those
+weeks, four closed seasons, as-of audit + paired intervals. Do not start until
+locked in `protocol.json`. Stub: `protocol.cascade_short_mean_tt1_vs_gen`.
+
 ## Active / next (sparse)
 
+- **Next likelihood arm:** mean t:t+1 vs short generative (`cascade_short_mean_tt1_vs_gen`).
 - Live shadow of locked L4 + `score_xp_v2` (no new strategiser arm without a protocol entry).
 - Layer 5 chips only if a pre-registered likelihood / priced-path comparison asks.
 - Objective-function search stays parked.
