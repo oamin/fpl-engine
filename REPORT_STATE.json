@@ -1,12 +1,22 @@
 {
-  "task": "lock_lineup_cov_false_live_layers",
-  "status": "done",
-  "DEFAULT_LINEUP_COV": false,
-  "live_layers": {
-    "pool": "FFScout firm ∩ sticky minutes gate — WHO",
-    "minutes": "as-of m / live xmi (+ optional availability overlay) — frozen on gen paths",
-    "scenario": "k∼M → attack → CS/GC"
+  "task": "cascade_mc_vs_mean_hist",
+  "status": "done_diagnostic",
+  "protocol": "cascade_mc_vs_mean_hist",
+  "season": "2025-26",
+  "n_strands": 12,
+  "elapsed_s": 89.4,
+  "compare": {
+    "jaccard_top15_vs_mean15": 0.304,
+    "n_mean_in_path_top": 7,
+    "mean_captain_in_path_top": true,
+    "path_top_captain": "Matty Cash",
+    "mean_captain": "Erling Haaland"
   },
-  "report": "reports/cascade_live_minutes_layers.md",
-  "parked": ["club_matchday_minutes_resample", "corr_threshold_competitor_pairs"]
+  "path": {
+    "n_squads_solved": 72,
+    "mean_hits": 6.13,
+    "sources": ["cascade_short_priced", "cascade_long_oracle_rank"]
+  },
+  "report": "reports/cascade_mc_vs_mean_hist.md",
+  "note": "Oracle ranks + LOSO GF/GA; not live Opta; strategy-emergence diagnostic"
 }

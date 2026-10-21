@@ -42,6 +42,16 @@ Gen hits≈7.2 / xfers≈3.8; mean-layer hits≈1.6 / xfers≈2.4; top-15 Jaccar
 Strategy policies diverge — generative strands are not a no-op vs μ boards.
 Not a gated path-V promote. Report: `reports/cascade_pathv_gen_vs_mean.md`.
 
+## Noted — hist MC frequency vs priced mean MILP (2026-10-21)
+
+`cascade_mc_vs_mean_hist` on **2025-26** (decision GW6 → 8–19, N=12):
+path = FD short + **oracle post-GW38 ranks** + **LOSO prior GF/GA±bands**
+(generative FT+cap freqs); mean = single xi+cap on priced GW8+γ·GW9 only.
+Jaccard top15∩mean15 **0.30**; **7/15** mean picks path-stable; mean captain
+Haaland in path-top; path concentrates captain on Cash (0.51) — strategy
+diverges from mean. Hits≈6.1. Not live-comparable / not gated. Report:
+`reports/cascade_mc_vs_mean_hist.md`.
+
 ## Parked — lineup_cov=False / freeze minutes (2026-10-21)
 
 `cascade_lineup_off_tt1`: gen with frozen mean minutes **clearly loses** to mean
