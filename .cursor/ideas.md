@@ -28,12 +28,19 @@ Scenario soft terms stay expanding-mean `bonus_mu` / `card_mu` / DefCon / saves.
 Tying bonus to the rolled scoreline (BPS proxy from G/A/CS) is possible later but
 parked as overkill until a path-V screen asks for it (`protocol.cascade_short_generative`).
 
-## Active screens (2026-10-21)
+## Parked — mean t:t+1 vs short gen as mean forecast (2026-10-21)
 
-- **Running:** `cascade_short_mean_tt1_vs_gen` (N_MC=20) — mean boards on
-  decision GW(t:t+1) vs short generative MC-mean; four closed seasons.
-- **Next:** `cascade_pathv_gen_vs_mean_milp` — FT+cap generative strands vs
-  mean-layer strands (diagnostic; after tt1).
+`cascade_short_mean_tt1_vs_gen` N_MC=20: gen MC-mean on decision GW(t:t+1)
+**clearly loses** vs mean boards on the same fits
+(Δ≈−0.054 [−0.060, −0.048], 80 decision-GW pairs). Product-horizon reframing
+does not rescue gen-as-mean. Report: `reports/cascade_short_mean_tt1_vs_gen.md`.
+
+## Noted — path-V gen vs mean MILP diagnostic (2026-10-21)
+
+`cascade_pathv_gen_vs_mean_milp` N=20 FT+cap: both arms solve (120 squads).
+Gen hits≈7.2 / xfers≈3.8; mean-layer hits≈1.6 / xfers≈2.4; top-15 Jaccard≈0.36.
+Strategy policies diverge — generative strands are not a no-op vs μ boards.
+Not a gated path-V promote. Report: `reports/cascade_pathv_gen_vs_mean.md`.
 
 ## Active / next (sparse)
 

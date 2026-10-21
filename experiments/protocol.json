@@ -1420,7 +1420,7 @@
   },
   "cascade_pathv_gen_vs_mean_milp": {
     "locked": "2026-10-21",
-    "status": "running",
+    "status": "done_diagnostic",
     "role": "path-V diagnostic: generative FT+cap strands vs mean-layer FT+cap strands",
     "module": "src/eval/cascade_pathv_gen_vs_mean.py",
     "report": "reports/cascade_pathv_gen_vs_mean.md",

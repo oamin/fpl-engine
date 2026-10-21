@@ -1,12 +1,17 @@
 {
-  "task": "cascade_short_mean_tt1_vs_gen",
+  "task": "cascade_pathv_gen_vs_mean_milp",
   "status": "done",
-  "verdict": "clearly_loses",
-  "delta_mean": -0.0539,
-  "interval": [-0.0597, -0.0484],
-  "n_mc": 20,
-  "n_decision_pairs": 80,
-  "elapsed_s": 1858.0,
-  "report": "reports/cascade_short_mean_tt1_vs_gen.md",
-  "next": "cascade_pathv_gen_vs_mean_milp (running)"
+  "passed_smoke": true,
+  "n": 20,
+  "top15_jaccard": 0.364,
+  "gen": {"n_squads": 120, "mean_hits": 7.16, "mean_transfers": 3.79, "elapsed_s": 599.4},
+  "mean": {"n_squads": 120, "mean_hits": 1.64, "mean_transfers": 2.39, "elapsed_s": 466.1},
+  "elapsed_s": 1065.6,
+  "report": "reports/cascade_pathv_gen_vs_mean.md",
+  "prior": {
+    "task": "cascade_short_mean_tt1_vs_gen",
+    "verdict": "clearly_loses",
+    "delta": -0.0539,
+    "report": "reports/cascade_short_mean_tt1_vs_gen.md"
+  }
 }
