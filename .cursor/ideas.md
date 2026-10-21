@@ -77,6 +77,13 @@ for this bias first. Report: `reports/top_mid_fwd_ga_mismatch.md`.
 α shrink on top fixtures. Residual mean bias stays a selection / path issue.
 Report: `reports/xg_strata_recal_screen.md`.
 
+## Parked — further top-μ / pot digs on GW residual (2026-10-21)
+
+PI: path residual vs actual is already small (~+1.1 on the oracle resid
+trial); do not dig further into MID+FWD G/A or stratified pot fixes for the
+mean-XI bias. Mean +12 is selection on a hot μ tail. Leave assist-structure
+ideas parked until a separate pre-registered likelihood ask.
+
 ## Noted — historical rate baseline for cascade (2026-10-21)
 
 `score_xp_v2_rate_baseline_prior`: season start = player prior (all prior

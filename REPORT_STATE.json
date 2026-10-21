@@ -1,16 +1,11 @@
 {
-  "task": "score_xp_v2_xg_strata_recal",
-  "status": "done_rejected",
-  "decision": "keep_raw_fd_xg",
-  "promote": false,
-  "protocol": "score_xp_v2_xg_strata_recal",
-  "module": "src/eval/xg_strata_recal_screen.py",
-  "contrast": "score_xp_v2_xg_strata_minus_score_xp_v2",
-  "interval": {
-    "mean": -0.00096,
-    "lo": -0.00164,
-    "hi": -0.00029
-  },
-  "report": "reports/xg_strata_recal_screen.md",
-  "note": "LOSO xG-quartile rescale clearly loses on player-GW log; keep raw FD xG"
+  "task": "park_top_mu_pot_residual_digs",
+  "status": "parked",
+  "reason": "path residual vs actual already small (~+1.1); PI stops further MID+FWD G/A / stratified pot digs for mean-XI bias",
+  "related": [
+    "cascade_mean_path_gw_resid",
+    "top_mid_fwd_ga_mismatch",
+    "score_xp_v2_xg_strata_recal"
+  ],
+  "note": "Mean +12 is selection on hot μ tail; keep raw FD xG; assist-structure deferred until a separate likelihood ask"
 }

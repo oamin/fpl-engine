@@ -21,6 +21,7 @@ Updated: 2026-10-20. **Numagent 2.0** is the product on main (`protocol.numagent
 | **13. Mean vs path GW residual** | **done (diagnostic)** | Full-side shares; semi-oracle buy-only. 2025-26: mean/path actual ≈647/646; resid bias +12.7 / +1.1. `reports/cascade_mean_path_gw_resid.md`. |
 | **14. Top MID+FWD G/A mismatch** | **done (diagnostic)** | Top xp decile: g/EG≈0.85 (pot≈0.82, shares OK); a/EA≈0.61 (pot≈0.72 **and** sA too fat). `reports/top_mid_fwd_ga_mismatch.md`. |
 | **15. Stratified FD pot calib** | **rejected** | LOSO xG-quartile rescale vs raw FD xG: Δlog **−0.00096** [−0.00164, −0.00029] → `keep_raw_fd_xg`. `reports/xg_strata_recal_screen.md`. |
+| **16. Top-μ / pot residual digs** | **parked** | Path resid ~+1.1; no further MID+FWD G/A or pot haircuts for mean-XI bias. |
 
 ## Plan
 
