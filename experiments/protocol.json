@@ -93,9 +93,26 @@
   },
   "score_xp_v2_share_history": {
     "locked": "2026-10-16",
-    "rule": "player rG/rA and compositional shares for mu_post (= score_xp_v2) use the scored season only, GW < t",
-    "no_prior_season_fill": true,
+    "revised": "2026-10-21 — cascade/hist paths use score_xp_v2_rate_baseline_prior for rG/rA; asof_share_history remains same-season for soft priors / minutes",
+    "rule": "asof history for minutes/soft priors is scored season only, GW < t; attack rG/rA on cascade paths use historical baseline (see score_xp_v2_rate_baseline_prior)",
+    "no_prior_season_fill": "soft_priors_and_minutes_only — attack rates on cascade use prior-season baseline",
     "helper": "src/markets/numagent_xp.asof_share_history",
+    "any_later_change": "dated protocol update required"
+  },
+  "score_xp_v2_rate_baseline_prior": {
+    "locked": "2026-10-21",
+    "status": "cascade_default",
+    "role": "attack rG/rA baseline: all prior closed seasons per player (name key); else positional appearance rates from those seasons",
+    "module": "src/markets/rate_baseline.py",
+    "wired": [
+      "src/models/short_horizon_cascade.build_frozen_side_table",
+      "src/markets/cascade_score_v2.build_frozen_pool",
+      "src/markets/cascade_score_v2.attach_rates_priors"
+    ],
+    "formula": "r = count/(M+RATE_M0) on appearance minutes; same M0/SE floor as score_xp_v2_rate_m0",
+    "not": "share-seed MC jitter (keep_frozen_shares); does not concatenate prior rows into asof_share_history",
+    "motive": "same-season-only rG collapses early (Matty Cash sG=1.0 Villa GW1–5) and poisons path-frequency captains",
+    "promote_to_score_xp_v2_gate": "deferred — cascade/hist on; full closed-season likelihood screen before flipping published mu_post boards",
     "any_later_change": "dated protocol update required"
   },
   "score_xp_v2_alphas": {

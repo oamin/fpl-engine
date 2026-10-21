@@ -159,7 +159,9 @@ def _build_hist_pool(
     if len(keep) < 15:
         raise RuntimeError(f"hist pool too small: {len(keep)}")
 
-    side, _, _ = build_frozen_side_table(hist, alpha_g=1.0, alpha_a=1.0)
+    side, _, _ = build_frozen_side_table(
+        hist, alpha_g=1.0, alpha_a=1.0, season=season, historical_rate_baseline=True
+    )
     if side.empty:
         raise RuntimeError("empty frozen side table")
     side = side.loc[side["element"].astype(str).isin(keep)].copy()
@@ -201,6 +203,8 @@ def _build_hist_pool(
             "drG",
             "rA",
             "drA",
+            "rate_source",
+            "rate_minutes",
             "bonus_mu",
             "bonus_se",
             "card_mu",
@@ -508,6 +512,8 @@ def write_report(state: dict[str, Any]) -> None:
         f"GW{mean['priced_gws']} only (hard stop).",
         f"- Pool: as-of minutes > {MIN_MINUTES} (n_apps≥{int(MIN_APPS)}); no FFScout.",
         f"- `lineup_cov={DEFAULT_LINEUP_COV}` (freeze as-of minutes on gen paths).",
+        "- **Attack rates:** historical baseline — prior closed seasons per player "
+        "(name key), else positional (`score_xp_v2_rate_baseline_prior`).",
         "",
         "## Path arm",
         "",
@@ -648,7 +654,13 @@ def main(argv: list[str] | None = None) -> int:
     if len(priced_gws) < 1:
         raise RuntimeError("no FD priced fits in horizon head")
 
-    side, _, _ = build_frozen_side_table(hist, alpha_g=alpha_g, alpha_a=alpha_a)
+    side, _, _ = build_frozen_side_table(
+        hist,
+        alpha_g=alpha_g,
+        alpha_a=alpha_a,
+        season=season,
+        historical_rate_baseline=True,
+    )
 
     print("[hist] mean arm…", flush=True)
     mean = run_mean_arm(

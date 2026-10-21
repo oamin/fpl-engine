@@ -47,10 +47,18 @@ Not a gated path-V promote. Report: `reports/cascade_pathv_gen_vs_mean.md`.
 `cascade_mc_vs_mean_hist` on **2025-26** (decision GW6 → 8–19, N=12):
 path = FD short + **oracle post-GW38 ranks** + **LOSO prior GF/GA±bands**
 (generative FT+cap freqs); mean = single xi+cap on priced GW8+γ·GW9 only.
-Jaccard top15∩mean15 **0.30**; **7/15** mean picks path-stable; mean captain
-Haaland in path-top; path concentrates captain on Cash (0.51) — strategy
-diverges from mean. Hits≈6.1. Not live-comparable / not gated. Report:
+**v1 (same-season rates):** Cash path-cap 0.51 via sG=1.0 (only Villa scorer
+GW1–5). **v2 (historical rate baseline):** Haaland path-cap 0.46; Cash out of
+top-15; Jaccard≈0.25. Not live-comparable / not gated. Report:
 `reports/cascade_mc_vs_mean_hist.md`.
+
+## Noted — historical rate baseline for cascade (2026-10-21)
+
+`score_xp_v2_rate_baseline_prior`: rG/rA from all prior closed seasons (name
+key + RATE_M0); else positional appearance rates from those seasons. Soft
+priors/minutes stay same-season. Fixes early-season share collapse. Wired into
+`build_frozen_side_table` / cascade pool. **Not** share-seed jitter. Full
+`score_xp_v2` gated promote deferred. Module: `src/markets/rate_baseline.py`.
 
 ## Parked — lineup_cov=False / freeze minutes (2026-10-21)
 
