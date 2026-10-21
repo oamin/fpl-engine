@@ -3,6 +3,15 @@
   "status": "cascade_default",
   "module": "src/markets/rate_baseline.py",
   "protocol": "score_xp_v2_rate_baseline_prior",
+  "semantics": {
+    "season_start": "player prior from all prior closed seasons; else positional",
+    "within_season": "add same-season appearance G/A/M for GW < t into prior counts",
+    "wired_hist": [
+      "build_frozen_side_table",
+      "attach_rates_priors"
+    ],
+    "live_bootstrap": "hist=None (pure prior until season hist is attached)"
+  },
   "hist_rerun": {
     "season": "2025-26",
     "n": 12,
@@ -10,7 +19,8 @@
     "freq_captain": 0.458,
     "cash_in_top15": false,
     "jaccard_top15_vs_mean15": 0.25,
-    "report": "reports/cascade_mc_vs_mean_hist.md"
+    "report": "reports/cascade_mc_vs_mean_hist.md",
+    "note": "diagnostic used prior-only; update path now wired"
   },
   "tests": "tests/test_rate_baseline.py",
   "note": "Full mu_post likelihood screen deferred before flipping published boards"

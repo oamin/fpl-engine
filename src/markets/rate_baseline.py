@@ -1,12 +1,16 @@
 """Historical player-rate baselines for attack shares (cascade / cold-start).
 
 Same-season-only ``rG``/``rA`` collapses early when one club-mate scores first
-(Matty Cash / Villa GW1–5). This module supplies:
+(Matty Cash / Villa GW1–5). Attack rates instead:
 
-1. **Player prior** — appearance rates from **all closed seasons before** the
-   scored season (name-matched; element ids are not stable across seasons).
-2. **Positional prior** — appearance per-90 G/A by position from those same
-   prior seasons, for players with no prior history.
+1. **Season start** — every player begins at a prior rate:
+   - **Player prior:** appearance counts from all closed seasons before the
+     scored season (name-matched; element ids are not stable across seasons).
+   - **Else positional prior:** appearance per-90 G/A by position from those
+     same prior seasons.
+2. **Within-season update** — as GWs complete, same-season appearance
+   goals/assists/minutes (GW ``< t``) are added to the prior counts so rates
+   move with the season.
 
 Does **not** reopen share-seed MC jitter (``keep_frozen_shares``). Soft terms
 (bonus / DefCon / cards) stay same-season. Protocol:
@@ -190,16 +194,105 @@ def positional_prior_rates(before_season: str) -> dict[str, dict[str, float]]:
     return out
 
 
+def _season_appearance_counts(
+    hist: pd.DataFrame | None,
+    *,
+    name_col: str = "name",
+    element_col: str = "element",
+    goals_col: str = "goals_scored",
+    assists_col: str = "assists",
+    minutes_col: str = "minutes",
+) -> tuple[dict[str, dict[str, float]], dict[int, dict[str, float]]]:
+    """Same-season appearance totals keyed by name_key and element."""
+    by_name: dict[str, dict[str, float]] = {}
+    by_el: dict[int, dict[str, float]] = {}
+    if hist is None or len(hist) == 0:
+        return by_name, by_el
+    h = hist.copy()
+    h[minutes_col] = pd.to_numeric(h[minutes_col], errors="coerce").fillna(0.0)
+    h = h.loc[h[minutes_col] > 0].copy()
+    if h.empty:
+        return by_name, by_el
+    if goals_col not in h.columns and "goals" in h.columns:
+        goals_col = "goals"
+    h[goals_col] = pd.to_numeric(h[goals_col], errors="coerce").fillna(0.0)
+    h[assists_col] = pd.to_numeric(h[assists_col], errors="coerce").fillna(0.0)
+    if name_col in h.columns:
+        h["_nk"] = h[name_col].map(norm_player_name)
+        for key, g in h.groupby("_nk", sort=False):
+            by_name[str(key)] = {
+                "goals": float(g[goals_col].sum()),
+                "assists": float(g[assists_col].sum()),
+                "minutes": float(g[minutes_col].sum()),
+            }
+    if element_col in h.columns:
+        h[element_col] = pd.to_numeric(h[element_col], errors="coerce")
+        for eid, g in h.dropna(subset=[element_col]).groupby(element_col, sort=False):
+            by_el[int(eid)] = {
+                "goals": float(g[goals_col].sum()),
+                "assists": float(g[assists_col].sum()),
+                "minutes": float(g[minutes_col].sum()),
+            }
+    return by_name, by_el
+
+
+def _combine_rate(
+    *,
+    g_prior: float,
+    a_prior: float,
+    m_prior: float,
+    g_season: float,
+    a_season: float,
+    m_season: float,
+    m0: float,
+    c_floor: float,
+    prior_kind: str,
+) -> dict[str, Any]:
+    """Player prior: (G0+Gs)/(M0+Ms+M0_pseudo). Positional: (r_pos·κ+Gs)/(κ+Ms)."""
+    gs, as_, ms = float(g_season), float(a_season), float(m_season)
+    if prior_kind == "player_prior":
+        g = float(g_prior) + gs
+        a = float(a_prior) + as_
+        m = float(m_prior) + ms
+        denom = m + float(m0)
+        src = "player_prior+season" if ms > 0 else "player_prior"
+    else:
+        # positional: κ minutes of weight at r_pos (= g_prior/m_prior style via r)
+        kappa = float(m0)
+        # g_prior/a_prior here are κ·r_pos (pseudo counts); m_prior unused
+        g = float(g_prior) + gs
+        a = float(a_prior) + as_
+        denom = kappa + ms
+        m = ms
+        src = "positional_prior+season" if ms > 0 else "positional_prior"
+    if denom <= 0:
+        denom = float(m0) if m0 > 0 else 1.0
+    return {
+        "rG": g / denom,
+        "drG": max(math.sqrt(g) if g > 0 else 0.0, c_floor) / denom,
+        "rA": a / denom,
+        "drA": max(math.sqrt(a) if a > 0 else 0.0, c_floor) / denom,
+        "rate_minutes": float(m_prior) + ms if prior_kind == "player_prior" else ms,
+        "rate_goals": g,
+        "rate_assists": a,
+        "rate_source": src,
+        "rate_season_minutes": ms,
+    }
+
+
 def rates_for_players(
     players: pd.DataFrame,
     *,
     season: str,
     name_col: str = "name",
     position_col: str = "position",
+    element_col: str = "element",
+    hist: pd.DataFrame | None = None,
 ) -> pd.DataFrame:
-    """Attach historical baseline rates onto ``players`` (one row per player).
+    """Prior rate at season start, updated with same-season appearances in ``hist``.
 
-    Lookup order: player prior by normalised name → positional prior.
+    Prior lookup: player prior by normalised name → positional prior.
+    ``hist`` should be same-season GW ``< t`` (``asof_share_history``).
     """
     if players is None or players.empty:
         return players.copy() if isinstance(players, pd.DataFrame) else pd.DataFrame()
@@ -211,6 +304,11 @@ def rates_for_players(
         if priors is not None and not priors.empty
         else None
     )
+    season_by_name, season_by_el = _season_appearance_counts(
+        hist, name_col=name_col, element_col=element_col
+    )
+    m0 = float(numagent_xp.RATE_M0)
+    c_floor = float(numagent_xp.RATE_SE_FLOOR)
 
     out = players.copy()
     n = len(out)
@@ -220,6 +318,7 @@ def rates_for_players(
     drA = np.zeros(n, dtype=float)
     sources: list[str] = []
     minutes = np.zeros(n, dtype=float)
+    season_minutes = np.zeros(n, dtype=float)
 
     for i in range(n):
         row = out.iloc[i]
@@ -229,37 +328,63 @@ def rates_for_players(
             pos = normalize_position(str(pos_raw)) if pd.notna(pos_raw) else "MID"
         except ValueError:
             pos = "MID"
-        used = None
+
+        # Same-season counts (element preferred when present).
+        sc = {"goals": 0.0, "assists": 0.0, "minutes": 0.0}
+        if element_col in out.columns and pd.notna(row.get(element_col)):
+            sc = season_by_el.get(int(row[element_col]), sc)
+        if sc["minutes"] <= 0 and key:
+            sc = season_by_name.get(key, sc)
+
         if by_key is not None and key and key in by_key.index:
             pr = by_key.loc[key]
             if isinstance(pr, pd.DataFrame):
                 pr = pr.iloc[0]
-            used = pr
-            src = "player_prior"
+            combined = _combine_rate(
+                g_prior=float(pr["rate_goals"]),
+                a_prior=float(pr["rate_assists"]),
+                m_prior=float(pr["rate_minutes"]),
+                g_season=sc["goals"],
+                a_season=sc["assists"],
+                m_season=sc["minutes"],
+                m0=m0,
+                c_floor=c_floor,
+                prior_kind="player_prior",
+            )
         else:
-            used = pos_map.get(pos) or pos_map.get("MID") or {
+            pos_r = pos_map.get(pos) or pos_map.get("MID") or {
                 "rG": 0.0,
-                "drG": 0.0,
                 "rA": 0.0,
-                "drA": 0.0,
-                "rate_minutes": 0.0,
             }
-            src = str(used.get("rate_source", "positional_prior"))
-        rG[i] = float(used["rG"])
-        drG[i] = float(used["drG"])
-        rA[i] = float(used["rA"])
-        drA[i] = float(used["drA"])
-        minutes[i] = float(used.get("rate_minutes", 0.0) or 0.0)
-        sources.append(src)
+            # κ·r_pos pseudo-counts (κ = RATE_M0)
+            combined = _combine_rate(
+                g_prior=float(pos_r["rG"]) * m0,
+                a_prior=float(pos_r["rA"]) * m0,
+                m_prior=m0,
+                g_season=sc["goals"],
+                a_season=sc["assists"],
+                m_season=sc["minutes"],
+                m0=m0,
+                c_floor=c_floor,
+                prior_kind="positional_prior",
+            )
+        rG[i] = float(combined["rG"])
+        drG[i] = float(combined["drG"])
+        rA[i] = float(combined["rA"])
+        drA[i] = float(combined["drA"])
+        minutes[i] = float(combined["rate_minutes"])
+        season_minutes[i] = float(combined["rate_season_minutes"])
+        sources.append(str(combined["rate_source"]))
 
     out["rG"] = rG
     out["drG"] = drG
     out["rA"] = rA
     out["drA"] = drA
     out["rate_minutes"] = minutes
+    out["rate_season_minutes"] = season_minutes
     out["rate_source"] = sources
-    out["rate_m0"] = float(numagent_xp.RATE_M0)
-    out["rate_se_floor"] = float(numagent_xp.RATE_SE_FLOOR)
+    out["rate_m0"] = m0
+    out["rate_se_floor"] = c_floor
     return out
 
 
@@ -269,23 +394,44 @@ def apply_historical_rate_baseline(
     season: str,
     name_col: str = "name",
     position_col: str = "position",
+    element_col: str = "element",
+    hist: pd.DataFrame | None = None,
 ) -> pd.DataFrame:
-    """Overwrite ``rG``/``rA``/``dr*`` on ``frame`` with historical baselines."""
+    """Overwrite ``rG``/``rA``/``dr*``: prior at start, updated with ``hist``."""
     if frame is None or frame.empty:
         return frame
     if name_col not in frame.columns:
         raise ValueError(f"apply_historical_rate_baseline needs {name_col!r}")
+    cols = [name_col]
+    if position_col in frame.columns:
+        cols.append(position_col)
+    if element_col in frame.columns:
+        cols.append(element_col)
+    slim = frame[cols].copy()
+    if position_col not in slim.columns:
+        slim[position_col] = "MID"
     rates = rates_for_players(
-        frame[[name_col, position_col]].copy()
-        if position_col in frame.columns
-        else frame[[name_col]].assign(**{position_col: "MID"}),
+        slim,
         season=season,
         name_col=name_col,
         position_col=position_col,
+        element_col=element_col,
+        hist=hist,
     )
     out = frame.copy()
-    for c in ("rG", "drG", "rA", "drA", "rate_minutes", "rate_source", "rate_m0", "rate_se_floor"):
-        out[c] = rates[c].to_numpy()
+    for c in (
+        "rG",
+        "drG",
+        "rA",
+        "drA",
+        "rate_minutes",
+        "rate_season_minutes",
+        "rate_source",
+        "rate_m0",
+        "rate_se_floor",
+    ):
+        if c in rates.columns:
+            out[c] = rates[c].to_numpy()
     return out
 
 

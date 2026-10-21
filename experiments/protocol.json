@@ -94,22 +94,27 @@
   "score_xp_v2_share_history": {
     "locked": "2026-10-16",
     "revised": "2026-10-21 — cascade/hist paths use score_xp_v2_rate_baseline_prior for rG/rA; asof_share_history remains same-season for soft priors / minutes",
-    "rule": "asof history for minutes/soft priors is scored season only, GW < t; attack rG/rA on cascade paths use historical baseline (see score_xp_v2_rate_baseline_prior)",
-    "no_prior_season_fill": "soft_priors_and_minutes_only — attack rates on cascade use prior-season baseline",
+    "rule": "asof history for minutes/soft priors is scored season only, GW < t; attack rG/rA on cascade paths use prior+season baseline (see score_xp_v2_rate_baseline_prior)",
+    "no_prior_season_fill": "soft_priors_and_minutes_only — attack rates on cascade use prior + same-season update, not raw same-season-only rates",
     "helper": "src/markets/numagent_xp.asof_share_history",
     "any_later_change": "dated protocol update required"
   },
   "score_xp_v2_rate_baseline_prior": {
     "locked": "2026-10-21",
+    "revised": "2026-10-21 — within-season update: prior counts + same-season GW < t appearances",
     "status": "cascade_default",
-    "role": "attack rG/rA baseline: all prior closed seasons per player (name key); else positional appearance rates from those seasons",
+    "role": "attack rG/rA: start season at prior (player name key, else positional); update each completed GW with same-season appearance G/A/M",
     "module": "src/markets/rate_baseline.py",
     "wired": [
       "src/models/short_horizon_cascade.build_frozen_side_table",
       "src/markets/cascade_score_v2.build_frozen_pool",
       "src/markets/cascade_score_v2.attach_rates_priors"
     ],
-    "formula": "r = count/(M+RATE_M0) on appearance minutes; same M0/SE floor as score_xp_v2_rate_m0",
+    "formula": {
+      "player_prior": "r = (G0+Gs)/(M0+Ms+RATE_M0); G0/M0 from all prior closed seasons",
+      "positional_prior": "r = (κ·r_pos+Gs)/(κ+Ms) with κ=RATE_M0 when no player prior",
+      "hist": "same-season asof_share_history (GW < t); empty hist = pure prior (season start / live bootstrap)"
+    },
     "not": "share-seed MC jitter (keep_frozen_shares); does not concatenate prior rows into asof_share_history",
     "motive": "same-season-only rG collapses early (Matty Cash sG=1.0 Villa GW1–5) and poisons path-frequency captains",
     "promote_to_score_xp_v2_gate": "deferred — cascade/hist on; full closed-season likelihood screen before flipping published mu_post boards",

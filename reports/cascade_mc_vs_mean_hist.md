@@ -10,10 +10,9 @@ Protocol: `cascade_mc_vs_mean_hist` · season **2025-26** · decision GW6 → ho
 - **Mean:** single `xi_plus_captain` MILP on discounted FD mean boards GW[8, 9] only (hard stop).
 - Pool: as-of minutes > 60.0 (n_apps≥2); no FFScout.
 - `lineup_cov=False` (freeze as-of minutes on gen paths).
-- **Attack rates:** historical baseline (`score_xp_v2_rate_baseline_prior`).
+- **Attack rates:** historical baseline — start at prior (player name key, else positional), then update with same-season GW `< t` appearances (`score_xp_v2_rate_baseline_prior`).
 
-**Rate baseline (2026-10-21):** prior-season player rG/rA (else positional) — fixes early-season Cash sG=1.0 captain pathology. Path top captain is now Haaland (0.46), not Cash.
-- **Attack rates:** historical baseline — prior closed seasons per player (name key), else positional (`score_xp_v2_rate_baseline_prior`).
+**Rate baseline (2026-10-21):** fixes early-season Cash `sG=1.0` captain pathology. Path top captain is now Haaland (0.46); Cash out of top-15. (Diagnostic used prior-only rates; within-season update landed same day.)
 
 ## Path arm
 

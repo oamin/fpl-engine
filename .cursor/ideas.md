@@ -54,9 +54,10 @@ top-15; Jaccard≈0.25. Not live-comparable / not gated. Report:
 
 ## Noted — historical rate baseline for cascade (2026-10-21)
 
-`score_xp_v2_rate_baseline_prior`: rG/rA from all prior closed seasons (name
-key + RATE_M0); else positional appearance rates from those seasons. Soft
-priors/minutes stay same-season. Fixes early-season share collapse. Wired into
+`score_xp_v2_rate_baseline_prior`: season start = player prior (all prior
+closed seasons, name key + RATE_M0) else positional; each completed GW adds
+same-season appearance G/A/M into the rate. Soft priors/minutes stay
+same-season. Fixes early-season share collapse. Wired into
 `build_frozen_side_table` / cascade pool. **Not** share-seed jitter. Full
 `score_xp_v2` gated promote deferred. Module: `src/markets/rate_baseline.py`.
 

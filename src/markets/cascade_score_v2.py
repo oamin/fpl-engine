@@ -183,12 +183,13 @@ def build_frozen_pool(
     frame["share_xG"] = 0.0
     frame["share_xA"] = 0.0
     frame["exp_defcon_hit"] = 0.0
-    # Prior-season player rates (else positional). web_name match is best-effort
-    # on live bootstrap; hist paths use full ``name`` via build_frozen_side_table.
+    # Season-start priors (player prior else positional). Live bootstrap has no
+    # same-season hist here; hist paths update via ``attach_rates_priors`` /
+    # ``build_frozen_side_table``.
     if "name" in frame.columns and season:
         from src.markets.rate_baseline import apply_historical_rate_baseline
 
-        frame = apply_historical_rate_baseline(frame, season=str(season))
+        frame = apply_historical_rate_baseline(frame, season=str(season), hist=None)
     return frame.reset_index(drop=True)
 
 
@@ -286,7 +287,8 @@ def attach_rates_priors(
     """Merge as-of rates/priors onto a player table; optional finish scales on rG/rA.
 
     When ``historical_rate_baseline`` is True, overwrite ``rG``/``rA`` with
-    prior-season player (else positional) baselines after the same-season merge.
+    prior rates at season start (player else positional), then update with
+    same-season appearance counts in ``hist`` (GW ``< t``).
     """
     rates = numagent_xp.player_rates_from_history(hist, id_col=id_col)
     priors = numagent_xp.history_priors_for_xp(hist, id_col=id_col)
@@ -333,7 +335,9 @@ def attach_rates_priors(
         if season_key is None and "season" in hist.columns and len(hist):
             season_key = str(hist["season"].iloc[0]).replace("_", "-")
         if season_key:
-            out = apply_historical_rate_baseline(out, season=str(season_key))
+            out = apply_historical_rate_baseline(
+                out, season=str(season_key), hist=hist
+            )
     return out
 
 
