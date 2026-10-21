@@ -1,11 +1,13 @@
 {
-  "task": "path_snapshot_every_gw",
-  "status": "done",
-  "change": "SNAPSHOT_EVERY: 2 → 1 (transfer decision every horizon GW; no forced hold)",
+  "task": "cascade_joint_path_plan",
+  "status": "wired",
+  "change": "xi_plus_captain_ft run_strand uses joint multi-GW transfer plan MILP (free open + FT/hit schedule) instead of myopic per-snapshot FT picks",
   "modules": [
-    "src/eval/cascade_mc_vs_mean_hist.py",
-    "src/eval/cascade_pathv_gen_vs_mean.py",
-    "src/models/multistage_mc_milp.py"
+    "src/models/path_transfer_plan.py",
+    "src/models/multistage_mc_milp.py",
+    "tests/test_path_transfer_plan.py"
   ],
-  "note": "Prior path resid / FT-PE / hist-MC runs used every-2; re-run before citing FT strategy"
+  "protocol": "cascade_joint_path_plan",
+  "tests": "unittest tests.test_path_transfer_plan tests.test_multistage_mc_milp OK",
+  "notes": "snapshot_every ignored for FT objective; every horizon GW is a decision week; PE screens should re-run under joint plan"
 }

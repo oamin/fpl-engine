@@ -58,7 +58,10 @@ Today’s pre-merge cloud cascade work initially scored with **`xp_on_pot` /
   layer stays `score_team_side`.
 - Long-horizon Opta multistage (`squad_sum` / `xi_plus_captain` /
   `xi_plus_captain_ft` ± minutes overlay) via
-  `src/markets/cascade_score_v2.py` — Opta place GF/GA ±MAE → `M` → `k∼M`
+  `src/markets/cascade_score_v2.py` — Opta place GF/GA ±MAE → `M` → `k∼M`.
+  **`xi_plus_captain_ft`** = joint multi-GW transfer plan
+  (`src/models/path_transfer_plan.py`): roll horizon → per-GW scores → one
+  MILP schedules opening 15 + holds/transfers/hits (not myopic snapshot FT).
 - Oracle-rank cascade 2025/26 — **viable**; oracle − market log **+0.0187**
 - Match-band / player G/A finish / rank tracker — rewired + rejudged 2026-10-19
   (all three **park** under `score_xp_v2`; keep baseline z=1.0 / blend=0.5,

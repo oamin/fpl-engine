@@ -26,8 +26,9 @@ Objective modes
 - ``squad_sum`` (original): maximise Σ score over the 15 (bench = full weight).
 - ``xi_plus_captain``: maximise Σ score over a legal XI **plus** one captain
   double (``c ≤ y ≤ x``), so premiums are valued as captain candidates.
-- ``xi_plus_captain_ft``: first snapshot free rebuild; later snapshots keep a
-  path squad under FT/hit cost (``V = XI + captain − 4·hits``).
+- ``xi_plus_captain_ft``: **joint** multi-GW transfer plan over the full
+  horizon (free open + FT/hit schedule). One MILP chooses the starting 15
+  and every later transfer / hold / hit; see ``path_transfer_plan``.
 
 Optional **minutes overlay** (``--minutes-overlay``): scale xmi/shares by FPL
 ``chance_of_playing_*`` / status so injured or doubtful pool players are not
@@ -176,6 +177,7 @@ class StrandResult:
     strand_id: int
     scorelines: list[dict[str, Any]] = field(default_factory=list)
     squads: list[dict[str, Any]] = field(default_factory=list)
+    meta: dict[str, Any] = field(default_factory=dict)
 
 
 def sample_match_lams(
@@ -622,6 +624,138 @@ def _scenarios_for_remaining(
     return out
 
 
+def _undiscounted_scores_by_gw(
+    pool: pd.DataFrame,
+    *,
+    plan_gws: Sequence[int],
+    rolled_by_gw: Mapping[int, list[dict[str, Any]]],
+    fixtures_gw: Mapping[int, list[dict[str, str]]],
+    paths: Mapping[str, ClubPath],
+    league_gf: float,
+    alpha_g: float,
+    alpha_a: float,
+    rng: random.Random,
+    hist_by_team: Mapping[str, pd.DataFrame] | None,
+    generative_attack: bool,
+    lineup_cov: bool,
+) -> dict[int, np.ndarray]:
+    """Per-GW player xP aligned to ``pool`` rows (undiscounted; MILP applies γ)."""
+    out: dict[int, np.ndarray] = {}
+    for gw in plan_gws:
+        g = int(gw)
+        if generative_attack:
+            scenarios = {g: list(rolled_by_gw.get(g, []))}
+            scored = score_pool_generative_on_scenarios(
+                pool,
+                scenarios,
+                gws=[g],
+                alpha_g=float(alpha_g),
+                alpha_a=float(alpha_a),
+                rng=rng,
+                hist_by_team=hist_by_team,
+                gamma=1.0,
+                lineup_cov=lineup_cov,
+            )
+        else:
+            scenario_lams = {
+                (str(sc["home"]), str(sc["away"])): (
+                    float(sc["lam_h"]),
+                    float(sc["lam_a"]),
+                )
+                for sc in rolled_by_gw.get(g, [])
+            }
+            pots = pots_for_gw_from_paths(
+                paths,
+                fixtures_gw.get(g, []),
+                g,
+                league_gf=league_gf,
+                scenario_lams=scenario_lams or None,
+            )
+            scored = score_pool_on_pots(
+                pool,
+                pots,
+                gws=[g],
+                gamma=1.0,
+                alpha_g=alpha_g,
+                alpha_a=alpha_a,
+            )
+        arr = pd.to_numeric(scored["mc_score"], errors="coerce").fillna(0.0).to_numpy(
+            dtype=float
+        )
+        if len(arr) != len(pool):
+            raise RuntimeError(
+                f"score length {len(arr)} != pool {len(pool)} at GW{g}"
+            )
+        out[g] = arr
+    return out
+
+
+def _emit_joint_ft_plan(
+    result: StrandResult,
+    *,
+    pool: pd.DataFrame,
+    plan_gws: Sequence[int],
+    scores_by_gw: Mapping[int, np.ndarray],
+    buy_ids: set[str] | None,
+    gamma: float,
+    milp_time_limit: float,
+    ft_pe_nu: float,
+) -> StrandResult:
+    """Solve one joint path schedule and append weekly squads."""
+    from src.models.path_transfer_plan import (
+        pick_path_transfer_plan,
+        score_matrix_for_candidates,
+        select_plan_candidates,
+    )
+
+    cands = select_plan_candidates(
+        pool,
+        scores_by_gw,
+        gws=plan_gws,
+        buy_ids=buy_ids,
+    )
+    S = score_matrix_for_candidates(cands, pool, scores_by_gw, plan_gws)
+    # Joint solve needs more wall than a single-GW pick; scale with horizon.
+    tlim = max(float(milp_time_limit) * max(1, len(plan_gws)), 30.0)
+    plan = pick_path_transfer_plan(
+        cands,
+        S,
+        plan_gws,
+        gamma=float(gamma),
+        max_hits=MAX_HITS_SNAPSHOT,
+        ft_pe_nu=float(ft_pe_nu),
+        time_limit=tlim,
+    )
+    for week in plan["weeks"]:
+        result.squads.append(
+            {
+                "gw": int(week["gw"]),
+                "player_ids": list(week["player_ids"]),
+                "names": list(week["names"]),
+                "score_sum": float(week["week_score"]),
+                "objective": OBJECTIVE_XI_CAPTAIN_FT,
+                "objective_value": float(week["week_score"]) - float(week["hits"]),
+                "captain_id": week["captain_id"],
+                "xi_ids": list(week["xi_ids"]),
+                "n_transfers": int(week["n_transfers"]),
+                "hits": int(week["hits"]),
+                "ft_before": int(week["ft_before"]),
+                "ft_after": int(week["ft_after"]),
+                "plan": "joint_path",
+            }
+        )
+    result.meta["path_plan"] = {
+        "n_candidates": plan["n_candidates"],
+        "horizon": plan["horizon"],
+        "objective": plan["objective"],
+        "status": plan["status"],
+        "terminal_ft": plan["terminal_ft"],
+        "terminal_pe": plan["terminal_pe"],
+        "ft_pe_nu": plan["ft_pe_nu"],
+    }
+    return result
+
+
 def run_strand(
     *,
     strand_id: int,
@@ -649,11 +783,12 @@ def run_strand(
     """One coherent MC strand: short/Opta scenarios → score_xp_v2 → MILP.
 
     ``selectable_ids``: when set, generative/mean scores may use the full
-    ``pool`` for club share context, but MILP only buys from this id set
-    (owned players are always kept under FT objectives).
+    ``pool`` for club share context, but MILP only buys from this id set.
 
-    ``ft_pe_nu``: potential-energy weight on ``ft_after`` for
-    ``xi_plus_captain_ft`` (0 = legacy ``S − hit_pts``).
+    ``xi_plus_captain_ft``: roll the full horizon, score each GW, then one
+    joint transfer-plan MILP (starting 15 + scheduled transfers/holds/hits).
+    ``snapshot_gws`` is ignored for that objective — every horizon GW is a
+    decision week. ``ft_pe_nu`` weights terminal FT-bank PE (0 = off).
     """
     if objective not in OBJECTIVES:
         raise ValueError(f"unknown objective: {objective!r}")
@@ -669,12 +804,6 @@ def run_strand(
     result = StrandResult(strand_id=strand_id)
     # Full rolled scenarios by GW (hg/ag/lam) for generative player scoring.
     rolled_by_gw: dict[int, list[dict[str, Any]]] = {}
-    owned_ids: set[str] | None = None
-    owned_frame: pd.DataFrame | None = None
-    ft_bank = 1
-    prev_snapshot_gw: int | None = None
-
-    from src.rules.fpl_2026 import advance_ft
 
     for gw in horizon_gws:
         week_fix = fixtures_gw.get(int(gw), [])
@@ -711,7 +840,43 @@ def run_strand(
                 }
             )
 
-        if int(gw) not in set(int(x) for x in snapshot_gws):
+    # FT path: one joint schedule over the whole rolled horizon.
+    if objective == OBJECTIVE_XI_CAPTAIN_FT:
+        plan_gws = [int(g) for g in horizon_gws]
+        if not plan_gws:
+            return result
+        try:
+            scores_by_gw = _undiscounted_scores_by_gw(
+                pool,
+                plan_gws=plan_gws,
+                rolled_by_gw=rolled_by_gw,
+                fixtures_gw=fixtures_gw,
+                paths=paths,
+                league_gf=league_gf,
+                alpha_g=float(alpha_g),
+                alpha_a=float(alpha_a),
+                rng=rng,
+                hist_by_team=hist_by_team,
+                generative_attack=generative_attack,
+                lineup_cov=lineup_cov,
+            )
+            return _emit_joint_ft_plan(
+                result,
+                pool=pool,
+                plan_gws=plan_gws,
+                scores_by_gw=scores_by_gw,
+                buy_ids=buy_ids,
+                gamma=float(gamma),
+                milp_time_limit=float(milp_time_limit),
+                ft_pe_nu=float(ft_pe_nu),
+            )
+        except RuntimeError:
+            return result
+
+    # Non-FT objectives: myopic snapshot MILP on discounted remaining μ.
+    snap_set = {int(x) for x in snapshot_gws}
+    for gw in horizon_gws:
+        if int(gw) not in snap_set:
             continue
 
         remaining = [g for g in horizon_gws if int(g) >= int(gw)]
@@ -740,7 +905,6 @@ def run_strand(
                 lineup_cov=lineup_cov,
             )
         else:
-            # Mean-layer fallback (pre-generative diagnostic).
             scenario_lams = {
                 (str(sc["home"]), str(sc["away"])): (
                     float(sc["lam_h"]),
@@ -769,54 +933,14 @@ def run_strand(
             )
         scored = scored.loc[np.isfinite(scored["mc_score"])]
         if buy_ids is not None:
-            force = set(owned_ids or ())
             scored = scored.loc[
-                scored["player_id"].astype(str).isin(buy_ids | force)
+                scored["player_id"].astype(str).isin(buy_ids)
             ].copy()
         if len(scored) < 15 or scored["position"].nunique() < 4:
             continue
 
-        n_transfers = 0
-        hits = 0
-        ft_before = int(ft_bank)
         try:
-            if objective == OBJECTIVE_XI_CAPTAIN_FT:
-                # Hold weeks between snapshots still roll the FT bank.
-                if prev_snapshot_gw is not None:
-                    for _gap in range(int(prev_snapshot_gw) + 1, int(gw)):
-                        ft_bank = advance_ft(ft_bank, 0)
-                    ft_before = int(ft_bank)
-                if owned_ids is None:
-                    picked = _pick_squad_xi_captain(
-                        scored, "mc_score", time_limit=milp_time_limit
-                    )
-                    # Opening rebuild is free (wildcard-like); bank starts at 1.
-                    n_transfers, hits = 0, 0
-                    ft_bank = 1
-                    obj_value = float(picked["objective"])
-                else:
-                    scored_ft = _merge_owned_into_scored(scored, owned_frame)
-                    pe_w = ft_horizon_weight(len(remaining), gamma=float(gamma))
-                    picked = _pick_squad_xi_captain_ft(
-                        scored_ft,
-                        "mc_score",
-                        owned_ids=owned_ids,
-                        ft=ft_before,
-                        time_limit=milp_time_limit,
-                        ft_pe_nu=float(ft_pe_nu),
-                        ft_pe_horizon_weight=float(pe_w),
-                    )
-                    n_transfers = int(picked["n_transfers"])
-                    hits = int(picked["hits"])
-                    obj_value = float(picked["net_objective"])
-                    ft_bank = advance_ft(ft_before, n_transfers)
-                squad = picked["squad"]
-                captain_id = picked["captain_id"]
-                xi_ids = picked["xi_ids"]
-                owned_ids = {str(x) for x in squad["player_id"].tolist()}
-                owned_frame = squad.copy()
-                prev_snapshot_gw = int(gw)
-            elif objective == OBJECTIVE_XI_CAPTAIN:
+            if objective == OBJECTIVE_XI_CAPTAIN:
                 picked = _pick_squad_xi_captain(
                     scored, "mc_score", time_limit=milp_time_limit
                 )
@@ -843,10 +967,10 @@ def run_strand(
                 "objective_value": float(obj_value),
                 "captain_id": captain_id,
                 "xi_ids": xi_ids,
-                "n_transfers": int(n_transfers),
-                "hits": int(hits),
-                "ft_before": int(ft_before),
-                "ft_after": int(ft_bank) if objective == OBJECTIVE_XI_CAPTAIN_FT else None,
+                "n_transfers": 0,
+                "hits": 0,
+                "ft_before": None,
+                "ft_after": None,
             }
         )
     return result
@@ -1407,8 +1531,15 @@ def write_trial_outputs(result: dict[str, Any], *, out_dir: Path) -> dict[str, s
         f"Share seeding: **{result.get('seed_shares')}**.",
         f"- Minutes overlay: **{result.get('minutes_overlay')}** "
         f"({result.get('overlay')}).",
-        f"- Snapshots at GW {result['snapshot_gws']} → selectable-pool MILP "
-        f"(`{obj}`).",
+        (
+            f"- Joint path transfer plan over GW {result['horizon']['gws']} "
+            f"(`{obj}`: free open + FT/hit schedule)."
+            if obj == OBJECTIVE_XI_CAPTAIN_FT
+            else (
+                f"- Snapshots at GW {result['snapshot_gws']} → selectable-pool MILP "
+                f"(`{obj}`)."
+            )
+        ),
         f"- Solved squads: **{result['n_squads_solved']}** · selectable "
         f"**{result['n_selectable']}** ({result.get('n_with_nonzero_rate', result.get('n_with_nonzero_share'))} with "
         f"nonzero rG) · seed {result['seed']}.",

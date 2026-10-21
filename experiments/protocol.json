@@ -1497,9 +1497,22 @@
     "seed": 7,
     "any_later_change": "dated protocol update required"
   },
+  "cascade_joint_path_plan": {
+    "locked": "2026-10-21",
+    "status": "wired",
+    "role": "xi_plus_captain_ft is a joint multi-GW transfer schedule (not myopic per-snapshot FT MILP)",
+    "module": "src/models/path_transfer_plan.py",
+    "wired_into": "src/models/multistage_mc_milp.run_strand",
+    "design": "roll full horizon → undiscounted per-GW score_xp_v2 → one MILP over all horizon GWs: free open + FT/hit-linked squads/XI/captain; γ^t in the joint objective; top_n=48 candidates",
+    "replaces": "myopic loop: discounted remaining μ → single-deadline _pick_squad_xi_captain_ft each snapshot",
+    "snapshot_every": "ignored for xi_plus_captain_ft (every horizon GW is a decision week)",
+    "ft_pe": "optional terminal linear ν·f_after on the joint plan (cascade_ft_pe_path myopic W·φ form is superseded when re-screening PE)",
+    "not": "four-season gate; retune ν; chips",
+    "any_later_change": "dated protocol update required"
+  },
   "cascade_ft_pe_path": {
     "locked": "2026-10-21",
-    "revised": "2026-10-21 — U scaled by remaining-horizon discount mass W=Σγ^h so PE shares the MILP ledger (ν alone is ~points/week)",
+    "revised": "2026-10-21 — U scaled by remaining-horizon discount mass W=Σγ^h so PE shares the MILP ledger (ν alone is ~points/week); 2026-10-21 joint path plan supersedes myopic snapshot PE form for future PE screens",
     "status": "done_diagnostic",
     "decision": "keep_watching_pe_small",
     "result": "2025-26 N=12: cand−ctrl transfers −0.33/strand, paid −0.33, hit pts −1.3, path actual +1.7, resid bias −0.38; still burns ~2FT+hits most snapshots",
@@ -1516,12 +1529,12 @@
     "metric": "diagnostic: mean transfers / paid / hit pts; path actual sum; path resid bias — not a four-season promote gate",
     "promote_rule": "none this batch; report PE effect on FT burn and whether path actual clearly worsens",
     "not": "retune ν on resid; four-season climb; L4 ft_dp thresholds revive",
-    "note": "First smoke with U=ν·φ (no W) left transfers unchanged — S is multi-week discounted; W is the unit fix, not a fit. Ran under path MAX_HITS_SNAPSHOT=2 (leftover); path hit bound now SQUAD_SIZE.",
+    "note": "First smoke with U=ν·φ (no W) left transfers unchanged — S is multi-week discounted; W is the unit fix, not a fit. Ran under path MAX_HITS_SNAPSHOT=2 (leftover); path hit bound now SQUAD_SIZE. Ran under myopic snapshot FT MILP — superseded by cascade_joint_path_plan.",
     "any_later_change": "dated protocol update required"
   },
   "cascade_mean_path_gw_resid": {
     "locked": "2026-10-21",
-    "revised": "2026-10-21 — full-side shares; semi-oracle is buy filter only; minutes-oracle boards; autosub+VC",
+    "revised": "2026-10-21 — full-side shares; semi-oracle is buy filter only; minutes-oracle boards; autosub+VC; path arm now joint transfer plan (cascade_joint_path_plan)",
     "status": "done_diagnostic",
     "result": "2025-26 GW8–19 N=12 after share fix: mean/path sum actual ≈647/646; mean resid bias +12.7 MAE 14.9; path +1.1 MAE 11.1; ~95s",
     "role": "per-GW residual mean XI vs stable cascade path XI (strand-mean held lineups) against actual points",
@@ -1534,7 +1547,7 @@
     "pool": "semi-oracle buy filter only: actual minutes > 60 in decision GW t",
     "minutes": "oracle on residual/mean boards (actual m, σ_m=0 per scored GW); path generative uses as-of m with GW-t overlay on buy-eligible only",
     "mean": "locked xi_plus_captain from priced t:t+1 oracle-minute boards; held all horizon GWs",
-    "path": "N=12 xi_plus_captain_ft strands; selectable_ids=buy filter; transfer decision every horizon GW (snapshot_every=1; prior runs used every-2 hold)",
+    "path": "N=12 xi_plus_captain_ft strands; selectable_ids=buy filter; joint multi-GW transfer plan over all horizon GWs (free open + FT/hit schedule; cascade_joint_path_plan)",
     "snapshot_every": 1,
     "pred": "FD centreline score_xp_v2 with minutes oracle on planned XI (+captain)",
     "actual": "locked XI + FPL bench autosub + VC if captain blanks",
