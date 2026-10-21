@@ -50,9 +50,13 @@ Report: `reports/cascade_lineup_off_tt1.md` (pair-threshold stack; superseded).
 
 ## Active — club matchday minutes (no corr threshold) (2026-10-21)
 
-PI rejected unsigned `CORR_THRESH=-0.40`. Default `lineup_cov` is now **club
-matchday resample** (draw one as-of club GW → full minutes vector). Pair-corr
-path parked. Re-running `cascade_lineup_off_tt1` under the new stack.
+PI rejected unsigned `CORR_THRESH=-0.40`. Default `lineup_cov` = **club matchday
+resample** (one as-of club GW → full minutes vector). Pair-corr path parked.
+
+Re-screen `cascade_lineup_off_tt1`: gen_off−mean still **clearly_loses** (−0.021);
+matchday gen_on **clearly beats** gen_off (+0.009) but **clearly loses** to mean
+(−0.011). More natural than pair-threshold; slightly worse vs mean than the
+parked joint-pair stack (−0.004 inconclusive). Report updated in place.
 
 ## Active / next (sparse)
 

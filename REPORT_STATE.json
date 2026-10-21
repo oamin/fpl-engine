@@ -1,23 +1,23 @@
 {
-  "task": "cascade_lineup_off_tt1",
+  "task": "cascade_lineup_off_tt1_matchday",
   "status": "done",
-  "primary": {
-    "comparison": "gen_off_minus_mean",
+  "lineup_stack": "club_matchday_resample",
+  "primary_gen_off_minus_mean": {
     "delta": -0.0206,
     "interval": [-0.0243, -0.0170],
     "verdict": "clearly_loses"
   },
-  "diagnostic_on_minus_off": {
-    "delta": 0.0162,
-    "interval": [0.0116, 0.0209],
+  "diagnostic_gen_on_minus_gen_off": {
+    "delta": 0.0092,
+    "interval": [0.0048, 0.0141],
     "verdict": "clearly_wins"
   },
-  "diagnostic_on_minus_mean": {
-    "delta": -0.0043,
-    "interval": [-0.0096, 0.0010],
-    "verdict": "does_not_clearly_lose"
+  "diagnostic_gen_on_minus_mean": {
+    "delta": -0.0114,
+    "interval": [-0.0167, -0.0060],
+    "verdict": "clearly_loses"
   },
-  "elapsed_s": 2661.8,
-  "report": "reports/cascade_lineup_off_tt1.md",
-  "note": "Freezing minutes hurts gen vs joint lineup_cov; keep lineup roll on for likelihood."
+  "note": "No CORR_THRESH. Matchday resample beats freeze minutes; still loses to mean. Prior pair-joint gen_on was closer to mean (−0.004).",
+  "elapsed_s": 3158.3,
+  "report": "reports/cascade_lineup_off_tt1.md"
 }
