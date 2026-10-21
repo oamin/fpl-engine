@@ -1379,6 +1379,12 @@ def main() -> None:
         help="Scale xmi/shares by FPL chance_of_playing / status (default on)",
     )
     p.add_argument(
+        "--generative-attack",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Generative lineup→attack→CS/GC (default on); --no-generative-attack uses mean layer",
+    )
+    p.add_argument(
         "--priced-odds",
         type=Path,
         default=ROOT / "data/scratch/gw08_odds_full.json",
@@ -1404,6 +1410,7 @@ def main() -> None:
         logs_path=args.logs,
         objective=args.objective,
         minutes_overlay=bool(args.minutes_overlay),
+        generative_attack=bool(args.generative_attack),
         priced_odds_path=args.priced_odds,
         priced_gw=args.priced_gw,
         use_priced_short=not bool(args.no_priced),

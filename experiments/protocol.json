@@ -1401,15 +1401,33 @@
     "any_later_change": "dated protocol update required"
   },
   "cascade_short_mean_tt1_vs_gen": {
-    "locked": null,
-    "status": "queued",
+    "locked": "2026-10-21",
+    "status": "running",
     "queued": "2026-10-21",
     "role": "product-horizon fair screen: mean boards on t:t+1 vs short generative",
+    "module": "src/eval/cascade_short_mean_tt1.py",
+    "report": "reports/cascade_short_mean_tt1_vs_gen.md",
     "baseline": "score_team_side on FD centreline M for GW(t) and GW(t+1)",
-    "treatment": "cascade_short generative k∼M→lineup→attack→CS/GC on priced t:t+1 (MC-mean or path as locked at run)",
-    "metric": "player-GW gaussian_log_score; paired Δ by GW then cluster_interval on CLOSED_SEASONS",
-    "window": "GW8–28 (or as locked); weeks with FD fits for both t and t+1",
-    "note": "Distinct from cascade_viability_batch B1 (same-GW aggregator). Lock before totals.",
+    "treatment": "short generative MC-mean (N_MC=20) on same FD fits for t and t+1",
+    "metric": "player-GW gaussian_log_score; paired Δ by decision_gw then cluster_interval on CLOSED_SEASONS",
+    "window": "decision GW8–27 (score weeks t and t+1); MIN_FITS=5 each week",
+    "n_mc": 20,
+    "sigma": 3.0,
+    "seed": 7,
+    "seasons": ["2022-23", "2023-24", "2024-25", "2025-26"],
+    "note": "Distinct from cascade_viability_batch B1 (same-GW aggregator).",
+    "any_later_change": "dated protocol update required"
+  },
+  "cascade_pathv_gen_vs_mean_milp": {
+    "locked": "2026-10-21",
+    "status": "queued_after_tt1",
+    "role": "path-V diagnostic: generative FT+cap strands vs mean-layer FT+cap strands",
+    "module": "src/eval/cascade_pathv_gen_vs_mean.py",
+    "report": "reports/cascade_pathv_gen_vs_mean.md",
+    "treatment": "xi_plus_captain_ft + generative_attack=True, N=20, GW6→8–19, priced GW8",
+    "baseline": "xi_plus_captain_ft + generative_attack=False (mean score_team_side on scenario λ), N=20 same seeds/horizon",
+    "metric": "diagnostic: squads solved, mean hits/transfers, captain concentration, top-freq overlap — not a gated path-V promote",
+    "note": "Strategy-layer smoke matching PI aim; full four-season realised path-V gate deferred.",
     "any_later_change": "dated protocol update required"
   }
 }
