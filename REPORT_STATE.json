@@ -1,13 +1,23 @@
 {
-  "task": "cascade_gamma_1",
+  "task": "cascade_ft_pe_simple",
   "status": "done",
-  "change": "Remove season_climb γ=0.9 from cascade defaults; lock undiscounted γ=1.0; re-ran FT PE under γ=1 (still inert)",
+  "change": "FT PE = hit value: U(b)=ν·b with ν=HIT_COST (+4/FT, +20 at cap); DEFAULT_FT_PE_NU on; hard must-spend before hits; retired φ·W",
   "modules": [
+    "src/models/path_transfer_plan.py",
     "src/models/multistage_mc_milp.py",
-    "src/models/short_horizon_cascade.py",
-    "src/markets/cascade_score_v2.py"
+    "src/eval/cascade_ft_pe_path.py",
+    "src/eval/cascade_mean_path_gw_resid.py"
   ],
-  "protocol": "cascade_gamma",
-  "pe_retest": "cand≡ctrl; transfers/strand 27 paid 16 under γ=1",
-  "note": "season_climb_ft.GAMMA=0.9 left for legacy published climb only"
+  "protocol": "cascade_ft_pe_path",
+  "U": {"0": 0, "1": 4, "2": 8, "3": 12, "4": 16, "5": 20},
+  "retest_n12": {
+    "season": "2025-26",
+    "delta_transfers": -0.08,
+    "delta_paid": 0.0,
+    "delta_hit_pts": 0.0,
+    "terminal_ft": "1.00→1.08",
+    "path_actual": "+0.6",
+    "decision": "keep_watching_pe_small"
+  },
+  "note": "Hold below cap → +4 PE; at five FTs weekly grant +0 unless one FT used"
 }

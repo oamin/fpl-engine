@@ -20,9 +20,7 @@ from src.models.multistage_mc_milp import (
     DEFAULT_FT_PE_NU,
     DEFAULT_GAMMA,
     MAX_HITS_SNAPSHOT,
-    ft_bank_phi,
     ft_bank_potential,
-    ft_horizon_weight,
 )
 from src.rules.fpl_2026 import (
     BUDGET_TENTHS as BUDGET,
@@ -134,8 +132,11 @@ def pick_path_transfer_plan(
 
     ``scores`` shape ``(H, n)`` aligned with ``gws`` and ``candidates``.
 
-    When ``ft_pe_nu > 0``, adds terminal PE ``U(f_H)=ν·φ(f_H)·W`` with
-    ``W=Σγ^h`` over the horizon (exact φ via one-hot on the terminal bank).
+    When ``ft_pe_nu > 0``, adds terminal PE ``U(f_H)=ν·f_H`` (default
+    ``ν=HIT_COST``: +4 per stored FT, +20 at cap). For linear ``U`` this equals
+    the telescoping sum of week-to-week ΔPE (``f_0`` fixed after open). Holding
+    below the cap grows next-deadline bank by +1 → +ν; at five the weekly grant
+    adds +0 PE unless a transfer is used first. No multi-week ``W`` scale.
     """
     H = int(len(gws))
     n = int(len(candidates))
@@ -156,11 +157,9 @@ def pick_path_transfer_plan(
 
     nu = float(ft_pe_nu)
     use_pe = nu > 0.0
-    pe_w = ft_horizon_weight(H, gamma=float(gamma)) if use_pe else 0.0
 
     # Layout:
-    # x[H*n] | y[H*n] | c[H*n] | buy[(H-1)*n] | u[H-1] | e[H-1] | f[H]
-    # | over[H-1] | z_pe[MAX_FT+1] (optional one-hot on terminal f)
+    # x | y | c | buy | u | e | f | over | hit_flag (1 iff k > f this week)
     nx = H * n
     ny = H * n
     nc = H * n
@@ -169,8 +168,8 @@ def pick_path_transfer_plan(
     n_e = max(0, H - 1)
     n_f = H
     n_over = max(0, H - 1)
-    n_z = (int(MAX_FT) + 1) if use_pe else 0
-    dim = nx + ny + nc + n_buy + n_u + n_e + n_f + n_over + n_z
+    n_hit = max(0, H - 1)
+    dim = nx + ny + nc + n_buy + n_u + n_e + n_f + n_over + n_hit
 
     def ix_x(t: int, i: int) -> int:
         return t * n + i
@@ -197,8 +196,8 @@ def pick_path_transfer_plan(
     def ix_over(t: int) -> int:
         return nx + ny + nc + n_buy + n_u + n_e + n_f + (t - 1)
 
-    def ix_z(b: int) -> int:
-        return nx + ny + nc + n_buy + n_u + n_e + n_f + n_over + b
+    def ix_hit(t: int) -> int:
+        return nx + ny + nc + n_buy + n_u + n_e + n_f + n_over + (t - 1)
 
     g = float(gamma)
     c_obj = np.zeros(dim)
@@ -211,11 +210,10 @@ def pick_path_transfer_plan(
         c_obj[ix_e(t)] = float(HIT_COST)
         for i in range(n):
             c_obj[ix_buy(t, i)] = float(TRANSFER_EPS)
-    # Terminal PE: max ν·φ(f_H)·W  →  minimise −ν·W·φ(b)·z_b
+    # Terminal bank PE: max ν·f_H → minimise −ν·f_H.
+    # (Sum of week-to-week ΔPE = ν·(f_H − f_0); f_0 fixed at 1 after open.)
     if use_pe:
-        for b in range(n_z):
-            phi_b = ft_bank_phi(b)
-            c_obj[ix_z(b)] = -nu * float(pe_w) * float(phi_b)
+        c_obj[ix_f(H - 1)] = -nu
 
     rows: list[np.ndarray] = []
     lo: list[float] = []
@@ -337,14 +335,36 @@ def pick_path_transfer_plan(
         for i in range(n):
             r[ix_buy(t, i)] = -1.0
         add(r, 0.0, 0.0)
-        # Must spend bank before hits: e <= max(0, k - f)
-        # With e >= k - f (from u ≤ f) this forces u = min(k, f).
+        # Must spend FT bank before hits: e = max(0, k - f).
+        # hit_flag a ∈ {0,1} with a=1 iff k ≥ f+1 (integer). Then:
+        #   a=0 → e=0; a=1 → e ≤ k−f.
+        # With e = k−u and u ≤ f (⇒ e ≥ k−f) this forces u = min(k, f).
+        # Do NOT add the always-on cut e ≤ k−f: when k < f that is infeasible
+        # and blocks bank growth (holds).
+        r = np.zeros(dim)
+        for i in range(n):
+            r[ix_buy(t, i)] = 1.0
+        r[ix_f(t - 1)] = -1.0
+        r[ix_hit(t)] = -float(k_max)
+        add(r, -np.inf, 0.0)  # k - f <= k_max·a
+        r = np.zeros(dim)
+        for i in range(n):
+            r[ix_buy(t, i)] = 1.0
+        r[ix_f(t - 1)] = -1.0
+        r[ix_hit(t)] = -float(k_max)
+        add(r, float(1 - k_max), np.inf)  # k - f >= 1 - k_max·(1−a)
         r = np.zeros(dim)
         r[ix_e(t)] = 1.0
-        r[ix_f(t - 1)] = 1.0
+        r[ix_hit(t)] = -float(k_max)
+        add(r, -np.inf, 0.0)  # e <= k_max·a  (⇒ e=0 when a=0)
+        # a=1 ⇒ e ≤ k−f; a=0 ⇒ vacuous (e − k + f ≤ MAX_FT).
+        r = np.zeros(dim)
+        r[ix_e(t)] = 1.0
         for i in range(n):
             r[ix_buy(t, i)] = -1.0
-        add(r, -np.inf, 0.0)
+        r[ix_f(t - 1)] = 1.0
+        r[ix_hit(t)] = float(MAX_FT)
+        add(r, -np.inf, float(MAX_FT))  # e - k + f + MAX_FT·a <= MAX_FT
         # k <= k_max
         r = np.zeros(dim)
         for i in range(n):
@@ -371,18 +391,6 @@ def pick_path_transfer_plan(
         r[ix_over(t)] = float(MAX_FT)
         r[ix_f(t - 1)] = -1.0
         add(r, -np.inf, 0.0)
-
-    if use_pe:
-        # One-hot: Σ z_b = 1, Σ b·z_b = f[H-1]
-        r = np.zeros(dim)
-        for b in range(n_z):
-            r[ix_z(b)] = 1.0
-        add(r, 1.0, 1.0)
-        r = np.zeros(dim)
-        r[ix_f(H - 1)] = 1.0
-        for b in range(n_z):
-            r[ix_z(b)] = -float(b)
-        add(r, 0.0, 0.0)
 
     # Bounds / integrality
     lb = np.zeros(dim)
@@ -454,11 +462,8 @@ def pick_path_transfer_plan(
         "horizon": H,
         "status": str(res.message),
         "ft_pe_nu": nu,
-        "ft_pe_horizon_weight": float(pe_w),
         "terminal_ft": terminal_ft,
         "terminal_pe": float(
-            ft_bank_potential(terminal_ft, nu=nu, horizon_weight=pe_w)
-            if weeks and use_pe
-            else 0.0
+            ft_bank_potential(terminal_ft, nu=nu) if weeks and use_pe else 0.0
         ),
     }

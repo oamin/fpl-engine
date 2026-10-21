@@ -23,50 +23,49 @@
     18,
     19
   ],
-  "candidate_nu": 2.0,
-  "pe_form": "terminal U(f_H)=\u03bd\u00b7\u03c6(f_H)\u00b7W with W=\u03a3\u03b3^h over horizon",
-  "pe_horizon_weight": 12.0,
-  "phi": {
+  "candidate_nu": 4.0,
+  "pe_form": "terminal U(f_H)=\u03bd\u00b7f_H with \u03bd=HIT_COST (+4 per stored FT, +20 at cap)",
+  "U": {
     "0": 0.0,
-    "1": 1.0,
-    "2": 1.9,
-    "3": 2.7,
-    "4": 3.4,
-    "5": 4.0
+    "1": 4.0,
+    "2": 8.0,
+    "3": 12.0,
+    "4": 16.0,
+    "5": 20.0
   },
   "arms": {
     "control": {
       "ft_pe_nu": 0.0,
-      "elapsed_s": 51.19765901565552,
-      "path_elapsed_s": 47.72347927093506,
+      "elapsed_s": 53.69525694847107,
+      "path_elapsed_s": 50.37048125267029,
       "transfers": {
         "n_squad_rows": 144,
-        "mean_transfers_per_strand": 27.0,
-        "mean_hit_pts_per_strand": 64.0,
-        "mean_paid_per_strand": 16.0,
+        "mean_transfers_per_strand": 26.583333333333332,
+        "mean_hit_pts_per_strand": 62.333333333333336,
+        "mean_paid_per_strand": 15.583333333333334,
         "mean_free_used_per_strand": 11.0,
         "per_gw": [
           {
             "gw": 9,
-            "mean_transfers": 1.5,
+            "mean_transfers": 1.333,
             "mean_hit_pts": 2.0,
             "mean_paid": 0.5,
-            "mean_free_used": 1.0,
-            "mean_ft_after": 1.0
+            "mean_free_used": 0.833,
+            "mean_ft_after": 1.167
           },
           {
             "gw": 10,
-            "mean_transfers": 2.667,
-            "mean_hit_pts": 6.667,
-            "mean_paid": 1.667,
-            "mean_free_used": 1.0,
+            "mean_transfers": 2.583,
+            "mean_hit_pts": 5.667,
+            "mean_paid": 1.417,
+            "mean_free_used": 1.167,
             "mean_ft_after": 1.0
           },
           {
             "gw": 11,
-            "mean_transfers": 2.833,
-            "mean_hit_pts": 7.333,
-            "mean_paid": 1.833,
+            "mean_transfers": 2.917,
+            "mean_hit_pts": 7.667,
+            "mean_paid": 1.917,
             "mean_free_used": 1.0,
             "mean_ft_after": 1.0
           },
@@ -83,6 +82,197 @@
             "mean_transfers": 2.583,
             "mean_hit_pts": 6.333,
             "mean_paid": 1.583,
+            "mean_free_used": 1.0,
+            "mean_ft_after": 1.0
+          },
+          {
+            "gw": 14,
+            "mean_transfers": 2.333,
+            "mean_hit_pts": 5.333,
+            "mean_paid": 1.333,
+            "mean_free_used": 1.0,
+            "mean_ft_after": 1.0
+          },
+          {
+            "gw": 15,
+            "mean_transfers": 2.417,
+            "mean_hit_pts": 6.0,
+            "mean_paid": 1.5,
+            "mean_free_used": 0.917,
+            "mean_ft_after": 1.083
+          },
+          {
+            "gw": 16,
+            "mean_transfers": 2.25,
+            "mean_hit_pts": 4.667,
+            "mean_paid": 1.167,
+            "mean_free_used": 1.083,
+            "mean_ft_after": 1.0
+          },
+          {
+            "gw": 17,
+            "mean_transfers": 3.167,
+            "mean_hit_pts": 8.667,
+            "mean_paid": 2.167,
+            "mean_free_used": 1.0,
+            "mean_ft_after": 1.0
+          },
+          {
+            "gw": 18,
+            "mean_transfers": 2.25,
+            "mean_hit_pts": 5.333,
+            "mean_paid": 1.333,
+            "mean_free_used": 0.917,
+            "mean_ft_after": 1.083
+          },
+          {
+            "gw": 19,
+            "mean_transfers": 2.0,
+            "mean_hit_pts": 3.667,
+            "mean_paid": 0.917,
+            "mean_free_used": 1.083,
+            "mean_ft_after": 1.0
+          }
+        ]
+      },
+      "per_gw": [
+        {
+          "gw": 8,
+          "path_pred": 50.791098233521375,
+          "path_actual": 61.083333333333336,
+          "path_resid": -10.292235099811961,
+          "n_strands": 12
+        },
+        {
+          "gw": 9,
+          "path_pred": 50.21439858063627,
+          "path_actual": 51.0,
+          "path_resid": -0.7856014193637293,
+          "n_strands": 12
+        },
+        {
+          "gw": 10,
+          "path_pred": 50.366482427382806,
+          "path_actual": 55.25,
+          "path_resid": -4.883517572617194,
+          "n_strands": 12
+        },
+        {
+          "gw": 11,
+          "path_pred": 50.677830625217105,
+          "path_actual": 44.583333333333336,
+          "path_resid": 6.094497291883769,
+          "n_strands": 12
+        },
+        {
+          "gw": 12,
+          "path_pred": 50.11758578237575,
+          "path_actual": 41.416666666666664,
+          "path_resid": 8.700919115709084,
+          "n_strands": 12
+        },
+        {
+          "gw": 13,
+          "path_pred": 50.181060730606724,
+          "path_actual": 32.583333333333336,
+          "path_resid": 17.59772739727339,
+          "n_strands": 12
+        },
+        {
+          "gw": 14,
+          "path_pred": 48.08264869038343,
+          "path_actual": 55.833333333333336,
+          "path_resid": -7.750684642949906,
+          "n_strands": 12
+        },
+        {
+          "gw": 15,
+          "path_pred": 49.00773940103648,
+          "path_actual": 55.416666666666664,
+          "path_resid": -6.408927265630183,
+          "n_strands": 12
+        },
+        {
+          "gw": 16,
+          "path_pred": 48.28671165343321,
+          "path_actual": 54.916666666666664,
+          "path_resid": -6.629955013233456,
+          "n_strands": 12
+        },
+        {
+          "gw": 17,
+          "path_pred": 55.05931436023693,
+          "path_actual": 74.08333333333333,
+          "path_resid": -19.024018973096396,
+          "n_strands": 12
+        },
+        {
+          "gw": 18,
+          "path_pred": 47.377024317377355,
+          "path_actual": 52.416666666666664,
+          "path_resid": -5.039642349289309,
+          "n_strands": 12
+        },
+        {
+          "gw": 19,
+          "path_pred": 44.27279191483413,
+          "path_actual": 51.083333333333336,
+          "path_resid": -6.810541418499206,
+          "n_strands": 12
+        }
+      ],
+      "path_actual_sum": 629.6666666666667,
+      "path_resid_bias": -2.935998329135425,
+      "path_resid_mae": 8.334855629946466
+    },
+    "candidate": {
+      "ft_pe_nu": 4.0,
+      "elapsed_s": 58.04885292053223,
+      "path_elapsed_s": 54.714598417282104,
+      "transfers": {
+        "n_squad_rows": 144,
+        "mean_transfers_per_strand": 26.5,
+        "mean_hit_pts_per_strand": 62.333333333333336,
+        "mean_paid_per_strand": 15.583333333333334,
+        "mean_free_used_per_strand": 10.916666666666666,
+        "per_gw": [
+          {
+            "gw": 9,
+            "mean_transfers": 1.333,
+            "mean_hit_pts": 2.0,
+            "mean_paid": 0.5,
+            "mean_free_used": 0.833,
+            "mean_ft_after": 1.167
+          },
+          {
+            "gw": 10,
+            "mean_transfers": 2.667,
+            "mean_hit_pts": 6.0,
+            "mean_paid": 1.5,
+            "mean_free_used": 1.167,
+            "mean_ft_after": 1.0
+          },
+          {
+            "gw": 11,
+            "mean_transfers": 2.833,
+            "mean_hit_pts": 7.333,
+            "mean_paid": 1.833,
+            "mean_free_used": 1.0,
+            "mean_ft_after": 1.0
+          },
+          {
+            "gw": 12,
+            "mean_transfers": 2.667,
+            "mean_hit_pts": 6.667,
+            "mean_paid": 1.667,
+            "mean_free_used": 1.0,
+            "mean_ft_after": 1.0
+          },
+          {
+            "gw": 13,
+            "mean_transfers": 2.667,
+            "mean_hit_pts": 6.667,
+            "mean_paid": 1.667,
             "mean_free_used": 1.0,
             "mean_ft_after": 1.0
           },
@@ -96,209 +286,18 @@
           },
           {
             "gw": 15,
-            "mean_transfers": 2.5,
-            "mean_hit_pts": 6.0,
-            "mean_paid": 1.5,
-            "mean_free_used": 1.0,
-            "mean_ft_after": 1.0
+            "mean_transfers": 2.333,
+            "mean_hit_pts": 5.667,
+            "mean_paid": 1.417,
+            "mean_free_used": 0.917,
+            "mean_ft_after": 1.083
           },
           {
             "gw": 16,
             "mean_transfers": 2.333,
-            "mean_hit_pts": 5.333,
-            "mean_paid": 1.333,
-            "mean_free_used": 1.0,
-            "mean_ft_after": 1.0
-          },
-          {
-            "gw": 17,
-            "mean_transfers": 3.0,
-            "mean_hit_pts": 8.0,
-            "mean_paid": 2.0,
-            "mean_free_used": 1.0,
-            "mean_ft_after": 1.0
-          },
-          {
-            "gw": 18,
-            "mean_transfers": 2.5,
-            "mean_hit_pts": 6.0,
-            "mean_paid": 1.5,
-            "mean_free_used": 1.0,
-            "mean_ft_after": 1.0
-          },
-          {
-            "gw": 19,
-            "mean_transfers": 1.917,
-            "mean_hit_pts": 3.667,
-            "mean_paid": 0.917,
-            "mean_free_used": 1.0,
-            "mean_ft_after": 1.0
-          }
-        ]
-      },
-      "per_gw": [
-        {
-          "gw": 8,
-          "path_pred": 50.75255134535087,
-          "path_actual": 62.083333333333336,
-          "path_resid": -11.33078198798247,
-          "n_strands": 12
-        },
-        {
-          "gw": 9,
-          "path_pred": 49.81765413785751,
-          "path_actual": 51.0,
-          "path_resid": -1.1823458621424905,
-          "n_strands": 12
-        },
-        {
-          "gw": 10,
-          "path_pred": 49.872231062779406,
-          "path_actual": 55.25,
-          "path_resid": -5.377768937220594,
-          "n_strands": 12
-        },
-        {
-          "gw": 11,
-          "path_pred": 51.00410312777101,
-          "path_actual": 44.166666666666664,
-          "path_resid": 6.837436461104346,
-          "n_strands": 12
-        },
-        {
-          "gw": 12,
-          "path_pred": 50.11758578237575,
-          "path_actual": 41.833333333333336,
-          "path_resid": 8.284252449042413,
-          "n_strands": 12
-        },
-        {
-          "gw": 13,
-          "path_pred": 50.181060730606724,
-          "path_actual": 32.083333333333336,
-          "path_resid": 18.09772739727339,
-          "n_strands": 12
-        },
-        {
-          "gw": 14,
-          "path_pred": 48.021027461927325,
-          "path_actual": 57.25,
-          "path_resid": -9.228972538072675,
-          "n_strands": 12
-        },
-        {
-          "gw": 15,
-          "path_pred": 48.553884628430346,
-          "path_actual": 54.666666666666664,
-          "path_resid": -6.112782038236318,
-          "n_strands": 12
-        },
-        {
-          "gw": 16,
-          "path_pred": 48.24716075935146,
-          "path_actual": 54.666666666666664,
-          "path_resid": -6.419505907315205,
-          "n_strands": 12
-        },
-        {
-          "gw": 17,
-          "path_pred": 55.6495862948783,
-          "path_actual": 73.91666666666667,
-          "path_resid": -18.267080371788374,
-          "n_strands": 12
-        },
-        {
-          "gw": 18,
-          "path_pred": 47.16055878606758,
-          "path_actual": 51.833333333333336,
-          "path_resid": -4.672774547265753,
-          "n_strands": 12
-        },
-        {
-          "gw": 19,
-          "path_pred": 44.02434522872904,
-          "path_actual": 51.916666666666664,
-          "path_resid": -7.892321437937625,
-          "n_strands": 12
-        }
-      ],
-      "path_actual_sum": 630.6666666666666,
-      "path_resid_bias": -3.1054097767117796,
-      "path_resid_mae": 8.641979161281805
-    },
-    "candidate": {
-      "ft_pe_nu": 2.0,
-      "elapsed_s": 47.21756458282471,
-      "path_elapsed_s": 43.87769079208374,
-      "transfers": {
-        "n_squad_rows": 144,
-        "mean_transfers_per_strand": 27.0,
-        "mean_hit_pts_per_strand": 64.0,
-        "mean_paid_per_strand": 16.0,
-        "mean_free_used_per_strand": 11.0,
-        "per_gw": [
-          {
-            "gw": 9,
-            "mean_transfers": 1.583,
-            "mean_hit_pts": 2.333,
-            "mean_paid": 0.583,
-            "mean_free_used": 1.0,
-            "mean_ft_after": 1.0
-          },
-          {
-            "gw": 10,
-            "mean_transfers": 2.333,
-            "mean_hit_pts": 5.333,
-            "mean_paid": 1.333,
-            "mean_free_used": 1.0,
-            "mean_ft_after": 1.0
-          },
-          {
-            "gw": 11,
-            "mean_transfers": 3.083,
-            "mean_hit_pts": 8.333,
-            "mean_paid": 2.083,
-            "mean_free_used": 1.0,
-            "mean_ft_after": 1.0
-          },
-          {
-            "gw": 12,
-            "mean_transfers": 2.75,
-            "mean_hit_pts": 7.0,
-            "mean_paid": 1.75,
-            "mean_free_used": 1.0,
-            "mean_ft_after": 1.0
-          },
-          {
-            "gw": 13,
-            "mean_transfers": 2.5,
-            "mean_hit_pts": 6.0,
-            "mean_paid": 1.5,
-            "mean_free_used": 1.0,
-            "mean_ft_after": 1.0
-          },
-          {
-            "gw": 14,
-            "mean_transfers": 2.5,
-            "mean_hit_pts": 6.0,
-            "mean_paid": 1.5,
-            "mean_free_used": 1.0,
-            "mean_ft_after": 1.0
-          },
-          {
-            "gw": 15,
-            "mean_transfers": 2.5,
-            "mean_hit_pts": 6.0,
-            "mean_paid": 1.5,
-            "mean_free_used": 1.0,
-            "mean_ft_after": 1.0
-          },
-          {
-            "gw": 16,
-            "mean_transfers": 2.333,
-            "mean_hit_pts": 5.333,
-            "mean_paid": 1.333,
-            "mean_free_used": 1.0,
+            "mean_hit_pts": 5.0,
+            "mean_paid": 1.25,
+            "mean_free_used": 1.083,
             "mean_ft_after": 1.0
           },
           {
@@ -311,11 +310,11 @@
           },
           {
             "gw": 18,
-            "mean_transfers": 2.583,
-            "mean_hit_pts": 6.333,
-            "mean_paid": 1.583,
-            "mean_free_used": 1.0,
-            "mean_ft_after": 1.0
+            "mean_transfers": 2.417,
+            "mean_hit_pts": 6.0,
+            "mean_paid": 1.5,
+            "mean_free_used": 0.917,
+            "mean_ft_after": 1.083
           },
           {
             "gw": 19,
@@ -323,37 +322,37 @@
             "mean_hit_pts": 3.667,
             "mean_paid": 0.917,
             "mean_free_used": 1.0,
-            "mean_ft_after": 1.0
+            "mean_ft_after": 1.083
           }
         ]
       },
       "per_gw": [
         {
           "gw": 8,
-          "path_pred": 50.75255134535087,
-          "path_actual": 62.166666666666664,
-          "path_resid": -11.414115321315798,
+          "path_pred": 50.791098233521375,
+          "path_actual": 61.916666666666664,
+          "path_resid": -11.12556843314529,
           "n_strands": 12
         },
         {
           "gw": 9,
-          "path_pred": 49.81765413785751,
-          "path_actual": 51.333333333333336,
-          "path_resid": -1.5156791954758262,
+          "path_pred": 50.21439858063627,
+          "path_actual": 50.666666666666664,
+          "path_resid": -0.4522680860303936,
           "n_strands": 12
         },
         {
           "gw": 10,
-          "path_pred": 50.2331922969488,
+          "path_pred": 50.7274436615522,
           "path_actual": 55.25,
-          "path_resid": -5.0168077030511995,
+          "path_resid": -4.522556338447799,
           "n_strands": 12
         },
         {
           "gw": 11,
-          "path_pred": 51.00410312777101,
-          "path_actual": 44.166666666666664,
-          "path_resid": 6.837436461104346,
+          "path_pred": 50.677830625217105,
+          "path_actual": 44.583333333333336,
+          "path_resid": 6.094497291883769,
           "n_strands": 12
         },
         {
@@ -366,56 +365,56 @@
         {
           "gw": 13,
           "path_pred": 50.181060730606724,
-          "path_actual": 32.083333333333336,
-          "path_resid": 18.09772739727339,
+          "path_actual": 32.583333333333336,
+          "path_resid": 17.59772739727339,
           "n_strands": 12
         },
         {
           "gw": 14,
-          "path_pred": 48.021027461927325,
-          "path_actual": 57.25,
-          "path_resid": -9.228972538072675,
+          "path_pred": 48.08264869038343,
+          "path_actual": 55.833333333333336,
+          "path_resid": -7.750684642949906,
           "n_strands": 12
         },
         {
           "gw": 15,
-          "path_pred": 48.553884628430346,
-          "path_actual": 54.666666666666664,
-          "path_resid": -6.112782038236318,
+          "path_pred": 49.05811261102116,
+          "path_actual": 55.416666666666664,
+          "path_resid": -6.358554055645506,
           "n_strands": 12
         },
         {
           "gw": 16,
-          "path_pred": 48.24716075935146,
-          "path_actual": 54.666666666666664,
-          "path_resid": -6.419505907315205,
+          "path_pred": 48.28671165343321,
+          "path_actual": 54.75,
+          "path_resid": -6.463288346566792,
           "n_strands": 12
         },
         {
           "gw": 17,
-          "path_pred": 55.6495862948783,
-          "path_actual": 73.75,
-          "path_resid": -18.100413705121703,
+          "path_pred": 55.05931436023693,
+          "path_actual": 73.66666666666667,
+          "path_resid": -18.60735230642974,
           "n_strands": 12
         },
         {
           "gw": 18,
-          "path_pred": 47.16055878606758,
-          "path_actual": 51.833333333333336,
-          "path_resid": -4.672774547265753,
+          "path_pred": 47.81928787966393,
+          "path_actual": 52.25,
+          "path_resid": -4.430712120336068,
           "n_strands": 12
         },
         {
           "gw": 19,
-          "path_pred": 44.02434522872904,
-          "path_actual": 51.75,
-          "path_resid": -7.7256547712709605,
+          "path_pred": 44.27279191483413,
+          "path_actual": 51.5,
+          "path_resid": -7.22720808516587,
           "n_strands": 12
         }
       ],
-      "path_actual_sum": 630.7500000000001,
-      "path_resid_bias": -3.0822741183087743,
-      "path_resid_mae": 8.618843502878798
+      "path_actual_sum": 630.25,
+      "path_resid_bias": -2.9134762730431496,
+      "path_resid_mae": 8.242889129409745
     }
   },
   "strands": {
@@ -433,24 +432,24 @@
           },
           {
             "gw": 9,
-            "n_transfers": 1,
+            "n_transfers": 0,
             "hits": 0,
             "ft_before": 1,
-            "ft_after": 1,
+            "ft_after": 2,
             "captain_id": "2025-26:624"
           },
           {
             "gw": 10,
-            "n_transfers": 2,
+            "n_transfers": 3,
             "hits": 4,
-            "ft_before": 1,
+            "ft_before": 2,
             "ft_after": 1,
             "captain_id": "2025-26:160"
           },
           {
             "gw": 11,
-            "n_transfers": 3,
-            "hits": 8,
+            "n_transfers": 2,
+            "hits": 4,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:160"
@@ -473,8 +472,8 @@
           },
           {
             "gw": 14,
-            "n_transfers": 3,
-            "hits": 8,
+            "n_transfers": 2,
+            "hits": 4,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:449"
@@ -800,16 +799,16 @@
           },
           {
             "gw": 17,
-            "n_transfers": 4,
-            "hits": 12,
+            "n_transfers": 6,
+            "hits": 20,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:387"
           },
           {
             "gw": 18,
-            "n_transfers": 7,
-            "hits": 24,
+            "n_transfers": 5,
+            "hits": 16,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:666"
@@ -845,16 +844,16 @@
           },
           {
             "gw": 10,
-            "n_transfers": 4,
-            "hits": 12,
+            "n_transfers": 3,
+            "hits": 8,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:597"
           },
           {
             "gw": 11,
-            "n_transfers": 1,
-            "hits": 0,
+            "n_transfers": 2,
+            "hits": 4,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:419"
@@ -1087,17 +1086,17 @@
           },
           {
             "gw": 15,
-            "n_transfers": 1,
+            "n_transfers": 0,
             "hits": 0,
             "ft_before": 1,
-            "ft_after": 1,
+            "ft_after": 2,
             "captain_id": "2025-26:381"
           },
           {
             "gw": 16,
             "n_transfers": 3,
-            "hits": 8,
-            "ft_before": 1,
+            "hits": 4,
+            "ft_before": 2,
             "ft_after": 1,
             "captain_id": "2025-26:200"
           },
@@ -1111,8 +1110,8 @@
           },
           {
             "gw": 18,
-            "n_transfers": 4,
-            "hits": 12,
+            "n_transfers": 3,
+            "hits": 8,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:668"
@@ -1148,16 +1147,16 @@
           },
           {
             "gw": 10,
-            "n_transfers": 2,
-            "hits": 4,
+            "n_transfers": 1,
+            "hits": 0,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:120"
           },
           {
             "gw": 11,
-            "n_transfers": 2,
-            "hits": 4,
+            "n_transfers": 3,
+            "hits": 8,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:449"
@@ -1196,16 +1195,16 @@
           },
           {
             "gw": 16,
-            "n_transfers": 2,
-            "hits": 4,
+            "n_transfers": 1,
+            "hits": 0,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:668"
           },
           {
             "gw": 17,
-            "n_transfers": 2,
-            "hits": 4,
+            "n_transfers": 3,
+            "hits": 8,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:317"
@@ -1305,16 +1304,16 @@
           },
           {
             "gw": 17,
-            "n_transfers": 5,
-            "hits": 16,
+            "n_transfers": 4,
+            "hits": 12,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:348"
           },
           {
             "gw": 18,
-            "n_transfers": 2,
-            "hits": 4,
+            "n_transfers": 3,
+            "hits": 8,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:119"
@@ -1443,17 +1442,17 @@
           },
           {
             "gw": 9,
-            "n_transfers": 1,
+            "n_transfers": 0,
             "hits": 0,
             "ft_before": 1,
-            "ft_after": 1,
+            "ft_after": 2,
             "captain_id": "2025-26:427"
           },
           {
             "gw": 10,
             "n_transfers": 4,
-            "hits": 12,
-            "ft_before": 1,
+            "hits": 8,
+            "ft_before": 2,
             "ft_after": 1,
             "captain_id": "2025-26:7"
           },
@@ -1616,17 +1615,17 @@
           },
           {
             "gw": 18,
-            "n_transfers": 1,
+            "n_transfers": 0,
             "hits": 0,
             "ft_before": 1,
-            "ft_after": 1,
+            "ft_after": 2,
             "captain_id": "2025-26:317"
           },
           {
             "gw": 19,
-            "n_transfers": 1,
+            "n_transfers": 2,
             "hits": 0,
-            "ft_before": 1,
+            "ft_before": 2,
             "ft_after": 1,
             "captain_id": "2025-26:488"
           }
@@ -1647,24 +1646,24 @@
           },
           {
             "gw": 9,
-            "n_transfers": 1,
+            "n_transfers": 0,
             "hits": 0,
             "ft_before": 1,
-            "ft_after": 1,
+            "ft_after": 2,
             "captain_id": "2025-26:624"
           },
           {
             "gw": 10,
-            "n_transfers": 2,
+            "n_transfers": 3,
             "hits": 4,
-            "ft_before": 1,
+            "ft_before": 2,
             "ft_after": 1,
             "captain_id": "2025-26:160"
           },
           {
             "gw": 11,
-            "n_transfers": 3,
-            "hits": 8,
+            "n_transfers": 2,
+            "hits": 4,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:160"
@@ -1695,8 +1694,8 @@
           },
           {
             "gw": 15,
-            "n_transfers": 2,
-            "hits": 4,
+            "n_transfers": 1,
+            "hits": 0,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:119"
@@ -1780,16 +1779,16 @@
           },
           {
             "gw": 13,
-            "n_transfers": 3,
-            "hits": 8,
+            "n_transfers": 4,
+            "hits": 12,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:120"
           },
           {
             "gw": 14,
-            "n_transfers": 4,
-            "hits": 12,
+            "n_transfers": 3,
+            "hits": 8,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:449"
@@ -1828,10 +1827,10 @@
           },
           {
             "gw": 19,
-            "n_transfers": 1,
+            "n_transfers": 0,
             "hits": 0,
             "ft_before": 1,
-            "ft_after": 1,
+            "ft_after": 2,
             "captain_id": "2025-26:668"
           }
         ]
@@ -1950,24 +1949,24 @@
           },
           {
             "gw": 9,
-            "n_transfers": 2,
-            "hits": 4,
+            "n_transfers": 1,
+            "hits": 0,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:82"
           },
           {
             "gw": 10,
-            "n_transfers": 3,
-            "hits": 8,
+            "n_transfers": 5,
+            "hits": 16,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:328"
           },
           {
             "gw": 11,
-            "n_transfers": 2,
-            "hits": 4,
+            "n_transfers": 1,
+            "hits": 0,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:373"
@@ -2014,16 +2013,16 @@
           },
           {
             "gw": 17,
-            "n_transfers": 4,
-            "hits": 12,
+            "n_transfers": 5,
+            "hits": 16,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:387"
           },
           {
             "gw": 18,
-            "n_transfers": 7,
-            "hits": 24,
+            "n_transfers": 6,
+            "hits": 20,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:666"
@@ -2059,16 +2058,16 @@
           },
           {
             "gw": 10,
-            "n_transfers": 3,
-            "hits": 8,
+            "n_transfers": 4,
+            "hits": 12,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:597"
           },
           {
             "gw": 11,
-            "n_transfers": 2,
-            "hits": 4,
+            "n_transfers": 1,
+            "hits": 0,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:419"
@@ -2301,24 +2300,24 @@
           },
           {
             "gw": 15,
-            "n_transfers": 1,
+            "n_transfers": 0,
             "hits": 0,
             "ft_before": 1,
-            "ft_after": 1,
+            "ft_after": 2,
             "captain_id": "2025-26:381"
           },
           {
             "gw": 16,
             "n_transfers": 3,
-            "hits": 8,
-            "ft_before": 1,
+            "hits": 4,
+            "ft_before": 2,
             "ft_after": 1,
             "captain_id": "2025-26:200"
           },
           {
             "gw": 17,
-            "n_transfers": 3,
-            "hits": 8,
+            "n_transfers": 2,
+            "hits": 4,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:342"
@@ -2580,16 +2579,16 @@
           },
           {
             "gw": 12,
-            "n_transfers": 4,
-            "hits": 12,
+            "n_transfers": 3,
+            "hits": 8,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:72"
           },
           {
             "gw": 13,
-            "n_transfers": 2,
-            "hits": 4,
+            "n_transfers": 3,
+            "hits": 8,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:449"
@@ -2657,17 +2656,17 @@
           },
           {
             "gw": 9,
-            "n_transfers": 1,
+            "n_transfers": 0,
             "hits": 0,
             "ft_before": 1,
-            "ft_after": 1,
+            "ft_after": 2,
             "captain_id": "2025-26:427"
           },
           {
             "gw": 10,
             "n_transfers": 4,
-            "hits": 12,
-            "ft_before": 1,
+            "hits": 8,
+            "ft_before": 2,
             "ft_after": 1,
             "captain_id": "2025-26:7"
           },
@@ -2830,17 +2829,17 @@
           },
           {
             "gw": 18,
-            "n_transfers": 1,
+            "n_transfers": 0,
             "hits": 0,
             "ft_before": 1,
-            "ft_after": 1,
+            "ft_after": 2,
             "captain_id": "2025-26:317"
           },
           {
             "gw": 19,
-            "n_transfers": 1,
+            "n_transfers": 2,
             "hits": 0,
-            "ft_before": 1,
+            "ft_before": 2,
             "ft_after": 1,
             "captain_id": "2025-26:488"
           }
@@ -2849,11 +2848,11 @@
     ]
   },
   "delta_candidate_minus_control": {
-    "transfers_per_strand": 0.0,
+    "transfers_per_strand": -0.08333333333333215,
     "paid_per_strand": 0.0,
     "hit_pts_per_strand": 0.0,
-    "path_actual_sum": 0.08333333333348492,
-    "path_resid_bias": 0.023135658403005355
+    "path_actual_sum": 0.5833333333332575,
+    "path_resid_bias": 0.0225220560922752
   },
-  "elapsed_s": 100.8400239944458
+  "elapsed_s": 114.11944460868835
 }

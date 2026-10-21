@@ -79,7 +79,7 @@ from src.models.opta_gf_ga_horizon import (
 from src.models.short_horizon_cascade import MARKET_BAND
 from src.models.minutes_overlay import apply_availability_overlay, overlay_summary
 from src.models.player_pool import POOL_JSON as DEFAULT_POOL_JSON, load_player_pool_ids
-from src.rules.fpl_2026 import SQUAD_SIZE
+from src.rules.fpl_2026 import HIT_COST, SQUAD_SIZE
 from src.teams import norm_team
 
 
@@ -102,24 +102,25 @@ OBJECTIVES = (OBJECTIVE_SQUAD_SUM, OBJECTIVE_XI_CAPTAIN, OBJECTIVE_XI_CAPTAIN_FT
 # Path FT hits: no artificial cap — bound = SQUAD_SIZE (same as L3/L4).
 # Objective still −HIT_COST per paid transfer. Do not restore max_hits=2.
 MAX_HITS_SNAPSHOT = int(SQUAD_SIZE)
-# Potential energy on ft_after: U(b)=ν·φ(b)·W. Default 0 = legacy objective.
-# Locked trial value lives in protocol.cascade_ft_pe_path (ν=HIT_COST/2).
-DEFAULT_FT_PE_NU = 0.0
+# FT bank PE: U(b) = ν · b, b capped at MAX_FT. Default ν = HIT_COST so each
+# stored FT is worth one hit (+4); five FTs = +20. Holding below the cap grows
+# next-deadline bank by +1 (+ν PE); at the cap the weekly grant adds +0 PE
+# unless a transfer is used first. Concave φ·W form is retired.
+DEFAULT_FT_PE_NU = float(HIT_COST)
 
 
 def ft_bank_phi(bank: int, *, max_ft: int | None = None) -> float:
-    """Concave bank shape ``φ(b)`` (unitless). Marginal value falls toward the cap."""
+    """Retired concave shape — kept as ``min(b, MAX_FT)`` for old call sites."""
     from src.rules.fpl_2026 import MAX_FT as _MAX_FT
 
     if int(bank) <= 0:
         return 0.0
     m = int(_MAX_FT if max_ft is None else max_ft)
-    b = min(int(bank), m)
-    return float(sum(1.0 - (i - 1) / (2.0 * float(m)) for i in range(1, b + 1)))
+    return float(min(int(bank), m))
 
 
 def ft_horizon_weight(n_remaining: int, *, gamma: float = DEFAULT_GAMMA) -> float:
-    """Discount mass ``W = Σ_{h=0..H-1} γ^h`` on the remaining horizon."""
+    """Legacy helper (PE no longer scales by W). Returns remaining-GW count at γ=1."""
     h = max(0, int(n_remaining))
     g = float(gamma)
     if h <= 0:
@@ -132,18 +133,23 @@ def ft_horizon_weight(n_remaining: int, *, gamma: float = DEFAULT_GAMMA) -> floa
 def ft_bank_potential(
     bank: int,
     *,
-    nu: float,
+    nu: float | None = None,
     max_ft: int | None = None,
     horizon_weight: float = 1.0,
 ) -> float:
-    """Potential energy of an FT bank on the path MILP ledger.
+    """Potential energy of an FT bank: ``U(b) = ν · b`` (b capped at MAX_FT).
 
-    ``U(b) = ν · φ(b) · W``. ``ν`` is pts/week of option value; ``W`` is the
-    remaining-horizon discount mass so ``U`` matches multi-week ``S``.
+    Default ``ν = HIT_COST`` (+4 per stored FT, +20 at cap). ``horizon_weight``
+    is ignored (API compat); PE is not multi-week-scaled.
     """
-    if float(nu) <= 0.0 or int(bank) <= 0 or float(horizon_weight) <= 0.0:
+    del horizon_weight
+    from src.rules.fpl_2026 import MAX_FT as _MAX_FT
+
+    n = float(DEFAULT_FT_PE_NU if nu is None else nu)
+    if n <= 0.0 or int(bank) <= 0:
         return 0.0
-    return float(nu) * ft_bank_phi(bank, max_ft=max_ft) * float(horizon_weight)
+    m = int(_MAX_FT if max_ft is None else max_ft)
+    return n * float(min(int(bank), m))
 # Scenario player scoring matches cascade_short generative (props off).
 DEFAULT_GENERATIVE_ATTACK = True
 # Align with cascade_short: freeze as-of mean minutes on gen paths (PI 2026-10-21).
@@ -790,7 +796,8 @@ def run_strand(
     ``xi_plus_captain_ft``: roll the full horizon, score each GW, then one
     joint transfer-plan MILP (starting 15 + scheduled transfers/holds/hits).
     ``snapshot_gws`` is ignored for that objective — every horizon GW is a
-    decision week. ``ft_pe_nu`` weights terminal FT-bank PE (0 = off).
+    decision week. ``ft_pe_nu`` weights terminal FT-bank PE ``U=ν·f_H``
+    (default ``HIT_COST``: +4 per stored FT; 0 = off).
     """
     if objective not in OBJECTIVES:
         raise ValueError(f"unknown objective: {objective!r}")

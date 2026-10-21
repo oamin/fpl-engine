@@ -71,9 +71,17 @@ for this bias first. Report: `reports/top_mid_fwd_ga_mismatch.md`.
 
 ## Noted — path FT potential energy (2026-10-21)
 
-`cascade_ft_pe_path` joint-plan retest under **γ=1**: PE still inert
-(cand≡ctrl; more aggressive transfer counts without discount). Do not inflate ν.
-Report: `reports/cascade_ft_pe_path.md`.
+Simple hit-value PE locked: `U(b)=ν·b`, ν=`HIT_COST` (+4 per stored FT,
++20 at five). Hold below cap → next bank +1 → PE +4; at cap grant +0 unless
+one FT used. Concave φ·W and ν=HIT_COST/2 retired. Joint-plan N=12 under γ=1:
+Δtransfers −0.08, Δpaid 0, terminal ft 1.00→1.08, actual +0.6
+(`keep_watching_pe_small`). `DEFAULT_FT_PE_NU=HIT_COST` on for
+`xi_plus_captain_ft`. Report: `reports/cascade_ft_pe_path.md`.
+
+## Rejected — concave φ·W FT PE (2026-10-21)
+
+`U=ν·φ(b)·W` with ν=HIT_COST/2 was inert under joint-plan γ=1 and mis-scaled
+the bank vs a hit. Replaced by linear hit-value PE.
 
 ## Noted — cascade γ=0.9 removed (2026-10-21)
 

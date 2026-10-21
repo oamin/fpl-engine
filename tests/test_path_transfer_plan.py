@@ -154,24 +154,69 @@ class JointPlanTest(unittest.TestCase):
         )
 
     def test_must_spend_ft_before_hits(self) -> None:
-        """Banked FT cannot be skipped to take optional hits."""
+        """Banked FT cannot be skipped to take hits (hard constraint, not soft)."""
         pool = _candidates()
-        gws = [8, 9, 10]
+        gws = [8, 9, 10, 11]
         n = len(pool)
-        S_pool = {g: np.full(n, 2.0) for g in gws}
-        # Small late bump so a 1-transfer is worth a hit only if FT is ignored.
-        mid_i = int(pool.index[pool["position"] == "MID"][-1])
-        S_pool[10][mid_i] = 6.0
+        S_pool = {g: np.full(n, 1.0) for g in gws}
+        # Rotating exclusive stars force multi-transfers after the bank grows.
+        fwd = pool.index[pool["position"] == "FWD"].tolist()
+        mid = pool.index[pool["position"] == "MID"].tolist()
+        stars = [int(fwd[-1]), int(fwd[-2]), int(mid[-1]), int(mid[-2])]
+        for i in stars:
+            pool.loc[i, "value"] = 180
+        for t, g in enumerate(gws):
+            S_pool[g][stars[t]] = 40.0
+        cands = select_plan_candidates(
+            pool, S_pool, gws=gws, buy_ids=None, top_n=48
+        )
+        S = score_matrix_for_candidates(cands, pool, S_pool, gws)
+        plan = pick_path_transfer_plan(
+            cands, S, gws, gamma=1.0, ft_pe_nu=0.0, time_limit=60.0
+        )
+        saw_hit = False
+        for w in plan["weeks"][1:]:
+            nt = int(w["n_transfers"])
+            fb = int(w["ft_before"])
+            paid = max(0, nt - fb)
+            self.assertEqual(int(w["hits"]), paid * HIT_COST)
+            # Bank advance must match must-spend: u = min(k, f).
+            u = min(nt, fb)
+            self.assertEqual(
+                int(w["ft_after"]),
+                min(MAX_FT, fb - u + 1),
+            )
+            if paid > 0:
+                saw_hit = True
+        self.assertTrue(saw_hit, "fixture should force at least one paid transfer")
+
+    def test_pe_banks_ft_when_scores_flat(self) -> None:
+        """With U=4·b and flat scores, hold to grow bank toward the cap."""
+        from src.rules.fpl_2026 import HIT_COST as _HC
+
+        pool = _candidates()
+        gws = [8, 9, 10, 11, 12, 13]
+        n = len(pool)
+        S_pool = {g: np.full(n, 1.0) for g in gws}
         cands = select_plan_candidates(
             pool, S_pool, gws=gws, buy_ids=None, top_n=40
         )
         S = score_matrix_for_candidates(cands, pool, S_pool, gws)
         plan = pick_path_transfer_plan(
-            cands, S, gws, gamma=1.0, ft_pe_nu=0.0, time_limit=45.0
+            cands,
+            S,
+            gws,
+            gamma=1.0,
+            ft_pe_nu=float(_HC),
+            time_limit=60.0,
         )
+        # Open leaves ft=1; after five holds bank reaches MAX_FT.
+        self.assertEqual(plan["weeks"][0]["ft_after"], 1)
+        self.assertEqual(plan["weeks"][-1]["ft_after"], MAX_FT)
+        self.assertEqual(plan["terminal_pe"], float(MAX_FT) * _HC)
         for w in plan["weeks"][1:]:
-            paid = max(0, int(w["n_transfers"]) - int(w["ft_before"]))
-            self.assertEqual(int(w["hits"]), paid * HIT_COST)
+            self.assertEqual(w["n_transfers"], 0)
+            self.assertEqual(w["hits"], 0)
 
     def test_hit_cost_in_objective(self) -> None:
         pool = _candidates()

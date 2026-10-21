@@ -320,9 +320,17 @@ def run_path_strands(
     n_strands: int,
     seed: int,
     selectable_ids: set[str] | None = None,
-    ft_pe_nu: float = 0.0,
+    ft_pe_nu: float | None = None,
 ) -> dict[str, Any]:
-    """Path strands. ``pool`` is the share/scoring roster; ``selectable_ids`` is the buy filter."""
+    """Path strands. ``pool`` is the share/scoring roster; ``selectable_ids`` is the buy filter.
+
+    ``ft_pe_nu`` defaults to ``DEFAULT_FT_PE_NU`` (=HIT_COST): terminal PE
+    ``U=ν·f`` on the joint plan.
+    """
+    from src.models.multistage_mc_milp import DEFAULT_FT_PE_NU as _DEFAULT_FT_PE_NU
+
+    if ft_pe_nu is None:
+        ft_pe_nu = float(_DEFAULT_FT_PE_NU)
     paths0 = init_paths_from_opta(ranks, profile=profile)
     rng = random.Random(int(seed))
     strands: list[dict[str, Any]] = []

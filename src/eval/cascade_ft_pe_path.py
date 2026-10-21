@@ -1,9 +1,8 @@
 """Path FT potential-energy trial vs legacy ``S − hit_pts``.
 
-Protocol: ``cascade_ft_pe_path`` (diagnostic). Same setup as
-``cascade_mean_path_gw_resid`` path arm under the **joint** multi-GW
-transfer plan; control ``ft_pe_nu=0``, candidate ``ft_pe_nu=2.0``
-(HIT_COST/2) with terminal ``U(f_H)=ν·φ(f_H)·W``, ``W=Σγ^h`` on the horizon.
+Protocol: ``cascade_ft_pe_path`` (diagnostic). Joint multi-GW transfer plan;
+control ``ft_pe_nu=0``, candidate ``ft_pe_nu=HIT_COST`` with terminal
+``U(f_H)=ν·f_H`` (each stored FT = +4, five = +20).
 
   PYTHONPATH=. python3 -m src.eval.cascade_ft_pe_path
   PYTHONPATH=. python3 -m src.eval.cascade_ft_pe_path --season 2025-26 --n 12
@@ -58,8 +57,8 @@ from src.strategy.layer4_bookie_path import _fd_index, _load_merged_enriched
 ROOT = Path(__file__).resolve().parents[2]
 REPORT_MD = ROOT / "reports" / "cascade_ft_pe_path.md"
 STATE_JSON = ROOT / "data/processed/cascade_ft_pe_path" / "state.json"
-# Locked a priori in protocol (HIT_COST/2).
-FT_PE_NU = float(HIT_COST) / 2.0
+# Simple PE: each stored FT worth one hit.
+FT_PE_NU = float(HIT_COST)
 
 
 def _now() -> float:
@@ -222,17 +221,9 @@ def main(argv: list[str] | None = None) -> None:
         f"control nu=0 vs candidate nu={nu}",
         flush=True,
     )
-    from src.models.multistage_mc_milp import DEFAULT_GAMMA, ft_horizon_weight
-
-    h_ex = max(1, int(args.horizon_end) - (decision_gw + START_OFFSET) + 1)
-    w_ex = ft_horizon_weight(h_ex, gamma=DEFAULT_GAMMA)
     print(
-        f"[ft_pe] joint-plan terminal U(b)=ν·φ·W at W≈{w_ex:.2f} "
-        f"(H={h_ex}, γ={DEFAULT_GAMMA}): "
-        + ", ".join(
-            f"U({b})={ft_bank_potential(b, nu=nu, horizon_weight=w_ex):.1f}"
-            for b in range(0, 6)
-        ),
+        f"[ft_pe] joint-plan terminal U(b)=ν·b (ν={nu:g}=HIT_COST): "
+        + ", ".join(f"U({b})={ft_bank_potential(b, nu=nu):.0f}" for b in range(0, 6)),
         flush=True,
     )
     t_all = _now()
@@ -402,11 +393,8 @@ def main(argv: list[str] | None = None) -> None:
         "seed": int(args.seed),
         "snapshot_gws": snapshot_gws,
         "candidate_nu": nu,
-        "pe_form": "terminal U(f_H)=ν·φ(f_H)·W with W=Σγ^h over horizon",
-        "pe_horizon_weight": float(w_ex),
-        "phi": {
-            str(b): ft_bank_potential(b, nu=1.0) for b in range(0, 6)
-        },
+        "pe_form": "terminal U(f_H)=ν·f_H with ν=HIT_COST (+4 per stored FT, +20 at cap)",
+        "U": {str(b): ft_bank_potential(b, nu=nu) for b in range(0, 6)},
         "arms": {
             k: {kk: vv for kk, vv in v.items() if kk != "strands"}
             for k, v in arms.items()
@@ -469,19 +457,15 @@ def main(argv: list[str] | None = None) -> None:
         "",
         "| arm | objective |",
         "| --- | --- |",
-        "| control | `V = Σ γ^t (XI+cap) − hit_pts` (`ft_pe_nu=0`) |",
+        "| control | `V = Σ (XI+cap) − hit_pts` (`ft_pe_nu=0`, γ=1) |",
         (
-            f"| candidate | `V + U(f_H)`, "
-            f"`U(b)=ν·φ(b)·W`, **ν={nu:g}** (=HIT_COST/2), "
-            f"W=Σγ^h on the full horizon (terminal bank only) |"
+            f"| candidate | `V + U(f_H)`, `U(b)=ν·b`, **ν={nu:g}** (=HIT_COST): "
+            "each stored FT = +4, five = +20 (terminal bank) |"
         ),
         "",
-        f"φ(b) = Σᵢ₌₁..b (1 − (i−1)/(2·MAX_FT)): "
-        + ", ".join(f"φ({b})={ft_bank_potential(b, nu=1.0):.2f}" for b in range(1, 6)),
-        "",
-        f"W≈{w_ex:.2f} for H={h_ex}, γ={DEFAULT_GAMMA}. "
-        "Under the joint plan PE is terminal leftover-bank value; mid-horizon "
-        "banking is already priced via future XI scores.",
+        "Bank dynamics: hold below cap → next deadline bank +1 → PE +4; "
+        "at five FTs the weekly grant adds +0 PE unless a transfer is used first. "
+        "Retired: concave φ and multi-week W scaling.",
         "",
         f"Wall: {state['elapsed_s']:.1f}s",
         "",
