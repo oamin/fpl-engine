@@ -1402,7 +1402,7 @@
   },
   "cascade_short_mean_tt1_vs_gen": {
     "locked": "2026-10-21",
-    "status": "running",
+    "status": "done_clearly_loses",
     "queued": "2026-10-21",
     "role": "product-horizon fair screen: mean boards on t:t+1 vs short generative",
     "module": "src/eval/cascade_short_mean_tt1.py",
@@ -1420,7 +1420,7 @@
   },
   "cascade_pathv_gen_vs_mean_milp": {
     "locked": "2026-10-21",
-    "status": "queued_after_tt1",
+    "status": "running",
     "role": "path-V diagnostic: generative FT+cap strands vs mean-layer FT+cap strands",
     "module": "src/eval/cascade_pathv_gen_vs_mean.py",
     "report": "reports/cascade_pathv_gen_vs_mean.md",

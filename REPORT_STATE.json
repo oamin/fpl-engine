@@ -1,12 +1,12 @@
 {
-  "task": "b1_inspect_and_queue_mean_tt1",
+  "task": "cascade_short_mean_tt1_vs_gen",
   "status": "done",
-  "example": {
-    "season": "2022-23",
-    "gw": 8,
-    "match": "Wolves vs Man City",
-    "report": "reports/cascade_viability_b1_example.md"
-  },
-  "queued": "cascade_short_mean_tt1_vs_gen",
-  "note": "B1 same-GW aggregator clarified; next arm = mean t:t+1 vs short gen (protocol stub, unlocked)."
+  "verdict": "clearly_loses",
+  "delta_mean": -0.0539,
+  "interval": [-0.0597, -0.0484],
+  "n_mc": 20,
+  "n_decision_pairs": 80,
+  "elapsed_s": 1858.0,
+  "report": "reports/cascade_short_mean_tt1_vs_gen.md",
+  "next": "cascade_pathv_gen_vs_mean_milp (running)"
 }
