@@ -102,20 +102,43 @@ MAX_HITS_SNAPSHOT = 2
 DEFAULT_FT_PE_NU = 0.0
 
 
-def ft_bank_potential(bank: int, *, nu: float, max_ft: int | None = None) -> float:
-    """Concave potential energy of an FT bank.
-
-    ``φ(b) = Σ_{i=1..b} (1 − (i−1)/(2·MAX_FT))`` so marginal value falls toward
-    the cap (unused grant waste). ``U = ν · φ``. ``ν≤0`` or ``b≤0`` → 0.
-    """
+def ft_bank_phi(bank: int, *, max_ft: int | None = None) -> float:
+    """Concave bank shape ``φ(b)`` (unitless). Marginal value falls toward the cap."""
     from src.rules.fpl_2026 import MAX_FT as _MAX_FT
 
-    if float(nu) <= 0.0 or int(bank) <= 0:
+    if int(bank) <= 0:
         return 0.0
     m = int(_MAX_FT if max_ft is None else max_ft)
     b = min(int(bank), m)
-    phi = sum(1.0 - (i - 1) / (2.0 * float(m)) for i in range(1, b + 1))
-    return float(nu) * float(phi)
+    return float(sum(1.0 - (i - 1) / (2.0 * float(m)) for i in range(1, b + 1)))
+
+
+def ft_horizon_weight(n_remaining: int, *, gamma: float = DEFAULT_GAMMA) -> float:
+    """Discount mass ``W = Σ_{h=0..H-1} γ^h`` on the remaining horizon."""
+    h = max(0, int(n_remaining))
+    g = float(gamma)
+    if h <= 0:
+        return 0.0
+    if abs(g - 1.0) < 1e-12:
+        return float(h)
+    return float((1.0 - g**h) / (1.0 - g))
+
+
+def ft_bank_potential(
+    bank: int,
+    *,
+    nu: float,
+    max_ft: int | None = None,
+    horizon_weight: float = 1.0,
+) -> float:
+    """Potential energy of an FT bank on the path MILP ledger.
+
+    ``U(b) = ν · φ(b) · W``. ``ν`` is pts/week of option value; ``W`` is the
+    remaining-horizon discount mass so ``U`` matches multi-week ``S``.
+    """
+    if float(nu) <= 0.0 or int(bank) <= 0 or float(horizon_weight) <= 0.0:
+        return 0.0
+    return float(nu) * ft_bank_phi(bank, max_ft=max_ft) * float(horizon_weight)
 # Scenario player scoring matches cascade_short generative (props off).
 DEFAULT_GENERATIVE_ATTACK = True
 # Align with cascade_short: freeze as-of mean minutes on gen paths (PI 2026-10-21).
@@ -771,6 +794,7 @@ def run_strand(
                     obj_value = float(picked["objective"])
                 else:
                     scored_ft = _merge_owned_into_scored(scored, owned_frame)
+                    pe_w = ft_horizon_weight(len(remaining), gamma=float(gamma))
                     picked = _pick_squad_xi_captain_ft(
                         scored_ft,
                         "mc_score",
@@ -778,6 +802,7 @@ def run_strand(
                         ft=ft_before,
                         time_limit=milp_time_limit,
                         ft_pe_nu=float(ft_pe_nu),
+                        ft_pe_horizon_weight=float(pe_w),
                     )
                     n_transfers = int(picked["n_transfers"])
                     hits = int(picked["hits"])
@@ -1047,6 +1072,7 @@ def _pick_squad_xi_captain_ft(
     max_hits: int = MAX_HITS_SNAPSHOT,
     time_limit: float = 8.0,
     ft_pe_nu: float = DEFAULT_FT_PE_NU,
+    ft_pe_horizon_weight: float = 1.0,
 ) -> dict[str, Any]:
     """Choose transfers maximising S − hit_pts + U(ft_after).
 
@@ -1062,6 +1088,7 @@ def _pick_squad_xi_captain_ft(
     k_max = int(ft) + int(max_hits)
     per_k = max(2.0, float(time_limit) / float(k_max + 1))
     nu = float(ft_pe_nu)
+    w = float(ft_pe_horizon_weight)
     for k in range(0, k_max + 1):
         try:
             picked = _pick_squad_xi_captain(
@@ -1075,7 +1102,7 @@ def _pick_squad_xi_captain_ft(
             continue
         hits = int(hit_cost(int(ft), k))
         ft_after = int(advance_ft(int(ft), int(k)))
-        pe = ft_bank_potential(ft_after, nu=nu)
+        pe = ft_bank_potential(ft_after, nu=nu, horizon_weight=w)
         value = float(picked["objective"]) - float(hits) + float(pe)
         if value > best_v:
             best_v = value
@@ -1087,6 +1114,7 @@ def _pick_squad_xi_captain_ft(
                 "ft_after": ft_after,
                 "ft_pe": float(pe),
                 "ft_pe_nu": nu,
+                "ft_pe_horizon_weight": w,
                 "net_objective": value,
             }
     if best is None:

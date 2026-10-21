@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from src.models.multistage_mc_milp import ft_bank_potential
+from src.models.multistage_mc_milp import ft_bank_potential, ft_horizon_weight
 from src.rules.fpl_2026 import MAX_FT
 
 
@@ -22,5 +22,15 @@ def test_pe_increases_concave():
     assert all(deltas[i] >= deltas[i + 1] - 1e-12 for i in range(len(deltas) - 1))
 
 
-def test_pe_scales_with_nu():
+def test_pe_scales_with_nu_and_horizon():
     assert abs(ft_bank_potential(2, nu=4.0) - 2 * ft_bank_potential(2, nu=2.0)) < 1e-9
+    assert abs(
+        ft_bank_potential(2, nu=2.0, horizon_weight=3.0)
+        - 3.0 * ft_bank_potential(2, nu=2.0, horizon_weight=1.0)
+    ) < 1e-9
+
+
+def test_horizon_weight_gamma():
+    assert abs(ft_horizon_weight(1, gamma=0.9) - 1.0) < 1e-12
+    assert abs(ft_horizon_weight(2, gamma=0.9) - 1.9) < 1e-12
+    assert abs(ft_horizon_weight(3, gamma=1.0) - 3.0) < 1e-12

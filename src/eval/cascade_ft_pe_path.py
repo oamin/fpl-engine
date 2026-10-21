@@ -221,9 +221,15 @@ def main(argv: list[str] | None = None) -> None:
         f"control nu=0 vs candidate nu={nu}",
         flush=True,
     )
+    from src.models.multistage_mc_milp import DEFAULT_GAMMA, ft_horizon_weight
+
+    w_ex = ft_horizon_weight(12, gamma=DEFAULT_GAMMA)
     print(
-        f"[ft_pe] U(b) examples: "
-        + ", ".join(f"U({b})={ft_bank_potential(b, nu=nu):.2f}" for b in range(0, 6)),
+        f"[ft_pe] U(b)=ν·φ·W examples at W≈{w_ex:.2f} (H=12, γ={DEFAULT_GAMMA}): "
+        + ", ".join(
+            f"U({b})={ft_bank_potential(b, nu=nu, horizon_weight=w_ex):.1f}"
+            for b in range(0, 6)
+        ),
         flush=True,
     )
     t_all = _now()
@@ -444,11 +450,15 @@ def main(argv: list[str] | None = None) -> None:
         "| control | `V = S − hit_pts` (`ft_pe_nu=0`) |",
         (
             f"| candidate | `V = S − hit_pts + U(ft_after)`, "
-            f"`U(b)=ν·φ(b)`, **ν={nu:g}** (=HIT_COST/2) |"
+            f"`U(b)=ν·φ(b)·W`, **ν={nu:g}** (=HIT_COST/2), "
+            f"W=Σγ^h on remaining horizon |"
         ),
         "",
         f"φ(b) = Σᵢ₌₁..b (1 − (i−1)/(2·MAX_FT)): "
         + ", ".join(f"φ({b})={ft_bank_potential(b, nu=1.0):.2f}" for b in range(1, 6)),
+        "",
+        "First smoke without W left transfers unchanged (S is multi-week). "
+        "W is the unit alignment, not a fit.",
         "",
         f"Wall: {state['elapsed_s']:.1f}s",
         "",
