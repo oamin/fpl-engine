@@ -1457,5 +1457,27 @@
     "metric": "diagnostic: squads solved, mean hits/transfers, captain concentration, top-freq overlap — not a gated path-V promote",
     "note": "Strategy-layer smoke matching PI aim; full four-season realised path-V gate deferred.",
     "any_later_change": "dated protocol update required"
+  },
+  "cascade_pathv_c2_ft_vs_rebuild": {
+    "locked": "2026-10-21",
+    "status": "done_park_clearly_loses",
+    "result": "2026-10-21: Δ −9.15/GW [−11.78, −6.38]; hit pts ~100–140/season; park FT path vs weekly rebuild",
+    "role": "cascade viability C2: gated path-V — FT path vs weekly free rebuild",
+    "ladder": "cascade_short_long_viability_audits C2",
+    "module": "src/eval/cascade_pathv_c2_ft_vs_rebuild.py",
+    "report": "reports/cascade_pathv_c2_ft_vs_rebuild.md",
+    "intervals": "data/processed/cascade_pathv_c2_intervals.json",
+    "treatment": "ft_path: free rebuild open (WC), then solve_week_transfers on μ_post with FT bank + hits (V = XI + captain − 4·hits)",
+    "baseline": "weekly_rebuild: solve_week_sigma free rebuild every GW on same μ_post (no continuity, 0 hits)",
+    "boards": "locked score_xp_v2 μ_post (mode=none) from score_xp_v2_closed — transfer-rule claim; generative parked after B1/B2 clearly_lose",
+    "metric": "paired-by-GW realised Δpoints (ft_path − weekly_rebuild); cluster_interval CLOSED_SEASONS; write_gated_report + carried score_xp_minus_score_exp_points",
+    "window": "GW8–38 on 2022-23…2025-26",
+    "chips": "off",
+    "viable_if": "path-V interval does not clearly lose (hi ≥ 0) and mean hits/GW not pathological",
+    "not": "C1 captain vs squad_sum; C3 short→long vs L4; generative boards; 2026-27 holdout",
+    "seed": 0,
+    "n_boot": 1000,
+    "time_limit_s": 20.0,
+    "any_later_change": "dated protocol update required"
   }
 }

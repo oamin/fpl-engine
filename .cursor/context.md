@@ -1,6 +1,6 @@
 # Architectural state
 
-Updated: 2026-10-20. **Numagent 2.0** is the product on main (`protocol.numagent_2_0`) — **supersedes Numagent 1.0**. Parked hypotheses: `.cursor/ideas.md`. Stage archaeology: root `CONTEXT.md` and `reports/SUPERSEDED.md`. Canonical index: `reports/LOCKED.md`.
+Updated: 2026-10-21. **Numagent 2.0** is the product on main (`protocol.numagent_2_0`) — **supersedes Numagent 1.0**. Parked hypotheses: `.cursor/ideas.md`. Stage archaeology: root `CONTEXT.md` and `reports/SUPERSEDED.md`. Canonical index: `reports/LOCKED.md`.
 
 ## Repo freeze sequence (2026-10-20)
 
@@ -16,6 +16,7 @@ Updated: 2026-10-20. **Numagent 2.0** is the product on main (`protocol.numagent
 | **8. Mean t:t+1 vs short gen** | **done** | N_MC=20 product horizon: still **clearly_loses** (Δ≈−0.054). `reports/cascade_short_mean_tt1_vs_gen.md`. |
 | **9. Path-V gen vs mean MILP** | **done (diagnostic)** | FT+cap N=20: both solve; gen hits≈7.2 vs mean≈1.6; top-15 Jaccard≈0.36. Not a path-V promote. `reports/cascade_pathv_gen_vs_mean.md`. |
 | **10. Minutes on gen paths** | **locked** | `DEFAULT_LINEUP_COV=False` — freeze as-of mean / live xmi. FFScout = pool WHO only. `reports/cascade_live_minutes_layers.md`. |
+| **11. Path-V C2 FT vs rebuild** | **park** | Gated: ft_path − weekly_rebuild **−9.15/GW** [−11.78, −6.38]; hit pts ~100–140/season. `reports/cascade_pathv_c2_ft_vs_rebuild.md`. C3 deferred. |
 
 ## Plan
 

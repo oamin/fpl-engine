@@ -1,0 +1,47 @@
+{
+  "seasons": [
+    "2022-23",
+    "2023-24",
+    "2024-25",
+    "2025-26"
+  ],
+  "min_gws": 20,
+  "comparisons": {
+    "score_xp_minus_score_exp_points": {
+      "mean": 0.015305621921945354,
+      "lo": 0.01295155277980016,
+      "hi": 0.01747868684462922,
+      "n_gws": {
+        "2022-23": 33,
+        "2023-24": 34,
+        "2024-25": 34,
+        "2025-26": 34
+      },
+      "incomplete_seasons": {},
+      "n_rows": 102315
+    },
+    "ft_path_minus_weekly_rebuild": {
+      "mean": -9.14516129032258,
+      "lo": -11.782661290322581,
+      "hi": -6.37883064516129,
+      "n_gws": {
+        "2022-23": 31,
+        "2023-24": 31,
+        "2024-25": 31,
+        "2025-26": 31
+      },
+      "incomplete_seasons": {},
+      "covers_zero": false,
+      "clearly_loses": true,
+      "clearly_wins": false,
+      "by_season_mean": {
+        "2022-23": -9.129032258064516,
+        "2023-24": -8.258064516129032,
+        "2024-25": -9.32258064516129,
+        "2025-26": -9.870967741935484
+      },
+      "unit": "realised_pts_net_per_gw"
+    }
+  },
+  "screen": "cascade_pathv_c2_ft_vs_rebuild"
+}
