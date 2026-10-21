@@ -42,12 +42,11 @@ Gen hits≈7.2 / xfers≈3.8; mean-layer hits≈1.6 / xfers≈2.4; top-15 Jaccar
 Strategy policies diverge — generative strands are not a no-op vs μ boards.
 Not a gated path-V promote. Report: `reports/cascade_pathv_gen_vs_mean.md`.
 
-## Active — starter_sub lineup pairs (2026-10-21)
+## Active — joint historical lineup pairs (2026-10-21)
 
-Competitor-pair roll now allows **starter_sub** (both play, minutes sum to 90)
-with `P_SUB_ON=0.45`, else exclusive 90/0. Attack dice gate = minutes>0.
-Re-screen gen path-V / tt1 only if claiming the new stack; as-of pair sub
-rates parked (`protocol.cascade_short_generative`).
+`P_SUB_ON` coin-flip **retired**. Competitor pairs resample as-of joint
+`(m_i, m_j)` from GWs where either played (natural 90/0 and 60/30). Thin
+joints keep mean minutes. Attack dice gate = minutes>0.
 
 ## Active / next (sparse)
 

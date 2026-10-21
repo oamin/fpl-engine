@@ -160,6 +160,8 @@ def competitor_pairs_for_club(
 ) -> list:
     if hist is None or hist.empty or club.empty:
         return []
+    from src.markets.lineup_roll import minutes_panel
+
     idc = _id_col(club)
     name_h = "player_name" if "player_name" in hist.columns else "name"
     id_h = "element" if "element" in hist.columns else ("player_id" if "player_id" in hist.columns else idc)
@@ -173,8 +175,9 @@ def competitor_pairs_for_club(
     if gw_col != "gw":
         h = h.rename(columns={gw_col: "gw"})
     table = minutes_corr_pairs(h, id_col=id_h, name_col=name_h)
+    panel = minutes_panel(h, id_col=id_h, gw_col="gw")
     ids = club[idc].astype(int).tolist()
-    return select_disjoint_pairs(ids, table)
+    return select_disjoint_pairs(ids, table, panel=panel)
 
 
 def xp_soft_priors_expanding(
