@@ -1,14 +1,15 @@
 # Example joint path strand (2025-26)
 
-> **Superseded numbers:** generated under climb-contaminated γ=0.9 before
-> `cascade_gamma` locked γ=1. Ledger shape is still illustrative; PE scale
-> (W, U) is not current. Re-roll under γ=1 for authoritative figures.
+> **Superseded numbers:** generated under climb-contaminated γ=0.9 and
+> concave φ·W PE. Ledger shape is still illustrative. Current PE is
+> `U(b)=ν·b` with ν=`HIT_COST` (+4/FT, +20 at cap); see
+> `reports/cascade_ft_pe_path.md`.
 
-Protocol path arm · season **2025-26** · decision GW6 → GW8–19 · strand **0** (seed chain from `7`, strand_seed=1390851128) · `ft_pe_nu=2`.
+Protocol path arm · season **2025-26** · decision GW6 → GW8–19 · strand **0** (seed chain from `7`, strand_seed=1390851128) · legacy `ft_pe_nu=2`.
 
 One coherent MC roll; joint MILP plans the opening 15 and every later transfer/hold. FT bank is next-deadline bank (`advance_ft`).
 
-PE: terminal only — `U(f_H)=ν·φ(f_H)·W` with ν=2, W=7.18 (γ=0.9-era). Column `ν·φ` is the bank shape × ν at that week’s `ft_after` (illustrative); **only GW19 adds U=14.4 to the objective**.
+PE (legacy on this page): terminal `U(f_H)=ν·φ(f_H)·W` with ν=2, W=7.18 — **retired**. Current engine: terminal `U(f_H)=ν·f_H`, ν=4.
 
 MILP: candidates=48, Optimization terminated successfully. (HiGHS Status 7: Optimal).
 
