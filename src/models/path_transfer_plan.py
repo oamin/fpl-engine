@@ -20,7 +20,9 @@ from src.models.multistage_mc_milp import (
     DEFAULT_FT_PE_NU,
     DEFAULT_GAMMA,
     MAX_HITS_SNAPSHOT,
+    ft_bank_phi,
     ft_bank_potential,
+    ft_horizon_weight,
 )
 from src.rules.fpl_2026 import (
     BUDGET_TENTHS as BUDGET,
@@ -40,8 +42,9 @@ from src.rules.fpl_2026 import (
 # Tractability: keep top-N by mean horizon score (per-position floors below).
 DEFAULT_TOP_N = 48
 POS_FLOOR = {"GKP": 3, "DEF": 8, "MID": 8, "FWD": 5}
-# Tiny per-buy friction so free FTs are not spent on zero-gain reshuffles.
-TRANSFER_EPS = 1e-3
+# Per-buy friction so free FTs are not spent on zero-gain reshuffles.
+# Large enough to beat HiGHS default MIP gap on flat boards.
+TRANSFER_EPS = 1e-2
 
 
 def select_plan_candidates(
@@ -130,6 +133,9 @@ def pick_path_transfer_plan(
     """Joint path MILP: free open + FT/hit schedule over all ``gws``.
 
     ``scores`` shape ``(H, n)`` aligned with ``gws`` and ``candidates``.
+
+    When ``ft_pe_nu > 0``, adds terminal PE ``U(f_H)=ν·φ(f_H)·W`` with
+    ``W=Σγ^h`` over the horizon (exact φ via one-hot on the terminal bank).
     """
     H = int(len(gws))
     n = int(len(candidates))
@@ -148,8 +154,13 @@ def pick_path_transfer_plan(
         else ids.copy()
     )
 
+    nu = float(ft_pe_nu)
+    use_pe = nu > 0.0
+    pe_w = ft_horizon_weight(H, gamma=float(gamma)) if use_pe else 0.0
+
     # Layout:
-    # x[H*n] | y[H*n] | c[H*n] | buy[(H-1)*n] | u[H-1] | e[H-1] | f_after[H] | over[H-1]
+    # x[H*n] | y[H*n] | c[H*n] | buy[(H-1)*n] | u[H-1] | e[H-1] | f[H]
+    # | over[H-1] | z_pe[MAX_FT+1] (optional one-hot on terminal f)
     nx = H * n
     ny = H * n
     nc = H * n
@@ -158,7 +169,8 @@ def pick_path_transfer_plan(
     n_e = max(0, H - 1)
     n_f = H
     n_over = max(0, H - 1)
-    dim = nx + ny + nc + n_buy + n_u + n_e + n_f + n_over
+    n_z = (int(MAX_FT) + 1) if use_pe else 0
+    dim = nx + ny + nc + n_buy + n_u + n_e + n_f + n_over + n_z
 
     def ix_x(t: int, i: int) -> int:
         return t * n + i
@@ -185,6 +197,9 @@ def pick_path_transfer_plan(
     def ix_over(t: int) -> int:
         return nx + ny + nc + n_buy + n_u + n_e + n_f + (t - 1)
 
+    def ix_z(b: int) -> int:
+        return nx + ny + nc + n_buy + n_u + n_e + n_f + n_over + b
+
     g = float(gamma)
     c_obj = np.zeros(dim)
     for t in range(H):
@@ -196,10 +211,11 @@ def pick_path_transfer_plan(
         c_obj[ix_e(t)] = float(HIT_COST)
         for i in range(n):
             c_obj[ix_buy(t, i)] = float(TRANSFER_EPS)
-    # Terminal PE on final FT bank (optional).
-    # Approximate φ as linear in f_after; exact concave φ needs SOS2.
-    if float(ft_pe_nu) > 0.0:
-        c_obj[ix_f(H - 1)] = -float(ft_pe_nu)
+    # Terminal PE: max ν·φ(f_H)·W  →  minimise −ν·W·φ(b)·z_b
+    if use_pe:
+        for b in range(n_z):
+            phi_b = ft_bank_phi(b)
+            c_obj[ix_z(b)] = -nu * float(pe_w) * float(phi_b)
 
     rows: list[np.ndarray] = []
     lo: list[float] = []
@@ -321,6 +337,14 @@ def pick_path_transfer_plan(
         for i in range(n):
             r[ix_buy(t, i)] = -1.0
         add(r, 0.0, 0.0)
+        # Must spend bank before hits: e <= max(0, k - f)
+        # With e >= k - f (from u ≤ f) this forces u = min(k, f).
+        r = np.zeros(dim)
+        r[ix_e(t)] = 1.0
+        r[ix_f(t - 1)] = 1.0
+        for i in range(n):
+            r[ix_buy(t, i)] = -1.0
+        add(r, -np.inf, 0.0)
         # k <= k_max
         r = np.zeros(dim)
         for i in range(n):
@@ -348,6 +372,18 @@ def pick_path_transfer_plan(
         r[ix_f(t - 1)] = -1.0
         add(r, -np.inf, 0.0)
 
+    if use_pe:
+        # One-hot: Σ z_b = 1, Σ b·z_b = f[H-1]
+        r = np.zeros(dim)
+        for b in range(n_z):
+            r[ix_z(b)] = 1.0
+        add(r, 1.0, 1.0)
+        r = np.zeros(dim)
+        r[ix_f(H - 1)] = 1.0
+        for b in range(n_z):
+            r[ix_z(b)] = -float(b)
+        add(r, 0.0, 0.0)
+
     # Bounds / integrality
     lb = np.zeros(dim)
     ub = np.ones(dim)
@@ -364,7 +400,10 @@ def pick_path_transfer_plan(
         constraints=LinearConstraint(np.vstack(rows), np.asarray(lo), np.asarray(hi)),
         bounds=Bounds(lb, ub),
         integrality=integrality,
-        options={"time_limit": float(time_limit)},
+        options={
+            "time_limit": float(time_limit),
+            "mip_rel_gap": 1e-8,
+        },
     )
     if not res.success or res.x is None:
         raise RuntimeError(f"path transfer plan MILP failed: {res.message}")
@@ -407,17 +446,19 @@ def pick_path_transfer_plan(
         )
 
     obj = float(-res.fun) if res.fun is not None else float("nan")
+    terminal_ft = int(weeks[-1]["ft_after"]) if weeks else 0
     return {
         "weeks": weeks,
         "objective": obj,
         "n_candidates": n,
         "horizon": H,
         "status": str(res.message),
-        "ft_pe_nu": float(ft_pe_nu),
-        "terminal_ft": int(weeks[-1]["ft_after"]) if weeks else 0,
+        "ft_pe_nu": nu,
+        "ft_pe_horizon_weight": float(pe_w),
+        "terminal_ft": terminal_ft,
         "terminal_pe": float(
-            ft_bank_potential(int(weeks[-1]["ft_after"]), nu=float(ft_pe_nu))
-            if weeks and float(ft_pe_nu) > 0
+            ft_bank_potential(terminal_ft, nu=nu, horizon_weight=pe_w)
+            if weeks and use_pe
             else 0.0
         ),
     }

@@ -1,8 +1,9 @@
 """Path FT potential-energy trial vs legacy ``S − hit_pts``.
 
 Protocol: ``cascade_ft_pe_path`` (diagnostic). Same setup as
-``cascade_mean_path_gw_resid`` path arm; control ``ft_pe_nu=0``, candidate
-``ft_pe_nu=2.0`` (HIT_COST/2) with concave ``U(ft_after)``.
+``cascade_mean_path_gw_resid`` path arm under the **joint** multi-GW
+transfer plan; control ``ft_pe_nu=0``, candidate ``ft_pe_nu=2.0``
+(HIT_COST/2) with terminal ``U(f_H)=ν·φ(f_H)·W``, ``W=Σγ^h`` on the horizon.
 
   PYTHONPATH=. python3 -m src.eval.cascade_ft_pe_path
   PYTHONPATH=. python3 -m src.eval.cascade_ft_pe_path --season 2025-26 --n 12
@@ -223,9 +224,11 @@ def main(argv: list[str] | None = None) -> None:
     )
     from src.models.multistage_mc_milp import DEFAULT_GAMMA, ft_horizon_weight
 
-    w_ex = ft_horizon_weight(12, gamma=DEFAULT_GAMMA)
+    h_ex = max(1, int(args.horizon_end) - (decision_gw + START_OFFSET) + 1)
+    w_ex = ft_horizon_weight(h_ex, gamma=DEFAULT_GAMMA)
     print(
-        f"[ft_pe] U(b)=ν·φ·W examples at W≈{w_ex:.2f} (H=12, γ={DEFAULT_GAMMA}): "
+        f"[ft_pe] joint-plan terminal U(b)=ν·φ·W at W≈{w_ex:.2f} "
+        f"(H={h_ex}, γ={DEFAULT_GAMMA}): "
         + ", ".join(
             f"U({b})={ft_bank_potential(b, nu=nu, horizon_weight=w_ex):.1f}"
             for b in range(0, 6)
@@ -391,6 +394,7 @@ def main(argv: list[str] | None = None) -> None:
 
     state = {
         "task": "cascade_ft_pe_path",
+        "planner": "joint_path_transfer_plan",
         "season": season,
         "decision_gw": decision_gw,
         "horizon": [start, int(args.horizon_end)],
@@ -398,6 +402,8 @@ def main(argv: list[str] | None = None) -> None:
         "seed": int(args.seed),
         "snapshot_gws": snapshot_gws,
         "candidate_nu": nu,
+        "pe_form": "terminal U(f_H)=ν·φ(f_H)·W with W=Σγ^h over horizon",
+        "pe_horizon_weight": float(w_ex),
         "phi": {
             str(b): ft_bank_potential(b, nu=1.0) for b in range(0, 6)
         },
@@ -436,54 +442,74 @@ def main(argv: list[str] | None = None) -> None:
         encoding="utf-8",
     )
 
+    def _mean_terminal_ft(strand_rows: list[dict[str, Any]]) -> float:
+        vals: list[float] = []
+        for st in strand_rows:
+            sqs = st.get("squads") or []
+            if not sqs:
+                continue
+            fa = sqs[-1].get("ft_after")
+            if fa is not None:
+                vals.append(float(fa))
+        return float(np.mean(vals)) if vals else float("nan")
+
+    ctrl_term = _mean_terminal_ft(arms["control"]["strands"])
+    cand_term = _mean_terminal_ft(arms["candidate"]["strands"])
+
     lines = [
-        "# Path FT potential energy vs legacy objective",
+        "# Path FT potential energy vs legacy objective (joint plan)",
         "",
         f"Protocol: `cascade_ft_pe_path` · season **{season}** · decision GW{decision_gw} "
         f"→ {start}–{args.horizon_end} · N={args.n} · seed={args.seed}",
         "",
-        "**Diagnostic.** Same path setup as `cascade_mean_path_gw_resid` "
-        "(full-side shares, semi-oracle buy, generative attack, autosub actuals).",
+        "**Diagnostic retest under `cascade_joint_path_plan`.** Same path setup as "
+        "`cascade_mean_path_gw_resid` (full-side shares, semi-oracle buy, generative "
+        "attack, autosub actuals). Planner is one joint multi-GW FT schedule per strand "
+        "(not the retired myopic snapshot FT MILP).",
         "",
         "| arm | objective |",
         "| --- | --- |",
-        "| control | `V = S − hit_pts` (`ft_pe_nu=0`) |",
+        "| control | `V = Σ γ^t (XI+cap) − hit_pts` (`ft_pe_nu=0`) |",
         (
-            f"| candidate | `V = S − hit_pts + U(ft_after)`, "
+            f"| candidate | `V + U(f_H)`, "
             f"`U(b)=ν·φ(b)·W`, **ν={nu:g}** (=HIT_COST/2), "
-            f"W=Σγ^h on remaining horizon |"
+            f"W=Σγ^h on the full horizon (terminal bank only) |"
         ),
         "",
         f"φ(b) = Σᵢ₌₁..b (1 − (i−1)/(2·MAX_FT)): "
         + ", ".join(f"φ({b})={ft_bank_potential(b, nu=1.0):.2f}" for b in range(1, 6)),
         "",
-        "First smoke without W left transfers unchanged (S is multi-week). "
-        "W is the unit alignment, not a fit.",
+        f"W≈{w_ex:.2f} for H={h_ex}, γ={DEFAULT_GAMMA}. "
+        "Under the joint plan PE is terminal leftover-bank value; mid-horizon "
+        "banking is already priced via future XI scores.",
         "",
         f"Wall: {state['elapsed_s']:.1f}s",
         "",
-        "## Transfer behaviour (mean over strands; excl. GW8 free rebuild)",
+        "## Transfer behaviour (mean over strands; excl. opening free rebuild)",
         "",
-        "| arm | transfers | free used | paid | hit pts |",
-        "| --- | ---: | ---: | ---: | ---: |",
+        "| arm | transfers | free used | paid | hit pts | mean terminal ft |",
+        "| --- | ---: | ---: | ---: | ---: | ---: |",
         (
             f"| control | {ctrl['transfers']['mean_transfers_per_strand']:.2f} | "
             f"{ctrl['transfers']['mean_free_used_per_strand']:.2f} | "
             f"{ctrl['transfers']['mean_paid_per_strand']:.2f} | "
-            f"{ctrl['transfers']['mean_hit_pts_per_strand']:.1f} |"
+            f"{ctrl['transfers']['mean_hit_pts_per_strand']:.1f} | "
+            f"{ctrl_term:.2f} |"
         ),
         (
             f"| candidate | {cand['transfers']['mean_transfers_per_strand']:.2f} | "
             f"{cand['transfers']['mean_free_used_per_strand']:.2f} | "
             f"{cand['transfers']['mean_paid_per_strand']:.2f} | "
-            f"{cand['transfers']['mean_hit_pts_per_strand']:.1f} |"
+            f"{cand['transfers']['mean_hit_pts_per_strand']:.1f} | "
+            f"{cand_term:.2f} |"
         ),
         (
             f"| Δ (cand−ctrl) | {delta['transfers_per_strand']:+.2f} |  | "
-            f"{delta['paid_per_strand']:+.2f} | {delta['hit_pts_per_strand']:+.1f} |"
+            f"{delta['paid_per_strand']:+.2f} | {delta['hit_pts_per_strand']:+.1f} | "
+            f"{cand_term - ctrl_term:+.2f} |"
         ),
         "",
-        "### Per snapshot (candidate)",
+        "### Per GW (candidate joint schedule)",
         "",
         "| GW | transfers | free | paid | hit pts | mean ft_after |",
         "| --- | ---: | ---: | ---: | ---: | ---: |",
@@ -515,8 +541,36 @@ def main(argv: list[str] | None = None) -> None:
         "",
         "## Decision",
         "",
-        "Diagnostic only — not a four-season promote. PE is working if paid "
-        "transfers / hit pts fall without a clear drop in path actual.",
+    ]
+    # Fill decision from observed deltas (diagnostic, not a promote gate).
+    if delta["path_actual_sum"] < -5.0 and delta["paid_per_strand"] > -0.5:
+        decision = (
+            "**`reject_pe_hurts_actual`** — terminal PE did not cut burn enough "
+            "and path actual fell."
+        )
+    elif abs(delta["paid_per_strand"]) < 0.5 and abs(delta["transfers_per_strand"]) < 0.5:
+        decision = (
+            "**`keep_watching_pe_small`** — under the joint plan, terminal PE "
+            f"(ν={nu:g}) barely moves transfer behaviour; path actual "
+            f"Δ={delta['path_actual_sum']:+.1f}."
+        )
+    elif delta["paid_per_strand"] <= -0.5 and delta["path_actual_sum"] >= -5.0:
+        decision = (
+            "**`keep_watching_pe_helps_burn`** — paid transfers fall without a "
+            "clear actual drop; still diagnostic only (not a four-season promote)."
+        )
+    else:
+        decision = (
+            "**`keep_watching`** — mixed PE effect under joint plan; diagnostic "
+            "only, not a four-season promote."
+        )
+    lines += [
+        decision,
+        "",
+        "Prior myopic-snapshot PE screen is superseded by this joint-plan retest.",
+        "",
+    ]
+    lines += [
         "",
         "## Artefacts",
         "",

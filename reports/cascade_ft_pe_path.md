@@ -1,51 +1,58 @@
-# Path FT potential energy vs legacy objective
+# Path FT potential energy vs legacy objective (joint plan)
 
 Protocol: `cascade_ft_pe_path` · season **2025-26** · decision GW6 → 8–19 · N=12 · seed=7
 
-**Diagnostic.** Same path setup as `cascade_mean_path_gw_resid` (full-side shares, semi-oracle buy, generative attack, autosub actuals).
+**Diagnostic retest under `cascade_joint_path_plan`.** Same path setup as `cascade_mean_path_gw_resid` (full-side shares, semi-oracle buy, generative attack, autosub actuals). Planner is one joint multi-GW FT schedule per strand (not the retired myopic snapshot FT MILP).
 
 | arm | objective |
 | --- | --- |
-| control | `V = S − hit_pts` (`ft_pe_nu=0`) |
-| candidate | `V = S − hit_pts + U(ft_after)`, `U(b)=ν·φ(b)·W`, **ν=2** (=HIT_COST/2), W=Σγ^h on remaining horizon |
+| control | `V = Σ γ^t (XI+cap) − hit_pts` (`ft_pe_nu=0`) |
+| candidate | `V + U(f_H)`, `U(b)=ν·φ(b)·W`, **ν=2** (=HIT_COST/2), W=Σγ^h on the full horizon (terminal bank only) |
 
 φ(b) = Σᵢ₌₁..b (1 − (i−1)/(2·MAX_FT)): φ(1)=1.00, φ(2)=1.90, φ(3)=2.70, φ(4)=3.40, φ(5)=4.00
 
-First smoke without W left transfers unchanged (S is multi-week). W is the unit alignment, not a fit.
+W≈7.18 for H=12, γ=0.9. Under the joint plan PE is terminal leftover-bank value; mid-horizon banking is already priced via future XI scores.
 
-Wall: 179.3s
+Wall: 164.7s
 
-## Transfer behaviour (mean over strands; excl. GW8 free rebuild)
+## Transfer behaviour (mean over strands; excl. opening free rebuild)
 
-| arm | transfers | free used | paid | hit pts |
-| --- | ---: | ---: | ---: | ---: |
-| control | 19.08 | 10.00 | 9.08 | 36.3 |
-| candidate | 18.75 | 10.00 | 8.75 | 35.0 |
-| Δ (cand−ctrl) | -0.33 |  | -0.33 | -1.3 |
+| arm | transfers | free used | paid | hit pts | mean terminal ft |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| control | 17.08 | 11.00 | 6.08 | 24.3 | 1.00 |
+| candidate | 17.08 | 11.00 | 6.08 | 24.3 | 1.00 |
+| Δ (cand−ctrl) | +0.00 |  | +0.00 | +0.0 | +0.00 |
 
-### Per snapshot (candidate)
+### Per GW (candidate joint schedule)
 
 | GW | transfers | free | paid | hit pts | mean ft_after |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 10 | 3.83 | 2.00 | 1.83 | 7.3 | 1.00 |
-| 12 | 3.75 | 1.92 | 1.83 | 7.3 | 1.08 |
-| 14 | 3.67 | 2.00 | 1.67 | 6.7 | 1.08 |
-| 16 | 3.42 | 1.92 | 1.50 | 6.0 | 1.17 |
-| 18 | 4.08 | 2.17 | 1.92 | 7.7 | 1.00 |
+| 9 | 1.58 | 1.00 | 0.58 | 2.3 | 1.00 |
+| 10 | 2.25 | 1.00 | 1.25 | 5.0 | 1.00 |
+| 11 | 2.08 | 1.00 | 1.08 | 4.3 | 1.00 |
+| 12 | 2.17 | 1.00 | 1.17 | 4.7 | 1.00 |
+| 13 | 1.83 | 1.00 | 0.83 | 3.3 | 1.00 |
+| 14 | 1.25 | 1.00 | 0.25 | 1.0 | 1.00 |
+| 15 | 1.33 | 1.00 | 0.33 | 1.3 | 1.00 |
+| 16 | 1.25 | 1.00 | 0.25 | 1.0 | 1.00 |
+| 17 | 1.33 | 1.00 | 0.33 | 1.3 | 1.00 |
+| 18 | 1.00 | 1.00 | 0.00 | 0.0 | 1.00 |
+| 19 | 1.00 | 1.00 | 0.00 | 0.0 | 1.00 |
 
 ## Path residual vs actual (oracle minutes + autosub)
 
 | arm | sum actual | resid bias | MAE |
 | --- | ---: | ---: | ---: |
-| control | 646.4 | +1.06 | 11.10 |
-| candidate | 648.1 | +0.68 | 11.36 |
-| Δ | +1.7 | -0.38 |  |
+| control | 641.0 | -2.31 | 8.72 |
+| candidate | 641.2 | -2.35 | 8.76 |
+| Δ | +0.2 | -0.04 |  |
 
 ## Decision
 
-**`keep_watching_pe_small`** — diagnostic only, not a four-season promote.
+**`keep_watching_pe_small`** — under the joint plan, terminal PE (ν=2) barely moves transfer behaviour; path actual Δ=+0.2.
 
-With `U=ν·φ·W` (ν=2), paid transfers fall only **−0.33/strand** and hit pts **−1.3**, while path actual is **+1.7** (not worse). The path still burns ~2 FT + ~2 hits most snapshots — generative multi-week `S` gaps still dominate HIT_COST-scale PE. Next natural step if pursued: strand **continuation** `U(b)` (DP/MC), not a larger ν fit.
+Prior myopic-snapshot PE screen is superseded by this joint-plan retest.
+
 
 ## Artefacts
 

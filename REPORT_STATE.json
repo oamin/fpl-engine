@@ -1,13 +1,14 @@
 {
-  "task": "cascade_joint_path_plan",
-  "status": "wired",
-  "change": "xi_plus_captain_ft run_strand uses joint multi-GW transfer plan MILP (free open + FT/hit schedule) instead of myopic per-snapshot FT picks",
+  "task": "cascade_ft_pe_path_joint_retest",
+  "status": "done_diagnostic",
+  "decision": "keep_watching_pe_small",
+  "change": "Retest FT potential energy under joint path plan; also force spend-FT-before-hits in path MILP",
+  "result": "2025-26 N=12: candidate ≡ control on transfers/paid/hits; terminal ft=1 both; path actual +0.2; PE inert",
   "modules": [
     "src/models/path_transfer_plan.py",
-    "src/models/multistage_mc_milp.py",
-    "tests/test_path_transfer_plan.py"
+    "src/eval/cascade_ft_pe_path.py",
+    "reports/cascade_ft_pe_path.md"
   ],
-  "protocol": "cascade_joint_path_plan",
-  "tests": "unittest tests.test_path_transfer_plan tests.test_multistage_mc_milp OK",
-  "notes": "snapshot_every ignored for FT objective; every horizon GW is a decision week; PE screens should re-run under joint plan"
+  "protocol": "cascade_ft_pe_path",
+  "report": "reports/cascade_ft_pe_path.md"
 }

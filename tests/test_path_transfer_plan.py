@@ -153,6 +153,26 @@ class JointPlanTest(unittest.TestCase):
             sum(int(w["n_transfers"]) for w in plan["weeks"][1:]), 1
         )
 
+    def test_must_spend_ft_before_hits(self) -> None:
+        """Banked FT cannot be skipped to take optional hits."""
+        pool = _candidates()
+        gws = [8, 9, 10]
+        n = len(pool)
+        S_pool = {g: np.full(n, 2.0) for g in gws}
+        # Small late bump so a 1-transfer is worth a hit only if FT is ignored.
+        mid_i = int(pool.index[pool["position"] == "MID"][-1])
+        S_pool[10][mid_i] = 6.0
+        cands = select_plan_candidates(
+            pool, S_pool, gws=gws, buy_ids=None, top_n=40
+        )
+        S = score_matrix_for_candidates(cands, pool, S_pool, gws)
+        plan = pick_path_transfer_plan(
+            cands, S, gws, gamma=1.0, ft_pe_nu=0.0, time_limit=45.0
+        )
+        for w in plan["weeks"][1:]:
+            paid = max(0, int(w["n_transfers"]) - int(w["ft_before"]))
+            self.assertEqual(int(w["hits"]), paid * HIT_COST)
+
     def test_hit_cost_in_objective(self) -> None:
         pool = _candidates()
         gws = [8, 9]
@@ -165,9 +185,13 @@ class JointPlanTest(unittest.TestCase):
         plan = pick_path_transfer_plan(
             cands, S, gws, gamma=1.0, ft_pe_nu=0.0, time_limit=45.0
         )
-        # Flat scores → hold is optimal (0 transfers after open).
-        self.assertEqual(plan["weeks"][1]["n_transfers"], 0)
+        # Flat scores → never pay hits (any churn is free-FT only).
         self.assertEqual(plan["weeks"][1]["hits"], 0)
+        paid = max(
+            0,
+            int(plan["weeks"][1]["n_transfers"]) - int(plan["weeks"][1]["ft_before"]),
+        )
+        self.assertEqual(paid, 0)
 
 
 if __name__ == "__main__":

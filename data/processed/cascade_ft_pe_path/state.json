@@ -1,5 +1,6 @@
 {
   "task": "cascade_ft_pe_path",
+  "planner": "joint_path_transfer_plan",
   "season": "2025-26",
   "decision_gw": 6,
   "horizon": [
@@ -10,13 +11,21 @@
   "seed": 7,
   "snapshot_gws": [
     8,
+    9,
     10,
+    11,
     12,
+    13,
     14,
+    15,
     16,
-    18
+    17,
+    18,
+    19
   ],
   "candidate_nu": 2.0,
+  "pe_form": "terminal U(f_H)=\u03bd\u00b7\u03c6(f_H)\u00b7W with W=\u03a3\u03b3^h over horizon",
+  "pe_horizon_weight": 7.175704635190001,
   "phi": {
     "0": 0.0,
     "1": 1.0,
@@ -28,53 +37,101 @@
   "arms": {
     "control": {
       "ft_pe_nu": 0.0,
-      "elapsed_s": 88.45661950111389,
-      "path_elapsed_s": 85.16165542602539,
+      "elapsed_s": 81.21230721473694,
+      "path_elapsed_s": 77.84424591064453,
       "transfers": {
-        "n_squad_rows": 72,
-        "mean_transfers_per_strand": 19.083333333333332,
-        "mean_hit_pts_per_strand": 36.333333333333336,
-        "mean_paid_per_strand": 9.083333333333334,
-        "mean_free_used_per_strand": 10.0,
+        "n_squad_rows": 144,
+        "mean_transfers_per_strand": 17.083333333333332,
+        "mean_hit_pts_per_strand": 24.333333333333332,
+        "mean_paid_per_strand": 6.083333333333333,
+        "mean_free_used_per_strand": 11.0,
         "per_gw": [
           {
+            "gw": 9,
+            "mean_transfers": 1.583,
+            "mean_hit_pts": 2.333,
+            "mean_paid": 0.583,
+            "mean_free_used": 1.0,
+            "mean_ft_after": 1.0
+          },
+          {
             "gw": 10,
-            "mean_transfers": 3.833,
-            "mean_hit_pts": 7.333,
-            "mean_paid": 1.833,
-            "mean_free_used": 2.0,
+            "mean_transfers": 2.333,
+            "mean_hit_pts": 5.333,
+            "mean_paid": 1.333,
+            "mean_free_used": 1.0,
+            "mean_ft_after": 1.0
+          },
+          {
+            "gw": 11,
+            "mean_transfers": 2.0,
+            "mean_hit_pts": 4.0,
+            "mean_paid": 1.0,
+            "mean_free_used": 1.0,
             "mean_ft_after": 1.0
           },
           {
             "gw": 12,
-            "mean_transfers": 3.917,
-            "mean_hit_pts": 7.667,
-            "mean_paid": 1.917,
-            "mean_free_used": 2.0,
+            "mean_transfers": 2.167,
+            "mean_hit_pts": 4.667,
+            "mean_paid": 1.167,
+            "mean_free_used": 1.0,
+            "mean_ft_after": 1.0
+          },
+          {
+            "gw": 13,
+            "mean_transfers": 1.833,
+            "mean_hit_pts": 3.333,
+            "mean_paid": 0.833,
+            "mean_free_used": 1.0,
             "mean_ft_after": 1.0
           },
           {
             "gw": 14,
-            "mean_transfers": 3.833,
-            "mean_hit_pts": 7.333,
-            "mean_paid": 1.833,
-            "mean_free_used": 2.0,
+            "mean_transfers": 1.25,
+            "mean_hit_pts": 1.0,
+            "mean_paid": 0.25,
+            "mean_free_used": 1.0,
+            "mean_ft_after": 1.0
+          },
+          {
+            "gw": 15,
+            "mean_transfers": 1.333,
+            "mean_hit_pts": 1.333,
+            "mean_paid": 0.333,
+            "mean_free_used": 1.0,
             "mean_ft_after": 1.0
           },
           {
             "gw": 16,
-            "mean_transfers": 3.583,
-            "mean_hit_pts": 6.333,
-            "mean_paid": 1.583,
-            "mean_free_used": 2.0,
+            "mean_transfers": 1.25,
+            "mean_hit_pts": 1.0,
+            "mean_paid": 0.25,
+            "mean_free_used": 1.0,
+            "mean_ft_after": 1.0
+          },
+          {
+            "gw": 17,
+            "mean_transfers": 1.333,
+            "mean_hit_pts": 1.333,
+            "mean_paid": 0.333,
+            "mean_free_used": 1.0,
             "mean_ft_after": 1.0
           },
           {
             "gw": 18,
-            "mean_transfers": 3.917,
-            "mean_hit_pts": 7.667,
-            "mean_paid": 1.917,
-            "mean_free_used": 2.0,
+            "mean_transfers": 1.0,
+            "mean_hit_pts": 0.0,
+            "mean_paid": 0.0,
+            "mean_free_used": 1.0,
+            "mean_ft_after": 1.0
+          },
+          {
+            "gw": 19,
+            "mean_transfers": 1.0,
+            "mean_hit_pts": 0.0,
+            "mean_paid": 0.0,
+            "mean_free_used": 1.0,
             "mean_ft_after": 1.0
           }
         ]
@@ -82,142 +139,190 @@
       "per_gw": [
         {
           "gw": 8,
-          "path_pred": 61.25872705123533,
-          "path_actual": 74.0,
-          "path_resid": -12.741272948764667,
+          "path_pred": 51.76465474333927,
+          "path_actual": 65.5,
+          "path_resid": -13.735345256660729,
           "n_strands": 12
         },
         {
           "gw": 9,
-          "path_pred": 59.91064167295762,
-          "path_actual": 53.416666666666664,
-          "path_resid": 6.4939750062909525,
+          "path_pred": 51.36657439939349,
+          "path_actual": 52.833333333333336,
+          "path_resid": -1.4667589339398432,
           "n_strands": 12
         },
         {
           "gw": 10,
-          "path_pred": 57.47942392971273,
-          "path_actual": 66.58333333333333,
-          "path_resid": -9.103909403620598,
+          "path_pred": 51.09923394637729,
+          "path_actual": 55.333333333333336,
+          "path_resid": -4.234099386956046,
           "n_strands": 12
         },
         {
           "gw": 11,
-          "path_pred": 57.4669746454931,
-          "path_actual": 41.666666666666664,
-          "path_resid": 15.800307978826439,
+          "path_pred": 53.55776677672353,
+          "path_actual": 46.0,
+          "path_resid": 7.557766776723533,
           "n_strands": 12
         },
         {
           "gw": 12,
-          "path_pred": 55.089315422752186,
-          "path_actual": 36.75,
-          "path_resid": 18.339315422752186,
+          "path_pred": 51.07602500492343,
+          "path_actual": 39.166666666666664,
+          "path_resid": 11.909358338256766,
           "n_strands": 12
         },
         {
           "gw": 13,
-          "path_pred": 58.25061583345169,
-          "path_actual": 28.416666666666668,
-          "path_resid": 29.833949166785022,
+          "path_pred": 50.65410348922376,
+          "path_actual": 31.666666666666668,
+          "path_resid": 18.98743682255709,
           "n_strands": 12
         },
         {
           "gw": 14,
-          "path_pred": 53.05937081416889,
-          "path_actual": 50.583333333333336,
-          "path_resid": 2.4760374808355508,
+          "path_pred": 48.706556811118624,
+          "path_actual": 57.333333333333336,
+          "path_resid": -8.626776522214712,
           "n_strands": 12
         },
         {
           "gw": 15,
-          "path_pred": 56.18440141068618,
-          "path_actual": 64.08333333333333,
-          "path_resid": -7.898931922647151,
+          "path_pred": 51.320768425254016,
+          "path_actual": 56.583333333333336,
+          "path_resid": -5.2625649080793195,
           "n_strands": 12
         },
         {
           "gw": 16,
-          "path_pred": 56.58905417976015,
-          "path_actual": 58.666666666666664,
-          "path_resid": -2.077612486906517,
+          "path_pred": 49.28648568392634,
+          "path_actual": 53.666666666666664,
+          "path_resid": -4.3801809827403275,
           "n_strands": 12
         },
         {
           "gw": 17,
-          "path_pred": 60.549276742836355,
-          "path_actual": 69.0,
-          "path_resid": -8.450723257163645,
+          "path_pred": 58.45890916133968,
+          "path_actual": 74.58333333333333,
+          "path_resid": -16.124424171993645,
           "n_strands": 12
         },
         {
           "gw": 18,
-          "path_pred": 43.97705738657833,
-          "path_actual": 54.75,
-          "path_resid": -10.77294261342167,
+          "path_pred": 50.15807025730832,
+          "path_actual": 54.583333333333336,
+          "path_resid": -4.4252630760250184,
           "n_strands": 12
         },
         {
           "gw": 19,
-          "path_pred": 39.3426931352489,
-          "path_actual": 48.5,
-          "path_resid": -9.1573068647511,
+          "path_pred": 45.84938545653869,
+          "path_actual": 53.75,
+          "path_resid": -7.900614543461309,
           "n_strands": 12
         }
       ],
-      "path_actual_sum": 646.4166666666667,
-      "path_resid_bias": 1.0617404631845673,
-      "path_resid_mae": 11.09552371273046
+      "path_actual_sum": 641.0000000000001,
+      "path_resid_bias": -2.3084554870444634,
+      "path_resid_mae": 8.717549143300696
     },
     "candidate": {
       "ft_pe_nu": 2.0,
-      "elapsed_s": 88.4698429107666,
-      "path_elapsed_s": 85.1263575553894,
+      "elapsed_s": 81.08367490768433,
+      "path_elapsed_s": 77.73101234436035,
       "transfers": {
-        "n_squad_rows": 72,
-        "mean_transfers_per_strand": 18.75,
-        "mean_hit_pts_per_strand": 35.0,
-        "mean_paid_per_strand": 8.75,
-        "mean_free_used_per_strand": 10.0,
+        "n_squad_rows": 144,
+        "mean_transfers_per_strand": 17.083333333333332,
+        "mean_hit_pts_per_strand": 24.333333333333332,
+        "mean_paid_per_strand": 6.083333333333333,
+        "mean_free_used_per_strand": 11.0,
         "per_gw": [
           {
+            "gw": 9,
+            "mean_transfers": 1.583,
+            "mean_hit_pts": 2.333,
+            "mean_paid": 0.583,
+            "mean_free_used": 1.0,
+            "mean_ft_after": 1.0
+          },
+          {
             "gw": 10,
-            "mean_transfers": 3.833,
-            "mean_hit_pts": 7.333,
-            "mean_paid": 1.833,
-            "mean_free_used": 2.0,
+            "mean_transfers": 2.25,
+            "mean_hit_pts": 5.0,
+            "mean_paid": 1.25,
+            "mean_free_used": 1.0,
+            "mean_ft_after": 1.0
+          },
+          {
+            "gw": 11,
+            "mean_transfers": 2.083,
+            "mean_hit_pts": 4.333,
+            "mean_paid": 1.083,
+            "mean_free_used": 1.0,
             "mean_ft_after": 1.0
           },
           {
             "gw": 12,
-            "mean_transfers": 3.75,
-            "mean_hit_pts": 7.333,
-            "mean_paid": 1.833,
-            "mean_free_used": 1.917,
-            "mean_ft_after": 1.083
+            "mean_transfers": 2.167,
+            "mean_hit_pts": 4.667,
+            "mean_paid": 1.167,
+            "mean_free_used": 1.0,
+            "mean_ft_after": 1.0
+          },
+          {
+            "gw": 13,
+            "mean_transfers": 1.833,
+            "mean_hit_pts": 3.333,
+            "mean_paid": 0.833,
+            "mean_free_used": 1.0,
+            "mean_ft_after": 1.0
           },
           {
             "gw": 14,
-            "mean_transfers": 3.667,
-            "mean_hit_pts": 6.667,
-            "mean_paid": 1.667,
-            "mean_free_used": 2.0,
-            "mean_ft_after": 1.083
+            "mean_transfers": 1.25,
+            "mean_hit_pts": 1.0,
+            "mean_paid": 0.25,
+            "mean_free_used": 1.0,
+            "mean_ft_after": 1.0
+          },
+          {
+            "gw": 15,
+            "mean_transfers": 1.333,
+            "mean_hit_pts": 1.333,
+            "mean_paid": 0.333,
+            "mean_free_used": 1.0,
+            "mean_ft_after": 1.0
           },
           {
             "gw": 16,
-            "mean_transfers": 3.417,
-            "mean_hit_pts": 6.0,
-            "mean_paid": 1.5,
-            "mean_free_used": 1.917,
-            "mean_ft_after": 1.167
+            "mean_transfers": 1.25,
+            "mean_hit_pts": 1.0,
+            "mean_paid": 0.25,
+            "mean_free_used": 1.0,
+            "mean_ft_after": 1.0
+          },
+          {
+            "gw": 17,
+            "mean_transfers": 1.333,
+            "mean_hit_pts": 1.333,
+            "mean_paid": 0.333,
+            "mean_free_used": 1.0,
+            "mean_ft_after": 1.0
           },
           {
             "gw": 18,
-            "mean_transfers": 4.083,
-            "mean_hit_pts": 7.667,
-            "mean_paid": 1.917,
-            "mean_free_used": 2.167,
+            "mean_transfers": 1.0,
+            "mean_hit_pts": 0.0,
+            "mean_paid": 0.0,
+            "mean_free_used": 1.0,
+            "mean_ft_after": 1.0
+          },
+          {
+            "gw": 19,
+            "mean_transfers": 1.0,
+            "mean_hit_pts": 0.0,
+            "mean_paid": 0.0,
+            "mean_free_used": 1.0,
             "mean_ft_after": 1.0
           }
         ]
@@ -225,92 +330,92 @@
       "per_gw": [
         {
           "gw": 8,
-          "path_pred": 61.25872705123533,
-          "path_actual": 74.0,
-          "path_resid": -12.741272948764667,
+          "path_pred": 51.76465474333927,
+          "path_actual": 64.75,
+          "path_resid": -12.985345256660729,
           "n_strands": 12
         },
         {
           "gw": 9,
-          "path_pred": 59.91064167295762,
-          "path_actual": 53.416666666666664,
-          "path_resid": 6.4939750062909525,
+          "path_pred": 51.36657439939349,
+          "path_actual": 52.833333333333336,
+          "path_resid": -1.4667589339398432,
           "n_strands": 12
         },
         {
           "gw": 10,
-          "path_pred": 57.47942392971273,
-          "path_actual": 66.58333333333333,
-          "path_resid": -9.103909403620598,
+          "path_pred": 50.738272712207895,
+          "path_actual": 55.333333333333336,
+          "path_resid": -4.595060621125441,
           "n_strands": 12
         },
         {
           "gw": 11,
-          "path_pred": 57.4669746454931,
-          "path_actual": 41.666666666666664,
-          "path_resid": 15.800307978826439,
+          "path_pred": 53.55776677672353,
+          "path_actual": 46.0,
+          "path_resid": 7.557766776723533,
           "n_strands": 12
         },
         {
           "gw": 12,
-          "path_pred": 54.61811933381883,
-          "path_actual": 36.166666666666664,
-          "path_resid": 18.451452667152168,
+          "path_pred": 51.07602500492343,
+          "path_actual": 39.166666666666664,
+          "path_resid": 11.909358338256766,
           "n_strands": 12
         },
         {
           "gw": 13,
-          "path_pred": 57.76100308902371,
-          "path_actual": 28.166666666666668,
-          "path_resid": 29.594336422357042,
+          "path_pred": 50.65410348922376,
+          "path_actual": 31.666666666666668,
+          "path_resid": 18.98743682255709,
           "n_strands": 12
         },
         {
           "gw": 14,
-          "path_pred": 52.96719578967293,
-          "path_actual": 51.083333333333336,
-          "path_resid": 1.8838624563395925,
+          "path_pred": 48.706556811118624,
+          "path_actual": 57.333333333333336,
+          "path_resid": -8.626776522214712,
           "n_strands": 12
         },
         {
           "gw": 15,
-          "path_pred": 56.19902292771123,
-          "path_actual": 65.08333333333333,
-          "path_resid": -8.884310405622095,
+          "path_pred": 51.37114163523869,
+          "path_actual": 56.583333333333336,
+          "path_resid": -5.212191698094642,
           "n_strands": 12
         },
         {
           "gw": 16,
-          "path_pred": 56.67070455075582,
-          "path_actual": 58.0,
-          "path_resid": -1.329295449244178,
+          "path_pred": 49.28648568392634,
+          "path_actual": 53.666666666666664,
+          "path_resid": -4.3801809827403275,
           "n_strands": 12
         },
         {
           "gw": 17,
-          "path_pred": 60.20685157681734,
-          "path_actual": 69.66666666666667,
-          "path_resid": -9.459815089849329,
+          "path_pred": 58.45890916133968,
+          "path_actual": 74.58333333333333,
+          "path_resid": -16.124424171993645,
           "n_strands": 12
         },
         {
           "gw": 18,
-          "path_pred": 43.153033196869465,
-          "path_actual": 55.75,
-          "path_resid": -12.596966803130535,
+          "path_pred": 50.15807025730832,
+          "path_actual": 54.583333333333336,
+          "path_resid": -4.4252630760250184,
           "n_strands": 12
         },
         {
           "gw": 19,
-          "path_pred": 38.56311092166668,
-          "path_actual": 48.5,
-          "path_resid": -9.936889078333323,
+          "path_pred": 45.84938545653869,
+          "path_actual": 54.666666666666664,
+          "path_resid": -8.817281210127973,
           "n_strands": 12
         }
       ],
-      "path_actual_sum": 648.0833333333333,
-      "path_resid_bias": 0.6809562793667894,
-      "path_resid_mae": 11.356366142460908
+      "path_actual_sum": 641.1666666666667,
+      "path_resid_bias": -2.3482267112820785,
+      "path_resid_mae": 8.757320367538311
     }
   },
   "strands": {
@@ -322,49 +427,97 @@
             "gw": 8,
             "n_transfers": 0,
             "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:597"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:624"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:160"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:160"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 1,
+            "hits": 0,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
           },
           {
-            "gw": 10,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "gw": 13,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:249"
+            "captain_id": "2025-26:64"
           },
           {
-            "gw": 12,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "gw": 14,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:449"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:119"
+          },
+          {
+            "gw": 16,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:47"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
           },
           {
-            "gw": 14,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:160"
-          },
-          {
-            "gw": 16,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:160"
-          },
-          {
             "gw": 18,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:449"
+            "captain_id": "2025-26:120"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:427"
           }
         ]
       },
@@ -375,49 +528,97 @@
             "gw": 8,
             "n_transfers": 0,
             "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:449"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:119"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:660"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:668"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:120"
+          },
+          {
+            "gw": 14,
+            "n_transfers": 1,
+            "hits": 0,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:449"
           },
           {
-            "gw": 10,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "gw": 15,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:430"
-          },
-          {
-            "gw": 12,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:430"
-          },
-          {
-            "gw": 14,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:328"
+            "captain_id": "2025-26:476"
           },
           {
             "gw": 16,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:120"
+            "captain_id": "2025-26:21"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:119"
           },
           {
             "gw": 18,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:449"
+            "captain_id": "2025-26:283"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:668"
           }
         ]
       },
@@ -428,49 +629,97 @@
             "gw": 8,
             "n_transfers": 0,
             "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:106"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:427"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:491"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:449"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:160"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:47"
+          },
+          {
+            "gw": 14,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:249"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 2,
+            "hits": 4,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
           },
           {
-            "gw": 10,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:430"
-          },
-          {
-            "gw": 12,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:430"
-          },
-          {
-            "gw": 14,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:430"
-          },
-          {
             "gw": 16,
-            "n_transfers": 3,
-            "hits": 4,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:430"
+            "captain_id": "2025-26:64"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:47"
           },
           {
             "gw": 18,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:648"
           }
         ]
       },
@@ -481,49 +730,97 @@
             "gw": 8,
             "n_transfers": 0,
             "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:82"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:328"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:373"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:82"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:295"
+          },
+          {
+            "gw": 14,
+            "n_transfers": 1,
+            "hits": 0,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
           },
           {
-            "gw": 10,
-            "n_transfers": 3,
-            "hits": 4,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:430"
-          },
-          {
-            "gw": 12,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:430"
-          },
-          {
-            "gw": 14,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "gw": 15,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:119"
           },
           {
             "gw": 16,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:249"
+            "captain_id": "2025-26:237"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:387"
           },
           {
             "gw": 18,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:283"
+            "captain_id": "2025-26:666"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
           }
         ]
       },
@@ -534,49 +831,97 @@
             "gw": 8,
             "n_transfers": 0,
             "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:200"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 1,
+            "hits": 0,
             "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:449"
+            "captain_id": "2025-26:26"
           },
           {
             "gw": 10,
-            "n_transfers": 4,
+            "n_transfers": 3,
             "hits": 8,
-            "ft_before": 2,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:430"
+            "captain_id": "2025-26:597"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:419"
           },
           {
             "gw": 12,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:430"
+            "captain_id": "2025-26:160"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:82"
           },
           {
             "gw": 14,
-            "n_transfers": 2,
+            "n_transfers": 1,
             "hits": 0,
-            "ft_before": 2,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:119"
+            "captain_id": "2025-26:660"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:157"
           },
           {
             "gw": 16,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:668"
           },
           {
-            "gw": 18,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "gw": 17,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:283"
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 18,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:419"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:120"
           }
         ]
       },
@@ -587,49 +932,97 @@
             "gw": 8,
             "n_transfers": 0,
             "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:224"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:582"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:668"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 2,
+            "hits": 4,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
           },
           {
-            "gw": 10,
-            "n_transfers": 3,
+            "gw": 12,
+            "n_transfers": 2,
             "hits": 4,
-            "ft_before": 2,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:119"
+            "captain_id": "2025-26:200"
           },
           {
-            "gw": 12,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "gw": 13,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:430"
+            "captain_id": "2025-26:120"
           },
           {
             "gw": 14,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:449"
-          },
-          {
-            "gw": 16,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:660"
           },
           {
-            "gw": 18,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "gw": 15,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:436"
+            "captain_id": "2025-26:157"
+          },
+          {
+            "gw": 16,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:328"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:249"
+          },
+          {
+            "gw": 18,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:373"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:373"
           }
         ]
       },
@@ -640,49 +1033,97 @@
             "gw": 8,
             "n_transfers": 0,
             "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:21"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:660"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:119"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:517"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:26"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 1,
+            "hits": 0,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:381"
           },
           {
-            "gw": 10,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:160"
-          },
-          {
-            "gw": 12,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:430"
-          },
-          {
             "gw": 14,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:249"
+            "captain_id": "2025-26:82"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:381"
           },
           {
             "gw": 16,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:430"
+            "captain_id": "2025-26:200"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:342"
           },
           {
             "gw": 18,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:381"
+            "captain_id": "2025-26:668"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:82"
           }
         ]
       },
@@ -693,47 +1134,95 @@
             "gw": 8,
             "n_transfers": 0,
             "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:224"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:5"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:120"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:449"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 3,
+            "hits": 8,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
           },
           {
-            "gw": 10,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:430"
-          },
-          {
-            "gw": 12,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "gw": 13,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
           },
           {
             "gw": 14,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:119"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
           },
           {
             "gw": 16,
-            "n_transfers": 2,
+            "n_transfers": 1,
             "hits": 0,
-            "ft_before": 2,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:82"
+            "captain_id": "2025-26:668"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:317"
           },
           {
             "gw": 18,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:205"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:449"
           }
@@ -746,49 +1235,97 @@
             "gw": 8,
             "n_transfers": 0,
             "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:160"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:488"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:8"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:476"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:200"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:160"
+          },
+          {
+            "gw": 14,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:119"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 1,
+            "hits": 0,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
           },
           {
-            "gw": 10,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:430"
-          },
-          {
-            "gw": 12,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:430"
-          },
-          {
-            "gw": 14,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:660"
-          },
-          {
             "gw": 16,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:381"
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:348"
           },
           {
             "gw": 18,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:430"
+            "captain_id": "2025-26:119"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:660"
           }
         ]
       },
@@ -799,49 +1336,97 @@
             "gw": 8,
             "n_transfers": 0,
             "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:160"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:381"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 3,
+            "hits": 8,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
           },
           {
-            "gw": 10,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "gw": 12,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:430"
+            "captain_id": "2025-26:72"
           },
           {
-            "gw": 12,
-            "n_transfers": 4,
+            "gw": 13,
+            "n_transfers": 3,
             "hits": 8,
-            "ft_before": 2,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:430"
+            "captain_id": "2025-26:449"
           },
           {
             "gw": 14,
-            "n_transfers": 4,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 3,
             "hits": 8,
-            "ft_before": 2,
+            "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
           },
           {
             "gw": 16,
-            "n_transfers": 3,
-            "hits": 4,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:7"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:648"
+          },
+          {
+            "gw": 18,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
           },
           {
-            "gw": 18,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "gw": 19,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:430"
+            "captain_id": "2025-26:119"
           }
         ]
       },
@@ -852,49 +1437,97 @@
             "gw": 8,
             "n_transfers": 0,
             "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:427"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:7"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:7"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 1,
+            "hits": 0,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
           },
           {
-            "gw": 10,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "gw": 13,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
-          },
-          {
-            "gw": 12,
-            "n_transfers": 3,
-            "hits": 4,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:72"
           },
           {
             "gw": 14,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:97"
           },
           {
             "gw": 16,
-            "n_transfers": 3,
-            "hits": 4,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:430"
+            "captain_id": "2025-26:106"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:694"
           },
           {
             "gw": 18,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:430"
+            "captain_id": "2025-26:120"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:64"
           }
         ]
       },
@@ -905,49 +1538,97 @@
             "gw": 8,
             "n_transfers": 0,
             "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:64"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:660"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:694"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:64"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 2,
+            "hits": 4,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
           },
           {
-            "gw": 10,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:430"
-          },
-          {
-            "gw": 12,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:430"
-          },
-          {
-            "gw": 14,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "gw": 13,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:120"
           },
           {
+            "gw": 14,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:64"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:381"
+          },
+          {
             "gw": 16,
-            "n_transfers": 4,
+            "n_transfers": 3,
             "hits": 8,
-            "ft_before": 2,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:660"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
           },
           {
             "gw": 18,
-            "n_transfers": 3,
-            "hits": 4,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:8"
+            "captain_id": "2025-26:317"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:488"
           }
         ]
       }
@@ -960,49 +1641,97 @@
             "gw": 8,
             "n_transfers": 0,
             "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:597"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:624"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:160"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:160"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 1,
+            "hits": 0,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
           },
           {
-            "gw": 10,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "gw": 13,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:249"
+            "captain_id": "2025-26:64"
           },
           {
-            "gw": 12,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "gw": 14,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:449"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:119"
+          },
+          {
+            "gw": 16,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:47"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
           },
           {
-            "gw": 14,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:160"
-          },
-          {
-            "gw": 16,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:160"
-          },
-          {
             "gw": 18,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:449"
+            "captain_id": "2025-26:120"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:427"
           }
         ]
       },
@@ -1013,49 +1742,97 @@
             "gw": 8,
             "n_transfers": 0,
             "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:449"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:119"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:660"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:668"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:120"
+          },
+          {
+            "gw": 14,
+            "n_transfers": 1,
+            "hits": 0,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:449"
           },
           {
-            "gw": 10,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "gw": 15,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:430"
-          },
-          {
-            "gw": 12,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:430"
-          },
-          {
-            "gw": 14,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:328"
+            "captain_id": "2025-26:476"
           },
           {
             "gw": 16,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:120"
+            "captain_id": "2025-26:21"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:119"
           },
           {
             "gw": 18,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:449"
+            "captain_id": "2025-26:283"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:668"
           }
         ]
       },
@@ -1066,49 +1843,97 @@
             "gw": 8,
             "n_transfers": 0,
             "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:106"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:427"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:491"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:449"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:160"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:47"
+          },
+          {
+            "gw": 14,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:249"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 2,
+            "hits": 4,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
           },
           {
-            "gw": 10,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:430"
-          },
-          {
-            "gw": 12,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:430"
-          },
-          {
-            "gw": 14,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:430"
-          },
-          {
             "gw": 16,
-            "n_transfers": 3,
-            "hits": 4,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:430"
+            "captain_id": "2025-26:64"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:47"
           },
           {
             "gw": 18,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:648"
           }
         ]
       },
@@ -1119,49 +1944,97 @@
             "gw": 8,
             "n_transfers": 0,
             "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:82"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:328"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:373"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:82"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:295"
+          },
+          {
+            "gw": 14,
+            "n_transfers": 1,
+            "hits": 0,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
           },
           {
-            "gw": 10,
-            "n_transfers": 3,
-            "hits": 4,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:430"
-          },
-          {
-            "gw": 12,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:430"
-          },
-          {
-            "gw": 14,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "gw": 15,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:119"
           },
           {
             "gw": 16,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:249"
+            "captain_id": "2025-26:237"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:387"
           },
           {
             "gw": 18,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:283"
+            "captain_id": "2025-26:666"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
           }
         ]
       },
@@ -1172,49 +2045,97 @@
             "gw": 8,
             "n_transfers": 0,
             "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:200"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 1,
+            "hits": 0,
             "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:449"
+            "captain_id": "2025-26:26"
           },
           {
             "gw": 10,
-            "n_transfers": 4,
+            "n_transfers": 3,
             "hits": 8,
-            "ft_before": 2,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:430"
+            "captain_id": "2025-26:597"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:419"
           },
           {
             "gw": 12,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:430"
+            "captain_id": "2025-26:160"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:82"
           },
           {
             "gw": 14,
-            "n_transfers": 2,
+            "n_transfers": 1,
             "hits": 0,
-            "ft_before": 2,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:119"
+            "captain_id": "2025-26:660"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:157"
           },
           {
             "gw": 16,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:668"
           },
           {
-            "gw": 18,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "gw": 17,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:283"
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 18,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:419"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:120"
           }
         ]
       },
@@ -1225,49 +2146,97 @@
             "gw": 8,
             "n_transfers": 0,
             "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:224"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:582"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:668"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 2,
+            "hits": 4,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
           },
           {
-            "gw": 10,
-            "n_transfers": 3,
+            "gw": 12,
+            "n_transfers": 2,
             "hits": 4,
-            "ft_before": 2,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:119"
+            "captain_id": "2025-26:200"
           },
           {
-            "gw": 12,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "gw": 13,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:430"
+            "captain_id": "2025-26:120"
           },
           {
             "gw": 14,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:449"
-          },
-          {
-            "gw": 16,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:660"
           },
           {
-            "gw": 18,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "gw": 15,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:436"
+            "captain_id": "2025-26:157"
+          },
+          {
+            "gw": 16,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:328"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:249"
+          },
+          {
+            "gw": 18,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:373"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:373"
           }
         ]
       },
@@ -1278,49 +2247,97 @@
             "gw": 8,
             "n_transfers": 0,
             "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:21"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:660"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:119"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:517"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:26"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 1,
+            "hits": 0,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:381"
           },
           {
-            "gw": 10,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:160"
-          },
-          {
-            "gw": 12,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:430"
-          },
-          {
             "gw": 14,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:249"
+            "captain_id": "2025-26:82"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:381"
           },
           {
             "gw": 16,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:430"
+            "captain_id": "2025-26:200"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:342"
           },
           {
             "gw": 18,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:381"
+            "captain_id": "2025-26:668"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:82"
           }
         ]
       },
@@ -1331,31 +2348,63 @@
             "gw": 8,
             "n_transfers": 0,
             "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:224"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:5"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:120"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:449"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 3,
+            "hits": 8,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
           },
           {
-            "gw": 10,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:430"
-          },
-          {
-            "gw": 12,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "gw": 13,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
           },
           {
             "gw": 14,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:119"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
           },
@@ -1363,15 +2412,31 @@
             "gw": 16,
             "n_transfers": 1,
             "hits": 0,
-            "ft_before": 2,
-            "ft_after": 2,
-            "captain_id": "2025-26:82"
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:668"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:317"
           },
           {
             "gw": 18,
-            "n_transfers": 5,
-            "hits": 8,
-            "ft_before": 3,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:205"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:449"
           }
@@ -1384,49 +2449,97 @@
             "gw": 8,
             "n_transfers": 0,
             "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:160"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:488"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:8"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:476"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:200"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:160"
+          },
+          {
+            "gw": 14,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:119"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 1,
+            "hits": 0,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
           },
           {
-            "gw": 10,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:430"
-          },
-          {
-            "gw": 12,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:430"
-          },
-          {
-            "gw": 14,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:660"
-          },
-          {
             "gw": 16,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:381"
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:348"
           },
           {
             "gw": 18,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:430"
+            "captain_id": "2025-26:119"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:660"
           }
         ]
       },
@@ -1437,49 +2550,97 @@
             "gw": 8,
             "n_transfers": 0,
             "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:160"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:381"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 3,
+            "hits": 8,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
           },
           {
-            "gw": 10,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "gw": 12,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:430"
+            "captain_id": "2025-26:72"
           },
           {
-            "gw": 12,
-            "n_transfers": 4,
+            "gw": 13,
+            "n_transfers": 3,
             "hits": 8,
-            "ft_before": 2,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:430"
+            "captain_id": "2025-26:449"
           },
           {
             "gw": 14,
-            "n_transfers": 4,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 3,
             "hits": 8,
-            "ft_before": 2,
+            "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
           },
           {
             "gw": 16,
-            "n_transfers": 3,
-            "hits": 4,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:7"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:648"
+          },
+          {
+            "gw": 18,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
           },
           {
-            "gw": 18,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "gw": 19,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:430"
+            "captain_id": "2025-26:119"
           }
         ]
       },
@@ -1490,49 +2651,97 @@
             "gw": 8,
             "n_transfers": 0,
             "hits": 0,
-            "ft_before": 1,
+            "ft_before": 0,
             "ft_after": 1,
             "captain_id": "2025-26:430"
           },
           {
-            "gw": 10,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "gw": 9,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:430"
+            "captain_id": "2025-26:427"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:7"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:7"
           },
           {
             "gw": 12,
             "n_transfers": 1,
             "hits": 0,
-            "ft_before": 2,
-            "ft_after": 2,
-            "captain_id": "2025-26:72"
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
           },
           {
             "gw": 14,
-            "n_transfers": 2,
+            "n_transfers": 1,
             "hits": 0,
-            "ft_before": 3,
-            "ft_after": 2,
+            "ft_before": 1,
+            "ft_after": 1,
             "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:97"
           },
           {
             "gw": 16,
-            "n_transfers": 2,
+            "n_transfers": 1,
             "hits": 0,
-            "ft_before": 3,
-            "ft_after": 2,
-            "captain_id": "2025-26:430"
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:106"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:694"
           },
           {
             "gw": 18,
-            "n_transfers": 5,
-            "hits": 8,
-            "ft_before": 3,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:430"
+            "captain_id": "2025-26:120"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:64"
           }
         ]
       },
@@ -1543,60 +2752,108 @@
             "gw": 8,
             "n_transfers": 0,
             "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:64"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:660"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:694"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:64"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 2,
+            "hits": 4,
             "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
           },
           {
-            "gw": 10,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:430"
-          },
-          {
-            "gw": 12,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
-            "captain_id": "2025-26:430"
-          },
-          {
-            "gw": 14,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
+            "gw": 13,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:120"
           },
           {
+            "gw": 14,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:64"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:381"
+          },
+          {
             "gw": 16,
-            "n_transfers": 4,
+            "n_transfers": 3,
             "hits": 8,
-            "ft_before": 2,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:660"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
             "captain_id": "2025-26:430"
           },
           {
             "gw": 18,
-            "n_transfers": 3,
-            "hits": 4,
-            "ft_before": 2,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
             "ft_after": 1,
-            "captain_id": "2025-26:8"
+            "captain_id": "2025-26:317"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:488"
           }
         ]
       }
     ]
   },
   "delta_candidate_minus_control": {
-    "transfers_per_strand": -0.33333333333333215,
-    "paid_per_strand": -0.3333333333333339,
-    "hit_pts_per_strand": -1.3333333333333357,
-    "path_actual_sum": 1.666666666666515,
-    "path_resid_bias": -0.3807841838177779
+    "transfers_per_strand": 0.0,
+    "paid_per_strand": 0.0,
+    "hit_pts_per_strand": 0.0,
+    "path_actual_sum": 0.16666666666662877,
+    "path_resid_bias": -0.039771224237615144
   },
-  "elapsed_s": 179.3407700061798
+  "elapsed_s": 164.69571900367737
 }

@@ -20,8 +20,8 @@ Updated: 2026-10-20. **Numagent 2.0** is the product on main (`protocol.numagent
 | **12. Historical rate baseline** | **cascade default** | Start at prior (player else positional); update with each completed GW. `src/markets/rate_baseline.py` · `protocol.score_xp_v2_rate_baseline_prior`. Full mu_post gate deferred. |
 | **13. Mean vs path GW residual** | **done (diagnostic)** | Full-side shares; semi-oracle buy-only. 2025-26: mean/path actual ≈647/646; resid bias +12.7 / +1.1. `reports/cascade_mean_path_gw_resid.md`. |
 | **14. Top MID+FWD G/A mismatch** | **done (diagnostic)** | Top xp decile: g/EG≈0.85 (pot≈0.82, shares OK); a/EA≈0.61 (pot≈0.72 **and** sA too fat). `reports/top_mid_fwd_ga_mismatch.md`. |
-| **15. Path FT potential energy** | **done (diagnostic)** | `U=ν·φ·W` vs legacy: paid −0.33/strand, actual +1.7; burn mostly unchanged. `reports/cascade_ft_pe_path.md`. |
-| **16. Path every-GW transfers** | **locked** | `SNAPSHOT_EVERY=1` — no forced hold between snapshots. Prior every-2 path totals need re-run. |
+| **15. Path FT potential energy** | **done (diagnostic)** | Joint-plan retest: PE inert (cand≡ctrl); terminal ft=1 both. Myopic −0.33 paid superseded. `reports/cascade_ft_pe_path.md`. |
+| **16. Path every-GW transfers** | **locked** | Joint path plan schedules every horizon GW (`cascade_joint_path_plan`). |
 
 ## Plan
 
