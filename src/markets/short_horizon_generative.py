@@ -3,7 +3,7 @@
 Per fixture path:
 
 1. ``k ∼ M`` (``match_outcome_roll`` from priced / FD λ).
-2. Lineup world (minutes-corr competitor pairs; firm XI override later).
+2. Lineup world: club matchday resample (one as-of GW → all minutes; no corr threshold).
 3. Scorer / assist dice (``π`` props-shape or shares; ``ρ`` assists; α empties).
 4. Defence from the **rolled** scoreline (``defence_roll``: CS if GA=0;
    GC = ⌊GA/2⌋) — no separate xCS / xGC moments on scenario strands.
@@ -28,6 +28,7 @@ from src.markets.lineup_roll import (
     START_GATE,
     LineupWorld,
     minutes_corr_pairs,
+    roll_club_gw_lineup,
     roll_lineup_world,
     select_disjoint_pairs,
 )
@@ -325,15 +326,8 @@ def _roll_or_trivial_lineup(
     mean_m = club["m"].to_numpy(float)
     if not lineup_cov:
         return trivial_lineup(mean_m)
-    pairs = competitor_pairs_for_club(hist, club)
-    if not pairs:
-        return trivial_lineup(mean_m)
-    return roll_lineup_world(
-        mean_m=mean_m,
-        names=club[_name_col(club)].astype(str),
-        pairs=pairs,
-        rng=rng,
-    )
+    # Club matchday resample — full GW minutes vector, no corr threshold.
+    return roll_club_gw_lineup(club, hist, rng, id_col_club=_id_col(club))
 
 
 def score_fixture_generative(

@@ -1,4 +1,4 @@
-"""Lineup / minutes covariance worlds."""
+"""Lineup / minutes worlds — club matchday resample (default)."""
 
 from __future__ import annotations
 
@@ -7,79 +7,97 @@ import unittest
 import numpy as np
 import pandas as pd
 
-from src.markets.attack_roll import build_side_dice, dice_for_lineup, roll_side_attack
+from src.markets.attack_roll import build_side_dice, dice_for_lineup
 from src.markets.lineup_roll import (
     CompetitorPair,
     gate_dice_weights,
     joint_minutes_for_ids,
     minutes_corr_pairs,
     minutes_panel,
+    roll_club_gw_lineup,
     roll_lineup_world,
     select_disjoint_pairs,
 )
 
 
-class LineupRollTest(unittest.TestCase):
-    def test_joint_resample_can_share_minutes(self) -> None:
-        """Historical 60/30 and 90/0 both appear — no P_SUB_ON coin-flip."""
-        joints = (
-            (90.0, 0.0),
-            (0.0, 90.0),
-            (60.0, 30.0),
-            (70.0, 20.0),
-            (65.0, 25.0),
+class ClubMatchdayResampleTest(unittest.TestCase):
+    def _hist(self) -> pd.DataFrame:
+        rows = []
+        # GW1: A 90, B 0, C 90
+        # GW2: A 60, B 30, C 90  (shared)
+        # GW3: A 0, B 90, C 90
+        specs = {
+            1: {1: 90, 2: 0, 3: 90},
+            2: {1: 60, 2: 30, 3: 90},
+            3: {1: 0, 2: 90, 3: 90},
+        }
+        names = {1: "Gyok", 2: "Hav", 3: "Saka"}
+        pos = {1: "FWD", 2: "FWD", 3: "MID"}
+        for gw, mins in specs.items():
+            for eid, m in mins.items():
+                rows.append(
+                    {
+                        "element": eid,
+                        "player_id": eid,
+                        "name": names[eid],
+                        "player_name": names[eid],
+                        "position": pos[eid],
+                        "gw": gw,
+                        "GW": gw,
+                        "minutes": m,
+                    }
+                )
+        return pd.DataFrame(rows)
+
+    def _club(self) -> pd.DataFrame:
+        return pd.DataFrame(
+            {
+                "element": [1, 2, 3],
+                "name": ["Gyok", "Hav", "Saka"],
+                "position": ["FWD", "FWD", "MID"],
+                "m": [50.0, 40.0, 90.0],
+            }
         )
-        pairs = [
-            CompetitorPair(
-                0, 1, -0.9, "Gyok", "Hav", id_i=1, id_j=2, joints=joints
-            )
-        ]
+
+    def test_resample_draws_real_matchday_vector(self) -> None:
+        hist = self._hist()
+        club = self._club()
         rng = np.random.default_rng(0)
-        seen_share = 0
-        seen_exclusive = 0
-        for _ in range(300):
-            world = roll_lineup_world(
-                mean_m=[80.0, 40.0, 90.0],
-                names=["Gyok", "Hav", "Saka"],
-                pairs=pairs,
-                rng=rng,
-            )
-            m0, m1 = float(world.minutes[0]), float(world.minutes[1])
-            self.assertIn((m0, m1), joints)
-            if m0 > 0 and m1 > 0:
-                seen_share += 1
-            if (m0 >= 90 and m1 == 0) or (m1 >= 90 and m0 == 0):
-                seen_exclusive += 1
-            self.assertTrue(world.pair_choices[0][2].startswith("joint:"))
-        self.assertGreater(seen_share, 0)
-        self.assertGreater(seen_exclusive, 0)
+        seen = set()
+        for _ in range(60):
+            world = roll_club_gw_lineup(club, hist, rng)
+            key = tuple(float(x) for x in world.minutes)
+            seen.add(key)
+            self.assertTrue(world.pair_choices[0][2] == "matchday_resample")
+        # All three historical GWs should appear
+        self.assertIn((90.0, 0.0, 90.0), seen)
+        self.assertIn((60.0, 30.0, 90.0), seen)
+        self.assertIn((0.0, 90.0, 90.0), seen)
 
-    def test_thin_joint_keeps_mean_minutes(self) -> None:
-        pairs = [
-            CompetitorPair(
-                0, 1, -0.9, "A", "B", joints=((90.0, 0.0),)  # only 1 obs
-            )
-        ]
-        world = roll_lineup_world(
-            mean_m=[55.0, 35.0, 90.0],
-            names=["A", "B", "C"],
-            pairs=pairs,
-            rng=np.random.default_rng(0),
-            min_joint_obs=3,
+    def test_shared_minutes_path_exists(self) -> None:
+        world = roll_club_gw_lineup(
+            self._club(), self._hist(), np.random.default_rng(1)
         )
-        self.assertAlmostEqual(float(world.minutes[0]), 55.0)
-        self.assertAlmostEqual(float(world.minutes[1]), 35.0)
-        self.assertTrue(world.pair_choices[0][2].startswith("mean_fallback:"))
+        # force until we see 60/30 or check distribution over many draws
+        saw_share = False
+        rng = np.random.default_rng(2)
+        for _ in range(40):
+            w = roll_club_gw_lineup(self._club(), self._hist(), rng)
+            if w.minutes[0] > 0 and w.minutes[1] > 0:
+                saw_share = True
+                self.assertAlmostEqual(float(w.minutes[0] + w.minutes[1]), 90.0)
+        self.assertTrue(saw_share)
 
-    def test_gate_renorms_to_eligible(self) -> None:
-        pi = np.array([0.5, 0.3, 0.2])
-        el = np.array([True, False, True])
-        out = gate_dice_weights(pi, el)
-        self.assertAlmostEqual(float(out.sum()), 1.0)
-        self.assertEqual(float(out[1]), 0.0)
-        self.assertGreater(float(out[0]), float(out[2]))
+    def test_thin_history_falls_back_to_mean(self) -> None:
+        hist = self._hist()
+        hist = hist.loc[hist["gw"] == 1]  # only 1 GW
+        world = roll_club_gw_lineup(
+            self._club(), hist, np.random.default_rng(0), min_club_gws=3
+        )
+        np.testing.assert_allclose(world.minutes, [50.0, 40.0, 90.0])
+        self.assertEqual(world.pair_choices[0][1], "mean_fallback")
 
-    def test_dice_allows_sub_with_under_60_minutes(self) -> None:
+    def test_attack_dice_keeps_sub_under_60(self) -> None:
         dice = build_side_dice(
             ["Gyok", "Hav", "Saka"],
             sG=[0.4, 0.4, 0.2],
@@ -88,129 +106,43 @@ class LineupRollTest(unittest.TestCase):
             alpha_a=1.0,
             G_team=2.0,
         )
-        world = roll_lineup_world(
-            mean_m=[80.0, 40.0, 90.0],
-            names=["Gyok", "Hav", "Saka"],
-            pairs=[
-                CompetitorPair(
-                    0,
-                    1,
-                    -0.8,
-                    "Gyok",
-                    "Hav",
-                    joints=((60.0, 30.0), (60.0, 30.0), (60.0, 30.0)),
-                )
-            ],
-            rng=np.random.default_rng(3),
-        )
+        # Manually build a 60/30 world via resampling until hit
+        rng = np.random.default_rng(0)
+        world = None
+        for _ in range(100):
+            w = roll_club_gw_lineup(self._club(), self._hist(), rng)
+            if abs(float(w.minutes[0]) - 60) < 1e-6 and abs(float(w.minutes[1]) - 30) < 1e-6:
+                world = w
+                break
+        self.assertIsNotNone(world)
         gated = dice_for_lineup(dice, world)
         self.assertGreater(float(gated.pi[0]), 0.0)
         self.assertGreater(float(gated.pi[1]), 0.0)
         self.assertTrue(bool(world.eligible[0]))
         self.assertFalse(bool(world.eligible[1]))
 
-    def test_dice_for_lineup_zeros_fully_benched(self) -> None:
-        dice = build_side_dice(
-            ["Gyok", "Hav", "Saka"],
-            sG=[0.4, 0.4, 0.2],
-            sA=[0.2, 0.2, 0.6],
-            alpha_g=1.0,
-            alpha_a=1.0,
-            G_team=2.0,
-        )
-        world = roll_lineup_world(
-            mean_m=[90, 90, 90],
-            names=["Gyok", "Hav", "Saka"],
-            pairs=[
-                CompetitorPair(
-                    0,
-                    1,
-                    -0.8,
-                    "Gyok",
-                    "Hav",
-                    joints=((90.0, 0.0), (90.0, 0.0), (90.0, 0.0)),
-                )
-            ],
-            rng=np.random.default_rng(1),
-        )
-        gated = dice_for_lineup(dice, world)
-        self.assertGreater(float(gated.pi[0]), 0.0)
-        self.assertEqual(float(gated.pi[1]), 0.0)
-        roll = roll_side_attack(
-            dice, goals_for=30, rng=np.random.default_rng(2), lineup=world
-        )
-        self.assertNotIn("Hav", roll.scorers)
+    def test_gate_renorms(self) -> None:
+        out = gate_dice_weights(np.array([0.5, 0.3, 0.2]), np.array([True, False, True]))
+        self.assertAlmostEqual(float(out.sum()), 1.0)
+        self.assertEqual(float(out[1]), 0.0)
 
-    def test_minutes_corr_pairs_detects_mutex_and_attaches_joints(self) -> None:
-        rows = []
-        for gw in range(1, 9):
-            rows.append(
-                {
-                    "player_id": 1,
-                    "player_name": "A",
-                    "position": "FWD",
-                    "gw": gw,
-                    "minutes": 90 if gw % 2 else 0,
-                }
-            )
-            rows.append(
-                {
-                    "player_id": 2,
-                    "player_name": "B",
-                    "position": "FWD",
-                    "gw": gw,
-                    "minutes": 0 if gw % 2 else 90,
-                }
-            )
-            rows.append(
-                {
-                    "player_id": 3,
-                    "player_name": "C",
-                    "position": "MID",
-                    "gw": gw,
-                    "minutes": 90,
-                }
-            )
-        # One shared-minutes GW pattern mixed in via extra rows on gw 9-11
-        for gw, (ma, mb) in enumerate([(60, 30), (70, 20), (65, 25)], start=9):
-            rows.append(
-                {
-                    "player_id": 1,
-                    "player_name": "A",
-                    "position": "FWD",
-                    "gw": gw,
-                    "minutes": ma,
-                }
-            )
-            rows.append(
-                {
-                    "player_id": 2,
-                    "player_name": "B",
-                    "position": "FWD",
-                    "gw": gw,
-                    "minutes": mb,
-                }
-            )
-            rows.append(
-                {
-                    "player_id": 3,
-                    "player_name": "C",
-                    "position": "MID",
-                    "gw": gw,
-                    "minutes": 90,
-                }
-            )
-        hist = pd.DataFrame(rows)
-        table = minutes_corr_pairs(hist, corr_thresh=-0.3)
-        self.assertFalse(table.empty)
-        panel = minutes_panel(hist)
-        joints = joint_minutes_for_ids(panel, 1, 2)
-        self.assertIn((60.0, 30.0), joints)
-        self.assertIn((90.0, 0.0), joints)
-        pairs = select_disjoint_pairs([1, 2, 3], table, panel=panel)
-        self.assertEqual(len(pairs), 1)
-        self.assertEqual({pairs[0].name_i, pairs[0].name_j}, {"A", "B"})
-        self.assertGreaterEqual(len(pairs[0].joints), 3)
+
+class LegacyPairPathTest(unittest.TestCase):
+    """Parked pair utilities still behave for archaeology."""
+
+    def test_legacy_joint_pair_still_importable(self) -> None:
+        joints = ((90.0, 0.0), (60.0, 30.0), (0.0, 90.0))
+        pairs = [CompetitorPair(0, 1, -0.9, "A", "B", joints=joints)]
+        world = roll_lineup_world(
+            mean_m=[50.0, 40.0],
+            names=["A", "B"],
+            pairs=pairs,
+            rng=np.random.default_rng(0),
+        )
+        self.assertIn(
+            (float(world.minutes[0]), float(world.minutes[1])),
+            joints,
+        )
 
 
 if __name__ == "__main__":

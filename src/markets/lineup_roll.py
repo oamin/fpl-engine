@@ -1,19 +1,21 @@
 """Lineup / minutes worlds before attack dice (short-horizon).
 
-Layer 1 of the generative stack:
+Default (``lineup_cov=True``): **club matchday resample** — draw one as-of
+gameweek for the club and use every player's minutes from that GW. No
+correlation threshold, no competitor-pair graph.
 
-1. Detect competitor pairs from same-club minutes correlation.
-2. Per path, resample each pair's minutes from their **as-of historical
-   joint** ``(m_i, m_j)`` on gameweeks where either played. That carries
-   rotation (90/0), starter+sub (60/30), and other patterns without a
-   hand-tuned ``P_SUB_ON``. Thin history leaves the pair on mean minutes.
-3. CS eligibility stays ``minutes ≥ 60``; attack dice gate on ``minutes > 0``.
+- CS eligibility: ``minutes ≥ 60``.
+- Attack dice gate: ``minutes > 0``.
+- Thin club history: fall back to as-of mean minutes.
+
+Legacy pair utilities (corr threshold, joint pair resample) stay importable
+for archaeology/tests but are **not** on the generative default path.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Mapping, Sequence
+from typing import Any, Sequence
 
 import numpy as np
 import pandas as pd
@@ -21,23 +23,27 @@ import pandas as pd
 from src.rules.fpl_2026 import normalize_position
 
 START_GATE = 60.0  # CS / 60′ appearance bonus gate
-CORR_THRESH = -0.40
-PRIOR_MINUTES = 30.0  # unused for joint resample; kept for callers/tests
-MIN_PAIR_MEAN = 5.0
-MIN_JOINT_OBS = 3  # need this many past (m_i, m_j) draws to resample
+MIN_CLUB_GWS = 3  # need this many as-of club GWs to resample a matchday
 MATCH_MINUTES = 90.0
+
+# --- Legacy pair constants (parked; not used by default lineup_cov path) ---
+CORR_THRESH = -0.40  # retired from default path — do not re-enable without PI lock
+PRIOR_MINUTES = 30.0
+MIN_PAIR_MEAN = 5.0
+MIN_JOINT_OBS = 3
 
 
 @dataclass(frozen=True)
 class CompetitorPair:
-    i: int  # row index on the board
+    """Legacy pair record (parked)."""
+
+    i: int
     j: int
     corr: float
     name_i: str
     name_j: str
     id_i: int = 0
     id_j: int = 0
-    # Historical joint minutes (m_i, m_j) for GWs where either played.
     joints: tuple[tuple[float, float], ...] = field(default_factory=tuple)
 
 
@@ -47,7 +53,7 @@ class LineupWorld:
 
     minutes: np.ndarray
     eligible: np.ndarray  # bool, minutes >= START_GATE (CS gate)
-    pair_choices: tuple[tuple[str, str, str], ...]  # (name_a, name_b, mode)
+    pair_choices: tuple[tuple[str, str, str], ...]  # diagnostic labels
 
     def as_dict(self, names: Sequence[str]) -> dict[str, Any]:
         return {
@@ -61,6 +67,153 @@ class LineupWorld:
         }
 
 
+def _rng_choice_index(rng: Any, n: int) -> int:
+    if n <= 0:
+        raise ValueError("empty choice")
+    if hasattr(rng, "integers"):
+        return int(rng.integers(0, n))
+    if hasattr(rng, "randrange"):
+        return int(rng.randrange(n))
+    return int(np.asarray(rng.integers(0, n)))
+
+
+def _hist_gw_col(hist: pd.DataFrame) -> str | None:
+    if "gw" in hist.columns:
+        return "gw"
+    if "GW" in hist.columns:
+        return "GW"
+    return None
+
+
+def _hist_id_col(hist: pd.DataFrame) -> str | None:
+    for c in ("element", "player_id"):
+        if c in hist.columns:
+            return c
+    return None
+
+
+def club_matchday_gws(
+    hist: pd.DataFrame,
+    *,
+    id_col: str | None = None,
+    minutes_col: str = "minutes",
+    gw_col: str | None = None,
+) -> list[Any]:
+    """As-of club GWs that have any positive minutes."""
+    if hist is None or hist.empty:
+        return []
+    gw_c = gw_col or _hist_gw_col(hist)
+    if gw_c is None:
+        return []
+    h = hist.copy()
+    h[minutes_col] = pd.to_numeric(h[minutes_col], errors="coerce").fillna(0.0)
+    gws = []
+    for gw, block in h.groupby(gw_c, sort=True):
+        if float(block[minutes_col].sum()) > 0:
+            gws.append(gw)
+    return gws
+
+
+def roll_club_gw_lineup(
+    club: pd.DataFrame,
+    hist: pd.DataFrame | None,
+    rng: Any,
+    *,
+    id_col_club: str = "element",
+    start_gate: float = START_GATE,
+    min_club_gws: int = MIN_CLUB_GWS,
+) -> LineupWorld:
+    """Draw one past club GW; assign each roster player's minutes from that GW.
+
+    Players missing from the drawn GW get 0′. If history is too thin, keep
+    as-of mean minutes on the club frame (``m`` / ``xmi``).
+    """
+    if "m" in club.columns:
+        mean_m = pd.to_numeric(club["m"], errors="coerce").fillna(0.0).to_numpy(float)
+    elif "xmi" in club.columns:
+        mean_m = pd.to_numeric(club["xmi"], errors="coerce").fillna(0.0).to_numpy(float)
+    else:
+        mean_m = np.zeros(len(club), dtype=float)
+
+    names_col = "name" if "name" in club.columns else (
+        "web_name" if "web_name" in club.columns else None
+    )
+    names = (
+        club[names_col].astype(str).tolist()
+        if names_col
+        else [str(i) for i in range(len(club))]
+    )
+
+    if hist is None or hist.empty or club.empty:
+        return LineupWorld(
+            minutes=mean_m.copy(),
+            eligible=mean_m >= float(start_gate),
+            pair_choices=(("club", "mean_fallback", "no_hist"),),
+        )
+
+    gw_c = _hist_gw_col(hist)
+    id_h = _hist_id_col(hist)
+    id_c = id_col_club if id_col_club in club.columns else (
+        "player_id" if "player_id" in club.columns else None
+    )
+    if gw_c is None or id_h is None or id_c is None:
+        return LineupWorld(
+            minutes=mean_m.copy(),
+            eligible=mean_m >= float(start_gate),
+            pair_choices=(("club", "mean_fallback", "bad_cols"),),
+        )
+
+    gws = club_matchday_gws(hist, minutes_col="minutes", gw_col=gw_c)
+    if len(gws) < int(min_club_gws):
+        return LineupWorld(
+            minutes=mean_m.copy(),
+            eligible=mean_m >= float(start_gate),
+            pair_choices=(("club", "mean_fallback", f"thin_gws={len(gws)}"),),
+        )
+
+    gw = gws[_rng_choice_index(rng, len(gws))]
+    block = hist.loc[hist[gw_c] == gw].copy()
+    block["minutes"] = pd.to_numeric(block["minutes"], errors="coerce").fillna(0.0)
+    mins_by_id = (
+        block.groupby(id_h, sort=False)["minutes"].sum().to_dict()
+    )
+    # keys may be int-like
+    mins_by_id = {int(k): float(v) for k, v in mins_by_id.items()}
+
+    minutes = np.zeros(len(club), dtype=float)
+    for i, raw in enumerate(club[id_c].tolist()):
+        try:
+            eid = int(str(raw).split(":")[-1])
+        except (TypeError, ValueError):
+            minutes[i] = 0.0
+            continue
+        minutes[i] = float(mins_by_id.get(eid, 0.0))
+
+    return LineupWorld(
+        minutes=minutes,
+        eligible=minutes >= float(start_gate),
+        pair_choices=(("club", f"gw={gw}", "matchday_resample"),),
+    )
+
+
+def trivial_lineup_from_means(
+    mean_m: np.ndarray | Sequence[float],
+    *,
+    start_gate: float = START_GATE,
+) -> LineupWorld:
+    minutes = np.asarray(mean_m, dtype=float).copy()
+    return LineupWorld(
+        minutes=minutes,
+        eligible=minutes >= float(start_gate),
+        pair_choices=(("club", "trivial", "mean_minutes"),),
+    )
+
+
+# ---------------------------------------------------------------------------
+# Legacy pair path (parked) — kept for unit tests / archaeology only
+# ---------------------------------------------------------------------------
+
+
 def minutes_panel(
     history: pd.DataFrame,
     *,
@@ -68,7 +221,6 @@ def minutes_panel(
     minutes_col: str = "minutes",
     gw_col: str = "gw",
 ) -> pd.DataFrame:
-    """GW × player minutes matrix (0-filled)."""
     if history is None or history.empty:
         return pd.DataFrame()
     h = history.copy()
@@ -84,7 +236,6 @@ def joint_minutes_for_ids(
     id_a: int,
     id_b: int,
 ) -> tuple[tuple[float, float], ...]:
-    """As-of joint ``(m_a, m_b)`` on GWs where either player had minutes > 0."""
     if panel is None or panel.empty:
         return ()
     if id_a not in panel.columns or id_b not in panel.columns:
@@ -107,7 +258,7 @@ def minutes_corr_pairs(
     gw_col: str = "gw",
     corr_thresh: float = CORR_THRESH,
 ) -> pd.DataFrame:
-    """Off-diagonal minutes correlations for players in ``history`` (one club)."""
+    """Legacy: off-diagonal minutes correlations (not on default path)."""
     if history.empty:
         return pd.DataFrame(
             columns=["id_a", "id_b", "name_a", "name_b", "pos_a", "pos_b", "corr", "mean_a", "mean_b"]
@@ -142,7 +293,7 @@ def minutes_corr_pairs(
             if max(ma, mb) < MIN_PAIR_MEAN:
                 continue
             pa, pb = pos_of.get(a, ""), pos_of.get(b, "")
-            if not _valid_competitor_positions(pa, pb):
+            if normalize_position(pa) != normalize_position(pb):
                 continue
             rows.append(
                 {
@@ -163,13 +314,6 @@ def minutes_corr_pairs(
     return out.sort_values("corr").reset_index(drop=True)
 
 
-def _valid_competitor_positions(pa: str, pb: str) -> bool:
-    """Same-role competition only (avoid DEF↔FWD artefacts)."""
-    pa = normalize_position(pa)
-    pb = normalize_position(pb)
-    return pa == pb
-
-
 def select_disjoint_pairs(
     board_ids: Sequence[int],
     pair_table: pd.DataFrame,
@@ -177,10 +321,7 @@ def select_disjoint_pairs(
     max_pairs: int = 8,
     panel: pd.DataFrame | None = None,
 ) -> list[CompetitorPair]:
-    """Greedy strongest-|corr| matching; each player in at most one pair.
-
-    Attaches as-of joint minute samples from ``panel`` when provided.
-    """
+    """Legacy greedy pair matching (not on default path)."""
     id_to_row = {int(pid): i for i, pid in enumerate(board_ids)}
     used: set[int] = set()
     chosen: list[CompetitorPair] = []
@@ -215,16 +356,6 @@ def select_disjoint_pairs(
     return chosen
 
 
-def _rng_choice_index(rng: Any, n: int) -> int:
-    if n <= 0:
-        raise ValueError("empty choice")
-    if hasattr(rng, "integers"):
-        return int(rng.integers(0, n))
-    if hasattr(rng, "randrange"):
-        return int(rng.randrange(n))
-    return int(np.asarray(rng.integers(0, n)))
-
-
 def roll_lineup_world(
     *,
     mean_m: np.ndarray | Sequence[float],
@@ -234,10 +365,7 @@ def roll_lineup_world(
     start_gate: float = START_GATE,
     min_joint_obs: int = MIN_JOINT_OBS,
 ) -> LineupWorld:
-    """Resample competitor-pair minutes from as-of historical joints.
-
-    Non-paired players (and pairs with thin joint history) keep mean minutes.
-    """
+    """Legacy pair-joint resample (not on default path)."""
     m0 = np.asarray(mean_m, dtype=float).copy()
     n = m0.size
     minutes = m0.copy()
@@ -255,14 +383,12 @@ def roll_lineup_world(
             minutes[j] = float(mb)
             mode = f"joint:{pair.name_i}/{pair.name_j}"
         else:
-            # Thin as-of history — leave mean minutes for both.
             mode = f"mean_fallback:{pair.name_i}/{pair.name_j}"
         choices.append((pair.name_i, pair.name_j, mode))
 
-    eligible = minutes >= float(start_gate)
     return LineupWorld(
         minutes=minutes,
-        eligible=eligible,
+        eligible=minutes >= float(start_gate),
         pair_choices=tuple(choices),
     )
 

@@ -45,10 +45,14 @@ Not a gated path-V promote. Report: `reports/cascade_pathv_gen_vs_mean.md`.
 ## Parked — lineup_cov=False / freeze minutes (2026-10-21)
 
 `cascade_lineup_off_tt1`: gen with frozen mean minutes **clearly loses** to mean
-(Δ≈−0.021). Diagnostic: gen with joint lineup **clearly beats** gen_off
-(Δ≈+0.016). Freezing minutes is not a free lunch on likelihood — keep
-`lineup_cov=True` (joint historical pairs) for now. Report:
-`reports/cascade_lineup_off_tt1.md`.
+(Δ≈−0.021). Diagnostic: gen with joint pair lineup beat gen_off (Δ≈+0.016).
+Report: `reports/cascade_lineup_off_tt1.md` (pair-threshold stack; superseded).
+
+## Active — club matchday minutes (no corr threshold) (2026-10-21)
+
+PI rejected unsigned `CORR_THRESH=-0.40`. Default `lineup_cov` is now **club
+matchday resample** (draw one as-of club GW → full minutes vector). Pair-corr
+path parked. Re-running `cascade_lineup_off_tt1` under the new stack.
 
 ## Active / next (sparse)
 

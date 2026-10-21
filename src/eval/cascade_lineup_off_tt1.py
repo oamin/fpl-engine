@@ -374,7 +374,7 @@ def run(*, n_mc: int = N_MC, seed: int = SEED) -> dict[str, Any]:
         "Treatment: generative MC-mean with **`lineup_cov=False`** (as-of mean "
         "minutes; scoreline → attack → CS/GC only).  ",
         "Baseline: `score_team_side` on the same FD centreline fits.  ",
-        "Diagnostic: same gen with `lineup_cov=True` (joint historical pairs).",
+        "Diagnostic: same gen with `lineup_cov=True` (club matchday resample).",
         "",
         f"- As-of audit: **{bool(audit.get('passed'))}**",
         f"- Decision-GW pairs: {len(d_off_mean)}",
