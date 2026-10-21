@@ -3,8 +3,11 @@
 Layer 1 of the generative stack:
 
 1. Detect competitor pairs from same-club minutes correlation.
-2. Per path, roll exclusive starts on those pairs (negative minutes cov).
-3. Gate the attack dice to players with enough minutes; renorm ``π`` / ``ρ``.
+2. Per path, for each pair either:
+   - **exclusive:** winner 90′, loser 0′ (rotation / either-or XI), or
+   - **starter_sub:** winner plays part of the match, loser comes on for the
+     rest (Gyökeres 60′ / Havertz 30′). Both can have minutes on one path.
+3. CS eligibility stays ``minutes ≥ 60``; attack dice gate on ``minutes > 0``.
 
 When the XI is uncertain, both members of a pair still appear across paths.
 When one is clearly nailed in the window, the mixture still skews toward them
@@ -21,10 +24,16 @@ import pandas as pd
 
 from src.rules.fpl_2026 import normalize_position
 
-START_GATE = 60.0  # eligible for CS / full attack dice
+START_GATE = 60.0  # CS / 60′ appearance bonus gate
 CORR_THRESH = -0.40
 PRIOR_MINUTES = 30.0  # softens cold-start wipe in exclusive mixtures
 MIN_PAIR_MEAN = 5.0
+# P(starter+sub share the match | pair rolled) vs exclusive 90/0.
+# Fixed prior for lock; as-of pair rates can replace later.
+P_SUB_ON = 0.45
+SUB_STARTER_LO = 55.0  # starter minutes when sub comes on
+SUB_STARTER_HI = 80.0
+MATCH_MINUTES = 90.0
 
 
 @dataclass(frozen=True)
@@ -41,8 +50,8 @@ class LineupWorld:
     """Minutes for one club on one path."""
 
     minutes: np.ndarray
-    eligible: np.ndarray  # bool, minutes >= START_GATE
-    pair_choices: tuple[tuple[str, str, str], ...]  # (winner, loser, pair_label)
+    eligible: np.ndarray  # bool, minutes >= START_GATE (CS gate)
+    pair_choices: tuple[tuple[str, str, str], ...]  # (winner, loser, mode|pair)
 
     def as_dict(self, names: Sequence[str]) -> dict[str, Any]:
         return {
@@ -170,22 +179,46 @@ def select_disjoint_pairs(
     return chosen
 
 
+def _rng_uniform(rng: Any, lo: float, hi: float) -> float:
+    if hasattr(rng, "uniform"):
+        return float(rng.uniform(lo, hi))
+    # random.Random
+    return float(lo) + (float(hi) - float(lo)) * float(rng.random())
+
+
+def _rng_random(rng: Any) -> float:
+    if hasattr(rng, "random"):
+        return float(rng.random())
+    return float(np.asarray(rng.random()))
+
+
 def roll_lineup_world(
     *,
     mean_m: np.ndarray | Sequence[float],
     names: Sequence[str],
     pairs: Sequence[CompetitorPair],
     rng: Any,
-    start_minutes: float = 90.0,
+    start_minutes: float = MATCH_MINUTES,
     bench_minutes: float = 0.0,
     prior_minutes: float = PRIOR_MINUTES,
     start_gate: float = START_GATE,
+    p_sub_on: float = P_SUB_ON,
+    sub_starter_lo: float = SUB_STARTER_LO,
+    sub_starter_hi: float = SUB_STARTER_HI,
 ) -> LineupWorld:
-    """Exclusive starts on competitor pairs; others keep mean minutes."""
+    """Roll competitor-pair minutes: exclusive XI or starter+sub share.
+
+    Non-paired players keep mean minutes. ``p_sub_on=0`` recovers the old
+    exclusive-only behaviour (winner ``start_minutes``, loser ``bench_minutes``).
+    """
     m0 = np.asarray(mean_m, dtype=float).copy()
     n = m0.size
     minutes = m0.copy()
     choices: list[tuple[str, str, str]] = []
+    p_sub = float(np.clip(p_sub_on, 0.0, 1.0))
+    lo = float(min(sub_starter_lo, sub_starter_hi))
+    hi = float(max(sub_starter_lo, sub_starter_hi))
+    match_m = float(start_minutes)
 
     for pair in pairs:
         i, j = int(pair.i), int(pair.j)
@@ -194,16 +227,26 @@ def roll_lineup_world(
         w_i = max(float(m0[i]), 0.0) + float(prior_minutes)
         w_j = max(float(m0[j]), 0.0) + float(prior_minutes)
         p_i = w_i / (w_i + w_j) if (w_i + w_j) > 0 else 0.5
-        u = float(rng.random()) if hasattr(rng, "random") else float(np.asarray(rng.random()))
-        if u < p_i:
+        if _rng_random(rng) < p_i:
             winner, loser = i, j
             w_name, l_name = pair.name_i, pair.name_j
         else:
             winner, loser = j, i
             w_name, l_name = pair.name_j, pair.name_i
-        minutes[winner] = float(start_minutes)
-        minutes[loser] = float(bench_minutes)
-        choices.append((w_name, l_name, f"{pair.name_i}/{pair.name_j}"))
+
+        if p_sub > 0.0 and _rng_random(rng) < p_sub:
+            # Starter plays most of the match; pair comes on for the rest.
+            starter_m = _rng_uniform(rng, lo, hi)
+            starter_m = float(np.clip(starter_m, 0.0, match_m))
+            sub_m = float(max(0.0, match_m - starter_m))
+            minutes[winner] = starter_m
+            minutes[loser] = sub_m
+            mode = f"starter_sub:{pair.name_i}/{pair.name_j}"
+        else:
+            minutes[winner] = float(start_minutes)
+            minutes[loser] = float(bench_minutes)
+            mode = f"exclusive:{pair.name_i}/{pair.name_j}"
+        choices.append((w_name, l_name, mode))
 
     eligible = minutes >= float(start_gate)
     return LineupWorld(
