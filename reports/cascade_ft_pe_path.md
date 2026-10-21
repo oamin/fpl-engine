@@ -6,8 +6,8 @@ Protocol: `cascade_ft_pe_path` · season **2025-26** · decision GW6 → 8–19 
 
 | arm | objective |
 | --- | --- |
-| control | `V = Σ γ^t (XI+cap) − hit_pts` (`ft_pe_nu=0`) |
-| candidate | `V + U(f_H)`, `U(b)=ν·φ(b)·W`, **ν=2** (=HIT_COST/2), W=Σγ^h on the full horizon (terminal bank only) |
+| control | `V = Σ (XI+cap) − hit_pts` (`ft_pe_nu=0`, **γ=1**) |
+| candidate | `V + U(f_H)`, `U(b)=ν·φ(b)·W`, **ν=2** (=HIT_COST/2), W=H under γ=1 (terminal bank only) |
 
 φ(b) = Σᵢ₌₁..b (1 − (i−1)/(2·MAX_FT)): φ(1)=1.00, φ(2)=1.90, φ(3)=2.70, φ(4)=3.40, φ(5)=4.00
 
