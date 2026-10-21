@@ -1,18 +1,7 @@
 {
-  "task": "cascade_ft_pe_path",
-  "status": "done_diagnostic",
-  "decision": "keep_watching_pe_small",
-  "season": "2025-26",
-  "n": 12,
-  "candidate_nu": 2.0,
-  "delta_candidate_minus_control": {
-    "transfers_per_strand": -0.33,
-    "paid_per_strand": -0.33,
-    "hit_pts_per_strand": -1.33,
-    "path_actual_sum": 1.67,
-    "path_resid_bias": -0.38
-  },
-  "wall_s": 179.3,
-  "report": "reports/cascade_ft_pe_path.md",
-  "note": "PE on ft_after moves slightly the right way but does not stop path FT burn; do not inflate ν"
+  "task": "path_max_hits_unconstrained",
+  "status": "done",
+  "change": "MAX_HITS_SNAPSHOT: 2 → SQUAD_SIZE (align with L3/L4; PI did not specify a hit cap)",
+  "module": "src/models/multistage_mc_milp.py",
+  "note": "Prior path resid / FT-PE transfer counts were under the artificial max_hits=2; do not cite as unconstrained"
 }

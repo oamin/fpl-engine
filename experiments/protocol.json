@@ -1515,7 +1515,7 @@
     "metric": "diagnostic: mean transfers / paid / hit pts; path actual sum; path resid bias — not a four-season promote gate",
     "promote_rule": "none this batch; report PE effect on FT burn and whether path actual clearly worsens",
     "not": "retune ν on resid; four-season climb; L4 ft_dp thresholds revive",
-    "note": "First smoke with U=ν·φ (no W) left transfers unchanged — S is multi-week discounted; W is the unit fix, not a fit.",
+    "note": "First smoke with U=ν·φ (no W) left transfers unchanged — S is multi-week discounted; W is the unit fix, not a fit. Ran under path MAX_HITS_SNAPSHOT=2 (leftover); path hit bound now SQUAD_SIZE.",
     "any_later_change": "dated protocol update required"
   },
   "cascade_mean_path_gw_resid": {

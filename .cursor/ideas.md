@@ -533,6 +533,13 @@ Superseded 2026-10-15 as priced-path default. γ=1 (undiscounted Σ over priced 
 
 Removed 2026-10-15. Default `DEFAULT_MAX_HITS = SQUAD_SIZE`; objective still `−HIT_COST·hits`. Re-screen priced path: L4−L3 **+2.55/GW** [+0.41, +4.64] (`reports/layer4_mupost_priced.md`). Do not restore a hit cap without a dated protocol arm. Older parked arms that hardcode `MAX_HITS=2` are frozen historical trials.
 
+## Path MILP max_hits=2 (leftover cap)
+
+Removed 2026-10-21. `multistage_mc_milp.MAX_HITS_SNAPSHOT` had stayed at 2 after
+L3/L4 went to `SQUAD_SIZE`. Aligned to `SQUAD_SIZE`; PI did not specify a hit
+cap. Prior path resid / FT-PE diagnostics used the old cap — do not cite their
+transfer counts as unconstrained-hit behaviour.
+
 ## L4 fresh open (crowd template vs μ-wildcard)
 
 Trialled 2026-10-15 (`protocol.strategy_layer4_mupost_fresh_open`, `reports/layer4_mupost_fresh_open.md`). Same L3/L4 priced policies; open = shared GW1 crowd **template** hold (not μ_post WC). L4−L3 **+1.87/GW** [−0.35, +4.16] **covers 0** → inconclusive. Season shape flips vs μ-WC open: 2024-25 **+133** (was −40); 2025-26 +136; 2022-23 −39. Default L4 path stays μ-WC open. Shows L4−L3 is **path-seed sensitive** — do not claim the +2.90 edge is opening-invariant. Optional later: premium/next/third opens as dated arms, not retunes.

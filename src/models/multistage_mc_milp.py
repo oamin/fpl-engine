@@ -78,6 +78,7 @@ from src.models.opta_gf_ga_horizon import (
 from src.models.short_horizon_cascade import MARKET_BAND
 from src.models.minutes_overlay import apply_availability_overlay, overlay_summary
 from src.models.player_pool import POOL_JSON as DEFAULT_POOL_JSON, load_player_pool_ids
+from src.rules.fpl_2026 import SQUAD_SIZE
 from src.teams import norm_team
 
 
@@ -95,9 +96,10 @@ OBJECTIVE_SQUAD_SUM = "squad_sum"
 OBJECTIVE_XI_CAPTAIN = "xi_plus_captain"
 OBJECTIVE_XI_CAPTAIN_FT = "xi_plus_captain_ft"
 OBJECTIVES = (OBJECTIVE_SQUAD_SUM, OBJECTIVE_XI_CAPTAIN, OBJECTIVE_XI_CAPTAIN_FT)
-# Path FT mode: allow this many hits beyond the free-transfer bank at a snapshot.
-MAX_HITS_SNAPSHOT = 2
-# Potential energy on ft_after: U(b)=ν·φ(b). Default 0 = legacy objective.
+# Path FT hits: no artificial cap — bound = SQUAD_SIZE (same as L3/L4).
+# Objective still −HIT_COST per paid transfer. Do not restore max_hits=2.
+MAX_HITS_SNAPSHOT = int(SQUAD_SIZE)
+# Potential energy on ft_after: U(b)=ν·φ(b)·W. Default 0 = legacy objective.
 # Locked trial value lives in protocol.cascade_ft_pe_path (ν=HIT_COST/2).
 DEFAULT_FT_PE_NU = 0.0
 
@@ -1076,8 +1078,10 @@ def _pick_squad_xi_captain_ft(
 ) -> dict[str, Any]:
     """Choose transfers maximising S − hit_pts + U(ft_after).
 
-    Legacy control is ``ft_pe_nu=0`` (``S − hit_pts`` only). With ``ft_pe_nu>0``,
-    unused bank has potential energy via :func:`ft_bank_potential`.
+    ``max_hits`` defaults to ``SQUAD_SIZE`` (unconstrained aside from squad
+    feasibility); the −4/hit term is the only hit brake. Legacy control is
+    ``ft_pe_nu=0`` (``S − hit_pts`` only). With ``ft_pe_nu>0``, unused bank
+    has potential energy via :func:`ft_bank_potential`.
     """
     from src.rules.fpl_2026 import advance_ft, hit_cost
 
