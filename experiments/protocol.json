@@ -1500,7 +1500,9 @@
   "cascade_ft_pe_path": {
     "locked": "2026-10-21",
     "revised": "2026-10-21 — U scaled by remaining-horizon discount mass W=Σγ^h so PE shares the MILP ledger (ν alone is ~points/week)",
-    "status": "queued",
+    "status": "done_diagnostic",
+    "decision": "keep_watching_pe_small",
+    "result": "2025-26 N=12: cand−ctrl transfers −0.33/strand, paid −0.33, hit pts −1.3, path actual +1.7, resid bias −0.38; still burns ~2FT+hits most snapshots",
     "role": "path FT objective with potential energy on ft_after vs current XI+cap−hits",
     "module": "src/eval/cascade_ft_pe_path.py",
     "report": "reports/cascade_ft_pe_path.md",

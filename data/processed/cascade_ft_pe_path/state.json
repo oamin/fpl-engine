@@ -28,8 +28,8 @@
   "arms": {
     "control": {
       "ft_pe_nu": 0.0,
-      "elapsed_s": 88.43642854690552,
-      "path_elapsed_s": 85.14864754676819,
+      "elapsed_s": 88.45661950111389,
+      "path_elapsed_s": 85.16165542602539,
       "transfers": {
         "n_squad_rows": 72,
         "mean_transfers_per_strand": 19.083333333333332,
@@ -171,13 +171,13 @@
     },
     "candidate": {
       "ft_pe_nu": 2.0,
-      "elapsed_s": 88.48919010162354,
-      "path_elapsed_s": 85.13707494735718,
+      "elapsed_s": 88.4698429107666,
+      "path_elapsed_s": 85.1263575553894,
       "transfers": {
         "n_squad_rows": 72,
-        "mean_transfers_per_strand": 19.083333333333332,
-        "mean_hit_pts_per_strand": 36.333333333333336,
-        "mean_paid_per_strand": 9.083333333333334,
+        "mean_transfers_per_strand": 18.75,
+        "mean_hit_pts_per_strand": 35.0,
+        "mean_paid_per_strand": 8.75,
         "mean_free_used_per_strand": 10.0,
         "per_gw": [
           {
@@ -190,34 +190,34 @@
           },
           {
             "gw": 12,
-            "mean_transfers": 3.917,
-            "mean_hit_pts": 7.667,
-            "mean_paid": 1.917,
-            "mean_free_used": 2.0,
-            "mean_ft_after": 1.0
+            "mean_transfers": 3.75,
+            "mean_hit_pts": 7.333,
+            "mean_paid": 1.833,
+            "mean_free_used": 1.917,
+            "mean_ft_after": 1.083
           },
           {
             "gw": 14,
-            "mean_transfers": 3.833,
-            "mean_hit_pts": 7.333,
-            "mean_paid": 1.833,
+            "mean_transfers": 3.667,
+            "mean_hit_pts": 6.667,
+            "mean_paid": 1.667,
             "mean_free_used": 2.0,
-            "mean_ft_after": 1.0
+            "mean_ft_after": 1.083
           },
           {
             "gw": 16,
-            "mean_transfers": 3.583,
-            "mean_hit_pts": 6.333,
-            "mean_paid": 1.583,
-            "mean_free_used": 2.0,
-            "mean_ft_after": 1.0
+            "mean_transfers": 3.417,
+            "mean_hit_pts": 6.0,
+            "mean_paid": 1.5,
+            "mean_free_used": 1.917,
+            "mean_ft_after": 1.167
           },
           {
             "gw": 18,
-            "mean_transfers": 3.917,
+            "mean_transfers": 4.083,
             "mean_hit_pts": 7.667,
             "mean_paid": 1.917,
-            "mean_free_used": 2.0,
+            "mean_free_used": 2.167,
             "mean_ft_after": 1.0
           }
         ]
@@ -253,64 +253,64 @@
         },
         {
           "gw": 12,
-          "path_pred": 55.089315422752186,
-          "path_actual": 36.75,
-          "path_resid": 18.339315422752186,
+          "path_pred": 54.61811933381883,
+          "path_actual": 36.166666666666664,
+          "path_resid": 18.451452667152168,
           "n_strands": 12
         },
         {
           "gw": 13,
-          "path_pred": 58.25061583345169,
-          "path_actual": 28.416666666666668,
-          "path_resid": 29.833949166785022,
+          "path_pred": 57.76100308902371,
+          "path_actual": 28.166666666666668,
+          "path_resid": 29.594336422357042,
           "n_strands": 12
         },
         {
           "gw": 14,
-          "path_pred": 53.05937081416889,
-          "path_actual": 50.583333333333336,
-          "path_resid": 2.4760374808355508,
+          "path_pred": 52.96719578967293,
+          "path_actual": 51.083333333333336,
+          "path_resid": 1.8838624563395925,
           "n_strands": 12
         },
         {
           "gw": 15,
-          "path_pred": 56.18440141068618,
-          "path_actual": 64.08333333333333,
-          "path_resid": -7.898931922647151,
+          "path_pred": 56.19902292771123,
+          "path_actual": 65.08333333333333,
+          "path_resid": -8.884310405622095,
           "n_strands": 12
         },
         {
           "gw": 16,
-          "path_pred": 56.58905417976015,
-          "path_actual": 58.666666666666664,
-          "path_resid": -2.077612486906517,
+          "path_pred": 56.67070455075582,
+          "path_actual": 58.0,
+          "path_resid": -1.329295449244178,
           "n_strands": 12
         },
         {
           "gw": 17,
-          "path_pred": 60.549276742836355,
-          "path_actual": 69.0,
-          "path_resid": -8.450723257163645,
+          "path_pred": 60.20685157681734,
+          "path_actual": 69.66666666666667,
+          "path_resid": -9.459815089849329,
           "n_strands": 12
         },
         {
           "gw": 18,
-          "path_pred": 43.97705738657833,
-          "path_actual": 54.75,
-          "path_resid": -10.77294261342167,
+          "path_pred": 43.153033196869465,
+          "path_actual": 55.75,
+          "path_resid": -12.596966803130535,
           "n_strands": 12
         },
         {
           "gw": 19,
-          "path_pred": 39.3426931352489,
+          "path_pred": 38.56311092166668,
           "path_actual": 48.5,
-          "path_resid": -9.1573068647511,
+          "path_resid": -9.936889078333323,
           "n_strands": 12
         }
       ],
-      "path_actual_sum": 646.4166666666667,
-      "path_resid_bias": 1.0617404631845673,
-      "path_resid_mae": 11.09552371273046
+      "path_actual_sum": 648.0833333333333,
+      "path_resid_bias": 0.6809562793667894,
+      "path_resid_mae": 11.356366142460908
     }
   },
   "strands": {
@@ -1361,17 +1361,17 @@
           },
           {
             "gw": 16,
-            "n_transfers": 2,
+            "n_transfers": 1,
             "hits": 0,
             "ft_before": 2,
-            "ft_after": 1,
+            "ft_after": 2,
             "captain_id": "2025-26:82"
           },
           {
             "gw": 18,
-            "n_transfers": 4,
+            "n_transfers": 5,
             "hits": 8,
-            "ft_before": 2,
+            "ft_before": 3,
             "ft_after": 1,
             "captain_id": "2025-26:449"
           }
@@ -1504,33 +1504,33 @@
           },
           {
             "gw": 12,
-            "n_transfers": 3,
-            "hits": 4,
+            "n_transfers": 1,
+            "hits": 0,
             "ft_before": 2,
-            "ft_after": 1,
+            "ft_after": 2,
             "captain_id": "2025-26:72"
           },
           {
             "gw": 14,
-            "n_transfers": 4,
-            "hits": 8,
-            "ft_before": 2,
-            "ft_after": 1,
+            "n_transfers": 2,
+            "hits": 0,
+            "ft_before": 3,
+            "ft_after": 2,
             "captain_id": "2025-26:430"
           },
           {
             "gw": 16,
-            "n_transfers": 3,
-            "hits": 4,
-            "ft_before": 2,
-            "ft_after": 1,
+            "n_transfers": 2,
+            "hits": 0,
+            "ft_before": 3,
+            "ft_after": 2,
             "captain_id": "2025-26:430"
           },
           {
             "gw": 18,
-            "n_transfers": 4,
+            "n_transfers": 5,
             "hits": 8,
-            "ft_before": 2,
+            "ft_before": 3,
             "ft_after": 1,
             "captain_id": "2025-26:430"
           }
@@ -1592,11 +1592,11 @@
     ]
   },
   "delta_candidate_minus_control": {
-    "transfers_per_strand": 0.0,
-    "paid_per_strand": 0.0,
-    "hit_pts_per_strand": 0.0,
-    "path_actual_sum": 0.0,
-    "path_resid_bias": 0.0
+    "transfers_per_strand": -0.33333333333333215,
+    "paid_per_strand": -0.3333333333333339,
+    "hit_pts_per_strand": -1.3333333333333357,
+    "path_actual_sum": 1.666666666666515,
+    "path_resid_bias": -0.3807841838177779
   },
-  "elapsed_s": 179.33826971054077
+  "elapsed_s": 179.3407700061798
 }

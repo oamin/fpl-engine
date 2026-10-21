@@ -1,10 +1,10 @@
 {
   "delta": {
-    "transfers_per_strand": 0.0,
-    "paid_per_strand": 0.0,
-    "hit_pts_per_strand": 0.0,
-    "path_actual_sum": 0.0,
-    "path_resid_bias": 0.0
+    "transfers_per_strand": -0.33333333333333215,
+    "paid_per_strand": -0.3333333333333339,
+    "hit_pts_per_strand": -1.3333333333333357,
+    "path_actual_sum": 1.666666666666515,
+    "path_resid_bias": -0.3807841838177779
   },
   "control": {
     "transfers": {
@@ -62,9 +62,9 @@
   "candidate": {
     "transfers": {
       "n_squad_rows": 72,
-      "mean_transfers_per_strand": 19.083333333333332,
-      "mean_hit_pts_per_strand": 36.333333333333336,
-      "mean_paid_per_strand": 9.083333333333334,
+      "mean_transfers_per_strand": 18.75,
+      "mean_hit_pts_per_strand": 35.0,
+      "mean_paid_per_strand": 8.75,
       "mean_free_used_per_strand": 10.0,
       "per_gw": [
         {
@@ -77,40 +77,40 @@
         },
         {
           "gw": 12,
-          "mean_transfers": 3.917,
-          "mean_hit_pts": 7.667,
-          "mean_paid": 1.917,
-          "mean_free_used": 2.0,
-          "mean_ft_after": 1.0
+          "mean_transfers": 3.75,
+          "mean_hit_pts": 7.333,
+          "mean_paid": 1.833,
+          "mean_free_used": 1.917,
+          "mean_ft_after": 1.083
         },
         {
           "gw": 14,
-          "mean_transfers": 3.833,
-          "mean_hit_pts": 7.333,
-          "mean_paid": 1.833,
+          "mean_transfers": 3.667,
+          "mean_hit_pts": 6.667,
+          "mean_paid": 1.667,
           "mean_free_used": 2.0,
-          "mean_ft_after": 1.0
+          "mean_ft_after": 1.083
         },
         {
           "gw": 16,
-          "mean_transfers": 3.583,
-          "mean_hit_pts": 6.333,
-          "mean_paid": 1.583,
-          "mean_free_used": 2.0,
-          "mean_ft_after": 1.0
+          "mean_transfers": 3.417,
+          "mean_hit_pts": 6.0,
+          "mean_paid": 1.5,
+          "mean_free_used": 1.917,
+          "mean_ft_after": 1.167
         },
         {
           "gw": 18,
-          "mean_transfers": 3.917,
+          "mean_transfers": 4.083,
           "mean_hit_pts": 7.667,
           "mean_paid": 1.917,
-          "mean_free_used": 2.0,
+          "mean_free_used": 2.167,
           "mean_ft_after": 1.0
         }
       ]
     },
-    "path_actual_sum": 646.4166666666667,
-    "path_resid_bias": 1.0617404631845673,
+    "path_actual_sum": 648.0833333333333,
+    "path_resid_bias": 0.6809562793667894,
     "ft_pe_nu": 2.0
   }
 }

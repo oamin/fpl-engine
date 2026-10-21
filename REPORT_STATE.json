@@ -1,23 +1,18 @@
 {
-  "task": "top_mid_fwd_ga_mismatch_dig",
+  "task": "cascade_ft_pe_path",
   "status": "done_diagnostic",
+  "decision": "keep_watching_pe_small",
   "season": "2025-26",
-  "window": "GW8-19",
-  "setup": "full-side minutes-oracle score_team_side; as-of rates/α at GW6; top=xp decile MID+FWD",
-  "alpha_g": 0.9597,
-  "alpha_a": 0.9194,
-  "headline": {
-    "top_goals_over_EG": 0.851,
-    "top_assists_over_EA": 0.612,
-    "rest_goals_over_EG": 0.888,
-    "rest_assists_over_EA": 0.842
+  "n": 12,
+  "candidate_nu": 2.0,
+  "delta_candidate_minus_control": {
+    "transfers_per_strand": -0.33,
+    "paid_per_strand": -0.33,
+    "hit_pts_per_strand": -1.33,
+    "path_actual_sum": 1.67,
+    "path_resid_bias": -0.38
   },
-  "decomposition_pool_relative": {
-    "goals_pot_team_pool_over_G_team": 0.823,
-    "goals_share_factor": 1.034,
-    "assists_pot_team_pool_over_A_team": 0.717,
-    "assists_share_factor": 0.854
-  },
-  "verdict": "Goals miss on top MID+FWD is mostly fat pots on their fixtures (shares OK when team scores). Assists miss is pot short plus over-concentrated sA on the hot μ tail.",
-  "report": "reports/top_mid_fwd_ga_mismatch.md"
+  "wall_s": 179.3,
+  "report": "reports/cascade_ft_pe_path.md",
+  "note": "PE on ft_after moves slightly the right way but does not stop path FT burn; do not inflate ν"
 }

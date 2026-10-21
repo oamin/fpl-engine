@@ -69,6 +69,14 @@ shares ≈OK when the side scores). Assists miss ≈ **pot** (≈0.72) **and** f
 `sA` on the hot μ tail (share factor ≈0.85). Do not chase goal-share retunes
 for this bias first. Report: `reports/top_mid_fwd_ga_mismatch.md`.
 
+## Noted — path FT potential energy (2026-10-21)
+
+`cascade_ft_pe_path`: `V = S − hits + ν·φ(b')·W` with ν=HIT_COST/2, W=Σγ^h.
+Vs legacy path: paid −0.33/strand, hit pts −1.3, actual +1.7 — PE moves the
+right way but does **not** stop snapshot FT burn (generative S gaps dominate).
+Do not inflate ν on this slice. Continuation `U(b)` is the next natural form
+if revisited. Report: `reports/cascade_ft_pe_path.md`.
+
 ## Noted — historical rate baseline for cascade (2026-10-21)
 
 `score_xp_v2_rate_baseline_prior`: season start = player prior (all prior
