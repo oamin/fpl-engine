@@ -1420,6 +1420,24 @@
     "note": "Distinct from cascade_viability_batch B1 (same-GW aggregator).",
     "any_later_change": "dated protocol update required"
   },
+  "cascade_lineup_off_tt1": {
+    "locked": "2026-10-21",
+    "status": "running",
+    "role": "trial: freeze minutes (lineup_cov=False) on short gen vs mean",
+    "module": "src/eval/cascade_lineup_off_tt1.py",
+    "report": "reports/cascade_lineup_off_tt1.md",
+    "treatment": "generative MC-mean N_MC=20 with lineup_cov=False (mean minutes; k∼M→attack→CS/GC)",
+    "baseline": "score_team_side on same FD centreline fits for decision GW(t:t+1)",
+    "diagnostic": "gen lineup_cov=True − gen_off; gen_on − mean",
+    "metric": "player-GW gaussian_log_score; paired Δ by decision_gw; cluster_interval CLOSED_SEASONS",
+    "window": "decision GW8–27",
+    "n_mc": 20,
+    "sigma": 3.0,
+    "seed": 7,
+    "seasons": ["2022-23", "2023-24", "2024-25", "2025-26"],
+    "note": "Tests PI hypothesis that rolling squad/minutes is overkill",
+    "any_later_change": "dated protocol update required"
+  },
   "cascade_pathv_gen_vs_mean_milp": {
     "locked": "2026-10-21",
     "status": "done_diagnostic",
