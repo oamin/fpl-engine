@@ -31,7 +31,9 @@ Open-loop joint path · FT PE ν=4. Wall: 114.9s
 
 ## Decision
 
-**`keep_watching_bench_alpha_moves`** — diagnostic only (not a four-season promote).
+**`keep_watching_bench_alpha_moves`** — α=0.10 barely moves the schedule
+(Δpaid +0.25) and lifts path actual ~+4. Does **not** cut hit churn on this
+open-loop board. Diagnostic only (not a four-season promote); do not default α on yet.
 
 ## Artefacts
 

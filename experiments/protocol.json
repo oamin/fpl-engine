@@ -1581,7 +1581,9 @@
   },
   "cascade_path_bench_weight": {
     "locked": "2026-10-22",
-    "status": "running",
+    "status": "done_diagnostic",
+    "decision": "keep_watching_bench_alpha_moves",
+    "result": "2025-26 N=12 α=0.10 vs 0: Δtransfers +0.25, Δpaid +0.25, terminal ft 0, path actual +4.3. Small schedule move; actual slightly up.",
     "role": "credit bench cover in path objective so rotation partners are not sold for free",
     "module": "src/eval/cascade_path_bench_weight.py",
     "report": "reports/cascade_path_bench_weight.md",
@@ -1597,7 +1599,8 @@
     "seed": 7,
     "metric": "diagnostic: transfers / paid / terminal ft / path actual — not a four-season promote",
     "promote_rule": "none this batch",
-    "not": "four-season gate; retune α on resid; revive climb first-sub transfer value",
+    "not": "four-season gate; retune α on resid; revive climb first-sub transfer value; default α on without further screen",
+    "note": "α=0.10 does not cut hit churn on open-loop path; modest actual lift only.",
     "any_later_change": "dated protocol update required"
   },
   "cascade_deadline_causal_minutes": {

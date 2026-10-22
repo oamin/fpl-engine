@@ -1,23 +1,23 @@
 {
-  "task": "cascade_deadline_causal_minutes",
+  "task": "cascade_path_bench_weight",
   "status": "done",
-  "change": "Oracle minutes only at each GW deadline; rolling replan (lookahead=4) vs open-loop frozen minutes",
+  "change": "Path objective bench cover weight α; trial α=0.10 vs 0 on open-loop joint plan",
   "modules": [
-    "src/models/deadline_minutes.py",
     "src/models/path_transfer_plan.py",
     "src/models/multistage_mc_milp.py",
-    "src/eval/cascade_deadline_causal_minutes.py",
+    "src/eval/cascade_path_bench_weight.py",
     "src/eval/cascade_mean_path_gw_resid.py"
   ],
-  "protocol": "cascade_deadline_causal_minutes",
+  "protocol": "cascade_path_bench_weight",
+  "alpha_lock": 0.10,
   "retest_n12": {
     "season": "2025-26",
-    "delta_transfers": 27.75,
-    "delta_paid": 27.67,
-    "delta_hit_pts": 110.7,
-    "delta_terminal_ft": -0.08,
-    "delta_path_actual": 11.8,
-    "decision": "keep_watching_causal_moves"
+    "delta_transfers": 0.25,
+    "delta_paid": 0.25,
+    "delta_hit_pts": 1.0,
+    "delta_terminal_ft": 0.0,
+    "delta_path_actual": 4.3,
+    "decision": "keep_watching_bench_alpha_moves"
   },
-  "note": "Causal minutes create shocks the open-loop freeze hid; path hits harder rather than banking FTs"
+  "note": "V = α·squad + (1-α)·XI + cap; α=0.10 does not cut hits; modest actual lift"
 }

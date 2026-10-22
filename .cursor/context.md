@@ -24,6 +24,7 @@ Updated: 2026-10-20. **Numagent 2.0** is the product on main (`protocol.numagent
 | **16. Path every-GW transfers** | **locked** | Joint path plan schedules every horizon GW (`cascade_joint_path_plan`). Hard must-spend: `e=max(0,k−f)`. |
 | **17. Cascade γ** | **locked γ=1** | Removed climb `γ=0.9` contamination from cascade/multistage defaults (`cascade_gamma`). |
 | **18. Deadline-causal minutes** | **done (diagnostic)** | Oracle m only at deadline GW; as-of for later; rolling replan. N=12: +hits, actual +12, terminal FT flat. `reports/cascade_deadline_causal_minutes.md`. |
+| **19. Path bench weight α** | **done (diagnostic)** | `V=α·squad+(1-α)·XI+cap`. N=12 α=0.10: Δpaid +0.25, actual +4.3 — not default-on. `reports/cascade_path_bench_weight.md`. |
 
 ## Plan
 
