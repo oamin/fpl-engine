@@ -40,9 +40,6 @@ from src.rules.fpl_2026 import (
 # Tractability: keep top-N by mean horizon score (per-position floors below).
 DEFAULT_TOP_N = 48
 POS_FLOOR = {"GKP": 3, "DEF": 8, "MID": 8, "FWD": 5}
-# Per-buy friction so free FTs are not spent on zero-gain reshuffles.
-# Large enough to beat HiGHS default MIP gap on flat boards.
-TRANSFER_EPS = 1e-2
 
 
 def select_plan_candidates(
@@ -208,8 +205,6 @@ def pick_path_transfer_plan(
             c_obj[ix_c(t, i)] = -w * float(scores[t, i])
     for t in range(1, H):
         c_obj[ix_e(t)] = float(HIT_COST)
-        for i in range(n):
-            c_obj[ix_buy(t, i)] = float(TRANSFER_EPS)
     # Terminal bank PE: max ν·f_H → minimise −ν·f_H.
     # (Sum of week-to-week ΔPE = ν·(f_H − f_0); f_0 fixed at 1 after open.)
     if use_pe:

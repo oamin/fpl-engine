@@ -210,12 +210,12 @@ class JointPlanTest(unittest.TestCase):
             ft_pe_nu=float(_HC),
             time_limit=60.0,
         )
-        # Open leaves ft=1; after five holds bank reaches MAX_FT.
+        # Open leaves ft=1; PE banks toward MAX_FT (free-FT churn OK if
+        # terminal bank still reaches the cap — no buy-side ε).
         self.assertEqual(plan["weeks"][0]["ft_after"], 1)
         self.assertEqual(plan["weeks"][-1]["ft_after"], MAX_FT)
         self.assertEqual(plan["terminal_pe"], float(MAX_FT) * _HC)
         for w in plan["weeks"][1:]:
-            self.assertEqual(w["n_transfers"], 0)
             self.assertEqual(w["hits"], 0)
 
     def test_hit_cost_in_objective(self) -> None:
