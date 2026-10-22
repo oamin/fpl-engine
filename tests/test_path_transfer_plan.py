@@ -238,6 +238,56 @@ class JointPlanTest(unittest.TestCase):
         )
         self.assertEqual(paid, 0)
 
+    def test_from_owned_transfers_and_ft_bank(self) -> None:
+        """Rolling start: transfer from a held 15 with a given FT bank."""
+        pool = _candidates()
+        gws = [9, 10]
+        n = len(pool)
+        S_pool = {g: np.full(n, 2.0) for g in gws}
+        mid_i = int(pool.index[pool["position"] == "MID"][-1])
+        S_pool[10][mid_i] = 30.0
+        # Build a legal owned 15 from cheap players.
+        owned_idx: list[int] = []
+        for pos, need in (("GKP", 2), ("DEF", 5), ("MID", 5), ("FWD", 3)):
+            owned_idx.extend(
+                pool.index[pool["position"] == pos].tolist()[:need]
+            )
+        owned_ids = [str(pool.iloc[i]["player_id"]) for i in owned_idx]
+        self.assertEqual(len(owned_ids), SQUAD_SIZE)
+        star_id = str(pool.iloc[mid_i]["player_id"])
+        cands = select_plan_candidates(
+            pool,
+            S_pool,
+            gws=gws,
+            buy_ids=None,
+            top_n=48,
+            force_ids=set(owned_ids),
+        )
+        S = score_matrix_for_candidates(cands, pool, S_pool, gws)
+        plan = pick_path_transfer_plan(
+            cands,
+            S,
+            gws,
+            gamma=1.0,
+            ft_pe_nu=0.0,
+            time_limit=60.0,
+            start_owned_ids=owned_ids,
+            start_ft=2,
+        )
+        w0 = plan["weeks"][0]
+        self.assertEqual(w0["ft_before"], 2)
+        self.assertTrue(plan["from_owned"])
+        # Must-spend / bank advance consistent.
+        for w in plan["weeks"]:
+            nt = int(w["n_transfers"])
+            fb = int(w["ft_before"])
+            paid = max(0, nt - fb)
+            self.assertEqual(int(w["hits"]), paid * HIT_COST)
+            u = min(nt, fb)
+            self.assertEqual(int(w["ft_after"]), min(MAX_FT, fb - u + 1))
+        # Star eventually owned if the bump is large enough.
+        self.assertIn(star_id, plan["weeks"][-1]["player_ids"])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,23 +1,23 @@
 {
-  "task": "cascade_ft_pe_simple",
+  "task": "cascade_deadline_causal_minutes",
   "status": "done",
-  "change": "FT PE = hit value: U(b)=ν·b with ν=HIT_COST (+4/FT, +20 at cap); DEFAULT_FT_PE_NU on; hard must-spend before hits; retired φ·W",
+  "change": "Oracle minutes only at each GW deadline; rolling replan (lookahead=4) vs open-loop frozen minutes",
   "modules": [
+    "src/models/deadline_minutes.py",
     "src/models/path_transfer_plan.py",
     "src/models/multistage_mc_milp.py",
-    "src/eval/cascade_ft_pe_path.py",
+    "src/eval/cascade_deadline_causal_minutes.py",
     "src/eval/cascade_mean_path_gw_resid.py"
   ],
-  "protocol": "cascade_ft_pe_path",
-  "U": {"0": 0, "1": 4, "2": 8, "3": 12, "4": 16, "5": 20},
+  "protocol": "cascade_deadline_causal_minutes",
   "retest_n12": {
     "season": "2025-26",
-    "delta_transfers": -0.08,
-    "delta_paid": 0.0,
-    "delta_hit_pts": 0.0,
-    "terminal_ft": "1.00→1.08",
-    "path_actual": "+0.6",
-    "decision": "keep_watching_pe_small"
+    "delta_transfers": 27.75,
+    "delta_paid": 27.67,
+    "delta_hit_pts": 110.7,
+    "delta_terminal_ft": -0.08,
+    "delta_path_actual": 11.8,
+    "decision": "keep_watching_causal_moves"
   },
-  "note": "Hold below cap → +4 PE; at five FTs weekly grant +0 unless one FT used"
+  "note": "Causal minutes create shocks the open-loop freeze hid; path hits harder rather than banking FTs"
 }
