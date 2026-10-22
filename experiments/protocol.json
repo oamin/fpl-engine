@@ -1579,6 +1579,17 @@
     "seed": 7,
     "any_later_change": "dated protocol update required"
   },
+  "cascade_path_bench_weight": {
+    "locked": "2026-10-22",
+    "revised": "2026-10-22 — PI rejected; α removed from path objective",
+    "status": "rejected",
+    "decision": "reject_bench_alpha",
+    "result": "α=0.10: Δpaid +0.25, actual +4.3. α=0.50: Δpaid +5.75, hit_pts +23, actual +2.0. Form rejected as inelegant; code removed.",
+    "role": "was: credit bench cover via α·squad+(1-α)·XI; retired",
+    "report": "reports/cascade_path_bench_weight.md",
+    "not": "restore bench_alpha in path MILP; revive climb first-sub transfer value",
+    "any_later_change": "dated protocol update required"
+  },
   "cascade_deadline_causal_minutes": {
     "locked": "2026-10-22",
     "status": "done_diagnostic",
