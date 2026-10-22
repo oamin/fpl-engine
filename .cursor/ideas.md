@@ -78,6 +78,16 @@ one FT used. Concave φ·W and ν=HIT_COST/2 retired. Joint-plan N=12 under γ=1
 (`keep_watching_pe_small`). `DEFAULT_FT_PE_NU=HIT_COST` on for
 `xi_plus_captain_ft`. Report: `reports/cascade_ft_pe_path.md`.
 
+## Noted — deadline-causal minutes (2026-10-22)
+
+Hypothesis: FT bank is insurance for unexpected minutes drops; open-loop
+frozen minutes hide that risk. Implemented rolling replan with oracle minutes
+only at the current deadline (as-of for later). N=12 vs open-loop: path
+**hits much more** (Δpaid +28) and actual rises (~+12), but terminal FT does
+not bank. PE=+4 is not a strong enough hold through deadline shocks.
+`keep_watching_causal_moves`. Report:
+`reports/cascade_deadline_causal_minutes.md`.
+
 ## Rejected — concave φ·W FT PE (2026-10-21)
 
 `U=ν·φ(b)·W` with ν=HIT_COST/2 was inert under joint-plan γ=1 and mis-scaled

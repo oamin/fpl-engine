@@ -99,6 +99,16 @@ OBJECTIVE_SQUAD_SUM = "squad_sum"
 OBJECTIVE_XI_CAPTAIN = "xi_plus_captain"
 OBJECTIVE_XI_CAPTAIN_FT = "xi_plus_captain_ft"
 OBJECTIVES = (OBJECTIVE_SQUAD_SUM, OBJECTIVE_XI_CAPTAIN, OBJECTIVE_XI_CAPTAIN_FT)
+# Path planner information set for minutes:
+# - open_loop: freeze pool minutes; one joint MILP over the horizon
+# - deadline_causal: at each deadline, oracle minutes for that GW only;
+#   as-of (GW < d) for later weeks; commit week d and replan
+PATH_PLAN_OPEN_LOOP = "open_loop"
+PATH_PLAN_DEADLINE_CAUSAL = "deadline_causal"
+PATH_PLAN_MODES = (PATH_PLAN_OPEN_LOOP, PATH_PLAN_DEADLINE_CAUSAL)
+# Receding look-ahead (GWs) for deadline-causal rolling replans.
+DEFAULT_CAUSAL_LOOKAHEAD = 4
+DEFAULT_CAUSAL_MILP_TIME = 12.0
 # Path FT hits: no artificial cap — bound = SQUAD_SIZE (same as L3/L4).
 # Objective still −HIT_COST per paid transfer. Do not restore max_hits=2.
 MAX_HITS_SNAPSHOT = int(SQUAD_SIZE)
@@ -698,6 +708,31 @@ def _undiscounted_scores_by_gw(
     return out
 
 
+def _append_plan_week(
+    result: StrandResult,
+    week: Mapping[str, Any],
+    *,
+    plan_tag: str,
+) -> None:
+    result.squads.append(
+        {
+            "gw": int(week["gw"]),
+            "player_ids": list(week["player_ids"]),
+            "names": list(week["names"]),
+            "score_sum": float(week["week_score"]),
+            "objective": OBJECTIVE_XI_CAPTAIN_FT,
+            "objective_value": float(week["week_score"]) - float(week["hits"]),
+            "captain_id": week["captain_id"],
+            "xi_ids": list(week["xi_ids"]),
+            "n_transfers": int(week["n_transfers"]),
+            "hits": int(week["hits"]),
+            "ft_before": int(week["ft_before"]),
+            "ft_after": int(week["ft_after"]),
+            "plan": plan_tag,
+        }
+    )
+
+
 def _emit_joint_ft_plan(
     result: StrandResult,
     *,
@@ -735,23 +770,7 @@ def _emit_joint_ft_plan(
         time_limit=tlim,
     )
     for week in plan["weeks"]:
-        result.squads.append(
-            {
-                "gw": int(week["gw"]),
-                "player_ids": list(week["player_ids"]),
-                "names": list(week["names"]),
-                "score_sum": float(week["week_score"]),
-                "objective": OBJECTIVE_XI_CAPTAIN_FT,
-                "objective_value": float(week["week_score"]) - float(week["hits"]),
-                "captain_id": week["captain_id"],
-                "xi_ids": list(week["xi_ids"]),
-                "n_transfers": int(week["n_transfers"]),
-                "hits": int(week["hits"]),
-                "ft_before": int(week["ft_before"]),
-                "ft_after": int(week["ft_after"]),
-                "plan": "joint_path",
-            }
-        )
+        _append_plan_week(result, week, plan_tag="joint_path")
     result.meta["path_plan"] = {
         "n_candidates": plan["n_candidates"],
         "horizon": plan["horizon"],
@@ -760,6 +779,176 @@ def _emit_joint_ft_plan(
         "terminal_ft": plan["terminal_ft"],
         "terminal_pe": plan["terminal_pe"],
         "ft_pe_nu": plan["ft_pe_nu"],
+        "path_plan_mode": PATH_PLAN_OPEN_LOOP,
+    }
+    return result
+
+
+def _scores_causal_at_deadline(
+    pool: pd.DataFrame,
+    *,
+    deadline_gw: int,
+    remaining: Sequence[int],
+    rolled_by_gw: Mapping[int, list[dict[str, Any]]],
+    fixtures_gw: Mapping[int, list[dict[str, str]]],
+    paths: Mapping[str, ClubPath],
+    league_gf: float,
+    alpha_g: float,
+    alpha_a: float,
+    rng: random.Random,
+    hist_by_team: Mapping[str, pd.DataFrame] | None,
+    generative_attack: bool,
+    lineup_cov: bool,
+    merged: pd.DataFrame,
+    season: str,
+) -> dict[int, np.ndarray]:
+    """Score remaining weeks with deadline-causal minutes.
+
+    GW ``deadline_gw`` uses oracle minutes; later weeks use as-of (GW < d).
+    """
+    from src.models.deadline_minutes import deadline_minute_views, pool_with_minutes
+
+    views = deadline_minute_views(
+        pool, merged, deadline_gw=int(deadline_gw), season=str(season)
+    )
+    out: dict[int, np.ndarray] = {}
+    for gw in remaining:
+        g = int(gw)
+        m_vec = views["this_gw"] if g == int(deadline_gw) else views["asof"]
+        scored_pool = pool_with_minutes(pool, m_vec)
+        part = _undiscounted_scores_by_gw(
+            scored_pool,
+            plan_gws=[g],
+            rolled_by_gw=rolled_by_gw,
+            fixtures_gw=fixtures_gw,
+            paths=paths,
+            league_gf=league_gf,
+            alpha_g=alpha_g,
+            alpha_a=alpha_a,
+            rng=rng,
+            hist_by_team=hist_by_team,
+            generative_attack=generative_attack,
+            lineup_cov=lineup_cov,
+        )
+        out[g] = part[g]
+    return out
+
+
+def _emit_rolling_causal_ft_plan(
+    result: StrandResult,
+    *,
+    pool: pd.DataFrame,
+    plan_gws: Sequence[int],
+    rolled_by_gw: Mapping[int, list[dict[str, Any]]],
+    fixtures_gw: Mapping[int, list[dict[str, str]]],
+    paths: Mapping[str, ClubPath],
+    league_gf: float,
+    alpha_g: float,
+    alpha_a: float,
+    rng: random.Random,
+    hist_by_team: Mapping[str, pd.DataFrame] | None,
+    generative_attack: bool,
+    lineup_cov: bool,
+    buy_ids: set[str] | None,
+    gamma: float,
+    milp_time_limit: float,
+    ft_pe_nu: float,
+    merged: pd.DataFrame,
+    season: str,
+    lookahead: int = DEFAULT_CAUSAL_LOOKAHEAD,
+) -> StrandResult:
+    """Rolling replan: oracle minutes only at the current deadline GW.
+
+    Solves a receding joint window of ``lookahead`` GWs, commits week 0 only.
+    """
+    from src.models.path_transfer_plan import (
+        pick_path_transfer_plan,
+        score_matrix_for_candidates,
+        select_plan_candidates,
+    )
+
+    owned: list[str] | None = None
+    ft_bank = 1
+    n_cands_last = 0
+    statuses: list[str] = []
+    L = max(1, int(lookahead))
+    tlim = float(DEFAULT_CAUSAL_MILP_TIME)
+    if milp_time_limit and float(milp_time_limit) > 0:
+        tlim = max(tlim, min(25.0, float(milp_time_limit) * 2.0))
+    for i, d in enumerate(plan_gws):
+        remaining = [int(g) for g in plan_gws[i:]]
+        window = remaining[:L]
+        scores_by_gw = _scores_causal_at_deadline(
+            pool,
+            deadline_gw=int(d),
+            remaining=window,
+            rolled_by_gw=rolled_by_gw,
+            fixtures_gw=fixtures_gw,
+            paths=paths,
+            league_gf=league_gf,
+            alpha_g=float(alpha_g),
+            alpha_a=float(alpha_a),
+            rng=rng,
+            hist_by_team=hist_by_team,
+            generative_attack=generative_attack,
+            lineup_cov=lineup_cov,
+            merged=merged,
+            season=str(season),
+        )
+        force = set(owned) if owned is not None else None
+        cands = select_plan_candidates(
+            pool,
+            scores_by_gw,
+            gws=window,
+            buy_ids=buy_ids,
+            force_ids=force,
+        )
+        S = score_matrix_for_candidates(cands, pool, scores_by_gw, window)
+        if owned is None:
+            plan = pick_path_transfer_plan(
+                cands,
+                S,
+                window,
+                gamma=float(gamma),
+                max_hits=MAX_HITS_SNAPSHOT,
+                ft_pe_nu=float(ft_pe_nu),
+                time_limit=tlim,
+            )
+        else:
+            plan = pick_path_transfer_plan(
+                cands,
+                S,
+                window,
+                gamma=float(gamma),
+                max_hits=MAX_HITS_SNAPSHOT,
+                ft_pe_nu=float(ft_pe_nu),
+                time_limit=tlim,
+                start_owned_ids=owned,
+                start_ft=int(ft_bank),
+            )
+        week0 = plan["weeks"][0]
+        _append_plan_week(result, week0, plan_tag="rolling_causal")
+        owned = list(week0["player_ids"])
+        ft_bank = int(week0["ft_after"])
+        n_cands_last = int(plan["n_candidates"])
+        statuses.append(str(plan["status"]))
+
+    terminal_ft = int(result.squads[-1]["ft_after"]) if result.squads else 0
+    result.meta["path_plan"] = {
+        "n_candidates": n_cands_last,
+        "horizon": len(plan_gws),
+        "status": statuses[-1] if statuses else "",
+        "terminal_ft": terminal_ft,
+        "terminal_pe": float(
+            ft_bank_potential(terminal_ft, nu=float(ft_pe_nu))
+            if float(ft_pe_nu) > 0
+            else 0.0
+        ),
+        "ft_pe_nu": float(ft_pe_nu),
+        "path_plan_mode": PATH_PLAN_DEADLINE_CAUSAL,
+        "n_replans": len(plan_gws),
+        "lookahead": L,
+        "milp_time_limit": tlim,
     }
     return result
 
@@ -787,20 +976,25 @@ def run_strand(
     profile: Mapping[int, Mapping[str, float]] | None = None,
     selectable_ids: set[str] | None = None,
     ft_pe_nu: float = DEFAULT_FT_PE_NU,
+    path_plan_mode: str = PATH_PLAN_OPEN_LOOP,
+    merged: pd.DataFrame | None = None,
+    season: str | None = None,
 ) -> StrandResult:
     """One coherent MC strand: short/Opta scenarios → score_xp_v2 → MILP.
 
     ``selectable_ids``: when set, generative/mean scores may use the full
     ``pool`` for club share context, but MILP only buys from this id set.
 
-    ``xi_plus_captain_ft``: roll the full horizon, score each GW, then one
-    joint transfer-plan MILP (starting 15 + scheduled transfers/holds/hits).
-    ``snapshot_gws`` is ignored for that objective — every horizon GW is a
-    decision week. ``ft_pe_nu`` weights terminal FT-bank PE ``U=ν·f_H``
-    (default ``HIT_COST``: +4 per stored FT; 0 = off).
+    ``xi_plus_captain_ft``: roll the full horizon, then plan transfers.
+    ``path_plan_mode=open_loop`` (default): one joint MILP on frozen pool
+    minutes. ``deadline_causal``: at each deadline, oracle minutes for that
+    GW only and as-of for later weeks; commit and replan. Requires
+    ``merged`` + ``season``. ``ft_pe_nu`` weights terminal FT-bank PE.
     """
     if objective not in OBJECTIVES:
         raise ValueError(f"unknown objective: {objective!r}")
+    if path_plan_mode not in PATH_PLAN_MODES:
+        raise ValueError(f"unknown path_plan_mode: {path_plan_mode!r}")
     if alpha_g is None or alpha_a is None:
         ag, aa, _, _ = numagent_xp.load_alphas()
         alpha_g = ag if alpha_g is None else alpha_g
@@ -849,12 +1043,38 @@ def run_strand(
                 }
             )
 
-    # FT path: one joint schedule over the whole rolled horizon.
+    # FT path: open-loop joint schedule, or rolling deadline-causal minutes.
     if objective == OBJECTIVE_XI_CAPTAIN_FT:
         plan_gws = [int(g) for g in horizon_gws]
         if not plan_gws:
             return result
         try:
+            if path_plan_mode == PATH_PLAN_DEADLINE_CAUSAL:
+                if merged is None or not season:
+                    raise ValueError(
+                        "deadline_causal path plan requires merged + season"
+                    )
+                return _emit_rolling_causal_ft_plan(
+                    result,
+                    pool=pool,
+                    plan_gws=plan_gws,
+                    rolled_by_gw=rolled_by_gw,
+                    fixtures_gw=fixtures_gw,
+                    paths=paths,
+                    league_gf=league_gf,
+                    alpha_g=float(alpha_g),
+                    alpha_a=float(alpha_a),
+                    rng=rng,
+                    hist_by_team=hist_by_team,
+                    generative_attack=generative_attack,
+                    lineup_cov=lineup_cov,
+                    buy_ids=buy_ids,
+                    gamma=float(gamma),
+                    milp_time_limit=float(milp_time_limit),
+                    ft_pe_nu=float(ft_pe_nu),
+                    merged=merged,
+                    season=str(season),
+                )
             scores_by_gw = _undiscounted_scores_by_gw(
                 pool,
                 plan_gws=plan_gws,

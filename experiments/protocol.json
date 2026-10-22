@@ -1578,5 +1578,28 @@
     "n": 12,
     "seed": 7,
     "any_later_change": "dated protocol update required"
+  },
+  "cascade_deadline_causal_minutes": {
+    "locked": "2026-10-22",
+    "status": "done_diagnostic",
+    "decision": "keep_watching_causal_moves",
+    "result": "2025-26 N=12: causal vs open-loop Δtransfers +27.8, Δpaid +27.7, Δhit_pts +110.7, terminal ft −0.08, path actual +11.8. Minutes shocks drive hit-heavy replan; FT bank does not rise.",
+    "role": "FT banking as insurance: reveal oracle minutes only at each GW deadline and replan vs open-loop frozen minutes",
+    "module": "src/eval/cascade_deadline_causal_minutes.py",
+    "report": "reports/cascade_deadline_causal_minutes.md",
+    "season": "2025-26",
+    "decision_gw": 6,
+    "horizon": "8-19",
+    "control": "path_plan_mode=open_loop: freeze as-of (+GW-t buy overlay) minutes; one joint MILP",
+    "candidate": "path_plan_mode=deadline_causal: at deadline d, oracle minutes for GW d only; as-of (GW<d) for later; rolling replan (lookahead=4); commit week d",
+    "ft_pe_nu": "HIT_COST (both arms)",
+    "motivation": "stored FTs cover unexpected rotations/minutes drops; open-loop foresight removes that risk",
+    "n": 12,
+    "seed": 7,
+    "metric": "diagnostic: transfers / paid / terminal ft / path actual — not a four-season promote",
+    "promote_rule": "none this batch",
+    "not": "four-season gate; change mean-board oracle residuals; chips; promote causal as default without hit-brake work",
+    "note": "Causal minutes make the path react; PE=+4 does not induce banking under deadline shocks (hits absorb the news).",
+    "any_later_change": "dated protocol update required"
   }
 }
