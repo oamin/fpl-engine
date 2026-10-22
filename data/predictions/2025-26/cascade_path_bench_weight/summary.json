@@ -1,0 +1,221 @@
+{
+  "delta": {
+    "transfers_per_strand": 0.25,
+    "paid_per_strand": 0.25,
+    "hit_pts_per_strand": 1.0,
+    "terminal_ft": 0.0,
+    "path_actual_sum": 4.3333333333332575,
+    "path_resid_bias": -0.20049162782465224
+  },
+  "decision": "keep_watching_bench_alpha_moves",
+  "control": {
+    "bench_alpha": 0.0,
+    "elapsed_s": 55.59726309776306,
+    "transfers": {
+      "n_squad_rows": 144,
+      "mean_transfers_per_strand": 26.583333333333332,
+      "mean_hit_pts_per_strand": 62.666666666666664,
+      "mean_paid_per_strand": 15.666666666666666,
+      "mean_free_used_per_strand": 10.916666666666666,
+      "per_gw": [
+        {
+          "gw": 9,
+          "mean_transfers": 1.417,
+          "mean_hit_pts": 2.333,
+          "mean_paid": 0.583,
+          "mean_free_used": 0.833,
+          "mean_ft_after": 1.167
+        },
+        {
+          "gw": 10,
+          "mean_transfers": 2.667,
+          "mean_hit_pts": 6.0,
+          "mean_paid": 1.5,
+          "mean_free_used": 1.167,
+          "mean_ft_after": 1.0
+        },
+        {
+          "gw": 11,
+          "mean_transfers": 2.833,
+          "mean_hit_pts": 7.333,
+          "mean_paid": 1.833,
+          "mean_free_used": 1.0,
+          "mean_ft_after": 1.0
+        },
+        {
+          "gw": 12,
+          "mean_transfers": 2.75,
+          "mean_hit_pts": 7.0,
+          "mean_paid": 1.75,
+          "mean_free_used": 1.0,
+          "mean_ft_after": 1.0
+        },
+        {
+          "gw": 13,
+          "mean_transfers": 2.583,
+          "mean_hit_pts": 6.333,
+          "mean_paid": 1.583,
+          "mean_free_used": 1.0,
+          "mean_ft_after": 1.0
+        },
+        {
+          "gw": 14,
+          "mean_transfers": 2.333,
+          "mean_hit_pts": 5.333,
+          "mean_paid": 1.333,
+          "mean_free_used": 1.0,
+          "mean_ft_after": 1.0
+        },
+        {
+          "gw": 15,
+          "mean_transfers": 2.417,
+          "mean_hit_pts": 6.0,
+          "mean_paid": 1.5,
+          "mean_free_used": 0.917,
+          "mean_ft_after": 1.083
+        },
+        {
+          "gw": 16,
+          "mean_transfers": 2.333,
+          "mean_hit_pts": 5.0,
+          "mean_paid": 1.25,
+          "mean_free_used": 1.083,
+          "mean_ft_after": 1.0
+        },
+        {
+          "gw": 17,
+          "mean_transfers": 3.0,
+          "mean_hit_pts": 8.0,
+          "mean_paid": 2.0,
+          "mean_free_used": 1.0,
+          "mean_ft_after": 1.0
+        },
+        {
+          "gw": 18,
+          "mean_transfers": 2.333,
+          "mean_hit_pts": 5.667,
+          "mean_paid": 1.417,
+          "mean_free_used": 0.917,
+          "mean_ft_after": 1.083
+        },
+        {
+          "gw": 19,
+          "mean_transfers": 1.917,
+          "mean_hit_pts": 3.667,
+          "mean_paid": 0.917,
+          "mean_free_used": 1.0,
+          "mean_ft_after": 1.083
+        }
+      ]
+    },
+    "mean_terminal_ft": 1.0833333333333333,
+    "path_actual_sum": 630.0,
+    "path_resid_bias": -2.873638662713352,
+    "path_resid_mae": 8.272495963524392
+  },
+  "candidate": {
+    "bench_alpha": 0.1,
+    "elapsed_s": 56.985724687576294,
+    "transfers": {
+      "n_squad_rows": 144,
+      "mean_transfers_per_strand": 26.833333333333332,
+      "mean_hit_pts_per_strand": 63.666666666666664,
+      "mean_paid_per_strand": 15.916666666666666,
+      "mean_free_used_per_strand": 10.916666666666666,
+      "per_gw": [
+        {
+          "gw": 9,
+          "mean_transfers": 1.417,
+          "mean_hit_pts": 2.333,
+          "mean_paid": 0.583,
+          "mean_free_used": 0.833,
+          "mean_ft_after": 1.167
+        },
+        {
+          "gw": 10,
+          "mean_transfers": 2.667,
+          "mean_hit_pts": 6.0,
+          "mean_paid": 1.5,
+          "mean_free_used": 1.167,
+          "mean_ft_after": 1.0
+        },
+        {
+          "gw": 11,
+          "mean_transfers": 2.833,
+          "mean_hit_pts": 7.333,
+          "mean_paid": 1.833,
+          "mean_free_used": 1.0,
+          "mean_ft_after": 1.0
+        },
+        {
+          "gw": 12,
+          "mean_transfers": 2.583,
+          "mean_hit_pts": 6.333,
+          "mean_paid": 1.583,
+          "mean_free_used": 1.0,
+          "mean_ft_after": 1.0
+        },
+        {
+          "gw": 13,
+          "mean_transfers": 2.583,
+          "mean_hit_pts": 6.333,
+          "mean_paid": 1.583,
+          "mean_free_used": 1.0,
+          "mean_ft_after": 1.0
+        },
+        {
+          "gw": 14,
+          "mean_transfers": 2.583,
+          "mean_hit_pts": 6.333,
+          "mean_paid": 1.583,
+          "mean_free_used": 1.0,
+          "mean_ft_after": 1.0
+        },
+        {
+          "gw": 15,
+          "mean_transfers": 2.333,
+          "mean_hit_pts": 5.667,
+          "mean_paid": 1.417,
+          "mean_free_used": 0.917,
+          "mean_ft_after": 1.083
+        },
+        {
+          "gw": 16,
+          "mean_transfers": 2.333,
+          "mean_hit_pts": 5.0,
+          "mean_paid": 1.25,
+          "mean_free_used": 1.083,
+          "mean_ft_after": 1.0
+        },
+        {
+          "gw": 17,
+          "mean_transfers": 3.0,
+          "mean_hit_pts": 8.0,
+          "mean_paid": 2.0,
+          "mean_free_used": 1.0,
+          "mean_ft_after": 1.0
+        },
+        {
+          "gw": 18,
+          "mean_transfers": 2.417,
+          "mean_hit_pts": 6.0,
+          "mean_paid": 1.5,
+          "mean_free_used": 0.917,
+          "mean_ft_after": 1.083
+        },
+        {
+          "gw": 19,
+          "mean_transfers": 2.083,
+          "mean_hit_pts": 4.333,
+          "mean_paid": 1.083,
+          "mean_free_used": 1.0,
+          "mean_ft_after": 1.083
+        }
+      ]
+    },
+    "mean_terminal_ft": 1.0833333333333333,
+    "path_actual_sum": 634.3333333333333,
+    "path_resid_bias": -3.074130290538004,
+    "path_resid_mae": 8.409168394674696
+  }
+}

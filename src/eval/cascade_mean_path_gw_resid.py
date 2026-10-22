@@ -324,12 +324,14 @@ def run_path_strands(
     path_plan_mode: str = "open_loop",
     merged: pd.DataFrame | None = None,
     season: str | None = None,
+    bench_alpha: float = 0.0,
 ) -> dict[str, Any]:
     """Path strands. ``pool`` is the share/scoring roster; ``selectable_ids`` is the buy filter.
 
     ``ft_pe_nu`` defaults to ``DEFAULT_FT_PE_NU`` (=HIT_COST): terminal PE
     ``U=ν·f`` on the joint plan. ``path_plan_mode=deadline_causal`` requires
     ``merged`` + ``season`` (oracle minutes only at each deadline GW).
+    ``bench_alpha`` credits bench cover in the path objective.
     """
     from src.models.multistage_mc_milp import DEFAULT_FT_PE_NU as _DEFAULT_FT_PE_NU
 
@@ -366,6 +368,7 @@ def run_path_strands(
             path_plan_mode=str(path_plan_mode),
             merged=merged,
             season=season,
+            bench_alpha=float(bench_alpha),
         )
         strands.append(
             {
