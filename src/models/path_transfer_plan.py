@@ -43,10 +43,6 @@ from src.rules.fpl_2026 import (
 # Tractability: keep top-N by mean horizon score (per-position floors below).
 DEFAULT_TOP_N = 48
 POS_FLOOR = {"GKP": 3, "DEF": 8, "MID": 8, "FWD": 5}
-# Bench cover weight in path objective:
-#   V = Σ [ α·squad_s + (1-α)·XI_s + captain_s ] − hits [+ PE]
-# α=0 → legacy XI+cap only. Locked trial value lives in protocol.
-DEFAULT_BENCH_ALPHA = 0.0
 
 
 def select_plan_candidates(
@@ -144,7 +140,6 @@ def pick_path_transfer_plan(
     time_limit: float = 90.0,
     start_owned_ids: Sequence[str] | None = None,
     start_ft: int = 1,
-    bench_alpha: float = DEFAULT_BENCH_ALPHA,
 ) -> dict[str, Any]:
     """Joint path MILP over ``gws``.
 
@@ -155,9 +150,6 @@ def pick_path_transfer_plan(
 
     When ``ft_pe_nu > 0``, adds terminal PE ``U(f_H)=ν·f_H`` (default
     ``ν=HIT_COST``: +4 per stored FT, +20 at cap).
-
-    ``bench_alpha`` ∈ [0,1] credits bench cover: equivalent to
-    ``α·Σ x s + (1-α)·Σ y s + Σ c s`` (captain still full weight).
     """
     H = int(len(gws))
     n = int(len(candidates))
@@ -165,9 +157,6 @@ def pick_path_transfer_plan(
         raise ValueError(f"scores shape {scores.shape} != ({H}, {n})")
     if H < 1:
         raise ValueError("need at least one GW")
-    alpha = float(bench_alpha)
-    if alpha < 0.0 or alpha > 1.0:
-        raise ValueError(f"bench_alpha out of range: {alpha}")
 
     values = pd.to_numeric(candidates["value"], errors="coerce").fillna(50.0).to_numpy(float)
     positions = candidates["position"].astype(str).to_numpy()
@@ -250,15 +239,11 @@ def pick_path_transfer_plan(
 
     g = float(gamma)
     c_obj = np.zeros(dim)
-    # V = α·Σ x s + (1-α)·Σ y s + Σ c s  → minimise negatives.
     for t in range(H):
         w = g**t
         for i in range(n):
-            s = float(scores[t, i])
-            if alpha > 0.0:
-                c_obj[ix_x(t, i)] = -w * alpha * s
-            c_obj[ix_y(t, i)] = -w * (1.0 - alpha) * s
-            c_obj[ix_c(t, i)] = -w * s
+            c_obj[ix_y(t, i)] = -w * float(scores[t, i])
+            c_obj[ix_c(t, i)] = -w * float(scores[t, i])
     for t in t_xfer:
         c_obj[ix_e(t)] = float(HIT_COST)
     if use_pe:
@@ -550,5 +535,4 @@ def pick_path_transfer_plan(
         ),
         "from_owned": bool(from_owned),
         "start_ft": int(ft0) if from_owned else None,
-        "bench_alpha": float(alpha),
     }

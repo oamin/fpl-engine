@@ -78,12 +78,11 @@ one FT used. Concave φ·W and ν=HIT_COST/2 retired. Joint-plan N=12 under γ=1
 (`keep_watching_pe_small`). `DEFAULT_FT_PE_NU=HIT_COST` on for
 `xi_plus_captain_ft`. Report: `reports/cascade_ft_pe_path.md`.
 
-## Noted — path bench-cover weight α (2026-10-22)
+## Rejected — path bench-cover weight α (2026-10-22)
 
-`V = α·Σ squad_s + (1-α)·Σ XI_s + captain` with a priori α=0.10 on open-loop
-joint path. N=12 vs α=0: schedule almost unchanged (Δpaid +0.25); path actual
-+4.3. Does not cut hit churn; keep watching, do not default α on.
-Report: `reports/cascade_path_bench_weight.md`. Climb “first-sub into transfer
+`V = α·Σ squad_s + (1-α)·Σ XI_s + captain` screened at α=0.10 / 0.50 then
+**rejected** as inelegant. α removed from the path objective. Report kept as
+record: `reports/cascade_path_bench_weight.md`. Climb “first-sub into transfer
 value” remains rejected.
 
 ## Noted — deadline-causal minutes (2026-10-22)

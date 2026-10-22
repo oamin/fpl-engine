@@ -238,34 +238,6 @@ class JointPlanTest(unittest.TestCase):
         )
         self.assertEqual(paid, 0)
 
-    def test_bench_alpha_wires_and_solves(self) -> None:
-        """bench_alpha ∈ (0,1] is accepted and returns a legal plan."""
-        pool = _candidates()
-        gws = [8, 9]
-        n = len(pool)
-        S_pool = {g: np.linspace(1.0, 3.0, n) for g in gws}
-        cands = select_plan_candidates(
-            pool, S_pool, gws=gws, buy_ids=None, top_n=40
-        )
-        S = score_matrix_for_candidates(cands, pool, S_pool, gws)
-        plan = pick_path_transfer_plan(
-            cands,
-            S,
-            gws,
-            gamma=1.0,
-            ft_pe_nu=0.0,
-            bench_alpha=0.10,
-            time_limit=45.0,
-        )
-        self.assertEqual(plan["bench_alpha"], 0.10)
-        self.assertEqual(len(plan["weeks"]), 2)
-        self.assertEqual(len(plan["weeks"][0]["player_ids"]), SQUAD_SIZE)
-        self.assertEqual(len(plan["weeks"][0]["xi_ids"]), 11)
-        with self.assertRaises(ValueError):
-            pick_path_transfer_plan(
-                cands, S, gws, bench_alpha=1.5, time_limit=5.0
-            )
-
     def test_from_owned_transfers_and_ft_bank(self) -> None:
         """Rolling start: transfer from a held 15 with a given FT bank."""
         pool = _candidates()

@@ -1,23 +1,8 @@
 {
   "task": "cascade_path_bench_weight",
-  "status": "done",
-  "change": "Path objective bench cover weight α; trial α=0.10 vs 0 on open-loop joint plan",
-  "modules": [
-    "src/models/path_transfer_plan.py",
-    "src/models/multistage_mc_milp.py",
-    "src/eval/cascade_path_bench_weight.py",
-    "src/eval/cascade_mean_path_gw_resid.py"
-  ],
+  "status": "rejected",
+  "change": "Remove bench_alpha from path MILP objective; PI rejected α·squad form",
   "protocol": "cascade_path_bench_weight",
-  "alpha_lock": 0.10,
-  "retest_n12": {
-    "season": "2025-26",
-    "delta_transfers": 0.25,
-    "delta_paid": 0.25,
-    "delta_hit_pts": 1.0,
-    "delta_terminal_ft": 0.0,
-    "delta_path_actual": 4.3,
-    "decision": "keep_watching_bench_alpha_moves"
-  },
-  "note": "V = α·squad + (1-α)·XI + cap; α=0.10 does not cut hits; modest actual lift"
+  "decision": "reject_bench_alpha",
+  "note": "Objective is again XI + captain − hits [+ terminal FT PE] only"
 }

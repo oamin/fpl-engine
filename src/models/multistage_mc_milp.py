@@ -743,7 +743,6 @@ def _emit_joint_ft_plan(
     gamma: float,
     milp_time_limit: float,
     ft_pe_nu: float,
-    bench_alpha: float = 0.0,
 ) -> StrandResult:
     """Solve one joint path schedule and append weekly squads."""
     from src.models.path_transfer_plan import (
@@ -769,7 +768,6 @@ def _emit_joint_ft_plan(
         max_hits=MAX_HITS_SNAPSHOT,
         ft_pe_nu=float(ft_pe_nu),
         time_limit=tlim,
-        bench_alpha=float(bench_alpha),
     )
     for week in plan["weeks"]:
         _append_plan_week(result, week, plan_tag="joint_path")
@@ -781,7 +779,6 @@ def _emit_joint_ft_plan(
         "terminal_ft": plan["terminal_ft"],
         "terminal_pe": plan["terminal_pe"],
         "ft_pe_nu": plan["ft_pe_nu"],
-        "bench_alpha": plan["bench_alpha"],
         "path_plan_mode": PATH_PLAN_OPEN_LOOP,
     }
     return result
@@ -859,7 +856,6 @@ def _emit_rolling_causal_ft_plan(
     merged: pd.DataFrame,
     season: str,
     lookahead: int = DEFAULT_CAUSAL_LOOKAHEAD,
-    bench_alpha: float = 0.0,
 ) -> StrandResult:
     """Rolling replan: oracle minutes only at the current deadline GW.
 
@@ -917,7 +913,6 @@ def _emit_rolling_causal_ft_plan(
                 max_hits=MAX_HITS_SNAPSHOT,
                 ft_pe_nu=float(ft_pe_nu),
                 time_limit=tlim,
-                bench_alpha=float(bench_alpha),
             )
         else:
             plan = pick_path_transfer_plan(
@@ -930,7 +925,6 @@ def _emit_rolling_causal_ft_plan(
                 time_limit=tlim,
                 start_owned_ids=owned,
                 start_ft=int(ft_bank),
-                bench_alpha=float(bench_alpha),
             )
         week0 = plan["weeks"][0]
         _append_plan_week(result, week0, plan_tag="rolling_causal")
@@ -951,7 +945,6 @@ def _emit_rolling_causal_ft_plan(
             else 0.0
         ),
         "ft_pe_nu": float(ft_pe_nu),
-        "bench_alpha": float(bench_alpha),
         "path_plan_mode": PATH_PLAN_DEADLINE_CAUSAL,
         "n_replans": len(plan_gws),
         "lookahead": L,
@@ -986,7 +979,6 @@ def run_strand(
     path_plan_mode: str = PATH_PLAN_OPEN_LOOP,
     merged: pd.DataFrame | None = None,
     season: str | None = None,
-    bench_alpha: float = 0.0,
 ) -> StrandResult:
     """One coherent MC strand: short/Opta scenarios → score_xp_v2 → MILP.
 
@@ -998,7 +990,6 @@ def run_strand(
     minutes. ``deadline_causal``: at each deadline, oracle minutes for that
     GW only and as-of for later weeks; commit and replan. Requires
     ``merged`` + ``season``. ``ft_pe_nu`` weights terminal FT-bank PE.
-    ``bench_alpha`` credits bench cover in the path objective (0 = XI+cap only).
     """
     if objective not in OBJECTIVES:
         raise ValueError(f"unknown objective: {objective!r}")
@@ -1083,7 +1074,6 @@ def run_strand(
                     ft_pe_nu=float(ft_pe_nu),
                     merged=merged,
                     season=str(season),
-                    bench_alpha=float(bench_alpha),
                 )
             scores_by_gw = _undiscounted_scores_by_gw(
                 pool,
@@ -1108,7 +1098,6 @@ def run_strand(
                 gamma=float(gamma),
                 milp_time_limit=float(milp_time_limit),
                 ft_pe_nu=float(ft_pe_nu),
-                bench_alpha=float(bench_alpha),
             )
         except RuntimeError:
             return result
