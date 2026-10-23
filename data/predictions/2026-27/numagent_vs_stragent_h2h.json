@@ -1,0 +1,55 @@
+{
+  "kind": "numagent_vs_stragent_h2h",
+  "as_of_utc": "2026-10-23T09:12:13Z",
+  "bar": "GW6\u201325 parallel track; first formal read GW26 (string_competitor_plan)",
+  "notes": [
+    "Numagent = FPL entry 2632584 realised points (official).",
+    "Stragent GW6\u20137 = paper (no official freeze); scored from GW6 horizon dry-run.",
+    "Stragent GW8 = official freeze; week not finished yet.",
+    "Alternate GW6 dry-run (Wood, C \u00d8degaard) paper net would be 49 (not used in table)."
+  ],
+  "weeks": [
+    {
+      "gw": 6,
+      "numagent": 56,
+      "numagent_raw": 56,
+      "numagent_hits": 0,
+      "numagent_cap": "Mbeumo",
+      "stragent": 49,
+      "stragent_raw": 49,
+      "stragent_hits": 0,
+      "stragent_cap": "B.Fernandes",
+      "stragent_status": "paper",
+      "delta_num_minus_str": 7,
+      "num_label": "entry (ojaminFC)",
+      "str_label": "horizon dry-run week-0 (Muniz)",
+      "str_autosubs": 0
+    },
+    {
+      "gw": 7,
+      "numagent": 68,
+      "numagent_raw": 68,
+      "numagent_hits": 0,
+      "numagent_cap": "Haaland",
+      "stragent": 61,
+      "stragent_raw": 61,
+      "stragent_hits": 0,
+      "stragent_cap": "Haaland",
+      "stragent_status": "paper",
+      "delta_num_minus_str": 7,
+      "num_label": "PI lock / entry",
+      "str_label": "paper GW7 intention (from GW6 horizon)",
+      "str_autosubs": 2
+    }
+  ],
+  "totals": {
+    "numagent": 124,
+    "stragent": 110,
+    "numagent_lead": 14,
+    "weeks_played": 2
+  },
+  "gw08": {
+    "numagent": "locked (Mainoo\u2192Lewis-Potter, C Haaland) \u2014 pending",
+    "stragent": "frozen (Shaw\u2192Mazraoui, C Haaland) \u2014 pending"
+  }
+}
