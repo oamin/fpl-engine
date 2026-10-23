@@ -6,7 +6,13 @@ import unittest
 
 import numpy as np
 
-from src.markets.attack_roll import EMPTY_A, EMPTY_G, build_side_dice, roll_side_attack
+from src.markets.attack_roll import (
+    EMPTY_A,
+    EMPTY_G,
+    build_side_dice,
+    expected_side_ga,
+    roll_side_attack,
+)
 
 
 class AttackRollTest(unittest.TestCase):
@@ -55,6 +61,31 @@ class AttackRollTest(unittest.TestCase):
         )
         self.assertGreater(float(dice.pi[0]), 0.2)
         self.assertAlmostEqual(float(dice.pi.sum()), 1.0, places=6)
+
+    def test_expected_ga_matches_mc_mean(self) -> None:
+        dice = build_side_dice(
+            ["A", "B", "C"],
+            sG=[0.5, 0.3, 0.2],
+            sA=[0.4, 0.4, 0.2],
+            alpha_g=0.9,
+            alpha_a=0.85,
+            G_team=2.0,
+        )
+        k = 3
+        eg, ea = expected_side_ga(dice, k)
+        rng = np.random.default_rng(42)
+        n_mc = 8000
+        g_sum = {n: 0.0 for n in dice.names}
+        a_sum = {n: 0.0 for n in dice.names}
+        for _ in range(n_mc):
+            roll = roll_side_attack(dice, goals_for=k, rng=rng)
+            for s in roll.scorers:
+                g_sum[s] += 1.0
+            for a in roll.assisters:
+                a_sum[a] += 1.0
+        for n in dice.names:
+            self.assertAlmostEqual(g_sum[n] / n_mc, eg[n], delta=0.08)
+            self.assertAlmostEqual(a_sum[n] / n_mc, ea[n], delta=0.08)
 
 
 if __name__ == "__main__":

@@ -209,9 +209,48 @@ def roll_side_attack(
 
 
 def mean_side_from_dice(dice: SideAttackDice, goals_for: float) -> dict[str, float]:
-    """E[FPL G/A] for a fixed ``k`` (diagnostic; no scorer≠assister coupling)."""
+    """E[FPL G/A] for a fixed ``k`` (approx assists; no scorer≠assister coupling)."""
     k = float(max(0.0, goals_for))
     eg = {n: float(dice.pi[i] * dice.alpha_g * k) for i, n in enumerate(dice.names)}
     # Assist mean ignoring exclusion ≈ α_A · α_G · k · ρ (rough); exact needs the dice.
     ea = {n: float(dice.rho[i] * dice.alpha_a * dice.alpha_g * k) for i, n in enumerate(dice.names)}
     return {"E_G": eg, "E_A_approx": ea}
+
+
+def expected_side_ga(
+    dice: SideAttackDice,
+    goals_for: int,
+    *,
+    lineup: LineupWorld | None = None,
+) -> tuple[dict[str, float], dict[str, float]]:
+    """Exact ``E[G_i | k]`` and ``E[A_i | k]`` under the locked attack dice.
+
+    Scorer: ``P(i) = π_i α_G``.
+    Assist given scorer ``i``: categorical over ``ρ·α_A`` with ``i`` zeroed and
+    empty mass ``1−α_A`` (same weights as ``roll_side_attack``).
+    """
+    if lineup is not None:
+        dice = dice_for_lineup(dice, lineup)
+    k = float(max(0, int(goals_for)))
+    ag = float(min(1.0, max(0.0, dice.alpha_g)))
+    aa = float(min(1.0, max(0.0, dice.alpha_a)))
+    pi = np.asarray(dice.pi, dtype=float)
+    rho = np.asarray(dice.rho, dtype=float)
+    n = len(dice.names)
+    eg = {dice.names[i]: float(k * pi[i] * ag) for i in range(n)}
+    ea = {dice.names[i]: 0.0 for i in range(n)}
+    if k <= 0 or n == 0 or ag <= 0 or aa <= 0:
+        return eg, ea
+    for i in range(n):
+        p_score = float(pi[i] * ag)
+        if p_score <= 0:
+            continue
+        denom = float(aa * (1.0 - float(rho[i])) + (1.0 - aa))
+        if denom <= 0:
+            continue
+        for j in range(n):
+            if j == i:
+                continue
+            p_ast = float(rho[j] * aa) / denom
+            ea[dice.names[j]] += k * p_score * p_ast
+    return eg, ea

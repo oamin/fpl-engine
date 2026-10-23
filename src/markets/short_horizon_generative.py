@@ -5,7 +5,8 @@ Per fixture path:
 1. ``k ∼ M`` (``match_outcome_roll`` from priced / FD λ).
 2. Lineup world: frozen as-of mean minutes by default (``lineup_cov=False``);
    matchday/pair rolls parked.
-3. Scorer / assist dice (``π`` props-shape or shares; ``ρ`` assists; α empties).
+3. Player layer: ``dice`` samples scorers/assists, or ``share_mean`` uses
+   ``E[G/A | k]`` from the same ``π`` / ``ρ`` / α (no player RNG).
 4. Defence from the **rolled** scoreline (``defence_roll``: CS if GA=0;
    GC = ⌊GA/2⌋) — no separate xCS / xGC moments on scenario strands.
 5. Soft priors from **expanding means** (not the roll): DefCon, bonus, cards,
@@ -23,7 +24,16 @@ from typing import Any, Mapping, Sequence
 import numpy as np
 import pandas as pd
 
-from src.markets.attack_roll import build_side_dice, roll_side_attack
+from src.markets.attack_roll import (
+    build_side_dice,
+    expected_side_ga,
+    roll_side_attack,
+)
+
+# Player layer on a rolled scoreline: dice = sample G/A; share_mean = E[G/A|k].
+PLAYER_ATTACK_DICE = "dice"
+PLAYER_ATTACK_SHARE_MEAN = "share_mean"
+PLAYER_ATTACK_MODES = (PLAYER_ATTACK_DICE, PLAYER_ATTACK_SHARE_MEAN)
 from src.markets.defence_roll import xp_defence_on_roll
 from src.markets.lineup_roll import (
     START_GATE,
@@ -242,18 +252,15 @@ def xp_soft_priors_expanding(
     }
 
 
-def xp_board_from_side_roll(
+def _xp_board_from_ga(
     club: pd.DataFrame,
     *,
-    attack,
+    goals: Mapping[str, float],
+    assists: Mapping[str, float],
     lineup: LineupWorld,
     goals_against: int,
 ) -> pd.DataFrame:
-    """Map one side's generative draws onto per-player xP components.
-
-    Roll-dependent: goals, assists, CS, GC (and appearance from minutes world).
-    Expanding-mean priors: DefCon, bonus, cards, saves.
-    """
+    """Map per-player G/A counts (integer or fractional) onto xP components."""
     if club.empty:
         return club.copy()
     out = club.copy()
@@ -265,15 +272,17 @@ def xp_board_from_side_roll(
         for p in out["position"].tolist()
     ]
     minutes = np.asarray(lineup.minutes, dtype=float)
-    goals = Counter(attack.scorers)
-    assists = Counter(attack.assisters)
 
     xp_appear = np.array([_appearance_xp(float(m)) for m in minutes])
     xp_goals = np.zeros(n)
     xp_assists = np.zeros(n)
+    e_g = np.zeros(n)
+    e_a = np.zeros(n)
     for i, name in enumerate(names):
-        g = float(goals.get(name, 0))
-        a = float(assists.get(name, 0))
+        g = float(goals.get(name, 0.0) or 0.0)
+        a = float(assists.get(name, 0.0) or 0.0)
+        e_g[i] = g
+        e_a[i] = a
         xp_goals[i] = g * float(GOAL_POINTS[pos[i]])
         xp_assists[i] = a * float(ASSIST_POINTS)
 
@@ -312,9 +321,49 @@ def xp_board_from_side_roll(
     out["goals_against"] = int(defence.goals_against)
     out["clean_sheet"] = bool(defence.clean_sheet)
     out["gc_bins"] = int(defence.gc_bins)
-    out["E_G"] = np.array([float(goals.get(nm, 0)) for nm in names])
-    out["E_A"] = np.array([float(assists.get(nm, 0)) for nm in names])
+    out["E_G"] = e_g
+    out["E_A"] = e_a
     return out
+
+
+def xp_board_from_side_roll(
+    club: pd.DataFrame,
+    *,
+    attack,
+    lineup: LineupWorld,
+    goals_against: int,
+) -> pd.DataFrame:
+    """Map one side's generative draws onto per-player xP components.
+
+    Roll-dependent: goals, assists, CS, GC (and appearance from minutes world).
+    Expanding-mean priors: DefCon, bonus, cards, saves.
+    """
+    return _xp_board_from_ga(
+        club,
+        goals=Counter(attack.scorers),
+        assists=Counter(attack.assisters),
+        lineup=lineup,
+        goals_against=goals_against,
+    )
+
+
+def xp_board_from_side_expectation(
+    club: pd.DataFrame,
+    *,
+    dice,
+    goals_for: int,
+    lineup: LineupWorld,
+    goals_against: int,
+) -> pd.DataFrame:
+    """``E[xP | k]`` via share dice — no player G/A sample."""
+    eg, ea = expected_side_ga(dice, goals_for, lineup=lineup)
+    return _xp_board_from_ga(
+        club,
+        goals=eg,
+        assists=ea,
+        lineup=lineup,
+        goals_against=goals_against,
+    )
 
 
 def _roll_or_trivial_lineup(
@@ -348,13 +397,20 @@ def score_fixture_generative(
     lineup_cov: bool = True,
     goals_home: int | None = None,
     goals_away: int | None = None,
+    player_attack: str = PLAYER_ATTACK_DICE,
 ) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, Any]]:
     """One generative path for both sides of a fixture.
 
     Scoreline: use ``goals_home`` / ``goals_away`` when already rolled
     (cascade_long Opta path); otherwise ``k ∼ M`` from λ. Props optional —
     cascade_long always passes ``None`` (unavailable beyond priced weeks).
+
+    ``player_attack``: ``dice`` samples scorers/assists; ``share_mean`` uses
+    ``E[G/A | k]`` from the same π/ρ/α (no player RNG).
     """
+    mode = str(player_attack or PLAYER_ATTACK_DICE)
+    if mode not in PLAYER_ATTACK_MODES:
+        raise ValueError(f"unknown player_attack={player_attack!r}")
     probs = match_outcome_probs_from_lambdas(lam_h, lam_a, rho)
     if goals_home is None or goals_away is None:
         roll = match_outcome_roll(probs, rng)
@@ -377,33 +433,51 @@ def score_fixture_generative(
     )
 
     empty = home_club.iloc[0:0].copy()
+    home_att = None
+    away_att = None
     if home_dice is None or home_c.empty:
         home_xp = empty
-        home_att = None
     else:
         home_lineup = _roll_or_trivial_lineup(
             home_c, hist=home_hist, rng=rng, lineup_cov=lineup_cov
         )
-        home_att = roll_side_attack(
-            home_dice, gh, rng, team="home", lineup=home_lineup
-        )
-        home_xp = xp_board_from_side_roll(
-            home_c, attack=home_att, lineup=home_lineup, goals_against=ga
-        )
+        if mode == PLAYER_ATTACK_SHARE_MEAN:
+            home_xp = xp_board_from_side_expectation(
+                home_c,
+                dice=home_dice,
+                goals_for=gh,
+                lineup=home_lineup,
+                goals_against=ga,
+            )
+        else:
+            home_att = roll_side_attack(
+                home_dice, gh, rng, team="home", lineup=home_lineup
+            )
+            home_xp = xp_board_from_side_roll(
+                home_c, attack=home_att, lineup=home_lineup, goals_against=ga
+            )
 
     if away_dice is None or away_c.empty:
         away_xp = empty
-        away_att = None
     else:
         away_lineup = _roll_or_trivial_lineup(
             away_c, hist=away_hist, rng=rng, lineup_cov=lineup_cov
         )
-        away_att = roll_side_attack(
-            away_dice, ga, rng, team="away", lineup=away_lineup
-        )
-        away_xp = xp_board_from_side_roll(
-            away_c, attack=away_att, lineup=away_lineup, goals_against=gh
-        )
+        if mode == PLAYER_ATTACK_SHARE_MEAN:
+            away_xp = xp_board_from_side_expectation(
+                away_c,
+                dice=away_dice,
+                goals_for=ga,
+                lineup=away_lineup,
+                goals_against=gh,
+            )
+        else:
+            away_att = roll_side_attack(
+                away_dice, ga, rng, team="away", lineup=away_lineup
+            )
+            away_xp = xp_board_from_side_roll(
+                away_c, attack=away_att, lineup=away_lineup, goals_against=gh
+            )
 
     meta = {
         "goals_home": gh,
@@ -415,6 +489,7 @@ def score_fixture_generative(
         "away_cs": gh == 0,
         "home_ga": ga,
         "away_ga": gh,
+        "player_attack": mode,
         "n_home_scorers": 0 if home_att is None else len(home_att.scorers),
         "n_away_scorers": 0 if away_att is None else len(away_att.scorers),
     }
@@ -449,6 +524,7 @@ def score_week_generative(
     prop_by_element: Mapping[int, float] | None = None,
     lineup_cov: bool = True,
     lam_overrides: Mapping[int, Mapping[str, float]] | None = None,
+    player_attack: str = PLAYER_ATTACK_DICE,
 ) -> pd.DataFrame:
     """Score a full GW by generative rolls on each priced fixture."""
     if side_table.empty or not fixture_fits:
@@ -488,6 +564,7 @@ def score_week_generative(
             home_props=prop_by_element,
             away_props=prop_by_element,
             lineup_cov=lineup_cov,
+            player_attack=player_attack,
         )
         for scored, team in ((home_xp, str(fit["home"])), (away_xp, str(fit["away"]))):
             if scored.empty:

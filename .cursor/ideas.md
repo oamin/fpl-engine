@@ -42,6 +42,15 @@ Gen hits≈7.2 / xfers≈3.8; mean-layer hits≈1.6 / xfers≈2.4; top-15 Jaccar
 Strategy policies diverge — generative strands are not a no-op vs μ boards.
 Not a gated path-V promote. Report: `reports/cascade_pathv_gen_vs_mean.md`.
 
+## Noted — share-conditional xP given rolled k (2026-10-23)
+
+`cascade_pathv_share_cond_xp`: keep `k∼M`, replace player dice with
+`E[G/A|k]` (`player_attack=share_mean`). Micro: fixed k, Star xp var 7.03
+(dice) → deterministic (share). Path-V N=8 FT+cap: top-15 Jaccard **0.67**
+vs dice; hits 7.5→6.7; transfers ~flat. Milder churn, not mean-layer calm
+(~1.6 hits). Candidate default for gen path-V; **not** a gated promote.
+Report: `reports/cascade_pathv_share_cond.md`.
+
 ## Parked — lineup_cov=False / freeze minutes (2026-10-21)
 
 `cascade_lineup_off_tt1`: gen with frozen mean minutes **clearly loses** to mean

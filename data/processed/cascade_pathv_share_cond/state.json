@@ -1,0 +1,262 @@
+{
+  "protocol": "cascade_pathv_share_cond_xp",
+  "n": 8,
+  "seed": 7,
+  "micro": {
+    "n_dice": 200,
+    "star_dice_mean": 6.824999999999999,
+    "star_dice_var": 7.029374999999999,
+    "star_share_mean": 7.102568368617685,
+    "star_share_nunique": 1,
+    "star_share_var": 0.0
+  },
+  "dice": {
+    "player_attack": "dice",
+    "returncode": 0,
+    "stderr_tail": "",
+    "elapsed_s": 210.00851559638977,
+    "n_squads": 96,
+    "strands_with_squads": 8,
+    "mean_transfers": 2.875,
+    "mean_hits": 7.5,
+    "scoring": "GW8 cascade_short priced centreline M\u2192k\u223cM (props matched=330; no \u03bb jitter); GW\u2265t+2 Opta place\u2192GF/GA\u00b1MAE\u2192M\u2192k\u223cM; generative lineup\u2192attack dice\u2192CS/GC; soft priors from score_xp_v2 helpers; same-season as-of rates/priors/rolling m frozen at decision GW",
+    "player_attack_meta": "dice",
+    "top15": [
+      {
+        "name": "Tzolakis",
+        "freq": 0.9375,
+        "freq_xi": 0.28125,
+        "freq_captain": 0.0,
+        "team": "hull"
+      },
+      {
+        "name": "Munoz",
+        "freq": 0.9270833333333334,
+        "freq_xi": 0.9166666666666666,
+        "freq_captain": 0.3541666666666667,
+        "team": "liverpool"
+      },
+      {
+        "name": "Tarkowski",
+        "freq": 0.84375,
+        "freq_xi": 0.8125,
+        "freq_captain": 0.09375,
+        "team": "everton"
+      },
+      {
+        "name": "Hall",
+        "freq": 0.84375,
+        "freq_xi": 0.8020833333333334,
+        "freq_captain": 0.07291666666666667,
+        "team": "newcastle"
+      },
+      {
+        "name": "Dasilva",
+        "freq": 0.8020833333333334,
+        "freq_xi": 0.59375,
+        "freq_captain": 0.041666666666666664,
+        "team": "coventry"
+      },
+      {
+        "name": "Calvert-Lewin",
+        "freq": 0.75,
+        "freq_xi": 0.08333333333333333,
+        "freq_captain": 0.0,
+        "team": "leeds"
+      },
+      {
+        "name": "Jo\u00e3o Pedro",
+        "freq": 0.6875,
+        "freq_xi": 0.5,
+        "freq_captain": 0.010416666666666666,
+        "team": "chelsea"
+      },
+      {
+        "name": "Lewis-Potter",
+        "freq": 0.6770833333333334,
+        "freq_xi": 0.65625,
+        "freq_captain": 0.10416666666666667,
+        "team": "brentford"
+      },
+      {
+        "name": "Tavernier",
+        "freq": 0.65625,
+        "freq_xi": 0.625,
+        "freq_captain": 0.07291666666666667,
+        "team": "bournemouth"
+      },
+      {
+        "name": "Rushworth",
+        "freq": 0.59375,
+        "freq_xi": 0.4166666666666667,
+        "freq_captain": 0.0,
+        "team": "coventry"
+      },
+      {
+        "name": "Haaland",
+        "freq": 0.59375,
+        "freq_xi": 0.4791666666666667,
+        "freq_captain": 0.010416666666666666,
+        "team": "man city"
+      },
+      {
+        "name": "Gro\u00df",
+        "freq": 0.4895833333333333,
+        "freq_xi": 0.4583333333333333,
+        "freq_captain": 0.07291666666666667,
+        "team": "brighton"
+      },
+      {
+        "name": "Hume",
+        "freq": 0.46875,
+        "freq_xi": 0.0,
+        "freq_captain": 0.0,
+        "team": "sunderland"
+      },
+      {
+        "name": "Saka",
+        "freq": 0.4583333333333333,
+        "freq_xi": 0.4375,
+        "freq_captain": 0.052083333333333336,
+        "team": "arsenal"
+      },
+      {
+        "name": "Belloumi",
+        "freq": 0.3854166666666667,
+        "freq_xi": 0.3541666666666667,
+        "freq_captain": 0.010416666666666666,
+        "team": "hull"
+      }
+    ],
+    "cap_top": {
+      "name": "Munoz",
+      "freq_captain": 0.3541666666666667
+    }
+  },
+  "share_mean": {
+    "player_attack": "share_mean",
+    "returncode": 0,
+    "stderr_tail": "",
+    "elapsed_s": 206.74457812309265,
+    "n_squads": 96,
+    "strands_with_squads": 8,
+    "mean_transfers": 2.6818181818181817,
+    "mean_hits": 6.7272727272727275,
+    "scoring": "GW8 cascade_short priced centreline M\u2192k\u223cM (props matched=330; no \u03bb jitter); GW\u2265t+2 Opta place\u2192GF/GA\u00b1MAE\u2192M\u2192k\u223cM; generative lineup\u2192E[G/A|k] share_mean\u2192CS/GC; soft priors from score_xp_v2 helpers; same-season as-of rates/priors/rolling m frozen at decision GW",
+    "player_attack_meta": "share_mean",
+    "top15": [
+      {
+        "name": "Tzolakis",
+        "freq": 1.0,
+        "freq_xi": 0.3125,
+        "freq_captain": 0.0,
+        "team": "hull"
+      },
+      {
+        "name": "Hall",
+        "freq": 0.9375,
+        "freq_xi": 0.875,
+        "freq_captain": 0.07291666666666667,
+        "team": "newcastle"
+      },
+      {
+        "name": "Tarkowski",
+        "freq": 0.90625,
+        "freq_xi": 0.90625,
+        "freq_captain": 0.0625,
+        "team": "everton"
+      },
+      {
+        "name": "Dasilva",
+        "freq": 0.8958333333333334,
+        "freq_xi": 0.6770833333333334,
+        "freq_captain": 0.11458333333333333,
+        "team": "coventry"
+      },
+      {
+        "name": "Munoz",
+        "freq": 0.8854166666666666,
+        "freq_xi": 0.875,
+        "freq_captain": 0.40625,
+        "team": "liverpool"
+      },
+      {
+        "name": "Tavernier",
+        "freq": 0.78125,
+        "freq_xi": 0.75,
+        "freq_captain": 0.07291666666666667,
+        "team": "bournemouth"
+      },
+      {
+        "name": "Calvert-Lewin",
+        "freq": 0.7291666666666666,
+        "freq_xi": 0.0,
+        "freq_captain": 0.0,
+        "team": "leeds"
+      },
+      {
+        "name": "Jo\u00e3o Pedro",
+        "freq": 0.7291666666666666,
+        "freq_xi": 0.625,
+        "freq_captain": 0.0,
+        "team": "chelsea"
+      },
+      {
+        "name": "Lewis-Potter",
+        "freq": 0.7291666666666666,
+        "freq_xi": 0.7083333333333334,
+        "freq_captain": 0.08333333333333333,
+        "team": "brentford"
+      },
+      {
+        "name": "Rushworth",
+        "freq": 0.6875,
+        "freq_xi": 0.4479166666666667,
+        "freq_captain": 0.0,
+        "team": "coventry"
+      },
+      {
+        "name": "Haaland",
+        "freq": 0.6666666666666666,
+        "freq_xi": 0.5833333333333334,
+        "freq_captain": 0.0,
+        "team": "man city"
+      },
+      {
+        "name": "Gonzalo",
+        "freq": 0.65625,
+        "freq_xi": 0.0,
+        "freq_captain": 0.0,
+        "team": "fulham"
+      },
+      {
+        "name": "Gro\u00df",
+        "freq": 0.6041666666666666,
+        "freq_xi": 0.59375,
+        "freq_captain": 0.041666666666666664,
+        "team": "brighton"
+      },
+      {
+        "name": "Bogle",
+        "freq": 0.46875,
+        "freq_xi": 0.17708333333333334,
+        "freq_captain": 0.0,
+        "team": "leeds"
+      },
+      {
+        "name": "Van Hecke",
+        "freq": 0.4583333333333333,
+        "freq_xi": 0.3645833333333333,
+        "freq_captain": 0.010416666666666666,
+        "team": "spurs"
+      }
+    ],
+    "cap_top": {
+      "name": "Munoz",
+      "freq_captain": 0.40625
+    }
+  },
+  "top15_jaccard": 0.6666666666666666,
+  "smoke_ok": true,
+  "wall_s": 417.9305579662323
+}

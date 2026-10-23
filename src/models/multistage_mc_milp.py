@@ -573,6 +573,7 @@ def run_strand(
     hist_by_team: Mapping[str, pd.DataFrame] | None = None,
     generative_attack: bool = DEFAULT_GENERATIVE_ATTACK,
     lineup_cov: bool = DEFAULT_LINEUP_COV,
+    player_attack: str = "dice",
     priced_by_gw: Mapping[int, Sequence[Mapping[str, Any]]] | None = None,
 ) -> StrandResult:
     """One coherent MC strand: short/Opta scenarios → score_xp_v2 → MILP."""
@@ -654,6 +655,7 @@ def run_strand(
                 hist_by_team=hist_by_team,
                 gamma=gamma,
                 lineup_cov=lineup_cov,
+                player_attack=player_attack,
             )
         else:
             # Mean-layer fallback (pre-generative diagnostic).
@@ -1112,6 +1114,7 @@ def run_multistage_trial(
     minutes_overlay: bool = True,
     generative_attack: bool = DEFAULT_GENERATIVE_ATTACK,
     lineup_cov: bool = DEFAULT_LINEUP_COV,
+    player_attack: str = "dice",
     priced_odds_path: Path | None = None,
     priced_gw: int = 8,
     use_priced_short: bool = True,
@@ -1198,6 +1201,7 @@ def run_multistage_trial(
                 hist_by_team=team_hist,
                 generative_attack=generative_attack,
                 lineup_cov=lineup_cov,
+                player_attack=player_attack,
                 priced_by_gw=priced_by_gw,
             )
         )
@@ -1205,11 +1209,17 @@ def run_multistage_trial(
     freq = aggregate_frequencies(strands, pool)
     n_squads = int(freq.attrs.get("n_squads") or 0)
     props_on = bool(priced_by_gw) and generative_attack
-    scenario_note = (
-        "generative lineup→attack→CS/GC; soft priors from score_xp_v2 helpers"
-        if generative_attack
-        else f"mean score_team_side ({SCORE_XP_V2}) on scenario λ moments"
-    )
+    if generative_attack and str(player_attack) == "share_mean":
+        scenario_note = (
+            "generative lineup→E[G/A|k] share_mean→CS/GC; "
+            "soft priors from score_xp_v2 helpers"
+        )
+    elif generative_attack:
+        scenario_note = (
+            "generative lineup→attack dice→CS/GC; soft priors from score_xp_v2 helpers"
+        )
+    else:
+        scenario_note = f"mean score_team_side ({SCORE_XP_V2}) on scenario λ moments"
     short_note = (
         f"GW{priced_meta['gws'][0]} cascade_short priced centreline M→k∼M"
         f" (props matched={priced_meta['n_props_matched']}; no λ jitter); "
@@ -1227,6 +1237,7 @@ def run_multistage_trial(
         ),
         "generative_attack": bool(generative_attack),
         "lineup_cov": bool(lineup_cov),
+        "player_attack": str(player_attack) if generative_attack else "mean",
         "props": props_on,
         "priced": priced_meta,
         "horizon": {"start": start, "end": end, "gws": horizon_gws},
@@ -1386,6 +1397,12 @@ def main() -> None:
         help="Generative lineup→attack→CS/GC (default on); --no-generative-attack uses mean layer",
     )
     p.add_argument(
+        "--player-attack",
+        choices=("dice", "share_mean"),
+        default="dice",
+        help="On generative strands: sample G/A (dice) or E[G/A|k] (share_mean)",
+    )
+    p.add_argument(
         "--priced-odds",
         type=Path,
         default=ROOT / "data/scratch/gw08_odds_full.json",
@@ -1412,6 +1429,7 @@ def main() -> None:
         objective=args.objective,
         minutes_overlay=bool(args.minutes_overlay),
         generative_attack=bool(args.generative_attack),
+        player_attack=str(args.player_attack),
         priced_odds_path=args.priced_odds,
         priced_gw=args.priced_gw,
         use_priced_short=not bool(args.no_priced),

@@ -16,6 +16,7 @@ Updated: 2026-10-20. **Numagent 2.0** is the product on main (`protocol.numagent
 | **8. Mean t:t+1 vs short gen** | **done** | N_MC=20 product horizon: still **clearly_loses** (Δ≈−0.054). `reports/cascade_short_mean_tt1_vs_gen.md`. |
 | **9. Path-V gen vs mean MILP** | **done (diagnostic)** | FT+cap N=20: both solve; gen hits≈7.2 vs mean≈1.6; top-15 Jaccard≈0.36. Not a path-V promote. `reports/cascade_pathv_gen_vs_mean.md`. |
 | **10. Minutes on gen paths** | **locked** | `DEFAULT_LINEUP_COV=False` — freeze as-of mean / live xmi. FFScout = pool WHO only. `reports/cascade_live_minutes_layers.md`. |
+| **11. Share-cond xP on rolled k** | **done (diagnostic)** | Roll `k∼M`; `E[G/A|k]` (`player_attack=share_mean`) vs attack dice. Micro: dice xp var 7.0 → share nunique=1. Path-V N=8: top-15 Jaccard 0.67; hits 7.5→6.7. Not a promote. `reports/cascade_pathv_share_cond.md`. |
 
 ## Plan
 
