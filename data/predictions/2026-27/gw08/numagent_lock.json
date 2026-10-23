@@ -6,8 +6,8 @@
   "recommended_at_utc": "2026-10-23T08:45:41Z",
   "entry_id": 2632584,
   "team_name": "ojaminFC",
-  "status": "recommended",
-  "note": "L4 after live Odds API refresh (AH+OU+BTTS, props off, us) + minutes_llm/FFScout xmi. C Haaland; VC Lewis-Potter. Bench = backup GK then outfield by \u03bc.",
+  "status": "locked",
+  "note": "PI locked selection into FPL. Captain Haaland; vice Mbeumo. Bench Verbruggen \u2192 Rudoni \u2192 Khalaili \u2192 Barry. Model: score_xp_v2 + share_se_pos_prior, L4 depth-2 \u03b3=1, props off; live Odds API AH+OU+BTTS (us) + minutes_llm/FFScout xmi.",
   "decision": {
     "chip_played": null,
     "transfers": {
@@ -158,5 +158,35 @@
     "props": false,
     "n_fixtures_t": 10,
     "n_fixtures_t1": 10
+  },
+  "locked_at_utc": "2026-10-23T08:58:39Z",
+  "model_notes": {
+    "primary": "L4",
+    "scorer": "score_xp_v2",
+    "promotions": [
+      "score_xp_v2_rate_m0",
+      "score_xp_v2_share_se_pos_prior",
+      "strategy_layer4_mupost_priced BOOKIE_DEPTH=2 \u03b3=1"
+    ],
+    "odds": {
+      "source": "live Odds API",
+      "path": "data/scratch/gw08_odds_bookie_depth2.json",
+      "markets": "AH+OU+BTTS (no anytime)",
+      "region": "us",
+      "n_fixtures_t": 10,
+      "n_fixtures_t1": 10,
+      "remaining_after": "171"
+    },
+    "minutes": {
+      "week_t": "minutes_llm + FFScout predicted XI / out / doubts \u2192 gw08_xmi_probe.csv",
+      "week_t1": "rolling3 only (L4 as-of law)",
+      "mainoo": "hard-flag injured, xmi=0"
+    },
+    "transfer_rationale": "Mainoo (0 xmi / injured to 8 Nov) \u2192 Lewis-Potter (Brentford MID, Hull) on 1 FT, 0 hits",
+    "horizon_objective": 125.83585821438518,
+    "week0_objective": 67.33363027549905,
+    "l3_contrast": "L3 preferred Mainoo \u2192 M.Sangar\u00e9 on week-t only; L4 kept Lewis-Potter",
+    "report": "reports/numagent_live_pick_gw08.md",
+    "pick_json": "data/predictions/2026-27/gw08/numagent_pick.json"
   }
 }

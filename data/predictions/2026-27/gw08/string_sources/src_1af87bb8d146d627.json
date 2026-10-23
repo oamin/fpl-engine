@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:1af87bb8d146d627",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cm3elveky53eo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Mon, 19 Oct 2026 05:38:47 GMT",
+  "published_at_utc": "2026-10-19T05:38:47Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "'Not in our DNA' - will 3v3 change the future of English football?",
+  "body": "Changes have been implemented by the FA from this season with under-7s dropping from playing 5v5 to 3v3 in England - could it help to change the DNA of English football?",
+  "player_ids": [],
+  "sha256": "6689b3b9df66d01001d1ea8ff1242114e9d8ee556406aba9caafb2c6601a3235"
+}

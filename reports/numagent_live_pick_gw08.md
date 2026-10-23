@@ -1,5 +1,7 @@
 # Numagent 2.0 live pick — GW8
 
+**PI locked** 2026-10-23 → [`data/predictions/2026-27/gw08/numagent_lock.json`](../data/predictions/2026-27/gw08/numagent_lock.json) (C Haaland, VC Mbeumo; bench Verbruggen → Rudoni → Khalaili → Barry). Model: `score_xp_v2` + promoted `share_se_pos_prior`, L4 depth-2 γ=1, **props off**; live Odds API + minutes_llm/FFScout xmi.
+
 Primary solver: **L4**. Team `ojaminFC` (entry 2632584). Bank 0 tenths, FT 1. Odds: `live` (20 priced events; t=10/10, t+1=10/10).
 
 α_G=0.9601, α_A=0.9050. Week-t minutes: xmi `668` / rolling3 `0`. Week-t+1 minutes: rolling3 only (L4 as-of law).

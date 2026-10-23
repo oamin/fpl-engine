@@ -1,22 +1,32 @@
 {
-  "task": "numagent_live_pick_gw08",
-  "status": "recommended",
+  "task": "gw08_dual_agent_lock",
+  "status": "done",
   "gw": 8,
   "deadline_utc": "2026-10-23T17:30:00Z",
-  "primary": "L4",
-  "transfers": {
-    "sold": [
-      "Mainoo"
-    ],
-    "bought": [
-      "Lewis-Potter"
-    ],
-    "hits": 0
+  "gw07_results": {
+    "numagent_fpl_points": 68,
+    "stragent_paper_net": 61,
+    "artifacts": [
+      "data/predictions/2026-27/gw07/numagent_results.json",
+      "data/predictions/2026-27/gw07/stragent_results.json",
+      "reports/gw07_agent_results.md"
+    ]
   },
-  "captain": "Haaland",
-  "vice_captain": "Mbeumo",
-  "formation": "1-4-4-2",
-  "horizon_objective": 125.84,
-  "odds_remaining_after": "171",
-  "report": "reports/numagent_live_pick_gw08.md"
+  "numagent_gw08": {
+    "status": "locked",
+    "transfers": {"sold": ["Mainoo"], "bought": ["Lewis-Potter"], "hits": 0},
+    "captain": "Haaland",
+    "vice_captain": "Mbeumo",
+    "lock": "data/predictions/2026-27/gw08/numagent_lock.json"
+  },
+  "stragent_gw08": {
+    "status": "frozen",
+    "transfers": {"sold": ["Shaw"], "bought": ["Mazraoui"], "hits": 0},
+    "captain": "Haaland",
+    "vice_captain": "B.Fernandes",
+    "plan": "data/predictions/2026-27/string_plans/gw08.json",
+    "ledger": "data/predictions/2026-27/string_agent_freeze.jsonl",
+    "trawl_sources": 171,
+    "report": "reports/stragent_live_pick_gw08.md"
+  }
 }

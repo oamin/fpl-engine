@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:2e97d08b9538214d",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/c60qkpe0e54qo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 23 Oct 2026 06:37:20 GMT",
+  "published_at_utc": "2026-10-23T06:37:20Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "What is going on at 'chaotic' Newcastle?",
+  "body": "Will the alarm bells be ringing at Newcastle United if they lose to struggling Crystal Palace on Sunday?",
+  "player_ids": [],
+  "sha256": "7af041f52043d92ab18f96e57862aa9473e2a379aef975834992b0066cd982fe"
+}
