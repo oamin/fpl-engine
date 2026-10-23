@@ -15,10 +15,14 @@ import math
 import statistics
 from collections import defaultdict
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any, Mapping, Protocol
 
 from src.models.forecast_xp import NEUTRAL_TOTAL, _clip, blend_pots, neutral_pot
 from src.teams import norm_team
+
+
+class _Rng(Protocol):
+    def random(self) -> float: ...
 
 ROOT = Path(__file__).resolve().parents[2]
 CACHE = ROOT / "data" / "cache"
@@ -284,6 +288,135 @@ def pots_from_season_gf_ga(
         return home, away
     neutral = neutral_pot()
     return blend_pots(home, neutral, shrink), blend_pots(away, neutral, shrink)
+
+
+def sample_within_band(
+    lo: float,
+    mid: float,
+    hi: float,
+    rng: _Rng,
+    *,
+    centre_blend: float = 0.5,
+) -> float:
+    """Centreline mid mixed with a uniform draw on ``[lo, hi]``."""
+    a, b = (lo, hi) if lo <= hi else (hi, lo)
+    u = a + (b - a) * float(rng.random())
+    w = float(min(1.0, max(0.0, centre_blend)))
+    return w * float(mid) + (1.0 - w) * u
+
+
+def sample_season_gf_ga_for_rank(
+    rank: float,
+    rng: _Rng,
+    *,
+    centre_blend: float = 0.5,
+    profile: dict[int, dict[str, float]] | None = None,
+    z_band: float | None = None,
+    method: str = "ols",
+) -> dict[str, float]:
+    """Sample season GF/GA inside the Opta-rank band (baseline for one club).
+
+    1st place uses the 1st-place GF/GA centre ± MAE; 20th uses 20th. No path.
+    """
+    rates = gf_ga_from_rank(
+        rank, profile=profile, method=method, z_band=z_band
+    )
+    gf = sample_within_band(
+        rates["gf_lo"], rates["gf"], rates["gf_hi"], rng, centre_blend=centre_blend
+    )
+    ga = sample_within_band(
+        rates["ga_lo"], rates["ga"], rates["ga_hi"], rng, centre_blend=centre_blend
+    )
+    return {
+        "rank": float(rates["rank"]),
+        "gf": float(max(0.0, gf)),
+        "ga": float(max(0.0, ga)),
+        "gf_centre": float(rates["gf"]),
+        "ga_centre": float(rates["ga"]),
+        "gf_lo": float(rates["gf_lo"]),
+        "gf_hi": float(rates["gf_hi"]),
+        "ga_lo": float(rates["ga_lo"]),
+        "ga_hi": float(rates["ga_hi"]),
+    }
+
+
+def sample_match_from_opta_ranks(
+    home_club: str,
+    away_club: str,
+    rng: _Rng,
+    *,
+    ranks: Mapping[str, float] | None = None,
+    centre_blend: float = 0.5,
+    profile: dict[int, dict[str, float]] | None = None,
+    league_gf: float | None = None,
+    z_band: float | None = None,
+    method: str = "ols",
+) -> dict[str, Any]:
+    """Baseline match λ from Opta place GF/GA ± bands (no ClubPath blend).
+
+    Each side rolls season GF/GA inside its rank band, then
+    ``pots_from_season_gf_ga`` → match λ. 1st vs 20th keep distinct rate
+    centres for every fixture on the horizon.
+    """
+    if ranks is None:
+        ranks = {r["club_norm"]: float(r["rank"]) for r in load_opta_ranks()}
+    h = norm_team(home_club)
+    a = norm_team(away_club)
+    if h not in ranks or a not in ranks:
+        missing = [c for c in (h, a) if c not in ranks]
+        raise KeyError(f"missing Opta rank for {missing}")
+    prof = profile if profile is not None else rank_gf_ga_profile()
+    lavg = float(league_gf) if league_gf is not None else league_avg_gf(prof)
+    home_s = sample_season_gf_ga_for_rank(
+        ranks[h],
+        rng,
+        centre_blend=centre_blend,
+        profile=prof,
+        z_band=z_band,
+        method=method,
+    )
+    away_s = sample_season_gf_ga_for_rank(
+        ranks[a],
+        rng,
+        centre_blend=centre_blend,
+        profile=prof,
+        z_band=z_band,
+        method=method,
+    )
+    pot_h, pot_a = pots_from_season_gf_ga(
+        home_s["gf"],
+        home_s["ga"],
+        away_s["gf"],
+        away_s["ga"],
+        league_gf=lavg,
+    )
+    # Band endpoints from rank centres (for diagnostics / sample_scoreline).
+    centre = match_prediction(
+        h,
+        a,
+        ranks=ranks,
+        method=method,
+        profile=prof,
+        league_gf=lavg,
+        z_band=z_band,
+    )
+    return {
+        "home": h,
+        "away": a,
+        "home_rank": float(ranks[h]),
+        "away_rank": float(ranks[a]),
+        "home_season_draw": home_s,
+        "away_season_draw": away_s,
+        "lam_home": float(pot_h["lam_scored"]),
+        "lam_away": float(pot_a["lam_scored"]),
+        "lam_home_lo": float(centre["lam_home_lo"]),
+        "lam_home_hi": float(centre["lam_home_hi"]),
+        "lam_away_lo": float(centre["lam_away_lo"]),
+        "lam_away_hi": float(centre["lam_away_hi"]),
+        "lam_home_centre": float(centre["lam_home"]),
+        "lam_away_centre": float(centre["lam_away"]),
+        "league_avg_gf": lavg,
+    }
 
 
 def match_prediction(

@@ -1,16 +1,16 @@
 """Priced t:t+1 → Opta t+2:t+n strand hand-off (plumbing).
 
-Short-horizon scenarios sample FD Dixon–Coles λ ±15%. The long-horizon
-cascade initialises ``ClubPath`` from Opta ranks. This module joins them:
+Short-horizon: centreline FD Dixon–Coles ``M`` → ``k ∼ M`` (no λ jitter).
+Long-horizon initialises ``ClubPath`` from Opta ranks. This module joins them:
 
 1. Init paths from Opta (as today).
-2. For each MC strand, sample priced-week λ from the FD fit (same band as
-   ``short_horizon_cascade``) and ``observe`` those scoreline means on the
-   path so t+2… carry short-horizon information.
+2. For each MC strand, roll priced-week ``k ∼ M`` from the FD fit and
+   ``observe`` that scoreline on the path so t+2… carry short-horizon info.
 3. Remaining fixtures stay on the Opta path roll.
 
 This is **plumbing + smoke**, not a likelihood promote. A gated path-V /
-player-log arm stays deferred until pre-registered.
+player-log arm stays deferred until pre-registered. ClubPath is unused for
+cascade_long λ (Opta baseline); observe remains for diagnostics only.
 """
 
 from __future__ import annotations
@@ -20,12 +20,16 @@ import random
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
+from src.markets.match_outcome import (
+    match_outcome_probs_from_lambdas,
+    match_outcome_roll,
+)
 from src.models.multistage_mc_milp import (
     ClubPath,
     init_paths_from_opta,
     pot_from_sampled_lam,
 )
-from src.models.short_horizon_cascade import MARKET_BAND, sample_fixture_moments
+from src.models.short_horizon_cascade import MARKET_BAND
 from src.teams import norm_team
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -40,43 +44,39 @@ def apply_priced_observations(
     rng: random.Random,
     band: float = MARKET_BAND,
 ) -> list[dict[str, Any]]:
-    """Sample λ for each priced fixture and update expanding ClubPath rates.
+    """Roll ``k ∼ M`` from each priced centreline fit; observe on ClubPath.
 
     ``fixtures`` entries need ``home``, ``away``, ``lam_h``, ``lam_a``, and
-    optionally ``rho``. Returns the sampled scoreline records.
+    optionally ``rho``. ``band`` must be 0 (λ jitter retired).
     """
+    if float(band) != 0.0:
+        raise ValueError(
+            "priced λ jitter is retired (band must be 0); use centreline M → k∼M"
+        )
     records: list[dict[str, Any]] = []
     for fx in fixtures:
         home = norm_team(str(fx["home"]))
         away = norm_team(str(fx["away"]))
         if home not in paths or away not in paths:
             continue
-        fit = {
-            "lam_h": float(fx["lam_h"]),
-            "lam_a": float(fx["lam_a"]),
-            "rho": float(fx.get("rho", 0.0) or 0.0),
-            "fixture": fx.get("fixture", 0),
-        }
-        sampled = sample_fixture_moments(fit, rng, band=band)
-        # Soft Poisson means as observed rates (fractional observe via rounding).
-        gh = int(round(float(sampled["lam_h"])))
-        ga = int(round(float(sampled["lam_a"])))
+        sh = float(fx["lam_h"])
+        sa = float(fx["lam_a"])
+        rho = float(fx.get("rho", 0.0) or 0.0)
+        probs = match_outcome_probs_from_lambdas(sh, sa, rho)
+        roll = match_outcome_roll(probs, rng)
+        gh, ga = int(roll.goals_home), int(roll.goals_away)
         paths[home].observe(gh, ga)
         paths[away].observe(ga, gh)
         records.append(
             {
                 "home": home,
                 "away": away,
-                "lam_h": float(sampled["lam_h"]),
-                "lam_a": float(sampled["lam_a"]),
+                "lam_h": sh,
+                "lam_a": sa,
                 "goals_h": gh,
                 "goals_a": ga,
-                "pot_home": pot_from_sampled_lam(
-                    float(sampled["lam_h"]), float(sampled["lam_a"])
-                ),
-                "pot_away": pot_from_sampled_lam(
-                    float(sampled["lam_a"]), float(sampled["lam_h"])
-                ),
+                "pot_home": pot_from_sampled_lam(sh, sa),
+                "pot_away": pot_from_sampled_lam(sa, sh),
             }
         )
     return records
@@ -89,7 +89,7 @@ def handoff_paths(
     seed: int = 0,
     band: float = MARKET_BAND,
 ) -> tuple[dict[str, ClubPath], list[dict[str, Any]]]:
-    """Opta-init paths after absorbing one priced-week scenario draw."""
+    """Opta-init paths after absorbing one priced-week ``k ∼ M`` draw."""
     paths = init_paths_from_opta(ranks=ranks)
     rng = random.Random(int(seed))
     recs = apply_priced_observations(paths, fixtures=priced_fixtures, rng=rng, band=band)
@@ -160,9 +160,9 @@ def smoke_handoff(
         ),
         "decision": "plumbing_only_no_likelihood_arm",
         "note": (
-            "Hand-off updates ClubPath from priced λ samples before Opta "
-            "t+2… rolls. Not a promote screen — register a path-V / player-log "
-            "comparison before claiming value."
+            "Hand-off updates ClubPath from priced centreline M → k∼M before "
+            "Opta t+2… rolls. Not a promote screen — register a path-V / "
+            "player-log comparison before claiming value."
         ),
     }
     PROCESSED.mkdir(parents=True, exist_ok=True)
@@ -172,8 +172,8 @@ def smoke_handoff(
     lines = [
         "# Strand hand-off smoke (priced → Opta)",
         "",
-        "Plumbing only. Short-horizon FD λ samples (±15%) update Opta-initialised "
-        "`ClubPath` rates before the long-horizon roll continues.",
+        "Plumbing only. Short-horizon centreline `M` → `k ∼ M` (no λ jitter) "
+        "updates Opta-initialised `ClubPath` rates before the long-horizon roll.",
         "",
         f"- Season / GW: **{season}** / **{decision_gw}**",
         f"- Priced fixtures: **{len(priced)}**",

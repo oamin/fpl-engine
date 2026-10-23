@@ -1,0 +1,52 @@
+{
+  "task": "cascade_short_mean_tt1_vs_gen",
+  "started_unix": 1792570993.7692451,
+  "n_mc": 20,
+  "sigma": 3.0,
+  "seed": 7,
+  "gw_start": 8,
+  "gw_end": 27,
+  "asof_audit": {
+    "passed": true,
+    "failures": []
+  },
+  "progress": {
+    "2022-23": {
+      "elapsed_s": 442.6053750514984,
+      "n_decision_gws": 20,
+      "n_rows": 7341
+    },
+    "2023-24": {
+      "elapsed_s": 476.20852398872375,
+      "n_decision_gws": 20,
+      "n_rows": 7428
+    },
+    "2024-25": {
+      "elapsed_s": 455.81451201438904,
+      "n_decision_gws": 20,
+      "n_rows": 7587
+    },
+    "2025-26": {
+      "elapsed_s": 483.0200979709625,
+      "n_decision_gws": 20,
+      "n_rows": 7674
+    }
+  },
+  "elapsed_s": 1858.0320711135864,
+  "n_decision_pairs": 80,
+  "interval": {
+    "mean": -0.05394847837263517,
+    "lo": -0.059705837298141835,
+    "hi": -0.04840861583124382,
+    "n_gws": {
+      "2022-23": 20,
+      "2023-24": 20,
+      "2024-25": 20,
+      "2025-26": 20
+    }
+  },
+  "verdict": "clearly_loses",
+  "comparison": "short_gen_tt1_minus_short_mean_tt1",
+  "finished_unix": 1792572851.8013206,
+  "report": "/workspace/reports/cascade_short_mean_tt1_vs_gen.md"
+}

@@ -1,0 +1,18 @@
+{
+  "full_side_shares": true,
+  "semi_oracle_buy_filter": true,
+  "min_oracle_minutes": 60.0,
+  "minutes_oracle_boards": true,
+  "autosub_actuals": true,
+  "n_share_roster": 159,
+  "n_buy_pool": 126,
+  "n_gws": 12,
+  "mean_resid_bias": 12.651685075970923,
+  "path_resid_bias": 1.0617404631845673,
+  "mean_resid_mae": 14.919903823134044,
+  "path_resid_mae": 11.09552371273046,
+  "mean_actual_sum": 647.0,
+  "path_actual_sum": 646.4166666666667,
+  "path_minus_mean_actual_sum": -0.5833333333333464,
+  "mean_autosubs_sum": 6
+}

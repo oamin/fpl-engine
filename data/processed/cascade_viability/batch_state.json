@@ -1,0 +1,318 @@
+{
+  "task": "cascade_short_long_viability_batch",
+  "started_unix": 1792534261.9896472,
+  "MARKET_BAND": 0.0,
+  "params": {
+    "gw_start": 8,
+    "gw_end": 28,
+    "n_mc": 6,
+    "sigma": 3.0,
+    "seasons": [
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26"
+    ]
+  },
+  "D": {
+    "elapsed_s": 1.8679895401000977,
+    "unittest_returncode": 0,
+    "unittest_passed": true,
+    "contaminated_banner": true,
+    "MARKET_BAND": 0.0,
+    "passed": true
+  },
+  "A": {
+    "started": 1792534263.8580365,
+    "A1_asof": {
+      "passed": true,
+      "failures": []
+    },
+    "A2_no_jitter": {
+      "MARKET_BAND": 0.0,
+      "band_is_zero": true,
+      "rejects_nonzero_band": true,
+      "passed": true
+    },
+    "A3_k_in_M": {
+      "n": 2000,
+      "bad_cells": 0,
+      "mean_gh": 2.0115,
+      "mean_ga": 0.7915,
+      "xg_home": 1.9940756161962645,
+      "xg_away": 0.7999770070105142,
+      "passed": true
+    },
+    "A4_A5_routing_props": {
+      "odds_present": true,
+      "n_fits": 10,
+      "n_props": 330,
+      "gw8_source": "cascade_short_priced",
+      "gw12_source": "cascade_long_opta",
+      "gw8_lam_matches_fit": true,
+      "gw8_has_props": true,
+      "gw12_props_empty": true,
+      "passed": true
+    },
+    "A6_milp_units": {
+      "returncode": 0,
+      "passed": true,
+      "stderr_tail": "premium_as_captain (tests.test_multistage_mc_milp.XiCaptainMilpTest.test_prefers_premium_as_captain) ... ok\ntest_moments_from_lams_consistent (tests.test_short_horizon_v2.CentrelineMatchesBuild.test_moments_from_lams_consistent) ... ok\ntest_scored_weeks_to_l4_pools (tests.test_short_horizon_v2.L4InjectAdapter.test_scored_weeks_to_l4_pools) ... ok\ntest_centreline_moments_no_jitter (tests.test_short_horizon_v2.SampleMoments.test_centreline_moments_no_jitter) ... ok\ntest_module_uses_score_xp_v2 (tests.test_short_horizon_v2.ScorerIdentity.test_module_uses_score_xp_v2) ... ok\ntest_scenario_default_is_generative (tests.test_short_horizon_v2.ScorerIdentity.test_scenario_default_is_generative) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 0.040s\n\nOK\n"
+    },
+    "elapsed_s": 1.7367191314697266,
+    "passed": true
+  },
+  "B": {
+    "elapsed_s": 650.0517332553864,
+    "gw_start": 8,
+    "gw_end": 28,
+    "n_mc": 6,
+    "sigma": 3.0,
+    "per_season": {
+      "2022-23": {
+        "elapsed_s": 154.8397195339203,
+        "n_short_rows": 3839,
+        "n_long_rows": 3839
+      },
+      "2023-24": {
+        "elapsed_s": 167.90335154533386,
+        "n_short_rows": 3935,
+        "n_long_rows": 3935
+      },
+      "2024-25": {
+        "elapsed_s": 159.42287802696228,
+        "n_short_rows": 4019,
+        "n_long_rows": 4019
+      },
+      "2025-26": {
+        "elapsed_s": 167.70700550079346,
+        "n_short_rows": 4053,
+        "n_long_rows": 4053
+      }
+    },
+    "n_gw_pairs_b1": 84,
+    "n_gw_pairs_b2": 84,
+    "n_gw_pairs_b3": 84,
+    "intervals": {
+      "short_gen_minus_short_mean": {
+        "mean": -0.08917061402615516,
+        "lo": -0.10015353852209062,
+        "hi": -0.07804228092046799,
+        "n_gws": {
+          "2022-23": 21,
+          "2023-24": 21,
+          "2024-25": 21,
+          "2025-26": 21
+        }
+      },
+      "long_gen_minus_long_mean": {
+        "mean": -0.09004038864953615,
+        "lo": -0.10054938240749016,
+        "hi": -0.07927978993532567,
+        "n_gws": {
+          "2022-23": 21,
+          "2023-24": 21,
+          "2024-25": 21,
+          "2025-26": 21
+        }
+      },
+      "short_gen_minus_long_gen": {
+        "mean": -0.00047693995542301214,
+        "lo": -0.014097976832729087,
+        "hi": 0.012702165041269775,
+        "n_gws": {
+          "2022-23": 21,
+          "2023-24": 21,
+          "2024-25": 21,
+          "2025-26": 21
+        }
+      }
+    },
+    "verdicts": {
+      "short_gen_minus_short_mean": "clearly_loses",
+      "long_gen_minus_long_mean": "clearly_loses",
+      "short_gen_minus_long_gen": "does_not_clearly_lose"
+    },
+    "note": "B1: short generative MC-mean vs FD mean layer. B2: oracle-rank Opta generative vs Opta mean (diagnostic ranks). B3: short_gen vs long_gen on overlapping player-GWs (priced info value)."
+  },
+  "C": {
+    "elapsed_s": 698.1464869976044,
+    "ft": {
+      "returncode": 0,
+      "n_squads": 72,
+      "mean_transfers": 3.8833333333333333,
+      "mean_hits": 7.533333333333333,
+      "props": true,
+      "priced": {
+        "gws": [
+          8
+        ],
+        "n_fits": 10,
+        "n_props_matched": 330,
+        "odds_path": "/workspace/data/scratch/gw08_odds_full.json"
+      },
+      "scoring": "GW8 cascade_short priced centreline M\u2192k\u223cM (props matched=330; no \u03bb jitter); GW\u2265t+2 Opta place\u2192GF/GA\u00b1MAE\u2192M\u2192k\u223cM; generative lineup\u2192attack\u2192CS/GC; soft priors from score_xp_v2 helpers; same-season as-of rates/priors/rolling m frozen at decision GW",
+      "sources_in_sample": [
+        "cascade_long_opta",
+        "cascade_short_priced"
+      ],
+      "top10": [
+        {
+          "name": "Gro\u00df",
+          "freq": 0.9305555555555556,
+          "freq_xi": 0.9305555555555556,
+          "freq_captain": 0.1388888888888889,
+          "team": "brighton"
+        },
+        {
+          "name": "Tzolakis",
+          "freq": 0.9166666666666666,
+          "freq_xi": 0.1388888888888889,
+          "freq_captain": 0.0,
+          "team": "hull"
+        },
+        {
+          "name": "Tarkowski",
+          "freq": 0.8888888888888888,
+          "freq_xi": 0.8611111111111112,
+          "freq_captain": 0.20833333333333334,
+          "team": "everton"
+        },
+        {
+          "name": "Dasilva",
+          "freq": 0.8472222222222222,
+          "freq_xi": 0.6805555555555556,
+          "freq_captain": 0.125,
+          "team": "coventry"
+        },
+        {
+          "name": "Hall",
+          "freq": 0.8472222222222222,
+          "freq_xi": 0.75,
+          "freq_captain": 0.1111111111111111,
+          "team": "newcastle"
+        },
+        {
+          "name": "Van Hecke",
+          "freq": 0.75,
+          "freq_xi": 0.6388888888888888,
+          "freq_captain": 0.1111111111111111,
+          "team": "spurs"
+        },
+        {
+          "name": "Wirtz",
+          "freq": 0.7361111111111112,
+          "freq_xi": 0.6805555555555556,
+          "freq_captain": 0.05555555555555555,
+          "team": "liverpool"
+        },
+        {
+          "name": "Saka",
+          "freq": 0.5555555555555556,
+          "freq_xi": 0.5277777777777778,
+          "freq_captain": 0.06944444444444445,
+          "team": "arsenal"
+        },
+        {
+          "name": "Hume",
+          "freq": 0.5555555555555556,
+          "freq_xi": 0.0,
+          "freq_captain": 0.0,
+          "team": "sunderland"
+        },
+        {
+          "name": "N.Jackson",
+          "freq": 0.5138888888888888,
+          "freq_xi": 0.4027777777777778,
+          "freq_captain": 0.013888888888888888,
+          "team": "aston villa"
+        }
+      ],
+      "stdout_tail": "   \"freq\": 0.917,\n      \"freq_captain\": 0.0\n    },\n    {\n      \"name\": \"Tarkowski\",\n      \"freq\": 0.889,\n      \"freq_captain\": 0.208\n    },\n    {\n      \"name\": \"Dasilva\",\n      \"freq\": 0.847,\n      \"freq_captain\": 0.125\n    },\n    {\n      \"name\": \"Hall\",\n      \"freq\": 0.847,\n      \"freq_captain\": 0.111\n    }\n  ],\n  \"json\": \"/workspace/data/predictions/2026-27/cascade_viability_ft/multistage_xi_captain_ft_trial.json\",\n  \"csv\": \"/workspace/data/predictions/2026-27/cascade_viability_ft/multistage_xi_captain_ft_player_freq.csv\",\n  \"report\": \"/workspace/reports/multistage_xi_captain_ft_trial.md\"\n}\n",
+      "stderr_tail": ""
+    },
+    "xi_captain": {
+      "returncode": 0,
+      "n_squads": 72,
+      "top10": [
+        {
+          "name": "Tzolakis",
+          "freq": 0.9027777777777778,
+          "freq_xi": 0.0,
+          "freq_captain": 0.0,
+          "team": "hull"
+        },
+        {
+          "name": "Gro\u00df",
+          "freq": 0.8055555555555556,
+          "freq_xi": 0.8055555555555556,
+          "freq_captain": 0.1388888888888889,
+          "team": "brighton"
+        },
+        {
+          "name": "Tarkowski",
+          "freq": 0.7638888888888888,
+          "freq_xi": 0.7638888888888888,
+          "freq_captain": 0.20833333333333334,
+          "team": "everton"
+        },
+        {
+          "name": "Hume",
+          "freq": 0.6944444444444444,
+          "freq_xi": 0.0,
+          "freq_captain": 0.0,
+          "team": "sunderland"
+        },
+        {
+          "name": "Hall",
+          "freq": 0.6805555555555556,
+          "freq_xi": 0.6805555555555556,
+          "freq_captain": 0.1111111111111111,
+          "team": "newcastle"
+        },
+        {
+          "name": "Gonzalo",
+          "freq": 0.6805555555555556,
+          "freq_xi": 0.0,
+          "freq_captain": 0.0,
+          "team": "fulham"
+        },
+        {
+          "name": "Wirtz",
+          "freq": 0.5972222222222222,
+          "freq_xi": 0.5972222222222222,
+          "freq_captain": 0.05555555555555555,
+          "team": "liverpool"
+        },
+        {
+          "name": "Van Hecke",
+          "freq": 0.5833333333333334,
+          "freq_xi": 0.5833333333333334,
+          "freq_captain": 0.1111111111111111,
+          "team": "spurs"
+        },
+        {
+          "name": "Dasilva",
+          "freq": 0.5694444444444444,
+          "freq_xi": 0.5555555555555556,
+          "freq_captain": 0.125,
+          "team": "coventry"
+        },
+        {
+          "name": "Calvert-Lewin",
+          "freq": 0.4583333333333333,
+          "freq_xi": 0.05555555555555555,
+          "freq_captain": 0.0,
+          "team": "leeds"
+        }
+      ]
+    },
+    "passed_smoke": true,
+    "note": "Diagnostic frequency only \u2014 not a gated path-V promote. Confirm GW8 source is cascade_short_priced and scoring mentions no \u03bb jitter."
+  },
+  "gated_report_error": "refusing report: paired intervals must cover the four closed seasons",
+  "report": "/workspace/reports/cascade_short_long_viability_results.md",
+  "finished_unix": 1792535613.9982367,
+  "elapsed_s": 1352.0085895061493,
+  "errors": []
+}
