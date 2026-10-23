@@ -1,8 +1,30 @@
 {
-  "task": "cascade_path_bench_weight",
-  "status": "rejected",
-  "change": "Remove bench_alpha from path MILP objective; PI rejected α·squad form",
-  "protocol": "cascade_path_bench_weight",
-  "decision": "reject_bench_alpha",
-  "note": "Objective is again XI + captain − hits [+ terminal FT PE] only"
+  "task": "cascade_locked_consolidate",
+  "status": "done",
+  "as_of_utc": "2026-10-23T15:55:00Z",
+  "note": "Fast-forward club-expanding to path-bench tip (#101–#106 locked/default stack). Open PR into main.",
+  "includes": {
+    "locked_or_default": [
+      "cascade_short_generative",
+      "cascade_long_match_outcome",
+      "DEFAULT_LINEUP_COV=False",
+      "score_xp_v2_rate_baseline_prior=cascade_default",
+      "cascade_joint_path_plan",
+      "cascade_gamma=1",
+      "DEFAULT_FT_PE_NU=HIT_COST",
+      "cascade_path_bench_weight=rejected"
+    ],
+    "diagnostic_landed": [
+      "cascade_deadline_causal_minutes",
+      "cascade_mc_vs_mean_hist",
+      "cascade_mean_path_gw_resid",
+      "cascade_ft_pe_path"
+    ],
+    "not_on_this_tip": [
+      "cascade_pathv_share_cond_xp (#108)",
+      "gw08 live pick (#107)"
+    ]
+  },
+  "index": "reports/CASCADE_LOCKED.md",
+  "branch": "cursor/club-expanding-gf-ga-2025-26-cc3d"
 }
