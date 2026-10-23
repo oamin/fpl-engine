@@ -1,16 +1,19 @@
 {
   "task": "numagent_live_pick_gw08",
-  "status": "recommended",
+  "status": "blocked_odds_credentials",
   "gw": 8,
   "deadline_utc": "2026-10-23T17:30:00Z",
-  "entry_id": 2632584,
-  "primary": "L3",
-  "transfers": {"sold": ["Mainoo"], "bought": ["Lewis-Potter"], "hits": 0},
-  "captain": "Haaland",
-  "vice_captain": "Lewis-Potter",
-  "formation": "1-4-4-2",
-  "objective": 63.74,
-  "report": "reports/numagent_live_pick_gw08.md",
-  "pick_json": "data/predictions/2026-27/gw08/numagent_pick.json",
-  "note": "L4 skipped (no GW9 odds in snapshot). Odds snapshot 2026-10-16; xmi rolling+status (Mainoo injury)."
+  "minutes": {
+    "status": "done",
+    "path": "data/scratch/gw08_xmi_probe.csv",
+    "method": "minutes_llm + FFScout predicted XI / out / doubts",
+    "n_cases": 668,
+    "n_lineups": 20,
+    "ffscout_fetched_at": "2026-10-23T08:32:08.747846+00:00"
+  },
+  "odds": {
+    "status": "blocked",
+    "reason": "ODDS_API_KEY and BETFAIR_* missing in environment"
+  },
+  "note": "Full LLM xmi probe complete. Waiting for odds credentials to re-run numagent_live_pick --fetch-odds."
 }
