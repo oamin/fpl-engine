@@ -1457,5 +1457,17 @@
     "metric": "diagnostic: squads solved, mean hits/transfers, captain concentration, top-freq overlap — not a gated path-V promote",
     "note": "Strategy-layer smoke matching PI aim; full four-season realised path-V gate deferred.",
     "any_later_change": "dated protocol update required"
+  },
+  "cascade_pathv_share_cond_xp": {
+    "locked": "2026-10-23",
+    "status": "done_diagnostic",
+    "role": "path-V quick screen: roll k∼M, replace player dice with E[G/A|k] from shares",
+    "module": "src/eval/cascade_pathv_share_cond.py",
+    "report": "reports/cascade_pathv_share_cond.md",
+    "treatment": "xi_plus_captain_ft + generative_attack + player_attack=share_mean, N=8, GW6→8–19, priced GW8",
+    "baseline": "same + player_attack=dice (current generative stack)",
+    "metric": "diagnostic: micro xp variance given k; mean hits/transfers; top-15 Jaccard — not a gated path-V promote",
+    "note": "Rao–Blackwellise player layer; match uncertainty kept. Full four-season gate deferred.",
+    "any_later_change": "dated protocol update required"
   }
 }

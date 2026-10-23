@@ -365,6 +365,7 @@ def score_pool_generative_on_scenarios(
     gamma: float = 0.9,
     lineup_cov: bool = True,
     rho: float = 0.0,
+    player_attack: str = "dice",
 ) -> pd.DataFrame:
     """Discounted multi-GW generative xP (cascade_short stack).
 
@@ -373,6 +374,8 @@ def score_pool_generative_on_scenarios(
     (element id → P(anytime)) are used on priced cascade_short weeks; Opta
     long weeks leave them unset. Missing goals trigger a fresh ``k ∼ M``
     draw from the fixture λ (scratch valuation; does not update ClubPath).
+
+    ``player_attack``: ``dice`` (sample G/A) or ``share_mean`` (E[G/A|k]).
     """
     out = pool.copy()
     if "team_n" not in out.columns and "team_norm" in out.columns:
@@ -411,6 +414,7 @@ def score_pool_generative_on_scenarios(
                 lineup_cov=lineup_cov,
                 goals_home=None if gh is None else int(gh),
                 goals_away=None if ga is None else int(ga),
+                player_attack=player_attack,
             )
             for scored in (home_xp, away_xp):
                 if scored is None or scored.empty:

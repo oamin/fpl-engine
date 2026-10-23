@@ -1,12 +1,32 @@
 {
-  "task": "lock_lineup_cov_false_live_layers",
-  "status": "done",
-  "DEFAULT_LINEUP_COV": false,
-  "live_layers": {
-    "pool": "FFScout firm ∩ sticky minutes gate — WHO",
-    "minutes": "as-of m / live xmi (+ optional availability overlay) — frozen on gen paths",
-    "scenario": "k∼M → attack → CS/GC"
+  "task": "cascade_pathv_share_cond_xp",
+  "status": "done_diagnostic",
+  "as_of_utc": "2026-10-23T15:32:01Z",
+  "protocol": "cascade_pathv_share_cond_xp",
+  "comparison": {
+    "treatment": "player_attack=share_mean (E[G/A|k] after k∼M)",
+    "baseline": "player_attack=dice",
+    "n": 8,
+    "seed": 7,
+    "objective": "xi_plus_captain_ft",
+    "horizon": "GW6 decision → GW8–19, priced GW8"
   },
-  "report": "reports/cascade_live_minutes_layers.md",
-  "parked": ["club_matchday_minutes_resample", "corr_threshold_competitor_pairs"]
+  "results": {
+    "smoke_ok": true,
+    "top15_jaccard": 0.667,
+    "dice_mean_hits": 7.5,
+    "share_mean_hits": 6.727,
+    "dice_mean_transfers": 2.875,
+    "share_mean_transfers": 2.682,
+    "micro_star_dice_var": 7.029,
+    "micro_star_share_nunique": 1,
+    "wall_s": 417.9
+  },
+  "verdict": "Micro variance kill confirmed. Path-V mildly calmer vs dice (Jaccard 0.67, hits −0.8); still far from mean-layer hit rates. Keep as gen path-V candidate; not a promote.",
+  "artifacts": {
+    "report": "reports/cascade_pathv_share_cond.md",
+    "state": "data/processed/cascade_pathv_share_cond/state.json",
+    "dice": "data/predictions/2026-27/cascade_pathv_dice",
+    "share_mean": "data/predictions/2026-27/cascade_pathv_share_mean"
+  }
 }

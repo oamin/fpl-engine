@@ -153,6 +153,30 @@ class FixtureGenerative(unittest.TestCase):
         self.assertIn("goals_home", meta)
         self.assertGreaterEqual(int(meta["goals_home"]), 0)
 
+    def test_share_mean_deterministic_given_scoreline(self) -> None:
+        home = self._club("Arsenal", ["A1", "A2"], [1, 2])
+        away = self._club("Everton", ["E1", "E2"], [3, 4])
+        xps = []
+        for seed in (0, 1, 2, 3):
+            h_xp, _, meta = score_fixture_generative(
+                home,
+                away,
+                lam_h=1.5,
+                lam_a=1.2,
+                rho=0.0,
+                alpha_g=0.96,
+                alpha_a=0.90,
+                rng=np.random.default_rng(seed),
+                lineup_cov=False,
+                goals_home=2,
+                goals_away=1,
+                player_attack="share_mean",
+            )
+            self.assertEqual(meta["player_attack"], "share_mean")
+            self.assertEqual(int(meta["goals_home"]), 2)
+            xps.append(tuple(float(x) for x in h_xp["xp"].tolist()))
+        self.assertEqual(len(set(xps)), 1)
+
     def test_cs_gc_match_rolled_scoreline(self) -> None:
         """Defence xP is the rolled GA, not moment xCS/xGC."""
         home = self._club("Arsenal", ["A1"], [1])
