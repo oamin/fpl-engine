@@ -25,7 +25,7 @@ Updated: 2026-10-20. **Numagent 2.0** is the product on main (`protocol.numagent
 | **17. Cascade γ** | **locked γ=1** | Removed climb `γ=0.9` contamination from cascade/multistage defaults (`cascade_gamma`). |
 | **18. Deadline-causal minutes** | **done (diagnostic)** | Oracle m only at deadline GW; as-of for later; rolling replan. N=12: +hits, actual +12, terminal FT flat. `reports/cascade_deadline_causal_minutes.md`. |
 | **19. Path bench weight α** | **rejected** | α·squad form screened then removed from path objective. `reports/cascade_path_bench_weight.md`. |
-| **20. GW8 live pick** | **recommended** | L3: Mainoo → Lewis-Potter (0 hits), C Haaland, 1-4-4-2. L4 skipped (no GW9 odds). `reports/numagent_live_pick_gw08.md`. |
+| **20. GW8 live pick** | **recommended** | L4 live odds: Mainoo → Lewis-Potter (0 hits), C Haaland, 1-4-4-2. Horizon obj 125.84. `reports/numagent_live_pick_gw08.md`. |
 
 ## Plan
 

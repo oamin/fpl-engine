@@ -1,43 +1,50 @@
 # Numagent 2.0 live pick — GW8
 
-Primary solver: **L3**. Team `ojaminFC` (entry 2632584). Bank 0 tenths, FT 1. Odds: `snapshot` (10 priced events; t=10/10, t+1=0/10).
+Primary solver: **L4**. Team `ojaminFC` (entry 2632584). Bank 0 tenths, FT 1. Odds: `live` (20 priced events; t=10/10, t+1=10/10).
 
 α_G=0.9601, α_A=0.9050. Week-t minutes: xmi `668` / rolling3 `0`. Week-t+1 minutes: rolling3 only (L4 as-of law).
 
-## Recommendation (L3)
+## Recommendation (L4)
 
 - Transfers: **1** (hits 0, −0 pts)
 - Sold: Mainoo
 - Bought: Lewis-Potter
 - Captain: **Haaland**
 - Formation: 1-4-4-2
-- Week-0 objective (μ − hits): 63.74 (XI 56.57 + C 7.17)
+- Week-0 objective (μ − hits): 67.33 (XI 58.95 + C 8.39)
+- Horizon objective (γ=1.0, H=2): **125.84** (week μ [58.947168073359926, 51.77347713618527] + C [8.386462202139128, 6.728750802700866])
 - Bank after: 0 · FT after: 1
 
 ### XI
 
 | Player | Pos | Club | μ | C |
 | --- | --- | --- | ---: | --- |
-| Raya | GKP | Arsenal | 5.07 |  |
-| Lewis-Potter | MID | Brentford | 5.63 |  |
-| Rogers | MID | Chelsea | 4.79 |  |
-| Thomas | DEF | Coventry City | 4.62 |  |
-| Affengruber | DEF | Fulham | 4.24 |  |
-| Haaland | FWD | Man City | 7.17 | C |
-| B.Fernandes | MID | Man Utd | 5.28 |  |
-| Mbeumo | MID | Man Utd | 5.44 |  |
-| Hall | DEF | Newcastle | 5.23 |  |
-| Wissa | FWD | Newcastle | 4.58 |  |
-| Murillo | DEF | Nott'm Forest | 4.52 |  |
+| Raya | GKP | Arsenal | 4.79 |  |
+| Lewis-Potter | MID | Brentford | 5.55 |  |
+| Rogers | MID | Chelsea | 5.19 |  |
+| Thomas | DEF | Coventry City | 4.44 |  |
+| Affengruber | DEF | Fulham | 4.35 |  |
+| Haaland | FWD | Man City | 8.39 | C |
+| B.Fernandes | MID | Man Utd | 5.64 |  |
+| Mbeumo | MID | Man Utd | 5.80 |  |
+| Hall | DEF | Newcastle | 5.52 |  |
+| Wissa | FWD | Newcastle | 4.82 |  |
+| Murillo | DEF | Nott'm Forest | 4.47 |  |
 
 ### Bench
 
 | Player | Pos | μ |
 | --- | --- | ---: |
-| Verbruggen | GKP | 2.88 |
-| Rudoni | MID | 3.94 |
-| Khalaili | DEF | 3.80 |
-| Barry | FWD | 3.55 |
+| Verbruggen | GKP | 2.79 |
+| Rudoni | MID | 3.83 |
+| Khalaili | DEF | 4.03 |
+| Barry | FWD | 3.83 |
+
+## L3 contrast (week t only)
+
+- Transfers: 1 (Mainoo → M.Sangaré)
+- Captain: Haaland
+- Objective: 67.47
 
 ## Fixtures scored (week t)
 
@@ -54,6 +61,16 @@ Primary solver: **L3**. Team `ojaminFC` (entry 2632584). Bank 0 tenths, FT 1. Od
 
 ## Fixtures scored (week t+1)
 
+- Chelsea v Manchester United: props 0/0
+- Bournemouth v Leeds United: props 0/0
+- Brentford v Nottingham Forest: props 0/0
+- Manchester City v Brighton and Hove Albion: props 0/0
+- Coventry City v Sunderland: props 0/0
+- Hull City v Ipswich Town: props 0/0
+- Tottenham Hotspur v Crystal Palace: props 0/0
+- Aston Villa v Fulham: props 0/0
+- Liverpool v Arsenal: props 0/0
+- Newcastle United v Everton: props 0/0
 
 ## Notes
 

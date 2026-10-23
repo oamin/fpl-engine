@@ -1,0 +1,11 @@
+{
+  "sent": false,
+  "ok": false,
+  "reason": "no_betfair_app_key",
+  "detail": "",
+  "source": "betfair",
+  "n_events": 0,
+  "remaining": "",
+  "last": "",
+  "used": ""
+}

@@ -1,20 +1,22 @@
 {
   "task": "numagent_live_pick_gw08",
-  "status": "blocked_odds_credentials",
+  "status": "recommended",
   "gw": 8,
   "deadline_utc": "2026-10-23T17:30:00Z",
-  "deadline_bst": "2026-10-23 18:30 BST",
-  "checked_at_utc": "2026-10-23T08:34:50Z",
-  "minutes": {
-    "status": "done",
-    "path": "data/scratch/gw08_xmi_probe.csv",
-    "method": "minutes_llm + FFScout predicted XI / out / doubts",
-    "n_cases": 668,
-    "n_lineups": 20
+  "primary": "L4",
+  "transfers": {
+    "sold": [
+      "Mainoo"
+    ],
+    "bought": [
+      "Lewis-Potter"
+    ],
+    "hits": 0
   },
-  "odds": {
-    "status": "blocked",
-    "reason": "ODDS_API_KEY and BETFAIR_* still missing after secrets request + timer"
-  },
-  "next": "Add ODDS_API_KEY (preferred for numagent --fetch-odds) or BETFAIR_* to the Cloud Agent environment, then ask to re-run the GW8 pick."
+  "captain": "Haaland",
+  "vice_captain": "Mbeumo",
+  "formation": "1-4-4-2",
+  "horizon_objective": 125.84,
+  "odds_remaining_after": "171",
+  "report": "reports/numagent_live_pick_gw08.md"
 }
