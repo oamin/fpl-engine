@@ -3,17 +3,18 @@
   "status": "blocked_odds_credentials",
   "gw": 8,
   "deadline_utc": "2026-10-23T17:30:00Z",
+  "deadline_bst": "2026-10-23 18:30 BST",
+  "checked_at_utc": "2026-10-23T08:34:50Z",
   "minutes": {
     "status": "done",
     "path": "data/scratch/gw08_xmi_probe.csv",
     "method": "minutes_llm + FFScout predicted XI / out / doubts",
     "n_cases": 668,
-    "n_lineups": 20,
-    "ffscout_fetched_at": "2026-10-23T08:32:08.747846+00:00"
+    "n_lineups": 20
   },
   "odds": {
     "status": "blocked",
-    "reason": "ODDS_API_KEY and BETFAIR_* missing in environment"
+    "reason": "ODDS_API_KEY and BETFAIR_* still missing after secrets request + timer"
   },
-  "note": "Full LLM xmi probe complete. Waiting for odds credentials to re-run numagent_live_pick --fetch-odds."
+  "next": "Add ODDS_API_KEY (preferred for numagent --fetch-odds) or BETFAIR_* to the Cloud Agent environment, then ask to re-run the GW8 pick."
 }
