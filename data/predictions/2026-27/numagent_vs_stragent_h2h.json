@@ -1,12 +1,12 @@
 {
   "kind": "numagent_vs_stragent_h2h",
-  "as_of_utc": "2026-10-23T09:12:13Z",
+  "as_of_utc": "2026-10-23T09:15:52Z",
   "bar": "GW6\u201325 parallel track; first formal read GW26 (string_competitor_plan)",
   "notes": [
     "Numagent = FPL entry 2632584 realised points (official).",
-    "Stragent GW6\u20137 = paper (no official freeze); scored from GW6 horizon dry-run.",
-    "Stragent GW8 = official freeze; week not finished yet.",
-    "Alternate GW6 dry-run (Wood, C \u00d8degaard) paper net would be 49 (not used in table)."
+    "Stragent GW6\u20138 = official freeze rows in string_agent_freeze.jsonl (locked-in comparison at each plan frozen_at_utc, pre-deadline).",
+    "Stragent GW8 week not finished yet (realised null).",
+    "GW6\u20137 realised attached on the freeze ledger; scores match the locked plans (not paper rescored)."
   ],
   "weeks": [
     {
@@ -19,10 +19,10 @@
       "stragent_raw": 49,
       "stragent_hits": 0,
       "stragent_cap": "B.Fernandes",
-      "stragent_status": "paper",
+      "stragent_status": "frozen_comparison",
       "delta_num_minus_str": 7,
       "num_label": "entry (ojaminFC)",
-      "str_label": "horizon dry-run week-0 (Muniz)",
+      "str_label": "frozen comparison (Muniz in, C Bruno)",
       "str_autosubs": 0
     },
     {
@@ -35,10 +35,10 @@
       "stragent_raw": 61,
       "stragent_hits": 0,
       "stragent_cap": "Haaland",
-      "stragent_status": "paper",
+      "stragent_status": "frozen_comparison",
       "delta_num_minus_str": 7,
       "num_label": "PI lock / entry",
-      "str_label": "paper GW7 intention (from GW6 horizon)",
+      "str_label": "frozen comparison (Robinson in, C Haaland)",
       "str_autosubs": 2
     }
   ],

@@ -1,6 +1,6 @@
 # GW7 agent results
 
-Evaluated `2026-10-23T08:58:39Z`.
+Evaluated `2026-10-23T08:58:39Z`. Stragent status updated to frozen comparison `2026-10-23T09:15:52Z`.
 
 ## Numagent (entry 2632584, PI-locked)
 
@@ -10,12 +10,13 @@ Evaluated `2026-10-23T08:58:39Z`.
 - Season total after GW7: 474
 - Rescore (autosub engine): 68 − 0 hits = 68
 
-## Stragent (paper — no official GW7 freeze)
+## Stragent (frozen comparison)
 
-- Source: GW7 intention inside `reports/string_agent_gw6_horizon_decision.json`
+- Official freeze: `data/predictions/2026-27/string_agent_freeze.jsonl` (GW7 row)
+- Plan: `data/predictions/2026-27/string_plans/gw07.json` (`frozen_at_utc` 2026-10-16T18:00:00Z)
 - Planned: out ['Davis'] → in ['Robinson']
 - Captain: Haaland · Vice: B.Fernandes
-- **Paper realised (autosub + C): 61** − 0 hits = **61**
+- **Realised (autosub + C): 61** − 0 hits = **61**
 - Autosubs: 2
 
 Artifacts: `data/predictions/2026-27/gw07/numagent_results.json`, `data/predictions/2026-27/gw07/stragent_results.json`.

@@ -2,8 +2,8 @@
   "kind": "stragent_gw_results",
   "gw": 7,
   "evaluated_at_utc": "2026-10-23T08:58:39Z",
-  "official_freeze": null,
-  "status": "paper_horizon_only",
+  "official_freeze": "data/predictions/2026-27/string_agent_freeze.jsonl",
+  "status": "frozen_comparison",
   "source": "reports/string_agent_gw6_horizon_decision.json (horizon GW7 week)",
   "selection": {
     "transfers_in": [
@@ -77,5 +77,5 @@
       "Forster": 0.0
     }
   },
-  "note": "No official string_agent_freeze.jsonl row for GW7. Scored the GW7 intention from the GW6 horizon dry-run (paper)."
+  "note": "Locked-in stragent vs numagent comparison for GW7 (official freeze row; realised attached)."
 }

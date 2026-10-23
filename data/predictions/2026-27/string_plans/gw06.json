@@ -81,6 +81,7 @@
       "271"
     ]
   },
+  "comparison_lock": true,
   "context_sha256": "90a124b1cba2342df53b9c7fbe6549191cd031cb43be40d95d004d8b56e6b25e",
   "deadline_utc": "2026-10-10T10:00:00Z",
   "decision": {
@@ -275,7 +276,7 @@
       "vice_captain": "411"
     }
   ],
-  "model_id": "gemini-3.8-flash (retrospective plan materialisation)",
+  "model_id": "Locked comparison freeze (GW6 horizon decision)",
   "prompt_sha256": "89fc9d8850ec352c7515bbb97c5892b88e48d8065c1f63c41410a16d679287c1",
   "rationale": "Press reports from BBC Sport and the Manchester Evening News confirm Erling Haaland asked to be withdrawn on 67 minutes for Norway with muscle fatigue. While Solbakken downplayed a serious injury and Sports Mole expects him available for Sunday, starting him away at Anfield is reasonable but handing him the armband with a fatigue flag is reckless. Bruno Fernandes is fully fit, on penalty duties, and commands the creative hub at home to Tottenham, making him our Gameweek 6 captain. Meanwhile, Dane Scarlett has permanently departed for Leyton Orient, leaving a completely dead bench asset. With 1.5 in the bank, we move Scarlett to Rodrigo Muniz, who steps directly into the starting eleven for Fulham's prime fixture run (Ipswich away, Hull home, Coventry away). This allows us to bench Dominic Calvert-Lewin against Arsenal's formidable backline. Frank Lampard confirmed Milan van Ewijk returned to training after his hamstring issue, giving us reliable bench depth alongside Luke Shaw. Looking ahead, Gameweek 7 is the ideal Haaland captaincy fixture at home to Ipswich Town, where we use our free transfer to swap Leif Davis (facing City away) for Antonee Robinson (hosting Hull). In Gameweek 8, we roll our transfer with strong home fixtures for Arsenal and Manchester United, banking two free transfers for future fixture swings."
 }

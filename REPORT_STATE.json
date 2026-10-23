@@ -1,16 +1,31 @@
 {
-  "task": "gw08_dual_agent_lock",
+  "task": "stragent_frozen_comparison_gw06_gw08",
   "status": "done",
   "gw": 8,
   "deadline_utc": "2026-10-23T17:30:00Z",
+  "as_of_utc": "2026-10-23T09:15:52Z",
+  "stragent_freeze": {
+    "ledger": "data/predictions/2026-27/string_agent_freeze.jsonl",
+    "rows": [6, 7, 8],
+    "status": "frozen_comparison",
+    "note": "GW6–8 locked-in stragent vs numagent comparison; frozen_at_utc pre-deadline on each plan; GW6–7 realised attached."
+  },
   "gw07_results": {
     "numagent_fpl_points": 68,
-    "stragent_paper_net": 61,
+    "stragent_frozen_net": 61,
     "artifacts": [
       "data/predictions/2026-27/gw07/numagent_results.json",
       "data/predictions/2026-27/gw07/stragent_results.json",
+      "data/predictions/2026-27/gw06/stragent_results.json",
       "reports/gw07_agent_results.md"
     ]
+  },
+  "h2h": {
+    "numagent_gw06_07": 124,
+    "stragent_gw06_07": 110,
+    "numagent_lead": 14,
+    "json": "data/predictions/2026-27/numagent_vs_stragent_h2h.json",
+    "report": "reports/numagent_vs_stragent_h2h.md"
   },
   "numagent_gw08": {
     "status": "locked",

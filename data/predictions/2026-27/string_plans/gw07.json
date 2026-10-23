@@ -81,6 +81,7 @@
       "271"
     ]
   },
+  "comparison_lock": true,
   "context_sha256": "9463de241ced297f71854383e8c524068ec64686da57ee811bfd7e602ddf959d",
   "deadline_utc": "2026-10-17T10:00:00Z",
   "decision": {
@@ -271,7 +272,7 @@
       "vice_captain": "411"
     }
   ],
-  "model_id": "gemini-3.8-flash (retrospective GW7 intention)",
+  "model_id": "Locked comparison freeze (GW7 intention from GW6 horizon)",
   "prompt_sha256": "89fc9d8850ec352c7515bbb97c5892b88e48d8065c1f63c41410a16d679287c1",
   "rationale": "Paper execution of the GW6 horizon: Davis \u2192 Robinson, captain Haaland home to Ipswich."
 }
