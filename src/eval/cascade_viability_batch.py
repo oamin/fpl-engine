@@ -576,7 +576,7 @@ def run_C_ft_captain(state: dict[str, Any]) -> None:
         "--seed",
         "7",
         "--snapshot-every",
-        "2",
+        "1",
         "--objective",
         "xi_plus_captain_ft",
         "--no-minutes-overlay",

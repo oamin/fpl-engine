@@ -101,7 +101,7 @@ class ScorePoolGenerative(unittest.TestCase):
             alpha_a=0.90,
             rng=np.random.default_rng(1),
             lineup_cov=False,
-            gamma=0.9,
+            gamma=1.0,
         )
         self.assertIn("mc_score", board.columns)
         self.assertTrue((board["mc_score"] >= 0).any() or True)

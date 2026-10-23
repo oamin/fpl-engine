@@ -1,0 +1,696 @@
+Tag availability and, when team news supports it, expected lineups for FPL Gameweek 8.
+Return a JSON object and nothing else:
+{"players": [...], "lineups": [...]}
+
+players — one object per player listed below:
+{"player_id": number, "tag": string, "note": string}
+tag is one of: injured, transferred, benched, 50/50, none.
+injured — hurt, suspended, or doubtful with a meaningful minutes cut.
+transferred — left the club / not available for this club.
+benched — known rotation / left out when you are NOT emitting a lineup for that club.
+50/50 — news says he could return this weekend (play-or-not).
+none — no clear availability override; rolling minutes apply unless a lineup places him.
+Do not invent a numeric xmi. Do not use ask. Do not use firm_starter.
+If status is s or u, or the chance is 0, tag must be injured.
+
+lineups — optional. Zero or more club predicted XIs from team news:
+{"club": string, "xi": [11 player_ids], "bench": [player_ids]}
+club must match a club name in the table. xi must list exactly 11 distinct ids from that club.
+bench is optional (named substitutes). Players in that club's list but neither xi nor bench
+are treated as not in the matchday squad (0 minutes) when a lineup is provided.
+Omit lineups (or use []) when the news does not support a predicted XI.
+Availability tags injured/transferred override lineup placement.
+
+A bare JSON array of player objects is also accepted (no lineups).
+
+player_id | name | pos | club | status | chance | last_minutes | news | focus
+1 | Raya | GKP | Arsenal | a |  | 90 |  | yes
+6 | Saliba | DEF | Arsenal | i | 0 | 0 | Back injury - Unknown return date | yes
+9 | Hincapie | DEF | Arsenal | d | 75 | 0 | Ankle injury - 75% chance of playing | yes
+12 | Saka | MID | Arsenal | d | 50 | 90 | Thigh injury - 50% chance of playing | yes
+18 | Martinelli | MID | Arsenal | u | 0 | 0 | Has joined Al Hilal permanently | yes
+22 | Nwaneri | MID | Arsenal | u | 0 | 0 | Has joined Borussia Dortmund on loan for the rest of the season | yes
+23 | Fábio Vieira | MID | Arsenal | u | 0 | 0 | Has joined Hamburger SV permanently | yes
+24 | Nelson | MID | Arsenal | u | 0 | 0 | has departed the club as a free agent. | yes
+27 | G.Jesus | FWD | Arsenal | u | 0 | 0 | Has joined FC Barcelona permanently | yes
+557 | Tzolis | MID | Arsenal | i | 0 | 0 | Hamstring injury - Expected back 1 Nov | yes
+2 | Arrizabalaga | GKP | Arsenal | a |  | 0 |  | squad
+3 | Meslier | GKP | Arsenal | a |  | 0 |  | squad
+4 | Gabriel | DEF | Arsenal | a |  | 90 |  | squad
+5 | J.Timber | DEF | Arsenal | a | 100 | 24 |  | squad
+7 | Lewis-Skelly | MID | Arsenal | a |  | 0 |  | squad
+8 | Calafiori | DEF | Arsenal | a |  | 90 |  | squad
+10 | White | DEF | Arsenal | a | 100 | 65 |  | squad
+11 | Mosquera | DEF | Arsenal | a | 100 | 0 |  | squad
+13 | Rice | MID | Arsenal | a | 100 | 90 |  | squad
+14 | Eze | MID | Arsenal | a |  | 45 |  | squad
+15 | Ødegaard | MID | Arsenal | a |  | 90 |  | squad
+16 | Madueke | MID | Arsenal | a |  | 45 |  | squad
+17 | Merino | MID | Arsenal | a |  | 24 |  | squad
+19 | Zubimendi | MID | Arsenal | a | 100 | 0 |  | squad
+20 | Dowman | MID | Arsenal | a | 100 | 0 |  | squad
+25 | Gyökeres | FWD | Arsenal | a |  | 24 |  | squad
+26 | Havertz | FWD | Arsenal | a | 100 | 65 |  | squad
+31 | Konsa | DEF | Arsenal | a | 100 | 90 |  | squad
+452 | Bruno G. | MID | Arsenal | a | 100 | 65 |  | squad
+30 | Digne | DEF | Aston Villa | u | 0 | 0 | Has joined Paris Saint-Germain permanently | yes
+38 | A.García | DEF | Aston Villa | u | 0 | 0 | Has joined Getafe on loan for the rest of the season | yes
+39 | Nedeljkovic | DEF | Aston Villa | u | 0 | 0 | Has joined Rangers on loan for the rest of the season | yes
+44 | Bailey | MID | Aston Villa | u | 0 | 0 | Has joined Olympiakos permanently | yes
+48 | Onana | MID | Aston Villa | i | 0 | 0 | Knee injury - Unknown return date | yes
+49 | Iling Jr | MID | Aston Villa | u | 0 | 0 | Has joined Bolton Wanderers on loan for the rest of the season | yes
+53 | Manzambi | MID | Aston Villa | d | 75 | 71 | Calf injury - 75% chance of playing | yes
+55 | Watkins | FWD | Aston Villa | u | 0 | 0 | Has joined Al Hilal permanently | yes
+596 | Ruggeri | DEF | Aston Villa | i | 0 | 0 | Hamstring injury - Expected back 2 Jan | yes
+607 | Lynch | MID | Aston Villa | u | 0 | 0 | Has joined Oxford United on loan until January | yes
+611 | Wan-Bissaka | DEF | Aston Villa | i | 0 | 76 | Hamstring injury - Expected back 21 Nov | yes
+29 | M.Bizot | GKP | Aston Villa | a | 100 | 0 |  | squad
+32 | Cash | DEF | Aston Villa | a | 100 | 90 |  | squad
+33 | Mings | DEF | Aston Villa | a |  | 90 |  | squad
+34 | Pau | DEF | Aston Villa | a | 100 | 13 |  | squad
+35 | Bogarde | MID | Aston Villa | a |  | 0 |  | squad
+36 | Maatsen | DEF | Aston Villa | a | 100 | 0 |  | squad
+37 | Lindelöf | DEF | Aston Villa | a |  | 90 |  | squad
+41 | Buendía | MID | Aston Villa | a |  | 71 |  | squad
+45 | McGinn | MID | Aston Villa | a |  | 45 |  | squad
+46 | Barkley | MID | Aston Villa | a | 100 | 18 |  | squad
+47 | Kamara | MID | Aston Villa | a | 100 | 90 |  | squad
+50 | Burrowes | MID | Aston Villa | a |  | 0 |  | squad
+51 | George Hemmings | MID | Aston Villa | a | 100 | 0 |  | squad
+52 | Alysson | MID | Aston Villa | a | 100 | 45 |  | squad
+54 | Gomes | MID | Aston Villa | a | 100 | 71 |  | squad
+56 | Abraham | FWD | Aston Villa | a | 100 | 0 |  | squad
+160 | Garnacho | MID | Aston Villa | a |  | 0 |  | squad
+166 | N.Jackson | FWD | Aston Villa | a |  | 90 |  | squad
+582 | Madjo | FWD | Aston Villa | a | 100 | 0 |  | squad
+597 | Suzuki | GKP | Aston Villa | a |  | 90 |  | squad
+606 | Rowe | DEF | Aston Villa | a |  | 0 |  | squad
+618 | Goretzka | MID | Aston Villa | a | 100 | 18 |  | squad
+630 | Harwood-Bellis | DEF | Aston Villa | a |  | 0 |  | squad
+631 | Mbaye | MID | Aston Villa | a |  | 18 |  | squad
+667 | Wright | GKP | Aston Villa | a |  | 0 |  | squad
+59 | Dennis | GKP | Bournemouth | u | 0 | 0 | Has joined MK Dons permanently | yes
+63 | Milosavljević | DEF | Bournemouth | i | 0 | 0 | Thigh injury - Expected back 8 Nov | yes
+65 | J.Araujo | DEF | Bournemouth | i | 0 | 0 | Thigh injury - Unknown return date | yes
+69 | Scott | MID | Bournemouth | i | 0 | 0 | Thigh injury - Expected back 8 Nov | yes
+78 | Kroupi.Jr | MID | Bournemouth | d | 50 | 0 | Foot injury - 50% chance of playing | yes
+80 | Enes Ünal | FWD | Bournemouth | u | 0 | 0 | Has joined Getafe permanently | yes
+57 | Petrović | GKP | Bournemouth | a |  | 90 |  | squad
+58 | Forster | GKP | Bournemouth | a |  | 0 |  | squad
+60 | Hill | DEF | Bournemouth | a |  | 90 |  | squad
+61 | Truffert | DEF | Bournemouth | a |  | 90 |  | squad
+62 | Diakité | DEF | Bournemouth | a |  | 1 |  | squad
+64 | Smith | DEF | Bournemouth | a |  | 90 |  | squad
+66 | Soler | DEF | Bournemouth | a | 100 | 0 |  | squad
+67 | Rayan | MID | Bournemouth | a |  | 88 |  | squad
+68 | Tavernier | MID | Bournemouth | a |  | 78 |  | squad
+70 | Kluivert | MID | Bournemouth | a | 100 | 28 |  | squad
+71 | Cook | MID | Bournemouth | a |  | 61 |  | squad
+72 | Gannon-Doak | MID | Bournemouth | a |  | 1 |  | squad
+73 | Adams | MID | Bournemouth | a | 100 | 88 |  | squad
+74 | Brooks | MID | Bournemouth | a | 100 | 0 |  | squad
+75 | Christie | MID | Bournemouth | a | 100 | 90 |  | squad
+76 | Tóth.A | MID | Bournemouth | a |  | 0 |  | squad
+77 | Adli | MID | Bournemouth | a | 100 | 11 |  | squad
+79 | Evanilson | FWD | Bournemouth | a |  | 78 |  | squad
+81 | Rodríguez | FWD | Bournemouth | a | 100 | 11 |  | squad
+566 | Silva | DEF | Bournemouth | a |  | 90 |  | squad
+573 | Sanchez | DEF | Bournemouth | a |  | 0 |  | squad
+608 | Jebbison | FWD | Bournemouth | a |  | 0 |  | squad
+615 | Di Gregorio | GKP | Bournemouth | a |  | 0 |  | squad
+93 | Schuster | DEF | Brentford | d | 75 | 0 | Ankle injury - 75% chance of playing | yes
+98 | Janelt | MID | Brentford | s | 0 | 90 | Suspended until 31 Oct | yes
+99 | Milambo | MID | Brentford | i | 0 | 0 | Knee injury - Unknown return date | yes
+102 | Yarmoliuk | MID | Brentford | s | 0 | 52 | Suspended until 8 Nov | yes
+103 | Dasilva | MID | Brentford | i | 0 | 0 | Hamstring injury - Unknown return date | yes
+107 | Furo | FWD | Brentford | i | 0 | 0 | Unspecified injury - Unknown return date | yes
+82 | Kelleher | GKP | Brentford | a |  | 90 |  | squad
+83 | Valdimarsson | GKP | Brentford | a |  | 0 |  | squad
+84 | Collins | DEF | Brentford | a | 100 | 0 |  | squad
+85 | Van den Berg | DEF | Brentford | a | 100 | 70 |  | squad
+86 | Lewis-Potter | MID | Brentford | a |  | 76 |  | squad
+87 | Ajer | DEF | Brentford | a |  | 90 |  | squad
+88 | Kayode | DEF | Brentford | a |  | 90 |  | squad
+89 | Henry | DEF | Brentford | a |  | 0 |  | squad
+90 | Hickey | DEF | Brentford | a |  | 19 |  | squad
+92 | Ji-soo | DEF | Brentford | a |  | 0 |  | squad
+94 | Schade | MID | Brentford | a | 100 | 45 |  | squad
+95 | O.Dango | MID | Brentford | a |  | 45 |  | squad
+96 | Damsgaard | MID | Brentford | a | 100 | 13 |  | squad
+97 | Jensen | MID | Brentford | a | 100 | 45 |  | squad
+100 | Carvalho | MID | Brentford | a | 100 | 0 |  | squad
+105 | Anthony | MID | Brentford | a |  | 76 |  | squad
+106 | Thiago | FWD | Brentford | a |  | 90 |  | squad
+108 | Wilson | FWD | Brentford | a |  | 0 |  | squad
+565 | M.Sangaré | MID | Brentford | a |  | 45 |  | squad
+620 | Diouf | DEF | Brentford | a |  | 13 |  | squad
+657 | Nunes | MID | Brentford | a |  | 0 |  | squad
+660 | Fredrick | DEF | Brentford | a |  | 0 |  | squad
+661 | Balcombe | GKP | Brentford | a |  | 0 |  | squad
+109 | Verbruggen | GKP | Brighton | a |  | 90 |  | yes
+118 | Igor | DEF | Brighton | u | 0 | 0 | Has joined Burnley permanently | yes
+121 | Mitoma | MID | Brighton | i | 0 | 0 | Hamstring injury - Expected back 31 Oct | yes
+122 | Minteh | MID | Brighton | i | 0 | 0 | Leg injury - Expected back 28 Nov | yes
+128 | Buonanotte | MID | Brighton | u | 0 | 0 | Has joined Elche on loan for the rest of the season | yes
+130 | Wieffer | DEF | Brighton | i | 0 | 0 | Knee injury - Unknown return date | yes
+132 | Howell | MID | Brighton | u | 0 | 0 | Has joined Leicester City on loan for the rest of the season | yes
+133 | Watson | MID | Brighton | u | 0 | 0 | Has joined Leicester City on loan for the rest of the season | yes
+135 | Yohanna | MID | Brighton | i | 0 | 0 | Unspecified injury - Expected back 31 Oct | yes
+137 | Tzimas | FWD | Brighton | i | 0 | 0 | Knee injury - Unknown return date | yes
+139 | Ferguson | FWD | Brighton | i | 0 | 0 | Ankle injury - Unknown return date | yes
+328 | Struijk | DEF | Brighton | d | 75 | 0 | Hamstring injury - 75% chance of playing | yes
+624 | Cozier-Duberry | MID | Brighton | u | 0 | 0 | Has joined Middlesbrough on loan for the rest of the season | yes
+652 | Azeez | MID | Brighton | i | 0 | 0 | Hamstring injury - Expected back 31 Oct | yes
+111 | Steele | GKP | Brighton | a |  | 0 |  | squad
+113 | F.Kadıoğlu | DEF | Brighton | a | 100 | 90 |  | squad
+114 | Boscagli | DEF | Brighton | a |  | 80 |  | squad
+115 | De Cuyper | DEF | Brighton | a |  | 90 |  | squad
+116 | Dunk | DEF | Brighton | a | 100 | 89 |  | squad
+117 | Coppola | DEF | Brighton | a |  | 0 |  | squad
+119 | Costinha | DEF | Brighton | a |  | 0 |  | squad
+120 | Svoboda | DEF | Brighton | a |  | 1 |  | squad
+123 | Hinshelwood | MID | Brighton | a | 100 | 19 |  | squad
+124 | Groß | MID | Brighton | a |  | 70 |  | squad
+125 | Georginio | FWD | Brighton | a | 100 | 19 |  | squad
+126 | O'Riley | MID | Brighton | a |  | 0 |  | squad
+127 | Gomez | MID | Brighton | a |  | 90 |  | squad
+129 | Ayari | MID | Brighton | a | 100 | 80 |  | squad
+134 | Oriola | MID | Brighton | a |  | 0 |  | squad
+138 | Kostoulas | FWD | Brighton | a |  | 70 |  | squad
+504 | Vuskovic | DEF | Brighton | a |  | 90 |  | squad
+594 | David | FWD | Brighton | a |  | 0 |  | squad
+600 | Osman | MID | Brighton | a |  | 0 |  | squad
+605 | Yalcouyé | MID | Brighton | a |  | 9 |  | squad
+614 | Hadjam | DEF | Brighton | a |  | 9 |  | squad
+639 | Andrés | MID | Brighton | a |  | 90 |  | squad
+658 | Ibrahim | MID | Brighton | a |  | 0 |  | squad
+28 | Martinez | GKP | Chelsea | i | 0 | 74 | Head injury - Unknown return date | yes
+40 | Rogers | MID | Chelsea | a |  | 90 |  | yes
+140 | Sánchez | GKP | Chelsea | u | 0 | 0 | Has joined Como on loan for the rest of the season | yes
+141 | Jörgensen | GKP | Chelsea | u | 0 | 0 | Has joined RC Strasbourg on loan for the rest of the season | yes
+142 | James | DEF | Chelsea | i | 0 | 0 | Knee injury - Unknown return date | yes
+143 | Chalobah | DEF | Chelsea | u | 0 | 0 | Has joined Como permanently | yes
+144 | Gusto | DEF | Chelsea | d | 75 | 0 | Illness - 75% chance of playing | yes
+146 | B.Badiashile | DEF | Chelsea | u | 0 | 0 | Has joined Napoli on loan for the rest of the season | yes
+150 | M.Sarr | DEF | Chelsea | u | 0 | 0 | Has joined Real Sociedad on loan for the rest of the season | yes
+158 | Gittens | MID | Chelsea | i | 0 | 0 | Ankle injury - Unknown return date | yes
+163 | D.Essugo | MID | Chelsea | u | 0 | 0 | Has joined RC Strasbourg on loan for the rest of the season | yes
+168 | Marc Guiu | FWD | Chelsea | u | 0 | 0 | Has joined RB Leipzig permanently | yes
+170 | Emegha | FWD | Chelsea | i | 0 | 0 | Hamstring injury - Unknown return date | yes
+583 | Chavarria | DEF | Chelsea | d | 75 | 0 | Unspecified injury - 75% chance of playing | yes
+101 | Henderson | MID | Chelsea | a | 100 | 90 |  | squad
+136 | Welbeck | FWD | Chelsea | a | 100 | 1 |  | squad
+145 | Fofana | DEF | Chelsea | a | 100 | 0 |  | squad
+148 | Hato | DEF | Chelsea | a |  | 90 |  | squad
+149 | Colwill | DEF | Chelsea | a |  | 90 |  | squad
+151 | Acheampong | DEF | Chelsea | a |  | 90 |  | squad
+152 | Palestra | DEF | Chelsea | a | 100 | 1 |  | squad
+154 | Palmer | MID | Chelsea | a | 100 | 90 |  | squad
+156 | Neto | MID | Chelsea | a |  | 90 |  | squad
+157 | Estêvão | MID | Chelsea | a |  | 0 |  | squad
+159 | Caicedo | MID | Chelsea | a | 100 | 90 |  | squad
+161 | Lavia | MID | Chelsea | a |  | 1 |  | squad
+164 | Quenda | MID | Chelsea | a | 100 | 1 |  | squad
+165 | João Pedro | FWD | Chelsea | a | 100 | 90 |  | squad
+169 | Mheuka | FWD | Chelsea | a |  | 0 |  | squad
+200 | Lacroix | DEF | Chelsea | a |  | 90 |  | squad
+560 | Penders | GKP | Chelsea | a |  | 15 |  | squad
+561 | Anselmino | DEF | Chelsea | a | 100 | 0 |  | squad
+568 | Barco | MID | Chelsea | a |  | 0 |  | squad
+662 | Nicoll-Jazuli | MID | Chelsea | a |  | 0 |  | squad
+171 | Dovin | GKP | Coventry City | u | 0 | 0 | not included in squad. | yes
+173 | Thomas | DEF | Coventry City | a |  | 90 |  | yes
+174 | Kitching | DEF | Coventry City | u | 0 | 0 | Has joined Sheffield United on loan for the rest of the season | yes
+180 | Woolfenden | DEF | Coventry City | i | 0 | 0 | Knee injury - Unknown return date | yes
+181 | Brau | DEF | Coventry City | u | 0 | 0 | Has joined Academico de Viseu on loan for the rest of the season | yes
+182 | Amenda | DEF | Coventry City | i | 0 | 0 | Calf injury - Unknown return date | yes
+183 | Rudoni | MID | Coventry City | a | 100 | 86 |  | yes
+187 | Eccles | MID | Coventry City | i | 0 | 0 | Ankle injury - Unknown return date | yes
+191 | Borges Rodrigues | MID | Coventry City | u | 0 | 0 | Has joined Burton Albion on loan for the rest of the season | yes
+192 | Andrews | MID | Coventry City | u | 0 | 0 | Has joined Oxford United on loan for the rest of the season | yes
+193 | Wright | FWD | Coventry City | i | 0 | 0 | Thigh injury - Unknown return date | yes
+196 | Markelo | FWD | Coventry City | u | 0 | 0 | Has joined Shabab Al-Ahli Dubai permanently | yes
+197 | Bassette | FWD | Coventry City | u | 0 | 0 | Has joined KVC Westerlo on loan for the rest of the season | yes
+91 | Pinnock | DEF | Coventry City | a |  | 90 |  | squad
+104 | Onyeka | MID | Coventry City | a | 100 | 30 |  | squad
+110 | Rushworth | GKP | Coventry City | a |  | 90 |  | squad
+172 | Wilson | GKP | Coventry City | a |  | 0 |  | squad
+175 | van Ewijk | DEF | Coventry City | a | 100 | 90 |  | squad
+176 | Dasilva | DEF | Coventry City | a |  | 90 |  | squad
+177 | Kesler-Hayden | DEF | Coventry City | a | 100 | 3 |  | squad
+178 | Bidwell | DEF | Coventry City | a |  | 0 |  | squad
+179 | Latibeaudiere | DEF | Coventry City | a |  | 0 |  | squad
+184 | Grimes | MID | Coventry City | a |  | 90 |  | squad
+185 | Sakamoto | MID | Coventry City | a |  | 77 |  | squad
+186 | Mason-Clark | MID | Coventry City | a | 100 | 12 |  | squad
+188 | Torp | MID | Coventry City | a |  | 0 |  | squad
+189 | Shepherd | MID | Coventry City | a |  | 0 |  | squad
+190 | Tchaouna | MID | Coventry City | a |  | 0 |  | squad
+194 | Thomas-Asante | FWD | Coventry City | a |  | 77 |  | squad
+195 | Simms | FWD | Coventry City | a |  | 0 |  | squad
+492 | Awoniyi | FWD | Coventry City | a | 100 | 30 |  | squad
+575 | Yirenkyi | MID | Coventry City | a |  | 59 |  | squad
+584 | Hamer | MID | Coventry City | a |  | 12 |  | squad
+599 | Cherif | FWD | Coventry City | a |  | 59 |  | squad
+623 | Bentley | GKP | Coventry City | a |  | 0 |  | squad
+655 | Gboho | MID | Coventry City | a |  | 0 |  | squad
+656 | Mfuni | DEF | Coventry City | a |  | 0 |  | squad
+198 | Henderson | GKP | Crystal Palace | d | 50 | 0 | Foot injury - 50% chance of playing | yes
+205 | Sosa | DEF | Crystal Palace | u | 0 | 0 | Has joined FC Cologne on loan for the rest of the season | yes
+206 | Chadi Riad | DEF | Crystal Palace | i | 0 | 0 | Knee injury - Unknown return date | yes
+215 | Devenny | MID | Crystal Palace | u | 0 | 0 | Has joined Stoke City permanently | yes
+216 | Esse | MID | Crystal Palace | u | 0 | 0 | Has joined Millwall on loan for the rest of the season | yes
+217 | M.França | MID | Crystal Palace | u | 0 | 0 | Has joined Alverca on loan for the rest of the season | yes
+219 | J.Rak-Sakyi | MID | Crystal Palace | u | 0 | 0 | has joined  Kasimpasa on loan for the rest of the seaon. | yes
+220 | Cardines | DEF | Crystal Palace | u | 0 | 0 | Has joined Bristol City on loan for the rest of the season | yes
+225 | Uche | FWD | Crystal Palace | u | 0 | 0 | has returned to Getafe CF | yes
+577 | Tomiyasu | DEF | Crystal Palace | i | 0 | 0 | Calf injury - Expected back 8 Nov | yes
+588 | Khalaili | DEF | Crystal Palace | a | 100 | 90 |  | yes
+644 | Timber | MID | Crystal Palace | d | 75 | 45 | Hamstring injury - 75% chance of playing | yes
+42 | Guessand | MID | Crystal Palace | a |  | 0 |  | squad
+153 | Disasi | DEF | Crystal Palace | a | 100 | 0 |  | squad
+199 | Benitez | GKP | Crystal Palace | a |  | 90 |  | squad
+202 | Richards | DEF | Crystal Palace | a |  | 90 |  | squad
+203 | Canvot | DEF | Crystal Palace | a |  | 90 |  | squad
+204 | Mitchell | DEF | Crystal Palace | a |  | 90 |  | squad
+207 | Mingueza | DEF | Crystal Palace | a |  | 0 |  | squad
+208 | Sarr | MID | Crystal Palace | a | 100 | 0 |  | squad
+210 | Wharton | MID | Crystal Palace | a | 100 | 90 |  | squad
+211 | Yeremy | MID | Crystal Palace | a |  | 60 |  | squad
+212 | Hughes | MID | Crystal Palace | a |  | 9 |  | squad
+213 | Lerma | MID | Crystal Palace | a |  | 37 |  | squad
+214 | Kamada | MID | Crystal Palace | a |  | 80 |  | squad
+218 | Doucouré | MID | Crystal Palace | a |  | 0 |  | squad
+221 | Drakes-Thomas | MID | Crystal Palace | a |  | 0 |  | squad
+222 | Strand Larsen | FWD | Crystal Palace | a |  | 60 |  | squad
+223 | Mateta | FWD | Crystal Palace | a | 100 | 29 |  | squad
+224 | Nketiah | FWD | Crystal Palace | a | 100 | 29 |  | squad
+241 | McNeil | MID | Crystal Palace | a |  | 45 |  | squad
+555 | Matthews | GKP | Crystal Palace | a |  | 0 |  | squad
+595 | Gozo | MID | Crystal Palace | a |  | 0 |  | squad
+633 | Ahanor | DEF | Crystal Palace | a |  | 52 |  | squad
+643 | Chilwell | DEF | Crystal Palace | a | 100 | 0 |  | squad
+647 | Osorio | MID | Crystal Palace | a |  | 0 |  | squad
+234 | Patterson | DEF | Everton | u | 0 | 0 | Has joined Torino permanently | yes
+235 | Aznou | DEF | Everton | u | 0 | 0 | Has joined Malaga on loan for the rest of the season | yes
+248 | Beto | FWD | Everton | u | 0 | 0 | Has joined Fiorentina permanently | yes
+249 | Barry | FWD | Everton | a |  | 90 |  | yes
+21 | Nørgaard | MID | Everton | a | 100 | 5 |  | squad
+209 | Johnson | MID | Everton | a |  | 5 |  | squad
+226 | Pickford | GKP | Everton | a |  | 90 |  | squad
+227 | Travers | GKP | Everton | a |  | 0 |  | squad
+228 | King | GKP | Everton | a |  | 0 |  | squad
+229 | Tarkowski | DEF | Everton | a |  | 90 |  | squad
+230 | Branthwaite | DEF | Everton | a | 100 | 90 |  | squad
+231 | Keane | DEF | Everton | a |  | 0 |  | squad
+232 | O'Brien | DEF | Everton | a |  | 0 |  | squad
+233 | Mykolenko | DEF | Everton | a | 100 | 90 |  | squad
+236 | Dewsbury-Hall | MID | Everton | a |  | 90 |  | squad
+238 | Grealish | MID | Everton | a | 100 | 84 |  | squad
+239 | Garner | MID | Everton | a | 100 | 90 |  | squad
+242 | George | MID | Everton | a |  | 35 |  | squad
+243 | Alcaraz | MID | Everton | a |  | 0 |  | squad
+244 | Armstrong | MID | Everton | a | 100 | 84 |  | squad
+245 | Dibling | MID | Everton | a |  | 0 |  | squad
+246 | Röhl | MID | Everton | a | 100 | 90 |  | squad
+247 | Hackney | MID | Everton | a | 100 | 0 |  | squad
+649 | Maitland-Niles | DEF | Everton | a |  | 54 |  | squad
+654 | Graham | MID | Everton | a |  | 0 |  | squad
+252 | McNally | GKP | Fulham | u | 0 | 0 | Has joined York City on loan for the rest of the season | yes
+269 | Sessegnon | DEF | Fulham | s | 0 | 12 | Suspended until 7 Nov | yes
+610 | De Fougerolles | DEF | Fulham | u | 0 | 0 | has joined  Real Salt Lake on loan for the rest of the seaon. | yes
+635 | Larsson | MID | Fulham | d | 25 | 0 | Groin injury - 25% chance of playing | yes
+650 | Affengruber | DEF | Fulham | a |  | 90 |  | yes
+250 | Leno | GKP | Fulham | a |  | 90 |  | squad
+251 | Lecomte | GKP | Fulham | a |  | 0 |  | squad
+253 | Andersen | DEF | Fulham | a | 100 | 0 |  | squad
+254 | Robinson | DEF | Fulham | a | 100 | 90 |  | squad
+255 | J.Cuenca | DEF | Fulham | a |  | 0 |  | squad
+256 | Tete | DEF | Fulham | a | 100 | 0 |  | squad
+257 | Bassey | DEF | Fulham | a |  | 90 |  | squad
+258 | Castagne | DEF | Fulham | a |  | 90 |  | squad
+261 | Iwobi | MID | Fulham | a |  | 90 |  | squad
+262 | Smith Rowe | MID | Fulham | a |  | 0 |  | squad
+263 | Kevin | MID | Fulham | a |  | 0 |  | squad
+264 | Bobb | MID | Fulham | a |  | 77 |  | squad
+265 | Berge | MID | Fulham | a |  | 90 |  | squad
+266 | Cairney | MID | Fulham | a | 100 | 12 |  | squad
+268 | King | MID | Fulham | a |  | 77 |  | squad
+270 | Reed | MID | Fulham | a |  | 0 |  | squad
+271 | Muniz | FWD | Fulham | a |  | 0 |  | squad
+272 | Kusi-Asare | FWD | Fulham | a |  | 0 |  | squad
+569 | Gonzalo | FWD | Fulham | a |  | 84 |  | squad
+570 | Palacios | MID | Fulham | a |  | 5 |  | squad
+580 | Charles | MID | Fulham | a |  | 90 |  | squad
+626 | Zepa | MID | Fulham | a |  | 0 |  | squad
+636 | Ángel | MID | Fulham | a |  | 0 |  | squad
+274 | Butland | GKP | Hull City | i | 0 | 0 | Arm injury - Unknown return date | yes
+275 | Cartwright | GKP | Hull City | u | 0 | 0 | Has joined Grimsby Town on loan for the rest of the season | yes
+276 | Lo-Tutala | GKP | Hull City | u | 0 | 0 | Has joined Colchester United on loan for the rest of the season | yes
+278 | Hughes | DEF | Hull City | i | 0 | 0 | Groin injury - Unknown return date | yes
+281 | Drameh | DEF | Hull City | u | 0 | 0 | Has joined Genoa permanently | yes
+283 | Jacob | DEF | Hull City | u | 0 | 0 | Has joined Newport County on loan until January | yes
+287 | Millar | MID | Hull City | u | 0 | 0 | Has joined Birmingham on loan for the rest of the season | yes
+291 | Matazo | MID | Hull City | i | 0 | 0 | Knee injury - Unknown return date | yes
+293 | Kamara | MID | Hull City | u | 0 | 0 | Has joined Portsmouth permanently | yes
+296 | Akintola | MID | Hull City | u | 0 | 0 | Has joined Omonoia FC permanently | yes
+297 | Gyabi | MID | Hull City | i | 0 | 0 | Thigh injury - Unknown return date | yes
+298 | Destan | FWD | Hull City | u | 0 | 0 | Has joined Konyaspor permanently | yes
+299 | Burstow | FWD | Hull City | u | 0 | 0 | Has joined Sheffield Wednesday on loan for the rest of the season | yes
+556 | Targett | DEF | Hull City | i | 0 | 0 | Ankle injury - Unknown return date | yes
+586 | Mendy | DEF | Hull City | i | 0 | 0 | Groin injury - Expected back 31 Oct | yes
+589 | Gourna-Douath | MID | Hull City | d | 50 | 0 | Calf injury - 50% chance of playing | yes
+617 | Cho | MID | Hull City | d | 50 | 0 | Unspecified injury - 50% chance of playing | yes
+632 | Ansah | FWD | Hull City | i | 0 | 0 | Back injury - Unknown return date | yes
+637 | Vaz | FWD | Hull City | d | 75 | 22 | Achilles injury - 75% chance of playing | yes
+240 | Iroegbunam | MID | Hull City | a | 100 | 45 |  | squad
+273 | Phillips | GKP | Hull City | a |  | 0 |  | squad
+277 | Egan | DEF | Hull City | a |  | 90 |  | squad
+279 | Ajayi | DEF | Hull City | a | 100 | 90 |  | squad
+280 | Coyle | DEF | Hull City | a | 100 | 90 |  | squad
+282 | Giles | DEF | Hull City | a |  | 22 |  | squad
+284 | McCarthy | DEF | Hull City | a |  | 0 |  | squad
+285 | McNair | DEF | Hull City | a | 100 | 0 |  | squad
+286 | Belloumi | MID | Hull City | a |  | 90 |  | squad
+288 | Dowell | MID | Hull City | a |  | 0 |  | squad
+289 | Crooks | MID | Hull City | a | 100 | 67 |  | squad
+290 | Slater | MID | Hull City | a |  | 74 |  | squad
+292 | Ömür | MID | Hull City | a |  | 0 |  | squad
+294 | Zambrano | MID | Hull City | a | 100 | 0 |  | squad
+295 | McBurnie | FWD | Hull City | a |  | 90 |  | squad
+340 | Gelhardt | MID | Hull City | a | 100 | 22 |  | squad
+563 | Morita | MID | Hull City | a | 100 | 15 |  | squad
+572 | Tzolakis | GKP | Hull City | a |  | 90 |  | squad
+574 | Hjertø-Dahl | MID | Hull City | a |  | 0 |  | squad
+576 | Stroud | MID | Hull City | a |  | 0 |  | squad
+585 | Herrington | DEF | Hull City | a |  | 45 |  | squad
+638 | Norton-Cuffy | DEF | Hull City | a | 100 | 67 |  | squad
+642 | Thomas | MID | Hull City | a |  | 67 |  | squad
+645 | Mouzakitis | MID | Hull City | a |  | 0 |  | squad
+267 | Lukić | MID | Ipswich Town | i | 0 | 0 | Groin injury - Expected back 23 Oct | yes
+307 | Johnson | DEF | Ipswich Town | u | 0 | 0 | Has joined Stoke City on loan for the rest of the season | yes
+311 | Burns | MID | Ipswich Town | u | 0 | 0 | Has joined Leicester City permanently | yes
+314 | Ogbene | MID | Ipswich Town | u | 0 | 0 | Has joined Lincoln City on loan until January | yes
+317 | Hirst | FWD | Ipswich Town | u | 0 | 0 | Has joined Stoke City permanently | yes
+319 | Szmodics | MID | Ipswich Town | u | 0 | 0 | Has joined Derby County on loan for the rest of the season | yes
+322 | Al-Hamadi | FWD | Ipswich Town | u | 0 | 0 | Has joined Sheffield Wednesday on loan for the rest of the season | yes
+554 | Van Oevelen | GKP | Ipswich Town | u | 0 | 0 | Has joined Valencia on loan for the rest of the season | yes
+602 | Humphreys | MID | Ipswich Town | u | 0 | 0 | Has joined Huddersfield Town on loan for the rest of the season | yes
+259 | Diop | DEF | Ipswich Town | a |  | 90 |  | squad
+300 | Walton | GKP | Ipswich Town | a |  | 90 |  | squad
+301 | Palmer | GKP | Ipswich Town | a |  | 0 |  | squad
+302 | Button | GKP | Ipswich Town | a |  | 0 |  | squad
+303 | Kipré | DEF | Ipswich Town | a |  | 0 |  | squad
+304 | O'Shea | DEF | Ipswich Town | a |  | 90 |  | squad
+305 | Davis | DEF | Ipswich Town | a |  | 90 |  | squad
+306 | Greaves | DEF | Ipswich Town | a |  | 90 |  | squad
+308 | Furlong | DEF | Ipswich Town | a |  | 0 |  | squad
+309 | Núñez | MID | Ipswich Town | a |  | 0 |  | squad
+310 | Matusiwa | MID | Ipswich Town | a | 100 | 19 |  | squad
+312 | Taylor | MID | Ipswich Town | a | 100 | 0 |  | squad
+313 | Clarke | MID | Ipswich Town | a |  | 1 |  | squad
+315 | Fatawu | MID | Ipswich Town | a | 100 | 19 |  | squad
+316 | Emersonn | FWD | Ipswich Town | a | 100 | 77 |  | squad
+318 | Philogene | MID | Ipswich Town | a | 100 | 0 |  | squad
+320 | Akpom | FWD | Ipswich Town | a |  | 12 |  | squad
+321 | Walle Egeli | FWD | Ipswich Town | a |  | 0 |  | squad
+323 | McAteer | MID | Ipswich Town | a |  | 0 |  | squad
+324 | Mehmeti | MID | Ipswich Town | a |  | 0 |  | squad
+562 | Maeda | MID | Ipswich Town | a |  | 70 |  | squad
+564 | Scherpen | GKP | Ipswich Town | a |  | 0 |  | squad
+571 | Florentino | MID | Ipswich Town | a | 100 | 70 |  | squad
+591 | Enciso | MID | Ipswich Town | a | 100 | 77 |  | squad
+592 | Ouattara | DEF | Ipswich Town | a |  | 90 |  | squad
+619 | Palacios | MID | Ipswich Town | a |  | 90 |  | squad
+640 | Flemming | FWD | Ipswich Town | a |  | 12 |  | squad
+326 | Perri | GKP | Leeds | u | 0 | 0 | Has joined Torino on loan for the rest of the season | yes
+329 | Rodon | DEF | Leeds | i | 0 | 0 | Hamstring injury - Expected back 21 Nov | yes
+333 | Bornauw | DEF | Leeds | u | 0 | 0 | Has joined Hamburg SV on loan for the rest of the season | yes
+341 | Gnonto | MID | Leeds | u | 0 | 0 | Has joined ACF Fiorentina on loan for the rest of the season | yes
+342 | Harrison | MID | Leeds | u | 0 | 0 | Has joined New England Revolution permanently | yes
+343 | James | MID | Leeds | d | 50 | 0 | Back injury - 50% chance of playing | yes
+348 | Piroe | FWD | Leeds | u | 0 | 0 | Has joined West Ham United on loan for the rest of the season | yes
+349 | Mateo Joseph | FWD | Leeds | i | 0 | 0 | Knee injury - Unknown return date | yes
+260 | Wilson | MID | Leeds | a | 100 | 0 |  | squad
+327 | Bijol | DEF | Leeds | a |  | 0 |  | squad
+330 | Bogle | DEF | Leeds | a |  | 90 |  | squad
+331 | Gudmundsson | DEF | Leeds | a | 100 | 90 |  | squad
+332 | Justin | DEF | Leeds | a |  | 90 |  | squad
+334 | Muharemović | DEF | Leeds | a |  | 90 |  | squad
+335 | Stach | MID | Leeds | a |  | 90 |  | squad
+336 | Okafor | MID | Leeds | a |  | 73 |  | squad
+337 | Aaronson | MID | Leeds | a |  | 0 |  | squad
+338 | Ampadu | MID | Leeds | a |  | 90 |  | squad
+339 | Longstaff | MID | Leeds | a |  | 9 |  | squad
+344 | Gruev | MID | Leeds | a | 100 | 0 |  | squad
+345 | Tanaka | MID | Leeds | a |  | 80 |  | squad
+346 | Calvert-Lewin | FWD | Leeds | a |  | 90 |  | squad
+347 | Nmecha | FWD | Leeds | a |  | 16 |  | squad
+385 | Trafford | GKP | Leeds | a |  | 90 |  | squad
+598 | Elvedi | DEF | Leeds | a |  | 90 |  | squad
+603 | Lienou | DEF | Leeds | a |  | 0 |  | squad
+604 | Cresswell | MID | Leeds | a |  | 0 |  | squad
+625 | Cairns | GKP | Leeds | a |  | 0 |  | squad
+629 | Zetterer | GKP | Leeds | a |  | 0 |  | squad
+641 | Bard | DEF | Leeds | a |  | 0 |  | squad
+648 | Bahoya | MID | Leeds | a | 100 | 0 |  | squad
+353 | Pecsi | GKP | Liverpool | u | 0 | 0 | Has joined TSV Hartberg on loan for the rest of the season | yes
+354 | Jaros | GKP | Liverpool | i | 0 | 0 | Knee injury - Unknown return date | yes
+357 | Frimpong | DEF | Liverpool | i | 0 | 6 | Hamstring injury - Unknown return date | yes
+360 | Bradley | DEF | Liverpool | i | 0 | 0 | Knee injury - Unknown return date | yes
+363 | Leoni | DEF | Liverpool | i | 0 | 0 | Knee injury - Unknown return date | yes
+365 | Ramsay | DEF | Liverpool | u | 0 | 0 | Has joined St Mirren on loan for the rest of the season | yes
+368 | Szoboszlai | MID | Liverpool | i | 0 | 31 | Hamstring injury - Unknown return date | yes
+373 | C.Jones | MID | Liverpool | u | 0 | 0 | Has joined Internazionale permanently | yes
+376 | Bajcetic | MID | Liverpool | u | 0 | 0 | Has joined Celta Vigo permanently | yes
+377 | Munoz | MID | Liverpool | d | 75 | 78 | Knee injury - 75% chance of playing | yes
+380 | Ekitiké | FWD | Liverpool | i | 0 | 0 | Achilles injury - Unknown return date | yes
+383 | Elliott | MID | Liverpool | u | 0 | 0 | Has joined Valencia on loan for the rest of the season | yes
+350 | A.Becker | GKP | Liverpool | a |  | 90 |  | squad
+351 | Mamardashvili | GKP | Liverpool | a |  | 0 |  | squad
+352 | Woodman | GKP | Liverpool | a |  | 0 |  | squad
+355 | Davies | GKP | Liverpool | a |  | 0 |  | squad
+356 | Virgil | DEF | Liverpool | a |  | 90 |  | squad
+358 | Kerkez | DEF | Liverpool | a |  | 90 |  | squad
+359 | Gomez | DEF | Liverpool | a | 100 | 11 |  | squad
+361 | Lucky | DEF | Liverpool | a |  | 0 |  | squad
+362 | Jacquet | DEF | Liverpool | a | 100 | 90 |  | squad
+364 | Tsimikas | DEF | Liverpool | a |  | 0 |  | squad
+366 | Wirtz | MID | Liverpool | a |  | 90 |  | squad
+367 | Gakpo | MID | Liverpool | a | 100 | 0 |  | squad
+369 | Ngumoha | MID | Liverpool | a |  | 38 |  | squad
+370 | Chiesa | MID | Liverpool | a | 100 | 0 |  | squad
+371 | Gravenberch | MID | Liverpool | a | 100 | 0 |  | squad
+372 | Mac Allister | MID | Liverpool | a |  | 90 |  | squad
+374 | Endo | MID | Liverpool | a | 100 | 0 |  | squad
+375 | Nyoni | MID | Liverpool | a |  | 58 |  | squad
+378 | McConnell | MID | Liverpool | a |  | 0 |  | squad
+379 | Isak | FWD | Liverpool | a | 100 | 78 |  | squad
+381 | Koumas | MID | Liverpool | a |  | 11 |  | squad
+382 | Danns | FWD | Liverpool | a | 100 | 0 |  | squad
+579 | Araujo | DEF | Liverpool | a |  | 45 |  | squad
+627 | Barcola | MID | Liverpool | a |  | 90 |  | squad
+387 | O'Reilly | DEF | Man City | d | 75 | 60 | Back injury - 75% chance of playing | yes
+389 | Matheus N. | DEF | Man City | d | 75 | 75 | Unspecified injury - 75% chance of playing | yes
+394 | Alleyne | DEF | Man City | u | 0 | 0 | Has joined Burnley on loan for the rest of the season | yes
+397 | Semenyo | MID | Man City | i | 0 | 13 | Knee injury - Unknown return date | yes
+402 | Rodrigo | MID | Man City | u | 0 | 0 | Has joined Barcelona permanently | yes
+404 | Reijnders | MID | Man City | u | 0 | 0 | Has joined Al Qadsiah permanently | yes
+406 | Kovačić | MID | Man City | d | 75 | 49 | Unspecified injury - 75% chance of playing | yes
+407 | Echeverri | MID | Man City | u | 0 | 0 | Has joined Benfica on loan for the rest of the season | yes
+408 | Phillips | MID | Man City | u | 0 | 0 | Has joined Sheffield United on loan for the rest of the season | yes
+409 | Mukasa | MID | Man City | u | 0 | 0 | has joined West Ham on loan for the rest of the seaon. | yes
+410 | Monga | MID | Man City | u | 0 | 0 | Has joined Swansea City on loan for the rest of the season | yes
+411 | Haaland | FWD | Man City | a | 100 | 90 |  | yes
+155 | Enzo | MID | Man City | a |  | 40 |  | squad
+237 | Ndiaye | MID | Man City | a |  | 90 |  | squad
+384 | Donnarumma | GKP | Man City | a |  | 90 |  | squad
+386 | Bettinelli | GKP | Man City | a |  | 0 |  | squad
+388 | Guéhi | DEF | Man City | a |  | 90 |  | squad
+390 | Rúben | DEF | Man City | a |  | 90 |  | squad
+391 | Gvardiol | DEF | Man City | a |  | 29 |  | squad
+392 | Aït-Nouri | DEF | Man City | a |  | 0 |  | squad
+393 | Khusanov | DEF | Man City | a |  | 14 |  | squad
+395 | Lewis | DEF | Man City | a |  | 0 |  | squad
+396 | Vitor Reis | DEF | Man City | a |  | 0 |  | squad
+398 | Foden | MID | Man City | a | 100 | 76 |  | squad
+399 | Cherki | MID | Man City | a |  | 0 |  | squad
+400 | Doku | MID | Man City | a | 100 | 76 |  | squad
+481 | Anderson | MID | Man City | a | 100 | 13 |  | squad
+587 | Rulli | GKP | Man City | a |  | 0 |  | squad
+616 | Bouaddi | MID | Man City | a |  | 90 |  | squad
+621 | McAidoo | MID | Man City | a |  | 0 |  | squad
+622 | Braithwaite | DEF | Man City | a |  | 0 |  | squad
+628 | Allan | MID | Man City | a |  | 0 |  | squad
+653 | Samba | MID | Man City | a |  | 0 |  | squad
+413 | Bayindir | GKP | Man Utd | u | 0 | 0 | Has joined Celta Vigo on loan for the rest of the season | yes
+415 | Dorgu | MID | Man Utd | i | 0 | 0 | Hamstring injury - Expected back 25 Oct | yes
+419 | Martinez | DEF | Man Utd | d | 75 | 45 | Thigh injury - 75% chance of playing | yes
+421 | Heaven | DEF | Man Utd | d | 75 | 0 | Illness - 75% chance of playing | yes
+423 | Shaw | DEF | Man Utd | i | 0 | 0 | Unspecified injury - Unknown return date | yes
+425 | Fredricson | DEF | Man Utd | u | 0 | 0 | Has joined Lausanne-Sport permanently | yes
+426 | B.Fernandes | MID | Man Utd | a |  | 90 |  | yes
+427 | Mbeumo | MID | Man Utd | a |  | 90 |  | yes
+429 | Rashford | MID | Man Utd | d | 75 | 0 | Hip injury - 75% chance of playing | yes
+432 | Mainoo | MID | Man Utd | i | 0 | 0 | Unspecified injury - Expected back 8 Nov | yes
+433 | Ugarte | MID | Man Utd | i | 0 | 0 | Knee injury - Unknown return date | yes
+436 | Collyer | MID | Man Utd | u | 0 | 0 | Has joined West Brom permanently | yes
+439 | Šeško | FWD | Man Utd | i | 0 | 0 | Shin injury - Unknown return date | yes
+441 | Obi | FWD | Man Utd | u | 0 | 0 | Has joined Willem II on loan for the rest of the season | yes
+43 | Tielemans | MID | Man Utd | a | 100 | 83 |  | squad
+131 | Baleba | MID | Man Utd | a | 100 | 73 |  | squad
+162 | Andrey Santos | MID | Man Utd | a |  | 90 |  | squad
+325 | Darlow | GKP | Man Utd | a | 100 | 0 |  | squad
+412 | Lammens | GKP | Man Utd | a |  | 90 |  | squad
+414 | Heaton | GKP | Man Utd | a | 100 | 0 |  | squad
+416 | De Ligt | DEF | Man Utd | a | 100 | 0 |  | squad
+417 | Dalot | DEF | Man Utd | a |  | 90 |  | squad
+418 | Maguire | DEF | Man Utd | a |  | 90 |  | squad
+420 | Yoro | DEF | Man Utd | a |  | 90 |  | squad
+422 | Mazraoui | DEF | Man Utd | a | 100 | 45 |  | squad
+424 | Amass | DEF | Man Utd | a |  | 0 |  | squad
+428 | Cunha | MID | Man Utd | a |  | 6 |  | squad
+430 | Mount | MID | Man Utd | a | 100 | 16 |  | squad
+431 | Amad | MID | Man Utd | a | 100 | 90 |  | squad
+434 | J.Fletcher | MID | Man Utd | a |  | 0 |  | squad
+435 | Lacey | MID | Man Utd | a |  | 0 |  | squad
+437 | Bendito Mantato | MID | Man Utd | a |  | 0 |  | squad
+438 | Fletcher | MID | Man Utd | a |  | 0 |  | squad
+440 | Zirkzee | FWD | Man Utd | a |  | 0 |  | squad
+444 | Jaouen | GKP | Newcastle | i | 0 | 0 | Hamstring injury - Unknown return date | yes
+449 | Hall | DEF | Newcastle | a |  | 90 |  | yes
+450 | Livramento | DEF | Newcastle | i | 0 | 0 | Knee injury - Expected back 7 Nov | yes
+451 | A.Murphy | DEF | Newcastle | u | 0 | 0 | Has joined FC Kaiserslautern on loan for the rest of the season | yes
+454 | Elanga | MID | Newcastle | i | 0 | 0 | Unspecified injury - Expected back 25 Oct | yes
+456 | J.Ramsey | MID | Newcastle | i | 0 | 0 | Thigh injury - Unknown return date | yes
+463 | Woltemade | FWD | Newcastle | u | 0 | 0 | Has joined Juventus on loan for the rest of the season | yes
+464 | Wissa | FWD | Newcastle | a |  | 90 |  | yes
+466 | Neave | FWD | Newcastle | u | 0 | 0 | Has joined Wolves on loan for the rest of the season | yes
+609 | Shahar | DEF | Newcastle | u | 0 | 0 | has joined Arouca on loan for the rest of the seaon. | yes
+405 | N.Gonzalez | MID | Newcastle | a | 100 | 90 |  | squad
+442 | Pope | GKP | Newcastle | a |  | 0 |  | squad
+443 | Gillespie | GKP | Newcastle | a |  | 0 |  | squad
+445 | Thiaw | DEF | Newcastle | a |  | 90 |  | squad
+446 | Schär | DEF | Newcastle | a | 100 | 0 |  | squad
+447 | Botman | DEF | Newcastle | a |  | 90 |  | squad
+448 | Burn | DEF | Newcastle | a | 100 | 1 |  | squad
+453 | Barnes | MID | Newcastle | a |  | 90 |  | squad
+457 | J.Murphy | MID | Newcastle | a |  | 0 |  | squad
+458 | Joelinton | MID | Newcastle | a | 100 | 89 |  | squad
+459 | L.Miley | MID | Newcastle | a | 100 | 90 |  | squad
+460 | Willock | MID | Newcastle | a |  | 55 |  | squad
+461 | Touré | MID | Newcastle | a | 100 | 34 |  | squad
+462 | Steur | MID | Newcastle | a |  | 0 |  | squad
+465 | Osula | FWD | Newcastle | a | 100 | 34 |  | squad
+559 | Bamba | MID | Newcastle | a |  | 0 |  | squad
+567 | Horníček | GKP | Newcastle | a |  | 90 |  | squad
+593 | Dedić | DEF | Newcastle | a | 100 | 0 |  | squad
+634 | Fernandez-Pardo | FWD | Newcastle | a |  | 55 |  | squad
+659 | Miley | MID | Newcastle | a |  | 0 |  | squad
+663 | Pivas | DEF | Newcastle | a |  | 0 |  | squad
+664 | Salia | FWD | Newcastle | a |  | 0 |  | squad
+665 | Mills | MID | Newcastle | a |  | 0 |  | squad
+666 | Thompson | MID | Newcastle | a |  | 0 |  | squad
+470 | Morato | DEF | Nott'm Forest | u | 0 | 0 | Has joined West Ham on loan for the rest of the season | yes
+472 | Murillo | DEF | Nott'm Forest | a | 100 | 90 |  | yes
+475 | Savona | DEF | Nott'm Forest | i | 0 | 0 | Knee injury - Unknown return date | yes
+477 | Abbott | DEF | Nott'm Forest | u | 0 | 0 | Has joined Southampton on loan for the rest of the season | yes
+479 | Bindon | DEF | Nott'm Forest | u | 0 | 0 | Has joined Charlton Athletic on loan for the rest of the season | yes
+484 | Hutchinson | MID | Nott'm Forest | u | 0 | 0 | Has joined AC Milan on loan for the rest of the season | yes
+485 | Bakwa | MID | Nott'm Forest | u | 0 | 0 | Has joined Lille on loan for the rest of the season | yes
+491 | Igor Jesus | FWD | Nott'm Forest | i | 0 | 0 | Calf injury - Unknown return date | yes
+167 | Delap | FWD | Nott'm Forest | a |  | 90 |  | squad
+201 | Muñoz | DEF | Nott'm Forest | a |  | 90 |  | squad
+467 | Sels | GKP | Nott'm Forest | a |  | 90 |  | squad
+468 | John | GKP | Nott'm Forest | a |  | 0 |  | squad
+469 | N.Williams | DEF | Nott'm Forest | a | 100 | 90 |  | squad
+471 | Milenković | DEF | Nott'm Forest | a | 100 | 0 |  | squad
+473 | Aina | DEF | Nott'm Forest | a |  | 0 |  | squad
+474 | Jair Cunha | DEF | Nott'm Forest | a | 100 | 84 |  | squad
+476 | O.Richards | DEF | Nott'm Forest | a |  | 0 |  | squad
+478 | Netz | DEF | Nott'm Forest | a |  | 0 |  | squad
+480 | Gibbs-White | MID | Nott'm Forest | a | 100 | 0 |  | squad
+482 | Hudson-Odoi | MID | Nott'm Forest | a | 100 | 5 |  | squad
+483 | Ndoye | MID | Nott'm Forest | a |  | 72 |  | squad
+486 | McAtee | MID | Nott'm Forest | a |  | 84 |  | squad
+487 | Dominguez | MID | Nott'm Forest | a |  | 73 |  | squad
+488 | I.Sangaré | MID | Nott'm Forest | a | 100 | 16 |  | squad
+489 | Yates | MID | Nott'm Forest | a | 100 | 0 |  | squad
+490 | Wood | FWD | Nott'm Forest | a |  | 5 |  | squad
+493 | Kalimuendo | FWD | Nott'm Forest | a |  | 17 |  | squad
+558 | Schlager | MID | Nott'm Forest | a |  | 90 |  | squad
+581 | Diomande | DEF | Nott'm Forest | a |  | 90 |  | squad
+590 | Benda | GKP | Nott'm Forest | a |  | 0 |  | squad
+147 | Tosin | DEF | Spurs | d | 75 | 70 | Calf injury - 75% chance of playing | yes
+401 | Marmoush | FWD | Spurs | d | 75 | 86 | Calf injury - 75% chance of playing | yes
+403 | Sávio | MID | Spurs | i | 0 | 0 | Muscular injury - Expected back 7 Nov | yes
+494 | Vicario | GKP | Spurs | u | 0 | 0 | Has joined Juventus on loan for the rest of the season | yes
+499 | Pedro Porro | DEF | Spurs | i | 0 | 0 | Hamstring injury - Expected back 24 Oct | yes
+500 | Romero | DEF | Spurs | u | 0 | 0 | Has joined Atletico Madrid permanently | yes
+502 | Robertson | DEF | Spurs | d | 75 | 68 | Foot injury - 75% chance of playing | yes
+505 | Spence | DEF | Spurs | u | 0 | 0 | Has joined Internazionale permanently | yes
+506 | Udogie | DEF | Spurs | d | 75 | 0 | Knee injury - 75% chance of playing | yes
+507 | Phillips | DEF | Spurs | u | 0 | 0 | Has joined Middlesbrough permanently | yes
+511 | Souza | DEF | Spurs | u | 0 | 0 | Has joined FC Porto on loan for the rest of the season | yes
+513 | Xavi | MID | Spurs | i | 0 | 0 | Knee injury - Unknown return date | yes
+516 | Bentancur | MID | Spurs | s | 0 | 0 | Suspended until 7 Nov | yes
+517 | Odobert | MID | Spurs | i | 0 | 0 | Knee injury - Unknown return date | yes
+518 | P.M.Sarr | MID | Spurs | u | 0 | 0 | Has joined Juventus on loan for the rest of the season | yes
+520 | Bergvall | MID | Spurs | i | 0 | 0 | Knee injury - Expected back 31 Oct | yes
+523 | Moore | MID | Spurs | u | 0 | 0 | Has joined FC Köln on loan for the rest of the season | yes
+527 | Richarlison | FWD | Spurs | u | 0 | 0 | not included in squad. | yes
+528 | Scarlett | FWD | Spurs | u | 0 | 0 | Has joined Leyton Orient permanently | yes
+578 | Mudryk | MID | Spurs | i | 0 | 0 | Ankle injury - Unknown return date | yes
+112 | Van Hecke | DEF | Spurs | a | 100 | 90 |  | squad
+455 | Tonali | MID | Spurs | a | 100 | 90 |  | squad
+495 | Austin | GKP | Spurs | a |  | 0 |  | squad
+496 | Kinsky | GKP | Spurs | a |  | 90 |  | squad
+497 | Dubravka | GKP | Spurs | a |  | 0 |  | squad
+498 | Senesi | DEF | Spurs | a |  | 0 |  | squad
+503 | Van de Ven | DEF | Spurs | a | 100 | 90 |  | squad
+508 | Davies | DEF | Spurs | a |  | 21 |  | squad
+509 | Byfield | DEF | Spurs | a |  | 0 |  | squad
+510 | Rowswell | DEF | Spurs | a |  | 0 |  | squad
+512 | Kudus | MID | Spurs | a | 100 | 86 |  | squad
+514 | Tel | MID | Spurs | a |  | 3 |  | squad
+515 | Maddison | MID | Spurs | a | 100 | 68 |  | squad
+519 | Gallagher | MID | Spurs | a |  | 21 |  | squad
+521 | Kulusevski | MID | Spurs | a | 100 | 3 |  | squad
+522 | Gray | MID | Spurs | a |  | 90 |  | squad
+524 | Olusesi | MID | Spurs | a |  | 0 |  | squad
+525 | Fernandes | MID | Spurs | a |  | 19 |  | squad
+526 | Solanke | FWD | Spurs | a |  | 90 |  | squad
+601 | Williams-Barnett | MID | Spurs | a |  | 0 |  | squad
+501 | Danso | DEF | Sunderland | s | 0 | 16 | Suspended until 31 Oct | yes
+530 | Patterson | GKP | Sunderland | u | 0 | 0 | Has joined Wrexham permanently | yes
+532 | Ballard | DEF | Sunderland | i | 0 | 0 | Hamstring injury - Unknown return date | yes
+537 | Seelt | DEF | Sunderland | u | 0 | 0 | Has joined Swansea City on loan for the rest of the season | yes
+538 | Hjelde | DEF | Sunderland | u | 0 | 0 | Has joined KV Mechelen on loan for the rest of the season | yes
+540 | Masuaku | DEF | Sunderland | u | 0 | 0 | Has joined Konyaspor permanently | yes
+541 | Meunier | DEF | Sunderland | d | 75 | 0 | Groin injury - 75% chance of playing | yes
+546 | Adingra | MID | Sunderland | u | 0 | 0 | Has joined Ajax on loan for the rest of the season | yes
+547 | Mundle | MID | Sunderland | i | 0 | 0 | Knee injury - Unknown return date | yes
+552 | Brobbey | FWD | Sunderland | d | 75 | 0 | Hamstring injury - 75% chance of playing | yes
+553 | Isidor | FWD | Sunderland | d | 50 | 0 | Knock - 50% chance of playing | yes
+529 | Roefs | GKP | Sunderland | a |  | 90 |  | squad
+531 | Ellborg | GKP | Sunderland | a |  | 0 |  | squad
+533 | Mukiele | DEF | Sunderland | a | 100 | 90 |  | squad
+534 | Hume | DEF | Sunderland | a |  | 90 |  | squad
+535 | Alderete | DEF | Sunderland | a | 100 | 58 |  | squad
+536 | Reinildo | DEF | Sunderland | a | 100 | 90 |  | squad
+539 | O'Nien | DEF | Sunderland | a |  | 31 |  | squad
+542 | E.Le Fée | MID | Sunderland | a |  | 90 |  | squad
+543 | Diarra | MID | Sunderland | a | 100 | 31 |  | squad
+544 | Xhaka | MID | Sunderland | a |  | 90 |  | squad
+545 | Sadiki | MID | Sunderland | a |  | 90 |  | squad
+548 | Rigg | MID | Sunderland | a |  | 64 |  | squad
+549 | Talbi | MID | Sunderland | a |  | 0 |  | squad
+550 | Jocelin.T | MID | Sunderland | a |  | 0 |  | squad
+551 | N.Angulo | MID | Sunderland | a |  | 0 |  | squad
+612 | Methalie | DEF | Sunderland | a | 100 | 0 |  | squad
+613 | Ahoka | MID | Sunderland | a |  | 25 |  | squad
+646 | Fofana | MID | Sunderland | a |  | 0 |  | squad
+651 | J.Angulo | FWD | Sunderland | a |  | 0 |  | squad
+668 | Tutierov | MID | Sunderland | a |  | 58 |  | squad
+
+Clubs in this prompt: Arsenal, Aston Villa, Bournemouth, Brentford, Brighton, Chelsea, Coventry City, Crystal Palace, Everton, Fulham, Hull City, Ipswich Town, Leeds, Liverpool, Man City, Man Utd, Newcastle, Nott'm Forest, Spurs, Sunderland

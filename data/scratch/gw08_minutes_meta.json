@@ -1,0 +1,32 @@
+{
+  "gw": 8,
+  "deadline_utc": "2026-10-23T17:30:00Z",
+  "n_cases": 668,
+  "n_focus": 218,
+  "clubs": [
+    "Arsenal",
+    "Aston Villa",
+    "Bournemouth",
+    "Brentford",
+    "Brighton",
+    "Chelsea",
+    "Coventry City",
+    "Crystal Palace",
+    "Everton",
+    "Fulham",
+    "Hull City",
+    "Ipswich Town",
+    "Leeds",
+    "Liverpool",
+    "Man City",
+    "Man Utd",
+    "Newcastle",
+    "Nott'm Forest",
+    "Spurs",
+    "Sunderland"
+  ],
+  "ffscout_fetched_at": "2026-10-23T08:32:08.747846+00:00",
+  "n_lineups": 20,
+  "refreshed_at": "2026-10-23T08:32:08.812470+00:00",
+  "method": "minutes_llm + FFScout predicted XI / out / doubts"
+}

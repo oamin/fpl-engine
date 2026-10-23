@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:8cff0902e55a76c2",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cq70pj7p0ep6o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 22 Oct 2026 15:33:29 GMT",
+  "published_at_utc": "2026-10-22T15:33:29Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "What are Real's attacking options during Vinicius Jr ban?",
+  "body": "Real Madrid’s attacking options are expanding under Jose Mourinho, with Endrick, Yan Diomande and Carlos Espi offering fresh solutions in the final third.",
+  "player_ids": [],
+  "sha256": "c464f953f9ae0e01600bacbc7304c6909df26cd2316c84e3e3e3d17ef82fdd15"
+}

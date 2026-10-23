@@ -1,0 +1,55 @@
+{
+  "kind": "numagent_vs_stragent_h2h",
+  "as_of_utc": "2026-10-23T09:15:52Z",
+  "bar": "GW6\u201325 parallel track; first formal read GW26 (string_competitor_plan)",
+  "notes": [
+    "Numagent = FPL entry 2632584 realised points (official).",
+    "Stragent GW6\u20138 = official freeze rows in string_agent_freeze.jsonl (locked-in comparison at each plan frozen_at_utc, pre-deadline).",
+    "Stragent GW8 week not finished yet (realised null).",
+    "GW6\u20137 realised attached on the freeze ledger; scores match the locked plans (not paper rescored)."
+  ],
+  "weeks": [
+    {
+      "gw": 6,
+      "numagent": 56,
+      "numagent_raw": 56,
+      "numagent_hits": 0,
+      "numagent_cap": "Mbeumo",
+      "stragent": 49,
+      "stragent_raw": 49,
+      "stragent_hits": 0,
+      "stragent_cap": "B.Fernandes",
+      "stragent_status": "frozen_comparison",
+      "delta_num_minus_str": 7,
+      "num_label": "entry (ojaminFC)",
+      "str_label": "frozen comparison (Muniz in, C Bruno)",
+      "str_autosubs": 0
+    },
+    {
+      "gw": 7,
+      "numagent": 68,
+      "numagent_raw": 68,
+      "numagent_hits": 0,
+      "numagent_cap": "Haaland",
+      "stragent": 61,
+      "stragent_raw": 61,
+      "stragent_hits": 0,
+      "stragent_cap": "Haaland",
+      "stragent_status": "frozen_comparison",
+      "delta_num_minus_str": 7,
+      "num_label": "PI lock / entry",
+      "str_label": "frozen comparison (Robinson in, C Haaland)",
+      "str_autosubs": 2
+    }
+  ],
+  "totals": {
+    "numagent": 124,
+    "stragent": 110,
+    "numagent_lead": 14,
+    "weeks_played": 2
+  },
+  "gw08": {
+    "numagent": "locked (Mainoo\u2192Lewis-Potter, C Haaland) \u2014 pending",
+    "stragent": "frozen (Shaw\u2192Mazraoui, C Haaland) \u2014 pending"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:219f9e94048f19a9",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cm86z5w5y21zo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 23 Oct 2026 06:44:39 GMT",
+  "published_at_utc": "2026-10-23T06:44:39Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "Injury issues mount at Hearts amid Milne & Borchgrevink blows - gossip",
+  "body": "Injury blows mount for Hearts defender as Rangers defender challenges team-mates.",
+  "player_ids": [],
+  "sha256": "5597dc3bc6ff6fe207a6631dd78842c794591d7804a3156b064de6240f0964c5"
+}

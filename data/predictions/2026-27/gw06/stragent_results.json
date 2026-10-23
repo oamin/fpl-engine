@@ -1,0 +1,26 @@
+{
+  "kind": "stragent_gw_results",
+  "gw": 6,
+  "evaluated_at_utc": "2026-10-23T09:15:26Z",
+  "official_freeze": "data/predictions/2026-27/string_agent_freeze.jsonl",
+  "status": "frozen_comparison",
+  "selection": {
+    "transfers_in": [
+      "271"
+    ],
+    "transfers_out": [
+      "528"
+    ],
+    "captain": "B.Fernandes",
+    "vice_captain": "Haaland"
+  },
+  "realised": {
+    "actual_points": 49,
+    "evaluated_at_utc": "2026-10-23T09:15:26Z",
+    "actual_xi_plus_captain": 49.0,
+    "hit_points": 0,
+    "n_autosubs": 0,
+    "comparison_locked": true
+  },
+  "note": "Locked-in stragent vs numagent comparison for GW6."
+}

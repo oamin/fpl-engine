@@ -61,7 +61,7 @@ REPORTS = ROOT / "reports"
 MARKET_BAND = 0.0
 DEFAULT_N = 8
 DEFAULT_SEED = 7
-DEFAULT_GAMMA = 0.9
+DEFAULT_GAMMA = 1.0
 POOL_CAP_PER_POS = 30
 MIN_POOL = 40
 SCORER = numagent_xp.SCORE_NAME  # score_xp_v2
@@ -173,11 +173,18 @@ def build_frozen_side_table(
     *,
     alpha_g: float,
     alpha_a: float,
+    season: str | None = None,
+    historical_rate_baseline: bool = True,
 ) -> tuple[pd.DataFrame, float, float]:
     """As-of roster with rates/priors/minutes frozen (same-season GW < t).
 
     ``hist`` must already be same-season rows with GW ``< t`` (caller uses
     ``asof_share_history``).
+
+    When ``historical_rate_baseline`` is True (default), ``rG``/``rA`` start
+    at prior-season player rates (else positional) and are updated with
+    same-season appearance counts in ``hist`` (GW ``< t``) —
+    ``protocol.score_xp_v2_rate_baseline_prior``. Soft priors stay same-season.
     """
     numagent_xp.assert_single_season_rate_history(hist)
     roster = _mean_minutes_asof(hist, rho=1.0, window=3)
@@ -212,6 +219,16 @@ def build_frozen_side_table(
             side[c] = pd.to_numeric(side[c], errors="coerce").fillna(default)
     side["player_id"] = side["element"].astype(str)
     side["team_n"] = side["team"].map(norm_team)
+    if historical_rate_baseline:
+        from src.markets.rate_baseline import apply_historical_rate_baseline
+
+        season_key = season
+        if season_key is None and "season" in hist.columns and len(hist):
+            season_key = str(hist["season"].iloc[0]).replace("_", "-")
+        if season_key:
+            side = apply_historical_rate_baseline(
+                side, season=str(season_key), hist=hist
+            )
     return side, float(alpha_g), float(alpha_a)
 
 

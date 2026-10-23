@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:3d8dcddb35269ff7",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/c6y0ek284pdgo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 23 Oct 2026 05:56:04 GMT",
+  "published_at_utc": "2026-10-23T05:56:04Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "Have Man Utd become the unmanageable club?",
+  "body": "The cycle of doom that has engulfed every Manchester United manager since Sir Alex Ferguson now has Michael Carrick in its unforgiving grip, writes Phil McNulty.",
+  "player_ids": [],
+  "sha256": "ff430c2a9712bcd13a312f13bf4b591087e70910275ea9c66cc0661f1b104f61"
+}

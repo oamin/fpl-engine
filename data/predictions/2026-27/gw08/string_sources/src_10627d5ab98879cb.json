@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:10627d5ab98879cb",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/c3y0eqkneze4o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 22 Oct 2026 16:30:41 GMT",
+  "published_at_utc": "2026-10-22T16:30:41Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "Sutton's predictions v Waffle the Wonder Dog and his owner, Simon",
+  "body": "BBC Sport football expert Chris Sutton takes on Waffle the Wonder Dog and his owner Simon, plus the BBC readers and AI with his predictions for this weekend's Premier League fixtures.",
+  "player_ids": [],
+  "sha256": "03773a76ad34aa91ea01f08e549387e876b9a889772d4c71056e44718a295c9b"
+}

@@ -16,6 +16,16 @@ Updated: 2026-10-20. **Numagent 2.0** is the product on main (`protocol.numagent
 | **8. Mean t:t+1 vs short gen** | **done** | N_MC=20 product horizon: still **clearly_loses** (Δ≈−0.054). `reports/cascade_short_mean_tt1_vs_gen.md`. |
 | **9. Path-V gen vs mean MILP** | **done (diagnostic)** | FT+cap N=20: both solve; gen hits≈7.2 vs mean≈1.6; top-15 Jaccard≈0.36. Not a path-V promote. `reports/cascade_pathv_gen_vs_mean.md`. |
 | **10. Minutes on gen paths** | **locked** | `DEFAULT_LINEUP_COV=False` — freeze as-of mean / live xmi. FFScout = pool WHO only. `reports/cascade_live_minutes_layers.md`. |
+| **11. Hist MC freq vs mean MILP** | **done (diagnostic)** | 2025-26 N=12: oracle ranks + LOSO GF/GA path vs priced t:t+1 mean. After rate baseline: Haaland top-cap 0.46 (Cash pathology gone). `reports/cascade_mc_vs_mean_hist.md`. |
+| **12. Historical rate baseline** | **cascade default** | Start at prior (player else positional); update with each completed GW. `src/markets/rate_baseline.py` · `protocol.score_xp_v2_rate_baseline_prior`. Full mu_post gate deferred. |
+| **13. Mean vs path GW residual** | **done (diagnostic)** | Full-side shares; semi-oracle buy-only. 2025-26: mean/path actual ≈647/646; resid bias +12.7 / +1.1. `reports/cascade_mean_path_gw_resid.md`. |
+| **14. Top MID+FWD G/A mismatch** | **done (diagnostic)** | Top xp decile: g/EG≈0.85 (pot≈0.82, shares OK); a/EA≈0.61 (pot≈0.72 **and** sA too fat). `reports/top_mid_fwd_ga_mismatch.md`. |
+| **15. Path FT potential energy** | **default on (diagnostic)** | `U(b)=ν·b`, ν=`HIT_COST` (+4/FT, +20 at cap). N=12: schedule Δ small (terminal ft 1.00→1.08). `reports/cascade_ft_pe_path.md`. |
+| **16. Path every-GW transfers** | **locked** | Joint path plan schedules every horizon GW (`cascade_joint_path_plan`). Hard must-spend: `e=max(0,k−f)`. |
+| **17. Cascade γ** | **locked γ=1** | Removed climb `γ=0.9` contamination from cascade/multistage defaults (`cascade_gamma`). |
+| **18. Deadline-causal minutes** | **done (diagnostic)** | Oracle m only at deadline GW; as-of for later; rolling replan. N=12: +hits, actual +12, terminal FT flat. `reports/cascade_deadline_causal_minutes.md`. |
+| **19. Path bench weight α** | **rejected** | α·squad form screened then removed from path objective. `reports/cascade_path_bench_weight.md`. |
+| **20. GW8 live pick** | **PI locked** | Numagent L4: Mainoo → Lewis-Potter, C Haaland / VC Mbeumo. Stragent freeze: Shaw → Mazraoui, C Haaland / VC Bruno. GW6–8 in `string_agent_freeze.jsonl` as locked comparison (GW6–7 realised 49/61). |
 
 ## Plan
 
@@ -52,7 +62,10 @@ Today’s pre-merge cloud cascade work initially scored with **`xp_on_pot` /
   layer stays `score_team_side`.
 - Long-horizon Opta multistage (`squad_sum` / `xi_plus_captain` /
   `xi_plus_captain_ft` ± minutes overlay) via
-  `src/markets/cascade_score_v2.py` — Opta place GF/GA ±MAE → `M` → `k∼M`
+  `src/markets/cascade_score_v2.py` — Opta place GF/GA ±MAE → `M` → `k∼M`.
+  **`xi_plus_captain_ft`** = joint multi-GW transfer plan
+  (`src/models/path_transfer_plan.py`): roll horizon → per-GW scores → one
+  MILP schedules opening 15 + holds/transfers/hits (not myopic snapshot FT).
 - Oracle-rank cascade 2025/26 — **viable**; oracle − market log **+0.0187**
 - Match-band / player G/A finish / rank tracker — rewired + rejudged 2026-10-19
   (all three **park** under `score_xp_v2`; keep baseline z=1.0 / blend=0.5,
