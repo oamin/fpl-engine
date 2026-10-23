@@ -1,0 +1,58 @@
+{
+  "kind": "numagent_live_lock",
+  "gw": 8,
+  "season": "2026-27",
+  "deadline_utc": "2026-10-23T17:30:00Z",
+  "recommended_at_utc": "2026-10-23T08:25:00Z",
+  "entry_id": 2632584,
+  "team_name": "ojaminFC",
+  "status": "recommended",
+  "note": "L3 pick (L4 skipped: no priced GW9 fixtures in snapshot). Odds from data/scratch/gw08_odds_full.json (fetched 2026-10-16). Minutes: rolling3 + FPL chance/status → data/scratch/gw08_xmi_probe.csv (Mainoo injury-discounted). Captain Haaland; vice Lewis-Potter (highest μ in XI after C). Bench order = backup GK then outfield by μ (Rudoni, Khalaili, Barry).",
+  "decision": {
+    "chip_played": null,
+    "transfers": {
+      "n": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "sold": ["Mainoo"],
+      "bought": ["Lewis-Potter"]
+    },
+    "formation": "1-4-4-2",
+    "squad_15": [1, 86, 40, 173, 650, 411, 426, 427, 449, 464, 472, 109, 183, 588, 249],
+    "starting_11": [1, 472, 173, 650, 449, 86, 40, 426, 427, 411, 464],
+    "captain": 411,
+    "captain_name": "Haaland",
+    "vice_captain": 86,
+    "vice_captain_name": "Lewis-Potter",
+    "bench_order": [109, 183, 588, 249],
+    "xi": [
+      {"element": 1, "name": "Raya", "position": "GKP", "club": "Arsenal", "mu_post": 5.07, "captain": false},
+      {"element": 472, "name": "Murillo", "position": "DEF", "club": "Nott'm Forest", "mu_post": 4.52, "captain": false},
+      {"element": 173, "name": "Thomas", "position": "DEF", "club": "Coventry City", "mu_post": 4.62, "captain": false},
+      {"element": 650, "name": "Affengruber", "position": "DEF", "club": "Fulham", "mu_post": 4.24, "captain": false},
+      {"element": 449, "name": "Hall", "position": "DEF", "club": "Newcastle", "mu_post": 5.23, "captain": false},
+      {"element": 86, "name": "Lewis-Potter", "position": "MID", "club": "Brentford", "mu_post": 5.63, "captain": false},
+      {"element": 40, "name": "Rogers", "position": "MID", "club": "Chelsea", "mu_post": 4.79, "captain": false},
+      {"element": 426, "name": "B.Fernandes", "position": "MID", "club": "Man Utd", "mu_post": 5.28, "captain": false},
+      {"element": 427, "name": "Mbeumo", "position": "MID", "club": "Man Utd", "mu_post": 5.44, "captain": false},
+      {"element": 411, "name": "Haaland", "position": "FWD", "club": "Man City", "mu_post": 7.17, "captain": true},
+      {"element": 464, "name": "Wissa", "position": "FWD", "club": "Newcastle", "mu_post": 4.58, "captain": false}
+    ],
+    "bench": [
+      {"element": 109, "name": "Verbruggen", "position": "GKP", "mu_post": 2.88},
+      {"element": 183, "name": "Rudoni", "position": "MID", "mu_post": 3.94},
+      {"element": 588, "name": "Khalaili", "position": "DEF", "mu_post": 3.80},
+      {"element": 249, "name": "Barry", "position": "FWD", "mu_post": 3.55}
+    ],
+    "objective": 63.74,
+    "xi_mu": 56.57,
+    "captain_mu": 7.17
+  },
+  "inputs": {
+    "odds": "data/scratch/gw08_odds_full.json",
+    "odds_fetched_at": "2026-10-16T17:59:41.591654+00:00",
+    "xmi": "data/scratch/gw08_xmi_probe.csv",
+    "primary": "L3",
+    "props": false
+  }
+}

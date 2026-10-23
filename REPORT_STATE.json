@@ -1,8 +1,16 @@
 {
-  "task": "cascade_path_bench_weight",
-  "status": "rejected",
-  "change": "Remove bench_alpha from path MILP objective; PI rejected α·squad form",
-  "protocol": "cascade_path_bench_weight",
-  "decision": "reject_bench_alpha",
-  "note": "Objective is again XI + captain − hits [+ terminal FT PE] only"
+  "task": "numagent_live_pick_gw08",
+  "status": "recommended",
+  "gw": 8,
+  "deadline_utc": "2026-10-23T17:30:00Z",
+  "entry_id": 2632584,
+  "primary": "L3",
+  "transfers": {"sold": ["Mainoo"], "bought": ["Lewis-Potter"], "hits": 0},
+  "captain": "Haaland",
+  "vice_captain": "Lewis-Potter",
+  "formation": "1-4-4-2",
+  "objective": 63.74,
+  "report": "reports/numagent_live_pick_gw08.md",
+  "pick_json": "data/predictions/2026-27/gw08/numagent_pick.json",
+  "note": "L4 skipped (no GW9 odds in snapshot). Odds snapshot 2026-10-16; xmi rolling+status (Mainoo injury)."
 }
