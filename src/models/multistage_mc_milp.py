@@ -165,7 +165,7 @@ def ft_bank_potential(
     """Potential energy of an FT bank: ``U(b) = ν · b`` (b capped at MAX_FT).
 
     Helper default ``ν = HIT_COST`` (+4 per stored FT). Path MILP defaults to
-    ``DEFAULT_FT_PE_NU=0`` (bank pot ledger only — PE not in \(V\)). Pass
+    ``DEFAULT_FT_PE_NU=0`` (bank pot ledger only — PE not in V). Pass
     ``nu`` explicitly to score PE. ``horizon_weight`` ignored (API compat).
     """
     del horizon_weight

@@ -16,7 +16,7 @@ objective (no captaincy double).
 
 **FT bank pot** is tracked as constrained state (``ft_before`` / ``ft_after``
 per week) and returned as ``bank_pot`` — separate from the objective.
-Default ``ft_pe_nu=0`` (no terminal bank PE in \(V\)).
+Default ``ft_pe_nu=0`` (no terminal bank PE in V).
 """
 
 from __future__ import annotations
