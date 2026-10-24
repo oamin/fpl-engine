@@ -1,19 +1,17 @@
 {
-  "task": "cascade_mean_xi_ft_hist",
+  "task": "cascade_mean_strand_convergence",
   "status": "done",
-  "as_of_utc": "2026-10-24T16:20:58Z",
-  "change": "2025-26 GW8–19 mean-board xi_ft screen N=500 (oracle ranks, LOSO GF/GA, prior rate baseline)",
-  "protocol": "cascade_mean_xi_ft_hist",
+  "as_of_utc": "2026-10-24T16:35:00Z",
+  "change": "Diagnostic: large-N gen mean vs centreline on 2025-26 GW8–19",
+  "protocol": "cascade_mean_strand_convergence",
   "verdict": {
-    "total_transfers": 12,
-    "total_hits": 0,
-    "terminal_ft": 1,
-    "objective": 1018.27,
-    "wall_s": 855.5,
-    "board_s": 845.0,
-    "note": "Banks to FT cap 5 (GW8–11 hold), spends at GW12–13 and GW16–19; same stable FT-only pattern as live mean probe"
+    "converges_to_centreline": false,
+    "converges_to": "generative expectation E[xP under k∼M + attack dice]",
+    "mae_vs_centre_n200": 0.363,
+    "mae_self_n100_vs_n200": 0.146,
+    "scoreline_bias_kh": 0.002,
+    "note": "Plateau ~0.36 xP MAE vs centreline; k∼M calibrated; gap is nonlinear player map"
   },
-  "live_n500_wall_note": "prior live Saka–Groß N=500 GW8–14 took ~1018s (~17 min)",
-  "artifact": "/opt/cursor/artifacts/cascade_mean_xi_ft_hist_n500.json",
-  "report": "reports/cascade_mean_xi_ft_hist.md"
+  "artifact": "/opt/cursor/artifacts/cascade_mean_strand_convergence.json",
+  "report": "reports/cascade_mean_strand_convergence.md"
 }

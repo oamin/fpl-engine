@@ -1556,6 +1556,23 @@
     ],
     "any_later_change": "dated protocol update required"
   },
+  "cascade_mean_strand_convergence": {
+    "locked": "2026-10-24",
+    "status": "done_diagnostic",
+    "result": "2025-26 GW8–19 Nmax=200: gen-mean MAE vs centreline plateaus ~0.36 (not →0); self MAE(N=100 vs 200)=0.15; k∼M nearly unbiased",
+    "role": "does large-N generative mean converge to centreline score_team_side?",
+    "module": "src.eval.cascade_mean_strand_convergence",
+    "report": "reports/cascade_mean_strand_convergence.md",
+    "season": "2025-26",
+    "horizon": "8-19",
+    "n_max": 200,
+    "seed": 7,
+    "centreline": "FD/oracle mid λ → score_team_side",
+    "gen": "band-sample (long) + k∼M + attack dice; average N strands",
+    "answer": "converges to generative expectation, not centreline — nonlinear CS/attack gap",
+    "not": "four-season likelihood gate; claim gen-mean is a better forecast",
+    "any_later_change": "dated protocol update required"
+  },
   "cascade_mean_xi_ft_hist": {
     "locked": "2026-10-24",
     "status": "done_diagnostic",
