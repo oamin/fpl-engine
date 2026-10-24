@@ -1,17 +1,22 @@
 {
-  "task": "cascade_mean_xi_ft_rolling",
+  "task": "cascade_mean_xi_ft_component_resid",
   "status": "done",
-  "as_of_utc": "2026-10-24T17:40:00Z",
-  "change": "Rolling mean xi_ft stick trial 2025-26 GW8–10 (N=100)",
+  "as_of_utc": "2026-10-24T18:12:44Z",
+  "change": "G/CS/GC residual (xP−actual) for rolling mean xi_ft run N=100",
   "protocol": "cascade_mean_xi_ft_rolling",
   "verdict": {
-    "mean_owned_jaccard": 0.88,
-    "xfer_exact": "1/3 (GW8 only)",
-    "rolling_transfers_hits": "2/0",
-    "ol_transfers_hits_on_steps": "0/0",
-    "note": "Soft drift after forecast refresh: spends 1 FT at GW9 and GW10 while OL banks; still hit-free; future transfer calendar rewritten each replan"
+    "open_loop_GW8_19": {
+      "G": "ΣxP 357 vs ΣP 127 → resid +230 (mean +1.74/player-GW)",
+      "CS": "ΣxP 95 vs ΣP 73 → resid +22",
+      "GC": "ΣxP −15 vs ΣP −10 → resid −5"
+    },
+    "rolling_GW8_10": {
+      "G": "ΣxP 80 vs ΣP 40 → resid +40",
+      "CS": "ΣxP 26 vs ΣP 42 → resid −16 (under-CS early)",
+      "GC": "ΣxP −2 vs ΣP 0 → resid −2"
+    },
+    "note": "Goals heavily over-predicted on XI; CS closer; GC small"
   },
-  "wall_s": 501.1,
-  "artifact": "/opt/cursor/artifacts/cascade_mean_xi_ft_rolling.json",
-  "report": "reports/cascade_mean_xi_ft_rolling.md"
+  "artifact": "/opt/cursor/artifacts/cascade_mean_xi_ft_component_resid.json",
+  "report": "reports/cascade_mean_xi_ft_component_resid.md"
 }
