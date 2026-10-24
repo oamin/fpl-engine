@@ -1,0 +1,2241 @@
+{
+  "task": "cascade_mean_xi_ft_rolling",
+  "season": "2025-26",
+  "e0": "E0_2526.csv",
+  "horizon_start": 8,
+  "horizon_end": 19,
+  "step_gws": [
+    8,
+    9,
+    10
+  ],
+  "n_strands": 100,
+  "seed": 7,
+  "ranks": "oracle_post_gw38",
+  "gf_ga_profile": "loso_prior_seasons_rankmean",
+  "rate_baseline": "prior_plus_season_before_each_step",
+  "objective": "xi_ft",
+  "open_loop": {
+    "decision_gw": 8,
+    "opening_15": [
+      "2025-26:5",
+      "2025-26:7",
+      "2025-26:8",
+      "2025-26:72",
+      "2025-26:119",
+      "2025-26:160",
+      "2025-26:249",
+      "2025-26:427",
+      "2025-26:430",
+      "2025-26:449",
+      "2025-26:469",
+      "2025-26:668",
+      "2025-26:670",
+      "2025-26:683",
+      "2025-26:714"
+    ],
+    "opening_names": [
+      "Gabriel dos Santos Magalh\u00e3es",
+      "Riccardo Calafiori",
+      "Jurri\u00ebn Timber",
+      "Marcos Senesi Bar\u00f3n",
+      "Bryan Mbeumo",
+      "Yankuba Minteh",
+      "Jo\u00e3o Pedro Junqueira de Jesus",
+      "Tijjani Reijnders",
+      "Erling Haaland",
+      "Bruno Borges Fernandes",
+      "Nick Pope",
+      "Granit Xhaka",
+      "Robin Roefs",
+      "Omar Alderete",
+      "Nick Woltemade"
+    ],
+    "objective": 1018.9463807074097,
+    "terminal_ft": 1,
+    "total_transfers": 12,
+    "total_hits": 0,
+    "weeks": [
+      {
+        "gw": 8,
+        "player_ids": [
+          "2025-26:5",
+          "2025-26:7",
+          "2025-26:8",
+          "2025-26:72",
+          "2025-26:119",
+          "2025-26:160",
+          "2025-26:249",
+          "2025-26:427",
+          "2025-26:430",
+          "2025-26:449",
+          "2025-26:469",
+          "2025-26:668",
+          "2025-26:670",
+          "2025-26:683",
+          "2025-26:714"
+        ],
+        "names": [
+          "Gabriel dos Santos Magalh\u00e3es",
+          "Riccardo Calafiori",
+          "Jurri\u00ebn Timber",
+          "Marcos Senesi Bar\u00f3n",
+          "Bryan Mbeumo",
+          "Yankuba Minteh",
+          "Jo\u00e3o Pedro Junqueira de Jesus",
+          "Tijjani Reijnders",
+          "Erling Haaland",
+          "Bruno Borges Fernandes",
+          "Nick Pope",
+          "Granit Xhaka",
+          "Robin Roefs",
+          "Omar Alderete",
+          "Nick Woltemade"
+        ],
+        "xi_ids": [
+          "2025-26:5",
+          "2025-26:8",
+          "2025-26:160",
+          "2025-26:249",
+          "2025-26:427",
+          "2025-26:430",
+          "2025-26:449",
+          "2025-26:668",
+          "2025-26:670",
+          "2025-26:683",
+          "2025-26:714"
+        ],
+        "captain_id": "2025-26:683",
+        "n_transfers": 0,
+        "hits": 0,
+        "ft_before": 1,
+        "ft_after": 2,
+        "xi_score": 75.93210959008742,
+        "captain_score": 0.0,
+        "week_score": 75.93210959008742,
+        "value_captain": false
+      },
+      {
+        "gw": 9,
+        "player_ids": [
+          "2025-26:5",
+          "2025-26:7",
+          "2025-26:8",
+          "2025-26:72",
+          "2025-26:119",
+          "2025-26:160",
+          "2025-26:249",
+          "2025-26:427",
+          "2025-26:430",
+          "2025-26:449",
+          "2025-26:469",
+          "2025-26:668",
+          "2025-26:670",
+          "2025-26:683",
+          "2025-26:714"
+        ],
+        "names": [
+          "Gabriel dos Santos Magalh\u00e3es",
+          "Riccardo Calafiori",
+          "Jurri\u00ebn Timber",
+          "Marcos Senesi Bar\u00f3n",
+          "Bryan Mbeumo",
+          "Yankuba Minteh",
+          "Jo\u00e3o Pedro Junqueira de Jesus",
+          "Tijjani Reijnders",
+          "Erling Haaland",
+          "Bruno Borges Fernandes",
+          "Nick Pope",
+          "Granit Xhaka",
+          "Robin Roefs",
+          "Omar Alderete",
+          "Nick Woltemade"
+        ],
+        "xi_ids": [
+          "2025-26:5",
+          "2025-26:7",
+          "2025-26:72",
+          "2025-26:119",
+          "2025-26:160",
+          "2025-26:249",
+          "2025-26:427",
+          "2025-26:430",
+          "2025-26:449",
+          "2025-26:469",
+          "2025-26:714"
+        ],
+        "captain_id": "2025-26:430",
+        "n_transfers": 0,
+        "hits": 0,
+        "ft_before": 2,
+        "ft_after": 3,
+        "xi_score": 77.63636458340619,
+        "captain_score": 0.0,
+        "week_score": 77.63636458340619,
+        "value_captain": false
+      },
+      {
+        "gw": 10,
+        "player_ids": [
+          "2025-26:5",
+          "2025-26:7",
+          "2025-26:8",
+          "2025-26:72",
+          "2025-26:119",
+          "2025-26:160",
+          "2025-26:249",
+          "2025-26:427",
+          "2025-26:430",
+          "2025-26:449",
+          "2025-26:469",
+          "2025-26:668",
+          "2025-26:670",
+          "2025-26:683",
+          "2025-26:714"
+        ],
+        "names": [
+          "Gabriel dos Santos Magalh\u00e3es",
+          "Riccardo Calafiori",
+          "Jurri\u00ebn Timber",
+          "Marcos Senesi Bar\u00f3n",
+          "Bryan Mbeumo",
+          "Yankuba Minteh",
+          "Jo\u00e3o Pedro Junqueira de Jesus",
+          "Tijjani Reijnders",
+          "Erling Haaland",
+          "Bruno Borges Fernandes",
+          "Nick Pope",
+          "Granit Xhaka",
+          "Robin Roefs",
+          "Omar Alderete",
+          "Nick Woltemade"
+        ],
+        "xi_ids": [
+          "2025-26:5",
+          "2025-26:7",
+          "2025-26:8",
+          "2025-26:119",
+          "2025-26:160",
+          "2025-26:427",
+          "2025-26:430",
+          "2025-26:449",
+          "2025-26:668",
+          "2025-26:670",
+          "2025-26:683"
+        ],
+        "captain_id": "2025-26:430",
+        "n_transfers": 0,
+        "hits": 0,
+        "ft_before": 3,
+        "ft_after": 4,
+        "xi_score": 91.49426571641625,
+        "captain_score": 0.0,
+        "week_score": 91.49426571641625,
+        "value_captain": false
+      },
+      {
+        "gw": 11,
+        "player_ids": [
+          "2025-26:5",
+          "2025-26:7",
+          "2025-26:8",
+          "2025-26:72",
+          "2025-26:119",
+          "2025-26:160",
+          "2025-26:249",
+          "2025-26:427",
+          "2025-26:430",
+          "2025-26:449",
+          "2025-26:469",
+          "2025-26:668",
+          "2025-26:670",
+          "2025-26:683",
+          "2025-26:714"
+        ],
+        "names": [
+          "Gabriel dos Santos Magalh\u00e3es",
+          "Riccardo Calafiori",
+          "Jurri\u00ebn Timber",
+          "Marcos Senesi Bar\u00f3n",
+          "Bryan Mbeumo",
+          "Yankuba Minteh",
+          "Jo\u00e3o Pedro Junqueira de Jesus",
+          "Tijjani Reijnders",
+          "Erling Haaland",
+          "Bruno Borges Fernandes",
+          "Nick Pope",
+          "Granit Xhaka",
+          "Robin Roefs",
+          "Omar Alderete",
+          "Nick Woltemade"
+        ],
+        "xi_ids": [
+          "2025-26:5",
+          "2025-26:7",
+          "2025-26:8",
+          "2025-26:119",
+          "2025-26:160",
+          "2025-26:249",
+          "2025-26:427",
+          "2025-26:430",
+          "2025-26:449",
+          "2025-26:469",
+          "2025-26:668"
+        ],
+        "captain_id": "2025-26:430",
+        "n_transfers": 0,
+        "hits": 0,
+        "ft_before": 4,
+        "ft_after": 5,
+        "xi_score": 79.48454713289742,
+        "captain_score": 0.0,
+        "week_score": 79.48454713289742,
+        "value_captain": false
+      },
+      {
+        "gw": 12,
+        "player_ids": [
+          "2025-26:5",
+          "2025-26:7",
+          "2025-26:8",
+          "2025-26:72",
+          "2025-26:82",
+          "2025-26:160",
+          "2025-26:249",
+          "2025-26:427",
+          "2025-26:430",
+          "2025-26:449",
+          "2025-26:469",
+          "2025-26:668",
+          "2025-26:670",
+          "2025-26:683",
+          "2025-26:714"
+        ],
+        "names": [
+          "Gabriel dos Santos Magalh\u00e3es",
+          "Riccardo Calafiori",
+          "Jurri\u00ebn Timber",
+          "Marcos Senesi Bar\u00f3n",
+          "Antoine Semenyo",
+          "Yankuba Minteh",
+          "Jo\u00e3o Pedro Junqueira de Jesus",
+          "Tijjani Reijnders",
+          "Erling Haaland",
+          "Bruno Borges Fernandes",
+          "Nick Pope",
+          "Granit Xhaka",
+          "Robin Roefs",
+          "Omar Alderete",
+          "Nick Woltemade"
+        ],
+        "xi_ids": [
+          "2025-26:7",
+          "2025-26:8",
+          "2025-26:72",
+          "2025-26:82",
+          "2025-26:160",
+          "2025-26:249",
+          "2025-26:427",
+          "2025-26:430",
+          "2025-26:449",
+          "2025-26:668",
+          "2025-26:670"
+        ],
+        "captain_id": "2025-26:430",
+        "n_transfers": 1,
+        "hits": 0,
+        "ft_before": 5,
+        "ft_after": 5,
+        "xi_score": 83.4283776482394,
+        "captain_score": 0.0,
+        "week_score": 83.4283776482394,
+        "value_captain": false
+      },
+      {
+        "gw": 13,
+        "player_ids": [
+          "2025-26:5",
+          "2025-26:7",
+          "2025-26:8",
+          "2025-26:64",
+          "2025-26:72",
+          "2025-26:120",
+          "2025-26:160",
+          "2025-26:427",
+          "2025-26:430",
+          "2025-26:449",
+          "2025-26:469",
+          "2025-26:668",
+          "2025-26:670",
+          "2025-26:683",
+          "2025-26:714"
+        ],
+        "names": [
+          "Gabriel dos Santos Magalh\u00e3es",
+          "Riccardo Calafiori",
+          "Jurri\u00ebn Timber",
+          "Ollie Watkins",
+          "Marcos Senesi Bar\u00f3n",
+          "Kevin Schade",
+          "Yankuba Minteh",
+          "Tijjani Reijnders",
+          "Erling Haaland",
+          "Bruno Borges Fernandes",
+          "Nick Pope",
+          "Granit Xhaka",
+          "Robin Roefs",
+          "Omar Alderete",
+          "Nick Woltemade"
+        ],
+        "xi_ids": [
+          "2025-26:5",
+          "2025-26:8",
+          "2025-26:64",
+          "2025-26:120",
+          "2025-26:160",
+          "2025-26:427",
+          "2025-26:430",
+          "2025-26:449",
+          "2025-26:469",
+          "2025-26:668",
+          "2025-26:683"
+        ],
+        "captain_id": "2025-26:683",
+        "n_transfers": 2,
+        "hits": 0,
+        "ft_before": 5,
+        "ft_after": 4,
+        "xi_score": 88.10961773696019,
+        "captain_score": 0.0,
+        "week_score": 88.10961773696019,
+        "value_captain": false
+      },
+      {
+        "gw": 14,
+        "player_ids": [
+          "2025-26:5",
+          "2025-26:7",
+          "2025-26:64",
+          "2025-26:72",
+          "2025-26:119",
+          "2025-26:160",
+          "2025-26:317",
+          "2025-26:427",
+          "2025-26:430",
+          "2025-26:449",
+          "2025-26:469",
+          "2025-26:668",
+          "2025-26:670",
+          "2025-26:683",
+          "2025-26:714"
+        ],
+        "names": [
+          "Gabriel dos Santos Magalh\u00e3es",
+          "Riccardo Calafiori",
+          "Ollie Watkins",
+          "Marcos Senesi Bar\u00f3n",
+          "Bryan Mbeumo",
+          "Yankuba Minteh",
+          "Joachim Andersen",
+          "Tijjani Reijnders",
+          "Erling Haaland",
+          "Bruno Borges Fernandes",
+          "Nick Pope",
+          "Granit Xhaka",
+          "Robin Roefs",
+          "Omar Alderete",
+          "Nick Woltemade"
+        ],
+        "xi_ids": [
+          "2025-26:5",
+          "2025-26:64",
+          "2025-26:72",
+          "2025-26:119",
+          "2025-26:427",
+          "2025-26:430",
+          "2025-26:449",
+          "2025-26:469",
+          "2025-26:668",
+          "2025-26:683",
+          "2025-26:714"
+        ],
+        "captain_id": "2025-26:430",
+        "n_transfers": 2,
+        "hits": 0,
+        "ft_before": 4,
+        "ft_after": 3,
+        "xi_score": 80.3614170369608,
+        "captain_score": 0.0,
+        "week_score": 80.3614170369608,
+        "value_captain": false
+      },
+      {
+        "gw": 15,
+        "player_ids": [
+          "2025-26:5",
+          "2025-26:7",
+          "2025-26:64",
+          "2025-26:72",
+          "2025-26:119",
+          "2025-26:160",
+          "2025-26:317",
+          "2025-26:427",
+          "2025-26:430",
+          "2025-26:449",
+          "2025-26:469",
+          "2025-26:668",
+          "2025-26:670",
+          "2025-26:683",
+          "2025-26:714"
+        ],
+        "names": [
+          "Gabriel dos Santos Magalh\u00e3es",
+          "Riccardo Calafiori",
+          "Ollie Watkins",
+          "Marcos Senesi Bar\u00f3n",
+          "Bryan Mbeumo",
+          "Yankuba Minteh",
+          "Joachim Andersen",
+          "Tijjani Reijnders",
+          "Erling Haaland",
+          "Bruno Borges Fernandes",
+          "Nick Pope",
+          "Granit Xhaka",
+          "Robin Roefs",
+          "Omar Alderete",
+          "Nick Woltemade"
+        ],
+        "xi_ids": [
+          "2025-26:5",
+          "2025-26:72",
+          "2025-26:119",
+          "2025-26:160",
+          "2025-26:317",
+          "2025-26:427",
+          "2025-26:430",
+          "2025-26:449",
+          "2025-26:469",
+          "2025-26:668",
+          "2025-26:714"
+        ],
+        "captain_id": "2025-26:714",
+        "n_transfers": 0,
+        "hits": 0,
+        "ft_before": 3,
+        "ft_after": 4,
+        "xi_score": 83.3030297161076,
+        "captain_score": 0.0,
+        "week_score": 83.3030297161076,
+        "value_captain": false
+      },
+      {
+        "gw": 16,
+        "player_ids": [
+          "2025-26:5",
+          "2025-26:7",
+          "2025-26:21",
+          "2025-26:64",
+          "2025-26:72",
+          "2025-26:160",
+          "2025-26:317",
+          "2025-26:427",
+          "2025-26:430",
+          "2025-26:449",
+          "2025-26:469",
+          "2025-26:668",
+          "2025-26:670",
+          "2025-26:683",
+          "2025-26:714"
+        ],
+        "names": [
+          "Gabriel dos Santos Magalh\u00e3es",
+          "Riccardo Calafiori",
+          "Declan Rice",
+          "Ollie Watkins",
+          "Marcos Senesi Bar\u00f3n",
+          "Yankuba Minteh",
+          "Joachim Andersen",
+          "Tijjani Reijnders",
+          "Erling Haaland",
+          "Bruno Borges Fernandes",
+          "Nick Pope",
+          "Granit Xhaka",
+          "Robin Roefs",
+          "Omar Alderete",
+          "Nick Woltemade"
+        ],
+        "xi_ids": [
+          "2025-26:5",
+          "2025-26:7",
+          "2025-26:21",
+          "2025-26:64",
+          "2025-26:160",
+          "2025-26:427",
+          "2025-26:430",
+          "2025-26:449",
+          "2025-26:668",
+          "2025-26:670",
+          "2025-26:683"
+        ],
+        "captain_id": "2025-26:670",
+        "n_transfers": 1,
+        "hits": 0,
+        "ft_before": 4,
+        "ft_after": 4,
+        "xi_score": 92.94592793086586,
+        "captain_score": 0.0,
+        "week_score": 92.94592793086586,
+        "value_captain": false
+      },
+      {
+        "gw": 17,
+        "player_ids": [
+          "2025-26:5",
+          "2025-26:7",
+          "2025-26:72",
+          "2025-26:82",
+          "2025-26:120",
+          "2025-26:317",
+          "2025-26:427",
+          "2025-26:430",
+          "2025-26:449",
+          "2025-26:469",
+          "2025-26:597",
+          "2025-26:668",
+          "2025-26:670",
+          "2025-26:683",
+          "2025-26:714"
+        ],
+        "names": [
+          "Gabriel dos Santos Magalh\u00e3es",
+          "Riccardo Calafiori",
+          "Marcos Senesi Bar\u00f3n",
+          "Antoine Semenyo",
+          "Kevin Schade",
+          "Joachim Andersen",
+          "Tijjani Reijnders",
+          "Erling Haaland",
+          "Bruno Borges Fernandes",
+          "Nick Pope",
+          "Richarlison de Andrade",
+          "Granit Xhaka",
+          "Robin Roefs",
+          "Omar Alderete",
+          "Nick Woltemade"
+        ],
+        "xi_ids": [
+          "2025-26:5",
+          "2025-26:7",
+          "2025-26:72",
+          "2025-26:82",
+          "2025-26:120",
+          "2025-26:427",
+          "2025-26:430",
+          "2025-26:449",
+          "2025-26:668",
+          "2025-26:670",
+          "2025-26:683"
+        ],
+        "captain_id": "2025-26:683",
+        "n_transfers": 3,
+        "hits": 0,
+        "ft_before": 4,
+        "ft_after": 2,
+        "xi_score": 94.59539922182442,
+        "captain_score": 0.0,
+        "week_score": 94.59539922182442,
+        "value_captain": false
+      },
+      {
+        "gw": 18,
+        "player_ids": [
+          "2025-26:5",
+          "2025-26:7",
+          "2025-26:72",
+          "2025-26:82",
+          "2025-26:119",
+          "2025-26:317",
+          "2025-26:427",
+          "2025-26:430",
+          "2025-26:449",
+          "2025-26:469",
+          "2025-26:597",
+          "2025-26:668",
+          "2025-26:670",
+          "2025-26:683",
+          "2025-26:714"
+        ],
+        "names": [
+          "Gabriel dos Santos Magalh\u00e3es",
+          "Riccardo Calafiori",
+          "Marcos Senesi Bar\u00f3n",
+          "Antoine Semenyo",
+          "Bryan Mbeumo",
+          "Joachim Andersen",
+          "Tijjani Reijnders",
+          "Erling Haaland",
+          "Bruno Borges Fernandes",
+          "Nick Pope",
+          "Richarlison de Andrade",
+          "Granit Xhaka",
+          "Robin Roefs",
+          "Omar Alderete",
+          "Nick Woltemade"
+        ],
+        "xi_ids": [
+          "2025-26:5",
+          "2025-26:7",
+          "2025-26:72",
+          "2025-26:82",
+          "2025-26:119",
+          "2025-26:427",
+          "2025-26:430",
+          "2025-26:449",
+          "2025-26:668",
+          "2025-26:670",
+          "2025-26:683"
+        ],
+        "captain_id": "2025-26:683",
+        "n_transfers": 1,
+        "hits": 0,
+        "ft_before": 2,
+        "ft_after": 2,
+        "xi_score": 83.48012984791112,
+        "captain_score": 0.0,
+        "week_score": 83.48012984791112,
+        "value_captain": false
+      },
+      {
+        "gw": 19,
+        "player_ids": [
+          "2025-26:5",
+          "2025-26:72",
+          "2025-26:82",
+          "2025-26:119",
+          "2025-26:160",
+          "2025-26:317",
+          "2025-26:427",
+          "2025-26:430",
+          "2025-26:436",
+          "2025-26:449",
+          "2025-26:469",
+          "2025-26:597",
+          "2025-26:670",
+          "2025-26:683",
+          "2025-26:714"
+        ],
+        "names": [
+          "Gabriel dos Santos Magalh\u00e3es",
+          "Marcos Senesi Bar\u00f3n",
+          "Antoine Semenyo",
+          "Bryan Mbeumo",
+          "Yankuba Minteh",
+          "Joachim Andersen",
+          "Tijjani Reijnders",
+          "Erling Haaland",
+          "Matthijs de Ligt",
+          "Bruno Borges Fernandes",
+          "Nick Pope",
+          "Richarlison de Andrade",
+          "Robin Roefs",
+          "Omar Alderete",
+          "Nick Woltemade"
+        ],
+        "xi_ids": [
+          "2025-26:5",
+          "2025-26:72",
+          "2025-26:82",
+          "2025-26:119",
+          "2025-26:160",
+          "2025-26:427",
+          "2025-26:430",
+          "2025-26:436",
+          "2025-26:449",
+          "2025-26:469",
+          "2025-26:714"
+        ],
+        "captain_id": "2025-26:119",
+        "n_transfers": 2,
+        "hits": 0,
+        "ft_before": 2,
+        "ft_after": 1,
+        "xi_score": 88.17519454573096,
+        "captain_score": 0.0,
+        "week_score": 88.17519454573096,
+        "value_captain": false
+      }
+    ],
+    "transfers": [
+      {
+        "gw": 12,
+        "buys": [
+          "Antoine Semenyo"
+        ],
+        "sells": [
+          "Bryan Mbeumo"
+        ],
+        "n_transfers": 1,
+        "hits": 0,
+        "ft_before": 5,
+        "ft_after": 5
+      },
+      {
+        "gw": 13,
+        "buys": [
+          "Kevin Schade",
+          "Ollie Watkins"
+        ],
+        "sells": [
+          "Jo\u00e3o Pedro Junqueira de Jesus",
+          "Antoine Semenyo"
+        ],
+        "n_transfers": 2,
+        "hits": 0,
+        "ft_before": 5,
+        "ft_after": 4
+      },
+      {
+        "gw": 14,
+        "buys": [
+          "Bryan Mbeumo",
+          "Joachim Andersen"
+        ],
+        "sells": [
+          "Kevin Schade",
+          "Jurri\u00ebn Timber"
+        ],
+        "n_transfers": 2,
+        "hits": 0,
+        "ft_before": 4,
+        "ft_after": 3
+      },
+      {
+        "gw": 16,
+        "buys": [
+          "Declan Rice"
+        ],
+        "sells": [
+          "Bryan Mbeumo"
+        ],
+        "n_transfers": 1,
+        "hits": 0,
+        "ft_before": 4,
+        "ft_after": 4
+      },
+      {
+        "gw": 17,
+        "buys": [
+          "Kevin Schade",
+          "Richarlison de Andrade",
+          "Antoine Semenyo"
+        ],
+        "sells": [
+          "Yankuba Minteh",
+          "Declan Rice",
+          "Ollie Watkins"
+        ],
+        "n_transfers": 3,
+        "hits": 0,
+        "ft_before": 4,
+        "ft_after": 2
+      },
+      {
+        "gw": 18,
+        "buys": [
+          "Bryan Mbeumo"
+        ],
+        "sells": [
+          "Kevin Schade"
+        ],
+        "n_transfers": 1,
+        "hits": 0,
+        "ft_before": 2,
+        "ft_after": 2
+      },
+      {
+        "gw": 19,
+        "buys": [
+          "Yankuba Minteh",
+          "Matthijs de Ligt"
+        ],
+        "sells": [
+          "Granit Xhaka",
+          "Riccardo Calafiori"
+        ],
+        "n_transfers": 2,
+        "hits": 0,
+        "ft_before": 2,
+        "ft_after": 1
+      }
+    ],
+    "board_s": 168.53597378730774,
+    "sources": [
+      "cascade_long_oracle_rank",
+      "cascade_short_priced"
+    ],
+    "priced_gws": [
+      8,
+      9
+    ],
+    "n_pool": 157
+  },
+  "rolling": {
+    "steps": [
+      {
+        "gw": 8,
+        "n_pool": 157,
+        "priced_gws": [
+          8,
+          9
+        ],
+        "board_s": 0.0,
+        "sources": [
+          "cascade_long_oracle_rank",
+          "cascade_short_priced"
+        ],
+        "alphas": [
+          0.9555555555555556,
+          0.9222222222222223
+        ],
+        "commit": {
+          "gw": 8,
+          "player_ids": [
+            "2025-26:5",
+            "2025-26:7",
+            "2025-26:8",
+            "2025-26:72",
+            "2025-26:119",
+            "2025-26:160",
+            "2025-26:249",
+            "2025-26:427",
+            "2025-26:430",
+            "2025-26:449",
+            "2025-26:469",
+            "2025-26:668",
+            "2025-26:670",
+            "2025-26:683",
+            "2025-26:714"
+          ],
+          "names": [
+            "Gabriel dos Santos Magalh\u00e3es",
+            "Riccardo Calafiori",
+            "Jurri\u00ebn Timber",
+            "Marcos Senesi Bar\u00f3n",
+            "Bryan Mbeumo",
+            "Yankuba Minteh",
+            "Jo\u00e3o Pedro Junqueira de Jesus",
+            "Tijjani Reijnders",
+            "Erling Haaland",
+            "Bruno Borges Fernandes",
+            "Nick Pope",
+            "Granit Xhaka",
+            "Robin Roefs",
+            "Omar Alderete",
+            "Nick Woltemade"
+          ],
+          "buys": [],
+          "sells": [],
+          "buy_ids": [],
+          "sell_ids": [],
+          "n_transfers": 0,
+          "hits": 0,
+          "ft_before": 1,
+          "ft_after": 2,
+          "xi_score": 75.93210959008742
+        },
+        "replan_objective": 1018.9463807074097,
+        "replan_terminal_ft": 1,
+        "replan_transfers_preview": [
+          {
+            "gw": 12,
+            "buys": [
+              "Antoine Semenyo"
+            ],
+            "sells": [
+              "Bryan Mbeumo"
+            ],
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 5,
+            "ft_after": 5
+          },
+          {
+            "gw": 13,
+            "buys": [
+              "Kevin Schade",
+              "Ollie Watkins"
+            ],
+            "sells": [
+              "Jo\u00e3o Pedro Junqueira de Jesus",
+              "Antoine Semenyo"
+            ],
+            "n_transfers": 2,
+            "hits": 0,
+            "ft_before": 5,
+            "ft_after": 4
+          },
+          {
+            "gw": 14,
+            "buys": [
+              "Bryan Mbeumo",
+              "Joachim Andersen"
+            ],
+            "sells": [
+              "Kevin Schade",
+              "Jurri\u00ebn Timber"
+            ],
+            "n_transfers": 2,
+            "hits": 0,
+            "ft_before": 4,
+            "ft_after": 3
+          },
+          {
+            "gw": 16,
+            "buys": [
+              "Declan Rice"
+            ],
+            "sells": [
+              "Bryan Mbeumo"
+            ],
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 4,
+            "ft_after": 4
+          },
+          {
+            "gw": 17,
+            "buys": [
+              "Kevin Schade",
+              "Richarlison de Andrade",
+              "Antoine Semenyo"
+            ],
+            "sells": [
+              "Yankuba Minteh",
+              "Declan Rice",
+              "Ollie Watkins"
+            ],
+            "n_transfers": 3,
+            "hits": 0,
+            "ft_before": 4,
+            "ft_after": 2
+          },
+          {
+            "gw": 18,
+            "buys": [
+              "Bryan Mbeumo"
+            ],
+            "sells": [
+              "Kevin Schade"
+            ],
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 2,
+            "ft_after": 2
+          },
+          {
+            "gw": 19,
+            "buys": [
+              "Yankuba Minteh",
+              "Matthijs de Ligt"
+            ],
+            "sells": [
+              "Granit Xhaka",
+              "Riccardo Calafiori"
+            ],
+            "n_transfers": 2,
+            "hits": 0,
+            "ft_before": 2,
+            "ft_after": 1
+          }
+        ],
+        "replan_weeks_head": [
+          {
+            "gw": 8,
+            "player_ids": [
+              "2025-26:5",
+              "2025-26:7",
+              "2025-26:8",
+              "2025-26:72",
+              "2025-26:119",
+              "2025-26:160",
+              "2025-26:249",
+              "2025-26:427",
+              "2025-26:430",
+              "2025-26:449",
+              "2025-26:469",
+              "2025-26:668",
+              "2025-26:670",
+              "2025-26:683",
+              "2025-26:714"
+            ],
+            "names": [
+              "Gabriel dos Santos Magalh\u00e3es",
+              "Riccardo Calafiori",
+              "Jurri\u00ebn Timber",
+              "Marcos Senesi Bar\u00f3n",
+              "Bryan Mbeumo",
+              "Yankuba Minteh",
+              "Jo\u00e3o Pedro Junqueira de Jesus",
+              "Tijjani Reijnders",
+              "Erling Haaland",
+              "Bruno Borges Fernandes",
+              "Nick Pope",
+              "Granit Xhaka",
+              "Robin Roefs",
+              "Omar Alderete",
+              "Nick Woltemade"
+            ],
+            "xi_ids": [
+              "2025-26:5",
+              "2025-26:8",
+              "2025-26:160",
+              "2025-26:249",
+              "2025-26:427",
+              "2025-26:430",
+              "2025-26:449",
+              "2025-26:668",
+              "2025-26:670",
+              "2025-26:683",
+              "2025-26:714"
+            ],
+            "captain_id": "2025-26:683",
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 2,
+            "xi_score": 75.93210959008742,
+            "captain_score": 0.0,
+            "week_score": 75.93210959008742,
+            "value_captain": false
+          },
+          {
+            "gw": 9,
+            "player_ids": [
+              "2025-26:5",
+              "2025-26:7",
+              "2025-26:8",
+              "2025-26:72",
+              "2025-26:119",
+              "2025-26:160",
+              "2025-26:249",
+              "2025-26:427",
+              "2025-26:430",
+              "2025-26:449",
+              "2025-26:469",
+              "2025-26:668",
+              "2025-26:670",
+              "2025-26:683",
+              "2025-26:714"
+            ],
+            "names": [
+              "Gabriel dos Santos Magalh\u00e3es",
+              "Riccardo Calafiori",
+              "Jurri\u00ebn Timber",
+              "Marcos Senesi Bar\u00f3n",
+              "Bryan Mbeumo",
+              "Yankuba Minteh",
+              "Jo\u00e3o Pedro Junqueira de Jesus",
+              "Tijjani Reijnders",
+              "Erling Haaland",
+              "Bruno Borges Fernandes",
+              "Nick Pope",
+              "Granit Xhaka",
+              "Robin Roefs",
+              "Omar Alderete",
+              "Nick Woltemade"
+            ],
+            "xi_ids": [
+              "2025-26:5",
+              "2025-26:7",
+              "2025-26:72",
+              "2025-26:119",
+              "2025-26:160",
+              "2025-26:249",
+              "2025-26:427",
+              "2025-26:430",
+              "2025-26:449",
+              "2025-26:469",
+              "2025-26:714"
+            ],
+            "captain_id": "2025-26:430",
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 2,
+            "ft_after": 3,
+            "xi_score": 77.63636458340619,
+            "captain_score": 0.0,
+            "week_score": 77.63636458340619,
+            "value_captain": false
+          },
+          {
+            "gw": 10,
+            "player_ids": [
+              "2025-26:5",
+              "2025-26:7",
+              "2025-26:8",
+              "2025-26:72",
+              "2025-26:119",
+              "2025-26:160",
+              "2025-26:249",
+              "2025-26:427",
+              "2025-26:430",
+              "2025-26:449",
+              "2025-26:469",
+              "2025-26:668",
+              "2025-26:670",
+              "2025-26:683",
+              "2025-26:714"
+            ],
+            "names": [
+              "Gabriel dos Santos Magalh\u00e3es",
+              "Riccardo Calafiori",
+              "Jurri\u00ebn Timber",
+              "Marcos Senesi Bar\u00f3n",
+              "Bryan Mbeumo",
+              "Yankuba Minteh",
+              "Jo\u00e3o Pedro Junqueira de Jesus",
+              "Tijjani Reijnders",
+              "Erling Haaland",
+              "Bruno Borges Fernandes",
+              "Nick Pope",
+              "Granit Xhaka",
+              "Robin Roefs",
+              "Omar Alderete",
+              "Nick Woltemade"
+            ],
+            "xi_ids": [
+              "2025-26:5",
+              "2025-26:7",
+              "2025-26:8",
+              "2025-26:119",
+              "2025-26:160",
+              "2025-26:427",
+              "2025-26:430",
+              "2025-26:449",
+              "2025-26:668",
+              "2025-26:670",
+              "2025-26:683"
+            ],
+            "captain_id": "2025-26:430",
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 3,
+            "ft_after": 4,
+            "xi_score": 91.49426571641625,
+            "captain_score": 0.0,
+            "week_score": 91.49426571641625,
+            "value_captain": false
+          },
+          {
+            "gw": 11,
+            "player_ids": [
+              "2025-26:5",
+              "2025-26:7",
+              "2025-26:8",
+              "2025-26:72",
+              "2025-26:119",
+              "2025-26:160",
+              "2025-26:249",
+              "2025-26:427",
+              "2025-26:430",
+              "2025-26:449",
+              "2025-26:469",
+              "2025-26:668",
+              "2025-26:670",
+              "2025-26:683",
+              "2025-26:714"
+            ],
+            "names": [
+              "Gabriel dos Santos Magalh\u00e3es",
+              "Riccardo Calafiori",
+              "Jurri\u00ebn Timber",
+              "Marcos Senesi Bar\u00f3n",
+              "Bryan Mbeumo",
+              "Yankuba Minteh",
+              "Jo\u00e3o Pedro Junqueira de Jesus",
+              "Tijjani Reijnders",
+              "Erling Haaland",
+              "Bruno Borges Fernandes",
+              "Nick Pope",
+              "Granit Xhaka",
+              "Robin Roefs",
+              "Omar Alderete",
+              "Nick Woltemade"
+            ],
+            "xi_ids": [
+              "2025-26:5",
+              "2025-26:7",
+              "2025-26:8",
+              "2025-26:119",
+              "2025-26:160",
+              "2025-26:249",
+              "2025-26:427",
+              "2025-26:430",
+              "2025-26:449",
+              "2025-26:469",
+              "2025-26:668"
+            ],
+            "captain_id": "2025-26:430",
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 4,
+            "ft_after": 5,
+            "xi_score": 79.48454713289742,
+            "captain_score": 0.0,
+            "week_score": 79.48454713289742,
+            "value_captain": false
+          }
+        ],
+        "reused_open_loop": true
+      },
+      {
+        "gw": 9,
+        "n_pool": 158,
+        "priced_gws": [
+          9,
+          10
+        ],
+        "board_s": 153.31166195869446,
+        "sources": [
+          "cascade_long_oracle_rank",
+          "cascade_short_priced"
+        ],
+        "alphas": [
+          0.9558823529411765,
+          0.9264705882352942
+        ],
+        "commit": {
+          "gw": 9,
+          "player_ids": [
+            "2025-26:5",
+            "2025-26:7",
+            "2025-26:8",
+            "2025-26:119",
+            "2025-26:160",
+            "2025-26:249",
+            "2025-26:295",
+            "2025-26:427",
+            "2025-26:430",
+            "2025-26:449",
+            "2025-26:469",
+            "2025-26:668",
+            "2025-26:670",
+            "2025-26:683",
+            "2025-26:714"
+          ],
+          "names": [
+            "Gabriel dos Santos Magalh\u00e3es",
+            "Riccardo Calafiori",
+            "Jurri\u00ebn Timber",
+            "Bryan Mbeumo",
+            "Yankuba Minteh",
+            "Jo\u00e3o Pedro Junqueira de Jesus",
+            "Michael Keane",
+            "Tijjani Reijnders",
+            "Erling Haaland",
+            "Bruno Borges Fernandes",
+            "Nick Pope",
+            "Granit Xhaka",
+            "Robin Roefs",
+            "Omar Alderete",
+            "Nick Woltemade"
+          ],
+          "buys": [
+            "Michael Keane"
+          ],
+          "sells": [
+            "Marcos Senesi Bar\u00f3n"
+          ],
+          "buy_ids": [
+            "2025-26:295"
+          ],
+          "sell_ids": [
+            "2025-26:72"
+          ],
+          "n_transfers": 1,
+          "hits": 0,
+          "ft_before": 2,
+          "ft_after": 2,
+          "xi_score": 79.90707946580316
+        },
+        "replan_objective": 953.940663915667,
+        "replan_terminal_ft": 1,
+        "replan_transfers_preview": [
+          {
+            "gw": 9,
+            "buys": [
+              "Michael Keane"
+            ],
+            "sells": [
+              "Marcos Senesi Bar\u00f3n"
+            ],
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 2,
+            "ft_after": 2
+          },
+          {
+            "gw": 11,
+            "buys": [
+              "Igor Thiago Nascimento Rodrigues",
+              "Nordi Mukiele",
+              "Antoine Semenyo"
+            ],
+            "sells": [
+              "Granit Xhaka",
+              "Riccardo Calafiori",
+              "Nick Woltemade"
+            ],
+            "n_transfers": 3,
+            "hits": 0,
+            "ft_before": 3,
+            "ft_after": 1
+          },
+          {
+            "gw": 13,
+            "buys": [
+              "Morgan Rogers"
+            ],
+            "sells": [
+              "Antoine Semenyo"
+            ],
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 2,
+            "ft_after": 2
+          },
+          {
+            "gw": 14,
+            "buys": [
+              "Antoine Semenyo"
+            ],
+            "sells": [
+              "Morgan Rogers"
+            ],
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 2,
+            "ft_after": 2
+          },
+          {
+            "gw": 15,
+            "buys": [
+              "Nick Woltemade"
+            ],
+            "sells": [
+              "Jo\u00e3o Pedro Junqueira de Jesus"
+            ],
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 2,
+            "ft_after": 2
+          },
+          {
+            "gw": 16,
+            "buys": [
+              "Declan Rice"
+            ],
+            "sells": [
+              "Antoine Semenyo"
+            ],
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 2,
+            "ft_after": 2
+          },
+          {
+            "gw": 17,
+            "buys": [
+              "Kevin Schade",
+              "Antoine Semenyo"
+            ],
+            "sells": [
+              "Bryan Mbeumo",
+              "Declan Rice"
+            ],
+            "n_transfers": 2,
+            "hits": 0,
+            "ft_before": 2,
+            "ft_after": 1
+          },
+          {
+            "gw": 18,
+            "buys": [
+              "Cody Gakpo"
+            ],
+            "sells": [
+              "Kevin Schade"
+            ],
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1
+          },
+          {
+            "gw": 19,
+            "buys": [
+              "Bryan Mbeumo"
+            ],
+            "sells": [
+              "Cody Gakpo"
+            ],
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1
+          }
+        ],
+        "replan_weeks_head": [
+          {
+            "gw": 9,
+            "player_ids": [
+              "2025-26:5",
+              "2025-26:7",
+              "2025-26:8",
+              "2025-26:119",
+              "2025-26:160",
+              "2025-26:249",
+              "2025-26:295",
+              "2025-26:427",
+              "2025-26:430",
+              "2025-26:449",
+              "2025-26:469",
+              "2025-26:668",
+              "2025-26:670",
+              "2025-26:683",
+              "2025-26:714"
+            ],
+            "names": [
+              "Gabriel dos Santos Magalh\u00e3es",
+              "Riccardo Calafiori",
+              "Jurri\u00ebn Timber",
+              "Bryan Mbeumo",
+              "Yankuba Minteh",
+              "Jo\u00e3o Pedro Junqueira de Jesus",
+              "Michael Keane",
+              "Tijjani Reijnders",
+              "Erling Haaland",
+              "Bruno Borges Fernandes",
+              "Nick Pope",
+              "Granit Xhaka",
+              "Robin Roefs",
+              "Omar Alderete",
+              "Nick Woltemade"
+            ],
+            "xi_ids": [
+              "2025-26:5",
+              "2025-26:7",
+              "2025-26:8",
+              "2025-26:119",
+              "2025-26:160",
+              "2025-26:249",
+              "2025-26:427",
+              "2025-26:430",
+              "2025-26:449",
+              "2025-26:469",
+              "2025-26:714"
+            ],
+            "captain_id": "2025-26:249",
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 2,
+            "ft_after": 2,
+            "xi_score": 79.90707946580316,
+            "captain_score": 0.0,
+            "week_score": 79.90707946580316,
+            "value_captain": false
+          },
+          {
+            "gw": 10,
+            "player_ids": [
+              "2025-26:5",
+              "2025-26:7",
+              "2025-26:8",
+              "2025-26:119",
+              "2025-26:160",
+              "2025-26:249",
+              "2025-26:295",
+              "2025-26:427",
+              "2025-26:430",
+              "2025-26:449",
+              "2025-26:469",
+              "2025-26:668",
+              "2025-26:670",
+              "2025-26:683",
+              "2025-26:714"
+            ],
+            "names": [
+              "Gabriel dos Santos Magalh\u00e3es",
+              "Riccardo Calafiori",
+              "Jurri\u00ebn Timber",
+              "Bryan Mbeumo",
+              "Yankuba Minteh",
+              "Jo\u00e3o Pedro Junqueira de Jesus",
+              "Michael Keane",
+              "Tijjani Reijnders",
+              "Erling Haaland",
+              "Bruno Borges Fernandes",
+              "Nick Pope",
+              "Granit Xhaka",
+              "Robin Roefs",
+              "Omar Alderete",
+              "Nick Woltemade"
+            ],
+            "xi_ids": [
+              "2025-26:5",
+              "2025-26:7",
+              "2025-26:8",
+              "2025-26:119",
+              "2025-26:160",
+              "2025-26:427",
+              "2025-26:430",
+              "2025-26:449",
+              "2025-26:670",
+              "2025-26:683",
+              "2025-26:714"
+            ],
+            "captain_id": "2025-26:430",
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 2,
+            "ft_after": 3,
+            "xi_score": 85.22249589311988,
+            "captain_score": 0.0,
+            "week_score": 85.22249589311988,
+            "value_captain": false
+          },
+          {
+            "gw": 11,
+            "player_ids": [
+              "2025-26:5",
+              "2025-26:8",
+              "2025-26:82",
+              "2025-26:119",
+              "2025-26:136",
+              "2025-26:160",
+              "2025-26:249",
+              "2025-26:295",
+              "2025-26:427",
+              "2025-26:430",
+              "2025-26:449",
+              "2025-26:469",
+              "2025-26:670",
+              "2025-26:683",
+              "2025-26:694"
+            ],
+            "names": [
+              "Gabriel dos Santos Magalh\u00e3es",
+              "Jurri\u00ebn Timber",
+              "Antoine Semenyo",
+              "Bryan Mbeumo",
+              "Igor Thiago Nascimento Rodrigues",
+              "Yankuba Minteh",
+              "Jo\u00e3o Pedro Junqueira de Jesus",
+              "Michael Keane",
+              "Tijjani Reijnders",
+              "Erling Haaland",
+              "Bruno Borges Fernandes",
+              "Nick Pope",
+              "Robin Roefs",
+              "Omar Alderete",
+              "Nordi Mukiele"
+            ],
+            "xi_ids": [
+              "2025-26:5",
+              "2025-26:8",
+              "2025-26:82",
+              "2025-26:119",
+              "2025-26:160",
+              "2025-26:249",
+              "2025-26:427",
+              "2025-26:430",
+              "2025-26:449",
+              "2025-26:469",
+              "2025-26:694"
+            ],
+            "captain_id": "2025-26:430",
+            "n_transfers": 3,
+            "hits": 0,
+            "ft_before": 3,
+            "ft_after": 1,
+            "xi_score": 82.29609675848647,
+            "captain_score": 0.0,
+            "week_score": 82.29609675848647,
+            "value_captain": false
+          },
+          {
+            "gw": 12,
+            "player_ids": [
+              "2025-26:5",
+              "2025-26:8",
+              "2025-26:82",
+              "2025-26:119",
+              "2025-26:136",
+              "2025-26:160",
+              "2025-26:249",
+              "2025-26:295",
+              "2025-26:427",
+              "2025-26:430",
+              "2025-26:449",
+              "2025-26:469",
+              "2025-26:670",
+              "2025-26:683",
+              "2025-26:694"
+            ],
+            "names": [
+              "Gabriel dos Santos Magalh\u00e3es",
+              "Jurri\u00ebn Timber",
+              "Antoine Semenyo",
+              "Bryan Mbeumo",
+              "Igor Thiago Nascimento Rodrigues",
+              "Yankuba Minteh",
+              "Jo\u00e3o Pedro Junqueira de Jesus",
+              "Michael Keane",
+              "Tijjani Reijnders",
+              "Erling Haaland",
+              "Bruno Borges Fernandes",
+              "Nick Pope",
+              "Robin Roefs",
+              "Omar Alderete",
+              "Nordi Mukiele"
+            ],
+            "xi_ids": [
+              "2025-26:5",
+              "2025-26:8",
+              "2025-26:82",
+              "2025-26:119",
+              "2025-26:160",
+              "2025-26:249",
+              "2025-26:427",
+              "2025-26:430",
+              "2025-26:449",
+              "2025-26:670",
+              "2025-26:694"
+            ],
+            "captain_id": "2025-26:430",
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 2,
+            "xi_score": 88.9260967584865,
+            "captain_score": 0.0,
+            "week_score": 88.9260967584865,
+            "value_captain": false
+          }
+        ],
+        "reused_open_loop": false
+      },
+      {
+        "gw": 10,
+        "n_pool": 152,
+        "priced_gws": [
+          10,
+          11
+        ],
+        "board_s": 137.2824947834015,
+        "sources": [
+          "cascade_long_oracle_rank",
+          "cascade_short_priced"
+        ],
+        "alphas": [
+          0.9615384615384616,
+          0.9316239316239316
+        ],
+        "commit": {
+          "gw": 10,
+          "player_ids": [
+            "2025-26:5",
+            "2025-26:7",
+            "2025-26:8",
+            "2025-26:119",
+            "2025-26:249",
+            "2025-26:295",
+            "2025-26:328",
+            "2025-26:427",
+            "2025-26:430",
+            "2025-26:449",
+            "2025-26:469",
+            "2025-26:668",
+            "2025-26:670",
+            "2025-26:683",
+            "2025-26:714"
+          ],
+          "names": [
+            "Gabriel dos Santos Magalh\u00e3es",
+            "Riccardo Calafiori",
+            "Jurri\u00ebn Timber",
+            "Bryan Mbeumo",
+            "Jo\u00e3o Pedro Junqueira de Jesus",
+            "Michael Keane",
+            "Ryan Sessegnon",
+            "Tijjani Reijnders",
+            "Erling Haaland",
+            "Bruno Borges Fernandes",
+            "Nick Pope",
+            "Granit Xhaka",
+            "Robin Roefs",
+            "Omar Alderete",
+            "Nick Woltemade"
+          ],
+          "buys": [
+            "Ryan Sessegnon"
+          ],
+          "sells": [
+            "Yankuba Minteh"
+          ],
+          "buy_ids": [
+            "2025-26:328"
+          ],
+          "sell_ids": [
+            "2025-26:160"
+          ],
+          "n_transfers": 1,
+          "hits": 0,
+          "ft_before": 2,
+          "ft_after": 2,
+          "xi_score": 82.47719990514486
+        },
+        "replan_objective": 848.713101350709,
+        "replan_terminal_ft": 1,
+        "replan_transfers_preview": [
+          {
+            "gw": 10,
+            "buys": [
+              "Ryan Sessegnon"
+            ],
+            "sells": [
+              "Yankuba Minteh"
+            ],
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 2,
+            "ft_after": 2
+          },
+          {
+            "gw": 12,
+            "buys": [
+              "Danny Welbeck",
+              "Nordi Mukiele",
+              "Antoine Semenyo"
+            ],
+            "sells": [
+              "Granit Xhaka",
+              "Nick Woltemade",
+              "Jurri\u00ebn Timber"
+            ],
+            "n_transfers": 3,
+            "hits": 0,
+            "ft_before": 3,
+            "ft_after": 1
+          },
+          {
+            "gw": 14,
+            "buys": [
+              "Amad Diallo",
+              "Marcos Senesi Bar\u00f3n"
+            ],
+            "sells": [
+              "Ryan Sessegnon",
+              "Riccardo Calafiori"
+            ],
+            "n_transfers": 2,
+            "hits": 0,
+            "ft_before": 2,
+            "ft_after": 1
+          },
+          {
+            "gw": 16,
+            "buys": [
+              "Ryan Sessegnon",
+              "Morgan Rogers"
+            ],
+            "sells": [
+              "Bruno Borges Fernandes",
+              "Amad Diallo"
+            ],
+            "n_transfers": 2,
+            "hits": 0,
+            "ft_before": 2,
+            "ft_after": 1
+          },
+          {
+            "gw": 17,
+            "buys": [
+              "Marcus Tavernier"
+            ],
+            "sells": [
+              "Morgan Rogers"
+            ],
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1
+          },
+          {
+            "gw": 18,
+            "buys": [
+              "Bruno Borges Fernandes"
+            ],
+            "sells": [
+              "Marcus Tavernier"
+            ],
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1
+          },
+          {
+            "gw": 19,
+            "buys": [
+              "Yankuba Minteh"
+            ],
+            "sells": [
+              "Tijjani Reijnders"
+            ],
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1
+          }
+        ],
+        "replan_weeks_head": [
+          {
+            "gw": 10,
+            "player_ids": [
+              "2025-26:5",
+              "2025-26:7",
+              "2025-26:8",
+              "2025-26:119",
+              "2025-26:249",
+              "2025-26:295",
+              "2025-26:328",
+              "2025-26:427",
+              "2025-26:430",
+              "2025-26:449",
+              "2025-26:469",
+              "2025-26:668",
+              "2025-26:670",
+              "2025-26:683",
+              "2025-26:714"
+            ],
+            "names": [
+              "Gabriel dos Santos Magalh\u00e3es",
+              "Riccardo Calafiori",
+              "Jurri\u00ebn Timber",
+              "Bryan Mbeumo",
+              "Jo\u00e3o Pedro Junqueira de Jesus",
+              "Michael Keane",
+              "Ryan Sessegnon",
+              "Tijjani Reijnders",
+              "Erling Haaland",
+              "Bruno Borges Fernandes",
+              "Nick Pope",
+              "Granit Xhaka",
+              "Robin Roefs",
+              "Omar Alderete",
+              "Nick Woltemade"
+            ],
+            "xi_ids": [
+              "2025-26:5",
+              "2025-26:7",
+              "2025-26:8",
+              "2025-26:119",
+              "2025-26:328",
+              "2025-26:427",
+              "2025-26:430",
+              "2025-26:449",
+              "2025-26:668",
+              "2025-26:670",
+              "2025-26:714"
+            ],
+            "captain_id": "2025-26:119",
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 2,
+            "ft_after": 2,
+            "xi_score": 82.47719990514486,
+            "captain_score": 0.0,
+            "week_score": 82.47719990514486,
+            "value_captain": false
+          },
+          {
+            "gw": 11,
+            "player_ids": [
+              "2025-26:5",
+              "2025-26:7",
+              "2025-26:8",
+              "2025-26:119",
+              "2025-26:249",
+              "2025-26:295",
+              "2025-26:328",
+              "2025-26:427",
+              "2025-26:430",
+              "2025-26:449",
+              "2025-26:469",
+              "2025-26:668",
+              "2025-26:670",
+              "2025-26:683",
+              "2025-26:714"
+            ],
+            "names": [
+              "Gabriel dos Santos Magalh\u00e3es",
+              "Riccardo Calafiori",
+              "Jurri\u00ebn Timber",
+              "Bryan Mbeumo",
+              "Jo\u00e3o Pedro Junqueira de Jesus",
+              "Michael Keane",
+              "Ryan Sessegnon",
+              "Tijjani Reijnders",
+              "Erling Haaland",
+              "Bruno Borges Fernandes",
+              "Nick Pope",
+              "Granit Xhaka",
+              "Robin Roefs",
+              "Omar Alderete",
+              "Nick Woltemade"
+            ],
+            "xi_ids": [
+              "2025-26:5",
+              "2025-26:7",
+              "2025-26:8",
+              "2025-26:119",
+              "2025-26:249",
+              "2025-26:328",
+              "2025-26:427",
+              "2025-26:430",
+              "2025-26:449",
+              "2025-26:469",
+              "2025-26:714"
+            ],
+            "captain_id": "2025-26:430",
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 2,
+            "ft_after": 3,
+            "xi_score": 79.76068629473482,
+            "captain_score": 0.0,
+            "week_score": 79.76068629473482,
+            "value_captain": false
+          },
+          {
+            "gw": 12,
+            "player_ids": [
+              "2025-26:5",
+              "2025-26:7",
+              "2025-26:82",
+              "2025-26:119",
+              "2025-26:178",
+              "2025-26:249",
+              "2025-26:295",
+              "2025-26:328",
+              "2025-26:427",
+              "2025-26:430",
+              "2025-26:449",
+              "2025-26:469",
+              "2025-26:670",
+              "2025-26:683",
+              "2025-26:694"
+            ],
+            "names": [
+              "Gabriel dos Santos Magalh\u00e3es",
+              "Riccardo Calafiori",
+              "Antoine Semenyo",
+              "Bryan Mbeumo",
+              "Danny Welbeck",
+              "Jo\u00e3o Pedro Junqueira de Jesus",
+              "Michael Keane",
+              "Ryan Sessegnon",
+              "Tijjani Reijnders",
+              "Erling Haaland",
+              "Bruno Borges Fernandes",
+              "Nick Pope",
+              "Robin Roefs",
+              "Omar Alderete",
+              "Nordi Mukiele"
+            ],
+            "xi_ids": [
+              "2025-26:5",
+              "2025-26:82",
+              "2025-26:119",
+              "2025-26:249",
+              "2025-26:328",
+              "2025-26:427",
+              "2025-26:430",
+              "2025-26:449",
+              "2025-26:670",
+              "2025-26:683",
+              "2025-26:694"
+            ],
+            "captain_id": "2025-26:430",
+            "n_transfers": 3,
+            "hits": 0,
+            "ft_before": 3,
+            "ft_after": 1,
+            "xi_score": 81.69465160785197,
+            "captain_score": 0.0,
+            "week_score": 81.69465160785197,
+            "value_captain": false
+          },
+          {
+            "gw": 13,
+            "player_ids": [
+              "2025-26:5",
+              "2025-26:7",
+              "2025-26:82",
+              "2025-26:119",
+              "2025-26:178",
+              "2025-26:249",
+              "2025-26:295",
+              "2025-26:328",
+              "2025-26:427",
+              "2025-26:430",
+              "2025-26:449",
+              "2025-26:469",
+              "2025-26:670",
+              "2025-26:683",
+              "2025-26:694"
+            ],
+            "names": [
+              "Gabriel dos Santos Magalh\u00e3es",
+              "Riccardo Calafiori",
+              "Antoine Semenyo",
+              "Bryan Mbeumo",
+              "Danny Welbeck",
+              "Jo\u00e3o Pedro Junqueira de Jesus",
+              "Michael Keane",
+              "Ryan Sessegnon",
+              "Tijjani Reijnders",
+              "Erling Haaland",
+              "Bruno Borges Fernandes",
+              "Nick Pope",
+              "Robin Roefs",
+              "Omar Alderete",
+              "Nordi Mukiele"
+            ],
+            "xi_ids": [
+              "2025-26:5",
+              "2025-26:82",
+              "2025-26:119",
+              "2025-26:178",
+              "2025-26:328",
+              "2025-26:427",
+              "2025-26:430",
+              "2025-26:449",
+              "2025-26:469",
+              "2025-26:683",
+              "2025-26:694"
+            ],
+            "captain_id": "2025-26:430",
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 2,
+            "xi_score": 81.31537105358152,
+            "captain_score": 0.0,
+            "week_score": 81.31537105358152,
+            "value_captain": false
+          }
+        ],
+        "reused_open_loop": false
+      }
+    ],
+    "final_owned": [
+      "2025-26:5",
+      "2025-26:7",
+      "2025-26:8",
+      "2025-26:119",
+      "2025-26:249",
+      "2025-26:295",
+      "2025-26:328",
+      "2025-26:427",
+      "2025-26:430",
+      "2025-26:449",
+      "2025-26:469",
+      "2025-26:668",
+      "2025-26:670",
+      "2025-26:683",
+      "2025-26:714"
+    ],
+    "final_ft": 2
+  },
+  "stick": {
+    "per_step": [
+      {
+        "gw": 8,
+        "commit_n_transfers": 0,
+        "commit_hits": 0,
+        "ft_before": 1,
+        "ft_after": 2,
+        "owned_jaccard_vs_ol": 1.0,
+        "sells_match": true,
+        "buys_match": true,
+        "xfer_exact": true,
+        "ol_n_transfers": 0,
+        "ol_hits": 0,
+        "replan_future_transfers": 12,
+        "commit_buys": [],
+        "commit_sells": [],
+        "ol_buys": [],
+        "ol_sells": [],
+        "reused_open_loop": true
+      },
+      {
+        "gw": 9,
+        "commit_n_transfers": 1,
+        "commit_hits": 0,
+        "ft_before": 2,
+        "ft_after": 2,
+        "owned_jaccard_vs_ol": 0.875,
+        "sells_match": false,
+        "buys_match": false,
+        "xfer_exact": false,
+        "ol_n_transfers": 0,
+        "ol_hits": 0,
+        "replan_future_transfers": 11,
+        "commit_buys": [
+          "Michael Keane"
+        ],
+        "commit_sells": [
+          "Marcos Senesi Bar\u00f3n"
+        ],
+        "ol_buys": [],
+        "ol_sells": [],
+        "reused_open_loop": false
+      },
+      {
+        "gw": 10,
+        "commit_n_transfers": 1,
+        "commit_hits": 0,
+        "ft_before": 2,
+        "ft_after": 2,
+        "owned_jaccard_vs_ol": 0.7647058823529411,
+        "sells_match": false,
+        "buys_match": false,
+        "xfer_exact": false,
+        "ol_n_transfers": 0,
+        "ol_hits": 0,
+        "replan_future_transfers": 10,
+        "commit_buys": [
+          "Ryan Sessegnon"
+        ],
+        "commit_sells": [
+          "Yankuba Minteh"
+        ],
+        "ol_buys": [],
+        "ol_sells": [],
+        "reused_open_loop": false
+      }
+    ],
+    "mean_owned_jaccard": 0.8799019607843137,
+    "xfer_exact_match_rate": 0.3333333333333333,
+    "n_xfer_exact": 1,
+    "n_steps": 3,
+    "rolling_transfers": 2,
+    "rolling_hits": 0,
+    "ol_transfers_on_steps": 0,
+    "ol_hits_on_steps": 0
+  },
+  "verdict_md": "**Soft drift, same regime.** GW8 matches open-loop (hold). After forecast refresh, GW9 sells Senesi\u2192Keane and GW10 sells Minteh\u2192Sessegnon \u2014 one free transfer each \u2014 while open-loop still banks. Ownership Jaccard 1.00\u21920.88\u21920.76 (mean 0.88). Still 0 hits; FT bank healthy. Long-horizon transfer calendar is rewritten each replan.",
+  "elapsed_s": 501.09775495529175,
+  "report": "/workspace/reports/cascade_mean_xi_ft_rolling.md"
+}

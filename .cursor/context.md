@@ -54,6 +54,7 @@ Pre-deadline squad advisor under 2026/27 rules. Cursor implements and screens; G
 | · N=500 | open omits Groß; **buy Groß GW10**, Saka out GW11 | done | `saka_gross_swap_probe_n500.json` |
 | **Mean xi_ft hist 2025-26** | oracle ranks + LOSO GF/GA + prior rates; GW8–19 N=500 → **12 FT / 0 hits** | diagnostic 2026-10-24 | `src/eval/cascade_mean_xi_ft_hist.py` · `reports/cascade_mean_xi_ft_hist.md` |
 | **Gen-mean convergence** | large N → generative E[xP], **not** centreline (MAE plateaus ~0.36) | diagnostic 2026-10-24 | `src/eval/cascade_mean_strand_convergence.py` |
+| **Mean xi_ft rolling stick** | GW8–10 receding replan vs OL; J̄=0.88; soft FT spend; 0 hits | diagnostic 2026-10-24 | `src/eval/cascade_mean_xi_ft_rolling.py` |
 
 **Numagent 1.0 and `score_xp` are superseded** (2026-10-19). Keep 1.0/`score_xp` only for historical climb replay and as the named gate baseline. New screens and the live path are Numagent 2.0 (`score_xp_v2` + L4).
 

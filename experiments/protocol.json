@@ -1556,6 +1556,23 @@
     ],
     "any_later_change": "dated protocol update required"
   },
+  "cascade_mean_xi_ft_rolling": {
+    "locked": "2026-10-24",
+    "status": "done_diagnostic",
+    "result": "2025-26 N=100 steps GW8–10: GW8 sticks; GW9/10 each spend 1 FT (OL banks); J̄=0.88; 0 hits; future calendar rewritten",
+    "role": "receding mean-board xi_ft stick test vs open-loop plan",
+    "module": "src.eval.cascade_mean_xi_ft_rolling",
+    "report": "reports/cascade_mean_xi_ft_rolling.md",
+    "season": "2025-26",
+    "horizon": "8-19",
+    "steps": [8, 9, 10],
+    "n": 100,
+    "seed": 7,
+    "method": "commit OL week-0 at GW8; refresh as-of+mean boards and replan at later steps",
+    "metric": "owned Jaccard vs OL; exact transfer-set match; hits / FT bank",
+    "not": "full-season roll; N=500; four-season gate; deadline-causal minutes arm",
+    "any_later_change": "dated protocol update required"
+  },
   "cascade_mean_strand_convergence": {
     "locked": "2026-10-24",
     "status": "done_diagnostic",

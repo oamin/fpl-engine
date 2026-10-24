@@ -1,17 +1,17 @@
 {
-  "task": "cascade_mean_strand_convergence",
+  "task": "cascade_mean_xi_ft_rolling",
   "status": "done",
-  "as_of_utc": "2026-10-24T16:35:00Z",
-  "change": "Diagnostic: large-N gen mean vs centreline on 2025-26 GW8–19",
-  "protocol": "cascade_mean_strand_convergence",
+  "as_of_utc": "2026-10-24T17:40:00Z",
+  "change": "Rolling mean xi_ft stick trial 2025-26 GW8–10 (N=100)",
+  "protocol": "cascade_mean_xi_ft_rolling",
   "verdict": {
-    "converges_to_centreline": false,
-    "converges_to": "generative expectation E[xP under k∼M + attack dice]",
-    "mae_vs_centre_n200": 0.363,
-    "mae_self_n100_vs_n200": 0.146,
-    "scoreline_bias_kh": 0.002,
-    "note": "Plateau ~0.36 xP MAE vs centreline; k∼M calibrated; gap is nonlinear player map"
+    "mean_owned_jaccard": 0.88,
+    "xfer_exact": "1/3 (GW8 only)",
+    "rolling_transfers_hits": "2/0",
+    "ol_transfers_hits_on_steps": "0/0",
+    "note": "Soft drift after forecast refresh: spends 1 FT at GW9 and GW10 while OL banks; still hit-free; future transfer calendar rewritten each replan"
   },
-  "artifact": "/opt/cursor/artifacts/cascade_mean_strand_convergence.json",
-  "report": "reports/cascade_mean_strand_convergence.md"
+  "wall_s": 501.1,
+  "artifact": "/opt/cursor/artifacts/cascade_mean_xi_ft_rolling.json",
+  "report": "reports/cascade_mean_xi_ft_rolling.md"
 }
