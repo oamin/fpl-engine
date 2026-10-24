@@ -1,8 +1,9 @@
 {
-  "task": "cascade_home_adv_off",
+  "task": "cascade_rankmean_gf_ga",
   "status": "done",
-  "as_of_utc": "2026-10-24T10:53:00Z",
-  "change": "HOME_ADV 1.08 → 1.0 in opta_gf_ga_horizon (never PI-approved)",
+  "as_of_utc": "2026-10-24T12:26:30Z",
+  "change": "Default Opta place→GF/GA is empirical rankmean ± place SD; OLS linear map retired from live path",
   "protocol": "cascade_long_match_outcome",
-  "note": "Neutral venue factor on Opta long-horizon λ. Do not restore 1.08 without a closed-season screen."
+  "default_method": "rankmean",
+  "note": "Do not restore OLS_GF/OLS_GA as the cascade default without PI approval."
 }

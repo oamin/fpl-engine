@@ -1,9 +1,9 @@
 """Long-horizon match pots from Opta predicted ranks → season GF/GA.
 
-Opta publishes finishing place / points only. We map place → season GF/GA
-(with uncertainty bands) on closed seasons, then build match λ pots in the
-same shape as ``forecast_xp.side_pot`` / ``strength_match_pots`` so the
-existing player-share path (``xp_on_pot``) can compute ``forecast_xp``.
+Opta publishes finishing place / points only. Default map: empirical mean
+season GF/GA **by finishing place** on closed E0 seasons, with the place
+sample SD as the band (``method="rankmean"``). Linear OLS place→GF/GA is
+kept only for explicit ``method="ols"`` archaeology — not the cascade path.
 
 Does not fit on the live 2026/27 holdout.
 """
@@ -39,12 +39,14 @@ N_MATCHES = 38.0
 # Neutral venue factor. The previous 1.08 home boost was never PI-approved
 # (agent-era spice, same class as λ ±15% jitter) — retired 2026-10-24.
 HOME_ADV = 1.0
-# OLS on closed seasons (rank → season totals); also used as default se.
+# Default place→GF/GA map (cascade_long): empirical place means + SD.
+DEFAULT_RANK_METHOD = "rankmean"
+# OLS place→GF/GA — retired from the live path; only for method="ols".
 OLS_GF = (79.896, -2.264)  # intercept, slope
 OLS_GA = (36.297, 1.888)
 OLS_MAE_GF = 7.29
 OLS_MAE_GA = 6.77
-Z_BAND = 1.0  # ±1 MAE ≈ ~68% band under Laplace / rough 1σ proxy
+Z_BAND = 1.0  # ±z · place SD (rankmean) or ±z · MAE (ols archaeology)
 
 
 def load_opta_ranks(path: Path | None = None) -> list[dict[str, Any]]:
@@ -188,20 +190,28 @@ def gf_ga_from_rank(
     rank: float,
     *,
     profile: dict[int, dict[str, float]] | None = None,
-    method: str = "ols",
+    method: str = DEFAULT_RANK_METHOD,
     ols_gf: tuple[float, float] | None = None,
     ols_ga: tuple[float, float] | None = None,
     mae_gf: float | None = None,
     mae_ga: float | None = None,
     z_band: float | None = None,
 ) -> dict[str, float]:
-    """Season GF/GA + uncertainty bands for a predicted finishing place."""
+    """Season GF/GA + uncertainty bands for a predicted finishing place.
+
+    Default ``rankmean``: place-bucket mean GF/GA and sample SD from closed
+    seasons (interpolated for non-integer ranks). ``ols`` keeps the retired
+    linear map for explicit archaeology only.
+    """
     r = max(1.0, min(20.0, float(rank)))
     z = float(Z_BAND if z_band is None else z_band)
     prof = profile if profile is not None else rank_gf_ga_profile()
-    if method == "rankmean":
+    mode = str(method or DEFAULT_RANK_METHOD)
+    if mode == "rankmean":
         lo = int(math.floor(r))
         hi = int(math.ceil(r))
+        lo = min(20, max(1, lo))
+        hi = min(20, max(1, hi))
         if lo == hi:
             gf, ga = prof[lo]["mean_gf"], prof[lo]["mean_ga"]
             sd_gf, sd_ga = prof[lo]["sd_gf"], prof[lo]["sd_ga"]
@@ -211,7 +221,7 @@ def gf_ga_from_rank(
             ga = (1 - w) * prof[lo]["mean_ga"] + w * prof[hi]["mean_ga"]
             sd_gf = (1 - w) * prof[lo]["sd_gf"] + w * prof[hi]["sd_gf"]
             sd_ga = (1 - w) * prof[lo]["sd_ga"] + w * prof[hi]["sd_ga"]
-    else:
+    elif mode == "ols":
         a_gf, b_gf = ols_gf if ols_gf is not None else OLS_GF
         a_ga, b_ga = ols_ga if ols_ga is not None else OLS_GA
         band_gf = float(mae_gf) if mae_gf is not None else OLS_MAE_GF
@@ -223,6 +233,8 @@ def gf_ga_from_rank(
         lo = min(20, max(1, lo))
         sd_gf = max(band_gf, prof[lo]["sd_gf"] * 0.5)
         sd_ga = max(band_ga, prof[lo]["sd_ga"] * 0.5)
+    else:
+        raise ValueError(f"unknown rank GF/GA method={method!r}")
 
     return {
         "rank": r,
@@ -234,7 +246,7 @@ def gf_ga_from_rank(
         "ga_hi": float(ga + z * sd_ga),
         "sd_gf": float(sd_gf),
         "sd_ga": float(sd_ga),
-        "method": method,
+        "method": mode,
         "z_band": z,
     }
 
@@ -315,11 +327,11 @@ def sample_season_gf_ga_for_rank(
     centre_blend: float = 0.5,
     profile: dict[int, dict[str, float]] | None = None,
     z_band: float | None = None,
-    method: str = "ols",
+    method: str = DEFAULT_RANK_METHOD,
 ) -> dict[str, float]:
     """Sample season GF/GA inside the Opta-rank band (baseline for one club).
 
-    1st place uses the 1st-place GF/GA centre ± MAE; 20th uses 20th. No path.
+    1st place uses the 1st-place empirical GF/GA mean ± z·SD; 20th uses 20th. No path.
     """
     rates = gf_ga_from_rank(
         rank, profile=profile, method=method, z_band=z_band
@@ -353,7 +365,7 @@ def sample_match_from_opta_ranks(
     profile: dict[int, dict[str, float]] | None = None,
     league_gf: float | None = None,
     z_band: float | None = None,
-    method: str = "ols",
+    method: str = DEFAULT_RANK_METHOD,
 ) -> dict[str, Any]:
     """Baseline match λ from Opta place GF/GA ± bands (no ClubPath blend).
 
@@ -427,7 +439,7 @@ def match_prediction(
     away_club: str,
     *,
     ranks: Mapping[str, float] | None = None,
-    method: str = "ols",
+    method: str = DEFAULT_RANK_METHOD,
     profile: dict[int, dict[str, float]] | None = None,
     ols_gf: tuple[float, float] | None = None,
     ols_ga: tuple[float, float] | None = None,
@@ -508,7 +520,7 @@ def forecast_pots_from_opta_gf_ga(
     end: int,
     priced_weeks: set[int] | None = None,
     ranks_path: Path | None = None,
-    method: str = "ols",
+    method: str = DEFAULT_RANK_METHOD,
     shrink: float = 1.0,
 ) -> dict[tuple[int, str], list[dict[str, float]]]:
     """Unpriced-week pots from Opta GF/GA (drop-in beside outrights pots).

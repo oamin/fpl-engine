@@ -6,10 +6,12 @@ import random
 import unittest
 
 from src.models.opta_gf_ga_horizon import (
+    DEFAULT_RANK_METHOD,
     gf_ga_from_rank,
     load_opta_ranks,
     match_prediction,
     pots_from_season_gf_ga,
+    rank_gf_ga_profile,
     sample_match_from_opta_ranks,
     sample_season_gf_ga_for_rank,
 )
@@ -20,6 +22,16 @@ class OptaGfGaHorizonTest(unittest.TestCase):
         ranks = load_opta_ranks()
         self.assertEqual(len(ranks), 20)
         self.assertEqual({r["rank"] for r in ranks}, set(range(1, 21)))
+
+    def test_default_is_empirical_rankmean(self) -> None:
+        self.assertEqual(DEFAULT_RANK_METHOD, "rankmean")
+        prof = rank_gf_ga_profile()
+        top = gf_ga_from_rank(1)
+        self.assertEqual(top["method"], "rankmean")
+        self.assertAlmostEqual(top["gf"], prof[1]["mean_gf"])
+        self.assertAlmostEqual(top["ga"], prof[1]["mean_ga"])
+        self.assertAlmostEqual(top["sd_gf"], prof[1]["sd_gf"])
+        self.assertAlmostEqual(top["sd_ga"], prof[1]["sd_ga"])
 
     def test_better_rank_higher_gf_lower_ga(self) -> None:
         top = gf_ga_from_rank(1)

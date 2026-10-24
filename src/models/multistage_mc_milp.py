@@ -267,7 +267,7 @@ def init_paths_from_opta(
     prof = rank_gf_ga_profile() if profile is None else profile
     paths: dict[str, ClubPath] = {}
     for club, rk in rank_map.items():
-        rates = gf_ga_from_rank(rk, profile=prof, method="ols")
+        rates = gf_ga_from_rank(rk, profile=prof)  # default rankmean
         paths[club] = ClubPath(
             att=float(rates["gf"]) / N_MATCHES,
             dfn=float(rates["ga"]) / N_MATCHES,

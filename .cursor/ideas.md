@@ -30,6 +30,14 @@ Never discussed or PI-approved (same class as λ jitter). Set to **1.0**
 non-unit factor returns. Legacy `channel_trial` still hardcodes 1.08 — leave
 as archaeology; not the cascade_long path.
 
+## Rejected — stored OLS place→GF/GA function (2026-10-24)
+
+`OLS_GF = 79.9 − 2.26·rank` / `OLS_GA = 36.3 + 1.89·rank` as the default
+map understates champions (place-1 mean GF 86.8 vs OLS 77.6). PI: do not
+store GF/GA vs rank as a fitted function. Default is **empirical place mean
++ sample SD** from closed E0 seasons (`method=rankmean`). OLS kept only
+behind explicit `method="ols"`.
+
 ## Parked — cascade_short bonus-from-roll (2026-10-20)
 
 Scenario soft terms stay expanding-mean `bonus_mu` / `card_mu` / DefCon / saves.
