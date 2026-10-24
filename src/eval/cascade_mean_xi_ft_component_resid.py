@@ -337,6 +337,44 @@ def _summarise(df: pd.DataFrame) -> dict[str, Any]:
     return out
 
 
+def _plot_per_match(state: dict[str, Any], path: Path) -> None:
+    """Bar chart of mean residual per XI player-match."""
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    fig, axes = plt.subplots(1, 2, figsize=(11, 4.2), sharey=True)
+    for ax, key, title in zip(
+        axes,
+        ("open_loop", "rolling"),
+        ("Open-loop XI GW8–19", "Rolling XI GW8–10"),
+    ):
+        rows = state["arms"][key].get("per_gw") or []
+        gws = [int(r["gw"]) for r in rows]
+        x = np.arange(len(gws))
+        w = 0.25
+        g = [float(r.get("resid_G_per_match", r["resid_G"] / max(int(r.get("n", 11)), 1))) for r in rows]
+        cs = [float(r.get("resid_CS_per_match", r["resid_CS"] / max(int(r.get("n", 11)), 1))) for r in rows]
+        gc = [float(r.get("resid_GC_per_match", r["resid_GC"] / max(int(r.get("n", 11)), 1))) for r in rows]
+        ax.bar(x - w, g, width=w, color="#c0392b", label="G")
+        ax.bar(x, cs, width=w, color="#2980b9", label="CS")
+        ax.bar(x + w, gc, width=w, color="#27ae60", label="GC")
+        ax.axhline(0, color="#333", lw=0.8)
+        ax.set_xticks(x)
+        ax.set_xticklabels([str(g_) for g_ in gws], fontsize=8)
+        ax.set_xlabel("GW")
+        ax.set_ylabel("mean (xP − P) / match")
+        ax.set_title(title)
+        ax.legend(frameon=False, ncol=3, fontsize=8)
+        ax.grid(True, axis="y", alpha=0.3)
+    fig.suptitle("Component residual per match · mean-board xP vs actual", y=1.02)
+    fig.tight_layout()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(path, dpi=140, bbox_inches="tight")
+    plt.close(fig)
+
+
 def write_report(state: dict[str, Any]) -> None:
     lines = [
         "# Mean xi_ft run — G / CS / GC residual (xP − actual)",
@@ -347,9 +385,12 @@ def write_report(state: dict[str, Any]) -> None:
         "",
         "xP = generative mean-board component (`xp_goals` / `xp_cs` / `xp_gc`). "
         "Actual P from FPL goals / CS (≥60′ & 0 GA) / GC bins (−1 per 2 for GKP/DEF). "
-        "Residual = **xP − P** on the planned XI.",
+        "Residual = **xP − P** on the planned XI. "
+        "Charts use **residual / match** = GW Σ resid ÷ XI player-matches.",
         "",
     ]
+    if state.get("plot"):
+        lines += [f"Plot: `{state['plot']}`", ""]
     for arm_key, title in (
         ("open_loop", "Open-loop XI (GW8 boards → GW8–19)"),
         ("rolling", "Rolling committed XI (step boards → GW8–10)"),
@@ -363,7 +404,7 @@ def write_report(state: dict[str, Any]) -> None:
         lines += [
             f"- Player-GWs: **{s['n_player_gw']}**",
             "",
-            "| component | Σ xP | Σ actual P | Σ resid | mean resid | MAE |",
+            "| component | Σ xP | Σ actual P | Σ resid | mean resid / match | MAE |",
             "| --- | ---: | ---: | ---: | ---: | ---: |",
         ]
         for comp in ("G", "CS", "GC"):
@@ -377,17 +418,18 @@ def write_report(state: dict[str, Any]) -> None:
             f"| **G+CS+GC** | {comb['sum_xP']:.1f} | {comb['sum_P']:.1f} | "
             f"{comb['sum_resid']:+.1f} |  | {comb['mae']:.3f} |",
             "",
-            "### Per GW (Σ over XI)",
+            "### Per GW (residual / match on XI)",
             "",
-            "| GW | xP_G | P_G | r_G | xP_CS | P_CS | r_CS | xP_GC | P_GC | r_GC |",
-            "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+            "| GW | n | r_G / match | r_CS / match | r_GC / match |",
+            "| --- | ---: | ---: | ---: | ---: |",
         ]
         for row in arm["per_gw"]:
+            n = int(row.get("n") or 11)
+            rg = row.get("resid_G_per_match", row["resid_G"] / max(n, 1))
+            rcs = row.get("resid_CS_per_match", row["resid_CS"] / max(n, 1))
+            rgc = row.get("resid_GC_per_match", row["resid_GC"] / max(n, 1))
             lines.append(
-                f"| {row['gw']} | {row['xP_G']:.1f} | {row['P_G']:.1f} | "
-                f"{row['resid_G']:+.1f} | {row['xP_CS']:.1f} | {row['P_CS']:.1f} | "
-                f"{row['resid_CS']:+.1f} | {row['xP_GC']:.1f} | {row['P_GC']:.1f} | "
-                f"{row['resid_GC']:+.1f} |"
+                f"| {row['gw']} | {n} | {rg:+.2f} | {rcs:+.2f} | {rgc:+.2f} |"
             )
         lines.append("")
     lines += [
@@ -536,9 +578,11 @@ def main(argv: list[str] | None = None) -> int:
             return []
         rows = []
         for gw, sub in df.groupby("gw"):
+            n = max(int(len(sub)), 1)
             rows.append(
                 {
                     "gw": int(gw),
+                    "n": n,
                     "xP_G": float(sub["xP_G"].sum()),
                     "P_G": float(sub["P_G"].sum()),
                     "resid_G": float(sub["resid_G"].sum()),
@@ -548,10 +592,15 @@ def main(argv: list[str] | None = None) -> int:
                     "xP_GC": float(sub["xP_GC"].sum()),
                     "P_GC": float(sub["P_GC"].sum()),
                     "resid_GC": float(sub["resid_GC"].sum()),
+                    "resid_G_per_match": float(sub["resid_G"].sum()) / n,
+                    "resid_CS_per_match": float(sub["resid_CS"].sum()) / n,
+                    "resid_GC_per_match": float(sub["resid_GC"].sum()) / n,
                 }
             )
         return rows
 
+    ol_per_gw = per_gw_table(ol_df)
+    roll_per_gw = per_gw_table(roll_df)
     state = {
         "task": "cascade_mean_xi_ft_component_resid",
         "source_artifact": str(args.artifact),
@@ -562,11 +611,11 @@ def main(argv: list[str] | None = None) -> int:
         "arms": {
             "open_loop": {
                 "summary": _summarise(ol_df),
-                "per_gw": per_gw_table(ol_df),
+                "per_gw": ol_per_gw,
             },
             "rolling": {
                 "summary": _summarise(roll_df),
-                "per_gw": per_gw_table(roll_df),
+                "per_gw": roll_per_gw,
             },
         },
         "elapsed_s": _now() - t_all,
@@ -579,6 +628,9 @@ def main(argv: list[str] | None = None) -> int:
         ol_df.to_csv(out_dir / "open_loop_xi_components.csv", index=False)
     if not roll_df.empty:
         roll_df.to_csv(out_dir / "rolling_xi_components.csv", index=False)
+    plot_path = Path("/opt/cursor/artifacts/cascade_mean_xi_ft_component_resid.png")
+    _plot_per_match(state, plot_path)
+    state["plot"] = str(plot_path)
     _save(state)
     write_report(state)
     Path(args.out).write_text(json.dumps(state, indent=2, default=str) + "\n")
