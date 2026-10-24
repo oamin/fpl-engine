@@ -1,9 +1,9 @@
 {
-  "task": "cascade_rankmean_gf_ga",
+  "task": "cascade_gbar_expanding_uncertainty",
   "status": "done",
-  "as_of_utc": "2026-10-24T12:26:30Z",
-  "change": "Default Opta place→GF/GA is empirical rankmean ± place SD; OLS linear map retired from live path",
+  "as_of_utc": "2026-10-24T13:16:36Z",
+  "change": "ḡ is assessed E0 expanding mean goals/team/match; place GF/GA and ḡ SE propagate into λ via delta method + sampling",
   "protocol": "cascade_long_match_outcome",
   "default_method": "rankmean",
-  "note": "Do not restore OLS_GF/OLS_GA as the cascade default without PI approval."
+  "note": "Live path uses E0_2627 via assessed_league_gf; closed prior when no completed rows."
 }

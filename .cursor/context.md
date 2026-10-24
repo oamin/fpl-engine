@@ -44,7 +44,7 @@ Pre-deadline squad advisor under 2026/27 rules. Cursor implements and screens; G
 | **Horizon** | L4 μ_post priced, `BOOKIE_DEPTH=2`, γ=1 | **strategiser default** | `src/strategy/layer4_week.py` · `reports/layer4_mupost_gamma1.md` |
 | **Live pick** | `numagent_live_pick` (props **off**) | GW7 PI lock | `src/live/numagent_live_pick.py` |
 | **cascade_short** | priced t:t+1 generative: centreline `M`→`k∼M` (no λ jitter) | locked 2026-10-20 | `cascade_short` / `short_horizon_generative` · `protocol.cascade_short_generative` |
-| **cascade_long** | Opta place→empirical GF/GA mean±SD→`M`→`k∼M`; generative xP, props off | locked 2026-10-20 · rankmean 2026-10-24 | `cascade_long` / `multistage_mc_milp` · `protocol.cascade_long_match_outcome` |
+| **cascade_long** | Opta place→empirical GF/GA mean±SD; ḡ=assessed expanding; δ-method λ SD→`M`→`k∼M`; generative xP, props off | locked 2026-10-20 · rankmean+ḡ 2026-10-24 | `cascade_long` / `multistage_mc_milp` · `protocol.cascade_long_match_outcome` |
 | **cascade rates** | historical player/positional rate baseline | cascade_default | `src/markets/rate_baseline.py` · `protocol.score_xp_v2_rate_baseline_prior` |
 | **cascade path** | joint every-GW FT plan; γ=1; FT PE=+4/FT; minutes frozen | locked / default-on | `path_transfer_plan` · `cascade_joint_path_plan` · `cascade_gamma` · `DEFAULT_LINEUP_COV=False` |
 

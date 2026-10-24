@@ -69,6 +69,8 @@ from src.markets.short_horizon_generative import hist_by_team_norm
 from src.models.opta_gf_ga_horizon import (
     N_MATCHES,
     gf_ga_from_rank,
+    LIVE_E0,
+    assessed_league_gf,
     league_avg_gf,
     load_opta_ranks,
     match_prediction,
@@ -405,6 +407,7 @@ def sample_opta_scenario(
     centre_blend: float = 0.5,
     ranks: Mapping[str, float] | None = None,
     profile: Mapping[int, Mapping[str, float]] | None = None,
+    sd_league_gf: float = 0.0,
 ) -> dict[str, Any]:
     """Baseline roll: place → GF/GA ± bands → λ → ``M`` → ``k ∼ M``.
 
@@ -412,6 +415,7 @@ def sample_opta_scenario(
     Pass ``ranks`` / ``profile`` for closed-season oracle + LOSO bands;
     defaults keep the live Opta JSON path.
     ``ClubPath`` is unused for λ (kept only as KeyError fallback).
+    ``sd_league_gf`` is the SE of assessed expanding ḡ (season-total units).
     """
     try:
         draw = sample_match_from_opta_ranks(
@@ -422,6 +426,7 @@ def sample_opta_scenario(
             profile=profile,
             centre_blend=centre_blend,
             league_gf=league_gf,
+            sd_league_gf=sd_league_gf,
         )
         # λ already sampled inside rank GF/GA bands — roll k∼M at that λ.
         sh = float(draw["lam_home"])
@@ -582,6 +587,7 @@ def sample_week_scenario(
     rng: random.Random,
     ranks: Mapping[str, float] | None = None,
     profile: Mapping[int, Mapping[str, float]] | None = None,
+    sd_league_gf: float = 0.0,
 ) -> dict[str, Any]:
     """Priced cascade_short when a fit exists; else Opta / oracle cascade_long."""
     key = (norm_team(home), norm_team(away))
@@ -596,6 +602,7 @@ def sample_week_scenario(
         rng=rng,
         ranks=ranks,
         profile=profile,
+        sd_league_gf=sd_league_gf,
     )
 
 
@@ -612,6 +619,7 @@ def _scenarios_for_remaining(
     | None = None,
     ranks: Mapping[str, float] | None = None,
     profile: Mapping[int, Mapping[str, float]] | None = None,
+    sd_league_gf: float = 0.0,
 ) -> dict[int, list[dict[str, Any]]]:
     """Current GW: stored rolls. Later GWs: scratch short (priced) or Opta/oracle."""
     pidx = priced_index or {}
@@ -636,6 +644,7 @@ def _scenarios_for_remaining(
                     rng=rng,
                     ranks=ranks,
                     profile=profile,
+                    sd_league_gf=sd_league_gf,
                 )
             )
         out[g_i] = rows
@@ -963,6 +972,7 @@ def run_strand(
     paths0: Mapping[str, ClubPath],
     league_gf: float,
     rng: random.Random,
+    sd_league_gf: float = 0.0,
     gamma: float = DEFAULT_GAMMA,
     milp_time_limit: float = 8.0,
     objective: str = OBJECTIVE_SQUAD_SUM,
@@ -1024,6 +1034,7 @@ def run_strand(
                 rng=rng,
                 ranks=ranks,
                 profile=profile,
+                sd_league_gf=sd_league_gf,
             )
             paths[fx["home"]].observe(sc["hg"], sc["ag"])
             paths[fx["away"]].observe(sc["ag"], sc["hg"])
@@ -1121,6 +1132,7 @@ def run_strand(
                 priced_index=priced_index,
                 ranks=ranks,
                 profile=profile,
+                sd_league_gf=sd_league_gf,
             )
             scored = score_pool_generative_on_scenarios(
                 pool,
@@ -1635,7 +1647,9 @@ def run_multistage_trial(
             }
 
     profile = rank_gf_ga_profile()
-    league_gf = league_avg_gf(profile)
+    league_state = assessed_league_gf(LIVE_E0, profile=profile)
+    league_gf = float(league_state["league_gf"])
+    sd_league_gf = float(league_state["se_league_gf"])
     paths0 = init_paths_from_opta()
     rng = random.Random(int(seed))
 
@@ -1651,6 +1665,7 @@ def run_multistage_trial(
                 pool=pool,
                 paths0=paths0,
                 league_gf=league_gf,
+                sd_league_gf=sd_league_gf,
                 rng=strand_rng,
                 gamma=gamma,
                 objective=objective,

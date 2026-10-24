@@ -7,7 +7,10 @@ import unittest
 
 from src.models.opta_gf_ga_horizon import (
     DEFAULT_RANK_METHOD,
+    LIVE_E0,
+    assessed_league_gf,
     gf_ga_from_rank,
+    lambdas_from_gf_ga,
     load_opta_ranks,
     match_prediction,
     pots_from_season_gf_ga,
@@ -73,6 +76,46 @@ class OptaGfGaHorizonTest(unittest.TestCase):
         self.assertEqual(draw["home_rank"], ranks[top])
         self.assertEqual(draw["away_rank"], ranks[bot])
         self.assertGreater(draw["lam_home"], draw["lam_away"])
+
+    def test_assessed_league_gf_expanding_live(self) -> None:
+        prior = assessed_league_gf(None)
+        live = assessed_league_gf(LIVE_E0)
+        self.assertEqual(prior["source"], "closed_prior")
+        self.assertEqual(live["source"], "expanding_assessed")
+        self.assertGreater(live["n_matches"], 0)
+        self.assertGreater(live["g_pm"], 0.5)
+        self.assertLess(live["g_pm"], 2.5)
+        self.assertGreater(live["se_league_gf"], 0.0)
+        self.assertLess(live["se_league_gf"], live["sd_league_gf"])
+
+    def test_lambda_uncertainty_propagates(self) -> None:
+        prop = lambdas_from_gf_ga(
+            80.0,
+            35.0,
+            40.0,
+            60.0,
+            league_gf=56.0,
+            sd_home_gf=10.0,
+            sd_home_ga=5.0,
+            sd_away_gf=8.0,
+            sd_away_ga=6.0,
+            sd_league_gf=2.0,
+        )
+        self.assertGreater(prop["sd_lam_home"], 0.0)
+        self.assertGreater(prop["sd_lam_away"], 0.0)
+        self.assertLess(prop["lam_home_lo"], prop["lam_home"])
+        self.assertGreater(prop["lam_home_hi"], prop["lam_home"])
+        # Leaky away defence raises λ_H vs tight defence.
+        tight = lambdas_from_gf_ga(
+            80.0, 35.0, 40.0, 40.0, league_gf=56.0, sd_away_ga=6.0
+        )
+        self.assertGreater(prop["lam_home"], tight["lam_home"])
+
+    def test_match_prediction_exposes_sd(self) -> None:
+        pred = match_prediction("Arsenal", "Fulham", e0_fname=LIVE_E0)
+        self.assertGreater(pred["sd_lam_home"], 0.0)
+        self.assertGreater(pred["sd_lam_away"], 0.0)
+        self.assertEqual(pred["league"]["source"], "expanding_assessed")
 
 
 if __name__ == "__main__":
