@@ -252,12 +252,76 @@ def run_one_strand_player_xp(
     return frame, meta_out
 
 
+def average_strands(
+    *,
+    player_name: str,
+    decision_gw: int,
+    horizon_end: int,
+    priced_gw: int,
+    seed0: int,
+    n_strands: int,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Mean (± sample SD) player xP by GW across ``n_strands`` independent runs."""
+    frames: list[pd.DataFrame] = []
+    meta0: dict[str, Any] | None = None
+    for i in range(int(n_strands)):
+        fr, meta = run_one_strand_player_xp(
+            player_name=player_name,
+            decision_gw=decision_gw,
+            horizon_end=horizon_end,
+            priced_gw=priced_gw,
+            seed=int(seed0) + i,
+        )
+        fr = fr.copy()
+        fr["strand"] = i
+        frames.append(fr)
+        if meta0 is None:
+            meta0 = meta
+    assert meta0 is not None
+    all_f = pd.concat(frames, ignore_index=True)
+    g = all_f.groupby("gw", sort=True)
+    out = g.agg(
+        player=("player", "first"),
+        player_id=("player_id", "first"),
+        team=("team", "first"),
+        opponent=("opponent", "first"),
+        venue=("venue", "first"),
+        source=("source", "first"),
+        xp_roll=("xp_roll", "mean"),
+        xp_appear=("xp_appear", "mean"),
+        xp_soft=("xp_soft", "mean"),
+        xp_total=("xp_total", "mean"),
+        xp_goals=("xp_goals", "mean"),
+        xp_assists=("xp_assists", "mean"),
+        xp_cs=("xp_cs", "mean"),
+        xp_gc=("xp_gc", "mean"),
+        sd_xp_total=("xp_total", "std"),
+        sd_xp_roll=("xp_roll", "std"),
+        n=("xp_total", "count"),
+    ).reset_index()
+    out["sd_xp_total"] = out["sd_xp_total"].fillna(0.0)
+    out["sd_xp_roll"] = out["sd_xp_roll"].fillna(0.0)
+    meta0 = {
+        **meta0,
+        "n_strands": int(n_strands),
+        "seed0": int(seed0),
+        "seeds": f"{int(seed0)}..{int(seed0) + int(n_strands) - 1}",
+    }
+    return out, meta0
+
+
 def plot_strand(frame: pd.DataFrame, meta: dict[str, Any], out: Path) -> Path:
     gws = frame["gw"].to_numpy()
     roll = frame["xp_roll"].to_numpy(dtype=float)
     appear = frame["xp_appear"].to_numpy(dtype=float)
     soft = frame["xp_soft"].to_numpy(dtype=float)
     total = frame["xp_total"].to_numpy(dtype=float)
+    n_strands = int(meta.get("n_strands") or 1)
+    sd_total = (
+        frame["sd_xp_total"].to_numpy(dtype=float)
+        if "sd_xp_total" in frame.columns
+        else np.zeros_like(total)
+    )
 
     fig, ax = plt.subplots(figsize=(10.5, 5.2))
     ax.bar(gws, roll, width=0.65, label="roll (G+A+CS+GC)", color="#1f4e79")
@@ -270,20 +334,35 @@ def plot_strand(frame: pd.DataFrame, meta: dict[str, Any], out: Path) -> Path:
         label="soft priors (fixed)",
         color="#c8d6e5",
     )
-    ax.plot(gws, total, "o-", color="#111111", lw=1.4, ms=5, label="total xP")
+    ax.errorbar(
+        gws,
+        total,
+        yerr=sd_total if n_strands > 1 else None,
+        fmt="o-",
+        color="#111111",
+        lw=1.4,
+        ms=5,
+        capsize=3,
+        label="total xP" + (" ± SD" if n_strands > 1 else ""),
+    )
 
     for _, r in frame.iterrows():
-        if r["source"] == "blank":
+        if r.get("source") == "blank" or (pd.isna(r.get("opponent")) and r.get("source") == "blank"):
+            tag = "blank"
+        elif pd.isna(r.get("opponent")):
             tag = "blank"
         else:
-            tag = f"{r['venue']} {r['opponent']}\n{int(r['hg'])}-{int(r['ag'])}"
-            if str(r["source"]).startswith("priced") or r["gw"] == meta["priced_gw"]:
+            tag = f"{r['venue']} {r['opponent']}"
+            if n_strands == 1 and r.get("hg") is not None and not pd.isna(r.get("hg")):
+                tag = f"{tag}\n{int(r['hg'])}-{int(r['ag'])}"
+            if "short" in str(r.get("source", "")).lower() or r["gw"] == meta["priced_gw"]:
                 tag = "SHORT\n" + tag
             else:
                 tag = "LONG\n" + tag
+        y = float(r["xp_total"]) + (float(r["sd_xp_total"]) if n_strands > 1 else 0.0) + 0.25
         ax.text(
             r["gw"],
-            float(r["xp_total"]) + 0.25,
+            y,
             tag,
             ha="center",
             va="bottom",
@@ -293,13 +372,21 @@ def plot_strand(frame: pd.DataFrame, meta: dict[str, Any], out: Path) -> Path:
 
     ax.axvline(meta["priced_gw"] + 0.5, color="#888888", ls="--", lw=0.9, alpha=0.8)
     ax.set_xlabel("Gameweek")
-    ax.set_ylabel("xP (one strand)")
+    ax.set_ylabel("xP" + (f" (mean of {n_strands} strands)" if n_strands > 1 else " (one strand)"))
     ax.set_xticks(list(gws))
-    ax.set_ylim(0, max(float(total.max()) + 2.5, 6.0))
-    ax.set_title(
-        f"{meta['player']} — one short+long strand "
-        f"(seed={meta['seed']}, decision GW{meta['decision_gw']})"
-    )
+    ymax = float((total + sd_total).max()) + 2.5
+    ax.set_ylim(0, max(ymax, 6.0))
+    if n_strands > 1:
+        title = (
+            f"{meta['player']} — mean short+long xP over {n_strands} strands "
+            f"(seeds {meta.get('seeds')}, decision GW{meta['decision_gw']})"
+        )
+    else:
+        title = (
+            f"{meta['player']} — one short+long strand "
+            f"(seed={meta['seed']}, decision GW{meta['decision_gw']})"
+        )
+    ax.set_title(title)
     ax.legend(loc="upper right", frameon=False)
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
@@ -317,24 +404,47 @@ def main() -> None:
     p.add_argument("--horizon-end", type=int, default=14)
     p.add_argument("--priced-gw", type=int, default=8)
     p.add_argument("--seed", type=int, default=7)
+    p.add_argument("--n-strands", type=int, default=1, help="Average this many strands (seeds seed..seed+N-1)")
     p.add_argument(
         "--out",
         type=Path,
-        default=Path("/opt/cursor/artifacts/strand_player_xp_saka.png"),
+        default=None,
     )
     p.add_argument(
         "--csv",
         type=Path,
-        default=Path("/opt/cursor/artifacts/strand_player_xp_saka.csv"),
+        default=None,
     )
     args = p.parse_args()
-    frame, meta = run_one_strand_player_xp(
-        player_name=args.player,
-        decision_gw=args.decision_gw,
-        horizon_end=args.horizon_end,
-        priced_gw=args.priced_gw,
-        seed=args.seed,
-    )
+    n = max(1, int(args.n_strands))
+    slug = str(args.player).lower().replace(" ", "_")
+    if args.out is None:
+        args.out = Path(
+            f"/opt/cursor/artifacts/strand_player_xp_{slug}"
+            + (f"_mean_n{n}.png" if n > 1 else ".png")
+        )
+    if args.csv is None:
+        args.csv = Path(
+            f"/opt/cursor/artifacts/strand_player_xp_{slug}"
+            + (f"_mean_n{n}.csv" if n > 1 else ".csv")
+        )
+    if n > 1:
+        frame, meta = average_strands(
+            player_name=args.player,
+            decision_gw=args.decision_gw,
+            horizon_end=args.horizon_end,
+            priced_gw=args.priced_gw,
+            seed0=args.seed,
+            n_strands=n,
+        )
+    else:
+        frame, meta = run_one_strand_player_xp(
+            player_name=args.player,
+            decision_gw=args.decision_gw,
+            horizon_end=args.horizon_end,
+            priced_gw=args.priced_gw,
+            seed=args.seed,
+        )
     frame.to_csv(args.csv, index=False)
     path = plot_strand(frame, meta, args.out)
     print(json.dumps({"meta": meta, "csv": str(args.csv), "plot": str(path)}, indent=2))
