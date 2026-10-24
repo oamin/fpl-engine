@@ -1,8 +1,14 @@
 {
-  "task": "cascade_ft_bank_pot",
+  "task": "saka_gross_swap_probe",
   "status": "done",
-  "as_of_utc": "2026-10-24T14:58:33Z",
-  "change": "FT bank is a separate ledger (plan.bank_pot); DEFAULT_FT_PE_NU=0 so bank PE is not in the path objective",
+  "as_of_utc": "2026-10-24T15:05:00Z",
+  "change": "xi_ft mean-board probe (N=12): Saka sold GW10; Groß owned GW8–14 (already in open 15); board Groß>Saka GW10–13",
   "protocol": "cascade_path_transfer_only",
-  "note": "V = Σ XI − hits (xi_ft) or Σ(XI+cap) − hits; bank tracked via constraints + bank_pot only."
+  "verdict": {
+    "swap_saka_to_gross_by_gw10": true,
+    "gross_held_from_gw10_on": true,
+    "nuance": "not 1-for-1: open 15 already held Groß; GW10 sold Saka+Thomas for Guéhi+Anderson"
+  },
+  "artifact": "/opt/cursor/artifacts/saka_gross_swap_probe.json",
+  "note": "value_captain=False; bank_pot.in_objective=False; ft_pe_nu=0"
 }
