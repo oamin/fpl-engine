@@ -48,7 +48,9 @@ Pre-deadline squad advisor under 2026/27 rules. Cursor implements and screens; G
 | **cascade rates** | historical player/positional rate baseline | cascade_default | `src/markets/rate_baseline.py` · `protocol.score_xp_v2_rate_baseline_prior` |
 | **cascade path** | joint every-GW FT plan; γ=1; FT **bank pot** (not in \(V\)); minutes frozen | locked / default-on | `path_transfer_plan` · `cascade_joint_path_plan` · `cascade_gamma` · `DEFAULT_LINEUP_COV=False` |
 | **transfer-rule screens** | `xi_ft` — joint FT, no captain double; bank pot separate | active 2026-10-24 | `protocol.cascade_path_transfer_only` |
-| **Saka→Groß organic probe** | mean N=12 boards; Saka out GW10; Groß held GW8–14 (already owned) | diagnostic 2026-10-24 | `scripts/saka_gross_swap_probe.py` · artifact `saka_gross_swap_probe.json` |
+| **Saka→Groß organic probe** | mean boards xi_ft; Groß held; 0 hits | diagnostic 2026-10-24 | `scripts/saka_gross_swap_probe.py --n-strands` |
+| · N=12 | Saka out GW10; bank to 3 FT then spend | done | `saka_gross_swap_probe.json` |
+| · N=100 | Saka out GW9; still 7 FT / 0 hits; softer GW10 cross | done | `saka_gross_swap_probe_n100.json` |
 
 **Numagent 1.0 and `score_xp` are superseded** (2026-10-19). Keep 1.0/`score_xp` only for historical climb replay and as the named gate baseline. New screens and the live path are Numagent 2.0 (`score_xp_v2` + L4).
 

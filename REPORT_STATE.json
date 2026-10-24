@@ -1,14 +1,18 @@
 {
-  "task": "saka_gross_swap_probe",
+  "task": "saka_gross_swap_probe_n100",
   "status": "done",
-  "as_of_utc": "2026-10-24T15:05:00Z",
-  "change": "xi_ft mean-board probe (N=12): Saka sold GW10; Groß owned GW8–14 (already in open 15); board Groß>Saka GW10–13",
+  "as_of_utc": "2026-10-24T15:25:00Z",
+  "change": "Mean-board xi_ft probe at N=100 (same seed0=7, GW8–14)",
   "protocol": "cascade_path_transfer_only",
   "verdict": {
     "swap_saka_to_gross_by_gw10": true,
     "gross_held_from_gw10_on": true,
-    "nuance": "not 1-for-1: open 15 already held Groß; GW10 sold Saka+Thomas for Guéhi+Anderson"
+    "saka_sold_gw": 9,
+    "total_transfers": 7,
+    "total_hits": 0,
+    "vs_n12": "N=12 sold Saka at GW10 after banking to 3 FT; N=100 sells at GW9 (earlier), still 0 hits / 7 FTs, Groß held GW8–14"
   },
-  "artifact": "/opt/cursor/artifacts/saka_gross_swap_probe.json",
-  "note": "value_captain=False; bank_pot.in_objective=False; ft_pe_nu=0"
+  "board_note": "N=100 Δ(G−S): GW10 +0.56, GW11 ≈0 (−0.07), Groß ahead GW12–14; crossover softer than N=12",
+  "artifact": "/opt/cursor/artifacts/saka_gross_swap_probe_n100.json",
+  "compare_plot": "/opt/cursor/artifacts/saka_gross_swap_probe_n12_vs_n100.png"
 }

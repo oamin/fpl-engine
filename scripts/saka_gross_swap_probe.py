@@ -165,8 +165,19 @@ def opening_15_with(
 
 
 def main() -> None:
-    n_strands = 12
-    seed0 = 7
+    import argparse
+
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--n-strands", type=int, default=12)
+    ap.add_argument("--seed0", type=int, default=7)
+    ap.add_argument(
+        "--out",
+        type=Path,
+        default=Path("/opt/cursor/artifacts/saka_gross_swap_probe.json"),
+    )
+    args = ap.parse_args()
+    n_strands = int(args.n_strands)
+    seed0 = int(args.seed0)
     decision_gw, horizon_end, priced_gw = 8, 14, 8
     pool, scores_by_gw, meta = mean_boards(
         n_strands=n_strands,
@@ -224,7 +235,7 @@ def main() -> None:
     )
 
     weeks = plan["weeks"]
-    print("=== mean board (12 strands) Saka vs Groß ===")
+    print(f"=== mean board ({n_strands} strands) Saka vs Groß ===")
     print(board.to_string(index=False))
     print()
     print(
@@ -289,7 +300,8 @@ def main() -> None:
         )
     )
 
-    out = Path("/opt/cursor/artifacts/saka_gross_swap_probe.json")
+    out = Path(args.out)
+    out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(
         json.dumps(
             {
@@ -301,6 +313,10 @@ def main() -> None:
                 "verdict": {
                     "swap_saka_to_gross_by_gw10": swapped,
                     "gross_held_from_gw10_on": held_gross_after,
+                    "total_transfers": int(
+                        sum(int(w["n_transfers"]) for w in weeks)
+                    ),
+                    "total_hits": int(sum(int(w["hits"]) for w in weeks)),
                 },
             },
             indent=2,
