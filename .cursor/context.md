@@ -46,8 +46,8 @@ Pre-deadline squad advisor under 2026/27 rules. Cursor implements and screens; G
 | **cascade_short** | priced t:t+1 generative: centreline `M`→`k∼M` (no λ jitter) | locked 2026-10-20 | `cascade_short` / `short_horizon_generative` · `protocol.cascade_short_generative` |
 | **cascade_long** | rankmean±SD latents; assessed ḡ; hierarchical λ→`M\|λ`→`k∼M`; generative xP, props off | **PI-approved 2026-10-24** | `cascade_long` / `multistage_mc_milp` · `protocol.cascade_long_match_outcome` |
 | **cascade rates** | historical player/positional rate baseline | cascade_default | `src/markets/rate_baseline.py` · `protocol.score_xp_v2_rate_baseline_prior` |
-| **cascade path** | joint every-GW FT plan; γ=1; FT PE=+4/FT; minutes frozen | locked / default-on | `path_transfer_plan` · `cascade_joint_path_plan` · `cascade_gamma` · `DEFAULT_LINEUP_COV=False` |
-| **transfer-rule screens** | `xi_ft` — joint FT, **no captain double** | active 2026-10-24 | `protocol.cascade_path_transfer_only` |
+| **cascade path** | joint every-GW FT plan; γ=1; FT **bank pot** (not in \(V\)); minutes frozen | locked / default-on | `path_transfer_plan` · `cascade_joint_path_plan` · `cascade_gamma` · `DEFAULT_LINEUP_COV=False` |
+| **transfer-rule screens** | `xi_ft` — joint FT, no captain double; bank pot separate | active 2026-10-24 | `protocol.cascade_path_transfer_only` |
 
 **Numagent 1.0 and `score_xp` are superseded** (2026-10-19). Keep 1.0/`score_xp` only for historical climb replay and as the named gate baseline. New screens and the live path are Numagent 2.0 (`score_xp_v2` + L4).
 

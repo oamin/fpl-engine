@@ -154,6 +154,28 @@ class JointPlanTest(unittest.TestCase):
         self.assertIn(star_id, weeks[10]["xi_ids"])
         self.assertIn(star_id, weeks[11]["xi_ids"])
 
+    def test_bank_pot_ledger_separate_from_objective(self) -> None:
+        """Default plan tracks FT bank pot; PE not in objective."""
+        from src.models.multistage_mc_milp import DEFAULT_FT_PE_NU
+
+        self.assertEqual(DEFAULT_FT_PE_NU, 0.0)
+        pool = _candidates()
+        gws = [8, 9, 10]
+        n = len(pool)
+        S_pool = {g: np.full(n, 2.0) for g in gws}
+        cands = select_plan_candidates(
+            pool, S_pool, gws=gws, buy_ids=None, top_n=48
+        )
+        S = score_matrix_for_candidates(cands, pool, S_pool, gws)
+        plan = pick_path_transfer_plan(cands, S, gws, gamma=1.0, time_limit=45.0)
+        pot = plan["bank_pot"]
+        self.assertFalse(pot["in_objective"])
+        self.assertEqual(float(pot["ft_pe_nu"]), 0.0)
+        self.assertEqual(len(pot["by_gw"]), len(gws))
+        self.assertEqual(int(pot["by_gw"][0]["ft_after"]), 1)
+        self.assertEqual(int(plan["terminal_ft"]), int(pot["terminal_ft"]))
+        self.assertEqual(float(plan["terminal_pe"]), 0.0)
+
     def test_forced_transfer_schedule(self) -> None:
         """Two expensive exclusives → open with A, transfer to B mid-horizon."""
         pool = _candidates().copy()

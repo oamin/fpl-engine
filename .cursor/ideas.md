@@ -38,6 +38,12 @@ store GF/GA vs rank as a fitted function. Default is **empirical place mean
 + sample SD** from closed E0 seasons (`method=rankmean`). OLS kept only
 behind explicit `method="ols"`.
 
+## Parked — FT bank PE in path objective (2026-10-24)
+
+`DEFAULT_FT_PE_NU=HIT_COST` put terminal bank into \(V\). PI: keep FT as a
+**separate bank pot** (constraints + `plan.bank_pot`); objective is XI/−hits
+only (`DEFAULT_FT_PE_NU=0`). Re-open PE only as an explicit diagnostic screen.
+
 ## Locked — cascade_long hierarchical Opta λ strat (PI 2026-10-24)
 
 PI-approved in `protocol.cascade_long_match_outcome`:

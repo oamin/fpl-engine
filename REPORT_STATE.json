@@ -1,8 +1,8 @@
 {
-  "task": "cascade_path_transfer_only",
+  "task": "cascade_ft_bank_pot",
   "status": "done",
-  "as_of_utc": "2026-10-24T14:28:42Z",
-  "change": "Add objective xi_ft: joint path transfers with captain double off (value_captain=False) to isolate the transfer rule",
+  "as_of_utc": "2026-10-24T14:58:00Z",
+  "change": "FT bank is a separate ledger (plan.bank_pot); DEFAULT_FT_PE_NU=0 so bank PE is not in the path objective",
   "protocol": "cascade_path_transfer_only",
-  "note": "Use --objective xi_ft for path-V / transfer screens until captaincy is back in scope."
+  "note": "V = Σ XI − hits (xi_ft) or Σ(XI+cap) − hits; bank tracked via constraints + bank_pot only."
 }

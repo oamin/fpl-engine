@@ -1522,22 +1522,23 @@
   },
   "cascade_joint_path_plan": {
     "locked": "2026-10-21",
-    "revised": "2026-10-24 — add xi_ft (joint transfers, captain double off) for transfer-rule isolation",
+    "revised": "2026-10-24 — xi_ft; FT bank pot separate from objective (DEFAULT_FT_PE_NU=0)",
     "status": "wired",
     "role": "joint multi-GW transfer schedule (not myopic per-snapshot FT MILP)",
     "module": "src/models/path_transfer_plan.py",
     "wired_into": "src/models/multistage_mc_milp.run_strand",
     "objectives": {
-      "xi_plus_captain_ft": "Σ(XI+captain) − hits + FT PE",
-      "xi_ft": "Σ XI − hits + FT PE — captaincy not valued; isolate transfer rule"
+      "xi_plus_captain_ft": "Σ(XI+captain) − hits",
+      "xi_ft": "Σ XI − hits — captaincy not valued; isolate transfer rule"
     },
     "design": "roll full horizon → per-GW scores → one MILP over all horizon GWs: free open + FT/hit-linked squads/XI; undiscounted Σ (γ=1); top_n=48 candidates",
     "replaces": "myopic loop: discounted remaining μ → single-deadline _pick_squad_xi_captain_ft each snapshot",
     "gamma": 1.0,
     "snapshot_every": "ignored for FT objectives (every horizon GW is a decision week)",
-    "ft_pe": "default on: terminal U(f_H)=ν·f_H with ν=HIT_COST (+4/FT, +20 at cap); hold below cap → +ν; at 5 grant +0 unless FT used",
+    "bank_pot": "constrained FT state ft_before/ft_after per GW; returned as plan.bank_pot; not in V",
+    "ft_pe": "default off (DEFAULT_FT_PE_NU=0); optional diagnostic U(f_H)=ν·f_H when ν>0 explicitly set",
     "transfer_rule_screen": "use objective=xi_ft until captain screens reopen",
-    "not": "four-season gate; retune ν; chips; restore γ=0.9; revive concave φ·W",
+    "not": "four-season gate; chips; restore γ=0.9; revive concave φ·W; put bank PE back in default V",
     "any_later_change": "dated protocol update required"
   },
   "cascade_path_transfer_only": {
@@ -1546,6 +1547,8 @@
     "role": "path-V / transfer-rule screens with captaincy held out",
     "objective": "xi_ft",
     "value_captain": false,
+    "ft_pe_nu": 0,
+    "bank_pot": "separate ledger (plan.bank_pot); V = Σ XI − hits only",
     "note": "Legal captain still assigned in XI for FPL shape; does not enter the MILP objective. Re-enable xi_plus_captain_ft only when testing captain+transfer jointly.",
     "modules": [
       "src/models/path_transfer_plan.py",
@@ -1570,7 +1573,7 @@
     "gamma": 1.0,
     "control": "xi_plus_captain_ft joint plan: V = Σ(XI+cap) − hit_pts (ft_pe_nu=0, γ=1)",
     "candidate": "V + U(f_H); U(b)=ν·b; ν=HIT_COST (+4 per stored FT, +20 at five); no φ, no W",
-    "default_engine": "DEFAULT_FT_PE_NU=HIT_COST (PE on for xi_plus_captain_ft)",
+    "default_engine": "DEFAULT_FT_PE_NU=0 (bank pot ledger only; PE diagnostic via explicit ν>0)",
     "must_spend": "hard MILP: e=max(0,k−f) via hit_flag big-M (not objective-soft)",
     "n": 12,
     "seed": 7,

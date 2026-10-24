@@ -11,8 +11,12 @@ Modes:
   (rolling deadline replan).
 
 ``value_captain=False`` isolates the **transfer rule**: objective is Σ XI
-scores − hits (+ FT PE); a legal captain is still picked but does not enter
-the objective (no captaincy double).
+scores − hits; a legal captain is still picked but does not enter the
+objective (no captaincy double).
+
+**FT bank pot** is tracked as constrained state (``ft_before`` / ``ft_after``
+per week) and returned as ``bank_pot`` — separate from the objective.
+Default ``ft_pe_nu=0`` (no terminal bank PE in \(V\)).
 """
 
 from __future__ import annotations
@@ -153,8 +157,9 @@ def pick_path_transfer_plan(
     When ``start_owned_ids`` is None, week 0 is a free rebuild and ``f_after[0]=1``.
     When set, week 0 transfers from that 15 with bank ``start_ft``.
 
-    When ``ft_pe_nu > 0``, adds terminal PE ``U(f_H)=ν·f_H`` (default
-    ``ν=HIT_COST``: +4 per stored FT, +20 at cap).
+    When ``ft_pe_nu > 0``, adds terminal PE ``U(f_H)=ν·f_H`` into the
+    objective (diagnostic only; default ``ft_pe_nu=0``). The FT **bank pot**
+    is always tracked via constraints and returned in ``bank_pot``.
 
     ``value_captain``: if False, captain double is omitted from the objective
     (transfer-rule isolation); a legal captain is still chosen in the XI.
@@ -533,6 +538,21 @@ def pick_path_transfer_plan(
 
     obj = float(-res.fun) if res.fun is not None else float("nan")
     terminal_ft = int(weeks[-1]["ft_after"]) if weeks else 0
+    bank_pot = {
+        "in_objective": bool(use_pe),
+        "ft_pe_nu": float(nu),
+        "terminal_ft": terminal_ft,
+        "by_gw": [
+            {
+                "gw": int(w["gw"]),
+                "ft_before": int(w["ft_before"]),
+                "ft_after": int(w["ft_after"]),
+                "n_transfers": int(w["n_transfers"]),
+                "hits": int(w["hits"]),
+            }
+            for w in weeks
+        ],
+    }
     return {
         "weeks": weeks,
         "objective": obj,
@@ -544,6 +564,7 @@ def pick_path_transfer_plan(
         "terminal_pe": float(
             ft_bank_potential(terminal_ft, nu=nu) if weeks and use_pe else 0.0
         ),
+        "bank_pot": bank_pot,
         "from_owned": bool(from_owned),
         "start_ft": int(ft0) if from_owned else None,
         "value_captain": use_cap,

@@ -128,7 +128,10 @@ MAX_HITS_SNAPSHOT = int(SQUAD_SIZE)
 # stored FT is worth one hit (+4); five FTs = +20. Holding below the cap grows
 # next-deadline bank by +1 (+ν PE); at the cap the weekly grant adds +0 PE
 # unless a transfer is used first. Concave φ·W form is retired.
-DEFAULT_FT_PE_NU = float(HIT_COST)
+# FT bank is a separate ledger (constraints + report). Do not put bank PE in
+# the path objective by default — hits already cost −4 via e. PE (ν>0) stays
+# available for explicit diagnostic screens only.
+DEFAULT_FT_PE_NU = 0.0
 
 
 def ft_bank_phi(bank: int, *, max_ft: int | None = None) -> float:
@@ -161,13 +164,14 @@ def ft_bank_potential(
 ) -> float:
     """Potential energy of an FT bank: ``U(b) = ν · b`` (b capped at MAX_FT).
 
-    Default ``ν = HIT_COST`` (+4 per stored FT, +20 at cap). ``horizon_weight``
-    is ignored (API compat); PE is not multi-week-scaled.
+    Helper default ``ν = HIT_COST`` (+4 per stored FT). Path MILP defaults to
+    ``DEFAULT_FT_PE_NU=0`` (bank pot ledger only — PE not in \(V\)). Pass
+    ``nu`` explicitly to score PE. ``horizon_weight`` ignored (API compat).
     """
     del horizon_weight
     from src.rules.fpl_2026 import MAX_FT as _MAX_FT
 
-    n = float(DEFAULT_FT_PE_NU if nu is None else nu)
+    n = float(HIT_COST if nu is None else nu)
     if n <= 0.0 or int(bank) <= 0:
         return 0.0
     m = int(_MAX_FT if max_ft is None else max_ft)
@@ -805,6 +809,7 @@ def _emit_joint_ft_plan(
         "terminal_ft": plan["terminal_ft"],
         "terminal_pe": plan["terminal_pe"],
         "ft_pe_nu": plan["ft_pe_nu"],
+        "bank_pot": plan.get("bank_pot"),
         "path_plan_mode": PATH_PLAN_OPEN_LOOP,
         "value_captain": bool(plan.get("value_captain", True)),
         "objective_name": str(objective),
