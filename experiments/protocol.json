@@ -178,18 +178,24 @@
   },
   "cascade_long_match_outcome": {
     "locked": "2026-10-20",
-    "revised": "2026-10-24 — rankmean±SD place map; ḡ = assessed expanding goals/team/match; δ-method λ uncertainty; HOME_ADV=1.0; M→k∼M; no λ jitter; props off",
+    "pi_approved": "2026-10-24",
+    "revised": "2026-10-24 — PI lock: rankmean±SD latents; assessed expanding ḡ; hierarchical λ→M→k; HOME_ADV=1.0; no second λ jitter; props off",
     "role": "long-horizon t+2… match M + generative player xP",
+    "status": "pi_approved_strat",
     "rank_map": "Opta place → closed-season empirical mean GF/GA by finishing place (method=rankmean); OLS place→GF/GA retired from live path",
-    "bands": "±z·place sample SD (z_band=1.0); ḡ SE from expanding mean; centre_blend=0.5 samples GF/GA and ḡ inside bands",
-    "lambda": "λ_H=(GF_H/38)·((GA_A/38)/ḡ); ḡ = assessed E0 expanding mean goals/team/match (prior-blended); δ-method SD from place SD + ḡ SE; ClubPath unused for λ; home_adv=1.0",
-    "league_gbar": "assessed_league_gf — live E0_2627 expanding (FTHG+FTAG)/2; closed prior when no rows; SE propagates into λ",
+    "latent_draw": "per strand: sample GF, GA, ḡ inside mean ± z·SD (z_band=1.0) via sample_within_band; centre_blend=0.5 (half centre, half Uniform[lo,hi])",
+    "bands": "place sample SD (n=4 closed seasons per place); ḡ SE from assessed expanding mean",
+    "lambda": "λ_H=(GF_H/38)·((GA_A/38)/ḡ); λ_A symmetric; ClubPath unused for λ; home_adv=1.0",
+    "league_gbar": "assessed_league_gf — live/assessed E0 expanding (FTHG+FTAG)/2 prior-blended; closed prior when no rows",
+    "uncertainty": "hierarchical — draw latents → λ → M|λ → k∼M; δ-method sd_lam is diagnostic only; do not resample λ after M is built",
     "home_adv": "1.0 — previous 1.08 never PI-approved; rejected 2026-10-24",
     "ols_rank_map": "retired — keep method=ols only for archaeology / old diagnostic replay",
-    "M": "match_outcome_probs_from_lambdas(λ_h, λ_a, ρ=0)",
-    "scoreline": "match_outcome_roll — k∼M categorical over all cells (replaces independent Poisson; no λ Uniform band)",
+    "M": "match_outcome_probs_from_lambdas(λ_h, λ_a, ρ=0) conditional on the strand's drawn λ",
+    "scoreline": "match_outcome_roll — k∼M|λ; λ uncertainty enters only via latent draws across strands (no Uniform λ band)",
     "player_xp": "cascade_short generative stack (lineup cov → attack dice → CS/GC from rolled GA → soft priors); props unavailable / off",
     "props": false,
+    "centre_blend": 0.5,
+    "z_band": 1.0,
     "scope": "cascade_long / multistage_mc_milp",
     "modules": [
       "src/models/opta_gf_ga_horizon.py",
@@ -198,7 +204,7 @@
       "src/markets/cascade_score_v2.py",
       "src/markets/short_horizon_generative.py"
     ],
-    "any_later_change": "dated protocol update required"
+    "any_later_change": "dated protocol update required; PI re-approval if rank_map, ḡ, latent_draw, or hierarchical scoreline changes"
   },
   "score_xp_v2_screen": {
     "score_column": "score_xp_v2",

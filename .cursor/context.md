@@ -13,7 +13,7 @@ Updated: 2026-10-23. **Numagent 2.0** is the product on main (`protocol.numagent
 | **3. Decompose v2 for cascade** | **done** | [`CASCADE_CONTRACT.md`](../reports/CASCADE_CONTRACT.md); `src/strategy/layer4_mu_inject.py` (`pools_from_mu_boards` → `solve_horizon_transfers`). Long-horizon λ→xP stays `cascade_score_v2`. |
 | **4. Cascade rebuild plan** | **done** | [`CASCADE_PLAN.md`](../reports/CASCADE_PLAN.md): **cascade_short** / **cascade_long**, shared [`player_pool`](../src/models/player_pool.py). Scorer gate: [`SCORE_XP_V2_CHECKLIST.md`](../reports/SCORE_XP_V2_CHECKLIST.md) — confirm before path-V screens. |
 | **5. cascade_short generative** | **done** | `protocol.cascade_short_generative` locked 2026-10-20 (PR #96 / #97): centreline `M`→`k∼M` (**no λ ±15% jitter**)→lineup→attack→CS/GC; soft priors = `score_xp_v2` helpers; firm XI deferred. |
-| **6. cascade_long Opta generative** | **done** | `protocol.cascade_long_match_outcome`: Opta place→empirical GF/GA mean±SD (`rankmean`)→`M`→`k∼M` (OLS map retired; no ClubPath λ blend, no λ % jitter); player stack = cascade_short generative **without props**. |
+| **6. cascade_long Opta generative** | **PI-approved 2026-10-24** | `protocol.cascade_long_match_outcome`: rankmean±SD latents (`centre_blend=0.5`) → assessed expanding ḡ → λ → `M\|λ` → `k∼M` (hierarchical; no second λ jitter; OLS/`HOME_ADV=1.08` retired); player stack = cascade_short generative **without props**. |
 | **7. Cascade viability overnight** | **done** | `cascade_viability_batch` A/D green; C FT+cap smoke OK; B1/B2 gen MC-mean **clearly_loses** vs centreline mean (Δ≈−0.09); B3 inconclusive. Gen-as-mean **parked** — `reports/cascade_short_long_viability_results.md`. |
 | **8. Mean t:t+1 vs short gen** | **done** | N_MC=20 product horizon: still **clearly_loses** (Δ≈−0.054). `reports/cascade_short_mean_tt1_vs_gen.md`. |
 | **9. Path-V gen vs mean MILP** | **done (diagnostic)** | FT+cap N=20: both solve; gen hits≈7.2 vs mean≈1.6; top-15 Jaccard≈0.36. Not a path-V promote. `reports/cascade_pathv_gen_vs_mean.md`. |
@@ -44,7 +44,7 @@ Pre-deadline squad advisor under 2026/27 rules. Cursor implements and screens; G
 | **Horizon** | L4 μ_post priced, `BOOKIE_DEPTH=2`, γ=1 | **strategiser default** | `src/strategy/layer4_week.py` · `reports/layer4_mupost_gamma1.md` |
 | **Live pick** | `numagent_live_pick` (props **off**) | GW7 PI lock | `src/live/numagent_live_pick.py` |
 | **cascade_short** | priced t:t+1 generative: centreline `M`→`k∼M` (no λ jitter) | locked 2026-10-20 | `cascade_short` / `short_horizon_generative` · `protocol.cascade_short_generative` |
-| **cascade_long** | Opta place→empirical GF/GA mean±SD; ḡ=assessed expanding; δ-method λ SD→`M`→`k∼M`; generative xP, props off | locked 2026-10-20 · rankmean+ḡ 2026-10-24 | `cascade_long` / `multistage_mc_milp` · `protocol.cascade_long_match_outcome` |
+| **cascade_long** | rankmean±SD latents; assessed ḡ; hierarchical λ→`M\|λ`→`k∼M`; generative xP, props off | **PI-approved 2026-10-24** | `cascade_long` / `multistage_mc_milp` · `protocol.cascade_long_match_outcome` |
 | **cascade rates** | historical player/positional rate baseline | cascade_default | `src/markets/rate_baseline.py` · `protocol.score_xp_v2_rate_baseline_prior` |
 | **cascade path** | joint every-GW FT plan; γ=1; FT PE=+4/FT; minutes frozen | locked / default-on | `path_transfer_plan` · `cascade_joint_path_plan` · `cascade_gamma` · `DEFAULT_LINEUP_COV=False` |
 

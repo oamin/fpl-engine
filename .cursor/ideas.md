@@ -38,6 +38,14 @@ store GF/GA vs rank as a fitted function. Default is **empirical place mean
 + sample SD** from closed E0 seasons (`method=rankmean`). OLS kept only
 behind explicit `method="ols"`.
 
+## Locked — cascade_long hierarchical Opta λ strat (PI 2026-10-24)
+
+PI-approved in `protocol.cascade_long_match_outcome`:
+rankmean place GF/GA ± SD → draw latents with `centre_blend=0.5` inside
+±z·SD → assessed expanding ḡ → Dixon–Coles λ → `M|λ` → `k∼M`. δ-method
+`sd_lam` is diagnostic only; no second λ Uniform band. See
+`reports/LOCKED.md` / `reports/CASCADE_LOCKED.md`.
+
 ## Parked — cascade_short bonus-from-roll (2026-10-20)
 
 Scenario soft terms stay expanding-mean `bonus_mu` / `card_mu` / DefCon / saves.

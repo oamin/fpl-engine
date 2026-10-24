@@ -1,9 +1,10 @@
 {
-  "task": "cascade_gbar_expanding_uncertainty",
+  "task": "cascade_long_pi_lock",
   "status": "done",
-  "as_of_utc": "2026-10-24T13:16:36Z",
-  "change": "ḡ is assessed E0 expanding mean goals/team/match; place GF/GA and ḡ SE propagate into λ via delta method + sampling",
+  "as_of_utc": "2026-10-24T13:27:02Z",
+  "change": "PI-approved cascade_long strat: rankmean±SD latents (centre_blend=0.5), assessed expanding g-bar, hierarchical λ→M|λ→k∼M",
   "protocol": "cascade_long_match_outcome",
-  "default_method": "rankmean",
-  "note": "Live path uses E0_2627 via assessed_league_gf; closed prior when no completed rows."
+  "status_field": "pi_approved_strat",
+  "pi_approved": "2026-10-24",
+  "note": "Do not change rank_map, g-bar, latent_draw, or hierarchical scoreline without dated protocol update + PI re-approval."
 }
