@@ -8,7 +8,7 @@ Product landing: PR into `main` from that tip.
 | Piece | Protocol / default | Note |
 | --- | --- | --- |
 | **cascade_short** | `cascade_short_generative` | Centreline `M→k∼M`; no λ ±15% jitter |
-| **cascade_long** | `cascade_long_match_outcome` | Opta place→GF/GA±MAE→`M→k∼M`; props off |
+| **cascade_long** | `cascade_long_match_outcome` | Opta place→GF/GA±MAE→`M→k∼M`; `HOME_ADV=1.0` (1.08 rejected); props off |
 | **Minutes on gen paths** | `DEFAULT_LINEUP_COV=False` | As-of mean / live xmi; FFScout = pool WHO only |
 | **Rate baseline** | `score_xp_v2_rate_baseline_prior` = `cascade_default` | Prior + same-season update; full `mu_post` gate deferred |
 | **Joint path transfers** | `cascade_joint_path_plan` = `wired` | Every horizon GW; `e=max(0,k−f)` |
