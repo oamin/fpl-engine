@@ -1,30 +1,17 @@
 {
-  "task": "cascade_locked_consolidate",
+  "task": "cascade_mean_strand_convergence",
   "status": "done",
-  "as_of_utc": "2026-10-23T15:55:00Z",
-  "note": "Fast-forward club-expanding to path-bench tip (#101–#106 locked/default stack). Open PR into main.",
-  "includes": {
-    "locked_or_default": [
-      "cascade_short_generative",
-      "cascade_long_match_outcome",
-      "DEFAULT_LINEUP_COV=False",
-      "score_xp_v2_rate_baseline_prior=cascade_default",
-      "cascade_joint_path_plan",
-      "cascade_gamma=1",
-      "DEFAULT_FT_PE_NU=HIT_COST",
-      "cascade_path_bench_weight=rejected"
-    ],
-    "diagnostic_landed": [
-      "cascade_deadline_causal_minutes",
-      "cascade_mc_vs_mean_hist",
-      "cascade_mean_path_gw_resid",
-      "cascade_ft_pe_path"
-    ],
-    "not_on_this_tip": [
-      "cascade_pathv_share_cond_xp (#108)",
-      "gw08 live pick (#107)"
-    ]
+  "as_of_utc": "2026-10-24T16:35:00Z",
+  "change": "Diagnostic: large-N gen mean vs centreline on 2025-26 GW8–19",
+  "protocol": "cascade_mean_strand_convergence",
+  "verdict": {
+    "converges_to_centreline": false,
+    "converges_to": "generative expectation E[xP under k∼M + attack dice]",
+    "mae_vs_centre_n200": 0.363,
+    "mae_self_n100_vs_n200": 0.146,
+    "scoreline_bias_kh": 0.002,
+    "note": "Plateau ~0.36 xP MAE vs centreline; k∼M calibrated; gap is nonlinear player map"
   },
-  "index": "reports/CASCADE_LOCKED.md",
-  "branch": "cursor/club-expanding-gf-ga-2025-26-cc3d"
+  "artifact": "/opt/cursor/artifacts/cascade_mean_strand_convergence.json",
+  "report": "reports/cascade_mean_strand_convergence.md"
 }

@@ -1,0 +1,92 @@
+[
+  {
+    "gw": 12,
+    "buys": [
+      "Antoine Semenyo"
+    ],
+    "sells": [
+      "Bruno Borges Fernandes"
+    ],
+    "n_transfers": 1,
+    "hits": 0,
+    "ft_before": 5,
+    "ft_after": 5
+  },
+  {
+    "gw": 13,
+    "buys": [
+      "Matthijs de Ligt",
+      "Bruno Borges Fernandes",
+      "Ollie Watkins"
+    ],
+    "sells": [
+      "Jo\u00e3o Pedro Junqueira de Jesus",
+      "Gabriel dos Santos Magalh\u00e3es",
+      "Antoine Semenyo"
+    ],
+    "n_transfers": 3,
+    "hits": 0,
+    "ft_before": 5,
+    "ft_after": 3
+  },
+  {
+    "gw": 16,
+    "buys": [
+      "Declan Rice"
+    ],
+    "sells": [
+      "Bryan Mbeumo"
+    ],
+    "n_transfers": 1,
+    "hits": 0,
+    "ft_before": 5,
+    "ft_after": 5
+  },
+  {
+    "gw": 17,
+    "buys": [
+      "Kevin Schade",
+      "Igor Thiago Nascimento Rodrigues",
+      "Antoine Semenyo"
+    ],
+    "sells": [
+      "Declan Rice",
+      "Bruno Borges Fernandes",
+      "Ollie Watkins"
+    ],
+    "n_transfers": 3,
+    "hits": 0,
+    "ft_before": 5,
+    "ft_after": 3
+  },
+  {
+    "gw": 18,
+    "buys": [
+      "Ryan Sessegnon",
+      "Mohamed Salah"
+    ],
+    "sells": [
+      "Kevin Schade",
+      "Antoine Semenyo"
+    ],
+    "n_transfers": 2,
+    "hits": 0,
+    "ft_before": 3,
+    "ft_after": 2
+  },
+  {
+    "gw": 19,
+    "buys": [
+      "Bryan Mbeumo",
+      "Bruno Borges Fernandes"
+    ],
+    "sells": [
+      "Mohamed Salah",
+      "Granit Xhaka"
+    ],
+    "n_transfers": 2,
+    "hits": 0,
+    "ft_before": 2,
+    "ft_after": 1
+  }
+]

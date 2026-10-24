@@ -91,16 +91,18 @@ Protocol: `cascade_short_generative`. Entry: `src/models/cascade_short.py` → `
 
 Modules: `short_horizon_generative`, `match_outcome`, `lineup_roll`, `attack_roll`, `defence_roll`, `player_attack`, `prop_shares`.
 
-### cascade_long match outcome (locked 2026-10-20)
+### cascade_long match outcome (PI-approved 2026-10-24)
 
-Protocol: `cascade_long_match_outcome`. Entry: `cascade_long` → `multistage_mc_milp`.
+Protocol: `cascade_long_match_outcome` (`status=pi_approved_strat`). Entry: `cascade_long` → `multistage_mc_milp`.
 
 | Step | Method |
 | --- | --- |
-| Rank → GF/GA | Locked OLS on closed-season place history (`opta_gf_ga_horizon`) |
-| λ | Opta place → GF/GA ±MAE → `sample_match_from_opta_ranks` (no ClubPath blend) |
-| M / scoreline | `match_outcome_probs_from_lambdas` → `match_outcome_roll` (`k ∼ M`) |
-| Player xP | Same generative stack as cascade_short (lineup → dice → CS/GC → soft priors); **props off** |
+| Rank → GF/GA | Empirical place mean ± sample SD (`method=rankmean`); OLS retired |
+| Latents | Per strand: GF, GA, ḡ inside ±z·SD with `centre_blend=0.5` |
+| ḡ | Assessed E0 expanding mean goals/team/match (`assessed_league_gf`) |
+| λ | `(GF/38)·((GA_opp/38)/ḡ)`; `HOME_ADV=1.0`; no ClubPath blend |
+| M / scoreline | Hierarchical: drawn λ → `M\|λ` → `k∼M`; no second λ jitter |
+| Player xP | Same generative stack as cascade_short; **props off** |
 
 ## Superseded
 
