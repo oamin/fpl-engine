@@ -36,7 +36,9 @@ CLOSED = [
 ]
 
 N_MATCHES = 38.0
-HOME_ADV = 1.08
+# Neutral venue factor. The previous 1.08 home boost was never PI-approved
+# (agent-era spice, same class as λ ±15% jitter) — retired 2026-10-24.
+HOME_ADV = 1.0
 # OLS on closed seasons (rank → season totals); also used as default se.
 OLS_GF = (79.896, -2.264)  # intercept, slope
 OLS_GA = (36.297, 1.888)
@@ -252,10 +254,11 @@ def pots_from_season_gf_ga(
     home_adv: float = HOME_ADV,
     shrink: float = 1.0,
 ) -> tuple[dict[str, float], dict[str, float]]:
-    """Dixon–Coles-style match pots from season GF/GA totals.
+    """Match pots from season GF/GA totals (attack × opp defence / league).
 
-    ``λ_H = (GF_H/38)·(GA_A / league_avg_rate)·home_adv`` (clipped).
-    Returns ``(home_pot, away_pot)`` compatible with ``xp_on_pot``.
+    ``λ_H = (GF_H/38)·((GA_A/38) / ḡ)·home_adv`` (clipped). Default
+    ``home_adv`` is 1.0 (no venue tilt). Returns pots compatible with
+    ``xp_on_pot``.
     """
     lavg = float(league_gf if league_gf is not None else 52.0) / N_MATCHES
     lavg = lavg if lavg > 0 else NEUTRAL_TOTAL / 2.0
