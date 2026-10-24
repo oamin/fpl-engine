@@ -1,20 +1,19 @@
 {
-  "task": "saka_gross_swap_probe_n500",
+  "task": "cascade_mean_xi_ft_hist",
   "status": "done",
-  "as_of_utc": "2026-10-24T15:50:05Z",
-  "change": "Mean-board xi_ft probe at N=500 (seed0=7, GW8–14)",
-  "protocol": "cascade_path_transfer_only",
+  "as_of_utc": "2026-10-24T16:20:58Z",
+  "change": "2025-26 GW8–19 mean-board xi_ft screen N=500 (oracle ranks, LOSO GF/GA, prior rate baseline)",
+  "protocol": "cascade_mean_xi_ft_hist",
   "verdict": {
-    "swap_saka_to_gross_by_gw10": false,
-    "gross_held_from_gw10_on": true,
-    "gross_bought_gw": 10,
-    "saka_sold_gw": 11,
-    "opening_has_gross": false,
-    "total_transfers": 7,
+    "total_transfers": 12,
     "total_hits": 0,
-    "note": "Unlike N=12/100, open 15 omits Groß; path buys Groß at GW10 (sell Mbeumo), dumps Saka at GW11 with Thiago→Haaland+Tonali. Still 0 hits."
+    "terminal_ft": 1,
+    "objective": 1018.27,
+    "wall_s": 855.5,
+    "board_s": 845.0,
+    "note": "Banks to FT cap 5 (GW8–11 hold), spends at GW12–13 and GW16–19; same stable FT-only pattern as live mean probe"
   },
-  "board_note": "N=500 Δ(G−S) near flat at GW10 (+0.07); clear Groß edge only from GW12 (+1.33)",
-  "artifact": "/opt/cursor/artifacts/saka_gross_swap_probe_n500.json",
-  "compare_plot": "/opt/cursor/artifacts/saka_gross_swap_probe_n12_n100_n500.png"
+  "live_n500_wall_note": "prior live Saka–Groß N=500 GW8–14 took ~1018s (~17 min)",
+  "artifact": "/opt/cursor/artifacts/cascade_mean_xi_ft_hist_n500.json",
+  "report": "reports/cascade_mean_xi_ft_hist.md"
 }
