@@ -28,6 +28,12 @@ Updated: 2026-10-23. **Numagent 2.0** is the product on main (`protocol.numagent
 | **18. Deadline-causal minutes** | **done (diagnostic)** | Oracle m only at deadline GW; as-of for later; rolling replan. N=12: +hits, actual +12, terminal FT flat. `reports/cascade_deadline_causal_minutes.md`. |
 | **19. Path bench weight α** | **rejected** | α·squad form screened then removed from path objective. `reports/cascade_path_bench_weight.md`. |
 
+## Recent diagnostic (2026-10-24)
+
+**Count resid E[G,CS,GA]** on mean xi_ft (N=100): ∅_G via α_G≈0.96 already
+in generative; OL XI still ΣE_G≅76 vs ΣG=28. CS/GA closer.
+`reports/cascade_mean_xi_ft_count_resid.md`.
+
 ## Plan
 
 Pre-deadline squad advisor under 2026/27 rules. Cursor implements and screens; Gemini proposes formulae; the PI reads gated batches. A result needs the as-of audit and paired intervals on 2022-23…2025-26 (`write_gated_report`). **Numagent 2.0 pots** use The Odds API (AH+OU+BTTS; quota-aware — `.cursor/rules/odds-api-quota.mdc`). Classic climb `gw_lines` may use Betfair. The live 2026/27 holdout is frozen — do not fit on it.
