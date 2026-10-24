@@ -1,22 +1,36 @@
 {
-  "task": "cascade_mean_xi_ft_component_resid",
+  "task": "cascade_mean_xi_ft_count_resid",
   "status": "done",
-  "as_of_utc": "2026-10-24T18:12:44Z",
-  "change": "G/CS/GC residual (xP−actual) for rolling mean xi_ft run N=100",
-  "protocol": "cascade_mean_xi_ft_rolling",
+  "as_of_utc": "2026-10-24T21:12:14Z",
+  "change": "E[G,CS,GA]\u2212actual count residual; \u2205_G via \u03b1_G documented",
   "verdict": {
-    "open_loop_GW8_19": {
-      "G": "ΣxP 357 vs ΣP 127 → resid +230 (mean +1.74/player-GW)",
-      "CS": "ΣxP 95 vs ΣP 73 → resid +22",
-      "GC": "ΣxP −15 vs ΣP −10 → resid −5"
+    "ol_G": {
+      "sum_E": 76.45,
+      "sum_actual": 28.0,
+      "sum_resid": 48.45,
+      "mean_resid": 0.36704545454545456,
+      "mae": 0.495530303030303,
+      "rmse": 0.6618414394015314
     },
-    "rolling_GW8_10": {
-      "G": "ΣxP 80 vs ΣP 40 → resid +40",
-      "CS": "ΣxP 26 vs ΣP 42 → resid −16 (under-CS early)",
-      "GC": "ΣxP −2 vs ΣP 0 → resid −2"
+    "ol_CS": {
+      "sum_E": 47.58,
+      "sum_actual": 34.0,
+      "sum_resid": 13.580000000000002,
+      "mean_resid": 0.10287878787878789,
+      "mae": 0.4192424242424242,
+      "rmse": 0.44891789085229467
     },
-    "note": "Goals heavily over-predicted on XI; CS closer; GC small"
+    "ol_GA": {
+      "sum_E": 141.67,
+      "sum_actual": 126.0,
+      "sum_resid": 15.669999999999998,
+      "mean_resid": 0.1187121212121212,
+      "mae": 0.7908333333333335,
+      "rmse": 1.0037448818692865
+    },
+    "empty_goal_rate": 0.04495943092141825,
+    "alpha_g": 0.9555555555555556
   },
-  "artifact": "/opt/cursor/artifacts/cascade_mean_xi_ft_component_resid.json",
-  "report": "reports/cascade_mean_xi_ft_component_resid.md"
+  "artifact": "/opt/cursor/artifacts/cascade_mean_xi_ft_count_resid.json",
+  "report": "reports/cascade_mean_xi_ft_count_resid.md"
 }

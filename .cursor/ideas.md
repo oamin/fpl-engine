@@ -4,6 +4,13 @@ Cursor chooses the next pre-registered comparison. The PI is not asked to pick. 
 
 **Numagent 2.0 is locked on main** — see `.cursor/context.md` and `reports/LOCKED.md` (`protocol.numagent_2_0`). Engine primary scorer is `score_xp_v2`. Numagent 1.0 and `score_xp` are **archived in-place** (`reports/ARCHIVE_NUMAGENT_1_0.md`). This file is the **park log**. Everything from “Procedure, locked 2026-10-07” downward is **Numagent 1.0 / stage archaeology** — not instructions for the live path.
 
+## Noted — count resid E[G,CS,GA] on mean xi_ft (2026-10-24)
+
+Generative already has ∅_G via α_G≈0.956 (empty rate ≈4.5%). Open-loop XI
+GW8–19 count residual: ΣE_G 76.5 vs ΣG 28 (+48); CS +13.6; GA +15.7. So the
+xP(G) overprint is mostly **too many attributed goals on the XI**, not just
+pts/goal. Report: `reports/cascade_mean_xi_ft_count_resid.md`.
+
 ## Parked — cascade generative MC-mean vs mean layer (2026-10-20 overnight)
 
 `cascade_viability_batch` B1/B2: player-GW log of N_MC=6 generative mean xP
