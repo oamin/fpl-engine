@@ -1,30 +1,22 @@
 {
-  "task": "cascade_locked_consolidate",
+  "task": "cascade_mean_xi_ft_component_resid",
   "status": "done",
-  "as_of_utc": "2026-10-23T15:55:00Z",
-  "note": "Fast-forward club-expanding to path-bench tip (#101–#106 locked/default stack). Open PR into main.",
-  "includes": {
-    "locked_or_default": [
-      "cascade_short_generative",
-      "cascade_long_match_outcome",
-      "DEFAULT_LINEUP_COV=False",
-      "score_xp_v2_rate_baseline_prior=cascade_default",
-      "cascade_joint_path_plan",
-      "cascade_gamma=1",
-      "DEFAULT_FT_PE_NU=HIT_COST",
-      "cascade_path_bench_weight=rejected"
-    ],
-    "diagnostic_landed": [
-      "cascade_deadline_causal_minutes",
-      "cascade_mc_vs_mean_hist",
-      "cascade_mean_path_gw_resid",
-      "cascade_ft_pe_path"
-    ],
-    "not_on_this_tip": [
-      "cascade_pathv_share_cond_xp (#108)",
-      "gw08 live pick (#107)"
-    ]
+  "as_of_utc": "2026-10-24T18:12:44Z",
+  "change": "G/CS/GC residual (xP−actual) for rolling mean xi_ft run N=100",
+  "protocol": "cascade_mean_xi_ft_rolling",
+  "verdict": {
+    "open_loop_GW8_19": {
+      "G": "ΣxP 357 vs ΣP 127 → resid +230 (mean +1.74/player-GW)",
+      "CS": "ΣxP 95 vs ΣP 73 → resid +22",
+      "GC": "ΣxP −15 vs ΣP −10 → resid −5"
+    },
+    "rolling_GW8_10": {
+      "G": "ΣxP 80 vs ΣP 40 → resid +40",
+      "CS": "ΣxP 26 vs ΣP 42 → resid −16 (under-CS early)",
+      "GC": "ΣxP −2 vs ΣP 0 → resid −2"
+    },
+    "note": "Goals heavily over-predicted on XI; CS closer; GC small"
   },
-  "index": "reports/CASCADE_LOCKED.md",
-  "branch": "cursor/club-expanding-gf-ga-2025-26-cc3d"
+  "artifact": "/opt/cursor/artifacts/cascade_mean_xi_ft_component_resid.json",
+  "report": "reports/cascade_mean_xi_ft_component_resid.md"
 }

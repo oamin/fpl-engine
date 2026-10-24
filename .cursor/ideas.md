@@ -22,6 +22,36 @@ book/FD (or Opta) centreline → `M` → categorical `k ∼ M`. Outcome noise is
 roll over `M`, not a second invented λ axis. Contaminated diagnostic:
 `reports/multistage_xi_captain_ft_short_long_trial.md` (GW8 used ±15%).
 
+## Rejected — Opta long-horizon HOME_ADV=1.08 (2026-10-24)
+
+`opta_gf_ga_horizon.HOME_ADV` multiplied home λ by 1.08 and away by 1/1.08.
+Never discussed or PI-approved (same class as λ jitter). Set to **1.0**
+(neutral venue). A home edge needs its own closed-season screen before any
+non-unit factor returns. Legacy `channel_trial` still hardcodes 1.08 — leave
+as archaeology; not the cascade_long path.
+
+## Rejected — stored OLS place→GF/GA function (2026-10-24)
+
+`OLS_GF = 79.9 − 2.26·rank` / `OLS_GA = 36.3 + 1.89·rank` as the default
+map understates champions (place-1 mean GF 86.8 vs OLS 77.6). PI: do not
+store GF/GA vs rank as a fitted function. Default is **empirical place mean
++ sample SD** from closed E0 seasons (`method=rankmean`). OLS kept only
+behind explicit `method="ols"`.
+
+## Parked — FT bank PE in path objective (2026-10-24)
+
+`DEFAULT_FT_PE_NU=HIT_COST` put terminal bank into \(V\). PI: keep FT as a
+**separate bank pot** (constraints + `plan.bank_pot`); objective is XI/−hits
+only (`DEFAULT_FT_PE_NU=0`). Re-open PE only as an explicit diagnostic screen.
+
+## Locked — cascade_long hierarchical Opta λ strat (PI 2026-10-24)
+
+PI-approved in `protocol.cascade_long_match_outcome`:
+rankmean place GF/GA ± SD → draw latents with `centre_blend=0.5` inside
+±z·SD → assessed expanding ḡ → Dixon–Coles λ → `M|λ` → `k∼M`. δ-method
+`sd_lam` is diagnostic only; no second λ Uniform band. See
+`reports/LOCKED.md` / `reports/CASCADE_LOCKED.md`.
+
 ## Parked — cascade_short bonus-from-roll (2026-10-20)
 
 Scenario soft terms stay expanding-mean `bonus_mu` / `card_mu` / DefCon / saves.

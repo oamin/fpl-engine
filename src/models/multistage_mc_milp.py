@@ -29,6 +29,9 @@ Objective modes
 - ``xi_plus_captain_ft``: **joint** multi-GW transfer plan over the full
   horizon (free open + FT/hit schedule). One MILP chooses the starting 15
   and every later transfer / hold / hit; see ``path_transfer_plan``.
+  Objective includes XI **plus** captain double.
+- ``xi_ft``: same joint transfer plan, but **no captaincy in the objective**
+  (Σ XI − hits + FT PE). Isolates the transfer rule for path-V screens.
 
 Optional **minutes overlay** (``--minutes-overlay``): scale xmi/shares by FPL
 ``chance_of_playing_*`` / status so injured or doubtful pool players are not
@@ -69,6 +72,8 @@ from src.markets.short_horizon_generative import hist_by_team_norm
 from src.models.opta_gf_ga_horizon import (
     N_MATCHES,
     gf_ga_from_rank,
+    LIVE_E0,
+    assessed_league_gf,
     league_avg_gf,
     load_opta_ranks,
     match_prediction,
@@ -98,7 +103,14 @@ SEED_SHARES = False
 OBJECTIVE_SQUAD_SUM = "squad_sum"
 OBJECTIVE_XI_CAPTAIN = "xi_plus_captain"
 OBJECTIVE_XI_CAPTAIN_FT = "xi_plus_captain_ft"
-OBJECTIVES = (OBJECTIVE_SQUAD_SUM, OBJECTIVE_XI_CAPTAIN, OBJECTIVE_XI_CAPTAIN_FT)
+OBJECTIVE_XI_FT = "xi_ft"
+OBJECTIVES = (
+    OBJECTIVE_SQUAD_SUM,
+    OBJECTIVE_XI_CAPTAIN,
+    OBJECTIVE_XI_CAPTAIN_FT,
+    OBJECTIVE_XI_FT,
+)
+FT_OBJECTIVES = (OBJECTIVE_XI_CAPTAIN_FT, OBJECTIVE_XI_FT)
 # Path planner information set for minutes:
 # - open_loop: freeze pool minutes; one joint MILP over the horizon
 # - deadline_causal: at each deadline, oracle minutes for that GW only;
@@ -116,7 +128,10 @@ MAX_HITS_SNAPSHOT = int(SQUAD_SIZE)
 # stored FT is worth one hit (+4); five FTs = +20. Holding below the cap grows
 # next-deadline bank by +1 (+ν PE); at the cap the weekly grant adds +0 PE
 # unless a transfer is used first. Concave φ·W form is retired.
-DEFAULT_FT_PE_NU = float(HIT_COST)
+# FT bank is a separate ledger (constraints + report). Do not put bank PE in
+# the path objective by default — hits already cost −4 via e. PE (ν>0) stays
+# available for explicit diagnostic screens only.
+DEFAULT_FT_PE_NU = 0.0
 
 
 def ft_bank_phi(bank: int, *, max_ft: int | None = None) -> float:
@@ -149,13 +164,14 @@ def ft_bank_potential(
 ) -> float:
     """Potential energy of an FT bank: ``U(b) = ν · b`` (b capped at MAX_FT).
 
-    Default ``ν = HIT_COST`` (+4 per stored FT, +20 at cap). ``horizon_weight``
-    is ignored (API compat); PE is not multi-week-scaled.
+    Helper default ``ν = HIT_COST`` (+4 per stored FT). Path MILP defaults to
+    ``DEFAULT_FT_PE_NU=0`` (bank pot ledger only — PE not in V). Pass
+    ``nu`` explicitly to score PE. ``horizon_weight`` ignored (API compat).
     """
     del horizon_weight
     from src.rules.fpl_2026 import MAX_FT as _MAX_FT
 
-    n = float(DEFAULT_FT_PE_NU if nu is None else nu)
+    n = float(HIT_COST if nu is None else nu)
     if n <= 0.0 or int(bank) <= 0:
         return 0.0
     m = int(_MAX_FT if max_ft is None else max_ft)
@@ -267,7 +283,7 @@ def init_paths_from_opta(
     prof = rank_gf_ga_profile() if profile is None else profile
     paths: dict[str, ClubPath] = {}
     for club, rk in rank_map.items():
-        rates = gf_ga_from_rank(rk, profile=prof, method="ols")
+        rates = gf_ga_from_rank(rk, profile=prof)  # default rankmean
         paths[club] = ClubPath(
             att=float(rates["gf"]) / N_MATCHES,
             dfn=float(rates["ga"]) / N_MATCHES,
@@ -405,6 +421,7 @@ def sample_opta_scenario(
     centre_blend: float = 0.5,
     ranks: Mapping[str, float] | None = None,
     profile: Mapping[int, Mapping[str, float]] | None = None,
+    sd_league_gf: float = 0.0,
 ) -> dict[str, Any]:
     """Baseline roll: place → GF/GA ± bands → λ → ``M`` → ``k ∼ M``.
 
@@ -412,6 +429,7 @@ def sample_opta_scenario(
     Pass ``ranks`` / ``profile`` for closed-season oracle + LOSO bands;
     defaults keep the live Opta JSON path.
     ``ClubPath`` is unused for λ (kept only as KeyError fallback).
+    ``sd_league_gf`` is the SE of assessed expanding ḡ (season-total units).
     """
     try:
         draw = sample_match_from_opta_ranks(
@@ -422,6 +440,7 @@ def sample_opta_scenario(
             profile=profile,
             centre_blend=centre_blend,
             league_gf=league_gf,
+            sd_league_gf=sd_league_gf,
         )
         # λ already sampled inside rank GF/GA bands — roll k∼M at that λ.
         sh = float(draw["lam_home"])
@@ -582,6 +601,7 @@ def sample_week_scenario(
     rng: random.Random,
     ranks: Mapping[str, float] | None = None,
     profile: Mapping[int, Mapping[str, float]] | None = None,
+    sd_league_gf: float = 0.0,
 ) -> dict[str, Any]:
     """Priced cascade_short when a fit exists; else Opta / oracle cascade_long."""
     key = (norm_team(home), norm_team(away))
@@ -596,6 +616,7 @@ def sample_week_scenario(
         rng=rng,
         ranks=ranks,
         profile=profile,
+        sd_league_gf=sd_league_gf,
     )
 
 
@@ -612,6 +633,7 @@ def _scenarios_for_remaining(
     | None = None,
     ranks: Mapping[str, float] | None = None,
     profile: Mapping[int, Mapping[str, float]] | None = None,
+    sd_league_gf: float = 0.0,
 ) -> dict[int, list[dict[str, Any]]]:
     """Current GW: stored rolls. Later GWs: scratch short (priced) or Opta/oracle."""
     pidx = priced_index or {}
@@ -636,6 +658,7 @@ def _scenarios_for_remaining(
                     rng=rng,
                     ranks=ranks,
                     profile=profile,
+                    sd_league_gf=sd_league_gf,
                 )
             )
         out[g_i] = rows
@@ -713,6 +736,7 @@ def _append_plan_week(
     week: Mapping[str, Any],
     *,
     plan_tag: str,
+    objective: str,
 ) -> None:
     result.squads.append(
         {
@@ -720,9 +744,10 @@ def _append_plan_week(
             "player_ids": list(week["player_ids"]),
             "names": list(week["names"]),
             "score_sum": float(week["week_score"]),
-            "objective": OBJECTIVE_XI_CAPTAIN_FT,
+            "objective": str(objective),
             "objective_value": float(week["week_score"]) - float(week["hits"]),
             "captain_id": week["captain_id"],
+            "value_captain": bool(week.get("value_captain", True)),
             "xi_ids": list(week["xi_ids"]),
             "n_transfers": int(week["n_transfers"]),
             "hits": int(week["hits"]),
@@ -743,6 +768,8 @@ def _emit_joint_ft_plan(
     gamma: float,
     milp_time_limit: float,
     ft_pe_nu: float,
+    objective: str = OBJECTIVE_XI_CAPTAIN_FT,
+    value_captain: bool = True,
 ) -> StrandResult:
     """Solve one joint path schedule and append weekly squads."""
     from src.models.path_transfer_plan import (
@@ -768,9 +795,12 @@ def _emit_joint_ft_plan(
         max_hits=MAX_HITS_SNAPSHOT,
         ft_pe_nu=float(ft_pe_nu),
         time_limit=tlim,
+        value_captain=bool(value_captain),
     )
     for week in plan["weeks"]:
-        _append_plan_week(result, week, plan_tag="joint_path")
+        _append_plan_week(
+            result, week, plan_tag="joint_path", objective=str(objective)
+        )
     result.meta["path_plan"] = {
         "n_candidates": plan["n_candidates"],
         "horizon": plan["horizon"],
@@ -779,7 +809,10 @@ def _emit_joint_ft_plan(
         "terminal_ft": plan["terminal_ft"],
         "terminal_pe": plan["terminal_pe"],
         "ft_pe_nu": plan["ft_pe_nu"],
+        "bank_pot": plan.get("bank_pot"),
         "path_plan_mode": PATH_PLAN_OPEN_LOOP,
+        "value_captain": bool(plan.get("value_captain", True)),
+        "objective_name": str(objective),
     }
     return result
 
@@ -856,6 +889,8 @@ def _emit_rolling_causal_ft_plan(
     merged: pd.DataFrame,
     season: str,
     lookahead: int = DEFAULT_CAUSAL_LOOKAHEAD,
+    objective: str = OBJECTIVE_XI_CAPTAIN_FT,
+    value_captain: bool = True,
 ) -> StrandResult:
     """Rolling replan: oracle minutes only at the current deadline GW.
 
@@ -913,6 +948,7 @@ def _emit_rolling_causal_ft_plan(
                 max_hits=MAX_HITS_SNAPSHOT,
                 ft_pe_nu=float(ft_pe_nu),
                 time_limit=tlim,
+                value_captain=bool(value_captain),
             )
         else:
             plan = pick_path_transfer_plan(
@@ -925,9 +961,15 @@ def _emit_rolling_causal_ft_plan(
                 time_limit=tlim,
                 start_owned_ids=owned,
                 start_ft=int(ft_bank),
+                value_captain=bool(value_captain),
             )
         week0 = plan["weeks"][0]
-        _append_plan_week(result, week0, plan_tag="rolling_causal")
+        _append_plan_week(
+            result,
+            week0,
+            plan_tag="rolling_causal",
+            objective=str(objective),
+        )
         owned = list(week0["player_ids"])
         ft_bank = int(week0["ft_after"])
         n_cands_last = int(plan["n_candidates"])
@@ -939,6 +981,8 @@ def _emit_rolling_causal_ft_plan(
         "horizon": len(plan_gws),
         "status": statuses[-1] if statuses else "",
         "terminal_ft": terminal_ft,
+        "value_captain": bool(value_captain),
+        "objective_name": str(objective),
         "terminal_pe": float(
             ft_bank_potential(terminal_ft, nu=float(ft_pe_nu))
             if float(ft_pe_nu) > 0
@@ -963,6 +1007,7 @@ def run_strand(
     paths0: Mapping[str, ClubPath],
     league_gf: float,
     rng: random.Random,
+    sd_league_gf: float = 0.0,
     gamma: float = DEFAULT_GAMMA,
     milp_time_limit: float = 8.0,
     objective: str = OBJECTIVE_SQUAD_SUM,
@@ -1024,6 +1069,7 @@ def run_strand(
                 rng=rng,
                 ranks=ranks,
                 profile=profile,
+                sd_league_gf=sd_league_gf,
             )
             paths[fx["home"]].observe(sc["hg"], sc["ag"])
             paths[fx["away"]].observe(sc["ag"], sc["hg"])
@@ -1044,8 +1090,9 @@ def run_strand(
             )
 
     # FT path: open-loop joint schedule, or rolling deadline-causal minutes.
-    if objective == OBJECTIVE_XI_CAPTAIN_FT:
+    if objective in FT_OBJECTIVES:
         plan_gws = [int(g) for g in horizon_gws]
+        value_captain = objective == OBJECTIVE_XI_CAPTAIN_FT
         if not plan_gws:
             return result
         try:
@@ -1074,6 +1121,8 @@ def run_strand(
                     ft_pe_nu=float(ft_pe_nu),
                     merged=merged,
                     season=str(season),
+                    objective=str(objective),
+                    value_captain=value_captain,
                 )
             scores_by_gw = _undiscounted_scores_by_gw(
                 pool,
@@ -1098,6 +1147,8 @@ def run_strand(
                 gamma=float(gamma),
                 milp_time_limit=float(milp_time_limit),
                 ft_pe_nu=float(ft_pe_nu),
+                objective=str(objective),
+                value_captain=value_captain,
             )
         except RuntimeError:
             return result
@@ -1121,6 +1172,7 @@ def run_strand(
                 priced_index=priced_index,
                 ranks=ranks,
                 profile=profile,
+                sd_league_gf=sd_league_gf,
             )
             scored = score_pool_generative_on_scenarios(
                 pool,
@@ -1635,7 +1687,9 @@ def run_multistage_trial(
             }
 
     profile = rank_gf_ga_profile()
-    league_gf = league_avg_gf(profile)
+    league_state = assessed_league_gf(LIVE_E0, profile=profile)
+    league_gf = float(league_state["league_gf"])
+    sd_league_gf = float(league_state["se_league_gf"])
     paths0 = init_paths_from_opta()
     rng = random.Random(int(seed))
 
@@ -1651,6 +1705,7 @@ def run_multistage_trial(
                 pool=pool,
                 paths0=paths0,
                 league_gf=league_gf,
+                sd_league_gf=sd_league_gf,
                 rng=strand_rng,
                 gamma=gamma,
                 objective=objective,
@@ -1725,6 +1780,8 @@ def write_trial_outputs(result: dict[str, Any], *, out_dir: Path) -> dict[str, s
     obj = str(result.get("objective") or OBJECTIVE_SQUAD_SUM)
     if obj == OBJECTIVE_XI_CAPTAIN_FT:
         stem = "multistage_xi_captain_ft"
+    elif obj == OBJECTIVE_XI_FT:
+        stem = "multistage_xi_ft"
     elif obj == OBJECTIVE_XI_CAPTAIN:
         stem = "multistage_xi_captain"
     else:
@@ -1762,8 +1819,13 @@ def write_trial_outputs(result: dict[str, Any], *, out_dir: Path) -> dict[str, s
         f"({result.get('overlay')}).",
         (
             f"- Joint path transfer plan over GW {result['horizon']['gws']} "
-            f"(`{obj}`: free open + FT/hit schedule)."
-            if obj == OBJECTIVE_XI_CAPTAIN_FT
+            f"(`{obj}`: free open + FT/hit schedule"
+            + (
+                "; captain double **off** — transfer rule only)."
+                if obj == OBJECTIVE_XI_FT
+                else "; XI+captain valued)."
+            )
+            if obj in FT_OBJECTIVES
             else (
                 f"- Snapshots at GW {result['snapshot_gws']} → selectable-pool MILP "
                 f"(`{obj}`)."
@@ -1844,7 +1906,10 @@ def main() -> None:
         "--objective",
         choices=list(OBJECTIVES),
         default=OBJECTIVE_SQUAD_SUM,
-        help="squad_sum = equal 15; xi_plus_captain = XI + captain double",
+        help=(
+            "squad_sum | xi_plus_captain | xi_plus_captain_ft | xi_ft "
+            "(xi_ft = joint transfers, no captain double)"
+        ),
     )
     p.add_argument(
         "--minutes-overlay",
