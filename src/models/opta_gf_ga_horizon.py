@@ -1,15 +1,18 @@
 """Long-horizon match pots from Opta predicted ranks → season GF/GA.
 
-Opta publishes finishing place / points only. Default map: empirical mean
-season GF/GA **by finishing place** on closed E0 seasons, with the place
-sample SD as the band (``method="rankmean"``). Match λ uses
-``(GF/38)·((GA_opp/38)/ḡ)`` where ``ḡ`` is the assessed expanding mean
-goals per team per match (live/assessed E0), prior-blended early season.
-Place SD and ``ḡ`` SE propagate into λ (delta method + sampling).
+PI-approved cascade_long strat (2026-10-24,
+``protocol.cascade_long_match_outcome``):
 
-Linear OLS place→GF/GA is kept only for explicit ``method="ols"``
-archaeology — not the cascade path. Does not fit the rank map on the live
-2026/27 holdout.
+- Place map: empirical mean GF/GA by finishing place + sample SD
+  (``method="rankmean"``).
+- Latents: per strand, draw GF/GA/ḡ inside ±z·SD with
+  ``centre_blend=0.5``.
+- ``ḡ``: assessed expanding mean goals/team/match (live/assessed E0).
+- λ: ``(GF/38)·((GA_opp/38)/ḡ)``; hierarchical ``λ → M|λ → k∼M``
+  (no second λ jitter). δ-method ``sd_lam`` is diagnostic only.
+
+OLS place→GF/GA is archaeology only (``method="ols"``). Does not fit the
+rank map on the live 2026/27 holdout.
 """
 
 from __future__ import annotations
