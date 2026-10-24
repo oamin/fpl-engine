@@ -12,6 +12,7 @@ Product landing: PR into `main` from that tip.
 | **Minutes on gen paths** | `DEFAULT_LINEUP_COV=False` | As-of mean / live xmi; FFScout = pool WHO only |
 | **Rate baseline** | `score_xp_v2_rate_baseline_prior` = `cascade_default` | Prior + same-season update; full `mu_post` gate deferred |
 | **Joint path transfers** | `cascade_joint_path_plan` = `wired` | Every horizon GW; `e=max(0,k−f)` |
+| **Transfer-rule path-V** | `cascade_path_transfer_only` / `xi_ft` | Captain double **off**; isolate transfers |
 | **Cascade γ** | `cascade_gamma` = `locked` | `DEFAULT_GAMMA=1.0` (climb 0.9 stays on legacy climb only) |
 | **FT potential energy** | `DEFAULT_FT_PE_NU=HIT_COST` | +4 per stored FT; diagnostic default-on |
 | **Bench α** | `cascade_path_bench_weight` = `rejected` | Removed from path objective |

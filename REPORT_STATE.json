@@ -1,10 +1,8 @@
 {
-  "task": "cascade_long_pi_lock",
+  "task": "cascade_path_transfer_only",
   "status": "done",
-  "as_of_utc": "2026-10-24T13:27:02Z",
-  "change": "PI-approved cascade_long strat: rankmean±SD latents (centre_blend=0.5), assessed expanding g-bar, hierarchical λ→M|λ→k∼M",
-  "protocol": "cascade_long_match_outcome",
-  "status_field": "pi_approved_strat",
-  "pi_approved": "2026-10-24",
-  "note": "Do not change rank_map, g-bar, latent_draw, or hierarchical scoreline without dated protocol update + PI re-approval."
+  "as_of_utc": "2026-10-24T14:28:42Z",
+  "change": "Add objective xi_ft: joint path transfers with captain double off (value_captain=False) to isolate the transfer rule",
+  "protocol": "cascade_path_transfer_only",
+  "note": "Use --objective xi_ft for path-V / transfer screens until captaincy is back in scope."
 }

@@ -118,6 +118,42 @@ class JointPlanTest(unittest.TestCase):
         if weeks[9]["n_transfers"] == 0:
             self.assertEqual(weeks[9]["ft_after"], 2)
 
+    def test_value_captain_false_isolates_xi_transfers(self) -> None:
+        """Transfer-rule mode: week_score = XI only; captain double off."""
+        pool = _candidates()
+        gws = [8, 9, 10, 11]
+        n = len(pool)
+        S_pool = {g: np.full(n, 2.0) for g in gws}
+        star_i = int(pool.index[pool["position"] == "MID"][-1])
+        for g in (8, 9):
+            S_pool[g][star_i] = 0.05
+        S_pool[10][star_i] = 25.0
+        S_pool[11][star_i] = 25.0
+        cands = select_plan_candidates(
+            pool, S_pool, gws=gws, buy_ids=None, top_n=48
+        )
+        star_id = str(pool.iloc[star_i]["player_id"])
+        S = score_matrix_for_candidates(cands, pool, S_pool, gws)
+        plan = pick_path_transfer_plan(
+            cands,
+            S,
+            gws,
+            gamma=1.0,
+            ft_pe_nu=0.0,
+            time_limit=60.0,
+            value_captain=False,
+        )
+        self.assertFalse(plan["value_captain"])
+        weeks = {int(w["gw"]): w for w in plan["weeks"]}
+        for w in weeks.values():
+            self.assertFalse(w["value_captain"])
+            self.assertEqual(float(w["captain_score"]), 0.0)
+            self.assertAlmostEqual(float(w["week_score"]), float(w["xi_score"]))
+            self.assertIn(w["captain_id"], w["xi_ids"])
+        # Still looks ahead into the XI when the asset spikes.
+        self.assertIn(star_id, weeks[10]["xi_ids"])
+        self.assertIn(star_id, weeks[11]["xi_ids"])
+
     def test_forced_transfer_schedule(self) -> None:
         """Two expensive exclusives → open with A, transfer to B mid-horizon."""
         pool = _candidates().copy()

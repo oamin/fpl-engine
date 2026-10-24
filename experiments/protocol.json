@@ -1522,17 +1522,35 @@
   },
   "cascade_joint_path_plan": {
     "locked": "2026-10-21",
-    "revised": "2026-10-21 — cascade γ=1 (undiscounted); removed climb γ=0.9 contamination",
+    "revised": "2026-10-24 — add xi_ft (joint transfers, captain double off) for transfer-rule isolation",
     "status": "wired",
-    "role": "xi_plus_captain_ft is a joint multi-GW transfer schedule (not myopic per-snapshot FT MILP)",
+    "role": "joint multi-GW transfer schedule (not myopic per-snapshot FT MILP)",
     "module": "src/models/path_transfer_plan.py",
     "wired_into": "src/models/multistage_mc_milp.run_strand",
-    "design": "roll full horizon → per-GW score_xp_v2 → one MILP over all horizon GWs: free open + FT/hit-linked squads/XI/captain; undiscounted Σ (γ=1); top_n=48 candidates",
+    "objectives": {
+      "xi_plus_captain_ft": "Σ(XI+captain) − hits + FT PE",
+      "xi_ft": "Σ XI − hits + FT PE — captaincy not valued; isolate transfer rule"
+    },
+    "design": "roll full horizon → per-GW scores → one MILP over all horizon GWs: free open + FT/hit-linked squads/XI; undiscounted Σ (γ=1); top_n=48 candidates",
     "replaces": "myopic loop: discounted remaining μ → single-deadline _pick_squad_xi_captain_ft each snapshot",
     "gamma": 1.0,
-    "snapshot_every": "ignored for xi_plus_captain_ft (every horizon GW is a decision week)",
+    "snapshot_every": "ignored for FT objectives (every horizon GW is a decision week)",
     "ft_pe": "default on: terminal U(f_H)=ν·f_H with ν=HIT_COST (+4/FT, +20 at cap); hold below cap → +ν; at 5 grant +0 unless FT used",
+    "transfer_rule_screen": "use objective=xi_ft until captain screens reopen",
     "not": "four-season gate; retune ν; chips; restore γ=0.9; revive concave φ·W",
+    "any_later_change": "dated protocol update required"
+  },
+  "cascade_path_transfer_only": {
+    "locked": "2026-10-24",
+    "status": "active",
+    "role": "path-V / transfer-rule screens with captaincy held out",
+    "objective": "xi_ft",
+    "value_captain": false,
+    "note": "Legal captain still assigned in XI for FPL shape; does not enter the MILP objective. Re-enable xi_plus_captain_ft only when testing captain+transfer jointly.",
+    "modules": [
+      "src/models/path_transfer_plan.py",
+      "src/models/multistage_mc_milp.py"
+    ],
     "any_later_change": "dated protocol update required"
   },
   "cascade_ft_pe_path": {

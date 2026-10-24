@@ -1,14 +1,18 @@
 """Joint multi-GW transfer plan MILP for one cascade path strand.
 
-Given per-GW player scores on a fully rolled strand, choose a legal 15 + XI +
-captain for **every** horizon GW and the transfers that link them, subject to
-FT bank dynamics and −4/hit.
+Given per-GW player scores on a fully rolled strand, choose a legal 15 + XI
+(+ optional captain) for **every** horizon GW and the transfers that link
+them, subject to FT bank dynamics and −4/hit.
 
 Modes:
 - **free open** (default): opening GW is a wildcard-like rebuild; FT bank
   after open is 1; later weeks transfer from that 15.
 - **from owned**: first GW transfers from a held 15 with a given FT bank
   (rolling deadline replan).
+
+``value_captain=False`` isolates the **transfer rule**: objective is Σ XI
+scores − hits (+ FT PE); a legal captain is still picked but does not enter
+the objective (no captaincy double).
 """
 
 from __future__ import annotations
@@ -140,6 +144,7 @@ def pick_path_transfer_plan(
     time_limit: float = 90.0,
     start_owned_ids: Sequence[str] | None = None,
     start_ft: int = 1,
+    value_captain: bool = True,
 ) -> dict[str, Any]:
     """Joint path MILP over ``gws``.
 
@@ -150,6 +155,9 @@ def pick_path_transfer_plan(
 
     When ``ft_pe_nu > 0``, adds terminal PE ``U(f_H)=ν·f_H`` (default
     ``ν=HIT_COST``: +4 per stored FT, +20 at cap).
+
+    ``value_captain``: if False, captain double is omitted from the objective
+    (transfer-rule isolation); a legal captain is still chosen in the XI.
     """
     H = int(len(gws))
     n = int(len(candidates))
@@ -238,12 +246,14 @@ def pick_path_transfer_plan(
         return nx + ny + nc + n_buy + n_u + n_e + n_f + n_over + step_of[t]
 
     g = float(gamma)
+    use_cap = bool(value_captain)
     c_obj = np.zeros(dim)
     for t in range(H):
         w = g**t
         for i in range(n):
             c_obj[ix_y(t, i)] = -w * float(scores[t, i])
-            c_obj[ix_c(t, i)] = -w * float(scores[t, i])
+            if use_cap:
+                c_obj[ix_c(t, i)] = -w * float(scores[t, i])
     for t in t_xfer:
         c_obj[ix_e(t)] = float(HIT_COST)
     if use_pe:
@@ -502,7 +512,7 @@ def pick_path_transfer_plan(
                 ft_b = int(round(x[ix_f(t - 1)]))
             ft_a = int(round(x[ix_f(t)]))
         xi_score = float(sum(scores[t, i] for i in xi_idx))
-        cap_score = float(scores[t, cap_idx[0]])
+        cap_score = float(scores[t, cap_idx[0]]) if use_cap else 0.0
         weeks.append(
             {
                 "gw": int(gw),
@@ -517,6 +527,7 @@ def pick_path_transfer_plan(
                 "xi_score": xi_score,
                 "captain_score": cap_score,
                 "week_score": xi_score + cap_score,
+                "value_captain": use_cap,
             }
         )
 
@@ -535,4 +546,5 @@ def pick_path_transfer_plan(
         ),
         "from_owned": bool(from_owned),
         "start_ft": int(ft0) if from_owned else None,
+        "value_captain": use_cap,
     }
