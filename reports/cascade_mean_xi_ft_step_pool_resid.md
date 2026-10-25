@@ -1,6 +1,6 @@
 # Stepped ≥60′ selection pool — xP(G, CS, GA) vs actual
 
-Season **2025-26** · horizon 8–19 · commit steps [8, 9, 10, 11, 12] · N=40 · seed=7 · wall 547.6s
+Season **2025-26** · horizon 8–19 · commit steps [8, 9, 10, 11, 12] · N=40 · seed=7 · wall 560.5s
 
 ## Protocol
 

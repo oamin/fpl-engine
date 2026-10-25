@@ -1,7 +1,7 @@
 {
   "task": "cascade_mean_xi_ft_step_pool_resid",
   "status": "done",
-  "as_of_utc": "2026-10-25T07:33:16Z",
+  "as_of_utc": "2026-10-25T07:50:59Z",
   "change": "Step GW8\u201312: refresh \u226560\u2032 selection pool each GW; full shares; xP(G,CS,GA) vs actual on committed XI",
   "verdict": {
     "n_player_gw": 55,

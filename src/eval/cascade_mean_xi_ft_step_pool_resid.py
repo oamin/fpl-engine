@@ -431,6 +431,9 @@ def main(argv: list[str] | None = None) -> int:
         id_to_name = {
             str(r.player_id): str(r.name) for r in select_pool.itertuples(index=False)
         }
+        owned_names = [id_to_name.get(x, x) for x in owned]
+        bench_ids = [x for x in owned if x not in set(xi)]
+        bench_names = [id_to_name.get(x, x) for x in bench_ids]
         steps_out.append(
             {
                 "gw": int(t),
@@ -442,7 +445,10 @@ def main(argv: list[str] | None = None) -> int:
                 "plan_gws": plan_gws,
                 "xi_ids": xi,
                 "xi_names": [id_to_name.get(x, x) for x in xi],
+                "bench_ids": bench_ids,
+                "bench_names": bench_names,
                 "owned": list(owned),
+                "owned_names": owned_names,
                 "buys": [id_to_name.get(x, x) for x in buys],
                 "sells": [id_to_name.get(x, x) for x in sells],
                 "n_transfers": int(week["n_transfers"]),
@@ -500,19 +506,11 @@ def main(argv: list[str] | None = None) -> int:
         "elapsed_s": _now() - t_all,
         "summary": summary,
         "per_gw": per_gw,
-        "steps": [
-            {
-                k: v
-                for k, v in s.items()
-                if k not in {"owned"}  # keep artifact smaller; xi_ids enough
-            }
-            for s in steps_out
-        ],
+        "steps": steps_out,
         "plot": str(plot_path),
     }
-    # attach owned only as counts
-    for s, raw in zip(state["steps"], steps_out, strict=True):
-        s["n_owned"] = len(raw["owned"])
+    for s in state["steps"]:
+        s["n_owned"] = len(s.get("owned") or [])
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(state, indent=2, default=str) + "\n")
@@ -567,12 +565,21 @@ def main(argv: list[str] | None = None) -> int:
             f"{pg['resid_G_per_match']:+.2f} | {pg['resid_CS_per_match']:+.2f} | "
             f"{pg['resid_GA_per_match']:+.2f} | {pg['xP_G']:.1f} | {pg['P_G']:.1f} |"
         )
-    lines += ["", "## Commits", ""]
+    lines += ["", "## Squads (XI + bench)", ""]
     for s in steps_out:
         lines.append(
-            f"- **GW{s['gw']}:** buy {s['buys']} / sell {s['sells']} · "
+            f"### GW{s['gw']} — buy {s['buys']} / sell {s['sells']} · "
             f"ft {s['ft_before']}→{s['ft_after']} · hits={s['hits']}"
         )
+        lines.append("")
+        lines.append("**XI**")
+        for i, name in enumerate(s.get("xi_names") or [], 1):
+            lines.append(f"{i}. {name}")
+        lines.append("")
+        lines.append("**Bench**")
+        for i, name in enumerate(s.get("bench_names") or [], 1):
+            lines.append(f"{i}. {name}")
+        lines.append("")
     lines += [
         "",
         "## Reproduce",
