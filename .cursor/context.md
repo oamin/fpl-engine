@@ -28,11 +28,11 @@ Updated: 2026-10-23. **Numagent 2.0** is the product on main (`protocol.numagent
 | **18. Deadline-causal minutes** | **done (diagnostic)** | Oracle m only at deadline GW; as-of for later; rolling replan. N=12: +hits, actual +12, terminal FT flat. `reports/cascade_deadline_causal_minutes.md`. |
 | **19. Path bench weight α** | **rejected** | α·squad form screened then removed from path objective. `reports/cascade_path_bench_weight.md`. |
 
-## Recent diagnostic (2026-10-24)
+## Recent diagnostic (2026-10-25)
 
-**Count resid E[G,CS,GA]** on mean xi_ft (N=100): ∅_G via α_G≈0.96 already
-in generative; OL XI still ΣE_G≅76 vs ΣG=28. CS/GA closer.
-`reports/cascade_mean_xi_ft_count_resid.md`.
+**Full-club shares:** hist generative was thinning π with the ≥60′ selection
+pool. Trial keeps selection thin, deals shares on m>0 club → OL XI G resid
++47→+12 (N=40). `reports/cascade_full_share_pool_trial.md`.
 
 ## Plan
 

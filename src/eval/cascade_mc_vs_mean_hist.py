@@ -84,6 +84,9 @@ N_STRANDS = 12
 SEED = 7
 MIN_MINUTES = 60.0
 MIN_APPS = 2.0
+# Share / attack dice pool: keep impact subs (m>0). Selection stays on MIN_*.
+SHARE_MIN_MINUTES = 0.0
+SHARE_MIN_APPS = 1.0
 POS_MAP = {1: "GKP", 2: "DEF", 3: "MID", 4: "FWD"}
 
 
@@ -148,17 +151,26 @@ def _build_hist_pool(
     *,
     decision_gw: int,
     season: str,
+    min_minutes: float | None = None,
+    min_apps: float | None = None,
 ) -> pd.DataFrame:
-    """Minutes>60 as-of pool with frozen rates/priors + decision-GW prices."""
+    """As-of pool with frozen rates/priors + decision-GW prices.
+
+    Default ``min_minutes`` / ``min_apps`` is the thin **selection** gate
+    (>60′, ≥2 apps). Pass ``SHARE_MIN_*`` for the full-club **share** pool
+    (impact subs included); apply the thin gate only after shares are dealt.
+    """
+    min_m = float(MIN_MINUTES if min_minutes is None else min_minutes)
+    min_a = float(MIN_APPS if min_apps is None else min_apps)
     rows = hist.to_dict(orient="records")
     mins = expanding_mean_minutes_from_history(rows, before_gw=int(decision_gw))
     keep = {
         pid
         for pid, m in mins.items()
-        if float(m["mean_minutes"]) > MIN_MINUTES and float(m["n_apps"]) >= MIN_APPS
+        if float(m["mean_minutes"]) > min_m and float(m["n_apps"]) >= min_a
     }
     if len(keep) < 15:
-        raise RuntimeError(f"hist pool too small: {len(keep)}")
+        raise RuntimeError(f"hist pool too small: {len(keep)} (min_m={min_m}, min_a={min_a})")
 
     side, _, _ = build_frozen_side_table(
         hist, alpha_g=1.0, alpha_a=1.0, season=season, historical_rate_baseline=True
@@ -253,6 +265,27 @@ def _build_hist_pool(
     # MILP quota keys are GKP/DEF/MID/FWD
     frame.loc[frame["position"] == "GK", "position"] = "GKP"
     return frame.reset_index(drop=True)
+
+
+def _build_hist_share_pool(
+    hist: pd.DataFrame,
+    prices: pd.DataFrame,
+    *,
+    decision_gw: int,
+    season: str,
+) -> pd.DataFrame:
+    """Full-club pool for attack shares (m>0, including impact subs)."""
+    frame = _build_hist_pool(
+        hist,
+        prices,
+        decision_gw=decision_gw,
+        season=season,
+        min_minutes=SHARE_MIN_MINUTES,
+        min_apps=SHARE_MIN_APPS,
+    )
+    return frame.loc[pd.to_numeric(frame["m"], errors="coerce").fillna(0.0) > 0].reset_index(
+        drop=True
+    )
 
 
 def _mean_board(

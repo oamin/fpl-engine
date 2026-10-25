@@ -36,6 +36,7 @@ from src.eval.cascade_mc_vs_mean_hist import (
     SEASON_E0,
     SEED,
     _build_hist_pool,
+    _build_hist_share_pool,
     _fd_priced_by_gw,
     _hist_fixtures_by_gw,
 )
@@ -106,11 +107,22 @@ def mean_boards_hist(
     plan_gws: list[int],
     n_strands: int,
     seed0: int,
+    share_pool: pd.DataFrame | None = None,
 ) -> tuple[dict[int, np.ndarray], dict[str, Any]]:
-    """Average generative player scores across strands (no per-strand MILP)."""
+    """Average generative player scores across strands (no per-strand MILP).
+
+    ``pool`` is the thin selection frame (scores aligned to these rows).
+    ``share_pool`` (default ``pool``) is the club frame for attack dice —
+    pass the full m>0 club so impact subs dilute π before selection.
+    """
+    score_pool = pool if share_pool is None else share_pool
     priced_index = _priced_index(priced_by_gw)
     paths0 = init_paths_from_opta(ranks, profile=profile)
     acc = {g: np.zeros(len(pool), dtype=float) for g in plan_gws}
+    sel_ids = [str(x) for x in pool["player_id"].astype(str).tolist()]
+    share_id_to_idx = {
+        str(p): i for i, p in enumerate(score_pool["player_id"].astype(str))
+    }
     t0 = _now()
     sources: set[str] = set()
     for s in range(int(n_strands)):
@@ -144,7 +156,7 @@ def mean_boards_hist(
                 week.append(sc)
             rolled[int(gw)] = week
         scores = _undiscounted_scores_by_gw(
-            pool,
+            score_pool,
             plan_gws=plan_gws,
             rolled_by_gw=rolled,
             fixtures_gw=fixtures_gw,
@@ -158,7 +170,11 @@ def mean_boards_hist(
             lineup_cov=DEFAULT_LINEUP_COV,
         )
         for g in plan_gws:
-            acc[int(g)] += scores[int(g)]
+            full = scores[int(g)]
+            for j, pid in enumerate(sel_ids):
+                i = share_id_to_idx.get(pid)
+                if i is not None:
+                    acc[int(g)][j] += float(full[i])
     mean = {g: acc[g] / float(n_strands) for g in plan_gws}
     meta = {
         "n_strands": int(n_strands),
@@ -166,6 +182,9 @@ def mean_boards_hist(
         "elapsed_s": _now() - t0,
         "sources": sorted(x for x in sources if x),
         "n_priced_fits": int(sum(len(v) for v in priced_by_gw.values())),
+        "n_selection_pool": int(len(pool)),
+        "n_share_pool": int(len(score_pool)),
+        "share_pool": "full_m_gt_0" if share_pool is not None else "same_as_selection",
     }
     return mean, meta
 
@@ -390,9 +409,13 @@ def main(argv: list[str] | None = None) -> int:
     pool = _build_hist_pool(
         hist, prices, decision_gw=decision_gw, season=season
     )
+    share_pool = _build_hist_share_pool(
+        hist, prices, decision_gw=decision_gw, season=season
+    )
     print(
-        f"[mean-xi-ft] pool={len(pool)} alphas=({alpha_g:.3f},{alpha_a:.3f}) "
-        "(rate baseline prior+season)",
+        f"[mean-xi-ft] select={len(pool)} share={len(share_pool)} "
+        f"alphas=({alpha_g:.3f},{alpha_a:.3f}) "
+        "(rate baseline prior+season; shares=full club m>0)",
         flush=True,
     )
 
@@ -410,6 +433,7 @@ def main(argv: list[str] | None = None) -> int:
     print("[mean-xi-ft] rolling mean boards…", flush=True)
     scores_by_gw, board_meta = mean_boards_hist(
         pool=pool,
+        share_pool=share_pool,
         fixtures_gw=fixtures_gw,
         priced_by_gw=priced_by_gw,
         ranks=ranks,
