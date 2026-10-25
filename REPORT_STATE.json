@@ -1,27 +1,17 @@
 {
-  "task": "cascade_vs_l3_component_xp",
+  "task": "cascade_vs_l3_component_xp_gap",
   "status": "done",
-  "as_of_utc": "2026-10-25T12:19:31Z",
-  "change": "Player xP(G,CS,GA) cascade vs L3/L4 on shared L3 path (same GW8 WC XI); actuals; no captain",
+  "as_of_utc": "2026-10-25T12:42:49Z",
+  "change": "Decompose xP(G,CS,GA)\u2212actual on shared XI: CS luck + G blank/scorer cancel",
   "verdict": {
-    "n_player_gw": 55,
-    "sum_casc_xP_G": 53.74999999999999,
-    "sum_casc_xP_CS": 42.37500000000001,
-    "sum_casc_xP_GA": -3.85,
-    "sum_l3_xP_G": 39.651779740713586,
-    "sum_l3_xP_CS": 40.279674376116375,
-    "sum_l3_xP_GA": -4.531162221547941,
-    "sum_P_G": 44.0,
-    "sum_P_CS": 68.0,
-    "sum_P_GA": -4.0,
-    "sum_total_points": 242.0,
-    "mae_casc_G": 1.2463636363636363,
-    "mae_l3_G": 1.0515366140064022,
-    "mae_casc_CS": 0.9804545454545456,
-    "mae_l3_CS": 1.0340220462160323,
-    "mae_casc_GA": 0.12636363636363637,
-    "mae_l3_GA": 0.1350108867334489
+    "casc_rG": 9.8,
+    "casc_rCS": -25.6,
+    "casc_rGA": 0.2,
+    "l3_rG": -4.3,
+    "l3_rCS": -27.7,
+    "l3_rGA": -0.5,
+    "cs_note": "DEF+GKP m>=60 actual CS rate 0.73 vs model p~0.43; GW8 6/6",
+    "g_note": "casc scorers -29.4 / blanks +39.1; FWD under, MID+DEF over"
   },
-  "artifact": "/opt/cursor/artifacts/cascade_vs_l3_component_xp.json",
-  "report": "reports/cascade_vs_l3_component_xp.md"
+  "report": "reports/cascade_vs_l3_component_xp_gap.md"
 }
