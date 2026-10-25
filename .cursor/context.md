@@ -30,12 +30,12 @@ Updated: 2026-10-23. **Numagent 2.0** is the product on main (`protocol.numagent
 
 ## Recent diagnostic (2026-10-25)
 
-**Multi-seed component residuals** (boards once, 5 GW8 opens held): CS does
-**not** cross 0 (casc mean r_CS −18.8; l3 −20.2). G stays ≥0 (casc +21.8;
-l3 +6.8). Wall ~7.3 min. `reports/cascade_vs_l3_component_xp_multiseed.md`.
+**Team-GW DC CS calib** (4 seasons): FD xCS bias p−y **+0.010** (GW8–12
+**−0.003**); goals +0.020. DC is calibrated — XI CS underprint was selection,
+not a broken Dixon–Coles. `reports/dixon_coles_team_cs_calib.md`.
 
-Prior single-XI path comparison: `reports/cascade_vs_l3_component_xp.md` /
-`_gap.md`. Captain/hits nets: `cascade_step_vs_l3_l4.md`.
+Multi-seed XI residuals (boards once): CS stayed negative across opens;
+`cascade_vs_l3_component_xp_multiseed.md`.
 
 ## Plan
 

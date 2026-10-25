@@ -52,7 +52,13 @@ Seasons: 2022-23, 2023-24, 2024-25, 2025-26 · wall 45.8s
 
 ## Verdict
 
-FD DC xCS bias (p−actual) pooled **+0.010**; GW8–12 **-0.003**. Goals xG−GF pooled **+0.020**. CS bias is small at team-GW → the XI CS gap was mostly selection/window, not a broken DC prior.
+FD DC xCS bias (p−actual) pooled **+0.010**; GW8–12 **-0.003**. Goals
+xG−GF pooled **+0.020**. Reliability bins track actual CS rates closely.
+
+**Dixon–Coles is not the problem.** Team-GW P(CS) is well calibrated.
+The multi-seed FPL XI CS underprint (DEF/GKP sheet rates ~50–70% vs model
+p≈0.35–0.40) is **selection**: XIs stack the backs that kept sheets, not a
+broken λ→xCS map. 2025-26 GW8–12 league team CS rate was ~27% with FD p≈27%.
 
 ## Reproduce
 
