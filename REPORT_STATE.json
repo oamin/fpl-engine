@@ -1,62 +1,13 @@
 {
-  "task": "xi_cs_selection_hypothesis_windows",
+  "task": "g_full_share_default",
   "status": "done",
-  "as_of_utc": "2026-10-25T14:21:35Z",
-  "change": "Same selected clubs across other 2025-26 GW windows",
+  "as_of_utc": "2026-10-25T14:40:00Z",
+  "change": "Close CS thread; lock full-club m>0 shares as default for xG/π; open G overprint dig",
   "verdict": {
-    "freeze": "back clubs from GW8\u201312 XI (m\u226560 GKP/DEF) per seed",
-    "n_seeds": 5,
-    "windows": [
-      {
-        "window": "GW1-7",
-        "mean_sel_bias": -0.10515896480931013,
-        "all_sel_bias_negative": true,
-        "mean_p_left": 0.1474,
-        "league_bias": -0.014811948176484029
-      },
-      {
-        "window": "GW8-12",
-        "mean_sel_bias": -0.0948092041959944,
-        "all_sel_bias_negative": true,
-        "mean_p_left": 0.18927999999999998,
-        "league_bias": -0.0008249021092363465
-      },
-      {
-        "window": "GW13-19",
-        "mean_sel_bias": -0.0407810749571653,
-        "all_sel_bias_negative": true,
-        "mean_p_left": 0.21480000000000002,
-        "league_bias": 0.022210967740362648
-      },
-      {
-        "window": "GW20-26",
-        "mean_sel_bias": 0.060311621831067974,
-        "all_sel_bias_negative": false,
-        "mean_p_left": 0.61188,
-        "league_bias": 0.03686949003109219
-      },
-      {
-        "window": "GW27-33",
-        "mean_sel_bias": 0.02819870615090847,
-        "all_sel_bias_negative": false,
-        "mean_p_left": 0.7444,
-        "league_bias": -0.03312598824879417
-      },
-      {
-        "window": "GW34-38",
-        "mean_sel_bias": -0.05561598930108833,
-        "all_sel_bias_negative": false,
-        "mean_p_left": 0.23708,
-        "league_bias": 0.029526684000541287
-      }
-    ],
-    "gw8_12_mean_sel_bias": -0.0948092041959944,
-    "early_gw1_12_mean_sel_bias": -0.09998408450265225,
-    "late_gw13_38_mean_sel_bias": -0.0019716840690692967,
-    "other_windows_mean_sel_bias": -0.022609140217117463,
-    "n_other_blocks_bias_lt_neg005": 2,
-    "read": "Sheet luck for these clubs is **early-season**, not only GW8\u201312: GW1\u201312 mean sel bias -0.100; GW13\u201338 mean -0.002 (near zero / flips sign). League stays ~calibrated in every block."
+    "cs_thread": "closed — selection / early-season luck; DC calibrated",
+    "share_default": "full club m>0 via share_players / required share_pool",
+    "open": "remaining player G residual under full-share default"
   },
-  "artifact": "/opt/cursor/artifacts/xi_cs_selection_hypothesis_windows.json",
-  "report": "reports/xi_cs_selection_hypothesis_windows.md"
+  "protocol": "cascade_short_generative.share_pool",
+  "report": "reports/CASCADE_LOCKED.md"
 }

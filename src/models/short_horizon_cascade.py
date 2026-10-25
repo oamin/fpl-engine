@@ -239,8 +239,14 @@ def score_week_on_fixture_moments(
     alpha_g: float,
     alpha_a: float,
     moment_overrides: Mapping[int, Mapping[str, float]] | None = None,
+    share_table: pd.DataFrame | None = None,
 ) -> pd.DataFrame:
-    """Score all clubs in the week; optional per-fixture moment overrides."""
+    """Score all clubs in the week; optional per-fixture moment overrides.
+
+    ``side_table`` may be a thin selection board. When ``share_table`` is set
+    (full club ``m>0``), goal/assist shares are built there and projected —
+    default cascade xG path when selection stays ≥60′.
+    """
     if side_table.empty or not fixture_fits:
         return pd.DataFrame()
     parts: list[pd.DataFrame] = []
@@ -256,6 +262,17 @@ def score_week_on_fixture_moments(
                 club = side_table.loc[side_table["team_n"] == team_n].copy()
             if club.empty:
                 continue
+            share_club = None
+            if share_table is not None and not share_table.empty:
+                share_club = share_table.loc[
+                    share_table["team"].astype(str) == team
+                ].copy()
+                if share_club.empty and "team_n" in share_table.columns:
+                    share_club = share_table.loc[
+                        share_table["team_n"] == team_n
+                    ].copy()
+                if share_club.empty:
+                    share_club = None
             if ov is not None:
                 xg = float(ov[f"xg_{prefix}"])
                 xcs = float(ov[f"xcs_{prefix}"])
@@ -271,6 +288,7 @@ def score_week_on_fixture_moments(
                 xgc=xgc,
                 alpha_g=alpha_g,
                 alpha_a=alpha_a,
+                share_players=share_club,
             )
             scored["element"] = club["element"].to_numpy()
             scored["team"] = team

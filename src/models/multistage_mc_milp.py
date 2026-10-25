@@ -375,6 +375,7 @@ def score_pool_on_pots(
     gamma: float = DEFAULT_GAMMA,
     alpha_g: float | None = None,
     alpha_a: float | None = None,
+    share_pool: pd.DataFrame | None = None,
 ) -> pd.DataFrame:
     """Discounted multi-GW ``score_xp_v2`` for MILP (club-side assembler)."""
     return score_pool_on_lam_pots(
@@ -384,6 +385,7 @@ def score_pool_on_pots(
         gamma=gamma,
         alpha_g=alpha_g,
         alpha_a=alpha_a,
+        share_pool=share_pool,
     )
 
 
@@ -679,8 +681,13 @@ def _undiscounted_scores_by_gw(
     hist_by_team: Mapping[str, pd.DataFrame] | None,
     generative_attack: bool,
     lineup_cov: bool,
+    share_pool: pd.DataFrame | None = None,
 ) -> dict[int, np.ndarray]:
-    """Per-GW player xP aligned to ``pool`` rows (undiscounted; MILP applies γ)."""
+    """Per-GW player xP aligned to ``pool`` rows (undiscounted; MILP applies γ).
+
+    ``share_pool`` (full club ``m>0``) builds generative π / mean xG shares when
+    ``pool`` is a thin selection board. Default cascade path.
+    """
     out: dict[int, np.ndarray] = {}
     for gw in plan_gws:
         g = int(gw)
@@ -696,6 +703,7 @@ def _undiscounted_scores_by_gw(
                 hist_by_team=hist_by_team,
                 gamma=1.0,
                 lineup_cov=lineup_cov,
+                share_pool=share_pool,
             )
         else:
             scenario_lams = {
@@ -719,6 +727,7 @@ def _undiscounted_scores_by_gw(
                 gamma=1.0,
                 alpha_g=alpha_g,
                 alpha_a=alpha_a,
+                share_pool=share_pool,
             )
         arr = pd.to_numeric(scored["mc_score"], errors="coerce").fillna(0.0).to_numpy(
             dtype=float
@@ -834,6 +843,7 @@ def _scores_causal_at_deadline(
     lineup_cov: bool,
     merged: pd.DataFrame,
     season: str,
+    share_pool: pd.DataFrame | None = None,
 ) -> dict[int, np.ndarray]:
     """Score remaining weeks with deadline-causal minutes.
 
@@ -862,6 +872,7 @@ def _scores_causal_at_deadline(
             hist_by_team=hist_by_team,
             generative_attack=generative_attack,
             lineup_cov=lineup_cov,
+            share_pool=share_pool,
         )
         out[g] = part[g]
     return out
@@ -888,6 +899,7 @@ def _emit_rolling_causal_ft_plan(
     ft_pe_nu: float,
     merged: pd.DataFrame,
     season: str,
+    share_pool: pd.DataFrame | None = None,
     lookahead: int = DEFAULT_CAUSAL_LOOKAHEAD,
     objective: str = OBJECTIVE_XI_CAPTAIN_FT,
     value_captain: bool = True,
@@ -929,6 +941,7 @@ def _emit_rolling_causal_ft_plan(
             lineup_cov=lineup_cov,
             merged=merged,
             season=str(season),
+            share_pool=share_pool,
         )
         force = set(owned) if owned is not None else None
         cands = select_plan_candidates(
@@ -1020,6 +1033,7 @@ def run_strand(
     ranks: Mapping[str, float] | None = None,
     profile: Mapping[int, Mapping[str, float]] | None = None,
     selectable_ids: set[str] | None = None,
+    share_pool: pd.DataFrame | None = None,
     ft_pe_nu: float = DEFAULT_FT_PE_NU,
     path_plan_mode: str = PATH_PLAN_OPEN_LOOP,
     merged: pd.DataFrame | None = None,
@@ -1027,8 +1041,8 @@ def run_strand(
 ) -> StrandResult:
     """One coherent MC strand: short/Opta scenarios → score_xp_v2 → MILP.
 
-    ``selectable_ids``: when set, generative/mean scores may use the full
-    ``pool`` for club share context, but MILP only buys from this id set.
+    ``share_pool``: full-club ``m>0`` frame for xG/π when ``pool`` is thin.
+    ``selectable_ids``: when set, MILP only buys from this id set.
 
     ``xi_plus_captain_ft``: roll the full horizon, then plan transfers.
     ``path_plan_mode=open_loop`` (default): one joint MILP on frozen pool
@@ -1121,6 +1135,7 @@ def run_strand(
                     ft_pe_nu=float(ft_pe_nu),
                     merged=merged,
                     season=str(season),
+                    share_pool=share_pool,
                     objective=str(objective),
                     value_captain=value_captain,
                 )
@@ -1137,6 +1152,7 @@ def run_strand(
                 hist_by_team=hist_by_team,
                 generative_attack=generative_attack,
                 lineup_cov=lineup_cov,
+                share_pool=share_pool,
             )
             return _emit_joint_ft_plan(
                 result,
@@ -1184,6 +1200,7 @@ def run_strand(
                 hist_by_team=hist_by_team,
                 gamma=gamma,
                 lineup_cov=lineup_cov,
+                share_pool=share_pool,
             )
         else:
             scenario_lams = {
@@ -1211,6 +1228,7 @@ def run_strand(
                 gamma=gamma,
                 alpha_g=alpha_g,
                 alpha_a=alpha_a,
+                share_pool=share_pool,
             )
         scored = scored.loc[np.isfinite(scored["mc_score"])]
         if buy_ids is not None:

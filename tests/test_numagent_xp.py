@@ -68,6 +68,56 @@ class AppearanceDefconBonus(unittest.TestCase):
         self.assertEqual(int(pri.loc[0, "saves_n"]), 4)
 
 
+class FullClubShareProjection(unittest.TestCase):
+    def test_thin_selection_keeps_full_club_mass(self) -> None:
+        """Impact sub dilutes star π; selection board must not re-normalise."""
+        full = pd.DataFrame(
+            {
+                "player_id": ["1", "2", "3"],
+                "name": ["Star", "Mate", "Sub"],
+                "position": ["FWD", "MID", "MID"],
+                "rG": [0.05, 0.02, 0.02],
+                "drG": [0.01, 0.005, 0.005],
+                "rA": [0.01, 0.01, 0.01],
+                "drA": [0.003, 0.003, 0.003],
+                "m": [90.0, 90.0, 20.0],
+                "sigma_m": [0.0, 0.0, 0.0],
+                "bonus_mu": [0.0, 0.0, 0.0],
+                "bonus_se": [0.0, 0.0, 0.0],
+                "card_mu": [0.0, 0.0, 0.0],
+                "card_se": [0.0, 0.0, 0.0],
+                "defcon_mu": [0.0, 0.0, 0.0],
+                "defcon_sig": [nx.SIG_FLOOR, nx.SIG_FLOOR, nx.SIG_FLOOR],
+                "defcon_n": [0, 0, 0],
+            }
+        )
+        thin = full.loc[full["m"] >= 60].copy()
+        thin_only = nx.score_team_side(
+            thin, xg=2.0, xcs=0.3, xgc=0.8, alpha_g=0.96, alpha_a=0.90,
+            share_se_shrink=False,
+        )
+        with_full = nx.score_team_side(
+            thin,
+            xg=2.0,
+            xcs=0.3,
+            xgc=0.8,
+            alpha_g=0.96,
+            alpha_a=0.90,
+            share_players=full,
+            share_se_shrink=False,
+        )
+        self.assertAlmostEqual(float(thin_only["sG"].sum()), 1.0, places=6)
+        self.assertLess(float(with_full["sG"].sum()), 0.95)
+        self.assertLess(
+            float(with_full.loc[with_full["name"] == "Star", "sG"].iloc[0]),
+            float(thin_only.loc[thin_only["name"] == "Star", "sG"].iloc[0]),
+        )
+        self.assertLess(
+            float(with_full.loc[with_full["name"] == "Star", "xp_goals"].iloc[0]),
+            float(thin_only.loc[thin_only["name"] == "Star", "xp_goals"].iloc[0]),
+        )
+
+
 class ScoreTeamSide(unittest.TestCase):
     def test_rotation_renormalises_attack(self) -> None:
         # Two MIDs share attack; starter gets most weight.

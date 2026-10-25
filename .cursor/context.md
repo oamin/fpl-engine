@@ -30,22 +30,17 @@ Updated: 2026-10-23. **Numagent 2.0** is the product on main (`protocol.numagent
 
 ## Recent diagnostic (2026-10-25)
 
-**XI CS selection hypothesis** (GW8–12, 5 multi-seeds): league team-GW bias
-≈0; selected backs' team-GWs mean bias **−0.194** (all seeds negative);
-mean bootstrap left-tail p **0.067**. Opens chase high xCS and those
-fixtures over-delivered. Supported —
-`reports/xi_cs_selection_hypothesis.md`.
+**CS thread closed.** XI CS underprint = early-season selection luck; league
+DC calibrated. Do not retune CS.
+`reports/xi_cs_selection_hypothesis.md` · windows · `dixon_coles_team_cs_calib.md`.
 
-**Same clubs, other windows** (freeze GW8–12 back clubs): early GW1–12
-mean sel bias ≈**−0.10**; GW13–38 ≈**0**. Luck is early-season, not only
-the screen block. `reports/xi_cs_selection_hypothesis_windows.md`.
-
-**Team-GW DC CS calib** (4 seasons): FD xCS bias p−y **+0.010** (GW8–12
-**−0.003**); goals +0.020. DC is calibrated — XI CS underprint was selection,
-not a broken Dixon–Coles. `reports/dixon_coles_team_cs_calib.md`.
+**Open — G overprint.** Full-club `m>0` shares are the **default** for xG/π
+even when selection stays ≥60′ (`share_players` / required `share_pool` on
+mean boards; `protocol.cascade_short_generative.share_pool`). Next dig is
+remaining player-G residual under that default.
 
 Multi-seed XI residuals (boards once): CS stayed negative across opens;
-`cascade_vs_l3_component_xp_multiseed.md`.
+G stayed positive — `cascade_vs_l3_component_xp_multiseed.md`.
 
 ## Plan
 
