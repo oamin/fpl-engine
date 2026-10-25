@@ -36,6 +36,10 @@ mean bootstrap left-tail p **0.067**. Opens chase high xCS and those
 fixtures over-delivered. Supported —
 `reports/xi_cs_selection_hypothesis.md`.
 
+**Same clubs, other windows** (freeze GW8–12 back clubs): early GW1–12
+mean sel bias ≈**−0.10**; GW13–38 ≈**0**. Luck is early-season, not only
+the screen block. `reports/xi_cs_selection_hypothesis_windows.md`.
+
 **Team-GW DC CS calib** (4 seasons): FD xCS bias p−y **+0.010** (GW8–12
 **−0.003**); goals +0.020. DC is calibrated — XI CS underprint was selection,
 not a broken Dixon–Coles. `reports/dixon_coles_team_cs_calib.md`.
