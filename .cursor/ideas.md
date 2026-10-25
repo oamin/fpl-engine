@@ -4,6 +4,14 @@ Cursor chooses the next pre-registered comparison. The PI is not asked to pick. 
 
 **Numagent 2.0 is locked on main** — see `.cursor/context.md` and `reports/LOCKED.md` (`protocol.numagent_2_0`). Engine primary scorer is `score_xp_v2`. Numagent 1.0 and `score_xp` are **archived in-place** (`reports/ARCHIVE_NUMAGENT_1_0.md`). This file is the **park log**. Everything from “Procedure, locked 2026-10-07” downward is **Numagent 1.0 / stage archaeology** — not instructions for the live path.
 
+## Noted — stepped ≥60′ pool xP(G,CS,GA) GW8–12 (2026-10-25)
+
+`cascade_mean_xi_ft_step_pool_resid` N=40: each step refreshes selection
+(≥60′ as-of) + full share pool, projects to horizon, commits XI. Overall
+resid G +23.8 / CS −1.9 / GA +0.7 on 55 player-GWs. Hot weeks GW9 (+16 G
+pts when XI scored 0) and GW12 (+10). CS/GA well behaved.
+`reports/cascade_mean_xi_ft_step_pool_resid.md`.
+
 ## Noted — full-club share pool vs thin ≥60′ shares (2026-10-25)
 
 Hist generative was building π on the selection pool (minutes>60) so City had

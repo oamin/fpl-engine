@@ -1,25 +1,32 @@
 {
-  "task": "cascade_full_share_pool_trial",
+  "task": "cascade_mean_xi_ft_step_pool_resid",
   "status": "done",
-  "as_of_utc": "2026-10-25T06:58:48Z",
-  "change": "Trial full-club share pool vs thin \u226560\u2032 shares; selection unchanged",
+  "as_of_utc": "2026-10-25T07:33:16Z",
+  "change": "Step GW8\u201312: refresh \u226560\u2032 selection pool each GW; full shares; xP(G,CS,GA) vs actual on committed XI",
   "verdict": {
-    "thin": {
-      "n_player_gw": 132,
-      "sum_E_G": 75.27499999999999,
-      "sum_G": 28.0,
-      "sum_resid": 47.27499999999999,
-      "mean_resid": 0.35814393939393935
+    "n_player_gw": 55,
+    "G": {
+      "sum_xP": 65.85,
+      "sum_P": 42.0,
+      "sum_resid": 23.849999999999998,
+      "mean_resid": 0.4336363636363636,
+      "mae": 1.22
     },
-    "full": {
-      "n_player_gw": 132,
-      "sum_E_G": 39.77499999999999,
-      "sum_G": 28.0,
-      "sum_resid": 11.774999999999991,
-      "mean_resid": 0.08920454545454538
+    "CS": {
+      "sum_xP": 43.075,
+      "sum_P": 45.0,
+      "sum_resid": -1.9250000000000003,
+      "mean_resid": -0.035,
+      "mae": 0.8350000000000001
     },
-    "delta_sum_resid": -35.5
+    "GA": {
+      "sum_xP": -6.3,
+      "sum_P": -7.0,
+      "sum_resid": 0.6999999999999993,
+      "mean_resid": 0.012727272727272714,
+      "mae": 0.18272727272727274
+    }
   },
-  "artifact": "/opt/cursor/artifacts/cascade_full_share_pool_trial.json",
-  "report": "reports/cascade_full_share_pool_trial.md"
+  "artifact": "/opt/cursor/artifacts/cascade_mean_xi_ft_step_pool_resid.json",
+  "report": "reports/cascade_mean_xi_ft_step_pool_resid.md"
 }

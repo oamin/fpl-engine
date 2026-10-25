@@ -30,9 +30,9 @@ Updated: 2026-10-23. **Numagent 2.0** is the product on main (`protocol.numagent
 
 ## Recent diagnostic (2026-10-25)
 
-**Full-club shares:** hist generative was thinning π with the ≥60′ selection
-pool. Trial keeps selection thin, deals shares on m>0 club → OL XI G resid
-+47→+12 (N=40). `reports/cascade_full_share_pool_trial.md`.
+**Stepped pool xP resid:** GW8–12 commit with refreshed ≥60′ selection +
+full shares each step. G +23.8 / CS −1.9 / GA +0.7 (N=40).
+`reports/cascade_mean_xi_ft_step_pool_resid.md`.
 
 ## Plan
 
