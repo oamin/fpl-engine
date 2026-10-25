@@ -43,13 +43,13 @@ retune DC / open a CS gated screen for this.
 `reports/xi_cs_selection_hypothesis_windows.md`,
 `reports/dixon_coles_team_cs_calib.md`.
 
-## Open — player G overprint after full-share default (2026-10-25)
+## Open — G overprint after full-share (2026-10-25)
 
-Remeasured: OL XI ΣE[G]−G **+11.8** under full-club shares (was +48.5 thin);
-rolling GW8–10 ≈0. Remaining mass is not ∅_G (α_G≈0.956 matches empty rate).
-Candidates for the leftover: pot λ / finish rates / XI selection of scorers —
-not another share-pool bug. Gate only if proposing a treatment.
-`reports/cascade_mean_xi_ft_count_resid.md`.
+Count resid OL gen +11.8. Dig: pot **cleared** (XI clubs over-delivered GF);
+centreline +2.1 is share blanks (Minteh/João Pedro/Woltemade); gen +7.3.
+Selection not special. Open: why generative E[G] > centreline on the XI
+(dice / nonlinear), not FD λ. Gate only with a treatment.
+`reports/cascade_g_overprint_dig.md`.
 
 ## Locked default — full-club share pool (2026-10-25)
 
