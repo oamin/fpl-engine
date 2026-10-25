@@ -4,6 +4,36 @@ Cursor chooses the next pre-registered comparison. The PI is not asked to pick. 
 
 **Numagent 2.0 is locked on main** — see `.cursor/context.md` and `reports/LOCKED.md` (`protocol.numagent_2_0`). Engine primary scorer is `score_xp_v2`. Numagent 1.0 and `score_xp` are **archived in-place** (`reports/ARCHIVE_NUMAGENT_1_0.md`). This file is the **park log**. Everything from “Procedure, locked 2026-10-07” downward is **Numagent 1.0 / stage archaeology** — not instructions for the live path.
 
+## Noted — cascade stepped vs L3/L4 GW8–12 (2026-10-25)
+
+Diagnostic actual net: cascade_step 276 vs L3 398 / L4 399 (−122/−123).
+Gap mostly GW8 (84 vs 162). Not gated. `reports/cascade_step_vs_l3_l4.md`.
+
+## Noted — seeded L3/L4 WC open on stepped cascade (2026-10-25)
+
+Same GW8 WC 15+XI+Kroupi C as L3/L4 (`data/processed/l3_l4_gw08_seed_2025_26.json`);
+hold 0 xfers, `advance_ft(1,0)`→2; xi_ft from GW9. N=40: **276** vs L3/L4
+398/399 (−122/−123) — same total as unseeded, different path (GW8 90 / GW9 41
+after 6 xfers / 16 hit pts). GW8 90 vs locked 162 is points-source (merged
+Kroupi 12 vs closed 48), not a different XI. Park: hit-control / FT PE on
+seeded open; also rescore locked L3/L4 weeks on merged if comparing opens.
+`reports/cascade_step_vs_l3_l4.md`.
+
+## Noted — cascade vs L3 player xP(G,CS,GA) shared XI (2026-10-25)
+
+No captain. Same GW8 WC XI; later GWs = L3 owned + pick_xi(v2). Both scorers
+on that XI vs actual components. Casc overprints G (53.7 vs P 44; l3 39.7);
+both underprint CS (42/40 vs P 68). MAE_G favours l3_v2; MAE_CS/GA close.
+`reports/cascade_vs_l3_component_xp.md`.
+
+## Noted — stepped ≥60′ pool xP(G,CS,GA) GW8–12 (2026-10-25)
+
+`cascade_mean_xi_ft_step_pool_resid` N=40: each step refreshes selection
+(≥60′ as-of) + full share pool, projects to horizon, commits XI. Overall
+resid G +23.8 / CS −1.9 / GA +0.7 on 55 player-GWs. Hot weeks GW9 (+16 G
+pts when XI scored 0) and GW12 (+10). CS/GA well behaved.
+`reports/cascade_mean_xi_ft_step_pool_resid.md`.
+
 ## Noted — full-club share pool vs thin ≥60′ shares (2026-10-25)
 
 Hist generative was building π on the selection pool (minutes>60) so City had
