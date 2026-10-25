@@ -1,17 +1,55 @@
 {
-  "task": "cascade_vs_l3_component_xp_gap",
+  "task": "cascade_vs_l3_component_xp_multiseed",
   "status": "done",
-  "as_of_utc": "2026-10-25T12:42:49Z",
-  "change": "Decompose xP(G,CS,GA)\u2212actual on shared XI: CS luck + G blank/scorer cancel",
+  "as_of_utc": "2026-10-25T13:07:31Z",
+  "change": "Boards-once multi-seed xP(G,CS,GA) residual midpoint check",
   "verdict": {
-    "casc_rG": 9.8,
-    "casc_rCS": -25.6,
-    "casc_rGA": 0.2,
-    "l3_rG": -4.3,
-    "l3_rCS": -27.7,
-    "l3_rGA": -0.5,
-    "cs_note": "DEF+GKP m>=60 actual CS rate 0.73 vs model p~0.43; GW8 6/6",
-    "g_note": "casc scorers -29.4 / blanks +39.1; FWD under, MID+DEF over"
+    "casc": {
+      "n_seeds": 5,
+      "rG_mean": 21.794999999999998,
+      "rG_std": 6.244845874799476,
+      "rG_min": 17.849999999999998,
+      "rG_max": 34.150000000000006,
+      "rCS_mean": -18.830000000000002,
+      "rCS_std": 6.322843505891949,
+      "rCS_min": -22.7,
+      "rCS_max": -6.225000000000001,
+      "rGA_mean": -2.1450000000000005,
+      "rGA_std": 2.2406137552019088,
+      "rGA_min": -4.050000000000001,
+      "rGA_max": 2.15,
+      "rG_crosses_zero": false,
+      "rCS_crosses_zero": false,
+      "rGA_crosses_zero": true
+    },
+    "l3": {
+      "n_seeds": 5,
+      "rG_mean": 6.808021579878438,
+      "rG_std": 6.370442699351113,
+      "rG_min": 1.031449241708084,
+      "rG_max": 16.680084234950346,
+      "rCS_mean": -20.185873115808228,
+      "rCS_std": 6.719457355367264,
+      "rCS_min": -25.12608696308042,
+      "rCS_max": -7.0055721323194176,
+      "rGA_mean": -2.843826267170539,
+      "rGA_std": 2.215775752309562,
+      "rGA_min": -4.6691499685547235,
+      "rGA_max": 1.4095944480903575,
+      "rG_crosses_zero": false,
+      "rCS_crosses_zero": false,
+      "rGA_crosses_zero": true
+    },
+    "board_s": {
+      "8": 100.52427005767822,
+      "9": 92.04388070106506,
+      "10": 84.52265572547913,
+      "11": 76.05024600028992,
+      "12": 67.05408024787903
+    }
   },
-  "report": "reports/cascade_vs_l3_component_xp_gap.md"
+  "elapsed_s": 440.75006914138794,
+  "n_seeds": 5,
+  "artifact": "/opt/cursor/artifacts/cascade_vs_l3_component_xp_multiseed.json",
+  "report": "reports/cascade_vs_l3_component_xp_multiseed.md"
 }
