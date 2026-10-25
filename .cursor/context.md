@@ -30,8 +30,12 @@ Updated: 2026-10-23. **Numagent 2.0** is the product on main (`protocol.numagent
 
 ## Recent diagnostic (2026-10-25)
 
-**Cascade stepped vs L3/L4** (2025-26 GW8–12 actual net): 276 vs 398/399
-(−122/−123). `reports/cascade_step_vs_l3_l4.md`.
+**Cascade stepped vs L3/L4** (2025-26 GW8–12 actual net): unseeded 276 vs
+398/399 (−122/−123). **Seeded** with L3/L4 GW8 WC 15+XI (hold open, FT→2):
+228 vs 398/399 (−170/−171). GW9 hit bomb (6 xfers / 16 hit pts). GW8 −72 on
+same XI is merged Kroupi 12 vs closed-climb 48. `--seed-owned
+data/processed/l3_l4_gw08_seed_2025_26.json`.
+`reports/cascade_step_vs_l3_l4.md`.
 
 ## Plan
 

@@ -9,9 +9,16 @@ Horizon GW8–19. At each decision GW ``t ∈ {8,…,12}``:
 5. Compare generative mean ``xp_goals`` / ``xp_cs`` / ``xp_gc`` on the XI
    to actual FPL G / CS / GA (GC) points.
 
+Optional ``--seed-owned``: start from a fixed 15 (e.g. L3/L4 GW8 WC). At the
+seed GW the squad is held (0 transfers); XI = ``pick_xi`` on the generative
+board; FT bank advances via ``advance_ft(ft, 0)``. Later steps use normal
+``xi_ft`` from that owned squad.
+
 GA here is the goals-against points component (``xp_gc`` / FPL GC deductions).
 
   PYTHONPATH=. python3 -m src.eval.cascade_mean_xi_ft_step_pool_resid --n 40
+  PYTHONPATH=. python3 -m src.eval.cascade_mean_xi_ft_step_pool_resid --n 40 \\
+      --seed-owned /opt/cursor/artifacts/l3_l4_gw08_seed_2025_26.json
 """
 
 from __future__ import annotations
@@ -67,7 +74,9 @@ from src.models.opta_gf_ga_horizon import (
     rank_gf_ga_profile_excluding,
     season_final_ranks,
 )
+from src.models.season_climb import pick_xi
 from src.models.short_horizon_cascade import load_prices
+from src.rules.fpl_2026 import advance_ft
 from src.strategy.layer4_bookie_path import _fd_index, _load_merged_enriched
 from src.teams import norm_team
 
@@ -93,6 +102,94 @@ def _element(pid: str) -> int | None:
         return int(float(text))
     except (TypeError, ValueError):
         return None
+
+
+def _load_seed_owned(path: Path) -> dict[str, Any]:
+    raw = json.loads(Path(path).read_text(encoding="utf-8"))
+    ids = [str(x) for x in (raw.get("player_ids") or [])]
+    if len(ids) != 15:
+        raise ValueError(f"seed-owned needs 15 player_ids, got {len(ids)} from {path}")
+    return {
+        "path": str(path),
+        "player_ids": ids,
+        "gw": int(raw["gw"]) if raw.get("gw") is not None else None,
+        "xi_ids": [str(x) for x in (raw.get("xi_ids") or [])] or None,
+        "captain_id": str(raw["captain_id"]) if raw.get("captain_id") else None,
+        "source": str(raw.get("source") or ""),
+    }
+
+
+def _inject_owned_from_share(
+    select_pool: pd.DataFrame,
+    share_pool: pd.DataFrame,
+    owned: list[str],
+) -> pd.DataFrame:
+    """Pull thin-gate misses from the full-club share pool into selection."""
+    have = set(select_pool["player_id"].astype(str))
+    missing = [p for p in owned if p not in have]
+    if not missing:
+        return select_pool
+    add = share_pool.loc[share_pool["player_id"].astype(str).isin(missing)].copy()
+    got = set(add["player_id"].astype(str))
+    still = [p for p in missing if p not in got]
+    if still:
+        raise RuntimeError(
+            f"seed owned missing from select and share pools: {still}"
+        )
+    return pd.concat([select_pool, add], ignore_index=True)
+
+
+def _hold_week_from_owned(
+    board: pd.DataFrame,
+    owned: list[str],
+    *,
+    gw: int,
+    ft_before: int,
+    seed_xi_ids: list[str] | None = None,
+    seed_captain_id: str | None = None,
+) -> dict[str, Any]:
+    """0-transfer commit; advance_ft(ft, 0).
+
+    If ``seed_xi_ids`` is provided (L3/L4 open XI), use it so the hold week
+    matches the seeded climb. Otherwise ``pick_xi`` on generative ``xp``.
+    """
+    squad = board.loc[board["player_id"].astype(str).isin(set(owned))].copy()
+    if len(squad) < 15:
+        have = set(squad["player_id"].astype(str))
+        raise RuntimeError(
+            f"GW{gw} hold: board missing owned {[p for p in owned if p not in have]}"
+        )
+    # Deduplicate if inject overlapped
+    squad = squad.drop_duplicates("player_id", keep="first")
+    form: list[int] | tuple[int, int, int] | None = None
+    if seed_xi_ids:
+        xi_ids = [str(x) for x in seed_xi_ids]
+        missing = [p for p in xi_ids if p not in set(owned)]
+        if missing:
+            raise RuntimeError(f"GW{gw} seed XI not in owned: {missing}")
+        if len(xi_ids) != 11:
+            raise RuntimeError(f"GW{gw} seed XI needs 11 ids, got {len(xi_ids)}")
+        xi_df = squad.loc[squad["player_id"].astype(str).isin(xi_ids)]
+    else:
+        xi_df, form = pick_xi(squad, "xp")
+        xi_ids = [str(x) for x in xi_df["player_id"].astype(str).tolist()]
+    cap = str(seed_captain_id) if seed_captain_id else None
+    if cap and cap not in set(xi_ids):
+        raise RuntimeError(f"GW{gw} seed captain {cap} not in XI")
+    return {
+        "gw": int(gw),
+        "player_ids": list(owned),
+        "xi_ids": xi_ids,
+        "captain_id": cap,
+        "formation": list(form) if form is not None else None,
+        "n_transfers": 0,
+        "hits": 0,
+        "ft_before": int(ft_before),
+        "ft_after": int(advance_ft(int(ft_before), 0)),
+        "xi_score": float(pd.to_numeric(xi_df["xp"], errors="coerce").fillna(0).sum()),
+        "week_score": float(pd.to_numeric(xi_df["xp"], errors="coerce").fillna(0).sum()),
+        "held": True,
+    }
 
 
 def mean_component_boards_split(
@@ -325,6 +422,13 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--cand-top-n", type=int, default=CAND_TOP_N)
     ap.add_argument("--milp-time", type=float, default=MILP_TIME)
     ap.add_argument(
+        "--seed-owned",
+        type=Path,
+        default=None,
+        help="JSON with player_ids (15). Hold that squad at seed GW; "
+        "pick_xi on boards; FT via advance_ft(ft,0). Later GWs use xi_ft.",
+    )
+    ap.add_argument(
         "--out",
         type=Path,
         default=Path("/opt/cursor/artifacts/cascade_mean_xi_ft_step_pool_resid.json"),
@@ -338,10 +442,17 @@ def main(argv: list[str] | None = None) -> int:
     horizon_end = int(args.horizon_end)
     n_strands = int(args.n)
     seed0 = int(args.seed)
+    seed_meta = _load_seed_owned(args.seed_owned) if args.seed_owned else None
+    hold_gw = int(seed_meta["gw"] if seed_meta and seed_meta["gw"] is not None else start_gw)
 
     print(
         f"[step-pool] season={season} steps={step_gws} horizon={start_gw}-{horizon_end} "
-        f"N={n_strands}",
+        f"N={n_strands}"
+        + (
+            f" seed_owned={seed_meta['path']} hold_gw={hold_gw}"
+            if seed_meta
+            else ""
+        ),
         flush=True,
     )
     t_all = _now()
@@ -353,7 +464,7 @@ def main(argv: list[str] | None = None) -> int:
     fd = _fd_index(season)
     prices = load_prices(season)
 
-    owned: list[str] | None = None
+    owned: list[str] | None = list(seed_meta["player_ids"]) if seed_meta else None
     start_ft = 1
     stash: pd.DataFrame | None = None
     steps_out: list[dict[str, Any]] = []
@@ -371,8 +482,13 @@ def main(argv: list[str] | None = None) -> int:
             hist, prices, decision_gw=int(t), season=season
         )
         if owned:
-            select_pool = _ensure_owned_in_pool(select_pool, stash, owned)
-            share_pool = _ensure_owned_in_pool(share_pool, stash, owned)
+            # Seed GW: thin select may miss WC picks — inject from share first.
+            if stash is None:
+                select_pool = _inject_owned_from_share(select_pool, share_pool, owned)
+            else:
+                select_pool = _ensure_owned_in_pool(select_pool, stash, owned)
+                share_pool = _ensure_owned_in_pool(share_pool, stash, owned)
+                select_pool = _inject_owned_from_share(select_pool, share_pool, owned)
         stash = select_pool.copy()
 
         fixtures_gw = _hist_fixtures_by_gw(enriched, start=int(t), end=horizon_end)
@@ -401,19 +517,36 @@ def main(argv: list[str] | None = None) -> int:
         )
         print(f"[step-pool] boards {board_meta['elapsed_s']:.1f}s", flush=True)
 
-        if owned is None:
-            owned = opening_15(select_pool, scores_by_gw, plan_gws)
-            start_ft = 1
-        plan = _plan_from_owned(
-            select_pool,
-            scores_by_gw,
-            plan_gws,
-            owned,
-            start_ft=start_ft,
-            top_n=int(args.cand_top_n),
-            time_limit=float(args.milp_time),
-        )
-        week = _week_by_gw(plan["weeks"])[int(t)]
+        held_open = bool(seed_meta and owned is not None and int(t) == hold_gw)
+        if held_open:
+            week = _hold_week_from_owned(
+                boards[int(t)],
+                owned,
+                gw=int(t),
+                ft_before=start_ft,
+                seed_xi_ids=seed_meta.get("xi_ids"),
+                seed_captain_id=seed_meta.get("captain_id"),
+            )
+            print(
+                f"[step-pool] GW{t} HOLD seed squad+XI (0 xfers) "
+                f"ft {week['ft_before']}→{week['ft_after']} "
+                f"cap={week.get('captain_id')}",
+                flush=True,
+            )
+        else:
+            if owned is None:
+                owned = opening_15(select_pool, scores_by_gw, plan_gws)
+                start_ft = 1
+            plan = _plan_from_owned(
+                select_pool,
+                scores_by_gw,
+                plan_gws,
+                owned,
+                start_ft=start_ft,
+                top_n=int(args.cand_top_n),
+                time_limit=float(args.milp_time),
+            )
+            week = _week_by_gw(plan["weeks"])[int(t)]
         xi = [str(x) for x in (week.get("xi_ids") or week.get("player_ids") or [])]
         # Prefer true XI (11); fall back to squad ids if missing
         if len(xi) > 11 and week.get("xi_ids"):
@@ -431,6 +564,9 @@ def main(argv: list[str] | None = None) -> int:
         id_to_name = {
             str(r.player_id): str(r.name) for r in select_pool.itertuples(index=False)
         }
+        # share pool names for any thin-gate injects already in select
+        for r in share_pool.itertuples(index=False):
+            id_to_name.setdefault(str(r.player_id), str(r.name))
         owned_names = [id_to_name.get(x, x) for x in owned]
         bench_ids = [x for x in owned if x not in set(xi)]
         bench_names = [id_to_name.get(x, x) for x in bench_ids]
@@ -456,6 +592,9 @@ def main(argv: list[str] | None = None) -> int:
                 "ft_before": int(week["ft_before"]),
                 "ft_after": int(week["ft_after"]),
                 "xi_score": float(week.get("xi_score") or week.get("week_score") or 0.0),
+                "held_seed": held_open,
+                # Only persist captain on seed-hold GWs (realised scoring).
+                "captain_id": week.get("captain_id") if held_open else None,
                 "summary": _summarise(pd.DataFrame(rows)),
             }
         )
@@ -492,6 +631,10 @@ def main(argv: list[str] | None = None) -> int:
         )
 
     plot_path = Path("/opt/cursor/artifacts/cascade_mean_xi_ft_step_pool_resid.png")
+    if seed_meta:
+        plot_path = Path(
+            "/opt/cursor/artifacts/cascade_mean_xi_ft_step_pool_resid_seeded.png"
+        )
     _plot(per_gw, plot_path, n=n_strands)
     summary = _summarise(df)
     state = {
@@ -501,6 +644,8 @@ def main(argv: list[str] | None = None) -> int:
         "step_gws": step_gws,
         "n_strands": n_strands,
         "seed": seed0,
+        "seed_owned": seed_meta,
+        "hold_gw": hold_gw if seed_meta else None,
         "selection_pool": "as-of mean minutes > 60, n_apps≥2; frozen until next step",
         "share_pool": "full club m>0 (impact subs on dice)",
         "elapsed_s": _now() - t_all,
@@ -515,6 +660,14 @@ def main(argv: list[str] | None = None) -> int:
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(state, indent=2, default=str) + "\n")
 
+    seed_line = ""
+    if seed_meta:
+        seed_line = (
+            f"- **Seed owned**: `{seed_meta['path']}` "
+            f"(hold GW{hold_gw}: 0 xfers; seed XI+captain if present else "
+            f"`pick_xi`; `advance_ft(ft,0)`). "
+            f"Source: {seed_meta.get('source') or 'n/a'}."
+        )
     lines = [
         "# Stepped ≥60′ selection pool — xP(G, CS, GA) vs actual",
         "",
@@ -532,6 +685,10 @@ def main(argv: list[str] | None = None) -> int:
         "- Mean of N generative boards → `xi_ft` plan; commit week-t XI.",
         "- Residual = xP − actual on that XI. **GA** = goals-against points "
         "(`xp_gc` / FPL GC).",
+    ]
+    if seed_line:
+        lines += ["", seed_line]
+    lines += [
         "",
         f"![per-match resid]({plot_path})",
         "",
@@ -580,25 +737,40 @@ def main(argv: list[str] | None = None) -> int:
         for i, name in enumerate(s.get("bench_names") or [], 1):
             lines.append(f"{i}. {name}")
         lines.append("")
+    repro = (
+        f"PYTHONPATH=. python3 -m src.eval.cascade_mean_xi_ft_step_pool_resid "
+        f"--n {n_strands} --steps {','.join(str(g) for g in step_gws)}"
+    )
+    if seed_meta:
+        repro += f" --seed-owned {seed_meta['path']}"
+        if args.out:
+            repro += f" --out {args.out}"
     lines += [
         "",
         "## Reproduce",
         "",
         "```bash",
-        f"PYTHONPATH=. python3 -m src.eval.cascade_mean_xi_ft_step_pool_resid "
-        f"--n {n_strands} --steps {','.join(str(g) for g in step_gws)}",
+        repro,
         "```",
         "",
     ]
     REPORT.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    change = (
+        "Step GW8–12: refresh ≥60′ selection pool each GW; "
+        "full shares; xP(G,CS,GA) vs actual on committed XI"
+    )
+    if seed_meta:
+        change = (
+            f"Re-run stepped cascade seeded with L3/L4 GW{hold_gw} WC 15 "
+            f"(hold open; xi_ft from GW{hold_gw + 1})"
+        )
     STATE.write_text(
         json.dumps(
             {
                 "task": "cascade_mean_xi_ft_step_pool_resid",
                 "status": "done",
                 "as_of_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                "change": "Step GW8–12: refresh ≥60′ selection pool each GW; "
-                "full shares; xP(G,CS,GA) vs actual on committed XI",
+                "change": change,
                 "verdict": summary,
                 "artifact": str(args.out),
                 "report": str(REPORT.relative_to(ROOT)),

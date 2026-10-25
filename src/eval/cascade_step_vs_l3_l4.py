@@ -55,12 +55,22 @@ def _cascade_week_points(
         pts = float(hit.iloc[0]["total_points"] or 0) if not hit.empty else 0.0
         rows.append({"player_id": pid, "name": name, "pts": pts})
     xi_sum = float(sum(r["pts"] for r in rows))
-    # Captain: Haaland if present, else highest actual on XI.
-    cap = next((r for r in rows if "Haaland" in str(r["name"])), None)
+    # Captain: on a seed-hold GW use seed captain_id; else Haaland if in XI;
+    # else max actual on XI. Do not use the MILP's expected-xP captain for
+    # realised pts (that arm is transfer-path only).
+    cap = None
+    if step.get("held_seed") and step.get("captain_id"):
+        cap = next(
+            (r for r in rows if str(r["player_id"]) == str(step["captain_id"])),
+            None,
+        )
+    if cap is None:
+        cap = next((r for r in rows if "Haaland" in str(r["name"])), None)
     if cap is None:
         cap = max(rows, key=lambda r: r["pts"]) if rows else {"name": "?", "pts": 0.0}
-    hits = int(step.get("hits") or 0)
-    hit_pts = 4 * hits
+    # path_transfer_plan stores hit POINTS in ``hits`` (HIT_COST × extras).
+    hit_pts = int(step.get("hits") or 0)
+    n_hit_xfers = hit_pts // 4
     net = xi_sum + float(cap["pts"]) - hit_pts
     return {
         "gw": gw,
@@ -68,7 +78,7 @@ def _cascade_week_points(
         "pts_xi": xi_sum,
         "pts_captain": float(cap["pts"]),
         "captain": str(cap["name"]),
-        "hits": hits,
+        "hits": n_hit_xfers,
         "hit_points": hit_pts,
         "pts_xi_cap": xi_sum + float(cap["pts"]),
         "pts_net": net,
@@ -216,6 +226,13 @@ def main(argv: list[str] | None = None) -> int:
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(state, indent=2, default=str) + "\n")
 
+    seed_note = ""
+    if casc.get("seed_owned"):
+        sm = casc["seed_owned"]
+        seed_note = (
+            f" Seeded from `{sm.get('path')}` "
+            f"(hold GW{casc.get('hold_gw')}: 0 xfers)."
+        )
     lines = [
         "# Cascade stepped xi_ft vs L3 / L4 (2025-26 GW8–12)",
         "",
@@ -225,7 +242,8 @@ def main(argv: list[str] | None = None) -> int:
         "",
         "- **cascade_step** — `cascade_mean_xi_ft_step_pool_resid` commits "
         "(full-club shares; ≥60′ selection refreshed GW8…12; projected to GW19). "
-        "Captain = Haaland if in XI.",
+        "Captain = Haaland if in XI."
+        + seed_note,
         "- **l3 / l4_mupost** — locked climb weeks from "
         f"`{Path(args.l4_json).relative_to(ROOT)}` (μ_post priced γ=1).",
         "",
@@ -274,19 +292,41 @@ def main(argv: list[str] | None = None) -> int:
         lines.append(f"  - XI: {', '.join(w['xi_names'])}")
         if w.get("bench_names"):
             lines.append(f"  - Bench: {', '.join(w['bench_names'])}")
+    gw8_c = next((w["pts_net"] for w in casc_weeks if w["gw"] == 8), None)
+    gw8_l3 = next(
+        (float(w["pts_net"]) for w in l_arms["l3"] if int(w["gw"]) == 8), None
+    )
+    gw8_bit = ""
+    if gw8_c is not None and gw8_l3 is not None:
+        gw8_bit = f" (GW8: {gw8_c:.0f} vs L3 {gw8_l3:.0f})"
+    gw9 = next((w for w in casc_weeks if w["gw"] == 9), None)
+    hit_note = ""
+    if gw9 and int(gw9.get("hit_points") or 0) > 0:
+        hit_note = (
+            f" GW9 took {gw9['n_transfers']} transfers / "
+            f"{int(gw9['hit_points'])} hit pts "
+            f"(net {gw9['pts_net']:.0f})."
+        )
+    seed_score_note = ""
+    if casc.get("seed_owned"):
+        seed_score_note = (
+            " GW8 uses the L3/L4 WC XI+captain; cascade pts are from "
+            "`load_merged` actuals, while locked L3/L4 weeks keep the climb "
+            "JSON totals (Kroupi GW8 is 12 merged vs 48 in "
+            "`score_xp_v2_closed` — that alone is −72 on the same XI)."
+        )
     lines += [
         "",
         "## Verdict",
         "",
-        f"On this window cascade stepped trails locked L3/L4 by "
+        f"On this window cascade stepped vs locked L3/L4: "
         f"**{deltas['l3']['sum_d']:+.0f}** / **{deltas['l4_mupost']['sum_d']:+.0f}** "
-        "net pts (mostly GW8: 84 vs 162). CS/GA calibration on the cascade path "
-        "does not yet translate to beating the priced μ_post climb.",
+        f"net pts{gw8_bit}.{hit_note}{seed_score_note}",
         "",
         "## Reproduce",
         "",
         "```bash",
-        "PYTHONPATH=. python3 -m src.eval.cascade_step_vs_l3_l4",
+        f"PYTHONPATH=. python3 -m src.eval.cascade_step_vs_l3_l4 --casc {args.casc}",
         "```",
         "",
     ]

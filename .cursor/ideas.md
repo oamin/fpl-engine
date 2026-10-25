@@ -9,6 +9,15 @@ Cursor chooses the next pre-registered comparison. The PI is not asked to pick. 
 Diagnostic actual net: cascade_step 276 vs L3 398 / L4 399 (−122/−123).
 Gap mostly GW8 (84 vs 162). Not gated. `reports/cascade_step_vs_l3_l4.md`.
 
+## Noted — seeded L3/L4 WC open on stepped cascade (2026-10-25)
+
+Same GW8 WC 15+XI+Kroupi C as L3/L4 (`data/processed/l3_l4_gw08_seed_2025_26.json`);
+hold 0 xfers, `advance_ft(1,0)`→2; xi_ft from GW9. N=40: **228** vs L3/L4
+398/399 (−170/−171). Worse than unseeded 276 — GW9 spent 6 transfers / 16
+hit pts (net −7). GW8 90 vs locked 162 is points-source (merged Kroupi 12 vs
+closed 48), not a different XI. Park: hit-control / FT PE on seeded open
+before another L3 screen. `reports/cascade_step_vs_l3_l4.md`.
+
 ## Noted — stepped ≥60′ pool xP(G,CS,GA) GW8–12 (2026-10-25)
 
 `cascade_mean_xi_ft_step_pool_resid` N=40: each step refreshes selection

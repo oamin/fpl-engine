@@ -1,38 +1,22 @@
 {
-  "task": "cascade_step_vs_l3_l4",
+  "task": "cascade_step_vs_l3_l4_seeded",
   "status": "done",
-  "as_of_utc": "2026-10-25T08:12:31Z",
-  "change": "Diagnostic screen: cascade stepped GW8\u201312 actual net vs L3/L4",
+  "as_of_utc": "2026-10-25T11:55:27Z",
+  "change": "Re-run stepped cascade with L3/L4 GW8 WC seed (hold XI+C; xi_ft GW9+); fix hit-points double count",
   "verdict": {
-    "totals": [
-      {
-        "arm": "l4_mupost",
-        "pts_net": 399.0,
-        "pts_xi_cap": 403.0,
-        "hits": 1,
-        "n_transfers": 6,
-        "n_gw": 5
-      },
-      {
-        "arm": "l3",
-        "pts_net": 398.0,
-        "pts_xi_cap": 398.0,
-        "hits": 0,
-        "n_transfers": 5,
-        "n_gw": 5
-      },
-      {
-        "arm": "cascade_step",
-        "pts_net": 276.0,
-        "pts_xi_cap": 276.0,
-        "hits": 0,
-        "n_transfers": 4,
-        "n_gw": 5
-      }
-    ],
+    "cascade_pts_net": 276.0,
     "cascade_minus_l3": -122.0,
-    "cascade_minus_l4": -123.0
+    "cascade_minus_l4": -123.0,
+    "per_gw_casc_minus_l3": {
+      "8": -72.0,
+      "9": -40.0,
+      "10": -8.0,
+      "11": 12.0,
+      "12": -14.0
+    },
+    "note": "Corrected: path-plan hits are points. GW9 6 xfers/16 hit pts net 41. Same XI GW8 -72 = Kroupi 12 vs 48."
   },
-  "artifact": "/opt/cursor/artifacts/cascade_step_vs_l3_l4.json",
+  "artifact": "/opt/cursor/artifacts/cascade_step_vs_l3_l4_seeded.json",
+  "seed": "data/processed/l3_l4_gw08_seed_2025_26.json",
   "report": "reports/cascade_step_vs_l3_l4.md"
 }
