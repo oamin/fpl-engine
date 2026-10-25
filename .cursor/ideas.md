@@ -4,6 +4,11 @@ Cursor chooses the next pre-registered comparison. The PI is not asked to pick. 
 
 **Numagent 2.0 is locked on main** — see `.cursor/context.md` and `reports/LOCKED.md` (`protocol.numagent_2_0`). Engine primary scorer is `score_xp_v2`. Numagent 1.0 and `score_xp` are **archived in-place** (`reports/ARCHIVE_NUMAGENT_1_0.md`). This file is the **park log**. Everything from “Procedure, locked 2026-10-07” downward is **Numagent 1.0 / stage archaeology** — not instructions for the live path.
 
+## Noted — cascade stepped vs L3/L4 GW8–12 (2026-10-25)
+
+Diagnostic actual net: cascade_step 276 vs L3 398 / L4 399 (−122/−123).
+Gap mostly GW8 (84 vs 162). Not gated. `reports/cascade_step_vs_l3_l4.md`.
+
 ## Noted — stepped ≥60′ pool xP(G,CS,GA) GW8–12 (2026-10-25)
 
 `cascade_mean_xi_ft_step_pool_resid` N=40: each step refreshes selection

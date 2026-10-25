@@ -30,9 +30,8 @@ Updated: 2026-10-23. **Numagent 2.0** is the product on main (`protocol.numagent
 
 ## Recent diagnostic (2026-10-25)
 
-**Stepped pool xP resid:** GW8–12 commit with refreshed ≥60′ selection +
-full shares each step. G +23.8 / CS −1.9 / GA +0.7 (N=40).
-`reports/cascade_mean_xi_ft_step_pool_resid.md`.
+**Cascade stepped vs L3/L4** (2025-26 GW8–12 actual net): 276 vs 398/399
+(−122/−123). `reports/cascade_step_vs_l3_l4.md`.
 
 ## Plan
 

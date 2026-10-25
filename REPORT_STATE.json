@@ -1,32 +1,38 @@
 {
-  "task": "cascade_mean_xi_ft_step_pool_resid",
+  "task": "cascade_step_vs_l3_l4",
   "status": "done",
-  "as_of_utc": "2026-10-25T07:50:59Z",
-  "change": "Step GW8\u201312: refresh \u226560\u2032 selection pool each GW; full shares; xP(G,CS,GA) vs actual on committed XI",
+  "as_of_utc": "2026-10-25T08:12:31Z",
+  "change": "Diagnostic screen: cascade stepped GW8\u201312 actual net vs L3/L4",
   "verdict": {
-    "n_player_gw": 55,
-    "G": {
-      "sum_xP": 65.85,
-      "sum_P": 42.0,
-      "sum_resid": 23.849999999999998,
-      "mean_resid": 0.4336363636363636,
-      "mae": 1.22
-    },
-    "CS": {
-      "sum_xP": 43.075,
-      "sum_P": 45.0,
-      "sum_resid": -1.9250000000000003,
-      "mean_resid": -0.035,
-      "mae": 0.8350000000000001
-    },
-    "GA": {
-      "sum_xP": -6.3,
-      "sum_P": -7.0,
-      "sum_resid": 0.6999999999999993,
-      "mean_resid": 0.012727272727272714,
-      "mae": 0.18272727272727274
-    }
+    "totals": [
+      {
+        "arm": "l4_mupost",
+        "pts_net": 399.0,
+        "pts_xi_cap": 403.0,
+        "hits": 1,
+        "n_transfers": 6,
+        "n_gw": 5
+      },
+      {
+        "arm": "l3",
+        "pts_net": 398.0,
+        "pts_xi_cap": 398.0,
+        "hits": 0,
+        "n_transfers": 5,
+        "n_gw": 5
+      },
+      {
+        "arm": "cascade_step",
+        "pts_net": 276.0,
+        "pts_xi_cap": 276.0,
+        "hits": 0,
+        "n_transfers": 4,
+        "n_gw": 5
+      }
+    ],
+    "cascade_minus_l3": -122.0,
+    "cascade_minus_l4": -123.0
   },
-  "artifact": "/opt/cursor/artifacts/cascade_mean_xi_ft_step_pool_resid.json",
-  "report": "reports/cascade_mean_xi_ft_step_pool_resid.md"
+  "artifact": "/opt/cursor/artifacts/cascade_step_vs_l3_l4.json",
+  "report": "reports/cascade_step_vs_l3_l4.md"
 }
