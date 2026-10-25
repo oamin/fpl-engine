@@ -29,6 +29,7 @@ from src.eval.cascade_mc_vs_mean_hist import (
     SEASON_E0,
     SEED,
     _build_hist_pool,
+    _build_hist_share_pool,
     _fd_priced_by_gw,
     _hist_fixtures_by_gw,
 )
@@ -174,8 +175,12 @@ def build_asof_bundle(
     pool = _build_hist_pool(
         hist, prices, decision_gw=int(decision_gw), season=season
     )
+    share_pool = _build_hist_share_pool(
+        hist, prices, decision_gw=int(decision_gw), season=season
+    )
     if owned:
         pool = _ensure_owned_in_pool(pool, stash, owned)
+        share_pool = _ensure_owned_in_pool(share_pool, stash, owned)
     fixtures_gw = _hist_fixtures_by_gw(
         enriched, start=int(decision_gw), end=int(horizon_end)
     )
@@ -185,6 +190,7 @@ def build_asof_bundle(
     priced_by_gw = _fd_priced_by_gw(enriched, fd, plan_gws[:2])
     scores_by_gw, board_meta = mean_boards_hist(
         pool=pool,
+        share_pool=share_pool,
         fixtures_gw=fixtures_gw,
         priced_by_gw=priced_by_gw,
         ranks=ranks,
@@ -200,6 +206,7 @@ def build_asof_bundle(
     return {
         "decision_gw": int(decision_gw),
         "pool": pool,
+        "share_pool": share_pool,
         "plan_gws": plan_gws,
         "priced_gws": sorted(priced_by_gw),
         "scores_by_gw": scores_by_gw,
@@ -207,6 +214,7 @@ def build_asof_bundle(
         "alpha_g": float(alpha_g),
         "alpha_a": float(alpha_a),
         "n_pool": int(len(pool)),
+        "n_share_pool": int(len(share_pool)),
     }
 
 

@@ -1,36 +1,25 @@
 {
-  "task": "cascade_mean_xi_ft_count_resid",
+  "task": "cascade_full_share_pool_trial",
   "status": "done",
-  "as_of_utc": "2026-10-24T21:12:14Z",
-  "change": "E[G,CS,GA]\u2212actual count residual; \u2205_G via \u03b1_G documented",
+  "as_of_utc": "2026-10-25T06:58:48Z",
+  "change": "Trial full-club share pool vs thin \u226560\u2032 shares; selection unchanged",
   "verdict": {
-    "ol_G": {
-      "sum_E": 76.45,
-      "sum_actual": 28.0,
-      "sum_resid": 48.45,
-      "mean_resid": 0.36704545454545456,
-      "mae": 0.495530303030303,
-      "rmse": 0.6618414394015314
+    "thin": {
+      "n_player_gw": 132,
+      "sum_E_G": 75.27499999999999,
+      "sum_G": 28.0,
+      "sum_resid": 47.27499999999999,
+      "mean_resid": 0.35814393939393935
     },
-    "ol_CS": {
-      "sum_E": 47.58,
-      "sum_actual": 34.0,
-      "sum_resid": 13.580000000000002,
-      "mean_resid": 0.10287878787878789,
-      "mae": 0.4192424242424242,
-      "rmse": 0.44891789085229467
+    "full": {
+      "n_player_gw": 132,
+      "sum_E_G": 39.77499999999999,
+      "sum_G": 28.0,
+      "sum_resid": 11.774999999999991,
+      "mean_resid": 0.08920454545454538
     },
-    "ol_GA": {
-      "sum_E": 141.67,
-      "sum_actual": 126.0,
-      "sum_resid": 15.669999999999998,
-      "mean_resid": 0.1187121212121212,
-      "mae": 0.7908333333333335,
-      "rmse": 1.0037448818692865
-    },
-    "empty_goal_rate": 0.04495943092141825,
-    "alpha_g": 0.9555555555555556
+    "delta_sum_resid": -35.5
   },
-  "artifact": "/opt/cursor/artifacts/cascade_mean_xi_ft_count_resid.json",
-  "report": "reports/cascade_mean_xi_ft_count_resid.md"
+  "artifact": "/opt/cursor/artifacts/cascade_full_share_pool_trial.json",
+  "report": "reports/cascade_full_share_pool_trial.md"
 }

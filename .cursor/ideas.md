@@ -4,6 +4,14 @@ Cursor chooses the next pre-registered comparison. The PI is not asked to pick. 
 
 **Numagent 2.0 is locked on main** — see `.cursor/context.md` and `reports/LOCKED.md` (`protocol.numagent_2_0`). Engine primary scorer is `score_xp_v2`. Numagent 1.0 and `score_xp` are **archived in-place** (`reports/ARCHIVE_NUMAGENT_1_0.md`). This file is the **park log**. Everything from “Procedure, locked 2026-10-07” downward is **Numagent 1.0 / stage archaeology** — not instructions for the live path.
 
+## Noted — full-club share pool vs thin ≥60′ shares (2026-10-25)
+
+Hist generative was building π on the selection pool (minutes>60) so City had
+4 players and Haaland π≈0.85. Trial: selection stays thin; shares use m>0
+full club (City 18, Haaland π≈0.40). OL XI ΣE_G resid +47.3 → **+11.8**
+(N=40). Wire full share pool into mean xi_ft boards next.
+`reports/cascade_full_share_pool_trial.md`.
+
 ## Noted — count resid E[G,CS,GA] on mean xi_ft (2026-10-24)
 
 Generative already has ∅_G via α_G≈0.956 (empty rate ≈4.5%). Open-loop XI
