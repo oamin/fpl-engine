@@ -34,10 +34,11 @@ Updated: 2026-10-23. **Numagent 2.0** is the product on main (`protocol.numagent
 DC calibrated. Do not retune CS.
 `reports/xi_cs_selection_hypothesis.md` · windows · `dixon_coles_team_cs_calib.md`.
 
-**Open — G overprint (remeasured under full-share default).** Count resid
-N=40 on mean xi_ft OL XI GW8–19: thin Σ resid G **+48.5** → full **+11.8**.
-Rolling GW8–10 G ≈ calibrated (+0.1). Remaining OL G dig is the open thread.
-`reports/cascade_mean_xi_ft_count_resid.md`.
+**Open — G overprint dig (full-share default).** Count resid OL +48.5→**+11.8**
+gen. Decomp: **not pot** (XI clubs xG−GF **−0.14**); centreline resid only
+**+2.1** (share +5.0 / pot −2.9 on blanking XI attackers); gen still **+7.3**.
+Selection not in bootstrap tail. Next: generative−centreline G gap / finish.
+`reports/cascade_g_overprint_dig.md`.
 
 Multi-seed XI residuals (boards once): CS stayed negative across opens;
 G stayed positive — `cascade_vs_l3_component_xp_multiseed.md`.
