@@ -30,11 +30,12 @@ Updated: 2026-10-23. **Numagent 2.0** is the product on main (`protocol.numagent
 
 ## Recent diagnostic (2026-10-25)
 
-**Cascade stepped vs L3/L4** (2025-26 GW8–12 actual net): unseeded 276 vs
-398/399 (−122/−123). **Seeded** with L3/L4 GW8 WC 15+XI (hold open, FT→2):
-228 vs 398/399 (−170/−171). GW9 hit bomb (6 xfers / 16 hit pts). GW8 −72 on
-same XI is merged Kroupi 12 vs closed-climb 48. `--seed-owned
-data/processed/l3_l4_gw08_seed_2025_26.json`.
+**Cascade stepped vs L3/L4** (2025-26 GW8–12 actual net): unseeded **276** vs
+398/399 (−122/−123). **Seeded** L3/L4 GW8 WC 15+XI (hold, FT→2; xi_ft GW9+):
+also **276** (−122/−123) — different GW mix (GW8 90, GW9 41 after 6 xfers /
+16 hit pts). GW8 −72 on the same XI is merged Kroupi 12 vs closed-climb 48.
+`--seed-owned data/processed/l3_l4_gw08_seed_2025_26.json`. Path-plan `hits`
+are points (fixed double-count in vs script).
 `reports/cascade_step_vs_l3_l4.md`.
 
 ## Plan
