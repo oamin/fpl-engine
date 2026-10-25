@@ -1,6 +1,6 @@
 # Cascade stepped xi_ft vs L3 / L4 (2025-26 GW8–12)
 
-As of `2026-10-25T08:12:31Z` (UTC).
+As of `2026-10-25T08:13:02Z` (UTC).
 
 ## Arms
 
@@ -52,7 +52,7 @@ As of `2026-10-25T08:12:31Z` (UTC).
 
 ## Verdict
 
-On this window cascade stepped trails locked L3/L4 by ~**−150** net pts, mostly GW8 (84 vs 162). CS/GA calibration on the cascade path does not yet translate to beating the priced μ_post climb.
+On this window cascade stepped trails locked L3/L4 by **-122** / **-123** net pts (mostly GW8: 84 vs 162). CS/GA calibration on the cascade path does not yet translate to beating the priced μ_post climb.
 
 ## Reproduce
 
