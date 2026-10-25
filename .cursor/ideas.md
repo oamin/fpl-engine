@@ -43,12 +43,13 @@ retune DC / open a CS gated screen for this.
 `reports/xi_cs_selection_hypothesis_windows.md`,
 `reports/dixon_coles_team_cs_calib.md`.
 
-## Open — player G overprint (2026-10-25)
+## Open — player G overprint after full-share default (2026-10-25)
 
-Cascade / mean xi_ft still over-attributes goals on selected XIs after CS
-closed. Full-club share pool is now the **default** for xG/π (selection may
-stay thin). Next: measure remaining G residual under that default; only then
-one pre-registered likelihood arm if a further treatment is proposed.
+Remeasured: OL XI ΣE[G]−G **+11.8** under full-club shares (was +48.5 thin);
+rolling GW8–10 ≈0. Remaining mass is not ∅_G (α_G≈0.956 matches empty rate).
+Candidates for the leftover: pot λ / finish rates / XI selection of scorers —
+not another share-pool bug. Gate only if proposing a treatment.
+`reports/cascade_mean_xi_ft_count_resid.md`.
 
 ## Locked default — full-club share pool (2026-10-25)
 
