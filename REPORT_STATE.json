@@ -1,21 +1,20 @@
 {
-  "task": "strand_full_share_pool_default",
+  "task": "cascade_g_gen_centreline_gap",
   "status": "done",
-  "as_of_utc": "2026-10-25T15:52:53Z",
-  "change": "Require full-club m>0 share_pool on generative run_strand / score paths; wire hist + live callers",
+  "as_of_utc": "2026-10-25T16:24:27Z",
+  "change": "Decompose gen\u2212centreline G gap into path\u03bb / shrink / k / dice",
   "verdict": {
-    "run_strand": "raises without share_pool when generative_attack",
-    "live": "run_multistage_trial builds build_frozen_share_pool",
-    "hist_callers": [
-      "cascade_mc_vs_mean_hist.run_path_arm",
-      "cascade_mean_path_gw_resid.run_path_strands",
-      "cascade_deadline_causal_minutes",
-      "cascade_ft_pe_path",
-      "cascade_mean_strand_convergence",
-      "cascade_mean_xi_ft_hist.mean_boards_hist",
-      "cascade_mean_xi_ft_component_resid.mean_component_boards"
-    ],
-    "selection": "stays thin (≥60′); dice / π on full club m>0"
+    "gap_gen_fd": 9.706979163041673,
+    "pieces": {
+      "path_\u03bb_vs_FD": 3.041311501016306,
+      "raw_sG_vs_shrink": 6.004413417261214,
+      "E[k]_vs_xG": -0.28797697046352844,
+      "props_\u03c0_vs_sG": -4.440892098500626e-16,
+      "dice_vs_mean_\u03c0k": 0.9492312152276816
+    },
+    "dominant": "raw_sG_vs_shrink",
+    "read": "gen\u2212cl_fd \u03a3 = **+9.71** on XI (gen resid +11.77, cl_fd resid +2.07). Pieces: path\u03bb\u2212FD +3.04; raw\u2212shrink +6.00; E[k]\u2212xG -0.29; props \u03c0\u2212sG -0.00; dice\u2212\u03c0k +0.95. **Dominant: raw_sG_vs_shrink** (+6.00). XI-club scoreline bias k\u2212xG -0.014."
   },
-  "report": "reports/cascade_full_share_pool_trial.md"
+  "artifact": "/opt/cursor/artifacts/cascade_g_gen_centreline_gap.json",
+  "report": "reports/cascade_g_gen_centreline_gap.md"
 }

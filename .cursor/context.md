@@ -34,11 +34,12 @@ Updated: 2026-10-23. **Numagent 2.0** is the product on main (`protocol.numagent
 DC calibrated. Do not retune CS.
 `reports/xi_cs_selection_hypothesis.md` · windows · `dixon_coles_team_cs_calib.md`.
 
-**Open — G overprint dig (full-share default).** Count resid OL +48.5→**+11.8**
-gen. Decomp: **not pot** (XI clubs xG−GF **−0.14**); centreline resid only
-**+2.1** (share +5.0 / pot −2.9 on blanking XI attackers); gen still **+7.3**.
-Selection not in bootstrap tail. Next: generative−centreline G gap / finish.
-`reports/cascade_g_overprint_dig.md`.
+**G overprint — dig closed on mechanism.** Full-share OL gen resid **+11.8**.
+Pot cleared; centreline +2.1 = share blanks. gen−cl_fd **+9.7** =
+**raw sG vs share-SE shrink +6.0** (dominant) + path Opta λ−FD **+3.0** +
+dice−πk +0.9; k−xG ≈0. Not dice nonlinearity. Treatment candidate: shrink
+on generative π (gate). `reports/cascade_g_overprint_dig.md` ·
+`reports/cascade_g_gen_centreline_gap.md`.
 
 **Strand default:** generative `run_strand` / `_undiscounted_scores_by_gw`
 require `share_pool` (full club m>0). Live + hist path/mean callers wired;
