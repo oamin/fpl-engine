@@ -148,7 +148,7 @@
   },
   "cascade_short_generative": {
     "locked": "2026-10-20",
-    "revised": "2026-10-21 — lineup_cov=False default (freeze as-of mean minutes); matchday/pair rolls parked; attack dice minutes>0; CS ≥60",
+    "revised": "2026-10-25 — full-club m>0 share_pool default for xG/π (selection may stay ≥60′); prior: 2026-10-21 lineup_cov=False; attack dice minutes>0; CS ≥60",
     "role": "priced short-horizon t:t+1 scenario attack + defence path",
     "mean_layer": "score_team_side / score_xp_v2 (unchanged; moment xCS/xGC)",
     "scenario": "book/FD fit → centreline Dixon–Coles M → match_outcome_roll (k∼M); no λ jitter; minutes = frozen as-of mean (live: xmi / as-of m); attack_roll; defence_roll CS/GC from rolled GA",
