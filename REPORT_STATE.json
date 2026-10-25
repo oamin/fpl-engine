@@ -1,13 +1,21 @@
 {
-  "task": "dixon_coles_team_cs_calib",
+  "task": "xi_cs_selection_hypothesis",
   "status": "done",
-  "as_of_utc": "2026-10-25T13:38:25Z",
-  "change": "Team-GW FD/Opta CS calibration \u2014 DC not broken",
+  "as_of_utc": "2026-10-25T13:48:25Z",
+  "change": "Test XI CS gap as selection of lucky team-GWs",
   "verdict": {
-    "fd_cs_bias_pooled": 0.009935588208499862,
-    "fd_cs_bias_gw8_12": -0.0033963986469590624,
-    "fd_xg_bias_pooled": 0.019902999331897056,
-    "read": "DC calibrated at team-GW; XI CS underprint was selection"
+    "league_gw8_12": {
+      "n": 100,
+      "mean_xcs": 0.2691750978907637,
+      "mean_cs": 0.27,
+      "bias": -0.0008249021092363465
+    },
+    "n_seeds": 5,
+    "mean_sel_bias": -0.19447705999520842,
+    "all_sel_bias_negative": true,
+    "mean_p_left": 0.06739999999999999,
+    "read": "Selection hypothesis supported: selected backs' team-GWs have actual CS \u226b FD xCS while the league panel is calibrated; selected bias sits in the left tail of a size-matched bootstrap."
   },
-  "report": "reports/dixon_coles_team_cs_calib.md"
+  "artifact": "/opt/cursor/artifacts/xi_cs_selection_hypothesis.json",
+  "report": "reports/xi_cs_selection_hypothesis.md"
 }

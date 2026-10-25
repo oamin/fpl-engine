@@ -30,6 +30,12 @@ Updated: 2026-10-23. **Numagent 2.0** is the product on main (`protocol.numagent
 
 ## Recent diagnostic (2026-10-25)
 
+**XI CS selection hypothesis** (GW8–12, 5 multi-seeds): league team-GW bias
+≈0; selected backs' team-GWs mean bias **−0.194** (all seeds negative);
+mean bootstrap left-tail p **0.067**. Opens chase high xCS and those
+fixtures over-delivered. Supported —
+`reports/xi_cs_selection_hypothesis.md`.
+
 **Team-GW DC CS calib** (4 seasons): FD xCS bias p−y **+0.010** (GW8–12
 **−0.003**); goals +0.020. DC is calibrated — XI CS underprint was selection,
 not a broken Dixon–Coles. `reports/dixon_coles_team_cs_calib.md`.

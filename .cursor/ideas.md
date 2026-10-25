@@ -19,6 +19,13 @@ Kroupi 12 vs closed 48), not a different XI. Park: hit-control / FT PE on
 seeded open; also rescore locked L3/L4 weeks on merged if comparing opens.
 `reports/cascade_step_vs_l3_l4.md`.
 
+## Noted — cascade vs L3 player xP(G,CS,GA) shared XI (2026-10-25)
+
+No captain. Same GW8 WC XI; later GWs = L3 owned + pick_xi(v2). Both scorers
+on that XI vs actual components. Casc overprints G (53.7 vs P 44; l3 39.7);
+both underprint CS (42/40 vs P 68). MAE_G favours l3_v2; MAE_CS/GA close.
+`reports/cascade_vs_l3_component_xp.md`.
+
 ## Noted — stepped ≥60′ pool xP(G,CS,GA) GW8–12 (2026-10-25)
 
 `cascade_mean_xi_ft_step_pool_resid` N=40: each step refreshes selection
