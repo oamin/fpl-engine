@@ -18,7 +18,11 @@ import numpy as np
 import pandas as pd
 
 from src.markets import numagent_xp
-from src.markets.cascade_score_v2 import build_frozen_pool, normalize_live_history
+from src.markets.cascade_score_v2 import (
+    build_frozen_pool,
+    build_frozen_share_pool,
+    normalize_live_history,
+)
 from src.markets.short_horizon_generative import hist_by_team_norm
 from src.models.multistage_mc_milp import (
     DEFAULT_LINEUP_COV,
@@ -70,6 +74,9 @@ def mean_boards(
     team_hist = hist_by_team_norm(hist)
     pool = build_frozen_pool(
         bootstrap, selectable, logs, before_gw=int(decision_gw), season="2026-27"
+    )
+    share_pool = build_frozen_share_pool(
+        bootstrap, logs, before_gw=int(decision_gw), season="2026-27"
     )
     by_gw = fixtures_by_gw(
         fixtures, team_names, start=int(decision_gw), end=int(horizon_end)
@@ -128,6 +135,7 @@ def mean_boards(
             hist_by_team=team_hist,
             generative_attack=True,
             lineup_cov=DEFAULT_LINEUP_COV,
+            share_pool=share_pool,
         )
         for g in plan_gws:
             acc[int(g)] += scores[int(g)]

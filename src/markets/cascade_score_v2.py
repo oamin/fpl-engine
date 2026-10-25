@@ -108,6 +108,32 @@ def rolling_m_sigma(hist: pd.DataFrame, element: int, *, window: int = 3) -> tup
     return m, sig
 
 
+def build_frozen_share_pool(
+    bootstrap: Mapping[str, Any],
+    history: pd.DataFrame,
+    *,
+    before_gw: int,
+    season: str = "2026-27",
+) -> pd.DataFrame:
+    """Full-club ``m>0`` roster for generative π / xG shares (live path).
+
+    Selection / buy universe stays on ``build_frozen_pool`` + ``player_pool``.
+    """
+    all_ids = {str(el["id"]) for el in bootstrap.get("elements") or []}
+    frame = build_frozen_pool(
+        bootstrap,
+        all_ids,
+        history,
+        before_gw=int(before_gw),
+        season=str(season),
+    )
+    if frame.empty:
+        return frame
+    return frame.loc[
+        pd.to_numeric(frame["m"], errors="coerce").fillna(0.0) > 0
+    ].reset_index(drop=True)
+
+
 def build_frozen_pool(
     bootstrap: Mapping[str, Any],
     selectable_ids: set[str],

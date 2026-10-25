@@ -120,14 +120,9 @@ def mean_boards_hist(
         raise ValueError(
             "share_pool is required (full club m>0); selection pool must stay thin"
         )
-    score_pool = share_pool
     priced_index = _priced_index(priced_by_gw)
     paths0 = init_paths_from_opta(ranks, profile=profile)
     acc = {g: np.zeros(len(pool), dtype=float) for g in plan_gws}
-    sel_ids = [str(x) for x in pool["player_id"].astype(str).tolist()]
-    share_id_to_idx = {
-        str(p): i for i, p in enumerate(score_pool["player_id"].astype(str))
-    }
     t0 = _now()
     sources: set[str] = set()
     for s in range(int(n_strands)):
@@ -161,7 +156,7 @@ def mean_boards_hist(
                 week.append(sc)
             rolled[int(gw)] = week
         scores = _undiscounted_scores_by_gw(
-            score_pool,
+            pool,
             plan_gws=plan_gws,
             rolled_by_gw=rolled,
             fixtures_gw=fixtures_gw,
@@ -173,13 +168,10 @@ def mean_boards_hist(
             hist_by_team=hist_by_team,
             generative_attack=True,
             lineup_cov=DEFAULT_LINEUP_COV,
+            share_pool=share_pool,
         )
         for g in plan_gws:
-            full = scores[int(g)]
-            for j, pid in enumerate(sel_ids):
-                i = share_id_to_idx.get(pid)
-                if i is not None:
-                    acc[int(g)][j] += float(full[i])
+            acc[int(g)] += scores[int(g)]
     mean = {g: acc[g] / float(n_strands) for g in plan_gws}
     meta = {
         "n_strands": int(n_strands),
@@ -188,7 +180,7 @@ def mean_boards_hist(
         "sources": sorted(x for x in sources if x),
         "n_priced_fits": int(sum(len(v) for v in priced_by_gw.values())),
         "n_selection_pool": int(len(pool)),
-        "n_share_pool": int(len(score_pool)),
+        "n_share_pool": int(len(share_pool)),
         "share_pool": "full_m_gt_0",
     }
     return mean, meta

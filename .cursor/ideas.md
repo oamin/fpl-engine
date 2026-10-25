@@ -57,7 +57,8 @@ Hist generative was building π on the selection pool (minutes>60) so City had
 4 players and Haaland π≈0.85. Trial: selection stays thin; shares use m>0
 full club (City 18, Haaland π≈0.40). OL XI ΣE_G resid +47.3 → **+11.8**
 (N=40). Now default: `share_pool` / `share_players` required on cascade mean
-boards; protocol `cascade_short_generative.share_pool`.
+boards **and** generative `run_strand` / live `run_multistage_trial`
+(`build_frozen_share_pool`); protocol `cascade_short_generative.share_pool`.
 `reports/cascade_full_share_pool_trial.md`.
 
 ## Noted — count resid E[G,CS,GA] on mean xi_ft (2026-10-24)

@@ -1,44 +1,21 @@
 {
-  "task": "cascade_g_overprint_dig",
+  "task": "strand_full_share_pool_default",
   "status": "done",
-  "as_of_utc": "2026-10-25T15:07:36Z",
-  "change": "Decompose leftover G resid into pot / share / selection",
+  "as_of_utc": "2026-10-25T15:52:53Z",
+  "change": "Require full-club m>0 share_pool on generative run_strand / score paths; wire hist + live callers",
   "verdict": {
-    "decomp": {
-      "n_xi_player_gw": 132,
-      "sum_E_G_mean": 30.068020836958326,
-      "sum_G": 28.0,
-      "sum_resid_mean": 2.0680208369583264,
-      "sum_pot_piece": -2.8891598367996045,
-      "sum_share_piece": 4.957180673757931,
-      "sum_E_G_gen": 35.325,
-      "sum_resid_gen": 7.325000000000001,
-      "alpha_g": 0.9555555555555556,
-      "pot_plus_share": 2.068020836958327,
-      "identity_err": 4.440892098500626e-16
-    },
-    "team_pot": {
-      "league_n": 240,
-      "league_mean_xg": 1.4148525194896773,
-      "league_mean_gf": 1.4333333333333333,
-      "league_bias": -0.01848081384365629,
-      "xi_clubs_n": 79,
-      "xi_mean_xg": 1.7123867424924406,
-      "xi_mean_gf": 1.8481012658227849,
-      "xi_bias": -0.13571452333034428
-    },
-    "selection": {
-      "n_xi_attack_gw": 120,
-      "n_pool": 1968,
-      "xi_mean_resid": 0.017233506974652733,
-      "boot_mean": 0.024964971517712563,
-      "boot_p05": -0.027926549579531706,
-      "boot_p95": 0.07279273077602283,
-      "p_right": 0.6156
-    },
-    "frac_pot_abs": 0.3682174936089168,
-    "read": "**Not pot.** XI clubs' FD xG \u2264 GF (team-GW bias -0.136; pot piece -2.9). Centreline resid is small (+2.1) and **share-driven** (share piece +5.0): sG mass on XI players who blanked. Generative resid stays higher (+7.3) \u2014 dice/nonlinear gap vs centreline, not FD \u03bb mis-fit. XI selection resid is not in the bootstrap tail."
+    "run_strand": "raises without share_pool when generative_attack",
+    "live": "run_multistage_trial builds build_frozen_share_pool",
+    "hist_callers": [
+      "cascade_mc_vs_mean_hist.run_path_arm",
+      "cascade_mean_path_gw_resid.run_path_strands",
+      "cascade_deadline_causal_minutes",
+      "cascade_ft_pe_path",
+      "cascade_mean_strand_convergence",
+      "cascade_mean_xi_ft_hist.mean_boards_hist",
+      "cascade_mean_xi_ft_component_resid.mean_component_boards"
+    ],
+    "selection": "stays thin (≥60′); dice / π on full club m>0"
   },
-  "artifact": "/opt/cursor/artifacts/cascade_g_overprint_dig.json",
-  "report": "reports/cascade_g_overprint_dig.md"
+  "report": "reports/cascade_full_share_pool_trial.md"
 }

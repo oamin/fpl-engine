@@ -30,6 +30,7 @@ import pandas as pd
 from src.eval.cascade_mc_vs_mean_hist import (
     SEASON_E0,
     _build_hist_pool,
+    _build_hist_share_pool,
     _fd_priced_by_gw,
     _hist_fixtures_by_gw,
 )
@@ -126,6 +127,7 @@ def actual_components(merged: pd.DataFrame, gw: int) -> pd.DataFrame:
 def mean_component_boards(
     *,
     pool: pd.DataFrame,
+    share_pool: pd.DataFrame,
     fixtures_gw: dict[int, list[dict[str, str]]],
     priced_by_gw: dict[int, list[dict[str, Any]]],
     ranks: dict[str, float],
@@ -138,7 +140,13 @@ def mean_component_boards(
     n_strands: int,
     seed0: int,
 ) -> tuple[dict[int, pd.DataFrame], dict[str, Any]]:
-    """Average generative ``xp_goals`` / ``xp_cs`` / ``xp_gc`` (+ total) by GW."""
+    """Average generative ``xp_goals`` / ``xp_cs`` / ``xp_gc`` (+ total) by GW.
+
+    Attack dice run on ``share_pool`` (full club m>0); scores accumulate onto
+    thin ``pool`` rows.
+    """
+    if share_pool is None or share_pool.empty:
+        raise ValueError("share_pool is required (full club m>0)")
     priced_index = _priced_index(priced_by_gw)
     paths0 = init_paths_from_opta(ranks, profile=profile)
     n = len(pool)
@@ -152,6 +160,9 @@ def mean_component_boards(
         for g in plan_gws
     }
     pid_to_idx = {str(p): i for i, p in enumerate(pool["player_id"].astype(str))}
+    dice = share_pool.copy()
+    if "team_n" not in dice.columns and "team_norm" in dice.columns:
+        dice["team_n"] = dice["team_norm"].map(lambda t: norm_team(str(t)))
     t0 = _now()
     for s in range(int(n_strands)):
         if s == 0 or (s + 1) % 25 == 0 or s + 1 == int(n_strands):
@@ -184,9 +195,6 @@ def mean_component_boards(
             rolled[int(gw)] = week
 
         score_rng = random.Random(int(seed0) + 10_000 + s)
-        out = pool.copy()
-        if "team_n" not in out.columns and "team_norm" in out.columns:
-            out["team_n"] = out["team_norm"].map(lambda t: norm_team(str(t)))
         for gw in plan_gws:
             g_acc = {
                 "xp_goals": np.zeros(n, float),
@@ -197,8 +205,8 @@ def mean_component_boards(
             for sc in rolled[int(gw)]:
                 home_n = norm_team(str(sc["home"]))
                 away_n = norm_team(str(sc["away"]))
-                home_club = out.loc[out["team_norm"].map(norm_team) == home_n].copy()
-                away_club = out.loc[out["team_norm"].map(norm_team) == away_n].copy()
+                home_club = dice.loc[dice["team_norm"].map(norm_team) == home_n].copy()
+                away_club = dice.loc[dice["team_norm"].map(norm_team) == away_n].copy()
                 if home_club.empty and away_club.empty:
                     continue
                 home_xp, away_xp, _meta = score_fixture_generative(
@@ -248,7 +256,14 @@ def mean_component_boards(
         for k, arr in acc[int(gw)].items():
             df[k] = arr / float(n_strands)
         frames[int(gw)] = df
-    meta = {"n_strands": int(n_strands), "seed0": int(seed0), "elapsed_s": _now() - t0}
+    meta = {
+        "n_strands": int(n_strands),
+        "seed0": int(seed0),
+        "elapsed_s": _now() - t0,
+        "n_selection_pool": int(len(pool)),
+        "n_share_pool": int(len(share_pool)),
+        "share_pool": "full_m_gt_0",
+    }
     return frames, meta
 
 
@@ -490,6 +505,9 @@ def main(argv: list[str] | None = None) -> int:
     alpha_g, alpha_a = _asof_alphas(hist)
     team_hist = hist_by_team_norm(hist)
     pool = _build_hist_pool(hist, prices, decision_gw=start_gw, season=season)
+    share_pool = _build_hist_share_pool(
+        hist, prices, decision_gw=start_gw, season=season
+    )
     fixtures_gw = _hist_fixtures_by_gw(
         enriched, start=start_gw, end=horizon_end
     )
@@ -497,6 +515,7 @@ def main(argv: list[str] | None = None) -> int:
     priced_by_gw = _fd_priced_by_gw(enriched, fd, plan_gws[:2])
     ol_boards, ol_meta = mean_component_boards(
         pool=pool,
+        share_pool=share_pool,
         fixtures_gw=fixtures_gw,
         priced_by_gw=priced_by_gw,
         ranks=ranks,
@@ -539,13 +558,18 @@ def main(argv: list[str] | None = None) -> int:
             ag, aa = _asof_alphas(hist_s)
             th = hist_by_team_norm(hist_s)
             pool_s = _build_hist_pool(hist_s, prices, decision_gw=gw, season=season)
+            share_s = _build_hist_share_pool(
+                hist_s, prices, decision_gw=gw, season=season
+            )
             pool_s = _ensure_owned_in_pool(pool_s, stash, owned)
+            share_s = _ensure_owned_in_pool(share_s, stash, owned)
             stash = pool_s.copy()
             fx = _hist_fixtures_by_gw(enriched, start=gw, end=horizon_end)
             pg = sorted(fx)
             priced = _fd_priced_by_gw(enriched, fd, pg[:2])
             boards, meta = mean_component_boards(
                 pool=pool_s,
+                share_pool=share_s,
                 fixtures_gw=fx,
                 priced_by_gw=priced,
                 ranks=ranks,

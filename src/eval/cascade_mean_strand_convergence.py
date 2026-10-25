@@ -29,6 +29,7 @@ from src.eval.cascade_mc_vs_mean_hist import (
     SEASON_E0,
     SEED,
     _build_hist_pool,
+    _build_hist_share_pool,
     _fd_priced_by_gw,
     _hist_fixtures_by_gw,
 )
@@ -100,6 +101,7 @@ def _metrics(a: np.ndarray, b: np.ndarray) -> dict[str, float]:
 def centreline_scores(
     *,
     pool: pd.DataFrame,
+    share_pool: pd.DataFrame,
     fixtures_gw: dict[int, list[dict[str, str]]],
     priced_by_gw: dict[int, list[dict[str, Any]]],
     ranks: dict[str, float],
@@ -145,6 +147,7 @@ def centreline_scores(
             gamma=1.0,
             alpha_g=alpha_g,
             alpha_a=alpha_a,
+            share_pool=share_pool,
         )
         arr = pd.to_numeric(scored["mc_score"], errors="coerce").fillna(0.0).to_numpy(
             float
@@ -158,6 +161,7 @@ def centreline_scores(
 def run_prefix_stream(
     *,
     pool: pd.DataFrame,
+    share_pool: pd.DataFrame,
     fixtures_gw: dict[int, list[dict[str, str]]],
     priced_by_gw: dict[int, list[dict[str, Any]]],
     ranks: dict[str, float],
@@ -171,6 +175,7 @@ def run_prefix_stream(
     seed0: int,
     report_ns: tuple[int, ...],
 ) -> dict[str, Any]:
+    """Prefix gen means. ``pool`` = thin rows; ``share_pool`` = full club dice."""
     priced_index = _priced_index(priced_by_gw)
     paths0 = init_paths_from_opta(ranks, profile=profile)
     acc = {g: np.zeros(len(pool), dtype=float) for g in plan_gws}
@@ -231,6 +236,7 @@ def run_prefix_stream(
             hist_by_team=hist_by_team,
             generative_attack=True,
             lineup_cov=DEFAULT_LINEUP_COV,
+            share_pool=share_pool,
         )
         for g in plan_gws:
             acc[int(g)] += scores[int(g)]
@@ -385,18 +391,23 @@ def main(argv: list[str] | None = None) -> int:
     alpha_g, alpha_a = _asof_alphas(hist)
     team_hist = hist_by_team_norm(hist)
     pool = _build_hist_pool(hist, prices, decision_gw=decision_gw, season=season)
+    share_pool = _build_hist_share_pool(
+        hist, prices, decision_gw=decision_gw, season=season
+    )
 
     fixtures_gw = _hist_fixtures_by_gw(enriched, start=start, end=horizon_end)
     plan_gws = sorted(fixtures_gw)
     priced_by_gw = _fd_priced_by_gw(enriched, fd, plan_gws[:2])
     print(
-        f"[conv] pool={len(pool)} gws={plan_gws} priced={sorted(priced_by_gw)}",
+        f"[conv] select={len(pool)} share={len(share_pool)} "
+        f"gws={plan_gws} priced={sorted(priced_by_gw)}",
         flush=True,
     )
 
     print("[conv] centreline boards…", flush=True)
     centre = centreline_scores(
         pool=pool,
+        share_pool=share_pool,
         fixtures_gw=fixtures_gw,
         priced_by_gw=priced_by_gw,
         ranks=ranks,
@@ -411,6 +422,7 @@ def main(argv: list[str] | None = None) -> int:
     print("[conv] generative prefix stream…", flush=True)
     stream = run_prefix_stream(
         pool=pool,
+        share_pool=share_pool,
         fixtures_gw=fixtures_gw,
         priced_by_gw=priced_by_gw,
         ranks=ranks,

@@ -40,6 +40,10 @@ gen. Decomp: **not pot** (XI clubs xG−GF **−0.14**); centreline resid only
 Selection not in bootstrap tail. Next: generative−centreline G gap / finish.
 `reports/cascade_g_overprint_dig.md`.
 
+**Strand default:** generative `run_strand` / `_undiscounted_scores_by_gw`
+require `share_pool` (full club m>0). Live + hist path/mean callers wired;
+selection stays thin.
+
 Multi-seed XI residuals (boards once): CS stayed negative across opens;
 G stayed positive — `cascade_vs_l3_component_xp_multiseed.md`.
 
