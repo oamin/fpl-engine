@@ -148,7 +148,7 @@
   },
   "cascade_short_generative": {
     "locked": "2026-10-20",
-    "revised": "2026-10-21 — lineup_cov=False default (freeze as-of mean minutes); matchday/pair rolls parked; attack dice minutes>0; CS ≥60",
+    "revised": "2026-10-25 — full-club m>0 share_pool default for xG/π (selection may stay ≥60′); prior: 2026-10-21 lineup_cov=False; attack dice minutes>0; CS ≥60",
     "role": "priced short-horizon t:t+1 scenario attack + defence path",
     "mean_layer": "score_team_side / score_xp_v2 (unchanged; moment xCS/xGC)",
     "scenario": "book/FD fit → centreline Dixon–Coles M → match_outcome_roll (k∼M); no λ jitter; minutes = frozen as-of mean (live: xmi / as-of m); attack_roll; defence_roll CS/GC from rolled GA",
@@ -161,6 +161,7 @@
     "lambda_jitter": "retired — MARKET_BAND=0; Uniform(1±15%) was never PI-approved",
     "defence": "CS = (GA==0) with ≥60'; GC = −⌊GA/2⌋ for GKP/DEF who played — no separate xCS/xGC on scenario strands",
     "attack_gate": "π/ρ renorm on minutes>0 (impact subs stay on dice); CS still ≥60",
+    "share_pool": "full club m>0 for xG/xA shares and generative π — default even when selection pool is thin (≥60′); do not re-normalise shares on the selection board",
     "soft_priors": "xp_defcon / xp_bonus / xp_cards / xp_saves from expanding means (as-of *_mu), gated by lineup minutes; not from the roll",
     "parked": ["bonus_from_roll", "lambda_uniform_band", "P_SUB_ON_starter_sub", "corr_threshold_competitor_pairs", "club_matchday_minutes_resample"],
     "scope": "cascade_short / short_horizon_cascade scenario strands only",

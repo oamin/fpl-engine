@@ -29,6 +29,7 @@ import pandas as pd
 from src.eval.cascade_mc_vs_mean_hist import (
     SEASON_E0,
     _build_hist_pool,
+    _build_hist_share_pool,
     _fd_priced_by_gw,
     _hist_fixtures_by_gw,
 )
@@ -121,8 +122,17 @@ def mean_count_boards(
     plan_gws: list[int],
     n_strands: int,
     seed0: int,
+    share_pool: pd.DataFrame | None = None,
 ) -> tuple[dict[int, pd.DataFrame], dict[str, Any]]:
-    """Average generative E[G], E[CS], E[GA] by GW (+ ∅_G diagnostics)."""
+    """Average generative E[G], E[CS], E[GA] by GW (+ ∅_G diagnostics).
+
+    ``pool`` = thin selection; ``share_pool`` = full club ``m>0`` for attack
+    dice (required default). Counts for selected players are projected back.
+    """
+    if share_pool is None:
+        raise ValueError(
+            "share_pool is required (full club m>0); selection pool must stay thin"
+        )
     priced_index = _priced_index(priced_by_gw)
     paths0 = init_paths_from_opta(ranks, profile=profile)
     n = len(pool)
@@ -164,14 +174,14 @@ def mean_count_boards(
             rolled[int(gw)] = week
 
         score_rng = random.Random(int(seed0) + 10_000 + s)
-        out = pool.copy()
+        dice = share_pool
         for gw in plan_gws:
             g_acc = {k: np.zeros(n, float) for k in keys}
             for sc in rolled[int(gw)]:
                 home_n = norm_team(str(sc["home"]))
                 away_n = norm_team(str(sc["away"]))
-                home_club = out.loc[out["team_norm"].map(norm_team) == home_n].copy()
-                away_club = out.loc[out["team_norm"].map(norm_team) == away_n].copy()
+                home_club = dice.loc[dice["team_norm"].map(norm_team) == home_n].copy()
+                away_club = dice.loc[dice["team_norm"].map(norm_team) == away_n].copy()
                 if home_club.empty and away_club.empty:
                     continue
                 home_xp, away_xp, meta = score_fixture_generative(
@@ -245,6 +255,9 @@ def mean_count_boards(
         "empty_goals_emptyset_G": int(empty_goals),
         "empty_goal_rate": empty_rate,
         "one_minus_alpha_g": 1.0 - float(alpha_g),
+        "n_selection_pool": int(len(pool)),
+        "n_share_pool": int(len(share_pool)),
+        "share_pool": "full_m_gt_0",
     }
     return frames, meta_out
 
@@ -372,6 +385,8 @@ def _plot(state: dict[str, Any], path: Path) -> None:
 
 def _write_report(state: dict[str, Any]) -> None:
     ol_e = state["ol_empty"]
+    ol_g = state["arms"]["open_loop"]["summary"].get("G") or {}
+    thin_g = (state.get("thin_baseline_ol_G") or {}).get("sum_resid")
     lines = [
         "# Mean xi_ft run — count residual E[G, CS, GA] − actual",
         "",
@@ -379,6 +394,21 @@ def _write_report(state: dict[str, Any]) -> None:
         f"Season **{state['season']}** · N={state['n_strands']} · "
         f"seed={state['seed']} · wall {state['elapsed_s']:.1f}s",
         "",
+        "## Share pool (default)",
+        "",
+        "Attack dice / π on **full club ``m>0``**; selection stays ≥60′. "
+        "Shares are not re-normalised on the thin board "
+        "(`protocol.cascade_short_generative.share_pool`).",
+        "",
+    ]
+    if thin_g is not None and ol_g:
+        lines += [
+            f"- Prior thin-share OL Σ resid G: **{float(thin_g):+.2f}**",
+            f"- Full-share OL Σ resid G: **{float(ol_g.get('sum_resid', float('nan'))):+.2f}** "
+            f"(Δ {float(ol_g.get('sum_resid', 0.0)) - float(thin_g):+.2f})",
+            "",
+        ]
+    lines += [
         "## Own goals / non-attributed goals",
         "",
         "Generative attack puts mass on ``∅_G``: each rolled match goal is "
@@ -486,11 +516,20 @@ def main(argv: list[str] | None = None) -> int:
     alpha_g, alpha_a = _asof_alphas(hist)
     team_hist = hist_by_team_norm(hist)
     pool = _build_hist_pool(hist, prices, decision_gw=start_gw, season=season)
+    share_pool = _build_hist_share_pool(
+        hist, prices, decision_gw=start_gw, season=season
+    )
+    print(
+        f"[count-resid] select={len(pool)} share={len(share_pool)} "
+        "(full club m>0 for π)",
+        flush=True,
+    )
     fixtures_gw = _hist_fixtures_by_gw(enriched, start=start_gw, end=horizon_end)
     plan_gws = sorted(fixtures_gw)
     priced_by_gw = _fd_priced_by_gw(enriched, fd, plan_gws[:2])
     ol_boards, ol_meta = mean_count_boards(
         pool=pool,
+        share_pool=share_pool,
         fixtures_gw=fixtures_gw,
         priced_by_gw=priced_by_gw,
         ranks=ranks,
@@ -536,13 +575,18 @@ def main(argv: list[str] | None = None) -> int:
             ag, aa = _asof_alphas(hist_s)
             th = hist_by_team_norm(hist_s)
             pool_s = _build_hist_pool(hist_s, prices, decision_gw=gw, season=season)
+            share_s = _build_hist_share_pool(
+                hist_s, prices, decision_gw=gw, season=season
+            )
             pool_s = _ensure_owned_in_pool(pool_s, stash, owned)
+            share_s = _ensure_owned_in_pool(share_s, stash, owned)
             stash = pool_s.copy()
             fx = _hist_fixtures_by_gw(enriched, start=gw, end=horizon_end)
             pg = sorted(fx)
             priced = _fd_priced_by_gw(enriched, fd, pg[:2])
             boards, meta = mean_count_boards(
                 pool=pool_s,
+                share_pool=share_s,
                 fixtures_gw=fx,
                 priced_by_gw=priced,
                 ranks=ranks,
@@ -593,6 +637,15 @@ def main(argv: list[str] | None = None) -> int:
             )
         return rows
 
+    thin_baseline = None
+    thin_path = Path("/opt/cursor/artifacts/cascade_mean_xi_ft_count_resid.json")
+    if thin_path.exists():
+        try:
+            thin_baseline = json.loads(thin_path.read_text())["arms"]["open_loop"][
+                "summary"
+            ].get("G")
+        except (KeyError, json.JSONDecodeError, TypeError):
+            thin_baseline = None
     state = {
         "task": "cascade_mean_xi_ft_count_resid",
         "season": season,
@@ -600,6 +653,10 @@ def main(argv: list[str] | None = None) -> int:
         "n_strands": n_strands,
         "seed": seed0,
         "elapsed_s": _now() - t_all,
+        "share_pool": "full_m_gt_0",
+        "n_selection_pool": ol_meta.get("n_selection_pool"),
+        "n_share_pool": ol_meta.get("n_share_pool"),
+        "thin_baseline_ol_G": thin_baseline,
         "ol_empty": {
             "alpha_g": ol_meta["alpha_g"],
             "alpha_a": ol_meta["alpha_a"],
@@ -626,19 +683,31 @@ def main(argv: list[str] | None = None) -> int:
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(state, indent=2) + "\n")
     _write_report(state)
+    ol_g = state["arms"]["open_loop"]["summary"].get("G") or {}
     STATE_JSON.write_text(
         json.dumps(
             {
                 "task": "cascade_mean_xi_ft_count_resid",
                 "status": "done",
                 "as_of_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                "change": "E[G,CS,GA]−actual count residual; ∅_G via α_G documented",
+                "change": "Remeasure E[G,CS,GA]−actual under full-club share default",
                 "verdict": {
-                    "ol_G": state["arms"]["open_loop"]["summary"].get("G"),
+                    "share_pool": "full_m_gt_0",
+                    "ol_G_resid": ol_g.get("sum_resid"),
+                    "thin_ol_G_resid": (thin_baseline or {}).get("sum_resid"),
                     "ol_CS": state["arms"]["open_loop"]["summary"].get("CS"),
                     "ol_GA": state["arms"]["open_loop"]["summary"].get("GA"),
+                    "roll_G_resid": state["arms"]["rolling"]["summary"]
+                    .get("G", {})
+                    .get("sum_resid"),
                     "empty_goal_rate": ol_meta["empty_goal_rate"],
-                    "alpha_g": ol_meta["alpha_g"],
+                    "read": (
+                        "Full-share default cuts OL ΣE[G] resid "
+                        f"{(thin_baseline or {}).get('sum_resid', float('nan')):+.1f} → "
+                        f"{ol_g.get('sum_resid', float('nan')):+.1f}; "
+                        "rolling GW8–10 G ≈ calibrated. Remaining OL G "
+                        "overprint is the open dig."
+                    ),
                 },
                 "artifact": str(args.out),
                 "report": str(REPORT_MD.relative_to(ROOT)),

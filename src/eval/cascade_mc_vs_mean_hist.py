@@ -322,6 +322,7 @@ def _mean_board(
 def run_path_arm(
     *,
     pool: pd.DataFrame,
+    share_pool: pd.DataFrame,
     fixtures_gw: dict[int, list[dict[str, str]]],
     priced_by_gw: dict[int, list[dict[str, Any]]],
     ranks: dict[str, float],
@@ -335,6 +336,7 @@ def run_path_arm(
     n_strands: int,
     seed: int,
 ) -> dict[str, Any]:
+    """Path strands. ``pool`` = thin selection; ``share_pool`` = full club m>0."""
     paths0 = init_paths_from_opta(ranks, profile=profile)
     rng = random.Random(int(seed))
     strands = []
@@ -362,6 +364,7 @@ def run_path_arm(
                 priced_by_gw=priced_by_gw,
                 ranks=ranks,
                 profile=profile,
+                share_pool=share_pool,
             )
         )
     freq = aggregate_frequencies(strands, pool)
@@ -666,8 +669,15 @@ def main(argv: list[str] | None = None) -> int:
     team_hist = hist_by_team_norm(hist)
 
     pool = _build_hist_pool(hist, prices, decision_gw=decision_gw, season=season)
+    share_pool = _build_hist_share_pool(
+        hist, prices, decision_gw=decision_gw, season=season
+    )
     pool_ids = set(pool["player_id"].astype(str))
-    print(f"[hist] pool={len(pool)} alphas=({alpha_g:.3f},{alpha_a:.3f})", flush=True)
+    print(
+        f"[hist] select={len(pool)} share={len(share_pool)} "
+        f"alphas=({alpha_g:.3f},{alpha_a:.3f})",
+        flush=True,
+    )
 
     fixtures_gw = _hist_fixtures_by_gw(enriched, start=start, end=horizon_end)
     horizon_gws = sorted(fixtures_gw)
@@ -718,6 +728,7 @@ def main(argv: list[str] | None = None) -> int:
     print("[hist] path arm…", flush=True)
     path = run_path_arm(
         pool=pool,
+        share_pool=share_pool,
         fixtures_gw=fixtures_gw,
         priced_by_gw=priced_by_gw,
         ranks=ranks,
@@ -750,6 +761,8 @@ def main(argv: list[str] | None = None) -> int:
         "snapshot_gws": snapshot_gws,
         "priced_gws": priced_gws,
         "n_pool": int(len(pool)),
+        "n_share_pool": int(len(share_pool)),
+        "share_pool": "full_m_gt_0",
         "ranks": "oracle_post_gw38",
         "gf_ga_profile": "loso_prior_seasons",
         "path": path,

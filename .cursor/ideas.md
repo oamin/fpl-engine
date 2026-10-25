@@ -34,12 +34,31 @@ resid G +23.8 / CS −1.9 / GA +0.7 on 55 player-GWs. Hot weeks GW9 (+16 G
 pts when XI scored 0) and GW12 (+10). CS/GA well behaved.
 `reports/cascade_mean_xi_ft_step_pool_resid.md`.
 
-## Noted — full-club share pool vs thin ≥60′ shares (2026-10-25)
+## Closed — XI CS underprint was selection (2026-10-25)
+
+Team-GW FD xCS calibrated (bias ≈0). Multi-seed XI CS gap = early-season
+sheet luck on selected back clubs (GW1–12), not broken Dixon–Coles. Do not
+retune DC / open a CS gated screen for this.
+`reports/xi_cs_selection_hypothesis.md`,
+`reports/xi_cs_selection_hypothesis_windows.md`,
+`reports/dixon_coles_team_cs_calib.md`.
+
+## Open — G overprint after full-share (2026-10-25)
+
+Count resid OL gen +11.8. Dig: pot **cleared** (XI clubs over-delivered GF);
+centreline +2.1 is share blanks (Minteh/João Pedro/Woltemade); gen +7.3.
+Selection not special. Open: why generative E[G] > centreline on the XI
+(dice / nonlinear), not FD λ. Gate only with a treatment.
+`reports/cascade_g_overprint_dig.md`.
+
+## Locked default — full-club share pool (2026-10-25)
 
 Hist generative was building π on the selection pool (minutes>60) so City had
 4 players and Haaland π≈0.85. Trial: selection stays thin; shares use m>0
 full club (City 18, Haaland π≈0.40). OL XI ΣE_G resid +47.3 → **+11.8**
-(N=40). Wire full share pool into mean xi_ft boards next.
+(N=40). Now default: `share_pool` / `share_players` required on cascade mean
+boards **and** generative `run_strand` / live `run_multistage_trial`
+(`build_frozen_share_pool`); protocol `cascade_short_generative.share_pool`.
 `reports/cascade_full_share_pool_trial.md`.
 
 ## Noted — count resid E[G,CS,GA] on mean xi_ft (2026-10-24)

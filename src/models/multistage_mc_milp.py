@@ -59,6 +59,7 @@ from src.markets import numagent_xp
 from src.markets.cascade_score_v2 import (
     SCORER as SCORE_XP_V2,
     build_frozen_pool,
+    build_frozen_share_pool,
     normalize_live_history,
     score_pool_generative_on_scenarios,
     score_pool_on_lam_pots,
@@ -375,6 +376,7 @@ def score_pool_on_pots(
     gamma: float = DEFAULT_GAMMA,
     alpha_g: float | None = None,
     alpha_a: float | None = None,
+    share_pool: pd.DataFrame | None = None,
 ) -> pd.DataFrame:
     """Discounted multi-GW ``score_xp_v2`` for MILP (club-side assembler)."""
     return score_pool_on_lam_pots(
@@ -384,6 +386,7 @@ def score_pool_on_pots(
         gamma=gamma,
         alpha_g=alpha_g,
         alpha_a=alpha_a,
+        share_pool=share_pool,
     )
 
 
@@ -679,8 +682,18 @@ def _undiscounted_scores_by_gw(
     hist_by_team: Mapping[str, pd.DataFrame] | None,
     generative_attack: bool,
     lineup_cov: bool,
+    share_pool: pd.DataFrame | None = None,
 ) -> dict[int, np.ndarray]:
-    """Per-GW player xP aligned to ``pool`` rows (undiscounted; MILP applies γ)."""
+    """Per-GW player xP aligned to ``pool`` rows (undiscounted; MILP applies γ).
+
+    ``share_pool`` (full club ``m>0``) builds generative π / mean xG shares when
+    ``pool`` is a thin selection board. Required when ``generative_attack``.
+    """
+    if generative_attack and share_pool is None:
+        raise ValueError(
+            "share_pool is required for generative scoring "
+            "(full club m>0); selection pool must stay thin"
+        )
     out: dict[int, np.ndarray] = {}
     for gw in plan_gws:
         g = int(gw)
@@ -696,6 +709,7 @@ def _undiscounted_scores_by_gw(
                 hist_by_team=hist_by_team,
                 gamma=1.0,
                 lineup_cov=lineup_cov,
+                share_pool=share_pool,
             )
         else:
             scenario_lams = {
@@ -719,6 +733,7 @@ def _undiscounted_scores_by_gw(
                 gamma=1.0,
                 alpha_g=alpha_g,
                 alpha_a=alpha_a,
+                share_pool=share_pool,
             )
         arr = pd.to_numeric(scored["mc_score"], errors="coerce").fillna(0.0).to_numpy(
             dtype=float
@@ -834,6 +849,7 @@ def _scores_causal_at_deadline(
     lineup_cov: bool,
     merged: pd.DataFrame,
     season: str,
+    share_pool: pd.DataFrame | None = None,
 ) -> dict[int, np.ndarray]:
     """Score remaining weeks with deadline-causal minutes.
 
@@ -862,6 +878,7 @@ def _scores_causal_at_deadline(
             hist_by_team=hist_by_team,
             generative_attack=generative_attack,
             lineup_cov=lineup_cov,
+            share_pool=share_pool,
         )
         out[g] = part[g]
     return out
@@ -888,6 +905,7 @@ def _emit_rolling_causal_ft_plan(
     ft_pe_nu: float,
     merged: pd.DataFrame,
     season: str,
+    share_pool: pd.DataFrame | None = None,
     lookahead: int = DEFAULT_CAUSAL_LOOKAHEAD,
     objective: str = OBJECTIVE_XI_CAPTAIN_FT,
     value_captain: bool = True,
@@ -929,6 +947,7 @@ def _emit_rolling_causal_ft_plan(
             lineup_cov=lineup_cov,
             merged=merged,
             season=str(season),
+            share_pool=share_pool,
         )
         force = set(owned) if owned is not None else None
         cands = select_plan_candidates(
@@ -1020,6 +1039,7 @@ def run_strand(
     ranks: Mapping[str, float] | None = None,
     profile: Mapping[int, Mapping[str, float]] | None = None,
     selectable_ids: set[str] | None = None,
+    share_pool: pd.DataFrame | None = None,
     ft_pe_nu: float = DEFAULT_FT_PE_NU,
     path_plan_mode: str = PATH_PLAN_OPEN_LOOP,
     merged: pd.DataFrame | None = None,
@@ -1027,8 +1047,10 @@ def run_strand(
 ) -> StrandResult:
     """One coherent MC strand: short/Opta scenarios → score_xp_v2 → MILP.
 
-    ``selectable_ids``: when set, generative/mean scores may use the full
-    ``pool`` for club share context, but MILP only buys from this id set.
+    ``share_pool``: **required** when ``generative_attack`` — full-club ``m>0``
+    frame for attack dice / π (selection ``pool`` may stay thin). Omitting it
+    recreates the Haaland π≈0.85 overprint.
+    ``selectable_ids``: when set, MILP only buys from this id set.
 
     ``xi_plus_captain_ft``: roll the full horizon, then plan transfers.
     ``path_plan_mode=open_loop`` (default): one joint MILP on frozen pool
@@ -1040,6 +1062,12 @@ def run_strand(
         raise ValueError(f"unknown objective: {objective!r}")
     if path_plan_mode not in PATH_PLAN_MODES:
         raise ValueError(f"unknown path_plan_mode: {path_plan_mode!r}")
+    if generative_attack and share_pool is None:
+        raise ValueError(
+            "share_pool is required for generative strands "
+            "(full club m>0); pass _build_hist_share_pool / "
+            "build_frozen_share_pool — selection pool must stay thin"
+        )
     if alpha_g is None or alpha_a is None:
         ag, aa, _, _ = numagent_xp.load_alphas()
         alpha_g = ag if alpha_g is None else alpha_g
@@ -1121,6 +1149,7 @@ def run_strand(
                     ft_pe_nu=float(ft_pe_nu),
                     merged=merged,
                     season=str(season),
+                    share_pool=share_pool,
                     objective=str(objective),
                     value_captain=value_captain,
                 )
@@ -1137,6 +1166,7 @@ def run_strand(
                 hist_by_team=hist_by_team,
                 generative_attack=generative_attack,
                 lineup_cov=lineup_cov,
+                share_pool=share_pool,
             )
             return _emit_joint_ft_plan(
                 result,
@@ -1184,6 +1214,7 @@ def run_strand(
                 hist_by_team=hist_by_team,
                 gamma=gamma,
                 lineup_cov=lineup_cov,
+                share_pool=share_pool,
             )
         else:
             scenario_lams = {
@@ -1211,6 +1242,7 @@ def run_strand(
                 gamma=gamma,
                 alpha_g=alpha_g,
                 alpha_a=alpha_a,
+                share_pool=share_pool,
             )
         scored = scored.loc[np.isfinite(scored["mc_score"])]
         if buy_ids is not None:
@@ -1648,10 +1680,24 @@ def run_multistage_trial(
         before_gw=int(decision_gw),
         season="2026-27",
     )
+    share_pool = (
+        build_frozen_share_pool(
+            bootstrap,
+            logs,
+            before_gw=int(decision_gw),
+            season="2026-27",
+        )
+        if generative_attack
+        else None
+    )
     overlay_meta: dict[str, Any] = {"overlay": False, "n": int(len(pool))}
     if minutes_overlay:
         pool = apply_availability_overlay(pool, bootstrap, prefer_next=True)
         overlay_meta = overlay_summary(pool)
+        if share_pool is not None and not share_pool.empty:
+            share_pool = apply_availability_overlay(
+                share_pool, bootstrap, prefer_next=True
+            )
     if len(pool) < 15:
         raise RuntimeError("selectable pool too small for MILP")
     n_with_share = int((pd.to_numeric(pool["rG"], errors="coerce").fillna(0) > 0).sum())
@@ -1715,6 +1761,7 @@ def run_multistage_trial(
                 generative_attack=generative_attack,
                 lineup_cov=lineup_cov,
                 priced_by_gw=priced_by_gw,
+                share_pool=share_pool,
             )
         )
 
@@ -1750,6 +1797,8 @@ def run_multistage_trial(
         "n_strands": int(n_strands),
         "n_squads_solved": n_squads,
         "n_selectable": int(len(pool)),
+        "n_share_pool": int(len(share_pool)) if share_pool is not None else None,
+        "share_pool": "full_m_gt_0" if share_pool is not None else None,
         "n_with_nonzero_rate": n_with_share,
         "n_with_nonzero_share": n_with_share,  # back-compat key
         "seed_shares": SEED_SHARES,

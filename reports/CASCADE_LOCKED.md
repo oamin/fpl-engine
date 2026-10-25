@@ -17,6 +17,7 @@ Product landing: PR into `main` from that tip.
 | **FT bank pot** | `plan.bank_pot` ledger | `ft_before`/`ft_after` constrained; **not** in \(V\) |
 | **FT potential energy** | `DEFAULT_FT_PE_NU=0` | PE optional diagnostic only (`ν>0` explicit) |
 | **Bench α** | `cascade_path_bench_weight` = `rejected` | Removed from path objective |
+| **Share / xG pool** | full club `m>0` | Selection may stay ≥60′; π and mean xG shares are **not** re-normalised on the thin board (`share_players` / `share_pool`) |
 
 ## Parked / diagnostic (not product promotes)
 
@@ -25,6 +26,8 @@ Product landing: PR into `main` from that tip.
 - Deadline-causal minutes — `keep_watching` diagnostic
 - Share-conditional `E[G/A|k]` — candidate gen path-V default; not yet on this tip (#108)
 - Hist MC / GW residual / MID+FWD G/A dig — diagnostics only
+- XI CS underprint — selection / early-season sheet luck; DC calibrated (`xi_cs_selection_hypothesis*`); **closed**
+- **Open:** player G overprint on cascade / xi_ft (full-share default locked; residual dig continues)
 
 ## Key modules
 
