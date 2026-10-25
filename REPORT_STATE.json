@@ -1,13 +1,13 @@
 {
   "task": "dixon_coles_team_cs_calib",
   "status": "done",
-  "as_of_utc": "2026-10-25T13:37:38Z",
-  "change": "Team-GW FD/Opta CS+goals calibration vs actual sheets",
+  "as_of_utc": "2026-10-25T13:38:25Z",
+  "change": "Team-GW FD/Opta CS calibration \u2014 DC not broken",
   "verdict": {
-    "fd_cs_bias": 0.009935588208499862,
+    "fd_cs_bias_pooled": 0.009935588208499862,
     "fd_cs_bias_gw8_12": -0.0033963986469590624,
-    "fd_xg_bias": 0.019902999331897056
+    "fd_xg_bias_pooled": 0.019902999331897056,
+    "read": "DC calibrated at team-GW; XI CS underprint was selection"
   },
-  "artifact": "/opt/cursor/artifacts/dixon_coles_team_cs_calib.json",
   "report": "reports/dixon_coles_team_cs_calib.md"
 }
