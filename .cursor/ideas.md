@@ -43,12 +43,19 @@ retune DC / open a CS gated screen for this.
 `reports/xi_cs_selection_hypothesis_windows.md`,
 `reports/dixon_coles_team_cs_calib.md`.
 
-## Open — G overprint after full-share (2026-10-25)
+## Parked — shrink generative π (2026-10-25)
 
-Count resid OL gen +11.8. Dig: pot **cleared** (XI clubs over-delivered GF);
-centreline +2.1 is share blanks (Minteh/João Pedro/Woltemade); gen +7.3.
-Selection not special. Open: why generative E[G] > centreline on the XI
-(dice / nonlinear), not FD λ. Gate only with a treatment.
+gen−cl_fd gap +9.7 on OL XI: **raw sG vs share-SE shrink +6.0** (dominant),
+path Opta λ−FD +3.0, dice−πk +0.9. Generative dice builds π without
+`share_se_shrink`; centreline shrinks. Not k∼M bias. Candidate treatment:
+apply the same share-SE shrink when building attack dice — gate on
+player-GW likelihood before promoting. Pot / selection already cleared.
+`reports/cascade_g_gen_centreline_gap.md`.
+
+## Closed — G overprint dig (2026-10-25)
+
+Count resid OL gen +11.8. Pot cleared; centreline +2.1 = share blanks;
+gen−centreline = shrink mismatch + hotter path λ. Selection not special.
 `reports/cascade_g_overprint_dig.md`.
 
 ## Locked default — full-club share pool (2026-10-25)
