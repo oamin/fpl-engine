@@ -1,13 +1,15 @@
 {
-  "task": "g_full_share_default",
+  "task": "cascade_mean_xi_ft_count_resid",
   "status": "done",
-  "as_of_utc": "2026-10-25T14:40:00Z",
-  "change": "Close CS thread; lock full-club m>0 shares as default for xG/π; open G overprint dig",
+  "as_of_utc": "2026-10-25T14:55:02Z",
+  "change": "Remeasure E[G,CS,GA]\u2212actual under full-club share default",
   "verdict": {
-    "cs_thread": "closed — selection / early-season luck; DC calibrated",
-    "share_default": "full club m>0 via share_players / required share_pool",
-    "open": "remaining player G residual under full-share default"
+    "share_pool": "full_m_gt_0",
+    "ol_G_resid": 11.774999999999999,
+    "thin_ol_G_resid": 48.45,
+    "roll_G_resid": 0.09999999999999942,
+    "read": "Full-share default cuts OL \u03a3E[G] resid +48.5 \u2192 +11.8; rolling GW8\u201310 G \u2248 calibrated. Remaining OL G overprint is the open dig."
   },
-  "protocol": "cascade_short_generative.share_pool",
-  "report": "reports/CASCADE_LOCKED.md"
+  "artifact": "/opt/cursor/artifacts/cascade_mean_xi_ft_count_resid_fullshare.json",
+  "report": "reports/cascade_mean_xi_ft_count_resid.md"
 }
