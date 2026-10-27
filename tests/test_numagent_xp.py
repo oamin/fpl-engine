@@ -30,6 +30,34 @@ class WeightsShares(unittest.TestCase):
         g30, _ = nx.goal_share_weight(0.02)
         self.assertAlmostEqual(g90, g30)
 
+    def test_goal_weight_flag_changes_sG(self) -> None:
+        players = pd.DataFrame(
+            {
+                "name": ["A", "B"],
+                "position": ["MID", "MID"],
+                "rG": [0.02, 0.02],
+                "drG": [0.0, 0.0],
+                "rA": [0.01, 0.01],
+                "drA": [0.0, 0.0],
+                "m": [90.0, 30.0],
+                "sigma_m": [0.0, 0.0],
+                "bonus_mu": [0.0, 0.0],
+                "bonus_se": [0.0, 0.0],
+                "card_mu": [0.0, 0.0],
+                "card_se": [0.0, 0.0],
+            }
+        )
+        rate = nx.score_team_side(
+            players, xg=1.5, xcs=0.3, xgc=0.8, alpha_g=0.96, alpha_a=0.90,
+            share_se_shrink=False, goal_weight="rate",
+        )
+        rm = nx.score_team_side(
+            players, xg=1.5, xcs=0.3, xgc=0.8, alpha_g=0.96, alpha_a=0.90,
+            share_se_shrink=False, goal_weight="rate_minutes",
+        )
+        self.assertAlmostEqual(float(rate.loc[0, "sG"]), float(rate.loc[1, "sG"]), places=6)
+        self.assertGreater(float(rm.loc[0, "sG"]), float(rm.loc[1, "sG"]))
+
     def test_shares_sum_to_one(self) -> None:
         w = np.array([0.1, 0.3, 0.6])
         dw = np.array([0.01, 0.02, 0.03])

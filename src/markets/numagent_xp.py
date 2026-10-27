@@ -309,15 +309,19 @@ def club_shares_on_frame(
     share_se_shrink: bool = True,
     share_se_tau2: float | None = None,
     share_se_prior: str = "position_minutes",
+    goal_weight: str = "rate",
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, dict[str, float] | None]:
     """Compositional ``sG``/``sA`` on a club frame (full m>0 side).
 
-    Goal shares: ``π ∝ rG`` (minutes gate only). Assist shares: ``∝ rA·m/90``.
-    Returns ``(sG, sA, dsG, dsA, shrink_diag)``. Shares sum to 1 on ``club``.
+    Goal shares default ``π ∝ rG`` (``goal_weight='rate'``; minutes gate only).
+    Pass ``goal_weight='rate_minutes'`` for the retired ``w=r·m/90`` arm.
+    Assist shares: ``∝ rA·m/90``. Returns ``(sG, sA, dsG, dsA, shrink_diag)``.
     """
     if club.empty:
         z = np.zeros(0, dtype=float)
         return z, z, z, z, None
+    if goal_weight not in ("rate", "rate_minutes"):
+        raise ValueError(f"goal_weight must be 'rate' or 'rate_minutes', got {goal_weight!r}")
 
     def _pos(p: object) -> str:
         s = str(p)
@@ -344,7 +348,10 @@ def club_shares_on_frame(
     wA = np.zeros(n)
     dwA = np.zeros(n)
     for i in range(n):
-        wG[i], dwG[i] = goal_share_weight(rG[i], drG[i])
+        if goal_weight == "rate":
+            wG[i], dwG[i] = goal_share_weight(rG[i], drG[i])
+        else:
+            wG[i], dwG[i] = weight_and_delta(rG[i], drG[i], m[i], sm[i])
         wA[i], dwA[i] = weight_and_delta(rA[i], drA[i], m[i], sm[i])
     sG, dsG = shares_and_deltas(wG, dwG)
     sA, dsA = shares_and_deltas(wA, dwA)
@@ -392,6 +399,7 @@ def project_club_shares(
     share_se_shrink: bool = True,
     share_se_tau2: float | None = None,
     share_se_prior: str = "position_minutes",
+    goal_weight: str = "rate",
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, dict[str, float] | None]:
     """Map full-club shares onto a (possibly thin) selection board.
 
@@ -403,6 +411,7 @@ def project_club_shares(
         share_se_shrink=share_se_shrink,
         share_se_tau2=share_se_tau2,
         share_se_prior=share_se_prior,
+        goal_weight=goal_weight,
     )
     n = len(players)
     sG = np.zeros(n, dtype=float)
@@ -450,6 +459,7 @@ def score_team_side(
     share_se_shrink: bool = True,
     share_se_tau2: float | None = None,
     share_se_prior: str = "position_minutes",
+    goal_weight: str = "rate",
 ) -> pd.DataFrame:
     """Score one team's players for one fixture side.
 
@@ -463,8 +473,9 @@ def score_team_side(
     Optional ``sG_override`` / ``sA_override``: compositional shares from a
     correlated-draw sampler (must be length n and sum ≈ 1 on the playing set).
 
-    Goal shares use ``goal_share_weight`` (``π ∝ rG``; minutes gate only).
-    Assist shares keep ``weight_and_delta`` (``∝ rA·m/90``).
+    Goal shares default ``goal_weight='rate'`` (``π ∝ rG``; minutes gate only).
+    ``goal_weight='rate_minutes'`` restores retired ``w=r·m/90``. Assist shares
+    keep ``weight_and_delta`` (``∝ rA·m/90``).
 
     Optional ``share_players``: full-club frame (``m>0``, impact subs) used to
     build ``sG``/``sA``. Selection boards stay thin; shares are projected and
@@ -507,13 +518,19 @@ def score_team_side(
     rA = col("rA")
     drA = col("drA")
 
+    if goal_weight not in ("rate", "rate_minutes"):
+        raise ValueError(f"goal_weight must be 'rate' or 'rate_minutes', got {goal_weight!r}")
+
     n = len(out)
     wG = np.zeros(n)
     dwG = np.zeros(n)
     wA = np.zeros(n)
     dwA = np.zeros(n)
     for i in range(n):
-        wG[i], dwG[i] = goal_share_weight(rG[i], drG[i])
+        if goal_weight == "rate":
+            wG[i], dwG[i] = goal_share_weight(rG[i], drG[i])
+        else:
+            wG[i], dwG[i] = weight_and_delta(rG[i], drG[i], m[i], sm[i])
         wA[i], dwA[i] = weight_and_delta(rA[i], drA[i], m[i], sm[i])
 
     share_shrink_diag: dict[str, float] | None = None
@@ -528,6 +545,7 @@ def score_team_side(
             share_players,
             out,
             share_se_shrink=share_se_shrink,
+            goal_weight=goal_weight,
             share_se_tau2=share_se_tau2,
             share_se_prior=share_se_prior,
         )
