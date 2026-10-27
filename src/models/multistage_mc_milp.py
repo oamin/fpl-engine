@@ -426,6 +426,7 @@ def sample_opta_scenario(
     profile: Mapping[int, Mapping[str, float]] | None = None,
     sd_league_gf: float = 0.0,
     away_shrink: float | None = None,
+    lam_shrink: float | None = None,
     home_adv: float | None = None,
 ) -> dict[str, Any]:
     """Baseline roll: place → GF/GA ± bands → λ → ``M`` → ``k ∼ M``.
@@ -435,13 +436,17 @@ def sample_opta_scenario(
     defaults keep the live Opta JSON path.
     ``ClubPath`` is unused for λ (kept only as KeyError fallback).
     ``sd_league_gf`` is the SE of assessed expanding ḡ (season-total units).
-    ``away_shrink`` defaults to ``opta_gf_ga_horizon.AWAY_SHRINK`` (1.0).
+    ``away_shrink`` / ``lam_shrink`` default to identity (1.0).
     ``home_adv`` is ignored if passed (deprecated).
     """
     del home_adv
-    from src.models.opta_gf_ga_horizon import AWAY_SHRINK as _AWAY_SHRINK
+    from src.models.opta_gf_ga_horizon import (
+        AWAY_SHRINK as _AWAY_SHRINK,
+        LAM_SHRINK as _LAM_SHRINK,
+    )
 
     shrink = float(_AWAY_SHRINK if away_shrink is None else away_shrink)
+    lshrink = float(_LAM_SHRINK if lam_shrink is None else lam_shrink)
     try:
         draw = sample_match_from_opta_ranks(
             home,
@@ -453,6 +458,7 @@ def sample_opta_scenario(
             league_gf=league_gf,
             sd_league_gf=sd_league_gf,
             away_shrink=shrink,
+            lam_shrink=lshrink,
         )
         # λ already sampled inside rank GF/GA bands — roll k∼M at that λ.
         sh = float(draw["lam_home"])
@@ -615,6 +621,7 @@ def sample_week_scenario(
     profile: Mapping[int, Mapping[str, float]] | None = None,
     sd_league_gf: float = 0.0,
     away_shrink: float | None = None,
+    lam_shrink: float | None = None,
     home_adv: float | None = None,
 ) -> dict[str, Any]:
     """Priced cascade_short when a fit exists; else Opta / oracle cascade_long."""
@@ -633,6 +640,7 @@ def sample_week_scenario(
         profile=profile,
         sd_league_gf=sd_league_gf,
         away_shrink=away_shrink,
+        lam_shrink=lam_shrink,
     )
 
 

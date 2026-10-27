@@ -209,6 +209,7 @@ def mean_component_boards_split(
     seed0: int,
     goal_weight: str = "rate_minutes",
     away_shrink: float | None = None,
+    lam_shrink: float | None = None,
     home_adv: float | None = None,
 ) -> tuple[dict[int, pd.DataFrame], dict[int, np.ndarray], dict[str, Any]]:
     """Generative mean components on share pool; project onto selection rows."""
@@ -244,6 +245,7 @@ def mean_component_boards_split(
                     profile=profile,
                     sd_league_gf=0.0,
                     away_shrink=away_shrink,
+                    lam_shrink=lam_shrink,
                 )
                 paths[fx["home"]].observe(sc["hg"], sc["ag"])
                 paths[fx["away"]].observe(sc["ag"], sc["hg"])

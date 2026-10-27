@@ -276,6 +276,21 @@
     "modules": ["src/eval/cascade_away_shrink_oos_seasons.py"],
     "note": "XI shared-L3 path is 2025-26-only; club λ is the transferable OOS metric"
   },
+  "cascade_long_lam_shrink_screen": {
+    "pre_registered": "2026-10-27",
+    "status": "diagnostic_screen",
+    "role": "combined scale on both λ_H and λ_A (lam_shrink); trial vs identity",
+    "formula": "λ_H ← λ_H·s; λ_A ← λ_A·s; away_shrink=1.0; no 0.20–3.50 λ clip",
+    "baseline": "lam_shrink=1.0",
+    "candidates": {
+      "lam_shrink_fit_train": "argmin MAE(λ,act) on 2022-23..2024-25, grid 0.80..1.00 step 0.02"
+    },
+    "holdout": "2025-26 GW8-38 team-sides",
+    "oos_seasons": ["2022-23", "2023-24", "2024-25"],
+    "promote_rule": "vs baseline: |overall bias| ↓ ≥0.05 AND neither |bias_H| nor |bias_A| rises by >0.05 AND MAE ↑ ≤0.02; default unchanged",
+    "modules": ["src/eval/cascade_long_lam_shrink_screen.py"],
+    "does_not_change_default": true
+  },
   "score_xp_v2_screen": {
     "score_column": "score_xp_v2",
     "baseline": "score_xp",

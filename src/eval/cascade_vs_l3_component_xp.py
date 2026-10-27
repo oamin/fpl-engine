@@ -616,6 +616,15 @@ def main(argv: list[str] | None = None) -> int:
         ),
     )
     ap.add_argument(
+        "--lam-shrink",
+        type=float,
+        default=None,
+        help=(
+            "Combined Opta λ scale (λ_H and λ_A × s; default LAM_SHRINK=1.0). "
+            "Counterfactual only."
+        ),
+    )
+    ap.add_argument(
         "--out",
         type=Path,
         default=Path("/opt/cursor/artifacts/cascade_vs_l3_component_xp.json"),
@@ -626,6 +635,7 @@ def main(argv: list[str] | None = None) -> int:
     goal_weight = str(args.goal_weight)
     match_source = str(args.match_source)
     away_shrink = None if args.away_shrink is None else float(args.away_shrink)
+    lam_shrink = None if args.lam_shrink is None else float(args.lam_shrink)
     step_gws = [int(x) for x in str(args.steps).split(",") if x.strip()]
     horizon_end = int(args.horizon_end)
     n_strands = int(args.n)
@@ -643,6 +653,7 @@ def main(argv: list[str] | None = None) -> int:
         f"[comp-xp] season={season} steps={step_gws} N={n_strands} "
         f"goal_weight={goal_weight} match_source={match_source} "
         f"away_shrink={away_shrink if away_shrink is not None else 'default'} "
+        f"lam_shrink={lam_shrink if lam_shrink is not None else 'default'} "
         f"seed={seed_meta['path']}",
         flush=True,
     )
@@ -761,6 +772,7 @@ def main(argv: list[str] | None = None) -> int:
             seed0=step_seed,
             goal_weight=goal_weight,
             away_shrink=away_shrink,
+            lam_shrink=lam_shrink,
         )
         print(f"[comp-xp] cascade boards {board_meta['elapsed_s']:.1f}s", flush=True)
         casc_board = boards[int(t)]
@@ -950,6 +962,7 @@ def main(argv: list[str] | None = None) -> int:
         "goal_weight": goal_weight,
         "match_source": match_source,
         "away_shrink": away_shrink,
+        "lam_shrink": lam_shrink,
         "decision_gw_only": bool(args.decision_gw_only),
         "seed_owned": seed_meta,
         "shared_team": (
@@ -1107,6 +1120,8 @@ def main(argv: list[str] | None = None) -> int:
     )
     if away_shrink is not None:
         repro += f" --away-shrink {away_shrink}"
+    if lam_shrink is not None:
+        repro += f" --lam-shrink {lam_shrink}"
     if args.decision_gw_only:
         repro += " --decision-gw-only"
     lines += [
