@@ -243,6 +243,7 @@
     "baseline": "away_shrink=1.0 (protocol.cascade_long_match_outcome)",
     "candidates": {
       "away_shrink_0_93": 0.93,
+      "away_shrink_0_75": "0.75 — XI resid G/CS zero-crossing (trend); screened 2026-10-27 add-on",
       "away_shrink_fit_train": "argmin MAE(λ,act) on closed seasons 2022-23..2024-25, grid 0.80..1.00 step 0.02"
     },
     "holdout": "2025-26 GW8-38 team-sides",

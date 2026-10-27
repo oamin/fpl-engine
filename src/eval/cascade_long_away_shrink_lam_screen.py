@@ -10,6 +10,7 @@ Arms (locked before reading 2025-26 holdout totals):
 
 - **baseline** ``away_shrink=1.0``
 - **candidate** ``away_shrink=0.93`` (≈1/1.08; old home_adv away effect only)
+- **candidate** ``away_shrink=0.75`` (XI resid G/CS ≈0 on trend; add-on arm)
 - **fit** ``away_shrink`` = argmin MAE(λ, actual) on train seasons
   2022-23…2024-25, grid 0.80…1.00 step 0.02
 
@@ -65,6 +66,7 @@ N_DRAWS = 40
 SEED = 7
 GRID = [round(x, 2) for x in np.arange(0.80, 1.01, 0.02)]
 CANDIDATE_093 = 0.93
+CANDIDATE_075 = 0.75  # XI resid zero-crossing; see *_s075 add-on report
 AWAY_IMPROVE_MIN = 0.10
 HOME_WORSEN_MAX = 0.05
 MAE_WORSEN_MAX = 0.02

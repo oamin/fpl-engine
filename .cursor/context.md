@@ -79,6 +79,9 @@ all on **away (+0.30)**; player resid FWD **+30.5** of +32.5; away played
 **resid vs s trend (GW8–38):** G rises ~−39→+32 and CS falls ~+53→−29 as s:0.5→1.0;
 both near 0 around **s≈0.75** (G −2.4 / CS +2.4). Fit 0.86 still +12/−11.
 `reports/cascade_away_shrink_xi_resid_trend.md`.
+**s=0.75 screen arm:** λ promote **PASS** (away +0.256→−0.123, home flat,
+MAE ↓). XI resid G **−2.4** / CS **+2.4**. Default still 1.0 pending PI.
+`reports/cascade_long_away_shrink_lam_screen_s075.md`.
 
 **Strand default:** generative `run_strand` / `_undiscounted_scores_by_gw`
 require `share_pool` (full club m>0). Live + hist path/mean callers wired;
