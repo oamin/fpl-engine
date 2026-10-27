@@ -43,19 +43,23 @@ retune DC / open a CS gated screen for this.
 `reports/xi_cs_selection_hypothesis_windows.md`,
 `reports/dixon_coles_team_cs_calib.md`.
 
+## Open — π∝r (drop minutes from share weights) (2026-10-27)
+
+OL XI gen resid: locked π∝r·m **+10.2** → π∝r (m=gate only) **+0.2**
+(Δ −10.0, N=40). Club pot still renorms; minutes in the weight were
+concentrating π on high-m XI attackers. Gate before promote.
+`reports/cascade_share_no_renorm_minutes.md`.
+
 ## Parked — shrink generative π (2026-10-25)
 
-gen−cl_fd gap +9.7 on OL XI: **raw sG vs share-SE shrink +6.0** (dominant),
-path Opta λ−FD +3.0, dice−πk +0.9. Generative dice builds π without
-`share_se_shrink`; centreline shrinks. Not k∼M bias. Candidate treatment:
-apply the same share-SE shrink when building attack dice — gate on
-player-GW likelihood before promoting. Pot / selection already cleared.
+PI: no artificial shrinks. gen−cl gap was mostly shrink apples-to-oranges;
+raw centreline ≈ gen. Not a treatment.
 `reports/cascade_g_gen_centreline_gap.md`.
 
 ## Closed — G overprint dig (2026-10-25)
 
 Count resid OL gen +11.8. Pot cleared; centreline +2.1 = share blanks;
-gen−centreline = shrink mismatch + hotter path λ. Selection not special.
+selection not special. Minutes-in-share-weights is the live lever (see open).
 `reports/cascade_g_overprint_dig.md`.
 
 ## Locked default — full-club share pool (2026-10-25)
