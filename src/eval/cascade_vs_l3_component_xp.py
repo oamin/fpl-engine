@@ -33,6 +33,7 @@ from src.eval.cascade_mc_vs_mean_hist import (
     DEFAULT_SEASON,
     SEASON_E0,
     SEED,
+    SHARE_MIN_APPS,
     _build_hist_pool,
     _build_hist_share_pool,
     _fd_priced_by_gw,
@@ -331,6 +332,43 @@ def _lookup(
     return out
 
 
+def _force_owned_from_hist(
+    pool: pd.DataFrame,
+    hist: pd.DataFrame,
+    prices: pd.DataFrame,
+    *,
+    owned: list[str],
+    decision_gw: int,
+    season: str,
+) -> pd.DataFrame:
+    """Append owned players missing after minutes filters (new buys / blanks)."""
+    have = set(pool["player_id"].astype(str))
+    missing = [p for p in owned if p not in have]
+    if not missing:
+        return pool
+    # Bypass mean-minutes gate; keep n_apps≥0 so brand-new rows can appear.
+    wide = _build_hist_pool(
+        hist,
+        prices,
+        decision_gw=int(decision_gw),
+        season=season,
+        min_minutes=-1.0,
+        min_apps=float(SHARE_MIN_APPS),
+    )
+    add = wide.loc[wide["player_id"].astype(str).isin(missing)].copy()
+    got = set(add["player_id"].astype(str))
+    still = [p for p in missing if p not in got]
+    if still:
+        raise RuntimeError(
+            f"GW{decision_gw}: owned missing from hist pool even unfiltered: {still}"
+        )
+    for c in pool.columns:
+        if c not in add.columns:
+            add[c] = np.nan if pool[c].dtype == object else 0.0
+    add = add[pool.columns]
+    return pd.concat([pool, add], ignore_index=True)
+
+
 def _plot_resid_series(
     steps: list[dict[str, Any]],
     path: Path,
@@ -508,12 +546,26 @@ def main(argv: list[str] | None = None) -> int:
         # Keep owned/XI scoreable when they drop the minutes filter mid-season
         # (same stash pattern as cascade_mean_xi_ft_step_pool_resid).
         force_ids = list(dict.fromkeys(list(owned) + list(xi_ids)))
-        if stash is None:
-            select_pool = _inject_owned_from_share(select_pool, share_pool, force_ids)
-        else:
-            select_pool = _ensure_owned_in_pool(select_pool, stash, force_ids)
-            share_pool = _ensure_owned_in_pool(share_pool, stash, force_ids)
-            select_pool = _inject_owned_from_share(select_pool, share_pool, force_ids)
+        share_pool = _force_owned_from_hist(
+            share_pool,
+            hist,
+            prices,
+            owned=force_ids,
+            decision_gw=int(t),
+            season=season,
+        )
+        if stash is not None:
+            select_pool = _ensure_owned_in_pool(
+                select_pool,
+                stash,
+                [p for p in force_ids if p in set(stash["player_id"].astype(str))],
+            )
+            share_pool = _ensure_owned_in_pool(
+                share_pool,
+                stash,
+                [p for p in force_ids if p in set(stash["player_id"].astype(str))],
+            )
+        select_pool = _inject_owned_from_share(select_pool, share_pool, force_ids)
         stash = select_pool.copy()
         plan_end = int(t) if bool(args.decision_gw_only) else horizon_end
         fixtures_gw = _hist_fixtures_by_gw(enriched, start=int(t), end=plan_end)
