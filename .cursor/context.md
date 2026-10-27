@@ -57,6 +57,9 @@ shared-XI screen — not a promote over FD for decision-GW components.
 t+2…38, pools refresh each t, L3 XI, no captain): horizon Σ resid_G shrinks
 with n_plan, but **per-GW** bias stays ~+2…+6 (cell mean +3.7 G / +1.3 CS).
 Overprint at every horizon offset — not a late-season rescue.
+Overlay **short FD t:t+1** on same XI: mean G/n long **+3.5** vs short
+**+1.9**; CS/n long **+1.6** vs short **−0.1**. Short swings ±10; long bias
+steadier but higher.
 `reports/cascade_long_horizon_component_resid.md`.
 
 **Strand default:** generative `run_strand` / `_undiscounted_scores_by_gw`
