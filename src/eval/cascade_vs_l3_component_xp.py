@@ -598,6 +598,15 @@ def main(argv: list[str] | None = None) -> int:
         help="Only roll/score the decision GW (skip unused future-horizon boards).",
     )
     ap.add_argument(
+        "--match-source",
+        choices=("fd", "opta"),
+        default="fd",
+        help=(
+            "Cascade match λ: fd = cascade_short FD centreline (default); "
+            "opta = cascade_long oracle-rank / Opta (empty priced index)."
+        ),
+    )
+    ap.add_argument(
         "--out",
         type=Path,
         default=Path("/opt/cursor/artifacts/cascade_vs_l3_component_xp.json"),
@@ -606,6 +615,7 @@ def main(argv: list[str] | None = None) -> int:
 
     season = str(args.season)
     goal_weight = str(args.goal_weight)
+    match_source = str(args.match_source)
     step_gws = [int(x) for x in str(args.steps).split(",") if x.strip()]
     horizon_end = int(args.horizon_end)
     n_strands = int(args.n)
@@ -621,7 +631,8 @@ def main(argv: list[str] | None = None) -> int:
 
     print(
         f"[comp-xp] season={season} steps={step_gws} N={n_strands} "
-        f"goal_weight={goal_weight} seed={seed_meta['path']}",
+        f"goal_weight={goal_weight} match_source={match_source} "
+        f"seed={seed_meta['path']}",
         flush=True,
     )
     t_all = _now()
@@ -710,11 +721,17 @@ def main(argv: list[str] | None = None) -> int:
         plan_end = int(t) if bool(args.decision_gw_only) else horizon_end
         fixtures_gw = _hist_fixtures_by_gw(enriched, start=int(t), end=plan_end)
         plan_gws = sorted(fixtures_gw)
-        priced_by_gw = _fd_priced_by_gw(enriched, fd, plan_gws[:2])
+        # fd → cascade_short priced λ; opta → empty index forces sample_opta_scenario
+        # (cascade_long_oracle_rank on closed seasons).
+        if match_source == "opta":
+            priced_by_gw: dict[int, list[dict[str, Any]]] = {}
+        else:
+            priced_by_gw = _fd_priced_by_gw(enriched, fd, plan_gws[:2])
         step_seed = seed0 if t == step_gws[0] else seed0 + 10_000 * int(t)
         print(
             f"[comp-xp] select={len(select_pool)} share={len(share_pool)} "
-            f"xi_src={xi_source} plan={plan_gws[0]}…{plan_gws[-1]}",
+            f"xi_src={xi_source} match={match_source} "
+            f"plan={plan_gws[0]}…{plan_gws[-1]}",
             flush=True,
         )
         boards, _scores, board_meta = mean_component_boards_split(
@@ -865,33 +882,47 @@ def main(argv: list[str] | None = None) -> int:
         else "π∝r·m/90 (default)"
     )
     blocks = _block_summaries(steps_out)
+    match_tag = "opta" if match_source == "opta" else ""
     plot_path = Path("/opt/cursor/artifacts/cascade_vs_l3_component_xp_resid.png")
     if goal_weight == "rate":
         plot_path = Path(
             "/opt/cursor/artifacts/cascade_vs_l3_component_xp_pi_r_resid.png"
         )
+    if match_tag:
+        plot_path = plot_path.with_name(
+            plot_path.stem + f"_{match_tag}" + plot_path.suffix
+        )
     if step_gws != list(STEP_GWS):
         tag = f"gw{step_gws[0]}-{step_gws[-1]}"
         plot_path = plot_path.with_name(plot_path.stem + f"_{tag}" + plot_path.suffix)
+    match_note = (
+        "cascade_long Opta/oracle λ"
+        if match_source == "opta"
+        else "cascade_short FD λ"
+    )
     _plot_resid_series(
         steps_out,
         plot_path,
         title=(
             f"{season} GW{step_gws[0]}–{step_gws[-1]}: XI Σ resid "
-            f"(goal_weight={goal_weight})"
+            f"(goal_weight={goal_weight}, {match_source})"
         ),
     )
+    task_base = (
+        "cascade_vs_l3_component_xp_pi_r"
+        if goal_weight == "rate"
+        else "cascade_vs_l3_component_xp"
+    )
+    if match_source == "opta":
+        task_base = f"{task_base}_opta"
     state = {
-        "task": (
-            "cascade_vs_l3_component_xp_pi_r"
-            if goal_weight == "rate"
-            else "cascade_vs_l3_component_xp"
-        ),
+        "task": task_base,
         "season": season,
         "step_gws": step_gws,
         "n_strands": n_strands,
         "seed": seed0,
         "goal_weight": goal_weight,
+        "match_source": match_source,
         "decision_gw_only": bool(args.decision_gw_only),
         "seed_owned": seed_meta,
         "shared_team": (
@@ -916,9 +947,13 @@ def main(argv: list[str] | None = None) -> int:
     args.out.write_text(json.dumps(state, indent=2, default=str) + "\n")
 
     title = (
-        "# Cascade π∝r vs L3/L4 — player xP(G, CS, GA) + actual (no captain)"
-        if goal_weight == "rate"
-        else "# Cascade vs L3/L4 — player xP(G, CS, GA) + actual (no captain)"
+        "# Cascade π∝r (long Opta) vs L3/L4 — player xP(G, CS, GA) + actual"
+        if goal_weight == "rate" and match_source == "opta"
+        else (
+            "# Cascade π∝r vs L3/L4 — player xP(G, CS, GA) + actual (no captain)"
+            if goal_weight == "rate"
+            else "# Cascade vs L3/L4 — player xP(G, CS, GA) + actual (no captain)"
+        )
     )
     lines = [
         title,
@@ -926,6 +961,7 @@ def main(argv: list[str] | None = None) -> int:
         f"Season **{season}** · GW{step_gws[0]}–{step_gws[-1]} "
         f"({len(step_gws)} weeks) · N={n_strands} · "
         f"goal_weight=`{goal_weight}` ({gw_note}) · "
+        f"match=`{match_source}` ({match_note}) · "
         f"wall {state['elapsed_s']:.1f}s",
         "",
         "## What this is",
@@ -935,12 +971,18 @@ def main(argv: list[str] | None = None) -> int:
         "`pick_xi` on `score_xp_v2`.",
         "- Both scorers on **that same XI** (no captain, no hits):",
         f"  - **cascade** — generative mean `xp_goals` / `xp_cs` / `xp_gc` "
-        f"(goal shares `{goal_weight}`)",
+        f"(goal shares `{goal_weight}`; {match_note})",
         "  - **l3_v2** — as-of `score_xp_v2` centreline components",
         "  - **actual** — FPL `P_G` / `P_CS` / `P_GA`",
         (
             "- Cascade rolls **decision GW only** (season map)."
             if args.decision_gw_only
+            else ""
+        ),
+        (
+            "- **Scope note:** product cascade_long is t+2…; this screen uses "
+            "Opta/oracle λ on the decision GW as a match-stack A/B vs L3."
+            if match_source == "opta"
             else ""
         ),
         "",
@@ -1033,6 +1075,7 @@ def main(argv: list[str] | None = None) -> int:
     repro = (
         f"PYTHONPATH=. python3 -m src.eval.cascade_vs_l3_component_xp "
         f"--n {n_strands} --goal-weight {goal_weight} "
+        f"--match-source {match_source} "
         f"--steps {','.join(str(g) for g in step_gws)}"
     )
     if args.decision_gw_only:
@@ -1048,12 +1091,27 @@ def main(argv: list[str] | None = None) -> int:
     report_path = REPORT
     if goal_weight == "rate":
         report_path = ROOT / "reports" / "cascade_vs_l3_component_xp_pi_r.md"
+    if match_source == "opta":
+        stem0 = (
+            "cascade_vs_l3_component_xp_pi_r_opta"
+            if goal_weight == "rate"
+            else "cascade_vs_l3_component_xp_opta"
+        )
+        report_path = ROOT / "reports" / f"{stem0}.md"
     if step_gws != list(STEP_GWS):
         tag = f"gw{step_gws[0]}-{step_gws[-1]}"
         stem = (
-            "cascade_vs_l3_component_xp_pi_r"
-            if goal_weight == "rate"
-            else "cascade_vs_l3_component_xp"
+            "cascade_vs_l3_component_xp_pi_r_opta"
+            if goal_weight == "rate" and match_source == "opta"
+            else (
+                "cascade_vs_l3_component_xp_pi_r"
+                if goal_weight == "rate"
+                else (
+                    "cascade_vs_l3_component_xp_opta"
+                    if match_source == "opta"
+                    else "cascade_vs_l3_component_xp"
+                )
+            )
         )
         report_path = ROOT / "reports" / f"{stem}_{tag}.md"
     report_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
@@ -1066,7 +1124,7 @@ def main(argv: list[str] | None = None) -> int:
                 "as_of_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                 "change": (
                     f"π∝r component map GW{step_gws[0]}–{step_gws[-1]} "
-                    "(shared L3 XI; no captain)"
+                    f"(shared L3 XI; no captain; match={match_source})"
                 ),
                 "verdict": {
                     **summary,
