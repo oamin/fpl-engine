@@ -161,15 +161,19 @@ def _force_side_rows(
         g = hist.loc[pd.to_numeric(hist["element"], errors="coerce") == eid]
         if g.empty:
             continue
+        # Latest appearance (transfers: Guéhi Palace→City).
+        if "GW" in g.columns:
+            g = g.sort_values("GW")
+        last = g.iloc[-1]
         m = float(pd.to_numeric(g["minutes"], errors="coerce").fillna(0.0).mean())
         sig = float(pd.to_numeric(g["minutes"], errors="coerce").fillna(0.0).std())
         if not np.isfinite(sig) or sig < 5.0:
             sig = 5.0
         row: dict[str, Any] = {
             "element": int(eid),
-            "name": str(g.iloc[0]["name"]),
-            "position": normalize_position(str(g.iloc[0]["position"])),
-            "team": str(g.iloc[0]["team"]),
+            "name": str(last["name"]),
+            "position": normalize_position(str(last["position"])),
+            "team": str(last["team"]),
             "m": m,
             "sigma_m": sig,
         }
@@ -310,7 +314,103 @@ def _v2_component_board(
     board["position"] = board["position"].map(
         lambda p: normalize_position(str(p)) if pd.notna(p) else p
     )
+    # Blank GWs: owned players whose club does not play never enter ``parts``.
+    # Stub zero components so pick_xi / shared XI scoring still sees them.
+    if force_ids:
+        board = _stub_zero_component_rows(
+            board,
+            force_ids=force_ids,
+            side=side,
+            prices=prices,
+            season=season,
+            decision_gw=int(decision_gw),
+        )
     return board
+
+
+def _stub_zero_component_rows(
+    board: pd.DataFrame,
+    *,
+    force_ids: list[str],
+    side: pd.DataFrame,
+    prices: pd.DataFrame,
+    season: str,
+    decision_gw: int,
+) -> pd.DataFrame:
+    """Append xp=0 rows for force_ids missing from a fixture-built board."""
+    if board is None or not force_ids:
+        return board
+    have = set(board["player_id"].astype(str))
+    have_e = set(
+        pd.to_numeric(board["element"], errors="coerce").dropna().astype(int)
+    )
+    pr = prices.loc[prices["gw"] == int(decision_gw)].drop_duplicates("element")
+    pr_by_e = {
+        int(r.element): r
+        for r in pr.itertuples(index=False)
+        if pd.notna(r.element)
+    }
+    side_by_e: dict[int, Any] = {}
+    if not side.empty:
+        for r in side.itertuples(index=False):
+            e = pd.to_numeric(r.element, errors="coerce")
+            if pd.notna(e):
+                side_by_e[int(e)] = r
+    stubs: list[dict[str, Any]] = []
+    for pid in force_ids:
+        pid_s = str(pid)
+        eid = _pid_element(pid_s)
+        if pid_s in have or eid in have_e:
+            continue
+        sr = side_by_e.get(eid)
+        pr_r = pr_by_e.get(eid)
+        name = str(
+            getattr(sr, "name", None)
+            or getattr(pr_r, "name", None)
+            or pid_s
+        )
+        pos_raw = getattr(sr, "position", None)
+        if pos_raw is None:
+            pos_raw = getattr(pr_r, "position", None)
+        pos = normalize_position(str(pos_raw)) if pos_raw is not None else ""
+        team = str(getattr(sr, "team", "") or "")
+        if not team:
+            team = str(getattr(pr_r, "team_norm", "") or "")
+        value = (
+            float(pr_r.value)
+            if pr_r is not None and pd.notna(getattr(pr_r, "value", None))
+            else float("nan")
+        )
+        tn = getattr(pr_r, "team_norm", None) if pr_r is not None else None
+        team_norm = str(tn) if tn is not None and pd.notna(tn) else (
+            norm_team(team) if team else ""
+        )
+        stubs.append(
+            {
+                "element": eid,
+                "name": name,
+                "position": pos,
+                "team": team,
+                "xp_goals": 0.0,
+                "xp_cs": 0.0,
+                "xp_gc": 0.0,
+                "xp": 0.0,
+                "score_xp_v2": 0.0,
+                "value": value,
+                "player_id": pid_s if ":" in pid_s else f"{season}:{eid}",
+                "team_norm": team_norm,
+            }
+        )
+        have.add(pid_s)
+        have_e.add(eid)
+    if not stubs:
+        return board
+    add = pd.DataFrame(stubs)
+    for c in board.columns:
+        if c not in add.columns:
+            add[c] = np.nan if board[c].dtype == object else 0.0
+    add = add[board.columns]
+    return pd.concat([board, add], ignore_index=True)
 
 
 def _lookup(
@@ -332,6 +432,32 @@ def _lookup(
     return out
 
 
+def _prices_carryforward_for(
+    prices: pd.DataFrame,
+    *,
+    decision_gw: int,
+    elements: list[int],
+) -> pd.DataFrame:
+    """Blank GWs omit club rows from the decision-GW price slice; reuse last price."""
+    if not elements:
+        return prices
+    pr_t = prices.loc[prices["gw"] == int(decision_gw)]
+    have = set(pd.to_numeric(pr_t["element"], errors="coerce").dropna().astype(int))
+    need = [int(e) for e in elements if int(e) not in have]
+    if not need:
+        return prices
+    prior = prices.loc[
+        (pd.to_numeric(prices["gw"], errors="coerce") < int(decision_gw))
+        & (pd.to_numeric(prices["element"], errors="coerce").isin(need))
+    ].copy()
+    if prior.empty:
+        return prices
+    prior = prior.sort_values("gw").groupby("element", as_index=False).tail(1)
+    prior = prior.copy()
+    prior["gw"] = int(decision_gw)
+    return pd.concat([prices, prior], ignore_index=True)
+
+
 def _force_owned_from_hist(
     pool: pd.DataFrame,
     hist: pd.DataFrame,
@@ -346,18 +472,32 @@ def _force_owned_from_hist(
     missing = [p for p in owned if p not in have]
     if not missing:
         return pool
+    miss_e = [_pid_element(p) for p in missing]
+    prices_cf = _prices_carryforward_for(
+        prices, decision_gw=int(decision_gw), elements=miss_e
+    )
     # Bypass mean-minutes gate; keep n_apps≥0 so brand-new rows can appear.
     wide = _build_hist_pool(
         hist,
-        prices,
+        prices_cf,
         decision_gw=int(decision_gw),
         season=season,
         min_minutes=-1.0,
         min_apps=float(SHARE_MIN_APPS),
     )
     add = wide.loc[wide["player_id"].astype(str).isin(missing)].copy()
+    if add.empty:
+        # player_id may be bare element in some price rows
+        add = wide.loc[
+            pd.to_numeric(wide["element"], errors="coerce").isin(miss_e)
+        ].copy()
+        if not add.empty and "player_id" in add.columns:
+            add["player_id"] = add["element"].map(
+                lambda e: f"{season}:{int(e)}"
+            )
     got = set(add["player_id"].astype(str))
-    still = [p for p in missing if p not in got]
+    got |= {f"{season}:{int(e)}" for e in pd.to_numeric(add["element"], errors="coerce").dropna().astype(int)} if not add.empty else set()
+    still = [p for p in missing if p not in got and f"{season}:{_pid_element(p)}" not in got]
     if still:
         raise RuntimeError(
             f"GW{decision_gw}: owned missing from hist pool even unfiltered: {still}"
@@ -620,11 +760,12 @@ def main(argv: list[str] | None = None) -> int:
                 p_g, p_cs, p_ga = float(a["P_G"]), float(a["P_CS"]), float(a["P_GC"])
                 name, pos, mins = str(a["name"]), str(a["position"]), float(a["minutes"])
             else:
-                p_g = p_cs = p_ga = float("nan")
-                name, pos, mins = id_to_name.get(pid, pid), "", float("nan")
+                # Blank GW (club not playing) or no row: components are 0.
+                p_g = p_cs = p_ga = 0.0
+                name, pos, mins = id_to_name.get(pid, pid), "", 0.0
             hit = g_merged.loc[g_merged["element"] == eid]
             total_pts = (
-                float(hit.iloc[0]["total_points"] or 0.0) if not hit.empty else float("nan")
+                float(hit.iloc[0]["total_points"] or 0.0) if not hit.empty else 0.0
             )
             row = {
                 "gw": int(t),
