@@ -48,6 +48,11 @@ cold G overprint +40) while cascade stays ~8–10 G/GW — not a steady G gap.
 (Thiago/Rice/Haaland/Ekitiké); blank-XI weeks (4, Σ+44) = P_G=0 vs ~10 xP.
 Casc≈l3 on those weeks; player season Σresid near 0. Do not retune shares.
 `reports/cascade_g_resid_swings_dig.md`.
+**cascade_long Opta decision-GW map** (`--match-source opta`, π∝r GW8–38):
+opta ΣG +32.5 / CS −29 vs actual; FD short +14 / −5; l3 +51 / −14.
+MAE ~tied with FD. Opta overprints G and underprints CS vs short on this
+shared-XI screen — not a promote over FD for decision-GW components.
+`reports/cascade_vs_l3_component_xp_pi_r_opta_gw8-38.md`.
 
 **Strand default:** generative `run_strand` / `_undiscounted_scores_by_gw`
 require `share_pool` (full club m>0). Live + hist path/mean callers wired;
