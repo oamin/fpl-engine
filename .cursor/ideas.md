@@ -45,12 +45,10 @@ retune DC / open a CS gated screen for this.
 
 ## Parked — π∝r goal shares (2026-10-27)
 
-Gated player-GW log-score: π∝r − π∝r·m **−0.00055** [−0.0010, −0.0001]
-→ **park_clear_lose**. Cascade stepped GW8–12 (N=40, L3/L4 seed): G resid
-+11.5→**−5.5**, but actual net **269** vs L3 398 (−129; baseline cascade
-−122). Keep default `w=r·m/90`.
-`reports/cascade_step_pi_r_vs_l3_l4.md` ·
-`reports/cascade_mean_xi_ft_step_pool_pi_r.md` ·
+Gated log-score clear lose. Component dig (shared L3 XI, no captain,
+GW8–12): cascade ΣG **53.7→42.0** under π∝r (actual 44; l3 39.7). Level
+fixed; MAE still trails l3_v2. Keep default `w=r·m/90`.
+`reports/cascade_vs_l3_component_xp_pi_r.md` ·
 `reports/score_xp_v2_goal_share_rate.md`.
 
 ## Parked — shrink generative π (2026-10-25)

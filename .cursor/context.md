@@ -35,11 +35,10 @@ DC calibrated. Do not retune CS.
 `reports/xi_cs_selection_hypothesis.md` · windows · `dixon_coles_team_cs_calib.md`.
 
 **G overprint.** Full-share OL gen ~+11. Pot cleared; not dice/k∼M.
-**π∝r parked 2026-10-27** — gated log-score clear lose vs π∝r·m
-(Δ −0.00055 [−0.0010, −0.0001]); keep `w=r·m/90`. Cascade GW8–12
-π∝r dig: G resid +11.5→−5.5 but actual net −129 vs L3 (baseline −122) —
-not a promote. Shrink parked as unwanted.
-`reports/cascade_step_pi_r_vs_l3_l4.md` · `score_xp_v2_goal_share_rate.md`.
+**π∝r parked 2026-10-27** — gated log-score clear lose; keep `w=r·m/90`.
+Cascade component dig (shared L3 XI, no captain): π∝r ΣG **42.0** vs
+baseline 53.7 / actual 44 / l3 39.7 — level fixed, MAE still trails l3.
+`reports/cascade_vs_l3_component_xp_pi_r.md` · `score_xp_v2_goal_share_rate.md`.
 
 **Strand default:** generative `run_strand` / `_undiscounted_scores_by_gw`
 require `share_pool` (full club m>0). Live + hist path/mean callers wired;
