@@ -53,6 +53,11 @@ opta ΣG +32.5 / CS −29 vs actual; FD short +14 / −5; l3 +51 / −14.
 MAE ~tied with FD. Opta overprints G and underprints CS vs short on this
 shared-XI screen — not a promote over FD for decision-GW components.
 `reports/cascade_vs_l3_component_xp_pi_r_opta_gw8-38.md`.
+**cascade_long horizon dig** (`cascade_long_horizon_component_resid`, π∝r,
+t+2…38, pools refresh each t, L3 XI, no captain): horizon Σ resid_G shrinks
+with n_plan, but **per-GW** bias stays ~+2…+6 (cell mean +3.7 G / +1.3 CS).
+Overprint at every horizon offset — not a late-season rescue.
+`reports/cascade_long_horizon_component_resid.md`.
 
 **Strand default:** generative `run_strand` / `_undiscounted_scores_by_gw`
 require `share_pool` (full club m>0). Live + hist path/mean callers wired;

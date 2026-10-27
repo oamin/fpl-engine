@@ -1,30 +1,28 @@
 {
-  "task": "cascade_vs_l3_component_xp_pi_r_opta_gw8-38",
+  "task": "cascade_long_horizon_component_resid",
   "status": "done",
-  "as_of_utc": "2026-10-27T10:27:00Z",
-  "change": "cascade_long Opta/oracle λ component map GW8–38 vs L3 vs actual (π∝r; shared L3 XI)",
+  "as_of_utc": "2026-10-27T11:55:00Z",
+  "change": "cascade_long Opta π∝r horizon resid t+2…38 stepping GW8–36",
   "verdict": {
-    "n_player_gw": 341,
-    "opta_sum_G": 291.5,
-    "fd_sum_G": 273.0,
-    "l3_sum_G": 310.4,
-    "P_G": 259.0,
-    "opta_minus_P_G": 32.5,
-    "fd_minus_P_G": 14.0,
-    "opta_sum_CS": 228.8,
-    "fd_sum_CS": 252.6,
-    "l3_sum_CS": 244.0,
-    "P_CS": 258.0,
-    "opta_minus_P_CS": -29.2,
-    "fd_minus_P_CS": -5.4,
-    "mae_G": {"opta": 1.205, "fd": 1.197, "l3": 1.247},
-    "mae_CS": {"opta": 0.873, "fd": 0.877, "l3": 0.887},
-    "note": "Decision-GW Opta overprints G and underprints CS vs FD short; MAE ~tied. FD short closer to actual season totals."
+    "n_steps": 29,
+    "n_forecast_cells": 435,
+    "mean_cell_resid_G": 3.68,
+    "mean_cell_resid_CS": 1.30,
+    "mean_cell_resid_GA": -0.56,
+    "blocks_mean_resid_G": {
+      "t=8-12": 80.0,
+      "t=13-19": 82.3,
+      "t=20-26": 66.4,
+      "t=27-33": 20.3,
+      "t=34-36": 5.7
+    },
+    "note": "Horizon Σ shrinks with n_plan; per-GW G bias stays ~+2…+6. Long Opta π∝r overprints goals at every offset."
   },
-  "artifact": "/opt/cursor/artifacts/cascade_vs_l3_component_xp_pi_r_opta_gw8-38.json",
-  "report": "reports/cascade_vs_l3_component_xp_pi_r_opta_gw8-38.md",
-  "plot": "/opt/cursor/artifacts/cascade_vs_l3_component_xp_pi_r_resid_opta_gw8-38.png",
-  "compare_fd": "/opt/cursor/artifacts/cascade_vs_l3_component_xp_pi_r_gw8-38.json",
+  "artifact": "/opt/cursor/artifacts/cascade_long_horizon_component_resid.json",
+  "report": "reports/cascade_long_horizon_component_resid.md",
+  "plot_shift": "/opt/cursor/artifacts/cascade_long_horizon_component_resid_shift.png",
+  "plot_revision": "/opt/cursor/artifacts/cascade_long_horizon_component_resid_revision.png",
   "goal_weight": "rate",
-  "match_source": "opta"
+  "match_source": "opta",
+  "plan_rule": "t+2:horizon_end"
 }
