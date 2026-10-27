@@ -44,6 +44,10 @@ sheet luck cleared.
 Residuals swing with actual variance (GW20–26 hot G underprint −23; GW27–38
 cold G overprint +40) while cascade stays ~8–10 G/GW — not a steady G gap.
 `reports/cascade_vs_l3_component_xp_pi_r_gw8-38.md`.
+**±10 G swing dig:** haul weeks (5, Σ−60) = 2–3 multi-goal scorers
+(Thiago/Rice/Haaland/Ekitiké); blank-XI weeks (4, Σ+44) = P_G=0 vs ~10 xP.
+Casc≈l3 on those weeks; player season Σresid near 0. Do not retune shares.
+`reports/cascade_g_resid_swings_dig.md`.
 
 **Strand default:** generative `run_strand` / `_undiscounted_scores_by_gw`
 require `share_pool` (full club m>0). Live + hist path/mean callers wired;

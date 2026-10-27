@@ -1,67 +1,23 @@
 {
-  "task": "cascade_vs_l3_component_xp_pi_r_gw8-38",
+  "task": "cascade_g_resid_swings_dig",
   "status": "done",
-  "as_of_utc": "2026-10-27T10:03:00Z",
-  "change": "π∝r component season map GW8–38 (shared L3 XI; no captain; decision-gw-only)",
+  "as_of_utc": "2026-10-27T10:10:00Z",
+  "change": "Player-level dig of ±10 G residual swings on π∝r GW8–38 map",
   "verdict": {
-    "n_player_gw": 341,
-    "sum_casc_xP_G": 273.025,
-    "sum_casc_xP_CS": 252.55,
-    "sum_casc_xP_GA": -46.35,
-    "sum_l3_xP_G": 310.42829240123416,
-    "sum_l3_xP_CS": 244.0474591879356,
-    "sum_l3_xP_GA": -49.81113027953258,
-    "sum_P_G": 259.0,
-    "sum_P_CS": 258.0,
-    "sum_P_GA": -39.0,
-    "casc_minus_P_G": 14.025,
-    "l3_minus_P_G": 51.42829240123416,
-    "casc_minus_P_CS": -5.45,
-    "l3_minus_P_CS": -13.9525408120644,
-    "mae_casc_G": 1.1965542521994135,
-    "mae_l3_G": 1.2470342935994303,
-    "mae_casc_CS": 0.8769794721407623,
-    "mae_l3_CS": 0.8870174435120555,
-    "blocks": [
-      {
-        "block": "GW8-12",
-        "resid_casc_G": -1.975,
-        "resid_casc_CS": -25.625,
-        "note": "G calibrated; CS early sheet luck"
-      },
-      {
-        "block": "GW13-19",
-        "resid_casc_G": -0.9,
-        "resid_casc_CS": 10.7,
-        "note": "G calibrated; CS mild over"
-      },
-      {
-        "block": "GW20-26",
-        "resid_casc_G": -22.625,
-        "resid_casc_CS": 0.025,
-        "note": "hot actual G (83); CS perfect"
-      },
-      {
-        "block": "GW27-33",
-        "resid_casc_G": 19.8,
-        "resid_casc_CS": 16.8,
-        "note": "actual G cools (45); model holds ~9/GW"
-      },
-      {
-        "block": "GW34-38",
-        "resid_casc_G": 19.725,
-        "resid_casc_CS": -7.35,
-        "note": "cold actual G (27); CS mild under"
-      }
-    ]
+    "mechanism": "haul_vs_blank_poisson",
+    "casc_l3_agree_on_big_weeks": true,
+    "haul_weeks_n": 5,
+    "haul_weeks_sum_resid_G": -60.4,
+    "blank_xi_weeks_n": 4,
+    "blank_xi_weeks_sum_resid_G": 43.6,
+    "season_casc_minus_P_G": 14.0,
+    "top_drivers": [
+      "Haaland Σ|r|=66.8 season +8.4",
+      "Thiago Σ|r|=58.4 season +2.6",
+      "Ekitiké Σ|r|=35.6 season +0.2"
+    ],
+    "do_not_retune_shares_from_swings": true
   },
-  "artifact": "/opt/cursor/artifacts/cascade_vs_l3_component_xp_pi_r_gw8-38.json",
-  "report": "reports/cascade_vs_l3_component_xp_pi_r_gw8-38.md",
-  "plot": "/opt/cursor/artifacts/cascade_vs_l3_component_xp_pi_r_resid_gw8-38.png",
-  "goal_weight": "rate",
-  "fixes": [
-    "force owned from unfiltered hist",
-    "blank-GW v2 zero stubs",
-    "price carryforward for blank clubs"
-  ]
+  "report": "reports/cascade_g_resid_swings_dig.md",
+  "source": "/opt/cursor/artifacts/cascade_vs_l3_component_xp_pi_r_gw8-38.json"
 }
