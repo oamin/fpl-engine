@@ -70,9 +70,12 @@ all on **away (+0.30)**; player resid FWD **+30.5** of +32.5; away played
 (`λ_A ← λ_A·s`; `λ_H` untouched); **no** 0.20–3.50 λ clip. Symmetric
 `HOME_ADV` screen superseded (failed promote by moving bias onto home).
 **away_shrink screen:** train fit → **0.86**; holdout candidate 0.93 and fit
-**both PASS** (home |bias| flat; away +0.256 → +0.150 / +0.043). Default
-`AWAY_SHRINK=1.0` unchanged until PI re-approval; XI counterfactual next.
-`reports/cascade_long_away_shrink_lam_screen.md`.
+**both PASS** (home |bias| flat; away +0.256 → +0.150 / +0.043).
+**XI counterfactual** (`--away-shrink 0.86`, Opta π∝r GW8–38): resid G
+**+32.5 → +12.1** (FD short +14.0); CS **−29.2 → −11.1** (FD −5.4). Default
+`AWAY_SHRINK=1.0` unchanged until PI re-approval.
+`reports/cascade_long_away_shrink_lam_screen.md` ·
+`reports/cascade_vs_l3_component_xp_pi_r_opta_gw8-38_as086.md`.
 
 **Strand default:** generative `run_strand` / `_undiscounted_scores_by_gw`
 require `share_pool` (full club m>0). Live + hist path/mean callers wired;
