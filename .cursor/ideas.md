@@ -120,6 +120,15 @@ screen.
 `reports/cascade_away_shrink_xi_resid_trend.md` ·
 `reports/cascade_long_away_shrink_lam_screen.md`.
 
+## Parked — combined lam_shrink on λ_H and λ_A (2026-10-27)
+
+`LAM_SHRINK`: both λ × s (away_shrink=1). Train fit s=0.92. Holdout 2025-26
+**FAIL** promote — overall bias almost clears (+0.125→+0.003) but **home
+|bias| worsens** (−0.007→−0.128) while away improves. OOS prior seasons
+**0/3 PASS**. Default `LAM_SHRINK=1.0`. Same class as symmetric venue spice:
+moves error H↔A / level without a stable OOS win.
+`reports/cascade_long_lam_shrink_screen.md`.
+
 ## Rejected — stored OLS place→GF/GA function (2026-10-24)
 
 `OLS_GF = 79.9 − 2.26·rank` / `OLS_GA = 36.3 + 1.89·rank` as the default

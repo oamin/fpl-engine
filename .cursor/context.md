@@ -84,8 +84,10 @@ MAE ↓). XI resid G **−2.4** / CS **+2.4**.
 `reports/cascade_long_away_shrink_lam_screen_s075.md`.
 **Venue verdict (PI 2026-10-27):** keep formula (away-only shrink, **no λ
 clip**); default **`AWAY_SHRINK=1.0`**. Fixed `s=0.768` parked — OOS club-λ
-on 2022-23…2024-25 **0/3 PASS** (overshoots where 2025-26 away overprint is
-absent). `reports/cascade_away_shrink_oos_seasons.md`.
+on 2022-23…2024-25 **0/3 PASS**. Combined **`lam_shrink`** (both λ × s)
+train-fit 0.92: holdout **FAIL** (home |bias| worsens); OOS **0/3**. Default
+`LAM_SHRINK=1.0`. `reports/cascade_away_shrink_oos_seasons.md` ·
+`reports/cascade_long_lam_shrink_screen.md`.
 
 **Strand default:** generative `run_strand` / `_undiscounted_scores_by_gw`
 require `share_pool` (full club m>0). Live + hist path/mean callers wired;
