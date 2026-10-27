@@ -40,6 +40,7 @@ from src.eval.cascade_mc_vs_mean_hist import (
 )
 from src.eval.cascade_mean_xi_ft_component_resid import actual_components
 from src.eval.cascade_mean_xi_ft_hist import HORIZON_END
+from src.eval.cascade_mean_xi_ft_rolling import _ensure_owned_in_pool
 from src.eval.cascade_mean_xi_ft_step_pool_resid import (
     _inject_owned_from_share,
     _load_seed_owned,
@@ -457,6 +458,7 @@ def main(argv: list[str] | None = None) -> int:
 
     rows: list[dict[str, Any]] = []
     steps_out: list[dict[str, Any]] = []
+    stash: pd.DataFrame | None = None
 
     for t in step_gws:
         print(f"[comp-xp] === GW{t} ===", flush=True)
@@ -503,9 +505,16 @@ def main(argv: list[str] | None = None) -> int:
         share_pool = _build_hist_share_pool(
             hist, prices, decision_gw=int(t), season=season
         )
-        select_pool = _inject_owned_from_share(select_pool, share_pool, owned)
-        # also ensure XI look-ups exist
-        select_pool = _inject_owned_from_share(select_pool, share_pool, xi_ids)
+        # Keep owned/XI scoreable when they drop the minutes filter mid-season
+        # (same stash pattern as cascade_mean_xi_ft_step_pool_resid).
+        force_ids = list(dict.fromkeys(list(owned) + list(xi_ids)))
+        if stash is None:
+            select_pool = _inject_owned_from_share(select_pool, share_pool, force_ids)
+        else:
+            select_pool = _ensure_owned_in_pool(select_pool, stash, force_ids)
+            share_pool = _ensure_owned_in_pool(share_pool, stash, force_ids)
+            select_pool = _inject_owned_from_share(select_pool, share_pool, force_ids)
+        stash = select_pool.copy()
         plan_end = int(t) if bool(args.decision_gw_only) else horizon_end
         fixtures_gw = _hist_fixtures_by_gw(enriched, start=int(t), end=plan_end)
         plan_gws = sorted(fixtures_gw)
