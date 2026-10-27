@@ -38,7 +38,12 @@ DC calibrated. Do not retune CS.
 **π∝r parked 2026-10-27** — gated log-score clear lose; keep `w=r·m/90`.
 Component digs (shared L3 XI, no captain): GW8–12 π∝r ΣG 42 vs actual 44
 (CS luck 42 vs 68); **GW20–24** CS calibrated (39.7 vs 42) — early-season
-sheet luck cleared. `cascade_vs_l3_component_xp_pi_r*.md`.
+sheet luck cleared.
+**Season map GW8–38 π∝r** (decision-gw-only, N=40): casc ΣG 273 vs P 259
+(+14; l3 +51); CS 253 vs 258 (−5; l3 −14). MAE casc ≤ l3 on G/CS/GA.
+Residuals swing with actual variance (GW20–26 hot G underprint −23; GW27–38
+cold G overprint +40) while cascade stays ~8–10 G/GW — not a steady G gap.
+`reports/cascade_vs_l3_component_xp_pi_r_gw8-38.md`.
 
 **Strand default:** generative `run_strand` / `_undiscounted_scores_by_gw`
 require `share_pool` (full club m>0). Live + hist path/mean callers wired;
