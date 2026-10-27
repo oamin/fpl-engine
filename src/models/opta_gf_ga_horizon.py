@@ -539,6 +539,7 @@ def sample_match_from_opta_ranks(
     e0_fname: str | Path | None = None,
     z_band: float | None = None,
     method: str = DEFAULT_RANK_METHOD,
+    home_adv: float = HOME_ADV,
 ) -> dict[str, Any]:
     """Baseline match λ from Opta place GF/GA ± bands (no ClubPath blend).
 
@@ -592,6 +593,7 @@ def sample_match_from_opta_ranks(
         away_s["gf"],
         away_s["ga"],
         league_gf=lavg,
+        home_adv=float(home_adv),
     )
     # Diagnostic bands: delta-method through place SD + ḡ SE at centres.
     centre = match_prediction(
@@ -604,6 +606,7 @@ def sample_match_from_opta_ranks(
         sd_league_gf=l_sd,
         e0_fname=e0_fname,
         z_band=z_band,
+        home_adv=float(home_adv),
     )
     return {
         "home": h,
@@ -643,6 +646,7 @@ def match_prediction(
     sd_league_gf: float | None = None,
     e0_fname: str | Path | None = None,
     z_band: float | None = None,
+    home_adv: float = HOME_ADV,
 ) -> dict[str, Any]:
     """Full scoreline forecast for one fixture from Opta ranks.
 
@@ -688,6 +692,7 @@ def match_prediction(
         away_rates["gf"],
         away_rates["ga"],
         league_gf=lavg,
+        home_adv=float(home_adv),
     )
     prop = lambdas_from_gf_ga(
         home_rates["gf"],
@@ -701,6 +706,7 @@ def match_prediction(
         sd_away_ga=away_rates["sd_ga"],
         sd_league_gf=l_sd,
         z_band=z_band,
+        home_adv=float(home_adv),
     )
 
     return {

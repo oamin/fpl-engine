@@ -425,6 +425,7 @@ def sample_opta_scenario(
     ranks: Mapping[str, float] | None = None,
     profile: Mapping[int, Mapping[str, float]] | None = None,
     sd_league_gf: float = 0.0,
+    home_adv: float | None = None,
 ) -> dict[str, Any]:
     """Baseline roll: place → GF/GA ± bands → λ → ``M`` → ``k ∼ M``.
 
@@ -433,7 +434,11 @@ def sample_opta_scenario(
     defaults keep the live Opta JSON path.
     ``ClubPath`` is unused for λ (kept only as KeyError fallback).
     ``sd_league_gf`` is the SE of assessed expanding ḡ (season-total units).
+    ``home_adv`` defaults to ``opta_gf_ga_horizon.HOME_ADV`` (1.0).
     """
+    from src.models.opta_gf_ga_horizon import HOME_ADV as _HOME_ADV
+
+    h_adv = float(_HOME_ADV if home_adv is None else home_adv)
     try:
         draw = sample_match_from_opta_ranks(
             home,
@@ -444,6 +449,7 @@ def sample_opta_scenario(
             centre_blend=centre_blend,
             league_gf=league_gf,
             sd_league_gf=sd_league_gf,
+            home_adv=h_adv,
         )
         # λ already sampled inside rank GF/GA bands — roll k∼M at that λ.
         sh = float(draw["lam_home"])
@@ -605,6 +611,7 @@ def sample_week_scenario(
     ranks: Mapping[str, float] | None = None,
     profile: Mapping[int, Mapping[str, float]] | None = None,
     sd_league_gf: float = 0.0,
+    home_adv: float | None = None,
 ) -> dict[str, Any]:
     """Priced cascade_short when a fit exists; else Opta / oracle cascade_long."""
     key = (norm_team(home), norm_team(away))
@@ -620,6 +627,7 @@ def sample_week_scenario(
         ranks=ranks,
         profile=profile,
         sd_league_gf=sd_league_gf,
+        home_adv=home_adv,
     )
 
 

@@ -208,6 +208,32 @@
     ],
     "any_later_change": "dated protocol update required; PI re-approval if rank_map, ḡ, latent_draw, or hierarchical scoreline changes"
   },
+  "cascade_long_home_adv_lam_screen": {
+    "pre_registered": "2026-10-27",
+    "status": "diagnostic_screen",
+    "role": "club λ venue fix for cascade_long G overprint (away λ high)",
+    "baseline": "home_adv=1.0 (protocol.cascade_long_match_outcome)",
+    "candidates": {
+      "home_adv_1_08": 1.08,
+      "home_adv_fit_train": "argmin MAE(λ,act) on closed seasons 2022-23..2024-25, grid 1.00..1.20 step 0.02"
+    },
+    "holdout": "2025-26 GW8-38 team-sides",
+    "metric_primary": "away mean(λ−actual goals)",
+    "metric_secondary": [
+      "home mean(λ−actual)",
+      "overall MAE(λ,act)",
+      "vs FD mean(λ−act)"
+    ],
+    "promote_rule": "on 2025-26 holdout vs baseline 1.0: |away bias| falls by ≥0.10 AND home |bias| does not rise by >0.05 AND MAE does not rise by >0.02; still requires PI re-approval before flipping protocol HOME_ADV",
+    "scope": "club λ only first; XI G resid is a follow-up counterfactual, not the gate",
+    "modules": [
+      "src/eval/cascade_long_home_adv_lam_screen.py",
+      "src/models/opta_gf_ga_horizon.py",
+      "src/models/multistage_mc_milp.py"
+    ],
+    "does_not_change_default": true,
+    "note": "1.08 was retired 2026-10-24 as unapproved; this screen re-opens it as a locked candidate only"
+  },
   "score_xp_v2_screen": {
     "score_column": "score_xp_v2",
     "baseline": "score_xp",
