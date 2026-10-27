@@ -1,19 +1,28 @@
 {
   "task": "cascade_vs_l3_component_xp_pi_r",
   "status": "done",
-  "as_of_utc": "2026-10-27T09:25:00Z",
-  "change": "Cascade π∝r xP(G,CS,GA) vs L3 centreline vs actual on shared L3 XI; no captain",
+  "as_of_utc": "2026-10-27T09:37:45Z",
+  "change": "\u03c0\u221dr cascade xP(G,CS,GA) vs L3/L4 on shared L3 path; actuals; no captain",
   "verdict": {
-    "goal_weight": "rate",
     "n_player_gw": 55,
-    "casc_sum": {"G": 42.0, "CS": 42.4, "GA": -3.9},
-    "l3_sum": {"G": 39.7, "CS": 40.3, "GA": -4.5},
-    "actual_sum": {"G": 44.0, "CS": 68.0, "GA": -4.0},
-    "baseline_casc_sum_G": 53.7,
-    "mae_casc_G": 1.186,
-    "mae_l3_G": 1.052,
-    "read": "Same L3 path XI, no captain. π∝r cuts cascade ΣG 53.7→42.0 (actual 44). Closer on level; MAE still trails l3_v2."
+    "sum_casc_xP_G": 45.025,
+    "sum_casc_xP_CS": 39.7,
+    "sum_casc_xP_GA": -8.024999999999999,
+    "sum_l3_xP_G": 52.32367156495148,
+    "sum_l3_xP_CS": 36.43737905906022,
+    "sum_l3_xP_GA": -8.788497664301659,
+    "sum_P_G": 70.0,
+    "sum_P_CS": 42.0,
+    "sum_P_GA": -9.0,
+    "sum_total_points": 249.0,
+    "mae_casc_G": 1.6213636363636366,
+    "mae_l3_G": 1.7356198287584228,
+    "mae_casc_CS": 0.9209090909090909,
+    "mae_l3_CS": 0.8842136769202398,
+    "mae_casc_GA": 0.18681818181818183,
+    "mae_l3_GA": 0.20040175441533736
   },
-  "artifact": "/opt/cursor/artifacts/cascade_vs_l3_component_xp_pi_r.json",
-  "report": "reports/cascade_vs_l3_component_xp_pi_r.md"
+  "artifact": "/opt/cursor/artifacts/cascade_vs_l3_component_xp_pi_r_gw20-24.json",
+  "report": "reports/cascade_vs_l3_component_xp_pi_r_gw20-24.md",
+  "goal_weight": "rate"
 }
