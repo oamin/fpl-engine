@@ -146,17 +146,17 @@ def _plot(rows: list[dict[str, Any]], path: Path) -> None:
     ax.axhline(0.0, color="#888", lw=0.8)
     ax.plot(xs, g, "o-", color="#c0392b", label="resid G (casc−P)")
     ax.plot(xs, cs, "s-", color="#2980b9", label="resid CS (casc−P)")
-    # mark published fit / default
-    for s_mark, lab in ((0.86, "fit 0.86"), (1.0, "default 1.0")):
+    for s_mark, lab, col in (
+        (0.86, "fit 0.86", "#27ae60"),
+        (1.0, "default 1.0", "#666"),
+    ):
         if any(abs(x - s_mark) < 1e-9 for x in xs):
-            ax.axvline(s_mark, color="#666", ls="--", lw=0.8, alpha=0.7)
-            ax.text(s_mark, ax.get_ylim()[1] if False else 0.0, "")
+            ax.axvline(s_mark, color=col, ls="--", lw=0.9, alpha=0.8, label=lab)
     ax.set_xlabel("away_shrink s")
     ax.set_ylabel("season XI Σ resid (points)")
     ax.set_title("2025-26 GW8–38 Opta π∝r: XI resid G/CS vs away_shrink")
     ax.legend(loc="best")
     ax.grid(True, alpha=0.3)
-    # annotate zero-ish crossings roughly
     path.parent.mkdir(parents=True, exist_ok=True)
     fig.tight_layout()
     fig.savefig(path, dpi=140)
