@@ -1,18 +1,39 @@
 {
-  "task": "score_xp_v2_goal_share_rate",
+  "task": "cascade_step_pi_r_vs_l3_l4",
   "status": "done",
-  "as_of_utc": "2026-10-27T08:45:00Z",
-  "change": "Gated four-season screen: goal π∝r vs π∝r·m on player-GW log-score",
+  "as_of_utc": "2026-10-27T08:56:17Z",
+  "change": "Cascade \u03c0\u221dr stepped GW8\u201312 actual net vs locked L3/L4",
   "verdict": {
-    "mean_d_log": -0.000549,
-    "lo": -0.001021,
-    "hi": -0.000118,
-    "covers_zero": false,
-    "verdict": "park_clear_lose",
-    "action": "keep default goal_weight=rate_minutes (w=r·m/90); π∝r remains a flag for archaeology",
-    "cascade_resid_dig": "OL XI +10.2→+0.2 under π∝r — not the gate",
-    "read": "Likelihood clear lose despite resid dig. Parked."
+    "totals": [
+      {
+        "arm": "l4_mupost",
+        "pts_net": 399.0,
+        "pts_xi_cap": 403.0,
+        "hits": 1,
+        "n_transfers": 6,
+        "n_gw": 5
+      },
+      {
+        "arm": "l3",
+        "pts_net": 398.0,
+        "pts_xi_cap": 398.0,
+        "hits": 0,
+        "n_transfers": 5,
+        "n_gw": 5
+      },
+      {
+        "arm": "cascade_step",
+        "pts_net": 269.0,
+        "pts_xi_cap": 281.0,
+        "hits": 3,
+        "n_transfers": 8,
+        "n_gw": 5
+      }
+    ],
+    "cascade_minus_l3": -129.0,
+    "cascade_minus_l4": -130.0,
+    "goal_weight": "rate"
   },
-  "report": "reports/score_xp_v2_goal_share_rate.md",
-  "protocol": "score_xp_v2_goal_share_rate"
+  "artifact": "/opt/cursor/artifacts/cascade_step_pi_r_vs_l3_l4.json",
+  "report": "reports/cascade_step_pi_r_vs_l3_l4.md"
 }

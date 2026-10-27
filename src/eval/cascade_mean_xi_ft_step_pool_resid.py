@@ -761,7 +761,8 @@ def main(argv: list[str] | None = None) -> int:
         lines.append("")
     repro = (
         f"PYTHONPATH=. python3 -m src.eval.cascade_mean_xi_ft_step_pool_resid "
-        f"--n {n_strands} --steps {','.join(str(g) for g in step_gws)}"
+        f"--n {n_strands} --steps {','.join(str(g) for g in step_gws)} "
+        f"--goal-weight {goal_weight}"
     )
     if seed_meta:
         repro += f" --seed-owned {seed_meta['path']}"
