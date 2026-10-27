@@ -36,6 +36,7 @@ from src.eval.cascade_mc_vs_mean_hist import (
     SEED,
     _build_hist_pool,
     _build_hist_share_pool,
+    _fd_priced_by_gw,
     _hist_fixtures_by_gw,
 )
 from src.eval.cascade_mean_xi_ft_component_resid import actual_components
@@ -82,31 +83,133 @@ def _pid_element(pid: str) -> int:
     return int(str(pid).split(":")[-1])
 
 
+def _per_gw(steps: list[dict[str, Any]], resid_key: str, n_key: str) -> list[float]:
+    out: list[float] = []
+    for s in steps:
+        n = float(s.get(n_key) or 0)
+        out.append(float(s[resid_key]) / n if n > 0 else float("nan"))
+    return out
+
+
 def _plot_horizon_shift(
     steps: list[dict[str, Any]],
     path: Path,
     *,
     title: str,
 ) -> None:
+    """Per-GW mean resid: long Opta t+2:end vs short FD t:t+1 (same XI)."""
     gws = [int(s["decision_gw"]) for s in steps]
     fig, axes = plt.subplots(3, 1, figsize=(11, 8.5), sharex=True)
     series = (
-        ("resid_G", "horizon Σ (xP_G − P_G)", "#c0392b"),
-        ("resid_CS", "horizon Σ (xP_CS − P_CS)", "#2980b9"),
-        ("resid_GA", "horizon Σ (xP_GA − P_GA)", "#27ae60"),
+        ("resid_G", "short_resid_G", "xP_G − P_G  (per GW)"),
+        ("resid_CS", "short_resid_CS", "xP_CS − P_CS  (per GW)"),
+        ("resid_GA", "short_resid_GA", "xP_GA − P_GA  (per GW)"),
     )
-    for ax, (key, lab, color) in zip(axes, series):
-        y = [float(s[key]) for s in steps]
+    has_short = all(f"short_resid_G" in s for s in steps)
+    for ax, (long_k, short_k, lab) in zip(axes, series):
         ax.axhline(0.0, color="#888", lw=0.8)
-        ax.plot(gws, y, "o-", color=color, lw=1.5, ms=3.5)
+        y_long = _per_gw(steps, long_k, "n_plan")
+        ax.plot(
+            gws,
+            y_long,
+            "o-",
+            color="#c0392b",
+            lw=1.5,
+            ms=3.5,
+            label="long Opta  t+2:end",
+        )
+        if has_short and short_k in steps[0]:
+            y_short = _per_gw(steps, short_k, "short_n_plan")
+            ax.plot(
+                gws,
+                y_short,
+                "s--",
+                color="#2980b9",
+                lw=1.4,
+                ms=3.5,
+                label="short FD  t:t+1",
+            )
         ax.set_ylabel(lab)
         ax.grid(True, axis="y", alpha=0.3)
-    axes[-1].set_xlabel("decision GW t  (boards = t+2 … end)")
+        ax.legend(framealpha=0.95, loc="upper right", fontsize=8)
+    axes[-1].set_xlabel("decision GW t")
     axes[0].set_title(title)
     fig.tight_layout()
     path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(path)
     plt.close(fig)
+
+
+def _score_xi_plan(
+    *,
+    boards: dict[int, pd.DataFrame],
+    plan_gws: list[int],
+    xi_ids: list[str],
+    merged: pd.DataFrame,
+    decision_gw: int,
+    arm: str,
+) -> tuple[dict[str, float], list[dict[str, Any]]]:
+    """Σ_XI components vs actual over plan_gws; return totals + per-target cells."""
+    sum_c = {"G": 0.0, "CS": 0.0, "GA": 0.0}
+    sum_p = {"G": 0.0, "CS": 0.0, "GA": 0.0}
+    cells: list[dict[str, Any]] = []
+    for gw in plan_gws:
+        casc_board = boards[int(gw)]
+        act = actual_components(merged, int(gw))
+        act_by_e = act.set_index("element") if not act.empty else None
+        tg_c = {"G": 0.0, "CS": 0.0, "GA": 0.0}
+        tg_p = {"G": 0.0, "CS": 0.0, "GA": 0.0}
+        for pid in xi_ids:
+            eid = _pid_element(pid)
+            casc = _lookup(casc_board, pid, ("xp_goals", "xp_cs", "xp_gc", "xp"))
+            cg = float(casc["xp_goals"]) if np.isfinite(casc["xp_goals"]) else 0.0
+            ccs = float(casc["xp_cs"]) if np.isfinite(casc["xp_cs"]) else 0.0
+            cga = float(casc["xp_gc"]) if np.isfinite(casc["xp_gc"]) else 0.0
+            if act_by_e is not None and eid in act_by_e.index:
+                a = act_by_e.loc[eid]
+                if isinstance(a, pd.DataFrame):
+                    a = a.iloc[0]
+                pg, pcs, pga = float(a["P_G"]), float(a["P_CS"]), float(a["P_GC"])
+            else:
+                pg = pcs = pga = 0.0
+            tg_c["G"] += cg
+            tg_c["CS"] += ccs
+            tg_c["GA"] += cga
+            tg_p["G"] += pg
+            tg_p["CS"] += pcs
+            tg_p["GA"] += pga
+        cell = {
+            "arm": arm,
+            "decision_gw": int(decision_gw),
+            "target_gw": int(gw),
+            "horizon_offset": int(gw) - int(decision_gw),
+            "casc_G": tg_c["G"],
+            "casc_CS": tg_c["CS"],
+            "casc_GA": tg_c["GA"],
+            "P_G": tg_p["G"],
+            "P_CS": tg_p["CS"],
+            "P_GA": tg_p["GA"],
+            "resid_G": tg_c["G"] - tg_p["G"],
+            "resid_CS": tg_c["CS"] - tg_p["CS"],
+            "resid_GA": tg_c["GA"] - tg_p["GA"],
+        }
+        cells.append(cell)
+        for k in sum_c:
+            sum_c[k] += tg_c[k]
+            sum_p[k] += tg_p[k]
+    totals = {
+        "casc_G": sum_c["G"],
+        "casc_CS": sum_c["CS"],
+        "casc_GA": sum_c["GA"],
+        "P_G": sum_p["G"],
+        "P_CS": sum_p["CS"],
+        "P_GA": sum_p["GA"],
+        "resid_G": sum_c["G"] - sum_p["G"],
+        "resid_CS": sum_c["CS"] - sum_p["CS"],
+        "resid_GA": sum_c["GA"] - sum_p["GA"],
+        "n_plan": len(plan_gws),
+    }
+    return totals, cells
 
 
 def _plot_target_revision(
@@ -161,6 +264,15 @@ def main(argv: list[str] | None = None) -> int:
         help="Default rate (π∝r) for this long-horizon dig.",
     )
     ap.add_argument(
+        "--reuse-long",
+        type=Path,
+        default=None,
+        help=(
+            "Reuse prior long Opta JSON (skip long boards); recompute cascade_short "
+            "t:t+1 on the same XI/pools and refresh plots."
+        ),
+    )
+    ap.add_argument(
         "--out",
         type=Path,
         default=Path(
@@ -202,14 +314,33 @@ def main(argv: list[str] | None = None) -> int:
 
     steps_out: list[dict[str, Any]] = []
     cells: list[dict[str, Any]] = []
+    short_cells: list[dict[str, Any]] = []
     stash: pd.DataFrame | None = None
+
+    reused: dict[int, dict[str, Any]] = {}
+    reused_cells: list[dict[str, Any]] = []
+    if args.reuse_long is not None:
+        prior = json.loads(Path(args.reuse_long).read_text(encoding="utf-8"))
+        reused = {int(s["decision_gw"]): s for s in prior.get("steps") or []}
+        cpath = prior.get("cells_path")
+        if cpath and Path(cpath).exists():
+            reused_cells = json.loads(Path(cpath).read_text(encoding="utf-8"))
+        print(
+            f"[long-horiz] reuse-long={args.reuse_long} "
+            f"({len(reused)} steps, {len(reused_cells)} long cells)",
+            flush=True,
+        )
 
     for t in step_gws:
         plan_lo = int(t) + 2
-        if plan_lo > horizon_end:
+        if plan_lo > horizon_end and int(t) not in reused:
             print(f"[long-horiz] skip GW{t}: t+2={plan_lo} > end={horizon_end}", flush=True)
             continue
-        print(f"[long-horiz] === decision GW{t} → plan {plan_lo}…{horizon_end} ===", flush=True)
+        print(
+            f"[long-horiz] === decision GW{t} → long {plan_lo}…{horizon_end} "
+            f"+ short {t}…{min(int(t) + 1, horizon_end)} ===",
+            flush=True,
+        )
         owned = list(owned_by_gw[int(t)])
         hist = numagent_xp.asof_share_history(merged, before_gw=int(t), season=season)
         alpha_g, alpha_a = _asof_alphas(hist)
@@ -229,7 +360,11 @@ def main(argv: list[str] | None = None) -> int:
         if v2_board.empty:
             raise RuntimeError(f"empty v2 board at GW{t}")
 
-        if int(t) == int(seed_meta["gw"] or step_gws[0]) and seed_meta.get("xi_ids"):
+        # Prefer locked XI from reused long step (exact match for overlay).
+        if int(t) in reused and reused[int(t)].get("xi_ids"):
+            xi_ids = [str(x) for x in reused[int(t)]["xi_ids"]]
+            xi_source = str(reused[int(t)].get("xi_source") or "reused_long")
+        elif int(t) == int(seed_meta["gw"] or step_gws[0]) and seed_meta.get("xi_ids"):
             xi_ids = list(seed_meta["xi_ids"])
             xi_source = "seed_l3_l4_wc"
         else:
@@ -269,43 +404,6 @@ def main(argv: list[str] | None = None) -> int:
         select_pool = _inject_owned_from_share(select_pool, share_pool, force_ids)
         stash = select_pool.copy()
 
-        fixtures_gw = _hist_fixtures_by_gw(
-            enriched, start=plan_lo, end=horizon_end
-        )
-        plan_gws = sorted(fixtures_gw)
-        if not plan_gws:
-            print(f"[long-horiz] GW{t}: no fixtures in {plan_lo}…{horizon_end}", flush=True)
-            continue
-        # cascade_long: never price — Opta/oracle on every plan GW.
-        priced_by_gw: dict[int, list[dict[str, Any]]] = {}
-        step_seed = seed0 if t == step_gws[0] else seed0 + 10_000 * int(t)
-        print(
-            f"[long-horiz] select={len(select_pool)} share={len(share_pool)} "
-            f"xi_src={xi_source} plan={plan_gws[0]}…{plan_gws[-1]} "
-            f"n_plan={len(plan_gws)}",
-            flush=True,
-        )
-        boards, _scores, board_meta = mean_component_boards_split(
-            select_pool=select_pool,
-            share_pool=share_pool,
-            fixtures_gw=fixtures_gw,
-            priced_by_gw=priced_by_gw,
-            ranks=ranks,
-            profile=profile,
-            league_gf=league_gf,
-            hist_by_team=team_hist,
-            alpha_g=alpha_g,
-            alpha_a=alpha_a,
-            plan_gws=plan_gws,
-            n_strands=n_strands,
-            seed0=step_seed,
-            goal_weight=goal_weight,
-        )
-        print(
-            f"[long-horiz] boards {board_meta['elapsed_s']:.1f}s",
-            flush=True,
-        )
-
         id_to_name = {
             str(r.player_id): str(r.name)
             for r in select_pool.itertuples(index=False)
@@ -313,59 +411,123 @@ def main(argv: list[str] | None = None) -> int:
         for r in v2_board.itertuples(index=False):
             id_to_name.setdefault(str(r.player_id), str(r.name))
 
-        sum_casc_g = sum_casc_cs = sum_casc_ga = 0.0
-        sum_p_g = sum_p_cs = sum_p_ga = 0.0
-        per_target: list[dict[str, Any]] = []
+        step_seed = seed0 if t == step_gws[0] else seed0 + 10_000 * int(t)
 
-        for gw in plan_gws:
-            casc_board = boards[int(gw)]
-            act = actual_components(merged, int(gw))
-            act_by_e = act.set_index("element") if not act.empty else None
-            tg_casc_g = tg_casc_cs = tg_casc_ga = 0.0
-            tg_p_g = tg_p_cs = tg_p_ga = 0.0
-            for pid in xi_ids:
-                eid = _pid_element(pid)
-                casc = _lookup(
-                    casc_board, pid, ("xp_goals", "xp_cs", "xp_gc", "xp")
-                )
-                cg = float(casc["xp_goals"]) if np.isfinite(casc["xp_goals"]) else 0.0
-                ccs = float(casc["xp_cs"]) if np.isfinite(casc["xp_cs"]) else 0.0
-                cga = float(casc["xp_gc"]) if np.isfinite(casc["xp_gc"]) else 0.0
-                if act_by_e is not None and eid in act_by_e.index:
-                    a = act_by_e.loc[eid]
-                    if isinstance(a, pd.DataFrame):
-                        a = a.iloc[0]
-                    pg, pcs, pga = float(a["P_G"]), float(a["P_CS"]), float(a["P_GC"])
-                else:
-                    pg = pcs = pga = 0.0
-                tg_casc_g += cg
-                tg_casc_cs += ccs
-                tg_casc_ga += cga
-                tg_p_g += pg
-                tg_p_cs += pcs
-                tg_p_ga += pga
-            cell = {
-                "decision_gw": int(t),
-                "target_gw": int(gw),
-                "horizon_offset": int(gw) - int(t),
-                "casc_G": tg_casc_g,
-                "casc_CS": tg_casc_cs,
-                "casc_GA": tg_casc_ga,
-                "P_G": tg_p_g,
-                "P_CS": tg_p_cs,
-                "P_GA": tg_p_ga,
-                "resid_G": tg_casc_g - tg_p_g,
-                "resid_CS": tg_casc_cs - tg_p_cs,
-                "resid_GA": tg_casc_ga - tg_p_ga,
+        # --- long Opta t+2:end ---
+        if int(t) in reused:
+            long_tot = {
+                "casc_G": float(reused[int(t)]["casc_G"]),
+                "casc_CS": float(reused[int(t)]["casc_CS"]),
+                "casc_GA": float(reused[int(t)]["casc_GA"]),
+                "P_G": float(reused[int(t)]["P_G"]),
+                "P_CS": float(reused[int(t)]["P_CS"]),
+                "P_GA": float(reused[int(t)]["P_GA"]),
+                "resid_G": float(reused[int(t)]["resid_G"]),
+                "resid_CS": float(reused[int(t)]["resid_CS"]),
+                "resid_GA": float(reused[int(t)]["resid_GA"]),
+                "n_plan": int(reused[int(t)]["n_plan"]),
             }
-            per_target.append(cell)
-            cells.append(cell)
-            sum_casc_g += tg_casc_g
-            sum_casc_cs += tg_casc_cs
-            sum_casc_ga += tg_casc_ga
-            sum_p_g += tg_p_g
-            sum_p_cs += tg_p_cs
-            sum_p_ga += tg_p_ga
+            plan_gws = list(reused[int(t)].get("plan_gws") or [])
+            board_s_long = float(reused[int(t)].get("board_s") or 0.0)
+            long_cells_t = [
+                c
+                for c in reused_cells
+                if int(c.get("decision_gw", -1)) == int(t)
+                and c.get("arm", "long") != "short"
+            ]
+            for c in long_cells_t:
+                c = dict(c)
+                c["arm"] = "long"
+                cells.append(c)
+            print(
+                f"[long-horiz] reused long n_plan={long_tot['n_plan']} "
+                f"resid G/CS/GA={long_tot['resid_G']:+.1f}/"
+                f"{long_tot['resid_CS']:+.1f}/{long_tot['resid_GA']:+.1f}",
+                flush=True,
+            )
+        else:
+            fixtures_gw = _hist_fixtures_by_gw(
+                enriched, start=plan_lo, end=horizon_end
+            )
+            plan_gws = sorted(fixtures_gw)
+            if not plan_gws:
+                print(
+                    f"[long-horiz] GW{t}: no fixtures in {plan_lo}…{horizon_end}",
+                    flush=True,
+                )
+                continue
+            print(
+                f"[long-horiz] select={len(select_pool)} share={len(share_pool)} "
+                f"xi_src={xi_source} long_plan={plan_gws[0]}…{plan_gws[-1]} "
+                f"n_plan={len(plan_gws)}",
+                flush=True,
+            )
+            boards, _scores, board_meta = mean_component_boards_split(
+                select_pool=select_pool,
+                share_pool=share_pool,
+                fixtures_gw=fixtures_gw,
+                priced_by_gw={},
+                ranks=ranks,
+                profile=profile,
+                league_gf=league_gf,
+                hist_by_team=team_hist,
+                alpha_g=alpha_g,
+                alpha_a=alpha_a,
+                plan_gws=plan_gws,
+                n_strands=n_strands,
+                seed0=step_seed,
+                goal_weight=goal_weight,
+            )
+            board_s_long = float(board_meta["elapsed_s"])
+            print(f"[long-horiz] long boards {board_s_long:.1f}s", flush=True)
+            long_tot, long_cells_t = _score_xi_plan(
+                boards=boards,
+                plan_gws=plan_gws,
+                xi_ids=xi_ids,
+                merged=merged,
+                decision_gw=int(t),
+                arm="long",
+            )
+            cells.extend(long_cells_t)
+
+        # --- short FD t:t+1 (same XI / pools) ---
+        short_hi = min(int(t) + 1, horizon_end)
+        short_fx = _hist_fixtures_by_gw(enriched, start=int(t), end=short_hi)
+        short_plan = sorted(short_fx)
+        if not short_plan:
+            raise RuntimeError(f"GW{t}: empty short plan t:t+1")
+        short_priced = _fd_priced_by_gw(enriched, fd, short_plan)
+        print(
+            f"[long-horiz] short_plan={short_plan[0]}…{short_plan[-1]} "
+            f"n={len(short_plan)} priced_gws={sorted(short_priced)}",
+            flush=True,
+        )
+        short_boards, _ss, short_meta = mean_component_boards_split(
+            select_pool=select_pool,
+            share_pool=share_pool,
+            fixtures_gw=short_fx,
+            priced_by_gw=short_priced,
+            ranks=ranks,
+            profile=profile,
+            league_gf=league_gf,
+            hist_by_team=team_hist,
+            alpha_g=alpha_g,
+            alpha_a=alpha_a,
+            plan_gws=short_plan,
+            n_strands=n_strands,
+            seed0=step_seed + 777,
+            goal_weight=goal_weight,
+        )
+        print(f"[long-horiz] short boards {short_meta['elapsed_s']:.1f}s", flush=True)
+        short_tot, short_cells_t = _score_xi_plan(
+            boards=short_boards,
+            plan_gws=short_plan,
+            xi_ids=xi_ids,
+            merged=merged,
+            decision_gw=int(t),
+            arm="short",
+        )
+        short_cells.extend(short_cells_t)
 
         step_rec = {
             "decision_gw": int(t),
@@ -374,28 +536,38 @@ def main(argv: list[str] | None = None) -> int:
             "xi_names": [id_to_name.get(x, x) for x in xi_ids],
             "owned": owned,
             "plan_gws": plan_gws,
-            "n_plan": len(plan_gws),
+            "n_plan": int(long_tot["n_plan"]),
             "n_selection_pool": int(len(select_pool)),
             "n_share_pool": int(len(share_pool)),
-            "board_s": float(board_meta["elapsed_s"]),
-            "casc_G": sum_casc_g,
-            "casc_CS": sum_casc_cs,
-            "casc_GA": sum_casc_ga,
-            "P_G": sum_p_g,
-            "P_CS": sum_p_cs,
-            "P_GA": sum_p_ga,
-            "resid_G": sum_casc_g - sum_p_g,
-            "resid_CS": sum_casc_cs - sum_p_cs,
-            "resid_GA": sum_casc_ga - sum_p_ga,
-            "per_target": per_target,
+            "board_s": float(board_s_long),
+            "casc_G": float(long_tot["casc_G"]),
+            "casc_CS": float(long_tot["casc_CS"]),
+            "casc_GA": float(long_tot["casc_GA"]),
+            "P_G": float(long_tot["P_G"]),
+            "P_CS": float(long_tot["P_CS"]),
+            "P_GA": float(long_tot["P_GA"]),
+            "resid_G": float(long_tot["resid_G"]),
+            "resid_CS": float(long_tot["resid_CS"]),
+            "resid_GA": float(long_tot["resid_GA"]),
+            "short_plan_gws": short_plan,
+            "short_n_plan": int(short_tot["n_plan"]),
+            "short_board_s": float(short_meta["elapsed_s"]),
+            "short_casc_G": float(short_tot["casc_G"]),
+            "short_casc_CS": float(short_tot["casc_CS"]),
+            "short_casc_GA": float(short_tot["casc_GA"]),
+            "short_P_G": float(short_tot["P_G"]),
+            "short_P_CS": float(short_tot["P_CS"]),
+            "short_P_GA": float(short_tot["P_GA"]),
+            "short_resid_G": float(short_tot["resid_G"]),
+            "short_resid_CS": float(short_tot["resid_CS"]),
+            "short_resid_GA": float(short_tot["resid_GA"]),
         }
         steps_out.append(step_rec)
         print(
-            f"[long-horiz] GW{t} horizon resid G/CS/GA="
-            f"{step_rec['resid_G']:+.1f}/{step_rec['resid_CS']:+.1f}/"
-            f"{step_rec['resid_GA']:+.1f} "
-            f"(casc {sum_casc_g:.1f}/{sum_casc_cs:.1f}/{sum_casc_ga:.1f} "
-            f"P {sum_p_g:.1f}/{sum_p_cs:.1f}/{sum_p_ga:.1f})",
+            f"[long-horiz] GW{t} long resid/n G="
+            f"{step_rec['resid_G']/max(step_rec['n_plan'],1):+.2f} "
+            f"short resid/n G="
+            f"{step_rec['short_resid_G']/max(step_rec['short_n_plan'],1):+.2f}",
             flush=True,
         )
 
@@ -409,20 +581,20 @@ def main(argv: list[str] | None = None) -> int:
         steps_out,
         plot_shift,
         title=(
-            f"{season} cascade_long Opta π∝r: horizon Σ resid vs decision t "
-            f"(boards t+2…{horizon_end})"
+            f"{season} π∝r per-GW resid: long Opta t+2…{horizon_end} "
+            f"vs short FD t:t+1 (same L3 XI)"
         ),
     )
-    # Fixed targets near mid / late season for revision paths.
+    # Fixed targets near mid / late season for revision paths (long arm).
     want_targets = [g for g in (16, 20, 24, 28, 32, 36) if g <= horizon_end]
     plot_rev = Path(
         "/opt/cursor/artifacts/cascade_long_horizon_component_resid_revision.png"
     )
     _plot_target_revision(
-        cells,
+        [c for c in cells if c.get("arm", "long") == "long"],
         plot_rev,
         targets=want_targets,
-        title=f"{season} resid_G revision for fixed targets as t → target−2",
+        title=f"{season} long resid_G revision for fixed targets as t → target−2",
     )
 
     # Summaries: early / mid / late decision blocks
@@ -437,6 +609,22 @@ def main(argv: list[str] | None = None) -> int:
             "mean_resid_CS": float(np.mean([s["resid_CS"] for s in sub])),
             "mean_resid_GA": float(np.mean([s["resid_GA"] for s in sub])),
             "mean_n_plan": float(np.mean([s["n_plan"] for s in sub])),
+            "mean_resid_G_per_gw": float(
+                np.mean([s["resid_G"] / max(s["n_plan"], 1) for s in sub])
+            ),
+            "mean_resid_CS_per_gw": float(
+                np.mean([s["resid_CS"] / max(s["n_plan"], 1) for s in sub])
+            ),
+            "mean_short_resid_G_per_gw": float(
+                np.mean(
+                    [s["short_resid_G"] / max(s["short_n_plan"], 1) for s in sub]
+                )
+            ),
+            "mean_short_resid_CS_per_gw": float(
+                np.mean(
+                    [s["short_resid_CS"] / max(s["short_n_plan"], 1) for s in sub]
+                )
+            ),
         }
 
     blocks = [
@@ -451,10 +639,12 @@ def main(argv: list[str] | None = None) -> int:
         if b is not None
     ]
 
-    # Per target-GW: mean resid across all decisions that forecast it
+    # Per target-GW: mean resid across all decisions that forecast it (long arm)
     by_target: list[dict[str, Any]] = []
     if cells:
         cdf = pd.DataFrame(cells)
+        if "arm" in cdf.columns:
+            cdf = cdf.loc[cdf["arm"].fillna("long") == "long"]
         for tg, g in cdf.groupby("target_gw"):
             by_target.append(
                 {
@@ -472,93 +662,104 @@ def main(argv: list[str] | None = None) -> int:
         "season": season,
         "step_gws": step_gws,
         "horizon_end": horizon_end,
-        "plan_rule": "t+2:horizon_end",
-        "match_source": "opta",
+        "plan_rule": "long=t+2:horizon_end; short=t:t+1",
+        "match_source": "opta+fd",
         "goal_weight": goal_weight,
         "n_strands": n_strands,
         "seed": seed0,
         "seed_owned": seed_meta,
+        "reuse_long": str(args.reuse_long) if args.reuse_long else None,
         "shared_team": (
             "L3 owned path; XI = seed WC or pick_xi(score_xp_v2); no captain. "
-            "Selection/share pools refresh every decision GW."
+            "Selection/share pools refresh every decision GW. "
+            "Long = Opta t+2:end; short = FD t:t+1 on the same XI."
         ),
         "elapsed_s": _now() - t_all,
         "blocks": blocks,
         "by_target_gw": by_target,
-        "steps": [
-            {k: v for k, v in s.items() if k != "per_target"} for s in steps_out
-        ],
+        "steps": steps_out,
         "plot_shift": str(plot_shift),
         "plot_revision": str(plot_rev),
     }
     args.out.parent.mkdir(parents=True, exist_ok=True)
     cells_path = Path(str(args.out).replace(".json", "_cells.json"))
+    all_cells = cells + short_cells
     cells_path.write_text(
-        json.dumps(cells, indent=2, default=str) + "\n", encoding="utf-8"
+        json.dumps(all_cells, indent=2, default=str) + "\n", encoding="utf-8"
     )
     state["cells_path"] = str(cells_path)
-    # Keep per_target on disk only via cells; steps already stripped.
     args.out.write_text(json.dumps(state, indent=2, default=str) + "\n")
 
+    long_pg = [s["resid_G"] / max(s["n_plan"], 1) for s in steps_out]
+    short_pg = [s["short_resid_G"] / max(s["short_n_plan"], 1) for s in steps_out]
     lines = [
-        "# cascade_long horizon residual — E[G, CS, GA] on t+2:end",
+        "# cascade_long vs cascade_short — per-GW E[G,CS,GA] residuals",
         "",
         f"Season **{season}** · decision steps GW{step_gws[0]}–{step_gws[-1]} · "
-        f"boards **t+2…{horizon_end}** · N={n_strands} · "
-        f"goal_weight=`{goal_weight}` · match=`opta` · "
+        f"N={n_strands} · goal_weight=`{goal_weight}` · "
         f"wall {state['elapsed_s']:.1f}s",
         "",
         "## What this is",
         "",
-        "- Product cascade_long scope: Opta/oracle λ on **t+2 … end** "
-        "(decision GW and t+1 excluded).",
-        "- Each step refreshes ≥60′ selection + full-club share pools.",
-        "- Shared L3 owned path; XI = WC seed or `pick_xi(score_xp_v2)`; "
-        "**no captain**.",
-        "- Residual = Σ_XI (generative xP − actual P) on each target GW; "
-        "horizon total = Σ over the plan.",
+        "- **long** — Opta/oracle λ on **t+2 … end** (product cascade_long).",
+        "- **short** — FD centreline λ on **t:t+1** (product cascade_short), "
+        "same refreshed pools + same L3 XI, no captain.",
+        "- Plot = **per-GW** mean resid (Σ resid / n_plan) so horizons compare.",
         "",
-        f"![horizon shift]({plot_shift})",
+        f"![per-GW shift]({plot_shift})",
         "",
-        f"![target revision]({plot_rev})",
+        f"![long target revision]({plot_rev})",
         "",
-        "## Horizon residual by decision GW",
+        f"- Mean per-GW resid_G: long **{float(np.mean(long_pg)):+.2f}**, "
+        f"short **{float(np.mean(short_pg)):+.2f}**",
+        f"- Mean per-GW resid_CS: long **"
+        f"{float(np.mean([s['resid_CS']/max(s['n_plan'],1) for s in steps_out])):+.2f}**, "
+        f"short **"
+        f"{float(np.mean([s['short_resid_CS']/max(s['short_n_plan'],1) for s in steps_out])):+.2f}**",
         "",
-        "| t | n_plan | casc G | P_G | resid G | casc CS | P_CS | resid CS | "
-        "casc GA | P_GA | resid GA |",
-        "| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+        "## Per decision GW (per-GW resid)",
+        "",
+        "| t | long n | long G/n | short n | short G/n | long CS/n | short CS/n | "
+        "long GA/n | short GA/n |",
+        "| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
     ]
     for s in steps_out:
+        n = max(int(s["n_plan"]), 1)
+        sn = max(int(s["short_n_plan"]), 1)
         lines.append(
-            f"| {s['decision_gw']} | {s['n_plan']} | {s['casc_G']:.1f} | "
-            f"{s['P_G']:.1f} | {s['resid_G']:+.1f} | {s['casc_CS']:.1f} | "
-            f"{s['P_CS']:.1f} | {s['resid_CS']:+.1f} | {s['casc_GA']:.1f} | "
-            f"{s['P_GA']:.1f} | {s['resid_GA']:+.1f} |"
+            f"| {s['decision_gw']} | {s['n_plan']} | {s['resid_G']/n:+.2f} | "
+            f"{s['short_n_plan']} | {s['short_resid_G']/sn:+.2f} | "
+            f"{s['resid_CS']/n:+.2f} | {s['short_resid_CS']/sn:+.2f} | "
+            f"{s['resid_GA']/n:+.2f} | {s['short_resid_GA']/sn:+.2f} |"
         )
     lines += [
         "",
-        "## Mean horizon residual by decision block",
+        "## Mean per-GW resid by decision block",
         "",
-        "| block | n | mean resid G | mean resid CS | mean resid GA | mean n_plan |",
+        "| block | n | long G/n | short G/n | long CS/n | short CS/n |",
         "| --- | ---: | ---: | ---: | ---: | ---: |",
     ]
     for b in blocks:
         lines.append(
-            f"| {b['block']} | {b['n_steps']} | {b['mean_resid_G']:+.1f} | "
-            f"{b['mean_resid_CS']:+.1f} | {b['mean_resid_GA']:+.1f} | "
-            f"{b['mean_n_plan']:.1f} |"
+            f"| {b['block']} | {b['n_steps']} | {b['mean_resid_G_per_gw']:+.2f} | "
+            f"{b['mean_short_resid_G_per_gw']:+.2f} | "
+            f"{b['mean_resid_CS_per_gw']:+.2f} | "
+            f"{b['mean_short_resid_CS_per_gw']:+.2f} |"
         )
+    repro = (
+        f"PYTHONPATH=. python3 -m src.eval.cascade_long_horizon_component_resid "
+        f"--n {n_strands} --goal-weight {goal_weight} "
+        f"--steps {','.join(str(g) for g in step_gws)} "
+        f"--horizon-end {horizon_end}"
+    )
+    if args.reuse_long:
+        repro += f" --reuse-long {args.reuse_long}"
     lines += [
         "",
         "## Reproduce",
         "",
         "```bash",
-        (
-            f"PYTHONPATH=. python3 -m src.eval.cascade_long_horizon_component_resid "
-            f"--n {n_strands} --goal-weight {goal_weight} "
-            f"--steps {','.join(str(g) for g in step_gws)} "
-            f"--horizon-end {horizon_end}"
-        ),
+        repro,
         "```",
         "",
         f"Cells: `{cells_path}`",
@@ -572,28 +773,38 @@ def main(argv: list[str] | None = None) -> int:
                 "status": "done",
                 "as_of_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                 "change": (
-                    f"cascade_long Opta π∝r horizon resid t+2…{horizon_end} "
-                    f"steps GW{step_gws[0]}–{step_gws[-1]}"
+                    f"long Opta t+2…{horizon_end} + short FD t:t+1 per-GW resid "
+                    f"overlay (π∝r, shared L3 XI)"
                 ),
                 "verdict": {
                     "n_steps": len(steps_out),
+                    "mean_long_resid_G_per_gw": float(np.mean(long_pg)),
+                    "mean_short_resid_G_per_gw": float(np.mean(short_pg)),
                     "blocks": blocks,
-                    "first_resid_G": steps_out[0]["resid_G"],
-                    "last_resid_G": steps_out[-1]["resid_G"],
                 },
                 "artifact": str(args.out),
                 "report": str(REPORT.relative_to(ROOT)),
                 "plot_shift": str(plot_shift),
                 "plot_revision": str(plot_rev),
                 "goal_weight": goal_weight,
-                "match_source": "opta",
+                "match_source": "opta+fd",
             },
             indent=2,
         )
         + "\n",
         encoding="utf-8",
     )
-    print(json.dumps({"summary_blocks": blocks, "n_steps": len(steps_out)}, indent=2))
+    print(
+        json.dumps(
+            {
+                "summary_blocks": blocks,
+                "n_steps": len(steps_out),
+                "mean_long_G_per_gw": float(np.mean(long_pg)),
+                "mean_short_G_per_gw": float(np.mean(short_pg)),
+            },
+            indent=2,
+        )
+    )
     print(f"wrote {args.out} {REPORT} {plot_shift}")
     return 0
 
