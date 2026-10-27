@@ -292,6 +292,56 @@
     "modules": ["src/eval/cascade_long_lam_shrink_screen.py"],
     "does_not_change_default": true
   },
+  "cascade_long_place_venue_lam_screen": {
+    "pre_registered": "2026-10-27",
+    "status": "diagnostic_screen",
+    "role": "place×venue Opta λ map for cascade_long G overprint (away λ high from venue-blind season totals)",
+    "baseline": "venue_mode=blind (protocol.cascade_long_match_outcome; DEFAULT_VENUE_MODE)",
+    "candidates": {
+      "venue_away": "λ_H blind; λ_A = gf_a_pm(ra)·((GA_H_blind/38)/ḡ)",
+      "venue_ev": "EV-matched full place×venue both sides",
+      "naive": "isolate diagnostic: attack×opp-def / blended ḡ (overshoots home)",
+      "blend_fit": "train-fit w on venue_away λ_A, grid 0.00..1.00 step 0.10 on 2022-23..2024-25"
+    },
+    "holdout": "2025-26 GW8-38 team-sides",
+    "oos_seasons": ["2022-23", "2023-24", "2024-25"],
+    "metric_primary": "away mean(λ−actual goals)",
+    "metric_secondary": [
+      "home mean(λ−actual)",
+      "overall MAE(λ,act)",
+      "vs FD mean(λ−act)"
+    ],
+    "promote_rule": "on holdout vs blind: |away bias| falls by ≥0.10 AND home |bias| does not rise by >0.05 AND MAE does not rise by >0.02; OOS required on 2022-23..2024-25 before any default flip; still requires PI re-approval before flipping DEFAULT_VENUE_MODE",
+    "scope": "club λ only first; XI G resid is a follow-up counterfactual, not the gate",
+    "modules": [
+      "src/eval/cascade_long_place_venue_lam_screen.py",
+      "src/models/opta_gf_ga_horizon.py",
+      "src/models/multistage_mc_milp.py"
+    ],
+    "does_not_change_default": true,
+    "note": "Follows cascade_long_g_overprint_isolate — structural fix for venue-blind place GF/GA; supersedes fixed away_shrink/lam_shrink spice"
+  },
+  "cascade_fd_generative_g_dig": {
+    "pre_registered": "2026-10-27",
+    "status": "diagnostic_dig",
+    "role": "Dig FD/generative +14 XI resid G under π∝r and default rate_minutes (cascade_short shared remainder)",
+    "baseline_artifact": "cascade_vs_l3_component_xp_pi_r_gw8-38 (FD, goal_weight=rate)",
+    "compare": "same map with goal_weight=rate_minutes (default)",
+    "lenses": [
+      "XI resid G rate vs rate_minutes",
+      "alpha_g empty mass vs scored xP",
+      "share concentration (HHI / top-1 sG) on XI FWDs",
+      "minutes gate (m=0 drop) under both weights"
+    ],
+    "holdout": "2025-26 GW8-38 shared L3 XI",
+    "decision_metric": "player-GW likelihood (XI resid diagnostic only)",
+    "modules": [
+      "src/eval/cascade_fd_generative_g_dig.py",
+      "src/eval/cascade_vs_l3_component_xp.py",
+      "src/markets/short_horizon_generative.py"
+    ],
+    "does_not_change_default": true
+  },
   "score_xp_v2_screen": {
     "score_column": "score_xp_v2",
     "baseline": "score_xp",

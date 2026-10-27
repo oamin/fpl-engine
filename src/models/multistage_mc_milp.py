@@ -428,6 +428,9 @@ def sample_opta_scenario(
     away_shrink: float | None = None,
     lam_shrink: float | None = None,
     home_adv: float | None = None,
+    venue_mode: str | None = None,
+    venue_blend: float = 0.5,
+    venue_profile: Mapping[int, Mapping[str, float]] | None = None,
 ) -> dict[str, Any]:
     """Baseline roll: place → GF/GA ± bands → λ → ``M`` → ``k ∼ M``.
 
@@ -437,16 +440,19 @@ def sample_opta_scenario(
     ``ClubPath`` is unused for λ (kept only as KeyError fallback).
     ``sd_league_gf`` is the SE of assessed expanding ḡ (season-total units).
     ``away_shrink`` / ``lam_shrink`` default to identity (1.0).
+    ``venue_mode`` defaults to ``blind`` (no place×venue remap).
     ``home_adv`` is ignored if passed (deprecated).
     """
     del home_adv
     from src.models.opta_gf_ga_horizon import (
         AWAY_SHRINK as _AWAY_SHRINK,
+        DEFAULT_VENUE_MODE as _DEFAULT_VENUE_MODE,
         LAM_SHRINK as _LAM_SHRINK,
     )
 
     shrink = float(_AWAY_SHRINK if away_shrink is None else away_shrink)
     lshrink = float(_LAM_SHRINK if lam_shrink is None else lam_shrink)
+    vmode = str(_DEFAULT_VENUE_MODE if venue_mode is None else venue_mode)
     try:
         draw = sample_match_from_opta_ranks(
             home,
@@ -459,6 +465,9 @@ def sample_opta_scenario(
             sd_league_gf=sd_league_gf,
             away_shrink=shrink,
             lam_shrink=lshrink,
+            venue_mode=vmode,
+            venue_blend=float(venue_blend),
+            venue_profile=venue_profile,  # type: ignore[arg-type]
         )
         # λ already sampled inside rank GF/GA bands — roll k∼M at that λ.
         sh = float(draw["lam_home"])

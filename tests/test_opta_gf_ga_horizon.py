@@ -8,16 +8,20 @@ import unittest
 from src.models.opta_gf_ga_horizon import (
     AWAY_SHRINK,
     DEFAULT_RANK_METHOD,
+    DEFAULT_VENUE_MODE,
     LIVE_E0,
     assessed_league_gf,
     gf_ga_from_rank,
     lambdas_from_gf_ga,
+    lambdas_from_place_venue,
     load_opta_ranks,
     match_prediction,
     pots_from_season_gf_ga,
     rank_gf_ga_profile,
+    rank_venue_gf_ga_profile,
     sample_match_from_opta_ranks,
     sample_season_gf_ga_for_rank,
+    venue_league_means,
 )
 
 
@@ -138,6 +142,40 @@ class OptaGfGaHorizonTest(unittest.TestCase):
         self.assertGreater(hot["lam_home"], 3.50)
         cold = lambdas_from_gf_ga(10.0, 80.0, 80.0, 10.0, league_gf=80.0)
         self.assertLess(cold["lam_home"], 0.20)
+
+    def test_default_venue_mode_is_blind(self) -> None:
+        self.assertEqual(DEFAULT_VENUE_MODE, "blind")
+        vprof = rank_venue_gf_ga_profile()
+        self.assertEqual(len(vprof), 20)
+        lg = venue_league_means(vprof)
+        self.assertGreater(lg["gf_h_pm"], lg["gf_a_pm"])
+        # Top place scores more at home than bottom place.
+        self.assertGreater(vprof[1]["gf_h_pm"], vprof[20]["gf_h_pm"])
+
+    def test_venue_away_keeps_home_blind(self) -> None:
+        ranks = {r["club_norm"]: float(r["rank"]) for r in load_opta_ranks()}
+        top = min(ranks, key=ranks.get)
+        bot = max(ranks, key=ranks.get)
+        blind = sample_match_from_opta_ranks(
+            top, bot, random.Random(0), ranks=ranks, centre_blend=1.0
+        )
+        away = sample_match_from_opta_ranks(
+            top,
+            bot,
+            random.Random(0),
+            ranks=ranks,
+            centre_blend=1.0,
+            venue_mode="venue_away",
+        )
+        self.assertAlmostEqual(away["lam_home"], blind["lam_home"])
+        self.assertLess(away["lam_away"], blind["lam_away"])
+        self.assertEqual(away["venue_mode"], "venue_away")
+
+    def test_place_venue_ev_finite(self) -> None:
+        out = lambdas_from_place_venue(1, 20, formula="venue")
+        self.assertTrue(out["lam_home"] == out["lam_home"])
+        self.assertTrue(out["lam_away"] == out["lam_away"])
+        self.assertGreater(out["lam_home"], out["lam_away"])
 
 
 if __name__ == "__main__":
