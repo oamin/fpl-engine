@@ -1,28 +1,19 @@
 {
-  "task": "cascade_vs_l3_component_xp_pi_r",
+  "task": "cascade_vs_l3_component_xp_pi_r_gw20-24",
   "status": "done",
-  "as_of_utc": "2026-10-27T09:37:45Z",
-  "change": "\u03c0\u221dr cascade xP(G,CS,GA) vs L3/L4 on shared L3 path; actuals; no captain",
+  "as_of_utc": "2026-10-27T09:40:00Z",
+  "change": "Same π∝r component dig on GW20–24 (post early-season CS luck window)",
   "verdict": {
+    "window": "2025-26 GW20-24",
+    "why": "xi_cs_selection_hypothesis: GW1–12 sel luck; GW20–26 near/flip zero",
+    "goal_weight": "rate",
     "n_player_gw": 55,
-    "sum_casc_xP_G": 45.025,
-    "sum_casc_xP_CS": 39.7,
-    "sum_casc_xP_GA": -8.024999999999999,
-    "sum_l3_xP_G": 52.32367156495148,
-    "sum_l3_xP_CS": 36.43737905906022,
-    "sum_l3_xP_GA": -8.788497664301659,
-    "sum_P_G": 70.0,
-    "sum_P_CS": 42.0,
-    "sum_P_GA": -9.0,
-    "sum_total_points": 249.0,
-    "mae_casc_G": 1.6213636363636366,
-    "mae_l3_G": 1.7356198287584228,
-    "mae_casc_CS": 0.9209090909090909,
-    "mae_l3_CS": 0.8842136769202398,
-    "mae_casc_GA": 0.18681818181818183,
-    "mae_l3_GA": 0.20040175441533736
+    "casc_sum": {"G": 45.0, "CS": 39.7, "GA": -8.0},
+    "l3_sum": {"G": 52.3, "CS": 36.4, "GA": -8.8},
+    "actual_sum": {"G": 70.0, "CS": 42.0, "GA": -9.0},
+    "compare_gw8_12_actual_CS": 68.0,
+    "read": "CS gap gone (casc 39.7 vs actual 42; GW8–12 was 42 vs 68). Both arms under-print G vs a hot 70 actual. No captain."
   },
   "artifact": "/opt/cursor/artifacts/cascade_vs_l3_component_xp_pi_r_gw20-24.json",
-  "report": "reports/cascade_vs_l3_component_xp_pi_r_gw20-24.md",
-  "goal_weight": "rate"
+  "report": "reports/cascade_vs_l3_component_xp_pi_r_gw20-24.md"
 }

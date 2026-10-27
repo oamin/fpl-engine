@@ -36,9 +36,9 @@ DC calibrated. Do not retune CS.
 
 **G overprint.** Full-share OL gen ~+11. Pot cleared; not dice/k∼M.
 **π∝r parked 2026-10-27** — gated log-score clear lose; keep `w=r·m/90`.
-Cascade component dig (shared L3 XI, no captain): π∝r ΣG **42.0** vs
-baseline 53.7 / actual 44 / l3 39.7 — level fixed, MAE still trails l3.
-`reports/cascade_vs_l3_component_xp_pi_r.md` · `score_xp_v2_goal_share_rate.md`.
+Component digs (shared L3 XI, no captain): GW8–12 π∝r ΣG 42 vs actual 44
+(CS luck 42 vs 68); **GW20–24** CS calibrated (39.7 vs 42) — early-season
+sheet luck cleared. `cascade_vs_l3_component_xp_pi_r*.md`.
 
 **Strand default:** generative `run_strand` / `_undiscounted_scores_by_gw`
 require `share_pool` (full club m>0). Live + hist path/mean callers wired;
