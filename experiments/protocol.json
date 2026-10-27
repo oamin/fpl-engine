@@ -181,16 +181,16 @@
   "cascade_long_match_outcome": {
     "locked": "2026-10-20",
     "pi_approved": "2026-10-24",
-    "revised": "2026-10-24 — PI lock: rankmean±SD latents; assessed expanding ḡ; hierarchical λ→M→k; HOME_ADV=1.0; no second λ jitter; props off",
+    "revised": "2026-10-27 — away_shrink on λ_A only (default 1.0); no λ clip; symmetric HOME_ADV retired; PI lock otherwise unchanged from 2026-10-24",
     "role": "long-horizon t+2… match M + generative player xP",
     "status": "pi_approved_strat",
     "rank_map": "Opta place → closed-season empirical mean GF/GA by finishing place (method=rankmean); OLS place→GF/GA retired from live path",
     "latent_draw": "per strand: sample GF, GA, ḡ inside mean ± z·SD (z_band=1.0) via sample_within_band; centre_blend=0.5 (half centre, half Uniform[lo,hi])",
     "bands": "place sample SD (n=4 closed seasons per place); ḡ SE from assessed expanding mean",
-    "lambda": "λ_H=(GF_H/38)·((GA_A/38)/ḡ); λ_A symmetric; ClubPath unused for λ; home_adv=1.0",
+    "lambda": "λ_H=(GF_H/38)·((GA_A/38)/ḡ); λ_A same × away_shrink; no λ clip; ClubPath unused for λ; away_shrink=1.0",
     "league_gbar": "assessed_league_gf — live/assessed E0 expanding (FTHG+FTAG)/2 prior-blended; closed prior when no rows",
     "uncertainty": "hierarchical — draw latents → λ → M|λ → k∼M; δ-method sd_lam is diagnostic only; do not resample λ after M is built",
-    "home_adv": "1.0 — previous 1.08 never PI-approved; rejected 2026-10-24",
+    "away_shrink": "1.0 — λ_A only (λ_A ← λ_A·s); symmetric HOME_ADV retired; no 0.20–3.50 λ clip (PI 2026-10-27)",
     "ols_rank_map": "retired — keep method=ols only for archaeology / old diagnostic replay",
     "M": "match_outcome_probs_from_lambdas(λ_h, λ_a, ρ=0) conditional on the strand's drawn λ",
     "scoreline": "match_outcome_roll — k∼M|λ; λ uncertainty enters only via latent draws across strands (no Uniform λ band)",
@@ -210,7 +210,7 @@
   },
   "cascade_long_home_adv_lam_screen": {
     "pre_registered": "2026-10-27",
-    "status": "diagnostic_screen",
+    "status": "superseded_wrong_formula",
     "role": "club λ venue fix for cascade_long G overprint (away λ high)",
     "baseline": "home_adv=1.0 (protocol.cascade_long_match_outcome)",
     "candidates": {
@@ -232,7 +232,35 @@
       "src/models/multistage_mc_milp.py"
     ],
     "does_not_change_default": true,
-    "note": "1.08 was retired 2026-10-24 as unapproved; this screen re-opens it as a locked candidate only"
+    "note": "Symmetric home_adv (λ_H·h, λ_A/h) failed promote; PI redirected to away_shrink on λ_A only, no λ clip",
+    "superseded": "2026-10-27 by cascade_long_away_shrink_lam_screen"
+  },
+  "cascade_long_away_shrink_lam_screen": {
+    "pre_registered": "2026-10-27",
+    "status": "diagnostic_screen",
+    "role": "club λ away_shrink for cascade_long G overprint (away λ high); supersedes home_adv screen",
+    "formula": "λ_H unchanged; λ_A ← λ_A · away_shrink; no 0.20–3.50 λ clip",
+    "baseline": "away_shrink=1.0 (protocol.cascade_long_match_outcome)",
+    "candidates": {
+      "away_shrink_0_93": 0.93,
+      "away_shrink_fit_train": "argmin MAE(λ,act) on closed seasons 2022-23..2024-25, grid 0.80..1.00 step 0.02"
+    },
+    "holdout": "2025-26 GW8-38 team-sides",
+    "metric_primary": "away mean(λ−actual goals)",
+    "metric_secondary": [
+      "home mean(λ−actual)",
+      "overall MAE(λ,act)",
+      "vs FD mean(λ−act)"
+    ],
+    "promote_rule": "on 2025-26 holdout vs baseline 1.0: |away bias| falls by ≥0.10 AND home |bias| does not rise by >0.05 AND MAE does not rise by >0.02; still requires PI re-approval before flipping protocol AWAY_SHRINK",
+    "scope": "club λ only first; XI G resid is a follow-up counterfactual, not the gate",
+    "modules": [
+      "src/eval/cascade_long_away_shrink_lam_screen.py",
+      "src/models/opta_gf_ga_horizon.py",
+      "src/models/multistage_mc_milp.py"
+    ],
+    "does_not_change_default": true,
+    "note": "PI 2026-10-27: apply venue as away_shrink on λ_A only; do not clip λ"
   },
   "score_xp_v2_screen": {
     "score_column": "score_xp_v2",

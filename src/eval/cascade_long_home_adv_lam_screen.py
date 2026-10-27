@@ -225,6 +225,10 @@ def _promote(
 
 
 def main(argv: list[str] | None = None) -> int:
+    raise SystemExit(
+        "superseded: run src.eval.cascade_long_away_shrink_lam_screen "
+        "(away_shrink on λ_A only; no λ clip). See protocol."
+    )
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--n-draws", type=int, default=N_DRAWS)
     ap.add_argument("--seed", type=int, default=SEED)

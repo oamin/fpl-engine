@@ -43,8 +43,11 @@ CLOSED = [
 ]
 
 N_MATCHES = 38.0
-# Neutral venue factor. The previous 1.08 home boost was never PI-approved
-# (agent-era spice, same class as λ ±15% jitter) — retired 2026-10-24.
+# Away λ shrink only (λ_A ← λ_A·s; λ_H untouched). Default 1.0 = identity.
+# Symmetric HOME_ADV (λ_H·h, λ_A/h) retired 2026-10-24; re-screened 2026-10-27
+# as home_adv and failed promote (home bias worsened). PI: away_shrink only.
+AWAY_SHRINK = 1.0
+# Deprecated alias — identity only; do not reintroduce symmetric home boost.
 HOME_ADV = 1.0
 # Default place→GF/GA map (cascade_long): empirical place means + SD.
 DEFAULT_RANK_METHOD = "rankmean"
@@ -374,22 +377,26 @@ def lambdas_from_gf_ga(
     sd_away_gf: float = 0.0,
     sd_away_ga: float = 0.0,
     sd_league_gf: float = 0.0,
-    home_adv: float = HOME_ADV,
+    away_shrink: float = AWAY_SHRINK,
+    home_adv: float | None = None,
     z_band: float | None = None,
 ) -> dict[str, float]:
     """Dixon–Coles λ with delta-method SDs from place GF/GA and ḡ uncertainty.
 
-    ``λ_H = (GF_H/38)·((GA_A/38)/ḡ)·h`` with ``ḡ = league_gf/38``. Relative
-    variances add under independence: GF_H, GA_A, and league_gf for ``λ_H``
-    (symmetrically GF_A, GA_H, league_gf for ``λ_A``).
+    ``λ_H = (GF_H/38)·((GA_A/38)/ḡ)``; ``λ_A`` same form then ``× away_shrink``.
+    ``ḡ = league_gf/38``. No hard clip on λ (PI 2026-10-27). Relative variances
+    add under independence: GF_H, GA_A, and league_gf for ``λ_H`` (symmetrically
+    GF_A, GA_H, league_gf for ``λ_A``). ``home_adv`` is ignored if passed
+    (deprecated symmetric spice).
     """
+    del home_adv  # deprecated; away_shrink only
     z = float(Z_BAND if z_band is None else z_band)
     L = max(float(league_gf), 1e-9)
-    h_adv = float(home_adv)
+    s = max(float(away_shrink), 0.0)
     gf_h, ga_h = max(float(home_gf), 0.0), max(float(home_ga), 0.0)
     gf_a, ga_a = max(float(away_gf), 0.0), max(float(away_ga), 0.0)
-    lam_h_raw = (gf_h * ga_a * h_adv) / (N_MATCHES * L)
-    lam_a_raw = (gf_a * ga_h / h_adv) / (N_MATCHES * L) if h_adv > 0 else 0.0
+    lam_h_raw = (gf_h * ga_a) / (N_MATCHES * L)
+    lam_a_raw = (gf_a * ga_h * s) / (N_MATCHES * L)
 
     def _rel_var(val: float, sd: float) -> float:
         if val <= 1e-12:
@@ -406,22 +413,21 @@ def lambdas_from_gf_ga(
         + _rel_var(ga_h, sd_home_ga)
         + _rel_var(L, sd_league_gf)
     )
-    lam_h = _clip(lam_h_raw, 0.20, 3.50)
-    lam_a = _clip(lam_a_raw, 0.20, 3.50)
     return {
-        "lam_home": float(lam_h),
-        "lam_away": float(lam_a),
+        "lam_home": float(lam_h_raw),
+        "lam_away": float(lam_a_raw),
         "lam_home_raw": float(lam_h_raw),
         "lam_away_raw": float(lam_a_raw),
         "sd_lam_home": float(sd_h),
         "sd_lam_away": float(sd_a),
-        "lam_home_lo": float(_clip(lam_h_raw - z * sd_h, 0.20, 3.50)),
-        "lam_home_hi": float(_clip(lam_h_raw + z * sd_h, 0.20, 3.50)),
-        "lam_away_lo": float(_clip(lam_a_raw - z * sd_a, 0.20, 3.50)),
-        "lam_away_hi": float(_clip(lam_a_raw + z * sd_a, 0.20, 3.50)),
+        "lam_home_lo": float(max(0.0, lam_h_raw - z * sd_h)),
+        "lam_home_hi": float(lam_h_raw + z * sd_h),
+        "lam_away_lo": float(max(0.0, lam_a_raw - z * sd_a)),
+        "lam_away_hi": float(lam_a_raw + z * sd_a),
         "league_gf": float(L),
         "g_pm": float(L / N_MATCHES),
         "z_band": z,
+        "away_shrink": float(s),
     }
 
 
@@ -432,25 +438,29 @@ def pots_from_season_gf_ga(
     away_ga: float,
     *,
     league_gf: float | None = None,
-    home_adv: float = HOME_ADV,
+    away_shrink: float = AWAY_SHRINK,
+    home_adv: float | None = None,
     shrink: float = 1.0,
 ) -> tuple[dict[str, float], dict[str, float]]:
     """Match pots from season GF/GA totals (attack × opp defence / league).
 
-    ``λ_H = (GF_H/38)·((GA_A/38) / ḡ)·home_adv`` (clipped). ``league_gf`` is
-    season-total units (``ḡ_pm × 38``); prefer ``assessed_league_gf`` for the
-    live / assessed expanding mean. Default ``home_adv`` is 1.0.
+    ``λ_H = (GF_H/38)·((GA_A/38) / ḡ)``; ``λ_A`` same then ``× away_shrink``.
+    No hard clip on λ. ``league_gf`` is season-total units (``ḡ_pm × 38``);
+    prefer ``assessed_league_gf`` for the live / assessed expanding mean.
+    Default ``away_shrink`` is 1.0. ``home_adv`` ignored if passed.
     """
+    del home_adv  # deprecated; away_shrink only
     if league_gf is None:
         league_gf = float(closed_league_gf_prior()["league_gf"])
     lavg = float(league_gf) / N_MATCHES
     lavg = lavg if lavg > 0 else NEUTRAL_TOTAL / 2.0
+    s = max(float(away_shrink), 0.0)
     rh_att = float(home_gf) / N_MATCHES
     ra_att = float(away_gf) / N_MATCHES
     rh_def = float(home_ga) / N_MATCHES
     ra_def = float(away_ga) / N_MATCHES
-    lam_h = _clip(rh_att * (ra_def / lavg) * home_adv, 0.20, 3.50)
-    lam_a = _clip(ra_att * (rh_def / lavg) / home_adv, 0.20, 3.50)
+    lam_h = rh_att * (ra_def / lavg)
+    lam_a = ra_att * (rh_def / lavg) * s
     e_total = lam_h + lam_a
     home = {
         "lam_scored": lam_h,
@@ -539,14 +549,17 @@ def sample_match_from_opta_ranks(
     e0_fname: str | Path | None = None,
     z_band: float | None = None,
     method: str = DEFAULT_RANK_METHOD,
-    home_adv: float = HOME_ADV,
+    away_shrink: float = AWAY_SHRINK,
+    home_adv: float | None = None,
 ) -> dict[str, Any]:
     """Baseline match λ from Opta place GF/GA ± bands (no ClubPath blend).
 
     Each side rolls season GF/GA inside its rank band; ḡ is the assessed
     expanding league mean (or an explicit ``league_gf``), also sampled inside
     its SE band; then ``pots_from_season_gf_ga`` → match λ.
+    ``home_adv`` is ignored if passed (deprecated).
     """
+    del home_adv
     if ranks is None:
         ranks = {r["club_norm"]: float(r["rank"]) for r in load_opta_ranks()}
     h = norm_team(home_club)
@@ -593,7 +606,7 @@ def sample_match_from_opta_ranks(
         away_s["gf"],
         away_s["ga"],
         league_gf=lavg,
-        home_adv=float(home_adv),
+        away_shrink=float(away_shrink),
     )
     # Diagnostic bands: delta-method through place SD + ḡ SE at centres.
     centre = match_prediction(
@@ -606,7 +619,7 @@ def sample_match_from_opta_ranks(
         sd_league_gf=l_sd,
         e0_fname=e0_fname,
         z_band=z_band,
-        home_adv=float(home_adv),
+        away_shrink=float(away_shrink),
     )
     return {
         "home": h,
@@ -646,13 +659,16 @@ def match_prediction(
     sd_league_gf: float | None = None,
     e0_fname: str | Path | None = None,
     z_band: float | None = None,
-    home_adv: float = HOME_ADV,
+    away_shrink: float = AWAY_SHRINK,
+    home_adv: float | None = None,
 ) -> dict[str, Any]:
     """Full scoreline forecast for one fixture from Opta ranks.
 
     λ bands use delta-method propagation of place GF/GA SDs and the SE of
     assessed expanding ḡ (not a corner envelope of independent lo/hi).
+    ``home_adv`` is ignored if passed (deprecated).
     """
+    del home_adv
     if ranks is None:
         ranks = {r["club_norm"]: float(r["rank"]) for r in load_opta_ranks()}
     h = norm_team(home_club)
@@ -692,7 +708,7 @@ def match_prediction(
         away_rates["gf"],
         away_rates["ga"],
         league_gf=lavg,
-        home_adv=float(home_adv),
+        away_shrink=float(away_shrink),
     )
     prop = lambdas_from_gf_ga(
         home_rates["gf"],
@@ -706,7 +722,7 @@ def match_prediction(
         sd_away_ga=away_rates["sd_ga"],
         sd_league_gf=l_sd,
         z_band=z_band,
-        home_adv=float(home_adv),
+        away_shrink=float(away_shrink),
     )
 
     return {

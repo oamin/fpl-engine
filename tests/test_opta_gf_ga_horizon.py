@@ -6,6 +6,7 @@ import random
 import unittest
 
 from src.models.opta_gf_ga_horizon import (
+    AWAY_SHRINK,
     DEFAULT_RANK_METHOD,
     LIVE_E0,
     assessed_league_gf,
@@ -116,6 +117,27 @@ class OptaGfGaHorizonTest(unittest.TestCase):
         self.assertGreater(pred["sd_lam_home"], 0.0)
         self.assertGreater(pred["sd_lam_away"], 0.0)
         self.assertEqual(pred["league"]["source"], "expanding_assessed")
+
+    def test_away_shrink_only_scales_away_lambda(self) -> None:
+        self.assertEqual(AWAY_SHRINK, 1.0)
+        base = lambdas_from_gf_ga(80.0, 35.0, 40.0, 60.0, league_gf=56.0)
+        shrunk = lambdas_from_gf_ga(
+            80.0, 35.0, 40.0, 60.0, league_gf=56.0, away_shrink=0.93
+        )
+        self.assertAlmostEqual(shrunk["lam_home"], base["lam_home"])
+        self.assertAlmostEqual(shrunk["lam_away"], base["lam_away"] * 0.93)
+        pot_h, pot_a = pots_from_season_gf_ga(
+            80.0, 35.0, 40.0, 60.0, league_gf=56.0, away_shrink=0.93
+        )
+        self.assertAlmostEqual(pot_h["lam_scored"], base["lam_home"])
+        self.assertAlmostEqual(pot_a["lam_scored"], base["lam_away"] * 0.93)
+
+    def test_lambda_not_hard_clipped(self) -> None:
+        # Extreme rates would previously clip to [0.20, 3.50].
+        hot = lambdas_from_gf_ga(120.0, 20.0, 20.0, 100.0, league_gf=40.0)
+        self.assertGreater(hot["lam_home"], 3.50)
+        cold = lambdas_from_gf_ga(10.0, 80.0, 80.0, 10.0, league_gf=80.0)
+        self.assertLess(cold["lam_home"], 0.20)
 
 
 if __name__ == "__main__":

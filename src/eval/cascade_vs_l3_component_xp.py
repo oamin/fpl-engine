@@ -607,12 +607,12 @@ def main(argv: list[str] | None = None) -> int:
         ),
     )
     ap.add_argument(
-        "--home-adv",
+        "--away-shrink",
         type=float,
         default=None,
         help=(
-            "Opta club-λ venue multiplier (default: protocol HOME_ADV=1.0). "
-            "Counterfactual only — does not flip the PI lock."
+            "Opta away λ shrink (λ_A ← λ_A·s; default AWAY_SHRINK=1.0). "
+            "Counterfactual only — does not flip the protocol default."
         ),
     )
     ap.add_argument(
@@ -625,7 +625,7 @@ def main(argv: list[str] | None = None) -> int:
     season = str(args.season)
     goal_weight = str(args.goal_weight)
     match_source = str(args.match_source)
-    home_adv = None if args.home_adv is None else float(args.home_adv)
+    away_shrink = None if args.away_shrink is None else float(args.away_shrink)
     step_gws = [int(x) for x in str(args.steps).split(",") if x.strip()]
     horizon_end = int(args.horizon_end)
     n_strands = int(args.n)
@@ -642,7 +642,7 @@ def main(argv: list[str] | None = None) -> int:
     print(
         f"[comp-xp] season={season} steps={step_gws} N={n_strands} "
         f"goal_weight={goal_weight} match_source={match_source} "
-        f"home_adv={home_adv if home_adv is not None else 'default'} "
+        f"away_shrink={away_shrink if away_shrink is not None else 'default'} "
         f"seed={seed_meta['path']}",
         flush=True,
     )
@@ -760,7 +760,7 @@ def main(argv: list[str] | None = None) -> int:
             n_strands=n_strands,
             seed0=step_seed,
             goal_weight=goal_weight,
-            home_adv=home_adv,
+            away_shrink=away_shrink,
         )
         print(f"[comp-xp] cascade boards {board_meta['elapsed_s']:.1f}s", flush=True)
         casc_board = boards[int(t)]
@@ -935,7 +935,7 @@ def main(argv: list[str] | None = None) -> int:
         "seed": seed0,
         "goal_weight": goal_weight,
         "match_source": match_source,
-        "home_adv": home_adv,
+        "away_shrink": away_shrink,
         "decision_gw_only": bool(args.decision_gw_only),
         "seed_owned": seed_meta,
         "shared_team": (
@@ -1091,8 +1091,8 @@ def main(argv: list[str] | None = None) -> int:
         f"--match-source {match_source} "
         f"--steps {','.join(str(g) for g in step_gws)}"
     )
-    if home_adv is not None:
-        repro += f" --home-adv {home_adv}"
+    if away_shrink is not None:
+        repro += f" --away-shrink {away_shrink}"
     if args.decision_gw_only:
         repro += " --decision-gw-only"
     lines += [
