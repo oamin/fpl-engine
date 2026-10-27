@@ -82,11 +82,10 @@ both near 0 around **s≈0.75** (G −2.4 / CS +2.4). Fit 0.86 still +12/−11.
 **s=0.75 screen arm:** λ promote **PASS** (away +0.256→−0.123, home flat,
 MAE ↓). XI resid G **−2.4** / CS **+2.4**.
 `reports/cascade_long_away_shrink_lam_screen_s075.md`.
-**Default AWAY_SHRINK=0.768** (PI; XI resid G/CS crossing). OOS club-λ on
-**2022-23…2024-25** (selection season excluded; no shared L3 XI there):
-**0/3 PASS** — prior seasons lack 2025-26's away overprint; s=0.768
-overshoots away bias negative. Pooled also FAIL.
-`reports/cascade_away_shrink_oos_seasons.md`.
+**Venue verdict (PI 2026-10-27):** keep formula (away-only shrink, **no λ
+clip**); default **`AWAY_SHRINK=1.0`**. Fixed `s=0.768` parked — OOS club-λ
+on 2022-23…2024-25 **0/3 PASS** (overshoots where 2025-26 away overprint is
+absent). `reports/cascade_away_shrink_oos_seasons.md`.
 
 **Strand default:** generative `run_strand` / `_undiscounted_scores_by_gw`
 require `share_pool` (full club m>0). Live + hist path/mean callers wired;

@@ -1,6 +1,9 @@
 # OOS club-λ screen: away_shrink=0.768 on prior seasons
 
-Candidate **s=0.768** (PI default from 2025-26 XI resid crossing) vs **s=1.0** · GW8–38 · N=40 · wall 73.4s
+Candidate **s=0.768** (from 2025-26 XI resid crossing) vs **s=1.0** · GW8–38 · N=40 · wall 73.4s
+
+**Verdict (2026-10-27):** park fixed `s`; live default **`AWAY_SHRINK=1.0`**.
+Keep away-only shrink formula and **no** 0.20–3.50 λ clip.
 
 ## Why these seasons
 

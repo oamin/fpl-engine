@@ -1,4 +1,4 @@
-"""OOS club-λ screen for ``AWAY_SHRINK=0.768`` on prior closed seasons.
+"""OOS club-λ screen for candidate ``s=0.768`` on prior closed seasons.
 
 ``s=0.768`` was chosen from the 2025-26 XI resid G/CS crossing, so that
 season is **selection-contaminated** for XI. The shared L3 XI path also
@@ -6,8 +6,8 @@ only exists for 2025-26. This diagnostic checks club λ (Opta − actual) for
 ``s=0.768`` vs ``s=1.0`` on **2022-23, 2023-24, 2024-25** GW8–38 — seasons
 that did not pick ``s``.
 
-Same promote thresholds as ``cascade_long_away_shrink_lam_screen`` applied
-**per season** vs that season's ``s=1.0`` baseline.
+Result (2026-10-27): **0/3 PASS** → park fixed ``s``; default ``AWAY_SHRINK``
+stays **1.0**. Formula (away-only shrink, no λ clip) kept.
 
   PYTHONPATH=. python3 -m src.eval.cascade_away_shrink_oos_seasons
 """
@@ -32,15 +32,14 @@ from src.eval.cascade_long_away_shrink_lam_screen import (
     _season_team_sides,
     _summarise,
 )
-from src.models.opta_gf_ga_horizon import AWAY_SHRINK
-
 ROOT = Path(__file__).resolve().parents[2]
 REPORT = ROOT / "reports" / "cascade_away_shrink_oos_seasons.md"
 STATE = ROOT / "REPORT_STATE.json"
 OUT = Path("/opt/cursor/artifacts/cascade_away_shrink_oos_seasons.json")
 
 OOS_SEASONS = ("2022-23", "2023-24", "2024-25")
-CANDIDATE = float(AWAY_SHRINK)  # 0.768
+# Locked candidate from 2025-26 XI resid crossing — not the live default.
+CANDIDATE = 0.768
 BASELINE = 1.0
 
 
@@ -131,7 +130,8 @@ def main(argv: list[str] | None = None) -> int:
         "task": "cascade_away_shrink_oos_seasons",
         "candidate": cand,
         "baseline": BASELINE,
-        "default_away_shrink": float(AWAY_SHRINK),
+        "default_away_shrink": 1.0,
+        "verdict": "reject_fixed_s_keep_default_1_0",
         "selection_note": (
             "s=0.768 chosen from 2025-26 XI resid crossing; "
             "OOS club-λ on 2022-23…2024-25 only (no shared L3 XI on those seasons)"

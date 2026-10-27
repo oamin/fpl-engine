@@ -43,11 +43,10 @@ CLOSED = [
 ]
 
 N_MATCHES = 38.0
-# Away λ shrink only (λ_A ← λ_A·s; λ_H untouched).
-# Symmetric HOME_ADV (λ_H·h, λ_A/h) retired 2026-10-24; re-screened 2026-10-27
-# as home_adv and failed promote. PI: away_shrink only.
-# Default 0.768 = XI resid G/CS crossing on 2025-26 Opta π∝r GW8–38 (PI 2026-10-27).
-AWAY_SHRINK = 0.768
+# Away λ shrink only (λ_A ← λ_A·s; λ_H untouched). No hard 0.20–3.50 λ clip.
+# Symmetric HOME_ADV (λ_H·h, λ_A/h) retired 2026-10-24. Fixed s≠1 (incl. 0.768
+# from 2025-26 XI resid crossing) parked 2026-10-27 — OOS club-λ 0/3 FAIL.
+AWAY_SHRINK = 1.0
 # Deprecated alias — do not reintroduce symmetric home boost.
 HOME_ADV = 1.0
 # Default place→GF/GA map (cascade_long): empirical place means + SD.

@@ -104,10 +104,20 @@ roll over `M`, not a second invented λ axis. Contaminated diagnostic:
 `HOME_ADV` multiplied home λ by h and away by 1/h. Never PI-approved.
 Pre-registered `cascade_long_home_adv_lam_screen`: 1.08 / fit 1.06 both
 **FAIL** promote (home |bias| worsens). PI redirected to **away_shrink on
-λ_A only** + no λ clip (`cascade_long_away_shrink_lam_screen`). That screen
-**PASS**ed (fit 0.86 recommended counterfactual); default stays 1.0 until
-PI re-approval. Legacy `channel_trial` 1.08 = archaeology.
-`reports/cascade_long_home_adv_lam_screen.md` ·
+λ_A only** + no λ clip. Legacy `channel_trial` 1.08 = archaeology.
+`reports/cascade_long_home_adv_lam_screen.md`.
+
+## Parked — fixed Opta away_shrink s≠1 (2026-10-27)
+
+Formula kept: `λ_A ← λ_A·s`, `λ_H` untouched, **no** 0.20–3.50 λ clip.
+Default **`AWAY_SHRINK=1.0`**. Fixed `s=0.768` (2025-26 XI resid G/CS
+crossing) and neighbours (0.75 / 0.86) are diagnostics only — OOS club-λ on
+2022-23…2024-25 **0/3 PASS** (overshoots where 2025-26 away overprint is
+absent). Do not lock a single `s` from one-season XI zero-crossing. Re-open
+only with as-of / expanding venue calibration under a pre-registered OOS
+screen.
+`reports/cascade_away_shrink_oos_seasons.md` ·
+`reports/cascade_away_shrink_xi_resid_trend.md` ·
 `reports/cascade_long_away_shrink_lam_screen.md`.
 
 ## Rejected — stored OLS place→GF/GA function (2026-10-24)
