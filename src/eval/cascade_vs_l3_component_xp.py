@@ -96,22 +96,30 @@ def _l3_owned_by_gw(
     *,
     season: str,
     gws: list[int],
+    seed_gw: int | None = None,
 ) -> dict[int, list[str]]:
+    """Replay L3 buys/sells from the seed GW through each requested GW.
+
+    Mid-season windows must apply all intervening transfers, not only weeks
+    inside ``gws`` (else owned resets to the WC open).
+    """
+    want = {int(g) for g in gws}
+    open_gw = int(seed_gw if seed_gw is not None else min(want))
     raw = json.loads(Path(l4_path).read_text(encoding="utf-8"))
     weeks = [
         w
         for w in (raw.get("weeks") or [])
         if str(w.get("season")) == season
         and str(w.get("arm")) == "l3"
-        and int(w.get("gw") or 0) in set(gws)
+        and int(w.get("gw") or 0) >= open_gw
+        and int(w.get("gw") or 0) <= max(want)
     ]
     weeks.sort(key=lambda w: int(w["gw"]))
     owned = list(seed_ids)
     out: dict[int, list[str]] = {}
     for w in weeks:
         gw = int(w["gw"])
-        if gw == min(gws):
-            # WC open = seed
+        if gw == open_gw:
             owned = list(seed_ids)
         else:
             sold = set(_as_id_list(w.get("sold")))
@@ -122,7 +130,11 @@ def _l3_owned_by_gw(
                     f"L3 owned size {len(owned)} at GW{gw} after "
                     f"sell={sorted(sold)} buy={bought}"
                 )
-        out[gw] = list(owned)
+        if gw in want:
+            out[gw] = list(owned)
+    missing = sorted(want - set(out))
+    if missing:
+        raise RuntimeError(f"L3 path missing owned for GWs {missing}")
     return out
 
 
@@ -351,6 +363,7 @@ def main(argv: list[str] | None = None) -> int:
         args.l4_json,
         season=season,
         gws=step_gws,
+        seed_gw=int(seed_meta.get("gw") or min(step_gws)),
     )
 
     print(
@@ -692,6 +705,15 @@ def main(argv: list[str] | None = None) -> int:
     report_path = REPORT
     if goal_weight == "rate":
         report_path = ROOT / "reports" / "cascade_vs_l3_component_xp_pi_r.md"
+    # Distinct report when the step window is not the GW8–12 default.
+    if step_gws != list(STEP_GWS):
+        tag = f"gw{step_gws[0]}-{step_gws[-1]}"
+        stem = (
+            "cascade_vs_l3_component_xp_pi_r"
+            if goal_weight == "rate"
+            else "cascade_vs_l3_component_xp"
+        )
+        report_path = ROOT / "reports" / f"{stem}_{tag}.md"
     report_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     STATE.write_text(
         json.dumps(
