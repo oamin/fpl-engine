@@ -181,16 +181,16 @@
   "cascade_long_match_outcome": {
     "locked": "2026-10-20",
     "pi_approved": "2026-10-24",
-    "revised": "2026-10-27 — away_shrink on λ_A only (default 1.0); no λ clip; symmetric HOME_ADV retired; PI lock otherwise unchanged from 2026-10-24",
+    "revised": "2026-10-27 — away_shrink on λ_A only; default AWAY_SHRINK=0.768 (XI resid crossing); no λ clip; symmetric HOME_ADV retired",
     "role": "long-horizon t+2… match M + generative player xP",
     "status": "pi_approved_strat",
     "rank_map": "Opta place → closed-season empirical mean GF/GA by finishing place (method=rankmean); OLS place→GF/GA retired from live path",
     "latent_draw": "per strand: sample GF, GA, ḡ inside mean ± z·SD (z_band=1.0) via sample_within_band; centre_blend=0.5 (half centre, half Uniform[lo,hi])",
     "bands": "place sample SD (n=4 closed seasons per place); ḡ SE from assessed expanding mean",
-    "lambda": "λ_H=(GF_H/38)·((GA_A/38)/ḡ); λ_A same × away_shrink; no λ clip; ClubPath unused for λ; away_shrink=1.0",
+    "lambda": "λ_H=(GF_H/38)·((GA_A/38)/ḡ); λ_A same × away_shrink; no λ clip; ClubPath unused for λ; away_shrink=0.768",
     "league_gbar": "assessed_league_gf — live/assessed E0 expanding (FTHG+FTAG)/2 prior-blended; closed prior when no rows",
     "uncertainty": "hierarchical — draw latents → λ → M|λ → k∼M; δ-method sd_lam is diagnostic only; do not resample λ after M is built",
-    "away_shrink": "1.0 — λ_A only (λ_A ← λ_A·s); symmetric HOME_ADV retired; no 0.20–3.50 λ clip (PI 2026-10-27)",
+    "away_shrink": "0.768 — λ_A only (λ_A ← λ_A·s); PI 2026-10-27 from 2025-26 XI resid G/CS crossing; OOS club-λ check on 2022-23…2024-25",
     "ols_rank_map": "retired — keep method=ols only for archaeology / old diagnostic replay",
     "M": "match_outcome_probs_from_lambdas(λ_h, λ_a, ρ=0) conditional on the strand's drawn λ",
     "scoreline": "match_outcome_roll — k∼M|λ; λ uncertainty enters only via latent draws across strands (no Uniform λ band)",
@@ -260,8 +260,22 @@
       "src/models/opta_gf_ga_horizon.py",
       "src/models/multistage_mc_milp.py"
     ],
-    "does_not_change_default": true,
-    "note": "PI 2026-10-27: apply venue as away_shrink on λ_A only; do not clip λ"
+    "does_not_change_default": false,
+    "promoted_default": 0.768,
+    "promoted": "2026-10-27",
+    "note": "PI 2026-10-27: away_shrink on λ_A only; no λ clip; default 0.768 from XI resid crossing; OOS club-λ on prior seasons via cascade_away_shrink_oos_seasons"
+  },
+  "cascade_away_shrink_oos_seasons": {
+    "pre_registered": "2026-10-27",
+    "status": "diagnostic_screen",
+    "role": "OOS club-λ check for AWAY_SHRINK=0.768 on seasons that did not select s",
+    "candidate": 0.768,
+    "baseline": 1.0,
+    "holdout_seasons": ["2022-23", "2023-24", "2024-25"],
+    "not": "2025-26 XI resid (selection season); no shared L3 XI on prior seasons",
+    "promote_rule": "same as cascade_long_away_shrink_lam_screen, applied per season vs that season s=1.0",
+    "modules": ["src/eval/cascade_away_shrink_oos_seasons.py"],
+    "note": "XI shared-L3 path is 2025-26-only; club λ is the transferable OOS metric"
   },
   "score_xp_v2_screen": {
     "score_column": "score_xp_v2",

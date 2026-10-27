@@ -43,11 +43,12 @@ CLOSED = [
 ]
 
 N_MATCHES = 38.0
-# Away λ shrink only (λ_A ← λ_A·s; λ_H untouched). Default 1.0 = identity.
+# Away λ shrink only (λ_A ← λ_A·s; λ_H untouched).
 # Symmetric HOME_ADV (λ_H·h, λ_A/h) retired 2026-10-24; re-screened 2026-10-27
-# as home_adv and failed promote (home bias worsened). PI: away_shrink only.
-AWAY_SHRINK = 1.0
-# Deprecated alias — identity only; do not reintroduce symmetric home boost.
+# as home_adv and failed promote. PI: away_shrink only.
+# Default 0.768 = XI resid G/CS crossing on 2025-26 Opta π∝r GW8–38 (PI 2026-10-27).
+AWAY_SHRINK = 0.768
+# Deprecated alias — do not reintroduce symmetric home boost.
 HOME_ADV = 1.0
 # Default place→GF/GA map (cascade_long): empirical place means + SD.
 DEFAULT_RANK_METHOD = "rankmean"
