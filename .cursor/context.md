@@ -91,6 +91,12 @@ away **+0.26**, worst on **away favourites (+0.43)**. Place GF/GA are
 venue-blind season totals. Naive place×venue diagnostic zeros away bias
 but breaks home — needs a proper pre-reg OOS screen, not fixed shrink.
 `reports/cascade_long_g_overprint_isolate.md`.
+**Place×venue λ path (default unchanged):** `venue_mode=blind|venue|
+venue_away|naive|blend` on `sample_match_from_opta_ranks` /
+`sample_opta_scenario`. Primary candidate **`venue_away`** (λ_H blind;
+λ_A = place×venue away attack × blind home defence). Pre-registered
+`cascade_long_place_venue_lam_screen` (+ OOS) and
+`cascade_fd_generative_g_dig` (π∝r vs `rate_minutes`).
 
 **Strand default:** generative `run_strand` / `_undiscounted_scores_by_gw`
 require `share_pool` (full club m>0). Live + hist path/mean callers wired;
