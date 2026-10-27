@@ -327,6 +327,12 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--seed-owned", type=Path, default=SEED_JSON)
     ap.add_argument("--l4-json", type=Path, default=L4_JSON)
     ap.add_argument(
+        "--goal-weight",
+        choices=("rate_minutes", "rate"),
+        default="rate_minutes",
+        help="Cascade generative goal shares: rate_minutes (default) or π∝r.",
+    )
+    ap.add_argument(
         "--out",
         type=Path,
         default=Path("/opt/cursor/artifacts/cascade_vs_l3_component_xp.json"),
@@ -334,6 +340,7 @@ def main(argv: list[str] | None = None) -> int:
     args = ap.parse_args(argv)
 
     season = str(args.season)
+    goal_weight = str(args.goal_weight)
     step_gws = [int(x) for x in str(args.steps).split(",") if x.strip()]
     horizon_end = int(args.horizon_end)
     n_strands = int(args.n)
@@ -348,7 +355,7 @@ def main(argv: list[str] | None = None) -> int:
 
     print(
         f"[comp-xp] season={season} steps={step_gws} N={n_strands} "
-        f"seed={seed_meta['path']}",
+        f"goal_weight={goal_weight} seed={seed_meta['path']}",
         flush=True,
     )
     t_all = _now()
@@ -435,6 +442,7 @@ def main(argv: list[str] | None = None) -> int:
             plan_gws=plan_gws,
             n_strands=n_strands,
             seed0=step_seed,
+            goal_weight=goal_weight,
         )
         print(f"[comp-xp] cascade boards {board_meta['elapsed_s']:.1f}s", flush=True)
         casc_board = boards[int(t)]
@@ -561,12 +569,22 @@ def main(argv: list[str] | None = None) -> int:
         "mae_casc_GA": float((df["casc_xP_GA"] - df["P_GA"]).abs().mean()),
         "mae_l3_GA": float((df["l3_xP_GA"] - df["P_GA"]).abs().mean()),
     }
+    gw_note = (
+        "π∝r (minutes gate only)"
+        if goal_weight == "rate"
+        else "π∝r·m/90 (default)"
+    )
     state = {
-        "task": "cascade_vs_l3_component_xp",
+        "task": (
+            "cascade_vs_l3_component_xp_pi_r"
+            if goal_weight == "rate"
+            else "cascade_vs_l3_component_xp"
+        ),
         "season": season,
         "step_gws": step_gws,
         "n_strands": n_strands,
         "seed": seed0,
+        "goal_weight": goal_weight,
         "seed_owned": seed_meta,
         "shared_team": (
             "GW8 = L3/L4 WC XI; GW9–12 = L3 owned path + pick_xi(score_xp_v2). "
@@ -580,10 +598,16 @@ def main(argv: list[str] | None = None) -> int:
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(state, indent=2, default=str) + "\n")
 
+    title = (
+        "# Cascade π∝r vs L3/L4 — player xP(G, CS, GA) + actual (no captain)"
+        if goal_weight == "rate"
+        else "# Cascade vs L3/L4 — player xP(G, CS, GA) + actual (no captain)"
+    )
     lines = [
-        "# Cascade vs L3/L4 — player xP(G, CS, GA) + actual (no captain)",
+        title,
         "",
         f"Season **{season}** · GW {step_gws} · N={n_strands} · "
+        f"goal_weight=`{goal_weight}` ({gw_note}) · "
         f"wall {state['elapsed_s']:.1f}s",
         "",
         "## What this is",
@@ -593,9 +617,10 @@ def main(argv: list[str] | None = None) -> int:
         "- GW9–12 follow the locked **L3** transfer path; XI = `pick_xi` on "
         "`score_xp_v2` among that owned 15.",
         "- Both scorers are read on **that same XI** (no captain, no hits):",
-        "  - **cascade** — generative mean `xp_goals` / `xp_cs` / `xp_gc`",
+        f"  - **cascade** — generative mean `xp_goals` / `xp_cs` / `xp_gc` "
+        f"(goal shares `{goal_weight}`)",
         "  - **l3_v2** — as-of `score_xp_v2` centreline components "
-        "(L4 μ_post≡v2 when mode=none)",
+        "(L4 μ_post≡v2 when mode=none; default π∝r·m)",
         "  - **actual** — FPL `P_G` / `P_CS` / `P_GA` and full `total_points`",
         "",
         "## XI totals by GW (no captain)",
@@ -659,29 +684,41 @@ def main(argv: list[str] | None = None) -> int:
         "## Reproduce",
         "",
         "```bash",
-        f"PYTHONPATH=. python3 -m src.eval.cascade_vs_l3_component_xp --n {n_strands}",
+        f"PYTHONPATH=. python3 -m src.eval.cascade_vs_l3_component_xp "
+        f"--n {n_strands} --goal-weight {goal_weight}",
         "```",
         "",
     ]
-    REPORT.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    report_path = REPORT
+    if goal_weight == "rate":
+        report_path = ROOT / "reports" / "cascade_vs_l3_component_xp_pi_r.md"
+    report_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     STATE.write_text(
         json.dumps(
             {
-                "task": "cascade_vs_l3_component_xp",
+                "task": state["task"],
                 "status": "done",
                 "as_of_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                "change": "Player xP(G,CS,GA) cascade vs L3/L4 on shared L3 path "
-                "(same GW8 WC XI); actuals; no captain",
+                "change": (
+                    "π∝r cascade xP(G,CS,GA) vs L3/L4 on shared L3 path; "
+                    "actuals; no captain"
+                    if goal_weight == "rate"
+                    else (
+                        "Player xP(G,CS,GA) cascade vs L3/L4 on shared L3 path "
+                        "(same GW8 WC XI); actuals; no captain"
+                    )
+                ),
                 "verdict": summary,
                 "artifact": str(args.out),
-                "report": str(REPORT.relative_to(ROOT)),
+                "report": str(report_path.relative_to(ROOT)),
+                "goal_weight": goal_weight,
             },
             indent=2,
         )
         + "\n"
     )
     print(json.dumps(summary, indent=2))
-    print("wrote", args.out, REPORT)
+    print("wrote", args.out, report_path)
     return 0
 
 
