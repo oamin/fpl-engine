@@ -1,19 +1,23 @@
 {
-  "task": "cascade_share_no_renorm_minutes",
+  "task": "lock_goal_share_pi_propto_r",
   "status": "done",
-  "as_of_utc": "2026-10-27T08:21:23Z",
-  "change": "Screen \u03c0\u221dr (no minutes in weights) vs locked \u03c0\u221dr\u00b7m",
+  "as_of_utc": "2026-10-27T08:28:00Z",
+  "change": "Lock goal shares to π∝r among m>0 (minutes gate only); assists keep ∝rA·m/90",
   "verdict": {
-    "resid": {
-      "comp_rm": 10.2,
-      "comp_r": 0.2249999999999992
-    },
-    "delta_vs_comp_rm": {
-      "comp_rm": 0.0,
-      "comp_r": -9.975
-    },
-    "read": "Locked **comp_rm** (\u03c0\u221dr\u00b7m) XI resid **+10.2**. **comp_r** (\u03c0\u221dr, minutes gate only) +0.2 (\u0394 -10.0). Dropping minutes from share weights cuts the G overprint. Club pot still renormalises; only the weight changes."
+    "locked": true,
+    "helper": "src.markets.numagent_xp.goal_share_weight",
+    "protocol": "cascade_short_generative.goal_share_weight",
+    "screen": "reports/cascade_share_no_renorm_minutes.md",
+    "xi_resid": {"before_rm": 10.2, "after_r": 0.2},
+    "callers": [
+      "club_shares_on_frame",
+      "score_team_side",
+      "build_club_dice_from_side",
+      "fixture_covariance._weights_for_shares",
+      "correlated_draws._base_weights",
+      "attack_roll_trial"
+    ],
+    "read": "Promoted π∝r for goals after the minutes-weight screen cut OL XI gen resid +10.2→+0.2. Assists unchanged."
   },
-  "artifact": "/opt/cursor/artifacts/cascade_share_no_renorm_minutes.json",
   "report": "reports/cascade_share_no_renorm_minutes.md"
 }

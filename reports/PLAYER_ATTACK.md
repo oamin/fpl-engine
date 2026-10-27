@@ -61,7 +61,7 @@ A_team = 0.9050 × 2.079 = 1.881
 rG = 4 / (1320+270) = 0.002516
 rA = 6 / (1320+270) = 0.003774
 m  = mean(last 3 GW mins) = 87.3
-wG = rG · m/90 = 0.00244    →   sG (shrunk) = 0.131
+wG = rG = 0.002516          →   sG (shrunk) among m>0 club  (π∝r; locked 2026-10-27)
 wA = rA · m/90 = 0.00366    →   sA (shrunk) = 0.159
 ```
 

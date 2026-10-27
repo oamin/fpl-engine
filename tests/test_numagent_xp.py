@@ -18,6 +18,18 @@ class WeightsShares(unittest.TestCase):
         self.assertAlmostEqual(w, 0.02)
         self.assertAlmostEqual(dw, 0.02 * 10.0 / 90.0)
 
+    def test_goal_share_weight_is_rate_only(self) -> None:
+        w, dw = nx.goal_share_weight(r=0.02, dr=0.005)
+        self.assertAlmostEqual(w, 0.02)
+        self.assertAlmostEqual(dw, 0.005)
+        # Minutes must not enter the goal weight (assist path still uses m).
+        w90, _ = nx.weight_and_delta(r=0.02, dr=0.0, m=90.0, sigma_m=0.0)
+        w30, _ = nx.weight_and_delta(r=0.02, dr=0.0, m=30.0, sigma_m=0.0)
+        self.assertNotAlmostEqual(w90, w30)
+        g90, _ = nx.goal_share_weight(0.02)
+        g30, _ = nx.goal_share_weight(0.02)
+        self.assertAlmostEqual(g90, g30)
+
     def test_shares_sum_to_one(self) -> None:
         w = np.array([0.1, 0.3, 0.6])
         dw = np.array([0.01, 0.02, 0.03])
@@ -120,7 +132,7 @@ class FullClubShareProjection(unittest.TestCase):
 
 class ScoreTeamSide(unittest.TestCase):
     def test_rotation_renormalises_attack(self) -> None:
-        # Two MIDs share attack; starter gets most weight.
+        # Equal rG → equal sG (π∝r); assists still favour the starter via m.
         players = pd.DataFrame(
             {
                 "name": ["A", "B"],
@@ -147,9 +159,11 @@ class ScoreTeamSide(unittest.TestCase):
             xgc=0.8,
             alpha_g=0.96,
             alpha_a=0.90,
+            share_se_shrink=False,
         )
         self.assertAlmostEqual(float(out["sG"].sum()), 1.0, places=6)
-        self.assertGreater(float(out.loc[0, "sG"]), float(out.loc[1, "sG"]))
+        self.assertAlmostEqual(float(out.loc[0, "sG"]), float(out.loc[1, "sG"]), places=6)
+        self.assertGreater(float(out.loc[0, "sA"]), float(out.loc[1, "sA"]))
         self.assertGreater(float(out.loc[0, "xp"]), float(out.loc[1, "xp"]))
         # Appearance 2 vs 1
         self.assertEqual(float(out.loc[0, "xp_appear"]), 2.0)

@@ -43,11 +43,11 @@ retune DC / open a CS gated screen for this.
 `reports/xi_cs_selection_hypothesis_windows.md`,
 `reports/dixon_coles_team_cs_calib.md`.
 
-## Open — π∝r (drop minutes from share weights) (2026-10-27)
+## Locked — π∝r goal shares (2026-10-27)
 
-OL XI gen resid: locked π∝r·m **+10.2** → π∝r (m=gate only) **+0.2**
-(Δ −10.0, N=40). Club pot still renorms; minutes in the weight were
-concentrating π on high-m XI attackers. Gate before promote.
+OL XI gen resid: π∝r·m **+10.2** → π∝r (m=gate only) **+0.2**
+(Δ −10.0, N=40). Promoted: `goal_share_weight` / protocol
+`cascade_short_generative.goal_share_weight`. Assists keep ∝rA·m/90.
 `reports/cascade_share_no_renorm_minutes.md`.
 
 ## Parked — shrink generative π (2026-10-25)
@@ -59,7 +59,7 @@ raw centreline ≈ gen. Not a treatment.
 ## Closed — G overprint dig (2026-10-25)
 
 Count resid OL gen +11.8. Pot cleared; centreline +2.1 = share blanks;
-selection not special. Minutes-in-share-weights is the live lever (see open).
+selection not special. Minutes-in-share-weights closed by π∝r lock.
 `reports/cascade_g_overprint_dig.md`.
 
 ## Locked default — full-club share pool (2026-10-25)

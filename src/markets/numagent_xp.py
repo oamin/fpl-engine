@@ -51,7 +51,11 @@ def appearance_xp(m: float) -> float:
 
 
 def weight_and_delta(r: float, dr: float, m: float, sigma_m: float) -> tuple[float, float]:
-    """w = r·m/90, Δw from independent rate and minutes errors."""
+    """w = r·m/90, Δw from independent rate and minutes errors.
+
+    Used for assist shares and rate×minutes quantities. Goal shares use
+    ``goal_share_weight`` (rate only; locked 2026-10-27).
+    """
     r = float(max(r, 0.0))
     dr = float(max(dr, 0.0))
     m = float(m)
@@ -59,6 +63,18 @@ def weight_and_delta(r: float, dr: float, m: float, sigma_m: float) -> tuple[flo
     w = r * m / 90.0
     dw = math.sqrt((m / 90.0 * dr) ** 2 + (r / 90.0 * sm) ** 2)
     return w, dw
+
+
+def goal_share_weight(r: float, dr: float = 0.0) -> tuple[float, float]:
+    """Goal-share weight: ``w = r`` (minutes gate the club, not the weight).
+
+    Locked 2026-10-27 (``cascade_share_no_renorm_minutes``): compositional
+    ``π ∝ r`` among ``m>0``. Minutes-weighted ``w = r·m/90`` over-concentrated
+    π on high-m XI attackers (OL resid +10.2 → +0.2).
+    """
+    r = float(max(r, 0.0))
+    dr = float(max(dr, 0.0))
+    return r, dr
 
 
 def shares_and_deltas(w: np.ndarray, dw: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
@@ -296,6 +312,7 @@ def club_shares_on_frame(
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, dict[str, float] | None]:
     """Compositional ``sG``/``sA`` on a club frame (full m>0 side).
 
+    Goal shares: ``π ∝ rG`` (minutes gate only). Assist shares: ``∝ rA·m/90``.
     Returns ``(sG, sA, dsG, dsA, shrink_diag)``. Shares sum to 1 on ``club``.
     """
     if club.empty:
@@ -327,7 +344,7 @@ def club_shares_on_frame(
     wA = np.zeros(n)
     dwA = np.zeros(n)
     for i in range(n):
-        wG[i], dwG[i] = weight_and_delta(rG[i], drG[i], m[i], sm[i])
+        wG[i], dwG[i] = goal_share_weight(rG[i], drG[i])
         wA[i], dwA[i] = weight_and_delta(rA[i], drA[i], m[i], sm[i])
     sG, dsG = shares_and_deltas(wG, dwG)
     sA, dsA = shares_and_deltas(wA, dwA)
@@ -446,6 +463,9 @@ def score_team_side(
     Optional ``sG_override`` / ``sA_override``: compositional shares from a
     correlated-draw sampler (must be length n and sum ≈ 1 on the playing set).
 
+    Goal shares use ``goal_share_weight`` (``π ∝ rG``; minutes gate only).
+    Assist shares keep ``weight_and_delta`` (``∝ rA·m/90``).
+
     Optional ``share_players``: full-club frame (``m>0``, impact subs) used to
     build ``sG``/``sA``. Selection boards stay thin; shares are projected and
     **not** re-normalised on ``players``. Default for cascade xG when the
@@ -493,7 +513,7 @@ def score_team_side(
     wA = np.zeros(n)
     dwA = np.zeros(n)
     for i in range(n):
-        wG[i], dwG[i] = weight_and_delta(rG[i], drG[i], m[i], sm[i])
+        wG[i], dwG[i] = goal_share_weight(rG[i], drG[i])
         wA[i], dwA[i] = weight_and_delta(rA[i], drA[i], m[i], sm[i])
 
     share_shrink_diag: dict[str, float] | None = None
