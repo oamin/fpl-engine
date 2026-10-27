@@ -30,9 +30,10 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
+from src.eval.cascade_mc_vs_mean_hist import _build_hist_share_pool
 from src.markets import numagent_xp as nx
 from src.markets.numagent_xp_pilot import load_merged
-from src.strategy.layer4_bookie_path import _load_merged_enriched
+from src.models.short_horizon_cascade import load_prices
 from src.teams import norm_team
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -134,62 +135,49 @@ def _run_rate_minutes() -> Path:
 
 
 def _share_probe() -> dict[str, Any]:
-    """HHI / top-1 sG under rate vs rate_minutes for clubs in merged hist."""
-    enriched = _load_merged_enriched(SEASON)
-    # Prefer player-level rate columns if present.
-    need = {"GW", "team", "position", "rG", "minutes"}
-    cols = set(enriched.columns)
-    if not need.issubset(cols):
-        # Fall back to merged FPL history.
-        merged = load_merged(SEASON)
-        frame = merged
-    else:
-        frame = enriched
+    """HHI / top-1 sG under rate vs rate_minutes from as-of hist share pools."""
+    merged = load_merged(SEASON)
+    prices = load_prices(SEASON)
     out_rows: list[dict[str, Any]] = []
     for gw in PROBE_GWS:
-        g = frame.loc[pd.to_numeric(frame["GW"], errors="coerce") == int(gw)].copy()
-        if g.empty:
-            continue
-        if "rG" not in g.columns:
-            continue
-        g["m"] = pd.to_numeric(g.get("minutes", g.get("xmi", 0)), errors="coerce").fillna(0.0)
-        g["rG"] = pd.to_numeric(g["rG"], errors="coerce").fillna(0.0)
-        g["drG"] = (
-            pd.to_numeric(g["drG"], errors="coerce").fillna(0.0)
-            if "drG" in g.columns
-            else 0.0
+        hist = nx.asof_share_history(merged, before_gw=int(gw), season=SEASON)
+        pool = _build_hist_share_pool(
+            hist, prices, decision_gw=int(gw), season=SEASON
         )
-        g["team_n"] = g["team"].map(lambda t: norm_team(str(t)))
-        for team, club in g.groupby("team_n"):
-            c = club.loc[club["m"] > 0].copy()
+        if pool.empty or "rG" not in pool.columns:
+            continue
+        team_col = "team_n" if "team_n" in pool.columns else "team"
+        for team, club in pool.groupby(team_col):
+            c = club.copy()
+            c["m"] = pd.to_numeric(c["m"], errors="coerce").fillna(0.0)
+            c = c.loc[c["m"] > 0]
             if len(c) < 2:
                 continue
+            rG = pd.to_numeric(c["rG"], errors="coerce").fillna(0.0).to_numpy(float)
+            drG = (
+                pd.to_numeric(c["drG"], errors="coerce").fillna(0.0).to_numpy(float)
+                if "drG" in c.columns
+                else np.zeros(len(c))
+            )
+            m = c["m"].to_numpy(float)
             w_rate = np.array(
-                [
-                    nx.goal_share_weight(float(r.rG), float(r.drG))[0]
-                    for r in c.itertuples(index=False)
-                ]
+                [nx.goal_share_weight(float(r), float(d))[0] for r, d in zip(rG, drG)]
             )
             w_rm = np.array(
                 [
-                    nx.weight_and_delta(
-                        float(r.rG), float(r.drG), float(r.m), 0.0
-                    )[0]
-                    for r in c.itertuples(index=False)
+                    nx.weight_and_delta(float(r), float(d), float(mm), 0.0)[0]
+                    for r, d, mm in zip(rG, drG, m)
                 ]
             )
             s_rate, _ = nx.shares_and_deltas(w_rate, np.zeros_like(w_rate))
             s_rm, _ = nx.shares_and_deltas(w_rm, np.zeros_like(w_rm))
             pos = c["position"].astype(str).to_numpy()
             for label, shares in (("rate", s_rate), ("rate_minutes", s_rm)):
-                hhi = float(np.sum(np.asarray(shares, float) ** 2))
-                top1 = float(np.max(shares)) if len(shares) else float("nan")
+                arr = np.asarray(shares, float)
+                hhi = float(np.sum(arr ** 2))
+                top1 = float(np.max(arr)) if len(arr) else float("nan")
                 fwd_mask = pos == "FWD"
-                fwd_share = (
-                    float(np.sum(np.asarray(shares, float)[fwd_mask]))
-                    if fwd_mask.any()
-                    else 0.0
-                )
+                fwd_share = float(np.sum(arr[fwd_mask])) if fwd_mask.any() else 0.0
                 out_rows.append(
                     {
                         "gw": int(gw),
@@ -202,9 +190,12 @@ def _share_probe() -> dict[str, Any]:
                     }
                 )
     if not out_rows:
-        return {"n": 0, "note": "no rG columns for share probe"}
+        return {"n": 0, "note": "no share-pool rows for probe GWs"}
     df = pd.DataFrame(out_rows)
-    summary: dict[str, Any] = {"n_club_gw": int(df["gw"].nunique() * df["team"].nunique() / 2)}
+    summary: dict[str, Any] = {
+        "n_rows": int(len(df)),
+        "probe_gws": list(PROBE_GWS),
+    }
     for label, sub in df.groupby("goal_weight"):
         summary[str(label)] = {
             "mean_hhi": float(sub["hhi"].mean()),
@@ -212,16 +203,24 @@ def _share_probe() -> dict[str, Any]:
             "mean_fwd_share_mass": float(sub["fwd_share_mass"].mean()),
             "n": int(len(sub)),
         }
-    # Pairwise delta rate − rate_minutes on matched club-GW.
     piv = df.pivot_table(
-        index=["gw", "team"], columns="goal_weight", values=["hhi", "top1", "fwd_share_mass"]
+        index=["gw", "team"],
+        columns="goal_weight",
+        values=["hhi", "top1", "fwd_share_mass"],
     )
     if ("hhi", "rate") in piv.columns and ("hhi", "rate_minutes") in piv.columns:
         summary["delta_rate_minus_rm"] = {
-            "mean_hhi": float((piv[("hhi", "rate")] - piv[("hhi", "rate_minutes")]).mean()),
-            "mean_top1": float((piv[("top1", "rate")] - piv[("top1", "rate_minutes")]).mean()),
+            "mean_hhi": float(
+                (piv[("hhi", "rate")] - piv[("hhi", "rate_minutes")]).mean()
+            ),
+            "mean_top1": float(
+                (piv[("top1", "rate")] - piv[("top1", "rate_minutes")]).mean()
+            ),
             "mean_fwd_share_mass": float(
-                (piv[("fwd_share_mass", "rate")] - piv[("fwd_share_mass", "rate_minutes")]).mean()
+                (
+                    piv[("fwd_share_mass", "rate")]
+                    - piv[("fwd_share_mass", "rate_minutes")]
+                ).mean()
             ),
         }
     return summary
@@ -278,8 +277,9 @@ def main(argv: list[str] | None = None) -> int:
         "share_probe": share,
         "verdict_notes": [
             "α_G empty mass is small (~1−0.96) — not the +14 driver.",
-            "FWD carries nearly all FD generative resid under π∝r.",
-            "Compare rate vs rate_minutes resid to test minutes-in-share.",
+            "Under default rate_minutes, FD XI resid G is ~+100 — much worse than π∝r +14.",
+            "Minutes-in-share concentrates G mass onto high-m players (DEF/MID/FWD all inflate).",
+            "π∝r dig arm was already the milder generative stack; default path is the hotter one.",
         ],
         "default_unchanged": True,
         "elapsed_s": _now() - t0,
@@ -340,10 +340,11 @@ def main(argv: list[str] | None = None) -> int:
         "",
         "## Next",
         "",
-        "- If rate_minutes resid ≈ π∝r resid: minutes-in-share is not the lever; "
-        "look at FWD rate priors / finish conversion under FD λ.",
-        "- If rate_minutes clearly lower: π∝r dig arm overstates; default path OK.",
-        "- Decision metric remains player-GW likelihood; XI resid is diagnostic.",
+        "- Default `rate_minutes` is the hot arm on this map — do **not** treat "
+        "π∝r +14 as the live generative problem.",
+        "- Share-concentration / minutes gate is the next generative lever "
+        "(player-GW likelihood gate before any default flip).",
+        "- Keep Opta λ venue work separate (`venue_away` club-λ candidate).",
         "",
         "## Reproduce",
         "",

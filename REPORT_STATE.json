@@ -1,16 +1,24 @@
 {
-  "task": "cascade_long_g_overprint_isolate",
+  "task": "cascade_long_place_venue_and_fd_gen_dig",
   "status": "done",
-  "as_of_utc": "2026-10-27T16:58:31Z",
-  "change": "Isolate cascade_long G overprint into \u03bb vs generative layers",
+  "as_of_utc": "2026-10-27T17:25:00Z",
+  "change": "Place×venue Opta λ screen + FD generative dig (defaults unchanged)",
   "verdict": {
-    "resid_opta_minus_P": 32.52499999999998,
-    "resid_fd_minus_P": 14.024999999999977,
-    "layer_opta_minus_fd_lam": 18.5,
-    "layer_fd_minus_P_generative": 14.024999999999977,
-    "pct_lam": 0.5687932359723293,
-    "pct_gen": 0.4312067640276706
+    "place_venue_holdout_winners": ["venue_away", "blend_fit"],
+    "place_venue_oos_pass_counts": {
+      "venue_away": 1,
+      "blend_fit": 1,
+      "venue_ev": 1,
+      "naive": 0
+    },
+    "default_venue_mode": "blind",
+    "fd_resid_G_rate": 14.025,
+    "fd_resid_G_rate_minutes": 100.3,
+    "alpha_g_empty_mass": 0.041
   },
-  "artifact": "/opt/cursor/artifacts/cascade_long_g_overprint_isolate.json",
-  "report": "reports/cascade_long_g_overprint_isolate.md"
+  "artifact": "/opt/cursor/artifacts/cascade_long_place_venue_lam_screen.json",
+  "reports": [
+    "reports/cascade_long_place_venue_lam_screen.md",
+    "reports/cascade_fd_generative_g_dig.md"
+  ]
 }

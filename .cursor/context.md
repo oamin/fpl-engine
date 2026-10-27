@@ -94,9 +94,16 @@ but breaks home — needs a proper pre-reg OOS screen, not fixed shrink.
 **Place×venue λ path (default unchanged):** `venue_mode=blind|venue|
 venue_away|naive|blend` on `sample_match_from_opta_ranks` /
 `sample_opta_scenario`. Primary candidate **`venue_away`** (λ_H blind;
-λ_A = place×venue away attack × blind home defence). Pre-registered
-`cascade_long_place_venue_lam_screen` (+ OOS) and
-`cascade_fd_generative_g_dig` (π∝r vs `rate_minutes`).
+λ_A = place×venue away attack × blind home defence).
+**Place×venue screen:** holdout **venue_away PASS** / blend_fit PASS
+(away +0.256→+0.117, home flat); full `venue`/`naive` FAIL (home).
+OOS **1/3** — **do not flip** `DEFAULT_VENUE_MODE=blind` (needs better
+OOS / PI). `reports/cascade_long_place_venue_lam_screen.md`.
+**FD generative dig:** π∝r resid G **+14**; default `rate_minutes`
+**+100** on the same FD map (FWD +47). α_G empty ~0.04 irrelevant.
+`rate_minutes` concentrates shares (HHI 0.17 vs 0.15). Live generative
+problem is the **default minutes weight**, not the π∝r dig arm.
+`reports/cascade_fd_generative_g_dig.md`.
 
 **Strand default:** generative `run_strand` / `_undiscounted_scores_by_gw`
 require `share_pool` (full club m>0). Live + hist path/mean callers wired;
