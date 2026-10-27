@@ -1,13 +1,15 @@
 {
-  "task": "away_shrink_verdict",
+  "task": "cascade_long_lam_shrink_screen",
   "status": "done",
-  "as_of_utc": "2026-10-27T16:41:54Z",
-  "change": "Park fixed away_shrink; default 1.0; keep no \u03bb clip",
+  "as_of_utc": "2026-10-27T16:53:08Z",
+  "change": "Trial combined lam_shrink on both \u03bb_H and \u03bb_A",
   "verdict": {
-    "AWAY_SHRINK": 1.0,
-    "formula": "lam_H unchanged; lam_A *= away_shrink",
-    "lambda_clip": false,
-    "fixed_s_0768": "parked \u2014 OOS club-\u03bb 0/3 FAIL"
+    "fit_lam_shrink": 0.92,
+    "holdout_winners": [],
+    "oos_n_pass": 0,
+    "default_unchanged": true,
+    "default_lam_shrink": 1.0
   },
-  "report": "reports/cascade_away_shrink_oos_seasons.md"
+  "artifact": "/opt/cursor/artifacts/cascade_long_lam_shrink_screen.json",
+  "report": "reports/cascade_long_lam_shrink_screen.md"
 }

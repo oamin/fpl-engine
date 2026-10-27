@@ -278,7 +278,8 @@
   },
   "cascade_long_lam_shrink_screen": {
     "pre_registered": "2026-10-27",
-    "status": "diagnostic_screen",
+    "status": "done_reject",
+    "result": "holdout FAIL (home |bias| worsens); OOS 0/3; keep LAM_SHRINK=1.0",
     "role": "combined scale on both λ_H and λ_A (lam_shrink); trial vs identity",
     "formula": "λ_H ← λ_H·s; λ_A ← λ_A·s; away_shrink=1.0; no 0.20–3.50 λ clip",
     "baseline": "lam_shrink=1.0",
