@@ -1,15 +1,16 @@
 {
-  "task": "cascade_long_lam_shrink_screen",
+  "task": "cascade_long_g_overprint_isolate",
   "status": "done",
-  "as_of_utc": "2026-10-27T16:53:08Z",
-  "change": "Trial combined lam_shrink on both \u03bb_H and \u03bb_A",
+  "as_of_utc": "2026-10-27T16:58:31Z",
+  "change": "Isolate cascade_long G overprint into \u03bb vs generative layers",
   "verdict": {
-    "fit_lam_shrink": 0.92,
-    "holdout_winners": [],
-    "oos_n_pass": 0,
-    "default_unchanged": true,
-    "default_lam_shrink": 1.0
+    "resid_opta_minus_P": 32.52499999999998,
+    "resid_fd_minus_P": 14.024999999999977,
+    "layer_opta_minus_fd_lam": 18.5,
+    "layer_fd_minus_P_generative": 14.024999999999977,
+    "pct_lam": 0.5687932359723293,
+    "pct_gen": 0.4312067640276706
   },
-  "artifact": "/opt/cursor/artifacts/cascade_long_lam_shrink_screen.json",
-  "report": "reports/cascade_long_lam_shrink_screen.md"
+  "artifact": "/opt/cursor/artifacts/cascade_long_g_overprint_isolate.json",
+  "report": "reports/cascade_long_g_overprint_isolate.md"
 }
