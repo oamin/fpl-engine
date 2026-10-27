@@ -39,3 +39,7 @@ Pre-registered **2026-10-27** · protocol `cascade_long_away_shrink_lam_screen` 
 PYTHONPATH=. python3 -m src.eval.cascade_long_away_shrink_lam_screen
 ```
 
+## Add-on: s=0.75 (XI zero-crossing)
+
+See `reports/cascade_long_away_shrink_lam_screen_s075.md`. Holdout λ promote
+**PASS**; XI resid G −2.4 / CS +2.4. Default `AWAY_SHRINK` still 1.0.

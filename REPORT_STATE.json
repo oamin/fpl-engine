@@ -1,49 +1,19 @@
 {
-  "task": "cascade_away_shrink_xi_resid_trend",
+  "task": "cascade_long_away_shrink_lam_screen_s075",
   "status": "done",
-  "as_of_utc": "2026-10-27T16:12:37Z",
-  "change": "Opta XI resid G/CS vs away_shrink s=0.5\u20261.0",
+  "as_of_utc": "2026-10-27T16:19:59Z",
+  "change": "Screen away_shrink=0.75 (XI zero-crossing) on locked \u03bb promote rule",
   "verdict": {
-    "closest_resid_G": {
-      "s": 0.75,
-      "resid_G": -2.3500000000000227
-    },
-    "closest_resid_CS": {
-      "s": 0.75,
-      "resid_CS": 2.4250000000000114
-    },
-    "at_s_1_00": {
-      "away_shrink": 1.0,
-      "resid_G": 32.52499999999998,
-      "resid_CS": -29.200000000000017,
-      "resid_GA": -14.0,
-      "sum_casc_xP_G": 291.525,
-      "sum_casc_xP_CS": 228.79999999999998,
-      "sum_P_G": 259.0,
-      "sum_P_CS": 258.0,
-      "mae_casc_G": 1.2047653958944282,
-      "mae_casc_CS": 0.8731671554252199,
-      "elapsed_s": 0.0,
-      "artifact": "/opt/cursor/artifacts/cascade_vs_l3_component_xp_pi_r_opta_gw8-38.json",
-      "log": null
-    },
-    "at_s_0_86": {
-      "away_shrink": 0.86,
-      "resid_G": 12.100000000000023,
-      "resid_CS": -11.075000000000017,
-      "resid_GA": -7.675000000000004,
-      "sum_casc_xP_G": 271.1,
-      "sum_casc_xP_CS": 246.92499999999998,
-      "sum_P_G": 259.0,
-      "sum_P_CS": 258.0,
-      "mae_casc_G": 1.1620234604105573,
-      "mae_casc_CS": 0.8728005865102639,
-      "elapsed_s": 0.0,
-      "artifact": "/opt/cursor/artifacts/cascade_vs_l3_component_xp_pi_r_opta_as086_gw8-38.json",
-      "log": null
-    }
+    "promote_pass": true,
+    "away_improve": 0.1324655806240143,
+    "home_worsen": 0.0,
+    "mae_worsen": -0.03092121588565877,
+    "holdout_bias_A": -0.12341336867265745,
+    "holdout_bias_H": -0.006525656838146948,
+    "xi_resid_G": -2.3500000000000227,
+    "xi_resid_CS": 2.4250000000000114,
+    "default_unchanged": true
   },
-  "artifact": "/opt/cursor/artifacts/cascade_away_shrink_xi_resid_trend.json",
-  "plot": "/opt/cursor/artifacts/cascade_away_shrink_xi_resid_trend.png",
-  "report": "reports/cascade_away_shrink_xi_resid_trend.md"
+  "artifact": "/opt/cursor/artifacts/cascade_long_away_shrink_lam_screen_s075.json",
+  "report": "reports/cascade_long_away_shrink_lam_screen_s075.md"
 }
