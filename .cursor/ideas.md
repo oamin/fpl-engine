@@ -99,13 +99,15 @@ book/FD (or Opta) centreline → `M` → categorical `k ∼ M`. Outcome noise is
 roll over `M`, not a second invented λ axis. Contaminated diagnostic:
 `reports/multistage_xi_captain_ft_short_long_trial.md` (GW8 used ±15%).
 
-## Rejected — Opta long-horizon HOME_ADV=1.08 (2026-10-24)
+## Rejected — Opta long-horizon HOME_ADV≠1.0 (2026-10-24 / screen 2026-10-27)
 
 `opta_gf_ga_horizon.HOME_ADV` multiplied home λ by 1.08 and away by 1/1.08.
 Never discussed or PI-approved (same class as λ jitter). Set to **1.0**
-(neutral venue). A home edge needs its own closed-season screen before any
-non-unit factor returns. Legacy `channel_trial` still hardcodes 1.08 — leave
-as archaeology; not the cascade_long path.
+(neutral venue). Pre-registered `cascade_long_home_adv_lam_screen` (2026-10-27)
+re-opened 1.08 + train-fit (1.06) on 2025-26 GW8–38: both **FAIL** promote
+(away |bias| drops, but home |bias| rises >0.05). Keep `HOME_ADV=1.0`. No XI
+counterfactual. Legacy `channel_trial` still hardcodes 1.08 — archaeology.
+`reports/cascade_long_home_adv_lam_screen.md`.
 
 ## Rejected — stored OLS place→GF/GA function (2026-10-24)
 

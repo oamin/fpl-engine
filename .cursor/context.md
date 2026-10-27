@@ -66,6 +66,12 @@ all on **away (+0.30)**; player resid FWD **+30.5** of +32.5; away played
 Σresid +25 vs home +1. Opta−FD casc gap +18.5 = λ venue into FWD under π∝r
 (`HOME_ADV=1.0`). Do not retune shares; venue fix needs pre-reg λ screen.
 `reports/cascade_long_g_resid_dig.md`.
+**HOME_ADV club-λ screen (2026-10-27):** pre-reg `cascade_long_home_adv_lam_screen`.
+Train fit → 1.06; holdout 2025-26 baseline away bias **+0.255** (FD +0.023).
+Candidate 1.08 / fit 1.06 both **FAIL** promote (away improves, home |bias|
+worsens >0.05). Keep `HOME_ADV=1.0`; no XI counterfactual; PI re-approval
+would still be required even if promote had fired.
+`reports/cascade_long_home_adv_lam_screen.md`.
 
 **Strand default:** generative `run_strand` / `_undiscounted_scores_by_gw`
 require `share_pool` (full club m>0). Live + hist path/mean callers wired;
