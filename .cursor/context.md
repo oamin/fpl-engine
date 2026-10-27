@@ -36,9 +36,10 @@ DC calibrated. Do not retune CS.
 
 **G overprint.** Full-share OL gen ~+11. Pot cleared; not dice/k∼M.
 **π∝r parked 2026-10-27** — gated log-score clear lose vs π∝r·m
-(Δ −0.00055 [−0.0010, −0.0001]); keep `w=r·m/90`. Cascade resid dig
-still cut XI +10.2→+0.2 — not the gate. Shrink parked as unwanted.
-`reports/score_xp_v2_goal_share_rate.md` · `cascade_share_no_renorm_minutes.md`.
+(Δ −0.00055 [−0.0010, −0.0001]); keep `w=r·m/90`. Cascade GW8–12
+π∝r dig: G resid +11.5→−5.5 but actual net −129 vs L3 (baseline −122) —
+not a promote. Shrink parked as unwanted.
+`reports/cascade_step_pi_r_vs_l3_l4.md` · `score_xp_v2_goal_share_rate.md`.
 
 **Strand default:** generative `run_strand` / `_undiscounted_scores_by_gw`
 require `share_pool` (full club m>0). Live + hist path/mean callers wired;
