@@ -904,6 +904,15 @@ def main(argv: list[str] | None = None) -> int:
         plot_path = plot_path.with_name(
             plot_path.stem + f"_{match_tag}" + plot_path.suffix
         )
+    shrink_tag = (
+        f"as{str(away_shrink).replace('.', '')}"
+        if away_shrink is not None
+        else ""
+    )
+    if shrink_tag:
+        plot_path = plot_path.with_name(
+            plot_path.stem + f"_{shrink_tag}" + plot_path.suffix
+        )
     if step_gws != list(STEP_GWS):
         tag = f"gw{step_gws[0]}-{step_gws[-1]}"
         plot_path = plot_path.with_name(plot_path.stem + f"_{tag}" + plot_path.suffix)
@@ -912,12 +921,15 @@ def main(argv: list[str] | None = None) -> int:
         if match_source == "opta"
         else "cascade_short FD λ"
     )
+    if away_shrink is not None:
+        match_note = f"{match_note}; away_shrink={away_shrink:g}"
     _plot_resid_series(
         steps_out,
         plot_path,
         title=(
             f"{season} GW{step_gws[0]}–{step_gws[-1]}: XI Σ resid "
-            f"(goal_weight={goal_weight}, {match_source})"
+            f"(goal_weight={goal_weight}, {match_source}"
+            f"{f', as={away_shrink:g}' if away_shrink is not None else ''})"
         ),
     )
     task_base = (
@@ -927,6 +939,8 @@ def main(argv: list[str] | None = None) -> int:
     )
     if match_source == "opta":
         task_base = f"{task_base}_opta"
+    if shrink_tag:
+        task_base = f"{task_base}_{shrink_tag}"
     state = {
         "task": task_base,
         "season": season,
@@ -1129,6 +1143,17 @@ def main(argv: list[str] | None = None) -> int:
             )
         )
         report_path = ROOT / "reports" / f"{stem}_{tag}.md"
+    if shrink_tag:
+        report_path = report_path.with_name(
+            report_path.stem + f"_{shrink_tag}" + report_path.suffix
+        )
+        if args.out.name == "cascade_vs_l3_component_xp.json":
+            args.out = Path("/opt/cursor/artifacts") / (
+                f"{task_base}_"
+                f"gw{step_gws[0]}-{step_gws[-1]}.json"
+                if step_gws != list(STEP_GWS)
+                else f"{task_base}.json"
+            )
     report_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     STATE.write_text(
         json.dumps(
@@ -1139,7 +1164,8 @@ def main(argv: list[str] | None = None) -> int:
                 "as_of_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                 "change": (
                     f"π∝r component map GW{step_gws[0]}–{step_gws[-1]} "
-                    f"(shared L3 XI; no captain; match={match_source})"
+                    f"(shared L3 XI; no captain; match={match_source}"
+                    f"{f'; away_shrink={away_shrink:g}' if away_shrink is not None else ''})"
                 ),
                 "verdict": {
                     **summary,

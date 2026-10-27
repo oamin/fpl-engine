@@ -1,16 +1,19 @@
 {
-  "task": "cascade_long_home_adv_lam_screen",
+  "task": "cascade_long_away_shrink_lam_screen",
   "status": "done",
-  "as_of_utc": "2026-10-27T13:53:31Z",
-  "change": "Pre-registered Opta HOME_ADV club-\u03bb venue screen",
+  "as_of_utc": "2026-10-27T14:33:33Z",
+  "change": "PI: away_shrink on \u03bb_A only; no \u03bb clip; re-screen",
   "verdict": {
-    "fit_home_adv": 1.06,
-    "winners": [],
-    "recommended_arm": null,
+    "fit_away_shrink": 0.86,
+    "winners": [
+      "candidate_0_93",
+      "fit_train"
+    ],
+    "recommended_arm": "fit_train",
     "default_unchanged": true,
-    "holdout_baseline_bias_A": 0.2551644707050728,
-    "holdout_baseline_bias_H": -0.007348635986114536
+    "holdout_baseline_bias_A": 0.25587894929667176,
+    "holdout_baseline_bias_H": -0.006525656838146948
   },
-  "artifact": "/opt/cursor/artifacts/cascade_long_home_adv_lam_screen.json",
-  "report": "reports/cascade_long_home_adv_lam_screen.md"
+  "artifact": "/opt/cursor/artifacts/cascade_long_away_shrink_lam_screen.json",
+  "report": "reports/cascade_long_away_shrink_lam_screen.md"
 }
