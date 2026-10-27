@@ -1,20 +1,16 @@
 {
-  "task": "cascade_long_g_resid_dig",
+  "task": "cascade_long_home_adv_lam_screen",
   "status": "done",
-  "as_of_utc": "2026-10-27T13:12:00Z",
-  "change": "Dig cascade_long G residual: Opta away λ → FWD xp_goals",
+  "as_of_utc": "2026-10-27T13:53:31Z",
+  "change": "Pre-registered Opta HOME_ADV club-\u03bb venue screen",
   "verdict": {
-    "mechanism": "opta_away_lam_high_into_fwd",
-    "opta_minus_act_lam": 0.15,
-    "fd_minus_act_lam": 0.01,
-    "opta_away_minus_act": 0.30,
-    "opta_home_minus_act": 0.0,
-    "decision_gw_resid_G": {"opta": 32.5, "fd": 14.0, "fwd_opta": 30.5},
-    "away_played_resid_G": 24.7,
-    "home_played_resid_G": 1.0,
-    "do_not_retune_shares": true,
-    "home_adv_note": "HOME_ADV=1.0; venue fix needs pre-registered λ screen"
+    "fit_home_adv": 1.06,
+    "winners": [],
+    "recommended_arm": null,
+    "default_unchanged": true,
+    "holdout_baseline_bias_A": 0.2551644707050728,
+    "holdout_baseline_bias_H": -0.007348635986114536
   },
-  "report": "reports/cascade_long_g_resid_dig.md",
-  "lam_table": "/tmp/opta_fd_lam_vs_act.csv"
+  "artifact": "/opt/cursor/artifacts/cascade_long_home_adv_lam_screen.json",
+  "report": "reports/cascade_long_home_adv_lam_screen.md"
 }
