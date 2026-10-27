@@ -61,6 +61,11 @@ Overlay **short FD t:t+1** on same XI: mean G/n long **+3.5** vs short
 **+1.9**; CS/n long **+1.6** vs short **−0.1**. Short swings ±10; long bias
 steadier but higher.
 `reports/cascade_long_horizon_component_resid.md`.
+**cascade_long G resid dig:** Opta club λ − actual **+0.15** (FD ~0), almost
+all on **away (+0.30)**; player resid FWD **+30.5** of +32.5; away played
+Σresid +25 vs home +1. Opta−FD casc gap +18.5 = λ venue into FWD under π∝r
+(`HOME_ADV=1.0`). Do not retune shares; venue fix needs pre-reg λ screen.
+`reports/cascade_long_g_resid_dig.md`.
 
 **Strand default:** generative `run_strand` / `_undiscounted_scores_by_gw`
 require `share_pool` (full club m>0). Live + hist path/mean callers wired;
