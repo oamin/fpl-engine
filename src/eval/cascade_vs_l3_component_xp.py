@@ -25,6 +25,7 @@ import time
 from pathlib import Path
 from typing import Any
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
@@ -329,6 +330,74 @@ def _lookup(
     return out
 
 
+def _plot_resid_series(
+    steps: list[dict[str, Any]],
+    path: Path,
+    *,
+    title: str,
+) -> None:
+    gws = [int(s["gw"]) for s in steps]
+    casc_g = [float(s["sum_casc_xP_G"]) - float(s["sum_P_G"]) for s in steps]
+    casc_cs = [float(s["sum_casc_xP_CS"]) - float(s["sum_P_CS"]) for s in steps]
+    l3_g = [float(s["sum_l3_xP_G"]) - float(s["sum_P_G"]) for s in steps]
+    l3_cs = [float(s["sum_l3_xP_CS"]) - float(s["sum_P_CS"]) for s in steps]
+    fig, axes = plt.subplots(2, 1, figsize=(10.5, 6.2), dpi=140, sharex=True)
+    for ax, casc, l3, lab in (
+        (axes[0], casc_g, l3_g, "Σ xP(G) − actual P_G"),
+        (axes[1], casc_cs, l3_cs, "Σ xP(CS) − actual P_CS"),
+    ):
+        ax.axhline(0.0, color="#888", lw=0.8)
+        ax.plot(gws, casc, "o-", color="#c0392b", lw=1.4, ms=3.5, label="cascade")
+        ax.plot(gws, l3, "s-", color="#2980b9", lw=1.4, ms=3.5, label="l3_v2")
+        ax.set_ylabel(lab)
+        ax.grid(True, axis="y", alpha=0.3)
+        ax.legend(framealpha=0.95, loc="upper right")
+    axes[1].set_xlabel("GW")
+    axes[0].set_title(title)
+    fig.tight_layout()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(path)
+    plt.close(fig)
+
+
+def _block_summaries(steps: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    blocks = (
+        (8, 12),
+        (13, 19),
+        (20, 26),
+        (27, 33),
+        (34, 38),
+    )
+    out: list[dict[str, Any]] = []
+    for lo, hi in blocks:
+        sub = [s for s in steps if lo <= int(s["gw"]) <= hi]
+        if not sub:
+            continue
+        casc_g = sum(float(s["sum_casc_xP_G"]) for s in sub)
+        casc_cs = sum(float(s["sum_casc_xP_CS"]) for s in sub)
+        l3_g = sum(float(s["sum_l3_xP_G"]) for s in sub)
+        l3_cs = sum(float(s["sum_l3_xP_CS"]) for s in sub)
+        p_g = sum(float(s["sum_P_G"]) for s in sub)
+        p_cs = sum(float(s["sum_P_CS"]) for s in sub)
+        out.append(
+            {
+                "block": f"GW{lo}-{hi}",
+                "n_gw": len(sub),
+                "casc_G": casc_g,
+                "l3_G": l3_g,
+                "P_G": p_g,
+                "resid_casc_G": casc_g - p_g,
+                "resid_l3_G": l3_g - p_g,
+                "casc_CS": casc_cs,
+                "l3_CS": l3_cs,
+                "P_CS": p_cs,
+                "resid_casc_CS": casc_cs - p_cs,
+                "resid_l3_CS": l3_cs - p_cs,
+            }
+        )
+    return out
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--season", default=DEFAULT_SEASON)
@@ -343,6 +412,11 @@ def main(argv: list[str] | None = None) -> int:
         choices=("rate_minutes", "rate"),
         default="rate_minutes",
         help="Cascade generative goal shares: rate_minutes (default) or π∝r.",
+    )
+    ap.add_argument(
+        "--decision-gw-only",
+        action="store_true",
+        help="Only roll/score the decision GW (skip unused future-horizon boards).",
     )
     ap.add_argument(
         "--out",
@@ -432,13 +506,14 @@ def main(argv: list[str] | None = None) -> int:
         select_pool = _inject_owned_from_share(select_pool, share_pool, owned)
         # also ensure XI look-ups exist
         select_pool = _inject_owned_from_share(select_pool, share_pool, xi_ids)
-        fixtures_gw = _hist_fixtures_by_gw(enriched, start=int(t), end=horizon_end)
+        plan_end = int(t) if bool(args.decision_gw_only) else horizon_end
+        fixtures_gw = _hist_fixtures_by_gw(enriched, start=int(t), end=plan_end)
         plan_gws = sorted(fixtures_gw)
         priced_by_gw = _fd_priced_by_gw(enriched, fd, plan_gws[:2])
         step_seed = seed0 if t == step_gws[0] else seed0 + 10_000 * int(t)
         print(
             f"[comp-xp] select={len(select_pool)} share={len(share_pool)} "
-            f"xi_src={xi_source}",
+            f"xi_src={xi_source} plan={plan_gws[0]}…{plan_gws[-1]}",
             flush=True,
         )
         boards, _scores, board_meta = mean_component_boards_split(
@@ -587,6 +662,23 @@ def main(argv: list[str] | None = None) -> int:
         if goal_weight == "rate"
         else "π∝r·m/90 (default)"
     )
+    blocks = _block_summaries(steps_out)
+    plot_path = Path("/opt/cursor/artifacts/cascade_vs_l3_component_xp_resid.png")
+    if goal_weight == "rate":
+        plot_path = Path(
+            "/opt/cursor/artifacts/cascade_vs_l3_component_xp_pi_r_resid.png"
+        )
+    if step_gws != list(STEP_GWS):
+        tag = f"gw{step_gws[0]}-{step_gws[-1]}"
+        plot_path = plot_path.with_name(plot_path.stem + f"_{tag}" + plot_path.suffix)
+    _plot_resid_series(
+        steps_out,
+        plot_path,
+        title=(
+            f"{season} GW{step_gws[0]}–{step_gws[-1]}: XI Σ resid "
+            f"(goal_weight={goal_weight})"
+        ),
+    )
     state = {
         "task": (
             "cascade_vs_l3_component_xp_pi_r"
@@ -598,17 +690,27 @@ def main(argv: list[str] | None = None) -> int:
         "n_strands": n_strands,
         "seed": seed0,
         "goal_weight": goal_weight,
+        "decision_gw_only": bool(args.decision_gw_only),
         "seed_owned": seed_meta,
         "shared_team": (
-            "GW8 = L3/L4 WC XI; GW9–12 = L3 owned path + pick_xi(score_xp_v2). "
+            "GW8 = L3/L4 WC XI; later GWs = L3 owned path + pick_xi(score_xp_v2). "
             "No captain. Both scorers evaluated on that same XI."
         ),
         "elapsed_s": _now() - t_all,
         "summary": summary,
+        "blocks": blocks,
         "per_gw": steps_out,
-        "players": rows,
+        "plot": str(plot_path),
+        "players": rows if len(step_gws) <= 8 else [],
     }
     args.out.parent.mkdir(parents=True, exist_ok=True)
+    # Full player rows always in a sidecar when the season map omits them.
+    if len(step_gws) > 8:
+        players_path = Path(str(args.out).replace(".json", "_players.json"))
+        players_path.write_text(
+            json.dumps(rows, indent=2, default=str) + "\n", encoding="utf-8"
+        )
+        state["players_path"] = str(players_path)
     args.out.write_text(json.dumps(state, indent=2, default=str) + "\n")
 
     title = (
@@ -619,36 +721,41 @@ def main(argv: list[str] | None = None) -> int:
     lines = [
         title,
         "",
-        f"Season **{season}** · GW {step_gws} · N={n_strands} · "
+        f"Season **{season}** · GW{step_gws[0]}–{step_gws[-1]} "
+        f"({len(step_gws)} weeks) · N={n_strands} · "
         f"goal_weight=`{goal_weight}` ({gw_note}) · "
         f"wall {state['elapsed_s']:.1f}s",
         "",
         "## What this is",
         "",
-        "- **Same GW8 team** for both arms: L3/L4 wildcard open "
-        f"(`{Path(seed_meta['path']).name}`).",
-        "- GW9–12 follow the locked **L3** transfer path; XI = `pick_xi` on "
-        "`score_xp_v2` among that owned 15.",
-        "- Both scorers are read on **that same XI** (no captain, no hits):",
+        "- Shared L3 path XI from WC open "
+        f"(`{Path(seed_meta['path']).name}`); later weeks = L3 buys/sells + "
+        "`pick_xi` on `score_xp_v2`.",
+        "- Both scorers on **that same XI** (no captain, no hits):",
         f"  - **cascade** — generative mean `xp_goals` / `xp_cs` / `xp_gc` "
         f"(goal shares `{goal_weight}`)",
-        "  - **l3_v2** — as-of `score_xp_v2` centreline components "
-        "(L4 μ_post≡v2 when mode=none; default π∝r·m)",
-        "  - **actual** — FPL `P_G` / `P_CS` / `P_GA` and full `total_points`",
+        "  - **l3_v2** — as-of `score_xp_v2` centreline components",
+        "  - **actual** — FPL `P_G` / `P_CS` / `P_GA`",
+        (
+            "- Cascade rolls **decision GW only** (season map)."
+            if args.decision_gw_only
+            else ""
+        ),
         "",
-        "## XI totals by GW (no captain)",
+        f"![resid]({plot_path})",
         "",
-        "| GW | casc ΣG | casc ΣCS | casc ΣGA | l3 ΣG | l3 ΣCS | l3 ΣGA | "
-        "P ΣG | P ΣCS | P ΣGA | Σ total_pts |",
-        "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+        "## Block totals (Σ over XI)",
+        "",
+        "| block | n | casc G | l3 G | P_G | casc−P G | l3−P G | "
+        "casc CS | l3 CS | P_CS | casc−P CS | l3−P CS |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
     ]
-    for s in steps_out:
+    for b in blocks:
         lines.append(
-            f"| {s['gw']} | {s['sum_casc_xP_G']:.1f} | {s['sum_casc_xP_CS']:.1f} | "
-            f"{s['sum_casc_xP_GA']:.1f} | {s['sum_l3_xP_G']:.1f} | "
-            f"{s['sum_l3_xP_CS']:.1f} | {s['sum_l3_xP_GA']:.1f} | "
-            f"{s['sum_P_G']:.1f} | {s['sum_P_CS']:.1f} | {s['sum_P_GA']:.1f} | "
-            f"{s['sum_total_points']:.0f} |"
+            f"| {b['block']} | {b['n_gw']} | {b['casc_G']:.1f} | {b['l3_G']:.1f} | "
+            f"{b['P_G']:.1f} | {b['resid_casc_G']:+.1f} | {b['resid_l3_G']:+.1f} | "
+            f"{b['casc_CS']:.1f} | {b['l3_CS']:.1f} | {b['P_CS']:.1f} | "
+            f"{b['resid_casc_CS']:+.1f} | {b['resid_l3_CS']:+.1f} |"
         )
     lines += [
         "",
@@ -658,8 +765,12 @@ def main(argv: list[str] | None = None) -> int:
         f"l3 = {summary['sum_l3_xP_G']:.1f}/{summary['sum_l3_xP_CS']:.1f}/"
         f"{summary['sum_l3_xP_GA']:.1f}; "
         f"actual = {summary['sum_P_G']:.1f}/{summary['sum_P_CS']:.1f}/"
-        f"{summary['sum_P_GA']:.1f}; "
-        f"Σ total_points = {summary['sum_total_points']:.0f}.",
+        f"{summary['sum_P_GA']:.1f}.",
+        "",
+        f"- casc − actual G: **{summary['sum_casc_xP_G'] - summary['sum_P_G']:+.1f}**",
+        f"- l3 − actual G: **{summary['sum_l3_xP_G'] - summary['sum_P_G']:+.1f}**",
+        f"- casc − actual CS: **{summary['sum_casc_xP_CS'] - summary['sum_P_CS']:+.1f}**",
+        f"- l3 − actual CS: **{summary['sum_l3_xP_CS'] - summary['sum_P_CS']:+.1f}**",
         "",
         "| component | MAE casc | MAE l3_v2 |",
         "| --- | ---: | ---: |",
@@ -667,45 +778,74 @@ def main(argv: list[str] | None = None) -> int:
         f"| CS | {summary['mae_casc_CS']:.3f} | {summary['mae_l3_CS']:.3f} |",
         f"| GA | {summary['mae_casc_GA']:.3f} | {summary['mae_l3_GA']:.3f} |",
         "",
-        "## Player rows",
+        "## Per GW (Σ on XI)",
         "",
+        "| GW | casc G | l3 G | P_G | casc−P G | l3−P G | "
+        "casc CS | l3 CS | P_CS | casc−P CS | l3−P CS |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
     ]
     for s in steps_out:
+        cg = float(s["sum_casc_xP_G"])
+        lg = float(s["sum_l3_xP_G"])
+        pg = float(s["sum_P_G"])
+        ccs = float(s["sum_casc_xP_CS"])
+        lcs = float(s["sum_l3_xP_CS"])
+        pcs = float(s["sum_P_CS"])
         lines.append(
-            f"### GW{s['gw']} — {s['xi_source']} · "
-            f"Σ total_pts={s['sum_total_points']:.0f}"
+            f"| {s['gw']} | {cg:.1f} | {lg:.1f} | {pg:.1f} | {cg - pg:+.1f} | "
+            f"{lg - pg:+.1f} | {ccs:.1f} | {lcs:.1f} | {pcs:.1f} | "
+            f"{ccs - pcs:+.1f} | {lcs - pcs:+.1f} |"
         )
-        lines.append("")
-        lines.append(
-            "| player | pos | m | casc G | casc CS | casc GA | "
-            "l3 G | l3 CS | l3 GA | P_G | P_CS | P_GA | total_pts |"
-        )
-        lines.append(
-            "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | "
-            "---: | ---: | ---: | ---: |"
-        )
-        for r in df.loc[df["gw"] == s["gw"]].itertuples(index=False):
+    if len(step_gws) <= 8:
+        lines += ["", "## Player rows", ""]
+        for s in steps_out:
             lines.append(
-                f"| {r.name} | {r.position} | {r.minutes:.0f} | "
-                f"{r.casc_xP_G:.2f} | {r.casc_xP_CS:.2f} | {r.casc_xP_GA:.2f} | "
-                f"{r.l3_xP_G:.2f} | {r.l3_xP_CS:.2f} | {r.l3_xP_GA:.2f} | "
-                f"{r.P_G:.0f} | {r.P_CS:.0f} | {r.P_GA:.0f} | "
-                f"{r.total_points:.0f} |"
+                f"### GW{s['gw']} — {s['xi_source']} · "
+                f"Σ total_pts={s['sum_total_points']:.0f}"
             )
-        lines.append("")
+            lines.append("")
+            lines.append(
+                "| player | pos | m | casc G | casc CS | casc GA | "
+                "l3 G | l3 CS | l3 GA | P_G | P_CS | P_GA | total_pts |"
+            )
+            lines.append(
+                "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | "
+                "---: | ---: | ---: | ---: |"
+            )
+            for r in df.loc[df["gw"] == s["gw"]].itertuples(index=False):
+                lines.append(
+                    f"| {r.name} | {r.position} | {r.minutes:.0f} | "
+                    f"{r.casc_xP_G:.2f} | {r.casc_xP_CS:.2f} | {r.casc_xP_GA:.2f} | "
+                    f"{r.l3_xP_G:.2f} | {r.l3_xP_CS:.2f} | {r.l3_xP_GA:.2f} | "
+                    f"{r.P_G:.0f} | {r.P_CS:.0f} | {r.P_GA:.0f} | "
+                    f"{r.total_points:.0f} |"
+                )
+            lines.append("")
+    else:
+        lines += [
+            "",
+            "Player rows omitted from the markdown (season map); see "
+            f"`{state.get('players_path', args.out)}`.",
+            "",
+        ]
+    repro = (
+        f"PYTHONPATH=. python3 -m src.eval.cascade_vs_l3_component_xp "
+        f"--n {n_strands} --goal-weight {goal_weight} "
+        f"--steps {','.join(str(g) for g in step_gws)}"
+    )
+    if args.decision_gw_only:
+        repro += " --decision-gw-only"
     lines += [
         "## Reproduce",
         "",
         "```bash",
-        f"PYTHONPATH=. python3 -m src.eval.cascade_vs_l3_component_xp "
-        f"--n {n_strands} --goal-weight {goal_weight}",
+        repro,
         "```",
         "",
     ]
     report_path = REPORT
     if goal_weight == "rate":
         report_path = ROOT / "reports" / "cascade_vs_l3_component_xp_pi_r.md"
-    # Distinct report when the step window is not the GW8–12 default.
     if step_gws != list(STEP_GWS):
         tag = f"gw{step_gws[0]}-{step_gws[-1]}"
         stem = (
@@ -718,29 +858,31 @@ def main(argv: list[str] | None = None) -> int:
     STATE.write_text(
         json.dumps(
             {
-                "task": state["task"],
+                "task": state["task"]
+                + (f"_gw{step_gws[0]}-{step_gws[-1]}" if step_gws != list(STEP_GWS) else ""),
                 "status": "done",
                 "as_of_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                 "change": (
-                    "π∝r cascade xP(G,CS,GA) vs L3/L4 on shared L3 path; "
-                    "actuals; no captain"
-                    if goal_weight == "rate"
-                    else (
-                        "Player xP(G,CS,GA) cascade vs L3/L4 on shared L3 path "
-                        "(same GW8 WC XI); actuals; no captain"
-                    )
+                    f"π∝r component map GW{step_gws[0]}–{step_gws[-1]} "
+                    "(shared L3 XI; no captain)"
                 ),
-                "verdict": summary,
+                "verdict": {
+                    **summary,
+                    "blocks": blocks,
+                    "casc_minus_P_G": summary["sum_casc_xP_G"] - summary["sum_P_G"],
+                    "casc_minus_P_CS": summary["sum_casc_xP_CS"] - summary["sum_P_CS"],
+                },
                 "artifact": str(args.out),
                 "report": str(report_path.relative_to(ROOT)),
+                "plot": str(plot_path),
                 "goal_weight": goal_weight,
             },
             indent=2,
         )
         + "\n"
     )
-    print(json.dumps(summary, indent=2))
-    print("wrote", args.out, report_path)
+    print(json.dumps({"summary": summary, "blocks": blocks}, indent=2))
+    print("wrote", args.out, report_path, plot_path)
     return 0
 
 
