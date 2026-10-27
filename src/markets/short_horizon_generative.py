@@ -105,12 +105,14 @@ def build_club_dice_from_side(
     if "sG" not in c.columns or "sA" not in c.columns:
         from src.markets import numagent_xp as nx
 
-        # Goals: π ∝ r (locked 2026-10-27). Assists: still ∝ r·m/90.
+        # Default goal/assist weights: w = r·m/90 (π∝r parked 2026-10-27).
         wG = np.array(
             [
-                nx.goal_share_weight(
+                nx.weight_and_delta(
                     float(c.iloc[i].get("rG", 0.0) or 0.0),
                     float(c.iloc[i].get("drG", 0.0) or 0.0),
+                    float(c.iloc[i]["m"]),
+                    float(c.iloc[i].get("sigma_m", 0.0) or 0.0),
                 )[0]
                 for i in range(len(c))
             ]

@@ -148,7 +148,7 @@
   },
   "cascade_short_generative": {
     "locked": "2026-10-20",
-    "revised": "2026-10-27 — goal shares π∝r among m>0 (minutes gate only; not in weight); assists still ∝rA·m/90; prior: 2026-10-25 full-club share_pool; 2026-10-21 lineup_cov=False",
+    "revised": "2026-10-25 — full-club m>0 share_pool default for xG/π (selection may stay ≥60′); prior: 2026-10-21 lineup_cov=False; attack dice minutes>0; CS ≥60",
     "role": "priced short-horizon t:t+1 scenario attack + defence path",
     "mean_layer": "score_team_side / score_xp_v2 (unchanged; moment xCS/xGC)",
     "scenario": "book/FD fit → centreline Dixon–Coles M → match_outcome_roll (k∼M); no λ jitter; minutes = frozen as-of mean (live: xmi / as-of m); attack_roll; defence_roll CS/GC from rolled GA",
@@ -162,7 +162,7 @@
     "defence": "CS = (GA==0) with ≥60'; GC = −⌊GA/2⌋ for GKP/DEF who played — no separate xCS/xGC on scenario strands",
     "attack_gate": "π/ρ renorm on minutes>0 (impact subs stay on dice); CS still ≥60",
     "share_pool": "full club m>0 for xG/xA shares and generative π — default even when selection pool is thin (≥60′); do not re-normalise shares on the selection board",
-    "goal_share_weight": "π ∝ rG among m>0 — minutes gate club membership only; locked 2026-10-27 (cascade_share_no_renorm_minutes: XI resid +10.2→+0.2). Assists keep w=rA·m/90",
+    "goal_share_weight": "default w=rG·m/90; π∝r parked 2026-10-27 (score_xp_v2_goal_share_rate clear lose on log-score; cascade resid dig only)",
     "soft_priors": "xp_defcon / xp_bonus / xp_cards / xp_saves from expanding means (as-of *_mu), gated by lineup minutes; not from the roll",
     "parked": ["bonus_from_roll", "lambda_uniform_band", "P_SUB_ON_starter_sub", "corr_threshold_competitor_pairs", "club_matchday_minutes_resample"],
     "scope": "cascade_short / short_horizon_cascade scenario strands only",
@@ -278,7 +278,8 @@
   },
   "score_xp_v2_goal_share_rate": {
     "locked": "2026-10-27",
-    "role": "goal share weights: π∝r among m>0 vs retired π∝r·m",
+    "parked": "2026-10-27",
+    "role": "goal share weights: π∝r among m>0 vs default π∝r·m — parked",
     "source": "src/markets/numagent_xp.goal_share_weight / score_team_side(goal_weight=…)",
     "trial": "src/markets/goal_share_rate_trial.py",
     "report": "reports/score_xp_v2_goal_share_rate.md",
@@ -292,6 +293,13 @@
     "minutes": "oracle (actual m, σ_m=0) — same historical stack law",
     "promote_if": "paired interval lo > 0 on four closed seasons",
     "cascade_resid_dig": "reports/cascade_share_no_renorm_minutes.md (OL XI +10.2→+0.2; not the gate)",
+    "result": {
+      "mean_d_log": -0.000549,
+      "lo": -0.001021,
+      "hi": -0.000118,
+      "covers_zero": false,
+      "verdict": "park_clear_lose — keep default goal_weight=rate_minutes (w=r·m/90)"
+    },
     "any_later_change": "dated protocol update required"
   },
   "score_xp_v2_share_se_shrink_scorers": {

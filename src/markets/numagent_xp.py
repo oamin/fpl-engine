@@ -53,8 +53,8 @@ def appearance_xp(m: float) -> float:
 def weight_and_delta(r: float, dr: float, m: float, sigma_m: float) -> tuple[float, float]:
     """w = r·m/90, Δw from independent rate and minutes errors.
 
-    Used for assist shares and rate×minutes quantities. Goal shares use
-    ``goal_share_weight`` (rate only; locked 2026-10-27).
+    Default goal and assist share weights (``goal_weight='rate_minutes'``).
+    ``goal_share_weight`` (π∝r) is the parked screen arm only.
     """
     r = float(max(r, 0.0))
     dr = float(max(dr, 0.0))
@@ -66,11 +66,11 @@ def weight_and_delta(r: float, dr: float, m: float, sigma_m: float) -> tuple[flo
 
 
 def goal_share_weight(r: float, dr: float = 0.0) -> tuple[float, float]:
-    """Goal-share weight: ``w = r`` (minutes gate the club, not the weight).
+    """Parked arm: ``w = r`` (minutes gate only; no m in the weight).
 
-    Locked 2026-10-27 (``cascade_share_no_renorm_minutes``): compositional
-    ``π ∝ r`` among ``m>0``. Minutes-weighted ``w = r·m/90`` over-concentrated
-    π on high-m XI attackers (OL resid +10.2 → +0.2).
+    Screened 2026-10-27 (``protocol.score_xp_v2_goal_share_rate``): clear lose
+    on player-GW log score vs ``w=r·m/90``. Cascade OL XI resid dig still
+    improved (+10.2→+0.2) — not the gate. Default remains ``weight_and_delta``.
     """
     r = float(max(r, 0.0))
     dr = float(max(dr, 0.0))
@@ -309,13 +309,13 @@ def club_shares_on_frame(
     share_se_shrink: bool = True,
     share_se_tau2: float | None = None,
     share_se_prior: str = "position_minutes",
-    goal_weight: str = "rate",
+    goal_weight: str = "rate_minutes",
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, dict[str, float] | None]:
     """Compositional ``sG``/``sA`` on a club frame (full m>0 side).
 
-    Goal shares default ``π ∝ rG`` (``goal_weight='rate'``; minutes gate only).
-    Pass ``goal_weight='rate_minutes'`` for the retired ``w=r·m/90`` arm.
-    Assist shares: ``∝ rA·m/90``. Returns ``(sG, sA, dsG, dsA, shrink_diag)``.
+    Goal shares default ``w=rG·m/90`` (``goal_weight='rate_minutes'``).
+    ``goal_weight='rate'`` is the parked π∝r screen arm. Assist shares:
+    ``∝ rA·m/90``. Returns ``(sG, sA, dsG, dsA, shrink_diag)``.
     """
     if club.empty:
         z = np.zeros(0, dtype=float)
@@ -399,7 +399,7 @@ def project_club_shares(
     share_se_shrink: bool = True,
     share_se_tau2: float | None = None,
     share_se_prior: str = "position_minutes",
-    goal_weight: str = "rate",
+    goal_weight: str = "rate_minutes",
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, dict[str, float] | None]:
     """Map full-club shares onto a (possibly thin) selection board.
 
@@ -459,7 +459,7 @@ def score_team_side(
     share_se_shrink: bool = True,
     share_se_tau2: float | None = None,
     share_se_prior: str = "position_minutes",
-    goal_weight: str = "rate",
+    goal_weight: str = "rate_minutes",
 ) -> pd.DataFrame:
     """Score one team's players for one fixture side.
 
@@ -473,9 +473,9 @@ def score_team_side(
     Optional ``sG_override`` / ``sA_override``: compositional shares from a
     correlated-draw sampler (must be length n and sum ≈ 1 on the playing set).
 
-    Goal shares default ``goal_weight='rate'`` (``π ∝ rG``; minutes gate only).
-    ``goal_weight='rate_minutes'`` restores retired ``w=r·m/90``. Assist shares
-    keep ``weight_and_delta`` (``∝ rA·m/90``).
+    Goal shares default ``goal_weight='rate_minutes'`` (``w=r·m/90``).
+    ``goal_weight='rate'`` is the parked π∝r arm (clear lose 2026-10-27).
+    Assist shares keep ``weight_and_delta`` (``∝ rA·m/90``).
 
     Optional ``share_players``: full-club frame (``m>0``, impact subs) used to
     build ``sG``/``sA``. Selection boards stay thin; shares are projected and

@@ -35,14 +35,14 @@ DC calibrated. Do not retune CS.
 `reports/xi_cs_selection_hypothesis.md` · windows · `dixon_coles_team_cs_calib.md`.
 
 **G overprint.** Full-share OL gen ~+11. Pot cleared; not dice/k∼M.
-**π∝r locked 2026-10-27** — goal shares drop minutes from weights
-(m=gate only); assists still ∝rA·m/90. Screen: XI resid **+10.2 → +0.2**
-(N=40). Shrink parked as unwanted.
-`reports/cascade_share_no_renorm_minutes.md` · `cascade_g_overprint_dig.md`.
+**π∝r parked 2026-10-27** — gated log-score clear lose vs π∝r·m
+(Δ −0.00055 [−0.0010, −0.0001]); keep `w=r·m/90`. Cascade resid dig
+still cut XI +10.2→+0.2 — not the gate. Shrink parked as unwanted.
+`reports/score_xp_v2_goal_share_rate.md` · `cascade_share_no_renorm_minutes.md`.
 
 **Strand default:** generative `run_strand` / `_undiscounted_scores_by_gw`
 require `share_pool` (full club m>0). Live + hist path/mean callers wired;
-selection stays thin. Goal weight: `goal_share_weight` (π∝r).
+selection stays thin. Goal weight default: `rate_minutes`.
 
 Multi-seed XI residuals (boards once): CS stayed negative across opens;
 G stayed positive — `cascade_vs_l3_component_xp_multiseed.md`.
@@ -57,7 +57,7 @@ Pre-deadline squad advisor under 2026/27 rules. Cursor implements and screens; G
 | --- | --- | --- | --- |
 | **Scorer** | `score_xp_v2` (**primary**; `score_xp` superseded) | locked 2026-10-13 · primary 2026-10-19 | `src/markets/numagent_xp.py` · `reports/score_xp_v2.md` · method lock `reports/numagent_2_0_method.md` |
 | **Rates** | \(M_0=270\), \(c=0.25\) | promoted 2026-10-16 | `reports/score_xp_v2_rate_m0.md` |
-| **Shares** | share-SE → position×minutes prior; **goal π∝r** (m=gate; assists ∝r·m/90) | prior 2026-10-17 · π∝r 2026-10-27 | `reports/score_xp_v2_share_se_pos_prior.md` · `cascade_share_no_renorm_minutes.md` |
+| **Shares** | share-SE → position×minutes prior; goal **π∝r·m** (π∝r parked) | prior 2026-10-17 · π∝r park 2026-10-27 | `reports/score_xp_v2_share_se_pos_prior.md` · `score_xp_v2_goal_share_rate.md` |
 | **μ_post** | ≡ `score_xp_v2` (shrink `mode=none`) | locked 2026-10-16 | `protocol.strategy_layer2_shrinkage` |
 | **Transfers** | L3 single-deadline | locked | `src/strategy/layer3_week.py` |
 | **Horizon** | L4 μ_post priced, `BOOKIE_DEPTH=2`, γ=1 | **strategiser default** | `src/strategy/layer4_week.py` · `reports/layer4_mupost_gamma1.md` |

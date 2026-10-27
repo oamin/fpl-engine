@@ -160,7 +160,7 @@ class FullClubShareProjection(unittest.TestCase):
 
 class ScoreTeamSide(unittest.TestCase):
     def test_rotation_renormalises_attack(self) -> None:
-        # Equal rG → equal sG (π∝r); assists still favour the starter via m.
+        # Two MIDs share attack; starter gets most weight (default π∝r·m).
         players = pd.DataFrame(
             {
                 "name": ["A", "B"],
@@ -190,7 +190,7 @@ class ScoreTeamSide(unittest.TestCase):
             share_se_shrink=False,
         )
         self.assertAlmostEqual(float(out["sG"].sum()), 1.0, places=6)
-        self.assertAlmostEqual(float(out.loc[0, "sG"]), float(out.loc[1, "sG"]), places=6)
+        self.assertGreater(float(out.loc[0, "sG"]), float(out.loc[1, "sG"]))
         self.assertGreater(float(out.loc[0, "sA"]), float(out.loc[1, "sA"]))
         self.assertGreater(float(out.loc[0, "xp"]), float(out.loc[1, "xp"]))
         # Appearance 2 vs 1

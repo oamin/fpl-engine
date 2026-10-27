@@ -162,10 +162,7 @@ def _player_ids(df: pd.DataFrame) -> list[str]:
 
 
 def _base_weights(players: pd.DataFrame) -> tuple[np.ndarray, np.ndarray]:
-    """Goal/assist weights used for Dirichlet (same as score_team_side).
-
-    Goals: ``π ∝ r`` (minutes gate only). Assists: ``∝ r·m/90``.
-    """
+    """Goal/assist weights used for Dirichlet (same as score_team_side)."""
     n = len(players)
     m = pd.to_numeric(players.get("m", 0), errors="coerce").fillna(0.0).to_numpy(float)
     sm = pd.to_numeric(players.get("sigma_m", 0), errors="coerce").fillna(0.0).to_numpy(float)
@@ -176,7 +173,7 @@ def _base_weights(players: pd.DataFrame) -> tuple[np.ndarray, np.ndarray]:
     wG = np.zeros(n)
     wA = np.zeros(n)
     for i in range(n):
-        wG[i], _ = nx.goal_share_weight(rG[i], drG[i])
+        wG[i], _ = nx.weight_and_delta(rG[i], drG[i], m[i], sm[i])
         wA[i], _ = nx.weight_and_delta(rA[i], drA[i], m[i], sm[i])
     return wG, wA
 

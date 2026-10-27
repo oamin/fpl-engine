@@ -43,11 +43,12 @@ retune DC / open a CS gated screen for this.
 `reports/xi_cs_selection_hypothesis_windows.md`,
 `reports/dixon_coles_team_cs_calib.md`.
 
-## Locked — π∝r goal shares (2026-10-27)
+## Parked — π∝r goal shares (2026-10-27)
 
-OL XI gen resid: π∝r·m **+10.2** → π∝r (m=gate only) **+0.2**
-(Δ −10.0, N=40). Promoted: `goal_share_weight` / protocol
-`cascade_short_generative.goal_share_weight`. Assists keep ∝rA·m/90.
+Gated player-GW log-score: π∝r − π∝r·m **−0.00055** [−0.0010, −0.0001]
+→ **park_clear_lose**. Keep default `w=r·m/90`. Cascade OL XI resid dig
+still +10.2→+0.2 (not the gate).
+`reports/score_xp_v2_goal_share_rate.md` ·
 `reports/cascade_share_no_renorm_minutes.md`.
 
 ## Parked — shrink generative π (2026-10-25)
@@ -59,7 +60,8 @@ raw centreline ≈ gen. Not a treatment.
 ## Closed — G overprint dig (2026-10-25)
 
 Count resid OL gen +11.8. Pot cleared; centreline +2.1 = share blanks;
-selection not special. Minutes-in-share-weights closed by π∝r lock.
+selection not special. Minutes-in-share-weights cut resid on dig but
+lost the gated likelihood screen — parked.
 `reports/cascade_g_overprint_dig.md`.
 
 ## Locked default — full-club share pool (2026-10-25)

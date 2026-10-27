@@ -101,8 +101,7 @@ def _weights_for_shares(players: pd.DataFrame) -> tuple[np.ndarray, np.ndarray, 
     wG = np.zeros(n)
     wA = np.zeros(n)
     for i in range(n):
-        # Goals: π ∝ r (m gates club membership). Assists: still ∝ r·m/90.
-        wG[i], _ = nx.goal_share_weight(rG[i], drG[i])
+        wG[i], _ = nx.weight_and_delta(rG[i], drG[i], m[i], sm[i])
         wA[i], _ = nx.weight_and_delta(rA[i], drA[i], m[i], sm[i])
     # Zero weights for non-playing
     wG = np.where(m > 0, wG, 0.0)

@@ -116,9 +116,9 @@ def _side_frame(
     board = board[board["m"] >= minutes_floor].reset_index(drop=True)
     if board.empty:
         return board
-    # Goals: π ∝ r (locked). Assists: still ∝ r·m/90. No shrink for trial clarity.
+    # Compositional baseline shares via weights (no shrink for trial clarity).
     wG = np.array(
-        [nx.goal_share_weight(r, dr)[0] for r, dr in board[["rG", "drG"]].to_numpy()]
+        [nx.weight_and_delta(r, dr, m, sm)[0] for r, dr, m, sm in board[["rG", "drG", "m", "sigma_m"]].to_numpy()]
     )
     wA = np.array(
         [nx.weight_and_delta(r, dr, m, sm)[0] for r, dr, m, sm in board[["rA", "drA", "m", "sigma_m"]].to_numpy()]
