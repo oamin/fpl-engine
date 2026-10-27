@@ -83,11 +83,14 @@ both near 0 around **s≈0.75** (G −2.4 / CS +2.4). Fit 0.86 still +12/−11.
 MAE ↓). XI resid G **−2.4** / CS **+2.4**.
 `reports/cascade_long_away_shrink_lam_screen_s075.md`.
 **Venue verdict (PI 2026-10-27):** keep formula (away-only shrink, **no λ
-clip**); default **`AWAY_SHRINK=1.0`**. Fixed `s=0.768` parked — OOS club-λ
-on 2022-23…2024-25 **0/3 PASS**. Combined **`lam_shrink`** (both λ × s)
-train-fit 0.92: holdout **FAIL** (home |bias| worsens); OOS **0/3**. Default
-`LAM_SHRINK=1.0`. `reports/cascade_away_shrink_oos_seasons.md` ·
-`reports/cascade_long_lam_shrink_screen.md`.
+clip**); default **`AWAY_SHRINK=1.0`**. Fixed `s=0.768` / `lam_shrink`
+parked (OOS / holdout FAIL).
+**G overprint isolate:** Opta XI resid G **+32.5** = **+18.5 Opta−FD λ
+(57%)** + **+14 FD−actual generative/π∝r (43%)**. Opta home λ≈actual;
+away **+0.26**, worst on **away favourites (+0.43)**. Place GF/GA are
+venue-blind season totals. Naive place×venue diagnostic zeros away bias
+but breaks home — needs a proper pre-reg OOS screen, not fixed shrink.
+`reports/cascade_long_g_overprint_isolate.md`.
 
 **Strand default:** generative `run_strand` / `_undiscounted_scores_by_gw`
 require `share_pool` (full club m>0). Live + hist path/mean callers wired;
