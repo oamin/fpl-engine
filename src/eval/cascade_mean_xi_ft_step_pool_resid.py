@@ -207,6 +207,7 @@ def mean_component_boards_split(
     plan_gws: list[int],
     n_strands: int,
     seed0: int,
+    goal_weight: str = "rate_minutes",
 ) -> tuple[dict[int, pd.DataFrame], dict[int, np.ndarray], dict[str, Any]]:
     """Generative mean components on share pool; project onto selection rows."""
     priced_index = _priced_index(priced_by_gw)
@@ -279,6 +280,7 @@ def mean_component_boards_split(
                     lineup_cov=DEFAULT_LINEUP_COV,
                     goals_home=int(sc["hg"]),
                     goals_away=int(sc["ag"]),
+                    goal_weight=goal_weight,
                 )
                 for scored in (home_xp, away_xp):
                     if scored is None or scored.empty:
@@ -314,6 +316,7 @@ def mean_component_boards_split(
         "elapsed_s": _now() - t0,
         "n_selection_pool": int(n_sel),
         "n_share_pool": int(len(share_pool)),
+        "goal_weight": str(goal_weight),
     }
     return frames, scores_by_gw, meta
 
@@ -429,6 +432,13 @@ def main(argv: list[str] | None = None) -> int:
         "pick_xi on boards; FT via advance_ft(ft,0). Later GWs use xi_ft.",
     )
     ap.add_argument(
+        "--goal-weight",
+        choices=("rate_minutes", "rate"),
+        default="rate_minutes",
+        help="Goal share weights on generative dice: rate_minutes=w·r·m/90 "
+        "(default); rate=π∝r (minutes gate only).",
+    )
+    ap.add_argument(
         "--out",
         type=Path,
         default=Path("/opt/cursor/artifacts/cascade_mean_xi_ft_step_pool_resid.json"),
@@ -436,6 +446,7 @@ def main(argv: list[str] | None = None) -> int:
     args = ap.parse_args(argv)
 
     season = str(args.season)
+    goal_weight = str(args.goal_weight)
     e0 = SEASON_E0[season]
     step_gws = [int(x) for x in str(args.steps).split(",") if x.strip()]
     start_gw = int(args.start_gw)
@@ -447,7 +458,7 @@ def main(argv: list[str] | None = None) -> int:
 
     print(
         f"[step-pool] season={season} steps={step_gws} horizon={start_gw}-{horizon_end} "
-        f"N={n_strands}"
+        f"N={n_strands} goal_weight={goal_weight}"
         + (
             f" seed_owned={seed_meta['path']} hold_gw={hold_gw}"
             if seed_meta
@@ -514,6 +525,7 @@ def main(argv: list[str] | None = None) -> int:
             plan_gws=plan_gws,
             n_strands=n_strands,
             seed0=step_seed,
+            goal_weight=goal_weight,
         )
         print(f"[step-pool] boards {board_meta['elapsed_s']:.1f}s", flush=True)
 
@@ -635,6 +647,8 @@ def main(argv: list[str] | None = None) -> int:
         plot_path = Path(
             "/opt/cursor/artifacts/cascade_mean_xi_ft_step_pool_resid_seeded.png"
         )
+    if goal_weight == "rate":
+        plot_path = plot_path.with_name(plot_path.stem + "_pi_r" + plot_path.suffix)
     _plot(per_gw, plot_path, n=n_strands)
     summary = _summarise(df)
     state = {
@@ -646,6 +660,7 @@ def main(argv: list[str] | None = None) -> int:
         "seed": seed0,
         "seed_owned": seed_meta,
         "hold_gw": hold_gw if seed_meta else None,
+        "goal_weight": goal_weight,
         "selection_pool": "as-of mean minutes > 60, n_apps≥2; frozen until next step",
         "share_pool": "full club m>0 (impact subs on dice)",
         "elapsed_s": _now() - t_all,
@@ -668,11 +683,17 @@ def main(argv: list[str] | None = None) -> int:
             f"`pick_xi`; `advance_ft(ft,0)`). "
             f"Source: {seed_meta.get('source') or 'n/a'}."
         )
+    gw_note = (
+        "π∝r (minutes gate only)"
+        if goal_weight == "rate"
+        else "π∝r·m/90 (default)"
+    )
     lines = [
         "# Stepped ≥60′ selection pool — xP(G, CS, GA) vs actual",
         "",
         f"Season **{season}** · horizon {start_gw}–{horizon_end} · "
         f"commit steps {step_gws} · N={n_strands} · seed={seed0} · "
+        f"goal_weight=`{goal_weight}` ({gw_note}) · "
         f"wall {state['elapsed_s']:.1f}s",
         "",
         "## Protocol",
@@ -680,6 +701,7 @@ def main(argv: list[str] | None = None) -> int:
         "- At each decision GW t: rebuild **selection** pool = players with "
         "as-of mean minutes > 60 (and ≥2 apps) before t.",
         "- **Share** pool = full club with m>0 (impact subs on generative dice).",
+        f"- **Goal shares**: `{goal_weight}` — {gw_note}. Assists stay ∝rA·m/90.",
         "- That as-of state (rates, minutes, both pools) is **projected forward** "
         "on strands for t…horizon end until the next step refreshes it.",
         "- Mean of N generative boards → `xi_ft` plan; commit week-t XI.",
@@ -754,33 +776,46 @@ def main(argv: list[str] | None = None) -> int:
         "```",
         "",
     ]
-    REPORT.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    report_path = REPORT
+    if goal_weight == "rate":
+        report_path = ROOT / "reports" / "cascade_mean_xi_ft_step_pool_pi_r.md"
+    report_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     change = (
         "Step GW8–12: refresh ≥60′ selection pool each GW; "
-        "full shares; xP(G,CS,GA) vs actual on committed XI"
+        f"full shares; goal_weight={goal_weight}; xP(G,CS,GA) vs actual"
     )
     if seed_meta:
         change = (
-            f"Re-run stepped cascade seeded with L3/L4 GW{hold_gw} WC 15 "
+            f"Stepped cascade π∝r goal shares; L3/L4 GW{hold_gw} WC seed "
             f"(hold open; xi_ft from GW{hold_gw + 1})"
+            if goal_weight == "rate"
+            else (
+                f"Re-run stepped cascade seeded with L3/L4 GW{hold_gw} WC 15 "
+                f"(hold open; xi_ft from GW{hold_gw + 1})"
+            )
         )
     STATE.write_text(
         json.dumps(
             {
-                "task": "cascade_mean_xi_ft_step_pool_resid",
+                "task": (
+                    "cascade_mean_xi_ft_step_pool_pi_r"
+                    if goal_weight == "rate"
+                    else "cascade_mean_xi_ft_step_pool_resid"
+                ),
                 "status": "done",
                 "as_of_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                 "change": change,
                 "verdict": summary,
                 "artifact": str(args.out),
-                "report": str(REPORT.relative_to(ROOT)),
+                "report": str(report_path.relative_to(ROOT)),
+                "goal_weight": goal_weight,
             },
             indent=2,
         )
         + "\n"
     )
     print(json.dumps(summary, indent=2))
-    print("wrote", args.out, REPORT)
+    print("wrote", args.out, report_path)
     return 0
 
 
