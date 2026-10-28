@@ -237,9 +237,9 @@ def run_season(
     rows["d_log"] = rows["log_rate"] - rows["log_rm"]
     rows["d_log_rm_minus_l3"] = rows["log_rm"] - rows["log_l3"]
     rows["d_log_rate_minus_l3"] = rows["log_rate"] - rows["log_l3"]
-    rows["abs_err_rm"] = (y - rows["xp_rm"].to_numpy(float)).abs()
-    rows["abs_err_rate"] = (y - rows["xp_rate"].to_numpy(float)).abs()
-    rows["abs_err_l3"] = (y - rows["xp_l3"].to_numpy(float)).abs()
+    rows["abs_err_rm"] = np.abs(y - rows["xp_rm"].to_numpy(float))
+    rows["abs_err_rate"] = np.abs(y - rows["xp_rate"].to_numpy(float))
+    rows["abs_err_l3"] = np.abs(y - rows["xp_l3"].to_numpy(float))
     gw = (
         rows.groupby("gw", sort=True)
         .agg(

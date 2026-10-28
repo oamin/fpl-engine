@@ -337,6 +337,25 @@
     "does_not_change_default": true,
     "note": "Design claim: season Σλ ≈ place GF; venue misallocation and XI generative are separate layers"
   },
+  "cascade_short_goal_weight_likelihood_screen": {
+    "pre_registered": "2026-10-28",
+    "status": "diagnostic_screen",
+    "role": "cascade_short generative π∝r vs rate_minutes on player-GW log score; L3 score_xp_v2 reference",
+    "treatment": "cascade_short_gen_goal_share_rate",
+    "baseline": "cascade_short_gen_goal_share_rate_minutes",
+    "l3_reference": "l3_score_xp_v2",
+    "formula": "treatment goal_weight=rate (π∝r); baseline goal_weight=rate_minutes (w=r·m/90); same FD centreline λ; MC-mean generative xP; assists unchanged",
+    "pool": "minutes>60, ≥3 prior apps, FD AH+OU priced weeks, GW8–38, σ=3",
+    "metric": "gaussian_log_score on generative MC-mean xp vs total_points; paired treatment−baseline by GW; cluster_interval across four closed seasons",
+    "promote_if": "paired interval lo > 0 on four closed seasons",
+    "n_mc": 6,
+    "modules": [
+      "src/eval/cascade_short_goal_weight_likelihood_screen.py",
+      "src/markets/short_horizon_generative.py"
+    ],
+    "does_not_change_default": true,
+    "note": "Re-screens parked score_xp_v2_goal_share_rate weight formula on cascade_short generative + L3 reference; Dig B XI resid is not the gate"
+  },
   "cascade_fd_goal_weight_likelihood_dig": {
     "pre_registered": "2026-10-28",
     "status": "done",
