@@ -476,8 +476,13 @@ def score_week_generative(
     prop_by_element: Mapping[int, float] | None = None,
     lineup_cov: bool = True,
     lam_overrides: Mapping[int, Mapping[str, float]] | None = None,
+    goal_weight: str = "rate_minutes",
 ) -> pd.DataFrame:
-    """Score a full GW by generative rolls on each priced fixture."""
+    """Score a full GW by generative rolls on each priced fixture.
+
+    ``goal_weight`` defaults to ``rate_minutes`` (``w=r·m/90``); ``rate`` is
+    the parked π∝r diagnostic arm.
+    """
     if side_table.empty or not fixture_fits:
         return pd.DataFrame()
     parts: list[pd.DataFrame] = []
@@ -515,6 +520,7 @@ def score_week_generative(
             home_props=prop_by_element,
             away_props=prop_by_element,
             lineup_cov=lineup_cov,
+            goal_weight=goal_weight,
         )
         for scored, team in ((home_xp, str(fit["home"])), (away_xp, str(fit["away"]))):
             if scored.empty:
