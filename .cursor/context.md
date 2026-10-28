@@ -104,6 +104,15 @@ OOS / PI). `reports/cascade_long_place_venue_lam_screen.md`.
 `rate_minutes` concentrates shares (HHI 0.17 vs 0.15). Live generative
 problem is the **default minutes weight**, not the π∝r dig arm.
 `reports/cascade_fd_generative_g_dig.md`.
+**Club Σλ vs place GF (2026-10-28):** pooled **Σλ − place GF ≈ +0.10**
+(design converges). Σλ − actual tracks whether the season under/over-shoots
+the LOSO prior (e.g. 2025-26 +5.8, 2023-24 −7.4). Venue-blind: cold
+seasons show H~0 / A high. XI heat ≠ escaped GF anchors.
+`reports/cascade_long_club_lam_vs_place_gf.md`.
+**Cascade goal_weight likelihood dig:** component G log π∝r−rm **+0.015**
+covers 0 (undetermined) on FD shared XI; gated `score_xp_v2` π∝r remains
+**park_clear_lose**. Default `rate_minutes` unchanged.
+`reports/cascade_fd_goal_weight_likelihood_dig.md`.
 
 **Strand default:** generative `run_strand` / `_undiscounted_scores_by_gw`
 require `share_pool` (full club m>0). Live + hist path/mean callers wired;

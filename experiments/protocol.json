@@ -322,6 +322,36 @@
     "does_not_change_default": true,
     "note": "Follows cascade_long_g_overprint_isolate — structural fix for venue-blind place GF/GA; supersedes fixed away_shrink/lam_shrink spice"
   },
+  "cascade_long_club_lam_vs_place_gf": {
+    "pre_registered": "2026-10-28",
+    "status": "done",
+    "result": "pooled Σλ−place_gf ≈ +0.10 (converges); Σλ−act varies by season scoring level; venue H~0 A high on cold seasons — not escaped GF anchors",
+    "role": "Separate club Σλ vs place GF from XI xP(G) heat — does cascade_long escape its GF anchors?",
+    "seasons": ["2022-23", "2023-24", "2024-25", "2025-26"],
+    "method": "oracle finishing ranks + LOSO place profile; Σ Opta λ vs place mean_gf vs actual goals; venue bias",
+    "venue_mode": "blind (default)",
+    "modules": [
+      "src/eval/cascade_long_club_lam_vs_place_gf.py",
+      "src/models/opta_gf_ga_horizon.py"
+    ],
+    "does_not_change_default": true,
+    "note": "Design claim: season Σλ ≈ place GF; venue misallocation and XI generative are separate layers"
+  },
+  "cascade_fd_goal_weight_likelihood_dig": {
+    "pre_registered": "2026-10-28",
+    "status": "done",
+    "result": "cascade component G log: π∝r Δ +0.015 [-0.002,+0.032] covers 0 (undetermined); resid G still +14 vs +100; score_xp_v2 gate already park_clear_lose for π∝r — default rate_minutes unchanged",
+    "role": "Cascade generative rate_minutes vs π∝r on component player-GW log score (FD shared L3 XI GW8–38)",
+    "baseline": "goal_weight=rate_minutes artifacts",
+    "treatment": "goal_weight=rate (π∝r) artifacts",
+    "metric": "gaussian_log_score σ=3 on casc_xP_G vs P_G; paired GW Δ; reference score_xp_v2_goal_share_rate already park_clear_lose",
+    "modules": [
+      "src/eval/cascade_fd_goal_weight_likelihood_dig.py",
+      "src/eval/cascade_fd_generative_g_dig.py"
+    ],
+    "does_not_change_default": true,
+    "note": "XI resid G hotter under rate_minutes is not the gate; likelihood is"
+  },
   "cascade_fd_generative_g_dig": {
     "pre_registered": "2026-10-27",
     "status": "done",

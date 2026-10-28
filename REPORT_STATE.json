@@ -1,24 +1,22 @@
 {
-  "task": "cascade_long_place_venue_and_fd_gen_dig",
+  "task": "cascade_long_club_lam_and_goal_weight_likelihood_digs",
   "status": "done",
-  "as_of_utc": "2026-10-27T17:25:00Z",
-  "change": "Place×venue Opta λ screen + FD generative dig (defaults unchanged)",
+  "as_of_utc": "2026-10-28T08:22:00Z",
+  "change": "Dig club Σλ vs place GF + cascade goal_weight component likelihood",
   "verdict": {
-    "place_venue_holdout_winners": ["venue_away", "blend_fit"],
-    "place_venue_oos_pass_counts": {
-      "venue_away": 1,
-      "blend_fit": 1,
-      "venue_ev": 1,
-      "naive": 0
-    },
-    "default_venue_mode": "blind",
-    "fd_resid_G_rate": 14.025,
-    "fd_resid_G_rate_minutes": 100.3,
-    "alpha_g_empty_mass": 0.041
+    "pooled_lam_minus_place": 0.105,
+    "pooled_lam_minus_act": 0.88,
+    "goal_weight_gw_d_log_G": 0.0153,
+    "goal_weight_covers_zero": true,
+    "prefer_component_log": "rate_undetermined",
+    "default_unchanged": true
   },
-  "artifact": "/opt/cursor/artifacts/cascade_long_place_venue_lam_screen.json",
+  "artifacts": [
+    "/opt/cursor/artifacts/cascade_long_club_lam_vs_place_gf.json",
+    "/opt/cursor/artifacts/cascade_fd_goal_weight_likelihood_dig.json"
+  ],
   "reports": [
-    "reports/cascade_long_place_venue_lam_screen.md",
-    "reports/cascade_fd_generative_g_dig.md"
+    "reports/cascade_long_club_lam_vs_place_gf.md",
+    "reports/cascade_fd_goal_weight_likelihood_dig.md"
   ]
 }
