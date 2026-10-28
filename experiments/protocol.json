@@ -339,7 +339,8 @@
   },
   "cascade_short_goal_weight_likelihood_screen": {
     "pre_registered": "2026-10-28",
-    "status": "diagnostic_screen",
+    "status": "done_inconclusive",
+    "result": "π∝r−rate_minutes Δ log +0.008 [-0.002,+0.017] covers 0 → inconclusive; both gen arms lose to L3 (~−0.03…−0.04); keep default rate_minutes",
     "role": "cascade_short generative π∝r vs rate_minutes on player-GW log score; L3 score_xp_v2 reference",
     "treatment": "cascade_short_gen_goal_share_rate",
     "baseline": "cascade_short_gen_goal_share_rate_minutes",

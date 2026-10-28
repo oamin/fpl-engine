@@ -1,22 +1,18 @@
 {
-  "task": "cascade_long_club_lam_and_goal_weight_likelihood_digs",
+  "task": "cascade_short_goal_weight_likelihood_screen",
   "status": "done",
-  "as_of_utc": "2026-10-28T08:22:00Z",
-  "change": "Dig club Σλ vs place GF + cascade goal_weight component likelihood",
+  "as_of_utc": "2026-10-28T08:59:00Z",
+  "change": "Gated cascade_short generative π∝r vs rate_minutes (+ L3)",
   "verdict": {
-    "pooled_lam_minus_place": 0.105,
-    "pooled_lam_minus_act": 0.88,
-    "goal_weight_gw_d_log_G": 0.0153,
-    "goal_weight_covers_zero": true,
-    "prefer_component_log": "rate_undetermined",
+    "verdict": "inconclusive",
+    "mean_d_log": 0.00796,
+    "lo": -0.00216,
+    "hi": 0.01695,
+    "covers_zero": true,
+    "rm_minus_l3": -0.0384,
+    "rate_minus_l3": -0.0304,
     "default_unchanged": true
   },
-  "artifacts": [
-    "/opt/cursor/artifacts/cascade_long_club_lam_vs_place_gf.json",
-    "/opt/cursor/artifacts/cascade_fd_goal_weight_likelihood_dig.json"
-  ],
-  "reports": [
-    "reports/cascade_long_club_lam_vs_place_gf.md",
-    "reports/cascade_fd_goal_weight_likelihood_dig.md"
-  ]
+  "artifact": "/opt/cursor/artifacts/cascade_short_goal_weight_likelihood_screen.json",
+  "report": "reports/cascade_short_goal_weight_likelihood_screen.md"
 }

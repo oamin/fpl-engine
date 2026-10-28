@@ -113,6 +113,12 @@ seasons show H~0 / A high. XI heat ≠ escaped GF anchors.
 covers 0 (undetermined) on FD shared XI; gated `score_xp_v2` π∝r remains
 **park_clear_lose**. Default `rate_minutes` unchanged.
 `reports/cascade_fd_goal_weight_likelihood_dig.md`.
+**Cascade_short gen goal_weight screen (2026-10-28):** eligible-pool
+likelihood, four seasons. π∝r − rate_minutes **+0.008** [-0.002, +0.017]
+→ **inconclusive** (not promote). Both gen arms lose to L3 centreline
+(~−0.03…−0.04). Default `rate_minutes` unchanged — Dig B’s +100 XI resid
+does not overturn the gate.
+`reports/cascade_short_goal_weight_likelihood_screen.md`.
 
 **Strand default:** generative `run_strand` / `_undiscounted_scores_by_gw`
 require `share_pool` (full club m>0). Live + hist path/mean callers wired;

@@ -137,17 +137,16 @@ OOS prior seasons **1/3** — keep **`DEFAULT_VENUE_MODE=blind`**. Re-open with
 as-of expanding H/A rates or a milder blend under a fresh OOS gate + PI.
 `reports/cascade_long_place_venue_lam_screen.md`.
 
-## Open — default rate_minutes G overprint (2026-10-27 / dig 2026-10-28)
+## Parked — cascade_short gen π∝r vs rate_minutes (2026-10-28)
 
-FD shared-L3 map GW8–38: π∝r resid G **+14**; default `rate_minutes` **+100**
-(FWD +47; DEF/MID also inflate). α_G empty ~0.04. `rate_minutes` raises share
-HHI/top-1. Cascade **component** G log π∝r−rm **+0.015** [-0.002, +0.032]
-covers 0 (undetermined) — hotter resid does not by itself flip likelihood.
-Gated centreline `score_xp_v2_goal_share_rate` remains **park_clear_lose** for
-π∝r. Next: concentration / soft minutes lever under a proper four-season
-likelihood gate, not XI resid alone. Defaults unchanged.
-`reports/cascade_fd_generative_g_dig.md` ·
-`reports/cascade_fd_goal_weight_likelihood_dig.md`.
+Eligible-pool gated screen on cascade_short generative MC-mean (+ L3 ref):
+π∝r − rate_minutes **+0.008** [-0.002, +0.017] → **inconclusive**. Both gen
+arms lose to L3 centreline. Centreline `score_xp_v2_goal_share_rate` remains
+**park_clear_lose**. Dig B XI resid (+100 under rate_minutes) is not a promote
+signal. Keep default `goal_weight=rate_minutes`. Soft concentration levers
+only under a fresh pre-reg if reopened.
+`reports/cascade_short_goal_weight_likelihood_screen.md` ·
+`reports/cascade_fd_generative_g_dig.md`.
 
 ## Rejected — stored OLS place→GF/GA function (2026-10-24)
 
