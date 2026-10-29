@@ -1,3 +1,10 @@
+## Noted — eligible-pool cascade vs L3 E[G,CS,GC] (2026-10-29)
+
+Stepped GW8–38 as-of; residual on actual m>60. L3 centreline beats both
+generative arms on G/CS MAE (short ΔMAE +0.045 G; long +0.062 G). Confirms
+XI digs on the full eligible pool — gen-as-mean stays parked. Defaults
+unchanged. `reports/cascade_eligible_component_resid.md`.
+
 ## Locked — cascade_long venue_mode=blind (PI 2026-10-29)
 
 PI: blind Opta club λ is best left as-is; lock as default.
