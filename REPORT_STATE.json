@@ -1,12 +1,12 @@
 {
-  "task": "opta_fd_lag1_resid_correction",
+  "task": "opta_act_lag1_resid_correction",
   "status": "done",
-  "change": "Causal lag-1 Opta\u2212FD residual correction updating each GW",
+  "change": "Lag-1 correction using Opta\u2212actual residual",
   "verdict": {
-    "team_venue_resid": -0.012456516312139959,
-    "team_venue_mae_fd": 0.24191605257101848,
-    "team_venue_mae_act": 0.9638370775673706,
-    "raw_mae_act": 0.9507423099753937
+    "mae_raw": 0.9507423099753937,
+    "mae_act_lag": 1.2888777234998205,
+    "mae_fd_lag_same_rows": 0.9638370775673706,
+    "autocorr_mean": 0.04331236464780175
   },
-  "report": "reports/opta_fd_lag1_resid_correction.md"
+  "report": "reports/opta_act_lag1_resid_correction.md"
 }
