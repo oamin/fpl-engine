@@ -2131,5 +2131,18 @@
     ],
     "does_not_change_default": true,
     "result": "holdout fd_venue_away_only PASS (A +0.255\u2192+0.146, H flat); fd_venue_fit FAIL home; OOS away_only 2/4 \u2014 keep r=1; same class as place\u00d7venue/expanding_away"
+  },
+  "cascade_long_fd_opta_gap_all_seasons": {
+    "pre_registered": "2026-10-29",
+    "status": "done",
+    "result": "pooled Opta\u2212FD \u22120.024 (misleading); signs flip (+22/25, \u221223/24); home Opta<FD all 4; away Opta>FD in 3/4 (not 2023-24)",
+    "role": "Opta\u2212FD residual gap on all four closed seasons GW8\u201338",
+    "seasons": [
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26"
+    ],
+    "does_not_change_default": true
   }
 }

@@ -1,22 +1,28 @@
 {
-  "task": "cascade_long_fd_venue_scale_lam_screen",
+  "task": "cascade_long_fd_opta_gap_all_seasons",
   "status": "done",
-  "as_of_utc": "2026-10-29T20:37:27Z",
-  "change": "Screen FD venue mean-ratio scale on Opta \u03bb",
+  "as_of_utc": "2026-10-29T20:44:09Z",
+  "change": "Measure Opta\u2212FD gap on all four closed seasons",
   "verdict": {
-    "train_r_H": 1.1440267970526037,
-    "train_r_A": 0.9288172214980571,
-    "winners": [
-      "fd_venue_away_only"
-    ],
-    "oos_pass_counts": {
-      "fd_venue_fit": 0,
-      "fd_venue_away_only": 2,
-      "pooled_const": 1
+    "pooled_mean_resid": -0.023818717882748558,
+    "by_season_mean_resid": {
+      "2022-23": 0.08463267321422992,
+      "2023-24": -0.16706606025156479,
+      "2024-25": -0.08245884289079977,
+      "2025-26": 0.0664099867638398
     },
-    "recommended_arm": null,
-    "default_unchanged": true
+    "away_by_season": {
+      "2022-23": 0.2369019715585574,
+      "2023-24": -0.013722022386690841,
+      "2024-25": 0.08596103383529594,
+      "2025-26": 0.2319699584019773
+    },
+    "home_by_season": {
+      "2022-23": -0.06763662513009756,
+      "2023-24": -0.3204100981164388,
+      "2024-25": -0.2508787196168955,
+      "2025-26": -0.09914998487429774
+    }
   },
-  "artifact": "/opt/cursor/artifacts/cascade_long_fd_venue_scale_lam_screen.json",
-  "report": "reports/cascade_long_fd_venue_scale_lam_screen.md"
+  "report": "reports/cascade_long_fd_opta_gap_all_seasons.md"
 }
