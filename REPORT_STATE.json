@@ -1,21 +1,18 @@
 {
-  "task": "cascade_long_expanding_ha_lam_screen",
+  "task": "cascade_long_fd_vs_opta_lam_compare",
   "status": "done",
-  "as_of_utc": "2026-10-29T19:00:38Z",
-  "change": "Screen as-of expanding club H/A \u03bb vs Opta blind",
+  "as_of_utc": "2026-10-29T19:04:16Z",
+  "change": "Compare FD vs Opta ranking \u03bb on 2025-26",
   "verdict": {
-    "fit_blend_w": 0.3,
-    "winners": [
-      "expanding_away"
-    ],
-    "oos_pass_counts": {
-      "expanding_ha": 1,
-      "expanding_away": 2,
-      "blend_fit": 0
-    },
-    "recommended_arm": null,
+    "season": "2025-26",
+    "n_paired": 618,
+    "mean_opta_minus_fd": 0.06771612551756095,
+    "mae_opta_fd": 0.30645439414803943,
+    "corr_opta_fd": 0.7062363063702473,
+    "opta_bias": 0.12185231337534856,
+    "fd_bias": 0.054136187857787635,
     "default_unchanged": true
   },
-  "artifact": "/opt/cursor/artifacts/cascade_long_expanding_ha_lam_screen.json",
-  "report": "reports/cascade_long_expanding_ha_lam_screen.md"
+  "artifact": "/opt/cursor/artifacts/cascade_long_fd_vs_opta_lam_compare.json",
+  "report": "reports/cascade_long_fd_vs_opta_lam_compare.md"
 }

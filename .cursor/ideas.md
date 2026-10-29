@@ -148,6 +148,15 @@ expanding_away **2/4**, expanding_ha **1/4**, blend_fit **0/4** — keep
 fix without stable OOS. Do not flip without ≥3/4 OOS + PI.
 `reports/cascade_long_expanding_ha_lam_screen.md`.
 
+## Noted — FD vs Opta ranking λ, 2025-26 (2026-10-29)
+
+One closed season, paired team-sides GW8–38 (n=618). Opta ranking λ and FD
+AH+OU centreline corr **0.71**, MAE **0.31**, mean Opta−FD **+0.07**. Opta
+away bias **+0.26** vs FD away **+0.02**; Opta home ~flat, FD home **+0.09**.
+Gap concentrated on Opta favourites / top finishing-rank tercile. Confirms
+isolate club-λ anatomy without XI resid. Not a promote.
+`reports/cascade_long_fd_vs_opta_lam_compare.md`.
+
 ## Closed — gen vs L3 log-score loss anatomy (2026-10-29)
 
 Diagnostic on eligible-pool screen rows: gen and L3 bias nearly identical

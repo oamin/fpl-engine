@@ -129,6 +129,11 @@ vs Opta blind. Holdout **expanding_away PASS** (A +0.259→+0.031, H flat);
 `expanding_ha` / `blend_fit` FAIL home/away thresholds. OOS **2/4**
 (expanding_away) — **do not flip** `DEFAULT_VENUE_MODE=blind`.
 `reports/cascade_long_expanding_ha_lam_screen.md`.
+**FD vs Opta ranking λ (2026-10-29):** 2025-26 GW8–38 n=618 paired.
+Opta−FD **+0.068** (MAE 0.306, corr 0.706). vs act: Opta **+0.122** /
+FD **+0.054**. Venue: Opta A **+0.255** vs FD A **+0.023**; Opta H flat,
+FD H **+0.086**. Favourites / top-rank tercile drive Opta−FD gap.
+`reports/cascade_long_fd_vs_opta_lam_compare.md`.
 
 **Strand default:** generative `run_strand` / `_undiscounted_scores_by_gw`
 require `share_pool` (full club m>0). Live + hist path/mean callers wired;
