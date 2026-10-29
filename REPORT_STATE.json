@@ -1,13 +1,20 @@
 {
-  "task": "cascade_long_blind_venue_lock",
+  "task": "cascade_eligible_component_resid",
   "status": "done",
-  "change": "PI lock: DEFAULT_VENUE_MODE=blind + identity AWAY_SHRINK/LAM_SHRINK as cascade_long defaults",
-  "verdict": {
-    "venue_mode": "blind",
-    "AWAY_SHRINK": 1.0,
-    "LAM_SHRINK": 1.0,
-    "pi_approved": "2026-10-29"
+  "change": "Stepped eligible-pool E[G,CS,GC] short/long vs L3 (m>60)",
+  "season": "2025-26",
+  "n_player_gw": 5892,
+  "n_gw": 31,
+  "overall_G_mae": {
+    "short": 0.8589825186693822,
+    "long": 0.8755346232179225,
+    "l3": 0.8135176403457421
   },
-  "report": "reports/cascade_long_blind_venue_lock.md",
-  "protocol": "cascade_long_match_outcome"
+  "paired_G_delta_mae": {
+    "short": 0.04546487832363997,
+    "long": 0.06201698287218036
+  },
+  "report": "/workspace/reports/cascade_eligible_component_resid.md",
+  "out": "/opt/cursor/artifacts/cascade_eligible_component_resid.json",
+  "elapsed_s": 577.5353426933289
 }

@@ -2210,7 +2210,7 @@
   },
   "cascade_eligible_component_resid": {
     "pre_registered": "2026-10-29",
-    "status": "running",
+    "status": "done",
     "role": "Stepped eligible-pool E[G,CS,GC]: cascade_short (FD) + cascade_long (Opta) vs L3 score_xp_v2",
     "season": "2025-26",
     "gws": "8-38",
@@ -2235,6 +2235,7 @@
       "src/eval/cascade_mean_xi_ft_step_pool_resid.py",
       "src/eval/cascade_vs_l3_component_xp.py"
     ],
-    "report": "reports/cascade_eligible_component_resid.md"
+    "report": "reports/cascade_eligible_component_resid.md",
+    "result": "2025-26 GW8-38 m>60 n=5892: G MAE L3 0.814 < short 0.859 < long 0.876; CS MAE L3 0.749 < long 0.793 < short 0.799; short−L3 G ΔMAE +0.045; long−L3 G ΔMAE +0.062 — L3 closer on G/CS; defaults unchanged"
   }
 }
