@@ -1,12 +1,12 @@
 {
-  "task": "opta_act_lag1_resid_correction",
+  "task": "opta_remaining_balance_lam",
   "status": "done",
-  "change": "Lag-1 correction using Opta\u2212actual residual",
+  "change": "Dig remaining-season balance \u03bb vs blind Opta",
   "verdict": {
-    "mae_raw": 0.9507423099753937,
-    "mae_act_lag": 1.2888777234998205,
-    "mae_fd_lag_same_rows": 0.9638370775673706,
-    "autocorr_mean": 0.04331236464780175
+    "mae_blind": 0.9487167099307,
+    "mae_balance": 1.0469490574088554,
+    "delta": 0.09823234747815535,
+    "corr_behind": -0.040970999012038774
   },
-  "report": "reports/opta_act_lag1_resid_correction.md"
+  "report": "reports/opta_remaining_balance_lam.md"
 }
