@@ -1,17 +1,13 @@
 {
-  "task": "cascade_long_fd_opta_lam_scale_dig",
+  "task": "cascade_long_fd_opta_form_resid",
   "status": "done",
-  "as_of_utc": "2026-10-29T19:43:36Z",
-  "change": "Fit FD\u2194Opta venue mean-ratio scaling (implementable form)",
+  "as_of_utc": "2026-10-29T19:57:30Z",
+  "change": "Measure as-of form pattern in Opta\u2212FD residual (2025-26)",
   "verdict": {
-    "form": "\u03bb'_H = r_H \u00b7 \u03bb_H ;  \u03bb'_A = r_A \u00b7 \u03bb_A",
-    "r_H_2025_26": 1.0638314429546942,
-    "r_A_2025_26": 0.8473470500092446,
-    "r_H_pooled": 1.1145644371874315,
-    "r_A_pooled": 0.8927788861993821,
-    "default_unchanged": true,
-    "oos_warning": true
+    "partial_corr_gd_l5_resid": -0.22868928914840464,
+    "beta_per_sd_form": -0.09050548004006026,
+    "partial_corr_gd_l5_fd": 0.23928972399174828,
+    "partial_corr_gd_l5_opta": 0.024611500752402798
   },
-  "artifact": "/opt/cursor/artifacts/cascade_long_fd_opta_lam_scale_dig.json",
-  "report": "reports/cascade_long_fd_opta_lam_scale_dig.md"
+  "report": "reports/cascade_long_fd_opta_form_resid.md"
 }

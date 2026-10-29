@@ -148,6 +148,11 @@ expanding_away **2/4**, expanding_ha **1/4**, blend_fit **0/4** — keep
 fix without stable OOS. Do not flip without ≥3/4 OOS + PI.
 `reports/cascade_long_expanding_ha_lam_screen.md`.
 
+## Noted — form swings FD vs place Opta λ (2026-10-29)
+
+As-of L5 GD on 2025-26 Opta−FD residual: raw tertiles flat; after rank+venue, in-form teams get FD lifted (partial r=−0.23 on resid). Opta place-locked. Not a promote — explanatory dig for the residual variance.
+`reports/cascade_long_fd_opta_form_resid.md`.
+
 ## Noted — FD↔Opta venue mean-ratio scale (2026-10-29)
 
 Implementable map: `λ'_H = r_H·λ_H`, `λ'_A = r_A·λ_A`,
