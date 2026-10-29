@@ -2072,5 +2072,13 @@
     "season": "2025-26",
     "form": "last-5 mean GD / pts / GF before GW",
     "does_not_change_default": true
+  },
+  "cascade_long_fd_opta_resid_drivers": {
+    "pre_registered": "2026-10-29",
+    "status": "done",
+    "result": "Form too weak to lean on (univ R\u00b2\u22480; \u0394R\u00b2 +0.03 after structure). Better drivers: venue + rank_gap/Opta margin (R\u00b2\u22480.40). Form secondary only.",
+    "role": "Horse-race drivers of Opta\u2212FD residual; judge whether form is lean-worthy",
+    "season": "2025-26",
+    "does_not_change_default": true
   }
 }

@@ -134,6 +134,7 @@ Opta−FD **+0.068** (MAE 0.306, corr 0.706). vs act: Opta **+0.122** /
 FD **+0.054**. Venue: Opta A **+0.255** vs FD A **+0.023**; Opta H flat,
 FD H **+0.086**. Favourites / top-rank tercile drive Opta−FD gap.
 `reports/cascade_long_fd_vs_opta_lam_compare.md`.
+**Opta−FD residual drivers (2026-10-29):** form not lean-worthy (univ R²≈0; ΔR² **+0.03** after structure). Dominant: **venue + rank_gap / Opta margin** (R²≈**0.40**). `reports/cascade_long_fd_opta_resid_drivers.md`.
 **Form vs Opta−FD residual (2026-10-29):** 2025-26 as-of L5 GD. Raw form flat (confounded with place). Conditional on rank+venue: partial r=**−0.23**; FD moves with form (**+0.24**), Opta does not (**+0.03**). Within top/bottom bands hot−cold resid **≈−0.13**.
 `reports/cascade_long_fd_opta_form_resid.md`.
 **FD↔Opta scale dig (2026-10-29):** not a global mul (Opta−FD flips

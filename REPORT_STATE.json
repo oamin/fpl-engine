@@ -1,13 +1,11 @@
 {
-  "task": "cascade_long_fd_opta_form_resid",
+  "task": "cascade_long_fd_opta_resid_drivers",
   "status": "done",
-  "as_of_utc": "2026-10-29T19:57:30Z",
-  "change": "Measure as-of form pattern in Opta\u2212FD residual (2025-26)",
+  "change": "Horse-race Opta\u2212FD residual drivers; form vs structure",
   "verdict": {
-    "partial_corr_gd_l5_resid": -0.22868928914840464,
-    "beta_per_sd_form": -0.09050548004006026,
-    "partial_corr_gd_l5_fd": 0.23928972399174828,
-    "partial_corr_gd_l5_opta": 0.024611500752402798
+    "form_lean_worthy": false,
+    "best_r2_structure": 0.405,
+    "form_delta_r2": 0.033
   },
-  "report": "reports/cascade_long_fd_opta_form_resid.md"
+  "report": "reports/cascade_long_fd_opta_resid_drivers.md"
 }
