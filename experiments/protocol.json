@@ -357,6 +357,47 @@
     "does_not_change_default": true,
     "note": "Re-screens parked score_xp_v2_goal_share_rate weight formula on cascade_short generative + L3 reference; Dig B XI resid is not the gate"
   },
+  "cascade_gen_vs_l3_loss_anatomy": {
+    "pre_registered": "2026-10-29",
+    "status": "done",
+    "result": "gen vs L3: bias nearly identical (~−0.96); gen higher pred SD (1.81 vs 1.57) and lower corr (0.217 vs 0.237); Δ log worst in top L3-xp quintile — variance/ranking, not mean bias; gen-as-mean stays parked (viability B1)",
+    "role": "Diagnostic: why cascade_short generative loses player-GW log score to L3 centreline",
+    "source_rows": "data/processed/cascade_short_goal_weight_likelihood_rows.csv",
+    "arms": ["rate_minutes", "rate", "l3"],
+    "lenses": [
+      "mean bias / MAE / corr / pred SD",
+      "Δ log (gen−L3) by L3-xp quintile",
+      "by closed season"
+    ],
+    "modules": ["src/eval/cascade_gen_vs_l3_loss_anatomy.py"],
+    "does_not_change_default": true,
+    "note": "Follow-up to cascade_short_goal_weight_likelihood_screen; confirms B1 park — not a mean-level G fix"
+  },
+  "cascade_long_expanding_ha_lam_screen": {
+    "pre_registered": "2026-10-29",
+    "status": "done_holdout_pass_oos_fail",
+    "result": "holdout expanding_away PASS (A +0.259→+0.031, H flat, MAE↓); OOS expanding_away 2/4, expanding_ha 1/4, blend_fit 0/4 — keep DEFAULT_VENUE_MODE=blind",
+    "role": "as-of expanding club H/A rates vs Opta blind place season-total λ (reopens place×venue with causal rates)",
+    "baseline": "venue_mode=blind place season-total λ",
+    "candidates": {
+      "expanding_ha": "as-of club H/A GF/GA (prior closed + current before GW; PRIOR_N=10) × opp venue def / league venue mean",
+      "expanding_away": "λ_H blind; λ_A from expanding club rates",
+      "blend_fit": "train-fit w on expanding_ha, grid 0.00..1.00 step 0.10 on 2022-23..2024-25"
+    },
+    "holdout": "2025-26 GW8-38 team-sides",
+    "oos_seasons": ["2022-23", "2023-24", "2024-25", "2025-26"],
+    "metric_primary": "away mean(λ−actual goals)",
+    "metric_secondary": ["home mean(λ−actual)", "overall MAE(λ,act)", "vs FD mean(λ−act) on holdout"],
+    "promote_rule": "on holdout vs blind: |away bias| falls by ≥0.10 AND home |bias| does not rise by >0.05 AND MAE does not rise by >0.02; OOS required (≥3/4 seasons) before any default flip; still requires PI re-approval",
+    "prior_pseudo_matches": 10,
+    "modules": [
+      "src/eval/cascade_long_expanding_ha_lam_screen.py",
+      "src/models/opta_gf_ga_horizon.py",
+      "src/models/multistage_mc_milp.py"
+    ],
+    "does_not_change_default": true,
+    "note": "Follows cascade_long_place_venue_lam_screen — as-of club rates instead of final-place×venue oracles; same promote thresholds"
+  },
   "cascade_fd_goal_weight_likelihood_dig": {
     "pre_registered": "2026-10-28",
     "status": "done",

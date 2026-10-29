@@ -119,6 +119,16 @@ likelihood, four seasons. π∝r − rate_minutes **+0.008** [-0.002, +0.017]
 (~−0.03…−0.04). Default `rate_minutes` unchanged — Dig B’s +100 XI resid
 does not overturn the gate.
 `reports/cascade_short_goal_weight_likelihood_screen.md`.
+**Gen vs L3 loss anatomy (2026-10-29):** bias nearly identical (~−0.96);
+gen higher pred SD (1.81 vs 1.57) and lower corr (0.217 vs 0.237); Δ log
+worst in top L3-xp quintile. Confirms viability B1 — variance/ranking, not
+a mean-level G fix. Gen-as-mean stays parked.
+`reports/cascade_gen_vs_l3_loss_anatomy.md`.
+**Expanding H/A λ screen (2026-10-29):** as-of club H/A rates (PRIOR_N=10)
+vs Opta blind. Holdout **expanding_away PASS** (A +0.259→+0.031, H flat);
+`expanding_ha` / `blend_fit` FAIL home/away thresholds. OOS **2/4**
+(expanding_away) — **do not flip** `DEFAULT_VENUE_MODE=blind`.
+`reports/cascade_long_expanding_ha_lam_screen.md`.
 
 **Strand default:** generative `run_strand` / `_undiscounted_scores_by_gw`
 require `share_pool` (full club m>0). Live + hist path/mean callers wired;

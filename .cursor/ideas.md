@@ -133,9 +133,28 @@ moves error H↔A / level without a stable OOS win.
 
 `venue_away` (λ_H blind; λ_A = place×venue away attack × blind home defence)
 **PASS** 2025-26 club-λ promote; full `venue`/`naive` FAIL (home |bias|).
-OOS prior seasons **1/3** — keep **`DEFAULT_VENUE_MODE=blind`**. Re-open with
-as-of expanding H/A rates or a milder blend under a fresh OOS gate + PI.
+OOS prior seasons **1/3** — keep **`DEFAULT_VENUE_MODE=blind`**. As-of
+expanding H/A re-open screened 2026-10-29 (below) — still OOS fail.
 `reports/cascade_long_place_venue_lam_screen.md`.
+
+## Parked — as-of expanding club H/A λ (2026-10-29)
+
+Re-opened place×venue with **as-of** club H/A rates (prior closed + current
+before GW; PRIOR_N=10), not final-place oracles. Holdout **expanding_away
+PASS** (A +0.259→+0.031, H flat, MAE↓); `expanding_ha` FAIL (home |bias|
+worsens +0.052); `blend_fit` w=0.30 FAIL away threshold. OOS pass counts
+expanding_away **2/4**, expanding_ha **1/4**, blend_fit **0/4** — keep
+**`DEFAULT_VENUE_MODE=blind`**. Same class as place×venue: holdout away
+fix without stable OOS. Do not flip without ≥3/4 OOS + PI.
+`reports/cascade_long_expanding_ha_lam_screen.md`.
+
+## Closed — gen vs L3 log-score loss anatomy (2026-10-29)
+
+Diagnostic on eligible-pool screen rows: gen and L3 bias nearly identical
+(~−0.96); gen higher pred SD / lower corr; Δ log worst on high-xp
+quintile. Confirms viability B1 (gen clearly_loses) is variance/ranking,
+not a mean-level G gap. Do not chase XI resid G via more generative dice.
+`reports/cascade_gen_vs_l3_loss_anatomy.md`.
 
 ## Parked — cascade_short gen π∝r vs rate_minutes (2026-10-28)
 

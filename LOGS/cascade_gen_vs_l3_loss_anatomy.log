@@ -1,0 +1,8 @@
+[
+  "Mean bias nearly identical (gen and L3 both ~\u22120.96 vs points).",
+  "Gen has higher pred SD and lower corr \u2014 extra variance / worse ranking.",
+  "\u0394 log worsens in the top L3-xp quintile (high-xp players).",
+  "Confirms viability B1: gen-as-mean parked; not a mean-level G fix."
+]
+wrote /opt/cursor/artifacts/cascade_gen_vs_l3_loss_anatomy.json
+wrote /workspace/reports/cascade_gen_vs_l3_loss_anatomy.md
