@@ -2144,5 +2144,12 @@
       "2025-26"
     ],
     "does_not_change_default": true
+  },
+  "cascade_long_fd_opta_venue_resid_drivers": {
+    "pre_registered": "2026-10-29",
+    "status": "done",
+    "result": "One mechanism: Opta venue-blind level vs FD HA\u2248+0.32; resid_ha\u2248Opta_level\u2212FD_ha. Season gaps = Opta level bias + whether FD away is soft. 2023-24 odd away because FD_A\u2248Opta_A.",
+    "role": "Coherent per-season drivers of home/away Opta\u2212FD residual",
+    "does_not_change_default": true
   }
 }

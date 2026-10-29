@@ -134,6 +134,7 @@ Opta−FD **+0.068** (MAE 0.306, corr 0.706). vs act: Opta **+0.122** /
 FD **+0.054**. Venue: Opta A **+0.255** vs FD A **+0.023**; Opta H flat,
 FD H **+0.086**. Favourites / top-rank tercile drive Opta−FD gap.
 `reports/cascade_long_fd_vs_opta_lam_compare.md`.
+**Home/away Opta−FD drivers (2026-10-29):** one mechanism all seasons — Opta H/A flat vs FD HA≈+0.32; resid≈Opta_level−FD_venue. Size varies with Opta season level + FD away softness (2023-24 away≈0 because FD_A≈Opta_A). `reports/cascade_long_fd_opta_venue_resid_drivers.md`.
 **Opta−FD gap all seasons (2026-10-29):** pooled **−0.024** (n=2498) masks sign flips — Opta>FD in 22/25, Opta<FD in 23/24. Home: Opta below FD all four. Away: Opta above FD in 3/4 (not 2023-24). `reports/cascade_long_fd_opta_gap_all_seasons.md`.
 **Margin-shrink λ trial (2026-10-29):** strength-mismatch lever `λ'=m+α(λ−m)` — **FAIL** (inert: E[λ_H]≈E[λ_A] under blind so venue biases do not move). `reports/cascade_long_margin_shrink_lam_screen.md`.
 **FD venue-scale λ trial (2026-10-29):** `λ'_ha=r_ha·λ_ha` toward FD. Train r_H=1.14 / r_A=0.93. Holdout **away_only PASS**; full fit FAIL home; OOS **2/4** — keep identity. Same OOS class as place×venue / expanding_away. `reports/cascade_long_fd_venue_scale_lam_screen.md`.

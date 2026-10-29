@@ -1,28 +1,10 @@
 {
-  "task": "cascade_long_fd_opta_gap_all_seasons",
+  "task": "cascade_long_fd_opta_venue_resid_drivers",
   "status": "done",
-  "as_of_utc": "2026-10-29T20:44:09Z",
-  "change": "Measure Opta\u2212FD gap on all four closed seasons",
+  "change": "Per-season coherent drivers of home/away Opta\u2212FD residual",
   "verdict": {
-    "pooled_mean_resid": -0.023818717882748558,
-    "by_season_mean_resid": {
-      "2022-23": 0.08463267321422992,
-      "2023-24": -0.16706606025156479,
-      "2024-25": -0.08245884289079977,
-      "2025-26": 0.0664099867638398
-    },
-    "away_by_season": {
-      "2022-23": 0.2369019715585574,
-      "2023-24": -0.013722022386690841,
-      "2024-25": 0.08596103383529594,
-      "2025-26": 0.2319699584019773
-    },
-    "home_by_season": {
-      "2022-23": -0.06763662513009756,
-      "2023-24": -0.3204100981164388,
-      "2024-25": -0.2508787196168955,
-      "2025-26": -0.09914998487429774
-    }
+    "mechanism": "Opta flat venue means vs FD home advantage; size varies by season level + FD HA",
+    "odd_season": "2023-24 away resid\u22480 because FD_A\u2248Opta_A"
   },
-  "report": "reports/cascade_long_fd_opta_gap_all_seasons.md"
+  "report": "reports/cascade_long_fd_opta_venue_resid_drivers.md"
 }
