@@ -1,6 +1,6 @@
 # FD λ vs cascade_long Opta ranking λ
 
-Pre-registered **2026-10-29** · protocol `cascade_long_fd_vs_opta_lam_compare` · season **2025-26** GW8–38 · wall 3.9s · n=618 paired team-sides
+Pre-registered **2026-10-29** · protocol `cascade_long_fd_vs_opta_lam_compare` · season **2025-26** GW8–38 · wall 3.8s · n=618 paired team-sides
 
 ## Verdict
 

@@ -134,6 +134,13 @@ Opta−FD **+0.068** (MAE 0.306, corr 0.706). vs act: Opta **+0.122** /
 FD **+0.054**. Venue: Opta A **+0.255** vs FD A **+0.023**; Opta H flat,
 FD H **+0.086**. Favourites / top-rank tercile drive Opta−FD gap.
 `reports/cascade_long_fd_vs_opta_lam_compare.md`.
+**FD↔Opta scale dig (2026-10-29):** not a global mul (Opta−FD flips
+sign 25→24). Implementable **venue mean-ratio**
+`λ'_H=r_H·λ_H`, `λ'_A=r_A·λ_A` with `r=mean(FD)/mean(Opta)`:
+2025-26 **r_H=1.064 / r_A=0.847**; 2024-25 **1.166 / 0.939**; pooled
+**≈1.115 / 0.893**. Hook next to `away_shrink` (+ `home_scale`). Affine
+`FD≈a·Opta+b` (a<1) needed for tails. **No default flip** (OOS unstable).
+`reports/cascade_long_fd_opta_lam_scale_dig.md`.
 
 **Strand default:** generative `run_strand` / `_undiscounted_scores_by_gw`
 require `share_pool` (full club m>0). Live + hist path/mean callers wired;

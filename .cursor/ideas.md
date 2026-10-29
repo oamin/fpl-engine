@@ -148,6 +148,17 @@ expanding_away **2/4**, expanding_ha **1/4**, blend_fit **0/4** — keep
 fix without stable OOS. Do not flip without ≥3/4 OOS + PI.
 `reports/cascade_long_expanding_ha_lam_screen.md`.
 
+## Noted — FD↔Opta venue mean-ratio scale (2026-10-29)
+
+Implementable map: `λ'_H = r_H·λ_H`, `λ'_A = r_A·λ_A`,
+`r_ha = mean(FD_ha)/mean(Opta_ha)`. 2025-26 **1.064 / 0.847**;
+2024-25 **1.166 / 0.939**; pooled **≈1.115 / 0.893**. Direction stable
+(FD warmer home, Opta hotter away); magnitudes move — one-season fit
+applied OOS worsens venue bias. Also: Opta tails fatter than FD
+(affine a<1). Hook = post-λ `home_scale` + `away_shrink`, not
+`LAM_SHRINK`. Parked pending OOS screen + PI; do not lock constants.
+`reports/cascade_long_fd_opta_lam_scale_dig.md`.
+
 ## Noted — FD vs Opta ranking λ, 2025-26 (2026-10-29)
 
 One closed season, paired team-sides GW8–38 (n=618). Opta ranking λ and FD

@@ -373,6 +373,21 @@
     "does_not_change_default": true,
     "note": "Follow-up to cascade_short_goal_weight_likelihood_screen; confirms B1 park — not a mean-level G fix"
   },
+  "cascade_long_fd_opta_lam_scale_dig": {
+    "pre_registered": "2026-10-29",
+    "status": "done",
+    "result": "Implementable form λ'_H=r_H·λ_H, λ'_A=r_A·λ_A with r=mean(FD)/mean(Opta) by venue; 2025-26 r_H=1.064 r_A=0.847; 2024-25 r_H=1.166 r_A=0.939; pooled r_H≈1.115 r_A≈0.893; direction stable, magnitudes not — no default flip",
+    "role": "Fit how FD centreline λ scales vs Opta ranking λ for an implementable post-λ map",
+    "form": "venue mean-ratio scale (not global mul; not LAM_SHRINK)",
+    "hook": "post-λ site next to away_shrink / home_scale in opta_gf_ga_horizon",
+    "seasons": ["2025-26", "2024-25"],
+    "modules": [
+      "src/eval/cascade_long_fd_opta_lam_scale_dig.py",
+      "src/eval/cascade_long_fd_vs_opta_lam_compare.py"
+    ],
+    "does_not_change_default": true,
+    "note": "Affine FD≈a·Opta+b (a<1) also needed for tail compression; venue mean-ratio alone matches venue means only. OOS required before promote"
+  },
   "cascade_long_fd_vs_opta_lam_compare": {
     "pre_registered": "2026-10-29",
     "status": "done",
