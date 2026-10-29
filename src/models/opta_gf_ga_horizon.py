@@ -46,16 +46,17 @@ N_MATCHES = 38.0
 # Away λ shrink only (λ_A ← λ_A·s; λ_H untouched). No hard 0.20–3.50 λ clip.
 # Symmetric HOME_ADV (λ_H·h, λ_A/h) retired 2026-10-24. Fixed s≠1 (incl. 0.768
 # from 2025-26 XI resid crossing) parked 2026-10-27 — OOS club-λ 0/3 FAIL.
+# Locked identity 2026-10-29 (PI): do not flip without a new pre-reg + PI.
 AWAY_SHRINK = 1.0
-# Combined scale on both λ_H and λ_A (after away_shrink). Default identity.
-# Diagnostic only until a pre-registered screen promotes it.
+# Combined scale on both λ_H and λ_A (after away_shrink). Locked identity
+# 2026-10-29 (PI) with venue_mode=blind — diagnostic only if reopened.
 LAM_SHRINK = 1.0
 # Deprecated alias — do not reintroduce symmetric home boost.
 HOME_ADV = 1.0
-# Venue λ map: blind (default season-total place GF/GA) vs place×venue rates.
-# ``venue_away`` keeps λ_H blind and replaces λ_A with venue away-attack ×
-# blind home defence. Full ``venue`` / ``naive`` are diagnostic only.
-# Default stays ``blind`` until a pre-registered screen + PI promote.
+# Venue λ map: locked ``blind`` = season-total place GF/GA (PI 2026-10-29).
+# place×venue / expanding H/A / FD venue-scale / margin-shrink / lag-1 /
+# remaining-balance all failed OOS or hurt MAE — leave identity.
+# ``venue_away`` / ``venue`` / ``naive`` / ``blend`` stay diagnostic only.
 DEFAULT_VENUE_MODE = "blind"
 VENUE_MODES = ("blind", "venue", "venue_away", "naive", "blend")
 # Default place→GF/GA map (cascade_long): empirical place means + SD.
@@ -755,7 +756,7 @@ def _apply_venue_mode_lambdas(
     away_shrink: float,
     lam_shrink: float,
 ) -> tuple[float, float, str]:
-    """Map blind λ through a venue_mode. Default ``blind`` is identity."""
+    """Map blind λ through a venue_mode. Locked default ``blind`` is identity."""
     mode = str(venue_mode or DEFAULT_VENUE_MODE)
     if mode not in VENUE_MODES:
         raise ValueError(f"unknown venue_mode={venue_mode!r}")
@@ -819,9 +820,10 @@ def sample_match_from_opta_ranks(
     Each side rolls season GF/GA inside its rank band; ḡ is the assessed
     expanding league mean (or an explicit ``league_gf``), also sampled inside
     its SE band; then ``pots_from_season_gf_ga`` → match λ.
-    ``venue_mode`` defaults to ``blind`` (no place×venue remap). Diagnostic
-    modes: ``venue``, ``venue_away``, ``naive``, ``blend`` (blend weight on
-    venue_away λ_A). ``home_adv`` is ignored if passed (deprecated).
+    ``venue_mode`` locked default ``blind`` (no place×venue remap; PI
+    2026-10-29). Diagnostic modes: ``venue``, ``venue_away``, ``naive``,
+    ``blend`` (blend weight on venue_away λ_A). ``home_adv`` is ignored if
+    passed (deprecated).
     """
     del home_adv
     if ranks is None:
@@ -956,8 +958,8 @@ def match_prediction(
 
     λ bands use delta-method propagation of place GF/GA SDs and the SE of
     assessed expanding ḡ (not a corner envelope of independent lo/hi).
-    ``venue_mode`` defaults to ``blind``. ``home_adv`` is ignored if passed
-    (deprecated).
+    ``venue_mode`` locked default ``blind`` (PI 2026-10-29). ``home_adv`` is
+    ignored if passed (deprecated).
     """
     del home_adv
     if ranks is None:

@@ -1,3 +1,11 @@
+## Locked — cascade_long venue_mode=blind (PI 2026-10-29)
+
+PI: blind Opta club λ is best left as-is; lock as default.
+`DEFAULT_VENUE_MODE=blind`, `AWAY_SHRINK=1.0`, `LAM_SHRINK=1.0`, `HOME_ADV=1.0`
+in `protocol.cascade_long_match_outcome` / `opta_gf_ga_horizon`.
+All screened remaps parked below. Report:
+`reports/cascade_long_blind_venue_lock.md`.
+
 ## Parked — Opta margin-shrink α<1 (2026-10-29)
 
 Compress fixture Opta margins toward match mean. Train-fit α=0.90. Holdout/OOS **0/4 PASS** — venue mean biases unchanged because blind Opta already has E[λ_H]≈E[λ_A]. Not a fix for away overprint.
@@ -5,8 +13,21 @@ Compress fixture Opta margins toward match mean. Train-fit α=0.90. Holdout/OOS 
 
 ## Parked — FD venue mean-ratio scale (2026-10-29)
 
-`λ'_H=r_H·λ_H`, `λ'_A=r_A·λ_A` with train FD/Opta venue means (r_H=1.14, r_A=0.93). Holdout **away_only PASS**; full (r_H,r_A) FAIL home boost; OOS away_only **2/4**. Keep identity. Same unstable-OOS class as place×venue / expanding_away.
+`λ'_H=r_H·λ_H`, `λ'_A=r_A·λ_A` with train FD/Opta venue means (r_H=1.14, r_A=0.93). Holdout **away_only PASS**; full (r_H,r_A) FAIL home boost; OOS away_only **2/4**. Keep identity. Same unstable-OOS class as place×venue / expanding_away. Superseded by blind lock 2026-10-29.
 `reports/cascade_long_fd_venue_scale_lam_screen.md`.
+
+## Parked — lag-1 Opta−FD / Opta−actual residual correction (2026-10-29)
+
+Subtract GW(t−1) Opta−FD from current λ tracks the book, not the ball.
+Opta−actual lag-1 hurts MAE. Keep blind.
+`reports/opta_fd_lag1_resid_correction.md` ·
+`reports/opta_act_lag1_resid_correction.md`.
+
+## Parked — remaining-season balance λ (2026-10-29)
+
+`gf_rem=(place_GF−ΣG)/games_left` → DC λ. MAE **1.047** vs blind **0.949**
+(Δ **+0.098**); pace→underprint corr **−0.041**. Keep blind.
+`reports/opta_remaining_balance_lam.md`.
 
 # Candidate hypotheses
 
@@ -145,6 +166,7 @@ moves error H↔A / level without a stable OOS win.
 **PASS** 2025-26 club-λ promote; full `venue`/`naive` FAIL (home |bias|).
 OOS prior seasons **1/3** — keep **`DEFAULT_VENUE_MODE=blind`**. As-of
 expanding H/A re-open screened 2026-10-29 (below) — still OOS fail.
+Superseded by blind lock 2026-10-29.
 `reports/cascade_long_place_venue_lam_screen.md`.
 
 ## Parked — as-of expanding club H/A λ (2026-10-29)
@@ -153,9 +175,8 @@ Re-opened place×venue with **as-of** club H/A rates (prior closed + current
 before GW; PRIOR_N=10), not final-place oracles. Holdout **expanding_away
 PASS** (A +0.259→+0.031, H flat, MAE↓); `expanding_ha` FAIL (home |bias|
 worsens +0.052); `blend_fit` w=0.30 FAIL away threshold. OOS pass counts
-expanding_away **2/4**, expanding_ha **1/4**, blend_fit **0/4** — keep
-**`DEFAULT_VENUE_MODE=blind`**. Same class as place×venue: holdout away
-fix without stable OOS. Do not flip without ≥3/4 OOS + PI.
+expanding_away **2/4**, expanding_ha **1/4**, blend_fit **0/4**.
+Superseded by blind lock 2026-10-29.
 `reports/cascade_long_expanding_ha_lam_screen.md`.
 
 ## Noted — form swings FD vs place Opta λ (2026-10-29)
@@ -221,8 +242,11 @@ only (`DEFAULT_FT_PE_NU=0`). Re-open PE only as an explicit diagnostic screen.
 PI-approved in `protocol.cascade_long_match_outcome`:
 rankmean place GF/GA ± SD → draw latents with `centre_blend=0.5` inside
 ±z·SD → assessed expanding ḡ → Dixon–Coles λ → `M|λ` → `k∼M`. δ-method
-`sd_lam` is diagnostic only; no second λ Uniform band. See
-`reports/LOCKED.md` / `reports/CASCADE_LOCKED.md`.
+`sd_lam` is diagnostic only; no second λ Uniform band.
+**Venue lock 2026-10-29:** `venue_mode=blind` + identity
+`AWAY_SHRINK`/`LAM_SHRINK`. See `reports/LOCKED.md` /
+`reports/CASCADE_LOCKED.md` /
+`reports/cascade_long_blind_venue_lock.md`.
 
 ## Parked — cascade_short bonus-from-roll (2026-10-20)
 

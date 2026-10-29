@@ -13,7 +13,7 @@ Updated: 2026-10-23. **Numagent 2.0** is the product on main (`protocol.numagent
 | **3. Decompose v2 for cascade** | **done** | [`CASCADE_CONTRACT.md`](../reports/CASCADE_CONTRACT.md); `src/strategy/layer4_mu_inject.py` (`pools_from_mu_boards` → `solve_horizon_transfers`). Long-horizon λ→xP stays `cascade_score_v2`. |
 | **4. Cascade rebuild plan** | **done** | [`CASCADE_PLAN.md`](../reports/CASCADE_PLAN.md): **cascade_short** / **cascade_long**, shared [`player_pool`](../src/models/player_pool.py). Scorer gate: [`SCORE_XP_V2_CHECKLIST.md`](../reports/SCORE_XP_V2_CHECKLIST.md) — confirm before path-V screens. |
 | **5. cascade_short generative** | **done** | `protocol.cascade_short_generative` locked 2026-10-20 (PR #96 / #97): centreline `M`→`k∼M` (**no λ ±15% jitter**)→lineup→attack→CS/GC; soft priors = `score_xp_v2` helpers; firm XI deferred. |
-| **6. cascade_long Opta generative** | **PI-approved 2026-10-24** | `protocol.cascade_long_match_outcome`: rankmean±SD latents (`centre_blend=0.5`) → assessed expanding ḡ → λ → `M\|λ` → `k∼M` (hierarchical; no second λ jitter; OLS/`HOME_ADV=1.08` retired); player stack = cascade_short generative **without props**. |
+| **6. cascade_long Opta generative** | **PI-approved 2026-10-24**; **venue blind locked 2026-10-29** | `protocol.cascade_long_match_outcome`: rankmean±SD latents (`centre_blend=0.5`) → assessed expanding ḡ → λ → `M\|λ` → `k∼M` (hierarchical; no second λ jitter; OLS/`HOME_ADV=1.08` retired); **`venue_mode=blind`** + identity `AWAY_SHRINK`/`LAM_SHRINK` locked (PI); player stack = cascade_short generative **without props**. `reports/cascade_long_blind_venue_lock.md`. |
 | **7. Cascade viability overnight** | **done** | `cascade_viability_batch` A/D green; C FT+cap smoke OK; B1/B2 gen MC-mean **clearly_loses** vs centreline mean (Δ≈−0.09); B3 inconclusive. Gen-as-mean **parked** — `reports/cascade_short_long_viability_results.md`. |
 | **8. Mean t:t+1 vs short gen** | **done** | N_MC=20 product horizon: still **clearly_loses** (Δ≈−0.054). `reports/cascade_short_mean_tt1_vs_gen.md`. |
 | **9. Path-V gen vs mean MILP** | **done (diagnostic)** | FT+cap N=20: both solve; gen hits≈7.2 vs mean≈1.6; top-15 Jaccard≈0.36. Not a path-V promote. `reports/cascade_pathv_gen_vs_mean.md`. |
@@ -91,14 +91,14 @@ away **+0.26**, worst on **away favourites (+0.43)**. Place GF/GA are
 venue-blind season totals. Naive place×venue diagnostic zeros away bias
 but breaks home — needs a proper pre-reg OOS screen, not fixed shrink.
 `reports/cascade_long_g_overprint_isolate.md`.
-**Place×venue λ path (default unchanged):** `venue_mode=blind|venue|
+**Place×venue λ path (locked blind):** `venue_mode=blind|venue|
 venue_away|naive|blend` on `sample_match_from_opta_ranks` /
-`sample_opta_scenario`. Primary candidate **`venue_away`** (λ_H blind;
+`sample_opta_scenario`. Primary candidate was **`venue_away`** (λ_H blind;
 λ_A = place×venue away attack × blind home defence).
 **Place×venue screen:** holdout **venue_away PASS** / blend_fit PASS
 (away +0.256→+0.117, home flat); full `venue`/`naive` FAIL (home).
-OOS **1/3** — **do not flip** `DEFAULT_VENUE_MODE=blind` (needs better
-OOS / PI). `reports/cascade_long_place_venue_lam_screen.md`.
+OOS **1/3** — **`DEFAULT_VENUE_MODE=blind` locked 2026-10-29 (PI)**.
+`reports/cascade_long_place_venue_lam_screen.md`.
 **FD generative dig:** π∝r resid G **+14**; default `rate_minutes`
 **+100** on the same FD map (FWD +47). α_G empty ~0.04 irrelevant.
 `rate_minutes` concentrates shares (HHI 0.17 vs 0.15). Live generative
@@ -127,7 +127,7 @@ a mean-level G fix. Gen-as-mean stays parked.
 **Expanding H/A λ screen (2026-10-29):** as-of club H/A rates (PRIOR_N=10)
 vs Opta blind. Holdout **expanding_away PASS** (A +0.259→+0.031, H flat);
 `expanding_ha` / `blend_fit` FAIL home/away thresholds. OOS **2/4**
-(expanding_away) — **do not flip** `DEFAULT_VENUE_MODE=blind`.
+(expanding_away) — parked under blind lock.
 `reports/cascade_long_expanding_ha_lam_screen.md`.
 **FD vs Opta ranking λ (2026-10-29):** 2025-26 GW8–38 n=618 paired.
 Opta−FD **+0.068** (MAE 0.306, corr 0.706). vs act: Opta **+0.122** /
@@ -148,6 +148,11 @@ sign 25→24). Implementable **venue mean-ratio**
 **≈1.115 / 0.893**. Hook next to `away_shrink` (+ `home_scale`). Affine
 `FD≈a·Opta+b` (a<1) needed for tails. **No default flip** (OOS unstable).
 `reports/cascade_long_fd_opta_lam_scale_dig.md`.
+**Lag-1 / remaining-balance digs (2026-10-29):** lag-1 Opta−FD tracks book
+not ball; lag-1 Opta−actual and remaining-season balance both raise MAE vs
+blind. **PI lock:** leave blind Opta as default —
+`reports/cascade_long_blind_venue_lock.md`.
+
 
 **Strand default:** generative `run_strand` / `_undiscounted_scores_by_gw`
 require `share_pool` (full club m>0). Live + hist path/mean callers wired;
@@ -172,7 +177,7 @@ Pre-deadline squad advisor under 2026/27 rules. Cursor implements and screens; G
 | **Horizon** | L4 μ_post priced, `BOOKIE_DEPTH=2`, γ=1 | **strategiser default** | `src/strategy/layer4_week.py` · `reports/layer4_mupost_gamma1.md` |
 | **Live pick** | `numagent_live_pick` (props **off**) | GW7 PI lock | `src/live/numagent_live_pick.py` |
 | **cascade_short** | priced t:t+1 generative: centreline `M`→`k∼M` (no λ jitter) | locked 2026-10-20 | `cascade_short` / `short_horizon_generative` · `protocol.cascade_short_generative` |
-| **cascade_long** | rankmean±SD latents; assessed ḡ; hierarchical λ→`M\|λ`→`k∼M`; generative xP, props off | **PI-approved 2026-10-24** | `cascade_long` / `multistage_mc_milp` · `protocol.cascade_long_match_outcome` |
+| **cascade_long** | rankmean±SD latents; assessed ḡ; hierarchical λ→`M\|λ`→`k∼M`; **`venue_mode=blind`** + identity shrinks; generative xP, props off | **PI-approved 2026-10-24**; **blind locked 2026-10-29** | `cascade_long` / `multistage_mc_milp` · `protocol.cascade_long_match_outcome` · `reports/cascade_long_blind_venue_lock.md` |
 | **cascade rates** | historical player/positional rate baseline | cascade_default | `src/markets/rate_baseline.py` · `protocol.score_xp_v2_rate_baseline_prior` |
 | **cascade path** | joint every-GW FT plan; γ=1; FT **bank pot** (not in \(V\)); minutes frozen | locked / default-on | `path_transfer_plan` · `cascade_joint_path_plan` · `cascade_gamma` · `DEFAULT_LINEUP_COV=False` |
 | **transfer-rule screens** | `xi_ft` — joint FT, no captain double; bank pot separate | active 2026-10-24 | `protocol.cascade_path_transfer_only` |

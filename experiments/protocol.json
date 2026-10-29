@@ -190,16 +190,19 @@
   "cascade_long_match_outcome": {
     "locked": "2026-10-20",
     "pi_approved": "2026-10-24",
-    "revised": "2026-10-27 \u2014 away_shrink on \u03bb_A only; default AWAY_SHRINK=1.0; no \u03bb clip (kept); fixed s\u22601 parked after OOS FAIL; symmetric HOME_ADV retired",
+    "revised": "2026-10-29 \u2014 venue_mode=blind locked as default (PI); AWAY_SHRINK=1.0 / LAM_SHRINK=1.0 identity locked; place\u00d7venue / expanding H/A / FD venue-scale / margin-shrink / lag-1 / remaining-balance parked after OOS or MAE FAIL",
+    "prior_revised": "2026-10-27 \u2014 away_shrink on \u03bb_A only; default AWAY_SHRINK=1.0; no \u03bb clip (kept); fixed s\u22601 parked after OOS FAIL; symmetric HOME_ADV retired",
     "role": "long-horizon t+2\u2026 match M + generative player xP",
     "status": "pi_approved_strat",
     "rank_map": "Opta place \u2192 closed-season empirical mean GF/GA by finishing place (method=rankmean); OLS place\u2192GF/GA retired from live path",
     "latent_draw": "per strand: sample GF, GA, \u1e21 inside mean \u00b1 z\u00b7SD (z_band=1.0) via sample_within_band; centre_blend=0.5 (half centre, half Uniform[lo,hi])",
     "bands": "place sample SD (n=4 closed seasons per place); \u1e21 SE from assessed expanding mean",
     "lambda": "\u03bb_H=(GF_H/38)\u00b7((GA_A/38)/\u1e21); \u03bb_A same \u00d7 away_shrink; no 0.20\u20133.50 \u03bb clip; ClubPath unused for \u03bb; away_shrink=1.0",
+    "venue_mode": "blind \u2014 locked 2026-10-29 (PI); season-total place GF/GA; no place\u00d7venue remap; DEFAULT_VENUE_MODE=blind",
+    "away_shrink": "1.0 \u2014 locked identity 2026-10-29 (PI); \u03bb_A only (\u03bb_A \u2190 \u03bb_A\u00b7s); no \u03bb clip; fixed s\u22601 parked",
+    "lam_shrink": "1.0 \u2014 locked identity 2026-10-29 (PI); both \u03bb after away_shrink",
     "league_gbar": "assessed_league_gf \u2014 live/assessed E0 expanding (FTHG+FTAG)/2 prior-blended; closed prior when no rows",
     "uncertainty": "hierarchical \u2014 draw latents \u2192 \u03bb \u2192 M|\u03bb \u2192 k\u223cM; \u03b4-method sd_lam is diagnostic only; do not resample \u03bb after M is built",
-    "away_shrink": "1.0 \u2014 \u03bb_A only (\u03bb_A \u2190 \u03bb_A\u00b7s); no \u03bb clip; fixed s=0.768 (XI crossing) parked \u2014 OOS club-\u03bb 0/3 on 2022-23\u20262024-25",
     "ols_rank_map": "retired \u2014 keep method=ols only for archaeology / old diagnostic replay",
     "M": "match_outcome_probs_from_lambdas(\u03bb_h, \u03bb_a, \u03c1=0) conditional on the strand's drawn \u03bb",
     "scoreline": "match_outcome_roll \u2014 k\u223cM|\u03bb; \u03bb uncertainty enters only via latent draws across strands (no Uniform \u03bb band)",
@@ -215,7 +218,8 @@
       "src/markets/cascade_score_v2.py",
       "src/markets/short_horizon_generative.py"
     ],
-    "any_later_change": "dated protocol update required; PI re-approval if rank_map, \u1e21, latent_draw, or hierarchical scoreline changes"
+    "any_later_change": "dated protocol update required; PI re-approval if rank_map, \u1e21, latent_draw, venue_mode, away_shrink/lam_shrink identity, or hierarchical scoreline changes",
+    "lock_report": "reports/cascade_long_blind_venue_lock.md"
   },
   "cascade_long_home_adv_lam_screen": {
     "pre_registered": "2026-10-27",
@@ -2151,5 +2155,57 @@
     "result": "One mechanism: Opta venue-blind level vs FD HA\u2248+0.32; resid_ha\u2248Opta_level\u2212FD_ha. Season gaps = Opta level bias + whether FD away is soft. 2023-24 odd away because FD_A\u2248Opta_A.",
     "role": "Coherent per-season drivers of home/away Opta\u2212FD residual",
     "does_not_change_default": true
+  },
+  "opta_fd_lag1_resid_correction": {
+    "pre_registered": "2026-10-29",
+    "status": "done_reject",
+    "result": "lag-1 Opta\u2212FD correction tracks the book not the ball; MAE vs act worse or flat \u2014 keep blind",
+    "role": "Causal lag-1 subtract prior GW Opta\u2212FD residual from current Opta \u03bb",
+    "does_not_change_default": true,
+    "report": "reports/opta_fd_lag1_resid_correction.md"
+  },
+  "opta_act_lag1_resid_correction": {
+    "pre_registered": "2026-10-29",
+    "status": "done_reject",
+    "result": "lag-1 Opta\u2212actual correction hurts MAE vs blind \u2014 keep blind",
+    "role": "Causal lag-1 subtract prior GW Opta\u2212actual residual from current Opta \u03bb",
+    "does_not_change_default": true,
+    "report": "reports/opta_act_lag1_resid_correction.md"
+  },
+  "opta_remaining_balance_lam": {
+    "pre_registered": "2026-10-29",
+    "status": "done_reject",
+    "result": "remaining-balance MAE 1.047 vs blind 0.949 (\u0394+0.098); pace\u2192underprint corr \u22120.041 \u2014 keep blind",
+    "role": "Remaining-season GF/GA balance \u03bb vs blind place/38 Opta rates",
+    "does_not_change_default": true,
+    "report": "reports/opta_remaining_balance_lam.md"
+  },
+  "cascade_long_blind_venue_lock": {
+    "locked": "2026-10-29",
+    "pi_approved": "2026-10-29",
+    "status": "locked",
+    "role": "Lock cascade_long club \u03bb defaults after Opta\u2212FD lever digs",
+    "defaults": {
+      "venue_mode": "blind",
+      "AWAY_SHRINK": 1.0,
+      "LAM_SHRINK": 1.0,
+      "HOME_ADV": 1.0
+    },
+    "verdict": "PI: blind Opta best left as-is; lock as default. All screened venue/scale/lag/balance levers failed OOS or hurt MAE.",
+    "parked_arms": [
+      "place\u00d7venue / venue_away",
+      "expanding H/A",
+      "FD venue-scale",
+      "margin-shrink",
+      "away_shrink s\u22601 / lam_shrink",
+      "lag-1 Opta\u2212FD",
+      "lag-1 Opta\u2212actual",
+      "remaining-season balance"
+    ],
+    "modules": [
+      "src/models/opta_gf_ga_horizon.py"
+    ],
+    "protocol": "cascade_long_match_outcome",
+    "report": "reports/cascade_long_blind_venue_lock.md"
   }
 }

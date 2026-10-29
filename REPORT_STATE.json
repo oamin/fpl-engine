@@ -1,12 +1,13 @@
 {
-  "task": "opta_remaining_balance_lam",
+  "task": "cascade_long_blind_venue_lock",
   "status": "done",
-  "change": "Dig remaining-season balance \u03bb vs blind Opta",
+  "change": "PI lock: DEFAULT_VENUE_MODE=blind + identity AWAY_SHRINK/LAM_SHRINK as cascade_long defaults",
   "verdict": {
-    "mae_blind": 0.9487167099307,
-    "mae_balance": 1.0469490574088554,
-    "delta": 0.09823234747815535,
-    "corr_behind": -0.040970999012038774
+    "venue_mode": "blind",
+    "AWAY_SHRINK": 1.0,
+    "LAM_SHRINK": 1.0,
+    "pi_approved": "2026-10-29"
   },
-  "report": "reports/opta_remaining_balance_lam.md"
+  "report": "reports/cascade_long_blind_venue_lock.md",
+  "protocol": "cascade_long_match_outcome"
 }
