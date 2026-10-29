@@ -1,11 +1,22 @@
 {
-  "task": "cascade_long_fd_opta_resid_drivers",
+  "task": "cascade_long_fd_venue_scale_lam_screen",
   "status": "done",
-  "change": "Horse-race Opta\u2212FD residual drivers; form vs structure",
+  "as_of_utc": "2026-10-29T20:37:27Z",
+  "change": "Screen FD venue mean-ratio scale on Opta \u03bb",
   "verdict": {
-    "form_lean_worthy": false,
-    "best_r2_structure": 0.405,
-    "form_delta_r2": 0.033
+    "train_r_H": 1.1440267970526037,
+    "train_r_A": 0.9288172214980571,
+    "winners": [
+      "fd_venue_away_only"
+    ],
+    "oos_pass_counts": {
+      "fd_venue_fit": 0,
+      "fd_venue_away_only": 2,
+      "pooled_const": 1
+    },
+    "recommended_arm": null,
+    "default_unchanged": true
   },
-  "report": "reports/cascade_long_fd_opta_resid_drivers.md"
+  "artifact": "/opt/cursor/artifacts/cascade_long_fd_venue_scale_lam_screen.json",
+  "report": "reports/cascade_long_fd_venue_scale_lam_screen.md"
 }

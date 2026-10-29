@@ -1,3 +1,13 @@
+## Parked — Opta margin-shrink α<1 (2026-10-29)
+
+Compress fixture Opta margins toward match mean. Train-fit α=0.90. Holdout/OOS **0/4 PASS** — venue mean biases unchanged because blind Opta already has E[λ_H]≈E[λ_A]. Not a fix for away overprint.
+`reports/cascade_long_margin_shrink_lam_screen.md`.
+
+## Parked — FD venue mean-ratio scale (2026-10-29)
+
+`λ'_H=r_H·λ_H`, `λ'_A=r_A·λ_A` with train FD/Opta venue means (r_H=1.14, r_A=0.93). Holdout **away_only PASS**; full (r_H,r_A) FAIL home boost; OOS away_only **2/4**. Keep identity. Same unstable-OOS class as place×venue / expanding_away.
+`reports/cascade_long_fd_venue_scale_lam_screen.md`.
+
 # Candidate hypotheses
 
 Cursor chooses the next pre-registered comparison. The PI is not asked to pick. A result needs the as-of audit and paired intervals on all four closed seasons. One comparison at a time.

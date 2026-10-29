@@ -2080,5 +2080,56 @@
     "role": "Horse-race drivers of Opta\u2212FD residual; judge whether form is lean-worthy",
     "season": "2025-26",
     "does_not_change_default": true
+  },
+  "cascade_long_margin_shrink_lam_screen": {
+    "pre_registered": "2026-10-29",
+    "status": "done_reject",
+    "role": "Trial strength-mismatch lever: compress Opta fixture \u03bb margins toward match mean",
+    "formula": "m=(\u03bb_H+\u03bb_A)/2; \u03bb'=m+\u03b1\u00b7(\u03bb\u2212m) per side; match total preserved",
+    "baseline": "\u03b1=1.0 (blind Opta)",
+    "candidates": {
+      "margin_shrink_fit": "train-fit \u03b1 on MAE(\u03bb,act), grid 0.50..1.00 step 0.05 on 2022-23..2024-25",
+      "margin_shrink_075": "fixed \u03b1=0.75 diagnostic"
+    },
+    "holdout": "2025-26 GW8-38 team-sides",
+    "oos_seasons": [
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26"
+    ],
+    "promote_rule": "vs blind: |away bias| \u2193 \u22650.10 AND home |bias| \u2191 \u22640.05 AND MAE \u2191 \u22640.02; OOS \u22653/4 before default flip; PI re-approval",
+    "lever_source": "Opta\u2212FD residual drivers \u2014 rank_gap / Opta margin (not form)",
+    "modules": [
+      "src/eval/cascade_long_margin_shrink_lam_screen.py"
+    ],
+    "does_not_change_default": true,
+    "result": "holdout FAIL / OOS 0/4; fit \u03b1=0.90 barely moves venue biases \u2014 inert when E[\u03bb_H]\u2248E[\u03bb_A] under blind; keep \u03b1=1"
+  },
+  "cascade_long_fd_venue_scale_lam_screen": {
+    "pre_registered": "2026-10-29",
+    "status": "done_holdout_pass_oos_fail",
+    "role": "Trial venue mean-ratio scale Opta\u2192FD levels (dominant Opta\u2212FD residual driver)",
+    "formula": "\u03bb'_H=r_H\u00b7\u03bb_H; \u03bb'_A=r_A\u00b7\u03bb_A; r_ha=mean(FD_ha)/mean(Opta_ha) on train",
+    "baseline": "r_H=r_A=1 (blind)",
+    "candidates": {
+      "fd_venue_fit": "train-fit (r_H,r_A) on 2022-23..2024-25 FD/Opta venue means",
+      "fd_venue_away_only": "r_H=1; r_A=train away FD/Opta",
+      "pooled_const": "diagnostic r_H=1.115 r_A=0.893 from scale dig"
+    },
+    "holdout": "2025-26 GW8-38 team-sides",
+    "oos_seasons": [
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26"
+    ],
+    "promote_rule": "vs blind: |away bias| \u2193 \u22650.10 AND home |bias| \u2191 \u22640.05 AND MAE \u2191 \u22640.02; OOS \u22653/4; PI re-approval",
+    "prior": "margin_shrink FAIL \u2014 venue means unchanged; this arm moves them",
+    "modules": [
+      "src/eval/cascade_long_fd_venue_scale_lam_screen.py"
+    ],
+    "does_not_change_default": true,
+    "result": "holdout fd_venue_away_only PASS (A +0.255\u2192+0.146, H flat); fd_venue_fit FAIL home; OOS away_only 2/4 \u2014 keep r=1; same class as place\u00d7venue/expanding_away"
   }
 }
