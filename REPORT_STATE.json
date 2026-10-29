@@ -1,10 +1,12 @@
 {
-  "task": "cascade_long_fd_opta_venue_resid_drivers",
+  "task": "opta_fd_lag1_resid_correction",
   "status": "done",
-  "change": "Per-season coherent drivers of home/away Opta\u2212FD residual",
+  "change": "Causal lag-1 Opta\u2212FD residual correction updating each GW",
   "verdict": {
-    "mechanism": "Opta flat venue means vs FD home advantage; size varies by season level + FD HA",
-    "odd_season": "2023-24 away resid\u22480 because FD_A\u2248Opta_A"
+    "team_venue_resid": -0.012456516312139959,
+    "team_venue_mae_fd": 0.24191605257101848,
+    "team_venue_mae_act": 0.9638370775673706,
+    "raw_mae_act": 0.9507423099753937
   },
-  "report": "reports/cascade_long_fd_opta_venue_resid_drivers.md"
+  "report": "reports/opta_fd_lag1_resid_correction.md"
 }
