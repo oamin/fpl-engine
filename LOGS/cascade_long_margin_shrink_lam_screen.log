@@ -1,0 +1,35 @@
+[margin-shrink] train=('2022-23', '2023-24', '2024-25') holdout=2025-26 GW8–38 N=20
+[margin-shrink] build 2022-23
+[margin-shrink] build 2023-24
+[margin-shrink] build 2024-25
+[margin-shrink] build 2025-26
+  train α=0.50 bias_A=+0.074 bias_H=-0.182 MAE=0.982
+  train α=0.55 bias_A=+0.074 bias_H=-0.182 MAE=0.976
+  train α=0.60 bias_A=+0.074 bias_H=-0.182 MAE=0.971
+  train α=0.65 bias_A=+0.074 bias_H=-0.182 MAE=0.967
+  train α=0.70 bias_A=+0.074 bias_H=-0.182 MAE=0.963
+  train α=0.75 bias_A=+0.074 bias_H=-0.182 MAE=0.961
+  train α=0.80 bias_A=+0.074 bias_H=-0.182 MAE=0.959
+  train α=0.85 bias_A=+0.074 bias_H=-0.182 MAE=0.958
+  train α=0.90 bias_A=+0.074 bias_H=-0.182 MAE=0.958
+  train α=0.95 bias_A=+0.074 bias_H=-0.182 MAE=0.958
+  train α=1.00 bias_A=+0.074 bias_H=-0.182 MAE=0.959
+[margin-shrink] fit α=0.90
+[margin-shrink] holdout baseline_blind α=1.00 H=-0.015 A=+0.259 MAE=0.918
+[margin-shrink] holdout margin_shrink_fit α=0.90 H=-0.014 A=+0.259 MAE=0.914
+[margin-shrink] holdout margin_shrink_075 α=0.75 H=-0.013 A=+0.258 MAE=0.913
+[margin-shrink] OOS 2022-23 winners=['none']
+[margin-shrink] OOS 2023-24 winners=['none']
+[margin-shrink] OOS 2024-25 winners=['none']
+[margin-shrink] OOS 2025-26 winners=['none']
+{
+  "fit_alpha": 0.9,
+  "winners": [],
+  "oos_pass_counts": {
+    "margin_shrink_fit": 0,
+    "margin_shrink_075": 0
+  },
+  "recommended": null
+}
+wrote /opt/cursor/artifacts/cascade_long_margin_shrink_lam_screen.json
+wrote /workspace/reports/cascade_long_margin_shrink_lam_screen.md

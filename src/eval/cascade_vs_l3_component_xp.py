@@ -25,6 +25,7 @@ import time
 from pathlib import Path
 from typing import Any
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
@@ -32,6 +33,7 @@ from src.eval.cascade_mc_vs_mean_hist import (
     DEFAULT_SEASON,
     SEASON_E0,
     SEED,
+    SHARE_MIN_APPS,
     _build_hist_pool,
     _build_hist_share_pool,
     _fd_priced_by_gw,
@@ -39,6 +41,7 @@ from src.eval.cascade_mc_vs_mean_hist import (
 )
 from src.eval.cascade_mean_xi_ft_component_resid import actual_components
 from src.eval.cascade_mean_xi_ft_hist import HORIZON_END
+from src.eval.cascade_mean_xi_ft_rolling import _ensure_owned_in_pool
 from src.eval.cascade_mean_xi_ft_step_pool_resid import (
     _inject_owned_from_share,
     _load_seed_owned,
@@ -96,22 +99,30 @@ def _l3_owned_by_gw(
     *,
     season: str,
     gws: list[int],
+    seed_gw: int | None = None,
 ) -> dict[int, list[str]]:
+    """Replay L3 buys/sells from the seed GW through each requested GW.
+
+    Mid-season windows must apply all intervening transfers, not only weeks
+    inside ``gws`` (else owned resets to the WC open).
+    """
+    want = {int(g) for g in gws}
+    open_gw = int(seed_gw if seed_gw is not None else min(want))
     raw = json.loads(Path(l4_path).read_text(encoding="utf-8"))
     weeks = [
         w
         for w in (raw.get("weeks") or [])
         if str(w.get("season")) == season
         and str(w.get("arm")) == "l3"
-        and int(w.get("gw") or 0) in set(gws)
+        and int(w.get("gw") or 0) >= open_gw
+        and int(w.get("gw") or 0) <= max(want)
     ]
     weeks.sort(key=lambda w: int(w["gw"]))
     owned = list(seed_ids)
     out: dict[int, list[str]] = {}
     for w in weeks:
         gw = int(w["gw"])
-        if gw == min(gws):
-            # WC open = seed
+        if gw == open_gw:
             owned = list(seed_ids)
         else:
             sold = set(_as_id_list(w.get("sold")))
@@ -122,7 +133,11 @@ def _l3_owned_by_gw(
                     f"L3 owned size {len(owned)} at GW{gw} after "
                     f"sell={sorted(sold)} buy={bought}"
                 )
-        out[gw] = list(owned)
+        if gw in want:
+            out[gw] = list(owned)
+    missing = sorted(want - set(out))
+    if missing:
+        raise RuntimeError(f"L3 path missing owned for GWs {missing}")
     return out
 
 
@@ -146,15 +161,19 @@ def _force_side_rows(
         g = hist.loc[pd.to_numeric(hist["element"], errors="coerce") == eid]
         if g.empty:
             continue
+        # Latest appearance (transfers: Guéhi Palace→City).
+        if "GW" in g.columns:
+            g = g.sort_values("GW")
+        last = g.iloc[-1]
         m = float(pd.to_numeric(g["minutes"], errors="coerce").fillna(0.0).mean())
         sig = float(pd.to_numeric(g["minutes"], errors="coerce").fillna(0.0).std())
         if not np.isfinite(sig) or sig < 5.0:
             sig = 5.0
         row: dict[str, Any] = {
             "element": int(eid),
-            "name": str(g.iloc[0]["name"]),
-            "position": normalize_position(str(g.iloc[0]["position"])),
-            "team": str(g.iloc[0]["team"]),
+            "name": str(last["name"]),
+            "position": normalize_position(str(last["position"])),
+            "team": str(last["team"]),
             "m": m,
             "sigma_m": sig,
         }
@@ -295,7 +314,103 @@ def _v2_component_board(
     board["position"] = board["position"].map(
         lambda p: normalize_position(str(p)) if pd.notna(p) else p
     )
+    # Blank GWs: owned players whose club does not play never enter ``parts``.
+    # Stub zero components so pick_xi / shared XI scoring still sees them.
+    if force_ids:
+        board = _stub_zero_component_rows(
+            board,
+            force_ids=force_ids,
+            side=side,
+            prices=prices,
+            season=season,
+            decision_gw=int(decision_gw),
+        )
     return board
+
+
+def _stub_zero_component_rows(
+    board: pd.DataFrame,
+    *,
+    force_ids: list[str],
+    side: pd.DataFrame,
+    prices: pd.DataFrame,
+    season: str,
+    decision_gw: int,
+) -> pd.DataFrame:
+    """Append xp=0 rows for force_ids missing from a fixture-built board."""
+    if board is None or not force_ids:
+        return board
+    have = set(board["player_id"].astype(str))
+    have_e = set(
+        pd.to_numeric(board["element"], errors="coerce").dropna().astype(int)
+    )
+    pr = prices.loc[prices["gw"] == int(decision_gw)].drop_duplicates("element")
+    pr_by_e = {
+        int(r.element): r
+        for r in pr.itertuples(index=False)
+        if pd.notna(r.element)
+    }
+    side_by_e: dict[int, Any] = {}
+    if not side.empty:
+        for r in side.itertuples(index=False):
+            e = pd.to_numeric(r.element, errors="coerce")
+            if pd.notna(e):
+                side_by_e[int(e)] = r
+    stubs: list[dict[str, Any]] = []
+    for pid in force_ids:
+        pid_s = str(pid)
+        eid = _pid_element(pid_s)
+        if pid_s in have or eid in have_e:
+            continue
+        sr = side_by_e.get(eid)
+        pr_r = pr_by_e.get(eid)
+        name = str(
+            getattr(sr, "name", None)
+            or getattr(pr_r, "name", None)
+            or pid_s
+        )
+        pos_raw = getattr(sr, "position", None)
+        if pos_raw is None:
+            pos_raw = getattr(pr_r, "position", None)
+        pos = normalize_position(str(pos_raw)) if pos_raw is not None else ""
+        team = str(getattr(sr, "team", "") or "")
+        if not team:
+            team = str(getattr(pr_r, "team_norm", "") or "")
+        value = (
+            float(pr_r.value)
+            if pr_r is not None and pd.notna(getattr(pr_r, "value", None))
+            else float("nan")
+        )
+        tn = getattr(pr_r, "team_norm", None) if pr_r is not None else None
+        team_norm = str(tn) if tn is not None and pd.notna(tn) else (
+            norm_team(team) if team else ""
+        )
+        stubs.append(
+            {
+                "element": eid,
+                "name": name,
+                "position": pos,
+                "team": team,
+                "xp_goals": 0.0,
+                "xp_cs": 0.0,
+                "xp_gc": 0.0,
+                "xp": 0.0,
+                "score_xp_v2": 0.0,
+                "value": value,
+                "player_id": pid_s if ":" in pid_s else f"{season}:{eid}",
+                "team_norm": team_norm,
+            }
+        )
+        have.add(pid_s)
+        have_e.add(eid)
+    if not stubs:
+        return board
+    add = pd.DataFrame(stubs)
+    for c in board.columns:
+        if c not in add.columns:
+            add[c] = np.nan if board[c].dtype == object else 0.0
+    add = add[board.columns]
+    return pd.concat([board, add], ignore_index=True)
 
 
 def _lookup(
@@ -317,6 +432,151 @@ def _lookup(
     return out
 
 
+def _prices_carryforward_for(
+    prices: pd.DataFrame,
+    *,
+    decision_gw: int,
+    elements: list[int],
+) -> pd.DataFrame:
+    """Blank GWs omit club rows from the decision-GW price slice; reuse last price."""
+    if not elements:
+        return prices
+    pr_t = prices.loc[prices["gw"] == int(decision_gw)]
+    have = set(pd.to_numeric(pr_t["element"], errors="coerce").dropna().astype(int))
+    need = [int(e) for e in elements if int(e) not in have]
+    if not need:
+        return prices
+    prior = prices.loc[
+        (pd.to_numeric(prices["gw"], errors="coerce") < int(decision_gw))
+        & (pd.to_numeric(prices["element"], errors="coerce").isin(need))
+    ].copy()
+    if prior.empty:
+        return prices
+    prior = prior.sort_values("gw").groupby("element", as_index=False).tail(1)
+    prior = prior.copy()
+    prior["gw"] = int(decision_gw)
+    return pd.concat([prices, prior], ignore_index=True)
+
+
+def _force_owned_from_hist(
+    pool: pd.DataFrame,
+    hist: pd.DataFrame,
+    prices: pd.DataFrame,
+    *,
+    owned: list[str],
+    decision_gw: int,
+    season: str,
+) -> pd.DataFrame:
+    """Append owned players missing after minutes filters (new buys / blanks)."""
+    have = set(pool["player_id"].astype(str))
+    missing = [p for p in owned if p not in have]
+    if not missing:
+        return pool
+    miss_e = [_pid_element(p) for p in missing]
+    prices_cf = _prices_carryforward_for(
+        prices, decision_gw=int(decision_gw), elements=miss_e
+    )
+    # Bypass mean-minutes gate; keep n_apps≥0 so brand-new rows can appear.
+    wide = _build_hist_pool(
+        hist,
+        prices_cf,
+        decision_gw=int(decision_gw),
+        season=season,
+        min_minutes=-1.0,
+        min_apps=float(SHARE_MIN_APPS),
+    )
+    add = wide.loc[wide["player_id"].astype(str).isin(missing)].copy()
+    if add.empty:
+        # player_id may be bare element in some price rows
+        add = wide.loc[
+            pd.to_numeric(wide["element"], errors="coerce").isin(miss_e)
+        ].copy()
+        if not add.empty and "player_id" in add.columns:
+            add["player_id"] = add["element"].map(
+                lambda e: f"{season}:{int(e)}"
+            )
+    got = set(add["player_id"].astype(str))
+    got |= {f"{season}:{int(e)}" for e in pd.to_numeric(add["element"], errors="coerce").dropna().astype(int)} if not add.empty else set()
+    still = [p for p in missing if p not in got and f"{season}:{_pid_element(p)}" not in got]
+    if still:
+        raise RuntimeError(
+            f"GW{decision_gw}: owned missing from hist pool even unfiltered: {still}"
+        )
+    for c in pool.columns:
+        if c not in add.columns:
+            add[c] = np.nan if pool[c].dtype == object else 0.0
+    add = add[pool.columns]
+    return pd.concat([pool, add], ignore_index=True)
+
+
+def _plot_resid_series(
+    steps: list[dict[str, Any]],
+    path: Path,
+    *,
+    title: str,
+) -> None:
+    gws = [int(s["gw"]) for s in steps]
+    casc_g = [float(s["sum_casc_xP_G"]) - float(s["sum_P_G"]) for s in steps]
+    casc_cs = [float(s["sum_casc_xP_CS"]) - float(s["sum_P_CS"]) for s in steps]
+    l3_g = [float(s["sum_l3_xP_G"]) - float(s["sum_P_G"]) for s in steps]
+    l3_cs = [float(s["sum_l3_xP_CS"]) - float(s["sum_P_CS"]) for s in steps]
+    fig, axes = plt.subplots(2, 1, figsize=(10.5, 6.2), dpi=140, sharex=True)
+    for ax, casc, l3, lab in (
+        (axes[0], casc_g, l3_g, "Σ xP(G) − actual P_G"),
+        (axes[1], casc_cs, l3_cs, "Σ xP(CS) − actual P_CS"),
+    ):
+        ax.axhline(0.0, color="#888", lw=0.8)
+        ax.plot(gws, casc, "o-", color="#c0392b", lw=1.4, ms=3.5, label="cascade")
+        ax.plot(gws, l3, "s-", color="#2980b9", lw=1.4, ms=3.5, label="l3_v2")
+        ax.set_ylabel(lab)
+        ax.grid(True, axis="y", alpha=0.3)
+        ax.legend(framealpha=0.95, loc="upper right")
+    axes[1].set_xlabel("GW")
+    axes[0].set_title(title)
+    fig.tight_layout()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(path)
+    plt.close(fig)
+
+
+def _block_summaries(steps: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    blocks = (
+        (8, 12),
+        (13, 19),
+        (20, 26),
+        (27, 33),
+        (34, 38),
+    )
+    out: list[dict[str, Any]] = []
+    for lo, hi in blocks:
+        sub = [s for s in steps if lo <= int(s["gw"]) <= hi]
+        if not sub:
+            continue
+        casc_g = sum(float(s["sum_casc_xP_G"]) for s in sub)
+        casc_cs = sum(float(s["sum_casc_xP_CS"]) for s in sub)
+        l3_g = sum(float(s["sum_l3_xP_G"]) for s in sub)
+        l3_cs = sum(float(s["sum_l3_xP_CS"]) for s in sub)
+        p_g = sum(float(s["sum_P_G"]) for s in sub)
+        p_cs = sum(float(s["sum_P_CS"]) for s in sub)
+        out.append(
+            {
+                "block": f"GW{lo}-{hi}",
+                "n_gw": len(sub),
+                "casc_G": casc_g,
+                "l3_G": l3_g,
+                "P_G": p_g,
+                "resid_casc_G": casc_g - p_g,
+                "resid_l3_G": l3_g - p_g,
+                "casc_CS": casc_cs,
+                "l3_CS": l3_cs,
+                "P_CS": p_cs,
+                "resid_casc_CS": casc_cs - p_cs,
+                "resid_l3_CS": l3_cs - p_cs,
+            }
+        )
+    return out
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--season", default=DEFAULT_SEASON)
@@ -327,6 +587,44 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--seed-owned", type=Path, default=SEED_JSON)
     ap.add_argument("--l4-json", type=Path, default=L4_JSON)
     ap.add_argument(
+        "--goal-weight",
+        choices=("rate_minutes", "rate"),
+        default="rate_minutes",
+        help="Cascade generative goal shares: rate_minutes (default) or π∝r.",
+    )
+    ap.add_argument(
+        "--decision-gw-only",
+        action="store_true",
+        help="Only roll/score the decision GW (skip unused future-horizon boards).",
+    )
+    ap.add_argument(
+        "--match-source",
+        choices=("fd", "opta"),
+        default="fd",
+        help=(
+            "Cascade match λ: fd = cascade_short FD centreline (default); "
+            "opta = cascade_long oracle-rank / Opta (empty priced index)."
+        ),
+    )
+    ap.add_argument(
+        "--away-shrink",
+        type=float,
+        default=None,
+        help=(
+            "Opta away λ shrink (λ_A ← λ_A·s; default AWAY_SHRINK=1.0). "
+            "Counterfactual only — does not flip the protocol default."
+        ),
+    )
+    ap.add_argument(
+        "--lam-shrink",
+        type=float,
+        default=None,
+        help=(
+            "Combined Opta λ scale (λ_H and λ_A × s; default LAM_SHRINK=1.0). "
+            "Counterfactual only."
+        ),
+    )
+    ap.add_argument(
         "--out",
         type=Path,
         default=Path("/opt/cursor/artifacts/cascade_vs_l3_component_xp.json"),
@@ -334,6 +632,10 @@ def main(argv: list[str] | None = None) -> int:
     args = ap.parse_args(argv)
 
     season = str(args.season)
+    goal_weight = str(args.goal_weight)
+    match_source = str(args.match_source)
+    away_shrink = None if args.away_shrink is None else float(args.away_shrink)
+    lam_shrink = None if args.lam_shrink is None else float(args.lam_shrink)
     step_gws = [int(x) for x in str(args.steps).split(",") if x.strip()]
     horizon_end = int(args.horizon_end)
     n_strands = int(args.n)
@@ -344,10 +646,14 @@ def main(argv: list[str] | None = None) -> int:
         args.l4_json,
         season=season,
         gws=step_gws,
+        seed_gw=int(seed_meta.get("gw") or min(step_gws)),
     )
 
     print(
         f"[comp-xp] season={season} steps={step_gws} N={n_strands} "
+        f"goal_weight={goal_weight} match_source={match_source} "
+        f"away_shrink={away_shrink if away_shrink is not None else 'default'} "
+        f"lam_shrink={lam_shrink if lam_shrink is not None else 'default'} "
         f"seed={seed_meta['path']}",
         flush=True,
     )
@@ -363,6 +669,7 @@ def main(argv: list[str] | None = None) -> int:
 
     rows: list[dict[str, Any]] = []
     steps_out: list[dict[str, Any]] = []
+    stash: pd.DataFrame | None = None
 
     for t in step_gws:
         print(f"[comp-xp] === GW{t} ===", flush=True)
@@ -409,16 +716,44 @@ def main(argv: list[str] | None = None) -> int:
         share_pool = _build_hist_share_pool(
             hist, prices, decision_gw=int(t), season=season
         )
-        select_pool = _inject_owned_from_share(select_pool, share_pool, owned)
-        # also ensure XI look-ups exist
-        select_pool = _inject_owned_from_share(select_pool, share_pool, xi_ids)
-        fixtures_gw = _hist_fixtures_by_gw(enriched, start=int(t), end=horizon_end)
+        # Keep owned/XI scoreable when they drop the minutes filter mid-season
+        # (same stash pattern as cascade_mean_xi_ft_step_pool_resid).
+        force_ids = list(dict.fromkeys(list(owned) + list(xi_ids)))
+        share_pool = _force_owned_from_hist(
+            share_pool,
+            hist,
+            prices,
+            owned=force_ids,
+            decision_gw=int(t),
+            season=season,
+        )
+        if stash is not None:
+            select_pool = _ensure_owned_in_pool(
+                select_pool,
+                stash,
+                [p for p in force_ids if p in set(stash["player_id"].astype(str))],
+            )
+            share_pool = _ensure_owned_in_pool(
+                share_pool,
+                stash,
+                [p for p in force_ids if p in set(stash["player_id"].astype(str))],
+            )
+        select_pool = _inject_owned_from_share(select_pool, share_pool, force_ids)
+        stash = select_pool.copy()
+        plan_end = int(t) if bool(args.decision_gw_only) else horizon_end
+        fixtures_gw = _hist_fixtures_by_gw(enriched, start=int(t), end=plan_end)
         plan_gws = sorted(fixtures_gw)
-        priced_by_gw = _fd_priced_by_gw(enriched, fd, plan_gws[:2])
+        # fd → cascade_short priced λ; opta → empty index forces sample_opta_scenario
+        # (cascade_long_oracle_rank on closed seasons).
+        if match_source == "opta":
+            priced_by_gw: dict[int, list[dict[str, Any]]] = {}
+        else:
+            priced_by_gw = _fd_priced_by_gw(enriched, fd, plan_gws[:2])
         step_seed = seed0 if t == step_gws[0] else seed0 + 10_000 * int(t)
         print(
             f"[comp-xp] select={len(select_pool)} share={len(share_pool)} "
-            f"xi_src={xi_source}",
+            f"xi_src={xi_source} match={match_source} "
+            f"plan={plan_gws[0]}…{plan_gws[-1]}",
             flush=True,
         )
         boards, _scores, board_meta = mean_component_boards_split(
@@ -435,6 +770,9 @@ def main(argv: list[str] | None = None) -> int:
             plan_gws=plan_gws,
             n_strands=n_strands,
             seed0=step_seed,
+            goal_weight=goal_weight,
+            away_shrink=away_shrink,
+            lam_shrink=lam_shrink,
         )
         print(f"[comp-xp] cascade boards {board_meta['elapsed_s']:.1f}s", flush=True)
         casc_board = boards[int(t)]
@@ -463,11 +801,12 @@ def main(argv: list[str] | None = None) -> int:
                 p_g, p_cs, p_ga = float(a["P_G"]), float(a["P_CS"]), float(a["P_GC"])
                 name, pos, mins = str(a["name"]), str(a["position"]), float(a["minutes"])
             else:
-                p_g = p_cs = p_ga = float("nan")
-                name, pos, mins = id_to_name.get(pid, pid), "", float("nan")
+                # Blank GW (club not playing) or no row: components are 0.
+                p_g = p_cs = p_ga = 0.0
+                name, pos, mins = id_to_name.get(pid, pid), "", 0.0
             hit = g_merged.loc[g_merged["element"] == eid]
             total_pts = (
-                float(hit.iloc[0]["total_points"] or 0.0) if not hit.empty else float("nan")
+                float(hit.iloc[0]["total_points"] or 0.0) if not hit.empty else 0.0
             )
             row = {
                 "gw": int(t),
@@ -561,56 +900,146 @@ def main(argv: list[str] | None = None) -> int:
         "mae_casc_GA": float((df["casc_xP_GA"] - df["P_GA"]).abs().mean()),
         "mae_l3_GA": float((df["l3_xP_GA"] - df["P_GA"]).abs().mean()),
     }
+    gw_note = (
+        "π∝r (minutes gate only)"
+        if goal_weight == "rate"
+        else "π∝r·m/90 (default)"
+    )
+    blocks = _block_summaries(steps_out)
+    match_tag = "opta" if match_source == "opta" else ""
+    plot_path = Path("/opt/cursor/artifacts/cascade_vs_l3_component_xp_resid.png")
+    if goal_weight == "rate":
+        plot_path = Path(
+            "/opt/cursor/artifacts/cascade_vs_l3_component_xp_pi_r_resid.png"
+        )
+    if match_tag:
+        plot_path = plot_path.with_name(
+            plot_path.stem + f"_{match_tag}" + plot_path.suffix
+        )
+    shrink_tag = (
+        f"as{str(away_shrink).replace('.', '')}"
+        if away_shrink is not None
+        else ""
+    )
+    if shrink_tag:
+        plot_path = plot_path.with_name(
+            plot_path.stem + f"_{shrink_tag}" + plot_path.suffix
+        )
+    if step_gws != list(STEP_GWS):
+        tag = f"gw{step_gws[0]}-{step_gws[-1]}"
+        plot_path = plot_path.with_name(plot_path.stem + f"_{tag}" + plot_path.suffix)
+    match_note = (
+        "cascade_long Opta/oracle λ"
+        if match_source == "opta"
+        else "cascade_short FD λ"
+    )
+    if away_shrink is not None:
+        match_note = f"{match_note}; away_shrink={away_shrink:g}"
+    _plot_resid_series(
+        steps_out,
+        plot_path,
+        title=(
+            f"{season} GW{step_gws[0]}–{step_gws[-1]}: XI Σ resid "
+            f"(goal_weight={goal_weight}, {match_source}"
+            f"{f', as={away_shrink:g}' if away_shrink is not None else ''})"
+        ),
+    )
+    task_base = (
+        "cascade_vs_l3_component_xp_pi_r"
+        if goal_weight == "rate"
+        else "cascade_vs_l3_component_xp"
+    )
+    if match_source == "opta":
+        task_base = f"{task_base}_opta"
+    if shrink_tag:
+        task_base = f"{task_base}_{shrink_tag}"
     state = {
-        "task": "cascade_vs_l3_component_xp",
+        "task": task_base,
         "season": season,
         "step_gws": step_gws,
         "n_strands": n_strands,
         "seed": seed0,
+        "goal_weight": goal_weight,
+        "match_source": match_source,
+        "away_shrink": away_shrink,
+        "lam_shrink": lam_shrink,
+        "decision_gw_only": bool(args.decision_gw_only),
         "seed_owned": seed_meta,
         "shared_team": (
-            "GW8 = L3/L4 WC XI; GW9–12 = L3 owned path + pick_xi(score_xp_v2). "
+            "GW8 = L3/L4 WC XI; later GWs = L3 owned path + pick_xi(score_xp_v2). "
             "No captain. Both scorers evaluated on that same XI."
         ),
         "elapsed_s": _now() - t_all,
         "summary": summary,
+        "blocks": blocks,
         "per_gw": steps_out,
-        "players": rows,
+        "plot": str(plot_path),
+        "players": rows if len(step_gws) <= 8 else [],
     }
     args.out.parent.mkdir(parents=True, exist_ok=True)
+    # Full player rows always in a sidecar when the season map omits them.
+    if len(step_gws) > 8:
+        players_path = Path(str(args.out).replace(".json", "_players.json"))
+        players_path.write_text(
+            json.dumps(rows, indent=2, default=str) + "\n", encoding="utf-8"
+        )
+        state["players_path"] = str(players_path)
     args.out.write_text(json.dumps(state, indent=2, default=str) + "\n")
 
+    title = (
+        "# Cascade π∝r (long Opta) vs L3/L4 — player xP(G, CS, GA) + actual"
+        if goal_weight == "rate" and match_source == "opta"
+        else (
+            "# Cascade π∝r vs L3/L4 — player xP(G, CS, GA) + actual (no captain)"
+            if goal_weight == "rate"
+            else "# Cascade vs L3/L4 — player xP(G, CS, GA) + actual (no captain)"
+        )
+    )
     lines = [
-        "# Cascade vs L3/L4 — player xP(G, CS, GA) + actual (no captain)",
+        title,
         "",
-        f"Season **{season}** · GW {step_gws} · N={n_strands} · "
+        f"Season **{season}** · GW{step_gws[0]}–{step_gws[-1]} "
+        f"({len(step_gws)} weeks) · N={n_strands} · "
+        f"goal_weight=`{goal_weight}` ({gw_note}) · "
+        f"match=`{match_source}` ({match_note}) · "
         f"wall {state['elapsed_s']:.1f}s",
         "",
         "## What this is",
         "",
-        "- **Same GW8 team** for both arms: L3/L4 wildcard open "
-        f"(`{Path(seed_meta['path']).name}`).",
-        "- GW9–12 follow the locked **L3** transfer path; XI = `pick_xi` on "
-        "`score_xp_v2` among that owned 15.",
-        "- Both scorers are read on **that same XI** (no captain, no hits):",
-        "  - **cascade** — generative mean `xp_goals` / `xp_cs` / `xp_gc`",
-        "  - **l3_v2** — as-of `score_xp_v2` centreline components "
-        "(L4 μ_post≡v2 when mode=none)",
-        "  - **actual** — FPL `P_G` / `P_CS` / `P_GA` and full `total_points`",
+        "- Shared L3 path XI from WC open "
+        f"(`{Path(seed_meta['path']).name}`); later weeks = L3 buys/sells + "
+        "`pick_xi` on `score_xp_v2`.",
+        "- Both scorers on **that same XI** (no captain, no hits):",
+        f"  - **cascade** — generative mean `xp_goals` / `xp_cs` / `xp_gc` "
+        f"(goal shares `{goal_weight}`; {match_note})",
+        "  - **l3_v2** — as-of `score_xp_v2` centreline components",
+        "  - **actual** — FPL `P_G` / `P_CS` / `P_GA`",
+        (
+            "- Cascade rolls **decision GW only** (season map)."
+            if args.decision_gw_only
+            else ""
+        ),
+        (
+            "- **Scope note:** product cascade_long is t+2…; this screen uses "
+            "Opta/oracle λ on the decision GW as a match-stack A/B vs L3."
+            if match_source == "opta"
+            else ""
+        ),
         "",
-        "## XI totals by GW (no captain)",
+        f"![resid]({plot_path})",
         "",
-        "| GW | casc ΣG | casc ΣCS | casc ΣGA | l3 ΣG | l3 ΣCS | l3 ΣGA | "
-        "P ΣG | P ΣCS | P ΣGA | Σ total_pts |",
-        "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+        "## Block totals (Σ over XI)",
+        "",
+        "| block | n | casc G | l3 G | P_G | casc−P G | l3−P G | "
+        "casc CS | l3 CS | P_CS | casc−P CS | l3−P CS |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
     ]
-    for s in steps_out:
+    for b in blocks:
         lines.append(
-            f"| {s['gw']} | {s['sum_casc_xP_G']:.1f} | {s['sum_casc_xP_CS']:.1f} | "
-            f"{s['sum_casc_xP_GA']:.1f} | {s['sum_l3_xP_G']:.1f} | "
-            f"{s['sum_l3_xP_CS']:.1f} | {s['sum_l3_xP_GA']:.1f} | "
-            f"{s['sum_P_G']:.1f} | {s['sum_P_CS']:.1f} | {s['sum_P_GA']:.1f} | "
-            f"{s['sum_total_points']:.0f} |"
+            f"| {b['block']} | {b['n_gw']} | {b['casc_G']:.1f} | {b['l3_G']:.1f} | "
+            f"{b['P_G']:.1f} | {b['resid_casc_G']:+.1f} | {b['resid_l3_G']:+.1f} | "
+            f"{b['casc_CS']:.1f} | {b['l3_CS']:.1f} | {b['P_CS']:.1f} | "
+            f"{b['resid_casc_CS']:+.1f} | {b['resid_l3_CS']:+.1f} |"
         )
     lines += [
         "",
@@ -620,8 +1049,12 @@ def main(argv: list[str] | None = None) -> int:
         f"l3 = {summary['sum_l3_xP_G']:.1f}/{summary['sum_l3_xP_CS']:.1f}/"
         f"{summary['sum_l3_xP_GA']:.1f}; "
         f"actual = {summary['sum_P_G']:.1f}/{summary['sum_P_CS']:.1f}/"
-        f"{summary['sum_P_GA']:.1f}; "
-        f"Σ total_points = {summary['sum_total_points']:.0f}.",
+        f"{summary['sum_P_GA']:.1f}.",
+        "",
+        f"- casc − actual G: **{summary['sum_casc_xP_G'] - summary['sum_P_G']:+.1f}**",
+        f"- l3 − actual G: **{summary['sum_l3_xP_G'] - summary['sum_P_G']:+.1f}**",
+        f"- casc − actual CS: **{summary['sum_casc_xP_CS'] - summary['sum_P_CS']:+.1f}**",
+        f"- l3 − actual CS: **{summary['sum_l3_xP_CS'] - summary['sum_P_CS']:+.1f}**",
         "",
         "| component | MAE casc | MAE l3_v2 |",
         "| --- | ---: | ---: |",
@@ -629,59 +1062,143 @@ def main(argv: list[str] | None = None) -> int:
         f"| CS | {summary['mae_casc_CS']:.3f} | {summary['mae_l3_CS']:.3f} |",
         f"| GA | {summary['mae_casc_GA']:.3f} | {summary['mae_l3_GA']:.3f} |",
         "",
-        "## Player rows",
+        "## Per GW (Σ on XI)",
         "",
+        "| GW | casc G | l3 G | P_G | casc−P G | l3−P G | "
+        "casc CS | l3 CS | P_CS | casc−P CS | l3−P CS |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
     ]
     for s in steps_out:
+        cg = float(s["sum_casc_xP_G"])
+        lg = float(s["sum_l3_xP_G"])
+        pg = float(s["sum_P_G"])
+        ccs = float(s["sum_casc_xP_CS"])
+        lcs = float(s["sum_l3_xP_CS"])
+        pcs = float(s["sum_P_CS"])
         lines.append(
-            f"### GW{s['gw']} — {s['xi_source']} · "
-            f"Σ total_pts={s['sum_total_points']:.0f}"
+            f"| {s['gw']} | {cg:.1f} | {lg:.1f} | {pg:.1f} | {cg - pg:+.1f} | "
+            f"{lg - pg:+.1f} | {ccs:.1f} | {lcs:.1f} | {pcs:.1f} | "
+            f"{ccs - pcs:+.1f} | {lcs - pcs:+.1f} |"
         )
-        lines.append("")
-        lines.append(
-            "| player | pos | m | casc G | casc CS | casc GA | "
-            "l3 G | l3 CS | l3 GA | P_G | P_CS | P_GA | total_pts |"
-        )
-        lines.append(
-            "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | "
-            "---: | ---: | ---: | ---: |"
-        )
-        for r in df.loc[df["gw"] == s["gw"]].itertuples(index=False):
+    if len(step_gws) <= 8:
+        lines += ["", "## Player rows", ""]
+        for s in steps_out:
             lines.append(
-                f"| {r.name} | {r.position} | {r.minutes:.0f} | "
-                f"{r.casc_xP_G:.2f} | {r.casc_xP_CS:.2f} | {r.casc_xP_GA:.2f} | "
-                f"{r.l3_xP_G:.2f} | {r.l3_xP_CS:.2f} | {r.l3_xP_GA:.2f} | "
-                f"{r.P_G:.0f} | {r.P_CS:.0f} | {r.P_GA:.0f} | "
-                f"{r.total_points:.0f} |"
+                f"### GW{s['gw']} — {s['xi_source']} · "
+                f"Σ total_pts={s['sum_total_points']:.0f}"
             )
-        lines.append("")
+            lines.append("")
+            lines.append(
+                "| player | pos | m | casc G | casc CS | casc GA | "
+                "l3 G | l3 CS | l3 GA | P_G | P_CS | P_GA | total_pts |"
+            )
+            lines.append(
+                "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | "
+                "---: | ---: | ---: | ---: |"
+            )
+            for r in df.loc[df["gw"] == s["gw"]].itertuples(index=False):
+                lines.append(
+                    f"| {r.name} | {r.position} | {r.minutes:.0f} | "
+                    f"{r.casc_xP_G:.2f} | {r.casc_xP_CS:.2f} | {r.casc_xP_GA:.2f} | "
+                    f"{r.l3_xP_G:.2f} | {r.l3_xP_CS:.2f} | {r.l3_xP_GA:.2f} | "
+                    f"{r.P_G:.0f} | {r.P_CS:.0f} | {r.P_GA:.0f} | "
+                    f"{r.total_points:.0f} |"
+                )
+            lines.append("")
+    else:
+        lines += [
+            "",
+            "Player rows omitted from the markdown (season map); see "
+            f"`{state.get('players_path', args.out)}`.",
+            "",
+        ]
+    repro = (
+        f"PYTHONPATH=. python3 -m src.eval.cascade_vs_l3_component_xp "
+        f"--n {n_strands} --goal-weight {goal_weight} "
+        f"--match-source {match_source} "
+        f"--steps {','.join(str(g) for g in step_gws)}"
+    )
+    if away_shrink is not None:
+        repro += f" --away-shrink {away_shrink}"
+    if lam_shrink is not None:
+        repro += f" --lam-shrink {lam_shrink}"
+    if args.decision_gw_only:
+        repro += " --decision-gw-only"
     lines += [
         "## Reproduce",
         "",
         "```bash",
-        f"PYTHONPATH=. python3 -m src.eval.cascade_vs_l3_component_xp --n {n_strands}",
+        repro,
         "```",
         "",
     ]
-    REPORT.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    report_path = REPORT
+    if goal_weight == "rate":
+        report_path = ROOT / "reports" / "cascade_vs_l3_component_xp_pi_r.md"
+    if match_source == "opta":
+        stem0 = (
+            "cascade_vs_l3_component_xp_pi_r_opta"
+            if goal_weight == "rate"
+            else "cascade_vs_l3_component_xp_opta"
+        )
+        report_path = ROOT / "reports" / f"{stem0}.md"
+    if step_gws != list(STEP_GWS):
+        tag = f"gw{step_gws[0]}-{step_gws[-1]}"
+        stem = (
+            "cascade_vs_l3_component_xp_pi_r_opta"
+            if goal_weight == "rate" and match_source == "opta"
+            else (
+                "cascade_vs_l3_component_xp_pi_r"
+                if goal_weight == "rate"
+                else (
+                    "cascade_vs_l3_component_xp_opta"
+                    if match_source == "opta"
+                    else "cascade_vs_l3_component_xp"
+                )
+            )
+        )
+        report_path = ROOT / "reports" / f"{stem}_{tag}.md"
+    if shrink_tag:
+        report_path = report_path.with_name(
+            report_path.stem + f"_{shrink_tag}" + report_path.suffix
+        )
+        if args.out.name == "cascade_vs_l3_component_xp.json":
+            args.out = Path("/opt/cursor/artifacts") / (
+                f"{task_base}_"
+                f"gw{step_gws[0]}-{step_gws[-1]}.json"
+                if step_gws != list(STEP_GWS)
+                else f"{task_base}.json"
+            )
+    report_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     STATE.write_text(
         json.dumps(
             {
-                "task": "cascade_vs_l3_component_xp",
+                "task": state["task"]
+                + (f"_gw{step_gws[0]}-{step_gws[-1]}" if step_gws != list(STEP_GWS) else ""),
                 "status": "done",
                 "as_of_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                "change": "Player xP(G,CS,GA) cascade vs L3/L4 on shared L3 path "
-                "(same GW8 WC XI); actuals; no captain",
-                "verdict": summary,
+                "change": (
+                    f"π∝r component map GW{step_gws[0]}–{step_gws[-1]} "
+                    f"(shared L3 XI; no captain; match={match_source}"
+                    f"{f'; away_shrink={away_shrink:g}' if away_shrink is not None else ''})"
+                ),
+                "verdict": {
+                    **summary,
+                    "blocks": blocks,
+                    "casc_minus_P_G": summary["sum_casc_xP_G"] - summary["sum_P_G"],
+                    "casc_minus_P_CS": summary["sum_casc_xP_CS"] - summary["sum_P_CS"],
+                },
                 "artifact": str(args.out),
-                "report": str(REPORT.relative_to(ROOT)),
+                "report": str(report_path.relative_to(ROOT)),
+                "plot": str(plot_path),
+                "goal_weight": goal_weight,
             },
             indent=2,
         )
         + "\n"
     )
-    print(json.dumps(summary, indent=2))
-    print("wrote", args.out, REPORT)
+    print(json.dumps({"summary": summary, "blocks": blocks}, indent=2))
+    print("wrote", args.out, report_path, plot_path)
     return 0
 
 

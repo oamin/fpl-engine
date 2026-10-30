@@ -8,7 +8,7 @@ Product landing: PR into `main` from that tip.
 | Piece | Protocol / default | Note |
 | --- | --- | --- |
 | **cascade_short** | `cascade_short_generative` | Centreline `M→k∼M`; no λ ±15% jitter |
-| **cascade_long** | `cascade_long_match_outcome` | **PI-approved 2026-10-24**: rankmean±SD latents (`centre_blend=0.5`); assessed expanding ḡ; hierarchical λ→`M\|λ`→`k∼M`; `HOME_ADV=1.0`; no second λ jitter; OLS retired; props off |
+| **cascade_long** | `cascade_long_match_outcome` | **PI-approved 2026-10-24**; **venue_mode=blind locked 2026-10-29 (PI)**: rankmean±SD latents (`centre_blend=0.5`); assessed expanding ḡ; hierarchical λ→`M\|λ`→`k∼M`; `AWAY_SHRINK=1.0` / `LAM_SHRINK=1.0` / `HOME_ADV=1.0` identity; no second λ jitter; OLS retired; props off. Place×venue / expanding H/A / FD venue-scale / margin-shrink / lag-1 / remaining-balance parked. `reports/cascade_long_blind_venue_lock.md` |
 | **Minutes on gen paths** | `DEFAULT_LINEUP_COV=False` | As-of mean / live xmi; FFScout = pool WHO only |
 | **Rate baseline** | `score_xp_v2_rate_baseline_prior` = `cascade_default` | Prior + same-season update; full `mu_post` gate deferred |
 | **Joint path transfers** | `cascade_joint_path_plan` = `wired` | Every horizon GW; `e=max(0,k−f)` |

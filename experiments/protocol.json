@@ -141,7 +141,10 @@
     "short_horizon": "scenario strands: k∼M → lineup cov → scorer/assist dice (π props-shape or shares; ρ assists; α empties); mean layer stays score_team_side; firm XI override deferred",
     "cap": "Σ E[G]_i = G_team always (mean); on a roll Σ FPL goals ≤ k via α_G empty mass; no absolute λ pin",
     "assists": "no prop overlay (locked)",
-    "parked": ["lift_only", "hard_absolute_replace"],
+    "parked": [
+      "lift_only",
+      "hard_absolute_replace"
+    ],
     "helper": "src/markets/prop_shares.prop_goal_pi via player_attack_from_m / score_team_side(prop_p_by_player=…); scenario: short_horizon_generative",
     "entrypoint": "src/live/numagent_live_pick.py use_props=False; opt-in --with-props",
     "any_later_change": "dated protocol update required"
@@ -162,8 +165,15 @@
     "defence": "CS = (GA==0) with ≥60'; GC = −⌊GA/2⌋ for GKP/DEF who played — no separate xCS/xGC on scenario strands",
     "attack_gate": "π/ρ renorm on minutes>0 (impact subs stay on dice); CS still ≥60",
     "share_pool": "full club m>0 for xG/xA shares and generative π — default even when selection pool is thin (≥60′); do not re-normalise shares on the selection board",
+    "goal_share_weight": "default w=rG·m/90; π∝r parked 2026-10-27 (score_xp_v2_goal_share_rate clear lose on log-score; cascade resid dig only)",
     "soft_priors": "xp_defcon / xp_bonus / xp_cards / xp_saves from expanding means (as-of *_mu), gated by lineup minutes; not from the roll",
-    "parked": ["bonus_from_roll", "lambda_uniform_band", "P_SUB_ON_starter_sub", "corr_threshold_competitor_pairs", "club_matchday_minutes_resample"],
+    "parked": [
+      "bonus_from_roll",
+      "lambda_uniform_band",
+      "P_SUB_ON_starter_sub",
+      "corr_threshold_competitor_pairs",
+      "club_matchday_minutes_resample"
+    ],
     "scope": "cascade_short / short_horizon_cascade scenario strands only",
     "firm_xi": "deferred — news/firm XI override later (pool/availability, not a minutes MC)",
     "default": true,
@@ -180,16 +190,19 @@
   "cascade_long_match_outcome": {
     "locked": "2026-10-20",
     "pi_approved": "2026-10-24",
-    "revised": "2026-10-24 — PI lock: rankmean±SD latents; assessed expanding ḡ; hierarchical λ→M→k; HOME_ADV=1.0; no second λ jitter; props off",
+    "revised": "2026-10-29 — venue_mode=blind locked as default (PI); AWAY_SHRINK=1.0 / LAM_SHRINK=1.0 identity locked; place×venue / expanding H/A / FD venue-scale / margin-shrink / lag-1 / remaining-balance parked after OOS or MAE FAIL",
+    "prior_revised": "2026-10-27 — away_shrink on λ_A only; default AWAY_SHRINK=1.0; no λ clip (kept); fixed s≠1 parked after OOS FAIL; symmetric HOME_ADV retired",
     "role": "long-horizon t+2… match M + generative player xP",
     "status": "pi_approved_strat",
     "rank_map": "Opta place → closed-season empirical mean GF/GA by finishing place (method=rankmean); OLS place→GF/GA retired from live path",
     "latent_draw": "per strand: sample GF, GA, ḡ inside mean ± z·SD (z_band=1.0) via sample_within_band; centre_blend=0.5 (half centre, half Uniform[lo,hi])",
     "bands": "place sample SD (n=4 closed seasons per place); ḡ SE from assessed expanding mean",
-    "lambda": "λ_H=(GF_H/38)·((GA_A/38)/ḡ); λ_A symmetric; ClubPath unused for λ; home_adv=1.0",
+    "lambda": "λ_H=(GF_H/38)·((GA_A/38)/ḡ); λ_A same × away_shrink; no 0.20–3.50 λ clip; ClubPath unused for λ; away_shrink=1.0",
+    "venue_mode": "blind — locked 2026-10-29 (PI); season-total place GF/GA; no place×venue remap; DEFAULT_VENUE_MODE=blind",
+    "away_shrink": "1.0 — locked identity 2026-10-29 (PI); λ_A only (λ_A ← λ_A·s); no λ clip; fixed s≠1 parked",
+    "lam_shrink": "1.0 — locked identity 2026-10-29 (PI); both λ after away_shrink",
     "league_gbar": "assessed_league_gf — live/assessed E0 expanding (FTHG+FTAG)/2 prior-blended; closed prior when no rows",
     "uncertainty": "hierarchical — draw latents → λ → M|λ → k∼M; δ-method sd_lam is diagnostic only; do not resample λ after M is built",
-    "home_adv": "1.0 — previous 1.08 never PI-approved; rejected 2026-10-24",
     "ols_rank_map": "retired — keep method=ols only for archaeology / old diagnostic replay",
     "M": "match_outcome_probs_from_lambdas(λ_h, λ_a, ρ=0) conditional on the strand's drawn λ",
     "scoreline": "match_outcome_roll — k∼M|λ; λ uncertainty enters only via latent draws across strands (no Uniform λ band)",
@@ -205,7 +218,316 @@
       "src/markets/cascade_score_v2.py",
       "src/markets/short_horizon_generative.py"
     ],
-    "any_later_change": "dated protocol update required; PI re-approval if rank_map, ḡ, latent_draw, or hierarchical scoreline changes"
+    "any_later_change": "dated protocol update required; PI re-approval if rank_map, ḡ, latent_draw, venue_mode, away_shrink/lam_shrink identity, or hierarchical scoreline changes",
+    "lock_report": "reports/cascade_long_blind_venue_lock.md"
+  },
+  "cascade_long_home_adv_lam_screen": {
+    "pre_registered": "2026-10-27",
+    "status": "superseded_wrong_formula",
+    "role": "club λ venue fix for cascade_long G overprint (away λ high)",
+    "baseline": "home_adv=1.0 (protocol.cascade_long_match_outcome)",
+    "candidates": {
+      "home_adv_1_08": 1.08,
+      "home_adv_fit_train": "argmin MAE(λ,act) on closed seasons 2022-23..2024-25, grid 1.00..1.20 step 0.02"
+    },
+    "holdout": "2025-26 GW8-38 team-sides",
+    "metric_primary": "away mean(λ−actual goals)",
+    "metric_secondary": [
+      "home mean(λ−actual)",
+      "overall MAE(λ,act)",
+      "vs FD mean(λ−act)"
+    ],
+    "promote_rule": "on 2025-26 holdout vs baseline 1.0: |away bias| falls by ≥0.10 AND home |bias| does not rise by >0.05 AND MAE does not rise by >0.02; still requires PI re-approval before flipping protocol HOME_ADV",
+    "scope": "club λ only first; XI G resid is a follow-up counterfactual, not the gate",
+    "modules": [
+      "src/eval/cascade_long_home_adv_lam_screen.py",
+      "src/models/opta_gf_ga_horizon.py",
+      "src/models/multistage_mc_milp.py"
+    ],
+    "does_not_change_default": true,
+    "note": "Symmetric home_adv (λ_H·h, λ_A/h) failed promote; PI redirected to away_shrink on λ_A only, no λ clip",
+    "superseded": "2026-10-27 by cascade_long_away_shrink_lam_screen"
+  },
+  "cascade_long_away_shrink_lam_screen": {
+    "pre_registered": "2026-10-27",
+    "status": "diagnostic_screen",
+    "role": "club λ away_shrink for cascade_long G overprint (away λ high); supersedes home_adv screen",
+    "formula": "λ_H unchanged; λ_A ← λ_A · away_shrink; no 0.20–3.50 λ clip",
+    "baseline": "away_shrink=1.0 (protocol.cascade_long_match_outcome)",
+    "candidates": {
+      "away_shrink_0_93": 0.93,
+      "away_shrink_0_75": "0.75 — XI resid G/CS zero-crossing (trend); screened 2026-10-27 add-on",
+      "away_shrink_fit_train": "argmin MAE(λ,act) on closed seasons 2022-23..2024-25, grid 0.80..1.00 step 0.02"
+    },
+    "holdout": "2025-26 GW8-38 team-sides",
+    "metric_primary": "away mean(λ−actual goals)",
+    "metric_secondary": [
+      "home mean(λ−actual)",
+      "overall MAE(λ,act)",
+      "vs FD mean(λ−act)"
+    ],
+    "promote_rule": "on 2025-26 holdout vs baseline 1.0: |away bias| falls by ≥0.10 AND home |bias| does not rise by >0.05 AND MAE does not rise by >0.02; still requires PI re-approval before flipping protocol AWAY_SHRINK",
+    "scope": "club λ only first; XI G resid is a follow-up counterfactual, not the gate",
+    "modules": [
+      "src/eval/cascade_long_away_shrink_lam_screen.py",
+      "src/models/opta_gf_ga_horizon.py",
+      "src/models/multistage_mc_milp.py"
+    ],
+    "does_not_change_default": true,
+    "note": "Formula locked: away_shrink on λ_A only; no λ clip. Default stays 1.0 — fixed s≠1 not promoted"
+  },
+  "cascade_away_shrink_oos_seasons": {
+    "pre_registered": "2026-10-27",
+    "status": "done_reject_fixed_s",
+    "role": "OOS club-λ check for candidate s=0.768 on seasons that did not select s",
+    "candidate": 0.768,
+    "baseline": 1.0,
+    "holdout_seasons": [
+      "2022-23",
+      "2023-24",
+      "2024-25"
+    ],
+    "result": "0/3 PASS; pooled FAIL — park fixed away_shrink; keep default 1.0",
+    "not": "2025-26 XI resid (selection season); no shared L3 XI on prior seasons",
+    "promote_rule": "same as cascade_long_away_shrink_lam_screen, applied per season vs that season s=1.0",
+    "modules": [
+      "src/eval/cascade_away_shrink_oos_seasons.py"
+    ],
+    "note": "XI shared-L3 path is 2025-26-only; club λ is the transferable OOS metric"
+  },
+  "cascade_long_lam_shrink_screen": {
+    "pre_registered": "2026-10-27",
+    "status": "done_reject",
+    "result": "holdout FAIL (home |bias| worsens); OOS 0/3; keep LAM_SHRINK=1.0",
+    "role": "combined scale on both λ_H and λ_A (lam_shrink); trial vs identity",
+    "formula": "λ_H ← λ_H·s; λ_A ← λ_A·s; away_shrink=1.0; no 0.20–3.50 λ clip",
+    "baseline": "lam_shrink=1.0",
+    "candidates": {
+      "lam_shrink_fit_train": "argmin MAE(λ,act) on 2022-23..2024-25, grid 0.80..1.00 step 0.02"
+    },
+    "holdout": "2025-26 GW8-38 team-sides",
+    "oos_seasons": [
+      "2022-23",
+      "2023-24",
+      "2024-25"
+    ],
+    "promote_rule": "vs baseline: |overall bias| ↓ ≥0.05 AND neither |bias_H| nor |bias_A| rises by >0.05 AND MAE ↑ ≤0.02; default unchanged",
+    "modules": [
+      "src/eval/cascade_long_lam_shrink_screen.py"
+    ],
+    "does_not_change_default": true
+  },
+  "cascade_long_place_venue_lam_screen": {
+    "pre_registered": "2026-10-27",
+    "status": "done_holdout_pass_oos_fail",
+    "result": "holdout venue_away+blend_fit PASS; OOS 1/3 — keep DEFAULT_VENUE_MODE=blind",
+    "role": "place×venue Opta λ map for cascade_long G overprint (away λ high from venue-blind season totals)",
+    "baseline": "venue_mode=blind (protocol.cascade_long_match_outcome; DEFAULT_VENUE_MODE)",
+    "candidates": {
+      "venue_away": "λ_H blind; λ_A = gf_a_pm(ra)·((GA_H_blind/38)/ḡ)",
+      "venue_ev": "EV-matched full place×venue both sides",
+      "naive": "isolate diagnostic: attack×opp-def / blended ḡ (overshoots home)",
+      "blend_fit": "train-fit w on venue_away λ_A, grid 0.00..1.00 step 0.10 on 2022-23..2024-25"
+    },
+    "holdout": "2025-26 GW8-38 team-sides",
+    "oos_seasons": [
+      "2022-23",
+      "2023-24",
+      "2024-25"
+    ],
+    "metric_primary": "away mean(λ−actual goals)",
+    "metric_secondary": [
+      "home mean(λ−actual)",
+      "overall MAE(λ,act)",
+      "vs FD mean(λ−act)"
+    ],
+    "promote_rule": "on holdout vs blind: |away bias| falls by ≥0.10 AND home |bias| does not rise by >0.05 AND MAE does not rise by >0.02; OOS required on 2022-23..2024-25 before any default flip; still requires PI re-approval before flipping DEFAULT_VENUE_MODE",
+    "scope": "club λ only first; XI G resid is a follow-up counterfactual, not the gate",
+    "modules": [
+      "src/eval/cascade_long_place_venue_lam_screen.py",
+      "src/models/opta_gf_ga_horizon.py",
+      "src/models/multistage_mc_milp.py"
+    ],
+    "does_not_change_default": true,
+    "note": "Follows cascade_long_g_overprint_isolate — structural fix for venue-blind place GF/GA; supersedes fixed away_shrink/lam_shrink spice"
+  },
+  "cascade_long_club_lam_vs_place_gf": {
+    "pre_registered": "2026-10-28",
+    "status": "done",
+    "result": "pooled Σλ−place_gf ≈ +0.10 (converges); Σλ−act varies by season scoring level; venue H~0 A high on cold seasons — not escaped GF anchors",
+    "role": "Separate club Σλ vs place GF from XI xP(G) heat — does cascade_long escape its GF anchors?",
+    "seasons": [
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26"
+    ],
+    "method": "oracle finishing ranks + LOSO place profile; Σ Opta λ vs place mean_gf vs actual goals; venue bias",
+    "venue_mode": "blind (default)",
+    "modules": [
+      "src/eval/cascade_long_club_lam_vs_place_gf.py",
+      "src/models/opta_gf_ga_horizon.py"
+    ],
+    "does_not_change_default": true,
+    "note": "Design claim: season Σλ ≈ place GF; venue misallocation and XI generative are separate layers"
+  },
+  "cascade_short_goal_weight_likelihood_screen": {
+    "pre_registered": "2026-10-28",
+    "status": "done_inconclusive",
+    "result": "π∝r−rate_minutes Δ log +0.008 [-0.002,+0.017] covers 0 → inconclusive; both gen arms lose to L3 (~−0.03…−0.04); keep default rate_minutes",
+    "role": "cascade_short generative π∝r vs rate_minutes on player-GW log score; L3 score_xp_v2 reference",
+    "treatment": "cascade_short_gen_goal_share_rate",
+    "baseline": "cascade_short_gen_goal_share_rate_minutes",
+    "l3_reference": "l3_score_xp_v2",
+    "formula": "treatment goal_weight=rate (π∝r); baseline goal_weight=rate_minutes (w=r·m/90); same FD centreline λ; MC-mean generative xP; assists unchanged",
+    "pool": "minutes>60, ≥3 prior apps, FD AH+OU priced weeks, GW8–38, σ=3",
+    "metric": "gaussian_log_score on generative MC-mean xp vs total_points; paired treatment−baseline by GW; cluster_interval across four closed seasons",
+    "promote_if": "paired interval lo > 0 on four closed seasons",
+    "n_mc": 6,
+    "modules": [
+      "src/eval/cascade_short_goal_weight_likelihood_screen.py",
+      "src/markets/short_horizon_generative.py"
+    ],
+    "does_not_change_default": true,
+    "note": "Re-screens parked score_xp_v2_goal_share_rate weight formula on cascade_short generative + L3 reference; Dig B XI resid is not the gate"
+  },
+  "cascade_gen_vs_l3_loss_anatomy": {
+    "pre_registered": "2026-10-29",
+    "status": "done",
+    "result": "gen vs L3: bias nearly identical (~−0.96); gen higher pred SD (1.81 vs 1.57) and lower corr (0.217 vs 0.237); Δ log worst in top L3-xp quintile — variance/ranking, not mean bias; gen-as-mean stays parked (viability B1)",
+    "role": "Diagnostic: why cascade_short generative loses player-GW log score to L3 centreline",
+    "source_rows": "data/processed/cascade_short_goal_weight_likelihood_rows.csv",
+    "arms": [
+      "rate_minutes",
+      "rate",
+      "l3"
+    ],
+    "lenses": [
+      "mean bias / MAE / corr / pred SD",
+      "Δ log (gen−L3) by L3-xp quintile",
+      "by closed season"
+    ],
+    "modules": [
+      "src/eval/cascade_gen_vs_l3_loss_anatomy.py"
+    ],
+    "does_not_change_default": true,
+    "note": "Follow-up to cascade_short_goal_weight_likelihood_screen; confirms B1 park — not a mean-level G fix"
+  },
+  "cascade_long_fd_opta_lam_scale_dig": {
+    "pre_registered": "2026-10-29",
+    "status": "done",
+    "result": "Implementable form λ'_H=r_H·λ_H, λ'_A=r_A·λ_A with r=mean(FD)/mean(Opta) by venue; 2025-26 r_H=1.064 r_A=0.847; 2024-25 r_H=1.166 r_A=0.939; pooled r_H≈1.115 r_A≈0.893; direction stable, magnitudes not — no default flip",
+    "role": "Fit how FD centreline λ scales vs Opta ranking λ for an implementable post-λ map",
+    "form": "venue mean-ratio scale (not global mul; not LAM_SHRINK)",
+    "hook": "post-λ site next to away_shrink / home_scale in opta_gf_ga_horizon",
+    "seasons": [
+      "2025-26",
+      "2024-25"
+    ],
+    "modules": [
+      "src/eval/cascade_long_fd_opta_lam_scale_dig.py",
+      "src/eval/cascade_long_fd_vs_opta_lam_compare.py"
+    ],
+    "does_not_change_default": true,
+    "note": "Affine FD≈a·Opta+b (a<1) also needed for tail compression; venue mean-ratio alone matches venue means only. OOS required before promote"
+  },
+  "cascade_long_fd_vs_opta_lam_compare": {
+    "pre_registered": "2026-10-29",
+    "status": "done",
+    "result": "2025-26 GW8–38 n=618: Opta−FD +0.068 MAE 0.306 corr 0.706; Opta bias +0.122 vs FD +0.054; venue: Opta A +0.255 / FD A +0.023, Opta H −0.011 / FD H +0.086 — Opta away-hot vs book; default blind unchanged",
+    "role": "Paired FD centreline λ vs cascade_long Opta ranking λ on one closed season",
+    "season": "2025-26",
+    "gw_range": [
+      8,
+      38
+    ],
+    "opta": "oracle finishing ranks + LOSO place GF/GA → sample_opta_scenario venue_mode=blind",
+    "fd": "football-data.co.uk AH+OU centreline (cascade_short_fd_hist)",
+    "metrics": [
+      "mean/MAE/corr Opta vs FD",
+      "bias/MAE/corr each vs actual",
+      "by venue H/A",
+      "by favourite",
+      "by finishing-rank tercile"
+    ],
+    "modules": [
+      "src/eval/cascade_long_fd_vs_opta_lam_compare.py",
+      "src/models/opta_gf_ga_horizon.py",
+      "src/models/multistage_mc_milp.py"
+    ],
+    "does_not_change_default": true,
+    "note": "One-season diagnostic; extends G-overprint isolate club-λ table without XI resid"
+  },
+  "cascade_long_expanding_ha_lam_screen": {
+    "pre_registered": "2026-10-29",
+    "status": "done_holdout_pass_oos_fail",
+    "result": "holdout expanding_away PASS (A +0.259→+0.031, H flat, MAE↓); OOS expanding_away 2/4, expanding_ha 1/4, blend_fit 0/4 — keep DEFAULT_VENUE_MODE=blind",
+    "role": "as-of expanding club H/A rates vs Opta blind place season-total λ (reopens place×venue with causal rates)",
+    "baseline": "venue_mode=blind place season-total λ",
+    "candidates": {
+      "expanding_ha": "as-of club H/A GF/GA (prior closed + current before GW; PRIOR_N=10) × opp venue def / league venue mean",
+      "expanding_away": "λ_H blind; λ_A from expanding club rates",
+      "blend_fit": "train-fit w on expanding_ha, grid 0.00..1.00 step 0.10 on 2022-23..2024-25"
+    },
+    "holdout": "2025-26 GW8-38 team-sides",
+    "oos_seasons": [
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26"
+    ],
+    "metric_primary": "away mean(λ−actual goals)",
+    "metric_secondary": [
+      "home mean(λ−actual)",
+      "overall MAE(λ,act)",
+      "vs FD mean(λ−act) on holdout"
+    ],
+    "promote_rule": "on holdout vs blind: |away bias| falls by ≥0.10 AND home |bias| does not rise by >0.05 AND MAE does not rise by >0.02; OOS required (≥3/4 seasons) before any default flip; still requires PI re-approval",
+    "prior_pseudo_matches": 10,
+    "modules": [
+      "src/eval/cascade_long_expanding_ha_lam_screen.py",
+      "src/models/opta_gf_ga_horizon.py",
+      "src/models/multistage_mc_milp.py"
+    ],
+    "does_not_change_default": true,
+    "note": "Follows cascade_long_place_venue_lam_screen — as-of club rates instead of final-place×venue oracles; same promote thresholds"
+  },
+  "cascade_fd_goal_weight_likelihood_dig": {
+    "pre_registered": "2026-10-28",
+    "status": "done",
+    "result": "cascade component G log: π∝r Δ +0.015 [-0.002,+0.032] covers 0 (undetermined); resid G still +14 vs +100; score_xp_v2 gate already park_clear_lose for π∝r — default rate_minutes unchanged",
+    "role": "Cascade generative rate_minutes vs π∝r on component player-GW log score (FD shared L3 XI GW8–38)",
+    "baseline": "goal_weight=rate_minutes artifacts",
+    "treatment": "goal_weight=rate (π∝r) artifacts",
+    "metric": "gaussian_log_score σ=3 on casc_xP_G vs P_G; paired GW Δ; reference score_xp_v2_goal_share_rate already park_clear_lose",
+    "modules": [
+      "src/eval/cascade_fd_goal_weight_likelihood_dig.py",
+      "src/eval/cascade_fd_generative_g_dig.py"
+    ],
+    "does_not_change_default": true,
+    "note": "XI resid G hotter under rate_minutes is not the gate; likelihood is"
+  },
+  "cascade_fd_generative_g_dig": {
+    "pre_registered": "2026-10-27",
+    "status": "done",
+    "result": "π∝r resid G +14; default rate_minutes +100 on same FD XI — minutes weight is the hot generative arm; α_G empty ~0.04",
+    "role": "Dig FD/generative +14 XI resid G under π∝r and default rate_minutes (cascade_short shared remainder)",
+    "baseline_artifact": "cascade_vs_l3_component_xp_pi_r_gw8-38 (FD, goal_weight=rate)",
+    "compare": "same map with goal_weight=rate_minutes (default)",
+    "lenses": [
+      "XI resid G rate vs rate_minutes",
+      "alpha_g empty mass vs scored xP",
+      "share concentration (HHI / top-1 sG) on XI FWDs",
+      "minutes gate (m=0 drop) under both weights"
+    ],
+    "holdout": "2025-26 GW8-38 shared L3 XI",
+    "decision_metric": "player-GW likelihood (XI resid diagnostic only)",
+    "modules": [
+      "src/eval/cascade_fd_generative_g_dig.py",
+      "src/eval/cascade_vs_l3_component_xp.py",
+      "src/markets/short_horizon_generative.py"
+    ],
+    "does_not_change_default": true
   },
   "score_xp_v2_screen": {
     "score_column": "score_xp_v2",
@@ -272,6 +594,32 @@
       "hi": 0.023362,
       "covers_zero": false,
       "verdict": "promote — default share_se_shrink=True, share_se_prior=position_minutes"
+    },
+    "any_later_change": "dated protocol update required"
+  },
+  "score_xp_v2_goal_share_rate": {
+    "locked": "2026-10-27",
+    "parked": "2026-10-27",
+    "role": "goal share weights: π∝r among m>0 vs default π∝r·m — parked",
+    "source": "src/markets/numagent_xp.goal_share_weight / score_team_side(goal_weight=…)",
+    "trial": "src/markets/goal_share_rate_trial.py",
+    "report": "reports/score_xp_v2_goal_share_rate.md",
+    "treatment": "score_xp_v2_goal_share_rate",
+    "baseline": "score_xp_v2_goal_share_rate_minutes",
+    "formula": "treatment wG=rG (m gates club only); baseline wG=rG·m/90; both π=w/Σw then share-SE position×minutes; assists ∝rA·m/90 both arms",
+    "applies_to": "sG channel only; assists unchanged; share_se_prior=position_minutes on",
+    "not": "assist weight change; share-SE off; artificial π shrink; holdout 2026-27",
+    "pool": "identical to score_xp_v2_screen (minutes>60, FD AH+OU, GW5–38, σ=3)",
+    "metric": "gaussian_log_score on point mean; paired treatment−baseline by GW then cluster_interval",
+    "minutes": "oracle (actual m, σ_m=0) — same historical stack law",
+    "promote_if": "paired interval lo > 0 on four closed seasons",
+    "cascade_resid_dig": "reports/cascade_share_no_renorm_minutes.md (OL XI +10.2→+0.2; not the gate)",
+    "result": {
+      "mean_d_log": -0.000549,
+      "lo": -0.001021,
+      "hi": -0.000118,
+      "covers_zero": false,
+      "verdict": "park_clear_lose — keep default goal_weight=rate_minutes (w=r·m/90)"
     },
     "any_later_change": "dated protocol update required"
   },
@@ -1426,7 +1774,12 @@
     "gw_end": 28,
     "n_mc": 6,
     "sigma": 3.0,
-    "seasons": ["2022-23", "2023-24", "2024-25", "2025-26"],
+    "seasons": [
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26"
+    ],
     "arms": {
       "A": "integrity (as-of, no λ jitter, k∈M, routing, MILP units)",
       "B1": "short_gen − short_mean (FD centreline)",
@@ -1453,7 +1806,12 @@
     "n_mc": 20,
     "sigma": 3.0,
     "seed": 7,
-    "seasons": ["2022-23", "2023-24", "2024-25", "2025-26"],
+    "seasons": [
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26"
+    ],
     "note": "Distinct from cascade_viability_batch B1 (same-GW aggregator).",
     "any_later_change": "dated protocol update required"
   },
@@ -1474,7 +1832,12 @@
     "n_mc": 20,
     "sigma": 3.0,
     "seed": 7,
-    "seasons": ["2022-23", "2023-24", "2024-25", "2025-26"],
+    "seasons": [
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26"
+    ],
     "note": "Tests PI hypothesis that rolling squad/minutes is overkill",
     "any_later_change": "dated protocol update required"
   },
@@ -1566,7 +1929,11 @@
     "report": "reports/cascade_mean_xi_ft_rolling.md",
     "season": "2025-26",
     "horizon": "8-19",
-    "steps": [8, 9, 10],
+    "steps": [
+      8,
+      9,
+      10
+    ],
     "n": 100,
     "seed": 7,
     "method": "commit OL week-0 at GW8; refresh as-of+mean boards and replan at later steps",
@@ -1700,5 +2067,262 @@
     "not": "four-season gate; change mean-board oracle residuals; chips; promote causal as default without hit-brake work",
     "note": "Causal minutes make the path react; PE=+4 does not induce banking under deadline shocks (hits absorb the news).",
     "any_later_change": "dated protocol update required"
+  },
+  "cascade_long_fd_opta_form_resid": {
+    "pre_registered": "2026-10-29",
+    "status": "done",
+    "result": "2025-26: raw form flat on Opta−FD; conditional on rank+venue partial r(L5 GD, resid)=−0.23; FD responds to form (+0.24), Opta place-locked (+0.03); +1 SD form → FD up ~0.09 vs Opta",
+    "role": "Does as-of recent form swing FD λ vs place-locked Opta ranking λ?",
+    "season": "2025-26",
+    "form": "last-5 mean GD / pts / GF before GW",
+    "does_not_change_default": true
+  },
+  "cascade_long_fd_opta_resid_drivers": {
+    "pre_registered": "2026-10-29",
+    "status": "done",
+    "result": "Form too weak to lean on (univ R²≈0; ΔR² +0.03 after structure). Better drivers: venue + rank_gap/Opta margin (R²≈0.40). Form secondary only.",
+    "role": "Horse-race drivers of Opta−FD residual; judge whether form is lean-worthy",
+    "season": "2025-26",
+    "does_not_change_default": true
+  },
+  "cascade_long_margin_shrink_lam_screen": {
+    "pre_registered": "2026-10-29",
+    "status": "done_reject",
+    "role": "Trial strength-mismatch lever: compress Opta fixture λ margins toward match mean",
+    "formula": "m=(λ_H+λ_A)/2; λ'=m+α·(λ−m) per side; match total preserved",
+    "baseline": "α=1.0 (blind Opta)",
+    "candidates": {
+      "margin_shrink_fit": "train-fit α on MAE(λ,act), grid 0.50..1.00 step 0.05 on 2022-23..2024-25",
+      "margin_shrink_075": "fixed α=0.75 diagnostic"
+    },
+    "holdout": "2025-26 GW8-38 team-sides",
+    "oos_seasons": [
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26"
+    ],
+    "promote_rule": "vs blind: |away bias| ↓ ≥0.10 AND home |bias| ↑ ≤0.05 AND MAE ↑ ≤0.02; OOS ≥3/4 before default flip; PI re-approval",
+    "lever_source": "Opta−FD residual drivers — rank_gap / Opta margin (not form)",
+    "modules": [
+      "src/eval/cascade_long_margin_shrink_lam_screen.py"
+    ],
+    "does_not_change_default": true,
+    "result": "holdout FAIL / OOS 0/4; fit α=0.90 barely moves venue biases — inert when E[λ_H]≈E[λ_A] under blind; keep α=1"
+  },
+  "cascade_long_fd_venue_scale_lam_screen": {
+    "pre_registered": "2026-10-29",
+    "status": "done_holdout_pass_oos_fail",
+    "role": "Trial venue mean-ratio scale Opta→FD levels (dominant Opta−FD residual driver)",
+    "formula": "λ'_H=r_H·λ_H; λ'_A=r_A·λ_A; r_ha=mean(FD_ha)/mean(Opta_ha) on train",
+    "baseline": "r_H=r_A=1 (blind)",
+    "candidates": {
+      "fd_venue_fit": "train-fit (r_H,r_A) on 2022-23..2024-25 FD/Opta venue means",
+      "fd_venue_away_only": "r_H=1; r_A=train away FD/Opta",
+      "pooled_const": "diagnostic r_H=1.115 r_A=0.893 from scale dig"
+    },
+    "holdout": "2025-26 GW8-38 team-sides",
+    "oos_seasons": [
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26"
+    ],
+    "promote_rule": "vs blind: |away bias| ↓ ≥0.10 AND home |bias| ↑ ≤0.05 AND MAE ↑ ≤0.02; OOS ≥3/4; PI re-approval",
+    "prior": "margin_shrink FAIL — venue means unchanged; this arm moves them",
+    "modules": [
+      "src/eval/cascade_long_fd_venue_scale_lam_screen.py"
+    ],
+    "does_not_change_default": true,
+    "result": "holdout fd_venue_away_only PASS (A +0.255→+0.146, H flat); fd_venue_fit FAIL home; OOS away_only 2/4 — keep r=1; same class as place×venue/expanding_away"
+  },
+  "cascade_long_fd_opta_gap_all_seasons": {
+    "pre_registered": "2026-10-29",
+    "status": "done",
+    "result": "pooled Opta−FD −0.024 (misleading); signs flip (+22/25, −23/24); home Opta<FD all 4; away Opta>FD in 3/4 (not 2023-24)",
+    "role": "Opta−FD residual gap on all four closed seasons GW8–38",
+    "seasons": [
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26"
+    ],
+    "does_not_change_default": true
+  },
+  "cascade_long_fd_opta_venue_resid_drivers": {
+    "pre_registered": "2026-10-29",
+    "status": "done",
+    "result": "One mechanism: Opta venue-blind level vs FD HA≈+0.32; resid_ha≈Opta_level−FD_ha. Season gaps = Opta level bias + whether FD away is soft. 2023-24 odd away because FD_A≈Opta_A.",
+    "role": "Coherent per-season drivers of home/away Opta−FD residual",
+    "does_not_change_default": true
+  },
+  "opta_fd_lag1_resid_correction": {
+    "pre_registered": "2026-10-29",
+    "status": "done_reject",
+    "result": "lag-1 Opta−FD correction tracks the book not the ball; MAE vs act worse or flat — keep blind",
+    "role": "Causal lag-1 subtract prior GW Opta−FD residual from current Opta λ",
+    "does_not_change_default": true,
+    "report": "reports/opta_fd_lag1_resid_correction.md"
+  },
+  "opta_act_lag1_resid_correction": {
+    "pre_registered": "2026-10-29",
+    "status": "done_reject",
+    "result": "lag-1 Opta−actual correction hurts MAE vs blind — keep blind",
+    "role": "Causal lag-1 subtract prior GW Opta−actual residual from current Opta λ",
+    "does_not_change_default": true,
+    "report": "reports/opta_act_lag1_resid_correction.md"
+  },
+  "opta_remaining_balance_lam": {
+    "pre_registered": "2026-10-29",
+    "status": "done_reject",
+    "result": "remaining-balance MAE 1.047 vs blind 0.949 (Δ+0.098); pace→underprint corr −0.041 — keep blind",
+    "role": "Remaining-season GF/GA balance λ vs blind place/38 Opta rates",
+    "does_not_change_default": true,
+    "report": "reports/opta_remaining_balance_lam.md"
+  },
+  "cascade_long_blind_venue_lock": {
+    "locked": "2026-10-29",
+    "pi_approved": "2026-10-29",
+    "status": "locked",
+    "role": "Lock cascade_long club λ defaults after Opta−FD lever digs",
+    "defaults": {
+      "venue_mode": "blind",
+      "AWAY_SHRINK": 1.0,
+      "LAM_SHRINK": 1.0,
+      "HOME_ADV": 1.0
+    },
+    "verdict": "PI: blind Opta best left as-is; lock as default. All screened venue/scale/lag/balance levers failed OOS or hurt MAE.",
+    "parked_arms": [
+      "place×venue / venue_away",
+      "expanding H/A",
+      "FD venue-scale",
+      "margin-shrink",
+      "away_shrink s≠1 / lam_shrink",
+      "lag-1 Opta−FD",
+      "lag-1 Opta−actual",
+      "remaining-season balance"
+    ],
+    "modules": [
+      "src/models/opta_gf_ga_horizon.py"
+    ],
+    "protocol": "cascade_long_match_outcome",
+    "report": "reports/cascade_long_blind_venue_lock.md"
+  },
+  "cascade_eligible_component_resid": {
+    "pre_registered": "2026-10-29",
+    "status": "superseded_wrong_horizon",
+    "role": "Stepped eligible-pool E[G,CS,GC]: cascade_short (FD) + cascade_long (Opta) vs L3 score_xp_v2",
+    "season": "2025-26",
+    "gws": "8-38",
+    "pool_generate": "full-club share pool m>0 as-of before each decision GW (shares not re-normalised on thin board)",
+    "pool_residual": "actual minutes>60 that GW; n_prior>=3; join players scored by all arms",
+    "arms": {
+      "cascade_short": "FD centreline λ → generative MC-mean xp_goals/xp_cs/xp_gc (goal_weight=rate_minutes)",
+      "cascade_long": "Opta/oracle place GF/GA venue_mode=blind → generative MC-mean (same goal_weight)",
+      "l3": "as-of score_xp_v2 centreline components via score_team_side"
+    },
+    "stepping": "as-of hist refresh each decision GW t; score decision GW only; repeat t=8…38",
+    "metric_primary": "player-GW residual (xP−P) bias / MAE / RMSE / corr on G, CS, GC",
+    "metric_secondary": [
+      "paired MAE and mean residual: short−L3, long−L3",
+      "per-GW and block (8-12 / 13-19 / 20-26 / 27-33 / 34-38) Σ residuals"
+    ],
+    "n_strands": 40,
+    "does_not_change_default": true,
+    "note": "Decision-GW-only residual — NOT the intended t:horizon snapshot. Superseded by cascade_eligible_horizon_snapshot.",
+    "modules": [
+      "src/eval/cascade_eligible_component_resid.py",
+      "src/eval/cascade_mean_xi_ft_step_pool_resid.py",
+      "src/eval/cascade_vs_l3_component_xp.py"
+    ],
+    "report": "reports/cascade_eligible_component_resid.md",
+    "result": "2025-26 GW8-38 m>60 n=5892: G MAE L3 0.814 < short 0.859 < long 0.876; CS MAE L3 0.749 < long 0.793 < short 0.799; short−L3 G ΔMAE +0.045; long−L3 G ΔMAE +0.062 — L3 closer on G/CS; defaults unchanged"
+  },
+  "cascade_eligible_horizon_snapshot": {
+    "pre_registered": "2026-10-30",
+    "status": "done",
+    "role": "Stepped as-of-t horizon snapshots: cascade_short+long E[G,CS,GC] for g=t…end vs contemporaneous L3 and actuals",
+    "supersedes": "cascade_eligible_component_resid",
+    "season": "2025-26",
+    "decision_gws": "8…horizon_end (step t → t+1)",
+    "horizon": "snapshot at t covers target GWs t…horizon_end (default 38; CLI --horizon-end)",
+    "cascade_freeze": "as-of hist / share pool / alphas frozen at decision GW t",
+    "arms": {
+      "cascade_short": "generative MC-mean; FD centreline λ only for g∈{t,t+1} (causal short book); no future-FD leak",
+      "cascade_long": "generative MC-mean; Opta place GF/GA venue_mode=blind for all g∈[t,end]",
+      "l3": "contemporaneous score_xp_v2 at each target g: as-of hist before g + FD priced near g"
+    },
+    "pool_residual": "at target g: actual minutes>60, n_prior≥3 as-of t (freeze), scored by the arm(s) under comparison",
+    "metric_primary": "player-GW residual (xP−P) bias/MAE by horizon_offset=g−t; paired vs L3",
+    "metric_secondary": [
+      "per decision-t horizon totals",
+      "revision of fixed target g as t approaches"
+    ],
+    "n_strands": 20,
+    "does_not_change_default": true,
+    "modules": [
+      "src/eval/cascade_eligible_horizon_snapshot.py"
+    ],
+    "report": "reports/cascade_eligible_horizon_snapshot.md",
+    "result": "2025-26: 31 decisions, horizon_end=38, n=85601 freeze×target cells. long−L3 G ΔMAE near(0–1) +0.054 / far(≥2) +0.021; overall long G MAE 0.846 vs L3 0.820; short t:t+1 G MAE 0.859 vs L3-same-rows. L3@g closer at all horizons; defaults unchanged"
+  },
+  "l3_opta_lambda_horizon": {
+    "pre_registered": "2026-10-30",
+    "status": "done",
+    "role": "Alternative to cascade gen: L3/L4 centreline mechanics at freeze t, driven by Opta centreline λ for every target g=t…end",
+    "season": "2025-26",
+    "decision_gws": "8…horizon_end",
+    "horizon": "g ∈ [t, horizon_end] (default 38)",
+    "treatment": "l3_opta_at_t",
+    "formula": "freeze build_frozen_side_table + alphas at t; for each g, Opta match_prediction λ (venue_mode=blind, place rankmean centres) → Dixon–Coles moments → score_team_side (L3 score_xp_v2 components)",
+    "baselines": {
+      "l3_fd_at_g": "contemporaneous L3: as-of before g + FD λ near g",
+      "actuals": "FPL P_G / P_CS / P_GC on minutes>60"
+    },
+    "pool_residual": "actual minutes>60 at g; n_prior≥3 as-of t; on both boards",
+    "metric_primary": "player-GW residual bias/MAE by horizon_offset; paired l3_opta@t − L3@g",
+    "why": "Audit whether Opta λ + L3 centreline is a feasible strategy scorer vs generative cascade_short/long",
+    "does_not_change_default": true,
+    "modules": [
+      "src/eval/l3_opta_lambda_horizon.py",
+      "src/models/opta_gf_ga_horizon.py",
+      "src/markets/numagent_xp.py"
+    ],
+    "report": "reports/l3_opta_lambda_horizon.md",
+    "result": "2025-26: 31 decisions, n=89444. L3@t+Opta G MAE 0.818 vs L3@g+FD 0.805 (near ΔMAE +0.013, far +0.012). Beats prior generative cascade_long @t (G MAE ≈0.846). CS near slightly better than L3@g (ΔMAE −0.006). Defaults unchanged — promising alternative to cascade gen for strategy scores."
+  },
+  "m_discrete_event_likelihood_screen": {
+    "pre_registered": "2026-10-30",
+    "status": "done_park_clear_lose",
+    "role": "Does a discrete M-event predictive likelihood beat Gaussian(centreline μ, σ) on player-GW points, without changing locked score_xp_v2 means?",
+    "claim": "Integrated M is kept as the mean board; discreteness is modeled in the predictive distribution (CS Bernoulli, GC count from M), not by mode/median point boards.",
+    "baseline": "l3_gaussian_total",
+    "treatment": "l3_factored_m_events",
+    "baseline_formula": "log p(y) = gaussian_log_score(total_points, μ=score_xp_v2 xp, σ=protocol.sigma); μ from FD centreline score_team_side (locked mean layer)",
+    "treatment_formula": "log p(y) = log p_G + log p_A + log p_CS + log p_GC + log p_rest; μ components from the same locked score_xp_v2 board; p_CS = Bernoulli(P(CS from M)) on whether P_CS>0; p_GC = categorical over k=⌊GA/2⌋ from M marginal for GKP/DEF (0 else); p_G/p_A = gaussian on xp_goals/xp_assists; p_rest = gaussian on (total_points − P_G − P_A − P_CS − P_GC) vs (xp − xp_goals − xp_assists − xp_cs − xp_gc)",
+    "mean_layer": "unchanged — no edit to score_team_side, α_G/α_A, shares, or cascade defaults",
+    "not": [
+      "mode/median M boards as μ",
+      "fitted β on event features (no OF search)",
+      "generative MC-mean as replacement μ (already clearly_loses — viability B1)",
+      "2026-27 holdout",
+      "Opta λ in this screen (FD centreline only; Opta follow-up only if FD treatment wins)"
+    ],
+    "pool": "minutes>60 at scored GW; ≥3 prior apps as-of GW; FD AH+OU priced weeks; GW8–38; four closed seasons",
+    "metric": "mean log predictive density per player-GW; paired treatment−baseline by GW; cluster_interval across protocol.closed_seasons",
+    "promote_if": "paired interval lo > 0 on four closed seasons",
+    "sanity_if_not_clear_lose": "DEF/GKP pick_xi tie-break using P(CS) and P(⌊GC/2⌋≥1) vs xp-only; realized XI points — climb sanity only, not the gate",
+    "sigma": 3.0,
+    "modules": [
+      "src/eval/m_discrete_event_likelihood_screen.py",
+      "src/markets/scoreline.py",
+      "src/markets/numagent_xp.py",
+      "src/eval/gates.py"
+    ],
+    "plan": "reports/m_discrete_event_likelihood_screen_PLAN.md",
+    "report": "reports/m_discrete_event_likelihood_screen.md",
+    "does_not_change_default": true,
+    "note": "Locks the discreteness question as a predictive-likelihood comparison. Mean board stays integrated M. Mode/median path parked.",
+    "result": "Δ log -4.6171 [-4.6323,-4.6018] → park_clear_lose; mean layer unchanged"
   }
 }

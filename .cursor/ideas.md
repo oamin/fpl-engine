@@ -1,3 +1,72 @@
+## Parked — discrete M-event vs Gaussian-on-total (2026-10-30)
+
+Pre-registered pair **clearly loses**: Δ log **−4.617** [−4.632, −4.602].
+Summing five component logs is not commensurate with one Gaussian on totals.
+Mean layer unchanged. Same-skeleton diagnostic (discrete CS/GC vs Gaussian
+CS/GC under identical G/A/rest) wins Δ **+3.231** [+3.212, +3.250] — suggests
+re-registering that pair if discreteness is pursued.
+`reports/m_discrete_event_likelihood_screen.md`.
+
+## Parked — Opta own-λ ×α (Arsenal club dig, 2026-10-30)
+
+Do-this-1: after `match_prediction`, shrink own-side λ by α; opp λ fixed;
+rebuild `M`. CS/GC unchanged (machine eps). Fixed α=0.76 on Arsenal GW8–38:
+helps 2024-25 / 2025-26 ΣG; **worsens** under-print on 2022-23 / 2023-24.
+**PI: keep α=1 (identity) as default** — no own-λ temper in the live Opta
+path. `LAM_SHRINK` / `AWAY_SHRINK` stay 1.0. Four-season rollup:
+`reports/l3_opta_own_alpha076_arsenal_four_season.md`.
+
+## Noted — L3@t + Opta λ horizon (2026-10-30)
+
+L3 centreline freeze at t + Opta blind λ for g=t…end. Much closer to
+contemporaneous L3@g than generative cascade_long (G MAE 0.818 vs 0.805;
+gen was ≈0.846). Candidate strategy scorer — not yet promoted.
+`reports/l3_opta_lambda_horizon.md`.
+
+## Noted — eligible horizon snapshots vs L3@g (2026-10-30)
+
+Correct design: freeze cascade @t for g=t…end; residual vs contemporaneous
+L3@g and actuals on m>60. L3 nearer on G (near ΔMAE +0.054; far +0.021).
+Decision-GW-only dig superseded. Defaults unchanged.
+`reports/cascade_eligible_horizon_snapshot.md`.
+
+## Superseded — eligible decision-GW-only cascade vs L3 (2026-10-29)
+
+Scored only GW(t) at each step — not the intended t:horizon snapshot.
+Kept as archaeology. `reports/cascade_eligible_component_resid.md`.
+
+
+## Locked — cascade_long venue_mode=blind (PI 2026-10-29)
+
+PI: blind Opta club λ is best left as-is; lock as default.
+`DEFAULT_VENUE_MODE=blind`, `AWAY_SHRINK=1.0`, `LAM_SHRINK=1.0`, `HOME_ADV=1.0`
+in `protocol.cascade_long_match_outcome` / `opta_gf_ga_horizon`.
+All screened remaps parked below. Report:
+`reports/cascade_long_blind_venue_lock.md`.
+
+## Parked — Opta margin-shrink α<1 (2026-10-29)
+
+Compress fixture Opta margins toward match mean. Train-fit α=0.90. Holdout/OOS **0/4 PASS** — venue mean biases unchanged because blind Opta already has E[λ_H]≈E[λ_A]. Not a fix for away overprint.
+`reports/cascade_long_margin_shrink_lam_screen.md`.
+
+## Parked — FD venue mean-ratio scale (2026-10-29)
+
+`λ'_H=r_H·λ_H`, `λ'_A=r_A·λ_A` with train FD/Opta venue means (r_H=1.14, r_A=0.93). Holdout **away_only PASS**; full (r_H,r_A) FAIL home boost; OOS away_only **2/4**. Keep identity. Same unstable-OOS class as place×venue / expanding_away. Superseded by blind lock 2026-10-29.
+`reports/cascade_long_fd_venue_scale_lam_screen.md`.
+
+## Parked — lag-1 Opta−FD / Opta−actual residual correction (2026-10-29)
+
+Subtract GW(t−1) Opta−FD from current λ tracks the book, not the ball.
+Opta−actual lag-1 hurts MAE. Keep blind.
+`reports/opta_fd_lag1_resid_correction.md` ·
+`reports/opta_act_lag1_resid_correction.md`.
+
+## Parked — remaining-season balance λ (2026-10-29)
+
+`gf_rem=(place_GF−ΣG)/games_left` → DC λ. MAE **1.047** vs blind **0.949**
+(Δ **+0.098**); pace→underprint corr **−0.041**. Keep blind.
+`reports/opta_remaining_balance_lam.md`.
+
 # Candidate hypotheses
 
 Cursor chooses the next pre-registered comparison. The PI is not asked to pick. A result needs the as-of audit and paired intervals on all four closed seasons. One comparison at a time.
@@ -43,19 +112,25 @@ retune DC / open a CS gated screen for this.
 `reports/xi_cs_selection_hypothesis_windows.md`,
 `reports/dixon_coles_team_cs_calib.md`.
 
+## Parked — π∝r goal shares (2026-10-27)
+
+Gated log-score clear lose. Component dig (shared L3 XI, no captain,
+GW8–12): cascade ΣG **53.7→42.0** under π∝r (actual 44; l3 39.7). Level
+fixed; MAE still trails l3_v2. Keep default `w=r·m/90`.
+`reports/cascade_vs_l3_component_xp_pi_r.md` ·
+`reports/score_xp_v2_goal_share_rate.md`.
+
 ## Parked — shrink generative π (2026-10-25)
 
-gen−cl_fd gap +9.7 on OL XI: **raw sG vs share-SE shrink +6.0** (dominant),
-path Opta λ−FD +3.0, dice−πk +0.9. Generative dice builds π without
-`share_se_shrink`; centreline shrinks. Not k∼M bias. Candidate treatment:
-apply the same share-SE shrink when building attack dice — gate on
-player-GW likelihood before promoting. Pot / selection already cleared.
+PI: no artificial shrinks. gen−cl gap was mostly shrink apples-to-oranges;
+raw centreline ≈ gen. Not a treatment.
 `reports/cascade_g_gen_centreline_gap.md`.
 
 ## Closed — G overprint dig (2026-10-25)
 
 Count resid OL gen +11.8. Pot cleared; centreline +2.1 = share blanks;
-gen−centreline = shrink mismatch + hotter path λ. Selection not special.
+selection not special. Minutes-in-share-weights cut resid on dig but
+lost the gated likelihood screen — parked.
 `reports/cascade_g_overprint_dig.md`.
 
 ## Locked default — full-club share pool (2026-10-25)
@@ -93,13 +168,98 @@ book/FD (or Opta) centreline → `M` → categorical `k ∼ M`. Outcome noise is
 roll over `M`, not a second invented λ axis. Contaminated diagnostic:
 `reports/multistage_xi_captain_ft_short_long_trial.md` (GW8 used ±15%).
 
-## Rejected — Opta long-horizon HOME_ADV=1.08 (2026-10-24)
+## Rejected — symmetric Opta HOME_ADV (2026-10-24 / screen 2026-10-27)
 
-`opta_gf_ga_horizon.HOME_ADV` multiplied home λ by 1.08 and away by 1/1.08.
-Never discussed or PI-approved (same class as λ jitter). Set to **1.0**
-(neutral venue). A home edge needs its own closed-season screen before any
-non-unit factor returns. Legacy `channel_trial` still hardcodes 1.08 — leave
-as archaeology; not the cascade_long path.
+`HOME_ADV` multiplied home λ by h and away by 1/h. Never PI-approved.
+Pre-registered `cascade_long_home_adv_lam_screen`: 1.08 / fit 1.06 both
+**FAIL** promote (home |bias| worsens). PI redirected to **away_shrink on
+λ_A only** + no λ clip. Legacy `channel_trial` 1.08 = archaeology.
+`reports/cascade_long_home_adv_lam_screen.md`.
+
+## Parked — fixed Opta away_shrink s≠1 (2026-10-27)
+
+Formula kept: `λ_A ← λ_A·s`, `λ_H` untouched, **no** 0.20–3.50 λ clip.
+Default **`AWAY_SHRINK=1.0`**. Fixed `s=0.768` (2025-26 XI resid G/CS
+crossing) and neighbours (0.75 / 0.86) are diagnostics only — OOS club-λ on
+2022-23…2024-25 **0/3 PASS** (overshoots where 2025-26 away overprint is
+absent). Do not lock a single `s` from one-season XI zero-crossing. Re-open
+only with as-of / expanding venue calibration under a pre-registered OOS
+screen.
+`reports/cascade_away_shrink_oos_seasons.md` ·
+`reports/cascade_away_shrink_xi_resid_trend.md` ·
+`reports/cascade_long_away_shrink_lam_screen.md`.
+
+## Parked — combined lam_shrink on λ_H and λ_A (2026-10-27)
+
+`LAM_SHRINK`: both λ × s (away_shrink=1). Train fit s=0.92. Holdout 2025-26
+**FAIL** promote — overall bias almost clears (+0.125→+0.003) but **home
+|bias| worsens** (−0.007→−0.128) while away improves. OOS prior seasons
+**0/3 PASS**. Default `LAM_SHRINK=1.0`. Same class as symmetric venue spice:
+moves error H↔A / level without a stable OOS win.
+`reports/cascade_long_lam_shrink_screen.md`.
+
+## Parked — place×venue Opta λ flip (2026-10-27)
+
+`venue_away` (λ_H blind; λ_A = place×venue away attack × blind home defence)
+**PASS** 2025-26 club-λ promote; full `venue`/`naive` FAIL (home |bias|).
+OOS prior seasons **1/3** — keep **`DEFAULT_VENUE_MODE=blind`**. As-of
+expanding H/A re-open screened 2026-10-29 (below) — still OOS fail.
+Superseded by blind lock 2026-10-29.
+`reports/cascade_long_place_venue_lam_screen.md`.
+
+## Parked — as-of expanding club H/A λ (2026-10-29)
+
+Re-opened place×venue with **as-of** club H/A rates (prior closed + current
+before GW; PRIOR_N=10), not final-place oracles. Holdout **expanding_away
+PASS** (A +0.259→+0.031, H flat, MAE↓); `expanding_ha` FAIL (home |bias|
+worsens +0.052); `blend_fit` w=0.30 FAIL away threshold. OOS pass counts
+expanding_away **2/4**, expanding_ha **1/4**, blend_fit **0/4**.
+Superseded by blind lock 2026-10-29.
+`reports/cascade_long_expanding_ha_lam_screen.md`.
+
+## Noted — form swings FD vs place Opta λ (2026-10-29)
+
+As-of L5 GD on 2025-26 Opta−FD residual: raw tertiles flat; after rank+venue, in-form teams get FD lifted (partial r=−0.23 on resid). Opta place-locked. Not a promote — explanatory dig for the residual variance.
+`reports/cascade_long_fd_opta_form_resid.md`.
+
+## Noted — FD↔Opta venue mean-ratio scale (2026-10-29)
+
+Implementable map: `λ'_H = r_H·λ_H`, `λ'_A = r_A·λ_A`,
+`r_ha = mean(FD_ha)/mean(Opta_ha)`. 2025-26 **1.064 / 0.847**;
+2024-25 **1.166 / 0.939**; pooled **≈1.115 / 0.893**. Direction stable
+(FD warmer home, Opta hotter away); magnitudes move — one-season fit
+applied OOS worsens venue bias. Also: Opta tails fatter than FD
+(affine a<1). Hook = post-λ `home_scale` + `away_shrink`, not
+`LAM_SHRINK`. Parked pending OOS screen + PI; do not lock constants.
+`reports/cascade_long_fd_opta_lam_scale_dig.md`.
+
+## Noted — FD vs Opta ranking λ, 2025-26 (2026-10-29)
+
+One closed season, paired team-sides GW8–38 (n=618). Opta ranking λ and FD
+AH+OU centreline corr **0.71**, MAE **0.31**, mean Opta−FD **+0.07**. Opta
+away bias **+0.26** vs FD away **+0.02**; Opta home ~flat, FD home **+0.09**.
+Gap concentrated on Opta favourites / top finishing-rank tercile. Confirms
+isolate club-λ anatomy without XI resid. Not a promote.
+`reports/cascade_long_fd_vs_opta_lam_compare.md`.
+
+## Closed — gen vs L3 log-score loss anatomy (2026-10-29)
+
+Diagnostic on eligible-pool screen rows: gen and L3 bias nearly identical
+(~−0.96); gen higher pred SD / lower corr; Δ log worst on high-xp
+quintile. Confirms viability B1 (gen clearly_loses) is variance/ranking,
+not a mean-level G gap. Do not chase XI resid G via more generative dice.
+`reports/cascade_gen_vs_l3_loss_anatomy.md`.
+
+## Parked — cascade_short gen π∝r vs rate_minutes (2026-10-28)
+
+Eligible-pool gated screen on cascade_short generative MC-mean (+ L3 ref):
+π∝r − rate_minutes **+0.008** [-0.002, +0.017] → **inconclusive**. Both gen
+arms lose to L3 centreline. Centreline `score_xp_v2_goal_share_rate` remains
+**park_clear_lose**. Dig B XI resid (+100 under rate_minutes) is not a promote
+signal. Keep default `goal_weight=rate_minutes`. Soft concentration levers
+only under a fresh pre-reg if reopened.
+`reports/cascade_short_goal_weight_likelihood_screen.md` ·
+`reports/cascade_fd_generative_g_dig.md`.
 
 ## Rejected — stored OLS place→GF/GA function (2026-10-24)
 
@@ -120,8 +280,11 @@ only (`DEFAULT_FT_PE_NU=0`). Re-open PE only as an explicit diagnostic screen.
 PI-approved in `protocol.cascade_long_match_outcome`:
 rankmean place GF/GA ± SD → draw latents with `centre_blend=0.5` inside
 ±z·SD → assessed expanding ḡ → Dixon–Coles λ → `M|λ` → `k∼M`. δ-method
-`sd_lam` is diagnostic only; no second λ Uniform band. See
-`reports/LOCKED.md` / `reports/CASCADE_LOCKED.md`.
+`sd_lam` is diagnostic only; no second λ Uniform band.
+**Venue lock 2026-10-29:** `venue_mode=blind` + identity
+`AWAY_SHRINK`/`LAM_SHRINK`. See `reports/LOCKED.md` /
+`reports/CASCADE_LOCKED.md` /
+`reports/cascade_long_blind_venue_lock.md`.
 
 ## Parked — cascade_short bonus-from-roll (2026-10-20)
 

@@ -1,0 +1,14 @@
+{
+  "form": "\u03bb'_H = r_H \u00b7 \u03bb_H ;  \u03bb'_A = r_A \u00b7 \u03bb_A",
+  "r_H_2025_26": 1.0638314429546942,
+  "r_A_2025_26": 0.8473470500092446,
+  "r_H_2024_25": 1.1662761854280823,
+  "r_A_2024_25": 0.938962115448821,
+  "r_H_pooled": 1.1145644371874315,
+  "r_A_pooled": 0.8927788861993821,
+  "hook": "After blind Dixon\u2013Coles \u03bb in sample_match_from_opta_ranks / sample_opta_scenario \u2014 same site as away_shrink (\u03bb_A) and lam_shrink (both). Prefer named home_scale + away_shrink (or fd_venue_scale=(r_H, r_A)); do not overload LAM_SHRINK.",
+  "affine_note": "OLS FD \u2248 a\u00b7Opta + b has a\u22480.55\u20130.91 and b>0: Opta high tails overshoot the book. Venue mean-ratio matches season venue means but does not compress tails; affine would.",
+  "oos_warning": "Fixed ratios fitted on one season move bias the wrong way on the other (sign of Opta\u2212FD flips). Pre-register an OOS club-\u03bb screen before any default flip \u2014 same bar as place\u00d7venue / expanding_ha."
+}
+wrote /opt/cursor/artifacts/cascade_long_fd_opta_lam_scale_dig.json
+wrote /workspace/reports/cascade_long_fd_opta_lam_scale_dig.md

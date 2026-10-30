@@ -104,7 +104,7 @@ def _l_weeks(path: Path, *, season: str, gws: list[int]) -> dict[str, list[dict[
     return out
 
 
-def _plot(per_gw: pd.DataFrame, path: Path) -> None:
+def _plot(per_gw: pd.DataFrame, path: Path, *, title: str | None = None) -> None:
     fig, ax = plt.subplots(figsize=(8.2, 4.4), dpi=140)
     for arm, color in (
         ("cascade_step", "#c0392b"),
@@ -123,7 +123,7 @@ def _plot(per_gw: pd.DataFrame, path: Path) -> None:
         )
     ax.set_xlabel("GW")
     ax.set_ylabel("actual pts_net (XI+C − hits)")
-    ax.set_title("2025-26 GW8–12: cascade stepped xi_ft vs L3 / L4")
+    ax.set_title(title or "2025-26 GW8–12: cascade stepped xi_ft vs L3 / L4")
     ax.set_xticks(sorted(per_gw["gw"].unique()))
     ax.grid(True, axis="y", alpha=0.3)
     ax.legend(framealpha=0.95)
@@ -145,6 +145,7 @@ def main(argv: list[str] | None = None) -> int:
     args = ap.parse_args(argv)
 
     casc = json.loads(Path(args.casc).read_text())
+    goal_weight = str(casc.get("goal_weight") or "rate_minutes")
     gws = [int(s["gw"]) for s in casc["steps"]]
     merged = load_merged(str(args.season))
     casc_weeks = [_cascade_week_points(merged, s) for s in casc["steps"]]
@@ -202,12 +203,21 @@ def main(argv: list[str] | None = None) -> int:
         }
 
     plot_path = Path("/opt/cursor/artifacts/cascade_step_vs_l3_l4.png")
-    _plot(per_gw, plot_path)
+    plot_title = "2025-26 GW8–12: cascade stepped xi_ft vs L3 / L4"
+    if goal_weight == "rate":
+        plot_path = Path("/opt/cursor/artifacts/cascade_step_pi_r_vs_l3_l4.png")
+        plot_title = "2025-26 GW8–12: cascade π∝r vs L3 / L4"
+    _plot(per_gw, plot_path, title=plot_title)
 
     state = {
-        "task": "cascade_step_vs_l3_l4",
+        "task": (
+            "cascade_step_pi_r_vs_l3_l4"
+            if goal_weight == "rate"
+            else "cascade_step_vs_l3_l4"
+        ),
         "season": str(args.season),
         "gws": gws,
+        "goal_weight": goal_weight,
         "cascade_source": str(args.casc),
         "l3_l4_source": str(args.l4_json),
         "cascade_captain_rule": "Haaland if in XI else max actual on XI",
@@ -233,15 +243,26 @@ def main(argv: list[str] | None = None) -> int:
             f" Seeded from `{sm.get('path')}` "
             f"(hold GW{casc.get('hold_gw')}: 0 xfers)."
         )
+    gw_note = (
+        "π∝r (minutes gate only)"
+        if goal_weight == "rate"
+        else "π∝r·m/90 (default)"
+    )
+    title = (
+        "# Cascade stepped xi_ft (π∝r) vs L3 / L4 (2025-26 GW8–12)"
+        if goal_weight == "rate"
+        else "# Cascade stepped xi_ft vs L3 / L4 (2025-26 GW8–12)"
+    )
     lines = [
-        "# Cascade stepped xi_ft vs L3 / L4 (2025-26 GW8–12)",
+        title,
         "",
         f"As of `{time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())}` (UTC).",
         "",
         "## Arms",
         "",
         "- **cascade_step** — `cascade_mean_xi_ft_step_pool_resid` commits "
-        "(full-club shares; ≥60′ selection refreshed GW8…12; projected to GW19). "
+        f"(full-club shares; goal_weight=`{goal_weight}` — {gw_note}; "
+        "≥60′ selection refreshed GW8…12; projected to GW19). "
         "Captain = Haaland if in XI."
         + seed_note,
         "- **l3 / l4_mupost** — locked climb weeks from "
@@ -330,21 +351,29 @@ def main(argv: list[str] | None = None) -> int:
         "```",
         "",
     ]
-    REPORT.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    report_path = REPORT
+    if goal_weight == "rate":
+        report_path = ROOT / "reports" / "cascade_step_pi_r_vs_l3_l4.md"
+    report_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     STATE.write_text(
         json.dumps(
             {
-                "task": "cascade_step_vs_l3_l4",
+                "task": state["task"],
                 "status": "done",
                 "as_of_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                "change": "Diagnostic screen: cascade stepped GW8–12 actual net vs L3/L4",
+                "change": (
+                    "Cascade π∝r stepped GW8–12 actual net vs locked L3/L4"
+                    if goal_weight == "rate"
+                    else "Diagnostic screen: cascade stepped GW8–12 actual net vs L3/L4"
+                ),
                 "verdict": {
                     "totals": state["totals"],
                     "cascade_minus_l3": deltas["l3"]["sum_d"],
                     "cascade_minus_l4": deltas["l4_mupost"]["sum_d"],
+                    "goal_weight": goal_weight,
                 },
                 "artifact": str(args.out),
-                "report": str(REPORT.relative_to(ROOT)),
+                "report": str(report_path.relative_to(ROOT)),
             },
             indent=2,
         )
@@ -352,7 +381,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     print(totals.to_string(index=False))
     print("cascade-L3", deltas["l3"]["sum_d"], "cascade-L4", deltas["l4_mupost"]["sum_d"])
-    print("wrote", args.out, REPORT)
+    print("wrote", args.out, report_path)
     return 0
 
 

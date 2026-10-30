@@ -50,7 +50,7 @@ from src.markets.cascade_score_v2 import SCORER, attach_rates_priors, score_fixt
 from src.markets.numagent_xp_pilot import load_merged
 from src.models.opta_gf_ga_horizon import (
     CACHE,
-    HOME_ADV,
+    AWAY_SHRINK,
     N_MATCHES,
     closed_league_gf_prior,
     fit_rank_ols_excluding,
@@ -129,7 +129,7 @@ def expanding_match_pots(e0_fname: str) -> list[dict[str, Any]]:
         else:
             league_gf = (league_goal_sum / league_n) * N_MATCHES
         pot_h, pot_a = pots_from_season_gf_ga(
-            h_gf, h_ga, a_gf, a_ga, league_gf=league_gf, home_adv=HOME_ADV
+            h_gf, h_ga, a_gf, a_ga, league_gf=league_gf, away_shrink=AWAY_SHRINK
         )
         out.append(
             {

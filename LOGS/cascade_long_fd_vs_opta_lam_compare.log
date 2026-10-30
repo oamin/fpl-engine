@@ -1,0 +1,11 @@
+[fd-vs-opta] season=2025-26 GW8–38 N=20
+[fd-vs-opta] paired team-sides n=618
+[
+  "Paired n=618: Opta\u2212FD mean +0.068, MAE 0.306, corr 0.706.",
+  "vs actual: Opta bias +0.122 MAE 0.918; FD bias +0.054 MAE 0.896.",
+  "Venue split: Opta away hot / FD closer on away; FD often warmer at home \u2014 same anatomy as G-overprint isolate.",
+  "Default venue_mode=blind unchanged; diagnostic only."
+]
+wrote /opt/cursor/artifacts/cascade_long_fd_vs_opta_lam_compare.json
+wrote /workspace/reports/cascade_long_fd_vs_opta_lam_compare.md
+wrote /workspace/data/processed/cascade_long_fd_vs_opta_lam_compare_rows.csv

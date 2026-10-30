@@ -1,20 +1,17 @@
 {
-  "task": "cascade_g_gen_centreline_gap",
+  "task": "m_discrete_event_likelihood_screen",
   "status": "done",
-  "as_of_utc": "2026-10-25T16:24:27Z",
-  "change": "Decompose gen\u2212centreline G gap into path\u03bb / shrink / k / dice",
+  "as_of_utc": "2026-10-30T16:21:56Z",
+  "change": "Gated factored M-event likelihood vs Gaussian-on-total",
   "verdict": {
-    "gap_gen_fd": 9.706979163041673,
-    "pieces": {
-      "path_\u03bb_vs_FD": 3.041311501016306,
-      "raw_sG_vs_shrink": 6.004413417261214,
-      "E[k]_vs_xG": -0.28797697046352844,
-      "props_\u03c0_vs_sG": -4.440892098500626e-16,
-      "dice_vs_mean_\u03c0k": 0.9492312152276816
-    },
-    "dominant": "raw_sG_vs_shrink",
-    "read": "gen\u2212cl_fd \u03a3 = **+9.71** on XI (gen resid +11.77, cl_fd resid +2.07). Pieces: path\u03bb\u2212FD +3.04; raw\u2212shrink +6.00; E[k]\u2212xG -0.29; props \u03c0\u2212sG -0.00; dice\u2212\u03c0k +0.95. **Dominant: raw_sG_vs_shrink** (+6.00). XI-club scoreline bias k\u2212xG -0.014."
+    "verdict": "park_clear_lose",
+    "mean_d_log": -4.617052268895857,
+    "lo": -4.632321977406889,
+    "hi": -4.60175337349907,
+    "covers_zero": false,
+    "default_unchanged": true,
+    "mean_layer_unchanged": true
   },
-  "artifact": "/opt/cursor/artifacts/cascade_g_gen_centreline_gap.json",
-  "report": "reports/cascade_g_gen_centreline_gap.md"
+  "artifact": "/opt/cursor/artifacts/m_discrete_event_likelihood_screen.json",
+  "report": "reports/m_discrete_event_likelihood_screen.md"
 }

@@ -1,0 +1,31 @@
+[fd-venue-scale] train=('2022-23', '2023-24', '2024-25') holdout=2025-26 GW8–38 N=20
+[fd-venue-scale] build 2022-23
+[fd-venue-scale] build 2023-24
+[fd-venue-scale] build 2024-25
+[fd-venue-scale] build 2025-26
+[fd-venue-scale] train ratios r_H=1.1440 r_A=0.9288
+[fd-venue-scale] holdout baseline_blind H=-0.013 A=+0.255 MAE=0.918
+[fd-venue-scale] holdout fd_venue_fit H=+0.204 A=+0.146 MAE=0.917
+[fd-venue-scale] holdout fd_venue_away_only H=-0.013 A=+0.146 MAE=0.902
+[fd-venue-scale] holdout pooled_const H=+0.160 A=+0.092 MAE=0.908
+[fd-venue-scale] OOS 2022-23 winners=['fd_venue_away_only', 'pooled_const']
+[fd-venue-scale] OOS 2023-24 winners=['none']
+[fd-venue-scale] OOS 2024-25 winners=['none']
+[fd-venue-scale] OOS 2025-26 winners=['fd_venue_away_only']
+{
+  "train_ratios": {
+    "H": 1.1440267970526037,
+    "A": 0.9288172214980571
+  },
+  "winners": [
+    "fd_venue_away_only"
+  ],
+  "oos_pass_counts": {
+    "fd_venue_fit": 0,
+    "fd_venue_away_only": 2,
+    "pooled_const": 1
+  },
+  "recommended": null
+}
+wrote /opt/cursor/artifacts/cascade_long_fd_venue_scale_lam_screen.json
+wrote /workspace/reports/cascade_long_fd_venue_scale_lam_screen.md
