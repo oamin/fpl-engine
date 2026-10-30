@@ -2290,5 +2290,38 @@
     ],
     "report": "reports/l3_opta_lambda_horizon.md",
     "result": "2025-26: 31 decisions, n=89444. L3@t+Opta G MAE 0.818 vs L3@g+FD 0.805 (near ΔMAE +0.013, far +0.012). Beats prior generative cascade_long @t (G MAE ≈0.846). CS near slightly better than L3@g (ΔMAE −0.006). Defaults unchanged — promising alternative to cascade gen for strategy scores."
+  },
+  "m_discrete_event_likelihood_screen": {
+    "pre_registered": "2026-10-30",
+    "status": "registered",
+    "role": "Does a discrete M-event predictive likelihood beat Gaussian(centreline μ, σ) on player-GW points, without changing locked score_xp_v2 means?",
+    "claim": "Integrated M is kept as the mean board; discreteness is modeled in the predictive distribution (CS Bernoulli, GC count from M), not by mode/median point boards.",
+    "baseline": "l3_gaussian_total",
+    "treatment": "l3_factored_m_events",
+    "baseline_formula": "log p(y) = gaussian_log_score(total_points, μ=score_xp_v2 xp, σ=protocol.sigma); μ from FD centreline score_team_side (locked mean layer)",
+    "treatment_formula": "log p(y) = log p_G + log p_A + log p_CS + log p_GC + log p_rest; μ components from the same locked score_xp_v2 board; p_CS = Bernoulli(P(CS from M)) on whether P_CS>0; p_GC = categorical over k=⌊GA/2⌋ from M marginal for GKP/DEF (0 else); p_G/p_A = gaussian on xp_goals/xp_assists; p_rest = gaussian on (total_points − P_G − P_A − P_CS − P_GC) vs (xp − xp_goals − xp_assists − xp_cs − xp_gc)",
+    "mean_layer": "unchanged — no edit to score_team_side, α_G/α_A, shares, or cascade defaults",
+    "not": [
+      "mode/median M boards as μ",
+      "fitted β on event features (no OF search)",
+      "generative MC-mean as replacement μ (already clearly_loses — viability B1)",
+      "2026-27 holdout",
+      "Opta λ in this screen (FD centreline only; Opta follow-up only if FD treatment wins)"
+    ],
+    "pool": "minutes>60 at scored GW; ≥3 prior apps as-of GW; FD AH+OU priced weeks; GW8–38; four closed seasons",
+    "metric": "mean log predictive density per player-GW; paired treatment−baseline by GW; cluster_interval across protocol.closed_seasons",
+    "promote_if": "paired interval lo > 0 on four closed seasons",
+    "sanity_if_not_clear_lose": "DEF/GKP pick_xi tie-break using P(CS) and P(⌊GC/2⌋≥1) vs xp-only; realized XI points — climb sanity only, not the gate",
+    "sigma": 3.0,
+    "modules": [
+      "src/eval/m_discrete_event_likelihood_screen.py",
+      "src/markets/scoreline.py",
+      "src/markets/numagent_xp.py",
+      "src/eval/gates.py"
+    ],
+    "plan": "reports/m_discrete_event_likelihood_screen_PLAN.md",
+    "report": "reports/m_discrete_event_likelihood_screen.md",
+    "does_not_change_default": true,
+    "note": "Locks the discreteness question as a predictive-likelihood comparison. Mean board stays integrated M. Mode/median path parked."
   }
 }
