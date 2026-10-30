@@ -1,9 +1,15 @@
-## Noted — eligible-pool cascade vs L3 E[G,CS,GC] (2026-10-29)
+## Noted — eligible horizon snapshots vs L3@g (2026-10-30)
 
-Stepped GW8–38 as-of; residual on actual m>60. L3 centreline beats both
-generative arms on G/CS MAE (short ΔMAE +0.045 G; long +0.062 G). Confirms
-XI digs on the full eligible pool — gen-as-mean stays parked. Defaults
-unchanged. `reports/cascade_eligible_component_resid.md`.
+Correct design: freeze cascade @t for g=t…end; residual vs contemporaneous
+L3@g and actuals on m>60. L3 nearer on G (near ΔMAE +0.054; far +0.021).
+Decision-GW-only dig superseded. Defaults unchanged.
+`reports/cascade_eligible_horizon_snapshot.md`.
+
+## Superseded — eligible decision-GW-only cascade vs L3 (2026-10-29)
+
+Scored only GW(t) at each step — not the intended t:horizon snapshot.
+Kept as archaeology. `reports/cascade_eligible_component_resid.md`.
+
 
 ## Locked — cascade_long venue_mode=blind (PI 2026-10-29)
 

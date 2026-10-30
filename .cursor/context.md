@@ -152,13 +152,15 @@ sign 25→24). Implementable **venue mean-ratio**
 not ball; lag-1 Opta−actual and remaining-season balance both raise MAE vs
 blind. **PI lock:** leave blind Opta as default —
 `reports/cascade_long_blind_venue_lock.md`.
-**Eligible-pool E[G,CS,GC] vs L3 (2026-10-29):** stepped GW8–38 as-of,
-residual on actual `m>60` (`n_prior≥3`), n=5892. Arms: cascade_short FD
-gen, cascade_long Opta blind gen, L3 `score_xp_v2`. G MAE **L3 0.814 <
-short 0.859 < long 0.876**; CS MAE **L3 0.749 < long 0.793 < short 0.799**.
-short−L3 G ΔMAE **+0.045**; long−L3 **+0.062**. L3 closer on G/CS;
-generative bias flatter than L3's more negative bias. Defaults unchanged.
+**Eligible-pool E[G,CS,GC] vs L3 (2026-10-29):** decision-GW-only dig
+**superseded** — wrong vs PI intent (not a t:horizon snapshot).
 `reports/cascade_eligible_component_resid.md`.
+**Eligible horizon snapshots (2026-10-30):** at each t, freeze cascade
+short (FD t:t+1) + long (Opta blind t:end); compare each target g to
+**L3@g** (FD near g) and actuals (`m>60`). 31 decisions, n=85601 cells.
+long−L3 G ΔMAE **near +0.054 / far +0.021**; short t:t+1 G MAE 0.859 vs
+L3 0.814. L3 closer near-term; far gap shrinks (some late offsets long≈L3).
+Defaults unchanged. `reports/cascade_eligible_horizon_snapshot.md`.
 
 
 **Strand default:** generative `run_strand` / `_undiscounted_scores_by_gw`
