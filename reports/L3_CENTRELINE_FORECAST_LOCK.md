@@ -16,7 +16,7 @@ likelihood is a separate eval lock (`l3_discrete_cs_gc_likelihood`).
 
 Freeze at decision GW `t`: rates, shares, alphas as-of `t`. Drive every target
 `g ∈ [t, end]` with the λ source above. Product strategiser default horizon is
-**H=5** (`t…t+4`): priced near + Opta far. Full-season dig board:
+**H=12** (`t…t+11`): priced near + Opta far. Full-season dig board:
 **L3@t + Opta λ** (`protocol.l3_opta_lambda_horizon` ·
 `reports/l3_opta_lambda_horizon.md`).
 

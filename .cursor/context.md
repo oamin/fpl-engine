@@ -8,7 +8,7 @@ Updated: 2026-10-30. **Numagent 2.0** is the product on main (`protocol.numagent
 
 **Front door:** [`reports/L3_CENTRELINE_FORECAST_LOCK.md`](../reports/L3_CENTRELINE_FORECAST_LOCK.md).
 
-Product **μ**: Odds API / FD centreline near (`t`/`t+1`); **Opta blind** λ far (`t+2…`); both → `score_team_side`. Strategy horizon default **H=5** (`src/strategy/l3_centreline_horizon.py` → live `numagent_live_pick` + hist `build_l3_centreline_horizon`). Gen MC-mean **not** μ. Discrete CS/GC likelihood locked separately for eval. `protocol.l3_centreline_forecast`.
+Product **μ**: Odds API / FD centreline near (`t`/`t+1`); **Opta blind** λ far (`t+2…`); both → `score_team_side`. Strategy horizon default **H=12** (`src/strategy/l3_centreline_horizon.py` → live `numagent_live_pick` + hist `build_l3_centreline_horizon`). Gen MC-mean **not** μ. Discrete CS/GC likelihood locked separately for eval. `protocol.l3_centreline_forecast`.
 
 **Stack:** land cascade + centreline locks onto `main` via the existing PR chain; do not open parallel μ screens until the live board is exercised.
 
@@ -198,7 +198,7 @@ Pre-deadline squad advisor under 2026/27 rules. Cursor implements and screens; G
 | **Shares** | share-SE → position×minutes prior; goal **π∝r·m** (π∝r parked) | prior 2026-10-17 · π∝r park 2026-10-27 | `reports/score_xp_v2_share_se_pos_prior.md` · `score_xp_v2_goal_share_rate.md` |
 | **μ_post** | ≡ `score_xp_v2` (shrink `mode=none`) | locked 2026-10-16 | `protocol.strategy_layer2_shrinkage` |
 | **Transfers** | L3 single-deadline | locked | `src/strategy/layer3_week.py` |
-| **Horizon** | L4 centreline H=5: priced t:t+1 + Opta blind t+2…t+4, γ=1 | **strategiser default** | `src/strategy/l3_centreline_horizon.py` · `layer4_week.py` · `L3_CENTRELINE_FORECAST_LOCK.md` |
+| **Horizon** | L4 centreline H=12: priced t:t+1 + Opta blind t+2…t+11, γ=1 | **strategiser default** | `src/strategy/l3_centreline_horizon.py` · `layer4_week.py` · `L3_CENTRELINE_FORECAST_LOCK.md` |
 | **Live pick** | `numagent_live_pick` (props **off**; `--centreline-horizon`) | GW7 PI lock · centreline 2026-10-30 | `src/live/numagent_live_pick.py` |
 | **cascade_short** | priced t:t+1 generative: centreline `M`→`k∼M` (no λ jitter) | locked 2026-10-20 | `cascade_short` / `short_horizon_generative` · `protocol.cascade_short_generative` |
 | **cascade_long** | rankmean±SD latents; assessed ḡ; hierarchical λ→`M\|λ`→`k∼M`; **`venue_mode=blind`** + identity shrinks; generative xP, props off | **PI-approved 2026-10-24**; **blind locked 2026-10-29** | `cascade_long` / `multistage_mc_milp` · `protocol.cascade_long_match_outcome` · `reports/cascade_long_blind_venue_lock.md` |
@@ -265,7 +265,7 @@ Screens: `reports/match_band_calibration.md`, `reports/player_ga_finish.md`,
 
 ### Strategiser defaults
 
-- L1 joint MILP on absolute μ; L2 identity attach; L3 transfers+hits; **L4 centreline horizon** = priced t:t+1 + Opta blind far (`protocol.l3_centreline_forecast`, default H=5)
+- L1 joint MILP on absolute μ; L2 identity attach; L3 transfers+hits; **L4 centreline horizon** = priced t:t+1 + Opta blind far (`protocol.l3_centreline_forecast`, default H=12)
 - L5 beam screened, not promoted (K=8 locked as beam width only) — L4 stays default
 - Captain = max μ; stack-vs-diversify diagnostic only (`reports/fixture_planning_glue.md`)
 
@@ -274,7 +274,7 @@ Screens: `reports/match_band_calibration.md`, `reports/player_ga_finish.md`,
 ```
 python -m src.live.numagent_live_pick --gw N
 python -m src.live.numagent_live_pick --gw N --fetch-odds   # Odds API, region=us; t+t+1
-python -m src.live.numagent_live_pick --gw N --centreline-horizon 5   # default
+python -m src.live.numagent_live_pick --gw N --centreline-horizon 12   # default
 ```
 
 Live near book = Odds API AH+OU+BTTS (covers t and t+1). Prefer `--from-snapshot` / `data/scratch/gwNN_odds_*.json` when already pulled. Frozen `data/live/gw_lines.csv` is not a live book.

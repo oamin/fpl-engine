@@ -41,7 +41,7 @@
       "L1": "src/strategy/layer1_week.py",
       "L2": "src/strategy/decision_value.py (mode=none identity)",
       "L3": "src/strategy/layer3_week.py",
-      "L4": "src/strategy/l3_centreline_horizon.py / layer4_week.py (H=5 centreline)"
+      "L4": "src/strategy/l3_centreline_horizon.py / layer4_week.py (H=12 centreline)"
     },
     "live_entrypoint": "src/live/numagent_live_pick.py",
     "live_odds": "Odds API AH+OU+BTTS (region=us) via --fetch-odds or snapshot; prices t and t+1; optional --with-props (default off)",
@@ -2401,7 +2401,7 @@
     "role": "Product forecast μ: L3/score_xp_v2 centreline mechanics; Odds API/FD λ near; Opta blind λ far; generative MC-mean is not μ.",
     "near": "Odds API AH+OU+BTTS (live) / FD AH+OU hist → Dixon–Coles M moments → score_team_side (t, t+1 priced)",
     "far": "Opta place rankmean venue_mode=blind → λ → M moments → score_team_side (t+2…)",
-    "default_horizon": 5,
+    "default_horizon": 12,
     "strategy_horizon_board": "l3_opta_lambda_horizon — freeze rates/shares/α at t; Opta λ for every g∈[t,end]",
     "strategiser_factory": "src/strategy/l3_centreline_horizon.py",
     "live_entrypoint": "src/live/numagent_live_pick.py --centreline-horizon",

@@ -40,7 +40,7 @@ from src.strategy.shrinkage import CohortMoments
 from src.teams import norm_team
 
 # Locked product defaults (protocol.l3_centreline_forecast).
-DEFAULT_HORIZON = 5  # t … t+4
+DEFAULT_HORIZON = 12  # t … t+11 (priced near + Opta far)
 NEAR_DEPTH = int(BOOKIE_DEPTH)  # t, t+1 priced / FD
 
 

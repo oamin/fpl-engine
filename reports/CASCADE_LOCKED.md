@@ -17,7 +17,7 @@ Product landing: PR into `main` from the consolidated tip.
 | Far `t+2…` (unpriced) | **Opta** place rankmean, **`venue_mode=blind`**, identity shrinks → λ → \(M\) moments | **same** `score_team_side` |
 
 Strategy horizon board: freeze rates/shares/α at `t`; Opta λ for every `g ∈ [t,end]`  
-(`protocol.l3_opta_lambda_horizon`). Product default **H=5** via
+(`protocol.l3_opta_lambda_horizon`). Product default **H=12** via
 `src/strategy/l3_centreline_horizon.py` → live `numagent_live_pick` /
 hist `build_l3_centreline_horizon`.
 

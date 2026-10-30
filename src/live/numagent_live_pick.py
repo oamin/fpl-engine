@@ -3,7 +3,7 @@
 Product ``protocol.numagent_2_0`` (supersedes Numagent 1.0 / ep_next freeze).
 Primary scorer is ``score_xp_v2``. Forecast μ:
 ``protocol.l3_centreline_forecast`` — Odds API priced near (t, t+1) + Opta
-blind far (default ``--centreline-horizon 5``).
+blind far (default ``--centreline-horizon 12``).
 
 Live near book = The Odds API (AH+OU+BTTS; quota-aware, region=us) — better
 t+1 coverage than Betfair 1X2. Prefer snapshots; ``--fetch-odds`` to refresh::
@@ -47,10 +47,10 @@ from src.strategy.layer4_week import solve_horizon_transfers
 from src.teams import norm_team
 
 # Locked L4: γ=1, no terminal lump. Near = priced t:t+1; far = Opta blind
-# under protocol.l3_centreline_forecast (default horizon 5).
+# under protocol.l3_centreline_forecast (default horizon 12).
 L4_GAMMA = 1.0
 BOOKIE_DEPTH = 2
-CENTRELINE_HORIZON = 5  # t … t+4
+CENTRELINE_HORIZON = 12  # t … t+11
 
 ROOT = Path(__file__).resolve().parents[2]
 SCRATCH = ROOT / "data" / "scratch"

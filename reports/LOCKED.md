@@ -49,7 +49,7 @@ Assembler: `src/markets/numagent_xp.py`. Defaults: `share_se_shrink=True`, `shar
 | L3 transfers | 2026-10-14 | `strategy_layer3_audit.md` | audit 6/6 |
 | L4 horizon | 2026-10-15 | `strategy_layer4_audit.md` | H=1 ≡ L3 |
 | **L4 μ_post priced γ=1** | 2026-10-15/16 | `layer4_mupost_gamma1.md` | priced near BOOKIE_DEPTH=2 |
-| **L4 centreline horizon H=5** | 2026-10-30 | `L3_CENTRELINE_FORECAST_LOCK.md` | **default**; t:t+1 priced + t+2…t+4 Opta blind |
+| **L4 centreline horizon H=12** | 2026-10-30 | `L3_CENTRELINE_FORECAST_LOCK.md` | **default**; t:t+1 priced + t+2…t+11 Opta blind |
 | Planning glue (captain=μ) | 2026-10-15 | `fixture_planning_glue.md` | haul/CVaR cover 0 |
 | L5 beam K=8 | 2026-10-16 | `layer5_vs_l4_k_rescreen.md` | width only; L4 stays default |
 
