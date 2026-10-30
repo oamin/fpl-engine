@@ -4,6 +4,12 @@ Product μ: `score_team_side` centreline. Near = FD λ; far = Opta blind λ.
 Strategy horizon board = L3@t freeze + Opta λ for g=t…end. Gen MC-mean is
 not μ. `protocol.l3_centreline_forecast` · `reports/L3_CENTRELINE_FORECAST_LOCK.md`.
 
+## Inconclusive — H=12 centreline climb vs H=2 priced (2026-10-30)
+
+Pre-registered `l3_centreline_horizon_h12_climb`: paired GW Δ **−0.558**
+[−3.059, +2.034] (covers 0). Not a promote of H=12 over H=2 on realised
+points; not a clear lose. `reports/l3_centreline_h12_climb_gate.md`.
+
 ## Locked — discrete CS/GC predictive likelihood (GKP/DEF) (2026-10-30)
 
 Pre-registered same-skeleton screen **locked** as eval default:

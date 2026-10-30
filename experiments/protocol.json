@@ -2432,7 +2432,7 @@
   },
   "l3_centreline_horizon_h12_climb": {
     "pre_registered": "2026-10-30",
-    "status": "screen",
+    "status": "inconclusive",
     "role": "Strategiser horizon: H=12 centreline (FD near + Opta blind far) vs H=2 priced-only L4 on the same locked μ recipes",
     "treatment": "l3_centreline_h12 — build_l3_centreline_horizon(H=12); γ=1; hard-stop at available boards",
     "baseline": "l3_priced_h2 — build_mupost_priced_horizon (BOOKIE_DEPTH=2); γ=1",
@@ -2440,6 +2440,14 @@
     "metric": "paired-by-GW realised XI+captain−hits; treatment − baseline; cluster_interval four closed seasons",
     "promote_if": "paired interval lo > 0 on four closed seasons",
     "park_if": "hi < 0",
+    "result": {
+      "mean_d_pts_gw": -0.558,
+      "lo": -3.059,
+      "hi": 2.034,
+      "covers_zero": true,
+      "pooled_d": -67,
+      "verdict": "inconclusive"
+    },
     "gw_start": 8,
     "gw_end": 38,
     "holdout": "2026-27 frozen — not in comparison",
