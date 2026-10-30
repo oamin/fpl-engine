@@ -1,17 +1,8 @@
 {
-  "task": "m_discrete_event_likelihood_screen",
-  "status": "done",
-  "as_of_utc": "2026-10-30T16:21:56Z",
-  "change": "Gated factored M-event likelihood vs Gaussian-on-total",
-  "verdict": {
-    "verdict": "park_clear_lose",
-    "mean_d_log": -4.617052268895857,
-    "lo": -4.632321977406889,
-    "hi": -4.60175337349907,
-    "covers_zero": false,
-    "default_unchanged": true,
-    "mean_layer_unchanged": true
-  },
-  "artifact": "/opt/cursor/artifacts/m_discrete_event_likelihood_screen.json",
-  "report": "reports/m_discrete_event_likelihood_screen.md"
+  "task": "m_skel_cs_gc_likelihood_screen",
+  "status": "registered",
+  "as_of_utc": "2026-10-30T16:35:36Z",
+  "change": "Pre-register GKP/DEF same-skeleton discrete CS/GC vs Gaussian CS/GC",
+  "plan": "reports/m_skel_cs_gc_likelihood_screen_PLAN.md",
+  "protocol": "m_skel_cs_gc_likelihood_screen"
 }

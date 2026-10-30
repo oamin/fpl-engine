@@ -2324,5 +2324,37 @@
     "does_not_change_default": true,
     "note": "Locks the discreteness question as a predictive-likelihood comparison. Mean board stays integrated M. Mode/median path parked.",
     "result": "Δ log -4.6171 [-4.6323,-4.6018] → park_clear_lose; mean layer unchanged"
+  },
+  "m_skel_cs_gc_likelihood_screen": {
+    "pre_registered": "2026-10-30",
+    "status": "registered",
+    "role": "On GKP/DEF, does discrete CS/GC from M beat Gaussian CS/GC under the same five-term skeleton (identical G/A/rest), without changing locked score_xp_v2 means?",
+    "claim": "Discreteness of CS/GC belongs in the predictive law from M; clean same-skeleton comparison on GKP/DEF only (avoids MID/FWD null-term inflation from the post-hoc diagnostic).",
+    "baseline": "l3_skel_gauss_cs_gc",
+    "treatment": "l3_skel_disc_cs_gc",
+    "baseline_formula": "log = log_G + log_A + N(P_CS|xp_cs,σ) + N(P_GC|xp_gc,σ) + log_rest; μ from FD centreline score_team_side",
+    "treatment_formula": "log = log_G + log_A + Bern(P(CS) from M) + cat(⌊GA/2⌋ from M) + log_rest; same locked μ for G/A/rest",
+    "mean_layer": "unchanged — no edit to score_team_side, α_G/α_A, shares, or cascade defaults",
+    "not": [
+      "MID/FWD in pool (null CS/GC terms inflate discrete vs Gaussian)",
+      "factored five-term vs single Gaussian-on-total (parked — incommensurate)",
+      "mode/median M boards as μ",
+      "fitted β / OF search",
+      "2026-27 holdout",
+      "Opta λ in this screen"
+    ],
+    "pool": "GKP/DEF; minutes>60 at scored GW; ≥3 prior apps as-of GW; FD AH+OU priced weeks; GW8–38; four closed seasons",
+    "metric": "mean log predictive density per player-GW; paired treatment−baseline by GW; cluster_interval across protocol.closed_seasons",
+    "promote_if": "paired interval lo > 0 on four closed seasons",
+    "follows": "m_discrete_event_likelihood_screen (park_clear_lose) + same-skeleton diagnostic note",
+    "artifacts": [
+      "src/eval/m_skel_cs_gc_likelihood_screen.py",
+      "data/processed/m_skel_cs_gc_likelihood_*",
+      "/opt/cursor/artifacts/m_skel_cs_gc_likelihood_screen.json"
+    ],
+    "plan": "reports/m_skel_cs_gc_likelihood_screen_PLAN.md",
+    "report": "reports/m_skel_cs_gc_likelihood_screen.md",
+    "does_not_change_default": true,
+    "note": "Locks the cleaned discreteness claim: same skeleton, CS/GC laws only, GKP/DEF pool."
   }
 }

@@ -1,3 +1,12 @@
+## Registered — same-skeleton discrete CS/GC (GKP/DEF) (2026-10-30)
+
+Clean re-registration after factored-vs-Gaussian-total parked and the
+pooled same-skeleton diagnostic was noted as inflated by MID/FWD null
+terms. Arms: identical G/A/rest; discrete Bern/cat CS/GC from M vs
+Gaussian(`xp_cs`/`xp_gc`, σ=3). Pool GKP/DEF only. Promote if lo>0.
+Plan: `reports/m_skel_cs_gc_likelihood_screen_PLAN.md` ·
+`protocol.m_skel_cs_gc_likelihood_screen`.
+
 ## Parked — discrete M-event vs Gaussian-on-total (2026-10-30)
 
 Pre-registered pair **clearly loses**: Δ log **−4.617** [−4.632, −4.602].
