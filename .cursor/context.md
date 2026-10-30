@@ -1,6 +1,6 @@
 # Architectural state
 
-Updated: 2026-10-23. **Numagent 2.0** is the product on main (`protocol.numagent_2_0`) — **supersedes Numagent 1.0**. Parked hypotheses: `.cursor/ideas.md`. Stage archaeology: root `CONTEXT.md` and `reports/SUPERSEDED.md`. Canonical index: `reports/LOCKED.md`. Cascade locked index: [`reports/CASCADE_LOCKED.md`](../reports/CASCADE_LOCKED.md).
+Updated: 2026-10-30. **Numagent 2.0** is the product on main (`protocol.numagent_2_0`) — **supersedes Numagent 1.0**. Parked hypotheses: `.cursor/ideas.md`. Stage archaeology: root `CONTEXT.md` and `reports/SUPERSEDED.md`. Canonical index: `reports/LOCKED.md`. Cascade locked index: [`reports/CASCADE_LOCKED.md`](../reports/CASCADE_LOCKED.md).
 
 **Cascade consolidation (2026-10-23):** locked / cascade_default pieces from #101–#106 (rate baseline, joint path, γ=1, FT PE, bench α reject; deadline-causal diagnostic) fast-forwarded onto `cursor/club-expanding-gf-ga-2025-26-cc3d` for landing on `main`.
 
@@ -282,6 +282,14 @@ Prefer `--from-snapshot` / `data/scratch/gwNN_odds_*.json` when the book is alre
 ## Climb constants (still in force)
 
 Hold 1.25, switch penalty 1.0, buy gate three prior appearances and xmi≥45. Empty chip map for legacy climb replay. Constants: `src/rules/fpl_2026.py`. Climb modules that still score on `score_xp` are historical only — do not extend them; new work uses `score_xp_v2` / L4.
+
+## Parked — discrete M-event likelihood vs Gaussian-on-total (2026-10-30)
+
+Pre-registered factored M-event likelihood **clearly loses** vs Gaussian(total|μ,σ=3)
+(Δ log −4.617 [−4.632, −4.602]); incommensurate 5-term vs 1-term score.
+Same-skeleton diagnostic (discrete CS/GC only) wins Δ +3.231 [+3.212, +3.250].
+Mean layer unchanged. `reports/m_discrete_event_likelihood_screen.md` ·
+`protocol.m_discrete_event_likelihood_screen`.
 
 ## Parked (do not revive without a new protocol arm)
 

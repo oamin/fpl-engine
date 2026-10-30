@@ -1,11 +1,11 @@
-## Registered — discrete M-event predictive likelihood (2026-10-30)
+## Parked — discrete M-event vs Gaussian-on-total (2026-10-30)
 
-Integrated M stays the mean board. Screen whether a factored predictive
-likelihood (Bernoulli CS + categorical ⌊GC/2⌋ from M, Gaussian G/A/rest)
-beats Gaussian(total | centreline μ, σ) on player-GW log score. No mode/
-median μ; no fitted β; FD only; four closed seasons. Plan locked before
-totals: `reports/m_discrete_event_likelihood_screen_PLAN.md` ·
-`protocol.m_discrete_event_likelihood_screen`.
+Pre-registered pair **clearly loses**: Δ log **−4.617** [−4.632, −4.602].
+Summing five component logs is not commensurate with one Gaussian on totals.
+Mean layer unchanged. Same-skeleton diagnostic (discrete CS/GC vs Gaussian
+CS/GC under identical G/A/rest) wins Δ **+3.231** [+3.212, +3.250] — suggests
+re-registering that pair if discreteness is pursued.
+`reports/m_discrete_event_likelihood_screen.md`.
 
 ## Parked — Opta own-λ ×α (Arsenal club dig, 2026-10-30)
 

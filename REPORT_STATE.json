@@ -1,9 +1,17 @@
 {
   "task": "m_discrete_event_likelihood_screen",
-  "status": "registered",
-  "change": "Pre-registered discrete M-event predictive likelihood vs Gaussian-on-total; mean layer untouched; no totals read",
-  "protocol": "m_discrete_event_likelihood_screen",
-  "plan": "/workspace/reports/m_discrete_event_likelihood_screen_PLAN.md",
-  "promote_if": "paired interval lo > 0 on four closed seasons",
-  "does_not_change_default": true
+  "status": "done",
+  "as_of_utc": "2026-10-30T16:21:56Z",
+  "change": "Gated factored M-event likelihood vs Gaussian-on-total",
+  "verdict": {
+    "verdict": "park_clear_lose",
+    "mean_d_log": -4.617052268895857,
+    "lo": -4.632321977406889,
+    "hi": -4.60175337349907,
+    "covers_zero": false,
+    "default_unchanged": true,
+    "mean_layer_unchanged": true
+  },
+  "artifact": "/opt/cursor/artifacts/m_discrete_event_likelihood_screen.json",
+  "report": "reports/m_discrete_event_likelihood_screen.md"
 }

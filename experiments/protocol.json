@@ -2293,7 +2293,7 @@
   },
   "m_discrete_event_likelihood_screen": {
     "pre_registered": "2026-10-30",
-    "status": "registered",
+    "status": "done_park_clear_lose",
     "role": "Does a discrete M-event predictive likelihood beat Gaussian(centreline μ, σ) on player-GW points, without changing locked score_xp_v2 means?",
     "claim": "Integrated M is kept as the mean board; discreteness is modeled in the predictive distribution (CS Bernoulli, GC count from M), not by mode/median point boards.",
     "baseline": "l3_gaussian_total",
@@ -2322,6 +2322,7 @@
     "plan": "reports/m_discrete_event_likelihood_screen_PLAN.md",
     "report": "reports/m_discrete_event_likelihood_screen.md",
     "does_not_change_default": true,
-    "note": "Locks the discreteness question as a predictive-likelihood comparison. Mean board stays integrated M. Mode/median path parked."
+    "note": "Locks the discreteness question as a predictive-likelihood comparison. Mean board stays integrated M. Mode/median path parked.",
+    "result": "Δ log -4.6171 [-4.6323,-4.6018] → park_clear_lose; mean layer unchanged"
   }
 }
