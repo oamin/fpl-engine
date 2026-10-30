@@ -1,15 +1,9 @@
 {
-  "task": "opta_own_lambda_alpha_trial",
-  "status": "parked",
-  "decision": "keep_alpha_1_default",
-  "change": "Trialed Opta own-side \u03bb \u00d7 0.76 (opp \u03bb fixed) on Arsenal GW8\u201338 across four closed seasons; CS/GC unchanged; fixed \u03b1 not season-universal. PI: keep \u03b1=1 identity as default.",
-  "seasons": ["2022-23", "2023-24", "2024-25", "2025-26"],
-  "alpha_trial": 0.76,
-  "alpha_default": 1.0,
-  "report": "/workspace/reports/l3_opta_own_alpha076_arsenal_four_season.md",
-  "locked_constants": {
-    "LAM_SHRINK": 1.0,
-    "AWAY_SHRINK": 1.0,
-    "venue_mode": "blind"
-  }
+  "task": "m_discrete_event_likelihood_screen",
+  "status": "registered",
+  "change": "Pre-registered discrete M-event predictive likelihood vs Gaussian-on-total; mean layer untouched; no totals read",
+  "protocol": "m_discrete_event_likelihood_screen",
+  "plan": "/workspace/reports/m_discrete_event_likelihood_screen_PLAN.md",
+  "promote_if": "paired interval lo > 0 on four closed seasons",
+  "does_not_change_default": true
 }

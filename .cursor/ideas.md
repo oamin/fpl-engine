@@ -1,3 +1,12 @@
+## Registered — discrete M-event predictive likelihood (2026-10-30)
+
+Integrated M stays the mean board. Screen whether a factored predictive
+likelihood (Bernoulli CS + categorical ⌊GC/2⌋ from M, Gaussian G/A/rest)
+beats Gaussian(total | centreline μ, σ) on player-GW log score. No mode/
+median μ; no fitted β; FD only; four closed seasons. Plan locked before
+totals: `reports/m_discrete_event_likelihood_screen_PLAN.md` ·
+`protocol.m_discrete_event_likelihood_screen`.
+
 ## Parked — Opta own-λ ×α (Arsenal club dig, 2026-10-30)
 
 Do-this-1: after `match_prediction`, shrink own-side λ by α; opp λ fixed;
