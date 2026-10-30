@@ -1,19 +1,17 @@
-## Registered — same-skeleton discrete CS/GC (GKP/DEF) (2026-10-30)
+## Kept — same-skeleton discrete CS/GC (GKP/DEF) (2026-10-30)
 
-Clean re-registration after factored-vs-Gaussian-total parked and the
-pooled same-skeleton diagnostic was noted as inflated by MID/FWD null
-terms. Arms: identical G/A/rest; discrete Bern/cat CS/GC from M vs
-Gaussian(`xp_cs`/`xp_gc`, σ=3). Pool GKP/DEF only. Promote if lo>0.
-Plan: `reports/m_skel_cs_gc_likelihood_screen_PLAN.md` ·
-`protocol.m_skel_cs_gc_likelihood_screen`.
+Pre-registered pair **promotes**: Δ log **+2.828** [+2.798, +2.858].
+Discrete Bern/cat CS/GC from M beats Gaussian(`xp_cs`/`xp_gc`, σ=3) under
+identical G/A/rest on GKP/DEF. Mean layer unchanged. Adopt discrete CS/GC
+in predictive likelihood / eval; do not change `score_team_side` means.
+`reports/m_skel_cs_gc_likelihood_screen.md`.
 
 ## Parked — discrete M-event vs Gaussian-on-total (2026-10-30)
 
 Pre-registered pair **clearly loses**: Δ log **−4.617** [−4.632, −4.602].
 Summing five component logs is not commensurate with one Gaussian on totals.
-Mean layer unchanged. Same-skeleton diagnostic (discrete CS/GC vs Gaussian
-CS/GC under identical G/A/rest) wins Δ **+3.231** [+3.212, +3.250] — suggests
-re-registering that pair if discreteness is pursued.
+Mean layer unchanged. Same-skeleton diagnostic was inflated by MID/FWD; cleaned GKP/DEF
+re-registration **promoted** — see Kept note below / `m_skel_cs_gc_likelihood_screen`.
 `reports/m_discrete_event_likelihood_screen.md`.
 
 ## Parked — Opta own-λ ×α (Arsenal club dig, 2026-10-30)

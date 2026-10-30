@@ -2,7 +2,7 @@
 
 **Protocol:** `m_skel_cs_gc_likelihood_screen`  
 **Pre-registered:** 2026-10-30  
-**Status:** registered (no totals read yet)
+**Status:** done_promote
 
 ## Motivation
 

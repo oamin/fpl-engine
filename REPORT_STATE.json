@@ -1,8 +1,17 @@
 {
   "task": "m_skel_cs_gc_likelihood_screen",
-  "status": "registered",
-  "as_of_utc": "2026-10-30T16:35:36Z",
-  "change": "Pre-register GKP/DEF same-skeleton discrete CS/GC vs Gaussian CS/GC",
-  "plan": "reports/m_skel_cs_gc_likelihood_screen_PLAN.md",
-  "protocol": "m_skel_cs_gc_likelihood_screen"
+  "status": "done",
+  "as_of_utc": "2026-10-30T16:41:06Z",
+  "change": "Gated GKP/DEF same-skeleton discrete CS/GC vs Gaussian CS/GC",
+  "verdict": {
+    "verdict": "promote",
+    "mean_d_log": 2.8276115773353694,
+    "lo": 2.7979595067610794,
+    "hi": 2.85790421923347,
+    "covers_zero": false,
+    "default_unchanged": true,
+    "mean_layer_unchanged": true
+  },
+  "artifact": "/opt/cursor/artifacts/m_skel_cs_gc_likelihood_screen.json",
+  "report": "reports/m_skel_cs_gc_likelihood_screen.md"
 }

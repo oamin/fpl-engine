@@ -283,6 +283,13 @@ Prefer `--from-snapshot` / `data/scratch/gwNN_odds_*.json` when the book is alre
 
 Hold 1.25, switch penalty 1.0, buy gate three prior appearances and xmi≥45. Empty chip map for legacy climb replay. Constants: `src/rules/fpl_2026.py`. Climb modules that still score on `score_xp` are historical only — do not extend them; new work uses `score_xp_v2` / L4.
 
+## Kept — same-skeleton discrete CS/GC likelihood (GKP/DEF, 2026-10-30)
+
+Pre-registered pair **promotes** (Δ log +2.828 [+2.798, +2.858]): discrete
+CS/GC from M beats Gaussian CS/GC under identical five-term skeleton on
+GKP/DEF. Mean board unchanged. `reports/m_skel_cs_gc_likelihood_screen.md` ·
+`protocol.m_skel_cs_gc_likelihood_screen`.
+
 ## Parked — discrete M-event likelihood vs Gaussian-on-total (2026-10-30)
 
 Pre-registered factored M-event likelihood **clearly loses** vs Gaussian(total|μ,σ=3)
