@@ -1,3 +1,12 @@
+## Parked — Opta own-λ ×α (Arsenal club dig, 2026-10-30)
+
+Do-this-1: after `match_prediction`, shrink own-side λ by α; opp λ fixed;
+rebuild `M`. CS/GC unchanged (machine eps). Fixed α=0.76 on Arsenal GW8–38:
+helps 2024-25 / 2025-26 ΣG; **worsens** under-print on 2022-23 / 2023-24.
+**PI: keep α=1 (identity) as default** — no own-λ temper in the live Opta
+path. `LAM_SHRINK` / `AWAY_SHRINK` stay 1.0. Four-season rollup:
+`reports/l3_opta_own_alpha076_arsenal_four_season.md`.
+
 ## Noted — L3@t + Opta λ horizon (2026-10-30)
 
 L3 centreline freeze at t + Opta blind λ for g=t…end. Much closer to

@@ -2,6 +2,10 @@
 
 Do-this-1: after `match_prediction`, Arsenal-side λ × 0.76; opp λ fixed; rebuild `M`.
 
+**Decision (PI 2026-10-30): keep α=1 as default.** Fixed 0.76 is not
+season-universal (helps 24–26; worsens under-print on 22–24). No change to
+`LAM_SHRINK` / `AWAY_SHRINK` / blind Opta path.
+
 | Season | Σ FD G | Σ Opta G | Σ ×0.76 G | act G | Σ FD CS | Σ Opta CS | Σ ×0.76 CS | act CS | Σ FD GC | Σ Opta GC | Σ ×0.76 GC | act GC |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | 2022-23 | 61.2 | 67.8 | 51.8 | 74 | 11.7 | 14.1 | 14.1 | 12 | 33.9 | 26.9 | 26.9 | 36 |

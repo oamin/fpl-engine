@@ -1,27 +1,15 @@
 {
-  "task": "l3_opta_lambda_horizon",
-  "status": "done",
-  "change": "L3@t + Opta \u03bb horizon vs L3@g + actuals (eligible m>60)",
-  "season": "2025-26",
-  "n_player_gw": 89444,
-  "n_decision": 31,
-  "bands": {
-    "near_0_1": {
-      "n": 11721,
-      "G_delta_mae": 0.01334513275278959,
-      "CS_delta_mae": -0.005706380925400656
-    },
-    "far_2plus": {
-      "n": 77723,
-      "G_delta_mae": 0.012263518840930132,
-      "CS_delta_mae": 0.0003655086608975733
-    }
-  },
-  "overall_G_mae": {
-    "l3_opta_at_t": 0.8178371501105008,
-    "l3_fd_at_g": 0.805431893459758
-  },
-  "report": "/workspace/reports/l3_opta_lambda_horizon.md",
-  "out": "/opt/cursor/artifacts/l3_opta_lambda_horizon.json",
-  "elapsed_s": 116.72366499900818
+  "task": "opta_own_lambda_alpha_trial",
+  "status": "parked",
+  "decision": "keep_alpha_1_default",
+  "change": "Trialed Opta own-side \u03bb \u00d7 0.76 (opp \u03bb fixed) on Arsenal GW8\u201338 across four closed seasons; CS/GC unchanged; fixed \u03b1 not season-universal. PI: keep \u03b1=1 identity as default.",
+  "seasons": ["2022-23", "2023-24", "2024-25", "2025-26"],
+  "alpha_trial": 0.76,
+  "alpha_default": 1.0,
+  "report": "/workspace/reports/l3_opta_own_alpha076_arsenal_four_season.md",
+  "locked_constants": {
+    "LAM_SHRINK": 1.0,
+    "AWAY_SHRINK": 1.0,
+    "venue_mode": "blind"
+  }
 }
