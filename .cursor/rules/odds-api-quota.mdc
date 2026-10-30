@@ -1,33 +1,23 @@
 ---
-description: Protect The Odds API free-tier quota — prefer snapshots; never burn credits on exploratory fetches
+description: Odds API ban — live book is Betfair Exchange only
 alwaysApply: true
 ---
 
-# Odds API quota (hard constraint)
+# Odds API ban
 
-The Odds API free tier is small (~500 credits/month). **Treat every paid call as expensive.** Over-use has already exhausted a key in this project.
-
-**Numagent 2.0 / `score_xp_v2`:** live AH+OU+BTTS pots (and optional anytime props) come from The Odds API via `numagent_live_pick --fetch-odds` or a prior snapshot. That path is intentional — do not delete it. (Numagent 1.0 / ep_next freeze is superseded.)
-
-**Classic climb / `gw_lines.csv` readers:** prefer Betfair Exchange folders (`python3 -m src.live.betfair_lines`). Do not open frozen `data/live/gw_lines.csv` as a live slate.
-
-## Before any Odds API call
-
-1. Prefer **no network**: `--from-snapshot`, existing `data/scratch/gwNN_odds_*.json`.
-2. Prefer **free sources** for history: football-data.co.uk E0; FPL API for squad state.
-3. If Odds API is required, **estimate cost first**: roughly `markets × regions × events` (plus 1/region for `/markets` discovery).
-4. Default regions for soccer props: **`us` only** (not `uk,us` / `us,us2` unless necessary).
-5. Do not loop discovery (`/events/{id}/markets`) across every fixture — one probe or skip discovery.
-6. Abort if remaining credits are low; leave a reserve for deadline Numagent pulls.
-7. Never print or commit the raw `ODDS_API_KEY`. Redact `apiKey=` in logs and snapshots.
-
-## Script defaults
-
-- `numagent_live_pick`: default offline snapshot; `--fetch-odds` only when refreshing live pots (region=`us`; props off unless `--with-props`).
-- Rebuild CSV / boards with `--from-snapshot` when possible.
+The live book is Betfair Exchange. Do not call The Odds API from an engine, a script, or a rehearsal.
 
 ## Do not
 
-- Re-fetch the same GW props repeatedly “to check”.
-- Request empty/unavailable market keys in bulk (they still cost credits).
-- Run calibrate/historical Odds API endpoints on the free key.
+- Read or write `ODDS_API_KEY`.
+- Request `the-odds-api.com`, including props, discovery, historical, or calibrate endpoints.
+- Open `data/live/gw_lines.csv` as a live slate. That file is the frozen holdout and stays byte-for-byte.
+- Treat a missing Betfair folder as permission to use the frozen slate.
+
+## Live prices
+
+Write a pull with `python3 -m src.live.betfair_lines --out <predictions/gwNN/betfair_*>`. Readers take `gw_lines.csv` only from that folder. Historical 1X2 for the published climb stays the football-data.co.uk E0 files already on disk.
+
+## Legacy snapshots
+
+Existing `data/scratch/gwNN_odds_*.json` files are offline rehearsal artifacts only. Do not refresh them via The Odds API. Prefer Betfair folders for new live pots.

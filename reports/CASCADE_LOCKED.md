@@ -13,11 +13,13 @@ Product landing: PR into `main` from the consolidated tip.
 
 | Horizon | λ source | Board |
 | --- | --- | --- |
-| Near `t`/`t+1` (priced) | Football-Data AH+OU(+BTTS) → DC \(M\) moments | `score_team_side` → `score_xp_v2` |
+| Near `t`/`t+1` (priced) | Betfair (live) / FD AH+OU(+BTTS) hist → DC \(M\) moments | `score_team_side` → `score_xp_v2` |
 | Far `t+2…` (unpriced) | **Opta** place rankmean, **`venue_mode=blind`**, identity shrinks → λ → \(M\) moments | **same** `score_team_side` |
 
 Strategy horizon board: freeze rates/shares/α at `t`; Opta λ for every `g ∈ [t,end]`  
-(`protocol.l3_opta_lambda_horizon`).
+(`protocol.l3_opta_lambda_horizon`). Product default **H=5** via
+`src/strategy/l3_centreline_horizon.py` → live `numagent_live_pick` /
+hist `build_l3_centreline_horizon`.
 
 **Generative MC-mean is not μ** (viability B1/B2; horizon snapshots).  
 `k∼M` strands remain for scenario/path only.

@@ -1,14 +1,12 @@
 {
-  "task": "l3_centreline_forecast_lock",
+  "task": "l3_centreline_hygiene_and_live_wire",
   "status": "done",
-  "as_of_utc": "2026-10-30T17:58:46Z",
-  "change": "Lock L3 centreline forecast model (FD near / Opta blind far); document stack",
-  "locked": {
-    "protocol": "l3_centreline_forecast",
-    "strategy_horizon": "l3_opta_lambda_horizon",
-    "eval_cs_gc": "l3_discrete_cs_gc_likelihood",
-    "mean_layer": "score_team_side",
-    "not_mu": "generative MC-mean"
+  "as_of_utc": "2026-10-30T20:30:00Z",
+  "change": "Hygiene Odds API→Betfair + front door; wire l3_centreline_forecast into live pick (H=5 Opta far) and hist factory",
+  "points": {
+    "1_hygiene": "LOCKED/context/protocol/odds-rule/fpl-protocol; L3_CENTRELINE_FORECAST_LOCK front door",
+    "2_wire": "src/strategy/l3_centreline_horizon.py + numagent_live_pick --centreline-horizon",
+    "3_mu_compare": "discuss — not executed"
   },
   "report": "reports/L3_CENTRELINE_FORECAST_LOCK.md"
 }

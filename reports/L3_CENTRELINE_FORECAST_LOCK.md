@@ -11,12 +11,14 @@ likelihood is a separate eval lock (`l3_discrete_cs_gc_likelihood`).
 
 | Horizon | λ / match layer | Player board |
 | --- | --- | --- |
-| **Near / priced** (`t`, `t+1`) | Football-Data AH+OU(+BTTS) → Dixon–Coles \(M\) → moments | `score_team_side` → `score_xp_v2` |
+| **Near / priced** (`t`, `t+1`) | Live **Betfair** / hist Football-Data AH+OU(+BTTS) → Dixon–Coles \(M\) → moments | `score_team_side` → `score_xp_v2` |
 | **Far / unpriced** (`t+2…`) | **Opta** place rankmean, **`venue_mode=blind`**, identity shrinks → λ → \(M\) moments | **same** `score_team_side` |
 
 Freeze at decision GW `t`: rates, shares, alphas as-of `t`. Drive every target
-`g ∈ [t, end]` with the λ source above. That is the **L3@t + Opta λ** horizon
-board (`protocol.l3_opta_lambda_horizon` · `reports/l3_opta_lambda_horizon.md`).
+`g ∈ [t, end]` with the λ source above. Product strategiser default horizon is
+**H=5** (`t…t+4`): priced near + Opta far. Full-season dig board:
+**L3@t + Opta λ** (`protocol.l3_opta_lambda_horizon` ·
+`reports/l3_opta_lambda_horizon.md`).
 
 ### Locked pieces (already in force — consolidated here)
 
@@ -67,10 +69,13 @@ Any revive of gen-as-mean needs a new pre-registered likelihood arm.
 | Role | Path |
 | --- | --- |
 | Mean board | `src/markets/numagent_xp.py` (`score_team_side`) |
+| **Strategiser horizon factory** | `src/strategy/l3_centreline_horizon.py` (`build_l3_centreline_horizon`) |
+| Live / receding pick | `src/live/numagent_live_pick.py` (`--centreline-horizon`, default 5) |
 | FD short fits | `src/models/short_horizon_cascade.py` |
 | Opta λ / place | `src/models/opta_gf_ga_horizon.py` |
 | Horizon dig / board recipe | `src/eval/l3_opta_lambda_horizon.py` |
 | Rate baseline | `src/markets/rate_baseline.py` |
+| Live book pull | `src/live/betfair_lines.py` |
 
 ## Re-open rule
 

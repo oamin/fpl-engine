@@ -730,7 +730,7 @@ Parked 2026-10-15 after `protocol.fixture_planning_glue`. Captain by P(xp≥8) o
 
 Trialled 2026-10-15 (`reports/layer4_bookie_trial.md`). Used cov **draw-mean as μ** (replaced `mu_post`) — wrong structure; all arms lost to L3. Parked. Correct structure is `strategy_layer4_mupost_priced`: week-t = L3 `mu_post`; look-ahead = projected point score on book pots; cov draws reserved for risk only. That path clears L3 (+2.90/GW under prior depth-3 boards). Do not reopen cov-as-μ without a new protocol lock.
 
-**Book depth lock 2026-10-16:** live Odds API prices ~t and t+1 only (~9d). `BOOKIE_DEPTH=2`. L3 = week t; L4 priced = t:t+1 hard-stop. Do not forecast weeks without book lines (t+2 and beyond stay out of the decision boards; calendar fills are strength-only and not the L4 default).
+**Book depth lock 2026-10-16 (updated 2026-10-30):** priced near still `BOOKIE_DEPTH=2` (t, t+1). Live book = **Betfair Exchange** (Odds API banned). Far weeks use locked **Opta blind** centreline under `l3_centreline_forecast` (default strategiser H=5), not strength-only calendar fills.
 
 ## Share-SE shrink (≠ total xp_se EB)
 

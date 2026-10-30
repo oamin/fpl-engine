@@ -6,7 +6,11 @@ Updated: 2026-10-30. **Numagent 2.0** is the product on main (`protocol.numagent
 
 ## Locked — L3 centreline forecast (2026-10-30)
 
-Product **μ**: FD centreline near (`t`/`t+1`); **Opta blind** λ far (`t+2…`); both → `score_team_side`. Strategy horizon = L3@t + Opta λ. Gen MC-mean **not** μ. Discrete CS/GC likelihood locked separately for eval. `protocol.l3_centreline_forecast` · `reports/L3_CENTRELINE_FORECAST_LOCK.md`.
+**Front door:** [`reports/L3_CENTRELINE_FORECAST_LOCK.md`](../reports/L3_CENTRELINE_FORECAST_LOCK.md).
+
+Product **μ**: FD/Betfair centreline near (`t`/`t+1`); **Opta blind** λ far (`t+2…`); both → `score_team_side`. Strategy horizon default **H=5** (`src/strategy/l3_centreline_horizon.py` → live `numagent_live_pick` + hist `build_l3_centreline_horizon`). Gen MC-mean **not** μ. Discrete CS/GC likelihood locked separately for eval. `protocol.l3_centreline_forecast`.
+
+**Stack:** land cascade + centreline locks onto `main` via the existing PR chain; do not open parallel μ screens until the live board is exercised.
 
 ## Repo freeze sequence (2026-10-20)
 
@@ -183,7 +187,7 @@ G stayed positive — `cascade_vs_l3_component_xp_multiseed.md`.
 
 ## Plan
 
-Pre-deadline squad advisor under 2026/27 rules. Cursor implements and screens; Gemini proposes formulae; the PI reads gated batches. A result needs the as-of audit and paired intervals on 2022-23…2025-26 (`write_gated_report`). **Numagent 2.0 pots** use The Odds API (AH+OU+BTTS; quota-aware — `.cursor/rules/odds-api-quota.mdc`). Classic climb `gw_lines` may use Betfair. The live 2026/27 holdout is frozen — do not fit on it.
+Pre-deadline squad advisor under 2026/27 rules. Cursor implements and screens; Gemini proposes formulae; the PI reads gated batches. A result needs the as-of audit and paired intervals on 2022-23…2025-26 (`write_gated_report`). **Numagent 2.0 live pots** are Betfair Exchange (`python3 -m src.live.betfair_lines`); The Odds API is banned (`.cursor/rules/odds-api-quota.mdc`). Forecast μ: [`L3_CENTRELINE_FORECAST_LOCK.md`](../reports/L3_CENTRELINE_FORECAST_LOCK.md). The live 2026/27 holdout is frozen — do not fit on it.
 
 ## Locked stack — Numagent 2.0
 
@@ -194,8 +198,8 @@ Pre-deadline squad advisor under 2026/27 rules. Cursor implements and screens; G
 | **Shares** | share-SE → position×minutes prior; goal **π∝r·m** (π∝r parked) | prior 2026-10-17 · π∝r park 2026-10-27 | `reports/score_xp_v2_share_se_pos_prior.md` · `score_xp_v2_goal_share_rate.md` |
 | **μ_post** | ≡ `score_xp_v2` (shrink `mode=none`) | locked 2026-10-16 | `protocol.strategy_layer2_shrinkage` |
 | **Transfers** | L3 single-deadline | locked | `src/strategy/layer3_week.py` |
-| **Horizon** | L4 μ_post priced, `BOOKIE_DEPTH=2`, γ=1 | **strategiser default** | `src/strategy/layer4_week.py` · `reports/layer4_mupost_gamma1.md` |
-| **Live pick** | `numagent_live_pick` (props **off**) | GW7 PI lock | `src/live/numagent_live_pick.py` |
+| **Horizon** | L4 centreline H=5: priced t:t+1 + Opta blind t+2…t+4, γ=1 | **strategiser default** | `src/strategy/l3_centreline_horizon.py` · `layer4_week.py` · `L3_CENTRELINE_FORECAST_LOCK.md` |
+| **Live pick** | `numagent_live_pick` (props **off**; `--centreline-horizon`) | GW7 PI lock · centreline 2026-10-30 | `src/live/numagent_live_pick.py` |
 | **cascade_short** | priced t:t+1 generative: centreline `M`→`k∼M` (no λ jitter) | locked 2026-10-20 | `cascade_short` / `short_horizon_generative` · `protocol.cascade_short_generative` |
 | **cascade_long** | rankmean±SD latents; assessed ḡ; hierarchical λ→`M\|λ`→`k∼M`; **`venue_mode=blind`** + identity shrinks; generative xP, props off | **PI-approved 2026-10-24**; **blind locked 2026-10-29** | `cascade_long` / `multistage_mc_milp` · `protocol.cascade_long_match_outcome` · `reports/cascade_long_blind_venue_lock.md` |
 | **cascade rates** | historical player/positional rate baseline | cascade_default | `src/markets/rate_baseline.py` · `protocol.score_xp_v2_rate_baseline_prior` |
@@ -261,18 +265,19 @@ Screens: `reports/match_band_calibration.md`, `reports/player_ga_finish.md`,
 
 ### Strategiser defaults
 
-- L1 joint MILP on absolute μ; L2 identity attach; L3 transfers+hits; **L4 priced path** week-t = L3 board, t+1 = projected `score_xp_v2` on book pots only (never an unpriced week)
+- L1 joint MILP on absolute μ; L2 identity attach; L3 transfers+hits; **L4 centreline horizon** = priced t:t+1 + Opta blind far (`protocol.l3_centreline_forecast`, default H=5)
 - L5 beam screened, not promoted (K=8 locked as beam width only) — L4 stays default
 - Captain = max μ; stack-vs-diversify diagnostic only (`reports/fixture_planning_glue.md`)
 
 ### Live path
 
 ```
+python3 -m src.live.betfair_lines --out data/predictions/2026-27/gwNN/betfair_*
 python -m src.live.numagent_live_pick --gw N
-python -m src.live.numagent_live_pick --gw N --fetch-odds   # Odds API, region=us
+python -m src.live.numagent_live_pick --gw N --centreline-horizon 5   # default
 ```
 
-Prefer `--from-snapshot` / `data/scratch/gwNN_odds_*.json` when the book is already pulled. `--fetch-odds` refreshes AH+OU+BTTS for Dixon–Coles pots (props off unless `--with-props`). Classic climb `gw_lines` readers may still use Betfair folders; frozen `data/live/gw_lines.csv` is not a live book.
+Live book = Betfair Exchange folders. Offline rehearsal may reuse legacy `data/scratch/gwNN_odds_*.json` snapshots — do not refresh via The Odds API. Frozen `data/live/gw_lines.csv` is not a live book.
 
 ### Latest PI lock — GW7 (2026-10-17)
 
@@ -301,12 +306,12 @@ Cleaned GKP/DEF re-registration locked — see Locked note above. `reports/m_dis
 
 Full list: `.cursor/ideas.md` and `reports/LOCKED.md` §Parked.
 
-Highlights: anytime props as live default; share-SE all-minutes / scorers-only; minutes decay ρ=0.7; L4 risk/chase/window/beyond-t+2 form fills; L4 FT-DP / chip half-stop; L5 as strategiser; constant-K μ_post shrink; Betfair pot source on US cloud (geo-blocked — Mac worker only).
+Highlights: anytime props as live default; share-SE all-minutes / scorers-only; minutes decay ρ=0.7; L4 risk/chase/window/beyond-t+2 form fills; L4 FT-DP / chip half-stop; L5 as strategiser; constant-K μ_post shrink; Odds API live pots (banned — use Betfair).
 
 ## Rules still in force
 
 - Gates: as-of audit + four-season paired intervals before any claim
 - Holdout freeze hashes untouched
-- Odds API: estimate cost first; region=`us`; prefer snapshots (quota rule)
+- Odds API banned; live pots = Betfair Exchange (`.cursor/rules/odds-api-quota.mdc`)
 - Fewer comparisons; objective-function search parked; captain/chip sims deferred until a pre-registered likelihood arm asks
 - After a discrete sub-task: write `REPORT_STATE.json`
