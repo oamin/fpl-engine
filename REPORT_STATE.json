@@ -1,15 +1,33 @@
 {
-  "task": "l3_centreline_horizon_h12_climb",
+  "task": "l3_component_climb_gate",
   "status": "done",
-  "as_of_utc": "2026-10-30T21:28:11Z",
-  "change": "Gated H=12 centreline climb vs H=2 priced",
-  "verdict": {
-    "verdict": "inconclusive",
-    "mean_d_pts_gw": -0.5583333333333333,
-    "lo": -3.058958333333333,
-    "hi": 2.0339583333333326,
-    "covers_zero": true,
-    "total_d": -67.0
+  "as_of_utc": "2026-10-30T21:54:27Z",
+  "change": "Gated L3 component climbs vs full xp (no captain, uncapped hits)",
+  "verdicts": {
+    "xp_goals": {
+      "verdict": "park_clear_lose",
+      "mean": -7.411764705882353,
+      "lo": -10.756932773109245,
+      "hi": -3.89810924369748
+    },
+    "xp_assists": {
+      "verdict": "park_clear_lose",
+      "mean": -6.773109243697479,
+      "lo": -9.93718487394958,
+      "hi": -3.6039915966386564
+    },
+    "xp_cs": {
+      "verdict": "park_clear_lose",
+      "mean": -15.15126050420168,
+      "lo": -18.530252100840336,
+      "hi": -11.864915966386556
+    },
+    "xp_gc": {
+      "verdict": "park_clear_lose",
+      "mean": -26.327731092436974,
+      "lo": -31.650420168067228,
+      "hi": -21.50357142857143
+    }
   },
-  "report": "reports/l3_centreline_h12_climb_gate.md"
+  "report": "reports/l3_component_climb_gate.md"
 }

@@ -77,9 +77,45 @@ def _now() -> float:
     return time.time()
 
 
+def _pts_map(work: pd.DataFrame) -> pd.Series:
+    """Unique player_id → total_points (DGW-safe)."""
+    tmp = work[["player_id", "total_points"]].copy()
+    tmp["player_id"] = tmp["player_id"].astype(str)
+    tmp["total_points"] = pd.to_numeric(tmp["total_points"], errors="coerce").fillna(
+        0.0
+    )
+    return tmp.groupby("player_id", as_index=True)["total_points"].sum()
+
+
 def _realised_xi_only(xi: pd.DataFrame, pts_map: pd.Series) -> float:
     ids = xi["player_id"].astype(str)
-    return float(ids.map(pts_map).astype(float).sum())
+    return float(ids.map(pts_map).fillna(0.0).astype(float).sum())
+
+
+def _ensure_held_component_rows(
+    pool: pd.DataFrame, held: HeldState, prev_meta: pd.DataFrame
+) -> pd.DataFrame:
+    """Stub missing held players with zero μ on every component column."""
+    out = _ensure_held_rows(pool, held, prev_meta)
+    zero_cols = (
+        "score_xp_v2",
+        "xp",
+        "xp_se",
+        "mu",
+        "mu_post",
+        *DEFAULT_COMPONENTS,
+        "xp_appear",
+        "xp_defcon",
+        "xp_bonus",
+        "xp_cards",
+        "xp_saves",
+    )
+    for c in zero_cols:
+        if c not in out.columns:
+            out[c] = 0.0
+        else:
+            out[c] = pd.to_numeric(out[c], errors="coerce").fillna(0.0)
+    return out
 
 
 def _score_component_board(
@@ -273,7 +309,7 @@ def climb_season(
             held = HeldState(
                 held.player_ids, held.purchase, held.bank, advance_ft(1, 0)
             )
-            pts_map = work.set_index(work["player_id"].astype(str))["total_points"]
+            pts_map = _pts_map(work)
             pts = _realised_xi_only(splan.plan.xi, pts_map)
             rows.append(
                 {
@@ -294,10 +330,8 @@ def climb_season(
             continue
 
         assert held is not None and prev_meta is not None
-        work = _ensure_held_rows(work, held, prev_meta)
-        pts_map = work.set_index(work["player_id"].astype(str))["total_points"].fillna(
-            0.0
-        )
+        work = _ensure_held_component_rows(work, held, prev_meta)
+        pts_map = _pts_map(work)
         plan = solve_week_transfers(
             work,
             held,
