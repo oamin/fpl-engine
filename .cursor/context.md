@@ -161,6 +161,13 @@ short (FD t:t+1) + long (Opta blind t:end); compare each target g to
 long−L3 G ΔMAE **near +0.054 / far +0.021**; short t:t+1 G MAE 0.859 vs
 L3 0.814. L3 closer near-term; far gap shrinks (some late offsets long≈L3).
 Defaults unchanged. `reports/cascade_eligible_horizon_snapshot.md`.
+**L3@t + Opta λ horizon (2026-10-30):** same freeze×target design, but
+**L3 centreline** (`score_team_side`) driven by Opta blind centreline λ
+(no generative dice). n=89444. G MAE **0.818** vs L3@g+FD **0.805**
+(near ΔMAE **+0.013**, far **+0.012**) — much closer than generative long
+(≈0.846). CS near ΔMAE **−0.006** (slightly beats L3@g). Promising
+strategy-score alternative to cascade gen; defaults unchanged.
+`reports/l3_opta_lambda_horizon.md`.
 
 
 **Strand default:** generative `run_strand` / `_undiscounted_scores_by_gw`

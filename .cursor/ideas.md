@@ -1,3 +1,10 @@
+## Noted — L3@t + Opta λ horizon (2026-10-30)
+
+L3 centreline freeze at t + Opta blind λ for g=t…end. Much closer to
+contemporaneous L3@g than generative cascade_long (G MAE 0.818 vs 0.805;
+gen was ≈0.846). Candidate strategy scorer — not yet promoted.
+`reports/l3_opta_lambda_horizon.md`.
+
 ## Noted — eligible horizon snapshots vs L3@g (2026-10-30)
 
 Correct design: freeze cascade @t for g=t…end; residual vs contemporaneous

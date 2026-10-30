@@ -1,0 +1,339 @@
+{
+  "season": "2025-26",
+  "horizon_end": 38,
+  "n_player_gw": 89444,
+  "n_decision": 31,
+  "elapsed_s": 116.72366499900818,
+  "overall": {
+    "opta": {
+      "G": {
+        "n": 89444.0,
+        "bias": -0.08957213727527884,
+        "mae": 0.8178371501105008,
+        "corr": 0.23155379108348215
+      },
+      "CS": {
+        "n": 89444.0,
+        "bias": -0.20350882584262125,
+        "mae": 0.7575226566834808,
+        "corr": 0.26495905870028763
+      },
+      "GC": {
+        "n": 89444.0,
+        "bias": -0.05946109641568737,
+        "mae": 0.2519571049397812,
+        "corr": 0.4818864167046406
+      }
+    },
+    "l3": {
+      "G": {
+        "n": 89444.0,
+        "bias": -0.11063894484793792,
+        "mae": 0.805431893459758,
+        "corr": 0.24303846319573288
+      },
+      "CS": {
+        "n": 89444.0,
+        "bias": -0.19223843881909816,
+        "mae": 0.7579528259645468,
+        "corr": 0.2871985689003794
+      },
+      "GC": {
+        "n": 89444.0,
+        "bias": -0.04681166244676158,
+        "mae": 0.2479744138053132,
+        "corr": 0.4976945611795186
+      }
+    }
+  },
+  "bands": {
+    "near_0_1": {
+      "n": 11721,
+      "G": {
+        "opta": {
+          "n": 11721.0,
+          "bias": -0.10631980966198426,
+          "mae": 0.8221039739060679,
+          "corr": 0.23721720398940552
+        },
+        "l3": {
+          "n": 11721.0,
+          "bias": -0.12644721437941142,
+          "mae": 0.8087588411532783,
+          "corr": 0.24701201280652232
+        },
+        "delta_mae": 0.01334513275278959
+      },
+      "CS": {
+        "opta": {
+          "n": 11721.0,
+          "bias": -0.20499275273447,
+          "mae": 0.7436336489847456,
+          "corr": 0.2910503431526631
+        },
+        "l3": {
+          "n": 11721.0,
+          "bias": -0.18857184240506294,
+          "mae": 0.7493400299101463,
+          "corr": 0.2984941265163711
+        },
+        "delta_mae": -0.005706380925400656
+      },
+      "GC": {
+        "opta": {
+          "n": 11721.0,
+          "bias": -0.04338571448560365,
+          "mae": 0.24547044171984078,
+          "corr": 0.5101479495034864
+        },
+        "l3": {
+          "n": 11721.0,
+          "bias": -0.02612297728696286,
+          "mae": 0.24403220573672896,
+          "corr": 0.5122756135905367
+        },
+        "delta_mae": 0.001438235983111824
+      }
+    },
+    "far_2plus": {
+      "n": 77723,
+      "G": {
+        "opta": {
+          "n": 77723.0,
+          "bias": -0.08704650820737649,
+          "mae": 0.817193692682097,
+          "corr": 0.2308534877233573
+        },
+        "l3": {
+          "n": 77723.0,
+          "bias": -0.10825498222196617,
+          "mae": 0.8049301738411668,
+          "corr": 0.24250097552568606
+        },
+        "delta_mae": 0.012263518840930132
+      },
+      "CS": {
+        "opta": {
+          "n": 77723.0,
+          "bias": -0.20328504257255503,
+          "mae": 0.7596171854489282,
+          "corr": 0.26114254808774057
+        },
+        "l3": {
+          "n": 77723.0,
+          "bias": -0.19279137908863106,
+          "mae": 0.7592516767880306,
+          "corr": 0.28551209250847176
+        },
+        "delta_mae": 0.0003655086608975733
+      },
+      "GC": {
+        "opta": {
+          "n": 77723.0,
+          "bias": -0.06188534086845569,
+          "mae": 0.2529353247666139,
+          "corr": 0.47782232402706887
+        },
+        "l3": {
+          "n": 77723.0,
+          "bias": -0.04993161508314979,
+          "mae": 0.2485689176300739,
+          "corr": 0.49591209713578
+        },
+        "delta_mae": 0.00436640713653999
+      }
+    }
+  },
+  "decisions": [
+    {
+      "decision_gw": 8,
+      "n_target_gws": 31,
+      "n_rows": 5358,
+      "side_n": 343
+    },
+    {
+      "decision_gw": 9,
+      "n_target_gws": 30,
+      "n_rows": 5199,
+      "side_n": 347
+    },
+    {
+      "decision_gw": 10,
+      "n_target_gws": 29,
+      "n_rows": 5114,
+      "side_n": 349
+    },
+    {
+      "decision_gw": 11,
+      "n_target_gws": 28,
+      "n_rows": 4930,
+      "side_n": 349
+    },
+    {
+      "decision_gw": 12,
+      "n_target_gws": 27,
+      "n_rows": 4758,
+      "side_n": 349
+    },
+    {
+      "decision_gw": 13,
+      "n_target_gws": 26,
+      "n_rows": 4585,
+      "side_n": 347
+    },
+    {
+      "decision_gw": 14,
+      "n_target_gws": 25,
+      "n_rows": 4455,
+      "side_n": 348
+    },
+    {
+      "decision_gw": 15,
+      "n_target_gws": 24,
+      "n_rows": 4268,
+      "side_n": 348
+    },
+    {
+      "decision_gw": 16,
+      "n_target_gws": 23,
+      "n_rows": 4097,
+      "side_n": 349
+    },
+    {
+      "decision_gw": 17,
+      "n_target_gws": 22,
+      "n_rows": 3906,
+      "side_n": 350
+    },
+    {
+      "decision_gw": 18,
+      "n_target_gws": 21,
+      "n_rows": 3733,
+      "side_n": 351
+    },
+    {
+      "decision_gw": 19,
+      "n_target_gws": 20,
+      "n_rows": 3594,
+      "side_n": 356
+    },
+    {
+      "decision_gw": 20,
+      "n_target_gws": 19,
+      "n_rows": 3419,
+      "side_n": 360
+    },
+    {
+      "decision_gw": 21,
+      "n_target_gws": 18,
+      "n_rows": 3287,
+      "side_n": 368
+    },
+    {
+      "decision_gw": 22,
+      "n_target_gws": 17,
+      "n_rows": 3125,
+      "side_n": 372
+    },
+    {
+      "decision_gw": 23,
+      "n_target_gws": 16,
+      "n_rows": 2940,
+      "side_n": 375
+    },
+    {
+      "decision_gw": 24,
+      "n_target_gws": 15,
+      "n_rows": 2794,
+      "side_n": 376
+    },
+    {
+      "decision_gw": 25,
+      "n_target_gws": 14,
+      "n_rows": 2612,
+      "side_n": 374
+    },
+    {
+      "decision_gw": 26,
+      "n_target_gws": 13,
+      "n_rows": 2431,
+      "side_n": 382
+    },
+    {
+      "decision_gw": 27,
+      "n_target_gws": 12,
+      "n_rows": 2255,
+      "side_n": 385
+    },
+    {
+      "decision_gw": 28,
+      "n_target_gws": 11,
+      "n_rows": 2087,
+      "side_n": 384
+    },
+    {
+      "decision_gw": 29,
+      "n_target_gws": 10,
+      "n_rows": 1899,
+      "side_n": 381
+    },
+    {
+      "decision_gw": 30,
+      "n_target_gws": 9,
+      "n_rows": 1717,
+      "side_n": 384
+    },
+    {
+      "decision_gw": 31,
+      "n_target_gws": 8,
+      "n_rows": 1524,
+      "side_n": 386
+    },
+    {
+      "decision_gw": 32,
+      "n_target_gws": 7,
+      "n_rows": 1360,
+      "side_n": 384
+    },
+    {
+      "decision_gw": 33,
+      "n_target_gws": 6,
+      "n_rows": 1167,
+      "side_n": 386
+    },
+    {
+      "decision_gw": 34,
+      "n_target_gws": 5,
+      "n_rows": 908,
+      "side_n": 383
+    },
+    {
+      "decision_gw": 35,
+      "n_target_gws": 4,
+      "n_rows": 774,
+      "side_n": 381
+    },
+    {
+      "decision_gw": 36,
+      "n_target_gws": 3,
+      "n_rows": 583,
+      "side_n": 380
+    },
+    {
+      "decision_gw": 37,
+      "n_target_gws": 2,
+      "n_rows": 382,
+      "side_n": 385
+    },
+    {
+      "decision_gw": 38,
+      "n_target_gws": 1,
+      "n_rows": 183,
+      "side_n": 385
+    }
+  ],
+  "seed": 7,
+  "players_csv": "/opt/cursor/artifacts/l3_opta_lambda_horizon_players.csv",
+  "offset_csv": "/opt/cursor/artifacts/l3_opta_lambda_horizon_offset.csv",
+  "plot": "/opt/cursor/artifacts/l3_opta_lambda_horizon_offset_mae.png"
+}

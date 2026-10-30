@@ -2268,7 +2268,7 @@
   },
   "l3_opta_lambda_horizon": {
     "pre_registered": "2026-10-30",
-    "status": "running",
+    "status": "done",
     "role": "Alternative to cascade gen: L3/L4 centreline mechanics at freeze t, driven by Opta centreline λ for every target g=t…end",
     "season": "2025-26",
     "decision_gws": "8…horizon_end",
@@ -2288,6 +2288,7 @@
       "src/models/opta_gf_ga_horizon.py",
       "src/markets/numagent_xp.py"
     ],
-    "report": "reports/l3_opta_lambda_horizon.md"
+    "report": "reports/l3_opta_lambda_horizon.md",
+    "result": "2025-26: 31 decisions, n=89444. L3@t+Opta G MAE 0.818 vs L3@g+FD 0.805 (near ΔMAE +0.013, far +0.012). Beats prior generative cascade_long @t (G MAE ≈0.846). CS near slightly better than L3@g (ΔMAE −0.006). Defaults unchanged — promising alternative to cascade gen for strategy scores."
   }
 }
