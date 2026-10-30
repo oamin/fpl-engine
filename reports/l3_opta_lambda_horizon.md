@@ -71,7 +71,12 @@ keep **L3/L4 centreline mechanics** (`score_team_side`), but drive far (and near
 
 - Near G ΔMAE **+0.013**; far **+0.012** (positive ⇒ L3@g closer to actuals).
 - Overall G MAE: L3@t+Opta **0.818** vs L3@g+FD **0.805**.
-- Compare also to prior generative cascade_long @t (G MAE ≈0.846 overall) — centreline+Opta should isolate whether dice were the problem vs Opta λ itself.
+- **vs generative cascade_long @t** (prior dig, G MAE ≈0.846; near ΔMAE +0.054):
+  centreline+Opta is clearly better — most of the earlier miss was
+  **generative dice / MC-mean**, not Opta λ itself.
+- CS: near ΔMAE **−0.006** (slightly beats L3@g); far flat.
+- Feasibility: **promising** as a strategy scorer (L3 mechanics + Opta λ
+  for the unpriced horizon). Not a default flip yet.
 - Defaults unchanged.
 
 ## Reproduce
