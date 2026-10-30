@@ -2240,7 +2240,7 @@
   },
   "cascade_eligible_horizon_snapshot": {
     "pre_registered": "2026-10-30",
-    "status": "running",
+    "status": "done",
     "role": "Stepped as-of-t horizon snapshots: cascade_short+long E[G,CS,GC] for g=t…end vs contemporaneous L3 and actuals",
     "supersedes": "cascade_eligible_component_resid",
     "season": "2025-26",
@@ -2263,6 +2263,7 @@
     "modules": [
       "src/eval/cascade_eligible_horizon_snapshot.py"
     ],
-    "report": "reports/cascade_eligible_horizon_snapshot.md"
+    "report": "reports/cascade_eligible_horizon_snapshot.md",
+    "result": "2025-26: 31 decisions, horizon_end=38, n=85601 freeze×target cells. long−L3 G ΔMAE near(0–1) +0.054 / far(≥2) +0.021; overall long G MAE 0.846 vs L3 0.820; short t:t+1 G MAE 0.859 vs L3-same-rows. L3@g closer at all horizons; defaults unchanged"
   }
 }

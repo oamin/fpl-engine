@@ -1,20 +1,29 @@
 {
-  "task": "cascade_eligible_component_resid",
+  "task": "cascade_eligible_horizon_snapshot",
   "status": "done",
-  "change": "Stepped eligible-pool E[G,CS,GC] short/long vs L3 (m>60)",
+  "change": "Horizon snapshots: cascade @t vs L3 @g vs actuals (eligible m>60)",
+  "supersedes": "cascade_eligible_component_resid",
   "season": "2025-26",
-  "n_player_gw": 5892,
-  "n_gw": 31,
+  "n_player_gw": 85601,
+  "n_decision": 31,
+  "bands": {
+    "near_0_1": {
+      "n": 11387,
+      "G_delta_mae": 0.05444024650705781,
+      "CS_delta_mae": 0.037556363168809725
+    },
+    "far_2plus": {
+      "n": 74214,
+      "G_delta_mae": 0.021329493186532766,
+      "CS_delta_mae": 0.022560945493440898
+    }
+  },
   "overall_G_mae": {
-    "short": 0.8589825186693822,
-    "long": 0.8755346232179225,
-    "l3": 0.8135176403457421
+    "long": 0.8457529701755819,
+    "l3": 0.8200189472749009,
+    "short": 0.8594274172301747
   },
-  "paired_G_delta_mae": {
-    "short": 0.04546487832363997,
-    "long": 0.06201698287218036
-  },
-  "report": "/workspace/reports/cascade_eligible_component_resid.md",
-  "out": "/opt/cursor/artifacts/cascade_eligible_component_resid.json",
-  "elapsed_s": 577.5353426933289
+  "report": "/workspace/reports/cascade_eligible_horizon_snapshot.md",
+  "out": "/opt/cursor/artifacts/cascade_eligible_horizon_snapshot.json",
+  "elapsed_s": 2385.9253509044647
 }
