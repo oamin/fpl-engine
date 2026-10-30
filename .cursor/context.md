@@ -8,7 +8,7 @@ Updated: 2026-10-30. **Numagent 2.0** is the product on main (`protocol.numagent
 
 **Front door:** [`reports/L3_CENTRELINE_FORECAST_LOCK.md`](../reports/L3_CENTRELINE_FORECAST_LOCK.md).
 
-Product **μ**: FD/Betfair centreline near (`t`/`t+1`); **Opta blind** λ far (`t+2…`); both → `score_team_side`. Strategy horizon default **H=5** (`src/strategy/l3_centreline_horizon.py` → live `numagent_live_pick` + hist `build_l3_centreline_horizon`). Gen MC-mean **not** μ. Discrete CS/GC likelihood locked separately for eval. `protocol.l3_centreline_forecast`.
+Product **μ**: Odds API / FD centreline near (`t`/`t+1`); **Opta blind** λ far (`t+2…`); both → `score_team_side`. Strategy horizon default **H=5** (`src/strategy/l3_centreline_horizon.py` → live `numagent_live_pick` + hist `build_l3_centreline_horizon`). Gen MC-mean **not** μ. Discrete CS/GC likelihood locked separately for eval. `protocol.l3_centreline_forecast`.
 
 **Stack:** land cascade + centreline locks onto `main` via the existing PR chain; do not open parallel μ screens until the live board is exercised.
 
@@ -187,7 +187,7 @@ G stayed positive — `cascade_vs_l3_component_xp_multiseed.md`.
 
 ## Plan
 
-Pre-deadline squad advisor under 2026/27 rules. Cursor implements and screens; Gemini proposes formulae; the PI reads gated batches. A result needs the as-of audit and paired intervals on 2022-23…2025-26 (`write_gated_report`). **Numagent 2.0 live pots** are Betfair Exchange (`python3 -m src.live.betfair_lines`); The Odds API is banned (`.cursor/rules/odds-api-quota.mdc`). Forecast μ: [`L3_CENTRELINE_FORECAST_LOCK.md`](../reports/L3_CENTRELINE_FORECAST_LOCK.md). The live 2026/27 holdout is frozen — do not fit on it.
+Pre-deadline squad advisor under 2026/27 rules. Cursor implements and screens; Gemini proposes formulae; the PI reads gated batches. A result needs the as-of audit and paired intervals on 2022-23…2025-26 (`write_gated_report`). **Numagent 2.0 live pots** use The Odds API (AH+OU+BTTS for t:t+1; quota-aware — `.cursor/rules/odds-api-quota.mdc`). Forecast μ: [`L3_CENTRELINE_FORECAST_LOCK.md`](../reports/L3_CENTRELINE_FORECAST_LOCK.md). The live 2026/27 holdout is frozen — do not fit on it.
 
 ## Locked stack — Numagent 2.0
 
@@ -272,12 +272,12 @@ Screens: `reports/match_band_calibration.md`, `reports/player_ga_finish.md`,
 ### Live path
 
 ```
-python3 -m src.live.betfair_lines --out data/predictions/2026-27/gwNN/betfair_*
 python -m src.live.numagent_live_pick --gw N
+python -m src.live.numagent_live_pick --gw N --fetch-odds   # Odds API, region=us; t+t+1
 python -m src.live.numagent_live_pick --gw N --centreline-horizon 5   # default
 ```
 
-Live book = Betfair Exchange folders. Offline rehearsal may reuse legacy `data/scratch/gwNN_odds_*.json` snapshots — do not refresh via The Odds API. Frozen `data/live/gw_lines.csv` is not a live book.
+Live near book = Odds API AH+OU+BTTS (covers t and t+1). Prefer `--from-snapshot` / `data/scratch/gwNN_odds_*.json` when already pulled. Frozen `data/live/gw_lines.csv` is not a live book.
 
 ### Latest PI lock — GW7 (2026-10-17)
 
@@ -306,12 +306,12 @@ Cleaned GKP/DEF re-registration locked — see Locked note above. `reports/m_dis
 
 Full list: `.cursor/ideas.md` and `reports/LOCKED.md` §Parked.
 
-Highlights: anytime props as live default; share-SE all-minutes / scorers-only; minutes decay ρ=0.7; L4 risk/chase/window/beyond-t+2 form fills; L4 FT-DP / chip half-stop; L5 as strategiser; constant-K μ_post shrink; Odds API live pots (banned — use Betfair).
+Highlights: anytime props as live default; share-SE all-minutes / scorers-only; minutes decay ρ=0.7; L4 risk/chase/window/beyond-t+2 form fills; L4 FT-DP / chip half-stop; L5 as strategiser; constant-K μ_post shrink.
 
 ## Rules still in force
 
 - Gates: as-of audit + four-season paired intervals before any claim
 - Holdout freeze hashes untouched
-- Odds API banned; live pots = Betfair Exchange (`.cursor/rules/odds-api-quota.mdc`)
+- Odds API: estimate cost first; region=`us`; prefer snapshots (quota rule)
 - Fewer comparisons; objective-function search parked; captain/chip sims deferred until a pre-registered likelihood arm asks
 - After a discrete sub-task: write `REPORT_STATE.json`

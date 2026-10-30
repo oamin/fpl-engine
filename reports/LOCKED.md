@@ -6,7 +6,7 @@
 | --- | --- | --- |
 | Live score | captured `ep_next` | **`score_xp_v2`** |
 | Historical / climb score | `score_xp` | `score_xp_v2` (primary); `score_xp` gate baseline only |
-| Pots | opening 1X2 / Betfair `gw_lines` | **Betfair Exchange** (`betfair_lines` → folder `gw_lines.csv`); FD AH+OU historically |
+| Pots | opening 1X2 / Betfair `gw_lines` | **Odds API AH+OU+BTTS** (snapshots or `--fetch-odds`; prices t and t+1) |
 | Transfers | `wildcard_plan` / climb search | **L3 → L4** centreline horizon (priced near + Opta far) |
 | Entry | `deadline` / `wildcard_plan` | **`numagent_live_pick`** |
 | Protocol | `numagent_1_0` | **`numagent_2_0`** · forecast μ [`L3_CENTRELINE_FORECAST_LOCK.md`](L3_CENTRELINE_FORECAST_LOCK.md) |
@@ -20,7 +20,7 @@ Do not treat stage_* / GW1–5 / stragent / GW6 `ep_next` dry runs as the live p
 | **GW7 PI lock** | `data/predictions/2026-27/gw07/numagent_lock.json` |
 | Pick report | `reports/numagent_live_pick_gw07.md` |
 | Live entrypoint | `python -m src.live.numagent_live_pick --gw N` |
-| Live book pull | `python3 -m src.live.betfair_lines --out data/predictions/2026-27/gwNN/betfair_*` |
+| Odds refresh | `… --fetch-odds` (region=`us`; quota rule — prefer snapshots) |
 | Forecast μ | [`L3_CENTRELINE_FORECAST_LOCK.md`](L3_CENTRELINE_FORECAST_LOCK.md) · `src/strategy/l3_centreline_horizon.py` |
 
 ## Scorer (`score_xp_v2` — Numagent 2.0 primary)
@@ -34,7 +34,7 @@ Do not treat stage_* / GW1–5 / stragent / GW6 `ep_next` dry runs as the live p
 | Share-SE position×minutes | 2026-10-17 | `score_xp_v2_share_se_pos_prior.md` | +0.0195 [+0.0158, +0.0234] |
 | Same-season shares | 2026-10-16 | protocol `score_xp_v2_share_history` | no prior-season fill |
 | Live α refresh | 2026-10-16 | protocol `score_xp_v2_alphas` | prior + live counts |
-| Live pots (Betfair) | 2026-10-16 · book 2026-10-30 | protocol `score_xp_v2_live_props` + Odds API ban | AH+OU(+BTTS) from Betfair folders; props default **off** |
+| Live pots (Odds API) | 2026-10-16 | protocol `score_xp_v2_live_props` + quota rule | AH+OU+BTTS for t:t+1; props default **off** |
 | Props formula | 2026-10-20 | `score_xp_v2_live_props` | **π from props, level from M**; assists no overlay; lift-only parked |
 
 Assembler: `src/markets/numagent_xp.py`. Defaults: `share_se_shrink=True`, `share_se_prior=position_minutes`, props **off**.

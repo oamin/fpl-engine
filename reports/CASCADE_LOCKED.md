@@ -13,7 +13,7 @@ Product landing: PR into `main` from the consolidated tip.
 
 | Horizon | λ source | Board |
 | --- | --- | --- |
-| Near `t`/`t+1` (priced) | Betfair (live) / FD AH+OU(+BTTS) hist → DC \(M\) moments | `score_team_side` → `score_xp_v2` |
+| Near `t`/`t+1` (priced) | Odds API (live) / FD AH+OU(+BTTS) hist → DC \(M\) moments | `score_team_side` → `score_xp_v2` |
 | Far `t+2…` (unpriced) | **Opta** place rankmean, **`venue_mode=blind`**, identity shrinks → λ → \(M\) moments | **same** `score_team_side` |
 
 Strategy horizon board: freeze rates/shares/α at `t`; Opta λ for every `g ∈ [t,end]`  

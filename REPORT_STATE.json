@@ -1,12 +1,9 @@
 {
-  "task": "l3_centreline_hygiene_and_live_wire",
+  "task": "restore_odds_api_live_near_book",
   "status": "done",
-  "as_of_utc": "2026-10-30T20:30:00Z",
-  "change": "Hygiene Odds API→Betfair + front door; wire l3_centreline_forecast into live pick (H=5 Opta far) and hist factory",
-  "points": {
-    "1_hygiene": "LOCKED/context/protocol/odds-rule/fpl-protocol; L3_CENTRELINE_FORECAST_LOCK front door",
-    "2_wire": "src/strategy/l3_centreline_horizon.py + numagent_live_pick --centreline-horizon",
-    "3_mu_compare": "discuss — not executed"
-  },
+  "as_of_utc": "2026-10-30T20:55:00Z",
+  "change": "PI correction: live near pots = Odds API (t:t+1 AH+OU+BTTS), not Betfair; keep H=5 centreline wire",
+  "live_near": "Odds API AH+OU+BTTS via --fetch-odds / snapshots",
+  "far": "Opta blind under l3_centreline_forecast",
   "report": "reports/L3_CENTRELINE_FORECAST_LOCK.md"
 }

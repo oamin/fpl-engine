@@ -2,12 +2,14 @@
 
 Product ``protocol.numagent_2_0`` (supersedes Numagent 1.0 / ep_next freeze).
 Primary scorer is ``score_xp_v2``. Forecast μ:
-``protocol.l3_centreline_forecast`` — priced near (t, t+1) + Opta blind far
-(default ``--centreline-horizon 5``).
+``protocol.l3_centreline_forecast`` — Odds API priced near (t, t+1) + Opta
+blind far (default ``--centreline-horizon 5``).
 
-Live book = Betfair Exchange (``python3 -m src.live.betfair_lines``). The Odds
-API is banned. Offline rehearsal may pass a legacy odds snapshot via
-``--from-snapshot``; do not refresh Odds API keys.
+Live near book = The Odds API (AH+OU+BTTS; quota-aware, region=us) — better
+t+1 coverage than Betfair 1X2. Prefer snapshots; ``--fetch-odds`` to refresh::
+
+  python -m src.live.numagent_live_pick --gw 7
+  python -m src.live.numagent_live_pick --gw 7 --fetch-odds
 
 Does not touch HOLDOUT_FREEZE.
 """
@@ -604,22 +606,29 @@ def run_pick(
 
     xmi = load_xmi_map(xmi_path, gw)
 
+    odds_docs: list[dict[str, Any]] = []
     if fetch_odds:
-        raise RuntimeError(
-            "Odds API fetch is banned. Pull Betfair with "
-            "`python3 -m src.live.betfair_lines --out …` or pass "
-            "`--from-snapshot` for offline rehearsal."
+        want = pairs_t + (pairs_t1 if use_l4 else [])
+        markets = "AH+OU+BTTS+anytime" if use_props else "AH+OU+BTTS"
+        credits = (4 if use_props else 3) * len(want)
+        print(
+            f"Odds API: ~{credits} credits for {len(want)} fixtures "
+            f"(GW{gw}"
+            + (f"+GW{gw+1}" if use_l4 else "")
+            + f", {markets}, region={REGION})",
+            flush=True,
         )
-    if odds_path is None or not odds_path.is_file():
-        raise FileNotFoundError(
-            "need --from-snapshot odds JSON (legacy rehearsal) or a Betfair "
-            "slate wired into the scorer"
-        )
-    odds_docs: list[dict[str, Any]] = [
-        json.loads(odds_path.read_text(encoding="utf-8"))
-    ]
-    if use_l4 and odds_t1_path is not None and odds_t1_path.is_file():
-        odds_docs.append(json.loads(odds_t1_path.read_text(encoding="utf-8")))
+        odds_doc = fetch_odds_for_fixtures(want, with_props=use_props)
+        path = SCRATCH / f"gw{gw:02d}_odds_bookie_depth{BOOKIE_DEPTH if use_l4 else 1}.json"
+        path.write_text(json.dumps(odds_doc, indent=2, default=str), encoding="utf-8")
+        print(f"wrote {path} remaining_after={odds_doc.get('remaining_after')}", flush=True)
+        odds_docs = [odds_doc]
+    else:
+        if odds_path is None or not odds_path.is_file():
+            raise FileNotFoundError("need --from-snapshot odds or --fetch-odds")
+        odds_docs.append(json.loads(odds_path.read_text(encoding="utf-8")))
+        if use_l4 and odds_t1_path is not None and odds_t1_path.is_file():
+            odds_docs.append(json.loads(odds_t1_path.read_text(encoding="utf-8")))
     odds_doc = _merge_odds_docs(odds_docs)
 
     pool_t, meta_t = score_pool_from_odds(
@@ -962,7 +971,7 @@ def write_report(doc: dict[str, Any], path: Path) -> None:
             else "- Props: off (AH+OU+BTTS pots only)."
         ),
         "- Week t minutes: xmi probe then rolling3; t+1 / Opta far: rolling3 / frozen side.",
-        "- Live book: Betfair Exchange (Odds API banned).",
+        "- Live near book: Odds API AH+OU+BTTS (t and t+1); far = Opta blind.",
         "",
     ]
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -993,7 +1002,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument(
         "--fetch-odds",
         action="store_true",
-        help="DEPRECATED / blocked — Odds API banned; use Betfair folders",
+        help="spend Odds API credits for t and t+1 fixtures (us region)",
     )
     ap.add_argument(
         "--l3-only",
@@ -1017,15 +1026,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--time-limit", type=float, default=90.0)
     args = ap.parse_args(argv)
 
-    if args.fetch_odds:
-        raise SystemExit(
-            "--fetch-odds is blocked (Odds API ban). "
-            "Pull Betfair with: python3 -m src.live.betfair_lines "
-            "--out data/predictions/2026-27/gwNN/betfair_*"
-        )
-
     snap = args.from_snapshot
-    if snap is None:
+    if snap is None and not args.fetch_odds:
         for cand in (
             SCRATCH / f"gw{int(args.gw):02d}_odds_bookie_depth2.json",
             SCRATCH / f"gw{int(args.gw):02d}_odds_full.json",
@@ -1040,7 +1042,7 @@ def main(argv: list[str] | None = None) -> int:
         xmi_path=args.xmi,
         odds_path=snap,
         odds_t1_path=args.odds_t1,
-        fetch_odds=False,
+        fetch_odds=bool(args.fetch_odds),
         entry_id=int(args.entry),
         time_limit=float(args.time_limit),
         use_l4=not bool(args.l3_only),

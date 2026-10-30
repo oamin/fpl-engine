@@ -11,7 +11,7 @@ likelihood is a separate eval lock (`l3_discrete_cs_gc_likelihood`).
 
 | Horizon | λ / match layer | Player board |
 | --- | --- | --- |
-| **Near / priced** (`t`, `t+1`) | Live **Betfair** / hist Football-Data AH+OU(+BTTS) → Dixon–Coles \(M\) → moments | `score_team_side` → `score_xp_v2` |
+| **Near / priced** (`t`, `t+1`) | Live **Odds API** AH+OU+BTTS (hist: Football-Data AH+OU) → Dixon–Coles \(M\) → moments | `score_team_side` → `score_xp_v2` |
 | **Far / unpriced** (`t+2…`) | **Opta** place rankmean, **`venue_mode=blind`**, identity shrinks → λ → \(M\) moments | **same** `score_team_side` |
 
 Freeze at decision GW `t`: rates, shares, alphas as-of `t`. Drive every target
@@ -75,7 +75,7 @@ Any revive of gen-as-mean needs a new pre-registered likelihood arm.
 | Opta λ / place | `src/models/opta_gf_ga_horizon.py` |
 | Horizon dig / board recipe | `src/eval/l3_opta_lambda_horizon.py` |
 | Rate baseline | `src/markets/rate_baseline.py` |
-| Live book pull | `src/live/betfair_lines.py` |
+| Live near book | Odds API via `numagent_live_pick --fetch-odds` / snapshots (quota rule) |
 
 ## Re-open rule
 

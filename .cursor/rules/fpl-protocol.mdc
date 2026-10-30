@@ -38,4 +38,4 @@ After a discrete sub-task, write `REPORT_STATE.json` at the repo root. If a scri
 
 Solver, simulator, and backtest constraints come from `src/rules/fpl_2026.py` (2026/27 squad, transfers, chips, scoring). Do not copy those constants into a new module.
 
-Do not index `.venv/`, `data/raw/`, `__pycache__/`, or full-season CSV dumps. **Product on main is Numagent 2.0** (`protocol.numagent_2_0`; supersedes Numagent 1.0 / `score_xp` live path). The Odds API is banned — live pots are Betfair Exchange (`.cursor/rules/odds-api-quota.mdc`). Forecast μ front door: `reports/L3_CENTRELINE_FORECAST_LOCK.md`. Index: `reports/LOCKED.md`.
+Do not index `.venv/`, `data/raw/`, `__pycache__/`, or full-season CSV dumps. **Product on main is Numagent 2.0** (`protocol.numagent_2_0`; supersedes Numagent 1.0 / `score_xp` live path). Live near pots are The Odds API (AH+OU+BTTS; quota-aware — `.cursor/rules/odds-api-quota.mdc`; prefer snapshots). Forecast μ front door: `reports/L3_CENTRELINE_FORECAST_LOCK.md`. Index: `reports/LOCKED.md`.
