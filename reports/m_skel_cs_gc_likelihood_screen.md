@@ -50,5 +50,5 @@ PYTHONPATH=. python3 -m src.eval.m_skel_cs_gc_likelihood_screen
 
 ## Lock
 
-**Locked 2026-10-30** as eval default:  · .
-Mean layer unchanged.
+**Locked 2026-10-30** as eval default: `protocol.l3_discrete_cs_gc_likelihood` ·
+`reports/l3_discrete_cs_gc_likelihood_lock.md`. Mean layer unchanged.
