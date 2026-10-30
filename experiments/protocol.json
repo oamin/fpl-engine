@@ -2265,5 +2265,29 @@
     ],
     "report": "reports/cascade_eligible_horizon_snapshot.md",
     "result": "2025-26: 31 decisions, horizon_end=38, n=85601 freeze×target cells. long−L3 G ΔMAE near(0–1) +0.054 / far(≥2) +0.021; overall long G MAE 0.846 vs L3 0.820; short t:t+1 G MAE 0.859 vs L3-same-rows. L3@g closer at all horizons; defaults unchanged"
+  },
+  "l3_opta_lambda_horizon": {
+    "pre_registered": "2026-10-30",
+    "status": "running",
+    "role": "Alternative to cascade gen: L3/L4 centreline mechanics at freeze t, driven by Opta centreline λ for every target g=t…end",
+    "season": "2025-26",
+    "decision_gws": "8…horizon_end",
+    "horizon": "g ∈ [t, horizon_end] (default 38)",
+    "treatment": "l3_opta_at_t",
+    "formula": "freeze build_frozen_side_table + alphas at t; for each g, Opta match_prediction λ (venue_mode=blind, place rankmean centres) → Dixon–Coles moments → score_team_side (L3 score_xp_v2 components)",
+    "baselines": {
+      "l3_fd_at_g": "contemporaneous L3: as-of before g + FD λ near g",
+      "actuals": "FPL P_G / P_CS / P_GC on minutes>60"
+    },
+    "pool_residual": "actual minutes>60 at g; n_prior≥3 as-of t; on both boards",
+    "metric_primary": "player-GW residual bias/MAE by horizon_offset; paired l3_opta@t − L3@g",
+    "why": "Audit whether Opta λ + L3 centreline is a feasible strategy scorer vs generative cascade_short/long",
+    "does_not_change_default": true,
+    "modules": [
+      "src/eval/l3_opta_lambda_horizon.py",
+      "src/models/opta_gf_ga_horizon.py",
+      "src/markets/numagent_xp.py"
+    ],
+    "report": "reports/l3_opta_lambda_horizon.md"
   }
 }
