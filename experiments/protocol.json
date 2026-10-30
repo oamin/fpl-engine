@@ -2432,7 +2432,7 @@
   },
   "l3_component_climb_gate": {
     "pre_registered": "2026-10-30",
-    "status": "screen",
+    "status": "park_clear_lose",
     "role": "Strip-down L3 climb: each centreline xP component as μ vs full score_xp_v2",
     "baseline": "full — score_xp_v2 on as-of FD centreline board",
     "treatments": ["xp_goals", "xp_assists", "xp_cs", "xp_gc"],
@@ -2445,6 +2445,13 @@
     "metric": "paired-by-GW realised XI−hits; component − full; cluster_interval four closed seasons",
     "promote_if": "paired interval lo > 0 (per component)",
     "park_if": "hi < 0",
+    "result": {
+      "xp_goals": {"mean": -7.412, "lo": -10.757, "hi": -3.898, "verdict": "park_clear_lose"},
+      "xp_assists": {"mean": -6.773, "lo": -9.937, "hi": -3.604, "verdict": "park_clear_lose"},
+      "xp_cs": {"mean": -15.151, "lo": -18.530, "hi": -11.865, "verdict": "park_clear_lose"},
+      "xp_gc": {"mean": -26.328, "lo": -31.650, "hi": -21.504, "verdict": "park_clear_lose"}
+    },
+    "note": "All four components clear-lose vs full. Component arms took ~0 hits (smaller μ scale vs HIT_COST=4); full took hits — scale confound for hit economics.",
     "gw_start": 8,
     "gw_end": 38,
     "holdout": "2026-27 frozen — not in comparison",
