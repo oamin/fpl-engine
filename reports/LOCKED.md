@@ -54,12 +54,18 @@ Assembler: `src/markets/numagent_xp.py`. Defaults: `share_se_shrink=True`, `shar
 Roadmap: `strategy_layers.md`.
 
 
-## Eval likelihood (locked 2026-10-30)
+## Forecast μ (locked 2026-10-30)
 
-| Lock | Date | Report | Δ / note |
+Front door: [`L3_CENTRELINE_FORECAST_LOCK.md`](L3_CENTRELINE_FORECAST_LOCK.md) · cascade index [`CASCADE_LOCKED.md`](CASCADE_LOCKED.md).
+
+| Lock | Date | Report | Note |
 | --- | --- | --- | --- |
-| Discrete CS/GC from M (GKP/DEF) | 2026-10-30 | `l3_discrete_cs_gc_likelihood_lock.md`, `m_skel_cs_gc_likelihood_screen.md` | Δ **+2.828** [+2.798, +2.858]; mean μ unchanged; Bern/cat vs Gaussian CS/GC |
+| L3 centreline forecast | 2026-10-30 | `L3_CENTRELINE_FORECAST_LOCK.md` | FD near / Opta blind far → `score_team_side`; gen MC-mean **not** μ |
+| Strategy horizon board | 2026-10-30 | `l3_opta_lambda_horizon.md` | L3@t freeze + Opta λ for `g=t…end` |
+| Opta club λ defaults | 2026-10-29 (PI) | `cascade_long_blind_venue_lock.md` | `venue_mode=blind`; identity shrinks |
+| Discrete CS/GC likelihood (eval) | 2026-10-30 | `l3_discrete_cs_gc_likelihood_lock.md` | Δ **+2.828** [+2.798, +2.858]; μ unchanged |
 | Factored-vs-Gaussian-total | 2026-10-30 · **parked** | `m_discrete_event_likelihood_screen.md` | clear lose (incommensurate) |
+| Gen MC-mean as μ | · **parked** | viability B1/B2; `cascade_short_mean_tt1_vs_gen.md` | clearly_loses |
 
 ## Parked screens (clear lose or cover 0)
 

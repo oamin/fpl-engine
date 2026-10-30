@@ -1,17 +1,14 @@
 {
-  "task": "l3_discrete_cs_gc_likelihood_lock",
+  "task": "l3_centreline_forecast_lock",
   "status": "done",
-  "as_of_utc": "2026-10-30T17:06:02Z",
-  "change": "Lock promoted GKP/DEF discrete CS/GC predictive likelihood as eval default",
+  "as_of_utc": "2026-10-30T17:58:46Z",
+  "change": "Lock L3 centreline forecast model (FD near / Opta blind far); document stack",
   "locked": {
-    "protocol": "l3_discrete_cs_gc_likelihood",
-    "screen": "m_skel_cs_gc_likelihood_screen",
-    "delta_log": "+2.8276 [+2.7980, +2.8579]",
-    "mean_layer_unchanged": true
+    "protocol": "l3_centreline_forecast",
+    "strategy_horizon": "l3_opta_lambda_horizon",
+    "eval_cs_gc": "l3_discrete_cs_gc_likelihood",
+    "mean_layer": "score_team_side",
+    "not_mu": "generative MC-mean"
   },
-  "parked_not_locked": [
-    "m_discrete_event_likelihood_screen",
-    "generative MC-mean as \u03bc"
-  ],
-  "report": "reports/l3_discrete_cs_gc_likelihood_lock.md"
+  "report": "reports/L3_CENTRELINE_FORECAST_LOCK.md"
 }

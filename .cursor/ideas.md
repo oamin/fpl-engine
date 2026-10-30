@@ -1,3 +1,9 @@
+## Locked — L3 centreline forecast (FD near / Opta blind far) (2026-10-30)
+
+Product μ: `score_team_side` centreline. Near = FD λ; far = Opta blind λ.
+Strategy horizon board = L3@t freeze + Opta λ for g=t…end. Gen MC-mean is
+not μ. `protocol.l3_centreline_forecast` · `reports/L3_CENTRELINE_FORECAST_LOCK.md`.
+
 ## Locked — discrete CS/GC predictive likelihood (GKP/DEF) (2026-10-30)
 
 Pre-registered same-skeleton screen **locked** as eval default:
@@ -10,8 +16,8 @@ mean layer unchanged. `protocol.l3_discrete_cs_gc_likelihood` ·
 Pre-registered pair **clearly loses**: Δ log **−4.617** [−4.632, −4.602].
 Summing five component logs is not commensurate with one Gaussian on totals.
 Mean layer unchanged. Same-skeleton diagnostic was inflated by MID/FWD; cleaned GKP/DEF
-re-registration **promoted** — see Kept note below / `m_skel_cs_gc_likelihood_screen`.
-`reports/m_discrete_event_likelihood_screen.md`.
+re-registration **locked** — see Locked discrete CS/GC note /
+`m_skel_cs_gc_likelihood_screen`. `reports/m_discrete_event_likelihood_screen.md`.
 
 ## Parked — Opta own-λ ×α (Arsenal club dig, 2026-10-30)
 
@@ -22,12 +28,6 @@ helps 2024-25 / 2025-26 ΣG; **worsens** under-print on 2022-23 / 2023-24.
 path. `LAM_SHRINK` / `AWAY_SHRINK` stay 1.0. Four-season rollup:
 `reports/l3_opta_own_alpha076_arsenal_four_season.md`.
 
-## Noted — L3@t + Opta λ horizon (2026-10-30)
-
-L3 centreline freeze at t + Opta blind λ for g=t…end. Much closer to
-contemporaneous L3@g than generative cascade_long (G MAE 0.818 vs 0.805;
-gen was ≈0.846). Candidate strategy scorer — not yet promoted.
-`reports/l3_opta_lambda_horizon.md`.
 
 ## Noted — eligible horizon snapshots vs L3@g (2026-10-30)
 

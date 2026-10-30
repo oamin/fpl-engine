@@ -4,6 +4,10 @@ Updated: 2026-10-30. **Numagent 2.0** is the product on main (`protocol.numagent
 
 **Cascade consolidation (2026-10-23):** locked / cascade_default pieces from #101–#106 (rate baseline, joint path, γ=1, FT PE, bench α reject; deadline-causal diagnostic) fast-forwarded onto `cursor/club-expanding-gf-ga-2025-26-cc3d` for landing on `main`.
 
+## Locked — L3 centreline forecast (2026-10-30)
+
+Product **μ**: FD centreline near (`t`/`t+1`); **Opta blind** λ far (`t+2…`); both → `score_team_side`. Strategy horizon = L3@t + Opta λ. Gen MC-mean **not** μ. Discrete CS/GC likelihood locked separately for eval. `protocol.l3_centreline_forecast` · `reports/L3_CENTRELINE_FORECAST_LOCK.md`.
+
 ## Repo freeze sequence (2026-10-20)
 
 | Step | Status | Note |
@@ -13,7 +17,7 @@ Updated: 2026-10-30. **Numagent 2.0** is the product on main (`protocol.numagent
 | **3. Decompose v2 for cascade** | **done** | [`CASCADE_CONTRACT.md`](../reports/CASCADE_CONTRACT.md); `src/strategy/layer4_mu_inject.py` (`pools_from_mu_boards` → `solve_horizon_transfers`). Long-horizon λ→xP stays `cascade_score_v2`. |
 | **4. Cascade rebuild plan** | **done** | [`CASCADE_PLAN.md`](../reports/CASCADE_PLAN.md): **cascade_short** / **cascade_long**, shared [`player_pool`](../src/models/player_pool.py). Scorer gate: [`SCORE_XP_V2_CHECKLIST.md`](../reports/SCORE_XP_V2_CHECKLIST.md) — confirm before path-V screens. |
 | **5. cascade_short generative** | **done** | `protocol.cascade_short_generative` locked 2026-10-20 (PR #96 / #97): centreline `M`→`k∼M` (**no λ ±15% jitter**)→lineup→attack→CS/GC; soft priors = `score_xp_v2` helpers; firm XI deferred. |
-| **6. cascade_long Opta generative** | **PI-approved 2026-10-24**; **venue blind locked 2026-10-29** | `protocol.cascade_long_match_outcome`: rankmean±SD latents (`centre_blend=0.5`) → assessed expanding ḡ → λ → `M\|λ` → `k∼M` (hierarchical; no second λ jitter; OLS/`HOME_ADV=1.08` retired); **`venue_mode=blind`** + identity `AWAY_SHRINK`/`LAM_SHRINK` locked (PI); player stack = cascade_short generative **without props**. `reports/cascade_long_blind_venue_lock.md`. |
+| **6. cascade_long Opta generative** | **PI-approved 2026-10-24**; **venue blind locked 2026-10-29** | `protocol.cascade_long_match_outcome`: rankmean±SD latents (`centre_blend=0.5`) → assessed expanding ḡ → λ → `M\|λ` → `k∼M` (hierarchical; no second λ jitter; OLS/`HOME_ADV=1.08` retired); **`venue_mode=blind`** + identity `AWAY_SHRINK`/`LAM_SHRINK` locked (PI); player stack = cascade_short generative **without props**. **2026-10-30:** Opta blind λ also drives **far centreline μ** via `score_team_side` (`l3_centreline_forecast`); gen MC-mean remains not-μ. `reports/cascade_long_blind_venue_lock.md` · `reports/L3_CENTRELINE_FORECAST_LOCK.md`. |
 | **7. Cascade viability overnight** | **done** | `cascade_viability_batch` A/D green; C FT+cap smoke OK; B1/B2 gen MC-mean **clearly_loses** vs centreline mean (Δ≈−0.09); B3 inconclusive. Gen-as-mean **parked** — `reports/cascade_short_long_viability_results.md`. |
 | **8. Mean t:t+1 vs short gen** | **done** | N_MC=20 product horizon: still **clearly_loses** (Δ≈−0.054). `reports/cascade_short_mean_tt1_vs_gen.md`. |
 | **9. Path-V gen vs mean MILP** | **done (diagnostic)** | FT+cap N=20: both solve; gen hits≈7.2 vs mean≈1.6; top-15 Jaccard≈0.36. Not a path-V promote. `reports/cascade_pathv_gen_vs_mean.md`. |
@@ -285,7 +289,7 @@ Hold 1.25, switch penalty 1.0, buy gate three prior appearances and xmi≥45. Em
 
 ## Locked — discrete CS/GC predictive likelihood (GKP/DEF, 2026-10-30)
 
-Pre-registered same-skeleton screen **locked** as eval default (Δ log +2.828 [+2.798, +2.858]). Bernoulli/categorical CS/GC from M; mean board unchanged. `protocol.l3_discrete_cs_gc_likelihood` · `reports/l3_discrete_cs_gc_likelihood_lock.md`.
+Eval default under the centreline forecast lock (Δ log +2.828 [+2.798, +2.858]). Bernoulli/categorical CS/GC from M; μ unchanged. `protocol.l3_discrete_cs_gc_likelihood`.
 
 ## Parked — discrete M-event likelihood vs Gaussian-on-total (2026-10-30)
 
