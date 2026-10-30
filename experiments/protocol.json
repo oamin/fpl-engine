@@ -2210,7 +2210,7 @@
   },
   "cascade_eligible_component_resid": {
     "pre_registered": "2026-10-29",
-    "status": "done",
+    "status": "superseded_wrong_horizon",
     "role": "Stepped eligible-pool E[G,CS,GC]: cascade_short (FD) + cascade_long (Opta) vs L3 score_xp_v2",
     "season": "2025-26",
     "gws": "8-38",
@@ -2229,7 +2229,7 @@
     ],
     "n_strands": 40,
     "does_not_change_default": true,
-    "note": "Eligible-pool residual dig (not XI path). Not a likelihood gate; defaults unchanged.",
+    "note": "Decision-GW-only residual — NOT the intended t:horizon snapshot. Superseded by cascade_eligible_horizon_snapshot.",
     "modules": [
       "src/eval/cascade_eligible_component_resid.py",
       "src/eval/cascade_mean_xi_ft_step_pool_resid.py",
@@ -2237,5 +2237,32 @@
     ],
     "report": "reports/cascade_eligible_component_resid.md",
     "result": "2025-26 GW8-38 m>60 n=5892: G MAE L3 0.814 < short 0.859 < long 0.876; CS MAE L3 0.749 < long 0.793 < short 0.799; short−L3 G ΔMAE +0.045; long−L3 G ΔMAE +0.062 — L3 closer on G/CS; defaults unchanged"
+  },
+  "cascade_eligible_horizon_snapshot": {
+    "pre_registered": "2026-10-30",
+    "status": "running",
+    "role": "Stepped as-of-t horizon snapshots: cascade_short+long E[G,CS,GC] for g=t…end vs contemporaneous L3 and actuals",
+    "supersedes": "cascade_eligible_component_resid",
+    "season": "2025-26",
+    "decision_gws": "8…horizon_end (step t → t+1)",
+    "horizon": "snapshot at t covers target GWs t…horizon_end (default 38; CLI --horizon-end)",
+    "cascade_freeze": "as-of hist / share pool / alphas frozen at decision GW t",
+    "arms": {
+      "cascade_short": "generative MC-mean; FD centreline λ only for g∈{t,t+1} (causal short book); no future-FD leak",
+      "cascade_long": "generative MC-mean; Opta place GF/GA venue_mode=blind for all g∈[t,end]",
+      "l3": "contemporaneous score_xp_v2 at each target g: as-of hist before g + FD priced near g"
+    },
+    "pool_residual": "at target g: actual minutes>60, n_prior≥3 as-of t (freeze), scored by the arm(s) under comparison",
+    "metric_primary": "player-GW residual (xP−P) bias/MAE by horizon_offset=g−t; paired vs L3",
+    "metric_secondary": [
+      "per decision-t horizon totals",
+      "revision of fixed target g as t approaches"
+    ],
+    "n_strands": 20,
+    "does_not_change_default": true,
+    "modules": [
+      "src/eval/cascade_eligible_horizon_snapshot.py"
+    ],
+    "report": "reports/cascade_eligible_horizon_snapshot.md"
   }
 }
