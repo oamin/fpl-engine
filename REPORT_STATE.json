@@ -1,17 +1,17 @@
 {
-  "task": "m_discrete_event_likelihood_screen",
+  "task": "l3_discrete_cs_gc_likelihood_lock",
   "status": "done",
-  "as_of_utc": "2026-10-30T16:21:56Z",
-  "change": "Gated factored M-event likelihood vs Gaussian-on-total",
-  "verdict": {
-    "verdict": "park_clear_lose",
-    "mean_d_log": -4.617052268895857,
-    "lo": -4.632321977406889,
-    "hi": -4.60175337349907,
-    "covers_zero": false,
-    "default_unchanged": true,
+  "as_of_utc": "2026-10-30T17:06:02Z",
+  "change": "Lock promoted GKP/DEF discrete CS/GC predictive likelihood as eval default",
+  "locked": {
+    "protocol": "l3_discrete_cs_gc_likelihood",
+    "screen": "m_skel_cs_gc_likelihood_screen",
+    "delta_log": "+2.8276 [+2.7980, +2.8579]",
     "mean_layer_unchanged": true
   },
-  "artifact": "/opt/cursor/artifacts/m_discrete_event_likelihood_screen.json",
-  "report": "reports/m_discrete_event_likelihood_screen.md"
+  "parked_not_locked": [
+    "m_discrete_event_likelihood_screen",
+    "generative MC-mean as \u03bc"
+  ],
+  "report": "reports/l3_discrete_cs_gc_likelihood_lock.md"
 }

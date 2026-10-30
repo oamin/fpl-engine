@@ -1,10 +1,16 @@
+## Locked — discrete CS/GC predictive likelihood (GKP/DEF) (2026-10-30)
+
+Pre-registered same-skeleton screen **locked** as eval default:
+Δ log **+2.828** [+2.798, +2.858]. Bernoulli/categorical CS/GC from M;
+mean layer unchanged. `protocol.l3_discrete_cs_gc_likelihood` ·
+`reports/l3_discrete_cs_gc_likelihood_lock.md`.
+
 ## Parked — discrete M-event vs Gaussian-on-total (2026-10-30)
 
 Pre-registered pair **clearly loses**: Δ log **−4.617** [−4.632, −4.602].
 Summing five component logs is not commensurate with one Gaussian on totals.
-Mean layer unchanged. Same-skeleton diagnostic (discrete CS/GC vs Gaussian
-CS/GC under identical G/A/rest) wins Δ **+3.231** [+3.212, +3.250] — suggests
-re-registering that pair if discreteness is pursued.
+Mean layer unchanged. Same-skeleton diagnostic was inflated by MID/FWD; cleaned GKP/DEF
+re-registration **promoted** — see Kept note below / `m_skel_cs_gc_likelihood_screen`.
 `reports/m_discrete_event_likelihood_screen.md`.
 
 ## Parked — Opta own-λ ×α (Arsenal club dig, 2026-10-30)

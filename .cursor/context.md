@@ -283,13 +283,15 @@ Prefer `--from-snapshot` / `data/scratch/gwNN_odds_*.json` when the book is alre
 
 Hold 1.25, switch penalty 1.0, buy gate three prior appearances and xmi≥45. Empty chip map for legacy climb replay. Constants: `src/rules/fpl_2026.py`. Climb modules that still score on `score_xp` are historical only — do not extend them; new work uses `score_xp_v2` / L4.
 
+## Locked — discrete CS/GC predictive likelihood (GKP/DEF, 2026-10-30)
+
+Pre-registered same-skeleton screen **locked** as eval default (Δ log +2.828 [+2.798, +2.858]). Bernoulli/categorical CS/GC from M; mean board unchanged. `protocol.l3_discrete_cs_gc_likelihood` · `reports/l3_discrete_cs_gc_likelihood_lock.md`.
+
 ## Parked — discrete M-event likelihood vs Gaussian-on-total (2026-10-30)
 
 Pre-registered factored M-event likelihood **clearly loses** vs Gaussian(total|μ,σ=3)
 (Δ log −4.617 [−4.632, −4.602]); incommensurate 5-term vs 1-term score.
-Same-skeleton diagnostic (discrete CS/GC only) wins Δ +3.231 [+3.212, +3.250].
-Mean layer unchanged. `reports/m_discrete_event_likelihood_screen.md` ·
-`protocol.m_discrete_event_likelihood_screen`.
+Cleaned GKP/DEF re-registration locked — see Locked note above. `reports/m_discrete_event_likelihood_screen.md`.
 
 ## Parked (do not revive without a new protocol arm)
 
