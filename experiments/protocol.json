@@ -2429,5 +2429,23 @@
     "report": "reports/L3_CENTRELINE_FORECAST_LOCK.md",
     "index": "reports/CASCADE_LOCKED.md",
     "any_later_change": "dated protocol update required; PI if breaks published comparison"
+  },
+  "l3_centreline_horizon_h12_climb": {
+    "pre_registered": "2026-10-30",
+    "status": "screen",
+    "role": "Strategiser horizon: H=12 centreline (FD near + Opta blind far) vs H=2 priced-only L4 on the same locked μ recipes",
+    "treatment": "l3_centreline_h12 — build_l3_centreline_horizon(H=12); γ=1; hard-stop at available boards",
+    "baseline": "l3_priced_h2 — build_mupost_priced_horizon (BOOKIE_DEPTH=2); γ=1",
+    "shared": "mu_post ≡ score_xp_v2 mode=none; shared μ_post wildcard open at gw_start; unconstrained hits (max_hits=15); −4/hit",
+    "metric": "paired-by-GW realised XI+captain−hits; treatment − baseline; cluster_interval four closed seasons",
+    "promote_if": "paired interval lo > 0 on four closed seasons",
+    "park_if": "hi < 0",
+    "gw_start": 8,
+    "gw_end": 38,
+    "holdout": "2026-27 frozen — not in comparison",
+    "note": "Transfer-rule / strategiser screen on locked centreline μ — not a μ promote. Opta place = season-final ranks (same as locked horizon dig).",
+    "entry": "src/eval/l3_centreline_h12_climb_gate.py",
+    "report": "reports/l3_centreline_h12_climb_gate.md",
+    "any_later_change": "dated protocol update required"
   }
 }
