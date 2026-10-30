@@ -12,6 +12,8 @@ Product **μ**: Odds API / FD centreline near (`t`/`t+1`); **Opta blind** λ far
 
 **Stack:** land cascade + centreline locks onto `main` via the existing PR chain; do not open parallel μ screens until the live board is exercised.
 
+**H=12 vs H=2 climb gate (2026-10-30):** pre-registered `l3_centreline_horizon_h12_climb` → **inconclusive** (Δ −0.558/GW [−3.06, +2.03]; covers 0). H=12 cuts hits in early seasons but loses 2024-25/2025-26. Not a promote; default H remains a product choice pending PI. `reports/l3_centreline_h12_climb_gate.md`.
+
 ## Repo freeze sequence (2026-10-20)
 
 | Step | Status | Note |

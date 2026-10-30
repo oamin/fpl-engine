@@ -1,9 +1,15 @@
 {
-  "task": "restore_odds_api_live_near_book",
+  "task": "l3_centreline_horizon_h12_climb",
   "status": "done",
-  "as_of_utc": "2026-10-30T20:55:00Z",
-  "change": "PI correction: live near pots = Odds API (t:t+1 AH+OU+BTTS), not Betfair; keep H=5 centreline wire",
-  "live_near": "Odds API AH+OU+BTTS via --fetch-odds / snapshots",
-  "far": "Opta blind under l3_centreline_forecast",
-  "report": "reports/L3_CENTRELINE_FORECAST_LOCK.md"
+  "as_of_utc": "2026-10-30T21:28:11Z",
+  "change": "Gated H=12 centreline climb vs H=2 priced",
+  "verdict": {
+    "verdict": "inconclusive",
+    "mean_d_pts_gw": -0.5583333333333333,
+    "lo": -3.058958333333333,
+    "hi": 2.0339583333333326,
+    "covers_zero": true,
+    "total_d": -67.0
+  },
+  "report": "reports/l3_centreline_h12_climb_gate.md"
 }
