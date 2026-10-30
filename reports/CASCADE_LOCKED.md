@@ -18,10 +18,12 @@ Product landing: PR into `main` from that tip.
 | **FT potential energy** | `DEFAULT_FT_PE_NU=0` | PE optional diagnostic only (`ν>0` explicit) |
 | **Bench α** | `cascade_path_bench_weight` = `rejected` | Removed from path objective |
 | **Share / xG pool** | full club `m>0` | Selection may stay ≥60′; π and mean xG shares are **not** re-normalised on the thin board (`share_players` / `share_pool`) |
+| **Discrete CS/GC likelihood (eval)** | `l3_discrete_cs_gc_likelihood` = `locked` 2026-10-30 | GKP/DEF Bern/cat from M under same-skeleton; mean μ unchanged; `reports/l3_discrete_cs_gc_likelihood_lock.md` |
 
 ## Parked / diagnostic (not product promotes)
 
 - Gen MC-mean as forecast — clearly loses (`cascade_viability_batch`, `cascade_short_mean_tt1_vs_gen`)
+- Factored five-term vs Gaussian-on-total — park_clear_lose (`m_discrete_event_likelihood_screen`)
 - Path-V gen vs mean MILP — diagnostic only
 - Deadline-causal minutes — `keep_watching` diagnostic
 - Share-conditional `E[G/A|k]` — candidate gen path-V default; not yet on this tip (#108)

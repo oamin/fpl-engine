@@ -47,3 +47,8 @@ Pool: GKP/DEF · GW8–38 · wall 165.6s · n=10714
 ```bash
 PYTHONPATH=. python3 -m src.eval.m_skel_cs_gc_likelihood_screen
 ```
+
+## Lock
+
+**Locked 2026-10-30** as eval default:  · .
+Mean layer unchanged.

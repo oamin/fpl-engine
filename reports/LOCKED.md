@@ -53,6 +53,14 @@ Assembler: `src/markets/numagent_xp.py`. Defaults: `share_se_shrink=True`, `shar
 
 Roadmap: `strategy_layers.md`.
 
+
+## Eval likelihood (locked 2026-10-30)
+
+| Lock | Date | Report | Δ / note |
+| --- | --- | --- | --- |
+| Discrete CS/GC from M (GKP/DEF) | 2026-10-30 | `l3_discrete_cs_gc_likelihood_lock.md`, `m_skel_cs_gc_likelihood_screen.md` | Δ **+2.828** [+2.798, +2.858]; mean μ unchanged; Bern/cat vs Gaussian CS/GC |
+| Factored-vs-Gaussian-total | 2026-10-30 · **parked** | `m_discrete_event_likelihood_screen.md` | clear lose (incommensurate) |
+
 ## Parked screens (clear lose or cover 0)
 
 | Arm | Report |

@@ -1,10 +1,9 @@
-## Kept — same-skeleton discrete CS/GC (GKP/DEF) (2026-10-30)
+## Locked — discrete CS/GC predictive likelihood (GKP/DEF) (2026-10-30)
 
-Pre-registered pair **promotes**: Δ log **+2.828** [+2.798, +2.858].
-Discrete Bern/cat CS/GC from M beats Gaussian(`xp_cs`/`xp_gc`, σ=3) under
-identical G/A/rest on GKP/DEF. Mean layer unchanged. Adopt discrete CS/GC
-in predictive likelihood / eval; do not change `score_team_side` means.
-`reports/m_skel_cs_gc_likelihood_screen.md`.
+Pre-registered same-skeleton screen **locked** as eval default:
+Δ log **+2.828** [+2.798, +2.858]. Bernoulli/categorical CS/GC from M;
+mean layer unchanged. `protocol.l3_discrete_cs_gc_likelihood` ·
+`reports/l3_discrete_cs_gc_likelihood_lock.md`.
 
 ## Parked — discrete M-event vs Gaussian-on-total (2026-10-30)
 
