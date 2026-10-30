@@ -2430,6 +2430,28 @@
     "index": "reports/CASCADE_LOCKED.md",
     "any_later_change": "dated protocol update required; PI if breaks published comparison"
   },
+  "l3_component_climb_gate": {
+    "pre_registered": "2026-10-30",
+    "status": "screen",
+    "role": "Strip-down L3 climb: each centreline xP component as μ vs full score_xp_v2",
+    "baseline": "full — score_xp_v2 on as-of FD centreline board",
+    "treatments": ["xp_goals", "xp_assists", "xp_cs", "xp_gc"],
+    "shared": "same FD centreline board; shared wildcard open on full score_xp_v2",
+    "rules": {
+      "value_captain": false,
+      "realised": "XI total_points only (no captain double)",
+      "max_hits": "SQUAD_SIZE (uncapped; −4/hit)"
+    },
+    "metric": "paired-by-GW realised XI−hits; component − full; cluster_interval four closed seasons",
+    "promote_if": "paired interval lo > 0 (per component)",
+    "park_if": "hi < 0",
+    "gw_start": 8,
+    "gw_end": 38,
+    "holdout": "2026-27 frozen — not in comparison",
+    "entry": "src/eval/l3_component_climb_gate.py",
+    "report": "reports/l3_component_climb_gate.md",
+    "any_later_change": "dated protocol update required"
+  },
   "l3_centreline_horizon_h12_climb": {
     "pre_registered": "2026-10-30",
     "status": "inconclusive",
