@@ -666,7 +666,9 @@ def score_team_side(
             xp_cs[i] = float(xcs) * cs_pts
             d_xp_cs[i] = float(d_xcs) * cs_pts
         if normalize_position(p) in ("GKP", "DEF"):
-            xp_gc[i] = float(GOALS_CONCEDED_DEDUCTION) * float(xgc)  # -1 * xGC
+            # ``xgc`` is E[⌊GC/2⌋] from Dixon–Coles ``team_moments`` (official
+            # −1 per two goals conceded), not E[GC].
+            xp_gc[i] = float(GOALS_CONCEDED_DEDUCTION) * float(xgc)
             d_xp_gc[i] = abs(float(GOALS_CONCEDED_DEDUCTION)) * float(d_xgc)
 
     # DefCon
