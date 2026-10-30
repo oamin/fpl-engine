@@ -213,17 +213,42 @@ def project_week_score_xp_v2(
     if not parts:
         return pd.DataFrame(), 0
     all_p = pd.concat(parts, ignore_index=True)
-    board = (
-        all_p.groupby("element", as_index=False)
-        .agg(
-            name=("name", "first") if "name" in all_p.columns else ("element", "first"),
-            position=("position", "first"),
-            team=("team", "first"),
-            club=("club", "first"),
-            score_xp_v2=("xp", "sum"),
-            xp_se=("xp_se", lambda s: float(np.sqrt((s.astype(float) ** 2).sum()))),
+    sum_cols = [
+        c
+        for c in (
+            "xp",
+            "xp_goals",
+            "xp_assists",
+            "xp_cs",
+            "xp_gc",
+            "xp_appear",
+            "xp_defcon",
+            "xp_bonus",
+            "xp_cards",
+            "xp_saves",
         )
-    )
+        if c in all_p.columns
+    ]
+    named: dict[str, tuple[str, Any]] = {
+        c: (c, "sum") for c in sum_cols
+    }
+    if "xp_se" in all_p.columns:
+        named["xp_se"] = (
+            "xp_se",
+            lambda s: float(np.sqrt((s.astype(float) ** 2).sum())),
+        )
+    if "name" in all_p.columns:
+        named["name"] = ("name", "first")
+    else:
+        named["name"] = ("element", "first")
+    named["position"] = ("position", "first")
+    named["team"] = ("team", "first")
+    named["club"] = ("club", "first")
+    board = all_p.groupby("element", as_index=False).agg(**named)
+    if "xp" in board.columns:
+        board["score_xp_v2"] = board["xp"]
+    elif "score_xp_v2" not in board.columns:
+        board["score_xp_v2"] = 0.0
     if "name" not in board.columns or board["name"].isna().all():
         board = board.drop(columns=["name"], errors="ignore")
         board = board.merge(
@@ -270,21 +295,45 @@ def _attach_store_ids(
     return out
 
 
+# Centreline component columns retained through horizon align (component-μ climbs).
+COMPONENT_MU_COLS = (
+    "xp_goals",
+    "xp_assists",
+    "xp_cs",
+    "xp_gc",
+    "xp_appear",
+    "xp_defcon",
+    "xp_bonus",
+    "xp_cards",
+    "xp_saves",
+)
+
+
 def _align_to_week0(week0: pd.DataFrame, other: pd.DataFrame) -> pd.DataFrame:
-    """Same player universe / meta as week-0; μ from other (0 if missing)."""
+    """Same player universe / meta as week-0; μ + components from other (0 if missing)."""
     by = other.set_index(other["player_id"].astype(str))
-    mu_map = {}
-    se_map = {}
-    raw_map = {}
+    mu_map: dict[str, float] = {}
+    se_map: dict[str, float] = {}
+    raw_map: dict[str, float] = {}
+    comp_maps: dict[str, dict[str, float]] = {c: {} for c in COMPONENT_MU_COLS}
     for pid, o in by.iterrows():
-        mu_map[str(pid)] = float(o["mu_post"])
-        se_map[str(pid)] = float(o["xp_se"]) if "xp_se" in o.index else 0.0
-        raw_map[str(pid)] = float(o["score_xp_v2"]) if "score_xp_v2" in o.index else mu_map[str(pid)]
+        pid_s = str(pid)
+        mu_map[pid_s] = float(o["mu_post"])
+        se_map[pid_s] = float(o["xp_se"]) if "xp_se" in o.index else 0.0
+        raw_map[pid_s] = (
+            float(o["score_xp_v2"]) if "score_xp_v2" in o.index else mu_map[pid_s]
+        )
+        for c in COMPONENT_MU_COLS:
+            if c in o.index and pd.notna(o[c]):
+                comp_maps[c][pid_s] = float(o[c])
     out = week0.copy()
     pids = out["player_id"].astype(str)
     out["mu_post"] = pids.map(lambda p: mu_map.get(p, 0.0)).astype(float)
     out["score_xp_v2"] = pids.map(lambda p: raw_map.get(p, 0.0)).astype(float)
     out["xp_se"] = pids.map(lambda p: se_map.get(p, 0.0)).astype(float)
+    for c in COMPONENT_MU_COLS:
+        cmap = comp_maps[c]
+        out[c] = pids.map(lambda p, m=cmap: m.get(p, 0.0)).astype(float)
     out["total_points"] = 0.0
     return out.reset_index(drop=True)
 

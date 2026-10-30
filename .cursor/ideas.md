@@ -6,9 +6,14 @@ not μ. `protocol.l3_centreline_forecast` · `reports/L3_CENTRELINE_FORECAST_LOC
 
 ## Parked — single-component L3 climbs vs full xp (2026-10-30)
 
-No captain; uncapped hits. All clear-lose vs full `score_xp_v2`:
+**Wrong question for long-horizon isolation.** Compared each component vs full
+on an L3 one-week climb. All clear-lose vs full `score_xp_v2`:
 G −7.4, A −6.8, CS −15.2, GC −26.3 pts/GW. Component arms took ~0 hits
 (μ scale ≪ HIT_COST). `reports/l3_component_climb_gate.md`.
+
+**Corrected screen (running):** `l4_component_horizon_climb` — L4+Opta H=12
+vs L4 H=2 with `mu_post :=` one component; no captain/chips; transfers/XI/
+bench/hits OK. L4 is the default t:t+1 scorer.
 
 ## Inconclusive — H=12 centreline climb vs H=2 priced (2026-10-30)
 
