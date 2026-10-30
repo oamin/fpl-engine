@@ -1,33 +1,33 @@
 {
-  "task": "l3_component_climb_gate",
+  "task": "l4_component_horizon_climb",
   "status": "done",
-  "as_of_utc": "2026-10-30T21:54:27Z",
-  "change": "Gated L3 component climbs vs full xp (no captain, uncapped hits)",
+  "as_of_utc": "2026-10-30T23:01:46Z",
+  "change": "Gated L4 H=12 vs H=2 climbs with component-only \u03bc",
   "verdicts": {
     "xp_goals": {
-      "verdict": "park_clear_lose",
-      "mean": -7.411764705882353,
-      "lo": -10.756932773109245,
-      "hi": -3.89810924369748
+      "verdict": "promote",
+      "mean": 2.691666666666667,
+      "lo": 0.5833333333333334,
+      "hi": 4.734166666666666
     },
     "xp_assists": {
-      "verdict": "park_clear_lose",
-      "mean": -6.773109243697479,
-      "lo": -9.93718487394958,
-      "hi": -3.6039915966386564
+      "verdict": "promote",
+      "mean": 2.2916666666666665,
+      "lo": 0.5745833333333333,
+      "hi": 4.1170833333333325
     },
     "xp_cs": {
-      "verdict": "park_clear_lose",
-      "mean": -15.15126050420168,
-      "lo": -18.530252100840336,
-      "hi": -11.864915966386556
+      "verdict": "inconclusive",
+      "mean": 0.26666666666666666,
+      "lo": -2.2754166666666666,
+      "hi": 2.7583333333333333
     },
     "xp_gc": {
-      "verdict": "park_clear_lose",
-      "mean": -26.327731092436974,
-      "lo": -31.650420168067228,
-      "hi": -21.50357142857143
+      "verdict": "inconclusive",
+      "mean": -0.8583333333333333,
+      "lo": -2.3589583333333333,
+      "hi": 0.7583333333333333
     }
   },
-  "report": "reports/l3_component_climb_gate.md"
+  "report": "reports/l4_component_horizon_climb_gate.md"
 }

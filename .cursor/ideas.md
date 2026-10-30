@@ -11,9 +11,10 @@ on an L3 one-week climb. All clear-lose vs full `score_xp_v2`:
 G −7.4, A −6.8, CS −15.2, GC −26.3 pts/GW. Component arms took ~0 hits
 (μ scale ≪ HIT_COST). `reports/l3_component_climb_gate.md`.
 
-**Corrected screen (running):** `l4_component_horizon_climb` — L4+Opta H=12
-vs L4 H=2 with `mu_post :=` one component; no captain/chips; transfers/XI/
-bench/hits OK. L4 is the default t:t+1 scorer.
+**Corrected screen (2026-10-30):** `l4_component_horizon_climb` — L4+Opta
+H=12 vs L4 H=2 with `mu_post :=` one component; no captain/chips.
+**G / A promote** H=12 (+2.69 / +2.29 pts/GW); **CS / GC inconclusive**.
+Full-μ H=12 vs H=2 stays inconclusive. `reports/l4_component_horizon_climb_gate.md`.
 
 ## Inconclusive — H=12 centreline climb vs H=2 priced (2026-10-30)
 

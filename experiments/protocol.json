@@ -2487,7 +2487,7 @@
   },
   "l4_component_horizon_climb": {
     "pre_registered": "2026-10-30",
-    "status": "running",
+    "status": "reported",
     "role": "Strip-down strategiser: L4+Opta H=12 vs L4 H=2 with μ = one centreline xP component (isolates which pieces hurt long-horizon decisions)",
     "treatment": "h12_<C> — build_l3_centreline_horizon(H=12); mu_post := C; γ=1",
     "baseline": "h2_<C> — build_mupost_priced_horizon (BOOKIE_DEPTH=2); mu_post := C; γ=1",
@@ -2505,10 +2505,16 @@
     "metric": "paired-by-GW realised XI−hits; H12 − H2 per component; cluster_interval four closed seasons",
     "promote_if": "paired interval lo > 0 (per component)",
     "park_if": "hi < 0",
+    "result": {
+      "xp_goals": {"mean": 2.692, "lo": 0.583, "hi": 4.734, "verdict": "promote"},
+      "xp_assists": {"mean": 2.292, "lo": 0.575, "hi": 4.117, "verdict": "promote"},
+      "xp_cs": {"mean": 0.267, "lo": -2.275, "hi": 2.758, "verdict": "inconclusive"},
+      "xp_gc": {"mean": -0.858, "lo": -2.359, "hi": 0.758, "verdict": "inconclusive"}
+    },
     "gw_start": 8,
     "gw_end": 38,
     "holdout": "2026-27 frozen — not in comparison",
-    "note": "Supersedes the mis-aimed l3_component_climb_gate (component vs full, L3 one-week) for the long-horizon question. Not a μ promote.",
+    "note": "H=12 helps when μ is goals or assists alone; CS/GC inconclusive (not clear-lose). Full-μ H=12 vs H=2 remains inconclusive (l3_centreline_horizon_h12_climb). Not a μ promote. Supersedes mis-aimed l3_component_climb_gate for the long-horizon question.",
     "entry": "src/eval/l4_component_horizon_climb_gate.py",
     "report": "reports/l4_component_horizon_climb_gate.md",
     "any_later_change": "dated protocol update required"

@@ -14,7 +14,7 @@ Product **μ**: Odds API / FD centreline near (`t`/`t+1`); **Opta blind** λ far
 
 **H=12 vs H=2 climb gate (2026-10-30):** pre-registered `l3_centreline_horizon_h12_climb` → **inconclusive** (Δ −0.558/GW [−3.06, +2.03]; covers 0). H=12 cuts hits in early seasons but loses 2024-25/2025-26. Not a promote; default H remains a product choice pending PI. `reports/l3_centreline_h12_climb_gate.md`.
 
-**Component climb gate (2026-10-30):** L3, no captain, uncapped hits. `xp_goals`/`assists`/`cs`/`gc` each **park_clear_lose** vs full `score_xp_v2`. Component arms ≈0 hits (scale vs −4). `reports/l3_component_climb_gate.md`.
+**Component climb gate (2026-10-30):** mis-aimed L3 component-vs-full one-week — parked. **Corrected:** `l4_component_horizon_climb` — L4 H=12 (Opta far) vs L4 H=2, `mu_post :=` one component, no captain/chips. **G/A promote** (+2.69 / +2.29); CS/GC inconclusive. `reports/l4_component_horizon_climb_gate.md`.
 
 ## Repo freeze sequence (2026-10-20)
 
