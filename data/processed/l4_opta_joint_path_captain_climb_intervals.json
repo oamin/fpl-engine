@@ -1,0 +1,47 @@
+{
+  "seasons": [
+    "2022-23",
+    "2023-24",
+    "2024-25",
+    "2025-26"
+  ],
+  "min_gws": 20,
+  "comparisons": {
+    "score_xp_minus_score_exp_points": {
+      "mean": 0.015305621921945354,
+      "lo": 0.01295155277980016,
+      "hi": 0.01747868684462922,
+      "n_gws": {
+        "2022-23": 33,
+        "2023-24": 34,
+        "2024-25": 34,
+        "2025-26": 34
+      },
+      "incomplete_seasons": {},
+      "n_rows": 102315
+    },
+    "decay_xi_plus_captain_minus_decay_xi_ft": {
+      "mean": 3.4833333333333334,
+      "lo": 1.8664583333333333,
+      "hi": 5.267083333333333,
+      "n_gws": {
+        "2022-23": 30,
+        "2023-24": 30,
+        "2024-25": 30,
+        "2025-26": 30
+      },
+      "incomplete_seasons": {},
+      "covers_zero": false,
+      "by_season_mean": {
+        "2022-23": 7.3,
+        "2023-24": 0.4666666666666667,
+        "2024-25": 4.266666666666667,
+        "2025-26": 1.9
+      },
+      "verdict": "promote",
+      "treatment": "decay_xi_plus_captain",
+      "baseline": "decay_xi_ft"
+    }
+  },
+  "screen": "l4_opta_joint_path_captain_climb"
+}

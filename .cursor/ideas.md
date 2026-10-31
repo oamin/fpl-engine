@@ -387,6 +387,14 @@ shares ≈OK when the side scores). Assists miss ≈ **pot** (≈0.72) **and** f
 `sA` on the hot μ tail (share factor ≈0.85). Do not chase goal-share retunes
 for this bias first. Report: `reports/top_mid_fwd_ga_mismatch.md`.
 
+## Noted — path captain double promoted (2026-10-31)
+
+`l4_opta_joint_path_captain_climb`: `value_captain=true` vs product `false`
+on locked joint path → **promote** (+3.48/GW [+1.87, +5.27]). Wired into
+`plan_centreline_path` / `joint_path_opta_decay` default. Autosubs were 0 on
+the closed climbs (pool rarely blanks); VC path coded. Haul/CVaR captain
+stays parked. Report: `reports/l4_opta_joint_path_captain_climb_gate.md`.
+
 ## Noted — path FT PE four-season climb inconclusive (2026-10-31)
 
 `l4_opta_joint_path_ft_pe_climb`: ν=`HIT_COST` vs 0 on locked

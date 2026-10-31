@@ -2657,7 +2657,7 @@
       }
     },
     "boards": "build_l3_centreline_horizon(H=12); mu_post ≡ score_xp_v2",
-    "planner": "pick_path_transfer_plan; from_owned; full board; value_captain=false; ft_pe_nu=0; gamma=1",
+    "planner": "pick_path_transfer_plan; from_owned; full board; value_captain=true; ft_pe_nu=0; gamma=1",
     "decay": {
       "scope": "t+2:end (near priced depth unchanged)",
       "formula": "mu_t ← mu_t * rho^(t - near + 1) on mu_post and xp_*",
@@ -2665,10 +2665,12 @@
       "rho": 0.85,
       "near": 2
     },
+    "revised": "2026-10-31 — value_captain=true promoted (l4_opta_joint_path_captain_climb)",
     "not": "undecayed joint_path product default; component-μ lock; live H=2 priced-only path (Opta far not live-ready)",
     "module": "src/strategy/centreline_path_plan.py",
     "report": "reports/JOINT_PATH_OPTA_DECAY_LOCK.md",
     "climb_report": "reports/l4_opta_joint_path_climb_gate.md",
+    "captain_climb": "reports/l4_opta_joint_path_captain_climb_gate.md",
     "any_later_change": "dated protocol update required"
   },
   "l4_opta_joint_path_component_climb": {
@@ -3083,10 +3085,10 @@
   },
   "l4_opta_joint_path_captain_climb": {
     "pre_registered": "2026-10-31",
-    "status": "running",
+    "status": "reported",
     "role": "Reintroduce captain double on locked joint_path_opta_decay (wired μ)",
     "boards": "build_l3_centreline_horizon(H=12); wired rate baseline + full-club shares; Opta far ρ=0.85→0",
-    "baseline": "decay_xi_ft — value_captain=false (product); legal captain still chosen",
+    "baseline": "decay_xi_ft — value_captain=false (prior product); legal captain still chosen",
     "treatment": "decay_xi_plus_captain — value_captain=true; V = Σ(XI+cap) − hits",
     "comparisons": [
       "decay_xi_plus_captain_minus_decay_xi_ft"
@@ -3121,6 +3123,22 @@
       "retune ν / ρ",
       "L4 oneshot contrast this batch"
     ],
-    "any_later_change": "dated protocol update required"
+    "any_later_change": "dated protocol update required",
+    "result": {
+      "decay_xi_plus_captain_minus_decay_xi_ft": {
+        "mean": 3.483,
+        "lo": 1.866,
+        "hi": 5.267,
+        "covers_zero": false,
+        "verdict": "promote",
+        "by_season_mean": {
+          "2022-23": 7.3,
+          "2023-24": 0.467,
+          "2024-25": 4.267,
+          "2025-26": 1.9
+        }
+      }
+    },
+    "note": "Promote. Wire value_captain=true into joint_path_opta_decay / plan_centreline_path default. Autosubs were 0 on these climbs (pool rarely blanks); VC path exercised in code but not observed."
   }
 }

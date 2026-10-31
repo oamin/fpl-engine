@@ -208,7 +208,7 @@ def week0_to_transfer_plan(
     *,
     mu_col: str = "mu_post",
     status: str = "path_ok",
-    value_captain: bool = False,
+    value_captain: bool = True,
 ) -> TransferWeekPlan:
     """Commit path week-0 into a ``TransferWeekPlan`` for ``_step_held``.
 
@@ -315,7 +315,7 @@ def plan_centreline_path(
     gamma: float = 1.0,
     max_hits: int = MAX_HITS_SNAPSHOT,
     ft_pe_nu: float = DEFAULT_FT_PE_NU,
-    value_captain: bool = False,
+    value_captain: bool = True,
     time_limit: float = 180.0,
     mip_rel_gap: float = 1e-3,
     decision_gw: int | None = None,
@@ -323,7 +323,9 @@ def plan_centreline_path(
     """Solve joint path on centreline pools; return week-0 plan + raw path dict.
 
     Candidates = full week-0 board. Ownership = ``held`` (``from_owned``).
-    Default objective = Σ XI − hits (``value_captain=False``).
+    Product default objective = Σ(XI+cap) − hits (``value_captain=True``;
+    promoted ``l4_opta_joint_path_captain_climb`` 2026-10-31). Pass
+    ``value_captain=False`` for transfer-rule isolation screens.
     """
     if not pools:
         raise ValueError("need at least one pool")

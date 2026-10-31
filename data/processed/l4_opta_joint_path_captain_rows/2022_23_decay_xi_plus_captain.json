@@ -1,0 +1,891 @@
+{
+  "smoke": false,
+  "seasons": [
+    "2022-23"
+  ],
+  "arms": [
+    "decay_xi_plus_captain"
+  ],
+  "gw_start": 8,
+  "gw_end": 38,
+  "elapsed_s": 435.66706681251526,
+  "rows": [
+    {
+      "season": "2022-23",
+      "gw": 8,
+      "arm": "decay_xi_plus_captain",
+      "phase": "wildcard",
+      "n_transfers": 0,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 75.0,
+      "cap_extra": 6.0,
+      "pts_net": 81.0,
+      "H": 0,
+      "n_candidates": 0,
+      "value_captain": true,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2022-23:318",
+      "vice_id": "2022-23:427",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2022-23",
+      "gw": 9,
+      "arm": "decay_xi_plus_captain",
+      "phase": "transfer",
+      "n_transfers": 2,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 59.0,
+      "cap_extra": 23.0,
+      "pts_net": 82.0,
+      "H": 12,
+      "horizon_obj": 416.6139100954591,
+      "n_candidates": 187,
+      "sold": [
+        "2022-23:199",
+        "2022-23:446"
+      ],
+      "bought": [
+        "2022-23:116",
+        "2022-23:128"
+      ],
+      "value_captain": true,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2022-23:318",
+      "vice_id": "2022-23:311",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2022-23",
+      "gw": 10,
+      "arm": "decay_xi_plus_captain",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 64.0,
+      "cap_extra": 6.0,
+      "pts_net": 70.0,
+      "H": 12,
+      "horizon_obj": 413.114241494187,
+      "n_candidates": 214,
+      "sold": [
+        "2022-23:503"
+      ],
+      "bought": [
+        "2022-23:335"
+      ],
+      "value_captain": true,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2022-23:318",
+      "vice_id": "2022-23:311",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2022-23",
+      "gw": 11,
+      "arm": "decay_xi_plus_captain",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 54.0,
+      "cap_extra": 2.0,
+      "pts_net": 56.0,
+      "H": 12,
+      "horizon_obj": 415.81662892463845,
+      "n_candidates": 209,
+      "sold": [
+        "2022-23:594"
+      ],
+      "bought": [
+        "2022-23:210"
+      ],
+      "value_captain": true,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2022-23:318",
+      "vice_id": "2022-23:427",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2022-23",
+      "gw": 12,
+      "arm": "decay_xi_plus_captain",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 30.0,
+      "cap_extra": 2.0,
+      "pts_net": 32.0,
+      "H": 12,
+      "horizon_obj": 418.35548694106575,
+      "n_candidates": 189,
+      "sold": [
+        "2022-23:318"
+      ],
+      "bought": [
+        "2022-23:279"
+      ],
+      "value_captain": true,
+      "n_autosubs": 0,
+      "n_blank_intended": 2,
+      "captain_id": "2022-23:279",
+      "vice_id": "2022-23:427",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2022-23",
+      "gw": 13,
+      "arm": "decay_xi_plus_captain",
+      "phase": "transfer",
+      "n_transfers": 2,
+      "hits": 1,
+      "hit_points": 4,
+      "pts_xi": 47.0,
+      "cap_extra": 13.0,
+      "pts_net": 56.0,
+      "H": 12,
+      "horizon_obj": 440.05555640622765,
+      "n_candidates": 206,
+      "sold": [
+        "2022-23:116",
+        "2022-23:210"
+      ],
+      "bought": [
+        "2022-23:318",
+        "2022-23:346"
+      ],
+      "value_captain": true,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2022-23:318",
+      "vice_id": "2022-23:279",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2022-23",
+      "gw": 14,
+      "arm": "decay_xi_plus_captain",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 63.0,
+      "cap_extra": 2.0,
+      "pts_net": 65.0,
+      "H": 12,
+      "horizon_obj": 453.59139032210453,
+      "n_candidates": 202,
+      "sold": [
+        "2022-23:128"
+      ],
+      "bought": [
+        "2022-23:16"
+      ],
+      "value_captain": true,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2022-23:279",
+      "vice_id": "2022-23:427",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2022-23",
+      "gw": 15,
+      "arm": "decay_xi_plus_captain",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 44.0,
+      "cap_extra": 1.0,
+      "pts_net": 45.0,
+      "H": 12,
+      "horizon_obj": 449.17989049349075,
+      "n_candidates": 209,
+      "sold": [
+        "2022-23:16"
+      ],
+      "bought": [
+        "2022-23:342"
+      ],
+      "value_captain": true,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2022-23:311",
+      "vice_id": "2022-23:427",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2022-23",
+      "gw": 16,
+      "arm": "decay_xi_plus_captain",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 50.0,
+      "cap_extra": 1.0,
+      "pts_net": 51.0,
+      "H": 12,
+      "horizon_obj": 463.0641224033684,
+      "n_candidates": 206,
+      "sold": [
+        "2022-23:376"
+      ],
+      "bought": [
+        "2022-23:152"
+      ],
+      "value_captain": true,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2022-23:318",
+      "vice_id": "2022-23:279",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2022-23",
+      "gw": 17,
+      "arm": "decay_xi_plus_captain",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 83.0,
+      "cap_extra": 13.0,
+      "pts_net": 96.0,
+      "H": 12,
+      "horizon_obj": 460.09491121838124,
+      "n_candidates": 211,
+      "sold": [
+        "2022-23:311"
+      ],
+      "bought": [
+        "2022-23:142"
+      ],
+      "value_captain": true,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2022-23:318",
+      "vice_id": "2022-23:427",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2022-23",
+      "gw": 18,
+      "arm": "decay_xi_plus_captain",
+      "phase": "transfer",
+      "n_transfers": 2,
+      "hits": 1,
+      "hit_points": 4,
+      "pts_xi": 43.0,
+      "cap_extra": 6.0,
+      "pts_net": 45.0,
+      "H": 12,
+      "horizon_obj": 476.19869157559316,
+      "n_candidates": 211,
+      "sold": [
+        "2022-23:279",
+        "2022-23:398"
+      ],
+      "bought": [
+        "2022-23:2",
+        "2022-23:210"
+      ],
+      "value_captain": true,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2022-23:318",
+      "vice_id": "2022-23:427",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2022-23",
+      "gw": 19,
+      "arm": "decay_xi_plus_captain",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 83.0,
+      "cap_extra": 14.0,
+      "pts_net": 97.0,
+      "H": 12,
+      "horizon_obj": 478.2768589421055,
+      "n_candidates": 209,
+      "sold": [
+        "2022-23:142"
+      ],
+      "bought": [
+        "2022-23:593"
+      ],
+      "value_captain": true,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2022-23:2",
+      "vice_id": "2022-23:318",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2022-23",
+      "gw": 20,
+      "arm": "decay_xi_plus_captain",
+      "phase": "transfer",
+      "n_transfers": 2,
+      "hits": 1,
+      "hit_points": 4,
+      "pts_xi": 66.0,
+      "cap_extra": 8.0,
+      "pts_net": 70.0,
+      "H": 12,
+      "horizon_obj": 486.1603312873591,
+      "n_candidates": 220,
+      "sold": [
+        "2022-23:342",
+        "2022-23:346"
+      ],
+      "bought": [
+        "2022-23:315",
+        "2022-23:332"
+      ],
+      "value_captain": true,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2022-23:318",
+      "vice_id": "2022-23:427",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2022-23",
+      "gw": 21,
+      "arm": "decay_xi_plus_captain",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 41.0,
+      "cap_extra": 6.0,
+      "pts_net": 47.0,
+      "H": 12,
+      "horizon_obj": 458.6196633669408,
+      "n_candidates": 201,
+      "sold": [
+        "2022-23:433"
+      ],
+      "bought": [
+        "2022-23:7"
+      ],
+      "value_captain": true,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2022-23:427",
+      "vice_id": "2022-23:357",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2022-23",
+      "gw": 22,
+      "arm": "decay_xi_plus_captain",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 56.0,
+      "cap_extra": 20.0,
+      "pts_net": 76.0,
+      "H": 12,
+      "horizon_obj": 473.0010474605706,
+      "n_candidates": 192,
+      "sold": [
+        "2022-23:593"
+      ],
+      "bought": [
+        "2022-23:331"
+      ],
+      "value_captain": true,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2022-23:335",
+      "vice_id": "2022-23:332",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2022-23",
+      "gw": 23,
+      "arm": "decay_xi_plus_captain",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 62.0,
+      "cap_extra": 4.0,
+      "pts_net": 66.0,
+      "H": 12,
+      "horizon_obj": 455.1719004836618,
+      "n_candidates": 191,
+      "sold": [
+        "2022-23:152"
+      ],
+      "bought": [
+        "2022-23:81"
+      ],
+      "value_captain": true,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2022-23:7",
+      "vice_id": "2022-23:26",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2022-23",
+      "gw": 24,
+      "arm": "decay_xi_plus_captain",
+      "phase": "transfer",
+      "n_transfers": 2,
+      "hits": 1,
+      "hit_points": 4,
+      "pts_xi": 52.0,
+      "cap_extra": 2.0,
+      "pts_net": 50.0,
+      "H": 12,
+      "horizon_obj": 440.7820623945113,
+      "n_candidates": 195,
+      "sold": [
+        "2022-23:306",
+        "2022-23:331"
+      ],
+      "bought": [
+        "2022-23:186",
+        "2022-23:484"
+      ],
+      "value_captain": true,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2022-23:318",
+      "vice_id": "2022-23:427",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2022-23",
+      "gw": 25,
+      "arm": "decay_xi_plus_captain",
+      "phase": "transfer",
+      "n_transfers": 2,
+      "hits": 1,
+      "hit_points": 4,
+      "pts_xi": 112.0,
+      "cap_extra": 11.0,
+      "pts_net": 119.0,
+      "H": 12,
+      "horizon_obj": 444.58586859826255,
+      "n_candidates": 179,
+      "sold": [
+        "2022-23:210",
+        "2022-23:357"
+      ],
+      "bought": [
+        "2022-23:280",
+        "2022-23:288"
+      ],
+      "value_captain": true,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2022-23:7",
+      "vice_id": "2022-23:19",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2022-23",
+      "gw": 26,
+      "arm": "decay_xi_plus_captain",
+      "phase": "transfer",
+      "n_transfers": 2,
+      "hits": 1,
+      "hit_points": 4,
+      "pts_xi": 40.0,
+      "cap_extra": 4.0,
+      "pts_net": 40.0,
+      "H": 12,
+      "horizon_obj": 447.64127480730014,
+      "n_candidates": 211,
+      "sold": [
+        "2022-23:288",
+        "2022-23:315"
+      ],
+      "bought": [
+        "2022-23:107",
+        "2022-23:80"
+      ],
+      "value_captain": true,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2022-23:318",
+      "vice_id": "2022-23:7",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2022-23",
+      "gw": 27,
+      "arm": "decay_xi_plus_captain",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 87.0,
+      "cap_extra": 11.0,
+      "pts_net": 98.0,
+      "H": 12,
+      "horizon_obj": 457.8291384974133,
+      "n_candidates": 216,
+      "sold": [
+        "2022-23:280"
+      ],
+      "bought": [
+        "2022-23:357"
+      ],
+      "value_captain": true,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2022-23:107",
+      "vice_id": "2022-23:81",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2022-23",
+      "gw": 28,
+      "arm": "decay_xi_plus_captain",
+      "phase": "transfer",
+      "n_transfers": 2,
+      "hits": 1,
+      "hit_points": 4,
+      "pts_xi": 42.0,
+      "cap_extra": 2.0,
+      "pts_net": 40.0,
+      "H": 11,
+      "horizon_obj": 420.17290166261057,
+      "n_candidates": 147,
+      "sold": [
+        "2022-23:26",
+        "2022-23:318"
+      ],
+      "bought": [
+        "2022-23:16",
+        "2022-23:40"
+      ],
+      "value_captain": true,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2022-23:7",
+      "vice_id": "2022-23:427",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2022-23",
+      "gw": 29,
+      "arm": "decay_xi_plus_captain",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 107.0,
+      "cap_extra": 14.0,
+      "pts_net": 121.0,
+      "H": 10,
+      "horizon_obj": 413.88352814619816,
+      "n_candidates": 228,
+      "sold": [
+        "2022-23:186"
+      ],
+      "bought": [
+        "2022-23:124"
+      ],
+      "value_captain": true,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2022-23:124",
+      "vice_id": "2022-23:107",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2022-23",
+      "gw": 30,
+      "arm": "decay_xi_plus_captain",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 62.0,
+      "cap_extra": 9.0,
+      "pts_net": 71.0,
+      "H": 9,
+      "horizon_obj": 376.30628748174837,
+      "n_candidates": 197,
+      "sold": [
+        "2022-23:124"
+      ],
+      "bought": [
+        "2022-23:301"
+      ],
+      "value_captain": true,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2022-23:301",
+      "vice_id": "2022-23:40",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2022-23",
+      "gw": 31,
+      "arm": "decay_xi_plus_captain",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 61.0,
+      "cap_extra": 2.0,
+      "pts_net": 63.0,
+      "H": 8,
+      "horizon_obj": 352.86600696607286,
+      "n_candidates": 204,
+      "sold": [
+        "2022-23:335"
+      ],
+      "bought": [
+        "2022-23:346"
+      ],
+      "value_captain": true,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2022-23:427",
+      "vice_id": "2022-23:301",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2022-23",
+      "gw": 32,
+      "arm": "decay_xi_plus_captain",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 51.0,
+      "cap_extra": 7.0,
+      "pts_net": 58.0,
+      "H": 7,
+      "horizon_obj": 330.25583451650834,
+      "n_candidates": 162,
+      "sold": [
+        "2022-23:484"
+      ],
+      "bought": [
+        "2022-23:280"
+      ],
+      "value_captain": true,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2022-23:7",
+      "vice_id": "2022-23:19",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2022-23",
+      "gw": 33,
+      "arm": "decay_xi_plus_captain",
+      "phase": "transfer",
+      "n_transfers": 4,
+      "hits": 3,
+      "hit_points": 12,
+      "pts_xi": 75.0,
+      "cap_extra": 14.0,
+      "pts_net": 77.0,
+      "H": 6,
+      "horizon_obj": 345.2958242252059,
+      "n_candidates": 206,
+      "sold": [
+        "2022-23:19",
+        "2022-23:427",
+        "2022-23:7",
+        "2022-23:81"
+      ],
+      "bought": [
+        "2022-23:104",
+        "2022-23:281",
+        "2022-23:318",
+        "2022-23:335"
+      ],
+      "value_captain": true,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2022-23:318",
+      "vice_id": "2022-23:40",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2022-23",
+      "gw": 34,
+      "arm": "decay_xi_plus_captain",
+      "phase": "transfer",
+      "n_transfers": 5,
+      "hits": 4,
+      "hit_points": 16,
+      "pts_xi": 116.0,
+      "cap_extra": 16.0,
+      "pts_net": 116.0,
+      "H": 5,
+      "horizon_obj": 325.463560395668,
+      "n_candidates": 229,
+      "sold": [
+        "2022-23:16",
+        "2022-23:301",
+        "2022-23:346",
+        "2022-23:39",
+        "2022-23:80"
+      ],
+      "bought": [
+        "2022-23:283",
+        "2022-23:315",
+        "2022-23:319",
+        "2022-23:342",
+        "2022-23:586"
+      ],
+      "value_captain": true,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2022-23:318",
+      "vice_id": "2022-23:283",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2022-23",
+      "gw": 35,
+      "arm": "decay_xi_plus_captain",
+      "phase": "transfer",
+      "n_transfers": 0,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 38.0,
+      "cap_extra": 2.0,
+      "pts_net": 40.0,
+      "H": 4,
+      "horizon_obj": 259.68525048482246,
+      "n_candidates": 208,
+      "sold": [],
+      "bought": [],
+      "value_captain": true,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2022-23:318",
+      "vice_id": "2022-23:319",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2022-23",
+      "gw": 36,
+      "arm": "decay_xi_plus_captain",
+      "phase": "transfer",
+      "n_transfers": 2,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 84.0,
+      "cap_extra": 7.0,
+      "pts_net": 91.0,
+      "H": 3,
+      "horizon_obj": 226.3531731050105,
+      "n_candidates": 205,
+      "sold": [
+        "2022-23:283",
+        "2022-23:319"
+      ],
+      "bought": [
+        "2022-23:369",
+        "2022-23:594"
+      ],
+      "value_captain": true,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2022-23:594",
+      "vice_id": "2022-23:357",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2022-23",
+      "gw": 37,
+      "arm": "decay_xi_plus_captain",
+      "phase": "transfer",
+      "n_transfers": 4,
+      "hits": 3,
+      "hit_points": 12,
+      "pts_xi": 81.0,
+      "cap_extra": 11.0,
+      "pts_net": 80.0,
+      "H": 2,
+      "horizon_obj": 129.56359662474523,
+      "n_candidates": 224,
+      "sold": [
+        "2022-23:107",
+        "2022-23:2",
+        "2022-23:315",
+        "2022-23:335"
+      ],
+      "bought": [
+        "2022-23:124",
+        "2022-23:303",
+        "2022-23:324",
+        "2022-23:333"
+      ],
+      "value_captain": true,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2022-23:333",
+      "vice_id": "2022-23:303",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2022-23",
+      "gw": 38,
+      "arm": "decay_xi_plus_captain",
+      "phase": "transfer",
+      "n_transfers": 3,
+      "hits": 2,
+      "hit_points": 8,
+      "pts_xi": 61.0,
+      "cap_extra": 16.0,
+      "pts_net": 69.0,
+      "H": 1,
+      "horizon_obj": 49.39962558111249,
+      "n_candidates": 210,
+      "sold": [
+        "2022-23:280",
+        "2022-23:281",
+        "2022-23:318"
+      ],
+      "bought": [
+        "2022-23:182",
+        "2022-23:188",
+        "2022-23:427"
+      ],
+      "value_captain": true,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2022-23:427",
+      "vice_id": "2022-23:40",
+      "cap_source": "captain"
+    }
+  ],
+  "arm_spec": {
+    "decay_xi_ft": {
+      "value_captain": false
+    },
+    "decay_xi_plus_captain": {
+      "value_captain": true
+    }
+  },
+  "realised": "XI autosub + captain/VC \u2212 hits"
+}

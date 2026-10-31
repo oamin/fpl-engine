@@ -1,8 +1,21 @@
 {
   "task": "l4_opta_joint_path_captain_climb",
-  "status": "smoke_ok",
-  "as_of_utc": "2026-10-31T16:36:47Z",
-  "change": "Captain climb rows / smoke (autosub+VC realised)",
-  "elapsed_s": 58.76857662200928,
-  "rows_out": "/workspace/data/processed/l4_opta_joint_path_captain_climb_smoke.json"
+  "status": "done",
+  "as_of_utc": "2026-10-31T17:50:00Z",
+  "change": "Captain climb promote (+3.483/GW); wire value_captain=true into joint_path_opta_decay",
+  "verdict": "promote",
+  "mean": 3.483,
+  "lo": 1.866,
+  "hi": 5.267,
+  "by_season_mean": {
+    "2022-23": 7.3,
+    "2023-24": 0.467,
+    "2024-25": 4.267,
+    "2025-26": 1.9
+  },
+  "decision": "product value_captain=true",
+  "report": "reports/l4_opta_joint_path_captain_climb_gate.md",
+  "lock": "reports/JOINT_PATH_OPTA_DECAY_LOCK.md",
+  "branch": "cursor/joint-path-captain-climb-cc3d",
+  "pr": 124
 }

@@ -40,6 +40,8 @@ Product **μ**: Odds API / FD centreline near (`t`/`t+1`); **Opta blind** λ far
 
 **FT PE climb (2026-10-31):** `l4_opta_joint_path_ft_pe_climb` — terminal `U(f_H)=ν·f_H` with ν=`HIT_COST` vs product ν=0 on locked joint path. **Inconclusive** (+0.108/GW [−1.26, +1.50]); seasons split (+3.7 / −0.5 / −3.5 / +0.7). Keep `ft_pe_nu=0`. `reports/l4_opta_joint_path_ft_pe_climb_gate.md`.
 
+**Captain climb (2026-10-31):** `l4_opta_joint_path_captain_climb` — `value_captain=true` vs `false` on locked joint path; realised autosub+VC−hits both arms. **Promote** (+3.483/GW [+1.87, +5.27]; all seasons ≥0). Product default `value_captain=True`. `reports/l4_opta_joint_path_captain_climb_gate.md`.
+
 ## Repo freeze sequence (2026-10-20)
 
 | Step | Status | Note |
