@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:63a8375dbc683d9b",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cj5ynr23rg4ro?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 30 Oct 2026 22:52:32 GMT",
+  "published_at_utc": "2026-10-30T22:52:32Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "From WiFi to 'relief' - how was Ferguson's Irish League debut?",
+  "body": "After a 1-1 draw in his first match as Glentoran manager, Duncan Ferguson speaks of his \"relief\" in a week filled with WiFi and homework.",
+  "player_ids": [],
+  "sha256": "f7fddcccb2f271bc61a2bc5b51f3556277cf27912cad71846188c92485d0c581"
+}

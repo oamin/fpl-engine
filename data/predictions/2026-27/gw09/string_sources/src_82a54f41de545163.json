@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:82a54f41de545163",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cmgr8l87edyjo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 29 Oct 2026 17:43:53 GMT",
+  "published_at_utc": "2026-10-29T17:43:53Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "Scottish football could pave way for 3pm TV blackout to end",
+  "body": "The first tentative steps to end the 3pm television blackout in the UK have been taken by Scottish football as it seeks offers for the next broadcast cycle.",
+  "player_ids": [],
+  "sha256": "062930bb9049e68f7c0d276c20d5ba6a1bb6469e5bde537c8a238caeec6a16cd"
+}

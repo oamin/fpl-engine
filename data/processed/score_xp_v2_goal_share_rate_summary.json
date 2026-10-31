@@ -1,0 +1,53 @@
+{
+  "treatment": "score_xp_v2_goal_share_rate",
+  "baseline": "score_xp_v2_goal_share_rate_minutes",
+  "formula": "treatment wG=rG (m gates club only); baseline wG=rG\u00b7m/90; both \u03c0=w/\u03a3w then share-SE position\u00d7minutes; assists \u221drA\u00b7m/90 both arms",
+  "seasons": [
+    {
+      "season": "2022-23",
+      "n_rows": 6937,
+      "n_gws": 33,
+      "mean_d_log": -0.0008424214774531978,
+      "mae_rm": 2.278723416127837,
+      "mae_rate": 2.2680434350247407
+    },
+    {
+      "season": "2023-24",
+      "n_rows": 6992,
+      "n_gws": 34,
+      "mean_d_log": -0.0005247965514389586,
+      "mae_rm": 2.3210534893546697,
+      "mae_rate": 2.307557729102682
+    },
+    {
+      "season": "2024-25",
+      "n_rows": 6931,
+      "n_gws": 34,
+      "mean_d_log": 0.00023054641216381107,
+      "mae_rm": 2.2639841860944205,
+      "mae_rate": 2.246192683325789
+    },
+    {
+      "season": "2025-26",
+      "n_rows": 6892,
+      "n_gws": 34,
+      "mean_d_log": -0.0010680720317832587,
+      "mae_rm": 2.3527229920810164,
+      "mae_rate": 2.345411719315553
+    }
+  ],
+  "cluster_interval": {
+    "mean": -0.0005490286116440099,
+    "lo": -0.0010209882397165554,
+    "hi": -0.00011827926176278001,
+    "n_gws": {
+      "2022-23": 33,
+      "2023-24": 34,
+      "2024-25": 34,
+      "2025-26": 34
+    }
+  },
+  "promote_if": "paired interval lo > 0 on four closed seasons",
+  "covers_zero": false,
+  "verdict": "park_clear_lose"
+}

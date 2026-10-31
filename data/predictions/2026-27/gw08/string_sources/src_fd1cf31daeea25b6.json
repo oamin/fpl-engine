@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:fd1cf31daeea25b6",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/videos/crp3g7z9x215o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Sun, 18 Oct 2026 21:39:04 GMT",
+  "published_at_utc": "2026-10-18T21:39:04Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "Mbappe scores twice as Real Madrid beat Sevilla",
+  "body": "Kylian Mbappe scores twice as Real Madrid beat Sevilla 4-1 in La Liga to close the gap on Barcelona to six points ahead of next weekend's El Clasico.",
+  "player_ids": [],
+  "sha256": "d9ba40ff4d7d385c20bd2dc0e9180d29494a4543e29b9ad332650473c07189ea"
+}

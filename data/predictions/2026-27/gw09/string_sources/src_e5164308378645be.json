@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:e5164308378645be",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cmkgqprr44gzo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 30 Oct 2026 10:22:08 GMT",
+  "published_at_utc": "2026-10-30T10:22:08Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "Ronaldo closes in on 1,000th goal with hat-trick",
+  "body": "Cristiano Ronaldo scores the 67th hat-trick of his career in Al-Nassr's 5-3 win against Al-Kholood in the Saudi Pro League.",
+  "player_ids": [],
+  "sha256": "2bfaa6717c4dda806e1b81a973b464827e615c1561e2d81cb3c9d02b15ede903"
+}

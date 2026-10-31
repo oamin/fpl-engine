@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:e62e044cce03ff7d",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cm3elpw7yd25o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 22 Oct 2026 12:44:08 GMT",
+  "published_at_utc": "2026-10-22T12:44:08Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "Breaking down Man Utd's tactics after Fernandes' criticism",
+  "body": "Was Manchester United captain Bruno Fernandes correct in his analysis of his side's tactics in their 4-1 thrashing by Italian side Como?",
+  "player_ids": [],
+  "sha256": "1604d86e72ddc62ed730ff0e45ab31ba74f1aba397c6be53005be3fc09d9d171"
+}

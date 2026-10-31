@@ -18,6 +18,46 @@ class WeightsShares(unittest.TestCase):
         self.assertAlmostEqual(w, 0.02)
         self.assertAlmostEqual(dw, 0.02 * 10.0 / 90.0)
 
+    def test_goal_share_weight_is_rate_only(self) -> None:
+        w, dw = nx.goal_share_weight(r=0.02, dr=0.005)
+        self.assertAlmostEqual(w, 0.02)
+        self.assertAlmostEqual(dw, 0.005)
+        # Minutes must not enter the goal weight (assist path still uses m).
+        w90, _ = nx.weight_and_delta(r=0.02, dr=0.0, m=90.0, sigma_m=0.0)
+        w30, _ = nx.weight_and_delta(r=0.02, dr=0.0, m=30.0, sigma_m=0.0)
+        self.assertNotAlmostEqual(w90, w30)
+        g90, _ = nx.goal_share_weight(0.02)
+        g30, _ = nx.goal_share_weight(0.02)
+        self.assertAlmostEqual(g90, g30)
+
+    def test_goal_weight_flag_changes_sG(self) -> None:
+        players = pd.DataFrame(
+            {
+                "name": ["A", "B"],
+                "position": ["MID", "MID"],
+                "rG": [0.02, 0.02],
+                "drG": [0.0, 0.0],
+                "rA": [0.01, 0.01],
+                "drA": [0.0, 0.0],
+                "m": [90.0, 30.0],
+                "sigma_m": [0.0, 0.0],
+                "bonus_mu": [0.0, 0.0],
+                "bonus_se": [0.0, 0.0],
+                "card_mu": [0.0, 0.0],
+                "card_se": [0.0, 0.0],
+            }
+        )
+        rate = nx.score_team_side(
+            players, xg=1.5, xcs=0.3, xgc=0.8, alpha_g=0.96, alpha_a=0.90,
+            share_se_shrink=False, goal_weight="rate",
+        )
+        rm = nx.score_team_side(
+            players, xg=1.5, xcs=0.3, xgc=0.8, alpha_g=0.96, alpha_a=0.90,
+            share_se_shrink=False, goal_weight="rate_minutes",
+        )
+        self.assertAlmostEqual(float(rate.loc[0, "sG"]), float(rate.loc[1, "sG"]), places=6)
+        self.assertGreater(float(rm.loc[0, "sG"]), float(rm.loc[1, "sG"]))
+
     def test_shares_sum_to_one(self) -> None:
         w = np.array([0.1, 0.3, 0.6])
         dw = np.array([0.01, 0.02, 0.03])
@@ -68,9 +108,59 @@ class AppearanceDefconBonus(unittest.TestCase):
         self.assertEqual(int(pri.loc[0, "saves_n"]), 4)
 
 
+class FullClubShareProjection(unittest.TestCase):
+    def test_thin_selection_keeps_full_club_mass(self) -> None:
+        """Impact sub dilutes star π; selection board must not re-normalise."""
+        full = pd.DataFrame(
+            {
+                "player_id": ["1", "2", "3"],
+                "name": ["Star", "Mate", "Sub"],
+                "position": ["FWD", "MID", "MID"],
+                "rG": [0.05, 0.02, 0.02],
+                "drG": [0.01, 0.005, 0.005],
+                "rA": [0.01, 0.01, 0.01],
+                "drA": [0.003, 0.003, 0.003],
+                "m": [90.0, 90.0, 20.0],
+                "sigma_m": [0.0, 0.0, 0.0],
+                "bonus_mu": [0.0, 0.0, 0.0],
+                "bonus_se": [0.0, 0.0, 0.0],
+                "card_mu": [0.0, 0.0, 0.0],
+                "card_se": [0.0, 0.0, 0.0],
+                "defcon_mu": [0.0, 0.0, 0.0],
+                "defcon_sig": [nx.SIG_FLOOR, nx.SIG_FLOOR, nx.SIG_FLOOR],
+                "defcon_n": [0, 0, 0],
+            }
+        )
+        thin = full.loc[full["m"] >= 60].copy()
+        thin_only = nx.score_team_side(
+            thin, xg=2.0, xcs=0.3, xgc=0.8, alpha_g=0.96, alpha_a=0.90,
+            share_se_shrink=False,
+        )
+        with_full = nx.score_team_side(
+            thin,
+            xg=2.0,
+            xcs=0.3,
+            xgc=0.8,
+            alpha_g=0.96,
+            alpha_a=0.90,
+            share_players=full,
+            share_se_shrink=False,
+        )
+        self.assertAlmostEqual(float(thin_only["sG"].sum()), 1.0, places=6)
+        self.assertLess(float(with_full["sG"].sum()), 0.95)
+        self.assertLess(
+            float(with_full.loc[with_full["name"] == "Star", "sG"].iloc[0]),
+            float(thin_only.loc[thin_only["name"] == "Star", "sG"].iloc[0]),
+        )
+        self.assertLess(
+            float(with_full.loc[with_full["name"] == "Star", "xp_goals"].iloc[0]),
+            float(thin_only.loc[thin_only["name"] == "Star", "xp_goals"].iloc[0]),
+        )
+
+
 class ScoreTeamSide(unittest.TestCase):
     def test_rotation_renormalises_attack(self) -> None:
-        # Two MIDs share attack; starter gets most weight.
+        # Two MIDs share attack; starter gets most weight (default π∝r·m).
         players = pd.DataFrame(
             {
                 "name": ["A", "B"],
@@ -97,9 +187,11 @@ class ScoreTeamSide(unittest.TestCase):
             xgc=0.8,
             alpha_g=0.96,
             alpha_a=0.90,
+            share_se_shrink=False,
         )
         self.assertAlmostEqual(float(out["sG"].sum()), 1.0, places=6)
         self.assertGreater(float(out.loc[0, "sG"]), float(out.loc[1, "sG"]))
+        self.assertGreater(float(out.loc[0, "sA"]), float(out.loc[1, "sA"]))
         self.assertGreater(float(out.loc[0, "xp"]), float(out.loc[1, "xp"]))
         # Appearance 2 vs 1
         self.assertEqual(float(out.loc[0, "xp_appear"]), 2.0)

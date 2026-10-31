@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:eeeef03c52fb728b",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cqlye4jpzzxyo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Mon, 26 Oct 2026 23:10:59 GMT",
+  "published_at_utc": "2026-10-26T23:10:59Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "Kane ends England's 25-year Ballon d'Or wait - how he bucked the trend",
+  "body": "Harry Kane becomes the first English player to win the Ballon d'Or since Michael Owen in 2001 after being crowned the world's best player at a ceremony in London.",
+  "player_ids": [],
+  "sha256": "50347492dac4115cd7e638e95c6c9e13a36efa10fa6f37671dd3125b81e6a85a"
+}

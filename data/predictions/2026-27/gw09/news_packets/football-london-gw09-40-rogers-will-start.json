@@ -1,0 +1,13 @@
+{
+  "packet_id": "football_london:gw09:rogers-will-start",
+  "source": "football_london",
+  "url": "https://www.football.london/chelsea-fc/news/predicted-chelsea-xi-vs-man-34838511",
+  "published_at_utc": "2026-10-31T07:00:00Z",
+  "club": "Chelsea",
+  "player_ids": [
+    40
+  ],
+  "headline": "Rogers will start",
+  "body": "Football London (Bobby Vincent), 31 Oct 2026 07:00: Morgan Rogers has played 90 minutes in both of Chelsea's matches in the past week, yet is still expected to start at Stamford Bridge vs Man Utd. With Jo\u00e3o Pedro out, Rogers is cast as the Blues' most dangerous attacker alongside Palmer's return. Predicted XI: \u2026 Neto, Palmer, Rogers; Welbeck.",
+  "sha256": "9f364fbe9b67f387d131fa03292ed37cbcac8d91986fc91e8d93a1d3be7494dc"
+}

@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:1dad2dfc60e76b75",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sounds/play/p0pkf71w?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 30 Oct 2026 08:00:00 GMT",
+  "published_at_utc": "2026-10-30T08:00:00Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "Podcast: Old Firm fan ban & League Cup semi-finals",
+  "body": "It’s make-or-break at Hampden, can Aberdeen stun Rangers? And who survives the cup derby?",
+  "player_ids": [],
+  "sha256": "246532e62ed88cd345f15e585b6ee92d5fbfa59282e257d0f420aac1e63ac29b"
+}

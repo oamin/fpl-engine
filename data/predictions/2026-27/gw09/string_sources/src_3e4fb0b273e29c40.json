@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:3e4fb0b273e29c40",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/crz657qv7nv4o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 30 Oct 2026 09:40:45 GMT",
+  "published_at_utc": "2026-10-30T09:40:45Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "Prospective Gateshead takeover close to collapse",
+  "body": "The takeover of National League side Gateshead is close to collapsing due to third-party involvement, according to prospective owners Flacks Group.",
+  "player_ids": [],
+  "sha256": "7d13754ec92fca4dd8d64955433f72c042c902f181a615c84d132ce9c816d5b4"
+}

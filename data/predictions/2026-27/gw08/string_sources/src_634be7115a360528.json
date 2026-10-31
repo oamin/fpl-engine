@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:634be7115a360528",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cq073zrgv8vvo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 22 Oct 2026 06:01:48 GMT",
+  "published_at_utc": "2026-10-22T06:01:48Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "Is Leicester boss Martin turning the Foxes' fortunes?",
+  "body": "Leicester are 10th in League One, 10 years after winning the Premier League. After hitting their lowest ebb, are there now grounds for optimism?",
+  "player_ids": [],
+  "sha256": "bce18db6bde6de46e2ad1df7b86230e676503b969df0a9b7d9ea444a08e7e1e5"
+}

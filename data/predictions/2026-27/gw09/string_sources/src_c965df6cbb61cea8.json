@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:c965df6cbb61cea8",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cv2d6ze63gk2o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 29 Oct 2026 13:19:52 GMT",
+  "published_at_utc": "2026-10-29T13:19:52Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "Is double drop from the Premier League becoming more common?",
+  "body": "Back-to-back relegations to the third tier of English football are becoming more common and this season Burnley could make it a hat-trick after Luton Town and Leicester.",
+  "player_ids": [],
+  "sha256": "08dff2dc12f59d840ccfbbd9a2f19504f69464f89bbdc97075acbdaade9d6c18"
+}

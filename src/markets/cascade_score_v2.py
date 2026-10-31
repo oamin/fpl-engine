@@ -108,6 +108,32 @@ def rolling_m_sigma(hist: pd.DataFrame, element: int, *, window: int = 3) -> tup
     return m, sig
 
 
+def build_frozen_share_pool(
+    bootstrap: Mapping[str, Any],
+    history: pd.DataFrame,
+    *,
+    before_gw: int,
+    season: str = "2026-27",
+) -> pd.DataFrame:
+    """Full-club ``m>0`` roster for generative π / xG shares (live path).
+
+    Selection / buy universe stays on ``build_frozen_pool`` + ``player_pool``.
+    """
+    all_ids = {str(el["id"]) for el in bootstrap.get("elements") or []}
+    frame = build_frozen_pool(
+        bootstrap,
+        all_ids,
+        history,
+        before_gw=int(before_gw),
+        season=str(season),
+    )
+    if frame.empty:
+        return frame
+    return frame.loc[
+        pd.to_numeric(frame["m"], errors="coerce").fillna(0.0) > 0
+    ].reset_index(drop=True)
+
+
 def build_frozen_pool(
     bootstrap: Mapping[str, Any],
     selectable_ids: set[str],
@@ -201,8 +227,13 @@ def score_club_side(
     alpha_g: float,
     alpha_a: float,
     rho: float = 0.0,
+    share_players: pd.DataFrame | None = None,
 ) -> pd.DataFrame:
-    """Score one club's rows for one fixture side via ``score_team_side``."""
+    """Score one club's rows for one fixture side via ``score_team_side``.
+
+    Pass ``share_players`` (full club ``m>0``) when ``club_players`` is a thin
+    selection board so xG shares are not re-normalised on ≥60′ only.
+    """
     if club_players.empty:
         return club_players.copy()
     mom = side_moments_from_lams(lam_for, lam_against, rho=rho)
@@ -213,6 +244,7 @@ def score_club_side(
         xgc=mom["xgc"],
         alpha_g=float(alpha_g),
         alpha_a=float(alpha_a),
+        share_players=share_players,
     )
 
 
@@ -224,11 +256,15 @@ def score_pool_on_lam_pots(
     gamma: float = 1.0,
     alpha_g: float | None = None,
     alpha_a: float | None = None,
+    share_pool: pd.DataFrame | None = None,
 ) -> pd.DataFrame:
     """Multi-GW ``score_xp_v2`` for MILP from scenario λ pots (γ=1 default).
 
     Each pot must carry ``lam_scored`` and ``threat`` (opp λ), as produced by
     ``pot_from_sampled_lam`` / path pots.
+
+    ``share_pool`` (full club ``m>0``) is the default xG share frame when the
+    selection ``pool`` is thin (≥60′).
     """
     if alpha_g is None or alpha_a is None:
         ag, aa, _, _ = numagent_xp.load_alphas()
@@ -238,6 +274,7 @@ def score_pool_on_lam_pots(
     out = pool.copy()
     totals = np.zeros(len(out), dtype=float)
     pid_to_idx = {str(p): i for i, p in enumerate(out["player_id"].astype(str))}
+    share = share_pool if share_pool is not None else out
 
     for h, gw in enumerate(gws):
         # Collect clubs that have a pot this GW and score each club once.
@@ -256,12 +293,16 @@ def score_pool_on_lam_pots(
             club_df = out.loc[mask].copy()
             if club_df.empty:
                 continue
+            share_df = share.loc[
+                share["team_norm"].map(norm_team) == norm_team(club)
+            ].copy()
             scored = score_club_side(
                 club_df,
                 lam_for=lam,
                 lam_against=max(opp, 1e-6),
                 alpha_g=float(alpha_g),
                 alpha_a=float(alpha_a),
+                share_players=share_df if len(share_df) > len(club_df) else None,
             )
             for i in range(len(scored)):
                 pid = str(club_df.iloc[i]["player_id"])
@@ -389,6 +430,7 @@ def score_pool_generative_on_scenarios(
     gamma: float = 1.0,
     lineup_cov: bool = True,
     rho: float = 0.0,
+    share_pool: pd.DataFrame | None = None,
 ) -> pd.DataFrame:
     """Multi-GW generative xP (cascade_short stack; γ=1 default).
 
@@ -397,12 +439,19 @@ def score_pool_generative_on_scenarios(
     (element id → P(anytime)) are used on priced cascade_short weeks; Opta
     long weeks leave them unset. Missing goals trigger a fresh ``k ∼ M``
     draw from the fixture λ (scratch valuation; does not update ClubPath).
+
+    Attack dice run on ``share_pool`` (full club ``m>0``) when provided;
+    scores are written back onto the thin selection ``pool``.
     """
     out = pool.copy()
     if "team_n" not in out.columns and "team_norm" in out.columns:
         out["team_n"] = out["team_norm"].map(lambda t: norm_team(str(t)))
     totals = np.zeros(len(out), dtype=float)
     pid_to_idx = {str(p): i for i, p in enumerate(out["player_id"].astype(str))}
+    dice_pool = share_pool if share_pool is not None else out
+    if "team_n" not in dice_pool.columns and "team_norm" in dice_pool.columns:
+        dice_pool = dice_pool.copy()
+        dice_pool["team_n"] = dice_pool["team_norm"].map(lambda t: norm_team(str(t)))
 
     for h, gw in enumerate(gws):
         disc = float(gamma) ** h
@@ -411,8 +460,13 @@ def score_pool_generative_on_scenarios(
             away = str(sc["away"])
             home_n = norm_team(home)
             away_n = norm_team(away)
-            home_club = out.loc[out["team_norm"].map(norm_team) == home_n].copy()
-            away_club = out.loc[out["team_norm"].map(norm_team) == away_n].copy()
+            team_col = "team_norm" if "team_norm" in dice_pool.columns else "team_n"
+            home_club = dice_pool.loc[
+                dice_pool[team_col].map(norm_team) == home_n
+            ].copy()
+            away_club = dice_pool.loc[
+                dice_pool[team_col].map(norm_team) == away_n
+            ].copy()
             if home_club.empty and away_club.empty:
                 continue
             gh = sc.get("hg", sc.get("goals_home"))

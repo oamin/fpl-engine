@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:fea9859be9ccddb1",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cjn5v3pl0159o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 30 Oct 2026 06:14:19 GMT",
+  "published_at_utc": "2026-10-30T06:14:19Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "How talking about Man Utd's cycle of doom became an industry",
+  "body": "Manchester United's struggles are pored over more than ever before - not least by former players.",
+  "player_ids": [],
+  "sha256": "1c06e846c0c64d60c392b55c9ad2d2dc7fe520c71cba689758469d560a169d06"
+}

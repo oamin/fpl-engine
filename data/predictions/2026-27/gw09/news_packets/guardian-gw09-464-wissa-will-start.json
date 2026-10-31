@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw09:wissa-will-start",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/30/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-30T16:19:00Z",
+  "club": "Newcastle",
+  "player_ids": [
+    464
+  ],
+  "headline": "Wissa will start",
+  "body": "The Guardian team news, 30 Oct 2026: Wissa will start (Newcastle) \u2014 expected to lead the Newcastle line; Osula ankle issue keeps him out of contention.",
+  "sha256": "4a62fbef352583a03eb4556b57f1f690e0f74fe32b8f5e824d2e8dc4b0a431e0"
+}

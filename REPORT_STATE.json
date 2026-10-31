@@ -1,30 +1,43 @@
 {
-  "task": "cascade_locked_consolidate",
+  "task": "l4_opta_joint_path_component_climb",
   "status": "done",
-  "as_of_utc": "2026-10-23T15:55:00Z",
-  "note": "Fast-forward club-expanding to path-bench tip (#101–#106 locked/default stack). Open PR into main.",
-  "includes": {
-    "locked_or_default": [
-      "cascade_short_generative",
-      "cascade_long_match_outcome",
-      "DEFAULT_LINEUP_COV=False",
-      "score_xp_v2_rate_baseline_prior=cascade_default",
-      "cascade_joint_path_plan",
-      "cascade_gamma=1",
-      "DEFAULT_FT_PE_NU=HIT_COST",
-      "cascade_path_bench_weight=rejected"
-    ],
-    "diagnostic_landed": [
-      "cascade_deadline_causal_minutes",
-      "cascade_mc_vs_mean_hist",
-      "cascade_mean_path_gw_resid",
-      "cascade_ft_pe_path"
-    ],
-    "not_on_this_tip": [
-      "cascade_pathv_share_cond_xp (#108)",
-      "gw08 live pick (#107)"
-    ]
+  "as_of_utc": "2026-10-31T11:07:29Z",
+  "change": "Gated joint path vs L4 under component-only \u03bc \u2014 all inconclusive",
+  "verdicts": {
+    "xp_assists": {
+      "joint_path_minus_l4_opta_h12": "inconclusive",
+      "joint_path_decay_minus_l4_opta_h12": "inconclusive",
+      "joint_path_decay_minus_joint_path": "inconclusive"
+    },
+    "xp_cs": {
+      "joint_path_minus_l4_opta_h12": "inconclusive",
+      "joint_path_decay_minus_l4_opta_h12": "inconclusive",
+      "joint_path_decay_minus_joint_path": "inconclusive"
+    },
+    "xp_gc": {
+      "joint_path_minus_l4_opta_h12": "inconclusive",
+      "joint_path_decay_minus_l4_opta_h12": "inconclusive",
+      "joint_path_decay_minus_joint_path": "inconclusive"
+    },
+    "xp_goals": {
+      "joint_path_minus_l4_opta_h12": "inconclusive",
+      "joint_path_decay_minus_l4_opta_h12": "inconclusive",
+      "joint_path_decay_minus_joint_path": "inconclusive"
+    }
   },
-  "index": "reports/CASCADE_LOCKED.md",
-  "branch": "cursor/club-expanding-gf-ga-2025-26-cc3d"
+  "means": {
+    "joint_path_xp_assists_minus_l4_opta_h12_xp_assists": 0.117,
+    "joint_path_decay_xp_assists_minus_l4_opta_h12_xp_assists": -0.15,
+    "joint_path_decay_xp_assists_minus_joint_path_xp_assists": -0.267,
+    "joint_path_xp_cs_minus_l4_opta_h12_xp_cs": 1.542,
+    "joint_path_decay_xp_cs_minus_l4_opta_h12_xp_cs": 1.917,
+    "joint_path_decay_xp_cs_minus_joint_path_xp_cs": 0.375,
+    "joint_path_xp_gc_minus_l4_opta_h12_xp_gc": 0.767,
+    "joint_path_decay_xp_gc_minus_l4_opta_h12_xp_gc": 1.492,
+    "joint_path_decay_xp_gc_minus_joint_path_xp_gc": 0.725,
+    "joint_path_xp_goals_minus_l4_opta_h12_xp_goals": -1.417,
+    "joint_path_decay_xp_goals_minus_l4_opta_h12_xp_goals": -0.833,
+    "joint_path_decay_xp_goals_minus_joint_path_xp_goals": 0.583
+  },
+  "report": "reports/l4_opta_joint_path_component_climb_gate.md"
 }

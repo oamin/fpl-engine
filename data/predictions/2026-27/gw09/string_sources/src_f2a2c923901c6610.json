@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:f2a2c923901c6610",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/videos/cm17k8x994edo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Wed, 28 Oct 2026 20:36:25 GMT",
+  "published_at_utc": "2026-10-28T20:36:25Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "Chelsea continue unbeaten start with win over Roma",
+  "body": "Chelsea's strong start to the season continues with victory over Roma in the Women's Champions League.",
+  "player_ids": [],
+  "sha256": "0831b8a339b8ec74e5004c0ff8d7573ee58147d7c910b26263f4a7f9bd9d709d"
+}

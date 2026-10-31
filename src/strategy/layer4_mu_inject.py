@@ -2,13 +2,16 @@
 
 ``solve_horizon_transfers`` is already column-agnostic (``mu_col``). The
 priced factory ``build_mupost_priced_horizon`` builds t+1 via
-``project_week_score_xp_v2``. Cascade / scenario paths should **not** go
-through that factory — they pass frozen μ frames here, then call L4.
+``project_week_score_xp_v2``. Product centreline horizon (priced near +
+Opta blind far) is ``src.strategy.l3_centreline_horizon.build_l3_centreline_horizon``
+under ``protocol.l3_centreline_forecast``. Cascade / scenario paths should
+**not** go through the priced-only factory — they pass frozen μ frames here,
+then call L4 (or use the centreline factory).
 
 Universe, prices, and club/position meta come from ``week0_pool`` only.
 Missing players get μ = 0 (same convention as ``_align_to_week0``).
 
-See ``reports/CASCADE_CONTRACT.md``.
+See ``reports/CASCADE_CONTRACT.md`` · ``reports/L3_CENTRELINE_FORECAST_LOCK.md``.
 """
 
 from __future__ import annotations

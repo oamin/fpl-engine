@@ -1,0 +1,13 @@
+{
+  "packet_id": "pl_official:gw09:isak-will-start",
+  "source": "pl_official",
+  "url": "https://www.premierleague.com/en/news/4750527/predicted-line-ups-for-premier-league-teams-in-matchweek-9/",
+  "published_at_utc": "2026-10-30T12:00:00Z",
+  "club": "Liverpool",
+  "player_ids": [
+    379
+  ],
+  "headline": "Isak will start",
+  "body": "Premier League Bloom predicted line-ups, Matchweek 9 (30 Oct 2026): Liverpool projected with Isak leading the line vs Arsenal as Iraola restores first-choice attackers after cup rotation.",
+  "sha256": "ba692b048ea598a93d23e75baf59bcd6fea02d250883e79036b9caaf7b1a652b"
+}

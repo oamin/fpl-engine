@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:0b83faa231a07b45",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cjr4yndrz1kro?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Mon, 19 Oct 2026 06:23:48 GMT",
+  "published_at_utc": "2026-10-19T06:23:48Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "Beer & Blackpool beach was how British players bonded - Pulis",
+  "body": "BBC Sport columnist Tony Pulis explains what Spurs will get from their team-bonding trip to Spain, and how differently managers built team morale in his day.",
+  "player_ids": [],
+  "sha256": "d58782b8b0b842dc009dca6903677dbf813467508c46e33f1232bde329916cd4"
+}

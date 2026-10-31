@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:0d0b1ee8d8a8e895",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/bitesize/articles/z8t4b7h?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Mon, 21 Sep 2026 20:12:31 GMT",
+  "published_at_utc": "2026-09-21T20:12:31Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "Ten unusual jobs in football",
+  "body": "What are some of the lesser known jobs in football? BBC Bitesize Careers finds out!",
+  "player_ids": [],
+  "sha256": "0ddd51711cc57be62e9930aa923f8dcb913655639ff4f4e28d0c108ce5ce657e"
+}

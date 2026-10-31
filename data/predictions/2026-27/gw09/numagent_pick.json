@@ -1,0 +1,774 @@
+{
+  "ok": true,
+  "gw": 9,
+  "primary": "L4",
+  "entry_id": 2632584,
+  "team_name": "ojaminFC",
+  "played_through": 8,
+  "bank": 0,
+  "ft": 1,
+  "active_chip_last_gw": null,
+  "odds_source": "snapshot",
+  "odds_fetched_at": "2026-10-31T07:45:42.078844+00:00",
+  "odds_remaining_after": "111",
+  "n_odds_ok": 20,
+  "n_fixtures_t": 10,
+  "n_fixtures_t1": 10,
+  "score_meta_t": {
+    "alpha_g": 0.9601357082273113,
+    "alpha_a": 0.9050042408821035,
+    "minutes_mode": "xmi_then_rolling",
+    "use_props": false,
+    "fixtures_scored": [
+      {
+        "match": "Chelsea v Manchester United",
+        "sides": 2,
+        "props_matched": 0,
+        "props_n": 0
+      },
+      {
+        "match": "Bournemouth v Leeds United",
+        "sides": 2,
+        "props_matched": 0,
+        "props_n": 0
+      },
+      {
+        "match": "Brentford v Nottingham Forest",
+        "sides": 2,
+        "props_matched": 0,
+        "props_n": 0
+      },
+      {
+        "match": "Manchester City v Brighton and Hove Albion",
+        "sides": 2,
+        "props_matched": 0,
+        "props_n": 0
+      },
+      {
+        "match": "Coventry City v Sunderland",
+        "sides": 2,
+        "props_matched": 0,
+        "props_n": 0
+      },
+      {
+        "match": "Hull City v Ipswich Town",
+        "sides": 2,
+        "props_matched": 0,
+        "props_n": 0
+      },
+      {
+        "match": "Tottenham Hotspur v Crystal Palace",
+        "sides": 2,
+        "props_matched": 0,
+        "props_n": 0
+      },
+      {
+        "match": "Aston Villa v Fulham",
+        "sides": 2,
+        "props_matched": 0,
+        "props_n": 0
+      },
+      {
+        "match": "Liverpool v Arsenal",
+        "sides": 2,
+        "props_matched": 0,
+        "props_n": 0
+      },
+      {
+        "match": "Newcastle United v Everton",
+        "sides": 2,
+        "props_matched": 0,
+        "props_n": 0
+      }
+    ],
+    "fixtures_failed": [],
+    "n_m_xmi": 669,
+    "n_m_rolling3": 0,
+    "n_fixtures_ok": 10
+  },
+  "score_meta_t1": {
+    "alpha_g": 0.9601357082273113,
+    "alpha_a": 0.9050042408821035,
+    "minutes_mode": "rolling3",
+    "use_props": false,
+    "fixtures_scored": [
+      {
+        "match": "Everton v Coventry City",
+        "sides": 2,
+        "props_matched": 0,
+        "props_n": 0
+      },
+      {
+        "match": "Leeds United v Tottenham Hotspur",
+        "sides": 2,
+        "props_matched": 0,
+        "props_n": 0
+      },
+      {
+        "match": "Arsenal v Hull City",
+        "sides": 2,
+        "props_matched": 0,
+        "props_n": 0
+      },
+      {
+        "match": "Fulham v Newcastle United",
+        "sides": 2,
+        "props_matched": 0,
+        "props_n": 0
+      },
+      {
+        "match": "Nottingham Forest v Manchester City",
+        "sides": 2,
+        "props_matched": 0,
+        "props_n": 0
+      },
+      {
+        "match": "Ipswich Town v Bournemouth",
+        "sides": 2,
+        "props_matched": 0,
+        "props_n": 0
+      },
+      {
+        "match": "Brighton and Hove Albion v Brentford",
+        "sides": 2,
+        "props_matched": 0,
+        "props_n": 0
+      },
+      {
+        "match": "Sunderland v Chelsea",
+        "sides": 2,
+        "props_matched": 0,
+        "props_n": 0
+      },
+      {
+        "match": "Crystal Palace v Liverpool",
+        "sides": 2,
+        "props_matched": 0,
+        "props_n": 0
+      },
+      {
+        "match": "Manchester United v Aston Villa",
+        "sides": 2,
+        "props_matched": 0,
+        "props_n": 0
+      }
+    ],
+    "fixtures_failed": [],
+    "n_m_xmi": 0,
+    "n_m_rolling3": 669,
+    "n_fixtures_ok": 10
+  },
+  "xmi_path": "data/scratch/gw09_xmi_probe.csv",
+  "history_scratch": "/workspace/data/scratch/player_gw_2026_27_through_gw08.csv",
+  "board_path": "/workspace/data/predictions/2026-27/gw09/numagent_board_20261031T080426Z.csv",
+  "board_t1_path": "/workspace/data/predictions/2026-27/gw09/numagent_board_t1_20261031T080426Z.csv",
+  "held": [
+    {
+      "id": 1,
+      "name": "Raya",
+      "purchase": 61,
+      "now_cost": 62,
+      "mu_post_t": 3.8055626325159024,
+      "xmi": 90.0
+    },
+    {
+      "id": 173,
+      "name": "Thomas",
+      "purchase": 40,
+      "now_cost": 40,
+      "mu_post_t": 1.0710145244169063,
+      "xmi": 39.833333333333336
+    },
+    {
+      "id": 449,
+      "name": "Hall",
+      "purchase": 53,
+      "now_cost": 53,
+      "mu_post_t": 4.601217151423146,
+      "xmi": 90.0
+    },
+    {
+      "id": 650,
+      "name": "Affengruber",
+      "purchase": 45,
+      "now_cost": 45,
+      "mu_post_t": 4.328492952491989,
+      "xmi": 90.0
+    },
+    {
+      "id": 472,
+      "name": "Murillo",
+      "purchase": 55,
+      "now_cost": 55,
+      "mu_post_t": 3.2017179449248725,
+      "xmi": 90.0
+    },
+    {
+      "id": 427,
+      "name": "Mbeumo",
+      "purchase": 79,
+      "now_cost": 79,
+      "mu_post_t": 4.177835463592013,
+      "xmi": 90.0
+    },
+    {
+      "id": 40,
+      "name": "Rogers",
+      "purchase": 76,
+      "now_cost": 81,
+      "mu_post_t": 4.773801959404006,
+      "xmi": 90.0
+    },
+    {
+      "id": 86,
+      "name": "Lewis-Potter",
+      "purchase": 55,
+      "now_cost": 55,
+      "mu_post_t": 4.341709990398801,
+      "xmi": 72.0
+    },
+    {
+      "id": 183,
+      "name": "Rudoni",
+      "purchase": 49,
+      "now_cost": 49,
+      "mu_post_t": 3.241963314229811,
+      "xmi": 78.33333333333333
+    },
+    {
+      "id": 411,
+      "name": "Haaland",
+      "purchase": 158,
+      "now_cost": 158,
+      "mu_post_t": 6.5687463296863795,
+      "xmi": 90.0
+    },
+    {
+      "id": 464,
+      "name": "Wissa",
+      "purchase": 62,
+      "now_cost": 60,
+      "mu_post_t": 3.42958655878223,
+      "xmi": 65.0
+    },
+    {
+      "id": 109,
+      "name": "Verbruggen",
+      "purchase": 45,
+      "now_cost": 46,
+      "mu_post_t": 2.7196907020945456,
+      "xmi": 90.0
+    },
+    {
+      "id": 426,
+      "name": "B.Fernandes",
+      "purchase": 117,
+      "now_cost": 117,
+      "mu_post_t": 4.478003377304462,
+      "xmi": 90.0
+    },
+    {
+      "id": 588,
+      "name": "Khalaili",
+      "purchase": 50,
+      "now_cost": 50,
+      "mu_post_t": 2.6581117059506956,
+      "xmi": 90.0
+    },
+    {
+      "id": 249,
+      "name": "Barry",
+      "purchase": 57,
+      "now_cost": 56,
+      "mu_post_t": 4.71915398121699,
+      "xmi": 90.0
+    }
+  ],
+  "recommendation": {
+    "n_squad": 15,
+    "n_xi": 11,
+    "captain_id": "411",
+    "formation": "1-3-4-3",
+    "objective": 53.7880632380293,
+    "xi_mu": 51.219316908342925,
+    "captain_mu": 6.5687463296863795,
+    "n_transfers": 2,
+    "hits": 1,
+    "hit_points": 4,
+    "bank_after": 19,
+    "ft_after": 1,
+    "sold": [
+      "426",
+      "464"
+    ],
+    "bought": [
+      "15",
+      "379"
+    ],
+    "cost": 987,
+    "mu_col": "mu_post",
+    "status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+    "label": "L4",
+    "captain_name": "Haaland",
+    "sold_names": [
+      "B.Fernandes",
+      "Wissa"
+    ],
+    "bought_names": [
+      "\u00d8degaard",
+      "Isak"
+    ],
+    "xi": [
+      {
+        "player_id": "1",
+        "name": "Raya",
+        "position": "GKP",
+        "club": "Arsenal",
+        "mu_post": 3.8055626325159024,
+        "captain": false
+      },
+      {
+        "player_id": "15",
+        "name": "\u00d8degaard",
+        "position": "MID",
+        "club": "Arsenal",
+        "mu_post": 4.889153949078695,
+        "captain": false
+      },
+      {
+        "player_id": "86",
+        "name": "Lewis-Potter",
+        "position": "MID",
+        "club": "Brentford",
+        "mu_post": 4.341709990398801,
+        "captain": false
+      },
+      {
+        "player_id": "40",
+        "name": "Rogers",
+        "position": "MID",
+        "club": "Chelsea",
+        "mu_post": 4.773801959404006,
+        "captain": false
+      },
+      {
+        "player_id": "249",
+        "name": "Barry",
+        "position": "FWD",
+        "club": "Everton",
+        "mu_post": 4.71915398121699,
+        "captain": false
+      },
+      {
+        "player_id": "650",
+        "name": "Affengruber",
+        "position": "DEF",
+        "club": "Fulham",
+        "mu_post": 4.328492952491989,
+        "captain": false
+      },
+      {
+        "player_id": "379",
+        "name": "Isak",
+        "position": "FWD",
+        "club": "Liverpool",
+        "mu_post": 5.811924553610128,
+        "captain": false
+      },
+      {
+        "player_id": "411",
+        "name": "Haaland",
+        "position": "FWD",
+        "club": "Man City",
+        "mu_post": 6.5687463296863795,
+        "captain": true
+      },
+      {
+        "player_id": "427",
+        "name": "Mbeumo",
+        "position": "MID",
+        "club": "Man Utd",
+        "mu_post": 4.177835463592013,
+        "captain": false
+      },
+      {
+        "player_id": "449",
+        "name": "Hall",
+        "position": "DEF",
+        "club": "Newcastle",
+        "mu_post": 4.601217151423146,
+        "captain": false
+      },
+      {
+        "player_id": "472",
+        "name": "Murillo",
+        "position": "DEF",
+        "club": "Nott'm Forest",
+        "mu_post": 3.2017179449248725,
+        "captain": false
+      }
+    ],
+    "bench": [
+      {
+        "player_id": "109",
+        "name": "Verbruggen",
+        "position": "GKP",
+        "mu_post": 2.7196907020945456
+      },
+      {
+        "player_id": "173",
+        "name": "Thomas",
+        "position": "DEF",
+        "mu_post": 1.0710145244169063
+      },
+      {
+        "player_id": "183",
+        "name": "Rudoni",
+        "position": "MID",
+        "mu_post": 3.241963314229811
+      },
+      {
+        "player_id": "588",
+        "name": "Khalaili",
+        "position": "DEF",
+        "mu_post": 2.6581117059506956
+      }
+    ],
+    "horizon": 2,
+    "gamma": 1.0,
+    "horizon_objective": 119.02689741075355,
+    "week_xi_mu": [
+      51.219316908342925,
+      57.889031250060036
+    ],
+    "week_captain_mu": [
+      6.5687463296863795,
+      7.349802922664222
+    ],
+    "status_horizon": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+    "centreline": {
+      "protocol": "l3_centreline_forecast",
+      "horizon": 2,
+      "opta_gws": [],
+      "near": "priced_odds_t_t1",
+      "far": "none"
+    }
+  },
+  "l3": {
+    "n_squad": 15,
+    "n_xi": 11,
+    "captain_id": "411",
+    "formation": "1-3-4-3",
+    "objective": 57.50727942006405,
+    "xi_mu": 50.938533090377675,
+    "captain_mu": 6.5687463296863795,
+    "n_transfers": 1,
+    "hits": 0,
+    "hit_points": 0,
+    "bank_after": 6,
+    "ft_after": 1,
+    "sold": [
+      "472"
+    ],
+    "bought": [
+      "112"
+    ],
+    "cost": 1000,
+    "mu_col": "mu_post",
+    "status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+    "label": "L3",
+    "captain_name": "Haaland",
+    "sold_names": [
+      "Murillo"
+    ],
+    "bought_names": [
+      "Van Hecke"
+    ],
+    "xi": [
+      {
+        "player_id": "1",
+        "name": "Raya",
+        "position": "GKP",
+        "club": "Arsenal",
+        "mu_post": 3.8055626325159024,
+        "captain": false
+      },
+      {
+        "player_id": "86",
+        "name": "Lewis-Potter",
+        "position": "MID",
+        "club": "Brentford",
+        "mu_post": 4.341709990398801,
+        "captain": false
+      },
+      {
+        "player_id": "40",
+        "name": "Rogers",
+        "position": "MID",
+        "club": "Chelsea",
+        "mu_post": 4.773801959404006,
+        "captain": false
+      },
+      {
+        "player_id": "249",
+        "name": "Barry",
+        "position": "FWD",
+        "club": "Everton",
+        "mu_post": 4.71915398121699,
+        "captain": false
+      },
+      {
+        "player_id": "650",
+        "name": "Affengruber",
+        "position": "DEF",
+        "club": "Fulham",
+        "mu_post": 4.328492952491989,
+        "captain": false
+      },
+      {
+        "player_id": "411",
+        "name": "Haaland",
+        "position": "FWD",
+        "club": "Man City",
+        "mu_post": 6.5687463296863795,
+        "captain": true
+      },
+      {
+        "player_id": "426",
+        "name": "B.Fernandes",
+        "position": "MID",
+        "club": "Man Utd",
+        "mu_post": 4.478003377304462,
+        "captain": false
+      },
+      {
+        "player_id": "427",
+        "name": "Mbeumo",
+        "position": "MID",
+        "club": "Man Utd",
+        "mu_post": 4.177835463592013,
+        "captain": false
+      },
+      {
+        "player_id": "449",
+        "name": "Hall",
+        "position": "DEF",
+        "club": "Newcastle",
+        "mu_post": 4.601217151423146,
+        "captain": false
+      },
+      {
+        "player_id": "464",
+        "name": "Wissa",
+        "position": "FWD",
+        "club": "Newcastle",
+        "mu_post": 3.42958655878223,
+        "captain": false
+      },
+      {
+        "player_id": "112",
+        "name": "Van Hecke",
+        "position": "DEF",
+        "club": "Spurs",
+        "mu_post": 5.714422693561758,
+        "captain": false
+      }
+    ],
+    "bench": [
+      {
+        "player_id": "109",
+        "name": "Verbruggen",
+        "position": "GKP",
+        "mu_post": 2.7196907020945456
+      },
+      {
+        "player_id": "173",
+        "name": "Thomas",
+        "position": "DEF",
+        "mu_post": 1.0710145244169063
+      },
+      {
+        "player_id": "183",
+        "name": "Rudoni",
+        "position": "MID",
+        "mu_post": 3.241963314229811
+      },
+      {
+        "player_id": "588",
+        "name": "Khalaili",
+        "position": "DEF",
+        "mu_post": 2.6581117059506956
+      }
+    ]
+  },
+  "l4": {
+    "n_squad": 15,
+    "n_xi": 11,
+    "captain_id": "411",
+    "formation": "1-3-4-3",
+    "objective": 53.7880632380293,
+    "xi_mu": 51.219316908342925,
+    "captain_mu": 6.5687463296863795,
+    "n_transfers": 2,
+    "hits": 1,
+    "hit_points": 4,
+    "bank_after": 19,
+    "ft_after": 1,
+    "sold": [
+      "426",
+      "464"
+    ],
+    "bought": [
+      "15",
+      "379"
+    ],
+    "cost": 987,
+    "mu_col": "mu_post",
+    "status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+    "label": "L4",
+    "captain_name": "Haaland",
+    "sold_names": [
+      "B.Fernandes",
+      "Wissa"
+    ],
+    "bought_names": [
+      "\u00d8degaard",
+      "Isak"
+    ],
+    "xi": [
+      {
+        "player_id": "1",
+        "name": "Raya",
+        "position": "GKP",
+        "club": "Arsenal",
+        "mu_post": 3.8055626325159024,
+        "captain": false
+      },
+      {
+        "player_id": "15",
+        "name": "\u00d8degaard",
+        "position": "MID",
+        "club": "Arsenal",
+        "mu_post": 4.889153949078695,
+        "captain": false
+      },
+      {
+        "player_id": "86",
+        "name": "Lewis-Potter",
+        "position": "MID",
+        "club": "Brentford",
+        "mu_post": 4.341709990398801,
+        "captain": false
+      },
+      {
+        "player_id": "40",
+        "name": "Rogers",
+        "position": "MID",
+        "club": "Chelsea",
+        "mu_post": 4.773801959404006,
+        "captain": false
+      },
+      {
+        "player_id": "249",
+        "name": "Barry",
+        "position": "FWD",
+        "club": "Everton",
+        "mu_post": 4.71915398121699,
+        "captain": false
+      },
+      {
+        "player_id": "650",
+        "name": "Affengruber",
+        "position": "DEF",
+        "club": "Fulham",
+        "mu_post": 4.328492952491989,
+        "captain": false
+      },
+      {
+        "player_id": "379",
+        "name": "Isak",
+        "position": "FWD",
+        "club": "Liverpool",
+        "mu_post": 5.811924553610128,
+        "captain": false
+      },
+      {
+        "player_id": "411",
+        "name": "Haaland",
+        "position": "FWD",
+        "club": "Man City",
+        "mu_post": 6.5687463296863795,
+        "captain": true
+      },
+      {
+        "player_id": "427",
+        "name": "Mbeumo",
+        "position": "MID",
+        "club": "Man Utd",
+        "mu_post": 4.177835463592013,
+        "captain": false
+      },
+      {
+        "player_id": "449",
+        "name": "Hall",
+        "position": "DEF",
+        "club": "Newcastle",
+        "mu_post": 4.601217151423146,
+        "captain": false
+      },
+      {
+        "player_id": "472",
+        "name": "Murillo",
+        "position": "DEF",
+        "club": "Nott'm Forest",
+        "mu_post": 3.2017179449248725,
+        "captain": false
+      }
+    ],
+    "bench": [
+      {
+        "player_id": "109",
+        "name": "Verbruggen",
+        "position": "GKP",
+        "mu_post": 2.7196907020945456
+      },
+      {
+        "player_id": "173",
+        "name": "Thomas",
+        "position": "DEF",
+        "mu_post": 1.0710145244169063
+      },
+      {
+        "player_id": "183",
+        "name": "Rudoni",
+        "position": "MID",
+        "mu_post": 3.241963314229811
+      },
+      {
+        "player_id": "588",
+        "name": "Khalaili",
+        "position": "DEF",
+        "mu_post": 2.6581117059506956
+      }
+    ],
+    "horizon": 2,
+    "gamma": 1.0,
+    "horizon_objective": 119.02689741075355,
+    "week_xi_mu": [
+      51.219316908342925,
+      57.889031250060036
+    ],
+    "week_captain_mu": [
+      6.5687463296863795,
+      7.349802922664222
+    ],
+    "status_horizon": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+    "centreline": {
+      "protocol": "l3_centreline_forecast",
+      "horizon": 2,
+      "opta_gws": [],
+      "near": "priced_odds_t_t1",
+      "far": "none"
+    }
+  }
+}

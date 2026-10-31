@@ -50,8 +50,9 @@ from src.markets.cascade_score_v2 import SCORER, attach_rates_priors, score_fixt
 from src.markets.numagent_xp_pilot import load_merged
 from src.models.opta_gf_ga_horizon import (
     CACHE,
-    HOME_ADV,
+    AWAY_SHRINK,
     N_MATCHES,
+    closed_league_gf_prior,
     fit_rank_ols_excluding,
     match_prediction,
     pots_from_season_gf_ga,
@@ -105,6 +106,10 @@ def expanding_match_pots(e0_fname: str) -> list[dict[str, Any]]:
     gf_sum: dict[str, float] = defaultdict(float)
     ga_sum: dict[str, float] = defaultdict(float)
     n_played: dict[str, int] = defaultdict(int)
+    # Assessed expanding ḡ: mean goals per team per match so far this season.
+    prior_league = float(closed_league_gf_prior()["league_gf"])
+    league_goal_sum = 0.0
+    league_n = 0
     out: list[dict[str, Any]] = []
     for row in rows_raw:
         home = norm_team(row["HomeTeam"])
@@ -119,8 +124,12 @@ def expanding_match_pots(e0_fname: str) -> list[dict[str, Any]]:
 
         h_gf, h_ga = rate(home)
         a_gf, a_ga = rate(away)
+        if league_n <= 0:
+            league_gf = prior_league
+        else:
+            league_gf = (league_goal_sum / league_n) * N_MATCHES
         pot_h, pot_a = pots_from_season_gf_ga(
-            h_gf, h_ga, a_gf, a_ga, league_gf=(NEUTRAL_GF_PM * N_MATCHES), home_adv=HOME_ADV
+            h_gf, h_ga, a_gf, a_ga, league_gf=league_gf, away_shrink=AWAY_SHRINK
         )
         out.append(
             {
@@ -145,6 +154,8 @@ def expanding_match_pots(e0_fname: str) -> list[dict[str, Any]]:
         gf_sum[away] += ag
         ga_sum[away] += hg
         n_played[away] += 1
+        league_goal_sum += 0.5 * float(hg + ag)
+        league_n += 1
     return out
 
 

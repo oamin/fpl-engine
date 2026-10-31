@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:b18df0fa70c2d9c7",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/c65yng4x302jo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 23 Oct 2026 06:06:38 GMT",
+  "published_at_utc": "2026-10-23T06:06:38Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "Pride, prestige, profile - the great Ballon d'Or campaign",
+  "body": "The Ballon d'Or is football's greatest individual accolade - and the thirst to win it has grown in recent years.",
+  "player_ids": [],
+  "sha256": "397498b129dfaee42bd5cc3e04ee1528437675cc3901f7c4b60b8c950c2d962c"
+}

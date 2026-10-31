@@ -6,12 +6,22 @@ import random
 import unittest
 
 from src.models.opta_gf_ga_horizon import (
+    AWAY_SHRINK,
+    DEFAULT_RANK_METHOD,
+    DEFAULT_VENUE_MODE,
+    LIVE_E0,
+    assessed_league_gf,
     gf_ga_from_rank,
+    lambdas_from_gf_ga,
+    lambdas_from_place_venue,
     load_opta_ranks,
     match_prediction,
     pots_from_season_gf_ga,
+    rank_gf_ga_profile,
+    rank_venue_gf_ga_profile,
     sample_match_from_opta_ranks,
     sample_season_gf_ga_for_rank,
+    venue_league_means,
 )
 
 
@@ -20,6 +30,16 @@ class OptaGfGaHorizonTest(unittest.TestCase):
         ranks = load_opta_ranks()
         self.assertEqual(len(ranks), 20)
         self.assertEqual({r["rank"] for r in ranks}, set(range(1, 21)))
+
+    def test_default_is_empirical_rankmean(self) -> None:
+        self.assertEqual(DEFAULT_RANK_METHOD, "rankmean")
+        prof = rank_gf_ga_profile()
+        top = gf_ga_from_rank(1)
+        self.assertEqual(top["method"], "rankmean")
+        self.assertAlmostEqual(top["gf"], prof[1]["mean_gf"])
+        self.assertAlmostEqual(top["ga"], prof[1]["mean_ga"])
+        self.assertAlmostEqual(top["sd_gf"], prof[1]["sd_gf"])
+        self.assertAlmostEqual(top["sd_ga"], prof[1]["sd_ga"])
 
     def test_better_rank_higher_gf_lower_ga(self) -> None:
         top = gf_ga_from_rank(1)
@@ -61,6 +81,101 @@ class OptaGfGaHorizonTest(unittest.TestCase):
         self.assertEqual(draw["home_rank"], ranks[top])
         self.assertEqual(draw["away_rank"], ranks[bot])
         self.assertGreater(draw["lam_home"], draw["lam_away"])
+
+    def test_assessed_league_gf_expanding_live(self) -> None:
+        prior = assessed_league_gf(None)
+        live = assessed_league_gf(LIVE_E0)
+        self.assertEqual(prior["source"], "closed_prior")
+        self.assertEqual(live["source"], "expanding_assessed")
+        self.assertGreater(live["n_matches"], 0)
+        self.assertGreater(live["g_pm"], 0.5)
+        self.assertLess(live["g_pm"], 2.5)
+        self.assertGreater(live["se_league_gf"], 0.0)
+        self.assertLess(live["se_league_gf"], live["sd_league_gf"])
+
+    def test_lambda_uncertainty_propagates(self) -> None:
+        prop = lambdas_from_gf_ga(
+            80.0,
+            35.0,
+            40.0,
+            60.0,
+            league_gf=56.0,
+            sd_home_gf=10.0,
+            sd_home_ga=5.0,
+            sd_away_gf=8.0,
+            sd_away_ga=6.0,
+            sd_league_gf=2.0,
+        )
+        self.assertGreater(prop["sd_lam_home"], 0.0)
+        self.assertGreater(prop["sd_lam_away"], 0.0)
+        self.assertLess(prop["lam_home_lo"], prop["lam_home"])
+        self.assertGreater(prop["lam_home_hi"], prop["lam_home"])
+        # Leaky away defence raises λ_H vs tight defence.
+        tight = lambdas_from_gf_ga(
+            80.0, 35.0, 40.0, 40.0, league_gf=56.0, sd_away_ga=6.0
+        )
+        self.assertGreater(prop["lam_home"], tight["lam_home"])
+
+    def test_match_prediction_exposes_sd(self) -> None:
+        pred = match_prediction("Arsenal", "Fulham", e0_fname=LIVE_E0)
+        self.assertGreater(pred["sd_lam_home"], 0.0)
+        self.assertGreater(pred["sd_lam_away"], 0.0)
+        self.assertEqual(pred["league"]["source"], "expanding_assessed")
+
+    def test_away_shrink_only_scales_away_lambda(self) -> None:
+        self.assertEqual(AWAY_SHRINK, 1.0)
+        base = lambdas_from_gf_ga(80.0, 35.0, 40.0, 60.0, league_gf=56.0)
+        shrunk = lambdas_from_gf_ga(
+            80.0, 35.0, 40.0, 60.0, league_gf=56.0, away_shrink=0.93
+        )
+        self.assertAlmostEqual(shrunk["lam_home"], base["lam_home"])
+        self.assertAlmostEqual(shrunk["lam_away"], base["lam_away"] * 0.93)
+        pot_h, pot_a = pots_from_season_gf_ga(
+            80.0, 35.0, 40.0, 60.0, league_gf=56.0, away_shrink=0.93
+        )
+        self.assertAlmostEqual(pot_h["lam_scored"], base["lam_home"])
+        self.assertAlmostEqual(pot_a["lam_scored"], base["lam_away"] * 0.93)
+
+    def test_lambda_not_hard_clipped(self) -> None:
+        # Extreme rates would previously clip to [0.20, 3.50].
+        hot = lambdas_from_gf_ga(120.0, 20.0, 20.0, 100.0, league_gf=40.0)
+        self.assertGreater(hot["lam_home"], 3.50)
+        cold = lambdas_from_gf_ga(10.0, 80.0, 80.0, 10.0, league_gf=80.0)
+        self.assertLess(cold["lam_home"], 0.20)
+
+    def test_default_venue_mode_is_blind(self) -> None:
+        self.assertEqual(DEFAULT_VENUE_MODE, "blind")
+        vprof = rank_venue_gf_ga_profile()
+        self.assertEqual(len(vprof), 20)
+        lg = venue_league_means(vprof)
+        self.assertGreater(lg["gf_h_pm"], lg["gf_a_pm"])
+        # Top place scores more at home than bottom place.
+        self.assertGreater(vprof[1]["gf_h_pm"], vprof[20]["gf_h_pm"])
+
+    def test_venue_away_keeps_home_blind(self) -> None:
+        ranks = {r["club_norm"]: float(r["rank"]) for r in load_opta_ranks()}
+        top = min(ranks, key=ranks.get)
+        bot = max(ranks, key=ranks.get)
+        blind = sample_match_from_opta_ranks(
+            top, bot, random.Random(0), ranks=ranks, centre_blend=1.0
+        )
+        away = sample_match_from_opta_ranks(
+            top,
+            bot,
+            random.Random(0),
+            ranks=ranks,
+            centre_blend=1.0,
+            venue_mode="venue_away",
+        )
+        self.assertAlmostEqual(away["lam_home"], blind["lam_home"])
+        self.assertLess(away["lam_away"], blind["lam_away"])
+        self.assertEqual(away["venue_mode"], "venue_away")
+
+    def test_place_venue_ev_finite(self) -> None:
+        out = lambdas_from_place_venue(1, 20, formula="venue")
+        self.assertTrue(out["lam_home"] == out["lam_home"])
+        self.assertTrue(out["lam_away"] == out["lam_away"])
+        self.assertGreater(out["lam_home"], out["lam_away"])
 
 
 if __name__ == "__main__":

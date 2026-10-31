@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:f8c00a1c406f2b66",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/c6kgq9qg28dno?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 29 Oct 2026 17:19:06 GMT",
+  "published_at_utc": "2026-10-29T17:19:06Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "Dowman to miss three matches after appeal rejected",
+  "body": "Arsenal's Max Dowman will miss three matches after an appeal against his sending-off during Tuesday's loss at Fleetwood is rejected.",
+  "player_ids": [],
+  "sha256": "3fadf539265c203bc1d3eadf1ef0d2c337093a88a8f3399f4114448a4a51a8f7"
+}
