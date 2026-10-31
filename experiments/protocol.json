@@ -3025,5 +3025,44 @@
     "climb_sanity_result": "keep wire — wired−legacy inconclusive",
     "pi": "Ollie — keep wired μ on published/centreline",
     "lock_report": "reports/SCORE_XP_V2_RATE_SHARE_WIRE_LOCK.md"
+  },
+  "l4_opta_joint_path_ft_pe_climb": {
+    "pre_registered": "2026-10-31",
+    "status": "running",
+    "role": "Terminal FT potential energy on locked joint_path_opta_decay (wired μ)",
+    "boards": "build_l3_centreline_horizon(H=12); wired rate baseline + full-club shares; Opta far ρ=0.85→0",
+    "baseline": "decay_ft_pe0 — ft_pe_nu=0 (product)",
+    "treatment": "decay_ft_pe4 — ft_pe_nu=HIT_COST (+4 per terminal banked FT; U(f_H)=ν·f_H)",
+    "comparisons": [
+      "decay_ft_pe4_minus_decay_ft_pe0"
+    ],
+    "shared": {
+      "planner": "pick_path_transfer_plan",
+      "wildcard_open": "full score_xp_v2 at gw_start",
+      "seed": "from_owned held 15 after wildcard",
+      "candidates": "full week-0 pool",
+      "value_captain": false,
+      "decay": "ρ=0.85 → 0",
+      "realised": "XI total_points − hits (PE objective-only)",
+      "chips": false,
+      "max_hits": "SQUAD_SIZE",
+      "gamma": 1.0,
+      "horizon": 12
+    },
+    "metric": "paired-by-GW realised XI−hits; cluster_interval four closed seasons",
+    "promote_if": "paired interval lo > 0",
+    "park_if": "hi < 0",
+    "gw_start": 8,
+    "gw_end": 38,
+    "holdout": "2026-27 frozen — not in comparison",
+    "entry": "src/eval/l4_opta_joint_path_ft_pe_climb_gate.py",
+    "report": "reports/l4_opta_joint_path_ft_pe_climb_gate.md",
+    "depends": [
+      "joint_path_opta_decay",
+      "cascade_ft_pe_path",
+      "score_xp_v2_rate_share_wire"
+    ],
+    "prior_diagnostic": "cascade_ft_pe_path — schedule Δ small; not a four-season climb",
+    "any_later_change": "dated protocol update required"
   }
 }
