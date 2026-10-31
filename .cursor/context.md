@@ -36,7 +36,7 @@ Product **μ**: Odds API / FD centreline near (`t`/`t+1`); **Opta blind** λ far
 
 **Likelihood promotes (2026-10-31):** rate baseline Δlog **+0.0024** [+0.0015, +0.0035]; full-club vs thin shares **+0.0101** [+0.0087, +0.0116]. Both promote — wire into published/centreline, then joint-path climb sanity. `reports/rate_baseline_share_pool_likelihood_gate.md`.
 
-**Decay tune climb (2026-10-31, running):** `l4_opta_joint_path_decay_tune` — ρ∈{0.70,0.95} and ρ=0.85→pos_mean vs locked ρ=0.85→0 on joint path.
+**Decay tune climb (2026-10-31):** `l4_opta_joint_path_decay_tune` — ρ=0.70 / 0.95 / pos_mean vs locked ρ=0.85→0 all **inconclusive** (means −0.62 / −0.33 / −0.40). Keep locked decay. `reports/l4_opta_joint_path_decay_tune_gate.md`.
 
 ## Repo freeze sequence (2026-10-20)
 
