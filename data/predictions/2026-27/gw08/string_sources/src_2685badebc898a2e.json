@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:2685badebc898a2e",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sounds/play/p0pj6hvg?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 23 Oct 2026 07:00:00 GMT",
+  "published_at_utc": "2026-10-23T07:00:00Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "Podcast: Euro review & Scottish Premiership preview",
+  "body": "Andy Burke, Scott Allan and Ewan Murray look ahead to the weekend's SPFL fixtures",
+  "player_ids": [],
+  "sha256": "f4cd7864d2b1f74b23644bd194caac6ff412aaebbf616b7d63e815f8246d18a3"
+}

@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw09:timber-could-return-this-weekend",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/30/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-30T16:19:00Z",
+  "club": "Crystal Palace",
+  "player_ids": [
+    644
+  ],
+  "headline": "Timber could return this weekend",
+  "body": "The Guardian team news, 30 Oct 2026: Timber could return this weekend (Crystal Palace) \u2014 doubtful (hamstring); maybe some minutes.",
+  "sha256": "30130b9ecb7c4663fdf6abf2c91183cceec63d27b35abd0d6900059d2837ab70"
+}

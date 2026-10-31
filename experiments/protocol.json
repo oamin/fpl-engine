@@ -41,13 +41,14 @@
       "L1": "src/strategy/layer1_week.py",
       "L2": "src/strategy/decision_value.py (mode=none identity)",
       "L3": "src/strategy/layer3_week.py",
-      "L4": "src/strategy/layer4_week.py / layer4_mupost_priced"
+      "L4": "src/strategy/l3_centreline_horizon.py / layer4_week.py (H=12 centreline)"
     },
     "live_entrypoint": "src/live/numagent_live_pick.py",
-    "live_odds": "Odds API AH+OU+BTTS (region=us) via --fetch-odds or snapshot; optional --with-props (default off)",
+    "live_odds": "Odds API AH+OU+BTTS (region=us) via --fetch-odds or snapshot; prices t and t+1; optional --with-props (default off)",
     "minutes": "news packets + predicted_lineup_roles → xmi",
     "pi_lock_example": "data/predictions/2026-27/gw07/numagent_lock.json",
-    "not": "ep_next freeze decision; score_xp climb as live path; Betfair-only ban of Odds API for Numagent pots",
+    "forecast_mu": "l3_centreline_forecast",
+    "not": "ep_next freeze decision; score_xp climb as live path; Betfair as Numagent near-book default",
     "any_later_change": "dated protocol update required"
   },
   "numagent_1_0": {
@@ -185,12 +186,13 @@
       "src/markets/lineup_roll.py",
       "src/markets/match_outcome.py"
     ],
-    "any_later_change": "dated protocol update required"
+    "any_later_change": "dated protocol update required",
+    "forecast_mu": "Near μ = FD centreline moments → score_team_side (l3_centreline_forecast). Generative strands are scenario/path only — not μ."
   },
   "cascade_long_match_outcome": {
     "locked": "2026-10-20",
     "pi_approved": "2026-10-24",
-    "revised": "2026-10-29 — venue_mode=blind locked as default (PI); AWAY_SHRINK=1.0 / LAM_SHRINK=1.0 identity locked; place×venue / expanding H/A / FD venue-scale / margin-shrink / lag-1 / remaining-balance parked after OOS or MAE FAIL",
+    "revised": "2026-10-29 — venue_mode=blind locked as default (PI); AWAY_SHRINK=1.0 / LAM_SHRINK=1.0 identity locked; place×venue / expanding H/A / FD venue-scale / margin-shrink / lag-1 / remaining-balance parked after OOS or MAE FAIL · 2026-10-30 — L3 centreline forecast lock: Opta blind λ drives far μ via score_team_side; gen MC-mean remains not-μ",
     "prior_revised": "2026-10-27 — away_shrink on λ_A only; default AWAY_SHRINK=1.0; no λ clip (kept); fixed s≠1 parked after OOS FAIL; symmetric HOME_ADV retired",
     "role": "long-horizon t+2… match M + generative player xP",
     "status": "pi_approved_strat",
@@ -219,7 +221,8 @@
       "src/markets/short_horizon_generative.py"
     ],
     "any_later_change": "dated protocol update required; PI re-approval if rank_map, ḡ, latent_draw, venue_mode, away_shrink/lam_shrink identity, or hierarchical scoreline changes",
-    "lock_report": "reports/cascade_long_blind_venue_lock.md"
+    "lock_report": "reports/cascade_long_blind_venue_lock.md",
+    "forecast_mu": "Centreline moments from Opta blind λ → score_team_side (see l3_centreline_forecast). Generative k∼M strands are scenario/path only — not μ."
   },
   "cascade_long_home_adv_lam_screen": {
     "pre_registered": "2026-10-27",
@@ -2268,7 +2271,7 @@
   },
   "l3_opta_lambda_horizon": {
     "pre_registered": "2026-10-30",
-    "status": "done",
+    "status": "locked_strategy_horizon",
     "role": "Alternative to cascade gen: L3/L4 centreline mechanics at freeze t, driven by Opta centreline λ for every target g=t…end",
     "season": "2025-26",
     "decision_gws": "8…horizon_end",
@@ -2282,14 +2285,17 @@
     "pool_residual": "actual minutes>60 at g; n_prior≥3 as-of t; on both boards",
     "metric_primary": "player-GW residual bias/MAE by horizon_offset; paired l3_opta@t − L3@g",
     "why": "Audit whether Opta λ + L3 centreline is a feasible strategy scorer vs generative cascade_short/long",
-    "does_not_change_default": true,
+    "does_not_change_default": false,
     "modules": [
       "src/eval/l3_opta_lambda_horizon.py",
       "src/models/opta_gf_ga_horizon.py",
       "src/markets/numagent_xp.py"
     ],
     "report": "reports/l3_opta_lambda_horizon.md",
-    "result": "2025-26: 31 decisions, n=89444. L3@t+Opta G MAE 0.818 vs L3@g+FD 0.805 (near ΔMAE +0.013, far +0.012). Beats prior generative cascade_long @t (G MAE ≈0.846). CS near slightly better than L3@g (ΔMAE −0.006). Defaults unchanged — promising alternative to cascade gen for strategy scores."
+    "result": "2025-26: 31 decisions, n=89444. L3@t+Opta G MAE 0.818 vs L3@g+FD 0.805 (near ΔMAE +0.013, far +0.012). Beats prior generative cascade_long @t (G MAE ≈0.846). CS near slightly better than L3@g (ΔMAE −0.006). Defaults unchanged — promising alternative to cascade gen for strategy scores. → locked_strategy_horizon 2026-10-30 under l3_centreline_forecast.",
+    "locked": "2026-10-30",
+    "lock_parent": "l3_centreline_forecast",
+    "note": "Locked 2026-10-30 as strategy horizon board under l3_centreline_forecast. MAE diagnostic vs L3@g + beats gen @t; not a player-GW log-score promote pair."
   },
   "m_discrete_event_likelihood_screen": {
     "pre_registered": "2026-10-30",
@@ -2387,6 +2393,130 @@
       "reports/l3_discrete_cs_gc_likelihood_lock.md",
       "reports/l3_fd_arsenal_discrete_cs_gc_from_M_2025-26_gw8-38.md"
     ],
+    "any_later_change": "dated protocol update required"
+  },
+  "l3_centreline_forecast": {
+    "locked": "2026-10-30",
+    "status": "locked",
+    "role": "Product forecast μ: L3/score_xp_v2 centreline mechanics; Odds API/FD λ near; Opta blind λ far; generative MC-mean is not μ.",
+    "near": "Odds API AH+OU+BTTS (live) / FD AH+OU hist → Dixon–Coles M moments → score_team_side (t, t+1 priced)",
+    "far": "Opta place rankmean venue_mode=blind → λ → M moments → score_team_side (t+2…)",
+    "default_horizon": 12,
+    "strategy_horizon_board": "l3_opta_lambda_horizon — freeze rates/shares/α at t; Opta λ for every g∈[t,end]",
+    "strategiser_factory": "src/strategy/l3_centreline_horizon.py",
+    "live_entrypoint": "src/live/numagent_live_pick.py --centreline-horizon",
+    "depends": [
+      "numagent_2_0",
+      "score_xp_v2_rate_baseline_prior",
+      "cascade_long_match_outcome",
+      "cascade_long_blind_venue_lock",
+      "l3_opta_lambda_horizon",
+      "l3_discrete_cs_gc_likelihood"
+    ],
+    "mean_layer": "score_team_side / score_xp_v2 — unchanged assembler",
+    "not_mu": [
+      "generative MC-mean xP",
+      "mode/median M boards",
+      "Opta own-λ ×α≠1",
+      "place×venue / expanding H/A / FD venue-scale / margin-shrink / lag-1 / remaining-balance"
+    ],
+    "evidence": [
+      "viability B1/B2 gen-as-mean clearly_loses",
+      "cascade_eligible_horizon_snapshot (gen long MAE 0.846 vs L3@g 0.820)",
+      "l3_opta_lambda_horizon (L3@t+Opta MAE 0.818 ≈ L3@g 0.805)",
+      "cascade_long_blind_venue_lock 2026-10-29"
+    ],
+    "report": "reports/L3_CENTRELINE_FORECAST_LOCK.md",
+    "index": "reports/CASCADE_LOCKED.md",
+    "any_later_change": "dated protocol update required; PI if breaks published comparison"
+  },
+  "l3_component_climb_gate": {
+    "pre_registered": "2026-10-30",
+    "status": "park_clear_lose",
+    "role": "Strip-down L3 climb: each centreline xP component as μ vs full score_xp_v2",
+    "baseline": "full — score_xp_v2 on as-of FD centreline board",
+    "treatments": ["xp_goals", "xp_assists", "xp_cs", "xp_gc"],
+    "shared": "same FD centreline board; shared wildcard open on full score_xp_v2",
+    "rules": {
+      "value_captain": false,
+      "realised": "XI total_points only (no captain double)",
+      "max_hits": "SQUAD_SIZE (uncapped; −4/hit)"
+    },
+    "metric": "paired-by-GW realised XI−hits; component − full; cluster_interval four closed seasons",
+    "promote_if": "paired interval lo > 0 (per component)",
+    "park_if": "hi < 0",
+    "result": {
+      "xp_goals": {"mean": -7.412, "lo": -10.757, "hi": -3.898, "verdict": "park_clear_lose"},
+      "xp_assists": {"mean": -6.773, "lo": -9.937, "hi": -3.604, "verdict": "park_clear_lose"},
+      "xp_cs": {"mean": -15.151, "lo": -18.530, "hi": -11.865, "verdict": "park_clear_lose"},
+      "xp_gc": {"mean": -26.328, "lo": -31.650, "hi": -21.504, "verdict": "park_clear_lose"}
+    },
+    "note": "All four components clear-lose vs full. Component arms took ~0 hits (smaller μ scale vs HIT_COST=4); full took hits — scale confound for hit economics.",
+    "gw_start": 8,
+    "gw_end": 38,
+    "holdout": "2026-27 frozen — not in comparison",
+    "entry": "src/eval/l3_component_climb_gate.py",
+    "report": "reports/l3_component_climb_gate.md",
+    "any_later_change": "dated protocol update required"
+  },
+  "l3_centreline_horizon_h12_climb": {
+    "pre_registered": "2026-10-30",
+    "status": "inconclusive",
+    "role": "Strategiser horizon: H=12 centreline (FD near + Opta blind far) vs H=2 priced-only L4 on the same locked μ recipes",
+    "treatment": "l3_centreline_h12 — build_l3_centreline_horizon(H=12); γ=1; hard-stop at available boards",
+    "baseline": "l3_priced_h2 — build_mupost_priced_horizon (BOOKIE_DEPTH=2); γ=1",
+    "shared": "mu_post ≡ score_xp_v2 mode=none; shared μ_post wildcard open at gw_start; unconstrained hits (max_hits=15); −4/hit",
+    "metric": "paired-by-GW realised XI+captain−hits; treatment − baseline; cluster_interval four closed seasons",
+    "promote_if": "paired interval lo > 0 on four closed seasons",
+    "park_if": "hi < 0",
+    "result": {
+      "mean_d_pts_gw": -0.558,
+      "lo": -3.059,
+      "hi": 2.034,
+      "covers_zero": true,
+      "pooled_d": -67,
+      "verdict": "inconclusive"
+    },
+    "gw_start": 8,
+    "gw_end": 38,
+    "holdout": "2026-27 frozen — not in comparison",
+    "note": "Transfer-rule / strategiser screen on locked centreline μ — not a μ promote. Opta place = season-final ranks (same as locked horizon dig).",
+    "entry": "src/eval/l3_centreline_h12_climb_gate.py",
+    "report": "reports/l3_centreline_h12_climb_gate.md",
+    "any_later_change": "dated protocol update required"
+  },
+  "l4_component_horizon_climb": {
+    "pre_registered": "2026-10-30",
+    "status": "reported",
+    "role": "Strip-down strategiser: L4+Opta H=12 vs L4 H=2 with μ = one centreline xP component (isolates which pieces hurt long-horizon decisions)",
+    "treatment": "h12_<C> — build_l3_centreline_horizon(H=12); mu_post := C; γ=1",
+    "baseline": "h2_<C> — build_mupost_priced_horizon (BOOKIE_DEPTH=2); mu_post := C; γ=1",
+    "components": ["xp_goals", "xp_assists", "xp_cs", "xp_gc"],
+    "near_scorer": "L4 score_xp_v2 / priced FD (default t:t+1; L4 beat L3 on gated climb)",
+    "far": "Opta blind place λ → score_team_side",
+    "shared": "wildcard open on full score_xp_v2 at gw_start; same component on both arms",
+    "rules": {
+      "value_captain": false,
+      "realised": "XI total_points only (no captain double)",
+      "chips": false,
+      "max_hits": "SQUAD_SIZE (uncapped; −4/hit)",
+      "transfers_xi_bench": true
+    },
+    "metric": "paired-by-GW realised XI−hits; H12 − H2 per component; cluster_interval four closed seasons",
+    "promote_if": "paired interval lo > 0 (per component)",
+    "park_if": "hi < 0",
+    "result": {
+      "xp_goals": {"mean": 2.692, "lo": 0.583, "hi": 4.734, "verdict": "promote"},
+      "xp_assists": {"mean": 2.292, "lo": 0.575, "hi": 4.117, "verdict": "promote"},
+      "xp_cs": {"mean": 0.267, "lo": -2.275, "hi": 2.758, "verdict": "inconclusive"},
+      "xp_gc": {"mean": -0.858, "lo": -2.359, "hi": 0.758, "verdict": "inconclusive"}
+    },
+    "gw_start": 8,
+    "gw_end": 38,
+    "holdout": "2026-27 frozen — not in comparison",
+    "note": "H=12 helps when μ is goals or assists alone; CS/GC inconclusive (not clear-lose). Full-μ H=12 vs H=2 remains inconclusive (l3_centreline_horizon_h12_climb). Not a μ promote. Supersedes mis-aimed l3_component_climb_gate for the long-horizon question.",
+    "entry": "src/eval/l4_component_horizon_climb_gate.py",
+    "report": "reports/l4_component_horizon_climb_gate.md",
     "any_later_change": "dated protocol update required"
   }
 }

@@ -148,6 +148,7 @@ def solve_horizon_transfers(
     max_hits: int = DEFAULT_MAX_HITS,
     hit_penalty: float | None = None,
     time_limit: float = 60.0,
+    value_captain: bool = True,
 ) -> HorizonPlan:
     """Multi-week horizon MILP; returns commit-week TransferWeekPlan in ``week0``.
 
@@ -156,6 +157,9 @@ def solve_horizon_transfers(
 
     ``hit_penalty`` (optional): objective cost per hit; defaults to ``HIT_COST``.
     Realised ``hit_points`` always use official ``HIT_COST`` (gate ≠ rescore).
+
+    ``value_captain=False`` keeps a legal captain each week but drops the captain
+    double from the objective (component / transfer-rule isolation).
     """
     H = int(horizon if horizon is not None else len(pools))
     if H < 1:
@@ -163,6 +167,7 @@ def solve_horizon_transfers(
     if len(pools) < H:
         raise ValueError(f"need {H} weekly pools, got {len(pools)}")
     pools = list(pools[:H])
+    use_cap = bool(value_captain)
 
     # H=1 + zero terminal → exact L3
     if (
@@ -178,6 +183,7 @@ def solve_horizon_transfers(
             max_per_club=max_per_club,
             max_hits=max_hits,
             time_limit=time_limit,
+            value_captain=use_cap,
         )
         return HorizonPlan(
             week0=w0,
@@ -233,7 +239,8 @@ def solve_horizon_transfers(
         w = g**t
         for i in range(n):
             c_obj[ix_s(t, i)] = -w * mu[t][i]
-            c_obj[ix_c(t, i)] = -w * mu[t][i]
+            if use_cap:
+                c_obj[ix_c(t, i)] = -w * mu[t][i]
     # Terminal on squad using last week's μ + mild value (+ optional by-player)
     wT = g**H
     tau_mu = float(terminal_mu_weight)
@@ -423,7 +430,10 @@ def solve_horizon_transfers(
     terminal *= wT
 
     horizon_obj = (
-        sum((g**t) * (week_xi_mu[t] + week_cap_mu[t]) for t in range(H))
+        sum(
+            (g**t) * (week_xi_mu[t] + (week_cap_mu[t] if use_cap else 0.0))
+            for t in range(H)
+        )
         - float(hit_points)
         + terminal
     )
@@ -432,7 +442,7 @@ def solve_horizon_transfers(
     n_mid = int((xi["position"] == "MID").sum())
     n_fwd = int((xi["position"] == "FWD").sum())
     xi_mu0 = week_xi_mu[0]
-    captain_mu0 = week_cap_mu[0]
+    captain_mu0 = week_cap_mu[0] if use_cap else 0.0
     # Week-0 objective piece (L3-style) for TransferWeekPlan.objective
     week0_obj = xi_mu0 + captain_mu0 - float(hit_points)
 

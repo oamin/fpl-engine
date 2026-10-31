@@ -1,0 +1,14 @@
+{
+  "source_id": "skysports:8a05f3643ac81e50",
+  "source": "skysports",
+  "outlet_class": "press",
+  "url": "https://www.skysports.com/football/sheffield-united-vs-wrexham/report/560648",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 30 Oct 2026 22:00:00 GMT",
+  "published_at_utc": "2026-10-30T22:00:00Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "Sheff Utd win first league game against Wrexham in 44 years",
+  "body": "Sheffield United shook off a 44-year hoodoo by beating Wrexham 1-0 in the Championship, winning against the Welsh side in the league for the first time since October 1982.",
+  "player_ids": [],
+  "sha256": "09cb98ecd57cb7a548ed0390f18518f2cda4860979cc11591623e16d827c3672"
+}

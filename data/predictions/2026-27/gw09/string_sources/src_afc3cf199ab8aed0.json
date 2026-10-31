@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:afc3cf199ab8aed0",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/videos/ckq6nvp2ldz5o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Sun, 25 Oct 2026 23:49:41 GMT",
+  "published_at_utc": "2026-10-25T23:49:41Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "How Liverpool's attack impressed against Brighton",
+  "body": "Match of the Day pundits Toby Alderweireld and Ashley Williams analyse Liverpool's impressive attacking display in their 2-0 win against Brighton at Anfield.",
+  "player_ids": [],
+  "sha256": "6c5a57b44cc67c94ee452772795de097e68e8f836f5c76ae7821cc3e95d299af"
+}

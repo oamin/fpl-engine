@@ -1,5 +1,8 @@
 # L3@t + Opta λ horizon — vs contemporaneous L3@g + actuals
 
+**Locked 2026-10-30** as strategy horizon board under `protocol.l3_centreline_forecast`  
+(`locked_strategy_horizon`). See [`L3_CENTRELINE_FORECAST_LOCK.md`](L3_CENTRELINE_FORECAST_LOCK.md).
+
 Season **2025-26** · decisions 31 · horizon_end=38 · n=89444 player-GW cells · wall 116.7s
 
 Pre-registered: `protocol.l3_opta_lambda_horizon`.
@@ -75,9 +78,10 @@ keep **L3/L4 centreline mechanics** (`score_team_side`), but drive far (and near
   centreline+Opta is clearly better — most of the earlier miss was
   **generative dice / MC-mean**, not Opta λ itself.
 - CS: near ΔMAE **−0.006** (slightly beats L3@g); far flat.
-- Feasibility: **promising** as a strategy scorer (L3 mechanics + Opta λ
-  for the unpriced horizon). Not a default flip yet.
-- Defaults unchanged.
+- Feasibility: L3 mechanics + Opta λ for the unpriced horizon beats gen @t
+  and tracks L3@g closely → **locked** as strategy horizon board 2026-10-30
+  (`l3_centreline_forecast`). Not a player-GW log-score promote pair.
+- Mean assembler defaults unchanged (`score_team_side`).
 
 ## Reproduce
 

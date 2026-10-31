@@ -1,17 +1,23 @@
 {
-  "task": "l3_discrete_cs_gc_likelihood_lock",
+  "task": "gw09_numagent_lock_and_stragent",
   "status": "done",
-  "as_of_utc": "2026-10-30T17:06:02Z",
-  "change": "Lock promoted GKP/DEF discrete CS/GC predictive likelihood as eval default",
-  "locked": {
-    "protocol": "l3_discrete_cs_gc_likelihood",
-    "screen": "m_skel_cs_gc_likelihood_screen",
-    "delta_log": "+2.8276 [+2.7980, +2.8579]",
-    "mean_layer_unchanged": true
+  "as_of_utc": "2026-10-31T08:30:00Z",
+  "change": "PI-locked GW9 numagent; froze GW9 stragent paper pick (Muniz→Barry)",
+  "numagent": {
+    "lock": "data/predictions/2026-27/gw09/numagent_lock.json",
+    "report": "reports/numagent_live_pick_gw09.md",
+    "transfers": "B.Fernandes+Wissa → Ødegaard+Isak (−4)",
+    "captain": "Haaland",
+    "vice": "Isak"
   },
-  "parked_not_locked": [
-    "m_discrete_event_likelihood_screen",
-    "generative MC-mean as \u03bc"
-  ],
-  "report": "reports/l3_discrete_cs_gc_likelihood_lock.md"
+  "stragent": {
+    "plan": "data/predictions/2026-27/string_plans/gw09.json",
+    "ledger": "data/predictions/2026-27/string_agent_freeze.jsonl",
+    "report": "reports/stragent_live_pick_gw09.md",
+    "trawl_sources": 197,
+    "transfers": "Muniz → Barry (0 hits)",
+    "captain": "Haaland",
+    "vice": "Rogers",
+    "horizon": "GW10 Guéhi→Van Hecke; GW11 hold"
+  }
 }

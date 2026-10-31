@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:b0356b489b09a2e9",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cmj4jr2vgx0ko?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 02 Oct 2026 06:37:49 GMT",
+  "published_at_utc": "2026-10-02T06:37:49Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "The Unpromotables: Germany's league champions who can't go up",
+  "body": "German football is grappling with a sum that doesn't add up - four promotion spots for five league champions.",
+  "player_ids": [],
+  "sha256": "012f7eb6d88d1fe20f6cebbd260ed5d50338079f17db75332078e8c03477cc54"
+}

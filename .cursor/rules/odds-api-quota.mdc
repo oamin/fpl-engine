@@ -7,9 +7,9 @@ alwaysApply: true
 
 The Odds API free tier is small (~500 credits/month). **Treat every paid call as expensive.** Over-use has already exhausted a key in this project.
 
-**Numagent 2.0 / `score_xp_v2`:** live AH+OU+BTTS pots (and optional anytime props) come from The Odds API via `numagent_live_pick --fetch-odds` or a prior snapshot. That path is intentional — do not delete it. (Numagent 1.0 / ep_next freeze is superseded.)
+**Numagent 2.0 / `score_xp_v2`:** live AH+OU+BTTS pots (and optional anytime props) come from The Odds API via `numagent_live_pick --fetch-odds` or a prior snapshot. That path is intentional — do not delete it. Odds API is the live near book because it prices **t and t+1** AH+OU+BTTS more usefully for L4 than Betfair 1X2 folders. (Numagent 1.0 / ep_next freeze is superseded.)
 
-**Classic climb / `gw_lines.csv` readers:** prefer Betfair Exchange folders (`python3 -m src.live.betfair_lines`). Do not open frozen `data/live/gw_lines.csv` as a live slate.
+**Classic climb / `gw_lines.csv` readers:** may use Betfair Exchange folders (`python3 -m src.live.betfair_lines`). Do not open frozen `data/live/gw_lines.csv` as a live slate.
 
 ## Before any Odds API call
 

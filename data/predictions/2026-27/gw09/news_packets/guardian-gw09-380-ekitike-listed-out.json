@@ -1,0 +1,14 @@
+{
+  "packet_id": "guardian:gw09:ekitike-listed-out",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/30/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-30T16:19:00Z",
+  "club": "Liverpool",
+  "player_ids": [
+    380,
+    380
+  ],
+  "headline": "Ekitike listed out",
+  "body": "The Guardian team news, 30 Oct 2026: Ekitike listed out (Liverpool) \u2014 injured (achilles, Dec).",
+  "sha256": "6970280896379505695b29940aa06af55fff2c197e33cac92ec90df03548ccbc"
+}

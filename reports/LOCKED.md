@@ -6,10 +6,10 @@
 | --- | --- | --- |
 | Live score | captured `ep_next` | **`score_xp_v2`** |
 | Historical / climb score | `score_xp` | `score_xp_v2` (primary); `score_xp` gate baseline only |
-| Pots | opening 1X2 / Betfair `gw_lines` | **Odds API AH+OU+BTTS** (snapshots or `--fetch-odds`) |
-| Transfers | `wildcard_plan` / climb search | **L3 → L4** μ_post priced |
+| Pots | opening 1X2 / Betfair `gw_lines` | **Odds API AH+OU+BTTS** (snapshots or `--fetch-odds`; prices t and t+1) |
+| Transfers | `wildcard_plan` / climb search | **L3 → L4** centreline horizon (priced near + Opta far) |
 | Entry | `deadline` / `wildcard_plan` | **`numagent_live_pick`** |
-| Protocol | `numagent_1_0` | **`numagent_2_0`** |
+| Protocol | `numagent_1_0` | **`numagent_2_0`** · forecast μ [`L3_CENTRELINE_FORECAST_LOCK.md`](L3_CENTRELINE_FORECAST_LOCK.md) |
 
 Do not treat stage_* / GW1–5 / stragent / GW6 `ep_next` dry runs as the live path.
 
@@ -17,10 +17,13 @@ Do not treat stage_* / GW1–5 / stragent / GW6 `ep_next` dry runs as the live p
 
 | Artifact | Path |
 | --- | --- |
-| **GW7 PI lock** | `data/predictions/2026-27/gw07/numagent_lock.json` |
-| Pick report | `reports/numagent_live_pick_gw07.md` |
-| Live entrypoint | `python -m src.live.numagent_live_pick --gw N` |
-| Odds refresh | `… --fetch-odds` (region=`us`; quota rule) |
+| **GW9 PI lock** | `data/predictions/2026-27/gw09/numagent_lock.json` |
+| Pick report | `reports/numagent_live_pick_gw09.md` |
+| GW8 PI lock | `data/predictions/2026-27/gw08/numagent_lock.json` |
+| GW7 PI lock | `data/predictions/2026-27/gw07/numagent_lock.json` |
+| Live entrypoint | `python -m src.live.numagent_live_pick --gw N --centreline-horizon 2` (priced H=2; Opta far not for live) |
+| Odds refresh | `… --fetch-odds` (region=`us`; quota rule — prefer snapshots) |
+| Forecast μ | [`L3_CENTRELINE_FORECAST_LOCK.md`](L3_CENTRELINE_FORECAST_LOCK.md) · `src/strategy/l3_centreline_horizon.py` |
 
 ## Scorer (`score_xp_v2` — Numagent 2.0 primary)
 
@@ -33,7 +36,7 @@ Do not treat stage_* / GW1–5 / stragent / GW6 `ep_next` dry runs as the live p
 | Share-SE position×minutes | 2026-10-17 | `score_xp_v2_share_se_pos_prior.md` | +0.0195 [+0.0158, +0.0234] |
 | Same-season shares | 2026-10-16 | protocol `score_xp_v2_share_history` | no prior-season fill |
 | Live α refresh | 2026-10-16 | protocol `score_xp_v2_alphas` | prior + live counts |
-| Live pots (Odds API) | 2026-10-16 | protocol `score_xp_v2_live_props` + quota rule | AH+OU+BTTS; props default **off** |
+| Live pots (Odds API) | 2026-10-16 | protocol `score_xp_v2_live_props` + quota rule | AH+OU+BTTS for t:t+1; props default **off** |
 | Props formula | 2026-10-20 | `score_xp_v2_live_props` | **π from props, level from M**; assists no overlay; lift-only parked |
 
 Assembler: `src/markets/numagent_xp.py`. Defaults: `share_se_shrink=True`, `share_se_prior=position_minutes`, props **off**.
@@ -47,19 +50,26 @@ Assembler: `src/markets/numagent_xp.py`. Defaults: `share_se_shrink=True`, `shar
 | L2 μ_post ≡ score_xp_v2 | 2026-10-16 | `se_credibility.md` (historical constant screen) | `mode=none` |
 | L3 transfers | 2026-10-14 | `strategy_layer3_audit.md` | audit 6/6 |
 | L4 horizon | 2026-10-15 | `strategy_layer4_audit.md` | H=1 ≡ L3 |
-| **L4 μ_post priced γ=1** | 2026-10-15/16 | `layer4_mupost_gamma1.md` | **default**; BOOKIE_DEPTH=2 |
+| **L4 μ_post priced γ=1** | 2026-10-15/16 | `layer4_mupost_gamma1.md` | priced near BOOKIE_DEPTH=2 |
+| **L4 centreline horizon H=12** | 2026-10-30 | `L3_CENTRELINE_FORECAST_LOCK.md` | **default**; t:t+1 priced + t+2…t+11 Opta blind |
 | Planning glue (captain=μ) | 2026-10-15 | `fixture_planning_glue.md` | haul/CVaR cover 0 |
 | L5 beam K=8 | 2026-10-16 | `layer5_vs_l4_k_rescreen.md` | width only; L4 stays default |
 
 Roadmap: `strategy_layers.md`.
 
 
-## Eval likelihood (locked 2026-10-30)
+## Forecast μ (locked 2026-10-30)
 
-| Lock | Date | Report | Δ / note |
+Front door: [`L3_CENTRELINE_FORECAST_LOCK.md`](L3_CENTRELINE_FORECAST_LOCK.md) · cascade index [`CASCADE_LOCKED.md`](CASCADE_LOCKED.md).
+
+| Lock | Date | Report | Note |
 | --- | --- | --- | --- |
-| Discrete CS/GC from M (GKP/DEF) | 2026-10-30 | `l3_discrete_cs_gc_likelihood_lock.md`, `m_skel_cs_gc_likelihood_screen.md` | Δ **+2.828** [+2.798, +2.858]; mean μ unchanged; Bern/cat vs Gaussian CS/GC |
+| L3 centreline forecast | 2026-10-30 | `L3_CENTRELINE_FORECAST_LOCK.md` | FD near / Opta blind far → `score_team_side`; gen MC-mean **not** μ |
+| Strategy horizon board | 2026-10-30 | `l3_opta_lambda_horizon.md` | L3@t freeze + Opta λ for `g=t…end` |
+| Opta club λ defaults | 2026-10-29 (PI) | `cascade_long_blind_venue_lock.md` | `venue_mode=blind`; identity shrinks |
+| Discrete CS/GC likelihood (eval) | 2026-10-30 | `l3_discrete_cs_gc_likelihood_lock.md` | Δ **+2.828** [+2.798, +2.858]; μ unchanged |
 | Factored-vs-Gaussian-total | 2026-10-30 · **parked** | `m_discrete_event_likelihood_screen.md` | clear lose (incommensurate) |
+| Gen MC-mean as μ | · **parked** | viability B1/B2; `cascade_short_mean_tt1_vs_gen.md` | clearly_loses |
 
 ## Parked screens (clear lose or cover 0)
 

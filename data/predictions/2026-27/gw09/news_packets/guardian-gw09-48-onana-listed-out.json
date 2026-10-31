@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw09:onana-listed-out",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/30/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-30T16:19:00Z",
+  "club": "Aston Villa",
+  "player_ids": [
+    48
+  ],
+  "headline": "Onana listed out",
+  "body": "The Guardian team news, 30 Oct 2026: Onana listed out (Aston Villa) \u2014 injured (knee).",
+  "sha256": "fc49e4e16a3e89ba7d907ff24715064a590f7fb1e1ad62e28ee4161b1214b8a4"
+}

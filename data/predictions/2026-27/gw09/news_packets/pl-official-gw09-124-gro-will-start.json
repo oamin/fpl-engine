@@ -1,0 +1,13 @@
+{
+  "packet_id": "pl_official:gw09:gro-will-start",
+  "source": "pl_official",
+  "url": "https://www.premierleague.com/en/news/4750527/predicted-line-ups-for-premier-league-teams-in-matchweek-9/",
+  "published_at_utc": "2026-10-30T12:00:00Z",
+  "club": "Brighton",
+  "player_ids": [
+    124
+  ],
+  "headline": "Gro\u00df will start",
+  "body": "Premier League Bloom predicted line-ups, Matchweek 9 (30 Oct 2026): Brighton projected with Gro\u00df in midfield away at Manchester City.",
+  "sha256": "d1318359cb97caa2192fcc0d4821e13d4b882c0bc5f2759c66b09d32e7c8f0c9"
+}

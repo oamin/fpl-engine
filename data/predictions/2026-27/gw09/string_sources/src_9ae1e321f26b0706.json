@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:9ae1e321f26b0706",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cm4g1q54pj20o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Mon, 26 Oct 2026 14:12:43 GMT",
+  "published_at_utc": "2026-10-26T14:12:43Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "Which game will Chelsea's Palmer miss after red card?",
+  "body": "BBC Sport's Ask Me Anything team explains why Cole Palmer's red card suspension will not rule him out of Chelsea's Premier League match against Manchester United.",
+  "player_ids": [],
+  "sha256": "941809fdc88d2d86ad6b3711d48c3c942412786ac09aa2937d7a36b7ce3da1f5"
+}

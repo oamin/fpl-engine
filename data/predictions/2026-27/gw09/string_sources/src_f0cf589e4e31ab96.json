@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:f0cf589e4e31ab96",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cq99zlpzm87ro?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Sat, 31 Oct 2026 06:44:38 GMT",
+  "published_at_utc": "2026-10-31T06:44:38Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "AC Milan v Inter and the tale of an iconic image",
+  "body": "AC Milan versus Inter will be shown live on the BBC on Saturday - this is the story of the fixture's most iconic image.",
+  "player_ids": [],
+  "sha256": "d840e3daba3ecef38b4d6e9dd94a2f62e2c0d87d39e09b836f7c6c41b4e1781c"
+}

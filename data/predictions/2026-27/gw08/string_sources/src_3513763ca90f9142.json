@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:3513763ca90f9142",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/c6z981p24q1eo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 22 Oct 2026 21:30:31 GMT",
+  "published_at_utc": "2026-10-22T21:30:31Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "Dream night for Bournemouth - win over Milan a sign of Premier League power",
+  "body": "Bournemouth's 3-0 win against AC Milan further illustrated the dominance of Premier League sides against their European counterparts.",
+  "player_ids": [],
+  "sha256": "4ac256826c5e4f21830a455362a1d304a740d66afc479a3ce0c6354f20986019"
+}

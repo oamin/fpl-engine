@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:7ee347fa515ca31f",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/videos/c6073jevmk3go?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Mon, 26 Oct 2026 12:02:22 GMT",
+  "published_at_utc": "2026-10-26T12:02:22Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "All the goals from the Women's Super League - matchweek seven",
+  "body": "Watch every goal from matchweek seven of the Women's Super League 2026-27 season.",
+  "player_ids": [],
+  "sha256": "0194a2a9ce7f62751ddce123bb10a2048367d582ea90908ab572a43c5d694302"
+}

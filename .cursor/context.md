@@ -1,8 +1,32 @@
 # Architectural state
 
-Updated: 2026-10-30. **Numagent 2.0** is the product on main (`protocol.numagent_2_0`) — **supersedes Numagent 1.0**. Parked hypotheses: `.cursor/ideas.md`. Stage archaeology: root `CONTEXT.md` and `reports/SUPERSEDED.md`. Canonical index: `reports/LOCKED.md`. Cascade locked index: [`reports/CASCADE_LOCKED.md`](../reports/CASCADE_LOCKED.md).
+Updated: 2026-10-31. **Numagent 2.0** is the product on main (`protocol.numagent_2_0`) — **supersedes Numagent 1.0**. Parked hypotheses: `.cursor/ideas.md`. Stage archaeology: root `CONTEXT.md` and `reports/SUPERSEDED.md`. Canonical index: `reports/LOCKED.md`. Cascade locked index: [`reports/CASCADE_LOCKED.md`](../reports/CASCADE_LOCKED.md).
+
+## Live — GW9 PI lock (2026-10-31)
+
+**Locked into FPL.** Artifact: [`data/predictions/2026-27/gw09/numagent_lock.json`](../data/predictions/2026-27/gw09/numagent_lock.json).
+
+**Priced L4 H=2 only** (no Opta far — Opta centreline not ready for live). Deep whitelist news + FFScout XIs → `gw09_xmi_probe.csv`. Cap `max_hits=1`.
+
+**Plan:** sell B.Fernandes + Wissa → buy Ødegaard + Isak (−4); C Haaland / VC Isak; bench Verbruggen → Thomas → Rudoni → Khalaili. Horizon obj **119.03**. L3 contrast: Murillo → Van Hecke. Report: `reports/numagent_live_pick_gw09.md`.
+
+### Stragent paper (GW9)
+
+Official freeze on the paper track (not the live entry). Trawl 197 `string_sources`. **Muniz → Barry** (0 hits); C Haaland / VC Rogers; bench Forster → Guéhi → Mazraoui → Cherki. Horizon: GW10 Guéhi→Van Hecke; GW11 hold. `reports/stragent_live_pick_gw09.md` · `string_plans/gw09.json`.
 
 **Cascade consolidation (2026-10-23):** locked / cascade_default pieces from #101–#106 (rate baseline, joint path, γ=1, FT PE, bench α reject; deadline-causal diagnostic) fast-forwarded onto `cursor/club-expanding-gf-ga-2025-26-cc3d` for landing on `main`.
+
+## Locked — L3 centreline forecast (2026-10-30)
+
+**Front door:** [`reports/L3_CENTRELINE_FORECAST_LOCK.md`](../reports/L3_CENTRELINE_FORECAST_LOCK.md).
+
+Product **μ**: Odds API / FD centreline near (`t`/`t+1`); **Opta blind** λ far (`t+2…`); both → `score_team_side`. Strategy horizon default **H=12** (`src/strategy/l3_centreline_horizon.py` → live `numagent_live_pick` + hist `build_l3_centreline_horizon`). Gen MC-mean **not** μ. Discrete CS/GC likelihood locked separately for eval. `protocol.l3_centreline_forecast`.
+
+**Stack:** land cascade + centreline locks onto `main` via the existing PR chain; do not open parallel μ screens until the live board is exercised.
+
+**H=12 vs H=2 climb gate (2026-10-30):** pre-registered `l3_centreline_horizon_h12_climb` → **inconclusive** (Δ −0.558/GW [−3.06, +2.03]; covers 0). H=12 cuts hits in early seasons but loses 2024-25/2025-26. Not a promote; default H remains a product choice pending PI. `reports/l3_centreline_h12_climb_gate.md`.
+
+**Component climb gate (2026-10-30):** mis-aimed L3 component-vs-full one-week — parked. **Corrected:** `l4_component_horizon_climb` — L4 H=12 (Opta far) vs L4 H=2, `mu_post :=` one component, no captain/chips. **G/A promote** (+2.69 / +2.29); CS/GC inconclusive. `reports/l4_component_horizon_climb_gate.md`.
 
 ## Repo freeze sequence (2026-10-20)
 
@@ -13,7 +37,7 @@ Updated: 2026-10-30. **Numagent 2.0** is the product on main (`protocol.numagent
 | **3. Decompose v2 for cascade** | **done** | [`CASCADE_CONTRACT.md`](../reports/CASCADE_CONTRACT.md); `src/strategy/layer4_mu_inject.py` (`pools_from_mu_boards` → `solve_horizon_transfers`). Long-horizon λ→xP stays `cascade_score_v2`. |
 | **4. Cascade rebuild plan** | **done** | [`CASCADE_PLAN.md`](../reports/CASCADE_PLAN.md): **cascade_short** / **cascade_long**, shared [`player_pool`](../src/models/player_pool.py). Scorer gate: [`SCORE_XP_V2_CHECKLIST.md`](../reports/SCORE_XP_V2_CHECKLIST.md) — confirm before path-V screens. |
 | **5. cascade_short generative** | **done** | `protocol.cascade_short_generative` locked 2026-10-20 (PR #96 / #97): centreline `M`→`k∼M` (**no λ ±15% jitter**)→lineup→attack→CS/GC; soft priors = `score_xp_v2` helpers; firm XI deferred. |
-| **6. cascade_long Opta generative** | **PI-approved 2026-10-24**; **venue blind locked 2026-10-29** | `protocol.cascade_long_match_outcome`: rankmean±SD latents (`centre_blend=0.5`) → assessed expanding ḡ → λ → `M\|λ` → `k∼M` (hierarchical; no second λ jitter; OLS/`HOME_ADV=1.08` retired); **`venue_mode=blind`** + identity `AWAY_SHRINK`/`LAM_SHRINK` locked (PI); player stack = cascade_short generative **without props**. `reports/cascade_long_blind_venue_lock.md`. |
+| **6. cascade_long Opta generative** | **PI-approved 2026-10-24**; **venue blind locked 2026-10-29** | `protocol.cascade_long_match_outcome`: rankmean±SD latents (`centre_blend=0.5`) → assessed expanding ḡ → λ → `M\|λ` → `k∼M` (hierarchical; no second λ jitter; OLS/`HOME_ADV=1.08` retired); **`venue_mode=blind`** + identity `AWAY_SHRINK`/`LAM_SHRINK` locked (PI); player stack = cascade_short generative **without props**. **2026-10-30:** Opta blind λ also drives **far centreline μ** via `score_team_side` (`l3_centreline_forecast`); gen MC-mean remains not-μ. `reports/cascade_long_blind_venue_lock.md` · `reports/L3_CENTRELINE_FORECAST_LOCK.md`. |
 | **7. Cascade viability overnight** | **done** | `cascade_viability_batch` A/D green; C FT+cap smoke OK; B1/B2 gen MC-mean **clearly_loses** vs centreline mean (Δ≈−0.09); B3 inconclusive. Gen-as-mean **parked** — `reports/cascade_short_long_viability_results.md`. |
 | **8. Mean t:t+1 vs short gen** | **done** | N_MC=20 product horizon: still **clearly_loses** (Δ≈−0.054). `reports/cascade_short_mean_tt1_vs_gen.md`. |
 | **9. Path-V gen vs mean MILP** | **done (diagnostic)** | FT+cap N=20: both solve; gen hits≈7.2 vs mean≈1.6; top-15 Jaccard≈0.36. Not a path-V promote. `reports/cascade_pathv_gen_vs_mean.md`. |
@@ -179,7 +203,7 @@ G stayed positive — `cascade_vs_l3_component_xp_multiseed.md`.
 
 ## Plan
 
-Pre-deadline squad advisor under 2026/27 rules. Cursor implements and screens; Gemini proposes formulae; the PI reads gated batches. A result needs the as-of audit and paired intervals on 2022-23…2025-26 (`write_gated_report`). **Numagent 2.0 pots** use The Odds API (AH+OU+BTTS; quota-aware — `.cursor/rules/odds-api-quota.mdc`). Classic climb `gw_lines` may use Betfair. The live 2026/27 holdout is frozen — do not fit on it.
+Pre-deadline squad advisor under 2026/27 rules. Cursor implements and screens; Gemini proposes formulae; the PI reads gated batches. A result needs the as-of audit and paired intervals on 2022-23…2025-26 (`write_gated_report`). **Numagent 2.0 live pots** use The Odds API (AH+OU+BTTS for t:t+1; quota-aware — `.cursor/rules/odds-api-quota.mdc`). Forecast μ: [`L3_CENTRELINE_FORECAST_LOCK.md`](../reports/L3_CENTRELINE_FORECAST_LOCK.md). The live 2026/27 holdout is frozen — do not fit on it.
 
 ## Locked stack — Numagent 2.0
 
@@ -190,8 +214,8 @@ Pre-deadline squad advisor under 2026/27 rules. Cursor implements and screens; G
 | **Shares** | share-SE → position×minutes prior; goal **π∝r·m** (π∝r parked) | prior 2026-10-17 · π∝r park 2026-10-27 | `reports/score_xp_v2_share_se_pos_prior.md` · `score_xp_v2_goal_share_rate.md` |
 | **μ_post** | ≡ `score_xp_v2` (shrink `mode=none`) | locked 2026-10-16 | `protocol.strategy_layer2_shrinkage` |
 | **Transfers** | L3 single-deadline | locked | `src/strategy/layer3_week.py` |
-| **Horizon** | L4 μ_post priced, `BOOKIE_DEPTH=2`, γ=1 | **strategiser default** | `src/strategy/layer4_week.py` · `reports/layer4_mupost_gamma1.md` |
-| **Live pick** | `numagent_live_pick` (props **off**) | GW7 PI lock | `src/live/numagent_live_pick.py` |
+| **Horizon** | L4 centreline H=12: priced t:t+1 + Opta blind t+2…t+11, γ=1 | **strategiser default** | `src/strategy/l3_centreline_horizon.py` · `layer4_week.py` · `L3_CENTRELINE_FORECAST_LOCK.md` |
+| **Live pick** | `numagent_live_pick` (props **off**; `--centreline-horizon`) | GW7 PI lock · centreline 2026-10-30 | `src/live/numagent_live_pick.py` |
 | **cascade_short** | priced t:t+1 generative: centreline `M`→`k∼M` (no λ jitter) | locked 2026-10-20 | `cascade_short` / `short_horizon_generative` · `protocol.cascade_short_generative` |
 | **cascade_long** | rankmean±SD latents; assessed ḡ; hierarchical λ→`M\|λ`→`k∼M`; **`venue_mode=blind`** + identity shrinks; generative xP, props off | **PI-approved 2026-10-24**; **blind locked 2026-10-29** | `cascade_long` / `multistage_mc_milp` · `protocol.cascade_long_match_outcome` · `reports/cascade_long_blind_venue_lock.md` |
 | **cascade rates** | historical player/positional rate baseline | cascade_default | `src/markets/rate_baseline.py` · `protocol.score_xp_v2_rate_baseline_prior` |
@@ -257,7 +281,7 @@ Screens: `reports/match_band_calibration.md`, `reports/player_ga_finish.md`,
 
 ### Strategiser defaults
 
-- L1 joint MILP on absolute μ; L2 identity attach; L3 transfers+hits; **L4 priced path** week-t = L3 board, t+1 = projected `score_xp_v2` on book pots only (never an unpriced week)
+- L1 joint MILP on absolute μ; L2 identity attach; L3 transfers+hits; **L4 centreline horizon** = priced t:t+1 + Opta blind far (`protocol.l3_centreline_forecast`, default H=12)
 - L5 beam screened, not promoted (K=8 locked as beam width only) — L4 stays default
 - Captain = max μ; stack-vs-diversify diagnostic only (`reports/fixture_planning_glue.md`)
 
@@ -265,10 +289,11 @@ Screens: `reports/match_band_calibration.md`, `reports/player_ga_finish.md`,
 
 ```
 python -m src.live.numagent_live_pick --gw N
-python -m src.live.numagent_live_pick --gw N --fetch-odds   # Odds API, region=us
+python -m src.live.numagent_live_pick --gw N --fetch-odds   # Odds API, region=us; t+t+1
+python -m src.live.numagent_live_pick --gw N --centreline-horizon 12   # default
 ```
 
-Prefer `--from-snapshot` / `data/scratch/gwNN_odds_*.json` when the book is already pulled. `--fetch-odds` refreshes AH+OU+BTTS for Dixon–Coles pots (props off unless `--with-props`). Classic climb `gw_lines` readers may still use Betfair folders; frozen `data/live/gw_lines.csv` is not a live book.
+Live near book = Odds API AH+OU+BTTS (covers t and t+1). Prefer `--from-snapshot` / `data/scratch/gwNN_odds_*.json` when already pulled. Frozen `data/live/gw_lines.csv` is not a live book.
 
 ### Latest PI lock — GW7 (2026-10-17)
 
@@ -285,7 +310,7 @@ Hold 1.25, switch penalty 1.0, buy gate three prior appearances and xmi≥45. Em
 
 ## Locked — discrete CS/GC predictive likelihood (GKP/DEF, 2026-10-30)
 
-Pre-registered same-skeleton screen **locked** as eval default (Δ log +2.828 [+2.798, +2.858]). Bernoulli/categorical CS/GC from M; mean board unchanged. `protocol.l3_discrete_cs_gc_likelihood` · `reports/l3_discrete_cs_gc_likelihood_lock.md`.
+Eval default under the centreline forecast lock (Δ log +2.828 [+2.798, +2.858]). Bernoulli/categorical CS/GC from M; μ unchanged. `protocol.l3_discrete_cs_gc_likelihood`.
 
 ## Parked — discrete M-event likelihood vs Gaussian-on-total (2026-10-30)
 
@@ -297,7 +322,7 @@ Cleaned GKP/DEF re-registration locked — see Locked note above. `reports/m_dis
 
 Full list: `.cursor/ideas.md` and `reports/LOCKED.md` §Parked.
 
-Highlights: anytime props as live default; share-SE all-minutes / scorers-only; minutes decay ρ=0.7; L4 risk/chase/window/beyond-t+2 form fills; L4 FT-DP / chip half-stop; L5 as strategiser; constant-K μ_post shrink; Betfair pot source on US cloud (geo-blocked — Mac worker only).
+Highlights: anytime props as live default; share-SE all-minutes / scorers-only; minutes decay ρ=0.7; L4 risk/chase/window/beyond-t+2 form fills; L4 FT-DP / chip half-stop; L5 as strategiser; constant-K μ_post shrink.
 
 ## Rules still in force
 

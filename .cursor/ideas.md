@@ -1,3 +1,27 @@
+## Locked — L3 centreline forecast (FD near / Opta blind far) (2026-10-30)
+
+Product μ: `score_team_side` centreline. Near = FD λ; far = Opta blind λ.
+Strategy horizon board = L3@t freeze + Opta λ for g=t…end. Gen MC-mean is
+not μ. `protocol.l3_centreline_forecast` · `reports/L3_CENTRELINE_FORECAST_LOCK.md`.
+
+## Parked — single-component L3 climbs vs full xp (2026-10-30)
+
+**Wrong question for long-horizon isolation.** Compared each component vs full
+on an L3 one-week climb. All clear-lose vs full `score_xp_v2`:
+G −7.4, A −6.8, CS −15.2, GC −26.3 pts/GW. Component arms took ~0 hits
+(μ scale ≪ HIT_COST). `reports/l3_component_climb_gate.md`.
+
+**Corrected screen (2026-10-30):** `l4_component_horizon_climb` — L4+Opta
+H=12 vs L4 H=2 with `mu_post :=` one component; no captain/chips.
+**G / A promote** H=12 (+2.69 / +2.29 pts/GW); **CS / GC inconclusive**.
+Full-μ H=12 vs H=2 stays inconclusive. `reports/l4_component_horizon_climb_gate.md`.
+
+## Inconclusive — H=12 centreline climb vs H=2 priced (2026-10-30)
+
+Pre-registered `l3_centreline_horizon_h12_climb`: paired GW Δ **−0.558**
+[−3.059, +2.034] (covers 0). Not a promote of H=12 over H=2 on realised
+points; not a clear lose. `reports/l3_centreline_h12_climb_gate.md`.
+
 ## Locked — discrete CS/GC predictive likelihood (GKP/DEF) (2026-10-30)
 
 Pre-registered same-skeleton screen **locked** as eval default:
@@ -10,8 +34,8 @@ mean layer unchanged. `protocol.l3_discrete_cs_gc_likelihood` ·
 Pre-registered pair **clearly loses**: Δ log **−4.617** [−4.632, −4.602].
 Summing five component logs is not commensurate with one Gaussian on totals.
 Mean layer unchanged. Same-skeleton diagnostic was inflated by MID/FWD; cleaned GKP/DEF
-re-registration **promoted** — see Kept note below / `m_skel_cs_gc_likelihood_screen`.
-`reports/m_discrete_event_likelihood_screen.md`.
+re-registration **locked** — see Locked discrete CS/GC note /
+`m_skel_cs_gc_likelihood_screen`. `reports/m_discrete_event_likelihood_screen.md`.
 
 ## Parked — Opta own-λ ×α (Arsenal club dig, 2026-10-30)
 
@@ -22,12 +46,6 @@ helps 2024-25 / 2025-26 ΣG; **worsens** under-print on 2022-23 / 2023-24.
 path. `LAM_SHRINK` / `AWAY_SHRINK` stay 1.0. Four-season rollup:
 `reports/l3_opta_own_alpha076_arsenal_four_season.md`.
 
-## Noted — L3@t + Opta λ horizon (2026-10-30)
-
-L3 centreline freeze at t + Opta blind λ for g=t…end. Much closer to
-contemporaneous L3@g than generative cascade_long (G MAE 0.818 vs 0.805;
-gen was ≈0.846). Candidate strategy scorer — not yet promoted.
-`reports/l3_opta_lambda_horizon.md`.
 
 ## Noted — eligible horizon snapshots vs L3@g (2026-10-30)
 
@@ -730,7 +748,7 @@ Parked 2026-10-15 after `protocol.fixture_planning_glue`. Captain by P(xp≥8) o
 
 Trialled 2026-10-15 (`reports/layer4_bookie_trial.md`). Used cov **draw-mean as μ** (replaced `mu_post`) — wrong structure; all arms lost to L3. Parked. Correct structure is `strategy_layer4_mupost_priced`: week-t = L3 `mu_post`; look-ahead = projected point score on book pots; cov draws reserved for risk only. That path clears L3 (+2.90/GW under prior depth-3 boards). Do not reopen cov-as-μ without a new protocol lock.
 
-**Book depth lock 2026-10-16:** live Odds API prices ~t and t+1 only (~9d). `BOOKIE_DEPTH=2`. L3 = week t; L4 priced = t:t+1 hard-stop. Do not forecast weeks without book lines (t+2 and beyond stay out of the decision boards; calendar fills are strength-only and not the L4 default).
+**Book depth lock 2026-10-16 (updated 2026-10-30):** priced near still `BOOKIE_DEPTH=2` (t, t+1). Live near book = **Odds API** AH+OU+BTTS (better t+1 coverage than Betfair 1X2). Far weeks use locked **Opta blind** centreline under `l3_centreline_forecast` (default strategiser H=12), not strength-only calendar fills.
 
 ## Share-SE shrink (≠ total xp_se EB)
 

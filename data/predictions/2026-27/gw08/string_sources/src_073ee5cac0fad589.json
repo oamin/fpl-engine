@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:073ee5cac0fad589",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/videos/cw77p6z7enlko?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Mon, 19 Oct 2026 09:10:36 GMT",
+  "published_at_utc": "2026-10-19T09:10:36Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "Watch: Best of the weekend's SPFL action",
+  "body": "Watch the best of the action from the weekend's action in the Scottish Championship, League 1 and League 2.",
+  "player_ids": [],
+  "sha256": "8068a4c3543d9530a8a6278973d1e03b2b30518d7782fa991fdc33e9e52c2e4f"
+}

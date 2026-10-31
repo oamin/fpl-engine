@@ -1,0 +1,1203 @@
+{
+  "source": "https://www.fantasyfootballscout.co.uk/team-news",
+  "fetched_at": "2026-10-31T07:45:32.860375+00:00",
+  "n_clubs": 20,
+  "availability": {
+    "predicted_xi": true,
+    "out_doubt_banned": true,
+    "nailed_on_label": false,
+    "firm_label": false,
+    "members_projections": false,
+    "mapping": "firm/nailed_on := predicted XI minus Out, Banned, and Doubts; firm_selection := predicted XI minus Out/Banned"
+  },
+  "clubs": [
+    {
+      "code": "ars",
+      "club": "Arsenal",
+      "club_norm": "arsenal",
+      "opponent": "Liverpool (A)",
+      "predicted_xi": [
+        "Raya Martin",
+        "White",
+        "Konsa Ngoyo",
+        "Gabriel Magalh\u00e3es",
+        "Calafiori",
+        "Rice",
+        "Bruno Guimar\u00e3es",
+        "Madueke",
+        "Odegaard",
+        "Eze",
+        "Havertz"
+      ],
+      "out": [
+        "Saka",
+        "Saliba"
+      ],
+      "doubts": [
+        {
+          "name": "Calafiori",
+          "chance": "75%"
+        },
+        {
+          "name": "Madueke",
+          "chance": "75%"
+        },
+        {
+          "name": "Rice",
+          "chance": "75%"
+        },
+        {
+          "name": "Tzolis",
+          "chance": "75%"
+        }
+      ],
+      "banned": [
+        "Dowman"
+      ],
+      "firm": [
+        "Raya Martin",
+        "White",
+        "Konsa Ngoyo",
+        "Gabriel Magalh\u00e3es",
+        "Bruno Guimar\u00e3es",
+        "Odegaard",
+        "Eze",
+        "Havertz"
+      ],
+      "firm_selection": [
+        "Raya Martin",
+        "White",
+        "Konsa Ngoyo",
+        "Gabriel Magalh\u00e3es",
+        "Calafiori",
+        "Rice",
+        "Bruno Guimar\u00e3es",
+        "Madueke",
+        "Odegaard",
+        "Eze",
+        "Havertz"
+      ],
+      "news": "Bukayo Saka (quad) and William Saliba (back) remain out, while Arsenal's appeal against Max Dowman's midweek red card has failed, so the teenager begins a three-match ban. Mikel Arteta did provide a triple injury boost (if we believe him) elsewhere, however, saying that Riccardo Calafiori (hip/ribs), Christos Tzolis (hamstring) and Declan Rice (hamstring) all trained on Friday and adding that \"if everything is okay, they will be available\" for Sunday's game. He perhaps wasn't quite so upbeat on "
+    },
+    {
+      "code": "avl",
+      "club": "Aston Villa",
+      "club_norm": "aston villa",
+      "opponent": "Fulham (H)",
+      "predicted_xi": [
+        "Suzuki",
+        "Cash",
+        "Lindelof",
+        "Torres",
+        "Maatsen",
+        "Kamara",
+        "Jo\u00e3o Gomes",
+        "Alysson Edward",
+        "McGinn",
+        "Manzambi",
+        "Jackson"
+      ],
+      "out": [
+        "Mvom Onana",
+        "Ruggeri",
+        "Wan-Bissaka"
+      ],
+      "doubts": [],
+      "banned": [],
+      "firm": [
+        "Suzuki",
+        "Cash",
+        "Lindelof",
+        "Torres",
+        "Maatsen",
+        "Kamara",
+        "Jo\u00e3o Gomes",
+        "Alysson Edward",
+        "McGinn",
+        "Manzambi",
+        "Jackson"
+      ],
+      "firm_selection": [
+        "Suzuki",
+        "Cash",
+        "Lindelof",
+        "Torres",
+        "Maatsen",
+        "Kamara",
+        "Jo\u00e3o Gomes",
+        "Alysson Edward",
+        "McGinn",
+        "Manzambi",
+        "Jackson"
+      ],
+      "news": "The broadcast section of Unai Emery\u2019s presser was short on team news, so we\u2019re not aware of any issues beyond Aaron Wan-Bissaka and Matteo Ruggeri (both hamstring), who will both be out for a few more weeks, plus long-term absentee Amadou Onana (knee). Right after the cameras cut off, however, there was a question on the midweek absences of Johan Manzambi and Nicolas Jackson, with Emery saying that their breathers were for \"different reasons, not only rest\". Since then, it's been noted that Jack"
+    },
+    {
+      "code": "bha",
+      "club": "Brighton",
+      "club_norm": "brighton",
+      "opponent": "Manchester City (A)",
+      "predicted_xi": [
+        "Verbruggen",
+        "Kadioglu",
+        "Vuskovic",
+        "Dunk",
+        "Boscagli",
+        "Chema Andr\u00e9s",
+        "Gro\u00df",
+        "G\u00f3mez",
+        "Ayari",
+        "De Cuyper",
+        "Kostoulas"
+      ],
+      "out": [
+        "Azeez",
+        "Ferguson",
+        "Mitoma",
+        "Struijk"
+      ],
+      "doubts": [
+        {
+          "name": "Chema Andr\u00e9s",
+          "chance": "75%"
+        },
+        {
+          "name": "Kadioglu",
+          "chance": "75%"
+        },
+        {
+          "name": "Tzimas",
+          "chance": "25%"
+        },
+        {
+          "name": "Yohanna",
+          "chance": "25%"
+        }
+      ],
+      "banned": [],
+      "firm": [
+        "Verbruggen",
+        "Vuskovic",
+        "Dunk",
+        "Boscagli",
+        "Gro\u00df",
+        "G\u00f3mez",
+        "Ayari",
+        "De Cuyper",
+        "Kostoulas"
+      ],
+      "firm_selection": [
+        "Verbruggen",
+        "Kadioglu",
+        "Vuskovic",
+        "Dunk",
+        "Boscagli",
+        "Chema Andr\u00e9s",
+        "Gro\u00df",
+        "G\u00f3mez",
+        "Ayari",
+        "De Cuyper",
+        "Kostoulas"
+      ],
+      "news": "Pascal Struijk\u00a0(hamstring), Zadok Yohanna (unspecified) and Stefan Tzimas (knee) are on the grass again but remain out, along with Femi Azeez (hamstring), Kaoru Mitoma (hamstring) and Evan Ferguson (ankle). There's better news outside of this group, however. Yankuba Minteh (leg) and Mats Wieffer (knee) marked their comebacks with substitute appearances against Manchester City on Wednesday, while Fabian Hurzeler is \"quite convinced\" that Chema Andres (hip) and Ferdi Kadioglu (hip) will be options"
+    },
+    {
+      "code": "bou",
+      "club": "Bournemouth",
+      "club_norm": "bournemouth",
+      "opponent": "Leeds United (H)",
+      "predicted_xi": [
+        "Petrovic",
+        "Smith",
+        "Hill",
+        "Ant\u00f3nio Silva",
+        "Truffert",
+        "Adams",
+        "Cook",
+        "Rayan",
+        "Kluivert",
+        "Tavernier",
+        "Evanilson"
+      ],
+      "out": [
+        "Araujo",
+        "Scott",
+        "T\u00f3th"
+      ],
+      "doubts": [
+        {
+          "name": "Milosavljevic",
+          "chance": "25%"
+        }
+      ],
+      "banned": [],
+      "firm": [
+        "Petrovic",
+        "Smith",
+        "Hill",
+        "Ant\u00f3nio Silva",
+        "Truffert",
+        "Adams",
+        "Cook",
+        "Rayan",
+        "Kluivert",
+        "Tavernier",
+        "Evanilson"
+      ],
+      "firm_selection": [
+        "Petrovic",
+        "Smith",
+        "Hill",
+        "Ant\u00f3nio Silva",
+        "Truffert",
+        "Adams",
+        "Cook",
+        "Rayan",
+        "Kluivert",
+        "Tavernier",
+        "Evanilson"
+      ],
+      "news": "Alex Toth (hamstring) and Julian Araujo (thigh) remain out, while Alex Scott (tendon) won't return until Gameweek 10 at the earliest. Veljko Milosavljevic (knee) also looks set to stay with the under-21s as he builds fitness following his recent spell on the sidelines. And while Eli Junior Kroupi is fit again, and now has two cameos in league and cup under his belt, Marco Rose has confirmed that the young attacker is not yet ready to start. Rose rested most of his regulars in midweek, confirming"
+    },
+    {
+      "code": "bre",
+      "club": "Brentford",
+      "club_norm": "brentford",
+      "opponent": "Nottingham Forest (H)",
+      "predicted_xi": [
+        "Kelleher",
+        "Kayode",
+        "van den Berg",
+        "Ajer",
+        "Lewis-Potter",
+        "Janelt",
+        "Sangar\u00e9",
+        "Dango Ouattara",
+        "Jensen",
+        "Schade",
+        "Thiago"
+      ],
+      "out": [
+        "Carvalho",
+        "Furo",
+        "Henry"
+      ],
+      "doubts": [
+        {
+          "name": "Dasilva",
+          "chance": "25%"
+        },
+        {
+          "name": "Milambo",
+          "chance": "25%"
+        }
+      ],
+      "banned": [
+        "Yarmolyuk"
+      ],
+      "firm": [
+        "Kelleher",
+        "Kayode",
+        "van den Berg",
+        "Ajer",
+        "Lewis-Potter",
+        "Janelt",
+        "Sangar\u00e9",
+        "Dango Ouattara",
+        "Jensen",
+        "Schade",
+        "Thiago"
+      ],
+      "firm_selection": [
+        "Kelleher",
+        "Kayode",
+        "van den Berg",
+        "Ajer",
+        "Lewis-Potter",
+        "Janelt",
+        "Sangar\u00e9",
+        "Dango Ouattara",
+        "Jensen",
+        "Schade",
+        "Thiago"
+      ],
+      "news": "Rico Henry (hip) and Kaye Furo (knee) remain out, while Keith Andrews explained that Fabio Carvalho's recent absence is down to a knock. He won't play again before the November internationals. We're also not expecting to see Antoni Milambo (knee) and Josh Dasilva (hamstring), despite their return to the grass this week. Yehor Yarmolyuk serves game three of a three-match ban, too, but Vitaly Janelt is available again after seeing out his one-match suspension in Gameweek 8. Janelt for Aaron Hickey"
+    },
+    {
+      "code": "che",
+      "club": "Chelsea",
+      "club_norm": "chelsea",
+      "opponent": "Manchester United (H)",
+      "predicted_xi": [
+        "Penders",
+        "Acheampong",
+        "Fofana",
+        "Colwill",
+        "Neto",
+        "Moises Caicedo",
+        "Henderson",
+        "Palestra",
+        "Palmer",
+        "Welbeck",
+        "Rogers"
+      ],
+      "out": [
+        "Anselmino",
+        "Gittens",
+        "Hato",
+        "James",
+        "Jo\u00e3o Pedro",
+        "Lacroix",
+        "Martinez"
+      ],
+      "doubts": [],
+      "banned": [],
+      "firm": [
+        "Penders",
+        "Acheampong",
+        "Fofana",
+        "Colwill",
+        "Neto",
+        "Moises Caicedo",
+        "Henderson",
+        "Palestra",
+        "Palmer",
+        "Welbeck",
+        "Rogers"
+      ],
+      "firm_selection": [
+        "Penders",
+        "Acheampong",
+        "Fofana",
+        "Colwill",
+        "Neto",
+        "Moises Caicedo",
+        "Henderson",
+        "Palestra",
+        "Palmer",
+        "Welbeck",
+        "Rogers"
+      ],
+      "news": "Xabi Alonso confirmed that Maxence Lacroix is out of the next two Gameweeks with the hamstring issue he picked up in midweek. Jorrel Hato (unknown) is also now on the sidelines, along with Emiliano Martinez (jaw), Reece James (knee), Aaron Anselmino (unknown), Jamie Gittens (ankle) and, of course, Joao Pedro (quad).\u00a0In better news, Moises Caicedo is fine after coming off against Liverpool on Wednesday, while Pep Chavarria (muscle) is back in the squad. Cole Palmer is, of course, available after "
+    },
+    {
+      "code": "cov",
+      "club": "Coventry",
+      "club_norm": "coventry",
+      "opponent": "Sunderland (H)",
+      "predicted_xi": [
+        "Rushworth",
+        "van Ewijk",
+        "Mfuni",
+        "Pinnock",
+        "Jay da Silva",
+        "Onyeka",
+        "Grimes",
+        "Sakamoto",
+        "Rudoni",
+        "Mason-Clark",
+        "Awoniyi"
+      ],
+      "out": [
+        "Amenda",
+        "Eccles",
+        "Woolfenden",
+        "Wright"
+      ],
+      "doubts": [
+        {
+          "name": "Thomas",
+          "chance": "75%"
+        }
+      ],
+      "banned": [],
+      "firm": [
+        "Rushworth",
+        "van Ewijk",
+        "Mfuni",
+        "Pinnock",
+        "Jay da Silva",
+        "Onyeka",
+        "Grimes",
+        "Sakamoto",
+        "Rudoni",
+        "Mason-Clark",
+        "Awoniyi"
+      ],
+      "firm_selection": [
+        "Rushworth",
+        "van Ewijk",
+        "Mfuni",
+        "Pinnock",
+        "Jay da Silva",
+        "Onyeka",
+        "Grimes",
+        "Sakamoto",
+        "Rudoni",
+        "Mason-Clark",
+        "Awoniyi"
+      ],
+      "news": "Luke Woolfenden (knee), Aurele Amenda (calf), Josh Eccles (ankle) and Haji Wright (quad) are still out, and although Bobby Thomas' calf issue is not as serious as first feared, Frank Lampard said he was \"not sure\" whether the centre-half would feature in Gameweek 9. Unless he was playing mind games (very possible), the Coventry boss may have been hinting that Stephen Mfuni - who replaced Thomas last weekend - was going to start instead, saying that Saturday was an \"opportunity\" for the Mancheste"
+    },
+    {
+      "code": "cry",
+      "club": "Crystal Palace",
+      "club_norm": "crystal palace",
+      "opponent": "Tottenham Hotspur (A)",
+      "predicted_xi": [
+        "Henderson",
+        "Richards",
+        "Disasi",
+        "Canvot",
+        "Khalaili",
+        "Kamada",
+        "Wharton",
+        "Mitchell",
+        "McNeil",
+        "Pino",
+        "Mateta"
+      ],
+      "out": [
+        "Riad",
+        "Ismaila Sarr",
+        "Tomiyasu"
+      ],
+      "doubts": [
+        {
+          "name": "Strand Larsen",
+          "chance": "75%"
+        },
+        {
+          "name": "Timber",
+          "chance": "75%"
+        }
+      ],
+      "banned": [],
+      "firm": [
+        "Henderson",
+        "Richards",
+        "Disasi",
+        "Canvot",
+        "Khalaili",
+        "Kamada",
+        "Wharton",
+        "Mitchell",
+        "McNeil",
+        "Pino",
+        "Mateta"
+      ],
+      "firm_selection": [
+        "Henderson",
+        "Richards",
+        "Disasi",
+        "Canvot",
+        "Khalaili",
+        "Kamada",
+        "Wharton",
+        "Mitchell",
+        "McNeil",
+        "Pino",
+        "Mateta"
+      ],
+      "news": "Last Updated Tue 27th Oct"
+    },
+    {
+      "code": "eve",
+      "club": "Everton",
+      "club_norm": "everton",
+      "opponent": "Newcastle United (A)",
+      "predicted_xi": [
+        "Pickford",
+        "R\u00f6hl",
+        "Tarkowski",
+        "Branthwaite",
+        "Mykolenko",
+        "Armstrong",
+        "Garner",
+        "Johnson",
+        "Dewsbury-Hall",
+        "George",
+        "Barry"
+      ],
+      "out": [],
+      "doubts": [
+        {
+          "name": "Branthwaite",
+          "chance": "75%"
+        },
+        {
+          "name": "Grealish",
+          "chance": "50%"
+        }
+      ],
+      "banned": [],
+      "firm": [
+        "Pickford",
+        "R\u00f6hl",
+        "Tarkowski",
+        "Mykolenko",
+        "Armstrong",
+        "Garner",
+        "Johnson",
+        "Dewsbury-Hall",
+        "George",
+        "Barry"
+      ],
+      "firm_selection": [
+        "Pickford",
+        "R\u00f6hl",
+        "Tarkowski",
+        "Branthwaite",
+        "Mykolenko",
+        "Armstrong",
+        "Garner",
+        "Johnson",
+        "Dewsbury-Hall",
+        "George",
+        "Barry"
+      ],
+      "news": "David Moyes' Gameweek 9 presser was filmed straight after Thursday's EFL Cup win over Newcastle United, who the Toffees coincidentally meet again on Monday. The Everton boss confirmed that Jarrad Branthwaite (concussion) \"should\" be fit for the rematch with the Magpies, while Vitalii Mykolenko was swiftly back from injury to play 86 minutes on Thursday. Everton also appear to have come through part one of their double-header with Newcastle unscathed. The big question, of course, is whether Jack "
+    },
+    {
+      "code": "ful",
+      "club": "Fulham",
+      "club_norm": "fulham",
+      "opponent": "Aston Villa (A)",
+      "predicted_xi": [
+        "Leno",
+        "Castagne",
+        "Affengruber",
+        "Bassey",
+        "Robinson",
+        "Berge",
+        "Charles",
+        "Bobb",
+        "King",
+        "Iwobi",
+        "Gonzalo Garc\u00eda"
+      ],
+      "out": [],
+      "doubts": [],
+      "banned": [
+        "Sessegnon (Ryan)"
+      ],
+      "firm": [
+        "Leno",
+        "Castagne",
+        "Affengruber",
+        "Bassey",
+        "Robinson",
+        "Berge",
+        "Charles",
+        "Bobb",
+        "King",
+        "Iwobi",
+        "Gonzalo Garc\u00eda"
+      ],
+      "firm_selection": [
+        "Leno",
+        "Castagne",
+        "Affengruber",
+        "Bassey",
+        "Robinson",
+        "Berge",
+        "Charles",
+        "Bobb",
+        "King",
+        "Iwobi",
+        "Gonzalo Garc\u00eda"
+      ],
+      "news": "Following the EFL Cup defeat to Crystal Palace, Alvaro Arbeloa said he had no new concerns for the trip to Aston Villa. That doesn't quite give the all-clear to David Affengruber, who finished the win over Coventry City with \"some pain\". He missed out against Palace, but it did sound like more of a breather for the centre-back. The Cottagers will definitely be without one player: Ryan Sessegnon completes a three-match ban, following his dismissal in Gameweek 7.\u00a0Sessegnon's continued absence prob"
+    },
+    {
+      "code": "hul",
+      "club": "Hull",
+      "club_norm": "hull",
+      "opponent": "Ipswich Town (H)",
+      "predicted_xi": [
+        "Tzolakis",
+        "Ajayi",
+        "Egan",
+        "Mendy",
+        "Coyle",
+        "Iroegbunam",
+        "Slater",
+        "Giles",
+        "Belloumi",
+        "McBurnie",
+        "Stroud"
+      ],
+      "out": [
+        "Ansah",
+        "Hughes",
+        "Matazo",
+        "Targett"
+      ],
+      "doubts": [
+        {
+          "name": "Butland",
+          "chance": "75%"
+        }
+      ],
+      "banned": [],
+      "firm": [
+        "Tzolakis",
+        "Ajayi",
+        "Egan",
+        "Mendy",
+        "Coyle",
+        "Iroegbunam",
+        "Slater",
+        "Giles",
+        "Belloumi",
+        "McBurnie",
+        "Stroud"
+      ],
+      "firm_selection": [
+        "Tzolakis",
+        "Ajayi",
+        "Egan",
+        "Mendy",
+        "Coyle",
+        "Iroegbunam",
+        "Slater",
+        "Giles",
+        "Belloumi",
+        "McBurnie",
+        "Stroud"
+      ],
+      "news": "Matt Targett (ankle) and Ilyas Ansah (back) remain on the sidelines but otherwise, there's positive team news from Humberside. Nobel Mendy (groin) returns to the matchday squad, while Oli McBurnie (ribs) and Lewie Coyle (hamstring) have shrugged off minor issues from last weekend. Jack Butland (shoulder) is back in training way ahead of schedule and could be involved, while even Charlie Hughes (groin) is on the grass - but he will first get game-time with the under-21s before marking his first-t"
+    },
+    {
+      "code": "ips",
+      "club": "Ipswich",
+      "club_norm": "ipswich",
+      "opponent": "Hull City (A)",
+      "predicted_xi": [
+        "Walton",
+        "Ouattara",
+        "Diop",
+        "O'Shea",
+        "Davis",
+        "Lukic",
+        "Palacios",
+        "Fatawu",
+        "Enciso",
+        "Maeda",
+        "Emersonn"
+      ],
+      "out": [],
+      "doubts": [
+        {
+          "name": "Lukic",
+          "chance": "75%"
+        }
+      ],
+      "banned": [],
+      "firm": [
+        "Walton",
+        "Ouattara",
+        "Diop",
+        "O'Shea",
+        "Davis",
+        "Palacios",
+        "Fatawu",
+        "Enciso",
+        "Maeda",
+        "Emersonn"
+      ],
+      "firm_selection": [
+        "Walton",
+        "Ouattara",
+        "Diop",
+        "O'Shea",
+        "Davis",
+        "Lukic",
+        "Palacios",
+        "Fatawu",
+        "Enciso",
+        "Maeda",
+        "Emersonn"
+      ],
+      "news": "Saka Lukic (groin) was involved in training on Friday and Gary O'Neil will make a late call on the midfielder's involvement against Hull City on Saturday. That's it for the Ipswich team news, with everyone else fit. No surprise that O'Neil didn't commit one way or another regarding a start for Lukic, but he did say that the Serbian has \"looked good\" and is \"an important player\", and the previous indication was that he wasn't rushed back for Gameweek 8 in order for him to be fit for this one. If "
+    },
+    {
+      "code": "lee",
+      "club": "Leeds",
+      "club_norm": "leeds",
+      "opponent": "Bournemouth (A)",
+      "predicted_xi": [
+        "Trafford",
+        "Justin",
+        "Elvedi",
+        "Muharemovic",
+        "Bogle",
+        "Ampadu",
+        "Tanaka",
+        "Gudmundsson",
+        "Aaronson",
+        "Calvert-Lewin",
+        "Okafor"
+      ],
+      "out": [
+        "Mateo Joseph",
+        "Rodon"
+      ],
+      "doubts": [
+        {
+          "name": "Stach",
+          "chance": "75%"
+        }
+      ],
+      "banned": [],
+      "firm": [
+        "Trafford",
+        "Justin",
+        "Elvedi",
+        "Muharemovic",
+        "Bogle",
+        "Ampadu",
+        "Tanaka",
+        "Gudmundsson",
+        "Aaronson",
+        "Calvert-Lewin",
+        "Okafor"
+      ],
+      "firm_selection": [
+        "Trafford",
+        "Justin",
+        "Elvedi",
+        "Muharemovic",
+        "Bogle",
+        "Ampadu",
+        "Tanaka",
+        "Gudmundsson",
+        "Aaronson",
+        "Calvert-Lewin",
+        "Okafor"
+      ],
+      "news": "Nico Elvedi has recovered from illness and is fit for Gameweek 9. Dominic Calvert-Lewin and Noah Okafor, who were doubts for Gameweek 8 but recovered to make the matchday squad at Sunderland, have also had a \"normal training week\" and should be \"fully available\". Anton Stach (foot), who was also a concern for last Sunday's match and who was reduced to a second-half cameo, is still \"struggling\", however, so bench duty may await him again. As for Joe Rodon (hamstring), he is partly back in team tr"
+    },
+    {
+      "code": "liv",
+      "club": "Liverpool",
+      "club_norm": "liverpool",
+      "opponent": "Arsenal (H)",
+      "predicted_xi": [
+        "Alisson",
+        "Ara\u00fajo",
+        "Jacquet",
+        "van Dijk",
+        "Kerkez",
+        "Gravenberch",
+        "Mac Allister",
+        "Gakpo",
+        "Wirtz",
+        "Barcola",
+        "Isak"
+      ],
+      "out": [
+        "Bradley",
+        "Ekitik\u00e9",
+        "Frimpong",
+        "Leoni"
+      ],
+      "doubts": [
+        {
+          "name": "V\u00edctor Mu\u00f1oz",
+          "chance": "50%"
+        },
+        {
+          "name": "Szoboszlai",
+          "chance": "50%"
+        }
+      ],
+      "banned": [],
+      "firm": [
+        "Alisson",
+        "Ara\u00fajo",
+        "Jacquet",
+        "van Dijk",
+        "Kerkez",
+        "Gravenberch",
+        "Mac Allister",
+        "Gakpo",
+        "Wirtz",
+        "Barcola",
+        "Isak"
+      ],
+      "firm_selection": [
+        "Alisson",
+        "Ara\u00fajo",
+        "Jacquet",
+        "van Dijk",
+        "Kerkez",
+        "Gravenberch",
+        "Mac Allister",
+        "Gakpo",
+        "Wirtz",
+        "Barcola",
+        "Isak"
+      ],
+      "news": "Andoni Iraola said Dominik Szoboszlai (hamstring) and Victor Munoz (knee) have \"a chance\" of being involved against Arsenal on Sunday, although their absence from training photos on Friday would suggest their chances of starting are seriously diminishing. Hugo Ekitike (Achilles), Conor Bradley (knee), Jeremie Frimpong (hamstring) and Giovanni Leoni (knee) remain out, but Florian Wirtz made a very swift recovery from the ankle issue he picked up in Gameweek 8 to feature in the EFL Cup in midweek."
+    },
+    {
+      "code": "mci",
+      "club": "Man City",
+      "club_norm": "man city",
+      "opponent": "Brighton and Hove Albion (H)",
+      "predicted_xi": [
+        "Donnarumma",
+        "Matheus Nunes",
+        "R\u00faben Dias",
+        "Khusanov",
+        "Gvardiol",
+        "Bouaddi",
+        "Anderson",
+        "Ndiaye",
+        "Fern\u00e1ndez",
+        "Doku",
+        "Haaland"
+      ],
+      "out": [
+        "Semenyo"
+      ],
+      "doubts": [],
+      "banned": [],
+      "firm": [
+        "Donnarumma",
+        "Matheus Nunes",
+        "R\u00faben Dias",
+        "Khusanov",
+        "Gvardiol",
+        "Bouaddi",
+        "Anderson",
+        "Ndiaye",
+        "Fern\u00e1ndez",
+        "Doku",
+        "Haaland"
+      ],
+      "firm_selection": [
+        "Donnarumma",
+        "Matheus Nunes",
+        "R\u00faben Dias",
+        "Khusanov",
+        "Gvardiol",
+        "Bouaddi",
+        "Anderson",
+        "Ndiaye",
+        "Fern\u00e1ndez",
+        "Doku",
+        "Haaland"
+      ],
+      "news": "Enzo Maresca has a fully fit squad bar medium-term absentee Antoine Semenyo (knee). Matheus Nunes returns, then, after a brief absence, while Iliman Ndiaye is also fine after cramp forced him off last weekend. The City boss gave his support to Gianluigi Donnarumma, who didn't have the best of games against Aston Villa last Saturday, saying that \"in this moment, it's Gigio plus 10.\" Maresca was also asked about Phil Foden and Rayan Cherki playing in the same side, as the pair did on Wednesday aga"
+    },
+    {
+      "code": "mun",
+      "club": "Man Utd",
+      "club_norm": "man utd",
+      "opponent": "Chelsea (A)",
+      "predicted_xi": [
+        "Lammens",
+        "Yoro",
+        "Maguire",
+        "Mart\u00ednez",
+        "Dalot",
+        "Baleba",
+        "Mainoo",
+        "Amad Diallo",
+        "Bruno Fernandes",
+        "Matheus Cunha",
+        "Mbeumo"
+      ],
+      "out": [
+        "Dorgu",
+        "Sesko",
+        "Shaw",
+        "Ugarte"
+      ],
+      "doubts": [
+        {
+          "name": "Mainoo",
+          "chance": "75%"
+        },
+        {
+          "name": "Rashford",
+          "chance": "25%"
+        }
+      ],
+      "banned": [],
+      "firm": [
+        "Lammens",
+        "Yoro",
+        "Maguire",
+        "Mart\u00ednez",
+        "Dalot",
+        "Baleba",
+        "Amad Diallo",
+        "Bruno Fernandes",
+        "Matheus Cunha",
+        "Mbeumo"
+      ],
+      "firm_selection": [
+        "Lammens",
+        "Yoro",
+        "Maguire",
+        "Mart\u00ednez",
+        "Dalot",
+        "Baleba",
+        "Mainoo",
+        "Amad Diallo",
+        "Bruno Fernandes",
+        "Matheus Cunha",
+        "Mbeumo"
+      ],
+      "news": "Bruno Fernandes is expected to return to first-team contention this weekend after clear-the-air talks with Michael Carrick. Kobbie Mainoo (unspecified) will feature in some capacity, too, after a return to training, but Luke Shaw (unspecified) and Marcus Rashford (hip)\u00a0look set to miss out again, along with longer-term absentees Patrick Dorgu (hamstring), Manuel Ugarte (knee) and Benjamin Sesko (calf). Whether Mainoo is fit enough to start is one of the main question marks this week; Carrick rat"
+    },
+    {
+      "code": "new",
+      "club": "Newcastle",
+      "club_norm": "newcastle",
+      "opponent": "Everton (H)",
+      "predicted_xi": [
+        "Horn\u00edcek",
+        "Dedic",
+        "Sch\u00e4r",
+        "Burn",
+        "Lewis Hall",
+        "Gonz\u00e1lez",
+        "Joelinton",
+        "Elanga",
+        "Willock",
+        "Barnes",
+        "Wissa"
+      ],
+      "out": [
+        "Jaouen",
+        "Livramento"
+      ],
+      "doubts": [
+        {
+          "name": "Fernandez-Pardo",
+          "chance": "75%"
+        },
+        {
+          "name": "Miley",
+          "chance": "75%"
+        },
+        {
+          "name": "Osula",
+          "chance": "75%"
+        }
+      ],
+      "banned": [],
+      "firm": [
+        "Horn\u00edcek",
+        "Dedic",
+        "Sch\u00e4r",
+        "Burn",
+        "Lewis Hall",
+        "Gonz\u00e1lez",
+        "Joelinton",
+        "Elanga",
+        "Willock",
+        "Barnes",
+        "Wissa"
+      ],
+      "firm_selection": [
+        "Horn\u00edcek",
+        "Dedic",
+        "Sch\u00e4r",
+        "Burn",
+        "Lewis Hall",
+        "Gonz\u00e1lez",
+        "Joelinton",
+        "Elanga",
+        "Willock",
+        "Barnes",
+        "Wissa"
+      ],
+      "news": "Matthias Jaissle opted to film his Gameweek 9 presser straight after full-time on Thursday, so the Newcastle boss couldn't give much of an update on William Osula (ankle) after the striker was taken off at half-time at the Hill Dickinson Stadium. Nor could he update us much on Mathias Fernandez-Pardo (illness) and Lewis Miley (muscle), who have sat out the last two matches in league and cup. We can confidently say that Ewen Jaouen (hamstring) and Tino Livramento (unspecified) remain out, at leas"
+    },
+    {
+      "code": "nfo",
+      "club": "Nott'm Forest",
+      "club_norm": "nottm forest",
+      "opponent": "Brentford (A)",
+      "predicted_xi": [
+        "Sels",
+        "Jair",
+        "Milenkovic",
+        "Murillo",
+        "Mu\u00f1oz",
+        "Mcatee",
+        "Schlager",
+        "Williams",
+        "Gibbs-White",
+        "Hudson-Odoi",
+        "Delap"
+      ],
+      "out": [
+        "Igor Jesus",
+        "Savona"
+      ],
+      "doubts": [
+        {
+          "name": "Nicol\u00e1s Dom\u00ednguez",
+          "chance": "75%"
+        },
+        {
+          "name": "Ndoye",
+          "chance": "75%"
+        }
+      ],
+      "banned": [],
+      "firm": [
+        "Sels",
+        "Jair",
+        "Milenkovic",
+        "Murillo",
+        "Mu\u00f1oz",
+        "Mcatee",
+        "Schlager",
+        "Williams",
+        "Gibbs-White",
+        "Hudson-Odoi",
+        "Delap"
+      ],
+      "firm_selection": [
+        "Sels",
+        "Jair",
+        "Milenkovic",
+        "Murillo",
+        "Mu\u00f1oz",
+        "Mcatee",
+        "Schlager",
+        "Williams",
+        "Gibbs-White",
+        "Hudson-Odoi",
+        "Delap"
+      ],
+      "news": "Neco Williams has trained all week despite coming off with an elbow injury last weekend, but there is still some lingering doubt over Nicol\u00e1s Dom\u00ednguez (muscle). Dan Ndoye is now a doubt, too, with muscle fatigue. Dom\u00ednguez was due to train for the first time on Friday, while Oliver Glasner was planning to run the rule over Ndoye on the same day. The Forest boss admitted there were question marks over both players, talking in terms of them being ready for Manchester City in Gameweek 10 instead, "
+    },
+    {
+      "code": "sun",
+      "club": "Sunderland",
+      "club_norm": "sunderland",
+      "opponent": "Coventry City (A)",
+      "predicted_xi": [
+        "Roefs",
+        "Hume",
+        "O'Nien",
+        "Alderete",
+        "Reinildo",
+        "Xhaka",
+        "Sadiki",
+        "Rigg",
+        "Le F\u00e9e",
+        "Nilson Angulo",
+        "Brobbey"
+      ],
+      "out": [
+        "Ballard",
+        "Mundle"
+      ],
+      "doubts": [
+        {
+          "name": "Isidor",
+          "chance": "75%"
+        },
+        {
+          "name": "Mukiele",
+          "chance": "75%"
+        }
+      ],
+      "banned": [],
+      "firm": [
+        "Roefs",
+        "Hume",
+        "O'Nien",
+        "Alderete",
+        "Reinildo",
+        "Xhaka",
+        "Sadiki",
+        "Rigg",
+        "Le F\u00e9e",
+        "Nilson Angulo",
+        "Brobbey"
+      ],
+      "firm_selection": [
+        "Roefs",
+        "Hume",
+        "O'Nien",
+        "Alderete",
+        "Reinildo",
+        "Xhaka",
+        "Sadiki",
+        "Rigg",
+        "Le F\u00e9e",
+        "Nilson Angulo",
+        "Brobbey"
+      ],
+      "news": "Thomas Meunier returned from a groin injury in Wednesday's EFL Cup win over Brentford, while Kevin Danso is also back after serving a one-match ban in Gameweek 8. Wilson Isidor (knock) \"should\" be the next of Regis Le Bris' squad out of the physio room this weekend, leaving only Dan Ballard (hamstring) and Romaine Mundle (knee) as confirmed absentees. Le Bris did later say, however, that Nordi Mukiele (throat) was one of the \"minor\" injuries the Black Cats would have to assess. Le Bris made 11 c"
+    },
+    {
+      "code": "tot",
+      "club": "Spurs",
+      "club_norm": "spurs",
+      "opponent": "Crystal Palace (H)",
+      "predicted_xi": [
+        "Kinsky",
+        "Porro",
+        "van Hecke",
+        "van de Ven",
+        "Robertson",
+        "Tonali",
+        "Mateus Fernandes",
+        "Kudus",
+        "Omar Marmoush",
+        "Tel",
+        "Solanke"
+      ],
+      "out": [
+        "Tosin",
+        "Bergvall",
+        "Savinho",
+        "Mudryk",
+        "Odobert",
+        "Simons"
+      ],
+      "doubts": [],
+      "banned": [
+        "Bentancur"
+      ],
+      "firm": [
+        "Kinsky",
+        "Porro",
+        "van Hecke",
+        "van de Ven",
+        "Robertson",
+        "Tonali",
+        "Mateus Fernandes",
+        "Kudus",
+        "Omar Marmoush",
+        "Tel",
+        "Solanke"
+      ],
+      "firm_selection": [
+        "Kinsky",
+        "Porro",
+        "van Hecke",
+        "van de Ven",
+        "Robertson",
+        "Tonali",
+        "Mateus Fernandes",
+        "Kudus",
+        "Omar Marmoush",
+        "Tel",
+        "Solanke"
+      ],
+      "news": "Lucas Bergvall (knee), Tosin Adarabioyo (calf), Savinho (muscle),\u00a0Mykhailo Mudryk (ankle), Xavi Simons (knee) and Wilson Odobert (knee) remain out and Rodrigo Bentancur is still suspended but Destiny Udogie (knee) is available again after a recent absence. And, despite being forced off last weekend, James Maddison (groin) is fit to face Crystal Palace on Saturday. Whether Roberto De Zerbi risks Maddison from the start again is the big question. Maddison broke down just after half-time last Satur"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:6b85cf88da60b01e",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cmx2302r04r4o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Wed, 21 Oct 2026 07:24:35 GMT",
+  "published_at_utc": "2026-10-21T07:24:35Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "Animal rights group asks Crystal Palace to retire eagle mascot",
+  "body": "Animal rights group Peta is urging Crystal Palace to retire their bald eagle mascot, saying a \"bright stadium filled with boisterous fans is no place for animals\".",
+  "player_ids": [],
+  "sha256": "46598555e2ec96dcaf3f6d714b47eaa9ba0aa74de7752afb6403518dd89bee6b"
+}

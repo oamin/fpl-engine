@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:b78e47bf45f36135",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/news/articles/cm3wv36d603yo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 29 Oct 2026 23:03:15 GMT",
+  "published_at_utc": "2026-10-29T23:03:15Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "China made Mbappé apologise - but many don't know exactly what he said",
+  "body": "His comment about Chinese leader Mao sparked anger but censorship left many wondering what exactly happened.",
+  "player_ids": [],
+  "sha256": "0a5afd516a27f028936ffbc253c725cea99550e689f6cfc7726d2ba8a44dc76f"
+}

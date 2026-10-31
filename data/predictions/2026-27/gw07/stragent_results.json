@@ -1,0 +1,81 @@
+{
+  "kind": "stragent_gw_results",
+  "gw": 7,
+  "evaluated_at_utc": "2026-10-23T08:58:39Z",
+  "official_freeze": null,
+  "status": "paper_horizon_only",
+  "source": "reports/string_agent_gw6_horizon_decision.json (horizon GW7 week)",
+  "selection": {
+    "transfers_in": [
+      "254"
+    ],
+    "transfers_out": [
+      "305"
+    ],
+    "captain_id": 411,
+    "vice_id": 426,
+    "captain": "Haaland",
+    "vice_captain": "B.Fernandes",
+    "starting_11": [
+      "Lammens",
+      "Calafiori",
+      "Robinson",
+      "Gu\u00e9hi",
+      "Barnes",
+      "B.Fernandes",
+      "Rogers",
+      "Cherki",
+      "\u00d8degaard",
+      "Haaland",
+      "Muniz"
+    ],
+    "bench_order": [
+      "Shaw",
+      "Calvert-Lewin",
+      "van Ewijk",
+      "Forster"
+    ]
+  },
+  "rescored": {
+    "gw": 7,
+    "actual_xi_plus_captain": 61.0,
+    "hit_points": 0,
+    "net": 61.0,
+    "n_autosubs": 2,
+    "captain_id": 411,
+    "vice_id": 426,
+    "doubled_id": 411,
+    "chip": null,
+    "starting_11_final": [
+      412,
+      8,
+      254,
+      388,
+      453,
+      426,
+      40,
+      346,
+      15,
+      411,
+      175
+    ],
+    "player_points": {
+      "Lammens": 3.0,
+      "Calafiori": 6.0,
+      "Robinson": 7.0,
+      "Gu\u00e9hi": 1.0,
+      "Barnes": 2.0,
+      "B.Fernandes": 1.0,
+      "Rogers": 2.0,
+      "Cherki": 0.0,
+      "\u00d8degaard": 3.0,
+      "Haaland": 13.0,
+      "Muniz": 0.0,
+      "Shaw": 0.0,
+      "Calvert-Lewin": 9.0,
+      "van Ewijk": 1.0,
+      "Forster": 0.0
+    }
+  },
+  "note": "No official string_agent_freeze.jsonl row for GW7. Scored the GW7 intention from the GW6 horizon dry-run (paper)."
+}
