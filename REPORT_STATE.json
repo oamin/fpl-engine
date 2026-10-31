@@ -1,27 +1,26 @@
 {
   "task": "decay_tune_and_rate_share_likelihood",
-  "status": "partial",
-  "as_of_utc": "2026-10-31T12:48:00Z",
-  "change": "Likelihood gates both promote; decay ρ/target climb dumps still running (max-4 queue)",
+  "status": "done",
+  "as_of_utc": "2026-10-31T13:42:00Z",
+  "change": "Decay ρ/target tune inconclusive (keep ρ=0.85→0); rate baseline + full-share likelihood both promote",
   "screens": {
-    "score_xp_v2_rate_baseline_likelihood": {
+    "l4_opta_joint_path_decay_tune": {
       "status": "reported",
-      "verdict": "promote",
-      "mean": 0.002447,
-      "lo": 0.001509,
-      "hi": 0.003488
+      "verdicts": {
+        "decay_r070_minus_decay_r085": "inconclusive",
+        "decay_r095_minus_decay_r085": "inconclusive",
+        "decay_r085_posmean_minus_decay_r085": "inconclusive"
+      },
+      "means": {"r070": -0.617, "r095": -0.333, "posmean": -0.4}
     },
-    "score_xp_v2_full_share_likelihood": {
-      "status": "reported",
-      "verdict": "promote",
-      "mean": 0.010131,
-      "lo": 0.008703,
-      "hi": 0.011602
-    },
-    "l4_opta_joint_path_decay_tune": "running — dumps under data/processed/l4_opta_joint_path_decay_tune_rows/"
+    "score_xp_v2_rate_baseline_likelihood": {"verdict": "promote", "mean": 0.002447},
+    "score_xp_v2_full_share_likelihood": {"verdict": "promote", "mean": 0.010131}
   },
-  "next": "wire rate baseline + full-club shares into published/centreline; finish decay tune merge; then joint-path climb sanity",
-  "report_likelihood": "reports/rate_baseline_share_pool_likelihood_gate.md",
+  "next": "wire rate baseline + full-club shares into published/centreline; then joint-path climb sanity",
+  "reports": [
+    "reports/l4_opta_joint_path_decay_tune_gate.md",
+    "reports/rate_baseline_share_pool_likelihood_gate.md"
+  ],
   "branch": "cursor/decay-rho-rate-share-gates-cc3d",
   "pr": 122
 }
