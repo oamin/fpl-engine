@@ -30,7 +30,7 @@ Product **μ**: Odds API / FD centreline near (`t`/`t+1`); **Opta blind** λ far
 
 **Joint path vs L4 oneshot (2026-10-31):** `l4_opta_joint_path_climb` on full L4+Opta H=12 μ — undecayed path **promote** (+1.925/GW); Opta far decay **inconclusive** vs L4 (+1.783/GW [−0.15, +3.88]) but **positive every season**. `reports/l4_opta_joint_path_climb_gate.md`.
 
-**Strategiser lock (PI 2026-10-31):** `joint_path_opta_decay` — every-GW joint path + Opta far × ρ^(t−near+1)→0 (ρ=0.85) on H=12 L4+Opta boards. Chosen over undecayed path for season consistency vs L4 (undecayed lost 2024-25). Live remains priced H=2 / L4 oneshot until Opta far is live-ready. [`JOINT_PATH_OPTA_DECAY_LOCK.md`](../reports/JOINT_PATH_OPTA_DECAY_LOCK.md).
+**Strategiser lock (PI 2026-10-31):** `joint_path_opta_decay` — every-GW joint path + Opta far × ρ^(t−near+1)→0 (ρ=0.85) on H=12 L4+Opta boards; **`value_captain=true`** (promoted 2026-10-31). Chosen over undecayed path for season consistency vs L4 (undecayed lost 2024-25). Live remains priced H=2 / L4 oneshot until Opta far is live-ready. [`JOINT_PATH_OPTA_DECAY_LOCK.md`](../reports/JOINT_PATH_OPTA_DECAY_LOCK.md).
 
 **Joint path component-μ (2026-10-31):** `l4_opta_joint_path_component_climb` — same planners with `mu_post :=` G/A/CS/GC. **All inconclusive** (joint path vs L4: goals −1.42, assists +0.12, CS +1.54, GC +0.77; all cover 0). Path stays very sticky (≈0 hits) under component μ. Stick to **full-μ** climbs. `reports/l4_opta_joint_path_component_climb_gate.md`.
 
@@ -40,7 +40,7 @@ Product **μ**: Odds API / FD centreline near (`t`/`t+1`); **Opta blind** λ far
 
 **FT PE climb (2026-10-31):** `l4_opta_joint_path_ft_pe_climb` — terminal `U(f_H)=ν·f_H` with ν=`HIT_COST` vs product ν=0 on locked joint path. **Inconclusive** (+0.108/GW [−1.26, +1.50]); seasons split (+3.7 / −0.5 / −3.5 / +0.7). Keep `ft_pe_nu=0`. `reports/l4_opta_joint_path_ft_pe_climb_gate.md`.
 
-**Captain climb (2026-10-31):** `l4_opta_joint_path_captain_climb` — `value_captain=true` vs `false` on locked joint path; realised autosub+VC−hits both arms. **Promote** (+3.483/GW [+1.87, +5.27]; all seasons ≥0). Product default `value_captain=True`. `reports/l4_opta_joint_path_captain_climb_gate.md`.
+**Captain climb (2026-10-31):** `l4_opta_joint_path_captain_climb` — `value_captain=true` vs `false` on locked joint path; realised autosub+VC−hits both arms. **Promote → locked** (+3.483/GW [+1.87, +5.27]; all seasons ≥0). Product default `value_captain=True`. [`JOINT_PATH_CAPTAIN_LOCK.md`](../reports/JOINT_PATH_CAPTAIN_LOCK.md).
 
 ## Repo freeze sequence (2026-10-20)
 

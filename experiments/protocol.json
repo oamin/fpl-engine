@@ -2666,6 +2666,8 @@
       "near": 2
     },
     "revised": "2026-10-31 — value_captain=true promoted (l4_opta_joint_path_captain_climb)",
+    "value_captain": true,
+    "captain_lock": "reports/JOINT_PATH_CAPTAIN_LOCK.md",
     "not": "undecayed joint_path product default; component-μ lock; live H=2 priced-only path (Opta far not live-ready)",
     "module": "src/strategy/centreline_path_plan.py",
     "report": "reports/JOINT_PATH_OPTA_DECAY_LOCK.md",
@@ -3085,7 +3087,10 @@
   },
   "l4_opta_joint_path_captain_climb": {
     "pre_registered": "2026-10-31",
-    "status": "reported",
+    "locked": "2026-10-31",
+    "status": "locked",
+    "pi": "Ollie — lock captain promote into joint_path_opta_decay",
+    "lock_report": "reports/JOINT_PATH_CAPTAIN_LOCK.md",
     "role": "Reintroduce captain double on locked joint_path_opta_decay (wired μ)",
     "boards": "build_l3_centreline_horizon(H=12); wired rate baseline + full-club shares; Opta far ρ=0.85→0",
     "baseline": "decay_xi_ft — value_captain=false (prior product); legal captain still chosen",
@@ -3140,5 +3145,51 @@
       }
     },
     "note": "Promote. Wire value_captain=true into joint_path_opta_decay / plan_centreline_path default. Autosubs were 0 on these climbs (pool rarely blanks); VC path exercised in code but not observed."
+  },
+  "l4_opta_joint_path_deadline_causal_minutes": {
+    "pre_registered": "2026-10-31",
+    "status": "running",
+    "role": "Deadline-causal minutes on locked joint_path_opta_decay + captain: oracle m at GW t; as-of mean for far horizon",
+    "boards": "build_l3_centreline_horizon(H=12); wired μ; Opta far ρ=0.85→0; value_captain=true; ft_pe_nu=0",
+    "baseline": "asof_all — as-of mean minutes for week-0 and far boards (product)",
+    "treatment": "oracle_t — week-0 μ rebuilt with oracle (actual) minutes at decision GW t; far boards as-of mean (GW < t)",
+    "comparisons": [
+      "oracle_t_minus_asof_all"
+    ],
+    "shared": {
+      "planner": "pick_path_transfer_plan",
+      "wildcard_open": "full score_xp_v2 at gw_start",
+      "seed": "from_owned held 15 after wildcard",
+      "candidates": "full week-0 pool",
+      "value_captain": true,
+      "ft_pe_nu": 0,
+      "decay": "ρ=0.85 → 0",
+      "chips": false,
+      "max_hits": "SQUAD_SIZE",
+      "gamma": 1.0,
+      "horizon": 12
+    },
+    "realised_both_arms": "FPL bench autosubs + captain/VC − hits",
+    "metric": "paired-by-GW realised XI(autosub)+cap/VC−hits; cluster_interval four closed seasons",
+    "promote_if": "paired interval lo > 0",
+    "park_if": "hi < 0",
+    "gw_start": 8,
+    "gw_end": 38,
+    "holdout": "2026-27 frozen — not in comparison",
+    "entry": "src/eval/l4_opta_joint_path_deadline_causal_minutes_gate.py",
+    "report": "reports/l4_opta_joint_path_deadline_causal_minutes_gate.md",
+    "depends": [
+      "joint_path_opta_decay",
+      "l4_opta_joint_path_captain_climb",
+      "cascade_deadline_causal_minutes"
+    ],
+    "prior_diagnostic": "cascade_deadline_causal_minutes — N=12; more hits / +actual; FT bank flat; not a four-season gate",
+    "not": [
+      "availability overlay",
+      "stochastic minutes MC",
+      "change ρ / ν",
+      "chip search"
+    ],
+    "any_later_change": "dated protocol update required"
   }
 }
