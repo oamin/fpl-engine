@@ -76,7 +76,8 @@ SEED = 0
 MAX_HITS = SQUAD_SIZE
 GAMMA = 1.0
 TIME_LIMIT_L4 = 60.0
-TIME_LIMIT_PATH = 180.0
+# Path MILP per strand; 180s×8 stranded under parallel load → multi-hour seasons.
+TIME_LIMIT_PATH = 90.0
 MIP_REL_GAP = 1e-3
 RHO = DEFAULT_DECAY_RHO
 N_STRANDS = DEFAULT_MU_BAND_STRANDS
