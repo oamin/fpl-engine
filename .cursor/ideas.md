@@ -4,7 +4,7 @@
 (−0.33), ρ=0.85→pos_mean (−0.40) all cover 0 vs locked ρ=0.85→0. Keep
 `joint_path_opta_decay` defaults. `reports/l4_opta_joint_path_decay_tune_gate.md`.
 
-## Promote pending wire — rate baseline + full-club shares (2026-10-31)
+## Wired pending climb — rate baseline + full-club shares (2026-10-31)
 
 Closed-season player-GW likelihood gates both **promote**:
 

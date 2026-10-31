@@ -1,26 +1,11 @@
 {
-  "task": "decay_tune_and_rate_share_likelihood",
-  "status": "done",
-  "as_of_utc": "2026-10-31T13:42:00Z",
-  "change": "Decay ρ/target tune inconclusive (keep ρ=0.85→0); rate baseline + full-share likelihood both promote",
+  "task": "mu_wire_and_climb_sanity",
+  "status": "running",
+  "as_of_utc": "2026-10-31T14:08:00Z",
+  "change": "Wired rate baseline + full-club shares; rebuilt closed score_xp_v2; mu-wire climb dumps running",
   "screens": {
-    "l4_opta_joint_path_decay_tune": {
-      "status": "reported",
-      "verdicts": {
-        "decay_r070_minus_decay_r085": "inconclusive",
-        "decay_r095_minus_decay_r085": "inconclusive",
-        "decay_r085_posmean_minus_decay_r085": "inconclusive"
-      },
-      "means": {"r070": -0.617, "r095": -0.333, "posmean": -0.4}
-    },
-    "score_xp_v2_rate_baseline_likelihood": {"verdict": "promote", "mean": 0.002447},
-    "score_xp_v2_full_share_likelihood": {"verdict": "promote", "mean": 0.010131}
+    "l4_opta_joint_path_mu_wire_climb": "running — 8 season×arm dumps"
   },
-  "next": "wire rate baseline + full-club shares into published/centreline; then joint-path climb sanity",
-  "reports": [
-    "reports/l4_opta_joint_path_decay_tune_gate.md",
-    "reports/rate_baseline_share_pool_likelihood_gate.md"
-  ],
   "branch": "cursor/decay-rho-rate-share-gates-cc3d",
   "pr": 122
 }

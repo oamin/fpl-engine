@@ -33,7 +33,9 @@ from src.strategy.decision_value import attach_mu_post
 from src.strategy.layer4_bookie_path import BOOKIE_DEPTH, _fd_index, _load_merged_enriched
 from src.strategy.layer4_mupost_priced import (
     _align_to_week0,
+    _attach_rates_priors_baseline,
     _attach_store_ids,
+    _mean_minutes_asof,
     build_mupost_priced_horizon,
 )
 from src.strategy.shrinkage import CohortMoments
@@ -64,6 +66,28 @@ def _opta_e0(season: str) -> str:
     return cand
 
 
+def _club_slice(side: pd.DataFrame, team: str, team_n: str) -> pd.DataFrame:
+    club = side.loc[side["team"].astype(str) == team].copy()
+    if club.empty and "team_n" in side.columns:
+        club = side.loc[side["team_n"] == norm_team(team_n)].copy()
+    if club.empty:
+        club = side.loc[
+            side["team"].map(lambda t: norm_team(str(t)) == norm_team(team_n))
+        ].copy()
+    return club
+
+
+def _share_club_for(
+    share_side: pd.DataFrame | None, club: pd.DataFrame, team: str, team_n: str
+) -> pd.DataFrame | None:
+    if share_side is None or share_side.empty or club.empty:
+        return None
+    share_club = _club_slice(share_side, team, team_n)
+    if share_club.empty or len(share_club) <= len(club):
+        return None
+    return share_club
+
+
 def project_week_opta_centreline(
     hist: pd.DataFrame,
     enriched: pd.DataFrame,
@@ -76,18 +100,33 @@ def project_week_opta_centreline(
     profile: dict[int, dict[str, float]],
     league_gf: float,
     side: pd.DataFrame | None = None,
+    share_side: pd.DataFrame | None = None,
+    season: str | None = None,
 ) -> tuple[pd.DataFrame, int]:
-    """``score_team_side`` for ``target_gw`` with Opta blind λ (frozen side)."""
+    """``score_team_side`` for ``target_gw`` with Opta blind λ (frozen side).
+
+    Full-club ``m>0`` shares are projected onto the selection side when
+    ``share_side`` is wider (``protocol.score_xp_v2_full_share_likelihood``).
+    """
     if side is None:
         side, _, _ = build_frozen_side_table(
             hist,
             alpha_g=float(alpha_g),
             alpha_a=float(alpha_a),
-            season=None,
+            season=season,
             historical_rate_baseline=True,
         )
     if side.empty:
         return pd.DataFrame(), 0
+    if share_side is None:
+        share_roster = _mean_minutes_asof(hist, min_m=0.0)
+        if not share_roster.empty and len(share_roster) > len(side):
+            share_side = _attach_rates_priors_baseline(
+                share_roster,
+                hist,
+                season=season,
+                historical_rate_baseline=True,
+            )
     fits = _opta_fits_for_gw(
         enriched,
         gw=int(target_gw),
@@ -104,9 +143,7 @@ def project_week_opta_centreline(
             (str(fit["home"]), str(fit["home_n"]), "home"),
             (str(fit["away"]), str(fit["away_n"]), "away"),
         ):
-            club = side.loc[side["team"].astype(str) == team].copy()
-            if club.empty and "team_n" in side.columns:
-                club = side.loc[side["team_n"] == norm_team(team_n)].copy()
+            club = _club_slice(side, team, str(team_n))
             if club.empty:
                 continue
             scored = numagent_xp.score_team_side(
@@ -116,6 +153,7 @@ def project_week_opta_centreline(
                 xgc=float(fit[f"xgc_{prefix}"]),
                 alpha_g=float(alpha_g),
                 alpha_a=float(alpha_a),
+                share_players=_share_club_for(share_side, club, team, str(team_n)),
             ).copy()
             scored["element"] = club["element"].to_numpy()
             scored["team"] = team
@@ -232,6 +270,15 @@ def build_l3_centreline_horizon(
         season=season,
         historical_rate_baseline=True,
     )
+    share_side: pd.DataFrame | None = None
+    share_roster = _mean_minutes_asof(hist, min_m=0.0)
+    if not share_roster.empty and len(share_roster) > len(side):
+        share_side = _attach_rates_priors_baseline(
+            share_roster,
+            hist,
+            season=season,
+            historical_rate_baseline=True,
+        )
     e0 = _opta_e0(season)
     ranks = season_final_ranks(e0)
     profile = rank_gf_ga_profile_excluding(e0)
@@ -263,6 +310,8 @@ def build_l3_centreline_horizon(
             profile=profile,
             league_gf=league_gf,
             side=side,
+            share_side=share_side,
+            season=season,
         )
         if raw.empty:
             break
@@ -354,6 +403,7 @@ def score_opta_fits_on_side(
     *,
     alpha_g: float,
     alpha_a: float,
+    share_side: pd.DataFrame | None = None,
 ) -> pd.DataFrame:
     """Aggregate ``score_team_side`` over Opta fits (DGW-safe)."""
     if side.empty or not fits:
@@ -364,14 +414,7 @@ def score_opta_fits_on_side(
             (str(fit["home"]), str(fit["home_n"]), "home"),
             (str(fit["away"]), str(fit["away_n"]), "away"),
         ):
-            club = side.loc[side["team"].astype(str) == team].copy()
-            if club.empty and "team_n" in side.columns:
-                club = side.loc[side["team_n"] == team_n].copy()
-            if club.empty:
-                # try norm match on team column
-                club = side.loc[
-                    side["team"].map(lambda t: norm_team(str(t)) == team_n)
-                ].copy()
+            club = _club_slice(side, team, str(team_n))
             if club.empty:
                 continue
             scored = numagent_xp.score_team_side(
@@ -381,6 +424,7 @@ def score_opta_fits_on_side(
                 xgc=float(fit[f"xgc_{prefix}"]),
                 alpha_g=float(alpha_g),
                 alpha_a=float(alpha_a),
+                share_players=_share_club_for(share_side, club, team, str(team_n)),
             ).copy()
             scored["element"] = club["element"].to_numpy()
             scored["team"] = team
@@ -440,6 +484,15 @@ def extend_pools_with_opta_far(
         season=season,
         historical_rate_baseline=True,
     )
+    share_side: pd.DataFrame | None = None
+    share_roster = _mean_minutes_asof(hist, min_m=0.0)
+    if not share_roster.empty and len(share_roster) > len(side):
+        share_side = _attach_rates_priors_baseline(
+            share_roster,
+            hist,
+            season=season,
+            historical_rate_baseline=True,
+        )
     e0 = _opta_e0(season)
     ranks = season_final_ranks(e0)
     profile = rank_gf_ga_profile_excluding(e0)
@@ -472,6 +525,8 @@ def extend_pools_with_opta_far(
             profile=profile,
             league_gf=league_gf,
             side=side,
+            share_side=share_side,
+            season=season,
         )
         if raw.empty:
             break

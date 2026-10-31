@@ -118,7 +118,7 @@
     },
     "not": "share-seed MC jitter (keep_frozen_shares); does not concatenate prior rows into asof_share_history",
     "motive": "same-season-only rG collapses early (Matty Cash sG=1.0 Villa GW1–5) and poisons path-frequency captains",
-    "promote_to_score_xp_v2_gate": "promote on likelihood 2026-10-31 (Δlog +0.0024 [+0.0015,+0.0035]) — wire published/centreline then joint-path climb sanity",
+    "promote_to_score_xp_v2_gate": "wired 2026-10-31 into score_gameweek + project_week_score_xp_v2 / centreline; climb sanity l4_opta_joint_path_mu_wire_climb",
     "any_later_change": "dated protocol update required"
   },
   "score_xp_v2_alphas": {
@@ -2949,6 +2949,45 @@
     "note": "\u03bc screen first. If promote, wire share_players into centreline/L4 mean callers; then joint-path climb sanity.",
     "entry": "src/markets/rate_baseline_share_pool_likelihood_gate.py",
     "report": "reports/rate_baseline_share_pool_likelihood_gate.md",
+    "any_later_change": "dated protocol update required"
+  },
+  "l4_opta_joint_path_mu_wire_climb": {
+    "pre_registered": "2026-10-31",
+    "status": "running",
+    "role": "Climb sanity after wiring rate baseline + full-club shares into published/centreline μ",
+    "boards_wired": "score_gameweek historical_rate_baseline; project_week_score_xp_v2 + Opta centreline full_club_shares m>0",
+    "baseline_legacy": "joint_path_decay_legacy — prior joint_path_decay dumps (pre-wire μ)",
+    "baseline_l4": "l4_opta_h12_wired — L4 oneshot on wired boards",
+    "treatment": "joint_path_decay_wired — locked joint path + ρ=0.85→0 on wired boards",
+    "comparisons": [
+      "joint_path_decay_wired_minus_joint_path_decay_legacy",
+      "joint_path_decay_wired_minus_l4_opta_h12_wired"
+    ],
+    "metric": "paired-by-GW realised XI−hits; cluster_interval four closed seasons",
+    "promote_wire_if": "joint_path_decay_wired − legacy not park_clear_lose (prefer lo>0)",
+    "park_wire_if": "wired − legacy hi < 0",
+    "gw_start": 8,
+    "gw_end": 38,
+    "holdout": "2026-27 frozen — not in comparison",
+    "entry": "src/eval/l4_opta_joint_path_mu_wire_climb_gate.py",
+    "report": "reports/l4_opta_joint_path_mu_wire_climb_gate.md",
+    "depends": [
+      "score_xp_v2_rate_baseline_likelihood",
+      "score_xp_v2_full_share_likelihood",
+      "joint_path_opta_decay"
+    ],
+    "any_later_change": "dated protocol update required"
+  },
+  "score_xp_v2_full_share_wire": {
+    "locked": "2026-10-31",
+    "status": "wired_pending_climb_sanity",
+    "role": "Full-club m>0 share_players on centreline/L4 mean boards after likelihood promote",
+    "likelihood": "score_xp_v2_full_share_likelihood",
+    "wired": [
+      "src/strategy/layer4_mupost_priced.project_week_score_xp_v2",
+      "src/strategy/l3_centreline_horizon.project_week_opta_centreline"
+    ],
+    "climb_sanity": "l4_opta_joint_path_mu_wire_climb",
     "any_later_change": "dated protocol update required"
   }
 }
