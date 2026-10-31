@@ -19,7 +19,7 @@ import argparse
 import json
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, Mapping
 
 import numpy as np
 import pandas as pd
@@ -188,6 +188,88 @@ def _attach_rates_priors_baseline(
     return side
 
 
+def _roster_from_minutes_map(
+    hist: pd.DataFrame,
+    minutes_by_element: Mapping[int, float],
+    *,
+    min_m: float = 0.0,
+) -> pd.DataFrame:
+    """Build a minutes roster from an explicit element→m map (e.g. oracle GW t)."""
+    if not minutes_by_element:
+        return pd.DataFrame()
+    meta = (
+        hist.groupby("element", as_index=False)
+        .agg(
+            name=("name", "first"),
+            position=("position", "first"),
+            team=("team", "first"),
+        )
+        if not hist.empty and "element" in hist.columns
+        else pd.DataFrame(columns=["element", "name", "position", "team"])
+    )
+    rows: list[dict[str, Any]] = []
+    meta_by = (
+        meta.drop_duplicates("element").set_index("element")
+        if not meta.empty
+        else None
+    )
+    for eid, m in minutes_by_element.items():
+        m_val = float(m)
+        if min_m <= 0.0:
+            if m_val < 0.0:
+                continue
+        elif m_val < float(min_m):
+            continue
+        name = str(eid)
+        position = "MID"
+        team = ""
+        if meta_by is not None and eid in meta_by.index:
+            r = meta_by.loc[eid]
+            name = str(r["name"])
+            position = str(r["position"])
+            team = str(r["team"])
+        rows.append(
+            {
+                "element": int(eid),
+                "name": name,
+                "position": position,
+                "team": team,
+                "m": m_val,
+                "sigma_m": 5.0,
+            }
+        )
+    if not rows:
+        return pd.DataFrame()
+    out = pd.DataFrame(rows)
+    out["position"] = out["position"].map(_pos_norm)
+    return out
+
+
+def oracle_minutes_by_element(
+    frame: pd.DataFrame,
+    gw: int,
+    *,
+    element_col: str = "element",
+    gw_col: str = "GW",
+    minutes_col: str = "minutes",
+) -> dict[int, float]:
+    """Actual minutes at ``gw`` keyed by element (DGW → sum)."""
+    if frame.empty:
+        return {}
+    gcol = gw_col if gw_col in frame.columns else ("gw" if "gw" in frame.columns else None)
+    if gcol is None or element_col not in frame.columns or minutes_col not in frame.columns:
+        return {}
+    week = frame.loc[pd.to_numeric(frame[gcol], errors="coerce").astype("Int64") == int(gw)]
+    if week.empty:
+        return {}
+    tmp = week[[element_col, minutes_col]].copy()
+    tmp[element_col] = pd.to_numeric(tmp[element_col], errors="coerce")
+    tmp[minutes_col] = pd.to_numeric(tmp[minutes_col], errors="coerce").fillna(0.0)
+    tmp = tmp.dropna(subset=[element_col])
+    summed = tmp.groupby(element_col, as_index=True)[minutes_col].sum()
+    return {int(k): float(v) for k, v in summed.items()}
+
+
 def project_week_score_xp_v2(
     hist: pd.DataFrame,
     merged: pd.DataFrame,
@@ -202,6 +284,7 @@ def project_week_score_xp_v2(
     season: str | None = None,
     historical_rate_baseline: bool = True,
     full_club_shares: bool = True,
+    minutes_by_element: Mapping[int, float] | None = None,
 ) -> tuple[pd.DataFrame, int]:
     """Point ``score_xp_v2`` for target_gw with frozen priors + FD pots.
 
@@ -210,12 +293,25 @@ def project_week_score_xp_v2(
     (``protocol.score_xp_v2_rate_baseline_likelihood`` promote).
     Goal/assist shares default to full-club ``m>0`` projected onto the
     selection roster (``protocol.score_xp_v2_full_share_likelihood``).
+
+    ``minutes_by_element``: optional oracle/explicit minutes map for this
+    target week (deadline-causal week-0). When set, replaces as-of mean
+    minutes for both selection and full-club share rosters.
     """
     hist = numagent_xp.asof_share_history(hist, before_gw=int(decision_gw))
     season_key = season
     if season_key is None and "season" in hist.columns and len(hist):
         season_key = str(hist["season"].iloc[0])
-    roster = _mean_minutes_asof(hist, rho=minutes_rho, window=minutes_window)
+    if minutes_by_element is not None:
+        roster = _roster_from_minutes_map(
+            hist, minutes_by_element, min_m=float(MIN_MEAN_M)
+        )
+        # Keep owned / low-minute rows out of the hard floor by also allowing
+        # any mapped player with m>=0 into the share pool below.
+        if roster.empty:
+            roster = _roster_from_minutes_map(hist, minutes_by_element, min_m=0.0)
+    else:
+        roster = _mean_minutes_asof(hist, rho=minutes_rho, window=minutes_window)
     if roster.empty:
         return pd.DataFrame(), 0
     side = _attach_rates_priors_baseline(
@@ -226,9 +322,14 @@ def project_week_score_xp_v2(
     )
     share_side = side
     if full_club_shares:
-        share_roster = _mean_minutes_asof(
-            hist, rho=minutes_rho, window=minutes_window, min_m=0.0
-        )
+        if minutes_by_element is not None:
+            share_roster = _roster_from_minutes_map(
+                hist, minutes_by_element, min_m=0.0
+            )
+        else:
+            share_roster = _mean_minutes_asof(
+                hist, rho=minutes_rho, window=minutes_window, min_m=0.0
+            )
         if not share_roster.empty and len(share_roster) > len(roster):
             share_side = _attach_rates_priors_baseline(
                 share_roster,
@@ -409,6 +510,80 @@ def _align_to_week0(week0: pd.DataFrame, other: pd.DataFrame) -> pd.DataFrame:
         out[c] = pids.map(lambda p, m=cmap: m.get(p, 0.0)).astype(float)
     out["total_points"] = 0.0
     return out.reset_index(drop=True)
+
+
+def rebuild_week0_with_minutes_mode(
+    week0_pool: pd.DataFrame,
+    *,
+    season: str,
+    decision_gw: int,
+    merged: pd.DataFrame,
+    fd: pd.DataFrame,
+    prices: pd.DataFrame,
+    moments: dict[str, CohortMoments] | None,
+    mode: str = "asof",
+    minutes_rho: float = 1.0,
+    minutes_window: int = 3,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Rebuild week-0 μ under as-of or oracle minutes; keep week0 player universe.
+
+    ``mode='asof'``: ``m`` = as-of mean (GW ``< t``).
+    ``mode='oracle'``: ``m`` = actual minutes at decision GW ``t``.
+    Far-horizon boards are unchanged (caller still uses as-of via centreline).
+    """
+    mode_key = str(mode).strip().lower()
+    if mode_key not in {"asof", "oracle"}:
+        raise ValueError(f"unknown minutes mode {mode!r}")
+    hist = merged.loc[
+        pd.to_numeric(merged["GW"], errors="coerce") < int(decision_gw)
+    ].copy()
+    alpha_g, alpha_a = _asof_alphas(hist)
+    minutes_map: Mapping[int, float] | None = None
+    if mode_key == "oracle":
+        # Prefer enriched/merged actuals; fall back empty → as-of.
+        minutes_map = oracle_minutes_by_element(merged, int(decision_gw))
+        if not minutes_map:
+            minutes_map = None
+            mode_key = "asof"
+    raw, n_fx = project_week_score_xp_v2(
+        hist,
+        merged,
+        fd,
+        decision_gw=int(decision_gw),
+        target_gw=int(decision_gw),
+        alpha_g=float(alpha_g),
+        alpha_a=float(alpha_a),
+        minutes_rho=float(minutes_rho),
+        minutes_window=int(minutes_window),
+        season=season,
+        historical_rate_baseline=True,
+        full_club_shares=True,
+        minutes_by_element=minutes_map,
+    )
+    meta = {
+        "week0_minutes_mode": mode_key,
+        "n_projected_fixtures": int(n_fx),
+        "n_oracle_minutes": int(len(minutes_map or {})),
+        "alpha_g": float(alpha_g),
+        "alpha_a": float(alpha_a),
+    }
+    if raw.empty:
+        return week0_pool.copy(), {**meta, "fallback": "empty_projection"}
+    board = _attach_store_ids(raw, prices, int(decision_gw), season)
+    board, _ = attach_mu_post(
+        board,
+        mu_col="score_xp_v2",
+        se_col="xp_se",
+        mode="none",
+        moments_by_pos=moments,
+        out_col="mu_post",
+    )
+    # Preserve realised columns from the store pool for banking.
+    out = _align_to_week0(week0_pool, board)
+    for col in ("total_points", "minutes"):
+        if col in week0_pool.columns:
+            out[col] = week0_pool[col].to_numpy()
+    return out, meta
 
 
 def build_mupost_priced_horizon(
