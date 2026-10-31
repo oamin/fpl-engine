@@ -70,7 +70,8 @@ SEED = 0
 MAX_HITS = SQUAD_SIZE
 GAMMA = 1.0
 TIME_LIMIT_L4 = 60.0
-TIME_LIMIT_PATH = 180.0
+TIME_LIMIT_PATH = 240.0
+MIP_REL_GAP = 1e-3
 RHO = DEFAULT_DECAY_RHO
 
 
@@ -118,6 +119,7 @@ def climb_season(
     time_limit_l4: float,
     time_limit_path: float,
     rho: float,
+    mip_rel_gap: float = MIP_REL_GAP,
 ) -> list[dict[str, Any]]:
     gws = store.gws(gw_start, gw_end)
     rows: list[dict[str, Any]] = []
@@ -212,6 +214,7 @@ def climb_season(
                 max_hits=MAX_HITS,
                 ft_pe_nu=0.0,
                 time_limit=time_limit_path,
+                mip_rel_gap=float(mip_rel_gap),
                 decision_gw=int(gw),
             )
             horizon_obj = float(raw.get("objective", float("nan")))
@@ -353,6 +356,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--gw-end", type=int, default=GW_END)
     ap.add_argument("--time-limit-l4", type=float, default=TIME_LIMIT_L4)
     ap.add_argument("--time-limit-path", type=float, default=TIME_LIMIT_PATH)
+    ap.add_argument("--mip-rel-gap", type=float, default=MIP_REL_GAP)
     ap.add_argument("--rho", type=float, default=RHO)
     ap.add_argument(
         "--arms",
@@ -461,6 +465,7 @@ def main(argv: list[str] | None = None) -> int:
                         time_limit_l4=float(args.time_limit_l4),
                         time_limit_path=float(args.time_limit_path),
                         rho=float(args.rho),
+                        mip_rel_gap=float(args.mip_rel_gap),
                     )
                 )
 

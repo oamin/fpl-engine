@@ -2560,5 +2560,48 @@
     "entry": "src/eval/l4_opta_joint_path_climb_gate.py",
     "report": "reports/l4_opta_joint_path_climb_gate.md",
     "any_later_change": "dated protocol update required"
+  },
+  "l4_opta_joint_path_component_climb": {
+    "pre_registered": "2026-10-31",
+    "status": "pending",
+    "role": "Same joint-path vs L4 oneshot planner screen as l4_opta_joint_path_climb, but mu_post := one centreline xP component (G/A/CS/GC)",
+    "boards": "build_l3_centreline_horizon(H=12); mu_post := component on every horizon board",
+    "baseline": "l4_opta_h12_<C> — solve_horizon_transfers; undecayed component boards",
+    "treatment_a": "joint_path_<C> — pick_path_transfer_plan; full board; from_owned; undecayed",
+    "treatment_b": "joint_path_decay_<C> — same planner; Opta far × ρ^(t−near+1) → 0; ρ=0.85",
+    "components": ["xp_goals", "xp_assists", "xp_cs", "xp_gc"],
+    "comparisons_per_component": [
+      "joint_path_<C>_minus_l4_opta_h12_<C>",
+      "joint_path_decay_<C>_minus_l4_opta_h12_<C>",
+      "joint_path_decay_<C>_minus_joint_path_<C>"
+    ],
+    "shared": {
+      "wildcard_open": "full score_xp_v2 at gw_start (not component)",
+      "seed": "from_owned held 15 after wildcard",
+      "candidates": "full week-0 pool",
+      "value_captain": false,
+      "ft_pe_nu": 0,
+      "realised": "XI total_points − hits",
+      "chips": false,
+      "max_hits": "SQUAD_SIZE",
+      "gamma": 1.0,
+      "horizon": 12
+    },
+    "decay": {
+      "scope": "t+2:end",
+      "formula": "mu_t ← mu_t * rho^(t - near + 1) on mu_post and xp_*",
+      "target": 0,
+      "rho": 0.85
+    },
+    "metric": "paired-by-GW realised XI−hits; cluster_interval four closed seasons; per component",
+    "promote_if": "paired interval lo > 0 (per component comparison)",
+    "park_if": "hi < 0",
+    "gw_start": 8,
+    "gw_end": 38,
+    "holdout": "2026-27 frozen — not in comparison",
+    "note": "Planner isolation under component-only μ. Complements l4_component_horizon_climb (H12 vs H2 on L4 oneshot) and full-μ l4_opta_joint_path_climb. Not a μ promote.",
+    "entry": "src/eval/l4_opta_joint_path_component_climb_gate.py",
+    "report": "reports/l4_opta_joint_path_component_climb_gate.md",
+    "any_later_change": "dated protocol update required"
   }
 }

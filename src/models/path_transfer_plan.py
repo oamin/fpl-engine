@@ -149,6 +149,7 @@ def pick_path_transfer_plan(
     start_owned_ids: Sequence[str] | None = None,
     start_ft: int = 1,
     value_captain: bool = True,
+    mip_rel_gap: float = 1e-8,
 ) -> dict[str, Any]:
     """Joint path MILP over ``gws``.
 
@@ -163,6 +164,9 @@ def pick_path_transfer_plan(
 
     ``value_captain``: if False, captain double is omitted from the objective
     (transfer-rule isolation); a legal captain is still chosen in the XI.
+
+    On HiGHS time-limit, a feasible incumbent ``x`` is accepted when week
+    supports reconstruct; otherwise raises.
     """
     H = int(len(gws))
     n = int(len(candidates))
@@ -489,11 +493,15 @@ def pick_path_transfer_plan(
         integrality=integrality,
         options={
             "time_limit": float(time_limit),
-            "mip_rel_gap": 1e-8,
+            "mip_rel_gap": float(mip_rel_gap),
         },
     )
-    if not res.success or res.x is None:
-        raise RuntimeError(f"path transfer plan MILP failed: {res.message}")
+    msg = str(res.message) if res.message is not None else ""
+    timed_out = "time limit" in msg.lower()
+    if res.x is None:
+        raise RuntimeError(f"path transfer plan MILP failed: {msg}")
+    if not res.success and not timed_out:
+        raise RuntimeError(f"path transfer plan MILP failed: {msg}")
 
     x = res.x
     weeks: list[dict[str, Any]] = []
@@ -503,7 +511,8 @@ def pick_path_transfer_plan(
         cap_idx = [i for i in range(n) if x[ix_c(t, i)] > 0.5]
         if len(squad_idx) != 15 or len(xi_idx) != 11 or len(cap_idx) != 1:
             raise RuntimeError(
-                f"bad plan at GW{gw}: squad={len(squad_idx)} xi={len(xi_idx)} cap={len(cap_idx)}"
+                f"bad plan at GW{gw}: squad={len(squad_idx)} xi={len(xi_idx)} "
+                f"cap={len(cap_idx)} (success={res.success}; {msg})"
             )
         if t not in step_of:
             n_tr, hits, ft_b, ft_a = 0, 0, 0, int(round(x[ix_f(0)]))
@@ -559,6 +568,9 @@ def pick_path_transfer_plan(
         "n_candidates": n,
         "horizon": H,
         "status": str(res.message),
+        "milp_success": bool(res.success),
+        "milp_timed_out": bool(timed_out),
+        "mip_rel_gap": float(mip_rel_gap),
         "ft_pe_nu": nu,
         "terminal_ft": terminal_ft,
         "terminal_pe": float(

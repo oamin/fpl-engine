@@ -277,6 +277,7 @@ def plan_centreline_path(
     max_hits: int = MAX_HITS_SNAPSHOT,
     ft_pe_nu: float = DEFAULT_FT_PE_NU,
     time_limit: float = 180.0,
+    mip_rel_gap: float = 1e-3,
     decision_gw: int | None = None,
 ) -> tuple[TransferWeekPlan, dict[str, Any]]:
     """Solve joint path on centreline pools; return week-0 plan + raw path dict.
@@ -314,6 +315,7 @@ def plan_centreline_path(
         start_owned_ids=owned,
         start_ft=int(held.ft),
         value_captain=False,
+        mip_rel_gap=float(mip_rel_gap),
     )
     if not raw.get("weeks"):
         raise RuntimeError("path plan returned no weeks")
