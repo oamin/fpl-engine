@@ -1,43 +1,16 @@
 {
-  "task": "l4_opta_joint_path_component_climb",
-  "status": "done",
-  "as_of_utc": "2026-10-31T11:07:29Z",
-  "change": "Gated joint path vs L4 under component-only \u03bc \u2014 all inconclusive",
-  "verdicts": {
-    "xp_assists": {
-      "joint_path_minus_l4_opta_h12": "inconclusive",
-      "joint_path_decay_minus_l4_opta_h12": "inconclusive",
-      "joint_path_decay_minus_joint_path": "inconclusive"
-    },
-    "xp_cs": {
-      "joint_path_minus_l4_opta_h12": "inconclusive",
-      "joint_path_decay_minus_l4_opta_h12": "inconclusive",
-      "joint_path_decay_minus_joint_path": "inconclusive"
-    },
-    "xp_gc": {
-      "joint_path_minus_l4_opta_h12": "inconclusive",
-      "joint_path_decay_minus_l4_opta_h12": "inconclusive",
-      "joint_path_decay_minus_joint_path": "inconclusive"
-    },
-    "xp_goals": {
-      "joint_path_minus_l4_opta_h12": "inconclusive",
-      "joint_path_decay_minus_l4_opta_h12": "inconclusive",
-      "joint_path_decay_minus_joint_path": "inconclusive"
-    }
+  "task": "joint_path_opta_decay",
+  "status": "locked",
+  "as_of_utc": "2026-10-31T12:05:00Z",
+  "change": "PI locked joint_path_decay (Opta far ρ=0.85) as strategiser default on L4+Opta H=12",
+  "screen": "l4_opta_joint_path_climb",
+  "vs_l4": {
+    "mean": 1.783,
+    "lo": -0.15,
+    "hi": 3.884,
+    "gate": "inconclusive",
+    "by_season_all_positive": true
   },
-  "means": {
-    "joint_path_xp_assists_minus_l4_opta_h12_xp_assists": 0.117,
-    "joint_path_decay_xp_assists_minus_l4_opta_h12_xp_assists": -0.15,
-    "joint_path_decay_xp_assists_minus_joint_path_xp_assists": -0.267,
-    "joint_path_xp_cs_minus_l4_opta_h12_xp_cs": 1.542,
-    "joint_path_decay_xp_cs_minus_l4_opta_h12_xp_cs": 1.917,
-    "joint_path_decay_xp_cs_minus_joint_path_xp_cs": 0.375,
-    "joint_path_xp_gc_minus_l4_opta_h12_xp_gc": 0.767,
-    "joint_path_decay_xp_gc_minus_l4_opta_h12_xp_gc": 1.492,
-    "joint_path_decay_xp_gc_minus_joint_path_xp_gc": 0.725,
-    "joint_path_xp_goals_minus_l4_opta_h12_xp_goals": -1.417,
-    "joint_path_decay_xp_goals_minus_l4_opta_h12_xp_goals": -0.833,
-    "joint_path_decay_xp_goals_minus_joint_path_xp_goals": 0.583
-  },
-  "report": "reports/l4_opta_joint_path_component_climb_gate.md"
+  "report": "reports/JOINT_PATH_OPTA_DECAY_LOCK.md",
+  "note": "Undecayed joint_path had formal promote but lost 2024-25; PI preferred season-consistent decay. Component climbs under PI review."
 }

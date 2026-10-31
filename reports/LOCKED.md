@@ -7,7 +7,7 @@
 | Live score | captured `ep_next` | **`score_xp_v2`** |
 | Historical / climb score | `score_xp` | `score_xp_v2` (primary); `score_xp` gate baseline only |
 | Pots | opening 1X2 / Betfair `gw_lines` | **Odds API AH+OU+BTTS** (snapshots or `--fetch-odds`; prices t and t+1) |
-| Transfers | `wildcard_plan` / climb search | **L3 → L4** centreline horizon (priced near + Opta far) |
+| Transfers | `wildcard_plan` / climb search | **joint path + Opta far decay** on L4+Opta H=12 (`joint_path_opta_decay`; live still L4 oneshot / priced H=2) |
 | Entry | `deadline` / `wildcard_plan` | **`numagent_live_pick`** |
 | Protocol | `numagent_1_0` | **`numagent_2_0`** · forecast μ [`L3_CENTRELINE_FORECAST_LOCK.md`](L3_CENTRELINE_FORECAST_LOCK.md) |
 
@@ -51,7 +51,8 @@ Assembler: `src/markets/numagent_xp.py`. Defaults: `share_se_shrink=True`, `shar
 | L3 transfers | 2026-10-14 | `strategy_layer3_audit.md` | audit 6/6 |
 | L4 horizon | 2026-10-15 | `strategy_layer4_audit.md` | H=1 ≡ L3 |
 | **L4 μ_post priced γ=1** | 2026-10-15/16 | `layer4_mupost_gamma1.md` | priced near BOOKIE_DEPTH=2 |
-| **L4 centreline horizon H=12** | 2026-10-30 | `L3_CENTRELINE_FORECAST_LOCK.md` | **default**; t:t+1 priced + t+2…t+11 Opta blind |
+| **L4 centreline horizon H=12** | 2026-10-30 | `L3_CENTRELINE_FORECAST_LOCK.md` | boards default; t:t+1 priced + t+2…t+11 Opta blind |
+| **Joint path + Opta far decay** | 2026-10-31 (PI) | `JOINT_PATH_OPTA_DECAY_LOCK.md` | **strategiser default** on H=12; ρ=0.85; live still L4 oneshot / H=2 |
 | Planning glue (captain=μ) | 2026-10-15 | `fixture_planning_glue.md` | haul/CVaR cover 0 |
 | L5 beam K=8 | 2026-10-16 | `layer5_vs_l4_k_rescreen.md` | width only; L4 stays default |
 

@@ -28,9 +28,11 @@ Product **μ**: Odds API / FD centreline near (`t`/`t+1`); **Opta blind** λ far
 
 **Component climb gate (2026-10-30):** mis-aimed L3 component-vs-full one-week — parked. **Corrected:** `l4_component_horizon_climb` — L4 H=12 (Opta far) vs L4 H=2, `mu_post :=` one component, no captain/chips. **G/A promote** (+2.69 / +2.29); CS/GC inconclusive. `reports/l4_component_horizon_climb_gate.md`.
 
-**Joint path vs L4 oneshot (2026-10-31):** `l4_opta_joint_path_climb` on full L4+Opta H=12 μ — **promote** (+1.925/GW [+0.08, +3.69]; lo>0). Every-GW `pick_path_transfer_plan` (full board, xi_ft, from_owned) beats L4 oneshot. Opta far decay ρ=0.85 **inconclusive** vs L4 and vs undecayed path. `reports/l4_opta_joint_path_climb_gate.md`.
+**Joint path vs L4 oneshot (2026-10-31):** `l4_opta_joint_path_climb` on full L4+Opta H=12 μ — undecayed path **promote** (+1.925/GW); Opta far decay **inconclusive** vs L4 (+1.783/GW [−0.15, +3.88]) but **positive every season**. `reports/l4_opta_joint_path_climb_gate.md`.
 
-**Joint path component-μ (2026-10-31):** `l4_opta_joint_path_component_climb` — same planners with `mu_post :=` G/A/CS/GC. **All inconclusive** (joint path vs L4: goals −1.42, assists +0.12, CS +1.54, GC +0.77; all cover 0). Path stays very sticky (≈0 hits) under component μ. `reports/l4_opta_joint_path_component_climb_gate.md`.
+**Strategiser lock (PI 2026-10-31):** `joint_path_opta_decay` — every-GW joint path + Opta far × ρ^(t−near+1)→0 (ρ=0.85) on H=12 L4+Opta boards. Chosen over undecayed path for season consistency vs L4 (undecayed lost 2024-25). Live remains priced H=2 / L4 oneshot until Opta far is live-ready. [`JOINT_PATH_OPTA_DECAY_LOCK.md`](../reports/JOINT_PATH_OPTA_DECAY_LOCK.md).
+
+**Joint path component-μ (2026-10-31):** `l4_opta_joint_path_component_climb` — same planners with `mu_post :=` G/A/CS/GC. **All inconclusive** (joint path vs L4: goals −1.42, assists +0.12, CS +1.54, GC +0.77; all cover 0). Path stays very sticky (≈0 hits) under component μ. PI reviewing. `reports/l4_opta_joint_path_component_climb_gate.md`.
 
 ## Repo freeze sequence (2026-10-20)
 
