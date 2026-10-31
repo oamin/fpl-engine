@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:a2e13d68773925e9",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cm3el25ez88yo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 30 Oct 2026 17:33:02 GMT",
+  "published_at_utc": "2026-10-30T17:33:02Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "Why has Caf abandoned plans to hold Afcon every four years?",
+  "body": "The Africa Cup of Nations will remain on a two-year cycle after the Confederation of African Football performed a U-turn on a decision taken last December.",
+  "player_ids": [],
+  "sha256": "65ef4f6c8f3b36f5e07ea2237d6a246abf546475f69a1151d38d448136e353b6"
+}

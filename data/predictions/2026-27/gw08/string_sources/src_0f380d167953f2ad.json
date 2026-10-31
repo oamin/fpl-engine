@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:0f380d167953f2ad",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cked364q8jxjo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 22 Oct 2026 16:31:24 GMT",
+  "published_at_utc": "2026-10-22T16:31:24Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "BBC to show Cray Wanderers v Stockport & Altrincham v Notts County",
+  "body": "Non-league clubs Altrincham and Cray Wanderers will stage the BBC's two chosen FA Cup first-round ties next month.",
+  "player_ids": [],
+  "sha256": "15f04510ca1649bebbad522fb6b5e8a699aef9b8d66f87e70de768bae1406a7c"
+}

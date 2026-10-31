@@ -1,27 +1,23 @@
 {
-  "task": "gw09_l4_priced_h2_live_pick",
+  "task": "gw09_numagent_lock_and_stragent",
   "status": "done",
-  "as_of_utc": "2026-10-31T08:10:00Z",
-  "change": "GW9 deadline pick on priced L4 H=2 only (no Opta far); deep whitelist team-news packets → xmi",
-  "deadline_utc": "2026-10-31T11:00:00Z",
-  "method": {
-    "primary": "L4",
-    "centreline_horizon": 2,
-    "opta_far": false,
-    "max_hits": 1,
-    "odds": "data/scratch/gw09_odds_bookie_depth2.json",
-    "xmi": "data/scratch/gw09_xmi_probe.csv"
-  },
-  "recommendation": {
-    "transfers": 2,
-    "hits": 1,
-    "sold": ["B.Fernandes", "Wissa"],
-    "bought": ["Ødegaard", "Isak"],
+  "as_of_utc": "2026-10-31T08:30:00Z",
+  "change": "PI-locked GW9 numagent; froze GW9 stragent paper pick (Muniz→Barry)",
+  "numagent": {
+    "lock": "data/predictions/2026-27/gw09/numagent_lock.json",
+    "report": "reports/numagent_live_pick_gw09.md",
+    "transfers": "B.Fernandes+Wissa → Ødegaard+Isak (−4)",
     "captain": "Haaland",
-    "vice_suggested": "Isak",
-    "horizon_objective": 119.03,
-    "l3_contrast": "Murillo → Van Hecke (1T)"
+    "vice": "Isak"
   },
-  "report": "reports/numagent_live_pick_gw09.md",
-  "pick_json": "data/predictions/2026-27/gw09/numagent_pick.json"
+  "stragent": {
+    "plan": "data/predictions/2026-27/string_plans/gw09.json",
+    "ledger": "data/predictions/2026-27/string_agent_freeze.jsonl",
+    "report": "reports/stragent_live_pick_gw09.md",
+    "trawl_sources": 197,
+    "transfers": "Muniz → Barry (0 hits)",
+    "captain": "Haaland",
+    "vice": "Rogers",
+    "horizon": "GW10 Guéhi→Van Hecke; GW11 hold"
+  }
 }

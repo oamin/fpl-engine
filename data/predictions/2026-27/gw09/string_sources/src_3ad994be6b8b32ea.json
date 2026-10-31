@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:3ad994be6b8b32ea",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cwvgd4yegyepo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 29 Oct 2026 20:53:07 GMT",
+  "published_at_utc": "2026-10-29T20:53:07Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "What have we learned from first round of Premiership?",
+  "body": "With every team having now faced one another in the Scottish Premiership, BBC Sport Scotland assesses the key things we have learned so far.",
+  "player_ids": [],
+  "sha256": "71de2c785a977377063263d7a0a08f6484479620943dc3e4db466f7c45788be6"
+}

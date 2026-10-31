@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:1dc7c35785a9314c",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/c8d75jn2057o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Tue, 13 Oct 2026 12:04:02 GMT",
+  "published_at_utc": "2026-10-13T12:04:02Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "Why are some football shin pads so small?",
+  "body": "Our Ask Me Anything team explore why some football shin pads are so small, and what the laws are around wearing them.",
+  "player_ids": [],
+  "sha256": "30be4bd6626ce67a48cc2613e09f576ff8b33e802f0382b431f7cb6390d73c01"
+}

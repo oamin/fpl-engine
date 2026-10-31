@@ -1,5 +1,7 @@
 # Numagent 2.0 live pick — GW9
 
+**PI locked** 2026-10-31 → [`data/predictions/2026-27/gw09/numagent_lock.json`](../data/predictions/2026-27/gw09/numagent_lock.json) (C Haaland, VC Isak; bench Verbruggen → Thomas → Rudoni → Khalaili).
+
 Deadline **2026-10-31T11:00:00Z**. Primary solver: **L4 priced H=2** (Odds t:t+1 only — **no Opta far**). Team `ojaminFC` (entry 2632584). Bank 0 tenths, FT 1. Odds: snapshot (20 priced; t=10/10, t+1=10/10; credits remaining 111). Live hit cap: **max_hits=1**.
 
 α_G=0.9601, α_A=0.9050. Week-t minutes: deep whitelist packets (Guardian + BBC / Coventry Telegraph / Chronicle / Sports Mole / Standard / Football London / club + PL) + FFScout XIs → `gw09_xmi_probe.csv` (xmi `669`). Week-t+1: rolling3 (L4 as-of).

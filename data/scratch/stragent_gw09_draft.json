@@ -1,0 +1,195 @@
+{
+  "model_id": "cursor-stragent-gw09-deepdive",
+  "rationale": "Deep-dive trawl (197 string_sources) plus FFScout predicted XIs and whitelist team news. GW8 left Muniz as a rotation risk; FFScout still starts Gonzalo Garc\u00eda at Fulham and Muniz is absent from the XI, so with 1 FT and 3 tenths we sell Muniz (53) for Barry (56), who leads the Everton line at Newcastle.\n\nGu\u00e9hi (now City) and Cherki are both outside FFScout\u2019s City XI (Donnarumma\u2026 Fern\u00e1ndez, Doku, Haaland) \u2014 both benched this week. Mazraoui is outside United\u2019s predicted XI (Yoro/Dalot preferred) and also benched. Calafiori is a 75% hip doubt but remains in Arsenal\u2019s predicted XI away at Liverpool; van Ewijk and Robinson are firm.\n\nMidfield four: Barnes (Newcastle XI vs Everton), Fernandes (Carrick: fully committed / will captain at Chelsea), Rogers (Football London / FFS XI vs United), \u00d8degaard (FFS Arsenal XI with Saka/Saliba out).\n\nCaptain Haaland at home to Brighton; vice Rogers for the United home ceiling if the armband blanks.\n\nHorizon: GW10 sell Gu\u00e9hi \u2192 Van Hecke (Spurs DEF in FFS XI) to clear the City dead minutes and free bank; GW11 hold to rebuild an FT before addressing Cherki.",
+  "decision": {
+    "chip_played": null,
+    "squad_15": [
+      "412",
+      "58",
+      "8",
+      "254",
+      "388",
+      "422",
+      "175",
+      "453",
+      "426",
+      "40",
+      "399",
+      "15",
+      "346",
+      "411",
+      "249"
+    ],
+    "starting_11": [
+      "412",
+      "8",
+      "254",
+      "175",
+      "453",
+      "426",
+      "40",
+      "15",
+      "411",
+      "346",
+      "249"
+    ],
+    "captain": "411",
+    "vice_captain": "40",
+    "bench_order": [
+      "58",
+      "388",
+      "422",
+      "399"
+    ],
+    "transfers_in": [
+      "249"
+    ],
+    "transfers_out": [
+      "271"
+    ]
+  },
+  "horizon": [
+    {
+      "chip_played": null,
+      "squad_15": [
+        "412",
+        "58",
+        "8",
+        "254",
+        "388",
+        "422",
+        "175",
+        "453",
+        "426",
+        "40",
+        "399",
+        "15",
+        "346",
+        "411",
+        "249"
+      ],
+      "starting_11": [
+        "412",
+        "8",
+        "254",
+        "175",
+        "453",
+        "426",
+        "40",
+        "15",
+        "411",
+        "346",
+        "249"
+      ],
+      "captain": "411",
+      "vice_captain": "40",
+      "bench_order": [
+        "58",
+        "388",
+        "422",
+        "399"
+      ],
+      "transfers_in": [
+        "249"
+      ],
+      "transfers_out": [
+        "271"
+      ],
+      "gw": 9
+    },
+    {
+      "gw": 10,
+      "chip_played": null,
+      "squad_15": [
+        "412",
+        "58",
+        "8",
+        "254",
+        "112",
+        "422",
+        "175",
+        "453",
+        "426",
+        "40",
+        "399",
+        "15",
+        "346",
+        "411",
+        "249"
+      ],
+      "starting_11": [
+        "412",
+        "8",
+        "112",
+        "175",
+        "453",
+        "426",
+        "40",
+        "15",
+        "411",
+        "346",
+        "249"
+      ],
+      "captain": "411",
+      "vice_captain": "40",
+      "bench_order": [
+        "58",
+        "254",
+        "422",
+        "399"
+      ],
+      "transfers_in": [
+        "112"
+      ],
+      "transfers_out": [
+        "388"
+      ]
+    },
+    {
+      "gw": 11,
+      "chip_played": null,
+      "squad_15": [
+        "412",
+        "58",
+        "8",
+        "254",
+        "112",
+        "422",
+        "175",
+        "453",
+        "426",
+        "40",
+        "399",
+        "15",
+        "346",
+        "411",
+        "249"
+      ],
+      "starting_11": [
+        "412",
+        "8",
+        "112",
+        "175",
+        "453",
+        "426",
+        "40",
+        "15",
+        "411",
+        "346",
+        "249"
+      ],
+      "captain": "411",
+      "vice_captain": "426",
+      "bench_order": [
+        "58",
+        "254",
+        "422",
+        "399"
+      ],
+      "transfers_in": [],
+      "transfers_out": []
+    }
+  ],
+  "notes": "Trawl wrote 197 string_sources (BBC/Guardian/Sky/FFScout/r/FantasyPL; clean). FFScout XI used for Muniz out / Barry in; Gu\u00e9hi+Cherki+Mazraoui flagged as non-XI. Numagent locked separately (Fernandes+Wissa\u2192\u00d8degaard+Isak) \u2014 paper track stays on this fifteen.",
+  "adjustments": "If Cherki is still outside City\u2019s XI after GW10, prioritise a nailed MID once bank allows. Revisit Calafiori if the hip keeps him at 75%."
+}

@@ -17,9 +17,11 @@ Do not treat stage_* / GW1–5 / stragent / GW6 `ep_next` dry runs as the live p
 
 | Artifact | Path |
 | --- | --- |
-| **GW7 PI lock** | `data/predictions/2026-27/gw07/numagent_lock.json` |
-| Pick report | `reports/numagent_live_pick_gw07.md` |
-| Live entrypoint | `python -m src.live.numagent_live_pick --gw N` |
+| **GW9 PI lock** | `data/predictions/2026-27/gw09/numagent_lock.json` |
+| Pick report | `reports/numagent_live_pick_gw09.md` |
+| GW8 PI lock | `data/predictions/2026-27/gw08/numagent_lock.json` |
+| GW7 PI lock | `data/predictions/2026-27/gw07/numagent_lock.json` |
+| Live entrypoint | `python -m src.live.numagent_live_pick --gw N --centreline-horizon 2` (priced H=2; Opta far not for live) |
 | Odds refresh | `… --fetch-odds` (region=`us`; quota rule — prefer snapshots) |
 | Forecast μ | [`L3_CENTRELINE_FORECAST_LOCK.md`](L3_CENTRELINE_FORECAST_LOCK.md) · `src/strategy/l3_centreline_horizon.py` |
 

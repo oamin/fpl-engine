@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:b668defd597689ce",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/c6n9r7wgp9q0o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 22 Oct 2026 17:49:08 GMT",
+  "published_at_utc": "2026-10-22T17:49:08Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "US to host first Women's Club World Cup in 2028",
+  "body": "Arsenal are named as one of the teams to compete at the inaugural Women's Club World Cup, to be hosted in the United States in 2028.",
+  "player_ids": [],
+  "sha256": "1f44ce71b3b7616a6dd45ca8921f719da35557df370ecd40537717574f1cc31f"
+}

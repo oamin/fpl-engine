@@ -1,0 +1,51 @@
+{
+  "model_id": "cursor-stragent-gw08-deepdive",
+  "rationale": "Deep-dive trawl (171 sources) plus FFScout predicted XIs. Shaw is listed out for Man Utd with an unspecified injury and unknown return — a dead asset. With 1 FT and 3 tenths in the bank we sell Shaw (43) for Mazraoui (43), who is in the FFScout Man Utd XI at home to Bournemouth, keeping the Man Utd count at 3 with Lammens and Bruno Fernandes.\n\nMuniz remains a rotation risk (FFScout starts Gonzalo García at Fulham; Muniz’s last three minutes are 7/13/10), so he stays on the bench. Calvert-Lewin keeps his place away at Sunderland after a strong run. Robinson is a 75% doubt but still in Fulham’s predicted XI — we start the firmer three of Calafiori (home Everton), Guéhi (City away Villa), and Mazraoui, with van Ewijk and Robinson as outfield cover.\n\nMidfield five: Ødegaard and Calafiori share Arsenal’s home Everton; Rogers hosts Spurs; Barnes away at Palace; Cherki travels with City; Fernandes hosts Bournemouth. No chip — wildcard/FH/BB/TC all preserved.\n\nCaptain Haaland (Maresca: 100% available) despite the Villa away trip; vice Fernandes for the home Bournemouth ceiling if the armband blanks.\n\nHorizon: GW9 hold to bank a second FT (City home Brighton is fine for Haaland/Cherki; Arsenal away Liverpool is ugly for Ødegaard/Calafiori so we revisit). GW10 intention: if Muniz is still benched, move him toward a nailed forward once the bank allows.",
+  "decision": {
+    "chip_played": null,
+    "squad_15": ["412", "58", "8", "254", "388", "422", "175", "453", "426", "40", "399", "15", "346", "411", "271"],
+    "starting_11": ["412", "8", "388", "422", "453", "426", "40", "399", "15", "411", "346"],
+    "captain": "411",
+    "vice_captain": "426",
+    "bench_order": ["58", "175", "254", "271"],
+    "transfers_in": ["422"],
+    "transfers_out": ["423"]
+  },
+  "horizon": [
+    {
+      "gw": 8,
+      "chip_played": null,
+      "squad_15": ["412", "58", "8", "254", "388", "422", "175", "453", "426", "40", "399", "15", "346", "411", "271"],
+      "starting_11": ["412", "8", "388", "422", "453", "426", "40", "399", "15", "411", "346"],
+      "captain": "411",
+      "vice_captain": "426",
+      "bench_order": ["58", "175", "254", "271"],
+      "transfers_in": ["422"],
+      "transfers_out": ["423"]
+    },
+    {
+      "gw": 9,
+      "chip_played": null,
+      "squad_15": ["412", "58", "8", "254", "388", "422", "175", "453", "426", "40", "399", "15", "346", "411", "271"],
+      "starting_11": ["412", "8", "388", "422", "453", "426", "40", "399", "15", "411", "346"],
+      "captain": "411",
+      "vice_captain": "426",
+      "bench_order": ["58", "175", "254", "271"],
+      "transfers_in": [],
+      "transfers_out": []
+    },
+    {
+      "gw": 10,
+      "chip_played": null,
+      "squad_15": ["412", "58", "8", "254", "388", "422", "175", "453", "426", "40", "399", "15", "346", "411", "271"],
+      "starting_11": ["412", "388", "422", "175", "453", "426", "40", "399", "15", "411", "346"],
+      "captain": "411",
+      "vice_captain": "15",
+      "bench_order": ["58", "8", "254", "271"],
+      "transfers_in": [],
+      "transfers_out": []
+    }
+  ],
+  "notes": "Trawl wrote 171 string_sources (BBC/Guardian/Sky/FFScout/r/FantasyPL; r/PremierLeague feed error). FFScout XI used for Shaw out and Mazraoui in. Muniz rotation flagged in forum + FFScout.",
+  "adjustments": "If Muniz is still benched after GW8, prioritise a nailed FWD on the FT bank. Revisit Arsenal assets before the Liverpool away."
+}
