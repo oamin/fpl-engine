@@ -1,0 +1,882 @@
+{
+  "smoke": false,
+  "seasons": [
+    "2024-25"
+  ],
+  "arms": [
+    "asof_all"
+  ],
+  "gw_start": 8,
+  "gw_end": 38,
+  "elapsed_s": 1892.078803062439,
+  "rows": [
+    {
+      "season": "2024-25",
+      "gw": 8,
+      "arm": "asof_all",
+      "phase": "wildcard",
+      "n_transfers": 0,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 48.0,
+      "cap_extra": 2.0,
+      "pts_net": 50.0,
+      "H": 0,
+      "n_candidates": 0,
+      "week0_minutes": "asof",
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2024-25:351",
+      "vice_id": "2024-25:328",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2024-25",
+      "gw": 9,
+      "arm": "asof_all",
+      "phase": "transfer",
+      "n_transfers": 3,
+      "hits": 1,
+      "hit_points": 4,
+      "pts_xi": 51.0,
+      "cap_extra": 6.0,
+      "pts_net": 53.0,
+      "H": 12,
+      "horizon_obj": 407.7458858584082,
+      "n_candidates": 209,
+      "sold": [
+        "2024-25:252",
+        "2024-25:325",
+        "2024-25:503"
+      ],
+      "bought": [
+        "2024-25:148",
+        "2024-25:15",
+        "2024-25:99"
+      ],
+      "week0_minutes": "asof",
+      "n_oracle_minutes": 0,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2024-25:351",
+      "vice_id": "2024-25:148",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2024-25",
+      "gw": 10,
+      "arm": "asof_all",
+      "phase": "transfer",
+      "n_transfers": 0,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 35.0,
+      "cap_extra": 2.0,
+      "pts_net": 37.0,
+      "H": 12,
+      "horizon_obj": 412.12545992512656,
+      "n_candidates": 209,
+      "sold": [],
+      "bought": [],
+      "week0_minutes": "asof",
+      "n_oracle_minutes": 0,
+      "n_autosubs": 1,
+      "n_blank_intended": 1,
+      "captain_id": "2024-25:351",
+      "vice_id": "2024-25:328",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2024-25",
+      "gw": 11,
+      "arm": "asof_all",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 36.0,
+      "cap_extra": 5.0,
+      "pts_net": 41.0,
+      "H": 12,
+      "horizon_obj": 410.57321764300764,
+      "n_candidates": 211,
+      "sold": [
+        "2024-25:371"
+      ],
+      "bought": [
+        "2024-25:422"
+      ],
+      "week0_minutes": "asof",
+      "n_oracle_minutes": 0,
+      "n_autosubs": 2,
+      "n_blank_intended": 2,
+      "captain_id": "2024-25:351",
+      "vice_id": "2024-25:328",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2024-25",
+      "gw": 12,
+      "arm": "asof_all",
+      "phase": "transfer",
+      "n_transfers": 2,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 51.0,
+      "cap_extra": 13.0,
+      "pts_net": 64.0,
+      "H": 12,
+      "horizon_obj": 408.4836227282209,
+      "n_candidates": 206,
+      "sold": [
+        "2024-25:351",
+        "2024-25:630"
+      ],
+      "bought": [
+        "2024-25:180",
+        "2024-25:3"
+      ],
+      "week0_minutes": "asof",
+      "n_oracle_minutes": 0,
+      "n_autosubs": 1,
+      "n_blank_intended": 1,
+      "captain_id": "2024-25:328",
+      "vice_id": "2024-25:180",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2024-25",
+      "gw": 13,
+      "arm": "asof_all",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 62.0,
+      "cap_extra": 2.0,
+      "pts_net": 64.0,
+      "H": 12,
+      "horizon_obj": 411.6445637781599,
+      "n_candidates": 211,
+      "sold": [
+        "2024-25:492"
+      ],
+      "bought": [
+        "2024-25:182"
+      ],
+      "week0_minutes": "asof",
+      "n_oracle_minutes": 0,
+      "n_autosubs": 1,
+      "n_blank_intended": 1,
+      "captain_id": "2024-25:148",
+      "vice_id": "2024-25:328",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2024-25",
+      "gw": 14,
+      "arm": "asof_all",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 47.0,
+      "cap_extra": 7.0,
+      "pts_net": 54.0,
+      "H": 12,
+      "horizon_obj": 416.9137143161377,
+      "n_candidates": 212,
+      "sold": [
+        "2024-25:422"
+      ],
+      "bought": [
+        "2024-25:36"
+      ],
+      "week0_minutes": "asof",
+      "n_oracle_minutes": 0,
+      "n_autosubs": 2,
+      "n_blank_intended": 4,
+      "captain_id": "2024-25:180",
+      "vice_id": "2024-25:182",
+      "cap_source": "vice"
+    },
+    {
+      "season": "2024-25",
+      "gw": 15,
+      "arm": "asof_all",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 51.0,
+      "cap_extra": 18.0,
+      "pts_net": 69.0,
+      "H": 12,
+      "horizon_obj": 410.6934689080995,
+      "n_candidates": 189,
+      "sold": [
+        "2024-25:4"
+      ],
+      "bought": [
+        "2024-25:617"
+      ],
+      "week0_minutes": "asof",
+      "n_oracle_minutes": 0,
+      "n_autosubs": 1,
+      "n_blank_intended": 3,
+      "captain_id": "2024-25:148",
+      "vice_id": "2024-25:182",
+      "cap_source": "vice"
+    },
+    {
+      "season": "2024-25",
+      "gw": 16,
+      "arm": "asof_all",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 50.0,
+      "cap_extra": 5.0,
+      "pts_net": 55.0,
+      "H": 12,
+      "horizon_obj": 423.2739298709837,
+      "n_candidates": 211,
+      "sold": [
+        "2024-25:36"
+      ],
+      "bought": [
+        "2024-25:339"
+      ],
+      "week0_minutes": "asof",
+      "n_oracle_minutes": 0,
+      "n_autosubs": 2,
+      "n_blank_intended": 2,
+      "captain_id": "2024-25:328",
+      "vice_id": "2024-25:182",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2024-25",
+      "gw": 17,
+      "arm": "asof_all",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 42.0,
+      "cap_extra": 21.0,
+      "pts_net": 63.0,
+      "H": 12,
+      "horizon_obj": 424.85077746476094,
+      "n_candidates": 202,
+      "sold": [
+        "2024-25:342"
+      ],
+      "bought": [
+        "2024-25:247"
+      ],
+      "week0_minutes": "asof",
+      "n_oracle_minutes": 0,
+      "n_autosubs": 1,
+      "n_blank_intended": 1,
+      "captain_id": "2024-25:328",
+      "vice_id": "2024-25:182",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2024-25",
+      "gw": 18,
+      "arm": "asof_all",
+      "phase": "transfer",
+      "n_transfers": 0,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 43.0,
+      "cap_extra": 9.0,
+      "pts_net": 52.0,
+      "H": 12,
+      "horizon_obj": 425.79859661354624,
+      "n_candidates": 215,
+      "sold": [],
+      "bought": [],
+      "week0_minutes": "asof",
+      "n_oracle_minutes": 0,
+      "n_autosubs": 1,
+      "n_blank_intended": 2,
+      "captain_id": "2024-25:328",
+      "vice_id": "2024-25:182",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2024-25",
+      "gw": 19,
+      "arm": "asof_all",
+      "phase": "transfer",
+      "n_transfers": 2,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 59.0,
+      "cap_extra": 16.0,
+      "pts_net": 75.0,
+      "H": 12,
+      "horizon_obj": 426.4166355740274,
+      "n_candidates": 206,
+      "sold": [
+        "2024-25:369",
+        "2024-25:99"
+      ],
+      "bought": [
+        "2024-25:338",
+        "2024-25:54"
+      ],
+      "week0_minutes": "asof",
+      "n_oracle_minutes": 0,
+      "n_autosubs": 2,
+      "n_blank_intended": 2,
+      "captain_id": "2024-25:328",
+      "vice_id": "2024-25:182",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2024-25",
+      "gw": 20,
+      "arm": "asof_all",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 48.0,
+      "cap_extra": 7.0,
+      "pts_net": 55.0,
+      "H": 12,
+      "horizon_obj": 433.91376145911624,
+      "n_candidates": 204,
+      "sold": [
+        "2024-25:148"
+      ],
+      "bought": [
+        "2024-25:401"
+      ],
+      "week0_minutes": "asof",
+      "n_oracle_minutes": 0,
+      "n_autosubs": 1,
+      "n_blank_intended": 1,
+      "captain_id": "2024-25:328",
+      "vice_id": "2024-25:401",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2024-25",
+      "gw": 21,
+      "arm": "asof_all",
+      "phase": "transfer",
+      "n_transfers": 0,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 59.0,
+      "cap_extra": 16.0,
+      "pts_net": 75.0,
+      "H": 12,
+      "horizon_obj": 443.5674018945012,
+      "n_candidates": 213,
+      "sold": [],
+      "bought": [],
+      "week0_minutes": "asof",
+      "n_oracle_minutes": 0,
+      "n_autosubs": 0,
+      "n_blank_intended": 1,
+      "captain_id": "2024-25:401",
+      "vice_id": "2024-25:328",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2024-25",
+      "gw": 22,
+      "arm": "asof_all",
+      "phase": "transfer",
+      "n_transfers": 2,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 30.0,
+      "cap_extra": 3.0,
+      "pts_net": 33.0,
+      "H": 12,
+      "horizon_obj": 459.67985162264995,
+      "n_candidates": 206,
+      "sold": [
+        "2024-25:15",
+        "2024-25:180"
+      ],
+      "bought": [
+        "2024-25:14",
+        "2024-25:447"
+      ],
+      "week0_minutes": "asof",
+      "n_oracle_minutes": 0,
+      "n_autosubs": 3,
+      "n_blank_intended": 3,
+      "captain_id": "2024-25:328",
+      "vice_id": "2024-25:401",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2024-25",
+      "gw": 23,
+      "arm": "asof_all",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 39.0,
+      "cap_extra": 8.0,
+      "pts_net": 47.0,
+      "H": 12,
+      "horizon_obj": 461.48922913612324,
+      "n_candidates": 205,
+      "sold": [
+        "2024-25:3"
+      ],
+      "bought": [
+        "2024-25:311"
+      ],
+      "week0_minutes": "asof",
+      "n_oracle_minutes": 0,
+      "n_autosubs": 1,
+      "n_blank_intended": 2,
+      "captain_id": "2024-25:328",
+      "vice_id": "2024-25:401",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2024-25",
+      "gw": 24,
+      "arm": "asof_all",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 80.0,
+      "cap_extra": 29.0,
+      "pts_net": 109.0,
+      "H": 12,
+      "horizon_obj": 451.423484789661,
+      "n_candidates": 207,
+      "sold": [
+        "2024-25:14"
+      ],
+      "bought": [
+        "2024-25:235"
+      ],
+      "week0_minutes": "asof",
+      "n_oracle_minutes": 0,
+      "n_autosubs": 0,
+      "n_blank_intended": 1,
+      "captain_id": "2024-25:328",
+      "vice_id": "2024-25:339",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2024-25",
+      "gw": 25,
+      "arm": "asof_all",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 62.0,
+      "cap_extra": 20.0,
+      "pts_net": 82.0,
+      "H": 12,
+      "horizon_obj": 424.1855326633605,
+      "n_candidates": 200,
+      "sold": [
+        "2024-25:235"
+      ],
+      "bought": [
+        "2024-25:14"
+      ],
+      "week0_minutes": "asof",
+      "n_oracle_minutes": 0,
+      "n_autosubs": 1,
+      "n_blank_intended": 2,
+      "captain_id": "2024-25:328",
+      "vice_id": "2024-25:311",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2024-25",
+      "gw": 26,
+      "arm": "asof_all",
+      "phase": "transfer",
+      "n_transfers": 3,
+      "hits": 2,
+      "hit_points": 8,
+      "pts_xi": 55.0,
+      "cap_extra": 14.0,
+      "pts_net": 61.0,
+      "H": 12,
+      "horizon_obj": 400.40095447328275,
+      "n_candidates": 198,
+      "sold": [
+        "2024-25:339",
+        "2024-25:355",
+        "2024-25:54"
+      ],
+      "bought": [
+        "2024-25:168",
+        "2024-25:18",
+        "2024-25:3"
+      ],
+      "week0_minutes": "asof",
+      "n_oracle_minutes": 0,
+      "n_autosubs": 1,
+      "n_blank_intended": 1,
+      "captain_id": "2024-25:328",
+      "vice_id": "2024-25:182",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2024-25",
+      "gw": 27,
+      "arm": "asof_all",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 49.0,
+      "cap_extra": 3.0,
+      "pts_net": 52.0,
+      "H": 12,
+      "horizon_obj": 412.2769016950308,
+      "n_candidates": 208,
+      "sold": [
+        "2024-25:617"
+      ],
+      "bought": [
+        "2024-25:110"
+      ],
+      "week0_minutes": "asof",
+      "n_oracle_minutes": 0,
+      "n_autosubs": 1,
+      "n_blank_intended": 2,
+      "captain_id": "2024-25:182",
+      "vice_id": "2024-25:328",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2024-25",
+      "gw": 28,
+      "arm": "asof_all",
+      "phase": "transfer",
+      "n_transfers": 0,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 41.0,
+      "cap_extra": 15.0,
+      "pts_net": 56.0,
+      "H": 11,
+      "horizon_obj": 399.3242066490143,
+      "n_candidates": 208,
+      "sold": [],
+      "bought": [],
+      "week0_minutes": "asof",
+      "n_oracle_minutes": 0,
+      "n_autosubs": 1,
+      "n_blank_intended": 1,
+      "captain_id": "2024-25:328",
+      "vice_id": "2024-25:182",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2024-25",
+      "gw": 29,
+      "arm": "asof_all",
+      "phase": "transfer",
+      "n_transfers": 2,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 32.0,
+      "cap_extra": 2.0,
+      "pts_net": 34.0,
+      "H": 10,
+      "horizon_obj": 382.39741367517445,
+      "n_candidates": 176,
+      "sold": [
+        "2024-25:311",
+        "2024-25:431"
+      ],
+      "bought": [
+        "2024-25:350",
+        "2024-25:78"
+      ],
+      "week0_minutes": "asof",
+      "n_oracle_minutes": 0,
+      "n_autosubs": 0,
+      "n_blank_intended": 2,
+      "captain_id": "2024-25:447",
+      "vice_id": "2024-25:110",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2024-25",
+      "gw": 30,
+      "arm": "asof_all",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 48.0,
+      "cap_extra": 3.0,
+      "pts_net": 51.0,
+      "H": 9,
+      "horizon_obj": 382.12926821431404,
+      "n_candidates": 206,
+      "sold": [
+        "2024-25:247"
+      ],
+      "bought": [
+        "2024-25:394"
+      ],
+      "week0_minutes": "asof",
+      "n_oracle_minutes": 0,
+      "n_autosubs": 2,
+      "n_blank_intended": 2,
+      "captain_id": "2024-25:328",
+      "vice_id": "2024-25:182",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2024-25",
+      "gw": 31,
+      "arm": "asof_all",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 33.0,
+      "cap_extra": 2.0,
+      "pts_net": 35.0,
+      "H": 8,
+      "horizon_obj": 365.5022457611883,
+      "n_candidates": 204,
+      "sold": [
+        "2024-25:350"
+      ],
+      "bought": [
+        "2024-25:395"
+      ],
+      "week0_minutes": "asof",
+      "n_oracle_minutes": 0,
+      "n_autosubs": 3,
+      "n_blank_intended": 3,
+      "captain_id": "2024-25:401",
+      "vice_id": "2024-25:328",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2024-25",
+      "gw": 32,
+      "arm": "asof_all",
+      "phase": "transfer",
+      "n_transfers": 2,
+      "hits": 1,
+      "hit_points": 4,
+      "pts_xi": 74.0,
+      "cap_extra": 11.0,
+      "pts_net": 81.0,
+      "H": 7,
+      "horizon_obj": 341.4323201215392,
+      "n_candidates": 199,
+      "sold": [
+        "2024-25:110",
+        "2024-25:78"
+      ],
+      "bought": [
+        "2024-25:585",
+        "2024-25:755"
+      ],
+      "week0_minutes": "asof",
+      "n_oracle_minutes": 0,
+      "n_autosubs": 1,
+      "n_blank_intended": 1,
+      "captain_id": "2024-25:401",
+      "vice_id": "2024-25:394",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2024-25",
+      "gw": 33,
+      "arm": "asof_all",
+      "phase": "transfer",
+      "n_transfers": 0,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 31.0,
+      "cap_extra": 4.0,
+      "pts_net": 35.0,
+      "H": 6,
+      "horizon_obj": 299.6471078532757,
+      "n_candidates": 214,
+      "sold": [],
+      "bought": [],
+      "week0_minutes": "asof",
+      "n_oracle_minutes": 0,
+      "n_autosubs": 1,
+      "n_blank_intended": 1,
+      "captain_id": "2024-25:755",
+      "vice_id": "2024-25:18",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2024-25",
+      "gw": 34,
+      "arm": "asof_all",
+      "phase": "transfer",
+      "n_transfers": 2,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 72.0,
+      "cap_extra": 8.0,
+      "pts_net": 80.0,
+      "H": 5,
+      "horizon_obj": 240.7513035297541,
+      "n_candidates": 165,
+      "sold": [
+        "2024-25:3",
+        "2024-25:585"
+      ],
+      "bought": [
+        "2024-25:88",
+        "2024-25:99"
+      ],
+      "week0_minutes": "asof",
+      "n_oracle_minutes": 0,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2024-25:328",
+      "vice_id": "2024-25:401",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2024-25",
+      "gw": 35,
+      "arm": "asof_all",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 44.0,
+      "cap_extra": 2.0,
+      "pts_net": 46.0,
+      "H": 4,
+      "horizon_obj": 204.67265513032072,
+      "n_candidates": 203,
+      "sold": [
+        "2024-25:18"
+      ],
+      "bought": [
+        "2024-25:350"
+      ],
+      "week0_minutes": "asof",
+      "n_oracle_minutes": 0,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2024-25:755",
+      "vice_id": "2024-25:401",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2024-25",
+      "gw": 36,
+      "arm": "asof_all",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 53.0,
+      "cap_extra": 8.0,
+      "pts_net": 61.0,
+      "H": 3,
+      "horizon_obj": 165.55131881657198,
+      "n_candidates": 194,
+      "sold": [
+        "2024-25:395"
+      ],
+      "bought": [
+        "2024-25:437"
+      ],
+      "week0_minutes": "asof",
+      "n_oracle_minutes": 0,
+      "n_autosubs": 1,
+      "n_blank_intended": 1,
+      "captain_id": "2024-25:447",
+      "vice_id": "2024-25:401",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2024-25",
+      "gw": 37,
+      "arm": "asof_all",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 36.0,
+      "cap_extra": 2.0,
+      "pts_net": 38.0,
+      "H": 2,
+      "horizon_obj": 115.57882782779883,
+      "n_candidates": 209,
+      "sold": [
+        "2024-25:437"
+      ],
+      "bought": [
+        "2024-25:231"
+      ],
+      "week0_minutes": "asof",
+      "n_oracle_minutes": 0,
+      "n_autosubs": 1,
+      "n_blank_intended": 1,
+      "captain_id": "2024-25:182",
+      "vice_id": "2024-25:328",
+      "cap_source": "captain"
+    },
+    {
+      "season": "2024-25",
+      "gw": 38,
+      "arm": "asof_all",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 44.0,
+      "cap_extra": 10.0,
+      "pts_net": 54.0,
+      "H": 1,
+      "horizon_obj": 58.892836589698476,
+      "n_candidates": 208,
+      "sold": [
+        "2024-25:231"
+      ],
+      "bought": [
+        "2024-25:409"
+      ],
+      "week0_minutes": "asof",
+      "n_oracle_minutes": 0,
+      "n_autosubs": 0,
+      "n_blank_intended": 0,
+      "captain_id": "2024-25:328",
+      "vice_id": "2024-25:401",
+      "cap_source": "captain"
+    }
+  ],
+  "arm_spec": {
+    "asof_all": {
+      "week0_minutes": "asof"
+    },
+    "oracle_t": {
+      "week0_minutes": "oracle"
+    }
+  }
+}

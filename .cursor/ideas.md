@@ -387,6 +387,14 @@ shares ≈OK when the side scores). Assists miss ≈ **pot** (≈0.72) **and** f
 `sA` on the hot μ tail (share factor ≈0.85). Do not chase goal-share retunes
 for this bias first. Report: `reports/top_mid_fwd_ga_mismatch.md`.
 
+## Noted — deadline-causal oracle@t promote = ceiling (2026-10-31)
+
+`l4_opta_joint_path_deadline_causal_minutes`: oracle week-0 minutes vs
+as-of on locked path+captain → **promote** (+2.07/GW). Do **not** wire
+actual minutes into product boards (leakage). Value is the gap to close
+with live week-t xmi / lineup news. Autosubs collapse; hits rise.
+Report: `reports/l4_opta_joint_path_deadline_causal_minutes_gate.md`.
+
 ## Noted — path captain double promoted (2026-10-31)
 
 `l4_opta_joint_path_captain_climb`: `value_captain=true` vs product `false`
