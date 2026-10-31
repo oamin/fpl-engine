@@ -1,23 +1,30 @@
 {
-  "milestone": "cascade-short-generative-locked",
-  "status": "complete",
-  "summary": "cascade_short generative stack locked (protocol.cascade_short_generative): mean score_team_side; scenario k∼M → lineup cov → attack dice → CS/GC from rolled GA; soft priors via score_xp_v2 DefCon/bonus/cards/saves helpers. Firm XI and bonus-from-roll deferred. PR #96 green — mark ready / merge to main.",
-  "gemini": "",
-  "decisions": {
-    "cascade_short_generative": {
-      "locked": "2026-10-20",
-      "protocol": "cascade_short_generative",
-      "pr": 96,
-      "deferred": ["firm_xi", "bonus_from_roll"]
-    }
+  "task": "cascade_locked_consolidate",
+  "status": "done",
+  "as_of_utc": "2026-10-23T15:55:00Z",
+  "note": "Fast-forward club-expanding to path-bench tip (#101–#106 locked/default stack). Open PR into main.",
+  "includes": {
+    "locked_or_default": [
+      "cascade_short_generative",
+      "cascade_long_match_outcome",
+      "DEFAULT_LINEUP_COV=False",
+      "score_xp_v2_rate_baseline_prior=cascade_default",
+      "cascade_joint_path_plan",
+      "cascade_gamma=1",
+      "DEFAULT_FT_PE_NU=HIT_COST",
+      "cascade_path_bench_weight=rejected"
+    ],
+    "diagnostic_landed": [
+      "cascade_deadline_causal_minutes",
+      "cascade_mc_vs_mean_hist",
+      "cascade_mean_path_gw_resid",
+      "cascade_ft_pe_path"
+    ],
+    "not_on_this_tip": [
+      "cascade_pathv_share_cond_xp (#108)",
+      "gw08 live pick (#107)"
+    ]
   },
-  "artifacts": [
-    "reports/LOCKED.md",
-    "reports/CASCADE_CONTRACT.md",
-    "experiments/protocol.json",
-    "src/markets/short_horizon_generative.py",
-    "src/markets/defence_roll.py",
-    "src/models/short_horizon_cascade.py",
-    "src/models/cascade_short.py"
-  ]
+  "index": "reports/CASCADE_LOCKED.md",
+  "branch": "cursor/club-expanding-gf-ga-2025-26-cc3d"
 }

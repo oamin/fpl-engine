@@ -85,11 +85,22 @@ Protocol: `cascade_short_generative`. Entry: `src/models/cascade_short.py` → `
 | Layer | Method |
 | --- | --- |
 | Mean / independent E[V] | `score_team_side` (moment xCS/xGC) |
-| Scenario strands (default on) | λ ±15% → `k ∼ M` → lineup cov → attack dice → CS/GC from rolled GA |
+| Scenario strands (default on) | centreline `M` → `k ∼ M` (no λ jitter) → lineup cov → attack dice → CS/GC from rolled GA |
 | Soft priors | DefCon `P(hit)`, bonus/cards own-rate, GKP saves multinomial — via `history_priors_for_xp` / same helpers as `score_xp_v2` |
 | Deferred | firm XI / news override; bonus-from-roll |
 
 Modules: `short_horizon_generative`, `match_outcome`, `lineup_roll`, `attack_roll`, `defence_roll`, `player_attack`, `prop_shares`.
+
+### cascade_long match outcome (locked 2026-10-20)
+
+Protocol: `cascade_long_match_outcome`. Entry: `cascade_long` → `multistage_mc_milp`.
+
+| Step | Method |
+| --- | --- |
+| Rank → GF/GA | Locked OLS on closed-season place history (`opta_gf_ga_horizon`) |
+| λ | Opta place → GF/GA ±MAE → `sample_match_from_opta_ranks` (no ClubPath blend) |
+| M / scoreline | `match_outcome_probs_from_lambdas` → `match_outcome_roll` (`k ∼ M`) |
+| Player xP | Same generative stack as cascade_short (lineup → dice → CS/GC → soft priors); **props off** |
 
 ## Superseded
 

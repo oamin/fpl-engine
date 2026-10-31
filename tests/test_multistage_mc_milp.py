@@ -5,9 +5,61 @@ from __future__ import annotations
 import random
 import unittest
 
-from src.models.multistage_mc_milp import ClubPath, aggregate_frequencies, sample_scoreline
-from src.models.multistage_mc_milp import StrandResult
+import numpy as np
 import pandas as pd
+
+from src.markets.match_outcome import match_outcome_probs_from_lambdas
+from src.models.multistage_mc_milp import (
+    ClubPath,
+    StrandResult,
+    aggregate_frequencies,
+    sample_match_lams,
+    sample_priced_scenario,
+    sample_scoreline,
+)
+from src.models import cascade_long as cl
+from src.models.short_horizon_cascade import MARKET_BAND
+
+
+class CascadeLongIdentity(unittest.TestCase):
+    def test_branch_uses_opta_match_source(self) -> None:
+        self.assertEqual(cl.BRANCH, "cascade_long")
+        self.assertEqual(cl.HORIZON, "t+2:t+n")
+        self.assertEqual(cl.MATCH_SOURCE, "opta_rank_gf_ga")
+
+
+class PricedCentrelineRoll(unittest.TestCase):
+    def test_market_band_retired(self) -> None:
+        self.assertEqual(MARKET_BAND, 0.0)
+
+    def test_priced_roll_uses_centreline_lambda(self) -> None:
+        fit = {
+            "home": "arsenal",
+            "away": "everton",
+            "lam_h": 2.05,
+            "lam_a": 0.68,
+            "rho": -0.2,
+            "home_props": {},
+            "away_props": {},
+        }
+        rng = random.Random(0)
+        sc = sample_priced_scenario(fit, rng)
+        self.assertAlmostEqual(sc["lam_h"], 2.05)
+        self.assertAlmostEqual(sc["lam_a"], 0.68)
+        self.assertEqual(sc["source"], "cascade_short_priced")
+        self.assertGreaterEqual(sc["hg"], 0)
+        self.assertGreaterEqual(sc["ag"], 0)
+
+    def test_priced_rejects_lambda_jitter(self) -> None:
+        fit = {
+            "home": "arsenal",
+            "away": "everton",
+            "lam_h": 2.0,
+            "lam_a": 1.0,
+            "rho": 0.0,
+        }
+        with self.assertRaises(ValueError):
+            sample_priced_scenario(fit, random.Random(0), band=0.15)
 
 
 class SampleScorelineTest(unittest.TestCase):
@@ -30,6 +82,60 @@ class SampleScorelineTest(unittest.TestCase):
             self.assertGreaterEqual(ga, 0)
         self.assertGreater(totals_h / 200, 0.8)
         self.assertLess(totals_h / 200, 2.5)
+
+    def test_scoreline_from_m_not_independent_poisson(self) -> None:
+        """Draws must be cells of M built from the sampled λ pair."""
+        rng = random.Random(7)
+        sh, sa = sample_match_lams(
+            1.8,
+            0.9,
+            lam_h_lo=1.5,
+            lam_h_hi=2.1,
+            lam_a_lo=0.7,
+            lam_a_hi=1.1,
+            rng=rng,
+            centre_blend=1.0,
+        )
+        probs = match_outcome_probs_from_lambdas(sh, sa, 0.0)
+        # With centre_blend=1, λ are fixed — every roll is under that M.
+        rng2 = random.Random(11)
+        for _ in range(50):
+            gh, ga, out_h, out_a = sample_scoreline(
+                1.8,
+                0.9,
+                lam_h_lo=1.5,
+                lam_h_hi=2.1,
+                lam_a_lo=0.7,
+                lam_a_hi=1.1,
+                rng=rng2,
+                centre_blend=1.0,
+            )
+            self.assertAlmostEqual(out_h, sh, places=9)
+            self.assertAlmostEqual(out_a, sa, places=9)
+            self.assertGreater(float(probs.matrix[gh, ga]), 0.0)
+            self.assertLessEqual(gh, probs.matrix.shape[0] - 1)
+            self.assertLessEqual(ga, probs.matrix.shape[1] - 1)
+
+    def test_mean_mass_tracks_lambda(self) -> None:
+        rng = random.Random(3)
+        n = 800
+        hs = []
+        for _ in range(n):
+            gh, ga, sh, sa = sample_scoreline(
+                2.0,
+                0.8,
+                lam_h_lo=2.0,
+                lam_h_hi=2.0,
+                lam_a_lo=0.8,
+                lam_a_hi=0.8,
+                rng=rng,
+                centre_blend=1.0,
+            )
+            hs.append(gh)
+            self.assertAlmostEqual(sh, 2.0)
+            self.assertAlmostEqual(sa, 0.8)
+        self.assertGreater(float(np.mean(hs)), 1.5)
+        self.assertLess(float(np.mean(hs)), 2.5)
 
 
 class ClubPathTest(unittest.TestCase):

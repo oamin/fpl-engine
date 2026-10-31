@@ -1,6 +1,6 @@
 # Short-horizon scenario layer (priced t : t+1) — Numagent 2.0
 
-Advisor layer on market-priced weeks. Scorer: **`score_xp_v2`** (`src/markets/numagent_xp.py`). Does **not** replace the published L4 mean path. Rates frozen at the deadline; λ sampled inside ±15% of FD Dixon–Coles fits; path FT via L1 → L3.
+Advisor layer on market-priced weeks. Scorer: **`score_xp_v2`** (`src/markets/numagent_xp.py`). Does **not** replace the published L4 mean path. Rates frozen at the deadline; scenario strands use centreline FD Dixon–Coles `M` → `k ∼ M` (**no λ jitter**; ±15% retired); path FT via L1 → L3.
 
 ## Decision
 
@@ -34,7 +34,7 @@ Advisor layer on market-priced weeks. Scorer: **`score_xp_v2`** (`src/markets/nu
 2. Team pots: `α_G/α_A × xG_M`; defence from `xCS` / `xGC` on the same `M`.
 3. Player rates: same-season GW `< t` only (`asof_share_history` + RATE_M0).
 4. Assembler: `numagent_xp.score_team_side` → `score_xp_v2` (share-SE shrink on).
-5. Scenario: sample λ ±15%; rebuild `M`; freeze rates; do not replace mean μ.
+5. Scenario: centreline `M` → `k ∼ M` (no λ jitter); freeze rates; do not replace mean μ.
 6. Path: L1 free rebuild at t, L3 FT/hits at t+1.
 
 ## Reproduce
