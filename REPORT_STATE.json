@@ -1,8 +1,16 @@
 {
   "task": "l4_opta_joint_path_ft_pe_climb",
-  "status": "smoke_ok",
-  "as_of_utc": "2026-10-31T15:36:34Z",
-  "change": "FT PE climb rows / smoke",
-  "elapsed_s": 25.80124282836914,
-  "rows_out": "/workspace/data/processed/l4_opta_joint_path_ft_pe_climb_smoke.json"
+  "status": "done",
+  "as_of_utc": "2026-10-31T15:54:50Z",
+  "change": "Gated FT PE climb on locked joint_path_opta_decay",
+  "verdicts": {
+    "decay_ft_pe4_minus_decay_ft_pe0": {
+      "verdict": "inconclusive",
+      "mean": 0.10833333333333334,
+      "lo": -1.25875,
+      "hi": 1.5012499999999989
+    }
+  },
+  "report": "reports/l4_opta_joint_path_ft_pe_climb_gate.md",
+  "elapsed_s": 0.00098419189453125
 }

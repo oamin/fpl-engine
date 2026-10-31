@@ -3028,7 +3028,7 @@
   },
   "l4_opta_joint_path_ft_pe_climb": {
     "pre_registered": "2026-10-31",
-    "status": "running",
+    "status": "reported",
     "role": "Terminal FT potential energy on locked joint_path_opta_decay (wired μ)",
     "boards": "build_l3_centreline_horizon(H=12); wired rate baseline + full-club shares; Opta far ρ=0.85→0",
     "baseline": "decay_ft_pe0 — ft_pe_nu=0 (product)",
@@ -3063,6 +3063,22 @@
       "score_xp_v2_rate_share_wire"
     ],
     "prior_diagnostic": "cascade_ft_pe_path — schedule Δ small; not a four-season climb",
-    "any_later_change": "dated protocol update required"
+    "any_later_change": "dated protocol update required",
+    "result": {
+      "decay_ft_pe4_minus_decay_ft_pe0": {
+        "mean": 0.108,
+        "lo": -1.259,
+        "hi": 1.501,
+        "covers_zero": true,
+        "verdict": "inconclusive",
+        "by_season_mean": {
+          "2022-23": 3.7,
+          "2023-24": -0.5,
+          "2024-25": -3.467,
+          "2025-26": 0.7
+        }
+      }
+    },
+    "note": "Inconclusive (+0.11/GW). PE moves schedules (term FT≈5) but season-signed: +2022-23 / −2024-25. Keep product ft_pe_nu=0. Do not retune ν."
   }
 }

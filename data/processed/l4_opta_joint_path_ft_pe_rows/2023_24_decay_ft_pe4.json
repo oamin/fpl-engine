@@ -1,0 +1,752 @@
+{
+  "smoke": false,
+  "seasons": [
+    "2023-24"
+  ],
+  "arms": [
+    "decay_ft_pe4"
+  ],
+  "gw_start": 8,
+  "gw_end": 38,
+  "elapsed_s": 793.525964975357,
+  "rows": [
+    {
+      "season": "2023-24",
+      "gw": 8,
+      "arm": "decay_ft_pe4",
+      "phase": "wildcard",
+      "n_transfers": 0,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 38.0,
+      "pts_net": 38.0,
+      "H": 0,
+      "n_candidates": 0,
+      "ft_pe_nu": 4.0,
+      "ft_after": 2,
+      "terminal_ft": 2
+    },
+    {
+      "season": "2023-24",
+      "gw": 9,
+      "arm": "decay_ft_pe4",
+      "phase": "transfer",
+      "n_transfers": 2,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 59.0,
+      "pts_net": 59.0,
+      "H": 12,
+      "horizon_obj": 378.6727434738199,
+      "n_candidates": 207,
+      "sold": [
+        "2023-24:293",
+        "2023-24:41"
+      ],
+      "bought": [
+        "2023-24:29",
+        "2023-24:343"
+      ],
+      "ft_pe_nu": 4.0,
+      "ft_after": 1,
+      "terminal_ft": 5
+    },
+    {
+      "season": "2023-24",
+      "gw": 10,
+      "arm": "decay_ft_pe4",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 65.0,
+      "pts_net": 65.0,
+      "H": 12,
+      "horizon_obj": 379.6427993406257,
+      "n_candidates": 204,
+      "sold": [
+        "2023-24:471"
+      ],
+      "bought": [
+        "2023-24:20"
+      ],
+      "ft_pe_nu": 4.0,
+      "ft_after": 1,
+      "terminal_ft": 5
+    },
+    {
+      "season": "2023-24",
+      "gw": 11,
+      "arm": "decay_ft_pe4",
+      "phase": "transfer",
+      "n_transfers": 2,
+      "hits": 1,
+      "hit_points": 4,
+      "pts_xi": 50.0,
+      "pts_net": 46.0,
+      "H": 12,
+      "horizon_obj": 367.3569611216422,
+      "n_candidates": 204,
+      "sold": [
+        "2023-24:353",
+        "2023-24:501"
+      ],
+      "bought": [
+        "2023-24:43",
+        "2023-24:678"
+      ],
+      "ft_pe_nu": 4.0,
+      "ft_after": 1,
+      "terminal_ft": 5
+    },
+    {
+      "season": "2023-24",
+      "gw": 12,
+      "arm": "decay_ft_pe4",
+      "phase": "transfer",
+      "n_transfers": 2,
+      "hits": 1,
+      "hit_points": 4,
+      "pts_xi": 52.0,
+      "pts_net": 48.0,
+      "H": 12,
+      "horizon_obj": 365.68461689928563,
+      "n_candidates": 213,
+      "sold": [
+        "2023-24:504",
+        "2023-24:678"
+      ],
+      "bought": [
+        "2023-24:134",
+        "2023-24:19"
+      ],
+      "ft_pe_nu": 4.0,
+      "ft_after": 1,
+      "terminal_ft": 5
+    },
+    {
+      "season": "2023-24",
+      "gw": 13,
+      "arm": "decay_ft_pe4",
+      "phase": "transfer",
+      "n_transfers": 0,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 50.0,
+      "pts_net": 50.0,
+      "H": 12,
+      "horizon_obj": 371.3783360049384,
+      "n_candidates": 209,
+      "sold": [],
+      "bought": [],
+      "ft_pe_nu": 4.0,
+      "ft_after": 2,
+      "terminal_ft": 5
+    },
+    {
+      "season": "2023-24",
+      "gw": 14,
+      "arm": "decay_ft_pe4",
+      "phase": "transfer",
+      "n_transfers": 2,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 51.0,
+      "pts_net": 51.0,
+      "H": 12,
+      "horizon_obj": 375.6256049594671,
+      "n_candidates": 207,
+      "sold": [
+        "2023-24:134",
+        "2023-24:703"
+      ],
+      "bought": [
+        "2023-24:112",
+        "2023-24:309"
+      ],
+      "ft_pe_nu": 4.0,
+      "ft_after": 1,
+      "terminal_ft": 5
+    },
+    {
+      "season": "2023-24",
+      "gw": 15,
+      "arm": "decay_ft_pe4",
+      "phase": "transfer",
+      "n_transfers": 0,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 36.0,
+      "pts_net": 36.0,
+      "H": 12,
+      "horizon_obj": 377.0282410990396,
+      "n_candidates": 210,
+      "sold": [],
+      "bought": [],
+      "ft_pe_nu": 4.0,
+      "ft_after": 2,
+      "terminal_ft": 5
+    },
+    {
+      "season": "2023-24",
+      "gw": 16,
+      "arm": "decay_ft_pe4",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 47.0,
+      "pts_net": 47.0,
+      "H": 12,
+      "horizon_obj": 374.86988826648343,
+      "n_candidates": 201,
+      "sold": [
+        "2023-24:220"
+      ],
+      "bought": [
+        "2023-24:342"
+      ],
+      "ft_pe_nu": 4.0,
+      "ft_after": 2,
+      "terminal_ft": 5
+    },
+    {
+      "season": "2023-24",
+      "gw": 17,
+      "arm": "decay_ft_pe4",
+      "phase": "transfer",
+      "n_transfers": 2,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 40.0,
+      "pts_net": 40.0,
+      "H": 12,
+      "horizon_obj": 376.92411009130274,
+      "n_candidates": 188,
+      "sold": [
+        "2023-24:261",
+        "2023-24:355"
+      ],
+      "bought": [
+        "2023-24:308",
+        "2023-24:33"
+      ],
+      "ft_pe_nu": 4.0,
+      "ft_after": 1,
+      "terminal_ft": 5
+    },
+    {
+      "season": "2023-24",
+      "gw": 18,
+      "arm": "decay_ft_pe4",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 39.0,
+      "pts_net": 39.0,
+      "H": 12,
+      "horizon_obj": 368.9018224214982,
+      "n_candidates": 183,
+      "sold": [
+        "2023-24:342"
+      ],
+      "bought": [
+        "2023-24:36"
+      ],
+      "ft_pe_nu": 4.0,
+      "ft_after": 1,
+      "terminal_ft": 5
+    },
+    {
+      "season": "2023-24",
+      "gw": 19,
+      "arm": "decay_ft_pe4",
+      "phase": "transfer",
+      "n_transfers": 0,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 29.0,
+      "pts_net": 29.0,
+      "H": 12,
+      "horizon_obj": 373.89388149128325,
+      "n_candidates": 211,
+      "sold": [],
+      "bought": [],
+      "ft_pe_nu": 4.0,
+      "ft_after": 2,
+      "terminal_ft": 5
+    },
+    {
+      "season": "2023-24",
+      "gw": 20,
+      "arm": "decay_ft_pe4",
+      "phase": "transfer",
+      "n_transfers": 2,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 68.0,
+      "pts_net": 68.0,
+      "H": 12,
+      "horizon_obj": 379.75553808875964,
+      "n_candidates": 209,
+      "sold": [
+        "2023-24:19",
+        "2023-24:309"
+      ],
+      "bought": [
+        "2023-24:344",
+        "2023-24:353"
+      ],
+      "ft_pe_nu": 4.0,
+      "ft_after": 1,
+      "terminal_ft": 5
+    },
+    {
+      "season": "2023-24",
+      "gw": 21,
+      "arm": "decay_ft_pe4",
+      "phase": "transfer",
+      "n_transfers": 2,
+      "hits": 1,
+      "hit_points": 4,
+      "pts_xi": 39.0,
+      "pts_net": 35.0,
+      "H": 12,
+      "horizon_obj": 375.67410853241466,
+      "n_candidates": 220,
+      "sold": [
+        "2023-24:33",
+        "2023-24:688"
+      ],
+      "bought": [
+        "2023-24:135",
+        "2023-24:31"
+      ],
+      "ft_pe_nu": 4.0,
+      "ft_after": 1,
+      "terminal_ft": 5
+    },
+    {
+      "season": "2023-24",
+      "gw": 22,
+      "arm": "decay_ft_pe4",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 58.0,
+      "pts_net": 58.0,
+      "H": 12,
+      "horizon_obj": 371.82329565842423,
+      "n_candidates": 204,
+      "sold": [
+        "2023-24:516"
+      ],
+      "bought": [
+        "2023-24:309"
+      ],
+      "ft_pe_nu": 4.0,
+      "ft_after": 1,
+      "terminal_ft": 5
+    },
+    {
+      "season": "2023-24",
+      "gw": 23,
+      "arm": "decay_ft_pe4",
+      "phase": "transfer",
+      "n_transfers": 2,
+      "hits": 1,
+      "hit_points": 4,
+      "pts_xi": 63.0,
+      "pts_net": 59.0,
+      "H": 12,
+      "horizon_obj": 376.28739943879435,
+      "n_candidates": 202,
+      "sold": [
+        "2023-24:36",
+        "2023-24:43"
+      ],
+      "bought": [
+        "2023-24:362",
+        "2023-24:83"
+      ],
+      "ft_pe_nu": 4.0,
+      "ft_after": 1,
+      "terminal_ft": 5
+    },
+    {
+      "season": "2023-24",
+      "gw": 24,
+      "arm": "decay_ft_pe4",
+      "phase": "transfer",
+      "n_transfers": 2,
+      "hits": 1,
+      "hit_points": 4,
+      "pts_xi": 62.0,
+      "pts_net": 58.0,
+      "H": 12,
+      "horizon_obj": 382.3318319143388,
+      "n_candidates": 206,
+      "sold": [
+        "2023-24:135",
+        "2023-24:31"
+      ],
+      "bought": [
+        "2023-24:313",
+        "2023-24:326"
+      ],
+      "ft_pe_nu": 4.0,
+      "ft_after": 1,
+      "terminal_ft": 5
+    },
+    {
+      "season": "2023-24",
+      "gw": 25,
+      "arm": "decay_ft_pe4",
+      "phase": "transfer",
+      "n_transfers": 2,
+      "hits": 1,
+      "hit_points": 4,
+      "pts_xi": 92.0,
+      "pts_net": 88.0,
+      "H": 12,
+      "horizon_obj": 374.68977735434555,
+      "n_candidates": 217,
+      "sold": [
+        "2023-24:308",
+        "2023-24:309"
+      ],
+      "bought": [
+        "2023-24:19",
+        "2023-24:303"
+      ],
+      "ft_pe_nu": 4.0,
+      "ft_after": 1,
+      "terminal_ft": 5
+    },
+    {
+      "season": "2023-24",
+      "gw": 26,
+      "arm": "decay_ft_pe4",
+      "phase": "transfer",
+      "n_transfers": 3,
+      "hits": 2,
+      "hit_points": 8,
+      "pts_xi": 58.0,
+      "pts_net": 50.0,
+      "H": 12,
+      "horizon_obj": 350.4901168722342,
+      "n_candidates": 168,
+      "sold": [
+        "2023-24:303",
+        "2023-24:343",
+        "2023-24:362"
+      ],
+      "bought": [
+        "2023-24:43",
+        "2023-24:664",
+        "2023-24:85"
+      ],
+      "ft_pe_nu": 4.0,
+      "ft_after": 1,
+      "terminal_ft": 5
+    },
+    {
+      "season": "2023-24",
+      "gw": 27,
+      "arm": "decay_ft_pe4",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 87.0,
+      "pts_net": 87.0,
+      "H": 12,
+      "horizon_obj": 370.51855961927293,
+      "n_candidates": 206,
+      "sold": [
+        "2023-24:344"
+      ],
+      "bought": [
+        "2023-24:516"
+      ],
+      "ft_pe_nu": 4.0,
+      "ft_after": 1,
+      "terminal_ft": 5
+    },
+    {
+      "season": "2023-24",
+      "gw": 28,
+      "arm": "decay_ft_pe4",
+      "phase": "transfer",
+      "n_transfers": 2,
+      "hits": 1,
+      "hit_points": 4,
+      "pts_xi": 54.0,
+      "pts_net": 50.0,
+      "H": 11,
+      "horizon_obj": 360.7956289431504,
+      "n_candidates": 202,
+      "sold": [
+        "2023-24:152",
+        "2023-24:83"
+      ],
+      "bought": [
+        "2023-24:77",
+        "2023-24:84"
+      ],
+      "ft_pe_nu": 4.0,
+      "ft_after": 1,
+      "terminal_ft": 5
+    },
+    {
+      "season": "2023-24",
+      "gw": 29,
+      "arm": "decay_ft_pe4",
+      "phase": "transfer",
+      "n_transfers": 4,
+      "hits": 3,
+      "hit_points": 12,
+      "pts_xi": 27.0,
+      "pts_net": 15.0,
+      "H": 10,
+      "horizon_obj": 322.24973571237365,
+      "n_candidates": 91,
+      "sold": [
+        "2023-24:19",
+        "2023-24:664",
+        "2023-24:84",
+        "2023-24:85"
+      ],
+      "bought": [
+        "2023-24:200",
+        "2023-24:501",
+        "2023-24:506",
+        "2023-24:526"
+      ],
+      "ft_pe_nu": 4.0,
+      "ft_after": 1,
+      "terminal_ft": 5
+    },
+    {
+      "season": "2023-24",
+      "gw": 30,
+      "arm": "decay_ft_pe4",
+      "phase": "transfer",
+      "n_transfers": 3,
+      "hits": 2,
+      "hit_points": 8,
+      "pts_xi": 64.0,
+      "pts_net": 56.0,
+      "H": 9,
+      "horizon_obj": 338.34782415746764,
+      "n_candidates": 208,
+      "sold": [
+        "2023-24:200",
+        "2023-24:326",
+        "2023-24:501"
+      ],
+      "bought": [
+        "2023-24:211",
+        "2023-24:362",
+        "2023-24:85"
+      ],
+      "ft_pe_nu": 4.0,
+      "ft_after": 1,
+      "terminal_ft": 5
+    },
+    {
+      "season": "2023-24",
+      "gw": 31,
+      "arm": "decay_ft_pe4",
+      "phase": "transfer",
+      "n_transfers": 2,
+      "hits": 1,
+      "hit_points": 4,
+      "pts_xi": 81.0,
+      "pts_net": 77.0,
+      "H": 8,
+      "horizon_obj": 341.2426319708627,
+      "n_candidates": 210,
+      "sold": [
+        "2023-24:43",
+        "2023-24:60"
+      ],
+      "bought": [
+        "2023-24:14",
+        "2023-24:343"
+      ],
+      "ft_pe_nu": 4.0,
+      "ft_after": 1,
+      "terminal_ft": 5
+    },
+    {
+      "season": "2023-24",
+      "gw": 32,
+      "arm": "decay_ft_pe4",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 51.0,
+      "pts_net": 51.0,
+      "H": 7,
+      "horizon_obj": 334.51925587503143,
+      "n_candidates": 213,
+      "sold": [
+        "2023-24:526"
+      ],
+      "bought": [
+        "2023-24:303"
+      ],
+      "ft_pe_nu": 4.0,
+      "ft_after": 1,
+      "terminal_ft": 5
+    },
+    {
+      "season": "2023-24",
+      "gw": 33,
+      "arm": "decay_ft_pe4",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 76.0,
+      "pts_net": 76.0,
+      "H": 6,
+      "horizon_obj": 318.1424165095146,
+      "n_candidates": 205,
+      "sold": [
+        "2023-24:112"
+      ],
+      "bought": [
+        "2023-24:341"
+      ],
+      "ft_pe_nu": 4.0,
+      "ft_after": 1,
+      "terminal_ft": 5
+    },
+    {
+      "season": "2023-24",
+      "gw": 34,
+      "arm": "decay_ft_pe4",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 108.0,
+      "pts_net": 108.0,
+      "H": 5,
+      "horizon_obj": 288.20662612731735,
+      "n_candidates": 223,
+      "sold": [
+        "2023-24:77"
+      ],
+      "bought": [
+        "2023-24:385"
+      ],
+      "ft_pe_nu": 4.0,
+      "ft_after": 1,
+      "terminal_ft": 4
+    },
+    {
+      "season": "2023-24",
+      "gw": 35,
+      "arm": "decay_ft_pe4",
+      "phase": "transfer",
+      "n_transfers": 2,
+      "hits": 1,
+      "hit_points": 4,
+      "pts_xi": 59.0,
+      "pts_net": 55.0,
+      "H": 4,
+      "horizon_obj": 246.40184592428804,
+      "n_candidates": 217,
+      "sold": [
+        "2023-24:303",
+        "2023-24:385"
+      ],
+      "bought": [
+        "2023-24:202",
+        "2023-24:520"
+      ],
+      "ft_pe_nu": 4.0,
+      "ft_after": 1,
+      "terminal_ft": 4
+    },
+    {
+      "season": "2023-24",
+      "gw": 36,
+      "arm": "decay_ft_pe4",
+      "phase": "transfer",
+      "n_transfers": 0,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 69.0,
+      "pts_net": 69.0,
+      "H": 3,
+      "horizon_obj": 199.6742731568402,
+      "n_candidates": 210,
+      "sold": [],
+      "bought": [],
+      "ft_pe_nu": 4.0,
+      "ft_after": 2,
+      "terminal_ft": 4
+    },
+    {
+      "season": "2023-24",
+      "gw": 37,
+      "arm": "decay_ft_pe4",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 78.0,
+      "pts_net": 78.0,
+      "H": 2,
+      "horizon_obj": 161.8885953636224,
+      "n_candidates": 220,
+      "sold": [
+        "2023-24:85"
+      ],
+      "bought": [
+        "2023-24:415"
+      ],
+      "ft_pe_nu": 4.0,
+      "ft_after": 2,
+      "terminal_ft": 3
+    },
+    {
+      "season": "2023-24",
+      "gw": 38,
+      "arm": "decay_ft_pe4",
+      "phase": "transfer",
+      "n_transfers": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "pts_xi": 76.0,
+      "pts_net": 76.0,
+      "H": 1,
+      "horizon_obj": 70.07092543088618,
+      "n_candidates": 211,
+      "sold": [
+        "2023-24:275"
+      ],
+      "bought": [
+        "2023-24:172"
+      ],
+      "ft_pe_nu": 4.0,
+      "ft_after": 2,
+      "terminal_ft": 2
+    }
+  ],
+  "arm_spec": {
+    "decay_ft_pe0": {
+      "ft_pe_nu": 0.0
+    },
+    "decay_ft_pe4": {
+      "ft_pe_nu": 4.0
+    }
+  }
+}
