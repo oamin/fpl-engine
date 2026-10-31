@@ -34,7 +34,7 @@ Product **μ**: Odds API / FD centreline near (`t`/`t+1`); **Opta blind** λ far
 
 **Joint path component-μ (2026-10-31):** `l4_opta_joint_path_component_climb` — same planners with `mu_post :=` G/A/CS/GC. **All inconclusive** (joint path vs L4: goals −1.42, assists +0.12, CS +1.54, GC +0.77; all cover 0). Path stays very sticky (≈0 hits) under component μ. Stick to **full-μ** climbs. `reports/l4_opta_joint_path_component_climb_gate.md`.
 
-**μ wire (2026-10-31):** rate baseline + full-club shares wired into `score_gameweek`, `project_week_score_xp_v2`, and Opta centreline after likelihood promotes. Closed `score_xp_v2` rebuilt. Climb sanity `l4_opta_joint_path_mu_wire_climb` running. `reports/rate_baseline_share_pool_likelihood_gate.md`.
+**μ wire kept (2026-10-31):** rate baseline + full-club shares default in published/centreline. Climb sanity vs legacy dumps **inconclusive** (−0.25/GW); wired decay still leans ahead of wired L4 (+1.13). Not a park. `reports/l4_opta_joint_path_mu_wire_climb_gate.md` · likelihood `reports/rate_baseline_share_pool_likelihood_gate.md`.
 
 **Decay tune climb (2026-10-31):** `l4_opta_joint_path_decay_tune` — ρ=0.70 / 0.95 / pos_mean vs locked ρ=0.85→0 all **inconclusive** (means −0.62 / −0.33 / −0.40). Keep locked decay. `reports/l4_opta_joint_path_decay_tune_gate.md`.
 
