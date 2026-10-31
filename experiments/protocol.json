@@ -102,7 +102,7 @@
   },
   "score_xp_v2_rate_baseline_prior": {
     "locked": "2026-10-21",
-    "revised": "2026-10-21 — within-season update: prior counts + same-season GW < t appearances",
+    "revised": "2026-10-31 — closed-season likelihood screen pre-registered (score_xp_v2_rate_baseline_likelihood)",
     "status": "cascade_default",
     "role": "attack rG/rA: start season at prior (player name key, else positional); update each completed GW with same-season appearance G/A/M",
     "module": "src/markets/rate_baseline.py",
@@ -2813,5 +2813,85 @@
         "component": "xp_goals"
       }
     }
+  },
+  "l4_opta_joint_path_decay_tune": {
+    "pre_registered": "2026-10-31",
+    "status": "running",
+    "role": "Tune Opta-far decay \u03c1 and target on locked joint_path_opta_decay planner/boards",
+    "boards": "build_l3_centreline_horizon(H=12); mu_post \u2261 score_xp_v2",
+    "baseline": "decay_r085 \u2014 \u03c1=0.85 \u2192 0 (locked product joint_path_opta_decay)",
+    "treatments": {
+      "decay_r070": "\u03c1=0.70 \u2192 0",
+      "decay_r095": "\u03c1=0.95 \u2192 0",
+      "decay_r085_posmean": "\u03c1=0.85 \u2192 positional mean of each xp column on the board"
+    },
+    "comparisons": [
+      "decay_r070_minus_decay_r085",
+      "decay_r095_minus_decay_r085",
+      "decay_r085_posmean_minus_decay_r085"
+    ],
+    "shared": {
+      "planner": "pick_path_transfer_plan",
+      "wildcard_open": "full score_xp_v2 at gw_start",
+      "seed": "from_owned held 15 after wildcard",
+      "candidates": "full week-0 pool",
+      "value_captain": false,
+      "ft_pe_nu": 0,
+      "realised": "XI total_points \u2212 hits",
+      "chips": false,
+      "max_hits": "SQUAD_SIZE",
+      "gamma": 1.0,
+      "horizon": 12
+    },
+    "metric": "paired-by-GW realised XI\u2212hits; cluster_interval four closed seasons",
+    "promote_if": "paired interval lo > 0",
+    "park_if": "hi < 0",
+    "gw_start": 8,
+    "gw_end": 38,
+    "holdout": "2026-27 frozen \u2014 not in comparison",
+    "note": "Strategiser knob screen on locked \u03bc. Reuses prior joint_path_decay dumps as decay_r085 when available.",
+    "entry": "src/eval/l4_opta_joint_path_decay_tune_gate.py",
+    "report": "reports/l4_opta_joint_path_decay_tune_gate.md",
+    "depends": [
+      "joint_path_opta_decay",
+      "l4_opta_joint_path_climb"
+    ],
+    "any_later_change": "dated protocol update required"
+  },
+  "score_xp_v2_rate_baseline_likelihood": {
+    "pre_registered": "2026-10-31",
+    "status": "running",
+    "role": "Closed-season player-GW likelihood: prior+season rate baseline vs published same-season rG/rA",
+    "baseline": "score_xp_v2 (same-season player_rates_from_history; shares on minutes>0)",
+    "treatment": "score_xp_v2_rate_baseline \u2014 apply_historical_rate_baseline on rG/rA before score_team_side",
+    "comparison": "score_xp_v2_rate_baseline_minus_score_xp_v2",
+    "metric": "gaussian_log_score \u03c3=3 on xp vs total_points; paired GW mean \u0394; cluster_interval four closed seasons",
+    "pool": "minutes>60, FD AH+OU, GW5\u201338",
+    "promote_if": "paired interval lo > 0",
+    "park_if": "hi < 0",
+    "holdout": "2026-27 frozen \u2014 not in comparison",
+    "follows": "score_xp_v2_rate_baseline_prior (cascade_default; promote_to_score_xp_v2_gate deferred)",
+    "note": "\u03bc screen first. Joint-path climb sanity only after non-clear-lose / promote.",
+    "entry": "src/markets/rate_baseline_share_pool_likelihood_gate.py",
+    "report": "reports/rate_baseline_share_pool_likelihood_gate.md",
+    "any_later_change": "dated protocol update required"
+  },
+  "score_xp_v2_full_share_likelihood": {
+    "pre_registered": "2026-10-31",
+    "status": "running",
+    "role": "Closed-season player-GW likelihood: full-club m>0 shares projected onto >60\u2032 pool vs thin >60\u2032 shares",
+    "baseline": "score_xp_v2_thin_share \u2014 sG/sA among minutes>60 only",
+    "treatment": "score_xp_v2_full_share \u2014 sG/sA on minutes>0 club via share_players; eval pool minutes>60",
+    "comparison": "score_xp_v2_full_share_minus_score_xp_v2_thin_share",
+    "metric": "gaussian_log_score \u03c3=3 on xp vs total_points; paired GW mean \u0394; cluster_interval four closed seasons",
+    "pool": "minutes>60, FD AH+OU, GW5\u201338",
+    "promote_if": "paired interval lo > 0",
+    "park_if": "hi < 0",
+    "holdout": "2026-27 frozen \u2014 not in comparison",
+    "follows": "cascade_short_generative.share_pool full-club default (resid dig); this is the published \u03bc log-score gate",
+    "note": "\u03bc screen first. If promote, wire share_players into centreline/L4 mean callers; then joint-path climb sanity.",
+    "entry": "src/markets/rate_baseline_share_pool_likelihood_gate.py",
+    "report": "reports/rate_baseline_share_pool_likelihood_gate.md",
+    "any_later_change": "dated protocol update required"
   }
 }

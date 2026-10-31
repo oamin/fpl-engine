@@ -32,7 +32,9 @@ Product **μ**: Odds API / FD centreline near (`t`/`t+1`); **Opta blind** λ far
 
 **Strategiser lock (PI 2026-10-31):** `joint_path_opta_decay` — every-GW joint path + Opta far × ρ^(t−near+1)→0 (ρ=0.85) on H=12 L4+Opta boards. Chosen over undecayed path for season consistency vs L4 (undecayed lost 2024-25). Live remains priced H=2 / L4 oneshot until Opta far is live-ready. [`JOINT_PATH_OPTA_DECAY_LOCK.md`](../reports/JOINT_PATH_OPTA_DECAY_LOCK.md).
 
-**Joint path component-μ (2026-10-31):** `l4_opta_joint_path_component_climb` — same planners with `mu_post :=` G/A/CS/GC. **All inconclusive** (joint path vs L4: goals −1.42, assists +0.12, CS +1.54, GC +0.77; all cover 0). Path stays very sticky (≈0 hits) under component μ. PI reviewing. `reports/l4_opta_joint_path_component_climb_gate.md`.
+**Joint path component-μ (2026-10-31):** `l4_opta_joint_path_component_climb` — same planners with `mu_post :=` G/A/CS/GC. **All inconclusive** (joint path vs L4: goals −1.42, assists +0.12, CS +1.54, GC +0.77; all cover 0). Path stays very sticky (≈0 hits) under component μ. Stick to **full-μ** climbs. `reports/l4_opta_joint_path_component_climb_gate.md`.
+
+**Next screens (2026-10-31, running):** (1) `l4_opta_joint_path_decay_tune` — ρ∈{0.70,0.95} and ρ=0.85→pos_mean vs locked ρ=0.85→0 on joint path. (2) `score_xp_v2_rate_baseline_likelihood` + `score_xp_v2_full_share_likelihood` — published μ log-score gates before any joint-path climb sanity.
 
 ## Repo freeze sequence (2026-10-20)
 

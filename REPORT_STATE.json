@@ -1,16 +1,12 @@
 {
-  "task": "joint_path_opta_decay",
-  "status": "locked",
-  "as_of_utc": "2026-10-31T12:05:00Z",
-  "change": "PI locked joint_path_decay (Opta far ρ=0.85) as strategiser default on L4+Opta H=12",
-  "screen": "l4_opta_joint_path_climb",
-  "vs_l4": {
-    "mean": 1.783,
-    "lo": -0.15,
-    "hi": 3.884,
-    "gate": "inconclusive",
-    "by_season_all_positive": true
+  "task": "decay_tune_and_rate_share_likelihood",
+  "status": "running",
+  "as_of_utc": "2026-10-31T12:30:00Z",
+  "change": "Pre-registered and launched (1) Opta-far decay ρ/target climb tune (2) rate-baseline + full-share likelihood gates",
+  "screens": {
+    "l4_opta_joint_path_decay_tune": "running — 12 season×arm dumps",
+    "score_xp_v2_rate_baseline_likelihood": "running",
+    "score_xp_v2_full_share_likelihood": "running"
   },
-  "report": "reports/JOINT_PATH_OPTA_DECAY_LOCK.md",
-  "note": "Undecayed joint_path had formal promote but lost 2024-25; PI preferred season-consistent decay. Component climbs under PI review."
+  "branch": "cursor/decay-rho-rate-share-gates-cc3d"
 }
