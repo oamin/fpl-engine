@@ -178,12 +178,17 @@ def score_gameweek(
     alpha_a: float,
     m0: float | None = None,
     rate_se_floor: float | None = None,
+    season: str | None = None,
+    historical_rate_baseline: bool = True,
 ) -> pd.DataFrame:
     """Score one GW: shares over minutes>0; keep minutes>60 for the pilot pool.
 
-    ``hist`` must be same-season GW ``< t`` (no prior-season fill for shares).
+    ``hist`` must be same-season GW ``< t`` for soft priors/minutes.
+    Attack ``rG``/``rA`` default to prior+season baseline
+    (``protocol.score_xp_v2_rate_baseline_likelihood`` promote). Shares stay
+    full-club ``minutes>0`` (already the pilot path; thin-share arm parked).
     Optional ``m0`` / ``rate_se_floor`` pass through to ``player_rates_from_history``
-    (defaults: promoted RATE_M0 / RATE_SE_FLOOR).
+    when baseline is off.
     """
     if week.empty:
         return pd.DataFrame()
@@ -246,6 +251,21 @@ def score_gameweek(
     apps["sigma_m"] = 0.0
     apps["player_id"] = apps["element"]
 
+    if historical_rate_baseline:
+        from src.markets.rate_baseline import apply_historical_rate_baseline
+
+        season_key = season
+        if season_key is None and "season" in hist.columns and len(hist):
+            season_key = str(hist["season"].iloc[0])
+        if season_key is None and "season" in week.columns and len(week):
+            season_key = str(week["season"].iloc[0])
+        if season_key:
+            apps = apply_historical_rate_baseline(
+                apps,
+                season=str(season_key).replace("_", "-"),
+                hist=hist,
+            )
+
     scored_parts: list[pd.DataFrame] = []
     for (_, _), g in apps.groupby(["fixture", "team_n"], sort=False):
         side = numagent_xp.score_team_side(
@@ -283,7 +303,15 @@ def run_pilot(season: str = SEASON) -> dict[str, Any]:
         week = merged[merged["GW"] == gw]
         ag, aa = _asof_alphas(hist)
         alpha_rows.append({"gw": gw, "alpha_g": ag, "alpha_a": aa, "n_hist_rows": len(hist)})
-        scored = score_gameweek(hist, week, fd, alpha_g=ag, alpha_a=aa)
+        scored = score_gameweek(
+            hist,
+            week,
+            fd,
+            alpha_g=ag,
+            alpha_a=aa,
+            season=season,
+            historical_rate_baseline=True,
+        )
         if not scored.empty:
             parts.append(scored)
 

@@ -101,9 +101,9 @@
     "any_later_change": "dated protocol update required"
   },
   "score_xp_v2_rate_baseline_prior": {
-    "locked": "2026-10-21",
-    "revised": "2026-10-21 — within-season update: prior counts + same-season GW < t appearances",
-    "status": "cascade_default",
+    "locked": "2026-10-31",
+    "revised": "2026-10-31 — closed-season likelihood screen pre-registered (score_xp_v2_rate_baseline_likelihood)",
+    "status": "locked",
     "role": "attack rG/rA: start season at prior (player name key, else positional); update each completed GW with same-season appearance G/A/M",
     "module": "src/markets/rate_baseline.py",
     "wired": [
@@ -118,8 +118,11 @@
     },
     "not": "share-seed MC jitter (keep_frozen_shares); does not concatenate prior rows into asof_share_history",
     "motive": "same-season-only rG collapses early (Matty Cash sG=1.0 Villa GW1–5) and poisons path-frequency captains",
-    "promote_to_score_xp_v2_gate": "deferred — cascade/hist on; full closed-season likelihood screen before flipping published mu_post boards",
-    "any_later_change": "dated protocol update required"
+    "promote_to_score_xp_v2_gate": "wired 2026-10-31 into score_gameweek + project_week_score_xp_v2 / centreline; climb sanity l4_opta_joint_path_mu_wire_climb",
+    "any_later_change": "dated protocol update required",
+    "pi": "Ollie — keep wired μ on published/centreline",
+    "lock_report": "reports/SCORE_XP_V2_RATE_SHARE_WIRE_LOCK.md",
+    "climb_sanity": "l4_opta_joint_path_mu_wire_climb — keep (inconclusive vs legacy)"
   },
   "score_xp_v2_alphas": {
     "locked": "2026-10-16",
@@ -2813,5 +2816,214 @@
         "component": "xp_goals"
       }
     }
+  },
+  "l4_opta_joint_path_decay_tune": {
+    "pre_registered": "2026-10-31",
+    "status": "reported",
+    "role": "Tune Opta-far decay ρ and target on locked joint_path_opta_decay planner/boards",
+    "boards": "build_l3_centreline_horizon(H=12); mu_post ≡ score_xp_v2",
+    "baseline": "decay_r085 — ρ=0.85 → 0 (locked product joint_path_opta_decay)",
+    "treatments": {
+      "decay_r070": "ρ=0.70 → 0",
+      "decay_r095": "ρ=0.95 → 0",
+      "decay_r085_posmean": "ρ=0.85 → positional mean of each xp column on the board"
+    },
+    "comparisons": [
+      "decay_r070_minus_decay_r085",
+      "decay_r095_minus_decay_r085",
+      "decay_r085_posmean_minus_decay_r085"
+    ],
+    "shared": {
+      "planner": "pick_path_transfer_plan",
+      "wildcard_open": "full score_xp_v2 at gw_start",
+      "seed": "from_owned held 15 after wildcard",
+      "candidates": "full week-0 pool",
+      "value_captain": false,
+      "ft_pe_nu": 0,
+      "realised": "XI total_points − hits",
+      "chips": false,
+      "max_hits": "SQUAD_SIZE",
+      "gamma": 1.0,
+      "horizon": 12
+    },
+    "metric": "paired-by-GW realised XI−hits; cluster_interval four closed seasons",
+    "promote_if": "paired interval lo > 0",
+    "park_if": "hi < 0",
+    "gw_start": 8,
+    "gw_end": 38,
+    "holdout": "2026-27 frozen — not in comparison",
+    "note": "All three treatments inconclusive vs locked ρ=0.85→0 (lean slight lose). Keep joint_path_opta_decay decay defaults.",
+    "entry": "src/eval/l4_opta_joint_path_decay_tune_gate.py",
+    "report": "reports/l4_opta_joint_path_decay_tune_gate.md",
+    "depends": [
+      "joint_path_opta_decay",
+      "l4_opta_joint_path_climb"
+    ],
+    "any_later_change": "dated protocol update required",
+    "result": {
+      "decay_r070_minus_decay_r085": {
+        "mean": -0.617,
+        "lo": -1.917,
+        "hi": 0.717,
+        "covers_zero": true,
+        "verdict": "inconclusive",
+        "by_season_mean": {
+          "2022-23": -1.3,
+          "2023-24": -1.4,
+          "2024-25": 0.533,
+          "2025-26": -0.3
+        }
+      },
+      "decay_r095_minus_decay_r085": {
+        "mean": -0.333,
+        "lo": -1.675,
+        "hi": 1.117,
+        "covers_zero": true,
+        "verdict": "inconclusive",
+        "by_season_mean": {
+          "2022-23": 0.333,
+          "2023-24": 0.733,
+          "2024-25": -0.667,
+          "2025-26": -1.733
+        }
+      },
+      "decay_r085_posmean_minus_decay_r085": {
+        "mean": -0.4,
+        "lo": -1.833,
+        "hi": 1.109,
+        "covers_zero": true,
+        "verdict": "inconclusive",
+        "by_season_mean": {
+          "2022-23": 2.1,
+          "2023-24": -0.833,
+          "2024-25": -0.267,
+          "2025-26": -2.6
+        }
+      }
+    }
+  },
+  "score_xp_v2_rate_baseline_likelihood": {
+    "pre_registered": "2026-10-31",
+    "status": "reported",
+    "result": {
+      "mean": 0.002447,
+      "lo": 0.001509,
+      "hi": 0.003488,
+      "covers_zero": false,
+      "verdict": "promote",
+      "n_rows": 27746
+    },
+    "role": "Closed-season player-GW likelihood: prior+season rate baseline vs published same-season rG/rA",
+    "baseline": "score_xp_v2 (same-season player_rates_from_history; shares on minutes>0)",
+    "treatment": "score_xp_v2_rate_baseline \u2014 apply_historical_rate_baseline on rG/rA before score_team_side",
+    "comparison": "score_xp_v2_rate_baseline_minus_score_xp_v2",
+    "metric": "gaussian_log_score \u03c3=3 on xp vs total_points; paired GW mean \u0394; cluster_interval four closed seasons",
+    "pool": "minutes>60, FD AH+OU, GW5\u201338",
+    "promote_if": "paired interval lo > 0",
+    "park_if": "hi < 0",
+    "holdout": "2026-27 frozen \u2014 not in comparison",
+    "follows": "score_xp_v2_rate_baseline_prior (cascade_default; promote_to_score_xp_v2_gate deferred)",
+    "note": "\u03bc screen first. Joint-path climb sanity only after non-clear-lose / promote.",
+    "entry": "src/markets/rate_baseline_share_pool_likelihood_gate.py",
+    "report": "reports/rate_baseline_share_pool_likelihood_gate.md",
+    "any_later_change": "dated protocol update required"
+  },
+  "score_xp_v2_full_share_likelihood": {
+    "pre_registered": "2026-10-31",
+    "status": "reported",
+    "result": {
+      "mean": 0.010131,
+      "lo": 0.008703,
+      "hi": 0.011602,
+      "covers_zero": false,
+      "verdict": "promote",
+      "n_rows": 27746
+    },
+    "role": "Closed-season player-GW likelihood: full-club m>0 shares projected onto >60\u2032 pool vs thin >60\u2032 shares",
+    "baseline": "score_xp_v2_thin_share \u2014 sG/sA among minutes>60 only",
+    "treatment": "score_xp_v2_full_share \u2014 sG/sA on minutes>0 club via share_players; eval pool minutes>60",
+    "comparison": "score_xp_v2_full_share_minus_score_xp_v2_thin_share",
+    "metric": "gaussian_log_score \u03c3=3 on xp vs total_points; paired GW mean \u0394; cluster_interval four closed seasons",
+    "pool": "minutes>60, FD AH+OU, GW5\u201338",
+    "promote_if": "paired interval lo > 0",
+    "park_if": "hi < 0",
+    "holdout": "2026-27 frozen \u2014 not in comparison",
+    "follows": "cascade_short_generative.share_pool full-club default (resid dig); this is the published \u03bc log-score gate",
+    "note": "\u03bc screen first. If promote, wire share_players into centreline/L4 mean callers; then joint-path climb sanity.",
+    "entry": "src/markets/rate_baseline_share_pool_likelihood_gate.py",
+    "report": "reports/rate_baseline_share_pool_likelihood_gate.md",
+    "any_later_change": "dated protocol update required"
+  },
+  "l4_opta_joint_path_mu_wire_climb": {
+    "pre_registered": "2026-10-31",
+    "status": "reported",
+    "role": "Climb sanity after wiring rate baseline + full-club shares into published/centreline μ",
+    "boards_wired": "score_gameweek historical_rate_baseline; project_week_score_xp_v2 + Opta centreline full_club_shares m>0",
+    "baseline_legacy": "joint_path_decay_legacy — prior joint_path_decay dumps (pre-wire μ)",
+    "baseline_l4": "l4_opta_h12_wired — L4 oneshot on wired boards",
+    "treatment": "joint_path_decay_wired — locked joint path + ρ=0.85→0 on wired boards",
+    "comparisons": [
+      "joint_path_decay_wired_minus_joint_path_decay_legacy",
+      "joint_path_decay_wired_minus_l4_opta_h12_wired"
+    ],
+    "metric": "paired-by-GW realised XI−hits; cluster_interval four closed seasons",
+    "promote_wire_if": "joint_path_decay_wired − legacy not park_clear_lose (prefer lo>0)",
+    "park_wire_if": "wired − legacy hi < 0",
+    "gw_start": 8,
+    "gw_end": 38,
+    "holdout": "2026-27 frozen — not in comparison",
+    "entry": "src/eval/l4_opta_joint_path_mu_wire_climb_gate.py",
+    "report": "reports/l4_opta_joint_path_mu_wire_climb_gate.md",
+    "depends": [
+      "score_xp_v2_rate_baseline_likelihood",
+      "score_xp_v2_full_share_likelihood",
+      "joint_path_opta_decay"
+    ],
+    "any_later_change": "dated protocol update required",
+    "result": {
+      "joint_path_decay_wired_minus_joint_path_decay_legacy": {
+        "mean": -0.25,
+        "lo": -2.167,
+        "hi": 1.725,
+        "covers_zero": true,
+        "verdict": "inconclusive",
+        "by_season_mean": {
+          "2022-23": -0.167,
+          "2023-24": 0.433,
+          "2024-25": -0.767,
+          "2025-26": -0.5
+        }
+      },
+      "joint_path_decay_wired_minus_l4_opta_h12_wired": {
+        "mean": 1.125,
+        "lo": -0.667,
+        "hi": 2.951,
+        "covers_zero": true,
+        "verdict": "inconclusive",
+        "by_season_mean": {
+          "2022-23": -0.033,
+          "2023-24": 2.967,
+          "2024-25": 2.9,
+          "2025-26": -1.333
+        }
+      }
+    },
+    "note": "PI locked wired μ. Wired−legacy inconclusive (−0.25). Wired decay leans ahead of wired L4 (+1.13). Keep rate baseline + full-club shares.",
+    "pi_lock": "2026-10-31 — keep wire"
+  },
+  "score_xp_v2_full_share_wire": {
+    "locked": "2026-10-31",
+    "status": "locked",
+    "role": "Full-club m>0 share_players on centreline/L4 mean boards after likelihood promote",
+    "likelihood": "score_xp_v2_full_share_likelihood",
+    "wired": [
+      "src/strategy/layer4_mupost_priced.project_week_score_xp_v2",
+      "src/strategy/l3_centreline_horizon.project_week_opta_centreline"
+    ],
+    "climb_sanity": "l4_opta_joint_path_mu_wire_climb",
+    "any_later_change": "dated protocol update required",
+    "climb_sanity_result": "keep wire — wired−legacy inconclusive",
+    "pi": "Ollie — keep wired μ on published/centreline",
+    "lock_report": "reports/SCORE_XP_V2_RATE_SHARE_WIRE_LOCK.md"
   }
 }

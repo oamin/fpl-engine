@@ -65,15 +65,20 @@ def _mean_minutes_asof(
     *,
     rho: float = 1.0,
     window: int = 3,
+    min_m: float | None = None,
 ) -> pd.DataFrame:
     """As-of minutes roster for projection.
 
     ``rho=1`` (default): expanding mean of all GW ``< t`` minutes (legacy L4).
     ``rho<1``: geometric decay on the last ``window`` GW rows (zeros included) —
     same law as ``protocol.score_xp_v2_minutes_decay`` / ``rolling_game_minutes``.
+
+    ``min_m``: minutes floor (default ``MIN_MEAN_M`` selection). Use ``0`` for the
+    full-club share pool (``m>0``) — ``protocol.score_xp_v2_full_share_likelihood``.
     """
     if hist.empty:
         return pd.DataFrame()
+    floor = float(MIN_MEAN_M if min_m is None else min_m)
     rho = float(rho)
     if rho >= 1.0 - 1e-12:
         g = (
@@ -87,7 +92,10 @@ def _mean_minutes_asof(
             )
         )
         g["sigma_m"] = g["sigma_m"].fillna(10.0).clip(lower=5.0)
-        g = g.loc[g["m"] >= MIN_MEAN_M].copy()
+        if floor <= 0.0:
+            g = g.loc[g["m"] > 0.0].copy()
+        else:
+            g = g.loc[g["m"] >= floor].copy()
         g["position"] = g["position"].map(_pos_norm)
         return g
 
@@ -102,7 +110,13 @@ def _mean_minutes_asof(
         by_gw = g.sort_values("GW").groupby("GW", sort=True)["minutes"].max()
         series = [float(v) for v in by_gw.tolist()]
         m_hat = rolling_game_minutes(series, window=int(window), rho=rho)
-        if m_hat is None or float(m_hat) < MIN_MEAN_M:
+        if m_hat is None:
+            continue
+        m_val = float(m_hat)
+        if floor <= 0.0:
+            if m_val <= 0.0:
+                continue
+        elif m_val < floor:
             continue
         sig = rolling_game_minutes_sigma(series, window=int(window))
         rows.append(
@@ -111,7 +125,7 @@ def _mean_minutes_asof(
                 "name": g["name"].iloc[0] if "name" in g.columns else str(eid),
                 "position": g["position"].iloc[0],
                 "team": g["team"].iloc[0],
-                "m": float(m_hat),
+                "m": m_val,
                 "sigma_m": float(max(sig, 5.0)),
             }
         )
@@ -122,28 +136,16 @@ def _mean_minutes_asof(
     return out
 
 
-def project_week_score_xp_v2(
+def _attach_rates_priors_baseline(
+    roster: pd.DataFrame,
     hist: pd.DataFrame,
-    merged: pd.DataFrame,
-    fd: pd.DataFrame,
     *,
-    decision_gw: int,
-    target_gw: int,
-    alpha_g: float,
-    alpha_a: float,
-    minutes_rho: float = 1.0,
-    minutes_window: int = 3,
-) -> tuple[pd.DataFrame, int]:
-    """Point ``score_xp_v2`` for target_gw with frozen priors + FD pots.
-
-    Player shares use ``hist`` only (same season, GW ``< decision_gw``) —
-    no prior-season fill.
-    """
-    hist = numagent_xp.asof_share_history(hist, before_gw=int(decision_gw))
-    roster = _mean_minutes_asof(hist, rho=minutes_rho, window=minutes_window)
+    season: str | None,
+    historical_rate_baseline: bool = True,
+) -> pd.DataFrame:
+    """Merge same-season rates/priors; optionally overwrite rG/rA with prior+season."""
     if roster.empty:
-        return pd.DataFrame(), 0
-
+        return roster.copy()
     rates = numagent_xp.player_rates_from_history(hist, id_col="element")
     priors = numagent_xp.history_priors_for_xp(hist, id_col="element")
     side = roster.merge(rates, on="element", how="left").merge(
@@ -173,6 +175,67 @@ def project_week_score_xp_v2(
             side[c] = pd.to_numeric(side[c], errors="coerce").fillna(default)
     side["player_id"] = side["element"].astype(str)
     side["team_n"] = side["team"].map(norm_team)
+    if historical_rate_baseline:
+        from src.markets.rate_baseline import apply_historical_rate_baseline
+
+        season_key = season
+        if season_key is None and "season" in hist.columns and len(hist):
+            season_key = str(hist["season"].iloc[0]).replace("_", "-")
+        if season_key:
+            side = apply_historical_rate_baseline(
+                side, season=str(season_key).replace("_", "-"), hist=hist
+            )
+    return side
+
+
+def project_week_score_xp_v2(
+    hist: pd.DataFrame,
+    merged: pd.DataFrame,
+    fd: pd.DataFrame,
+    *,
+    decision_gw: int,
+    target_gw: int,
+    alpha_g: float,
+    alpha_a: float,
+    minutes_rho: float = 1.0,
+    minutes_window: int = 3,
+    season: str | None = None,
+    historical_rate_baseline: bool = True,
+    full_club_shares: bool = True,
+) -> tuple[pd.DataFrame, int]:
+    """Point ``score_xp_v2`` for target_gw with frozen priors + FD pots.
+
+    Soft priors use ``hist`` only (same season, GW ``< decision_gw``).
+    Attack ``rG``/``rA`` default to prior+season baseline
+    (``protocol.score_xp_v2_rate_baseline_likelihood`` promote).
+    Goal/assist shares default to full-club ``m>0`` projected onto the
+    selection roster (``protocol.score_xp_v2_full_share_likelihood``).
+    """
+    hist = numagent_xp.asof_share_history(hist, before_gw=int(decision_gw))
+    season_key = season
+    if season_key is None and "season" in hist.columns and len(hist):
+        season_key = str(hist["season"].iloc[0])
+    roster = _mean_minutes_asof(hist, rho=minutes_rho, window=minutes_window)
+    if roster.empty:
+        return pd.DataFrame(), 0
+    side = _attach_rates_priors_baseline(
+        roster,
+        hist,
+        season=season_key,
+        historical_rate_baseline=bool(historical_rate_baseline),
+    )
+    share_side = side
+    if full_club_shares:
+        share_roster = _mean_minutes_asof(
+            hist, rho=minutes_rho, window=minutes_window, min_m=0.0
+        )
+        if not share_roster.empty and len(share_roster) > len(roster):
+            share_side = _attach_rates_priors_baseline(
+                share_roster,
+                hist,
+                season=season_key,
+                historical_rate_baseline=bool(historical_rate_baseline),
+            )
 
     sched = _schedule(merged)
     week_fx = sched.loc[sched["GW"] == int(target_gw)]
@@ -192,6 +255,15 @@ def project_week_score_xp_v2(
             club = side.loc[side["team"].astype(str) == team].copy()
             if club.empty:
                 continue
+            share_club = None
+            if share_side is not None and not share_side.empty:
+                share_club = share_side.loc[share_side["team"].astype(str) == team].copy()
+                if share_club.empty and "team_n" in share_side.columns:
+                    share_club = share_side.loc[
+                        share_side["team_n"] == team_n
+                    ].copy()
+                if share_club.empty or len(share_club) <= len(club):
+                    share_club = None
             fr = fd_row.iloc[0]
             scored = numagent_xp.score_team_side(
                 club,
@@ -200,6 +272,7 @@ def project_week_score_xp_v2(
                 xgc=float(fr["xgc"]),
                 alpha_g=alpha_g,
                 alpha_a=alpha_a,
+                share_players=share_club,
             )
             scored["element"] = club["element"].to_numpy()
             scored["team"] = team
@@ -393,6 +466,9 @@ def build_mupost_priced_horizon(
             alpha_a=alpha_a,
             minutes_rho=minutes_rho,
             minutes_window=minutes_window,
+            season=season,
+            historical_rate_baseline=True,
+            full_club_shares=True,
         )
         if raw.empty:
             continue

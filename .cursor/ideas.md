@@ -1,3 +1,33 @@
+## Locked — rate baseline + full-club shares on published μ (PI 2026-10-31)
+
+Product defaults: prior+season `rG`/`rA`; centreline/L4 `share_players` from
+full club `m>0`. Likelihood promotes + climb sanity keep. Front door:
+`reports/SCORE_XP_V2_RATE_SHARE_WIRE_LOCK.md`.
+
+## Locked — rate baseline + full-club shares on published μ (PI 2026-10-31)
+
+Climb sanity `l4_opta_joint_path_mu_wire_climb`: wired−legacy **inconclusive**
+(−0.25 [−2.17, +1.73]); wired decay − wired L4 **+1.13** [−0.67, +2.95]
+inconclusive. Keep wire (likelihood promotes stand). Report:
+`reports/l4_opta_joint_path_mu_wire_climb_gate.md`.
+
+## Inconclusive — Opta-far decay ρ / pos_mean tune (2026-10-31)
+
+`l4_opta_joint_path_decay_tune` on locked joint path: ρ=0.70 (−0.62), ρ=0.95
+(−0.33), ρ=0.85→pos_mean (−0.40) all cover 0 vs locked ρ=0.85→0. Keep
+`joint_path_opta_decay` defaults. `reports/l4_opta_joint_path_decay_tune_gate.md`.
+
+## Kept — rate baseline + full-club share wire (2026-10-31)
+
+Closed-season player-GW likelihood gates both **promote**:
+
+- Rate baseline − published: Δ log **+0.0024** [+0.0015, +0.0035]
+- Full-club shares − thin (>60′): Δ log **+0.0101** [+0.0087, +0.0116]
+
+Next: wire into published `score_xp_v2` / centreline mean callers, then
+joint-path climb sanity on locked `joint_path_opta_decay`.
+`reports/rate_baseline_share_pool_likelihood_gate.md`.
+
 ## Locked — L3 centreline forecast (FD near / Opta blind far) (2026-10-30)
 
 Product μ: `score_team_side` centreline. Near = FD λ; far = Opta blind λ.

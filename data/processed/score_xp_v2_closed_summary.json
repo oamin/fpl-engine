@@ -1,5 +1,6 @@
 {
   "gated": false,
+  "score_name": "score_xp_v2",
   "pre_register": "score_xp_v2_minus_score_xp (not yet in protocol.comparisons)",
   "pool": "minutes > 60; join to score_xp (n_prior>=3 from closed rebuild)",
   "minutes_policy": "actual minutes, sigma_m=0",
@@ -15,39 +16,39 @@
       "season": "2022-23",
       "n_rows": 6864,
       "n_gws": 33,
-      "mean_d_log": 0.07683589543221937,
-      "mae_num": 2.2852476133714674,
+      "mean_d_log": 0.1003026347522408,
+      "mae_num": 2.277571938933636,
       "mae_sxp": 2.2724119273216568
     },
     {
       "season": "2023-24",
       "n_rows": 6956,
       "n_gws": 34,
-      "mean_d_log": 0.04349740777769903,
-      "mae_num": 2.3199394518833403,
+      "mean_d_log": 0.06941260326390078,
+      "mae_num": 2.3140660930284036,
       "mae_sxp": 2.293877148817526
     },
     {
       "season": "2024-25",
       "n_rows": 6892,
       "n_gws": 34,
-      "mean_d_log": 0.030553597308732187,
-      "mae_num": 2.254219128522518,
+      "mean_d_log": 0.05350016290784982,
+      "mae_num": 2.2636399336882316,
       "mae_sxp": 2.239488130320133
     },
     {
       "season": "2025-26",
       "n_rows": 6856,
       "n_gws": 34,
-      "mean_d_log": 0.06221694035557316,
-      "mae_num": 2.363738554374938,
+      "mean_d_log": 0.08651682382225072,
+      "mae_num": 2.3448822809735033,
       "mae_sxp": 2.374650776260096
     }
   ],
   "cluster_interval": {
-    "mean": 0.053101442179936204,
-    "lo": 0.0452846756454834,
-    "hi": 0.06089620244899177,
+    "mean": 0.07726365190088882,
+    "lo": 0.07105041238409646,
+    "hi": 0.08414457155866041,
     "n_gws": {
       "2022-23": 33,
       "2023-24": 34,
@@ -60,6 +61,5 @@
     "run_asof_audit on the scoring feature path",
     "pre-register comparison without breaking COMPARISONS requirement",
     "write_gated_report with protocol intervals + this cluster interval"
-  ],
-  "score_name": "score_xp_v2"
+  ]
 }

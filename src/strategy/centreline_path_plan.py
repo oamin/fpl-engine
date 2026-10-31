@@ -52,13 +52,19 @@ def apply_opta_far_decay(
     *,
     near_depth: int = NEAR_DEPTH,
     rho: float = DEFAULT_DECAY_RHO,
-    target: float = DEFAULT_DECAY_TARGET,
+    target: float | str = DEFAULT_DECAY_TARGET,
 ) -> list[pd.DataFrame]:
     """Decay far-horizon xp toward ``target``: factor ``ρ^(t−near+1)`` for ``t≥near``.
 
-    Near boards ``0 .. near-1`` are returned unchanged. Default target is 0
-    (components shrink toward zero). A non-zero target uses
-    ``target + (mu − target) * factor``.
+    Near boards ``0 .. near-1`` are returned unchanged.
+
+    ``target`` modes:
+
+    * ``0`` / ``"zero"`` — shrink toward 0 (``mu * factor``).
+    * scalar float — ``target + (mu − target) * factor``.
+    * ``"pos_mean"`` — per column, per row: target = mean of that column among
+      same ``position`` on the board (falls back to board mean if position
+      missing).
     """
     if not pools:
         return []
@@ -68,7 +74,21 @@ def apply_opta_far_decay(
     r = float(rho)
     if not (0.0 < r <= 1.0):
         raise ValueError(f"rho must be in (0, 1], got {r}")
-    tgt = float(target)
+
+    mode: str
+    scalar_tgt = 0.0
+    if isinstance(target, str):
+        mode = str(target).strip().lower()
+        if mode in ("0", "zero", ""):
+            mode = "zero"
+        elif mode not in ("pos_mean", "zero"):
+            raise ValueError(
+                f"target str must be 'zero' or 'pos_mean', got {target!r}"
+            )
+    else:
+        scalar_tgt = float(target)
+        mode = "zero" if abs(scalar_tgt) < 1e-15 else "scalar"
+
     out: list[pd.DataFrame] = []
     for t, pool in enumerate(pools):
         if t < near:
@@ -76,14 +96,28 @@ def apply_opta_far_decay(
             continue
         factor = r ** (t - near + 1)
         q = pool.copy()
+        pos = None
+        if mode == "pos_mean" and "position" in q.columns:
+            pos = q["position"].astype(str)
         for col in _DECAY_COLS:
             if col not in q.columns:
                 continue
             raw = pd.to_numeric(q[col], errors="coerce").fillna(0.0).astype(float)
-            if tgt == 0.0:
+            if mode == "zero":
                 q[col] = raw * factor
+            elif mode == "scalar":
+                q[col] = scalar_tgt + (raw - scalar_tgt) * factor
             else:
-                q[col] = tgt + (raw - tgt) * factor
+                # pos_mean
+                if pos is None:
+                    tgt_series = pd.Series(float(raw.mean()), index=q.index)
+                else:
+                    board_mean = float(raw.mean()) if len(raw) else 0.0
+                    means = raw.groupby(pos).transform("mean")
+                    tgt_series = means.fillna(board_mean)
+                q[col] = tgt_series.to_numpy(float) + (
+                    raw.to_numpy(float) - tgt_series.to_numpy(float)
+                ) * factor
         out.append(q)
     return out
 
@@ -272,7 +306,7 @@ def plan_centreline_path(
     decay: bool = False,
     near_depth: int = NEAR_DEPTH,
     rho: float = DEFAULT_DECAY_RHO,
-    decay_target: float = DEFAULT_DECAY_TARGET,
+    decay_target: float | str = DEFAULT_DECAY_TARGET,
     gamma: float = 1.0,
     max_hits: int = MAX_HITS_SNAPSHOT,
     ft_pe_nu: float = DEFAULT_FT_PE_NU,
@@ -332,6 +366,7 @@ def plan_centreline_path(
         "horizon": int(raw.get("horizon", len(boards))),
         "decay": bool(decay),
         "rho": float(rho) if decay else None,
+        "decay_target": decay_target if decay else None,
         "near_depth": int(near_depth),
         "from_owned": True,
         "value_captain": False,

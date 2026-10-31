@@ -32,7 +32,11 @@ Product **μ**: Odds API / FD centreline near (`t`/`t+1`); **Opta blind** λ far
 
 **Strategiser lock (PI 2026-10-31):** `joint_path_opta_decay` — every-GW joint path + Opta far × ρ^(t−near+1)→0 (ρ=0.85) on H=12 L4+Opta boards. Chosen over undecayed path for season consistency vs L4 (undecayed lost 2024-25). Live remains priced H=2 / L4 oneshot until Opta far is live-ready. [`JOINT_PATH_OPTA_DECAY_LOCK.md`](../reports/JOINT_PATH_OPTA_DECAY_LOCK.md).
 
-**Joint path component-μ (2026-10-31):** `l4_opta_joint_path_component_climb` — same planners with `mu_post :=` G/A/CS/GC. **All inconclusive** (joint path vs L4: goals −1.42, assists +0.12, CS +1.54, GC +0.77; all cover 0). Path stays very sticky (≈0 hits) under component μ. PI reviewing. `reports/l4_opta_joint_path_component_climb_gate.md`.
+**Joint path component-μ (2026-10-31):** `l4_opta_joint_path_component_climb` — same planners with `mu_post :=` G/A/CS/GC. **All inconclusive** (joint path vs L4: goals −1.42, assists +0.12, CS +1.54, GC +0.77; all cover 0). Path stays very sticky (≈0 hits) under component μ. Stick to **full-μ** climbs. `reports/l4_opta_joint_path_component_climb_gate.md`.
+
+**μ wire locked (PI 2026-10-31):** rate baseline + full-club shares are product defaults on published/centreline. Climb sanity inconclusive vs legacy (−0.25) but not a park; wired decay still leans ahead of wired L4 (+1.13). [`SCORE_XP_V2_RATE_SHARE_WIRE_LOCK.md`](../reports/SCORE_XP_V2_RATE_SHARE_WIRE_LOCK.md).
+
+**Decay tune climb (2026-10-31):** `l4_opta_joint_path_decay_tune` — ρ=0.70 / 0.95 / pos_mean vs locked ρ=0.85→0 all **inconclusive** (means −0.62 / −0.33 / −0.40). Keep locked decay. `reports/l4_opta_joint_path_decay_tune_gate.md`.
 
 ## Repo freeze sequence (2026-10-20)
 
@@ -49,7 +53,7 @@ Product **μ**: Odds API / FD centreline near (`t`/`t+1`); **Opta blind** λ far
 | **9. Path-V gen vs mean MILP** | **done (diagnostic)** | FT+cap N=20: both solve; gen hits≈7.2 vs mean≈1.6; top-15 Jaccard≈0.36. Not a path-V promote. `reports/cascade_pathv_gen_vs_mean.md`. |
 | **10. Minutes on gen paths** | **locked** | `DEFAULT_LINEUP_COV=False` — freeze as-of mean / live xmi. FFScout = pool WHO only. `reports/cascade_live_minutes_layers.md`. |
 | **11. Hist MC freq vs mean MILP** | **done (diagnostic)** | 2025-26 N=12: oracle ranks + LOSO GF/GA path vs priced t:t+1 mean. After rate baseline: Haaland top-cap 0.46 (Cash pathology gone). `reports/cascade_mc_vs_mean_hist.md`. |
-| **12. Historical rate baseline** | **cascade default** | Start at prior (player else positional); update with each completed GW. `src/markets/rate_baseline.py` · `protocol.score_xp_v2_rate_baseline_prior`. Full mu_post gate deferred. |
+| **12. Historical rate baseline** | **locked (PI)** | Start at prior (player else positional); update with each completed GW. Now published/centreline default too. `SCORE_XP_V2_RATE_SHARE_WIRE_LOCK.md`. |
 | **13. Mean vs path GW residual** | **done (diagnostic)** | Full-side shares; semi-oracle buy-only. 2025-26: mean/path actual ≈647/646; resid bias +12.7 / +1.1. `reports/cascade_mean_path_gw_resid.md`. |
 | **14. Top MID+FWD G/A mismatch** | **done (diagnostic)** | Top xp decile: g/EG≈0.85 (pot≈0.82, shares OK); a/EA≈0.61 (pot≈0.72 **and** sA too fat). `reports/top_mid_fwd_ga_mismatch.md`. |
 | **15. Path FT potential energy** | **default on (diagnostic)** | `U(b)=ν·b`, ν=`HIT_COST` (+4/FT, +20 at cap). N=12: schedule Δ small (terminal ft 1.00→1.08). `reports/cascade_ft_pe_path.md`. |
