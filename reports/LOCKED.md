@@ -38,8 +38,9 @@ Do not treat stage_* / GW1–5 / stragent / GW6 `ep_next` dry runs as the live p
 | Live α refresh | 2026-10-16 | protocol `score_xp_v2_alphas` | prior + live counts |
 | Live pots (Odds API) | 2026-10-16 | protocol `score_xp_v2_live_props` + quota rule | AH+OU+BTTS for t:t+1; props default **off** |
 | Props formula | 2026-10-20 | `score_xp_v2_live_props` | **π from props, level from M**; assists no overlay; lift-only parked |
+| **Rate baseline + full-club shares** | 2026-10-31 (PI) | `SCORE_XP_V2_RATE_SHARE_WIRE_LOCK.md` | prior+season `rG`/`rA`; `share_players` from `m>0` on centreline/L4 |
 
-Assembler: `src/markets/numagent_xp.py`. Defaults: `share_se_shrink=True`, `share_se_prior=position_minutes`, props **off**.
+Assembler: `src/markets/numagent_xp.py`. Defaults: `share_se_shrink=True`, `share_se_prior=position_minutes`, props **off**; attack rates = historical baseline; centreline/L4 shares = full club `m>0`.
 
 **Match layer (decomposition):** `match_outcome_probs` / `match_outcome_roll` — `src/markets/match_outcome.py` · [`MATCH_OUTCOME.md`](MATCH_OUTCOME.md).
 

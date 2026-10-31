@@ -101,9 +101,9 @@
     "any_later_change": "dated protocol update required"
   },
   "score_xp_v2_rate_baseline_prior": {
-    "locked": "2026-10-21",
+    "locked": "2026-10-31",
     "revised": "2026-10-31 — closed-season likelihood screen pre-registered (score_xp_v2_rate_baseline_likelihood)",
-    "status": "cascade_default",
+    "status": "locked",
     "role": "attack rG/rA: start season at prior (player name key, else positional); update each completed GW with same-season appearance G/A/M",
     "module": "src/markets/rate_baseline.py",
     "wired": [
@@ -119,7 +119,10 @@
     "not": "share-seed MC jitter (keep_frozen_shares); does not concatenate prior rows into asof_share_history",
     "motive": "same-season-only rG collapses early (Matty Cash sG=1.0 Villa GW1–5) and poisons path-frequency captains",
     "promote_to_score_xp_v2_gate": "wired 2026-10-31 into score_gameweek + project_week_score_xp_v2 / centreline; climb sanity l4_opta_joint_path_mu_wire_climb",
-    "any_later_change": "dated protocol update required"
+    "any_later_change": "dated protocol update required",
+    "pi": "Ollie — keep wired μ on published/centreline",
+    "lock_report": "reports/SCORE_XP_V2_RATE_SHARE_WIRE_LOCK.md",
+    "climb_sanity": "l4_opta_joint_path_mu_wire_climb — keep (inconclusive vs legacy)"
   },
   "score_xp_v2_alphas": {
     "locked": "2026-10-16",
@@ -3005,11 +3008,12 @@
         }
       }
     },
-    "note": "Keep μ wire. Wired−legacy inconclusive (−0.25). Wired decay still leans ahead of wired L4 (+1.13). Not a park of rate baseline / full-club shares."
+    "note": "PI locked wired μ. Wired−legacy inconclusive (−0.25). Wired decay leans ahead of wired L4 (+1.13). Keep rate baseline + full-club shares.",
+    "pi_lock": "2026-10-31 — keep wire"
   },
   "score_xp_v2_full_share_wire": {
     "locked": "2026-10-31",
-    "status": "wired",
+    "status": "locked",
     "role": "Full-club m>0 share_players on centreline/L4 mean boards after likelihood promote",
     "likelihood": "score_xp_v2_full_share_likelihood",
     "wired": [
@@ -3018,6 +3022,8 @@
     ],
     "climb_sanity": "l4_opta_joint_path_mu_wire_climb",
     "any_later_change": "dated protocol update required",
-    "climb_sanity_result": "keep wire — wired−legacy inconclusive"
+    "climb_sanity_result": "keep wire — wired−legacy inconclusive",
+    "pi": "Ollie — keep wired μ on published/centreline",
+    "lock_report": "reports/SCORE_XP_V2_RATE_SHARE_WIRE_LOCK.md"
   }
 }

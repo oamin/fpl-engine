@@ -1,4 +1,10 @@
-## Kept — rate baseline + full-club share wire (2026-10-31)
+## Locked — rate baseline + full-club shares on published μ (PI 2026-10-31)
+
+Product defaults: prior+season `rG`/`rA`; centreline/L4 `share_players` from
+full club `m>0`. Likelihood promotes + climb sanity keep. Front door:
+`reports/SCORE_XP_V2_RATE_SHARE_WIRE_LOCK.md`.
+
+## Locked — rate baseline + full-club shares on published μ (PI 2026-10-31)
 
 Climb sanity `l4_opta_joint_path_mu_wire_climb`: wired−legacy **inconclusive**
 (−0.25 [−2.17, +1.73]); wired decay − wired L4 **+1.13** [−0.67, +2.95]
