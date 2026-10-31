@@ -51,7 +51,11 @@ def appearance_xp(m: float) -> float:
 
 
 def weight_and_delta(r: float, dr: float, m: float, sigma_m: float) -> tuple[float, float]:
-    """w = r·m/90, Δw from independent rate and minutes errors."""
+    """w = r·m/90, Δw from independent rate and minutes errors.
+
+    Default goal and assist share weights (``goal_weight='rate_minutes'``).
+    ``goal_share_weight`` (π∝r) is the parked screen arm only.
+    """
     r = float(max(r, 0.0))
     dr = float(max(dr, 0.0))
     m = float(m)
@@ -59,6 +63,18 @@ def weight_and_delta(r: float, dr: float, m: float, sigma_m: float) -> tuple[flo
     w = r * m / 90.0
     dw = math.sqrt((m / 90.0 * dr) ** 2 + (r / 90.0 * sm) ** 2)
     return w, dw
+
+
+def goal_share_weight(r: float, dr: float = 0.0) -> tuple[float, float]:
+    """Parked arm: ``w = r`` (minutes gate only; no m in the weight).
+
+    Screened 2026-10-27 (``protocol.score_xp_v2_goal_share_rate``): clear lose
+    on player-GW log score vs ``w=r·m/90``. Cascade OL XI resid dig still
+    improved (+10.2→+0.2) — not the gate. Default remains ``weight_and_delta``.
+    """
+    r = float(max(r, 0.0))
+    dr = float(max(dr, 0.0))
+    return r, dr
 
 
 def shares_and_deltas(w: np.ndarray, dw: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
@@ -276,6 +292,154 @@ def load_alphas(path=None) -> tuple[float, float, float, float]:
     return ag, aa, se_g, se_a
 
 
+def _player_key_series(frame: pd.DataFrame) -> pd.Series:
+    """Stable id key for projecting full-club shares onto a selection board."""
+    if "player_id" in frame.columns:
+        return frame["player_id"].map(lambda x: str(x).split(":")[-1])
+    if "element" in frame.columns:
+        return frame["element"].map(lambda x: str(x).split(":")[-1])
+    if "name" in frame.columns:
+        return frame["name"].astype(str)
+    raise ValueError("share projection needs player_id, element, or name")
+
+
+def club_shares_on_frame(
+    club: pd.DataFrame,
+    *,
+    share_se_shrink: bool = True,
+    share_se_tau2: float | None = None,
+    share_se_prior: str = "position_minutes",
+    goal_weight: str = "rate_minutes",
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, dict[str, float] | None]:
+    """Compositional ``sG``/``sA`` on a club frame (full m>0 side).
+
+    Goal shares default ``w=rG·m/90`` (``goal_weight='rate_minutes'``).
+    ``goal_weight='rate'`` is the parked π∝r screen arm. Assist shares:
+    ``∝ rA·m/90``. Returns ``(sG, sA, dsG, dsA, shrink_diag)``.
+    """
+    if club.empty:
+        z = np.zeros(0, dtype=float)
+        return z, z, z, z, None
+    if goal_weight not in ("rate", "rate_minutes"):
+        raise ValueError(f"goal_weight must be 'rate' or 'rate_minutes', got {goal_weight!r}")
+
+    def _pos(p: object) -> str:
+        s = str(p)
+        if s == "GK":
+            s = "GKP"
+        return normalize_position(s)
+
+    pos = club["position"].map(_pos)
+
+    def col(name: str, default: float = 0.0) -> np.ndarray:
+        if name in club.columns:
+            return pd.to_numeric(club[name], errors="coerce").fillna(default).to_numpy(float)
+        return np.full(len(club), float(default), dtype=float)
+
+    m = col("m")
+    sm = col("sigma_m")
+    rG = col("rG")
+    drG = col("drG")
+    rA = col("rA")
+    drA = col("drA")
+    n = len(club)
+    wG = np.zeros(n)
+    dwG = np.zeros(n)
+    wA = np.zeros(n)
+    dwA = np.zeros(n)
+    for i in range(n):
+        if goal_weight == "rate":
+            wG[i], dwG[i] = goal_share_weight(rG[i], drG[i])
+        else:
+            wG[i], dwG[i] = weight_and_delta(rG[i], drG[i], m[i], sm[i])
+        wA[i], dwA[i] = weight_and_delta(rA[i], drA[i], m[i], sm[i])
+    sG, dsG = shares_and_deltas(wG, dwG)
+    sA, dsA = shares_and_deltas(wA, dwA)
+    shrink_diag: dict[str, float] | None = None
+    if share_se_shrink:
+        sG_raw, sA_raw = sG.copy(), sA.copy()
+        pos_list = [str(p) for p in pos.tolist()]
+        sG, g_diag = shrink_shares_by_se(
+            sG,
+            dsG,
+            m,
+            tau2=share_se_tau2,
+            prior_support=share_se_prior,
+            positions=pos_list,
+            channel="G",
+        )
+        sA, a_diag = shrink_shares_by_se(
+            sA,
+            dsA,
+            m,
+            tau2=share_se_tau2,
+            prior_support=share_se_prior,
+            positions=pos_list,
+            channel="A",
+        )
+        shrink_diag = {
+            "tau2_g": g_diag["tau2"],
+            "tau2_a": a_diag["tau2"],
+            "mean_k_g": g_diag["mean_k"],
+            "mean_k_a": a_diag["mean_k"],
+            "max_abs_delta_g": g_diag["max_abs_delta"],
+            "max_abs_delta_a": a_diag["max_abs_delta"],
+            "max_abs_delta_sG": float(np.max(np.abs(sG - sG_raw))) if n else 0.0,
+            "max_abs_delta_sA": float(np.max(np.abs(sA - sA_raw))) if n else 0.0,
+            "prior_support": g_diag.get("prior_support", float("nan")),
+            "n_share_club": float(n),
+        }
+    return sG, sA, dsG, dsA, shrink_diag
+
+
+def project_club_shares(
+    club: pd.DataFrame,
+    players: pd.DataFrame,
+    *,
+    share_se_shrink: bool = True,
+    share_se_tau2: float | None = None,
+    share_se_prior: str = "position_minutes",
+    goal_weight: str = "rate_minutes",
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, dict[str, float] | None]:
+    """Map full-club shares onto a (possibly thin) selection board.
+
+    Shares are **not** re-normalised on ``players`` — missing mass stays with
+    impact subs / non-selected teammates (the G overprint fix).
+    """
+    sG_c, sA_c, dsG_c, dsA_c, diag = club_shares_on_frame(
+        club,
+        share_se_shrink=share_se_shrink,
+        share_se_tau2=share_se_tau2,
+        share_se_prior=share_se_prior,
+        goal_weight=goal_weight,
+    )
+    n = len(players)
+    sG = np.zeros(n, dtype=float)
+    sA = np.zeros(n, dtype=float)
+    dsG = np.zeros(n, dtype=float)
+    dsA = np.zeros(n, dtype=float)
+    if club.empty or players.empty:
+        return sG, sA, dsG, dsA, diag
+    club_keys = _player_key_series(club).tolist()
+    by_key = {k: i for i, k in enumerate(club_keys)}
+    for j, key in enumerate(_player_key_series(players).tolist()):
+        i = by_key.get(key)
+        if i is None:
+            continue
+        sG[j] = float(sG_c[i])
+        sA[j] = float(sA_c[i])
+        dsG[j] = float(dsG_c[i])
+        dsA[j] = float(dsA_c[i])
+    if diag is not None:
+        diag = {
+            **diag,
+            "n_selection": float(n),
+            "sel_sG_mass": float(sG.sum()),
+            "sel_sA_mass": float(sA.sum()),
+        }
+    return sG, sA, dsG, dsA, diag
+
+
 def score_team_side(
     players: pd.DataFrame,
     *,
@@ -290,10 +454,12 @@ def score_team_side(
     d_xgc: float = 0.0,
     sG_override: np.ndarray | None = None,
     sA_override: np.ndarray | None = None,
+    share_players: pd.DataFrame | None = None,
     prop_p_by_player: Mapping[str | int, float] | None = None,
     share_se_shrink: bool = True,
     share_se_tau2: float | None = None,
     share_se_prior: str = "position_minutes",
+    goal_weight: str = "rate_minutes",
 ) -> pd.DataFrame:
     """Score one team's players for one fixture side.
 
@@ -306,6 +472,15 @@ def score_team_side(
 
     Optional ``sG_override`` / ``sA_override``: compositional shares from a
     correlated-draw sampler (must be length n and sum ≈ 1 on the playing set).
+
+    Goal shares default ``goal_weight='rate_minutes'`` (``w=r·m/90``).
+    ``goal_weight='rate'`` is the parked π∝r arm (clear lose 2026-10-27).
+    Assist shares keep ``weight_and_delta`` (``∝ rA·m/90``).
+
+    Optional ``share_players``: full-club frame (``m>0``, impact subs) used to
+    build ``sG``/``sA``. Selection boards stay thin; shares are projected and
+    **not** re-normalised on ``players``. Default for cascade xG when the
+    selection pool is ≥60′.
 
     Optional ``prop_p_by_player``: FPL id (or ``player_id`` string) → fair
     P(anytime scorer). When set, goal shares are **shaped** by props
@@ -343,17 +518,40 @@ def score_team_side(
     rA = col("rA")
     drA = col("drA")
 
+    if goal_weight not in ("rate", "rate_minutes"):
+        raise ValueError(f"goal_weight must be 'rate' or 'rate_minutes', got {goal_weight!r}")
+
     n = len(out)
     wG = np.zeros(n)
     dwG = np.zeros(n)
     wA = np.zeros(n)
     dwA = np.zeros(n)
     for i in range(n):
-        wG[i], dwG[i] = weight_and_delta(rG[i], drG[i], m[i], sm[i])
+        if goal_weight == "rate":
+            wG[i], dwG[i] = goal_share_weight(rG[i], drG[i])
+        else:
+            wG[i], dwG[i] = weight_and_delta(rG[i], drG[i], m[i], sm[i])
         wA[i], dwA[i] = weight_and_delta(rA[i], drA[i], m[i], sm[i])
 
-    sG, dsG = shares_and_deltas(wG, dwG)
-    sA, dsA = shares_and_deltas(wA, dwA)
+    share_shrink_diag: dict[str, float] | None = None
+    used_share_club = (
+        share_players is not None
+        and not share_players.empty
+        and sG_override is None
+        and sA_override is None
+    )
+    if used_share_club:
+        sG, sA, dsG, dsA, share_shrink_diag = project_club_shares(
+            share_players,
+            out,
+            share_se_shrink=share_se_shrink,
+            goal_weight=goal_weight,
+            share_se_tau2=share_se_tau2,
+            share_se_prior=share_se_prior,
+        )
+    else:
+        sG, dsG = shares_and_deltas(wG, dwG)
+        sA, dsA = shares_and_deltas(wA, dwA)
     if sG_override is not None:
         sG = np.asarray(sG_override, dtype=float)
         if sG.shape != (n,):
@@ -365,8 +563,12 @@ def score_team_side(
             raise ValueError(f"sA_override length {sA.size} != n={n}")
         dsA = np.zeros(n)
 
-    share_shrink_diag: dict[str, float] | None = None
-    if share_se_shrink and sG_override is None and sA_override is None:
+    if (
+        share_se_shrink
+        and sG_override is None
+        and sA_override is None
+        and not used_share_club
+    ):
         sG_raw, sA_raw = sG.copy(), sA.copy()
         pos_list = [str(p) for p in pos.tolist()]
         sG, g_diag = shrink_shares_by_se(
@@ -464,7 +666,9 @@ def score_team_side(
             xp_cs[i] = float(xcs) * cs_pts
             d_xp_cs[i] = float(d_xcs) * cs_pts
         if normalize_position(p) in ("GKP", "DEF"):
-            xp_gc[i] = float(GOALS_CONCEDED_DEDUCTION) * float(xgc)  # -1 * xGC
+            # ``xgc`` is E[⌊GC/2⌋] from Dixon–Coles ``team_moments`` (official
+            # −1 per two goals conceded), not E[GC].
+            xp_gc[i] = float(GOALS_CONCEDED_DEDUCTION) * float(xgc)
             d_xp_gc[i] = abs(float(GOALS_CONCEDED_DEDUCTION)) * float(d_xgc)
 
     # DefCon

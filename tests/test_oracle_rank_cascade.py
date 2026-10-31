@@ -40,6 +40,7 @@ class OracleRankCascadeTest(unittest.TestCase):
         top = gf_ga_from_rank(
             1,
             profile=prof,
+            method="ols",
             ols_gf=tuple(ols["ols_gf"]),
             ols_ga=tuple(ols["ols_ga"]),
             mae_gf=ols["mae_gf"],
@@ -48,6 +49,7 @@ class OracleRankCascadeTest(unittest.TestCase):
         bot = gf_ga_from_rank(
             20,
             profile=prof,
+            method="ols",
             ols_gf=tuple(ols["ols_gf"]),
             ols_ga=tuple(ols["ols_ga"]),
             mae_gf=ols["mae_gf"],

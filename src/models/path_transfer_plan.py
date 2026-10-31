@@ -1,14 +1,22 @@
 """Joint multi-GW transfer plan MILP for one cascade path strand.
 
-Given per-GW player scores on a fully rolled strand, choose a legal 15 + XI +
-captain for **every** horizon GW and the transfers that link them, subject to
-FT bank dynamics and −4/hit.
+Given per-GW player scores on a fully rolled strand, choose a legal 15 + XI
+(+ optional captain) for **every** horizon GW and the transfers that link
+them, subject to FT bank dynamics and −4/hit.
 
 Modes:
 - **free open** (default): opening GW is a wildcard-like rebuild; FT bank
   after open is 1; later weeks transfer from that 15.
 - **from owned**: first GW transfers from a held 15 with a given FT bank
   (rolling deadline replan).
+
+``value_captain=False`` isolates the **transfer rule**: objective is Σ XI
+scores − hits; a legal captain is still picked but does not enter the
+objective (no captaincy double).
+
+**FT bank pot** is tracked as constrained state (``ft_before`` / ``ft_after``
+per week) and returned as ``bank_pot`` — separate from the objective.
+Default ``ft_pe_nu=0`` (no terminal bank PE in V).
 """
 
 from __future__ import annotations
@@ -140,6 +148,8 @@ def pick_path_transfer_plan(
     time_limit: float = 90.0,
     start_owned_ids: Sequence[str] | None = None,
     start_ft: int = 1,
+    value_captain: bool = True,
+    mip_rel_gap: float = 1e-8,
 ) -> dict[str, Any]:
     """Joint path MILP over ``gws``.
 
@@ -148,8 +158,15 @@ def pick_path_transfer_plan(
     When ``start_owned_ids`` is None, week 0 is a free rebuild and ``f_after[0]=1``.
     When set, week 0 transfers from that 15 with bank ``start_ft``.
 
-    When ``ft_pe_nu > 0``, adds terminal PE ``U(f_H)=ν·f_H`` (default
-    ``ν=HIT_COST``: +4 per stored FT, +20 at cap).
+    When ``ft_pe_nu > 0``, adds terminal PE ``U(f_H)=ν·f_H`` into the
+    objective (diagnostic only; default ``ft_pe_nu=0``). The FT **bank pot**
+    is always tracked via constraints and returned in ``bank_pot``.
+
+    ``value_captain``: if False, captain double is omitted from the objective
+    (transfer-rule isolation); a legal captain is still chosen in the XI.
+
+    On HiGHS time-limit, a feasible incumbent ``x`` is accepted when week
+    supports reconstruct; otherwise raises.
     """
     H = int(len(gws))
     n = int(len(candidates))
@@ -238,12 +255,14 @@ def pick_path_transfer_plan(
         return nx + ny + nc + n_buy + n_u + n_e + n_f + n_over + step_of[t]
 
     g = float(gamma)
+    use_cap = bool(value_captain)
     c_obj = np.zeros(dim)
     for t in range(H):
         w = g**t
         for i in range(n):
             c_obj[ix_y(t, i)] = -w * float(scores[t, i])
-            c_obj[ix_c(t, i)] = -w * float(scores[t, i])
+            if use_cap:
+                c_obj[ix_c(t, i)] = -w * float(scores[t, i])
     for t in t_xfer:
         c_obj[ix_e(t)] = float(HIT_COST)
     if use_pe:
@@ -474,11 +493,15 @@ def pick_path_transfer_plan(
         integrality=integrality,
         options={
             "time_limit": float(time_limit),
-            "mip_rel_gap": 1e-8,
+            "mip_rel_gap": float(mip_rel_gap),
         },
     )
-    if not res.success or res.x is None:
-        raise RuntimeError(f"path transfer plan MILP failed: {res.message}")
+    msg = str(res.message) if res.message is not None else ""
+    timed_out = "time limit" in msg.lower()
+    if res.x is None:
+        raise RuntimeError(f"path transfer plan MILP failed: {msg}")
+    if not res.success and not timed_out:
+        raise RuntimeError(f"path transfer plan MILP failed: {msg}")
 
     x = res.x
     weeks: list[dict[str, Any]] = []
@@ -488,7 +511,8 @@ def pick_path_transfer_plan(
         cap_idx = [i for i in range(n) if x[ix_c(t, i)] > 0.5]
         if len(squad_idx) != 15 or len(xi_idx) != 11 or len(cap_idx) != 1:
             raise RuntimeError(
-                f"bad plan at GW{gw}: squad={len(squad_idx)} xi={len(xi_idx)} cap={len(cap_idx)}"
+                f"bad plan at GW{gw}: squad={len(squad_idx)} xi={len(xi_idx)} "
+                f"cap={len(cap_idx)} (success={res.success}; {msg})"
             )
         if t not in step_of:
             n_tr, hits, ft_b, ft_a = 0, 0, 0, int(round(x[ix_f(0)]))
@@ -502,7 +526,7 @@ def pick_path_transfer_plan(
                 ft_b = int(round(x[ix_f(t - 1)]))
             ft_a = int(round(x[ix_f(t)]))
         xi_score = float(sum(scores[t, i] for i in xi_idx))
-        cap_score = float(scores[t, cap_idx[0]])
+        cap_score = float(scores[t, cap_idx[0]]) if use_cap else 0.0
         weeks.append(
             {
                 "gw": int(gw),
@@ -517,22 +541,43 @@ def pick_path_transfer_plan(
                 "xi_score": xi_score,
                 "captain_score": cap_score,
                 "week_score": xi_score + cap_score,
+                "value_captain": use_cap,
             }
         )
 
     obj = float(-res.fun) if res.fun is not None else float("nan")
     terminal_ft = int(weeks[-1]["ft_after"]) if weeks else 0
+    bank_pot = {
+        "in_objective": bool(use_pe),
+        "ft_pe_nu": float(nu),
+        "terminal_ft": terminal_ft,
+        "by_gw": [
+            {
+                "gw": int(w["gw"]),
+                "ft_before": int(w["ft_before"]),
+                "ft_after": int(w["ft_after"]),
+                "n_transfers": int(w["n_transfers"]),
+                "hits": int(w["hits"]),
+            }
+            for w in weeks
+        ],
+    }
     return {
         "weeks": weeks,
         "objective": obj,
         "n_candidates": n,
         "horizon": H,
         "status": str(res.message),
+        "milp_success": bool(res.success),
+        "milp_timed_out": bool(timed_out),
+        "mip_rel_gap": float(mip_rel_gap),
         "ft_pe_nu": nu,
         "terminal_ft": terminal_ft,
         "terminal_pe": float(
             ft_bank_potential(terminal_ft, nu=nu) if weeks and use_pe else 0.0
         ),
+        "bank_pot": bank_pot,
         "from_owned": bool(from_owned),
         "start_ft": int(ft0) if from_owned else None,
+        "value_captain": use_cap,
     }

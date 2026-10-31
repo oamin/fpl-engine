@@ -29,6 +29,7 @@ from src.eval.cascade_mc_vs_mean_hist import (
     SNAPSHOT_EVERY,
     START_OFFSET,
     _build_hist_pool,
+    _build_hist_share_pool,
     _fd_priced_by_gw,
     _hist_fixtures_by_gw,
 )
@@ -244,6 +245,9 @@ def main(argv: list[str] | None = None) -> None:
     score_pool = _build_hist_pool(
         hist, prices, decision_gw=decision_gw, season=season
     )
+    share_pool = _build_hist_share_pool(
+        hist, prices, decision_gw=decision_gw, season=season
+    )
     oracle_els = semi_oracle_elements(merged, decision_gw)
     buy_pool = score_pool.loc[
         pd.to_numeric(score_pool["element"], errors="coerce").isin(oracle_els)
@@ -296,6 +300,7 @@ def main(argv: list[str] | None = None) -> None:
         t0 = _now()
         path = run_path_strands(
             pool=score_pool,
+            share_pool=share_pool,
             fixtures_gw=fixtures_gw,
             priced_by_gw=priced_by_gw,
             ranks=ranks,

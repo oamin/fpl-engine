@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:fa527b91f64ff729",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/crly062vd0z7o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 29 Oct 2026 08:07:22 GMT",
+  "published_at_utc": "2026-10-29T08:07:22Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "Mourinho and chaos - is Real Madrid boss misunderstood?",
+  "body": "Jose Mourinho has spent the past decade seeing other managers hailed as geniuses, but did Real Madrid's win at Barcelona show he's been misunderstood?",
+  "player_ids": [],
+  "sha256": "c4e55a0f29a834da79bf4e8497afa8adf8d8657ea993529ad20ceba8d8d798a9"
+}

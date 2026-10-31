@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:39bb11d5188a653c",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/c9gkvrkkjv0lo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 23 Oct 2026 07:57:27 GMT",
+  "published_at_utc": "2026-10-23T07:57:27Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "New Victor Moses? How Alonso has transformed Neto",
+  "body": "Those following Chelsea closely may feel history is repeating itself as Pedro Neto excels at wing-back, much like Victor Moses did a decade ago.",
+  "player_ids": [],
+  "sha256": "d3c968a406aac6e273df912118ef279327fdfe55cdc090016621fd26421cb83d"
+}

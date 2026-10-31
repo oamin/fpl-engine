@@ -1,0 +1,38 @@
+[expanding-ha] train=('2022-23', '2023-24', '2024-25') holdout=2025-26 GW8–38 N=20
+[expanding-ha] build 2022-23
+[expanding-ha] build 2023-24
+[expanding-ha] build 2024-25
+[expanding-ha] build 2025-26
+  train blend w=0.00 bias_A=+0.074 bias_H=-0.182 MAE=0.959
+  train blend w=0.10 bias_A=+0.060 bias_H=-0.165 MAE=0.955
+  train blend w=0.20 bias_A=+0.046 bias_H=-0.148 MAE=0.953
+  train blend w=0.30 bias_A=+0.032 bias_H=-0.131 MAE=0.953
+  train blend w=0.40 bias_A=+0.019 bias_H=-0.115 MAE=0.953
+  train blend w=0.50 bias_A=+0.005 bias_H=-0.098 MAE=0.954
+  train blend w=0.60 bias_A=-0.009 bias_H=-0.081 MAE=0.956
+  train blend w=0.70 bias_A=-0.023 bias_H=-0.064 MAE=0.960
+  train blend w=0.80 bias_A=-0.037 bias_H=-0.047 MAE=0.964
+  train blend w=0.90 bias_A=-0.051 bias_H=-0.030 MAE=0.970
+  train blend w=1.00 bias_A=-0.064 bias_H=-0.013 MAE=0.977
+[expanding-ha] fit blend w=0.30
+[expanding-ha] holdout baseline_blind H=-0.015 A=+0.259 MAE=0.918
+[expanding-ha] holdout expanding_ha H=+0.067 A=+0.031 MAE=0.916
+[expanding-ha] holdout expanding_away H=-0.015 A=+0.031 MAE=0.905
+[expanding-ha] holdout blend_fit H=+0.010 A=+0.191 MAE=0.906
+[expanding-ha] OOS 2022-23 winners=['expanding_ha', 'expanding_away']
+[expanding-ha] OOS 2023-24 winners=['none']
+[expanding-ha] OOS 2024-25 winners=['none']
+[expanding-ha] OOS 2025-26 winners=['expanding_away']
+{
+  "winners": [
+    "expanding_away"
+  ],
+  "oos_pass_counts": {
+    "expanding_ha": 1,
+    "expanding_away": 2,
+    "blend_fit": 0
+  },
+  "recommended": null
+}
+wrote /opt/cursor/artifacts/cascade_long_expanding_ha_lam_screen.json
+wrote /workspace/reports/cascade_long_expanding_ha_lam_screen.md

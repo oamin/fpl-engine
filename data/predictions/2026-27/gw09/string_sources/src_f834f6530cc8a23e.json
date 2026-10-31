@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:f834f6530cc8a23e",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cp30ggvqj0do?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 30 Oct 2026 10:50:44 GMT",
+  "published_at_utc": "2026-10-30T10:50:44Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "How to follow the Premier League on the BBC this weekend",
+  "body": "Our Ask Me Anything team explains how to follow matches from week nine of the Premier League season on the BBC this weekend.",
+  "player_ids": [],
+  "sha256": "f92c7751dabf3dceea7b5d3641150270ad7aebaf53ec3ce84a984b3d06040d35"
+}

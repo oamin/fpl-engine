@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:5eb91b2b414e6d20",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cq4g148z2xp2o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 30 Oct 2026 12:18:28 GMT",
+  "published_at_utc": "2026-10-30T12:18:28Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "Forest Green launch £2m lawsuit over Savage approach",
+  "body": "Forest Green chairman Dale Vince announces the club is taking legal action against Peterborough United following their approach for manager Robbie Savage.",
+  "player_ids": [],
+  "sha256": "eb984eec245cddd3f7da986ce4cd7a31d9e4ab967861db5c94365186b36225a5"
+}

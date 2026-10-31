@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:0fd6761ecc9c50ce",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cqe8rglz8p90o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 22 Oct 2026 16:19:30 GMT",
+  "published_at_utc": "2026-10-22T16:19:30Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "Fernandes to stay captain as Rooney calls Man Utd players babies",
+  "body": "Bruno Fernandes will remain as Manchester United captain and will not be disciplined for his post-match criticism of Michael Carrick after the 4-1 Champions League defeat by Como.",
+  "player_ids": [],
+  "sha256": "77593817f401a3860a5bc1ec2a6d8c2b29adbecbfd80dbe72b18076d199023ea"
+}

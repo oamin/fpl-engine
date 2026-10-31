@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:2ada6d7cffeace25",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cqp9gky38lj3o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Mon, 26 Oct 2026 23:14:39 GMT",
+  "published_at_utc": "2026-10-26T23:14:39Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "Putellas wins record-equalling third Ballon d'Or",
+  "body": "Barcelona and Spain midfielder Alexia Putellas wins the Ballon d'Or Feminin for a record-equalling third time.",
+  "player_ids": [],
+  "sha256": "0d54e98e9684386c4854dc93e39d628f824b05d4e95ecb1321c95ea2c6786673"
+}

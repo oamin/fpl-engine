@@ -116,7 +116,7 @@ def _side_frame(
     board = board[board["m"] >= minutes_floor].reset_index(drop=True)
     if board.empty:
         return board
-    # Compositional baseline shares via weights (no shrink for trial clarity)
+    # Compositional baseline shares via weights (no shrink for trial clarity).
     wG = np.array(
         [nx.weight_and_delta(r, dr, m, sm)[0] for r, dr, m, sm in board[["rG", "drG", "m", "sigma_m"]].to_numpy()]
     )

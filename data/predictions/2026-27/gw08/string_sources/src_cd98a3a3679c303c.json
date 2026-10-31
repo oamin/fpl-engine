@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:cd98a3a3679c303c",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sounds/play/m0033tlq?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 22 Oct 2026 15:16:00 GMT",
+  "published_at_utc": "2026-10-22T15:16:00Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "Football Daily",
+  "body": "Andy Mitten & Jay Motty join Rick & Lloyd to dissect Man United's disastrous night.",
+  "player_ids": [],
+  "sha256": "a0adb6e7b2eba397875df7786a42dd9ce7ce31180bfd3827f8af9d8da909dba1"
+}

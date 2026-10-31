@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:9a405acc4e8ff971",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/videos/crje5zewk52no?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Mon, 26 Oct 2026 09:41:25 GMT",
+  "published_at_utc": "2026-10-26T09:41:25Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "Late Mbappe goal earns Real win at Barca in dramatic Clasico",
+  "body": "Kylian Mbappe scores twice for Real Madrid as they beat Barcelona 2-1 at the Camp Nou in the first El Clasico of the season.",
+  "player_ids": [],
+  "sha256": "97f7ad9c614c63a5b4fd01b1a5f62ec2fd51d71378ce5b1129512d6d5319c9d0"
+}

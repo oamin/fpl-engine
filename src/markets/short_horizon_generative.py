@@ -90,8 +90,13 @@ def build_club_dice_from_side(
     alpha_a: float,
     G_team: float,
     prop_p_by_element: Mapping[int, float] | None = None,
+    goal_weight: str = "rate_minutes",
 ) -> tuple[Any, pd.DataFrame]:
-    """Build ``SideAttackDice`` + ordered club frame (playing m>0)."""
+    """Build ``SideAttackDice`` + ordered club frame (playing m>0).
+
+    ``goal_weight``: ``rate_minutes`` (default ``w=r·m/90``) or ``rate``
+    (π∝r; minutes gate only — cascade resid dig arm).
+    """
     c = club.copy()
     if "m" not in c.columns and "xmi" in c.columns:
         c["m"] = pd.to_numeric(c["xmi"], errors="coerce").fillna(0.0)
@@ -105,14 +110,25 @@ def build_club_dice_from_side(
     if "sG" not in c.columns or "sA" not in c.columns:
         from src.markets import numagent_xp as nx
 
+        if goal_weight not in ("rate", "rate_minutes"):
+            raise ValueError(
+                f"goal_weight must be 'rate' or 'rate_minutes', got {goal_weight!r}"
+            )
         wG = np.array(
             [
-                nx.weight_and_delta(
-                    float(c.iloc[i].get("rG", 0.0) or 0.0),
-                    float(c.iloc[i].get("drG", 0.0) or 0.0),
-                    float(c.iloc[i]["m"]),
-                    float(c.iloc[i].get("sigma_m", 0.0) or 0.0),
-                )[0]
+                (
+                    nx.goal_share_weight(
+                        float(c.iloc[i].get("rG", 0.0) or 0.0),
+                        float(c.iloc[i].get("drG", 0.0) or 0.0),
+                    )[0]
+                    if goal_weight == "rate"
+                    else nx.weight_and_delta(
+                        float(c.iloc[i].get("rG", 0.0) or 0.0),
+                        float(c.iloc[i].get("drG", 0.0) or 0.0),
+                        float(c.iloc[i]["m"]),
+                        float(c.iloc[i].get("sigma_m", 0.0) or 0.0),
+                    )[0]
+                )
                 for i in range(len(c))
             ]
         )
@@ -348,6 +364,7 @@ def score_fixture_generative(
     lineup_cov: bool = True,
     goals_home: int | None = None,
     goals_away: int | None = None,
+    goal_weight: str = "rate_minutes",
 ) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, Any]]:
     """One generative path for both sides of a fixture.
 
@@ -370,10 +387,20 @@ def score_fixture_generative(
     g_away = float(alpha_g) * float(probs.moments["xg_away"])
 
     home_dice, home_c = build_club_dice_from_side(
-        home_club, alpha_g=alpha_g, alpha_a=alpha_a, G_team=g_home, prop_p_by_element=home_props
+        home_club,
+        alpha_g=alpha_g,
+        alpha_a=alpha_a,
+        G_team=g_home,
+        prop_p_by_element=home_props,
+        goal_weight=goal_weight,
     )
     away_dice, away_c = build_club_dice_from_side(
-        away_club, alpha_g=alpha_g, alpha_a=alpha_a, G_team=g_away, prop_p_by_element=away_props
+        away_club,
+        alpha_g=alpha_g,
+        alpha_a=alpha_a,
+        G_team=g_away,
+        prop_p_by_element=away_props,
+        goal_weight=goal_weight,
     )
 
     empty = home_club.iloc[0:0].copy()
@@ -449,8 +476,13 @@ def score_week_generative(
     prop_by_element: Mapping[int, float] | None = None,
     lineup_cov: bool = True,
     lam_overrides: Mapping[int, Mapping[str, float]] | None = None,
+    goal_weight: str = "rate_minutes",
 ) -> pd.DataFrame:
-    """Score a full GW by generative rolls on each priced fixture."""
+    """Score a full GW by generative rolls on each priced fixture.
+
+    ``goal_weight`` defaults to ``rate_minutes`` (``w=r·m/90``); ``rate`` is
+    the parked π∝r diagnostic arm.
+    """
     if side_table.empty or not fixture_fits:
         return pd.DataFrame()
     parts: list[pd.DataFrame] = []
@@ -488,6 +520,7 @@ def score_week_generative(
             home_props=prop_by_element,
             away_props=prop_by_element,
             lineup_cov=lineup_cov,
+            goal_weight=goal_weight,
         )
         for scored, team in ((home_xp, str(fit["home"])), (away_xp, str(fit["away"]))):
             if scored.empty:

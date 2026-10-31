@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:20da6d7e2ab308d0",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/videos/ckeq3v1wgxy4o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 29 Oct 2026 22:40:17 GMT",
+  "published_at_utc": "2026-10-29T22:40:17Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "PSG score late to hold struggling Man City",
+  "body": "Manchester City concede late to a draw 1-1 with Paris St-Germain, as their wait for a win in the Women's Champions League this season continues.",
+  "player_ids": [],
+  "sha256": "57e8b6b8812cb96d5dee56017f6fd456820a6c9a5bee11f04886d0731fd727fa"
+}

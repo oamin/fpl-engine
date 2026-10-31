@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:37f1d93268cd1b6f",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cwrkypzzp6xeo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 30 Oct 2026 14:22:18 GMT",
+  "published_at_utc": "2026-10-30T14:22:18Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "O'Neill agrees with McGregor about Celtic issues",
+  "body": "Manager Martin O'Neill says he is in \"full agreement\" with captain Callum McGregor's assessment of Celtic's issues, but insisted they will \"sort it out\".",
+  "player_ids": [],
+  "sha256": "56dcf0d0fca32030257992d1cec04f09320097e74a2845f0cc3b35b4ca6a2ad9"
+}

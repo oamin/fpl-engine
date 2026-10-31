@@ -1,0 +1,64 @@
+{
+  "seasons": [
+    "2022-23",
+    "2023-24",
+    "2024-25",
+    "2025-26"
+  ],
+  "min_gws": 20,
+  "comparisons": {
+    "score_xp_minus_score_exp_points": {
+      "mean": 0.015305621921945354,
+      "lo": 0.01295155277980016,
+      "hi": 0.01747868684462922,
+      "n_gws": {
+        "2022-23": 33,
+        "2023-24": 34,
+        "2024-25": 34,
+        "2025-26": 34
+      },
+      "incomplete_seasons": {},
+      "n_rows": 102315
+    },
+    "cascade_short_gen_goal_share_rate_minus_cascade_short_gen_goal_share_rate_minutes": {
+      "mean": 0.007962761855470839,
+      "lo": -0.002161054333694003,
+      "hi": 0.016953742684307417,
+      "n_gws": {
+        "2022-23": 31,
+        "2023-24": 30,
+        "2024-25": 31,
+        "2025-26": 31
+      },
+      "incomplete_seasons": {},
+      "n_rows": 23302
+    },
+    "cascade_short_gen_goal_share_rate_minutes_minus_l3_score_xp_v2": {
+      "mean": -0.03838907723299361,
+      "lo": -0.04448425553311109,
+      "hi": -0.03210025960785979,
+      "n_gws": {
+        "2022-23": 31,
+        "2023-24": 30,
+        "2024-25": 31,
+        "2025-26": 31
+      },
+      "incomplete_seasons": {},
+      "n_rows": 23302
+    },
+    "cascade_short_gen_goal_share_rate_minus_l3_score_xp_v2": {
+      "mean": -0.03042631537752278,
+      "lo": -0.0368193249742962,
+      "hi": -0.024384296105759366,
+      "n_gws": {
+        "2022-23": 31,
+        "2023-24": 30,
+        "2024-25": 31,
+        "2025-26": 31
+      },
+      "incomplete_seasons": {},
+      "n_rows": 23302
+    }
+  },
+  "screen": "cascade_short_goal_weight_likelihood_screen"
+}

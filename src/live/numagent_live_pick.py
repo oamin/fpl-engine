@@ -1,8 +1,12 @@
-"""Numagent 2.0 live pick: xmi + book pots → L4 on held 15.
+"""Numagent 2.0 live pick: xmi + book pots → L4 centreline horizon on held 15.
 
 Product ``protocol.numagent_2_0`` (supersedes Numagent 1.0 / ep_next freeze).
-Primary scorer is ``score_xp_v2``. Offline-friendly defaults (snapshot odds).
-Optional live Odds API pull is quota-aware (region=us; AH+OU+BTTS pots)::
+Primary scorer is ``score_xp_v2``. Forecast μ:
+``protocol.l3_centreline_forecast`` — Odds API priced near (t, t+1) + Opta
+blind far (default ``--centreline-horizon 12``).
+
+Live near book = The Odds API (AH+OU+BTTS; quota-aware, region=us) — better
+t+1 coverage than Betfair 1X2. Prefer snapshots; ``--fetch-odds`` to refresh::
 
   python -m src.live.numagent_live_pick --gw 7
   python -m src.live.numagent_live_pick --gw 7 --fetch-odds
@@ -42,9 +46,14 @@ from src.strategy.layer3_week import held_from_frame, solve_week_transfers
 from src.strategy.layer4_week import solve_horizon_transfers
 from src.teams import norm_team
 
-# Locked L4 priced path: γ=1, hard-stop, no terminal lump.
+# Locked L4: γ=1, no terminal lump. Near = priced t:t+1; far = Opta blind
+# under protocol.l3_centreline_forecast (default horizon 12).
 L4_GAMMA = 1.0
 BOOKIE_DEPTH = 2
+CENTRELINE_HORIZON = 12  # t … t+11
+# Live commit-week hit bound: γ=1 over H=12 otherwise over-transfers.
+# 1 FT + max_hits → at most 1+max_hits transfers this deadline.
+LIVE_MAX_HITS = 1
 
 ROOT = Path(__file__).resolve().parents[2]
 SCRATCH = ROOT / "data" / "scratch"
@@ -55,10 +64,30 @@ POS_MAP = {1: "GKP", 2: "DEF", 3: "MID", 4: "FWD"}
 
 
 def _get_json(url: str) -> Any:
-    with httpx.Client(timeout=60.0) as client:
-        r = client.get(url)
-        r.raise_for_status()
-        return r.json()
+    import time
+
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+            "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        ),
+        "Accept": "application/json",
+    }
+    last_exc: Exception | None = None
+    for attempt in range(4):
+        try:
+            with httpx.Client(timeout=60.0, headers=headers) as client:
+                r = client.get(url)
+                if r.status_code == 403 and attempt < 3:
+                    time.sleep(1.5 * (attempt + 1))
+                    continue
+                r.raise_for_status()
+                return r.json()
+        except Exception as exc:  # noqa: BLE001 — retry transient FPL blocks
+            last_exc = exc
+            time.sleep(1.5 * (attempt + 1))
+    assert last_exc is not None
+    raise last_exc
 
 
 def fetch_bootstrap() -> dict[str, Any]:
@@ -564,6 +593,7 @@ def run_pick(
     time_limit: float = 60.0,
     use_l4: bool = True,
     use_props: bool = False,
+    centreline_horizon: int = CENTRELINE_HORIZON,
 ) -> dict[str, Any]:
     played_gw = int(gw) - 1
     bootstrap = fetch_bootstrap()
@@ -691,21 +721,124 @@ def run_pick(
         raise RuntimeError(f"held missing from scored pool: {missing}")
 
     l3 = solve_week_transfers(
-        work_t, held, mu_col="mu_post", max_hits=15, time_limit=time_limit
+        work_t,
+        held,
+        mu_col="mu_post",
+        max_hits=LIVE_MAX_HITS,
+        time_limit=time_limit,
     )
     l3_block = _plan_block(l3, els=els, label="L3")
 
     l4_block = None
+    centreline_meta: dict[str, Any] = {}
     if use_l4 and work_t1 is not None:
+        pools: list[pd.DataFrame] = [work_t, work_t1]
+        H = max(BOOKIE_DEPTH, int(centreline_horizon))
+        if H <= BOOKIE_DEPTH:
+            centreline_meta = {
+                "protocol": "l3_centreline_forecast",
+                "horizon": BOOKIE_DEPTH,
+                "opta_gws": [],
+                "near": "priced_odds_t_t1",
+                "far": "none",
+            }
+            print(
+                f"L4 centreline horizon={BOOKIE_DEPTH} (priced t:t+1 only; no Opta far)",
+                flush=True,
+            )
+        elif H > BOOKIE_DEPTH:
+            try:
+                from src.models.opta_gf_ga_horizon import (
+                    league_avg_gf,
+                    rank_gf_ga_profile_excluding,
+                    season_final_ranks,
+                )
+                from src.models.short_horizon_cascade import build_frozen_side_table
+                from src.strategy.l3_centreline_horizon import (
+                    _opta_e0,
+                    opta_fits_from_fixture_pairs,
+                    score_opta_fits_on_side,
+                )
+                from src.strategy.layer4_mupost_priced import _align_to_week0
+
+                e0 = _opta_e0("2026-27")
+                ranks = season_final_ranks(e0)
+                profile = rank_gf_ga_profile_excluding(e0)
+                league_gf = float(league_avg_gf(profile))
+                # Live hist lacks fixture/was_home for _asof_alphas; reuse week-t α
+                # (same load_alphas path as score_pool_from_odds).
+                alpha_g = float(meta_t.get("alpha_g") or 0.96)
+                alpha_a = float(meta_t.get("alpha_a") or 0.90)
+                side, alpha_g, alpha_a = build_frozen_side_table(
+                    hist,
+                    alpha_g=float(alpha_g),
+                    alpha_a=float(alpha_a),
+                    season="2026-27",
+                    historical_rate_baseline=True,
+                )
+                opta_gws: list[int] = []
+                for step in range(BOOKIE_DEPTH, H):
+                    gw_f = int(gw) + step
+                    fx_f = _get_json(
+                        f"https://fantasy.premierleague.com/api/fixtures/?event={gw_f}"
+                    )
+                    if not fx_f:
+                        break
+                    pairs_f = [
+                        (teams[int(f["team_h"])], teams[int(f["team_a"])])
+                        for f in fx_f
+                        if f.get("team_h") is not None and f.get("team_a") is not None
+                    ]
+                    fits = opta_fits_from_fixture_pairs(
+                        pairs_f,
+                        ranks=ranks,
+                        profile=profile,
+                        league_gf=league_gf,
+                    )
+                    raw = score_opta_fits_on_side(
+                        side, fits, alpha_g=float(alpha_g), alpha_a=float(alpha_a)
+                    )
+                    if raw.empty:
+                        break
+                    # Align element ids onto week-0 universe.
+                    raw = raw.copy()
+                    raw["player_id"] = raw["element"].astype(str)
+                    raw["mu_post"] = raw["score_xp_v2"]
+                    if "xp_se" not in raw.columns:
+                        raw["xp_se"] = 0.0
+                    pools.append(_align_to_week0(work_t, raw))
+                    opta_gws.append(gw_f)
+                centreline_meta = {
+                    "protocol": "l3_centreline_forecast",
+                    "horizon": len(pools),
+                    "opta_gws": opta_gws,
+                    "opta_e0": e0,
+                    "near": "priced_odds_t_t1",
+                    "far": "opta_blind",
+                }
+                print(
+                    f"L4 centreline horizon={len(pools)} "
+                    f"(Opta far GWs {opta_gws or '—'})",
+                    flush=True,
+                )
+            except Exception as exc:  # noqa: BLE001 — fall back to priced-only
+                print(f"L4 centreline Opta extend skipped: {exc}", flush=True)
+                centreline_meta = {
+                    "protocol": "l3_centreline_forecast",
+                    "horizon": BOOKIE_DEPTH,
+                    "opta_gws": [],
+                    "error": str(exc),
+                    "fallback": "priced_only",
+                }
         hz = solve_horizon_transfers(
-            [work_t, work_t1],
+            pools,
             held,
             mu_col="mu_post",
-            horizon=BOOKIE_DEPTH,
+            horizon=len(pools),
             gamma=L4_GAMMA,
             terminal_mu_weight=0.0,
             terminal_value_weight=0.0,
-            max_hits=15,
+            max_hits=LIVE_MAX_HITS,
             time_limit=time_limit,
         )
         l4_block = _plan_block(hz.week0, els=els, label="L4")
@@ -715,6 +848,7 @@ def run_pick(
         l4_block["week_xi_mu"] = list(hz.week_xi_mu)
         l4_block["week_captain_mu"] = list(hz.week_captain_mu)
         l4_block["status_horizon"] = hz.status
+        l4_block["centreline"] = centreline_meta
 
     out_dir = PRED / f"gw{gw:02d}"
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -855,19 +989,38 @@ def write_report(doc: dict[str, Any], path: Path) -> None:
             lines.append(
                 f"- {fx['match']}: props {fx.get('props_matched')}/{fx.get('props_n')}"
             )
+    cl = (doc.get("l4") or {}).get("centreline") or {}
     lines += [
         "",
         "## Notes",
         "",
         "- `mu_post` ≡ `score_xp_v2` (no shrink).",
-        "- L4 = BOOKIE_DEPTH=2 (t and t+1), γ=1, hard-stop, no terminal.",
+        (
+            f"- L4 centreline horizon H={cl.get('horizon', '—')} "
+            f"(`protocol.l3_centreline_forecast`): priced t:t+1"
+            + (
+                f" + Opta blind {cl.get('opta_gws')}"
+                if cl.get("opta_gws")
+                else ""
+            )
+            + "; γ=1; no terminal."
+        ),
         "- Shares: 2026/27 only, GW < decision week; α pooled prior+live.",
         (
             "- Props: lift-only anytime overlay."
             if (doc.get("score_meta_t") or {}).get("use_props")
             else "- Props: off (AH+OU+BTTS pots only)."
         ),
-        "- Week t minutes: xmi probe then rolling3; t+1: rolling3 only.",
+        (
+            "- Week t minutes: xmi probe then rolling3; t+1: rolling3 (as-of)."
+            if not cl.get("opta_gws")
+            else "- Week t minutes: xmi probe then rolling3; t+1 / Opta far: rolling3 / frozen side."
+        ),
+        (
+            "- Live near book: Odds API AH+OU+BTTS (t and t+1); no Opta far."
+            if not cl.get("opta_gws")
+            else "- Live near book: Odds API AH+OU+BTTS (t and t+1); far = Opta blind."
+        ),
         "",
     ]
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -906,6 +1059,15 @@ def main(argv: list[str] | None = None) -> int:
         help="skip L4 (week t only)",
     )
     ap.add_argument(
+        "--centreline-horizon",
+        type=int,
+        default=CENTRELINE_HORIZON,
+        help=(
+            "L4 centreline horizon under l3_centreline_forecast "
+            f"(default {CENTRELINE_HORIZON}: priced t:t+1 + Opta far)"
+        ),
+    )
+    ap.add_argument(
         "--with-props",
         action="store_true",
         help="apply anytime-scorer prop overlay (default: off)",
@@ -934,6 +1096,7 @@ def main(argv: list[str] | None = None) -> int:
         time_limit=float(args.time_limit),
         use_l4=not bool(args.l3_only),
         use_props=bool(args.with_props),
+        centreline_horizon=int(args.centreline_horizon),
     )
     out_json = PRED / f"gw{int(args.gw):02d}" / "numagent_pick.json"
     out_md = ROOT / "reports" / f"numagent_live_pick_gw{int(args.gw):02d}.md"

@@ -1,0 +1,14 @@
+{
+  "source_id": "guardian:72d771182c637eb9",
+  "source": "guardian",
+  "outlet_class": "press",
+  "url": "https://www.theguardian.com/football/2026/oct/30/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 30 Oct 2026 16:19:26 GMT",
+  "published_at_utc": "2026-10-30T16:19:26Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "Premier League team news: predicted lineups for the weekend action",
+  "body": "Chelsea take on Michael Carrick’s Manchester United on Saturday while Liverpool host Arsenal on Sunday Saturday 12.30pm TNT Sports 1 Venue Stamford Bridge Continue reading...",
+  "player_ids": [],
+  "sha256": "94cda56ccccef2baf7d612312038b0fe6fae35b8a38a511a64b65938830fe5f7"
+}

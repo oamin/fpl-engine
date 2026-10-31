@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:db806be22d425349",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/ckwyqdvedj32o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Wed, 21 Oct 2026 09:15:41 GMT",
+  "published_at_utc": "2026-10-21T09:15:41Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "Leicester to visit Oxford City in FA Cup first round - full draw",
+  "body": "Leicester City will travel to National League North side Oxford City in the 2026-27 FA Cup first round - five years after winning the competition.",
+  "player_ids": [],
+  "sha256": "52f435256e59adc0ae59e0c3e9429d19c97325aa548cbb9497607d481f8908b7"
+}

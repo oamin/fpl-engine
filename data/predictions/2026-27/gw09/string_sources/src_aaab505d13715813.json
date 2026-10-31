@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:aaab505d13715813",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cq1m4j79x50jo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 29 Oct 2026 19:55:24 GMT",
+  "published_at_utc": "2026-10-29T19:55:24Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "Sutton's predictions v Bad Day At The Office star John Hannah",
+  "body": "BBC Sport football expert Chris Sutton takes on Bad Day At The Office star John Hannah, plus the BBC readers and AI with his predictions for this weekend's Premier League fixtures.",
+  "player_ids": [],
+  "sha256": "2c124335b7f94e0ee02b6cabc2b91fbea0836daf48e9fa8a5ed9de1426ef3591"
+}

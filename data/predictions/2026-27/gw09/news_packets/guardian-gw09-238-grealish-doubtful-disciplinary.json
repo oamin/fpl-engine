@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw09:grealish-doubtful-disciplinary",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/30/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-30T16:19:00Z",
+  "club": "Everton",
+  "player_ids": [
+    238
+  ],
+  "headline": "Grealish doubtful disciplinary",
+  "body": "The Guardian team news, 30 Oct 2026: Grealish doubtful disciplinary (Everton) \u2014 omitted midweek for breach of club discipline; availability unclear.",
+  "sha256": "4178abf2b42fa071fc8479714a78f4183bdc9e2014eda9f16969841d02a0dbe5"
+}

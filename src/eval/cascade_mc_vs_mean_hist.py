@@ -84,6 +84,9 @@ N_STRANDS = 12
 SEED = 7
 MIN_MINUTES = 60.0
 MIN_APPS = 2.0
+# Share / attack dice pool: keep impact subs (m>0). Selection stays on MIN_*.
+SHARE_MIN_MINUTES = 0.0
+SHARE_MIN_APPS = 1.0
 POS_MAP = {1: "GKP", 2: "DEF", 3: "MID", 4: "FWD"}
 
 
@@ -148,17 +151,26 @@ def _build_hist_pool(
     *,
     decision_gw: int,
     season: str,
+    min_minutes: float | None = None,
+    min_apps: float | None = None,
 ) -> pd.DataFrame:
-    """Minutes>60 as-of pool with frozen rates/priors + decision-GW prices."""
+    """As-of pool with frozen rates/priors + decision-GW prices.
+
+    Default ``min_minutes`` / ``min_apps`` is the thin **selection** gate
+    (>60′, ≥2 apps). Pass ``SHARE_MIN_*`` for the full-club **share** pool
+    (impact subs included); apply the thin gate only after shares are dealt.
+    """
+    min_m = float(MIN_MINUTES if min_minutes is None else min_minutes)
+    min_a = float(MIN_APPS if min_apps is None else min_apps)
     rows = hist.to_dict(orient="records")
     mins = expanding_mean_minutes_from_history(rows, before_gw=int(decision_gw))
     keep = {
         pid
         for pid, m in mins.items()
-        if float(m["mean_minutes"]) > MIN_MINUTES and float(m["n_apps"]) >= MIN_APPS
+        if float(m["mean_minutes"]) > min_m and float(m["n_apps"]) >= min_a
     }
     if len(keep) < 15:
-        raise RuntimeError(f"hist pool too small: {len(keep)}")
+        raise RuntimeError(f"hist pool too small: {len(keep)} (min_m={min_m}, min_a={min_a})")
 
     side, _, _ = build_frozen_side_table(
         hist, alpha_g=1.0, alpha_a=1.0, season=season, historical_rate_baseline=True
@@ -255,6 +267,27 @@ def _build_hist_pool(
     return frame.reset_index(drop=True)
 
 
+def _build_hist_share_pool(
+    hist: pd.DataFrame,
+    prices: pd.DataFrame,
+    *,
+    decision_gw: int,
+    season: str,
+) -> pd.DataFrame:
+    """Full-club pool for attack shares (m>0, including impact subs)."""
+    frame = _build_hist_pool(
+        hist,
+        prices,
+        decision_gw=decision_gw,
+        season=season,
+        min_minutes=SHARE_MIN_MINUTES,
+        min_apps=SHARE_MIN_APPS,
+    )
+    return frame.loc[pd.to_numeric(frame["m"], errors="coerce").fillna(0.0) > 0].reset_index(
+        drop=True
+    )
+
+
 def _mean_board(
     side: pd.DataFrame,
     enriched: pd.DataFrame,
@@ -289,6 +322,7 @@ def _mean_board(
 def run_path_arm(
     *,
     pool: pd.DataFrame,
+    share_pool: pd.DataFrame,
     fixtures_gw: dict[int, list[dict[str, str]]],
     priced_by_gw: dict[int, list[dict[str, Any]]],
     ranks: dict[str, float],
@@ -302,6 +336,7 @@ def run_path_arm(
     n_strands: int,
     seed: int,
 ) -> dict[str, Any]:
+    """Path strands. ``pool`` = thin selection; ``share_pool`` = full club m>0."""
     paths0 = init_paths_from_opta(ranks, profile=profile)
     rng = random.Random(int(seed))
     strands = []
@@ -329,6 +364,7 @@ def run_path_arm(
                 priced_by_gw=priced_by_gw,
                 ranks=ranks,
                 profile=profile,
+                share_pool=share_pool,
             )
         )
     freq = aggregate_frequencies(strands, pool)
@@ -633,8 +669,15 @@ def main(argv: list[str] | None = None) -> int:
     team_hist = hist_by_team_norm(hist)
 
     pool = _build_hist_pool(hist, prices, decision_gw=decision_gw, season=season)
+    share_pool = _build_hist_share_pool(
+        hist, prices, decision_gw=decision_gw, season=season
+    )
     pool_ids = set(pool["player_id"].astype(str))
-    print(f"[hist] pool={len(pool)} alphas=({alpha_g:.3f},{alpha_a:.3f})", flush=True)
+    print(
+        f"[hist] select={len(pool)} share={len(share_pool)} "
+        f"alphas=({alpha_g:.3f},{alpha_a:.3f})",
+        flush=True,
+    )
 
     fixtures_gw = _hist_fixtures_by_gw(enriched, start=start, end=horizon_end)
     horizon_gws = sorted(fixtures_gw)
@@ -685,6 +728,7 @@ def main(argv: list[str] | None = None) -> int:
     print("[hist] path arm…", flush=True)
     path = run_path_arm(
         pool=pool,
+        share_pool=share_pool,
         fixtures_gw=fixtures_gw,
         priced_by_gw=priced_by_gw,
         ranks=ranks,
@@ -717,6 +761,8 @@ def main(argv: list[str] | None = None) -> int:
         "snapshot_gws": snapshot_gws,
         "priced_gws": priced_gws,
         "n_pool": int(len(pool)),
+        "n_share_pool": int(len(share_pool)),
+        "share_pool": "full_m_gt_0",
         "ranks": "oracle_post_gw38",
         "gf_ga_profile": "loso_prior_seasons",
         "path": path,

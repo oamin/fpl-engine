@@ -1,0 +1,14 @@
+{
+  "source_id": "skysports_football:5ee5c0207575fd54",
+  "source": "skysports_football",
+  "outlet_class": "youtube",
+  "url": "https://www.youtube.com/watch?v=K_YsIMMDbkA",
+  "clock": "youtube_published_at",
+  "raw_published_at": "2026-10-27T23:20:22+00:00",
+  "published_at_utc": "2026-10-27T23:20:22Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "Fleetwood Town knock Arsenal out of the Carabao Cup on penalties!",
+  "body": "",
+  "player_ids": [],
+  "sha256": "f9cb59fbe5b28641b5044f6cc4de78d0d33fc2945da5db799cc4ad19cdb69157"
+}

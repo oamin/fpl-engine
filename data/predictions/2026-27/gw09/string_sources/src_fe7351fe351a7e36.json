@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:fe7351fe351a7e36",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/news/articles/cxly4pqndz57o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 30 Oct 2026 15:03:12 GMT",
+  "published_at_utc": "2026-10-30T15:03:12Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "Items stolen from Man Utd Munich air disaster memorial",
+  "body": "The foundation has urged the return of stolen items, saying they mean so much to bereaved families.",
+  "player_ids": [],
+  "sha256": "f29066b46ead6b5193fbe0488ad293a755004e846d8a07fbca090c1310ae5e45"
+}

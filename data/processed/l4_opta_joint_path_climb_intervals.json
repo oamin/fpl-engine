@@ -1,0 +1,91 @@
+{
+  "seasons": [
+    "2022-23",
+    "2023-24",
+    "2024-25",
+    "2025-26"
+  ],
+  "min_gws": 20,
+  "comparisons": {
+    "score_xp_minus_score_exp_points": {
+      "mean": 0.015305621921945354,
+      "lo": 0.01295155277980016,
+      "hi": 0.01747868684462922,
+      "n_gws": {
+        "2022-23": 33,
+        "2023-24": 34,
+        "2024-25": 34,
+        "2025-26": 34
+      },
+      "incomplete_seasons": {},
+      "n_rows": 102315
+    },
+    "joint_path_minus_l4_opta_h12": {
+      "mean": 1.925,
+      "lo": 0.08291666666666668,
+      "hi": 3.691875,
+      "n_gws": {
+        "2022-23": 30,
+        "2023-24": 30,
+        "2024-25": 30,
+        "2025-26": 30
+      },
+      "incomplete_seasons": {},
+      "covers_zero": false,
+      "by_season_mean": {
+        "2022-23": 5.266666666666667,
+        "2023-24": 2.2333333333333334,
+        "2024-25": -1.0666666666666667,
+        "2025-26": 1.2666666666666666
+      },
+      "verdict": "promote",
+      "treatment": "joint_path",
+      "baseline": "l4_opta_h12"
+    },
+    "joint_path_decay_minus_l4_opta_h12": {
+      "mean": 1.7833333333333334,
+      "lo": -0.15041666666666664,
+      "hi": 3.8835416666666664,
+      "n_gws": {
+        "2022-23": 30,
+        "2023-24": 30,
+        "2024-25": 30,
+        "2025-26": 30
+      },
+      "incomplete_seasons": {},
+      "covers_zero": true,
+      "by_season_mean": {
+        "2022-23": 1.3333333333333333,
+        "2023-24": 1.7333333333333334,
+        "2024-25": 1.0333333333333334,
+        "2025-26": 3.033333333333333
+      },
+      "verdict": "inconclusive",
+      "treatment": "joint_path_decay",
+      "baseline": "l4_opta_h12"
+    },
+    "joint_path_decay_minus_joint_path": {
+      "mean": -0.14166666666666666,
+      "lo": -1.6089583333333333,
+      "hi": 1.3585416666666665,
+      "n_gws": {
+        "2022-23": 30,
+        "2023-24": 30,
+        "2024-25": 30,
+        "2025-26": 30
+      },
+      "incomplete_seasons": {},
+      "covers_zero": true,
+      "by_season_mean": {
+        "2022-23": -3.933333333333333,
+        "2023-24": -0.5,
+        "2024-25": 2.1,
+        "2025-26": 1.7666666666666666
+      },
+      "verdict": "inconclusive",
+      "treatment": "joint_path_decay",
+      "baseline": "joint_path"
+    }
+  },
+  "screen": "l4_opta_joint_path_climb"
+}

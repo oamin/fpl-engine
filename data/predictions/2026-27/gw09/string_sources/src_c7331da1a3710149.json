@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:c7331da1a3710149",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/c54g1vpypgw3o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 22 Oct 2026 08:54:13 GMT",
+  "published_at_utc": "2026-10-22T08:54:13Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "Who is close to a yellow card suspension in Champions League?",
+  "body": "BBC Sport's Ask Me Anything team explains what the rules are regarding yellow card suspensions in this season's Champions League",
+  "player_ids": [],
+  "sha256": "3b8ee501a6de3bbd013be0da3731f0f85cdc9cb8633d8c879fac0cb7627f7fe6"
+}

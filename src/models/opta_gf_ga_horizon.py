@@ -1,11 +1,18 @@
 """Long-horizon match pots from Opta predicted ranks → season GF/GA.
 
-Opta publishes finishing place / points only. We map place → season GF/GA
-(with uncertainty bands) on closed seasons, then build match λ pots in the
-same shape as ``forecast_xp.side_pot`` / ``strength_match_pots`` so the
-existing player-share path (``xp_on_pot``) can compute ``forecast_xp``.
+PI-approved cascade_long strat (2026-10-24,
+``protocol.cascade_long_match_outcome``):
 
-Does not fit on the live 2026/27 holdout.
+- Place map: empirical mean GF/GA by finishing place + sample SD
+  (``method="rankmean"``).
+- Latents: per strand, draw GF/GA/ḡ inside ±z·SD with
+  ``centre_blend=0.5``.
+- ``ḡ``: assessed expanding mean goals/team/match (live/assessed E0).
+- λ: ``(GF/38)·((GA_opp/38)/ḡ)``; hierarchical ``λ → M|λ → k∼M``
+  (no second λ jitter). δ-method ``sd_lam`` is diagnostic only.
+
+OLS place→GF/GA is archaeology only (``method="ols"``). Does not fit the
+rank map on the live 2026/27 holdout.
 """
 
 from __future__ import annotations
@@ -36,13 +43,34 @@ CLOSED = [
 ]
 
 N_MATCHES = 38.0
-HOME_ADV = 1.08
-# OLS on closed seasons (rank → season totals); also used as default se.
+# Away λ shrink only (λ_A ← λ_A·s; λ_H untouched). No hard 0.20–3.50 λ clip.
+# Symmetric HOME_ADV (λ_H·h, λ_A/h) retired 2026-10-24. Fixed s≠1 (incl. 0.768
+# from 2025-26 XI resid crossing) parked 2026-10-27 — OOS club-λ 0/3 FAIL.
+# Locked identity 2026-10-29 (PI): do not flip without a new pre-reg + PI.
+AWAY_SHRINK = 1.0
+# Combined scale on both λ_H and λ_A (after away_shrink). Locked identity
+# 2026-10-29 (PI) with venue_mode=blind — diagnostic only if reopened.
+LAM_SHRINK = 1.0
+# Deprecated alias — do not reintroduce symmetric home boost.
+HOME_ADV = 1.0
+# Venue λ map: locked ``blind`` = season-total place GF/GA (PI 2026-10-29).
+# place×venue / expanding H/A / FD venue-scale / margin-shrink / lag-1 /
+# remaining-balance all failed OOS or hurt MAE — leave identity.
+# ``venue_away`` / ``venue`` / ``naive`` / ``blend`` stay diagnostic only.
+DEFAULT_VENUE_MODE = "blind"
+VENUE_MODES = ("blind", "venue", "venue_away", "naive", "blend")
+# Default place→GF/GA map (cascade_long): empirical place means + SD.
+DEFAULT_RANK_METHOD = "rankmean"
+# OLS place→GF/GA — retired from the live path; only for method="ols".
 OLS_GF = (79.896, -2.264)  # intercept, slope
 OLS_GA = (36.297, 1.888)
 OLS_MAE_GF = 7.29
 OLS_MAE_GA = 6.77
-Z_BAND = 1.0  # ±1 MAE ≈ ~68% band under Laplace / rough 1σ proxy
+Z_BAND = 1.0  # ±z · place SD (rankmean) or ±z · MAE (ols archaeology)
+# Live / assessed E0 for expanding league ḡ (goals per team per match).
+LIVE_E0 = "E0_2627.csv"
+# Pseudo-matches of closed prior mixed into early-season expanding ḡ.
+PRIOR_PSEUDO_MATCHES = 38.0
 
 
 def load_opta_ranks(path: Path | None = None) -> list[dict[str, Any]]:
@@ -128,6 +156,198 @@ def rank_gf_ga_profile_excluding(exclude_fname: str) -> dict[int, dict[str, floa
     return _profile_from_files(fnames)
 
 
+def _read_e0_score_rows(fname: str) -> list[dict[str, Any]]:
+    import csv
+
+    path = CACHE / fname
+    if not path.is_file():
+        return []
+    with path.open(newline="", encoding="utf-8-sig") as f:
+        return list(csv.DictReader(f))
+
+
+def _venue_profile_from_files(fnames: list[str]) -> dict[int, dict[str, float]]:
+    """Per finishing place: mean/sd home and away GF/GA per match."""
+    buckets: dict[int, dict[str, list[float]]] = defaultdict(
+        lambda: {"gf_h": [], "ga_h": [], "gf_a": [], "ga_a": []}
+    )
+    for fname in fnames:
+        ranks = season_final_ranks(fname)
+        for row in _read_e0_score_rows(fname):
+            raw_h, raw_a = row.get("FTHG"), row.get("FTAG")
+            if raw_h is None or raw_h == "" or raw_a is None or raw_a == "":
+                continue
+            try:
+                hg, ag = int(raw_h), int(raw_a)
+            except (TypeError, ValueError):
+                continue
+            h = norm_team(str(row.get("HomeTeam") or ""))
+            a = norm_team(str(row.get("AwayTeam") or ""))
+            if h not in ranks or a not in ranks:
+                continue
+            rh = min(20, max(1, int(round(float(ranks[h])))))
+            ra = min(20, max(1, int(round(float(ranks[a])))))
+            buckets[rh]["gf_h"].append(float(hg))
+            buckets[rh]["ga_h"].append(float(ag))
+            buckets[ra]["gf_a"].append(float(ag))
+            buckets[ra]["ga_a"].append(float(hg))
+    out: dict[int, dict[str, float]] = {}
+    for rank in range(1, 21):
+        d = buckets[rank]
+        def _mean(xs: list[float]) -> float:
+            return statistics.fmean(xs) if xs else float("nan")
+
+        def _sd(xs: list[float], fallback: float) -> float:
+            return statistics.stdev(xs) if len(xs) > 1 else fallback
+
+        out[rank] = {
+            "gf_h_pm": _mean(d["gf_h"]),
+            "ga_h_pm": _mean(d["ga_h"]),
+            "gf_a_pm": _mean(d["gf_a"]),
+            "ga_a_pm": _mean(d["ga_a"]),
+            "sd_gf_h_pm": _sd(d["gf_h"], 0.5),
+            "sd_ga_h_pm": _sd(d["ga_h"], 0.5),
+            "sd_gf_a_pm": _sd(d["gf_a"], 0.5),
+            "sd_ga_a_pm": _sd(d["ga_a"], 0.5),
+            "n_h": float(len(d["gf_h"])),
+            "n_a": float(len(d["gf_a"])),
+        }
+    return out
+
+
+def rank_venue_gf_ga_profile() -> dict[int, dict[str, float]]:
+    """Place × venue GF/GA per-match rates from all closed seasons."""
+    return _venue_profile_from_files([fname for _, fname in CLOSED])
+
+
+def rank_venue_gf_ga_profile_excluding(
+    exclude_fname: str,
+) -> dict[int, dict[str, float]]:
+    """Place × venue rates on closed seasons other than ``exclude_fname``."""
+    fnames = [fname for _, fname in CLOSED if fname != exclude_fname]
+    if not fnames:
+        raise ValueError("no seasons left after exclude")
+    return _venue_profile_from_files(fnames)
+
+
+def venue_league_means(
+    venue_profile: dict[int, dict[str, float]] | None = None,
+) -> dict[str, float]:
+    """League means of place×venue per-match rates (unweighted over places)."""
+    prof = venue_profile if venue_profile is not None else rank_venue_gf_ga_profile()
+    keys = ("gf_h_pm", "ga_h_pm", "gf_a_pm", "ga_a_pm")
+    out: dict[str, float] = {}
+    for k in keys:
+        vals: list[float] = []
+        for p in range(1, 21):
+            try:
+                v = float(prof[p][k])
+            except (KeyError, TypeError, ValueError):
+                continue
+            if math.isfinite(v):
+                vals.append(v)
+        out[k] = statistics.fmean(vals) if vals else float("nan")
+    return out
+
+
+def _place_venue_row(
+    rank: float, venue_profile: dict[int, dict[str, float]]
+) -> dict[str, float]:
+    r = max(1.0, min(20.0, float(rank)))
+    lo = int(math.floor(r))
+    hi = int(math.ceil(r))
+    lo = min(20, max(1, lo))
+    hi = min(20, max(1, hi))
+    if lo == hi:
+        return dict(venue_profile[lo])
+    w = r - lo
+    keys = (
+        "gf_h_pm",
+        "ga_h_pm",
+        "gf_a_pm",
+        "ga_a_pm",
+        "sd_gf_h_pm",
+        "sd_ga_h_pm",
+        "sd_gf_a_pm",
+        "sd_ga_a_pm",
+    )
+    out: dict[str, float] = {}
+    for k in keys:
+        out[k] = (1.0 - w) * float(venue_profile[lo][k]) + w * float(
+            venue_profile[hi][k]
+        )
+    out["n_h"] = float(venue_profile[lo].get("n_h", 0.0))
+    out["n_a"] = float(venue_profile[lo].get("n_a", 0.0))
+    return out
+
+
+def lambdas_from_place_venue(
+    home_rank: float,
+    away_rank: float,
+    *,
+    venue_profile: dict[int, dict[str, float]] | None = None,
+    league_gf: float | None = None,
+    formula: str = "venue",
+    away_shrink: float = AWAY_SHRINK,
+    lam_shrink: float = LAM_SHRINK,
+    # Optional blind season totals for venue_away (home defence).
+    home_ga_season: float | None = None,
+) -> dict[str, float]:
+    """Match λ from place×venue per-match rates.
+
+    Formulas (``away_shrink`` / ``lam_shrink`` applied after):
+
+    - ``venue`` (EV-matched): ``λ_H = gf_h·(ga_a/league_ga_a)``,
+      ``λ_A = gf_a·(ga_h/league_ga_h)``.
+    - ``naive``: same attack×opp-def but ``/ (league_gf/38)`` (isolate diagnostic;
+      overshoots home).
+    - ``venue_away``: ``λ_H`` not produced here (caller keeps blind);
+      ``λ_A = gf_a_pm · ((home_ga_season/38) / ḡ)``.
+    """
+    prof = venue_profile if venue_profile is not None else rank_venue_gf_ga_profile()
+    vh = _place_venue_row(home_rank, prof)
+    va = _place_venue_row(away_rank, prof)
+    lg = venue_league_means(prof)
+    s_away = max(float(away_shrink), 0.0)
+    s_lam = max(float(lam_shrink), 0.0)
+    mode = str(formula or "venue")
+    if mode == "naive":
+        if league_gf is None:
+            raise ValueError("naive place×venue needs league_gf")
+        g_pm = max(float(league_gf) / N_MATCHES, 1e-9)
+        lam_h = float(vh["gf_h_pm"]) * (float(va["ga_a_pm"]) / g_pm)
+        lam_a = float(va["gf_a_pm"]) * (float(vh["ga_h_pm"]) / g_pm)
+    elif mode == "venue_away":
+        if league_gf is None or home_ga_season is None:
+            raise ValueError("venue_away needs league_gf and home_ga_season")
+        g_pm = max(float(league_gf) / N_MATCHES, 1e-9)
+        # Home λ left to caller; return NaN so misuse is obvious.
+        lam_h = float("nan")
+        lam_a = float(va["gf_a_pm"]) * (
+            (max(float(home_ga_season), 0.0) / N_MATCHES) / g_pm
+        )
+    elif mode == "venue":
+        den_a = max(float(lg["ga_a_pm"]), 1e-9)
+        den_h = max(float(lg["ga_h_pm"]), 1e-9)
+        lam_h = float(vh["gf_h_pm"]) * (float(va["ga_a_pm"]) / den_a)
+        lam_a = float(va["gf_a_pm"]) * (float(vh["ga_h_pm"]) / den_h)
+    else:
+        raise ValueError(f"unknown place×venue formula={formula!r}")
+    if math.isfinite(lam_h):
+        lam_h = max(0.0, lam_h) * s_lam
+    lam_a = max(0.0, lam_a) * s_away * s_lam
+    return {
+        "lam_home": float(lam_h),
+        "lam_away": float(lam_a),
+        "formula": mode,
+        "away_shrink": float(s_away),
+        "lam_shrink": float(s_lam),
+        "home_venue": vh,
+        "away_venue": va,
+        "league_venue": lg,
+    }
+
+
 def _ols_fit(xs: list[float], ys: list[float]) -> tuple[float, float, float]:
     """Return (intercept, slope, MAE)."""
     n = len(xs)
@@ -186,20 +406,28 @@ def gf_ga_from_rank(
     rank: float,
     *,
     profile: dict[int, dict[str, float]] | None = None,
-    method: str = "ols",
+    method: str = DEFAULT_RANK_METHOD,
     ols_gf: tuple[float, float] | None = None,
     ols_ga: tuple[float, float] | None = None,
     mae_gf: float | None = None,
     mae_ga: float | None = None,
     z_band: float | None = None,
 ) -> dict[str, float]:
-    """Season GF/GA + uncertainty bands for a predicted finishing place."""
+    """Season GF/GA + uncertainty bands for a predicted finishing place.
+
+    Default ``rankmean``: place-bucket mean GF/GA and sample SD from closed
+    seasons (interpolated for non-integer ranks). ``ols`` keeps the retired
+    linear map for explicit archaeology only.
+    """
     r = max(1.0, min(20.0, float(rank)))
     z = float(Z_BAND if z_band is None else z_band)
     prof = profile if profile is not None else rank_gf_ga_profile()
-    if method == "rankmean":
+    mode = str(method or DEFAULT_RANK_METHOD)
+    if mode == "rankmean":
         lo = int(math.floor(r))
         hi = int(math.ceil(r))
+        lo = min(20, max(1, lo))
+        hi = min(20, max(1, hi))
         if lo == hi:
             gf, ga = prof[lo]["mean_gf"], prof[lo]["mean_ga"]
             sd_gf, sd_ga = prof[lo]["sd_gf"], prof[lo]["sd_ga"]
@@ -209,7 +437,7 @@ def gf_ga_from_rank(
             ga = (1 - w) * prof[lo]["mean_ga"] + w * prof[hi]["mean_ga"]
             sd_gf = (1 - w) * prof[lo]["sd_gf"] + w * prof[hi]["sd_gf"]
             sd_ga = (1 - w) * prof[lo]["sd_ga"] + w * prof[hi]["sd_ga"]
-    else:
+    elif mode == "ols":
         a_gf, b_gf = ols_gf if ols_gf is not None else OLS_GF
         a_ga, b_ga = ols_ga if ols_ga is not None else OLS_GA
         band_gf = float(mae_gf) if mae_gf is not None else OLS_MAE_GF
@@ -221,6 +449,8 @@ def gf_ga_from_rank(
         lo = min(20, max(1, lo))
         sd_gf = max(band_gf, prof[lo]["sd_gf"] * 0.5)
         sd_ga = max(band_ga, prof[lo]["sd_ga"] * 0.5)
+    else:
+        raise ValueError(f"unknown rank GF/GA method={method!r}")
 
     return {
         "rank": r,
@@ -232,14 +462,177 @@ def gf_ga_from_rank(
         "ga_hi": float(ga + z * sd_ga),
         "sd_gf": float(sd_gf),
         "sd_ga": float(sd_ga),
-        "method": method,
+        "method": mode,
         "z_band": z,
     }
 
 
 def league_avg_gf(profile: dict[int, dict[str, float]] | None = None) -> float:
+    """Closed-season prior: mean place ``mean_gf`` (season-total units)."""
     prof = profile if profile is not None else rank_gf_ga_profile()
     return statistics.fmean(v["mean_gf"] for v in prof.values())
+
+
+def _e0_team_goals_per_match(
+    path: Path, *, max_matches: int | None = None
+) -> list[float]:
+    """Per completed E0 fixture: mean goals scored per team ``(FTHG+FTAG)/2``."""
+    import csv
+
+    if not path.is_file():
+        return []
+    out: list[float] = []
+    with path.open(newline="", encoding="utf-8-sig") as f:
+        for row in csv.DictReader(f):
+            raw_h, raw_a = row.get("FTHG"), row.get("FTAG")
+            if raw_h is None or raw_h == "" or raw_a is None or raw_a == "":
+                continue
+            try:
+                hg, ag = int(raw_h), int(raw_a)
+            except (TypeError, ValueError):
+                continue
+            out.append(0.5 * float(hg + ag))
+            if max_matches is not None and len(out) >= int(max_matches):
+                break
+    return out
+
+
+def closed_league_gf_prior(
+    profile: dict[int, dict[str, float]] | None = None,
+) -> dict[str, float]:
+    """Prior ḡ from closed E0 seasons (centre + cross-season SD)."""
+    centre = float(league_avg_gf(profile))
+    season_pm: list[float] = []
+    for _, fname in CLOSED:
+        xs = _e0_team_goals_per_match(CACHE / fname)
+        if xs:
+            season_pm.append(statistics.fmean(xs))
+    sd_pm = (
+        statistics.stdev(season_pm)
+        if len(season_pm) > 1
+        else max(0.05, centre / N_MATCHES * 0.05)
+    )
+    return {
+        "league_gf": centre,
+        "g_pm": centre / N_MATCHES,
+        "sd_league_gf": float(sd_pm * N_MATCHES),
+        "sd_g_pm": float(sd_pm),
+        "se_league_gf": float(sd_pm * N_MATCHES),
+        "se_g_pm": float(sd_pm),
+        "n_matches": 0.0,
+        "source": "closed_prior",
+    }
+
+
+def assessed_league_gf(
+    e0_fname: str | Path | None = None,
+    *,
+    max_matches: int | None = None,
+    profile: dict[int, dict[str, float]] | None = None,
+    prior_matches: float = PRIOR_PSEUDO_MATCHES,
+) -> dict[str, float]:
+    """Live / assessed expanding mean goals per team per match → season GF units.
+
+    ``ḡ`` is the as-of mean of ``(FTHG+FTAG)/2`` on completed E0 rows, blended
+    with the closed-season prior (``prior_matches`` pseudo-games) so early
+    weeks stay stable. ``sd_*`` is the match-level sample SD; ``se_*`` is the
+    SE of the expanding mean (uncertainty on ḡ itself).
+    """
+    prior = closed_league_gf_prior(profile)
+    if e0_fname is None:
+        return prior
+    path = Path(e0_fname) if isinstance(e0_fname, Path) else CACHE / str(e0_fname)
+    xs = _e0_team_goals_per_match(path, max_matches=max_matches)
+    n = float(len(xs))
+    if n <= 0:
+        return prior
+    hat_pm = float(statistics.fmean(xs))
+    sd_pm = float(statistics.stdev(xs)) if n > 1 else float(prior["sd_g_pm"])
+    n0 = max(0.0, float(prior_matches))
+    g_pm = (n0 * float(prior["g_pm"]) + n * hat_pm) / (n0 + n)
+    # SE of blended mean: match SD / sqrt(effective n).
+    se_pm = sd_pm / math.sqrt(n0 + n)
+    return {
+        "league_gf": float(g_pm * N_MATCHES),
+        "g_pm": float(g_pm),
+        "hat_g_pm": hat_pm,
+        "sd_league_gf": float(sd_pm * N_MATCHES),
+        "sd_g_pm": sd_pm,
+        "se_league_gf": float(se_pm * N_MATCHES),
+        "se_g_pm": float(se_pm),
+        "n_matches": n,
+        "prior_matches": n0,
+        "e0": str(path.name),
+        "source": "expanding_assessed",
+    }
+
+
+def lambdas_from_gf_ga(
+    home_gf: float,
+    home_ga: float,
+    away_gf: float,
+    away_ga: float,
+    *,
+    league_gf: float,
+    sd_home_gf: float = 0.0,
+    sd_home_ga: float = 0.0,
+    sd_away_gf: float = 0.0,
+    sd_away_ga: float = 0.0,
+    sd_league_gf: float = 0.0,
+    away_shrink: float = AWAY_SHRINK,
+    lam_shrink: float = LAM_SHRINK,
+    home_adv: float | None = None,
+    z_band: float | None = None,
+) -> dict[str, float]:
+    """Dixon–Coles λ with delta-method SDs from place GF/GA and ḡ uncertainty.
+
+    ``λ_H = (GF_H/38)·((GA_A/38)/ḡ)``; ``λ_A`` same then ``× away_shrink``.
+    Both then ``× lam_shrink`` (combined scale). ``ḡ = league_gf/38``. No hard
+    clip on λ (PI 2026-10-27). Relative variances add under independence.
+    ``home_adv`` is ignored if passed (deprecated symmetric spice).
+    """
+    del home_adv  # deprecated; away_shrink / lam_shrink only
+    z = float(Z_BAND if z_band is None else z_band)
+    L = max(float(league_gf), 1e-9)
+    s_away = max(float(away_shrink), 0.0)
+    s_lam = max(float(lam_shrink), 0.0)
+    gf_h, ga_h = max(float(home_gf), 0.0), max(float(home_ga), 0.0)
+    gf_a, ga_a = max(float(away_gf), 0.0), max(float(away_ga), 0.0)
+    lam_h_raw = (gf_h * ga_a) / (N_MATCHES * L) * s_lam
+    lam_a_raw = (gf_a * ga_h * s_away) / (N_MATCHES * L) * s_lam
+
+    def _rel_var(val: float, sd: float) -> float:
+        if val <= 1e-12:
+            return 0.0
+        return (float(sd) / val) ** 2
+
+    sd_h = abs(lam_h_raw) * math.sqrt(
+        _rel_var(gf_h, sd_home_gf)
+        + _rel_var(ga_a, sd_away_ga)
+        + _rel_var(L, sd_league_gf)
+    )
+    sd_a = abs(lam_a_raw) * math.sqrt(
+        _rel_var(gf_a, sd_away_gf)
+        + _rel_var(ga_h, sd_home_ga)
+        + _rel_var(L, sd_league_gf)
+    )
+    return {
+        "lam_home": float(lam_h_raw),
+        "lam_away": float(lam_a_raw),
+        "lam_home_raw": float(lam_h_raw),
+        "lam_away_raw": float(lam_a_raw),
+        "sd_lam_home": float(sd_h),
+        "sd_lam_away": float(sd_a),
+        "lam_home_lo": float(max(0.0, lam_h_raw - z * sd_h)),
+        "lam_home_hi": float(lam_h_raw + z * sd_h),
+        "lam_away_lo": float(max(0.0, lam_a_raw - z * sd_a)),
+        "lam_away_hi": float(lam_a_raw + z * sd_a),
+        "league_gf": float(L),
+        "g_pm": float(L / N_MATCHES),
+        "z_band": z,
+        "away_shrink": float(s_away),
+        "lam_shrink": float(s_lam),
+    }
 
 
 def pots_from_season_gf_ga(
@@ -249,22 +642,31 @@ def pots_from_season_gf_ga(
     away_ga: float,
     *,
     league_gf: float | None = None,
-    home_adv: float = HOME_ADV,
+    away_shrink: float = AWAY_SHRINK,
+    lam_shrink: float = LAM_SHRINK,
+    home_adv: float | None = None,
     shrink: float = 1.0,
 ) -> tuple[dict[str, float], dict[str, float]]:
-    """Dixon–Coles-style match pots from season GF/GA totals.
+    """Match pots from season GF/GA totals (attack × opp defence / league).
 
-    ``λ_H = (GF_H/38)·(GA_A / league_avg_rate)·home_adv`` (clipped).
-    Returns ``(home_pot, away_pot)`` compatible with ``xp_on_pot``.
+    ``λ_H = (GF_H/38)·((GA_A/38) / ḡ)``; ``λ_A`` same then ``× away_shrink``.
+    Both then ``× lam_shrink``. No hard clip on λ. ``league_gf`` is
+    season-total units; prefer ``assessed_league_gf`` for live expanding mean.
+    Defaults identity. ``home_adv`` ignored if passed.
     """
-    lavg = float(league_gf if league_gf is not None else 52.0) / N_MATCHES
+    del home_adv  # deprecated
+    if league_gf is None:
+        league_gf = float(closed_league_gf_prior()["league_gf"])
+    lavg = float(league_gf) / N_MATCHES
     lavg = lavg if lavg > 0 else NEUTRAL_TOTAL / 2.0
+    s_away = max(float(away_shrink), 0.0)
+    s_lam = max(float(lam_shrink), 0.0)
     rh_att = float(home_gf) / N_MATCHES
     ra_att = float(away_gf) / N_MATCHES
     rh_def = float(home_ga) / N_MATCHES
     ra_def = float(away_ga) / N_MATCHES
-    lam_h = _clip(rh_att * (ra_def / lavg) * home_adv, 0.20, 3.50)
-    lam_a = _clip(ra_att * (rh_def / lavg) / home_adv, 0.20, 3.50)
+    lam_h = rh_att * (ra_def / lavg) * s_lam
+    lam_a = ra_att * (rh_def / lavg) * s_away * s_lam
     e_total = lam_h + lam_a
     home = {
         "lam_scored": lam_h,
@@ -312,11 +714,11 @@ def sample_season_gf_ga_for_rank(
     centre_blend: float = 0.5,
     profile: dict[int, dict[str, float]] | None = None,
     z_band: float | None = None,
-    method: str = "ols",
+    method: str = DEFAULT_RANK_METHOD,
 ) -> dict[str, float]:
     """Sample season GF/GA inside the Opta-rank band (baseline for one club).
 
-    1st place uses the 1st-place GF/GA centre ± MAE; 20th uses 20th. No path.
+    1st place uses the 1st-place empirical GF/GA mean ± z·SD; 20th uses 20th. No path.
     """
     rates = gf_ga_from_rank(
         rank, profile=profile, method=method, z_band=z_band
@@ -340,6 +742,59 @@ def sample_season_gf_ga_for_rank(
     }
 
 
+def _apply_venue_mode_lambdas(
+    *,
+    blind_h: float,
+    blind_a: float,
+    home_rank: float,
+    away_rank: float,
+    home_ga_season: float,
+    league_gf: float,
+    venue_mode: str,
+    venue_blend: float,
+    venue_profile: dict[int, dict[str, float]] | None,
+    away_shrink: float,
+    lam_shrink: float,
+) -> tuple[float, float, str]:
+    """Map blind λ through a venue_mode. Locked default ``blind`` is identity."""
+    mode = str(venue_mode or DEFAULT_VENUE_MODE)
+    if mode not in VENUE_MODES:
+        raise ValueError(f"unknown venue_mode={venue_mode!r}")
+    if mode == "blind":
+        return float(blind_h), float(blind_a), mode
+    w = float(min(1.0, max(0.0, venue_blend)))
+    if mode == "blend":
+        # Blend weight applies to venue_away (λ_H stays blind).
+        formula = "venue_away"
+        use_w = w
+    elif mode == "venue_away":
+        formula = "venue_away"
+        use_w = 1.0
+    elif mode == "venue":
+        formula = "venue"
+        use_w = 1.0
+    else:  # naive
+        formula = "naive"
+        use_w = 1.0
+    pv = lambdas_from_place_venue(
+        home_rank,
+        away_rank,
+        venue_profile=venue_profile,
+        league_gf=float(league_gf),
+        formula=formula,
+        away_shrink=float(away_shrink),
+        lam_shrink=float(lam_shrink),
+        home_ga_season=float(home_ga_season),
+    )
+    if formula == "venue_away":
+        lam_h = float(blind_h)
+        lam_a = (1.0 - use_w) * float(blind_a) + use_w * float(pv["lam_away"])
+    else:
+        lam_h = (1.0 - use_w) * float(blind_h) + use_w * float(pv["lam_home"])
+        lam_a = (1.0 - use_w) * float(blind_a) + use_w * float(pv["lam_away"])
+    return float(lam_h), float(lam_a), mode
+
+
 def sample_match_from_opta_ranks(
     home_club: str,
     away_club: str,
@@ -349,15 +804,28 @@ def sample_match_from_opta_ranks(
     centre_blend: float = 0.5,
     profile: dict[int, dict[str, float]] | None = None,
     league_gf: float | None = None,
+    sd_league_gf: float | None = None,
+    e0_fname: str | Path | None = None,
     z_band: float | None = None,
-    method: str = "ols",
+    method: str = DEFAULT_RANK_METHOD,
+    away_shrink: float = AWAY_SHRINK,
+    lam_shrink: float = LAM_SHRINK,
+    home_adv: float | None = None,
+    venue_mode: str = DEFAULT_VENUE_MODE,
+    venue_blend: float = 0.5,
+    venue_profile: dict[int, dict[str, float]] | None = None,
 ) -> dict[str, Any]:
     """Baseline match λ from Opta place GF/GA ± bands (no ClubPath blend).
 
-    Each side rolls season GF/GA inside its rank band, then
-    ``pots_from_season_gf_ga`` → match λ. 1st vs 20th keep distinct rate
-    centres for every fixture on the horizon.
+    Each side rolls season GF/GA inside its rank band; ḡ is the assessed
+    expanding league mean (or an explicit ``league_gf``), also sampled inside
+    its SE band; then ``pots_from_season_gf_ga`` → match λ.
+    ``venue_mode`` locked default ``blind`` (no place×venue remap; PI
+    2026-10-29). Diagnostic modes: ``venue``, ``venue_away``, ``naive``,
+    ``blend`` (blend weight on venue_away λ_A). ``home_adv`` is ignored if
+    passed (deprecated).
     """
+    del home_adv
     if ranks is None:
         ranks = {r["club_norm"]: float(r["rank"]) for r in load_opta_ranks()}
     h = norm_team(home_club)
@@ -366,7 +834,22 @@ def sample_match_from_opta_ranks(
         missing = [c for c in (h, a) if c not in ranks]
         raise KeyError(f"missing Opta rank for {missing}")
     prof = profile if profile is not None else rank_gf_ga_profile()
-    lavg = float(league_gf) if league_gf is not None else league_avg_gf(prof)
+    z = float(Z_BAND if z_band is None else z_band)
+    if league_gf is None:
+        assessed = assessed_league_gf(e0_fname, profile=prof)
+        l_mid = float(assessed["league_gf"])
+        l_sd = float(assessed["se_league_gf"])
+    else:
+        l_mid = float(league_gf)
+        l_sd = float(sd_league_gf) if sd_league_gf is not None else 0.0
+    lavg = sample_within_band(
+        l_mid - z * l_sd,
+        l_mid,
+        l_mid + z * l_sd,
+        rng,
+        centre_blend=centre_blend,
+    )
+    lavg = max(lavg, 1e-6)
     home_s = sample_season_gf_ga_for_rank(
         ranks[h],
         rng,
@@ -389,16 +872,40 @@ def sample_match_from_opta_ranks(
         away_s["gf"],
         away_s["ga"],
         league_gf=lavg,
+        away_shrink=float(away_shrink),
+        lam_shrink=float(lam_shrink),
     )
-    # Band endpoints from rank centres (for diagnostics / sample_scoreline).
+    lam_h = float(pot_h["lam_scored"])
+    lam_a = float(pot_a["lam_scored"])
+    lam_h, lam_a, vmode = _apply_venue_mode_lambdas(
+        blind_h=lam_h,
+        blind_a=lam_a,
+        home_rank=float(ranks[h]),
+        away_rank=float(ranks[a]),
+        home_ga_season=float(home_s["ga"]),
+        league_gf=float(lavg),
+        venue_mode=str(venue_mode),
+        venue_blend=float(venue_blend),
+        venue_profile=venue_profile,
+        away_shrink=float(away_shrink),
+        lam_shrink=float(lam_shrink),
+    )
+    # Diagnostic bands: delta-method through place SD + ḡ SE at centres.
     centre = match_prediction(
         h,
         a,
         ranks=ranks,
         method=method,
         profile=prof,
-        league_gf=lavg,
+        league_gf=l_mid,
+        sd_league_gf=l_sd,
+        e0_fname=e0_fname,
         z_band=z_band,
+        away_shrink=float(away_shrink),
+        lam_shrink=float(lam_shrink),
+        venue_mode=str(venue_mode),
+        venue_blend=float(venue_blend),
+        venue_profile=venue_profile,
     )
     return {
         "home": h,
@@ -407,15 +914,21 @@ def sample_match_from_opta_ranks(
         "away_rank": float(ranks[a]),
         "home_season_draw": home_s,
         "away_season_draw": away_s,
-        "lam_home": float(pot_h["lam_scored"]),
-        "lam_away": float(pot_a["lam_scored"]),
+        "lam_home": float(lam_h),
+        "lam_away": float(lam_a),
         "lam_home_lo": float(centre["lam_home_lo"]),
         "lam_home_hi": float(centre["lam_home_hi"]),
         "lam_away_lo": float(centre["lam_away_lo"]),
         "lam_away_hi": float(centre["lam_away_hi"]),
+        "sd_lam_home": float(centre["sd_lam_home"]),
+        "sd_lam_away": float(centre["sd_lam_away"]),
         "lam_home_centre": float(centre["lam_home"]),
         "lam_away_centre": float(centre["lam_away"]),
-        "league_avg_gf": lavg,
+        "league_avg_gf": float(l_mid),
+        "league_gf_draw": float(lavg),
+        "sd_league_gf": float(l_sd),
+        "venue_mode": vmode,
+        "venue_blend": float(venue_blend),
     }
 
 
@@ -424,16 +937,31 @@ def match_prediction(
     away_club: str,
     *,
     ranks: Mapping[str, float] | None = None,
-    method: str = "ols",
+    method: str = DEFAULT_RANK_METHOD,
     profile: dict[int, dict[str, float]] | None = None,
     ols_gf: tuple[float, float] | None = None,
     ols_ga: tuple[float, float] | None = None,
     mae_gf: float | None = None,
     mae_ga: float | None = None,
     league_gf: float | None = None,
+    sd_league_gf: float | None = None,
+    e0_fname: str | Path | None = None,
     z_band: float | None = None,
+    away_shrink: float = AWAY_SHRINK,
+    lam_shrink: float = LAM_SHRINK,
+    home_adv: float | None = None,
+    venue_mode: str = DEFAULT_VENUE_MODE,
+    venue_blend: float = 0.5,
+    venue_profile: dict[int, dict[str, float]] | None = None,
 ) -> dict[str, Any]:
-    """Full scoreline forecast for one fixture from Opta ranks."""
+    """Full scoreline forecast for one fixture from Opta ranks.
+
+    λ bands use delta-method propagation of place GF/GA SDs and the SE of
+    assessed expanding ḡ (not a corner envelope of independent lo/hi).
+    ``venue_mode`` locked default ``blind`` (PI 2026-10-29). ``home_adv`` is
+    ignored if passed (deprecated).
+    """
+    del home_adv
     if ranks is None:
         ranks = {r["club_norm"]: float(r["rank"]) for r in load_opta_ranks()}
     h = norm_team(home_club)
@@ -442,7 +970,19 @@ def match_prediction(
         missing = [c for c in (h, a) if c not in ranks]
         raise KeyError(f"missing Opta rank for {missing}")
     prof = profile if profile is not None else rank_gf_ga_profile()
-    lavg = float(league_gf) if league_gf is not None else league_avg_gf(prof)
+    if league_gf is None:
+        assessed = assessed_league_gf(e0_fname, profile=prof)
+        lavg = float(assessed["league_gf"])
+        l_sd = float(assessed["se_league_gf"])
+        league_meta = assessed
+    else:
+        lavg = float(league_gf)
+        l_sd = float(sd_league_gf) if sd_league_gf is not None else 0.0
+        league_meta = {
+            "league_gf": lavg,
+            "se_league_gf": l_sd,
+            "source": "explicit",
+        }
     rate_kw = {
         "profile": prof,
         "method": method,
@@ -461,19 +1001,43 @@ def match_prediction(
         away_rates["gf"],
         away_rates["ga"],
         league_gf=lavg,
+        away_shrink=float(away_shrink),
+        lam_shrink=float(lam_shrink),
     )
-    # Uncertainty: evaluate λ at band corners (home/away GF/GA lo/hi).
-    corners = []
-    for hgf in (home_rates["gf_lo"], home_rates["gf"], home_rates["gf_hi"]):
-        for hga in (home_rates["ga_lo"], home_rates["ga"], home_rates["ga_hi"]):
-            for agf in (away_rates["gf_lo"], away_rates["gf"], away_rates["gf_hi"]):
-                for aga in (away_rates["ga_lo"], away_rates["ga"], away_rates["ga_hi"]):
-                    ph, pa = pots_from_season_gf_ga(
-                        hgf, hga, agf, aga, league_gf=lavg
-                    )
-                    corners.append((ph["lam_scored"], pa["lam_scored"]))
-    lam_h_vals = [c[0] for c in corners]
-    lam_a_vals = [c[1] for c in corners]
+    prop = lambdas_from_gf_ga(
+        home_rates["gf"],
+        home_rates["ga"],
+        away_rates["gf"],
+        away_rates["ga"],
+        league_gf=lavg,
+        sd_home_gf=home_rates["sd_gf"],
+        sd_home_ga=home_rates["sd_ga"],
+        sd_away_gf=away_rates["sd_gf"],
+        sd_away_ga=away_rates["sd_ga"],
+        sd_league_gf=l_sd,
+        z_band=z_band,
+        away_shrink=float(away_shrink),
+        lam_shrink=float(lam_shrink),
+    )
+    lam_h, lam_a, vmode = _apply_venue_mode_lambdas(
+        blind_h=float(pot_h["lam_scored"]),
+        blind_a=float(pot_a["lam_scored"]),
+        home_rank=float(ranks[h]),
+        away_rank=float(ranks[a]),
+        home_ga_season=float(home_rates["ga"]),
+        league_gf=float(lavg),
+        venue_mode=str(venue_mode),
+        venue_blend=float(venue_blend),
+        venue_profile=venue_profile,
+        away_shrink=float(away_shrink),
+        lam_shrink=float(lam_shrink),
+    )
+    # Keep relative δ-method bands; shift centres to venue-adjusted λ.
+    sd_h = float(prop["sd_lam_home"])
+    sd_a = float(prop["sd_lam_away"])
+    z = float(Z_BAND if z_band is None else z_band)
+    pot_h = {**pot_h, "lam_scored": lam_h, "attack": lam_h, "e_total": lam_h + lam_a}
+    pot_a = {**pot_a, "lam_scored": lam_a, "attack": lam_a, "e_total": lam_h + lam_a}
 
     return {
         "home": h,
@@ -484,16 +1048,22 @@ def match_prediction(
         "away_season": away_rates,
         "pot_home": pot_h,
         "pot_away": pot_a,
-        "lam_home": pot_h["lam_scored"],
-        "lam_away": pot_a["lam_scored"],
-        "lam_home_lo": min(lam_h_vals),
-        "lam_home_hi": max(lam_h_vals),
-        "lam_away_lo": min(lam_a_vals),
-        "lam_away_hi": max(lam_a_vals),
-        "e_total": pot_h["e_total"],
+        "lam_home": lam_h,
+        "lam_away": lam_a,
+        "lam_home_lo": float(max(0.0, lam_h - z * sd_h)),
+        "lam_home_hi": float(lam_h + z * sd_h),
+        "lam_away_lo": float(max(0.0, lam_a - z * sd_a)),
+        "lam_away_hi": float(lam_a + z * sd_a),
+        "sd_lam_home": sd_h,
+        "sd_lam_away": sd_a,
+        "e_total": lam_h + lam_a,
         "p_cs_home": pot_h["p_cs_mkt"],
         "p_cs_away": pot_a["p_cs_mkt"],
         "league_avg_gf": lavg,
+        "sd_league_gf": l_sd,
+        "league": league_meta,
+        "venue_mode": vmode,
+        "venue_blend": float(venue_blend),
     }
 
 
@@ -505,7 +1075,7 @@ def forecast_pots_from_opta_gf_ga(
     end: int,
     priced_weeks: set[int] | None = None,
     ranks_path: Path | None = None,
-    method: str = "ols",
+    method: str = DEFAULT_RANK_METHOD,
     shrink: float = 1.0,
 ) -> dict[tuple[int, str], list[dict[str, float]]]:
     """Unpriced-week pots from Opta GF/GA (drop-in beside outrights pots).
@@ -517,7 +1087,7 @@ def forecast_pots_from_opta_gf_ga(
     opta = load_opta_ranks(ranks_path)
     ranks = {r["club_norm"]: float(r["rank"]) for r in opta}
     profile = rank_gf_ga_profile()
-    lavg = league_avg_gf(profile)
+    lavg = float(assessed_league_gf(LIVE_E0, profile=profile)["league_gf"])
     rates = {
         r["club_norm"]: gf_ga_from_rank(r["rank"], profile=profile, method=method)
         for r in opta

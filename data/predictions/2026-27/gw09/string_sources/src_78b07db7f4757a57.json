@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:78b07db7f4757a57",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/news/articles/ck98zmrdz2g5o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 29 Oct 2026 13:47:43 GMT",
+  "published_at_utc": "2026-10-29T13:47:43Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "Toney nightclub assault trial set for June 2028",
+  "body": "The footballer has denied assaulting a man at a Soho nightclub on 6 December last year.",
+  "player_ids": [],
+  "sha256": "4a1d1d52282010e84f43f03346257a18be44ed3e4f139e7c88e5f0b6ef6a2b66"
+}

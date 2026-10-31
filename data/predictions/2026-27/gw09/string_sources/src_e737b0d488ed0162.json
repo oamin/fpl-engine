@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:e737b0d488ed0162",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cqy0r31kwne0o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 30 Oct 2026 07:41:38 GMT",
+  "published_at_utc": "2026-10-30T07:41:38Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "'The most important person managers must manage is themselves'",
+  "body": "BBC Sport columnist Tony Pulis explains why Vincent Kompany's health scare was a reminder that management takes its toll physically and mentally",
+  "player_ids": [],
+  "sha256": "d80a23f698bb753edf35cc43cac9021bea96b0e04c777de02ab951df542a570d"
+}

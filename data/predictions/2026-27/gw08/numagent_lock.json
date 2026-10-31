@@ -1,0 +1,192 @@
+{
+  "kind": "numagent_live_lock",
+  "gw": 8,
+  "season": "2026-27",
+  "deadline_utc": "2026-10-23T17:30:00Z",
+  "recommended_at_utc": "2026-10-23T08:45:41Z",
+  "entry_id": 2632584,
+  "team_name": "ojaminFC",
+  "status": "locked",
+  "note": "PI locked selection into FPL. Captain Haaland; vice Mbeumo. Bench Verbruggen \u2192 Rudoni \u2192 Khalaili \u2192 Barry. Model: score_xp_v2 + share_se_pos_prior, L4 depth-2 \u03b3=1, props off; live Odds API AH+OU+BTTS (us) + minutes_llm/FFScout xmi.",
+  "decision": {
+    "chip_played": null,
+    "transfers": {
+      "n": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "sold": [
+        "Mainoo"
+      ],
+      "bought": [
+        "Lewis-Potter"
+      ]
+    },
+    "formation": "1-4-4-2",
+    "captain": "411",
+    "captain_name": "Haaland",
+    "vice_captain": 427,
+    "vice_captain_name": "Mbeumo",
+    "xi": [
+      {
+        "player_id": "1",
+        "name": "Raya",
+        "position": "GKP",
+        "club": "Arsenal",
+        "mu_post": 4.794146651836029,
+        "captain": false
+      },
+      {
+        "player_id": "86",
+        "name": "Lewis-Potter",
+        "position": "MID",
+        "club": "Brentford",
+        "mu_post": 5.5452527363668045,
+        "captain": false
+      },
+      {
+        "player_id": "40",
+        "name": "Rogers",
+        "position": "MID",
+        "club": "Chelsea",
+        "mu_post": 5.187539309285048,
+        "captain": false
+      },
+      {
+        "player_id": "173",
+        "name": "Thomas",
+        "position": "DEF",
+        "club": "Coventry City",
+        "mu_post": 4.442102202354456,
+        "captain": false
+      },
+      {
+        "player_id": "650",
+        "name": "Affengruber",
+        "position": "DEF",
+        "club": "Fulham",
+        "mu_post": 4.346841737555395,
+        "captain": false
+      },
+      {
+        "player_id": "411",
+        "name": "Haaland",
+        "position": "FWD",
+        "club": "Man City",
+        "mu_post": 8.386462202139128,
+        "captain": true
+      },
+      {
+        "player_id": "426",
+        "name": "B.Fernandes",
+        "position": "MID",
+        "club": "Man Utd",
+        "mu_post": 5.639885358552102,
+        "captain": false
+      },
+      {
+        "player_id": "427",
+        "name": "Mbeumo",
+        "position": "MID",
+        "club": "Man Utd",
+        "mu_post": 5.801561009738062,
+        "captain": false
+      },
+      {
+        "player_id": "449",
+        "name": "Hall",
+        "position": "DEF",
+        "club": "Newcastle",
+        "mu_post": 5.515805758375567,
+        "captain": false
+      },
+      {
+        "player_id": "464",
+        "name": "Wissa",
+        "position": "FWD",
+        "club": "Newcastle",
+        "mu_post": 4.815346266090378,
+        "captain": false
+      },
+      {
+        "player_id": "472",
+        "name": "Murillo",
+        "position": "DEF",
+        "club": "Nott'm Forest",
+        "mu_post": 4.472224841066946,
+        "captain": false
+      }
+    ],
+    "bench": [
+      {
+        "player_id": "109",
+        "name": "Verbruggen",
+        "position": "GKP",
+        "mu_post": 2.785059664136028
+      },
+      {
+        "player_id": "183",
+        "name": "Rudoni",
+        "position": "MID",
+        "mu_post": 3.8314628361948047
+      },
+      {
+        "player_id": "588",
+        "name": "Khalaili",
+        "position": "DEF",
+        "mu_post": 4.028873912511027
+      },
+      {
+        "player_id": "249",
+        "name": "Barry",
+        "position": "FWD",
+        "mu_post": 3.8251016213394267
+      }
+    ],
+    "objective_week0": 67.33363027549905,
+    "horizon_objective": 125.83585821438518,
+    "bank_after": 0,
+    "ft_after": 1
+  },
+  "inputs": {
+    "odds": "data/scratch/gw08_odds_bookie_depth2.json",
+    "odds_fetched_at": "2026-10-23T08:44:23.784586+00:00",
+    "odds_sha256": "5ff15355add7c86419801c9ac17997a7f1f4c13383ff72a795edc5dbf7516219",
+    "odds_remaining_after": "171",
+    "xmi": "data/scratch/gw08_xmi_probe.csv",
+    "xmi_sha256": "61811941074890650834f4dfbf7716cd5b571a1ec5b8c8da2672a1e522951436",
+    "primary": "L4",
+    "props": false,
+    "n_fixtures_t": 10,
+    "n_fixtures_t1": 10
+  },
+  "locked_at_utc": "2026-10-23T08:58:39Z",
+  "model_notes": {
+    "primary": "L4",
+    "scorer": "score_xp_v2",
+    "promotions": [
+      "score_xp_v2_rate_m0",
+      "score_xp_v2_share_se_pos_prior",
+      "strategy_layer4_mupost_priced BOOKIE_DEPTH=2 \u03b3=1"
+    ],
+    "odds": {
+      "source": "live Odds API",
+      "path": "data/scratch/gw08_odds_bookie_depth2.json",
+      "markets": "AH+OU+BTTS (no anytime)",
+      "region": "us",
+      "n_fixtures_t": 10,
+      "n_fixtures_t1": 10,
+      "remaining_after": "171"
+    },
+    "minutes": {
+      "week_t": "minutes_llm + FFScout predicted XI / out / doubts \u2192 gw08_xmi_probe.csv",
+      "week_t1": "rolling3 only (L4 as-of law)",
+      "mainoo": "hard-flag injured, xmi=0"
+    },
+    "transfer_rationale": "Mainoo (0 xmi / injured to 8 Nov) \u2192 Lewis-Potter (Brentford MID, Hull) on 1 FT, 0 hits",
+    "horizon_objective": 125.83585821438518,
+    "week0_objective": 67.33363027549905,
+    "l3_contrast": "L3 preferred Mainoo \u2192 M.Sangar\u00e9 on week-t only; L4 kept Lewis-Potter",
+    "report": "reports/numagent_live_pick_gw08.md",
+    "pick_json": "data/predictions/2026-27/gw08/numagent_pick.json"
+  }
+}

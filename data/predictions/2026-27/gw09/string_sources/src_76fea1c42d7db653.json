@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:76fea1c42d7db653",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/c875p940g5v2o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 30 Oct 2026 15:41:43 GMT",
+  "published_at_utc": "2026-10-30T15:41:43Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "Arteta warns Dowman 'we are not in Disneyland' after red card",
+  "body": "Mikel Arteta says \"we are not in Disneyland\" and that he will hold Max Dowman to the same standards as other first-team players after the teenager's red card against Fleetwood.",
+  "player_ids": [],
+  "sha256": "5fb95fdc61d5221069bcfd4da1bb2a11db883207e033b145d5f2df8ae1b0837b"
+}

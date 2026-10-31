@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:f52183acae25219e",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/ck3r52vn758xo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 30 Oct 2026 23:08:16 GMT",
+  "published_at_utc": "2026-10-30T23:08:16Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "Man Utd target Barcelona's Lopez - Saturday's gossip",
+  "body": "Manchester United target Barcelona's Fermin Lopez, Lisandro Martinez is attracting interest from the La Liga side, Arsenal eye Club Brugge striker Nicolo Tresoldi, plus more.",
+  "player_ids": [],
+  "sha256": "2e01fef17a9c9a3429bb3afc0b4a2898ba33520b059410edcec49ec927c6dc95"
+}

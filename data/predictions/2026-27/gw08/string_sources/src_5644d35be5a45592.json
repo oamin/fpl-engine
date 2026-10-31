@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:5644d35be5a45592",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/c6r7ymev78edo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 23 Oct 2026 07:15:27 GMT",
+  "published_at_utc": "2026-10-23T07:15:27Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "EFL preview: 'Sleepless nights' for under pressure bosses",
+  "body": "Norwich City head coach Philippe Clement, Sheffield Wednesday manager Henrik Pedersen and Bristol Rovers boss Steve Evans face scrutiny.",
+  "player_ids": [],
+  "sha256": "900998e4b99f6bf4950705eabc159ba8e419fb6a166b105806645d95e57619d5"
+}

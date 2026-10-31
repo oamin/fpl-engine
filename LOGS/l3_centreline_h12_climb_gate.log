@@ -1,0 +1,267 @@
+[h12-gate] as-of audit…
+loading closed score_xp_v2 …
+climbing 2022-23 arm=l3_priced_h2 …
+  2022-23 l3_priced_h2 GW08 WC pts=49
+  2022-23 l3_priced_h2 GW09 T=4 hits=2 H=2 pts=51
+  2022-23 l3_priced_h2 GW10 T=1 hits=0 H=2 pts=71
+  2022-23 l3_priced_h2 GW11 T=2 hits=1 H=2 pts=45
+  2022-23 l3_priced_h2 GW12 T=1 hits=0 H=2 pts=53
+  2022-23 l3_priced_h2 GW13 T=2 hits=1 H=2 pts=44
+  2022-23 l3_priced_h2 GW14 T=1 hits=0 H=2 pts=51
+  2022-23 l3_priced_h2 GW15 T=1 hits=0 H=2 pts=67
+  2022-23 l3_priced_h2 GW16 T=1 hits=0 H=2 pts=46
+  2022-23 l3_priced_h2 GW17 T=2 hits=1 H=2 pts=72
+  2022-23 l3_priced_h2 GW18 T=3 hits=2 H=2 pts=28
+  2022-23 l3_priced_h2 GW19 T=2 hits=1 H=2 pts=58
+  2022-23 l3_priced_h2 GW20 T=1 hits=0 H=2 pts=74
+  2022-23 l3_priced_h2 GW21 T=4 hits=3 H=2 pts=36
+  2022-23 l3_priced_h2 GW22 T=1 hits=0 H=2 pts=74
+  2022-23 l3_priced_h2 GW23 T=1 hits=0 H=2 pts=67
+  2022-23 l3_priced_h2 GW24 T=4 hits=3 H=2 pts=54
+  2022-23 l3_priced_h2 GW25 T=3 hits=2 H=2 pts=113
+  2022-23 l3_priced_h2 GW26 T=5 hits=4 H=2 pts=28
+  2022-23 l3_priced_h2 GW27 T=3 hits=2 H=2 pts=101
+  2022-23 l3_priced_h2 GW28 T=3 hits=2 H=2 pts=39
+  2022-23 l3_priced_h2 GW29 T=3 hits=2 H=2 pts=112
+  2022-23 l3_priced_h2 GW30 T=1 hits=0 H=2 pts=59
+  2022-23 l3_priced_h2 GW31 T=4 hits=3 H=2 pts=49
+  2022-23 l3_priced_h2 GW32 T=1 hits=0 H=2 pts=62
+  2022-23 l3_priced_h2 GW33 T=4 hits=3 H=2 pts=44
+  2022-23 l3_priced_h2 GW34 T=4 hits=3 H=2 pts=130
+  2022-23 l3_priced_h2 GW35 T=2 hits=1 H=2 pts=41
+  2022-23 l3_priced_h2 GW36 T=5 hits=4 H=2 pts=122
+  2022-23 l3_priced_h2 GW37 T=2 hits=1 H=2 pts=73
+  2022-23 l3_priced_h2 GW38 T=2 hits=1 H=1 pts=47
+climbing 2022-23 arm=l3_centreline_h12 …
+  2022-23 l3_centreline_h12 GW08 WC pts=49
+  2022-23 l3_centreline_h12 GW09 T=6 hits=4 H=12 pts=62
+  2022-23 l3_centreline_h12 GW10 T=1 hits=0 H=12 pts=61
+  2022-23 l3_centreline_h12 GW11 T=1 hits=0 H=12 pts=48
+  2022-23 l3_centreline_h12 GW12 T=1 hits=0 H=12 pts=40
+  2022-23 l3_centreline_h12 GW13 T=2 hits=1 H=12 pts=59
+  2022-23 l3_centreline_h12 GW14 T=3 hits=2 H=12 pts=48
+  2022-23 l3_centreline_h12 GW15 T=1 hits=0 H=12 pts=43
+  2022-23 l3_centreline_h12 GW16 T=2 hits=1 H=12 pts=41
+  2022-23 l3_centreline_h12 GW17 T=3 hits=2 H=12 pts=72
+  2022-23 l3_centreline_h12 GW18 T=1 hits=0 H=12 pts=53
+  2022-23 l3_centreline_h12 GW19 T=1 hits=0 H=12 pts=80
+  2022-23 l3_centreline_h12 GW20 T=3 hits=2 H=12 pts=73
+  2022-23 l3_centreline_h12 GW21 T=1 hits=0 H=12 pts=43
+  2022-23 l3_centreline_h12 GW22 T=1 hits=0 H=12 pts=75
+  2022-23 l3_centreline_h12 GW23 T=1 hits=0 H=12 pts=56
+  2022-23 l3_centreline_h12 GW24 T=2 hits=1 H=12 pts=43
+  2022-23 l3_centreline_h12 GW25 T=2 hits=1 H=12 pts=92
+  2022-23 l3_centreline_h12 GW26 T=1 hits=0 H=12 pts=65
+  2022-23 l3_centreline_h12 GW27 T=1 hits=0 H=12 pts=88
+  2022-23 l3_centreline_h12 GW28 T=1 hits=0 H=11 pts=22
+  2022-23 l3_centreline_h12 GW29 T=2 hits=1 H=10 pts=108
+  2022-23 l3_centreline_h12 GW30 T=1 hits=0 H=9 pts=61
+  2022-23 l3_centreline_h12 GW31 T=1 hits=0 H=8 pts=77
+  2022-23 l3_centreline_h12 GW32 T=1 hits=0 H=7 pts=49
+  2022-23 l3_centreline_h12 GW33 T=2 hits=1 H=6 pts=57
+  2022-23 l3_centreline_h12 GW34 T=3 hits=2 H=5 pts=118
+  2022-23 l3_centreline_h12 GW35 T=0 hits=0 H=4 pts=42
+  2022-23 l3_centreline_h12 GW36 T=2 hits=0 H=3 pts=120
+  2022-23 l3_centreline_h12 GW37 T=2 hits=1 H=2 pts=83
+  2022-23 l3_centreline_h12 GW38 T=3 hits=2 H=1 pts=46
+climbing 2023-24 arm=l3_priced_h2 …
+  2023-24 l3_priced_h2 GW08 WC pts=57
+  2023-24 l3_priced_h2 GW09 T=3 hits=1 H=2 pts=68
+  2023-24 l3_priced_h2 GW10 T=1 hits=0 H=2 pts=65
+  2023-24 l3_priced_h2 GW11 T=1 hits=0 H=2 pts=36
+  2023-24 l3_priced_h2 GW12 T=2 hits=1 H=2 pts=43
+  2023-24 l3_priced_h2 GW13 T=1 hits=0 H=2 pts=45
+  2023-24 l3_priced_h2 GW14 T=1 hits=0 H=2 pts=80
+  2023-24 l3_priced_h2 GW15 T=1 hits=0 H=2 pts=33
+  2023-24 l3_priced_h2 GW16 T=1 hits=0 H=2 pts=75
+  2023-24 l3_priced_h2 GW17 T=1 hits=0 H=2 pts=52
+  2023-24 l3_priced_h2 GW18 T=1 hits=0 H=2 pts=46
+  2023-24 l3_priced_h2 GW19 T=1 hits=0 H=2 pts=40
+  2023-24 l3_priced_h2 GW20 T=1 hits=0 H=2 pts=84
+  2023-24 l3_priced_h2 GW21 T=2 hits=1 H=2 pts=52
+  2023-24 l3_priced_h2 GW22 T=2 hits=1 H=2 pts=84
+  2023-24 l3_priced_h2 GW23 T=1 hits=0 H=2 pts=57
+  2023-24 l3_priced_h2 GW24 T=5 hits=4 H=2 pts=62
+  2023-24 l3_priced_h2 GW25 T=4 hits=3 H=2 pts=77
+  2023-24 l3_priced_h2 GW26 T=2 hits=1 H=2 pts=58
+  2023-24 l3_priced_h2 GW27 T=3 hits=2 H=2 pts=79
+  2023-24 l3_priced_h2 GW28 T=5 hits=4 H=2 pts=62
+  2023-24 l3_priced_h2 GW29 T=4 hits=3 H=2 pts=4
+  2023-24 l3_priced_h2 GW30 T=2 hits=1 H=2 pts=68
+  2023-24 l3_priced_h2 GW31 T=2 hits=1 H=2 pts=44
+  2023-24 l3_priced_h2 GW32 T=1 hits=0 H=2 pts=65
+  2023-24 l3_priced_h2 GW33 T=5 hits=4 H=2 pts=36
+  2023-24 l3_priced_h2 GW34 T=3 hits=2 H=2 pts=102
+  2023-24 l3_priced_h2 GW35 T=1 hits=0 H=2 pts=67
+  2023-24 l3_priced_h2 GW36 T=5 hits=4 H=2 pts=68
+  2023-24 l3_priced_h2 GW37 T=1 hits=0 H=2 pts=102
+  2023-24 l3_priced_h2 GW38 T=1 hits=0 H=1 pts=85
+climbing 2023-24 arm=l3_centreline_h12 …
+  2023-24 l3_centreline_h12 GW08 WC pts=57
+  2023-24 l3_centreline_h12 GW09 T=5 hits=3 H=12 pts=72
+  2023-24 l3_centreline_h12 GW10 T=1 hits=0 H=12 pts=58
+  2023-24 l3_centreline_h12 GW11 T=1 hits=0 H=12 pts=33
+  2023-24 l3_centreline_h12 GW12 T=2 hits=1 H=12 pts=56
+  2023-24 l3_centreline_h12 GW13 T=2 hits=1 H=12 pts=45
+  2023-24 l3_centreline_h12 GW14 T=1 hits=0 H=12 pts=57
+  2023-24 l3_centreline_h12 GW15 T=1 hits=0 H=12 pts=37
+  2023-24 l3_centreline_h12 GW16 T=1 hits=0 H=12 pts=50
+  2023-24 l3_centreline_h12 GW17 T=2 hits=1 H=12 pts=48
+  2023-24 l3_centreline_h12 GW18 T=2 hits=1 H=12 pts=37
+  2023-24 l3_centreline_h12 GW19 T=1 hits=0 H=12 pts=50
+  2023-24 l3_centreline_h12 GW20 T=1 hits=0 H=12 pts=99
+  2023-24 l3_centreline_h12 GW21 T=1 hits=0 H=12 pts=33
+  2023-24 l3_centreline_h12 GW22 T=2 hits=1 H=12 pts=61
+  2023-24 l3_centreline_h12 GW23 T=4 hits=3 H=12 pts=63
+  2023-24 l3_centreline_h12 GW24 T=1 hits=0 H=12 pts=63
+  2023-24 l3_centreline_h12 GW25 T=3 hits=2 H=12 pts=87
+  2023-24 l3_centreline_h12 GW26 T=2 hits=1 H=12 pts=48
+  2023-24 l3_centreline_h12 GW27 T=1 hits=0 H=12 pts=82
+  2023-24 l3_centreline_h12 GW28 T=1 hits=0 H=11 pts=67
+  2023-24 l3_centreline_h12 GW29 T=1 hits=0 H=10 pts=12
+  2023-24 l3_centreline_h12 GW30 T=3 hits=2 H=9 pts=55
+  2023-24 l3_centreline_h12 GW31 T=1 hits=0 H=8 pts=96
+  2023-24 l3_centreline_h12 GW32 T=1 hits=0 H=7 pts=56
+  2023-24 l3_centreline_h12 GW33 T=1 hits=0 H=6 pts=106
+  2023-24 l3_centreline_h12 GW34 T=1 hits=0 H=5 pts=113
+  2023-24 l3_centreline_h12 GW35 T=2 hits=1 H=4 pts=61
+  2023-24 l3_centreline_h12 GW36 T=1 hits=0 H=3 pts=74
+  2023-24 l3_centreline_h12 GW37 T=1 hits=0 H=2 pts=88
+  2023-24 l3_centreline_h12 GW38 T=1 hits=0 H=1 pts=81
+climbing 2024-25 arm=l3_priced_h2 …
+  2024-25 l3_priced_h2 GW08 WC pts=68
+  2024-25 l3_priced_h2 GW09 T=2 hits=0 H=2 pts=58
+  2024-25 l3_priced_h2 GW10 T=1 hits=0 H=2 pts=54
+  2024-25 l3_priced_h2 GW11 T=1 hits=0 H=2 pts=55
+  2024-25 l3_priced_h2 GW12 T=3 hits=2 H=2 pts=51
+  2024-25 l3_priced_h2 GW13 T=2 hits=1 H=2 pts=71
+  2024-25 l3_priced_h2 GW14 T=3 hits=2 H=2 pts=74
+  2024-25 l3_priced_h2 GW15 T=3 hits=2 H=2 pts=51
+  2024-25 l3_priced_h2 GW16 T=2 hits=1 H=2 pts=52
+  2024-25 l3_priced_h2 GW17 T=1 hits=0 H=2 pts=67
+  2024-25 l3_priced_h2 GW18 T=1 hits=0 H=2 pts=54
+  2024-25 l3_priced_h2 GW19 T=2 hits=1 H=2 pts=81
+  2024-25 l3_priced_h2 GW20 T=1 hits=0 H=2 pts=59
+  2024-25 l3_priced_h2 GW21 T=1 hits=0 H=2 pts=93
+  2024-25 l3_priced_h2 GW22 T=1 hits=0 H=2 pts=56
+  2024-25 l3_priced_h2 GW23 T=1 hits=0 H=2 pts=56
+  2024-25 l3_priced_h2 GW24 T=3 hits=2 H=2 pts=109
+  2024-25 l3_priced_h2 GW25 T=3 hits=2 H=2 pts=97
+  2024-25 l3_priced_h2 GW26 T=1 hits=0 H=2 pts=69
+  2024-25 l3_priced_h2 GW27 T=2 hits=1 H=2 pts=48
+  2024-25 l3_priced_h2 GW28 T=2 hits=1 H=2 pts=59
+  2024-25 l3_priced_h2 GW29 T=3 hits=2 H=2 pts=60
+  2024-25 l3_priced_h2 GW30 T=2 hits=1 H=2 pts=51
+  2024-25 l3_priced_h2 GW31 T=4 hits=3 H=2 pts=47
+  2024-25 l3_priced_h2 GW32 T=3 hits=2 H=2 pts=85
+  2024-25 l3_priced_h2 GW33 T=3 hits=2 H=2 pts=58
+  2024-25 l3_priced_h2 GW34 T=2 hits=1 H=2 pts=85
+  2024-25 l3_priced_h2 GW35 T=2 hits=1 H=2 pts=41
+  2024-25 l3_priced_h2 GW36 T=1 hits=0 H=2 pts=50
+  2024-25 l3_priced_h2 GW37 T=1 hits=0 H=2 pts=36
+  2024-25 l3_priced_h2 GW38 T=1 hits=0 H=1 pts=63
+climbing 2024-25 arm=l3_centreline_h12 …
+  2024-25 l3_centreline_h12 GW08 WC pts=68
+  2024-25 l3_centreline_h12 GW09 T=7 hits=5 H=12 pts=65
+  2024-25 l3_centreline_h12 GW10 T=1 hits=0 H=12 pts=53
+  2024-25 l3_centreline_h12 GW11 T=2 hits=1 H=12 pts=47
+  2024-25 l3_centreline_h12 GW12 T=1 hits=0 H=12 pts=58
+  2024-25 l3_centreline_h12 GW13 T=1 hits=0 H=12 pts=82
+  2024-25 l3_centreline_h12 GW14 T=5 hits=4 H=12 pts=55
+  2024-25 l3_centreline_h12 GW15 T=2 hits=1 H=12 pts=50
+  2024-25 l3_centreline_h12 GW16 T=1 hits=0 H=12 pts=37
+  2024-25 l3_centreline_h12 GW17 T=1 hits=0 H=12 pts=94
+  2024-25 l3_centreline_h12 GW18 T=2 hits=1 H=12 pts=55
+  2024-25 l3_centreline_h12 GW19 T=1 hits=0 H=12 pts=101
+  2024-25 l3_centreline_h12 GW20 T=2 hits=1 H=12 pts=63
+  2024-25 l3_centreline_h12 GW21 T=3 hits=2 H=12 pts=67
+  2024-25 l3_centreline_h12 GW22 T=2 hits=1 H=12 pts=47
+  2024-25 l3_centreline_h12 GW23 T=1 hits=0 H=12 pts=61
+  2024-25 l3_centreline_h12 GW24 T=3 hits=2 H=12 pts=101
+  2024-25 l3_centreline_h12 GW25 T=2 hits=1 H=12 pts=79
+  2024-25 l3_centreline_h12 GW26 T=3 hits=2 H=12 pts=64
+  2024-25 l3_centreline_h12 GW27 T=1 hits=0 H=12 pts=54
+  2024-25 l3_centreline_h12 GW28 T=1 hits=0 H=11 pts=53
+  2024-25 l3_centreline_h12 GW29 T=1 hits=0 H=10 pts=33
+  2024-25 l3_centreline_h12 GW30 T=4 hits=3 H=9 pts=56
+  2024-25 l3_centreline_h12 GW31 T=1 hits=0 H=8 pts=37
+  2024-25 l3_centreline_h12 GW32 T=2 hits=1 H=7 pts=71
+  2024-25 l3_centreline_h12 GW33 T=1 hits=0 H=6 pts=69
+  2024-25 l3_centreline_h12 GW34 T=1 hits=0 H=5 pts=77
+  2024-25 l3_centreline_h12 GW35 T=1 hits=0 H=4 pts=59
+  2024-25 l3_centreline_h12 GW36 T=1 hits=0 H=3 pts=42
+  2024-25 l3_centreline_h12 GW37 T=1 hits=0 H=2 pts=30
+  2024-25 l3_centreline_h12 GW38 T=1 hits=0 H=1 pts=71
+climbing 2025-26 arm=l3_priced_h2 …
+  2025-26 l3_priced_h2 GW08 WC pts=162
+  2025-26 l3_priced_h2 GW09 T=3 hits=1 H=2 pts=80
+  2025-26 l3_priced_h2 GW10 T=1 hits=0 H=2 pts=85
+  2025-26 l3_priced_h2 GW11 T=1 hits=0 H=2 pts=43
+  2025-26 l3_priced_h2 GW12 T=1 hits=0 H=2 pts=37
+  2025-26 l3_priced_h2 GW13 T=1 hits=0 H=2 pts=47
+  2025-26 l3_priced_h2 GW14 T=2 hits=1 H=2 pts=59
+  2025-26 l3_priced_h2 GW15 T=1 hits=0 H=2 pts=70
+  2025-26 l3_priced_h2 GW16 T=1 hits=0 H=2 pts=63
+  2025-26 l3_priced_h2 GW17 T=1 hits=0 H=2 pts=90
+  2025-26 l3_priced_h2 GW18 T=1 hits=0 H=2 pts=67
+  2025-26 l3_priced_h2 GW19 T=3 hits=2 H=2 pts=39
+  2025-26 l3_priced_h2 GW20 T=1 hits=0 H=2 pts=75
+  2025-26 l3_priced_h2 GW21 T=1 hits=0 H=2 pts=70
+  2025-26 l3_priced_h2 GW22 T=1 hits=0 H=2 pts=50
+  2025-26 l3_priced_h2 GW23 T=2 hits=1 H=2 pts=39
+  2025-26 l3_priced_h2 GW24 T=1 hits=0 H=2 pts=67
+  2025-26 l3_priced_h2 GW25 T=1 hits=0 H=2 pts=67
+  2025-26 l3_priced_h2 GW26 T=2 hits=1 H=2 pts=63
+  2025-26 l3_priced_h2 GW27 T=1 hits=0 H=2 pts=51
+  2025-26 l3_priced_h2 GW28 T=1 hits=0 H=2 pts=72
+  2025-26 l3_priced_h2 GW29 T=1 hits=0 H=2 pts=72
+  2025-26 l3_priced_h2 GW30 T=1 hits=0 H=2 pts=61
+  2025-26 l3_priced_h2 GW31 T=2 hits=1 H=2 pts=38
+  2025-26 l3_priced_h2 GW32 T=3 hits=2 H=2 pts=37
+  2025-26 l3_priced_h2 GW33 T=2 hits=1 H=2 pts=76
+  2025-26 l3_priced_h2 GW34 T=3 hits=2 H=2 pts=58
+  2025-26 l3_priced_h2 GW35 T=2 hits=1 H=2 pts=64
+  2025-26 l3_priced_h2 GW36 T=3 hits=2 H=2 pts=87
+  2025-26 l3_priced_h2 GW37 T=1 hits=0 H=2 pts=66
+  2025-26 l3_priced_h2 GW38 T=3 hits=2 H=1 pts=33
+climbing 2025-26 arm=l3_centreline_h12 …
+  2025-26 l3_centreline_h12 GW08 WC pts=162
+  2025-26 l3_centreline_h12 GW09 T=9 hits=7 H=12 pts=74
+  2025-26 l3_centreline_h12 GW10 T=1 hits=0 H=12 pts=74
+  2025-26 l3_centreline_h12 GW11 T=2 hits=1 H=12 pts=35
+  2025-26 l3_centreline_h12 GW12 T=1 hits=0 H=12 pts=35
+  2025-26 l3_centreline_h12 GW13 T=2 hits=1 H=12 pts=42
+  2025-26 l3_centreline_h12 GW14 T=1 hits=0 H=12 pts=49
+  2025-26 l3_centreline_h12 GW15 T=1 hits=0 H=12 pts=64
+  2025-26 l3_centreline_h12 GW16 T=1 hits=0 H=12 pts=51
+  2025-26 l3_centreline_h12 GW17 T=1 hits=0 H=12 pts=86
+  2025-26 l3_centreline_h12 GW18 T=2 hits=1 H=12 pts=62
+  2025-26 l3_centreline_h12 GW19 T=1 hits=0 H=12 pts=56
+  2025-26 l3_centreline_h12 GW20 T=1 hits=0 H=12 pts=60
+  2025-26 l3_centreline_h12 GW21 T=1 hits=0 H=12 pts=50
+  2025-26 l3_centreline_h12 GW22 T=3 hits=2 H=12 pts=44
+  2025-26 l3_centreline_h12 GW23 T=1 hits=0 H=12 pts=47
+  2025-26 l3_centreline_h12 GW24 T=1 hits=0 H=12 pts=68
+  2025-26 l3_centreline_h12 GW25 T=3 hits=2 H=12 pts=67
+  2025-26 l3_centreline_h12 GW26 T=2 hits=1 H=12 pts=61
+  2025-26 l3_centreline_h12 GW27 T=1 hits=0 H=12 pts=50
+  2025-26 l3_centreline_h12 GW28 T=0 hits=0 H=11 pts=81
+  2025-26 l3_centreline_h12 GW29 T=2 hits=0 H=10 pts=55
+  2025-26 l3_centreline_h12 GW30 T=1 hits=0 H=9 pts=59
+  2025-26 l3_centreline_h12 GW31 T=1 hits=0 H=8 pts=58
+  2025-26 l3_centreline_h12 GW32 T=1 hits=0 H=7 pts=69
+  2025-26 l3_centreline_h12 GW33 T=2 hits=1 H=6 pts=81
+  2025-26 l3_centreline_h12 GW34 T=1 hits=0 H=5 pts=36
+  2025-26 l3_centreline_h12 GW35 T=1 hits=0 H=4 pts=63
+  2025-26 l3_centreline_h12 GW36 T=2 hits=1 H=3 pts=76
+  2025-26 l3_centreline_h12 GW37 T=2 hits=1 H=2 pts=72
+  2025-26 l3_centreline_h12 GW38 T=4 hits=3 H=1 pts=30
+{
+  "verdict": "inconclusive",
+  "mean": -0.5583333333333333,
+  "lo": -3.058958333333333,
+  "hi": 2.0339583333333326,
+  "covers_zero": true,
+  "total_d": -67.0,
+  "report": "/workspace/reports/l3_centreline_h12_climb_gate.md"
+}

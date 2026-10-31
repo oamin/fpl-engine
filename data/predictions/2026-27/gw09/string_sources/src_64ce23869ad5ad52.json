@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:64ce23869ad5ad52",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cqn73pxx8vr5o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 30 Oct 2026 08:39:36 GMT",
+  "published_at_utc": "2026-10-30T08:39:36Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "Afcon to return to two-year cycle after Caf U-turn",
+  "body": "The Africa Cup of Nations (Afcon) will return to its traditional two-year cycle after a review into December's decision to host it every four years instead.",
+  "player_ids": [],
+  "sha256": "45991d253c83777d1dbe100b7c870076a6b9d709e652e6fa07129491af705110"
+}

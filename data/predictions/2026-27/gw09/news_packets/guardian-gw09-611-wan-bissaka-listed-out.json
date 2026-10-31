@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw09:wan-bissaka-listed-out",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/30/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-30T16:19:00Z",
+  "club": "Aston Villa",
+  "player_ids": [
+    611
+  ],
+  "headline": "Wan-Bissaka listed out",
+  "body": "The Guardian team news, 30 Oct 2026: Wan-Bissaka listed out (Aston Villa) \u2014 injured (hamstring, 21 Nov).",
+  "sha256": "a0cfe230d62f7ea3b400704b74b23cc4d3a774752282b3d81ffa18f4e0e44e3d"
+}

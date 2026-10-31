@@ -9,8 +9,9 @@ from src.rules.fpl_2026 import HIT_COST, MAX_FT
 
 
 class FtBankPotentialTest(unittest.TestCase):
-    def test_default_nu_is_hit_cost(self) -> None:
-        self.assertEqual(DEFAULT_FT_PE_NU, float(HIT_COST))
+    def test_engine_default_pe_off_bank_pot_separate(self) -> None:
+        """Path objective does not include bank PE by default."""
+        self.assertEqual(DEFAULT_FT_PE_NU, 0.0)
 
     def test_pe_zero_when_nu_or_bank_zero(self) -> None:
         self.assertEqual(ft_bank_potential(0, nu=4.0), 0.0)

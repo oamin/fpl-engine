@@ -1,0 +1,14 @@
+{
+  "source_id": "guardian:06d09e09199cecc5",
+  "source": "guardian",
+  "outlet_class": "press",
+  "url": "https://www.theguardian.com/football/2026/oct/25/hull-brentford-premier-league-match-report",
+  "clock": "http_last_modified",
+  "raw_published_at": "Sun, 25 Oct 2026 16:40:07 GMT",
+  "published_at_utc": "2026-10-25T16:40:07Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "Ouattara rescues point for Brentford as Hull maintain unbeaten home record",
+  "body": "Hull’s unbeaten home record remains intact but the Tigers have not tasted victory for seven games after this draw with Brentford. The opening goal came courtesy of a 24th-minute Oli McBurnie penalty, awarded when Aaron Hickey flattened Tim Iroegbunam while trying to hook the ball away. Continue reading...",
+  "player_ids": [],
+  "sha256": "015355cb3a2fdd930827752c84a96b106e0b1b2eed66ac44aed0011158e3d6fb"
+}

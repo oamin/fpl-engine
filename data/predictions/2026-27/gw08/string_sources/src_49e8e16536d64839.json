@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:49e8e16536d64839",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/c63elp2kz4exo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 22 Oct 2026 21:53:52 GMT",
+  "published_at_utc": "2026-10-22T21:53:52Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "Man Utd chief keen on Howe - Friday's gossip",
+  "body": "Manchester United linked with Antonio Conte, Unai Emery, Eddie Howe and Julian Nagelsmann among others if they part ways with manager Michael Carrick.",
+  "player_ids": [],
+  "sha256": "94a6e0b184f90faaa56e9e4d2ff10238b53f908399dc45192828be5867a7b415"
+}

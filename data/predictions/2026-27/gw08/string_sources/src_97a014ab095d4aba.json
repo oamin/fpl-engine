@@ -1,0 +1,14 @@
+{
+  "source_id": "reddit_fantasypl:97a014ab095d4aba",
+  "source": "reddit_fantasypl",
+  "outlet_class": "forum",
+  "url": "https://www.reddit.com/r/FantasyPL/comments/1xcx50u/haalands_backup_dancers_the_best_of_the_best_for/",
+  "clock": "feed_updated",
+  "raw_published_at": "2026-10-22T22:42:40+00:00",
+  "published_at_utc": "2026-10-22T22:42:40Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "Haaland's backup dancers - The Best of the Best for your other two FWDs",
+  "body": "We&#39;re back. For everyone who has joined the app / website, thank you! Please, please, use the feedback button for anything you want to change, fix, have thoughts on, anything. 🙏 I&#39;m building this based on what I want, but I also want to build based on what you want, so please let me know. TLDR at the top: Isak and Barry. You&#39;re welcome. Nerd data behind the TLDR below: Anyway, let&#39;s dive right into it, xPts performed (per 90 basis, 15 min per match played) for forwards: https://preview.redd.it/mf1zy6na82xh1.png?width=1918&amp;format=png&amp;auto=webp&amp;s=4a715ae9cfa856b117f53ac76d4971ae6764121f Wait, what is that I see? Nmecha? Flemming? Akpom? Mateta? Turns out forwards are RIFE with impact subs who show up and do their damndest to score a goal, who&#39;d a thunk it: https://preview.redd.it/534gnrdt82xh1.png?width=3372&amp;format=png&amp;auto=webp&amp;s=4b34bce77784322bfb5a4164caa76a45ce28d0c7 So this means we have to really increase the min mins played per match. Let&#39;s try 45: https://preview.redd.it/cxkkt1k092xh1.png?width=1918&amp;format=png&amp;auto=webp&amp;s=c20b05c77a8c3cfc813320490741484ced458c8b Well, well, well. Mateta has sticking power, like a Gecko with great xGI and poor shot conversion: https://preview.redd.it/5snm6d3892xh1.png?width=3372&amp;format=png&amp;auto=webp&amp;s=fbf966fbea84763b074c89e2783c939c5523851d Anyway, ignoring Mateta for now, here is the xPts performed ranking on a per 90 basis: Haaland (shocked, I tell you) Isak Emerson (Ipswich are a surprisingly attacking side) Brobbey Barry Joao Pedro DCL Igor J Now this is interesting, because there&#39;s some pretty big discrepancies with actual % ownership: https://preview.redd.it/wftv9a4u92xh1.png?width=1918&amp;format=png&amp;auto=webp&amp;s=2f891806f3b1e5a2febfaf2c8a29e2c21f54ce7c Haaland - 76.9% Joao Pedro - 73% DCL - 23.6% Wissa - 13.6% Isak - 13.2% Kostoulas - 9.9% Thiago - 8.8% Barry - 8.2% Of course we have to account for the fact that a good number of users ar",
+  "player_ids": [],
+  "sha256": "366bf614252a246c401fdfe5da2a4a5270b30c1d7d8836cd37632ae82e7e3f45"
+}

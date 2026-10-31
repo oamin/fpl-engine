@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:2f7f830a29a8d2e3",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cqx287ekvvvpo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 22 Oct 2026 22:52:52 GMT",
+  "published_at_utc": "2026-10-22T22:52:52Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "O'Neill bemoans marginal moments but are Celtic just not good enough?",
+  "body": "Martin O'Neill spoke of refereeing decisions and near misses after the Europa League defeat against Celta Vigo. But is the reality more concerning?",
+  "player_ids": [],
+  "sha256": "1f61e8074756632e50cc5eb3268060f284f8aadbd7255768db5ab4e709e23cdd"
+}

@@ -1,0 +1,13 @@
+{
+  "packet_id": "the_standard:gw09:isak-will-start",
+  "source": "the_standard",
+  "url": "https://www.standard.co.uk/sport/football/liverpool-fc-xi-vs-arsenal-confirmed-team-news-predicted-lineup-injury-latest-2026-premier-league-b1302792.html",
+  "published_at_utc": "2026-10-31T08:00:00Z",
+  "club": "Liverpool",
+  "player_ids": [
+    379
+  ],
+  "headline": "Isak will start",
+  "body": "The Standard (Jack Tanner), 31 Oct 2026: Andoni Iraola will welcome back seven Liverpool regulars vs Arsenal including Alexander Isak, who is expected to return to the starting lineup at Anfield. Predicted 4-2-3-1 with Isak leading the line: Alisson; Ara\u00fajo, Jacquet, Van Dijk, Kerkez; Gravenberch, Mac Allister; Barcola, Wirtz, Gakpo; Isak.",
+  "sha256": "934b2c885a966ba15e1d284d07b0317eea691c717c04c138129bcb378d1c4e69"
+}

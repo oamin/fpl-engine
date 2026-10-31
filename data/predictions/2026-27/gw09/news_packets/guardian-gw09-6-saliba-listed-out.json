@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw09:saliba-listed-out",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/30/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-30T16:19:00Z",
+  "club": "Arsenal",
+  "player_ids": [
+    6
+  ],
+  "headline": "Saliba listed out",
+  "body": "The Guardian team news, 30 Oct 2026: Saliba listed out (Arsenal) \u2014 injured / unavailable (back).",
+  "sha256": "354b263a3f7cd849f57e8b16a1a646eb8c731fdaf5ca1c186c083ac139e43bff"
+}

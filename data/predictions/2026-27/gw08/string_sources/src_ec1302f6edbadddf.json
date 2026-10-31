@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:ec1302f6edbadddf",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/c98rz0d0l40vo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Wed, 21 Oct 2026 12:46:12 GMT",
+  "published_at_utc": "2026-10-21T12:46:12Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "The keeper doing 'Premier League' things for EFL's last unbeaten side",
+  "body": "Walsall goalkeeper Jed Ward is producing \"Premier League\" contributions with his hands and feet, say dazzled team-mates and his manager.",
+  "player_ids": [],
+  "sha256": "da5df0d59ef79a7614db1528b009bbe6b43a6fc3ca97945c487a222cb9a5e9e0"
+}

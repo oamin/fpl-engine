@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:502a060e69fe8ced",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/bitesize/articles/zxhkrmn?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Wed, 23 Sep 2026 11:17:47 GMT",
+  "published_at_utc": "2026-09-23T11:17:47Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "'My job combines my passion for gaming and football'",
+  "body": "CJ discusses his route into his job testing football video games. Find out more about his role, career progression and top tips for getting into a similar role.",
+  "player_ids": [],
+  "sha256": "2e5c95abfcf24c3d80393c7b047846926c1973e34f0523e09f2feb299371715e"
+}

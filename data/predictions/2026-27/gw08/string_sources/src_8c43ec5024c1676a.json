@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:8c43ec5024c1676a",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cvze4w57746yo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Mon, 19 Oct 2026 20:15:48 GMT",
+  "published_at_utc": "2026-10-19T20:15:48Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "Building Lionesses 2.0 - Wiegman's new challenge awaits",
+  "body": "England head coach Sarina Wiegman has changed women's football in the country, so what does she face after signing a contract extension?",
+  "player_ids": [],
+  "sha256": "85899224a9fd48bcbe0c779828d141e6a264e0237b0ccb580a3bc86a94f20e27"
+}

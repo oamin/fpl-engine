@@ -39,6 +39,7 @@ from src.eval.cascade_mc_vs_mean_hist import (
     SNAPSHOT_EVERY,
     START_OFFSET,
     _build_hist_pool,
+    _build_hist_share_pool,
     _fd_priced_by_gw,
     _hist_fixtures_by_gw,
 )
@@ -307,6 +308,7 @@ def _held_lineups(
 def run_path_strands(
     *,
     pool: pd.DataFrame,
+    share_pool: pd.DataFrame,
     fixtures_gw: dict[int, list[dict[str, str]]],
     priced_by_gw: dict[int, list[dict[str, Any]]],
     ranks: dict[str, float],
@@ -325,11 +327,11 @@ def run_path_strands(
     merged: pd.DataFrame | None = None,
     season: str | None = None,
 ) -> dict[str, Any]:
-    """Path strands. ``pool`` is the share/scoring roster; ``selectable_ids`` is the buy filter.
+    """Path strands. ``pool`` = thin scoring/MILP roster; ``share_pool`` = full club m>0 dice.
 
-    ``ft_pe_nu`` defaults to ``DEFAULT_FT_PE_NU`` (=HIT_COST): terminal PE
-    ``U=ν·f`` on the joint plan. ``path_plan_mode=deadline_causal`` requires
-    ``merged`` + ``season`` (oracle minutes only at each deadline GW).
+    ``selectable_ids`` is the buy filter. ``ft_pe_nu`` defaults to
+    ``DEFAULT_FT_PE_NU`` (=HIT_COST). ``path_plan_mode=deadline_causal``
+    requires ``merged`` + ``season``.
     """
     from src.models.multistage_mc_milp import DEFAULT_FT_PE_NU as _DEFAULT_FT_PE_NU
 
@@ -366,6 +368,7 @@ def run_path_strands(
             path_plan_mode=str(path_plan_mode),
             merged=merged,
             season=season,
+            share_pool=share_pool,
         )
         strands.append(
             {
@@ -803,8 +806,11 @@ def main(argv: list[str] | None = None) -> int:
     alpha_g, alpha_a = _asof_alphas(hist)
     team_hist = hist_by_team_norm(hist)
 
-    # Share/scoring roster: as-of hist pool (not cut to GW-t m>60).
+    # Thin scoring/MILP roster (≥60′); full-club m>0 for attack dice.
     score_pool = _build_hist_pool(
+        hist, prices, decision_gw=decision_gw, season=season
+    )
+    share_pool = _build_hist_share_pool(
         hist, prices, decision_gw=decision_gw, season=season
     )
     oracle_els = semi_oracle_elements(merged, decision_gw)
@@ -849,7 +855,8 @@ def main(argv: list[str] | None = None) -> int:
     score_pool["xmi"] = score_pool["m"]
     score_pool["sigma_m"] = 0.0
     print(
-        f"[resid] share_roster={len(score_pool)} buy_pool={len(buy_pool)} "
+        f"[resid] select={len(score_pool)} share={len(share_pool)} "
+        f"buy_pool={len(buy_pool)} "
         f"(semi-oracle buy m>{MIN_ORACLE_MINUTES:.0f} @ GW{decision_gw}; "
         f"{len(oracle_els)} GW players)",
         flush=True,
@@ -894,9 +901,10 @@ def main(argv: list[str] | None = None) -> int:
         flush=True,
     )
 
-    print("[resid] path arm (full share roster → buy filter)…", flush=True)
+    print("[resid] path arm (thin select + full share dice → buy filter)…", flush=True)
     path = run_path_strands(
         pool=score_pool,
+        share_pool=share_pool,
         fixtures_gw=fixtures_gw,
         priced_by_gw=priced_by_gw,
         ranks=ranks,

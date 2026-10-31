@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw09:lacroix-listed-out",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/30/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-30T16:19:00Z",
+  "club": "Chelsea",
+  "player_ids": [
+    200
+  ],
+  "headline": "Lacroix listed out",
+  "body": "The Guardian team news, 30 Oct 2026: Lacroix listed out (Chelsea) \u2014 injured (hamstring).",
+  "sha256": "f9445e1baacd866e75f38ae8770896f15cf6d22e3cdde002ed310dd1b02b3ab2"
+}

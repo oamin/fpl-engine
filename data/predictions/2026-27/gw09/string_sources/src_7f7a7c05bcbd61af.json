@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:7f7a7c05bcbd61af",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/articles/cwx2836e1mp7o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 29 Oct 2026 12:47:29 GMT",
+  "published_at_utc": "2026-10-29T12:47:29Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "Why is there only one Premier League match on Sunday?",
+  "body": "BBC Sport's Ask Me Anything team explains where is no 14:00 GMT kick-off on Sunday in the Premier League this weekend.",
+  "player_ids": [],
+  "sha256": "6964c0b5c63254ee208fe7febccc97b9dc9915346f0dcd890018474653362020"
+}

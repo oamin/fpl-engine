@@ -1,0 +1,38 @@
+{
+  "seasons": [
+    "2022-23",
+    "2023-24",
+    "2024-25",
+    "2025-26"
+  ],
+  "min_gws": 20,
+  "comparisons": {
+    "score_xp_minus_score_exp_points": {
+      "mean": 0.015305621921945354,
+      "lo": 0.01295155277980016,
+      "hi": 0.01747868684462922,
+      "n_gws": {
+        "2022-23": 33,
+        "2023-24": 34,
+        "2024-25": 34,
+        "2025-26": 34
+      },
+      "incomplete_seasons": {},
+      "n_rows": 102315
+    },
+    "score_xp_v2_goal_share_rate_minus_score_xp_v2_goal_share_rate_minutes": {
+      "mean": -0.0005490286116440099,
+      "lo": -0.0010209882397165554,
+      "hi": -0.00011827926176278001,
+      "n_gws": {
+        "2022-23": 33,
+        "2023-24": 34,
+        "2024-25": 34,
+        "2025-26": 34
+      },
+      "incomplete_seasons": {},
+      "n_rows": 27752
+    }
+  },
+  "screen": "score_xp_v2_goal_share_rate"
+}

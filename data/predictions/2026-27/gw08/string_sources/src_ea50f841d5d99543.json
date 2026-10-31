@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:ea50f841d5d99543",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cq9vz19p41x8o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 22 Oct 2026 18:04:21 GMT",
+  "published_at_utc": "2026-10-22T18:04:21Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "Fernandes' home burgled while in Italy with Man Utd",
+  "body": "Manchester United captain Bruno Fernandes had his home burgled on Wednesday while he was in Italy for his club's Champions League game against Como.",
+  "player_ids": [],
+  "sha256": "664d7ab34b51bcf8ba2bcd56f6c16fb58e864a76bd6072a08da1eaab9bdf9021"
+}

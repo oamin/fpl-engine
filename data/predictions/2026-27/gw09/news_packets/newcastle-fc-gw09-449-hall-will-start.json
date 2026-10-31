@@ -1,0 +1,14 @@
+{
+  "packet_id": "newcastle_fc:gw09:hall-will-start",
+  "source": "newcastle_fc",
+  "url": "https://www.newcastleunited.com/en/news/confirmed-line-up-one-change-for-everton-carabao-cup-clash",
+  "published_at_utc": "2026-10-29T18:00:00Z",
+  "club": "Newcastle",
+  "player_ids": [
+    449,
+    464
+  ],
+  "headline": "Hall will start",
+  "body": "Newcastle United official, 29 Oct 2026: Confirmed cup XI at Everton had Lewis Hall at left-back in Dedic\u2013Sch\u00e4r\u2013Burn\u2013Hall; Wissa among the strong bench. Same defensive spine projected for Monday's league rematch with Osula now an ankle doubt.",
+  "sha256": "bab246d4f0b1af04f94b0f250645d3b137f2ceb78dcb33973e2d6b4f316ceb20"
+}

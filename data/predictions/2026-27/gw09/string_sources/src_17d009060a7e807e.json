@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:17d009060a7e807e",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/c6x2w1epxx8yo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 30 Oct 2026 10:26:53 GMT",
+  "published_at_utc": "2026-10-30T10:26:53Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "Calvert-Lewin set for new Leeds deal",
+  "body": "England striker Dominic Calvert-Lewin is set to sign a new contract at Leeds United.",
+  "player_ids": [],
+  "sha256": "07603524465ef0814f0965ff663e59c2256c65959c80fbf67dc15202dbf44ab8"
+}

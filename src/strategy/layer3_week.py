@@ -9,6 +9,9 @@ Hits are unconstrained aside from a solver bound of ``SQUAD_SIZE`` (full
 rebuild); each hit still costs ``HIT_COST``. Chips and multi-week horizon
 are out of scope.
 
+``value_captain=False`` keeps a legal captain but drops the captain double
+from the objective (transfer-rule / component isolation).
+
 μ comes from the caller (normally Layer-2 ``mu_post`` ≡ ``score_xp_v2``
 after 2026-10-16). No stacked ~0.5 haircut.
 """
@@ -157,8 +160,9 @@ def solve_week_transfers(
     max_per_club: int = MAX_PER_CLUB,
     max_hits: int = DEFAULT_MAX_HITS,
     time_limit: float = 30.0,
+    value_captain: bool = True,
 ) -> TransferWeekPlan:
-    """Joint MILP: transfers from held 15 + XI + captain on μ, net of hits."""
+    """Joint MILP: transfers from held 15 + XI (+ optional captain μ) net of hits."""
     df = _prepare_pool(pool, mu_col=mu_col)
     df = _ensure_held_in_pool(df, held)
 
@@ -193,11 +197,13 @@ def solve_week_transfers(
             return nx + ns + i
         return nx + ns + nc  # extra
 
-    # minimise −(Σ μ s + Σ μ c) + HIT_COST * extra
+    # minimise −(Σ μ s [+ Σ μ c]) + HIT_COST * extra
     c_obj = np.zeros(dim)
+    use_cap = bool(value_captain)
     for i in range(n):
         c_obj[blk("s", i)] = -mu[i]
-        c_obj[blk("c", i)] = -mu[i]
+        if use_cap:
+            c_obj[blk("c", i)] = -mu[i]
     c_obj[blk("extra")] = float(HIT_COST)
 
     rows: list[np.ndarray] = []
@@ -372,7 +378,9 @@ def solve_week_transfers(
     n_fwd = int((xi["position"] == "FWD").sum())
     xi_mu = float(xi["mu"].sum())
     captain_mu = float(df.loc[df["player_id"] == captain_id, "mu"].iloc[0])
-    objective = xi_mu + captain_mu - float(hit_points)
+    objective = xi_mu - float(hit_points)
+    if use_cap:
+        objective += captain_mu
 
     squad = squad.assign(in_xi=squad["player_id"].isin(xi["player_id"]), is_captain=False)
     squad.loc[squad["player_id"] == captain_id, "is_captain"] = True
@@ -386,7 +394,7 @@ def solve_week_transfers(
         formation=(n_def, n_mid, n_fwd),
         objective=objective,
         xi_mu=xi_mu,
-        captain_mu=captain_mu,
+        captain_mu=captain_mu if use_cap else 0.0,
         hits=hits,
         n_transfers=n_transfers,
         hit_points=hit_points,

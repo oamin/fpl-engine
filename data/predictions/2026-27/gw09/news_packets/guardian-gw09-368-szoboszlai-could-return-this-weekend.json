@@ -1,0 +1,13 @@
+{
+  "packet_id": "guardian:gw09:szoboszlai-could-return-this-weekend",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/30/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-30T16:19:00Z",
+  "club": "Liverpool",
+  "player_ids": [
+    368
+  ],
+  "headline": "Szoboszlai could return this weekend",
+  "body": "The Guardian team news, 30 Oct 2026: Szoboszlai could return this weekend (Liverpool) \u2014 doubtful (hamstring); has a chance.",
+  "sha256": "9c241e81ce41ef4cc78f33f43728130fcdf20ede2c18dd4a108b45a0f6a682cc"
+}

@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:e04286187c30b9ef",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cmkgkpexjzneo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 30 Oct 2026 16:21:10 GMT",
+  "published_at_utc": "2026-10-30T16:21:10Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "Fears Chelsea's Lacroix could be out until January",
+  "body": "Chelsea fear Maxence Lacroix will have a lengthy lay-off having suffered a serious hamstring injury.",
+  "player_ids": [],
+  "sha256": "dfec558053da0c33b0016a6f830d5b04dd5a700478bcfee799437a7389d9082c"
+}

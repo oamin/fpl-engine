@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:0e3ce02617ba52ec",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cq23d1ldgn1yo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 30 Oct 2026 11:07:04 GMT",
+  "published_at_utc": "2026-10-30T11:07:04Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "Families v loyal fans - women's football's attendance dilemma",
+  "body": "Average Women's Super League attendances surged by 192% in the season after the Lionesses' Euro 2022 triumph, but the boom has stalled.",
+  "player_ids": [],
+  "sha256": "d28f5f40d2ebf2f0c94b2fc73d5598dec0d3cb60e5e6735883f84c98f4833950"
+}

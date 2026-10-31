@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:6fb3c68000150ef6",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/videos/c9x28pyg05vyo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Mon, 19 Oct 2026 21:33:07 GMT",
+  "published_at_utc": "2026-10-19T21:33:07Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "Spurs beat Coventry to earn first league win of the season",
+  "body": "Tottenham Hotspur record their first Premier League win of the season and move off the bottom of the table with a home victory over Coventry City.",
+  "player_ids": [],
+  "sha256": "de34089a5824c5c6206b42e46305cbc4f1ec908e3ac0385d23ebdf8694f39afc"
+}

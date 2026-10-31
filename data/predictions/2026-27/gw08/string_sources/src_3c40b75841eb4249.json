@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:3c40b75841eb4249",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cked3x8452pdo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 23 Oct 2026 08:28:21 GMT",
+  "published_at_utc": "2026-10-23T08:28:21Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "Should Man Utd boss Carrick drop captain Fernandes?",
+  "body": "Manchester United head coach Michael Carrick must decide whether to leave skipper Bruno Fernandes out of Sunday's crucial Premier League clash with Bournemouth",
+  "player_ids": [],
+  "sha256": "b9abdd57266f24cb228f0b24ac34509e2b6b1d90c969927fd73d5349d19bc22e"
+}

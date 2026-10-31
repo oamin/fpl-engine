@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:f529accf9453bcb2",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/videos/c962yd2ykejmo?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Sun, 18 Oct 2026 17:02:19 GMT",
+  "published_at_utc": "2026-10-18T17:02:19Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "James scores brilliant double as Chelsea put six past Spurs",
+  "body": "Chelsea secure their fifth-consecutive Women's Super League win with victory over Tottenham in manager Sonia Bompastor's 50th game in the competition.",
+  "player_ids": [],
+  "sha256": "2f111693ed9fa8b0a3fceae828e9261448be1e2c6e3402ab10a73b9c337803be"
+}

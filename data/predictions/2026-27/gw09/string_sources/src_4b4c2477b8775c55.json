@@ -1,0 +1,14 @@
+{
+  "source_id": "skysports:4b4c2477b8775c55",
+  "source": "skysports",
+  "outlet_class": "press",
+  "url": "https://www.skysports.com/f1/news/12040/13605831/mexico-city-gp-charles-leclerc-completes-friday-practice-double-as-ferrari-team-mate-lewis-hamilton-suffers-technical-failure",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 30 Oct 2026 23:10:00 GMT",
+  "published_at_utc": "2026-10-30T23:10:00Z",
+  "observed_at_utc": "2026-10-31T08:14:23Z",
+  "headline": "Leclerc seals Mexico City practice double as Hamilton suffers technical issue",
+  "body": "Charles Leclerc completed a Friday practice double at the Mexico City Grand Prix but Ferrari's strong showing was dampened by Lewis Hamilton suffering a technical issue.",
+  "player_ids": [],
+  "sha256": "ff56f06825a7b849ff1d84525b75ad1843fb4a914bf97e7fea083bd603600790"
+}

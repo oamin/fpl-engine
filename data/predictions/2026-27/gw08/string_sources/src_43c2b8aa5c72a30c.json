@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:43c2b8aa5c72a30c",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/cw3djpg15045o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Fri, 23 Oct 2026 08:14:50 GMT",
+  "published_at_utc": "2026-10-23T08:14:50Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "Forest's start raises questions - but belief in Glasner remains",
+  "body": "Nottingham Forest go to Ipswich in the bottom three of the Premier League, but boss Oliver Glasner believes they have deserved more this season.",
+  "player_ids": [],
+  "sha256": "f51a6f8fe679dc560ce275adfe6ab7b1e606b7b2408b2db38b0c935f65976a08"
+}

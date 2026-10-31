@@ -1,0 +1,14 @@
+{
+  "source_id": "bbc_sport:eaa30af210ff3bcc",
+  "source": "bbc_sport",
+  "outlet_class": "press",
+  "url": "https://www.bbc.co.uk/sport/football/articles/ck0541dzqe04o?at_medium=RSS&at_campaign=rss",
+  "clock": "http_last_modified",
+  "raw_published_at": "Thu, 22 Oct 2026 10:28:21 GMT",
+  "published_at_utc": "2026-10-22T10:28:21Z",
+  "observed_at_utc": "2026-10-23T08:59:59Z",
+  "headline": "Third-longest serving manager in top 92 clubs Woodman leaves Bromley",
+  "body": "Bromley part company with manager Andy Woodman following a challenging start to the 2026-27 season.",
+  "player_ids": [],
+  "sha256": "be31a107e6f60806531ac3cf175dbf85eb67ccce8e613040161ebfbceecac6dd"
+}

@@ -1,0 +1,13 @@
+{
+  "packet_id": "bbc_sport:gw09:osula-doubtful-ankle",
+  "source": "bbc_sport",
+  "url": "https://www.bbc.com/sport/football/articles/cq33x2pz48j7o",
+  "published_at_utc": "2026-10-30T18:00:00Z",
+  "club": "Newcastle",
+  "player_ids": [
+    465
+  ],
+  "headline": "Osula doubtful ankle",
+  "body": "BBC Sport, 30 Oct 2026: Jaissle said Will Osula 'twisted his ankle when he took the shot' in the Carabao Cup loss at Everton. 'Right now, it's too early to say whether he will be fit for Monday' vs Everton in the league.",
+  "sha256": "8f7403ce910d8f9f19ff4c0948e5239e51ca0d88808093fc6a7bca9bbd8b0b15"
+}
