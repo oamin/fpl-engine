@@ -3080,5 +3080,47 @@
       }
     },
     "note": "Inconclusive (+0.11/GW). PE moves schedules (term FT≈5) but season-signed: +2022-23 / −2024-25. Keep product ft_pe_nu=0. Do not retune ν."
+  },
+  "l4_opta_joint_path_captain_climb": {
+    "pre_registered": "2026-10-31",
+    "status": "running",
+    "role": "Reintroduce captain double on locked joint_path_opta_decay (wired μ)",
+    "boards": "build_l3_centreline_horizon(H=12); wired rate baseline + full-club shares; Opta far ρ=0.85→0",
+    "baseline": "decay_xi_ft — value_captain=false (product); legal captain still chosen",
+    "treatment": "decay_xi_plus_captain — value_captain=true; V = Σ(XI+cap) − hits",
+    "comparisons": [
+      "decay_xi_plus_captain_minus_decay_xi_ft"
+    ],
+    "shared": {
+      "planner": "pick_path_transfer_plan",
+      "wildcard_open": "full score_xp_v2 at gw_start",
+      "seed": "from_owned held 15 after wildcard",
+      "candidates": "full week-0 pool",
+      "ft_pe_nu": 0,
+      "decay": "ρ=0.85 → 0",
+      "chips": false,
+      "max_hits": "SQUAD_SIZE",
+      "gamma": 1.0,
+      "horizon": 12
+    },
+    "realised_both_arms": "FPL bench autosubs + captain/VC − hits (VC doubles if captain 0′)",
+    "metric": "paired-by-GW realised XI(autosub)+cap/VC−hits; cluster_interval four closed seasons",
+    "promote_if": "paired interval lo > 0",
+    "park_if": "hi < 0",
+    "gw_start": 8,
+    "gw_end": 38,
+    "holdout": "2026-27 frozen — not in comparison",
+    "entry": "src/eval/l4_opta_joint_path_captain_climb_gate.py",
+    "report": "reports/l4_opta_joint_path_captain_climb_gate.md",
+    "depends": [
+      "joint_path_opta_decay"
+    ],
+    "not": [
+      "chip search",
+      "haul/CVaR captain override",
+      "retune ν / ρ",
+      "L4 oneshot contrast this batch"
+    ],
+    "any_later_change": "dated protocol update required"
   }
 }

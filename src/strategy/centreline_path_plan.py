@@ -1,6 +1,7 @@
 """Glue: L4+Opta centreline boards → joint path transfer plan.
 
-Full-board candidates (no top-48), ``xi_ft`` (``value_captain=False``),
+Full-board candidates (no top-48); default ``xi_ft`` (``value_captain=False``).
+Optional ``value_captain=True`` for ``xi_plus_captain`` screens.
 ``from_owned`` seeded 15. Optional Opta-far exponential decay toward 0.
 
   from src.strategy.centreline_path_plan import (
@@ -207,6 +208,7 @@ def week0_to_transfer_plan(
     *,
     mu_col: str = "mu_post",
     status: str = "path_ok",
+    value_captain: bool = False,
 ) -> TransferWeekPlan:
     """Commit path week-0 into a ``TransferWeekPlan`` for ``_step_held``.
 
@@ -273,9 +275,12 @@ def week0_to_transfer_plan(
     n_mid = int((xi["position"] == "MID").sum())
     n_fwd = int((xi["position"] == "FWD").sum())
     xi_mu = float(xi["mu"].sum())
-    # Captain μ not valued (xi_ft); keep 0 in the TransferWeekPlan objective piece.
-    captain_mu = 0.0
-    week0_obj = xi_mu - float(hit_points)
+    captain_mu = (
+        float(xi.loc[xi["player_id"] == captain_id, "mu"].sum())
+        if bool(value_captain)
+        else 0.0
+    )
+    week0_obj = xi_mu + float(captain_mu) - float(hit_points)
 
     return TransferWeekPlan(
         squad=squad.reset_index(drop=True),
@@ -310,6 +315,7 @@ def plan_centreline_path(
     gamma: float = 1.0,
     max_hits: int = MAX_HITS_SNAPSHOT,
     ft_pe_nu: float = DEFAULT_FT_PE_NU,
+    value_captain: bool = False,
     time_limit: float = 180.0,
     mip_rel_gap: float = 1e-3,
     decision_gw: int | None = None,
@@ -317,7 +323,7 @@ def plan_centreline_path(
     """Solve joint path on centreline pools; return week-0 plan + raw path dict.
 
     Candidates = full week-0 board. Ownership = ``held`` (``from_owned``).
-    Objective = Σ XI − hits (``value_captain=False``).
+    Default objective = Σ XI − hits (``value_captain=False``).
     """
     if not pools:
         raise ValueError("need at least one pool")
@@ -338,6 +344,7 @@ def plan_centreline_path(
         week0, scores_by_gw, gws, force_ids=set(owned)
     )
     S = score_matrix_for_candidates(cands, week0, scores_by_gw, gws)
+    use_cap = bool(value_captain)
     raw = pick_path_transfer_plan(
         cands,
         S,
@@ -348,7 +355,7 @@ def plan_centreline_path(
         time_limit=float(time_limit),
         start_owned_ids=owned,
         start_ft=int(held.ft),
-        value_captain=False,
+        value_captain=use_cap,
         mip_rel_gap=float(mip_rel_gap),
     )
     if not raw.get("weeks"):
@@ -359,6 +366,7 @@ def plan_centreline_path(
         week0,
         mu_col=mu_col,
         status=str(raw.get("status", "path_ok")),
+        value_captain=use_cap,
     )
     meta = {
         "objective": float(raw.get("objective", float("nan"))),
@@ -369,7 +377,7 @@ def plan_centreline_path(
         "decay_target": decay_target if decay else None,
         "near_depth": int(near_depth),
         "from_owned": True,
-        "value_captain": False,
+        "value_captain": use_cap,
         "ft_pe_nu": float(ft_pe_nu),
         "status": str(raw.get("status", "")),
     }
