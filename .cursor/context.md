@@ -1,6 +1,12 @@
 # Architectural state
 
-Updated: 2026-10-30. **Numagent 2.0** is the product on main (`protocol.numagent_2_0`) — **supersedes Numagent 1.0**. Parked hypotheses: `.cursor/ideas.md`. Stage archaeology: root `CONTEXT.md` and `reports/SUPERSEDED.md`. Canonical index: `reports/LOCKED.md`. Cascade locked index: [`reports/CASCADE_LOCKED.md`](../reports/CASCADE_LOCKED.md).
+Updated: 2026-10-31. **Numagent 2.0** is the product on main (`protocol.numagent_2_0`) — **supersedes Numagent 1.0**. Parked hypotheses: `.cursor/ideas.md`. Stage archaeology: root `CONTEXT.md` and `reports/SUPERSEDED.md`. Canonical index: `reports/LOCKED.md`. Cascade locked index: [`reports/CASCADE_LOCKED.md`](../reports/CASCADE_LOCKED.md).
+
+## Live — GW9 deadline pick (2026-10-31)
+
+**Priced L4 H=2 only** (no Opta far — Opta centreline not ready for live). Deep whitelist news + FFScout XIs → `gw09_xmi_probe.csv`. Cap `max_hits=1`.
+
+**Plan:** sell B.Fernandes + Wissa → buy Ødegaard + Isak (−4); C Haaland / vice Isak. Horizon obj **119.03**. L3 contrast: Murillo → Van Hecke. Report: `reports/numagent_live_pick_gw09.md`.
 
 **Cascade consolidation (2026-10-23):** locked / cascade_default pieces from #101–#106 (rate baseline, joint path, γ=1, FT PE, bench α reject; deadline-causal diagnostic) fast-forwarded onto `cursor/club-expanding-gf-ga-2025-26-cc3d` for landing on `main`.
 

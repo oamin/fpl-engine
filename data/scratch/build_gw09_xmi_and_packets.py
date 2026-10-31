@@ -273,6 +273,286 @@ def apply_ffs_lineup_roles(
     return roles
 
 
+def write_deep_desk_packets(boot: dict[str, Any], out_dir: Path) -> int:
+    """Local-desk / BBC / club packets for owned + buy targets (pre-deadline)."""
+    els = {int(e["id"]): e for e in boot["elements"]}
+    teams = {int(t["id"]): t["name"] for t in boot["teams"]}
+    by_club: dict[str, list[dict[str, Any]]] = {}
+    for el in boot["elements"]:
+        by_club.setdefault(teams[int(el["team"])], []).append(el)
+
+    def find(club: str, *names: str) -> list[int]:
+        cands = by_club.get(club) or []
+        out: list[int] = []
+        for name in names:
+            hit = match_ffs_name_to_fpl(name, cands)
+            if hit is not None:
+                out.append(int(hit["id"]))
+        return out
+
+    # source, club, headline, body, url, published_at, names...
+    notes: list[tuple[str, str, str, str, str, str, tuple[str, ...]]] = [
+        (
+            "bbc_sport",
+            "Coventry City",
+            "Thomas could return this weekend",
+            (
+                "BBC Sport, 29 Oct 2026 (Katie Stafford): Frank Lampard said Bobby Thomas "
+                "has 'a small calf issue' and will be assessed closer to Saturday vs "
+                "Sunderland. On cover, Lampard said Stephen Mfuni 'has shown in the "
+                "moments he's played… It's an opportunity, for sure.' Late fitness call."
+            ),
+            "https://www.bbc.co.uk/sport/football/articles/ckly06j9wnv4o",
+            "2026-10-29T18:00:00Z",
+            ("Thomas",),
+        ),
+        (
+            "coventry_telegraph",
+            "Coventry City",
+            "Thomas could return this weekend",
+            (
+                "Coventry Telegraph (Andy Turner), 29 Oct 2026 15:38: Lampard confirmed "
+                "Thomas is a doubt for Sunderland with a 'small' calf injury — 'thankfully "
+                "not as was feared' around the Achilles. 'So we're not sure about this "
+                "weekend. We'll see. We've got another 48 hours… the injury is hopefully "
+                "not a terrible one.' Mfuni on standby; Latibeaudiere only other option "
+                "with Amenda out to Christmas."
+            ),
+            "https://www.coventrytelegraph.net/sport/football/football-news/coventry-city-injuries-bobby-thomas-34835698",
+            "2026-10-29T15:38:00Z",
+            ("Thomas",),
+        ),
+        (
+            "pl_official",
+            "Coventry City",
+            "Thomas could return this weekend",
+            (
+                "Premier League official, 30 Oct 2026: Lampard update — Thomas to be "
+                "assessed ahead of the Sunderland encounter after the calf issue that "
+                "forced him off vs Fulham."
+            ),
+            "https://www.premierleague.com/en/news/4747025/thomas-to-be-assessed-ahead-of-sunderland-encounter",
+            "2026-10-30T12:00:00Z",
+            ("Thomas",),
+        ),
+        (
+            "bbc_sport",
+            "Man Utd",
+            "Bruno Fernandes will start",
+            (
+                "BBC Sport, 29 Oct 2026 (Josh Lobley): Carrick on clear-the-air talks with "
+                "Bruno Fernandes — 'He's an important player… He's fully committed to this "
+                "football club… He's the one that's kind of led the team so well… and he'll "
+                "continue to do that.' On the captaincy for Chelsea: 'There is no decision "
+                "to be made on that.' Mainoo has 'done a bit of training'; Šeško out a "
+                "long period."
+            ),
+            "https://www.bbc.com/sport/football/articles/ckpdg50nypq9o",
+            "2026-10-29T17:00:00Z",
+            ("B.Fernandes", "Bruno Fernandes"),
+        ),
+        (
+            "sportsmole",
+            "Man Utd",
+            "Bruno Fernandes will start",
+            (
+                "Sports Mole preview (Ben Knapton), updated 30 Oct 2026: Fernandes should "
+                "return to the Man Utd XI at Chelsea; Carrick said he remains fully "
+                "committed after clear-the-air talks. Predicted XI includes Fernandes "
+                "behind Cunha. Mainoo back in training; Shaw, Šeško, Ugarte, Dorgu still "
+                "missing."
+            ),
+            "https://www.sportsmole.co.uk/football/man-utd/preview/chelsea-vs-man-utd-prediction-team-news-lineups_607947.html",
+            "2026-10-30T14:53:00Z",
+            ("B.Fernandes", "Bruno Fernandes"),
+        ),
+        (
+            "football_london",
+            "Chelsea",
+            "Rogers will start",
+            (
+                "Football London (Bobby Vincent), 31 Oct 2026 07:00: Morgan Rogers has "
+                "played 90 minutes in both of Chelsea's matches in the past week, yet is "
+                "still expected to start at Stamford Bridge vs Man Utd. With João Pedro "
+                "out, Rogers is cast as the Blues' most dangerous attacker alongside "
+                "Palmer's return. Predicted XI: … Neto, Palmer, Rogers; Welbeck."
+            ),
+            "https://www.football.london/chelsea-fc/news/predicted-chelsea-xi-vs-man-34838511",
+            "2026-10-31T07:00:00Z",
+            ("Rogers",),
+        ),
+        (
+            "sportsmole",
+            "Chelsea",
+            "Rogers will start",
+            (
+                "Sports Mole, 29–30 Oct 2026: Chelsea possible XI vs Man Utd lists Rogers "
+                "with Palmer after João Pedro (thigh) and Lacroix (hamstring, weeks) are "
+                "ruled out; Caicedo and Gusto fine. Predicted: Penders; … Neto, Palmer, "
+                "Rogers."
+            ),
+            "https://www.sportsmole.co.uk/football/man-utd/preview/chelsea-vs-man-utd-prediction-team-news-lineups_607947.html",
+            "2026-10-30T14:53:00Z",
+            ("Rogers",),
+        ),
+        (
+            "sportsmole",
+            "Brighton",
+            "Groß will start",
+            (
+                "Sports Mole (Oliver Thomas), 29 Oct 2026: Hürzeler expected to restore "
+                "his strongest XI at Man City. 'Pascal Gross is all but certain to retain "
+                "his starting spot in a deeper midfield position' alongside Andrés "
+                "(hip cleared). Predicted: Verbruggen; … Gross, Andrés; … Kostoulas. "
+                "Mitoma, Struijk, Ferguson among those still out."
+            ),
+            "https://www.sportsmole.co.uk/football/brighton-and-hove-albion/predicted-lineups/kostoulas-kadioglu-andres-decisions-predicted-brighton-lineup-vs-man-city_607917.html",
+            "2026-10-29T15:35:00Z",
+            ("Groß", "Gross"),
+        ),
+        (
+            "the_standard",
+            "Liverpool",
+            "Isak will start",
+            (
+                "The Standard (Jack Tanner), 31 Oct 2026: Andoni Iraola will welcome back "
+                "seven Liverpool regulars vs Arsenal including Alexander Isak, who is "
+                "expected to return to the starting lineup at Anfield. Predicted 4-2-3-1 "
+                "with Isak leading the line: Alisson; Araújo, Jacquet, Van Dijk, Kerkez; "
+                "Gravenberch, Mac Allister; Barcola, Wirtz, Gakpo; Isak."
+            ),
+            "https://www.standard.co.uk/sport/football/liverpool-fc-xi-vs-arsenal-confirmed-team-news-predicted-lineup-injury-latest-2026-premier-league-b1302792.html",
+            "2026-10-31T08:00:00Z",
+            ("Isak",),
+        ),
+        (
+            "bbc_sport",
+            "Newcastle",
+            "Osula doubtful ankle",
+            (
+                "BBC Sport, 30 Oct 2026: Jaissle said Will Osula 'twisted his ankle when he "
+                "took the shot' in the Carabao Cup loss at Everton. 'Right now, it's too "
+                "early to say whether he will be fit for Monday' vs Everton in the league."
+            ),
+            "https://www.bbc.com/sport/football/articles/cq33x2pz48j7o",
+            "2026-10-30T18:00:00Z",
+            ("Osula",),
+        ),
+        (
+            "chronicle_live",
+            "Newcastle",
+            "Osula doubtful ankle",
+            (
+                "Chronicle Live (Lee Ryder), 29 Oct 2026 22:54: Osula went off after "
+                "Tarkowski's block in the cup; Jaissle — 'William Osula was not able to "
+                "continue, he twisted his ankle…' Danish striker a doubt for Monday's "
+                "Premier League rematch with Everton."
+            ),
+            "https://www.chroniclelive.co.uk/sport/football/football-news/matthias-jaissle-makes-shocking-claim-34837239",
+            "2026-10-29T22:54:00Z",
+            ("Osula",),
+        ),
+        (
+            "chronicle_live",
+            "Newcastle",
+            "Wissa will start",
+            (
+                "Chronicle Live (Lee Ryder), 31 Oct 2026 07:00: Between now and Monday, "
+                "Newcastle will assess Osula's ankle. Jaissle would have to consider "
+                "playing Yoane Wissa as the lone striker on Monday if Osula and "
+                "Fernandez-Pardo don't make it. Hall started the cup rematch build-up "
+                "at LB in the Dedic–Schär–Burn–Hall back four."
+            ),
+            "https://www.chroniclelive.co.uk/sport/football/football-news/harvey-barnes-decision-might-surprise-34840875",
+            "2026-10-31T07:00:00Z",
+            ("Wissa", "Hall", "Lewis Hall"),
+        ),
+        (
+            "newcastle_fc",
+            "Newcastle",
+            "Hall will start",
+            (
+                "Newcastle United official, 29 Oct 2026: Confirmed cup XI at Everton had "
+                "Lewis Hall at left-back in Dedic–Schär–Burn–Hall; Wissa among the "
+                "strong bench. Same defensive spine projected for Monday's league rematch "
+                "with Osula now an ankle doubt."
+            ),
+            "https://www.newcastleunited.com/en/news/confirmed-line-up-one-change-for-everton-carabao-cup-clash",
+            "2026-10-29T18:00:00Z",
+            ("Hall", "Lewis Hall", "Wissa"),
+        ),
+        (
+            "pl_official",
+            "Liverpool",
+            "Isak will start",
+            (
+                "Premier League Bloom predicted line-ups, Matchweek 9 (30 Oct 2026): "
+                "Liverpool projected with Isak leading the line vs Arsenal as Iraola "
+                "restores first-choice attackers after cup rotation."
+            ),
+            PL_URL,
+            PL_PUB,
+            ("Isak",),
+        ),
+        (
+            "pl_official",
+            "Brighton",
+            "Groß will start",
+            (
+                "Premier League Bloom predicted line-ups, Matchweek 9 (30 Oct 2026): "
+                "Brighton projected with Groß in midfield away at Manchester City."
+            ),
+            PL_URL,
+            PL_PUB,
+            ("Groß", "Gross"),
+        ),
+        (
+            "everton_fc",
+            "Everton",
+            "Barry will start",
+            (
+                "Everton FC official team news (29 Oct 2026, cup): Thierno Barry "
+                "spearheaded the attack in the confirmed XI vs Newcastle; Branthwaite "
+                "sidelined concussion; Grealish unavailable (discipline). Barry remains "
+                "the projected league nine for Monday's rematch."
+            ),
+            "https://www.evertonfc.com/news/2026/october/29/everton-team-news-confirmed-for-newcastle-cup-clash/",
+            "2026-10-29T17:00:00Z",
+            ("Barry",),
+        ),
+    ]
+
+    n = 0
+    for source, club, headline, body, url, published, names in notes:
+        ids = find(club, *names)
+        if not ids:
+            print(f"  skip unresolved deep: {source} {club} {headline} {names}")
+            continue
+        # dedupe ids preserving order
+        seen: set[int] = set()
+        uniq: list[int] = []
+        for i in ids:
+            if i not in seen:
+                seen.add(i)
+                uniq.append(i)
+        doc = _packet(
+            source=source,
+            headline=headline,
+            body=body,
+            url=url,
+            published_at_utc=published,
+            club=club,
+            player_ids=uniq,
+        )
+        slug = doc["packet_id"].split(":")[-1]
+        fname = f"{source.replace('_', '-')}-gw09-{uniq[0]}-{slug}.json"
+        _write_packet(out_dir / fname, doc)
+        n += 1
+        # verify element exists
+        _ = els.get(uniq[0])
+    return n
+
+
 def compile_all_xmi(
     boot: dict[str, Any],
     hist: pd.DataFrame,
@@ -282,6 +562,8 @@ def compile_all_xmi(
     out_dir.mkdir(parents=True, exist_ok=True)
     n_g = write_guardian_packets(boot, out_dir)
     print(f"wrote {n_g} guardian packets → {out_dir}")
+    n_d = write_deep_desk_packets(boot, out_dir)
+    print(f"wrote {n_d} deep desk packets → {out_dir}")
 
     packets = load_gameweek_packets(
         GW,
@@ -411,10 +693,26 @@ def compile_all_xmi(
 
 
 def main() -> int:
+    import argparse
+
+    ap = argparse.ArgumentParser()
+    ap.add_argument(
+        "--reuse-cache",
+        action="store_true",
+        help="Reuse through-GW8 hist CSV and FFScout JSON; only rewrite packets + xmi",
+    )
+    args = ap.parse_args()
     boot = json.loads((ROOT / "data/live/bootstrap.json").read_text(encoding="utf-8"))
-    hist = append_gw8_history(boot)
-    ffs = pull_team_news(out_dir=ROOT / "data/scratch/ffscout_gw09")
-    print(f"FFScout clubs={ffs['n_clubs']}")
+    hist_path = ROOT / "data/scratch/player_gw_2026_27_through_gw08.csv"
+    ffs_path = ROOT / "data/scratch/ffscout_gw09/ffscout_team_news.json"
+    if args.reuse_cache and hist_path.is_file() and ffs_path.is_file():
+        hist = pd.read_csv(hist_path)
+        ffs = json.loads(ffs_path.read_text(encoding="utf-8"))
+        print(f"reused hist {hist_path.name} + FFS {ffs.get('n_clubs')} clubs")
+    else:
+        hist = append_gw8_history(boot)
+        ffs = pull_team_news(out_dir=ROOT / "data/scratch/ffscout_gw09")
+        print(f"FFScout clubs={ffs['n_clubs']}")
     compile_all_xmi(boot, hist, ffs)
     return 0
 

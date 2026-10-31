@@ -160,15 +160,15 @@
   },
   "xmi_path": "data/scratch/gw09_xmi_probe.csv",
   "history_scratch": "/workspace/data/scratch/player_gw_2026_27_through_gw08.csv",
-  "board_path": "/workspace/data/predictions/2026-27/gw09/numagent_board_20261031T075153Z.csv",
-  "board_t1_path": "/workspace/data/predictions/2026-27/gw09/numagent_board_t1_20261031T075153Z.csv",
+  "board_path": "/workspace/data/predictions/2026-27/gw09/numagent_board_20261031T080426Z.csv",
+  "board_t1_path": "/workspace/data/predictions/2026-27/gw09/numagent_board_t1_20261031T080426Z.csv",
   "held": [
     {
       "id": 1,
       "name": "Raya",
       "purchase": 61,
       "now_cost": 62,
-      "mu_post_t": 3.8061253895741802,
+      "mu_post_t": 3.8055626325159024,
       "xmi": 90.0
     },
     {
@@ -176,7 +176,7 @@
       "name": "Thomas",
       "purchase": 40,
       "now_cost": 40,
-      "mu_post_t": 1.0619319147529576,
+      "mu_post_t": 1.0710145244169063,
       "xmi": 39.833333333333336
     },
     {
@@ -184,7 +184,7 @@
       "name": "Hall",
       "purchase": 53,
       "now_cost": 53,
-      "mu_post_t": 4.652090676718833,
+      "mu_post_t": 4.601217151423146,
       "xmi": 90.0
     },
     {
@@ -192,7 +192,7 @@
       "name": "Affengruber",
       "purchase": 45,
       "now_cost": 45,
-      "mu_post_t": 4.318405233040989,
+      "mu_post_t": 4.328492952491989,
       "xmi": 90.0
     },
     {
@@ -200,7 +200,7 @@
       "name": "Murillo",
       "purchase": 55,
       "now_cost": 55,
-      "mu_post_t": 3.2111737757657552,
+      "mu_post_t": 3.2017179449248725,
       "xmi": 90.0
     },
     {
@@ -208,7 +208,7 @@
       "name": "Mbeumo",
       "purchase": 79,
       "now_cost": 79,
-      "mu_post_t": 4.112840521055195,
+      "mu_post_t": 4.177835463592013,
       "xmi": 90.0
     },
     {
@@ -216,7 +216,7 @@
       "name": "Rogers",
       "purchase": 76,
       "now_cost": 81,
-      "mu_post_t": 5.001403628836611,
+      "mu_post_t": 4.773801959404006,
       "xmi": 90.0
     },
     {
@@ -224,23 +224,23 @@
       "name": "Lewis-Potter",
       "purchase": 55,
       "now_cost": 55,
-      "mu_post_t": 4.506384504679792,
-      "xmi": 77.66666666666667
+      "mu_post_t": 4.341709990398801,
+      "xmi": 72.0
     },
     {
       "id": 183,
       "name": "Rudoni",
       "purchase": 49,
       "now_cost": 49,
-      "mu_post_t": 3.205619872832354,
-      "xmi": 83.0
+      "mu_post_t": 3.241963314229811,
+      "xmi": 78.33333333333333
     },
     {
       "id": 411,
       "name": "Haaland",
       "purchase": 158,
       "now_cost": 158,
-      "mu_post_t": 6.657443710670478,
+      "mu_post_t": 6.5687463296863795,
       "xmi": 90.0
     },
     {
@@ -248,7 +248,7 @@
       "name": "Wissa",
       "purchase": 62,
       "now_cost": 60,
-      "mu_post_t": 3.4823826225306886,
+      "mu_post_t": 3.42958655878223,
       "xmi": 65.0
     },
     {
@@ -256,7 +256,7 @@
       "name": "Verbruggen",
       "purchase": 45,
       "now_cost": 46,
-      "mu_post_t": 2.719232759803481,
+      "mu_post_t": 2.7196907020945456,
       "xmi": 90.0
     },
     {
@@ -264,7 +264,7 @@
       "name": "B.Fernandes",
       "purchase": 117,
       "now_cost": 117,
-      "mu_post_t": 4.414511857660466,
+      "mu_post_t": 4.478003377304462,
       "xmi": 90.0
     },
     {
@@ -272,7 +272,7 @@
       "name": "Khalaili",
       "purchase": 50,
       "now_cost": 50,
-      "mu_post_t": 2.675673409722179,
+      "mu_post_t": 2.6581117059506956,
       "xmi": 90.0
     },
     {
@@ -280,7 +280,7 @@
       "name": "Barry",
       "purchase": 57,
       "now_cost": 56,
-      "mu_post_t": 4.723249795985238,
+      "mu_post_t": 4.71915398121699,
       "xmi": 90.0
     }
   ],
@@ -289,23 +289,23 @@
     "n_xi": 11,
     "captain_id": "411",
     "formation": "1-3-4-3",
-    "objective": 53.99359422435602,
-    "xi_mu": 51.336150513685546,
-    "captain_mu": 6.657443710670478,
+    "objective": 53.7880632380293,
+    "xi_mu": 51.219316908342925,
+    "captain_mu": 6.5687463296863795,
     "n_transfers": 2,
     "hits": 1,
     "hit_points": 4,
-    "bank_after": 24,
+    "bank_after": 19,
     "ft_after": 1,
     "sold": [
       "426",
       "464"
     ],
     "bought": [
-      "124",
+      "15",
       "379"
     ],
-    "cost": 982,
+    "cost": 987,
     "mu_col": "mu_post",
     "status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
     "label": "L4",
@@ -315,7 +315,7 @@
       "Wissa"
     ],
     "bought_names": [
-      "Gro\u00df",
+      "\u00d8degaard",
       "Isak"
     ],
     "xi": [
@@ -324,7 +324,15 @@
         "name": "Raya",
         "position": "GKP",
         "club": "Arsenal",
-        "mu_post": 3.8061253895741802,
+        "mu_post": 3.8055626325159024,
+        "captain": false
+      },
+      {
+        "player_id": "15",
+        "name": "\u00d8degaard",
+        "position": "MID",
+        "club": "Arsenal",
+        "mu_post": 4.889153949078695,
         "captain": false
       },
       {
@@ -332,15 +340,7 @@
         "name": "Lewis-Potter",
         "position": "MID",
         "club": "Brentford",
-        "mu_post": 4.506384504679792,
-        "captain": false
-      },
-      {
-        "player_id": "124",
-        "name": "Gro\u00df",
-        "position": "MID",
-        "club": "Brighton",
-        "mu_post": 4.786846934651966,
+        "mu_post": 4.341709990398801,
         "captain": false
       },
       {
@@ -348,7 +348,7 @@
         "name": "Rogers",
         "position": "MID",
         "club": "Chelsea",
-        "mu_post": 5.001403628836611,
+        "mu_post": 4.773801959404006,
         "captain": false
       },
       {
@@ -356,7 +356,7 @@
         "name": "Barry",
         "position": "FWD",
         "club": "Everton",
-        "mu_post": 4.723249795985238,
+        "mu_post": 4.71915398121699,
         "captain": false
       },
       {
@@ -364,7 +364,7 @@
         "name": "Affengruber",
         "position": "DEF",
         "club": "Fulham",
-        "mu_post": 4.318405233040989,
+        "mu_post": 4.328492952491989,
         "captain": false
       },
       {
@@ -372,7 +372,7 @@
         "name": "Isak",
         "position": "FWD",
         "club": "Liverpool",
-        "mu_post": 5.560186342706497,
+        "mu_post": 5.811924553610128,
         "captain": false
       },
       {
@@ -380,7 +380,7 @@
         "name": "Haaland",
         "position": "FWD",
         "club": "Man City",
-        "mu_post": 6.657443710670478,
+        "mu_post": 6.5687463296863795,
         "captain": true
       },
       {
@@ -388,7 +388,7 @@
         "name": "Mbeumo",
         "position": "MID",
         "club": "Man Utd",
-        "mu_post": 4.112840521055195,
+        "mu_post": 4.177835463592013,
         "captain": false
       },
       {
@@ -396,7 +396,7 @@
         "name": "Hall",
         "position": "DEF",
         "club": "Newcastle",
-        "mu_post": 4.652090676718833,
+        "mu_post": 4.601217151423146,
         "captain": false
       },
       {
@@ -404,7 +404,7 @@
         "name": "Murillo",
         "position": "DEF",
         "club": "Nott'm Forest",
-        "mu_post": 3.2111737757657552,
+        "mu_post": 3.2017179449248725,
         "captain": false
       }
     ],
@@ -413,77 +413,45 @@
         "player_id": "109",
         "name": "Verbruggen",
         "position": "GKP",
-        "mu_post": 2.719232759803481
+        "mu_post": 2.7196907020945456
       },
       {
         "player_id": "173",
         "name": "Thomas",
         "position": "DEF",
-        "mu_post": 1.0619319147529576
+        "mu_post": 1.0710145244169063
       },
       {
         "player_id": "183",
         "name": "Rudoni",
         "position": "MID",
-        "mu_post": 3.205619872832354
+        "mu_post": 3.241963314229811
       },
       {
         "player_id": "588",
         "name": "Khalaili",
         "position": "DEF",
-        "mu_post": 2.675673409722179
+        "mu_post": 2.6581117059506956
       }
     ],
-    "horizon": 12,
+    "horizon": 2,
     "gamma": 1.0,
-    "horizon_objective": 721.262936942885,
+    "horizon_objective": 119.02689741075355,
     "week_xi_mu": [
-      51.336150513685546,
-      57.66586519469059,
-      52.679190166833564,
-      48.73315719922747,
-      53.537839910862225,
-      53.89906166657918,
-      53.43879728225748,
-      52.98334941025307,
-      53.242597046727205,
-      54.022586000344226,
-      55.05932379144142,
-      53.537839910862225
+      51.219316908342925,
+      57.889031250060036
     ],
     "week_captain_mu": [
-      6.657443710670478,
-      7.349802922664222,
-      8.20927354642772,
-      5.995099198084132,
-      6.793250745488242,
-      6.4842622284615175,
-      6.960584272110211,
-      7.451384771357778,
-      6.932763584163928,
-      7.063012496270922,
-      8.437050627933292,
-      6.793250745488243
+      6.5687463296863795,
+      7.349802922664222
     ],
     "status_horizon": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
     "centreline": {
       "protocol": "l3_centreline_forecast",
-      "horizon": 12,
-      "opta_gws": [
-        11,
-        12,
-        13,
-        14,
-        15,
-        16,
-        17,
-        18,
-        19,
-        20
-      ],
-      "opta_e0": "E0_2627.csv",
+      "horizon": 2,
+      "opta_gws": [],
       "near": "priced_odds_t_t1",
-      "far": "opta_blind"
+      "far": "none"
     }
   },
   "l3": {
@@ -491,27 +459,27 @@
     "n_xi": 11,
     "captain_id": "411",
     "formation": "1-3-4-3",
-    "objective": 58.00464967002987,
-    "xi_mu": 51.34720595935939,
-    "captain_mu": 6.657443710670478,
+    "objective": 57.50727942006405,
+    "xi_mu": 50.938533090377675,
+    "captain_mu": 6.5687463296863795,
     "n_transfers": 1,
     "hits": 0,
     "hit_points": 0,
-    "bank_after": 1,
+    "bank_after": 6,
     "ft_after": 1,
     "sold": [
-      "588"
+      "472"
     ],
     "bought": [
       "112"
     ],
-    "cost": 1005,
+    "cost": 1000,
     "mu_col": "mu_post",
     "status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
     "label": "L3",
     "captain_name": "Haaland",
     "sold_names": [
-      "Khalaili"
+      "Murillo"
     ],
     "bought_names": [
       "Van Hecke"
@@ -522,7 +490,7 @@
         "name": "Raya",
         "position": "GKP",
         "club": "Arsenal",
-        "mu_post": 3.8061253895741802,
+        "mu_post": 3.8055626325159024,
         "captain": false
       },
       {
@@ -530,7 +498,7 @@
         "name": "Lewis-Potter",
         "position": "MID",
         "club": "Brentford",
-        "mu_post": 4.506384504679792,
+        "mu_post": 4.341709990398801,
         "captain": false
       },
       {
@@ -538,7 +506,7 @@
         "name": "Rogers",
         "position": "MID",
         "club": "Chelsea",
-        "mu_post": 5.001403628836611,
+        "mu_post": 4.773801959404006,
         "captain": false
       },
       {
@@ -546,7 +514,7 @@
         "name": "Barry",
         "position": "FWD",
         "club": "Everton",
-        "mu_post": 4.723249795985238,
+        "mu_post": 4.71915398121699,
         "captain": false
       },
       {
@@ -554,7 +522,7 @@
         "name": "Affengruber",
         "position": "DEF",
         "club": "Fulham",
-        "mu_post": 4.318405233040989,
+        "mu_post": 4.328492952491989,
         "captain": false
       },
       {
@@ -562,7 +530,7 @@
         "name": "Haaland",
         "position": "FWD",
         "club": "Man City",
-        "mu_post": 6.657443710670478,
+        "mu_post": 6.5687463296863795,
         "captain": true
       },
       {
@@ -570,7 +538,7 @@
         "name": "B.Fernandes",
         "position": "MID",
         "club": "Man Utd",
-        "mu_post": 4.414511857660466,
+        "mu_post": 4.478003377304462,
         "captain": false
       },
       {
@@ -578,7 +546,7 @@
         "name": "Mbeumo",
         "position": "MID",
         "club": "Man Utd",
-        "mu_post": 4.112840521055195,
+        "mu_post": 4.177835463592013,
         "captain": false
       },
       {
@@ -586,7 +554,7 @@
         "name": "Hall",
         "position": "DEF",
         "club": "Newcastle",
-        "mu_post": 4.652090676718833,
+        "mu_post": 4.601217151423146,
         "captain": false
       },
       {
@@ -594,7 +562,7 @@
         "name": "Wissa",
         "position": "FWD",
         "club": "Newcastle",
-        "mu_post": 3.4823826225306886,
+        "mu_post": 3.42958655878223,
         "captain": false
       },
       {
@@ -602,7 +570,7 @@
         "name": "Van Hecke",
         "position": "DEF",
         "club": "Spurs",
-        "mu_post": 5.672368018606917,
+        "mu_post": 5.714422693561758,
         "captain": false
       }
     ],
@@ -611,25 +579,25 @@
         "player_id": "109",
         "name": "Verbruggen",
         "position": "GKP",
-        "mu_post": 2.719232759803481
+        "mu_post": 2.7196907020945456
       },
       {
         "player_id": "173",
         "name": "Thomas",
         "position": "DEF",
-        "mu_post": 1.0619319147529576
+        "mu_post": 1.0710145244169063
       },
       {
         "player_id": "183",
         "name": "Rudoni",
         "position": "MID",
-        "mu_post": 3.205619872832354
+        "mu_post": 3.241963314229811
       },
       {
-        "player_id": "472",
-        "name": "Murillo",
+        "player_id": "588",
+        "name": "Khalaili",
         "position": "DEF",
-        "mu_post": 3.2111737757657552
+        "mu_post": 2.6581117059506956
       }
     ]
   },
@@ -638,23 +606,23 @@
     "n_xi": 11,
     "captain_id": "411",
     "formation": "1-3-4-3",
-    "objective": 53.99359422435602,
-    "xi_mu": 51.336150513685546,
-    "captain_mu": 6.657443710670478,
+    "objective": 53.7880632380293,
+    "xi_mu": 51.219316908342925,
+    "captain_mu": 6.5687463296863795,
     "n_transfers": 2,
     "hits": 1,
     "hit_points": 4,
-    "bank_after": 24,
+    "bank_after": 19,
     "ft_after": 1,
     "sold": [
       "426",
       "464"
     ],
     "bought": [
-      "124",
+      "15",
       "379"
     ],
-    "cost": 982,
+    "cost": 987,
     "mu_col": "mu_post",
     "status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
     "label": "L4",
@@ -664,7 +632,7 @@
       "Wissa"
     ],
     "bought_names": [
-      "Gro\u00df",
+      "\u00d8degaard",
       "Isak"
     ],
     "xi": [
@@ -673,7 +641,15 @@
         "name": "Raya",
         "position": "GKP",
         "club": "Arsenal",
-        "mu_post": 3.8061253895741802,
+        "mu_post": 3.8055626325159024,
+        "captain": false
+      },
+      {
+        "player_id": "15",
+        "name": "\u00d8degaard",
+        "position": "MID",
+        "club": "Arsenal",
+        "mu_post": 4.889153949078695,
         "captain": false
       },
       {
@@ -681,15 +657,7 @@
         "name": "Lewis-Potter",
         "position": "MID",
         "club": "Brentford",
-        "mu_post": 4.506384504679792,
-        "captain": false
-      },
-      {
-        "player_id": "124",
-        "name": "Gro\u00df",
-        "position": "MID",
-        "club": "Brighton",
-        "mu_post": 4.786846934651966,
+        "mu_post": 4.341709990398801,
         "captain": false
       },
       {
@@ -697,7 +665,7 @@
         "name": "Rogers",
         "position": "MID",
         "club": "Chelsea",
-        "mu_post": 5.001403628836611,
+        "mu_post": 4.773801959404006,
         "captain": false
       },
       {
@@ -705,7 +673,7 @@
         "name": "Barry",
         "position": "FWD",
         "club": "Everton",
-        "mu_post": 4.723249795985238,
+        "mu_post": 4.71915398121699,
         "captain": false
       },
       {
@@ -713,7 +681,7 @@
         "name": "Affengruber",
         "position": "DEF",
         "club": "Fulham",
-        "mu_post": 4.318405233040989,
+        "mu_post": 4.328492952491989,
         "captain": false
       },
       {
@@ -721,7 +689,7 @@
         "name": "Isak",
         "position": "FWD",
         "club": "Liverpool",
-        "mu_post": 5.560186342706497,
+        "mu_post": 5.811924553610128,
         "captain": false
       },
       {
@@ -729,7 +697,7 @@
         "name": "Haaland",
         "position": "FWD",
         "club": "Man City",
-        "mu_post": 6.657443710670478,
+        "mu_post": 6.5687463296863795,
         "captain": true
       },
       {
@@ -737,7 +705,7 @@
         "name": "Mbeumo",
         "position": "MID",
         "club": "Man Utd",
-        "mu_post": 4.112840521055195,
+        "mu_post": 4.177835463592013,
         "captain": false
       },
       {
@@ -745,7 +713,7 @@
         "name": "Hall",
         "position": "DEF",
         "club": "Newcastle",
-        "mu_post": 4.652090676718833,
+        "mu_post": 4.601217151423146,
         "captain": false
       },
       {
@@ -753,7 +721,7 @@
         "name": "Murillo",
         "position": "DEF",
         "club": "Nott'm Forest",
-        "mu_post": 3.2111737757657552,
+        "mu_post": 3.2017179449248725,
         "captain": false
       }
     ],
@@ -762,77 +730,45 @@
         "player_id": "109",
         "name": "Verbruggen",
         "position": "GKP",
-        "mu_post": 2.719232759803481
+        "mu_post": 2.7196907020945456
       },
       {
         "player_id": "173",
         "name": "Thomas",
         "position": "DEF",
-        "mu_post": 1.0619319147529576
+        "mu_post": 1.0710145244169063
       },
       {
         "player_id": "183",
         "name": "Rudoni",
         "position": "MID",
-        "mu_post": 3.205619872832354
+        "mu_post": 3.241963314229811
       },
       {
         "player_id": "588",
         "name": "Khalaili",
         "position": "DEF",
-        "mu_post": 2.675673409722179
+        "mu_post": 2.6581117059506956
       }
     ],
-    "horizon": 12,
+    "horizon": 2,
     "gamma": 1.0,
-    "horizon_objective": 721.262936942885,
+    "horizon_objective": 119.02689741075355,
     "week_xi_mu": [
-      51.336150513685546,
-      57.66586519469059,
-      52.679190166833564,
-      48.73315719922747,
-      53.537839910862225,
-      53.89906166657918,
-      53.43879728225748,
-      52.98334941025307,
-      53.242597046727205,
-      54.022586000344226,
-      55.05932379144142,
-      53.537839910862225
+      51.219316908342925,
+      57.889031250060036
     ],
     "week_captain_mu": [
-      6.657443710670478,
-      7.349802922664222,
-      8.20927354642772,
-      5.995099198084132,
-      6.793250745488242,
-      6.4842622284615175,
-      6.960584272110211,
-      7.451384771357778,
-      6.932763584163928,
-      7.063012496270922,
-      8.437050627933292,
-      6.793250745488243
+      6.5687463296863795,
+      7.349802922664222
     ],
     "status_horizon": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
     "centreline": {
       "protocol": "l3_centreline_forecast",
-      "horizon": 12,
-      "opta_gws": [
-        11,
-        12,
-        13,
-        14,
-        15,
-        16,
-        17,
-        18,
-        19,
-        20
-      ],
-      "opta_e0": "E0_2627.csv",
+      "horizon": 2,
+      "opta_gws": [],
       "near": "priced_odds_t_t1",
-      "far": "opta_blind"
+      "far": "none"
     }
   }
 }

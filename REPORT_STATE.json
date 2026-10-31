@@ -1,33 +1,27 @@
 {
-  "task": "l4_component_horizon_climb",
+  "task": "gw09_l4_priced_h2_live_pick",
   "status": "done",
-  "as_of_utc": "2026-10-30T23:01:46Z",
-  "change": "Gated L4 H=12 vs H=2 climbs with component-only \u03bc",
-  "verdicts": {
-    "xp_goals": {
-      "verdict": "promote",
-      "mean": 2.691666666666667,
-      "lo": 0.5833333333333334,
-      "hi": 4.734166666666666
-    },
-    "xp_assists": {
-      "verdict": "promote",
-      "mean": 2.2916666666666665,
-      "lo": 0.5745833333333333,
-      "hi": 4.1170833333333325
-    },
-    "xp_cs": {
-      "verdict": "inconclusive",
-      "mean": 0.26666666666666666,
-      "lo": -2.2754166666666666,
-      "hi": 2.7583333333333333
-    },
-    "xp_gc": {
-      "verdict": "inconclusive",
-      "mean": -0.8583333333333333,
-      "lo": -2.3589583333333333,
-      "hi": 0.7583333333333333
-    }
+  "as_of_utc": "2026-10-31T08:10:00Z",
+  "change": "GW9 deadline pick on priced L4 H=2 only (no Opta far); deep whitelist team-news packets → xmi",
+  "deadline_utc": "2026-10-31T11:00:00Z",
+  "method": {
+    "primary": "L4",
+    "centreline_horizon": 2,
+    "opta_far": false,
+    "max_hits": 1,
+    "odds": "data/scratch/gw09_odds_bookie_depth2.json",
+    "xmi": "data/scratch/gw09_xmi_probe.csv"
   },
-  "report": "reports/l4_component_horizon_climb_gate.md"
+  "recommendation": {
+    "transfers": 2,
+    "hits": 1,
+    "sold": ["B.Fernandes", "Wissa"],
+    "bought": ["Ødegaard", "Isak"],
+    "captain": "Haaland",
+    "vice_suggested": "Isak",
+    "horizon_objective": 119.03,
+    "l3_contrast": "Murillo → Van Hecke (1T)"
+  },
+  "report": "reports/numagent_live_pick_gw09.md",
+  "pick_json": "data/predictions/2026-27/gw09/numagent_pick.json"
 }

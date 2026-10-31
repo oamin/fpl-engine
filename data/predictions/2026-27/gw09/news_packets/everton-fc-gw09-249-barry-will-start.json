@@ -1,0 +1,13 @@
+{
+  "packet_id": "everton_fc:gw09:barry-will-start",
+  "source": "everton_fc",
+  "url": "https://www.evertonfc.com/news/2026/october/29/everton-team-news-confirmed-for-newcastle-cup-clash/",
+  "published_at_utc": "2026-10-29T17:00:00Z",
+  "club": "Everton",
+  "player_ids": [
+    249
+  ],
+  "headline": "Barry will start",
+  "body": "Everton FC official team news (29 Oct 2026, cup): Thierno Barry spearheaded the attack in the confirmed XI vs Newcastle; Branthwaite sidelined concussion; Grealish unavailable (discipline). Barry remains the projected league nine for Monday's rematch.",
+  "sha256": "71e8556e1c46de7dbdefbb14326dfce77558a2a5ff0a07d6c940087f22a49c8d"
+}

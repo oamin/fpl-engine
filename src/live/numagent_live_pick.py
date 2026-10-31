@@ -734,7 +734,19 @@ def run_pick(
     if use_l4 and work_t1 is not None:
         pools: list[pd.DataFrame] = [work_t, work_t1]
         H = max(BOOKIE_DEPTH, int(centreline_horizon))
-        if H > BOOKIE_DEPTH:
+        if H <= BOOKIE_DEPTH:
+            centreline_meta = {
+                "protocol": "l3_centreline_forecast",
+                "horizon": BOOKIE_DEPTH,
+                "opta_gws": [],
+                "near": "priced_odds_t_t1",
+                "far": "none",
+            }
+            print(
+                f"L4 centreline horizon={BOOKIE_DEPTH} (priced t:t+1 only; no Opta far)",
+                flush=True,
+            )
+        elif H > BOOKIE_DEPTH:
             try:
                 from src.models.opta_gf_ga_horizon import (
                     league_avg_gf,
@@ -999,8 +1011,16 @@ def write_report(doc: dict[str, Any], path: Path) -> None:
             if (doc.get("score_meta_t") or {}).get("use_props")
             else "- Props: off (AH+OU+BTTS pots only)."
         ),
-        "- Week t minutes: xmi probe then rolling3; t+1 / Opta far: rolling3 / frozen side.",
-        "- Live near book: Odds API AH+OU+BTTS (t and t+1); far = Opta blind.",
+        (
+            "- Week t minutes: xmi probe then rolling3; t+1: rolling3 (as-of)."
+            if not cl.get("opta_gws")
+            else "- Week t minutes: xmi probe then rolling3; t+1 / Opta far: rolling3 / frozen side."
+        ),
+        (
+            "- Live near book: Odds API AH+OU+BTTS (t and t+1); no Opta far."
+            if not cl.get("opta_gws")
+            else "- Live near book: Odds API AH+OU+BTTS (t and t+1); far = Opta blind."
+        ),
         "",
     ]
     path.parent.mkdir(parents=True, exist_ok=True)
