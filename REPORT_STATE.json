@@ -1,16 +1,8 @@
 {
-  "task": "l4_opta_joint_path_deadline_causal_minutes",
-  "status": "done",
-  "as_of_utc": "2026-10-31T19:34:38Z",
-  "change": "Gated deadline-causal minutes climb on joint path + captain",
-  "verdicts": {
-    "oracle_t_minus_asof_all": {
-      "verdict": "promote",
-      "mean": 2.066666666666667,
-      "lo": 0.325,
-      "hi": 3.875
-    }
-  },
-  "report": "reports/l4_opta_joint_path_deadline_causal_minutes_gate.md",
-  "elapsed_s": 0.0013470649719238281
+  "task": "l4_opta_joint_path_mu_band_roll",
+  "status": "pre_registered_running",
+  "as_of_utc": "2026-10-31T20:00:00Z",
+  "change": "Pre-register μ-band strand roll (N=8, ±2σ, σ decays with μ); smoke OK; 4-season climb launching",
+  "protocol": "l4_opta_joint_path_mu_band_roll",
+  "smoke_elapsed_s": 71.0
 }

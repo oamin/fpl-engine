@@ -387,6 +387,13 @@ shares ≈OK when the side scores). Assists miss ≈ **pot** (≈0.72) **and** f
 `sA` on the hot μ tail (share factor ≈0.85). Do not chase goal-share retunes
 for this bias first. Report: `reports/top_mid_fwd_ga_mismatch.md`.
 
+## Parked — live multi-GW minutes / xmi propagation (2026-10-31)
+
+Live still: week-t `xmi`, t+1 rolling3, far as-of — news “out N weeks” does
+not yet carry across the horizon. Deadline-causal ceiling (+2.07/GW) shows
+week-t minutes value; live minutes-layer redesign deferred until L4+Opta
+strategiser is finely tuned. Reopen with a dated protocol arm after that.
+
 ## Noted — deadline-causal oracle@t promote = ceiling (2026-10-31)
 
 `l4_opta_joint_path_deadline_causal_minutes`: oracle week-0 minutes vs
