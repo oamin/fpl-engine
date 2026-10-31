@@ -1,0 +1,14 @@
+{
+  "packet_id": "guardian:gw09:joao-pedro-listed-out",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/30/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-30T16:19:00Z",
+  "club": "Chelsea",
+  "player_ids": [
+    165,
+    165
+  ],
+  "headline": "Joao Pedro listed out",
+  "body": "The Guardian team news, 30 Oct 2026: Joao Pedro listed out (Chelsea) \u2014 injured (thigh, unknown).",
+  "sha256": "918184bd167986490b5506a9d89882cbe637c27903b76344385c5ad692f64886"
+}

@@ -1,0 +1,14 @@
+{
+  "packet_id": "guardian:gw09:sarr-listed-out",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/30/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-30T16:19:00Z",
+  "club": "Crystal Palace",
+  "player_ids": [
+    208,
+    208
+  ],
+  "headline": "Sarr listed out",
+  "body": "The Guardian team news, 30 Oct 2026: Sarr listed out (Crystal Palace) \u2014 injured (groin).",
+  "sha256": "228893d3f3482254498b1f0f50770db5d6b7e030b61854a38a6392664a6ae5a2"
+}

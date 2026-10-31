@@ -1,0 +1,14 @@
+{
+  "packet_id": "guardian:gw09:bruno-fernandes-will-start",
+  "source": "guardian",
+  "url": "https://www.theguardian.com/football/2026/oct/30/premier-league-team-news-predicted-lineups-for-the-weekend-action",
+  "published_at_utc": "2026-10-30T16:19:00Z",
+  "club": "Man Utd",
+  "player_ids": [
+    426,
+    426
+  ],
+  "headline": "Bruno Fernandes will start",
+  "body": "The Guardian team news, 30 Oct 2026: Bruno Fernandes will start (Man Utd) \u2014 Carrick expected to restore captain to XI after unused sub last week.",
+  "sha256": "ab1dbd418729abde1aa6c4c73b28bb9bc070303695ca8a43b7ca2336de7b66d9"
+}

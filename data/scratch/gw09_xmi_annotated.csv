@@ -1,0 +1,670 @@
+player_id,gw,xmi,xmi_sigma,tag,source,web_name,status,chance,news,lineup_role
+1,9,90.0,0.0,lineup_xi,lineup:xi,Raya,a,,,xi
+2,9,0.0,0.0,rolling avg,rolling,Arrizabalaga,a,,,
+3,9,0.0,0.0,rolling avg,rolling,Meslier,a,,,
+4,9,90.0,0.0,lineup_xi,lineup:xi,Gabriel,a,,,xi
+5,9,27.666666666666668,29.67041174863155,rolling avg,rolling,J.Timber,a,100.0,,
+6,9,0.0,0.0,injured,override:hard_flag,Saliba,i,0.0,Back injury - Unknown return date,
+7,9,22.333333333333332,38.68246803570493,rolling avg,rolling,Lewis-Skelly,a,,,
+8,9,50.5,39.25981830489455,injured,override:injured,Calafiori,d,75.0,Hip injury - 75% chance of playing,xi
+9,9,0.0,0.0,rolling avg,rolling,Hincapie,a,100.0,,
+10,9,77.5,46.45786621588785,lineup_xi,lineup:xi,White,a,100.0,,xi
+11,9,0.0,0.0,rolling avg,rolling,Mosquera,a,100.0,,
+12,9,0.0,0.0,injured,override:hard_flag,Saka,i,0.0,Thigh injury - Unknown return date,
+13,9,64.75,6.350852961085883,injured,override:injured,Rice,d,75.0,Unspecified injury - 75% chance of playing,xi
+14,9,65.0,31.04834939252005,lineup_xi,lineup:xi,Eze,a,,,xi
+15,9,84.0,10.392304845413264,lineup_xi,lineup:xi,Ødegaard,a,,,xi
+16,9,33.75,45.0,injured,override:injured,Madueke,d,50.0,Ankle injury - 50% chance of playing,xi
+17,9,40.333333333333336,23.28805129961142,rolling avg,rolling,Merino,a,,,
+18,9,0.0,0.0,transferred,override:hard_flag,Martinelli,u,0.0,Has joined Al Hilal permanently,
+19,9,13.333333333333334,15.275252316519467,rolling avg,rolling,Zubimendi,a,100.0,,
+20,9,0.0,0.0,injured,override:hard_flag,Dowman,s,0.0,Suspended until 29 Nov,
+22,9,0.0,0.0,transferred,override:hard_flag,Nwaneri,u,0.0,Has joined Borussia Dortmund on loan for the rest of the season,
+23,9,0.0,0.0,transferred,override:hard_flag,Fábio Vieira,u,0.0,Has joined Hamburger SV permanently,
+24,9,0.0,0.0,injured,override:hard_flag,Nelson,u,0.0,has departed the club as a free agent.,
+25,9,36.0,27.073972741361768,rolling avg,rolling,Gyökeres,a,,,
+26,9,65.0,34.39476704383968,lineup_xi,lineup:xi,Havertz,a,100.0,,xi
+27,9,0.0,0.0,transferred,override:hard_flag,G.Jesus,u,0.0,Has joined FC Barcelona permanently,
+31,9,90.0,0.0,lineup_xi,lineup:xi,Konsa,a,100.0,,xi
+452,9,65.0,23.28805129961142,lineup_xi,lineup:xi,Bruno G.,a,100.0,,xi
+557,9,54.0,41.569219381653056,injured,override:injured,Tzolis,d,75.0,Hamstring injury - 75% chance of playing,
+29,9,0.0,0.0,rolling avg,rolling,M.Bizot,a,100.0,,
+30,9,0.0,0.0,transferred,override:hard_flag,Digne,u,0.0,Has joined Paris Saint-Germain permanently,
+32,9,75.0,25.98076211353316,lineup_xi,lineup:xi,Cash,a,100.0,,xi
+33,9,60.0,51.96152422706632,rolling avg,rolling,Mings,a,,,
+34,9,65.0,48.6449723335653,lineup_xi,lineup:xi,Pau,a,100.0,,xi
+35,9,0.0,0.0,rolling avg,rolling,Bogarde,a,,,
+36,9,90.0,51.96152422706632,lineup_xi,lineup:xi,Maatsen,a,100.0,,xi
+37,9,90.0,0.0,lineup_xi,lineup:xi,Lindelöf,a,,,xi
+38,9,0.0,0.0,transferred,override:hard_flag,A.García,u,0.0,Has joined Getafe on loan for the rest of the season,
+39,9,0.0,0.0,transferred,override:hard_flag,Nedeljkovic,u,0.0,Has joined Rangers on loan for the rest of the season,
+41,9,61.666666666666664,33.97548135543238,rolling avg,rolling,Buendía,a,,,
+44,9,0.0,0.0,transferred,override:hard_flag,Bailey,u,0.0,Has joined Olympiakos permanently,
+45,9,65.0,19.008769905844336,lineup_xi,lineup:xi,McGinn,a,,,xi
+46,9,16.0,9.16515138991168,rolling avg,rolling,Barkley,a,100.0,,
+47,9,87.66666666666667,4.041451884327381,lineup_xi,lineup:xi,Kamara,a,100.0,,xi
+48,9,0.0,0.0,injured,override:hard_flag,Onana,i,0.0,Knee injury - Unknown return date,
+49,9,0.0,0.0,transferred,override:hard_flag,Iling Jr,u,0.0,Has joined Bolton Wanderers on loan for the rest of the season,
+50,9,0.0,0.0,rolling avg,rolling,Burrowes,a,,,
+51,9,6.0,10.392304845413264,rolling avg,rolling,George Hemmings,a,100.0,,
+52,9,34.333333333333336,30.43572462310259,rolling avg,rolling,Alysson,a,100.0,,
+53,9,69.0,3.4641016151377544,lineup_xi,lineup:xi,Manzambi,a,100.0,,xi
+54,9,80.66666666666667,9.50438495292217,lineup_xi,lineup:xi,Gomes,a,100.0,,xi
+55,9,0.0,0.0,transferred,override:hard_flag,Watkins,u,0.0,Has joined Al Hilal permanently,
+56,9,0.6666666666666666,1.1547005383792517,rolling avg,rolling,Abraham,a,100.0,,
+160,9,0.0,0.0,rolling avg,rolling,Garnacho,a,,,
+166,9,86.0,4.58257569495584,lineup_xi,lineup:xi,N.Jackson,a,,,xi
+582,9,2.6666666666666665,4.618802153517007,rolling avg,rolling,Madjo,a,100.0,,
+596,9,0.0,0.0,injured,override:hard_flag,Ruggeri,i,0.0,Hamstring injury - Expected back 2 Jan,
+597,9,90.0,0.0,lineup_xi,lineup:xi,Suzuki,a,,,xi
+606,9,0.0,0.0,rolling avg,rolling,Rowe,a,,,
+607,9,0.0,0.0,transferred,override:hard_flag,Lynch,u,0.0,Has joined Oxford United on loan until January,
+611,9,0.0,0.0,injured,override:hard_flag,Wan-Bissaka,i,0.0,Hamstring injury - Expected back 21 Nov,
+618,9,8.666666666666666,9.018499505645789,rolling avg,rolling,Goretzka,a,100.0,,
+630,9,0.0,0.0,rolling avg,rolling,Harwood-Bellis,a,,,
+631,9,18.333333333333332,12.503332889007368,rolling avg,rolling,Mbaye,a,,,
+667,9,0.0,0.0,rolling avg,rolling,Wright,a,,,
+57,9,90.0,0.0,lineup_xi,lineup:xi,Petrović,a,,,xi
+58,9,0.0,0.0,rolling avg,rolling,Forster,a,,,
+59,9,0.0,0.0,transferred,override:hard_flag,Dennis,u,0.0,Has joined MK Dons permanently,
+60,9,90.0,0.0,lineup_xi,lineup:xi,Hill,a,,,xi
+61,9,90.0,0.0,lineup_xi,lineup:xi,Truffert,a,,,xi
+62,9,1.3333333333333333,1.5275252316519468,rolling avg,rolling,Diakité,a,,,
+63,9,0.0,0.0,injured,override:hard_flag,Milosavljević,i,0.0,Thigh injury - Expected back 31 Oct,
+64,9,83.66666666666667,8.504900548115383,lineup_xi,lineup:xi,Smith,a,,,xi
+65,9,0.0,0.0,injured,override:hard_flag,J.Araujo,i,0.0,Thigh injury - Unknown return date,
+66,9,0.0,0.0,rolling avg,rolling,Soler,a,100.0,,
+67,9,88.33333333333333,1.5275252316519468,lineup_xi,lineup:xi,Rayan,a,,,xi
+68,9,79.33333333333333,6.110100926607787,lineup_xi,lineup:xi,Tavernier,a,,,xi
+69,9,0.0,0.0,injured,override:hard_flag,Scott,i,0.0,Thigh injury - Expected back 21 Nov,
+70,9,65.0,31.04834939252005,lineup_xi,lineup:xi,Kluivert,a,100.0,,xi
+71,9,65.0,31.0,lineup_xi,lineup:xi,Cook,a,,,xi
+72,9,10.0,14.730919862656235,rolling avg,rolling,Gannon-Doak,a,,,
+73,9,88.33333333333333,1.5275252316519468,lineup_xi,lineup:xi,Adams,a,100.0,,xi
+74,9,5.0,8.660254037844387,rolling avg,rolling,Brooks,a,100.0,,
+75,9,59.666666666666664,39.50105483823607,rolling avg,rolling,Christie,a,100.0,,
+76,9,0.0,0.0,injured,override:hard_flag,Tóth.A,i,0.0,Hamstring injury - Unknown return date,
+77,9,4.666666666666667,5.686240703077327,rolling avg,rolling,Adli,a,100.0,,
+78,9,1.0,1.7320508075688772,rolling avg,rolling,Kroupi.Jr,a,100.0,,
+79,9,84.66666666666667,6.110100926607787,lineup_xi,lineup:xi,Evanilson,a,,,xi
+80,9,0.0,0.0,transferred,override:hard_flag,Enes Ünal,u,0.0,Has joined Getafe permanently,
+81,9,3.6666666666666665,6.3508529610858835,rolling avg,rolling,Rodríguez,a,100.0,,
+566,9,90.0,0.0,lineup_xi,lineup:xi,Silva,a,,,xi
+573,9,0.0,0.0,rolling avg,rolling,Sanchez,a,,,
+608,9,5.0,8.660254037844387,rolling avg,rolling,Jebbison,a,,,
+615,9,0.0,0.0,rolling avg,rolling,Di Gregorio,a,,,
+82,9,90.0,0.0,lineup_xi,lineup:xi,Kelleher,a,,,xi
+83,9,0.0,0.0,rolling avg,rolling,Valdimarsson,a,,,
+84,9,0.0,0.0,rolling avg,rolling,Collins,a,100.0,,
+85,9,80.0,47.258156262526086,lineup_xi,lineup:xi,Van den Berg,a,100.0,,xi
+86,9,77.66666666666667,2.0816659994661326,lineup_xi,lineup:xi,Lewis-Potter,a,,,xi
+87,9,90.0,0.0,lineup_xi,lineup:xi,Ajer,a,,,xi
+88,9,82.66666666666667,12.701705922171767,lineup_xi,lineup:xi,Kayode,a,,,xi
+89,9,0.0,0.0,injured,override:hard_flag,Henry,i,0.0,Hip injury - Unknown return date,
+90,9,33.666666666666664,23.692474191889147,rolling avg,rolling,Hickey,a,,,
+92,9,0.0,0.0,rolling avg,rolling,Ji-soo,a,,,
+93,9,30.0,51.96152422706632,rolling avg,rolling,Schuster,a,100.0,,
+94,9,65.33333333333333,22.810816147900834,lineup_xi,lineup:xi,Schade,a,100.0,,xi
+95,9,65.0,34.01960219246153,lineup_xi,lineup:xi,O.Dango,a,,,xi
+96,9,42.333333333333336,38.552993831002716,rolling avg,rolling,Damsgaard,a,100.0,,
+97,9,67.5,45.0,lineup_xi,lineup:xi,Jensen,a,100.0,,xi
+98,9,90.0,51.96152422706632,lineup_xi,lineup:xi,Janelt,a,100.0,,xi
+99,9,0.0,0.0,injured,override:hard_flag,Milambo,i,0.0,Knee injury - Unknown return date,
+100,9,0.0,0.0,injured,override:hard_flag,Carvalho,i,0.0,Knock - Expected back 23 Nov,
+102,9,0.0,0.0,injured,override:hard_flag,Yarmoliuk,s,0.0,Suspended until 8 Nov,
+103,9,0.0,0.0,injured,override:hard_flag,Dasilva,i,0.0,Hamstring injury - Unknown return date,
+105,9,61.333333333333336,28.93671255228094,rolling avg,rolling,Anthony,a,,,
+106,9,90.0,0.0,lineup_xi,lineup:xi,Thiago,a,,,xi
+107,9,0.0,0.0,injured,override:hard_flag,Furo,i,0.0,Unspecified injury - Unknown return date,
+108,9,4.0,6.928203230275509,rolling avg,rolling,Wilson,a,,,
+565,9,65.0,35.02855977627399,lineup_xi,lineup:xi,M.Sangaré,a,,,xi
+620,9,11.333333333333334,2.0816659994661326,rolling avg,rolling,Diouf,a,,,
+657,9,0.0,0.0,rolling avg,rolling,Nunes,a,,,
+660,9,0.0,0.0,rolling avg,rolling,Fredrick,a,,,
+661,9,0.0,0.0,rolling avg,rolling,Balcombe,a,,,
+109,9,90.0,0.0,lineup_xi,lineup:xi,Verbruggen,a,,,xi
+111,9,0.0,0.0,rolling avg,rolling,Steele,a,,,
+113,9,28.333333333333332,28.333333333333332,50/50,override:50/50,F.Kadıoğlu,d,75.0,Hip injury - 75% chance of playing,xi
+114,9,71.66666666666667,23.62907813126304,lineup_xi,lineup:xi,Boscagli,a,,,xi
+115,9,90.0,0.0,lineup_xi,lineup:xi,De Cuyper,a,,,xi
+116,9,89.5,51.675268101223566,lineup_xi,lineup:xi,Dunk,a,100.0,,xi
+117,9,0.0,0.0,rolling avg,rolling,Coppola,a,,,
+118,9,0.0,0.0,transferred,override:hard_flag,Igor,u,0.0,Has joined Burnley permanently,
+119,9,32.666666666666664,45.003703551300454,rolling avg,rolling,Costinha,a,,,
+120,9,1.6666666666666667,2.0816659994661326,rolling avg,rolling,Svoboda,a,,,
+121,9,0.0,0.0,injured,override:hard_flag,Mitoma,i,0.0,Hamstring injury - Expected back 22 Nov,
+122,9,0.0,0.0,rolling avg,rolling,Minteh,a,100.0,,
+123,9,21.333333333333332,22.5905584998099,rolling avg,rolling,Hinshelwood,a,100.0,,
+124,9,83.33333333333333,11.547005383792516,lineup_xi,lineup:xi,Groß,a,,,xi
+125,9,16.0,2.6457513110645907,rolling avg,rolling,Georginio,a,100.0,,
+126,9,1.3333333333333333,2.3094010767585034,rolling avg,rolling,O'Riley,a,,,
+127,9,88.33333333333333,2.8867513459481287,lineup_xi,lineup:xi,Gomez,a,,,xi
+128,9,0.0,0.0,transferred,override:hard_flag,Buonanotte,u,0.0,Has joined Elche on loan for the rest of the season,
+129,9,81.33333333333333,8.082903768654761,lineup_xi,lineup:xi,Ayari,a,100.0,,xi
+130,9,0.0,0.0,rolling avg,rolling,Wieffer,a,100.0,,
+132,9,0.0,0.0,transferred,override:hard_flag,Howell,u,0.0,Has joined Leicester City on loan for the rest of the season,
+133,9,0.0,0.0,transferred,override:hard_flag,Watson,u,0.0,Has joined Leicester City on loan for the rest of the season,
+134,9,0.0,0.0,rolling avg,rolling,Oriola,a,,,
+135,9,0.0,0.0,injured,override:hard_flag,Yohanna,i,0.0,Unspecified injury - Expected back 22 Nov,
+137,9,0.0,0.0,injured,override:hard_flag,Tzimas,i,0.0,Knee injury - Unknown return date,
+138,9,78.33333333333333,10.408329997330664,lineup_xi,lineup:xi,Kostoulas,a,,,xi
+139,9,0.0,0.0,injured,override:hard_flag,Ferguson,i,0.0,Ankle injury - Unknown return date,
+328,9,0.0,0.0,injured,override:hard_flag,Struijk,i,0.0,Hamstring injury - Expected back 8 Nov,
+504,9,90.0,0.0,lineup_xi,lineup:xi,Vuskovic,a,,,xi
+594,9,0.0,0.0,rolling avg,rolling,David,a,,,
+600,9,0.0,0.0,rolling avg,rolling,Osman,a,,,
+605,9,16.666666666666668,16.862186493255653,rolling avg,rolling,Yalcouyé,a,,,
+614,9,3.0,5.196152422706632,rolling avg,rolling,Hadjam,a,,,
+624,9,0.0,0.0,transferred,override:hard_flag,Cozier-Duberry,u,0.0,Has joined Middlesbrough on loan for the rest of the season,
+639,9,56.75,19.857828011475306,injured,override:injured,Andrés,d,75.0,Hip injury - 75% chance of playing,xi
+652,9,0.0,0.0,injured,override:hard_flag,Azeez,i,0.0,Hamstring injury - Expected back 8 Nov,
+658,9,0.0,0.0,rolling avg,rolling,Ibrahim,a,,,
+28,9,0.0,0.0,injured,override:hard_flag,Martinez,i,0.0,Head injury - Unknown return date,
+40,9,90.0,0.0,lineup_xi,lineup:xi,Rogers,a,,,xi
+101,9,90.0,0.0,lineup_xi,lineup:xi,Henderson,a,100.0,,xi
+136,9,65.0,39.551653989856526,lineup_xi,lineup:xi,Welbeck,a,100.0,,xi
+140,9,0.0,0.0,transferred,override:hard_flag,Sánchez,u,0.0,Has joined Como on loan for the rest of the season,
+141,9,0.0,0.0,transferred,override:hard_flag,Jörgensen,u,0.0,Has joined RC Strasbourg on loan for the rest of the season,
+142,9,0.0,0.0,injured,override:hard_flag,James,i,0.0,Knee injury - Unknown return date,
+143,9,0.0,0.0,transferred,override:hard_flag,Chalobah,u,0.0,Has joined Como permanently,
+144,9,0.0,0.0,rolling avg,rolling,Gusto,a,100.0,,
+145,9,70.0,40.414518843273804,lineup_xi,lineup:xi,Fofana,a,100.0,,xi
+146,9,0.0,0.0,transferred,override:hard_flag,B.Badiashile,u,0.0,Has joined Napoli on loan for the rest of the season,
+148,9,0.0,0.0,injured,override:hard_flag,Hato,i,0.0,Unspecified injury - Unknown return date,
+149,9,90.0,0.0,lineup_xi,lineup:xi,Colwill,a,,,xi
+150,9,0.0,0.0,transferred,override:hard_flag,M.Sarr,u,0.0,Has joined Real Sociedad on loan for the rest of the season,
+151,9,66.33333333333333,40.99186911246343,lineup_xi,lineup:xi,Acheampong,a,,,xi
+152,9,65.0,14.153915830374764,lineup_xi,lineup:xi,Palestra,a,100.0,,xi
+154,9,86.33333333333333,6.350852961085883,lineup_xi,lineup:xi,Palmer,a,100.0,,xi
+156,9,87.66666666666667,2.0816659994661326,lineup_xi,lineup:xi,Neto,a,,,xi
+157,9,7.0,9.643650760992955,rolling avg,rolling,Estêvão,a,,,
+158,9,0.0,0.0,injured,override:hard_flag,Gittens,i,0.0,Ankle injury - Unknown return date,
+159,9,90.0,51.96152422706632,lineup_xi,lineup:xi,Caicedo,a,100.0,,xi
+161,9,0.3333333333333333,0.5773502691896258,rolling avg,rolling,Lavia,a,,,
+163,9,0.0,0.0,transferred,override:hard_flag,D.Essugo,u,0.0,Has joined RC Strasbourg on loan for the rest of the season,
+164,9,30.333333333333332,36.35014901390823,rolling avg,rolling,Quenda,a,100.0,,
+165,9,0.0,0.0,injured,override:hard_flag,João Pedro,i,0.0,Thigh injury - Unknown return date,
+168,9,0.0,0.0,transferred,override:hard_flag,Marc Guiu,u,0.0,Has joined RB Leipzig permanently,
+169,9,0.0,0.0,rolling avg,rolling,Mheuka,a,,,
+170,9,0.0,0.0,rolling avg,rolling,Emegha,a,100.0,,
+200,9,0.0,0.0,injured,override:hard_flag,Lacroix,i,0.0,Hamstring injury - Unknown return date,
+560,9,65.0,48.218253804964775,lineup_xi,lineup:xi,Penders,a,,,xi
+561,9,0.0,0.0,injured,override:hard_flag,Anselmino,i,0.0,Unspecified injury - Unknown return date,
+568,9,28.666666666666668,49.652123150307816,rolling avg,rolling,Barco,a,,,
+583,9,30.0,51.96152422706632,rolling avg,rolling,Chavarria,a,100.0,,
+662,9,1.0,1.7320508075688772,rolling avg,rolling,Nicoll-Jazuli,a,,,
+669,9,0.0,0.0,rolling avg,rolling,Sharman-Lowe,a,,,
+91,9,90.0,0.0,lineup_xi,lineup:xi,Pinnock,a,,,xi
+104,9,65.0,36.8284310463171,lineup_xi,lineup:xi,Onyeka,a,100.0,,xi
+110,9,90.0,0.0,lineup_xi,lineup:xi,Rushworth,a,,,xi
+171,9,0.0,0.0,benched,override:hard_flag,Dovin,u,0.0,not included in squad.,
+172,9,0.0,0.0,rolling avg,rolling,Wilson,a,,,
+173,9,39.833333333333336,39.833333333333336,50/50,override:50/50,Thomas,d,50.0,Calf injury - 50% chance of playing,
+174,9,0.0,0.0,transferred,override:hard_flag,Kitching,u,0.0,Has joined Sheffield United on loan for the rest of the season,
+175,9,90.0,51.96152422706632,lineup_xi,lineup:xi,van Ewijk,a,100.0,,xi
+176,9,90.0,0.0,lineup_xi,lineup:xi,Dasilva,a,,,xi
+177,9,1.0,1.7320508075688772,rolling avg,rolling,Kesler-Hayden,a,100.0,,
+178,9,0.0,0.0,rolling avg,rolling,Bidwell,a,,,
+179,9,0.3333333333333333,0.5773502691896258,rolling avg,rolling,Latibeaudiere,a,,,
+180,9,0.0,0.0,injured,override:hard_flag,Woolfenden,i,0.0,Knee injury - Unknown return date,
+181,9,0.0,0.0,transferred,override:hard_flag,Brau,u,0.0,Has joined Academico de Viseu on loan for the rest of the season,
+182,9,0.0,0.0,injured,override:hard_flag,Amenda,i,0.0,Calf injury - Unknown return date,
+183,9,83.0,8.888194417315589,lineup_xi,lineup:xi,Rudoni,a,100.0,,xi
+184,9,90.0,0.0,lineup_xi,lineup:xi,Grimes,a,,,xi
+185,9,81.0,46.93612681080534,lineup_xi,lineup:xi,Sakamoto,a,,,xi
+186,9,65.0,16.802777548171413,lineup_xi,lineup:xi,Mason-Clark,a,100.0,,xi
+187,9,0.0,0.0,injured,override:hard_flag,Eccles,i,0.0,Ankle injury - Unknown return date,
+188,9,0.0,0.0,rolling avg,rolling,Torp,a,,,
+189,9,0.0,0.0,rolling avg,rolling,Shepherd,a,,,
+190,9,15.0,25.98076211353316,rolling avg,rolling,Tchaouna,a,,,
+191,9,0.0,0.0,transferred,override:hard_flag,Borges Rodrigues,u,0.0,Has joined Burton Albion on loan for the rest of the season,
+192,9,0.0,0.0,transferred,override:hard_flag,Andrews,u,0.0,Has joined Oxford United on loan for the rest of the season,
+193,9,0.0,0.0,injured,override:hard_flag,Wright,i,0.0,Thigh injury - Unknown return date,
+194,9,77.66666666666667,12.013880860626733,rolling avg,rolling,Thomas-Asante,a,,,
+195,9,5.333333333333333,9.237604307034013,rolling avg,rolling,Simms,a,,,
+196,9,0.0,0.0,transferred,override:hard_flag,Markelo,u,0.0,Has joined Shabab Al-Ahli Dubai permanently,
+197,9,0.0,0.0,transferred,override:hard_flag,Bassette,u,0.0,Has joined KVC Westerlo on loan for the rest of the season,
+492,9,65.0,15.695009822658072,lineup_xi,lineup:xi,Awoniyi,a,100.0,,xi
+575,9,71.66666666666667,16.258331197676263,rolling avg,rolling,Yirenkyi,a,,,
+584,9,5.333333333333333,6.110100926607787,rolling avg,rolling,Hamer,a,,,
+599,9,41.666666666666664,36.2537354397217,rolling avg,rolling,Cherif,a,,,
+623,9,0.0,0.0,rolling avg,rolling,Bentley,a,,,
+655,9,0.0,0.0,rolling avg,rolling,Gboho,a,,,
+656,9,65.0,45.8257569495584,lineup_xi,lineup:xi,Mfuni,a,,,xi
+42,9,0.0,0.0,rolling avg,rolling,Guessand,a,,,
+153,9,90.0,51.96152422706632,lineup_xi,lineup:xi,Disasi,a,100.0,,xi
+198,9,90.0,0.0,lineup_xi,lineup:xi,Henderson,a,100.0,,xi
+199,9,90.0,0.0,rolling avg,rolling,Benitez,a,,,
+202,9,90.0,0.0,lineup_xi,lineup:xi,Richards,a,,,xi
+203,9,90.0,0.0,lineup_xi,lineup:xi,Canvot,a,,,xi
+204,9,90.0,0.0,lineup_xi,lineup:xi,Mitchell,a,,,xi
+205,9,0.0,0.0,transferred,override:hard_flag,Sosa,u,0.0,Has joined FC Cologne on loan for the rest of the season,
+206,9,0.0,0.0,injured,override:hard_flag,Chadi Riad,i,0.0,Knee injury - Unknown return date,
+207,9,0.0,0.0,rolling avg,rolling,Mingueza,a,,,
+208,9,0.0,0.0,injured,override:hard_flag,Sarr,i,0.0,Groin injury - Expected back 8 Nov,
+210,9,90.0,0.0,lineup_xi,lineup:xi,Wharton,a,100.0,,xi
+211,9,77.0,15.394804318340652,lineup_xi,lineup:xi,Yeremy,a,,,xi
+212,9,3.0,5.196152422706632,rolling avg,rolling,Hughes,a,,,
+213,9,27.333333333333332,24.00694344004112,rolling avg,rolling,Lerma,a,,,
+214,9,86.66666666666667,5.773502691896257,lineup_xi,lineup:xi,Kamada,a,,,xi
+215,9,0.0,0.0,transferred,override:hard_flag,Devenny,u,0.0,Has joined Stoke City permanently,
+216,9,0.0,0.0,transferred,override:hard_flag,Esse,u,0.0,Has joined Millwall on loan for the rest of the season,
+217,9,0.0,0.0,transferred,override:hard_flag,M.França,u,0.0,Has joined Alverca on loan for the rest of the season,
+218,9,0.0,0.0,rolling avg,rolling,Doucouré,a,,,
+219,9,0.0,0.0,transferred,override:hard_flag,J.Rak-Sakyi,u,0.0,has joined  Kasimpasa on loan for the rest of the seaon.,
+220,9,0.0,0.0,transferred,override:hard_flag,Cardines,u,0.0,Has joined Bristol City on loan for the rest of the season,
+221,9,0.0,0.0,rolling avg,rolling,Drakes-Thomas,a,,,
+222,9,52.875,42.035699113967404,injured,override:injured,Strand Larsen,d,75.0,Ankle injury - 75% chance of playing,
+223,9,65.0,30.512292604784715,lineup_xi,lineup:xi,Mateta,a,100.0,,xi
+224,9,21.666666666666668,11.846237095944574,rolling avg,rolling,Nketiah,a,100.0,,
+225,9,0.0,0.0,transferred,override:hard_flag,Uche,u,0.0,has returned to Getafe CF,
+241,9,65.0,32.036437588054845,lineup_xi,lineup:xi,McNeil,a,,,xi
+555,9,0.0,0.0,rolling avg,rolling,Matthews,a,,,
+577,9,0.0,0.0,injured,override:hard_flag,Tomiyasu,i,0.0,Calf injury - Expected back 8 Nov,
+588,9,90.0,0.0,lineup_xi,lineup:xi,Khalaili,a,100.0,,xi
+595,9,0.0,0.0,rolling avg,rolling,Gozo,a,,,
+633,9,17.333333333333332,30.022213997860543,rolling avg,rolling,Ahanor,a,,,
+643,9,0.0,0.0,rolling avg,rolling,Chilwell,a,100.0,,
+644,9,33.75,33.75,50/50,override:50/50,Timber,d,75.0,Hamstring injury - 75% chance of playing,
+647,9,9.0,15.588457268119896,rolling avg,rolling,Osorio,a,,,
+21,9,1.6666666666666667,2.8867513459481287,rolling avg,rolling,Nørgaard,a,100.0,,
+209,9,65.0,36.49657518178932,lineup_xi,lineup:xi,Johnson,a,,,xi
+226,9,90.0,0.0,lineup_xi,lineup:xi,Pickford,a,,,xi
+227,9,0.0,0.0,rolling avg,rolling,Travers,a,,,
+228,9,0.0,0.0,rolling avg,rolling,King,a,,,
+229,9,90.0,0.0,lineup_xi,lineup:xi,Tarkowski,a,,,xi
+230,9,45.0,45.0,50/50,override:50/50,Branthwaite,d,75.0,Concussion - 75% chance of playing,xi
+231,9,0.0,0.0,rolling avg,rolling,Keane,a,,,
+232,9,30.333333333333332,51.675268101223566,rolling avg,rolling,O'Brien,a,,,
+233,9,84.33333333333333,9.814954576223638,lineup_xi,lineup:xi,Mykolenko,a,100.0,,xi
+234,9,0.0,0.0,transferred,override:hard_flag,Patterson,u,0.0,Has joined Torino permanently,
+235,9,0.0,0.0,transferred,override:hard_flag,Aznou,u,0.0,Has joined Malaga on loan for the rest of the season,
+236,9,88.33333333333333,2.8867513459481287,lineup_xi,lineup:xi,Dewsbury-Hall,a,,,xi
+238,9,40.5,46.861498055439924,injured,override:injured,Grealish,d,50.0,,
+239,9,90.0,0.0,lineup_xi,lineup:xi,Garner,a,100.0,,xi
+242,9,65.0,40.5010287935175,lineup_xi,lineup:xi,George,a,,,xi
+243,9,1.3333333333333333,2.3094010767585034,rolling avg,rolling,Alcaraz,a,,,
+244,9,88.0,3.4641016151377544,lineup_xi,lineup:xi,Armstrong,a,100.0,,xi
+245,9,14.0,12.489995996796797,rolling avg,rolling,Dibling,a,,,
+246,9,90.0,51.96152422706632,lineup_xi,lineup:xi,Röhl,a,100.0,,xi
+247,9,5.666666666666667,8.962886439832502,rolling avg,rolling,Hackney,a,100.0,,
+248,9,0.0,0.0,transferred,override:hard_flag,Beto,u,0.0,Has joined Fiorentina permanently,
+249,9,90.0,0.0,lineup_xi,lineup:xi,Barry,a,,,xi
+649,9,48.0,45.2990066116245,rolling avg,rolling,Maitland-Niles,a,,,
+654,9,0.0,0.0,rolling avg,rolling,Graham,a,,,
+250,9,90.0,0.0,lineup_xi,lineup:xi,Leno,a,,,xi
+251,9,0.0,0.0,rolling avg,rolling,Lecomte,a,,,
+252,9,0.0,0.0,transferred,override:hard_flag,McNally,u,0.0,Has joined York City on loan for the rest of the season,
+253,9,3.3333333333333335,5.773502691896257,rolling avg,rolling,Andersen,a,100.0,,
+254,9,90.0,0.0,lineup_xi,lineup:xi,Robinson,a,100.0,,xi
+255,9,0.0,0.0,rolling avg,rolling,J.Cuenca,a,,,
+256,9,3.0,5.196152422706632,rolling avg,rolling,Tete,a,100.0,,
+257,9,90.0,0.0,lineup_xi,lineup:xi,Bassey,a,,,xi
+258,9,90.0,0.0,lineup_xi,lineup:xi,Castagne,a,,,xi
+261,9,77.66666666666667,10.785793124908958,lineup_xi,lineup:xi,Iwobi,a,,,xi
+262,9,0.0,0.0,rolling avg,rolling,Smith Rowe,a,100.0,,
+263,9,6.333333333333333,10.96965511460289,rolling avg,rolling,Kevin,a,,,
+264,9,75.66666666666667,5.131601439446884,lineup_xi,lineup:xi,Bobb,a,,,xi
+265,9,65.0,33.08070938376826,lineup_xi,lineup:xi,Berge,a,,,xi
+266,9,7.0,6.244997998398398,rolling avg,rolling,Cairney,a,100.0,,
+268,9,78.66666666666667,1.5275252316519468,lineup_xi,lineup:xi,King,a,,,xi
+269,9,0.0,0.0,injured,override:hard_flag,Sessegnon,s,0.0,Suspended until 7 Nov,
+270,9,0.0,0.0,rolling avg,rolling,Reed,a,,,
+271,9,8.666666666666666,8.082903768654761,rolling avg,rolling,Muniz,a,,,
+272,9,0.0,0.0,rolling avg,rolling,Kusi-Asare,a,,,
+569,9,78.66666666666667,5.507570547286102,lineup_xi,lineup:xi,Gonzalo,a,,,xi
+570,9,13.333333333333334,7.371114795831994,rolling avg,rolling,Palacios,a,,,
+580,9,90.0,0.0,lineup_xi,lineup:xi,Charles,a,,,xi
+610,9,0.0,0.0,transferred,override:hard_flag,De Fougerolles,u,0.0,has joined  Real Salt Lake on loan for the rest of the seaon.,
+626,9,0.0,0.0,rolling avg,rolling,Zepa,a,,,
+635,9,25.0,32.69556544854363,rolling avg,rolling,Larsson,a,100.0,,
+636,9,0.0,0.0,rolling avg,rolling,Ángel,a,,,
+650,9,90.0,0.0,lineup_xi,lineup:xi,Affengruber,a,100.0,,xi
+240,9,65.0,15.01110699893027,lineup_xi,lineup:xi,Iroegbunam,a,100.0,,xi
+273,9,0.0,0.0,rolling avg,rolling,Phillips,a,,,
+274,9,45.0,0.0,injured,override:injured,Butland,d,50.0,Arm injury - 50% chance of playing,
+275,9,0.0,0.0,transferred,override:hard_flag,Cartwright,u,0.0,Has joined Grimsby Town on loan for the rest of the season,
+276,9,0.0,0.0,transferred,override:hard_flag,Lo-Tutala,u,0.0,Has joined Colchester United on loan for the rest of the season,
+277,9,85.66666666666667,7.505553499465135,lineup_xi,lineup:xi,Egan,a,,,xi
+278,9,0.0,0.0,injured,override:hard_flag,Hughes,i,0.0,Groin injury - Unknown return date,
+279,9,90.0,0.0,lineup_xi,lineup:xi,Ajayi,a,100.0,,xi
+280,9,81.33333333333333,15.01110699893027,lineup_xi,lineup:xi,Coyle,a,100.0,,xi
+281,9,0.0,0.0,transferred,override:hard_flag,Drameh,u,0.0,Has joined Genoa permanently,
+282,9,65.0,34.31229128655406,lineup_xi,lineup:xi,Giles,a,,,xi
+283,9,0.0,0.0,transferred,override:hard_flag,Jacob,u,0.0,Has joined Newport County on loan until January,
+284,9,0.0,0.0,rolling avg,rolling,McCarthy,a,,,
+285,9,0.0,0.0,rolling avg,rolling,McNair,a,100.0,,
+286,9,85.66666666666667,4.041451884327381,lineup_xi,lineup:xi,Belloumi,a,,,xi
+287,9,0.0,0.0,transferred,override:hard_flag,Millar,u,0.0,Has joined Birmingham on loan for the rest of the season,
+288,9,0.0,0.0,rolling avg,rolling,Dowell,a,,,
+289,9,37.333333333333336,34.15162270424838,rolling avg,rolling,Crooks,a,100.0,,
+290,9,80.33333333333333,8.504900548115383,lineup_xi,lineup:xi,Slater,a,,,xi
+291,9,0.0,0.0,injured,override:hard_flag,Matazo,i,0.0,Knee injury - Unknown return date,
+292,9,0.0,0.0,rolling avg,rolling,Ömür,a,,,
+293,9,0.0,0.0,transferred,override:hard_flag,Kamara,u,0.0,Has joined Portsmouth permanently,
+294,9,0.0,0.0,rolling avg,rolling,Zambrano,a,100.0,,
+295,9,88.33333333333333,2.8867513459481287,lineup_xi,lineup:xi,McBurnie,a,,,xi
+296,9,0.0,0.0,transferred,override:hard_flag,Akintola,u,0.0,Has joined Omonoia FC permanently,
+297,9,0.0,0.0,injured,override:hard_flag,Gyabi,i,0.0,Thigh injury - Unknown return date,
+298,9,0.0,0.0,transferred,override:hard_flag,Destan,u,0.0,Has joined Konyaspor permanently,
+299,9,0.0,0.0,transferred,override:hard_flag,Burstow,u,0.0,Has joined Sheffield Wednesday on loan for the rest of the season,
+340,9,11.0,9.643650760992955,rolling avg,rolling,Gelhardt,a,100.0,,
+556,9,0.0,0.0,injured,override:hard_flag,Targett,i,0.0,Ankle injury - Unknown return date,
+563,9,11.0,9.643650760992955,rolling avg,rolling,Morita,a,100.0,,
+572,9,90.0,0.0,lineup_xi,lineup:xi,Tzolakis,a,,,xi
+574,9,0.0,0.0,rolling avg,rolling,Hjertø-Dahl,a,,,
+576,9,90.0,51.96152422706632,lineup_xi,lineup:xi,Stroud,a,,,xi
+585,9,75.0,25.98076211353316,rolling avg,rolling,Herrington,a,,,
+586,9,90.0,0.0,lineup_xi,lineup:xi,Mendy,a,100.0,,xi
+589,9,9.0,6.928203230275509,injured,override:injured,Gourna-Douath,d,75.0,Calf injury - 75% chance of playing,
+617,9,17.333333333333332,15.044378795195678,rolling avg,rolling,Cho,a,100.0,,
+632,9,0.0,0.0,injured,override:hard_flag,Ansah,i,0.0,Back injury - Unknown return date,
+637,9,12.666666666666666,9.018499505645789,rolling avg,rolling,Vaz,a,100.0,,
+638,9,30.666666666666668,33.85754470326124,rolling avg,rolling,Norton-Cuffy,a,100.0,,
+642,9,43.0,37.322915213043046,rolling avg,rolling,Thomas,a,,,
+645,9,0.0,0.0,rolling avg,rolling,Mouzakitis,a,,,
+259,9,90.0,0.0,lineup_xi,lineup:xi,Diop,a,,,xi
+267,9,54.0,41.569219381653056,injured,override:injured,Lukić,d,75.0,Groin injury - 75% chance of playing,xi
+300,9,90.0,0.0,lineup_xi,lineup:xi,Walton,a,,,xi
+301,9,0.0,0.0,rolling avg,rolling,Palmer,a,,,
+302,9,0.0,0.0,rolling avg,rolling,Button,a,,,
+303,9,0.0,0.0,rolling avg,rolling,Kipré,a,,,
+304,9,90.0,0.0,lineup_xi,lineup:xi,O'Shea,a,,,xi
+305,9,90.0,0.0,lineup_xi,lineup:xi,Davis,a,,,xi
+306,9,30.0,51.96152422706632,rolling avg,rolling,Greaves,a,,,
+307,9,0.0,0.0,transferred,override:hard_flag,Johnson,u,0.0,Has joined Stoke City on loan for the rest of the season,
+308,9,0.0,0.0,rolling avg,rolling,Furlong,a,,,
+309,9,0.0,0.0,rolling avg,rolling,Núñez,a,,,
+310,9,8.0,9.848857801796104,rolling avg,rolling,Matusiwa,a,100.0,,
+311,9,0.0,0.0,transferred,override:hard_flag,Burns,u,0.0,Has joined Leicester City permanently,
+312,9,0.0,0.0,rolling avg,rolling,Taylor,a,100.0,,
+313,9,31.666666666666668,32.08322510804257,rolling avg,rolling,Clarke,a,,,
+314,9,0.0,0.0,transferred,override:hard_flag,Ogbene,u,0.0,Has joined Lincoln City on loan until January,
+315,9,65.0,29.022979401386987,lineup_xi,lineup:xi,Fatawu,a,100.0,,xi
+316,9,72.0,11.357816691600547,lineup_xi,lineup:xi,Emersonn,a,100.0,,xi
+317,9,0.0,0.0,transferred,override:hard_flag,Hirst,u,0.0,Has joined Stoke City permanently,
+318,9,28.0,30.199337741083,rolling avg,rolling,Philogene,a,100.0,,
+319,9,0.0,0.0,transferred,override:hard_flag,Szmodics,u,0.0,Has joined Derby County on loan for the rest of the season,
+320,9,8.333333333333334,4.041451884327381,rolling avg,rolling,Akpom,a,,,
+321,9,0.0,0.0,rolling avg,rolling,Walle Egeli,a,,,
+322,9,0.0,0.0,transferred,override:hard_flag,Al-Hamadi,u,0.0,Has joined Sheffield Wednesday on loan for the rest of the season,
+323,9,0.0,0.0,rolling avg,rolling,McAteer,a,,,
+324,9,0.0,0.0,rolling avg,rolling,Mehmeti,a,,,
+554,9,0.0,0.0,transferred,override:hard_flag,Van Oevelen,u,0.0,Has joined Valencia on loan for the rest of the season,
+562,9,65.0,30.89228598426043,lineup_xi,lineup:xi,Maeda,a,,,xi
+564,9,0.0,0.0,rolling avg,rolling,Scherpen,a,,,
+571,9,57.0,35.34119409414458,rolling avg,rolling,Florentino,a,100.0,,
+591,9,78.33333333333333,6.110100926607787,lineup_xi,lineup:xi,Enciso,a,100.0,,xi
+592,9,90.0,0.0,lineup_xi,lineup:xi,Ouattara,a,,,xi
+602,9,0.0,0.0,transferred,override:hard_flag,Humphreys,u,0.0,Has joined Huddersfield Town on loan for the rest of the season,
+619,9,86.66666666666667,5.773502691896257,lineup_xi,lineup:xi,Palacios,a,,,xi
+640,9,17.0,11.357816691600547,rolling avg,rolling,Flemming,a,,,
+260,9,21.666666666666668,37.52776749732568,rolling avg,rolling,Wilson,a,100.0,,
+326,9,0.0,0.0,transferred,override:hard_flag,Perri,u,0.0,Has joined Torino on loan for the rest of the season,
+327,9,30.0,51.96152422706632,rolling avg,rolling,Bijol,a,,,
+329,9,0.0,0.0,injured,override:hard_flag,Rodon,i,0.0,Hamstring injury - Expected back 21 Nov,
+330,9,82.0,13.856406460551018,lineup_xi,lineup:xi,Bogle,a,,,xi
+331,9,90.0,0.0,lineup_xi,lineup:xi,Gudmundsson,a,100.0,,xi
+332,9,90.0,0.0,lineup_xi,lineup:xi,Justin,a,,,xi
+333,9,0.0,0.0,transferred,override:hard_flag,Bornauw,u,0.0,Has joined Hamburg SV on loan for the rest of the season,
+334,9,90.0,0.0,lineup_xi,lineup:xi,Muharemović,a,,,xi
+335,9,34.0,38.1051177665153,injured,override:injured,Stach,d,50.0,Foot injury - 50% chance of playing,
+336,9,65.0,28.307831660749525,lineup_xi,lineup:xi,Okafor,a,100.0,,xi
+337,9,65.0,32.516662395352526,lineup_xi,lineup:xi,Aaronson,a,,,xi
+338,9,90.0,0.0,lineup_xi,lineup:xi,Ampadu,a,,,xi
+339,9,3.3333333333333335,4.932882862316247,rolling avg,rolling,Longstaff,a,,,
+341,9,0.0,0.0,transferred,override:hard_flag,Gnonto,u,0.0,Has joined ACF Fiorentina on loan for the rest of the season,
+342,9,0.0,0.0,transferred,override:hard_flag,Harrison,u,0.0,Has joined New England Revolution permanently,
+343,9,7.666666666666667,13.279056191361391,rolling avg,rolling,James,a,100.0,,
+344,9,0.0,0.0,rolling avg,rolling,Gruev,a,100.0,,
+345,9,78.33333333333333,10.598742063723098,lineup_xi,lineup:xi,Tanaka,a,,,xi
+346,9,88.0,3.4641016151377544,lineup_xi,lineup:xi,Calvert-Lewin,a,100.0,,xi
+347,9,11.666666666666666,5.8594652770823155,rolling avg,rolling,Nmecha,a,,,
+348,9,0.0,0.0,transferred,override:hard_flag,Piroe,u,0.0,Has joined West Ham United on loan for the rest of the season,
+349,9,0.0,0.0,injured,override:hard_flag,Mateo Joseph,i,0.0,Knee injury - Unknown return date,
+385,9,90.0,0.0,lineup_xi,lineup:xi,Trafford,a,,,xi
+598,9,90.0,51.96152422706632,lineup_xi,lineup:xi,Elvedi,a,100.0,,xi
+603,9,0.0,0.0,rolling avg,rolling,Lienou,a,,,
+604,9,0.0,0.0,rolling avg,rolling,Cresswell,a,,,
+625,9,0.0,0.0,rolling avg,rolling,Cairns,a,,,
+629,9,0.0,0.0,rolling avg,rolling,Zetterer,a,,,
+641,9,0.0,0.0,rolling avg,rolling,Bard,a,,,
+648,9,0.3333333333333333,0.5773502691896258,rolling avg,rolling,Bahoya,a,100.0,,
+350,9,90.0,0.0,lineup_xi,lineup:xi,A.Becker,a,,,xi
+351,9,0.0,0.0,rolling avg,rolling,Mamardashvili,a,,,
+352,9,0.0,0.0,rolling avg,rolling,Woodman,a,,,
+353,9,0.0,0.0,transferred,override:hard_flag,Pecsi,u,0.0,Has joined TSV Hartberg on loan for the rest of the season,
+354,9,0.0,0.0,injured,override:hard_flag,Jaros,i,0.0,Knee injury - Unknown return date,
+355,9,0.0,0.0,rolling avg,rolling,Davies,a,,,
+356,9,90.0,0.0,lineup_xi,lineup:xi,Virgil,a,,,xi
+357,9,0.0,0.0,injured,override:hard_flag,Frimpong,i,0.0,Hamstring injury - Unknown return date,
+358,9,89.0,1.7320508075688772,lineup_xi,lineup:xi,Kerkez,a,,,xi
+359,9,3.6666666666666665,6.3508529610858835,rolling avg,rolling,Gomez,a,100.0,,
+360,9,0.0,0.0,injured,override:hard_flag,Bradley,i,0.0,Knee injury - Unknown return date,
+361,9,0.0,0.0,rolling avg,rolling,Lucky,a,,,
+362,9,90.0,0.0,lineup_xi,lineup:xi,Jacquet,a,100.0,,xi
+363,9,0.0,0.0,injured,override:hard_flag,Leoni,i,0.0,Knee injury - Unknown return date,
+364,9,0.6666666666666666,1.1547005383792517,rolling avg,rolling,Tsimikas,a,,,
+365,9,0.0,0.0,transferred,override:hard_flag,Ramsay,u,0.0,Has joined St Mirren on loan for the rest of the season,
+366,9,74.66666666666667,13.613718571108091,lineup_xi,lineup:xi,Wirtz,a,100.0,,xi
+367,9,90.0,51.96152422706632,lineup_xi,lineup:xi,Gakpo,a,100.0,,xi
+368,9,27.75,27.75,50/50,override:50/50,Szoboszlai,d,50.0,Hamstring injury - 50% chance of playing,
+369,9,17.0,19.313207915827967,rolling avg,rolling,Ngumoha,a,,,
+370,9,0.0,0.0,rolling avg,rolling,Chiesa,a,100.0,,
+371,9,65.0,49.56813492557492,lineup_xi,lineup:xi,Gravenberch,a,100.0,,xi
+372,9,90.0,0.0,lineup_xi,lineup:xi,Mac Allister,a,,,xi
+373,9,0.0,0.0,transferred,override:hard_flag,C.Jones,u,0.0,Has joined Internazionale permanently,
+374,9,0.0,0.0,rolling avg,rolling,Endo,a,100.0,,
+375,9,34.0,21.0,rolling avg,rolling,Nyoni,a,,,
+376,9,0.0,0.0,injured,override:hard_flag,Bajcetic,u,0.0,Has joined Celta Vigo permanently,
+377,9,24.0,40.84115571332428,injured,override:injured,Munoz,d,50.0,Knee injury - 50% chance of playing,
+378,9,0.0,0.0,rolling avg,rolling,McConnell,a,,,
+379,9,78.0,2.0,lineup_xi,lineup:xi,Isak,a,100.0,,xi
+380,9,0.0,0.0,injured,override:hard_flag,Ekitiké,i,0.0,Achilles injury - Unknown return date,
+381,9,11.0,2.0,rolling avg,rolling,Koumas,a,,,
+382,9,0.0,0.0,rolling avg,rolling,Danns,a,100.0,,
+383,9,0.0,0.0,transferred,override:hard_flag,Elliott,u,0.0,Has joined Valencia on loan for the rest of the season,
+579,9,75.0,25.98076211353316,lineup_xi,lineup:xi,Araujo,a,,,xi
+627,9,0.0,0.0,injured,override:hard_flag,Barcola,i,0.0,,
+155,9,73.33333333333333,28.867513459481287,lineup_xi,lineup:xi,Enzo,a,,,xi
+237,9,77.33333333333333,11.372481406154654,lineup_xi,lineup:xi,Ndiaye,a,,,xi
+384,9,90.0,0.0,lineup_xi,lineup:xi,Donnarumma,a,,,xi
+386,9,0.0,0.0,rolling avg,rolling,Bettinelli,a,,,
+387,9,21.666666666666668,33.291640592396966,rolling avg,rolling,O'Reilly,a,100.0,,
+388,9,75.0,25.98076211353316,rolling avg,rolling,Guéhi,a,,,
+389,9,82.5,48.218253804964775,lineup_xi,lineup:xi,Matheus N.,a,100.0,,xi
+390,9,90.0,0.0,lineup_xi,lineup:xi,Rúben,a,,,xi
+391,9,69.66666666666667,35.21836642056717,lineup_xi,lineup:xi,Gvardiol,a,,,xi
+392,9,0.0,0.0,rolling avg,rolling,Aït-Nouri,a,,,
+393,9,65.0,48.428641663104,lineup_xi,lineup:xi,Khusanov,a,,,xi
+394,9,0.0,0.0,transferred,override:hard_flag,Alleyne,u,0.0,Has joined Burnley on loan for the rest of the season,
+395,9,15.0,25.98076211353316,rolling avg,rolling,Lewis,a,,,
+396,9,0.0,0.0,rolling avg,rolling,Vitor Reis,a,,,
+397,9,0.0,0.0,injured,override:hard_flag,Semenyo,i,0.0,Knee injury - Unknown return date,
+398,9,40.333333333333336,38.214307966170644,rolling avg,rolling,Foden,a,100.0,,
+399,9,43.0,42.035699113967404,rolling avg,rolling,Cherki,a,,,
+400,9,65.0,39.87898360456712,lineup_xi,lineup:xi,Doku,a,100.0,,xi
+402,9,0.0,0.0,injured,override:hard_flag,Rodrigo,u,0.0,Has joined Barcelona permanently,
+404,9,0.0,0.0,transferred,override:hard_flag,Reijnders,u,0.0,Has joined Al Qadsiah permanently,
+406,9,16.333333333333332,28.290163190291665,rolling avg,rolling,Kovačić,a,100.0,,
+407,9,0.0,0.0,transferred,override:hard_flag,Echeverri,u,0.0,Has joined Benfica on loan for the rest of the season,
+408,9,0.0,0.0,transferred,override:hard_flag,Phillips,u,0.0,Has joined Sheffield United on loan for the rest of the season,
+409,9,0.0,0.0,transferred,override:hard_flag,Mukasa,u,0.0,has joined West Ham on loan for the rest of the seaon.,
+410,9,0.0,0.0,transferred,override:hard_flag,Monga,u,0.0,Has joined Swansea City on loan for the rest of the season,
+411,9,90.0,0.0,lineup_xi,lineup:xi,Haaland,a,100.0,,xi
+481,9,65.0,44.45597072760118,lineup_xi,lineup:xi,Anderson,a,100.0,,xi
+587,9,0.0,0.0,rolling avg,rolling,Rulli,a,,,
+616,9,90.0,51.96152422706632,lineup_xi,lineup:xi,Bouaddi,a,,,xi
+621,9,7.0,12.12435565298214,rolling avg,rolling,McAidoo,a,,,
+622,9,0.0,0.0,rolling avg,rolling,Braithwaite,a,,,
+628,9,0.0,0.0,rolling avg,rolling,Allan,a,,,
+653,9,0.0,0.0,rolling avg,rolling,Samba,a,,,
+43,9,72.66666666666667,24.214320831552005,rolling avg,rolling,Tielemans,a,100.0,,
+131,9,72.0,41.58124577258358,lineup_xi,lineup:xi,Baleba,a,100.0,,xi
+162,9,60.0,51.96152422706632,rolling avg,rolling,Andrey Santos,a,,,
+325,9,0.0,0.0,rolling avg,rolling,Darlow,a,100.0,,
+412,9,90.0,0.0,lineup_xi,lineup:xi,Lammens,a,,,xi
+413,9,0.0,0.0,transferred,override:hard_flag,Bayindir,u,0.0,Has joined Celta Vigo on loan for the rest of the season,
+414,9,0.0,0.0,rolling avg,rolling,Heaton,a,100.0,,
+415,9,0.0,0.0,injured,override:hard_flag,Dorgu,i,0.0,Hamstring injury - Unknown return date,
+416,9,0.0,0.0,rolling avg,rolling,De Ligt,a,100.0,,
+417,9,90.0,0.0,lineup_xi,lineup:xi,Dalot,a,,,xi
+418,9,90.0,0.0,lineup_xi,lineup:xi,Maguire,a,,,xi
+419,9,65.0,33.291640592396966,lineup_xi,lineup:xi,Martinez,a,100.0,,xi
+420,9,90.0,51.96152422706632,lineup_xi,lineup:xi,Yoro,a,,,xi
+421,9,21.333333333333332,36.950417228136054,rolling avg,rolling,Heaven,a,100.0,,
+422,9,15.0,25.98076211353316,rolling avg,rolling,Mazraoui,a,100.0,,
+423,9,0.0,0.0,injured,override:hard_flag,Shaw,i,0.0,Unspecified injury - Unknown return date,
+424,9,0.0,0.0,rolling avg,rolling,Amass,a,,,
+425,9,0.0,0.0,transferred,override:hard_flag,Fredricson,u,0.0,Has joined Lausanne-Sport permanently,
+426,9,90.0,51.96152422706632,lineup_xi,lineup:xi,B.Fernandes,a,,,xi
+427,9,90.0,0.0,lineup_xi,lineup:xi,Mbeumo,a,,,xi
+428,9,65.0,42.035699113967404,lineup_xi,lineup:xi,Cunha,a,,,xi
+429,9,38.0,38.0,50/50,override:50/50,Rashford,d,75.0,Hip injury - 75% chance of playing,
+430,9,38.666666666666664,44.55707949735186,rolling avg,rolling,Mount,a,100.0,,
+431,9,83.5,48.6449723335653,lineup_xi,lineup:xi,Amad,a,100.0,,xi
+432,9,39.5,39.5,50/50,override:50/50,Mainoo,d,25.0,Unspecified injury - 25% chance of playing,xi
+433,9,0.0,0.0,injured,override:hard_flag,Ugarte,i,0.0,Knee injury - Unknown return date,
+434,9,0.0,0.0,rolling avg,rolling,J.Fletcher,a,,,
+435,9,4.0,6.928203230275509,rolling avg,rolling,Lacey,a,,,
+436,9,0.0,0.0,transferred,override:hard_flag,Collyer,u,0.0,Has joined West Brom permanently,
+437,9,0.0,0.0,rolling avg,rolling,Bendito Mantato,a,,,
+438,9,0.0,0.0,rolling avg,rolling,Fletcher,a,,,
+439,9,0.0,0.0,injured,override:hard_flag,Šeško,i,0.0,Shin injury - Unknown return date,
+440,9,10.333333333333334,9.291573243177568,rolling avg,rolling,Zirkzee,a,,,
+441,9,0.0,0.0,transferred,override:hard_flag,Obi,u,0.0,Has joined Willem II on loan for the rest of the season,
+405,9,90.0,51.96152422706632,lineup_xi,lineup:xi,N.Gonzalez,a,100.0,,xi
+442,9,0.0,0.0,rolling avg,rolling,Pope,a,,,
+443,9,0.0,0.0,rolling avg,rolling,Gillespie,a,,,
+444,9,0.0,0.0,injured,override:hard_flag,Jaouen,i,0.0,Hamstring injury - Unknown return date,
+445,9,60.333333333333336,51.3841739578767,rolling avg,rolling,Thiaw,a,,,
+446,9,65.0,46.604720790924176,lineup_xi,lineup:xi,Schär,a,100.0,,xi
+447,9,60.0,51.96152422706632,rolling avg,rolling,Botman,a,,,
+448,9,65.0,51.675268101223566,lineup_xi,lineup:xi,Burn,a,100.0,,xi
+449,9,90.0,0.0,lineup_xi,lineup:xi,Hall,a,,,xi
+450,9,0.0,0.0,injured,override:hard_flag,Livramento,i,0.0,Knee injury - Unknown return date,
+451,9,0.0,0.0,transferred,override:hard_flag,A.Murphy,u,0.0,Has joined FC Kaiserslautern on loan for the rest of the season,
+453,9,85.33333333333333,8.082903768654761,lineup_xi,lineup:xi,Barnes,a,,,xi
+454,9,65.0,7.505553499465136,lineup_xi,lineup:xi,Elanga,a,100.0,,xi
+456,9,4.333333333333333,7.505553499465136,rolling avg,rolling,J.Ramsey,a,100.0,,
+457,9,60.0,51.96152422706632,rolling avg,rolling,J.Murphy,a,,,
+458,9,86.5,50.00333322222963,lineup_xi,lineup:xi,Joelinton,a,100.0,,xi
+459,9,67.5,51.96152422706632,injured,override:injured,L.Miley,d,75.0,Muscular injury - 75% chance of playing,
+460,9,72.33333333333333,15.821925715074425,lineup_xi,lineup:xi,Willock,a,,,xi
+461,9,16.666666666666668,17.009801096230763,rolling avg,rolling,Touré,a,100.0,,
+462,9,23.333333333333332,36.17089069035118,rolling avg,rolling,Steur,a,,,
+463,9,0.0,0.0,transferred,override:hard_flag,Woltemade,u,0.0,Has joined Juventus on loan for the rest of the season,
+464,9,65.0,44.45597072760118,lineup_xi,lineup:xi,Wissa,a,,,xi
+465,9,27.5,38.07011076071796,injured,override:injured,Osula,d,50.0,Ankle injury - 50% chance of playing,
+466,9,0.0,0.0,transferred,override:hard_flag,Neave,u,0.0,Has joined Wolves on loan for the rest of the season,
+559,9,1.0,1.7320508075688772,rolling avg,rolling,Bamba,a,,,
+567,9,90.0,0.0,lineup_xi,lineup:xi,Horníček,a,,,xi
+593,9,90.0,51.96152422706632,lineup_xi,lineup:xi,Dedić,a,100.0,,xi
+609,9,0.0,0.0,transferred,override:hard_flag,Shahar,u,0.0,has joined Arouca on loan for the rest of the seaon.,
+634,9,42.666666666666664,38.03068936179481,rolling avg,rolling,Fernandez-Pardo,d,75.0,Illness - 75% chance of playing,
+659,9,0.0,0.0,rolling avg,rolling,Miley,a,,,
+663,9,0.0,0.0,rolling avg,rolling,Pivas,a,,,
+664,9,0.0,0.0,rolling avg,rolling,Salia,a,,,
+665,9,0.0,0.0,rolling avg,rolling,Mills,a,,,
+666,9,0.0,0.0,rolling avg,rolling,Thompson,a,,,
+167,9,90.0,0.0,lineup_xi,lineup:xi,Delap,a,,,xi
+201,9,87.33333333333333,4.618802153517006,lineup_xi,lineup:xi,Muñoz,a,,,xi
+467,9,90.0,0.0,lineup_xi,lineup:xi,Sels,a,,,xi
+468,9,0.0,0.0,rolling avg,rolling,John,a,,,
+469,9,87.66666666666667,4.041451884327381,lineup_xi,lineup:xi,N.Williams,a,100.0,,xi
+470,9,0.0,0.0,transferred,override:hard_flag,Morato,u,0.0,Has joined West Ham on loan for the rest of the season,
+471,9,90.0,51.96152422706632,lineup_xi,lineup:xi,Milenković,a,100.0,,xi
+472,9,90.0,0.0,lineup_xi,lineup:xi,Murillo,a,100.0,,xi
+473,9,0.0,0.0,rolling avg,rolling,Aina,a,,,
+474,9,88.0,3.4641016151377544,lineup_xi,lineup:xi,Jair Cunha,a,100.0,,xi
+475,9,0.0,0.0,injured,override:hard_flag,Savona,i,0.0,Knee injury - Unknown return date,
+476,9,0.0,0.0,rolling avg,rolling,O.Richards,a,,,
+477,9,0.0,0.0,transferred,override:hard_flag,Abbott,u,0.0,Has joined Southampton on loan for the rest of the season,
+478,9,4.333333333333333,3.7859388972001824,rolling avg,rolling,Netz,a,,,
+479,9,0.0,0.0,transferred,override:hard_flag,Bindon,u,0.0,Has joined Charlton Athletic on loan for the rest of the season,
+480,9,90.0,51.96152422706632,lineup_xi,lineup:xi,Gibbs-White,a,100.0,,xi
+482,9,65.0,10.969655114602888,lineup_xi,lineup:xi,Hudson-Odoi,a,100.0,,xi
+483,9,33.0,7.211102550927978,injured,override:injured,Ndoye,d,50.0,Hamstring injury - 50% chance of playing,
+484,9,0.0,0.0,transferred,override:hard_flag,Hutchinson,u,0.0,Has joined AC Milan on loan for the rest of the season,
+485,9,0.0,0.0,transferred,override:hard_flag,Bakwa,u,0.0,Has joined Lille on loan for the rest of the season,
+486,9,85.33333333333333,4.163331998932265,lineup_xi,lineup:xi,McAtee,a,,,xi
+487,9,54.75,42.146569650842686,injured,override:injured,Dominguez,d,75.0,Muscular injury - 75% chance of playing,
+488,9,7.666666666666667,8.020806277010642,rolling avg,rolling,I.Sangaré,a,100.0,,
+489,9,0.0,0.0,rolling avg,rolling,Yates,a,100.0,,
+490,9,7.666666666666667,8.32666399786453,rolling avg,rolling,Wood,a,,,
+491,9,0.0,0.0,injured,override:hard_flag,Igor Jesus,i,0.0,Calf injury - Unknown return date,
+493,9,5.666666666666667,9.814954576223638,rolling avg,rolling,Kalimuendo,a,,,
+558,9,90.0,0.0,lineup_xi,lineup:xi,Schlager,a,,,xi
+581,9,54.0,47.62352359916263,rolling avg,rolling,Diomande,a,,,
+590,9,0.0,0.0,rolling avg,rolling,Benda,a,,,
+112,9,90.0,0.0,lineup_xi,lineup:xi,Van Hecke,a,100.0,,xi
+147,9,0.0,0.0,injured,override:hard_flag,Tosin,i,0.0,Calf injury - Unknown return date,
+401,9,80.0,14.0,lineup_xi,lineup:xi,Marmoush,a,100.0,,xi
+403,9,0.0,0.0,injured,override:hard_flag,Sávio,i,0.0,Muscular injury - Expected back 21 Nov,
+455,9,87.66666666666667,4.041451884327381,lineup_xi,lineup:xi,Tonali,a,100.0,,xi
+494,9,0.0,0.0,transferred,override:hard_flag,Vicario,u,0.0,Has joined Juventus on loan for the rest of the season,
+495,9,0.0,0.0,rolling avg,rolling,Austin,a,,,
+496,9,90.0,0.0,lineup_xi,lineup:xi,Kinsky,a,,,xi
+497,9,0.0,0.0,rolling avg,rolling,Dubravka,a,,,
+498,9,0.0,0.0,rolling avg,rolling,Senesi,a,,,
+499,9,65.0,12.897028081435403,lineup_xi,lineup:xi,Pedro Porro,a,100.0,,xi
+500,9,0.0,0.0,transferred,override:hard_flag,Romero,u,0.0,Has joined Atletico Madrid permanently,
+502,9,74.0,14.0,lineup_xi,lineup:xi,Robertson,a,100.0,,xi
+503,9,90.0,0.0,lineup_xi,lineup:xi,Van de Ven,a,100.0,,xi
+505,9,0.0,0.0,transferred,override:hard_flag,Spence,u,0.0,Has joined Internazionale permanently,
+506,9,0.0,0.0,rolling avg,rolling,Udogie,a,100.0,,
+507,9,0.0,0.0,transferred,override:hard_flag,Phillips,u,0.0,Has joined Middlesbrough permanently,
+508,9,7.333333333333333,11.846237095944574,rolling avg,rolling,Davies,a,,,
+509,9,0.0,0.0,rolling avg,rolling,Byfield,a,,,
+510,9,0.0,0.0,rolling avg,rolling,Rowswell,a,,,
+511,9,0.0,0.0,transferred,override:hard_flag,Souza,u,0.0,Has joined FC Porto on loan for the rest of the season,
+512,9,73.0,24.269322199023193,lineup_xi,lineup:xi,Kudus,a,100.0,,xi
+513,9,0.0,0.0,injured,override:hard_flag,Xavi,i,0.0,Knee injury - Unknown return date,
+514,9,65.0,49.96331987902058,lineup_xi,lineup:xi,Tel,a,,,xi
+515,9,47.333333333333336,22.12088003071608,rolling avg,rolling,Maddison,a,100.0,,
+516,9,0.0,0.0,injured,override:hard_flag,Bentancur,s,0.0,Suspended until 7 Nov,
+517,9,0.0,0.0,injured,override:hard_flag,Odobert,i,0.0,Knee injury - Unknown return date,
+518,9,0.0,0.0,transferred,override:hard_flag,P.M.Sarr,u,0.0,Has joined Juventus on loan for the rest of the season,
+519,9,22.0,16.522711641858304,rolling avg,rolling,Gallagher,a,,,
+520,9,0.0,0.0,injured,override:hard_flag,Bergvall,i,0.0,Knee injury - Expected back 31 Oct,
+521,9,1.3333333333333333,1.5275252316519468,rolling avg,rolling,Kulusevski,a,100.0,,
+522,9,83.66666666666667,10.96965511460289,rolling avg,rolling,Gray,a,,,
+523,9,0.0,0.0,transferred,override:hard_flag,Moore,u,0.0,Has joined FC Köln on loan for the rest of the season,
+524,9,0.0,0.0,rolling avg,rolling,Olusesi,a,,,
+525,9,65.0,35.92121007612819,lineup_xi,lineup:xi,Fernandes,a,,,xi
+526,9,65.0,32.78719262151,lineup_xi,lineup:xi,Solanke,a,,,xi
+527,9,0.0,0.0,benched,override:hard_flag,Richarlison,u,0.0,not included in squad.,
+528,9,0.0,0.0,transferred,override:hard_flag,Scarlett,u,0.0,Has joined Leyton Orient permanently,
+578,9,0.0,0.0,injured,override:hard_flag,Mudryk,i,0.0,Ankle injury - Unknown return date,
+601,9,0.0,0.0,rolling avg,rolling,Williams-Barnett,a,,,
+501,9,35.333333333333336,48.01388688008224,rolling avg,rolling,Danso,a,100.0,,
+529,9,90.0,0.0,lineup_xi,lineup:xi,Roefs,a,,,xi
+530,9,0.0,0.0,transferred,override:hard_flag,Patterson,u,0.0,Has joined Wrexham permanently,
+531,9,0.0,0.0,rolling avg,rolling,Ellborg,a,,,
+532,9,0.0,0.0,injured,override:hard_flag,Ballard,i,0.0,Hamstring injury - Unknown return date,
+533,9,57.75,22.516660498395403,injured,override:injured,Mukiele,d,75.0,Knock - 75% chance of playing,
+534,9,65.0,45.61067126598043,lineup_xi,lineup:xi,Hume,a,,,xi
+535,9,65.0,29.46183972531247,lineup_xi,lineup:xi,Alderete,a,100.0,,xi
+536,9,90.0,51.96152422706632,lineup_xi,lineup:xi,Reinildo,a,100.0,,xi
+537,9,0.0,0.0,transferred,override:hard_flag,Seelt,u,0.0,Has joined Swansea City on loan for the rest of the season,
+538,9,0.0,0.0,transferred,override:hard_flag,Hjelde,u,0.0,Has joined KV Mechelen on loan for the rest of the season,
+539,9,65.0,45.72016331262754,lineup_xi,lineup:xi,O'Nien,a,,,xi
+540,9,0.0,0.0,transferred,override:hard_flag,Masuaku,u,0.0,Has joined Konyaspor permanently,
+541,9,26.0,45.033320996790806,rolling avg,rolling,Meunier,a,100.0,,
+542,9,86.0,6.928203230275509,lineup_xi,lineup:xi,E.Le Fée,a,,,xi
+543,9,14.0,15.716233645501712,rolling avg,rolling,Diarra,a,100.0,,
+544,9,90.0,0.0,lineup_xi,lineup:xi,Xhaka,a,,,xi
+545,9,82.33333333333333,13.279056191361393,lineup_xi,lineup:xi,Sadiki,a,,,xi
+546,9,0.0,0.0,transferred,override:hard_flag,Adingra,u,0.0,Has joined Ajax on loan for the rest of the season,
+547,9,0.0,0.0,injured,override:hard_flag,Mundle,i,0.0,Knee injury - Unknown return date,
+548,9,77.0,46.31774318048466,lineup_xi,lineup:xi,Rigg,a,,,xi
+549,9,3.6666666666666665,6.3508529610858835,rolling avg,rolling,Talbi,a,,,
+550,9,0.0,0.0,rolling avg,rolling,Jocelin.T,a,,,
+551,9,68.5,40.67349669420289,lineup_xi,lineup:xi,N.Angulo,a,,,xi
+552,9,77.0,46.31774318048466,lineup_xi,lineup:xi,Brobbey,a,100.0,,xi
+553,9,11.0,12.701705922171767,injured,override:injured,Isidor,d,50.0,Knock - 50% chance of playing,
+612,9,30.0,51.96152422706632,rolling avg,rolling,Methalie,a,100.0,,
+613,9,8.333333333333334,14.433756729740644,rolling avg,rolling,Ahoka,a,,,
+646,9,10.0,17.320508075688775,rolling avg,rolling,Fofana,a,,,
+651,9,0.0,0.0,rolling avg,rolling,J.Angulo,a,,,
+668,9,41.5,23.33452377915607,rolling avg,rolling,Tutierov,a,,,

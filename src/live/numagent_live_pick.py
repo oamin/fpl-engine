@@ -51,6 +51,9 @@ from src.teams import norm_team
 L4_GAMMA = 1.0
 BOOKIE_DEPTH = 2
 CENTRELINE_HORIZON = 12  # t … t+11
+# Live commit-week hit bound: γ=1 over H=12 otherwise over-transfers.
+# 1 FT + max_hits → at most 1+max_hits transfers this deadline.
+LIVE_MAX_HITS = 1
 
 ROOT = Path(__file__).resolve().parents[2]
 SCRATCH = ROOT / "data" / "scratch"
@@ -61,10 +64,30 @@ POS_MAP = {1: "GKP", 2: "DEF", 3: "MID", 4: "FWD"}
 
 
 def _get_json(url: str) -> Any:
-    with httpx.Client(timeout=60.0) as client:
-        r = client.get(url)
-        r.raise_for_status()
-        return r.json()
+    import time
+
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+            "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        ),
+        "Accept": "application/json",
+    }
+    last_exc: Exception | None = None
+    for attempt in range(4):
+        try:
+            with httpx.Client(timeout=60.0, headers=headers) as client:
+                r = client.get(url)
+                if r.status_code == 403 and attempt < 3:
+                    time.sleep(1.5 * (attempt + 1))
+                    continue
+                r.raise_for_status()
+                return r.json()
+        except Exception as exc:  # noqa: BLE001 — retry transient FPL blocks
+            last_exc = exc
+            time.sleep(1.5 * (attempt + 1))
+    assert last_exc is not None
+    raise last_exc
 
 
 def fetch_bootstrap() -> dict[str, Any]:
@@ -698,7 +721,11 @@ def run_pick(
         raise RuntimeError(f"held missing from scored pool: {missing}")
 
     l3 = solve_week_transfers(
-        work_t, held, mu_col="mu_post", max_hits=15, time_limit=time_limit
+        work_t,
+        held,
+        mu_col="mu_post",
+        max_hits=LIVE_MAX_HITS,
+        time_limit=time_limit,
     )
     l3_block = _plan_block(l3, els=els, label="L3")
 
@@ -709,7 +736,6 @@ def run_pick(
         H = max(BOOKIE_DEPTH, int(centreline_horizon))
         if H > BOOKIE_DEPTH:
             try:
-                from src.markets.numagent_xp_pilot import _asof_alphas
                 from src.models.opta_gf_ga_horizon import (
                     league_avg_gf,
                     rank_gf_ga_profile_excluding,
@@ -727,7 +753,10 @@ def run_pick(
                 ranks = season_final_ranks(e0)
                 profile = rank_gf_ga_profile_excluding(e0)
                 league_gf = float(league_avg_gf(profile))
-                alpha_g, alpha_a = _asof_alphas(hist)
+                # Live hist lacks fixture/was_home for _asof_alphas; reuse week-t α
+                # (same load_alphas path as score_pool_from_odds).
+                alpha_g = float(meta_t.get("alpha_g") or 0.96)
+                alpha_a = float(meta_t.get("alpha_a") or 0.90)
                 side, alpha_g, alpha_a = build_frozen_side_table(
                     hist,
                     alpha_g=float(alpha_g),
@@ -797,7 +826,7 @@ def run_pick(
             gamma=L4_GAMMA,
             terminal_mu_weight=0.0,
             terminal_value_weight=0.0,
-            max_hits=15,
+            max_hits=LIVE_MAX_HITS,
             time_limit=time_limit,
         )
         l4_block = _plan_block(hz.week0, els=els, label="L4")
