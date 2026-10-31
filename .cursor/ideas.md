@@ -1,3 +1,14 @@
+## Promote pending wire — rate baseline + full-club shares (2026-10-31)
+
+Closed-season player-GW likelihood gates both **promote**:
+
+- Rate baseline − published: Δ log **+0.0024** [+0.0015, +0.0035]
+- Full-club shares − thin (>60′): Δ log **+0.0101** [+0.0087, +0.0116]
+
+Next: wire into published `score_xp_v2` / centreline mean callers, then
+joint-path climb sanity on locked `joint_path_opta_decay`.
+`reports/rate_baseline_share_pool_likelihood_gate.md`.
+
 ## Locked — L3 centreline forecast (FD near / Opta blind far) (2026-10-30)
 
 Product μ: `score_team_side` centreline. Near = FD λ; far = Opta blind λ.

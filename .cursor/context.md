@@ -34,7 +34,9 @@ Product **μ**: Odds API / FD centreline near (`t`/`t+1`); **Opta blind** λ far
 
 **Joint path component-μ (2026-10-31):** `l4_opta_joint_path_component_climb` — same planners with `mu_post :=` G/A/CS/GC. **All inconclusive** (joint path vs L4: goals −1.42, assists +0.12, CS +1.54, GC +0.77; all cover 0). Path stays very sticky (≈0 hits) under component μ. Stick to **full-μ** climbs. `reports/l4_opta_joint_path_component_climb_gate.md`.
 
-**Next screens (2026-10-31, running):** (1) `l4_opta_joint_path_decay_tune` — ρ∈{0.70,0.95} and ρ=0.85→pos_mean vs locked ρ=0.85→0 on joint path. (2) `score_xp_v2_rate_baseline_likelihood` + `score_xp_v2_full_share_likelihood` — published μ log-score gates before any joint-path climb sanity.
+**Likelihood promotes (2026-10-31):** rate baseline Δlog **+0.0024** [+0.0015, +0.0035]; full-club vs thin shares **+0.0101** [+0.0087, +0.0116]. Both promote — wire into published/centreline, then joint-path climb sanity. `reports/rate_baseline_share_pool_likelihood_gate.md`.
+
+**Decay tune climb (2026-10-31, running):** `l4_opta_joint_path_decay_tune` — ρ∈{0.70,0.95} and ρ=0.85→pos_mean vs locked ρ=0.85→0 on joint path.
 
 ## Repo freeze sequence (2026-10-20)
 

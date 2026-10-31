@@ -1,12 +1,27 @@
 {
   "task": "decay_tune_and_rate_share_likelihood",
-  "status": "running",
-  "as_of_utc": "2026-10-31T12:30:00Z",
-  "change": "Pre-registered and launched (1) Opta-far decay ρ/target climb tune (2) rate-baseline + full-share likelihood gates",
+  "status": "partial",
+  "as_of_utc": "2026-10-31T12:48:00Z",
+  "change": "Likelihood gates both promote; decay ρ/target climb dumps still running (max-4 queue)",
   "screens": {
-    "l4_opta_joint_path_decay_tune": "running — 12 season×arm dumps",
-    "score_xp_v2_rate_baseline_likelihood": "running",
-    "score_xp_v2_full_share_likelihood": "running"
+    "score_xp_v2_rate_baseline_likelihood": {
+      "status": "reported",
+      "verdict": "promote",
+      "mean": 0.002447,
+      "lo": 0.001509,
+      "hi": 0.003488
+    },
+    "score_xp_v2_full_share_likelihood": {
+      "status": "reported",
+      "verdict": "promote",
+      "mean": 0.010131,
+      "lo": 0.008703,
+      "hi": 0.011602
+    },
+    "l4_opta_joint_path_decay_tune": "running — dumps under data/processed/l4_opta_joint_path_decay_tune_rows/"
   },
-  "branch": "cursor/decay-rho-rate-share-gates-cc3d"
+  "next": "wire rate baseline + full-club shares into published/centreline; finish decay tune merge; then joint-path climb sanity",
+  "report_likelihood": "reports/rate_baseline_share_pool_likelihood_gate.md",
+  "branch": "cursor/decay-rho-rate-share-gates-cc3d",
+  "pr": 122
 }

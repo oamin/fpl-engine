@@ -118,7 +118,7 @@
     },
     "not": "share-seed MC jitter (keep_frozen_shares); does not concatenate prior rows into asof_share_history",
     "motive": "same-season-only rG collapses early (Matty Cash sG=1.0 Villa GW1–5) and poisons path-frequency captains",
-    "promote_to_score_xp_v2_gate": "deferred — cascade/hist on; full closed-season likelihood screen before flipping published mu_post boards",
+    "promote_to_score_xp_v2_gate": "promote on likelihood 2026-10-31 (Δlog +0.0024 [+0.0015,+0.0035]) — wire published/centreline then joint-path climb sanity",
     "any_later_change": "dated protocol update required"
   },
   "score_xp_v2_alphas": {
@@ -2860,7 +2860,15 @@
   },
   "score_xp_v2_rate_baseline_likelihood": {
     "pre_registered": "2026-10-31",
-    "status": "running",
+    "status": "reported",
+    "result": {
+      "mean": 0.002447,
+      "lo": 0.001509,
+      "hi": 0.003488,
+      "covers_zero": false,
+      "verdict": "promote",
+      "n_rows": 27746
+    },
     "role": "Closed-season player-GW likelihood: prior+season rate baseline vs published same-season rG/rA",
     "baseline": "score_xp_v2 (same-season player_rates_from_history; shares on minutes>0)",
     "treatment": "score_xp_v2_rate_baseline \u2014 apply_historical_rate_baseline on rG/rA before score_team_side",
@@ -2878,7 +2886,15 @@
   },
   "score_xp_v2_full_share_likelihood": {
     "pre_registered": "2026-10-31",
-    "status": "running",
+    "status": "reported",
+    "result": {
+      "mean": 0.010131,
+      "lo": 0.008703,
+      "hi": 0.011602,
+      "covers_zero": false,
+      "verdict": "promote",
+      "n_rows": 27746
+    },
     "role": "Closed-season player-GW likelihood: full-club m>0 shares projected onto >60\u2032 pool vs thin >60\u2032 shares",
     "baseline": "score_xp_v2_thin_share \u2014 sG/sA among minutes>60 only",
     "treatment": "score_xp_v2_full_share \u2014 sG/sA on minutes>0 club via share_players; eval pool minutes>60",
