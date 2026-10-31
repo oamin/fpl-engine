@@ -38,6 +38,8 @@ Product **μ**: Odds API / FD centreline near (`t`/`t+1`); **Opta blind** λ far
 
 **Decay tune climb (2026-10-31):** `l4_opta_joint_path_decay_tune` — ρ=0.70 / 0.95 / pos_mean vs locked ρ=0.85→0 all **inconclusive** (means −0.62 / −0.33 / −0.40). Keep locked decay. `reports/l4_opta_joint_path_decay_tune_gate.md`.
 
+**FT PE climb (2026-10-31):** `l4_opta_joint_path_ft_pe_climb` — terminal `U(f_H)=ν·f_H` with ν=`HIT_COST` vs product ν=0 on locked joint path. **Inconclusive** (+0.108/GW [−1.26, +1.50]); seasons split (+3.7 / −0.5 / −3.5 / +0.7). Keep `ft_pe_nu=0`. `reports/l4_opta_joint_path_ft_pe_climb_gate.md`.
+
 ## Repo freeze sequence (2026-10-20)
 
 | Step | Status | Note |

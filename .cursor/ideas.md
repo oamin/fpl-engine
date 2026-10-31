@@ -387,6 +387,14 @@ shares ≈OK when the side scores). Assists miss ≈ **pot** (≈0.72) **and** f
 `sA` on the hot μ tail (share factor ≈0.85). Do not chase goal-share retunes
 for this bias first. Report: `reports/top_mid_fwd_ga_mismatch.md`.
 
+## Noted — path FT PE four-season climb inconclusive (2026-10-31)
+
+`l4_opta_joint_path_ft_pe_climb`: ν=`HIT_COST` vs 0 on locked
+`joint_path_opta_decay` → **inconclusive** (+0.11/GW). Schedule moves
+(terminal FT≈5) but seasons oppose (+2022-23, −2024-25). Keep product
+`ft_pe_nu=0`. Do not retune ν on climb resid. Report:
+`reports/l4_opta_joint_path_ft_pe_climb_gate.md`.
+
 ## Noted — path FT potential energy (2026-10-21)
 
 Simple hit-value PE locked: `U(b)=ν·b`, ν=`HIT_COST` (+4 per stored FT,

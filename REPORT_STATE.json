@@ -1,9 +1,16 @@
 {
-  "task": "mu_wire_pi_lock",
+  "task": "l4_opta_joint_path_ft_pe_climb",
   "status": "done",
-  "as_of_utc": "2026-10-31T15:11:00Z",
-  "change": "PI locked wired μ (rate baseline + full-club shares) as published/centreline default",
-  "lock": "reports/SCORE_XP_V2_RATE_SHARE_WIRE_LOCK.md",
-  "branch": "cursor/decay-rho-rate-share-gates-cc3d",
-  "pr": 122
+  "as_of_utc": "2026-10-31T15:54:50Z",
+  "change": "Gated FT PE climb on locked joint_path_opta_decay",
+  "verdicts": {
+    "decay_ft_pe4_minus_decay_ft_pe0": {
+      "verdict": "inconclusive",
+      "mean": 0.10833333333333334,
+      "lo": -1.25875,
+      "hi": 1.5012499999999989
+    }
+  },
+  "report": "reports/l4_opta_joint_path_ft_pe_climb_gate.md",
+  "elapsed_s": 0.00098419189453125
 }
