@@ -209,6 +209,7 @@ def climb_season(
             gamma=GAMMA,
             max_hits=MAX_HITS,
             ft_pe_nu=nu,
+            value_captain=False,
             time_limit=time_limit_path,
             mip_rel_gap=float(mip_rel_gap),
             decision_gw=int(gw),

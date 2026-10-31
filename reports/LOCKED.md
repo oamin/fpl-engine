@@ -54,6 +54,7 @@ Assembler: `src/markets/numagent_xp.py`. Defaults: `share_se_shrink=True`, `shar
 | **L4 μ_post priced γ=1** | 2026-10-15/16 | `layer4_mupost_gamma1.md` | priced near BOOKIE_DEPTH=2 |
 | **L4 centreline horizon H=12** | 2026-10-30 | `L3_CENTRELINE_FORECAST_LOCK.md` | boards default; t:t+1 priced + t+2…t+11 Opta blind |
 | **Joint path + Opta far decay** | 2026-10-31 (PI) | `JOINT_PATH_OPTA_DECAY_LOCK.md` | **strategiser default** on H=12; ρ=0.85; live still L4 oneshot / H=2 |
+| **Joint path captain double** | 2026-10-31 (PI) | `JOINT_PATH_CAPTAIN_LOCK.md` | `value_captain=true` on strategiser (+3.48/GW) |
 | Planning glue (captain=μ) | 2026-10-15 | `fixture_planning_glue.md` | haul/CVaR cover 0 |
 | L5 beam K=8 | 2026-10-16 | `layer5_vs_l4_k_rescreen.md` | width only; L4 stays default |
 

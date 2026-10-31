@@ -1,16 +1,21 @@
 {
-  "task": "l4_opta_joint_path_ft_pe_climb",
+  "task": "l4_opta_joint_path_captain_climb",
   "status": "done",
-  "as_of_utc": "2026-10-31T15:54:50Z",
-  "change": "Gated FT PE climb on locked joint_path_opta_decay",
-  "verdicts": {
-    "decay_ft_pe4_minus_decay_ft_pe0": {
-      "verdict": "inconclusive",
-      "mean": 0.10833333333333334,
-      "lo": -1.25875,
-      "hi": 1.5012499999999989
-    }
+  "as_of_utc": "2026-10-31T17:50:00Z",
+  "change": "Captain climb promote (+3.483/GW); wire value_captain=true into joint_path_opta_decay",
+  "verdict": "promote",
+  "mean": 3.483,
+  "lo": 1.866,
+  "hi": 5.267,
+  "by_season_mean": {
+    "2022-23": 7.3,
+    "2023-24": 0.467,
+    "2024-25": 4.267,
+    "2025-26": 1.9
   },
-  "report": "reports/l4_opta_joint_path_ft_pe_climb_gate.md",
-  "elapsed_s": 0.00098419189453125
+  "decision": "product value_captain=true",
+  "report": "reports/l4_opta_joint_path_captain_climb_gate.md",
+  "lock": "reports/JOINT_PATH_OPTA_DECAY_LOCK.md",
+  "branch": "cursor/joint-path-captain-climb-cc3d",
+  "pr": 124
 }

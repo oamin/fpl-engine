@@ -71,6 +71,7 @@ class SeasonStore:
                 score_xp_v2=("score_xp_v2", "sum"),
                 xp_se=("xp_se", lambda s: float((s.astype(float) ** 2).sum() ** 0.5)),
                 total_points=("total_points", "sum"),
+                minutes=("minutes", "sum"),
                 name=("name", "first"),
                 position=("position", "first"),
                 team=("team", "first"),
