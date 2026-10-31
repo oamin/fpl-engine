@@ -1,21 +1,16 @@
 {
-  "task": "l4_opta_joint_path_captain_climb",
+  "task": "l4_opta_joint_path_deadline_causal_minutes",
   "status": "done",
-  "as_of_utc": "2026-10-31T17:50:00Z",
-  "change": "Captain climb promote (+3.483/GW); wire value_captain=true into joint_path_opta_decay",
-  "verdict": "promote",
-  "mean": 3.483,
-  "lo": 1.866,
-  "hi": 5.267,
-  "by_season_mean": {
-    "2022-23": 7.3,
-    "2023-24": 0.467,
-    "2024-25": 4.267,
-    "2025-26": 1.9
+  "as_of_utc": "2026-10-31T19:34:38Z",
+  "change": "Gated deadline-causal minutes climb on joint path + captain",
+  "verdicts": {
+    "oracle_t_minus_asof_all": {
+      "verdict": "promote",
+      "mean": 2.066666666666667,
+      "lo": 0.325,
+      "hi": 3.875
+    }
   },
-  "decision": "product value_captain=true",
-  "report": "reports/l4_opta_joint_path_captain_climb_gate.md",
-  "lock": "reports/JOINT_PATH_OPTA_DECAY_LOCK.md",
-  "branch": "cursor/joint-path-captain-climb-cc3d",
-  "pr": 124
+  "report": "reports/l4_opta_joint_path_deadline_causal_minutes_gate.md",
+  "elapsed_s": 0.0013470649719238281
 }
