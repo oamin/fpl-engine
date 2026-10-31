@@ -2518,5 +2518,47 @@
     "entry": "src/eval/l4_component_horizon_climb_gate.py",
     "report": "reports/l4_component_horizon_climb_gate.md",
     "any_later_change": "dated protocol update required"
+  },
+  "l4_opta_joint_path_climb": {
+    "pre_registered": "2026-10-31",
+    "status": "pending",
+    "role": "Joint multi-GW path plan vs L4 oneshot on identical L4+Opta H=12 boards; second arm decays Opta far μ",
+    "boards": "build_l3_centreline_horizon(H=12) — L4/FD priced t:t+1 + Opta blind far; full μ (mu_post≡score_xp_v2)",
+    "baseline": "l4_opta_h12 — solve_horizon_transfers (transfers at t=0 only; re-lineups later); undecayed boards",
+    "treatment_a": "joint_path — pick_path_transfer_plan every-GW x/FT; from_owned seeded 15; full board (no top-48); undecayed boards",
+    "treatment_b": "joint_path_decay — same planner; Opta far boards (t≥near) μ and xp components × ρ^(t−near+1) toward 0; ρ=0.85",
+    "comparisons": [
+      "joint_path_minus_l4_opta_h12",
+      "joint_path_decay_minus_l4_opta_h12",
+      "joint_path_decay_minus_joint_path"
+    ],
+    "shared": {
+      "wildcard_open": "full score_xp_v2 at gw_start",
+      "seed": "from_owned held 15 after wildcard (FT advanced)",
+      "candidates": "full week-0 pool (no DEFAULT_TOP_N=48 cap)",
+      "value_captain": false,
+      "ft_pe_nu": 0,
+      "realised": "XI total_points − hits (no captain double)",
+      "chips": false,
+      "max_hits": "SQUAD_SIZE (uncapped; −4/hit)",
+      "gamma": 1.0,
+      "horizon": 12
+    },
+    "decay": {
+      "scope": "t+2:end (near priced depth unchanged)",
+      "formula": "mu_t ← mu_t * rho^(t - near + 1); same factor on xp_* / score_xp_v2 / mu_post",
+      "target": 0,
+      "rho": 0.85
+    },
+    "metric": "paired-by-GW realised XI−hits; cluster_interval four closed seasons",
+    "promote_if": "paired interval lo > 0",
+    "park_if": "hi < 0",
+    "gw_start": 8,
+    "gw_end": 38,
+    "holdout": "2026-27 frozen — not in comparison",
+    "note": "Planner isolation on locked L4+Opta μ — not a μ promote. Decay arm tests whether damping Opta far xp toward 0 improves the joint path.",
+    "entry": "src/eval/l4_opta_joint_path_climb_gate.py",
+    "report": "reports/l4_opta_joint_path_climb_gate.md",
+    "any_later_change": "dated protocol update required"
   }
 }
