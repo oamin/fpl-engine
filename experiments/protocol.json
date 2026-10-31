@@ -26,17 +26,17 @@
       "score_exp_points"
     ]
   ],
-  "comparisons_note": "Frozen historical procedure pair only (score_xp − score_exp_points). Not the live product. Engine primary is score_xp_v2 under Numagent 2.0. Archive index: reports/ARCHIVE_NUMAGENT_1_0.md.",
+  "comparisons_note": "Frozen historical procedure pair only (score_xp \u2212 score_exp_points). Not the live product. Engine primary is score_xp_v2 under Numagent 2.0. Archive index: reports/ARCHIVE_NUMAGENT_1_0.md.",
   "numagent_2_0": {
     "locked": "2026-10-19",
     "product": "Numagent 2.0",
-    "status": "current — supersedes Numagent 1.0 on main",
+    "status": "current \u2014 supersedes Numagent 1.0 on main",
     "supersedes": "numagent_1_0",
     "index": "reports/LOCKED.md",
     "method": "reports/numagent_2_0_method.md",
     "scorer": "score_xp_v2",
     "scorer_assembler": "src/markets/numagent_xp.py",
-    "strategiser_default": "L4 μ_post priced BOOKIE_DEPTH=2 γ=1",
+    "strategiser_default": "L4 \u03bc_post priced BOOKIE_DEPTH=2 \u03b3=1",
     "strategiser_modules": {
       "L1": "src/strategy/layer1_week.py",
       "L2": "src/strategy/decision_value.py (mode=none identity)",
@@ -45,7 +45,7 @@
     },
     "live_entrypoint": "src/live/numagent_live_pick.py",
     "live_odds": "Odds API AH+OU+BTTS (region=us) via --fetch-odds or snapshot; prices t and t+1; optional --with-props (default off)",
-    "minutes": "news packets + predicted_lineup_roles → xmi",
+    "minutes": "news packets + predicted_lineup_roles \u2192 xmi",
     "pi_lock_example": "data/predictions/2026-27/gw07/numagent_lock.json",
     "forecast_mu": "l3_centreline_forecast",
     "not": "ep_next freeze decision; score_xp climb as live path; Betfair as Numagent near-book default",
@@ -54,7 +54,7 @@
   "numagent_1_0": {
     "superseded": "2026-10-19",
     "product": "Numagent 1.0",
-    "status": "archived in-place — do not use for live or new screens",
+    "status": "archived in-place \u2014 do not use for live or new screens",
     "role": "GW6-era numeric path: captured ep_next as decision score; score_xp shadow/historical; wildcard_plan / plan_half on opening pots; classic gw_lines",
     "decision_capture": "slot_t1 / ep_next same-stamp (live_primary archive)",
     "scorer": "score_xp (and ep_next for live XI/captain)",
@@ -86,7 +86,7 @@
       "score_xp",
       "numagent_1_0"
     ],
-    "score_xp_status": "superseded — kept for historical climb replay and as the gate baseline that lost to v2; do not use for new live work or new screens except as a named baseline",
+    "score_xp_status": "superseded \u2014 kept for historical climb replay and as the gate baseline that lost to v2; do not use for new live work or new screens except as a named baseline",
     "live_path": "src/live/numagent_live_pick.py",
     "mu_post": "identity attach of score_xp_v2 (strategy_layer2_shrinkage mode=none)",
     "any_later_change": "dated protocol update required",
@@ -94,15 +94,15 @@
   },
   "score_xp_v2_share_history": {
     "locked": "2026-10-16",
-    "revised": "2026-10-21 — cascade/hist paths use score_xp_v2_rate_baseline_prior for rG/rA; asof_share_history remains same-season for soft priors / minutes",
+    "revised": "2026-10-21 \u2014 cascade/hist paths use score_xp_v2_rate_baseline_prior for rG/rA; asof_share_history remains same-season for soft priors / minutes",
     "rule": "asof history for minutes/soft priors is scored season only, GW < t; attack rG/rA on cascade paths use prior+season baseline (see score_xp_v2_rate_baseline_prior)",
-    "no_prior_season_fill": "soft_priors_and_minutes_only — attack rates on cascade use prior + same-season update, not raw same-season-only rates",
+    "no_prior_season_fill": "soft_priors_and_minutes_only \u2014 attack rates on cascade use prior + same-season update, not raw same-season-only rates",
     "helper": "src/markets/numagent_xp.asof_share_history",
     "any_later_change": "dated protocol update required"
   },
   "score_xp_v2_rate_baseline_prior": {
     "locked": "2026-10-21",
-    "revised": "2026-10-21 — within-season update: prior counts + same-season GW < t appearances",
+    "revised": "2026-10-21 \u2014 within-season update: prior counts + same-season GW < t appearances",
     "status": "cascade_default",
     "role": "attack rG/rA: start season at prior (player name key, else positional); update each completed GW with same-season appearance G/A/M",
     "module": "src/markets/rate_baseline.py",
@@ -113,60 +113,60 @@
     ],
     "formula": {
       "player_prior": "r = (G0+Gs)/(M0+Ms+RATE_M0); G0/M0 from all prior closed seasons",
-      "positional_prior": "r = (κ·r_pos+Gs)/(κ+Ms) with κ=RATE_M0 when no player prior",
+      "positional_prior": "r = (\u03ba\u00b7r_pos+Gs)/(\u03ba+Ms) with \u03ba=RATE_M0 when no player prior",
       "hist": "same-season asof_share_history (GW < t); empty hist = pure prior (season start / live bootstrap)"
     },
     "not": "share-seed MC jitter (keep_frozen_shares); does not concatenate prior rows into asof_share_history",
-    "motive": "same-season-only rG collapses early (Matty Cash sG=1.0 Villa GW1–5) and poisons path-frequency captains",
-    "promote_to_score_xp_v2_gate": "deferred — cascade/hist on; full closed-season likelihood screen before flipping published mu_post boards",
+    "motive": "same-season-only rG collapses early (Matty Cash sG=1.0 Villa GW1\u20135) and poisons path-frequency captains",
+    "promote_to_score_xp_v2_gate": "deferred \u2014 cascade/hist on; full closed-season likelihood screen before flipping published mu_post boards",
     "any_later_change": "dated protocol update required"
   },
   "score_xp_v2_alphas": {
     "locked": "2026-10-16",
-    "role": "team pot scale α_G / α_A for score_xp_v2",
+    "role": "team pot scale \u03b1_G / \u03b1_A for score_xp_v2",
     "prior": "cleaned 2025/26 fixture-sides (data/processed/fpl_goal_assist_rates.json prior block)",
     "live": "add clean 2026/27 counts after each completed GW; match goals from FD E0_2627, player G/A from player_gw_2026_27",
-    "pooled": "α = (prior + live) counts; load via numagent_xp.load_alphas / fpl_score_rates.rates",
+    "pooled": "\u03b1 = (prior + live) counts; load via numagent_xp.load_alphas / fpl_score_rates.rates",
     "refresh": "python -m src.markets.fpl_score_rates --refresh-live [--before-gw N]",
     "not_share_mass": true,
     "any_later_change": "dated protocol update required"
   },
   "score_xp_v2_live_props": {
     "locked": "2026-10-16",
-    "revised": "2026-10-20 — props shape π, M levels (row 1); lift-only parked; assists no overlay locked; live default still OFF",
+    "revised": "2026-10-20 \u2014 props shape \u03c0, M levels (row 1); lift-only parked; assists no overlay locked; live default still OFF",
     "role": "optional live GW anytime overlay; default path is AH/OU/BTTS pots only",
     "live_default": false,
     "live_default_reason": "GW7 Chelsea distortion under prior lift/cap; keep opt-in until a live window screens clean under row-1",
-    "base": "mu_post ≡ score_xp_v2 from Dixon–Coles M (AH+OU+BTTS when priced); G_team = α_G × xG_M",
-    "props": "when enabled: anytime Yes → λ=−log(1−p) as relative weight; uncovered keep baseline E[G]=sG·G_team; π=w/Σw; E[G]=π·G_team",
-    "short_horizon": "scenario strands: k∼M → lineup cov → scorer/assist dice (π props-shape or shares; ρ assists; α empties); mean layer stays score_team_side; firm XI override deferred",
-    "cap": "Σ E[G]_i = G_team always (mean); on a roll Σ FPL goals ≤ k via α_G empty mass; no absolute λ pin",
+    "base": "mu_post \u2261 score_xp_v2 from Dixon\u2013Coles M (AH+OU+BTTS when priced); G_team = \u03b1_G \u00d7 xG_M",
+    "props": "when enabled: anytime Yes \u2192 \u03bb=\u2212log(1\u2212p) as relative weight; uncovered keep baseline E[G]=sG\u00b7G_team; \u03c0=w/\u03a3w; E[G]=\u03c0\u00b7G_team",
+    "short_horizon": "scenario strands: k\u223cM \u2192 lineup cov \u2192 scorer/assist dice (\u03c0 props-shape or shares; \u03c1 assists; \u03b1 empties); mean layer stays score_team_side; firm XI override deferred",
+    "cap": "\u03a3 E[G]_i = G_team always (mean); on a roll \u03a3 FPL goals \u2264 k via \u03b1_G empty mass; no absolute \u03bb pin",
     "assists": "no prop overlay (locked)",
     "parked": [
       "lift_only",
       "hard_absolute_replace"
     ],
-    "helper": "src/markets/prop_shares.prop_goal_pi via player_attack_from_m / score_team_side(prop_p_by_player=…); scenario: short_horizon_generative",
+    "helper": "src/markets/prop_shares.prop_goal_pi via player_attack_from_m / score_team_side(prop_p_by_player=\u2026); scenario: short_horizon_generative",
     "entrypoint": "src/live/numagent_live_pick.py use_props=False; opt-in --with-props",
     "any_later_change": "dated protocol update required"
   },
   "cascade_short_generative": {
     "locked": "2026-10-20",
-    "revised": "2026-10-25 — full-club m>0 share_pool default for xG/π (selection may stay ≥60′); prior: 2026-10-21 lineup_cov=False; attack dice minutes>0; CS ≥60",
+    "revised": "2026-10-25 \u2014 full-club m>0 share_pool default for xG/\u03c0 (selection may stay \u226560\u2032); prior: 2026-10-21 lineup_cov=False; attack dice minutes>0; CS \u226560",
     "role": "priced short-horizon t:t+1 scenario attack + defence path",
     "mean_layer": "score_team_side / score_xp_v2 (unchanged; moment xCS/xGC)",
-    "scenario": "book/FD fit → centreline Dixon–Coles M → match_outcome_roll (k∼M); no λ jitter; minutes = frozen as-of mean (live: xmi / as-of m); attack_roll; defence_roll CS/GC from rolled GA",
-    "lineup": "lineup_cov=False — trivial/mean minutes world on every gen path. Club matchday resample and corr-pair joints parked (likelihood screens).",
+    "scenario": "book/FD fit \u2192 centreline Dixon\u2013Coles M \u2192 match_outcome_roll (k\u223cM); no \u03bb jitter; minutes = frozen as-of mean (live: xmi / as-of m); attack_roll; defence_roll CS/GC from rolled GA",
+    "lineup": "lineup_cov=False \u2014 trivial/mean minutes world on every gen path. Club matchday resample and corr-pair joints parked (likelihood screens).",
     "live_layers": {
-      "pool": "player_pool = FFScout firm ∩ expanding minutes>60 sticky ids — WHO may be selected (not a minutes roll)",
+      "pool": "player_pool = FFScout firm \u2229 expanding minutes>60 sticky ids \u2014 WHO may be selected (not a minutes roll)",
       "minutes": "as-of mean m / live xmi on the side table; optional FPL availability overlay scales m; frozen on gen paths",
-      "scenario": "k∼M → attack dice → CS/GC from rolled GA"
+      "scenario": "k\u223cM \u2192 attack dice \u2192 CS/GC from rolled GA"
     },
-    "lambda_jitter": "retired — MARKET_BAND=0; Uniform(1±15%) was never PI-approved",
-    "defence": "CS = (GA==0) with ≥60'; GC = −⌊GA/2⌋ for GKP/DEF who played — no separate xCS/xGC on scenario strands",
-    "attack_gate": "π/ρ renorm on minutes>0 (impact subs stay on dice); CS still ≥60",
-    "share_pool": "full club m>0 for xG/xA shares and generative π — default even when selection pool is thin (≥60′); do not re-normalise shares on the selection board",
-    "goal_share_weight": "default w=rG·m/90; π∝r parked 2026-10-27 (score_xp_v2_goal_share_rate clear lose on log-score; cascade resid dig only)",
+    "lambda_jitter": "retired \u2014 MARKET_BAND=0; Uniform(1\u00b115%) was never PI-approved",
+    "defence": "CS = (GA==0) with \u226560'; GC = \u2212\u230aGA/2\u230b for GKP/DEF who played \u2014 no separate xCS/xGC on scenario strands",
+    "attack_gate": "\u03c0/\u03c1 renorm on minutes>0 (impact subs stay on dice); CS still \u226560",
+    "share_pool": "full club m>0 for xG/xA shares and generative \u03c0 \u2014 default even when selection pool is thin (\u226560\u2032); do not re-normalise shares on the selection board",
+    "goal_share_weight": "default w=rG\u00b7m/90; \u03c0\u221dr parked 2026-10-27 (score_xp_v2_goal_share_rate clear lose on log-score; cascade resid dig only)",
     "soft_priors": "xp_defcon / xp_bonus / xp_cards / xp_saves from expanding means (as-of *_mu), gated by lineup minutes; not from the roll",
     "parked": [
       "bonus_from_roll",
@@ -176,7 +176,7 @@
       "club_matchday_minutes_resample"
     ],
     "scope": "cascade_short / short_horizon_cascade scenario strands only",
-    "firm_xi": "deferred — news/firm XI override later (pool/availability, not a minutes MC)",
+    "firm_xi": "deferred \u2014 news/firm XI override later (pool/availability, not a minutes MC)",
     "default": true,
     "toggle": "run_decision(generative_attack=True, lineup_cov=False)",
     "modules": [
@@ -187,28 +187,28 @@
       "src/markets/match_outcome.py"
     ],
     "any_later_change": "dated protocol update required",
-    "forecast_mu": "Near μ = FD centreline moments → score_team_side (l3_centreline_forecast). Generative strands are scenario/path only — not μ."
+    "forecast_mu": "Near \u03bc = FD centreline moments \u2192 score_team_side (l3_centreline_forecast). Generative strands are scenario/path only \u2014 not \u03bc."
   },
   "cascade_long_match_outcome": {
     "locked": "2026-10-20",
     "pi_approved": "2026-10-24",
-    "revised": "2026-10-29 — venue_mode=blind locked as default (PI); AWAY_SHRINK=1.0 / LAM_SHRINK=1.0 identity locked; place×venue / expanding H/A / FD venue-scale / margin-shrink / lag-1 / remaining-balance parked after OOS or MAE FAIL · 2026-10-30 — L3 centreline forecast lock: Opta blind λ drives far μ via score_team_side; gen MC-mean remains not-μ",
-    "prior_revised": "2026-10-27 — away_shrink on λ_A only; default AWAY_SHRINK=1.0; no λ clip (kept); fixed s≠1 parked after OOS FAIL; symmetric HOME_ADV retired",
-    "role": "long-horizon t+2… match M + generative player xP",
+    "revised": "2026-10-29 \u2014 venue_mode=blind locked as default (PI); AWAY_SHRINK=1.0 / LAM_SHRINK=1.0 identity locked; place\u00d7venue / expanding H/A / FD venue-scale / margin-shrink / lag-1 / remaining-balance parked after OOS or MAE FAIL \u00b7 2026-10-30 \u2014 L3 centreline forecast lock: Opta blind \u03bb drives far \u03bc via score_team_side; gen MC-mean remains not-\u03bc",
+    "prior_revised": "2026-10-27 \u2014 away_shrink on \u03bb_A only; default AWAY_SHRINK=1.0; no \u03bb clip (kept); fixed s\u22601 parked after OOS FAIL; symmetric HOME_ADV retired",
+    "role": "long-horizon t+2\u2026 match M + generative player xP",
     "status": "pi_approved_strat",
-    "rank_map": "Opta place → closed-season empirical mean GF/GA by finishing place (method=rankmean); OLS place→GF/GA retired from live path",
-    "latent_draw": "per strand: sample GF, GA, ḡ inside mean ± z·SD (z_band=1.0) via sample_within_band; centre_blend=0.5 (half centre, half Uniform[lo,hi])",
-    "bands": "place sample SD (n=4 closed seasons per place); ḡ SE from assessed expanding mean",
-    "lambda": "λ_H=(GF_H/38)·((GA_A/38)/ḡ); λ_A same × away_shrink; no 0.20–3.50 λ clip; ClubPath unused for λ; away_shrink=1.0",
-    "venue_mode": "blind — locked 2026-10-29 (PI); season-total place GF/GA; no place×venue remap; DEFAULT_VENUE_MODE=blind",
-    "away_shrink": "1.0 — locked identity 2026-10-29 (PI); λ_A only (λ_A ← λ_A·s); no λ clip; fixed s≠1 parked",
-    "lam_shrink": "1.0 — locked identity 2026-10-29 (PI); both λ after away_shrink",
-    "league_gbar": "assessed_league_gf — live/assessed E0 expanding (FTHG+FTAG)/2 prior-blended; closed prior when no rows",
-    "uncertainty": "hierarchical — draw latents → λ → M|λ → k∼M; δ-method sd_lam is diagnostic only; do not resample λ after M is built",
-    "ols_rank_map": "retired — keep method=ols only for archaeology / old diagnostic replay",
-    "M": "match_outcome_probs_from_lambdas(λ_h, λ_a, ρ=0) conditional on the strand's drawn λ",
-    "scoreline": "match_outcome_roll — k∼M|λ; λ uncertainty enters only via latent draws across strands (no Uniform λ band)",
-    "player_xp": "cascade_short generative stack (lineup cov → attack dice → CS/GC from rolled GA → soft priors); props unavailable / off",
+    "rank_map": "Opta place \u2192 closed-season empirical mean GF/GA by finishing place (method=rankmean); OLS place\u2192GF/GA retired from live path",
+    "latent_draw": "per strand: sample GF, GA, \u1e21 inside mean \u00b1 z\u00b7SD (z_band=1.0) via sample_within_band; centre_blend=0.5 (half centre, half Uniform[lo,hi])",
+    "bands": "place sample SD (n=4 closed seasons per place); \u1e21 SE from assessed expanding mean",
+    "lambda": "\u03bb_H=(GF_H/38)\u00b7((GA_A/38)/\u1e21); \u03bb_A same \u00d7 away_shrink; no 0.20\u20133.50 \u03bb clip; ClubPath unused for \u03bb; away_shrink=1.0",
+    "venue_mode": "blind \u2014 locked 2026-10-29 (PI); season-total place GF/GA; no place\u00d7venue remap; DEFAULT_VENUE_MODE=blind",
+    "away_shrink": "1.0 \u2014 locked identity 2026-10-29 (PI); \u03bb_A only (\u03bb_A \u2190 \u03bb_A\u00b7s); no \u03bb clip; fixed s\u22601 parked",
+    "lam_shrink": "1.0 \u2014 locked identity 2026-10-29 (PI); both \u03bb after away_shrink",
+    "league_gbar": "assessed_league_gf \u2014 live/assessed E0 expanding (FTHG+FTAG)/2 prior-blended; closed prior when no rows",
+    "uncertainty": "hierarchical \u2014 draw latents \u2192 \u03bb \u2192 M|\u03bb \u2192 k\u223cM; \u03b4-method sd_lam is diagnostic only; do not resample \u03bb after M is built",
+    "ols_rank_map": "retired \u2014 keep method=ols only for archaeology / old diagnostic replay",
+    "M": "match_outcome_probs_from_lambdas(\u03bb_h, \u03bb_a, \u03c1=0) conditional on the strand's drawn \u03bb",
+    "scoreline": "match_outcome_roll \u2014 k\u223cM|\u03bb; \u03bb uncertainty enters only via latent draws across strands (no Uniform \u03bb band)",
+    "player_xp": "cascade_short generative stack (lineup cov \u2192 attack dice \u2192 CS/GC from rolled GA \u2192 soft priors); props unavailable / off",
     "props": false,
     "centre_blend": 0.5,
     "z_band": 1.0,
@@ -220,69 +220,69 @@
       "src/markets/cascade_score_v2.py",
       "src/markets/short_horizon_generative.py"
     ],
-    "any_later_change": "dated protocol update required; PI re-approval if rank_map, ḡ, latent_draw, venue_mode, away_shrink/lam_shrink identity, or hierarchical scoreline changes",
+    "any_later_change": "dated protocol update required; PI re-approval if rank_map, \u1e21, latent_draw, venue_mode, away_shrink/lam_shrink identity, or hierarchical scoreline changes",
     "lock_report": "reports/cascade_long_blind_venue_lock.md",
-    "forecast_mu": "Centreline moments from Opta blind λ → score_team_side (see l3_centreline_forecast). Generative k∼M strands are scenario/path only — not μ."
+    "forecast_mu": "Centreline moments from Opta blind \u03bb \u2192 score_team_side (see l3_centreline_forecast). Generative k\u223cM strands are scenario/path only \u2014 not \u03bc."
   },
   "cascade_long_home_adv_lam_screen": {
     "pre_registered": "2026-10-27",
     "status": "superseded_wrong_formula",
-    "role": "club λ venue fix for cascade_long G overprint (away λ high)",
+    "role": "club \u03bb venue fix for cascade_long G overprint (away \u03bb high)",
     "baseline": "home_adv=1.0 (protocol.cascade_long_match_outcome)",
     "candidates": {
       "home_adv_1_08": 1.08,
-      "home_adv_fit_train": "argmin MAE(λ,act) on closed seasons 2022-23..2024-25, grid 1.00..1.20 step 0.02"
+      "home_adv_fit_train": "argmin MAE(\u03bb,act) on closed seasons 2022-23..2024-25, grid 1.00..1.20 step 0.02"
     },
     "holdout": "2025-26 GW8-38 team-sides",
-    "metric_primary": "away mean(λ−actual goals)",
+    "metric_primary": "away mean(\u03bb\u2212actual goals)",
     "metric_secondary": [
-      "home mean(λ−actual)",
-      "overall MAE(λ,act)",
-      "vs FD mean(λ−act)"
+      "home mean(\u03bb\u2212actual)",
+      "overall MAE(\u03bb,act)",
+      "vs FD mean(\u03bb\u2212act)"
     ],
-    "promote_rule": "on 2025-26 holdout vs baseline 1.0: |away bias| falls by ≥0.10 AND home |bias| does not rise by >0.05 AND MAE does not rise by >0.02; still requires PI re-approval before flipping protocol HOME_ADV",
-    "scope": "club λ only first; XI G resid is a follow-up counterfactual, not the gate",
+    "promote_rule": "on 2025-26 holdout vs baseline 1.0: |away bias| falls by \u22650.10 AND home |bias| does not rise by >0.05 AND MAE does not rise by >0.02; still requires PI re-approval before flipping protocol HOME_ADV",
+    "scope": "club \u03bb only first; XI G resid is a follow-up counterfactual, not the gate",
     "modules": [
       "src/eval/cascade_long_home_adv_lam_screen.py",
       "src/models/opta_gf_ga_horizon.py",
       "src/models/multistage_mc_milp.py"
     ],
     "does_not_change_default": true,
-    "note": "Symmetric home_adv (λ_H·h, λ_A/h) failed promote; PI redirected to away_shrink on λ_A only, no λ clip",
+    "note": "Symmetric home_adv (\u03bb_H\u00b7h, \u03bb_A/h) failed promote; PI redirected to away_shrink on \u03bb_A only, no \u03bb clip",
     "superseded": "2026-10-27 by cascade_long_away_shrink_lam_screen"
   },
   "cascade_long_away_shrink_lam_screen": {
     "pre_registered": "2026-10-27",
     "status": "diagnostic_screen",
-    "role": "club λ away_shrink for cascade_long G overprint (away λ high); supersedes home_adv screen",
-    "formula": "λ_H unchanged; λ_A ← λ_A · away_shrink; no 0.20–3.50 λ clip",
+    "role": "club \u03bb away_shrink for cascade_long G overprint (away \u03bb high); supersedes home_adv screen",
+    "formula": "\u03bb_H unchanged; \u03bb_A \u2190 \u03bb_A \u00b7 away_shrink; no 0.20\u20133.50 \u03bb clip",
     "baseline": "away_shrink=1.0 (protocol.cascade_long_match_outcome)",
     "candidates": {
       "away_shrink_0_93": 0.93,
-      "away_shrink_0_75": "0.75 — XI resid G/CS zero-crossing (trend); screened 2026-10-27 add-on",
-      "away_shrink_fit_train": "argmin MAE(λ,act) on closed seasons 2022-23..2024-25, grid 0.80..1.00 step 0.02"
+      "away_shrink_0_75": "0.75 \u2014 XI resid G/CS zero-crossing (trend); screened 2026-10-27 add-on",
+      "away_shrink_fit_train": "argmin MAE(\u03bb,act) on closed seasons 2022-23..2024-25, grid 0.80..1.00 step 0.02"
     },
     "holdout": "2025-26 GW8-38 team-sides",
-    "metric_primary": "away mean(λ−actual goals)",
+    "metric_primary": "away mean(\u03bb\u2212actual goals)",
     "metric_secondary": [
-      "home mean(λ−actual)",
-      "overall MAE(λ,act)",
-      "vs FD mean(λ−act)"
+      "home mean(\u03bb\u2212actual)",
+      "overall MAE(\u03bb,act)",
+      "vs FD mean(\u03bb\u2212act)"
     ],
-    "promote_rule": "on 2025-26 holdout vs baseline 1.0: |away bias| falls by ≥0.10 AND home |bias| does not rise by >0.05 AND MAE does not rise by >0.02; still requires PI re-approval before flipping protocol AWAY_SHRINK",
-    "scope": "club λ only first; XI G resid is a follow-up counterfactual, not the gate",
+    "promote_rule": "on 2025-26 holdout vs baseline 1.0: |away bias| falls by \u22650.10 AND home |bias| does not rise by >0.05 AND MAE does not rise by >0.02; still requires PI re-approval before flipping protocol AWAY_SHRINK",
+    "scope": "club \u03bb only first; XI G resid is a follow-up counterfactual, not the gate",
     "modules": [
       "src/eval/cascade_long_away_shrink_lam_screen.py",
       "src/models/opta_gf_ga_horizon.py",
       "src/models/multistage_mc_milp.py"
     ],
     "does_not_change_default": true,
-    "note": "Formula locked: away_shrink on λ_A only; no λ clip. Default stays 1.0 — fixed s≠1 not promoted"
+    "note": "Formula locked: away_shrink on \u03bb_A only; no \u03bb clip. Default stays 1.0 \u2014 fixed s\u22601 not promoted"
   },
   "cascade_away_shrink_oos_seasons": {
     "pre_registered": "2026-10-27",
     "status": "done_reject_fixed_s",
-    "role": "OOS club-λ check for candidate s=0.768 on seasons that did not select s",
+    "role": "OOS club-\u03bb check for candidate s=0.768 on seasons that did not select s",
     "candidate": 0.768,
     "baseline": 1.0,
     "holdout_seasons": [
@@ -290,23 +290,23 @@
       "2023-24",
       "2024-25"
     ],
-    "result": "0/3 PASS; pooled FAIL — park fixed away_shrink; keep default 1.0",
+    "result": "0/3 PASS; pooled FAIL \u2014 park fixed away_shrink; keep default 1.0",
     "not": "2025-26 XI resid (selection season); no shared L3 XI on prior seasons",
     "promote_rule": "same as cascade_long_away_shrink_lam_screen, applied per season vs that season s=1.0",
     "modules": [
       "src/eval/cascade_away_shrink_oos_seasons.py"
     ],
-    "note": "XI shared-L3 path is 2025-26-only; club λ is the transferable OOS metric"
+    "note": "XI shared-L3 path is 2025-26-only; club \u03bb is the transferable OOS metric"
   },
   "cascade_long_lam_shrink_screen": {
     "pre_registered": "2026-10-27",
     "status": "done_reject",
     "result": "holdout FAIL (home |bias| worsens); OOS 0/3; keep LAM_SHRINK=1.0",
-    "role": "combined scale on both λ_H and λ_A (lam_shrink); trial vs identity",
-    "formula": "λ_H ← λ_H·s; λ_A ← λ_A·s; away_shrink=1.0; no 0.20–3.50 λ clip",
+    "role": "combined scale on both \u03bb_H and \u03bb_A (lam_shrink); trial vs identity",
+    "formula": "\u03bb_H \u2190 \u03bb_H\u00b7s; \u03bb_A \u2190 \u03bb_A\u00b7s; away_shrink=1.0; no 0.20\u20133.50 \u03bb clip",
     "baseline": "lam_shrink=1.0",
     "candidates": {
-      "lam_shrink_fit_train": "argmin MAE(λ,act) on 2022-23..2024-25, grid 0.80..1.00 step 0.02"
+      "lam_shrink_fit_train": "argmin MAE(\u03bb,act) on 2022-23..2024-25, grid 0.80..1.00 step 0.02"
     },
     "holdout": "2025-26 GW8-38 team-sides",
     "oos_seasons": [
@@ -314,7 +314,7 @@
       "2023-24",
       "2024-25"
     ],
-    "promote_rule": "vs baseline: |overall bias| ↓ ≥0.05 AND neither |bias_H| nor |bias_A| rises by >0.05 AND MAE ↑ ≤0.02; default unchanged",
+    "promote_rule": "vs baseline: |overall bias| \u2193 \u22650.05 AND neither |bias_H| nor |bias_A| rises by >0.05 AND MAE \u2191 \u22640.02; default unchanged",
     "modules": [
       "src/eval/cascade_long_lam_shrink_screen.py"
     ],
@@ -323,14 +323,14 @@
   "cascade_long_place_venue_lam_screen": {
     "pre_registered": "2026-10-27",
     "status": "done_holdout_pass_oos_fail",
-    "result": "holdout venue_away+blend_fit PASS; OOS 1/3 — keep DEFAULT_VENUE_MODE=blind",
-    "role": "place×venue Opta λ map for cascade_long G overprint (away λ high from venue-blind season totals)",
+    "result": "holdout venue_away+blend_fit PASS; OOS 1/3 \u2014 keep DEFAULT_VENUE_MODE=blind",
+    "role": "place\u00d7venue Opta \u03bb map for cascade_long G overprint (away \u03bb high from venue-blind season totals)",
     "baseline": "venue_mode=blind (protocol.cascade_long_match_outcome; DEFAULT_VENUE_MODE)",
     "candidates": {
-      "venue_away": "λ_H blind; λ_A = gf_a_pm(ra)·((GA_H_blind/38)/ḡ)",
-      "venue_ev": "EV-matched full place×venue both sides",
-      "naive": "isolate diagnostic: attack×opp-def / blended ḡ (overshoots home)",
-      "blend_fit": "train-fit w on venue_away λ_A, grid 0.00..1.00 step 0.10 on 2022-23..2024-25"
+      "venue_away": "\u03bb_H blind; \u03bb_A = gf_a_pm(ra)\u00b7((GA_H_blind/38)/\u1e21)",
+      "venue_ev": "EV-matched full place\u00d7venue both sides",
+      "naive": "isolate diagnostic: attack\u00d7opp-def / blended \u1e21 (overshoots home)",
+      "blend_fit": "train-fit w on venue_away \u03bb_A, grid 0.00..1.00 step 0.10 on 2022-23..2024-25"
     },
     "holdout": "2025-26 GW8-38 team-sides",
     "oos_seasons": [
@@ -338,53 +338,53 @@
       "2023-24",
       "2024-25"
     ],
-    "metric_primary": "away mean(λ−actual goals)",
+    "metric_primary": "away mean(\u03bb\u2212actual goals)",
     "metric_secondary": [
-      "home mean(λ−actual)",
-      "overall MAE(λ,act)",
-      "vs FD mean(λ−act)"
+      "home mean(\u03bb\u2212actual)",
+      "overall MAE(\u03bb,act)",
+      "vs FD mean(\u03bb\u2212act)"
     ],
-    "promote_rule": "on holdout vs blind: |away bias| falls by ≥0.10 AND home |bias| does not rise by >0.05 AND MAE does not rise by >0.02; OOS required on 2022-23..2024-25 before any default flip; still requires PI re-approval before flipping DEFAULT_VENUE_MODE",
-    "scope": "club λ only first; XI G resid is a follow-up counterfactual, not the gate",
+    "promote_rule": "on holdout vs blind: |away bias| falls by \u22650.10 AND home |bias| does not rise by >0.05 AND MAE does not rise by >0.02; OOS required on 2022-23..2024-25 before any default flip; still requires PI re-approval before flipping DEFAULT_VENUE_MODE",
+    "scope": "club \u03bb only first; XI G resid is a follow-up counterfactual, not the gate",
     "modules": [
       "src/eval/cascade_long_place_venue_lam_screen.py",
       "src/models/opta_gf_ga_horizon.py",
       "src/models/multistage_mc_milp.py"
     ],
     "does_not_change_default": true,
-    "note": "Follows cascade_long_g_overprint_isolate — structural fix for venue-blind place GF/GA; supersedes fixed away_shrink/lam_shrink spice"
+    "note": "Follows cascade_long_g_overprint_isolate \u2014 structural fix for venue-blind place GF/GA; supersedes fixed away_shrink/lam_shrink spice"
   },
   "cascade_long_club_lam_vs_place_gf": {
     "pre_registered": "2026-10-28",
     "status": "done",
-    "result": "pooled Σλ−place_gf ≈ +0.10 (converges); Σλ−act varies by season scoring level; venue H~0 A high on cold seasons — not escaped GF anchors",
-    "role": "Separate club Σλ vs place GF from XI xP(G) heat — does cascade_long escape its GF anchors?",
+    "result": "pooled \u03a3\u03bb\u2212place_gf \u2248 +0.10 (converges); \u03a3\u03bb\u2212act varies by season scoring level; venue H~0 A high on cold seasons \u2014 not escaped GF anchors",
+    "role": "Separate club \u03a3\u03bb vs place GF from XI xP(G) heat \u2014 does cascade_long escape its GF anchors?",
     "seasons": [
       "2022-23",
       "2023-24",
       "2024-25",
       "2025-26"
     ],
-    "method": "oracle finishing ranks + LOSO place profile; Σ Opta λ vs place mean_gf vs actual goals; venue bias",
+    "method": "oracle finishing ranks + LOSO place profile; \u03a3 Opta \u03bb vs place mean_gf vs actual goals; venue bias",
     "venue_mode": "blind (default)",
     "modules": [
       "src/eval/cascade_long_club_lam_vs_place_gf.py",
       "src/models/opta_gf_ga_horizon.py"
     ],
     "does_not_change_default": true,
-    "note": "Design claim: season Σλ ≈ place GF; venue misallocation and XI generative are separate layers"
+    "note": "Design claim: season \u03a3\u03bb \u2248 place GF; venue misallocation and XI generative are separate layers"
   },
   "cascade_short_goal_weight_likelihood_screen": {
     "pre_registered": "2026-10-28",
     "status": "done_inconclusive",
-    "result": "π∝r−rate_minutes Δ log +0.008 [-0.002,+0.017] covers 0 → inconclusive; both gen arms lose to L3 (~−0.03…−0.04); keep default rate_minutes",
-    "role": "cascade_short generative π∝r vs rate_minutes on player-GW log score; L3 score_xp_v2 reference",
+    "result": "\u03c0\u221dr\u2212rate_minutes \u0394 log +0.008 [-0.002,+0.017] covers 0 \u2192 inconclusive; both gen arms lose to L3 (~\u22120.03\u2026\u22120.04); keep default rate_minutes",
+    "role": "cascade_short generative \u03c0\u221dr vs rate_minutes on player-GW log score; L3 score_xp_v2 reference",
     "treatment": "cascade_short_gen_goal_share_rate",
     "baseline": "cascade_short_gen_goal_share_rate_minutes",
     "l3_reference": "l3_score_xp_v2",
-    "formula": "treatment goal_weight=rate (π∝r); baseline goal_weight=rate_minutes (w=r·m/90); same FD centreline λ; MC-mean generative xP; assists unchanged",
-    "pool": "minutes>60, ≥3 prior apps, FD AH+OU priced weeks, GW8–38, σ=3",
-    "metric": "gaussian_log_score on generative MC-mean xp vs total_points; paired treatment−baseline by GW; cluster_interval across four closed seasons",
+    "formula": "treatment goal_weight=rate (\u03c0\u221dr); baseline goal_weight=rate_minutes (w=r\u00b7m/90); same FD centreline \u03bb; MC-mean generative xP; assists unchanged",
+    "pool": "minutes>60, \u22653 prior apps, FD AH+OU priced weeks, GW8\u201338, \u03c3=3",
+    "metric": "gaussian_log_score on generative MC-mean xp vs total_points; paired treatment\u2212baseline by GW; cluster_interval across four closed seasons",
     "promote_if": "paired interval lo > 0 on four closed seasons",
     "n_mc": 6,
     "modules": [
@@ -397,7 +397,7 @@
   "cascade_gen_vs_l3_loss_anatomy": {
     "pre_registered": "2026-10-29",
     "status": "done",
-    "result": "gen vs L3: bias nearly identical (~−0.96); gen higher pred SD (1.81 vs 1.57) and lower corr (0.217 vs 0.237); Δ log worst in top L3-xp quintile — variance/ranking, not mean bias; gen-as-mean stays parked (viability B1)",
+    "result": "gen vs L3: bias nearly identical (~\u22120.96); gen higher pred SD (1.81 vs 1.57) and lower corr (0.217 vs 0.237); \u0394 log worst in top L3-xp quintile \u2014 variance/ranking, not mean bias; gen-as-mean stays parked (viability B1)",
     "role": "Diagnostic: why cascade_short generative loses player-GW log score to L3 centreline",
     "source_rows": "data/processed/cascade_short_goal_weight_likelihood_rows.csv",
     "arms": [
@@ -407,22 +407,22 @@
     ],
     "lenses": [
       "mean bias / MAE / corr / pred SD",
-      "Δ log (gen−L3) by L3-xp quintile",
+      "\u0394 log (gen\u2212L3) by L3-xp quintile",
       "by closed season"
     ],
     "modules": [
       "src/eval/cascade_gen_vs_l3_loss_anatomy.py"
     ],
     "does_not_change_default": true,
-    "note": "Follow-up to cascade_short_goal_weight_likelihood_screen; confirms B1 park — not a mean-level G fix"
+    "note": "Follow-up to cascade_short_goal_weight_likelihood_screen; confirms B1 park \u2014 not a mean-level G fix"
   },
   "cascade_long_fd_opta_lam_scale_dig": {
     "pre_registered": "2026-10-29",
     "status": "done",
-    "result": "Implementable form λ'_H=r_H·λ_H, λ'_A=r_A·λ_A with r=mean(FD)/mean(Opta) by venue; 2025-26 r_H=1.064 r_A=0.847; 2024-25 r_H=1.166 r_A=0.939; pooled r_H≈1.115 r_A≈0.893; direction stable, magnitudes not — no default flip",
-    "role": "Fit how FD centreline λ scales vs Opta ranking λ for an implementable post-λ map",
+    "result": "Implementable form \u03bb'_H=r_H\u00b7\u03bb_H, \u03bb'_A=r_A\u00b7\u03bb_A with r=mean(FD)/mean(Opta) by venue; 2025-26 r_H=1.064 r_A=0.847; 2024-25 r_H=1.166 r_A=0.939; pooled r_H\u22481.115 r_A\u22480.893; direction stable, magnitudes not \u2014 no default flip",
+    "role": "Fit how FD centreline \u03bb scales vs Opta ranking \u03bb for an implementable post-\u03bb map",
     "form": "venue mean-ratio scale (not global mul; not LAM_SHRINK)",
-    "hook": "post-λ site next to away_shrink / home_scale in opta_gf_ga_horizon",
+    "hook": "post-\u03bb site next to away_shrink / home_scale in opta_gf_ga_horizon",
     "seasons": [
       "2025-26",
       "2024-25"
@@ -432,19 +432,19 @@
       "src/eval/cascade_long_fd_vs_opta_lam_compare.py"
     ],
     "does_not_change_default": true,
-    "note": "Affine FD≈a·Opta+b (a<1) also needed for tail compression; venue mean-ratio alone matches venue means only. OOS required before promote"
+    "note": "Affine FD\u2248a\u00b7Opta+b (a<1) also needed for tail compression; venue mean-ratio alone matches venue means only. OOS required before promote"
   },
   "cascade_long_fd_vs_opta_lam_compare": {
     "pre_registered": "2026-10-29",
     "status": "done",
-    "result": "2025-26 GW8–38 n=618: Opta−FD +0.068 MAE 0.306 corr 0.706; Opta bias +0.122 vs FD +0.054; venue: Opta A +0.255 / FD A +0.023, Opta H −0.011 / FD H +0.086 — Opta away-hot vs book; default blind unchanged",
-    "role": "Paired FD centreline λ vs cascade_long Opta ranking λ on one closed season",
+    "result": "2025-26 GW8\u201338 n=618: Opta\u2212FD +0.068 MAE 0.306 corr 0.706; Opta bias +0.122 vs FD +0.054; venue: Opta A +0.255 / FD A +0.023, Opta H \u22120.011 / FD H +0.086 \u2014 Opta away-hot vs book; default blind unchanged",
+    "role": "Paired FD centreline \u03bb vs cascade_long Opta ranking \u03bb on one closed season",
     "season": "2025-26",
     "gw_range": [
       8,
       38
     ],
-    "opta": "oracle finishing ranks + LOSO place GF/GA → sample_opta_scenario venue_mode=blind",
+    "opta": "oracle finishing ranks + LOSO place GF/GA \u2192 sample_opta_scenario venue_mode=blind",
     "fd": "football-data.co.uk AH+OU centreline (cascade_short_fd_hist)",
     "metrics": [
       "mean/MAE/corr Opta vs FD",
@@ -459,17 +459,17 @@
       "src/models/multistage_mc_milp.py"
     ],
     "does_not_change_default": true,
-    "note": "One-season diagnostic; extends G-overprint isolate club-λ table without XI resid"
+    "note": "One-season diagnostic; extends G-overprint isolate club-\u03bb table without XI resid"
   },
   "cascade_long_expanding_ha_lam_screen": {
     "pre_registered": "2026-10-29",
     "status": "done_holdout_pass_oos_fail",
-    "result": "holdout expanding_away PASS (A +0.259→+0.031, H flat, MAE↓); OOS expanding_away 2/4, expanding_ha 1/4, blend_fit 0/4 — keep DEFAULT_VENUE_MODE=blind",
-    "role": "as-of expanding club H/A rates vs Opta blind place season-total λ (reopens place×venue with causal rates)",
-    "baseline": "venue_mode=blind place season-total λ",
+    "result": "holdout expanding_away PASS (A +0.259\u2192+0.031, H flat, MAE\u2193); OOS expanding_away 2/4, expanding_ha 1/4, blend_fit 0/4 \u2014 keep DEFAULT_VENUE_MODE=blind",
+    "role": "as-of expanding club H/A rates vs Opta blind place season-total \u03bb (reopens place\u00d7venue with causal rates)",
+    "baseline": "venue_mode=blind place season-total \u03bb",
     "candidates": {
-      "expanding_ha": "as-of club H/A GF/GA (prior closed + current before GW; PRIOR_N=10) × opp venue def / league venue mean",
-      "expanding_away": "λ_H blind; λ_A from expanding club rates",
+      "expanding_ha": "as-of club H/A GF/GA (prior closed + current before GW; PRIOR_N=10) \u00d7 opp venue def / league venue mean",
+      "expanding_away": "\u03bb_H blind; \u03bb_A from expanding club rates",
       "blend_fit": "train-fit w on expanding_ha, grid 0.00..1.00 step 0.10 on 2022-23..2024-25"
     },
     "holdout": "2025-26 GW8-38 team-sides",
@@ -479,13 +479,13 @@
       "2024-25",
       "2025-26"
     ],
-    "metric_primary": "away mean(λ−actual goals)",
+    "metric_primary": "away mean(\u03bb\u2212actual goals)",
     "metric_secondary": [
-      "home mean(λ−actual)",
-      "overall MAE(λ,act)",
-      "vs FD mean(λ−act) on holdout"
+      "home mean(\u03bb\u2212actual)",
+      "overall MAE(\u03bb,act)",
+      "vs FD mean(\u03bb\u2212act) on holdout"
     ],
-    "promote_rule": "on holdout vs blind: |away bias| falls by ≥0.10 AND home |bias| does not rise by >0.05 AND MAE does not rise by >0.02; OOS required (≥3/4 seasons) before any default flip; still requires PI re-approval",
+    "promote_rule": "on holdout vs blind: |away bias| falls by \u22650.10 AND home |bias| does not rise by >0.05 AND MAE does not rise by >0.02; OOS required (\u22653/4 seasons) before any default flip; still requires PI re-approval",
     "prior_pseudo_matches": 10,
     "modules": [
       "src/eval/cascade_long_expanding_ha_lam_screen.py",
@@ -493,16 +493,16 @@
       "src/models/multistage_mc_milp.py"
     ],
     "does_not_change_default": true,
-    "note": "Follows cascade_long_place_venue_lam_screen — as-of club rates instead of final-place×venue oracles; same promote thresholds"
+    "note": "Follows cascade_long_place_venue_lam_screen \u2014 as-of club rates instead of final-place\u00d7venue oracles; same promote thresholds"
   },
   "cascade_fd_goal_weight_likelihood_dig": {
     "pre_registered": "2026-10-28",
     "status": "done",
-    "result": "cascade component G log: π∝r Δ +0.015 [-0.002,+0.032] covers 0 (undetermined); resid G still +14 vs +100; score_xp_v2 gate already park_clear_lose for π∝r — default rate_minutes unchanged",
-    "role": "Cascade generative rate_minutes vs π∝r on component player-GW log score (FD shared L3 XI GW8–38)",
+    "result": "cascade component G log: \u03c0\u221dr \u0394 +0.015 [-0.002,+0.032] covers 0 (undetermined); resid G still +14 vs +100; score_xp_v2 gate already park_clear_lose for \u03c0\u221dr \u2014 default rate_minutes unchanged",
+    "role": "Cascade generative rate_minutes vs \u03c0\u221dr on component player-GW log score (FD shared L3 XI GW8\u201338)",
     "baseline": "goal_weight=rate_minutes artifacts",
-    "treatment": "goal_weight=rate (π∝r) artifacts",
-    "metric": "gaussian_log_score σ=3 on casc_xP_G vs P_G; paired GW Δ; reference score_xp_v2_goal_share_rate already park_clear_lose",
+    "treatment": "goal_weight=rate (\u03c0\u221dr) artifacts",
+    "metric": "gaussian_log_score \u03c3=3 on casc_xP_G vs P_G; paired GW \u0394; reference score_xp_v2_goal_share_rate already park_clear_lose",
     "modules": [
       "src/eval/cascade_fd_goal_weight_likelihood_dig.py",
       "src/eval/cascade_fd_generative_g_dig.py"
@@ -513,8 +513,8 @@
   "cascade_fd_generative_g_dig": {
     "pre_registered": "2026-10-27",
     "status": "done",
-    "result": "π∝r resid G +14; default rate_minutes +100 on same FD XI — minutes weight is the hot generative arm; α_G empty ~0.04",
-    "role": "Dig FD/generative +14 XI resid G under π∝r and default rate_minutes (cascade_short shared remainder)",
+    "result": "\u03c0\u221dr resid G +14; default rate_minutes +100 on same FD XI \u2014 minutes weight is the hot generative arm; \u03b1_G empty ~0.04",
+    "role": "Dig FD/generative +14 XI resid G under \u03c0\u221dr and default rate_minutes (cascade_short shared remainder)",
     "baseline_artifact": "cascade_vs_l3_component_xp_pi_r_gw8-38 (FD, goal_weight=rate)",
     "compare": "same map with goal_weight=rate_minutes (default)",
     "lenses": [
@@ -536,7 +536,7 @@
     "score_column": "score_xp_v2",
     "baseline": "score_xp",
     "minutes": "oracle",
-    "minutes_detail": "actual minutes, sigma_m=0; historical stack screen only — live path still uses tags/xmi",
+    "minutes_detail": "actual minutes, sigma_m=0; historical stack screen only \u2014 live path still uses tags/xmi",
     "pool": "minutes > 60 with football-data opening AH+OU",
     "gw_start": 5,
     "gw_end": 38,
@@ -546,7 +546,7 @@
     "locked": "2026-10-13",
     "promoted_as_primary": "2026-10-19",
     "replaces_published_score_xp": true,
-    "role": "engine primary scorer; score_xp superseded (gate Δ +0.0531 vs score_xp)"
+    "role": "engine primary scorer; score_xp superseded (gate \u0394 +0.0531 vs score_xp)"
   },
   "score_xp_v2_share_se_shrink": {
     "locked": "2026-10-16",
@@ -558,71 +558,71 @@
     "report": "reports/score_xp_v2_share_se_shrink.md",
     "treatment": "score_xp_v2 with share_se_shrink all_minutes",
     "baseline": "score_xp_v2 (raw shares)",
-    "formula": "s0=m/Σm on m>0; τ²=median(Δs²) on playing Δs>0 (floor 1e-4); K=τ²/(τ²+Δs²); s̃=Ks+(1−K)s0; renormalise",
+    "formula": "s0=m/\u03a3m on m>0; \u03c4\u00b2=median(\u0394s\u00b2) on playing \u0394s>0 (floor 1e-4); K=\u03c4\u00b2/(\u03c4\u00b2+\u0394s\u00b2); s\u0303=Ks+(1\u2212K)s0; renormalise",
     "applies_to": "sG and sA separately; before props overlay; overrides off",
-    "not": "constant-K on total xp; μ±xp_se risk arms; rate soft-shrink",
-    "pool": "identical to score_xp_v2_screen (minutes>60, FD AH+OU, GW5–38, σ=3)",
-    "metric": "gaussian_log_score on point mean; paired treatment−baseline by GW then cluster_interval",
-    "minutes": "oracle (actual m, σ_m=0) — same historical stack law",
+    "not": "constant-K on total xp; \u03bc\u00b1xp_se risk arms; rate soft-shrink",
+    "pool": "identical to score_xp_v2_screen (minutes>60, FD AH+OU, GW5\u201338, \u03c3=3)",
+    "metric": "gaussian_log_score on point mean; paired treatment\u2212baseline by GW then cluster_interval",
+    "minutes": "oracle (actual m, \u03c3_m=0) \u2014 same historical stack law",
     "promote_if": "paired interval lo > 0 on four closed seasons",
     "result": {
       "mean_d_log": 0.003418,
       "lo": 0.001324,
       "hi": 0.005652,
       "covers_zero": false,
-      "verdict": "promote — default share_se_shrink=True (superseded 2026-10-17)"
+      "verdict": "promote \u2014 default share_se_shrink=True (superseded 2026-10-17)"
     },
     "any_later_change": "dated protocol update required"
   },
   "score_xp_v2_share_se_pos_prior": {
     "locked": "2026-10-17",
     "promoted": "2026-10-17",
-    "role": "default score_xp_v2: share-SE shrink toward position×minutes prior",
+    "role": "default score_xp_v2: share-SE shrink toward position\u00d7minutes prior",
     "source": "src/markets/numagent_xp.shrink_shares_by_se(prior_support=position_minutes)",
     "trial": "src/markets/share_se_pos_prior_trial.py",
     "report": "reports/score_xp_v2_share_se_pos_prior.md",
     "treatment": "score_xp_v2 with share_se_shrink position_minutes prior",
     "baseline": "score_xp_v2 (raw shares)",
-    "formula": "s0∝m·w(pos); w_G={GKP:0,DEF:0.255,MID:1,FWD:2.467}; w_A={GKP:0.042,DEF:0.396,MID:1,FWD:0.954}; τ²=median(Δs²); K=τ²/(τ²+Δs²); s̃=Ks+(1−K)s0; renormalise",
-    "weights_source": "pooled closed-season per-90 goal/assist rates 2022-23…2025-26 (MID=1)",
+    "formula": "s0\u221dm\u00b7w(pos); w_G={GKP:0,DEF:0.255,MID:1,FWD:2.467}; w_A={GKP:0.042,DEF:0.396,MID:1,FWD:0.954}; \u03c4\u00b2=median(\u0394s\u00b2); K=\u03c4\u00b2/(\u03c4\u00b2+\u0394s\u00b2); s\u0303=Ks+(1\u2212K)s0; renormalise",
+    "weights_source": "pooled closed-season per-90 goal/assist rates 2022-23\u20262025-26 (MID=1)",
     "applies_to": "sG and sA separately; before props overlay; overrides off",
     "not": "all-minutes prior; scorers-only prior; live weight fit",
-    "pool": "identical to score_xp_v2_screen (minutes>60, FD AH+OU, GW5–38, σ=3)",
-    "metric": "gaussian_log_score on point mean; paired treatment−baseline by GW then cluster_interval",
-    "minutes": "oracle (actual m, σ_m=0) — same historical stack law",
+    "pool": "identical to score_xp_v2_screen (minutes>60, FD AH+OU, GW5\u201338, \u03c3=3)",
+    "metric": "gaussian_log_score on point mean; paired treatment\u2212baseline by GW then cluster_interval",
+    "minutes": "oracle (actual m, \u03c3_m=0) \u2014 same historical stack law",
     "promote_if": "paired interval lo > 0 on four closed seasons vs raw",
     "result": {
       "mean_d_log": 0.01954,
       "lo": 0.015835,
       "hi": 0.023362,
       "covers_zero": false,
-      "verdict": "promote — default share_se_shrink=True, share_se_prior=position_minutes"
+      "verdict": "promote \u2014 default share_se_shrink=True, share_se_prior=position_minutes"
     },
     "any_later_change": "dated protocol update required"
   },
   "score_xp_v2_goal_share_rate": {
     "locked": "2026-10-27",
     "parked": "2026-10-27",
-    "role": "goal share weights: π∝r among m>0 vs default π∝r·m — parked",
-    "source": "src/markets/numagent_xp.goal_share_weight / score_team_side(goal_weight=…)",
+    "role": "goal share weights: \u03c0\u221dr among m>0 vs default \u03c0\u221dr\u00b7m \u2014 parked",
+    "source": "src/markets/numagent_xp.goal_share_weight / score_team_side(goal_weight=\u2026)",
     "trial": "src/markets/goal_share_rate_trial.py",
     "report": "reports/score_xp_v2_goal_share_rate.md",
     "treatment": "score_xp_v2_goal_share_rate",
     "baseline": "score_xp_v2_goal_share_rate_minutes",
-    "formula": "treatment wG=rG (m gates club only); baseline wG=rG·m/90; both π=w/Σw then share-SE position×minutes; assists ∝rA·m/90 both arms",
+    "formula": "treatment wG=rG (m gates club only); baseline wG=rG\u00b7m/90; both \u03c0=w/\u03a3w then share-SE position\u00d7minutes; assists \u221drA\u00b7m/90 both arms",
     "applies_to": "sG channel only; assists unchanged; share_se_prior=position_minutes on",
-    "not": "assist weight change; share-SE off; artificial π shrink; holdout 2026-27",
-    "pool": "identical to score_xp_v2_screen (minutes>60, FD AH+OU, GW5–38, σ=3)",
-    "metric": "gaussian_log_score on point mean; paired treatment−baseline by GW then cluster_interval",
-    "minutes": "oracle (actual m, σ_m=0) — same historical stack law",
+    "not": "assist weight change; share-SE off; artificial \u03c0 shrink; holdout 2026-27",
+    "pool": "identical to score_xp_v2_screen (minutes>60, FD AH+OU, GW5\u201338, \u03c3=3)",
+    "metric": "gaussian_log_score on point mean; paired treatment\u2212baseline by GW then cluster_interval",
+    "minutes": "oracle (actual m, \u03c3_m=0) \u2014 same historical stack law",
     "promote_if": "paired interval lo > 0 on four closed seasons",
-    "cascade_resid_dig": "reports/cascade_share_no_renorm_minutes.md (OL XI +10.2→+0.2; not the gate)",
+    "cascade_resid_dig": "reports/cascade_share_no_renorm_minutes.md (OL XI +10.2\u2192+0.2; not the gate)",
     "result": {
       "mean_d_log": -0.000549,
       "lo": -0.001021,
       "hi": -0.000118,
       "covers_zero": false,
-      "verdict": "park_clear_lose — keep default goal_weight=rate_minutes (w=r·m/90)"
+      "verdict": "park_clear_lose \u2014 keep default goal_weight=rate_minutes (w=r\u00b7m/90)"
     },
     "any_later_change": "dated protocol update required"
   },
@@ -635,12 +635,12 @@
     "treatment": "score_xp_v2 with share_se_shrink positive_share prior",
     "baseline": "score_xp_v2 (raw shares)",
     "diagnostic_baseline": "score_xp_v2 with share_se_shrink all_minutes (legacy)",
-    "formula": "s0=m/Σm on s>0 only; zeros stay 0; τ²=median(Δs²); K=τ²/(τ²+Δs²); s̃=Ks+(1−K)s0; renormalise",
+    "formula": "s0=m/\u03a3m on s>0 only; zeros stay 0; \u03c4\u00b2=median(\u0394s\u00b2); K=\u03c4\u00b2/(\u03c4\u00b2+\u0394s\u00b2); s\u0303=Ks+(1\u2212K)s0; renormalise",
     "applies_to": "sG and sA separately; before props overlay; overrides off",
     "not": "all-minutes prior; constant-K on total xp",
-    "pool": "identical to score_xp_v2_screen (minutes>60, FD AH+OU, GW5–38, σ=3)",
-    "metric": "gaussian_log_score on point mean; paired treatment−baseline by GW then cluster_interval",
-    "minutes": "oracle (actual m, σ_m=0) — same historical stack law",
+    "pool": "identical to score_xp_v2_screen (minutes>60, FD AH+OU, GW5\u201338, \u03c3=3)",
+    "metric": "gaussian_log_score on point mean; paired treatment\u2212baseline by GW then cluster_interval",
+    "minutes": "oracle (actual m, \u03c3_m=0) \u2014 same historical stack law",
     "promote_if": "paired interval lo > 0 on four closed seasons vs raw; else if hi<0 set share_se_shrink=False",
     "result": {
       "mean_d_log": -0.00358,
@@ -655,23 +655,23 @@
   "score_xp_v2_minutes_decay": {
     "locked": "2026-10-16",
     "role": "predicted minutes: geometric decay on last-3 GW rows vs flat mean",
-    "source": "src/live/news_packets.rolling_game_minutes(rho=…)",
+    "source": "src/live/news_packets.rolling_game_minutes(rho=\u2026)",
     "trial": "src/markets/minutes_decay_trial.py",
     "report": "reports/score_xp_v2_minutes_decay.md",
-    "treatment": "score_xp_v2 with m=decay(ρ=0.7) last-3 (zeros included); σ_m=window SD",
-    "baseline": "score_xp_v2 with m=flat last-3 mean; σ_m=window SD",
-    "formula": "m̂=Σ ρ^{n-1-i} m_{t-n+i} / Σ ρ^{n-1-i}; n≤3; ρ=0.7; rates/priors/share-SE/M0 unchanged",
+    "treatment": "score_xp_v2 with m=decay(\u03c1=0.7) last-3 (zeros included); \u03c3_m=window SD",
+    "baseline": "score_xp_v2 with m=flat last-3 mean; \u03c3_m=window SD",
+    "formula": "m\u0302=\u03a3 \u03c1^{n-1-i} m_{t-n+i} / \u03a3 \u03c1^{n-1-i}; n\u22643; \u03c1=0.7; rates/priors/share-SE/M0 unchanged",
     "not": "oracle minutes; FDR; beyond-t+1 boards; LLM numeric xmi",
-    "pool": "identical to score_xp_v2_screen (actual minutes>60, FD AH+OU, GW5–38, σ=3)",
-    "metric": "gaussian_log_score on point mean; paired treatment−baseline by GW then cluster_interval",
-    "minutes": "predicted from GW < t (flat vs decay) — not oracle",
+    "pool": "identical to score_xp_v2_screen (actual minutes>60, FD AH+OU, GW5\u201338, \u03c3=3)",
+    "metric": "gaussian_log_score on point mean; paired treatment\u2212baseline by GW then cluster_interval",
+    "minutes": "predicted from GW < t (flat vs decay) \u2014 not oracle",
     "promote_if": "paired interval lo > 0 on four closed seasons",
     "result": {
       "mean_d_log": -0.00087,
       "lo": -0.002603,
       "hi": 0.000723,
       "covers_zero": true,
-      "verdict": "inconclusive — park; keep flat last-3 (ρ=1)"
+      "verdict": "inconclusive \u2014 park; keep flat last-3 (\u03c1=1)"
     },
     "any_later_change": "dated protocol update required"
   },
@@ -684,25 +684,25 @@
     "report": "reports/score_xp_v2_rate_m0.md",
     "treatment": "score_xp_v2 with M0=270, rate_se_floor=0.25 (share_se_shrink on)",
     "baseline": "score_xp_v2 (M0=0, rate_se_floor=0; share_se_shrink on)",
-    "formula": "r=G/(M+M0); Δr=max(√G,c)/(M+M0); M0=270; c=0.25; same for A; same-season GW<t only",
+    "formula": "r=G/(M+M0); \u0394r=max(\u221aG,c)/(M+M0); M0=270; c=0.25; same for A; same-season GW<t only",
     "not": "prior-season rate fill; soft shrink of r toward position mean; constant-K on total xp",
-    "pool": "identical to score_xp_v2_screen (minutes>60, FD AH+OU, GW5–38, σ=3)",
-    "metric": "gaussian_log_score on point mean; paired treatment−baseline by GW then cluster_interval",
-    "minutes": "oracle (actual m, σ_m=0) — same historical stack law",
+    "pool": "identical to score_xp_v2_screen (minutes>60, FD AH+OU, GW5\u201338, \u03c3=3)",
+    "metric": "gaussian_log_score on point mean; paired treatment\u2212baseline by GW then cluster_interval",
+    "minutes": "oracle (actual m, \u03c3_m=0) \u2014 same historical stack law",
     "promote_if": "paired interval lo > 0 on four closed seasons",
     "result": {
       "mean_d_log": 0.003685,
       "lo": 0.000571,
       "hi": 0.007053,
       "covers_zero": false,
-      "verdict": "promote — default RATE_M0=270, RATE_SE_FLOOR=0.25"
+      "verdict": "promote \u2014 default RATE_M0=270, RATE_SE_FLOOR=0.25"
     },
     "any_later_change": "dated protocol update required"
   },
   "strategy_layer2_shrinkage": {
     "locked": "2026-10-16",
     "mode": "none",
-    "mode_note": "PI 2026-10-16: constant-K shrink retired for decision boards; mu_post ≡ score_xp_v2. Historical constant screen frozen below.",
+    "mode_note": "PI 2026-10-16: constant-K shrink retired for decision boards; mu_post \u2261 score_xp_v2. Historical constant screen frozen below.",
     "mu_column": "score_xp_v2",
     "se_column": "xp_se",
     "prior": "n/a under mode=none",
@@ -712,7 +712,7 @@
     "ownership_tilt": false,
     "milp": "linear on mu_post (= score_xp_v2); identity attach before solve",
     "hit_chip_calibration": "on mu_post (= raw score_xp_v2); do not stack the ~0.5 decision-week haircut",
-    "screen": "src/strategy/se_credibility.py → reports/se_credibility.md (historical; constant beat none on log-score)",
+    "screen": "src/strategy/se_credibility.py \u2192 reports/se_credibility.md (historical; constant beat none on log-score)",
     "historical_constant_lock": {
       "locked": "2026-10-14",
       "mode": "constant",
@@ -749,14 +749,14 @@
     "hit_cost": 4,
     "hit_cost_source": "src/rules/fpl_2026.HIT_COST",
     "max_hits_default": 15,
-    "max_hits_note": "2026-10-15: unconstrained hits — solver bound = SQUAD_SIZE only; objective still −4/hit. Prior L3/L4 climbs used max_hits=2 (artificial cap); re-screen under 15 before citing those totals.",
+    "max_hits_note": "2026-10-15: unconstrained hits \u2014 solver bound = SQUAD_SIZE only; objective still \u22124/hit. Prior L3/L4 climbs used max_hits=2 (artificial cap); re-screen under 15 before citing those totals.",
     "max_transfers": "ft_before + max_hits",
     "budget": "bank + sell_prices of sold >= now_cost of bought (fpl_2026.sell_price)",
     "stacked_half_haircut": false,
     "ownership_tilt": false,
     "chips": false,
     "horizon": 1,
-    "horizon_note": "PI 2026-10-16: L3 forecasts week t only (bookie-priced). Look-ahead is L4 priced H≤2 (t and t+1).",
+    "horizon_note": "PI 2026-10-16: L3 forecasts week t only (bookie-priced). Look-ahead is L4 priced H\u22642 (t and t+1).",
     "candidate_top_n": null,
     "candidate_top_n_note": "optional soft knob; held 15 always included; null = full pool",
     "baselines": [
@@ -787,7 +787,7 @@
       "mu_basis": "sum over squad of mu at week H-1 (fixture-weighted residual proxy)",
       "value_weight": 0.0,
       "value_scale_tenths": 1000,
-      "note": "mild squad-μ terminal; value credit off until a dated screen"
+      "note": "mild squad-\u03bc terminal; value credit off until a dated screen"
     },
     "hit_cost": 4,
     "max_hits_default": 15,
@@ -812,16 +812,16 @@
     "report": "reports/layer4_mupost_gamma1.md",
     "bookie_depth": 2,
     "bookie_depth_note": "PI 2026-10-16: live Odds API EPL quotes ~9d (t and t+1). BOOKIE_DEPTH=2. Never forecast a week without bookie pricing. L3 remains H=1 (week t only).",
-    "week_t": "same mu_post board as Layer 3 (mu_post ≡ score_xp_v2; shrink retired 2026-10-16)",
-    "week_t1": "score_xp_v2 with priors/α/minutes frozen GW < t, opening book pots for that fixture; identity attach into mu_post",
-    "week_t2": "removed — unpriced on live Odds API horizon",
+    "week_t": "same mu_post board as Layer 3 (mu_post \u2261 score_xp_v2; shrink retired 2026-10-16)",
+    "week_t1": "score_xp_v2 with priors/\u03b1/minutes frozen GW < t, opening book pots for that fixture; identity attach into mu_post",
+    "week_t2": "removed \u2014 unpriced on live Odds API horizon",
     "minutes": "as-of mean minutes (not future actual)",
     "covariance": "not used for mean boards (risk/captain later)",
-    "beyond_priced": "hard stop — no fill boards without book lines; prior beyond-t+2 / team-form terminals stay parked",
-    "beyond_t2_diagnostic": "team-form FDR colour only via src/strategy/team_form_diagnostic.py — never a decision board",
+    "beyond_priced": "hard stop \u2014 no fill boards without book lines; prior beyond-t+2 / team-form terminals stay parked",
+    "beyond_t2_diagnostic": "team-form FDR colour only via src/strategy/team_form_diagnostic.py \u2014 never a decision board",
     "H": "n_priced in {1,2}",
     "gamma": 1.0,
-    "gamma_note": "2026-10-15: promoted γ=1 (undiscounted Σ μ over priced weeks). Prior default γ=0.9 screened at +2.55/GW; γ=1 at +3.56/GW (reports/layer4_mupost_gamma1.md). Not γ_fill.",
+    "gamma_note": "2026-10-15: promoted \u03b3=1 (undiscounted \u03a3 \u03bc over priced weeks). Prior default \u03b3=0.9 screened at +2.55/GW; \u03b3=1 at +3.56/GW (reports/layer4_mupost_gamma1.md). Not \u03b3_fill.",
     "gamma_prior_0p9": {
       "report": "reports/layer4_mupost_priced.md",
       "mean_d_per_gw": 2.548,
@@ -833,16 +833,16 @@
     },
     "terminal_mu_weight": 0.0,
     "max_hits_default": 15,
-    "max_hits_note": "unconstrained (SQUAD_SIZE bound); objective still −4/hit",
+    "max_hits_note": "unconstrained (SQUAD_SIZE bound); objective still \u22124/hit",
     "baseline": "layer3_one_week",
     "H1_identity": "H=1 recovers solve_week_transfers on week-t mu_post",
-    "eval": "paired-by-GW realised XI+captain-hits; L4 − L3 on four closed seasons",
-    "opening": "shared μ_post wildcard (L2 constant shrink) at gw_start — both arms identical open",
+    "eval": "paired-by-GW realised XI+captain-hits; L4 \u2212 L3 on four closed seasons",
+    "opening": "shared \u03bc_post wildcard (L2 constant shrink) at gw_start \u2014 both arms identical open",
     "any_later_change": "dated protocol update required"
   },
   "strategy_layer4_mupost_gamma1": {
     "locked": "2026-10-15",
-    "role": "priced μ_post L4 with γ=1 vs L3 — promoted to strategy_layer4_mupost_priced default",
+    "role": "priced \u03bc_post L4 with \u03b3=1 vs L3 \u2014 promoted to strategy_layer4_mupost_priced default",
     "trial": "src/strategy/layer4_mupost_trial.py --gamma 1",
     "report": "reports/layer4_mupost_gamma1.md",
     "gamma": 1.0,
@@ -854,28 +854,28 @@
       "pooled_d": 441
     },
     "baseline": "layer3_one_week",
-    "eval": "paired-by-GW realised XI+captain-hits; L4 − L3 on four closed seasons",
+    "eval": "paired-by-GW realised XI+captain-hits; L4 \u2212 L3 on four closed seasons",
     "any_later_change": "dated protocol update required"
   },
   "strategy_layer5_chips": {
     "locked": "2026-10-15",
-    "role": "chip+transfer strategy on priced L4; emerges from FPL rules + multi-week foresight — no play thresholds",
+    "role": "chip+transfer strategy on priced L4; emerges from FPL rules + multi-week foresight \u2014 no play thresholds",
     "step": 4,
     "architecture": {
       "inner_boards": "strategy_layer4_mupost_priced (gamma=1, unconstrained hits, hard-stop when unpriced)",
-      "step_1": "ChipWallet legality helpers — done",
-      "step_2": "thin TC/BB commit-week scoring identity only — done",
-      "step_3": "WC/FH state via advance_planner_state — done (WC keeps rebuild; FH reverts; FT preserved; hits 0)",
-      "step_4": "joint outer beam layer5_beam.py; K screen layer5_beam_k_trial.py — done",
-      "step_5": "climb L5 (K=2) vs L4 priced no-chip — layer5_vs_l4_trial.py — done (not promoted)",
-      "horizon_foundation": "extend as-of boards beyond t:t+1 (option 3) — layer5_calendar_boards.py"
+      "step_1": "ChipWallet legality helpers \u2014 done",
+      "step_2": "thin TC/BB commit-week scoring identity only \u2014 done",
+      "step_3": "WC/FH state via advance_planner_state \u2014 done (WC keeps rebuild; FH reverts; FT preserved; hits 0)",
+      "step_4": "joint outer beam layer5_beam.py; K screen layer5_beam_k_trial.py \u2014 done",
+      "step_5": "climb L5 (K=2) vs L4 priced no-chip \u2014 layer5_vs_l4_trial.py \u2014 done (not promoted)",
+      "horizon_foundation": "extend as-of boards beyond t:t+1 (option 3) \u2014 layer5_calendar_boards.py"
     },
     "step_5_screen": {
       "locked": "2026-10-15",
-      "baseline": "L4 priced γ=1 no chips (strategy_layer4_mupost_priced)",
+      "baseline": "L4 priced \u03b3=1 no chips (strategy_layer4_mupost_priced)",
       "treatment": "L5 joint beam DEFAULT_BEAM_K=2",
-      "opening": "shared μ_post wildcard",
-      "eval": "paired-by-GW realised XI+cap (+BB bench / TC×3) − hits; L5 − L4 on four closed seasons",
+      "opening": "shared \u03bc_post wildcard",
+      "eval": "paired-by-GW realised XI+cap (+BB bench / TC\u00d73) \u2212 hits; L5 \u2212 L4 on four closed seasons",
       "trial": "src/strategy/layer5_vs_l4_trial.py",
       "report": "reports/layer5_vs_l4.md",
       "promote_if": "paired interval lo > 0",
@@ -885,7 +885,7 @@
         "hi": 0.177,
         "covers_zero": true,
         "pooled_d": -350,
-        "verdict": "inconclusive — keep L4 default; L5 not promoted"
+        "verdict": "inconclusive \u2014 keep L4 default; L5 not promoted"
       }
     },
     "beam_K": {
@@ -906,17 +906,17 @@
           8,
           16
         ],
-        "eval": "paired L5(K)−L4 after horizon-MILP; priced hard-stop",
+        "eval": "paired L5(K)\u2212L4 after horizon-MILP; priced hard-stop",
         "trial": "src/strategy/layer5_vs_l4_k_trial.py",
         "report": "reports/layer5_vs_l4_k_rescreen.md",
-        "result": "K=8≡16 best pooled (+91 vs L4); all K cover 0; PI lock K=8"
+        "result": "K=8\u226116 best pooled (+91 vs L4); all K cover 0; PI lock K=8"
       },
-      "note": "K is search budget only — not an FPL rule. Does not promote L5 over L4. Change default only with a dated protocol arm."
+      "note": "K is search budget only \u2014 not an FPL rule. Does not promote L5 over L4. Change default only with a dated protocol arm."
     },
     "source": "src/strategy/layer5_week.py",
     "audit": "src/strategy/layer5_audit.py",
     "report": "reports/strategy_layer5_audit.md",
-    "chip_law": "src/rules/fpl_2026.ChipWallet / hit_cost / advance_ft / captain_multiplier — do not re-encode",
+    "chip_law": "src/rules/fpl_2026.ChipWallet / hit_cost / advance_ft / captain_multiplier \u2014 do not re-encode",
     "scoring_chips": {
       "none": "xi_mu + captain_mu - hits",
       "triple_captain": "xi_mu + 2*captain_mu - hits",
@@ -927,19 +927,19 @@
     "holdout": "2026-27 frozen; not in paired climb",
     "horizon_foundation": {
       "locked": "2026-10-15",
-      "role": "option 3 start — extend as-of μ boards beyond priced t:t+1 for a longer chip calendar; L4 BOOKIE_DEPTH=2 unchanged",
+      "role": "option 3 start \u2014 extend as-of \u03bc boards beyond priced t:t+1 for a longer chip calendar; L4 BOOKIE_DEPTH=2 unchanged",
       "source": "src/strategy/layer5_calendar_boards.py",
       "audit": "python -m src.strategy.layer5_calendar_boards --audit",
       "report": "reports/layer5_calendar_boards_audit.md",
       "depth_default": 8,
       "week0": "caller L3 mu_post board",
-      "weeks_ahead": "t+1: FD pots (BOOKIE_DEPTH=2); t+2+: as-of team-strength pots only — never bookie beyond t+1 (live law, locked 2026-10-16)",
-      "not": "FD/bookie pots beyond t+1; player-μ FDR decay (L4 beyond B/C parked); does not change strategy_layer4_mupost_priced",
+      "weeks_ahead": "t+1: FD pots (BOOKIE_DEPTH=2); t+2+: as-of team-strength pots only \u2014 never bookie beyond t+1 (live law, locked 2026-10-16)",
+      "not": "FD/bookie pots beyond t+1; player-\u03bc FDR decay (L4 beyond B/C parked); does not change strategy_layer4_mupost_priced",
       "screen": {
         "locked": "2026-10-15",
         "trial": "src/strategy/layer5_calendar_trial.py",
         "report": "reports/layer5_calendar_vs_l4.md",
-        "baseline": "L4 priced γ=1 no chips",
+        "baseline": "L4 priced \u03b3=1 no chips",
         "treatment": "L5 beam K=2 on calendar boards depth=8",
         "promote_if": "paired interval lo > 0",
         "result": {
@@ -948,8 +948,8 @@
           "hi": 0.347,
           "covers_zero": true,
           "pooled_d": -299,
-          "vs_priced_l5": "mildly less bad than −2.82/GW priced Step 5; still all seasons ≤0",
-          "verdict": "inconclusive — keep L4; longer boards alone do not rescue L5"
+          "vs_priced_l5": "mildly less bad than \u22122.82/GW priced Step 5; still all seasons \u22640",
+          "verdict": "inconclusive \u2014 keep L4; longer boards alone do not rescue L5"
         },
         "live_legal_rescreen": {
           "locked": "2026-10-16",
@@ -960,21 +960,21 @@
           "hi": -1.386,
           "covers_zero": false,
           "pooled_d": -426,
-          "verdict": "lose — keep L4 hard-stop; crude strength fill beyond t+2 hurts"
+          "verdict": "lose \u2014 keep L4 hard-stop; crude strength fill beyond t+2 hurts"
         }
       },
       "chip_dissection": {
         "locked": "2026-10-15",
-        "note": "joint L5_cal path: chip weeks +114 vs L4; none weeks −413 — loss is aftermath not play-week",
+        "note": "joint L5_cal path: chip weeks +114 vs L4; none weeks \u2212413 \u2014 loss is aftermath not play-week",
         "report": "reports/layer5_chip_dissection.md",
         "ablation": {
-          "role": "diagnostic — ABORTED: no_chips already ~−120/season vs L4 (confounded: beam≠L4 MILP)",
+          "role": "diagnostic \u2014 ABORTED: no_chips already ~\u2212120/season vs L4 (confounded: beam\u2260L4 MILP)",
           "trial": "src/strategy/layer5_chip_ablation_trial.py",
           "status": "aborted"
         },
         "nochips_first_order": {
           "locked": "2026-10-15",
-          "role": "2×2 horizon-MILP vs beam × priced vs calendar — unconfound no_chips loss",
+          "role": "2\u00d72 horizon-MILP vs beam \u00d7 priced vs calendar \u2014 unconfound no_chips loss",
           "trial": "src/strategy/layer5_nochips_diagnose.py",
           "report": "reports/layer5_nochips_diagnose.md",
           "result": {
@@ -989,7 +989,7 @@
           "locked": "2026-10-16",
           "role": "depth-0 none/TC/BB use solve_horizon_transfers (L4); later depths XI-only",
           "source": "src/strategy/layer5_beam.py",
-          "smoke": "beam no_chips priced ≡ l4_priced on 2025-26 GW8-14 (sumΔ=0)",
+          "smoke": "beam no_chips priced \u2261 l4_priced on 2025-26 GW8-14 (sum\u0394=0)",
           "next": "re-screen L5 chips (priced boards first) vs L4"
         },
         "vs_l4_horizon_milp_rescreen": {
@@ -997,28 +997,28 @@
           "role": "re-screen L5 K=2 chips vs L4 after horizon-MILP beam fix; priced hard-stop only",
           "trial": "src/strategy/layer5_vs_l4_trial.py --rescreen",
           "report": "reports/layer5_vs_l4_rescreen.md",
-          "baseline": "L4 priced γ=1 no chips",
+          "baseline": "L4 priced \u03b3=1 no chips",
           "treatment": "L5 beam K=2; depth-0 = solve_horizon_transfers",
           "board": "priced t:t+1 hard-stop (no calendar)",
           "time_limit": 45.0,
-          "eval": "paired-by-GW realised XI+captain−hits; L5 − L4 on four closed seasons",
-          "promote_rule": "promote L5 only if L5−L4 interval clear of 0 above",
+          "eval": "paired-by-GW realised XI+captain\u2212hits; L5 \u2212 L4 on four closed seasons",
+          "promote_rule": "promote L5 only if L5\u2212L4 interval clear of 0 above",
           "result": {
             "mean_d_per_gw": 0.113,
             "lo": -1.855,
             "hi": 2.105,
             "covers_zero": true,
             "pooled_d": 14,
-            "vs_prior_step5": "prior myopic beam −2.82/GW; horizon-MILP rescues chips to ~flat vs L4",
-            "verdict": "inconclusive — keep L4 default; L5 optional live shadow"
+            "vs_prior_step5": "prior myopic beam \u22122.82/GW; horizon-MILP rescues chips to ~flat vs L4",
+            "verdict": "inconclusive \u2014 keep L4 default; L5 optional live shadow"
           }
         },
         "vs_l4_k_grid_rescreen": {
           "locked": "2026-10-16",
-          "role": "L5 beam K∈{1,2,4,8,16} vs L4 after horizon-MILP; priced hard-stop",
+          "role": "L5 beam K\u2208{1,2,4,8,16} vs L4 after horizon-MILP; priced hard-stop",
           "trial": "src/strategy/layer5_vs_l4_k_trial.py",
           "report": "reports/layer5_vs_l4_k_rescreen.md",
-          "baseline": "L4 priced γ=1 no chips",
+          "baseline": "L4 priced \u03b3=1 no chips",
           "ks": [
             1,
             2,
@@ -1028,7 +1028,7 @@
           ],
           "board": "priced t:t+1 hard-stop",
           "time_limit": 45.0,
-          "eval": "paired-by-GW L5(K)−L4 on four closed seasons",
+          "eval": "paired-by-GW L5(K)\u2212L4 on four closed seasons",
           "promote_rule": "promote a K only if interval clear of 0 above vs L4",
           "result": {
             "pooled_d": {
@@ -1039,8 +1039,8 @@
               "K16": 91
             },
             "all_cover_zero": true,
-            "best_point": "K=8 (≡K16)",
-            "verdict": "inconclusive all K vs L4 — keep L4 as strategiser; PI locked DEFAULT_BEAM_K=8 (≡16)"
+            "best_point": "K=8 (\u2261K16)",
+            "verdict": "inconclusive all K vs L4 \u2014 keep L4 as strategiser; PI locked DEFAULT_BEAM_K=8 (\u226116)"
           }
         }
       }
@@ -1053,18 +1053,18 @@
     "source": "src/strategy/chip_stop.py",
     "trial": "src/strategy/layer4_chip_stop_trial.py",
     "report": "reports/layer4_chip_stop.md",
-    "boards": "priced t:t+1 γ=1",
+    "boards": "priced t:t+1 \u03b3=1",
     "policy": {
-      "tc_bb": "leave-one-out DP τ(weeks_left); play if gain ≥ τ; τ_1=0",
-      "wc": "rebuild week μ − none obj ≥ WC_MARGIN=16",
-      "fh": "rebuild week μ − none obj ≥ FH_MARGIN=12",
-      "pick": "among clearing chips, max (gain − hurdle); else none"
+      "tc_bb": "leave-one-out DP \u03c4(weeks_left); play if gain \u2265 \u03c4; \u03c4_1=0",
+      "wc": "rebuild week \u03bc \u2212 none obj \u2265 WC_MARGIN=16",
+      "fh": "rebuild week \u03bc \u2212 none obj \u2265 FH_MARGIN=12",
+      "pick": "among clearing chips, max (gain \u2212 hurdle); else none"
     },
     "transfers": "L4 solve_horizon_transfers on none path; WC/FH rebuild",
     "not": "L5 beam; FT-DP retune",
-    "eval": "paired-by-GW pts chip_stop − l4; chip play counts",
+    "eval": "paired-by-GW pts chip_stop \u2212 l4; chip play counts",
     "promote_rule": "paired interval clears 0 vs l4",
-    "result": "parked 2026-10-16: −0.185/GW covers 0; chips TC8/FH7/BB5/WC3",
+    "result": "parked 2026-10-16: \u22120.185/GW covers 0; chips TC8/FH7/BB5/WC3",
     "any_later_change": "dated protocol update required"
   },
   "strategy_layer4_ft_dp": {
@@ -1073,13 +1073,13 @@
     "source": "src/strategy/ft_dp.py",
     "trial": "src/strategy/layer4_ft_dp_trial.py",
     "report": "reports/layer4_ft_dp.md",
-    "boards": "priced t:t+1 γ=1",
-    "gains": "as-of one-/two-swap μ; leave-one-season-out",
-    "policy": "roll unless obj_ft−obj_roll ≥ τ(gw,bank); else ft vs hits by horizon objective",
+    "boards": "priced t:t+1 \u03b3=1",
+    "gains": "as-of one-/two-swap \u03bc; leave-one-season-out",
+    "policy": "roll unless obj_ft\u2212obj_roll \u2265 \u03c4(gw,bank); else ft vs hits by horizon objective",
     "not": "chip planner",
     "eval": "paired-by-GW pts vs l4; hits; mean FT; DP choice counts",
     "promote_rule": "hits toward controls + mean FT up without clear pts loss vs l4",
-    "result": "parked 2026-10-16: −0.58/GW covers 0; hits 276≈284; mean FT ~1.06",
+    "result": "parked 2026-10-16: \u22120.58/GW covers 0; hits 276\u2248284; mean FT ~1.06",
     "any_later_change": "dated protocol update required"
   },
   "strategy_layer4_hit_controls": {
@@ -1087,11 +1087,11 @@
     "role": "step-2 baselines: hard season hit budget + simple objective hit gate vs unconstrained L4",
     "trial": "src/strategy/layer4_hit_controls_trial.py",
     "report": "reports/layer4_hit_controls.md",
-    "boards": "priced t:t+1 γ=1 (strategy_layer4_mupost_priced)",
+    "boards": "priced t:t+1 \u03b3=1 (strategy_layer4_mupost_priced)",
     "arms": {
       "l4": "unconstrained hits (locked baseline)",
-      "budget": "season hit_points ≤ 16 then max_hits=0",
-      "gate": "objective hit_penalty = HIT_COST+4 (=8); realised hit_points still HIT_COST×hits"
+      "budget": "season hit_points \u2264 16 then max_hits=0",
+      "gate": "objective hit_penalty = HIT_COST+4 (=8); realised hit_points still HIT_COST\u00d7hits"
     },
     "not": "FT-DP; chip planner; promote arm",
     "eval": "paired-by-GW points vs l4; report hits + mean FT path",
@@ -1099,16 +1099,16 @@
   },
   "team_form_diagnostic": {
     "locked": "2026-10-16",
-    "role": "expanding club-form FDR as colour only — never MILP board/terminal",
+    "role": "expanding club-form FDR as colour only \u2014 never MILP board/terminal",
     "source": "src/strategy/team_form_diagnostic.py",
-    "form": "expanding mean club Σ pts (managers stripped); FDR = μ_own−μ_opp",
-    "window": "t+2…t+6 by default (beyond priced BOOKIE_DEPTH=2)",
+    "form": "expanding mean club \u03a3 pts (managers stripped); FDR = \u03bc_own\u2212\u03bc_opp",
+    "window": "t+2\u2026t+6 by default (beyond priced BOOKIE_DEPTH=2)",
     "decision_board": "strategy_layer4_mupost_priced hard-stop remains",
     "any_later_change": "dated protocol update required"
   },
   "strategy_layer4_mupost_fresh_open": {
     "locked": "2026-10-15",
-    "role": "same L3 vs L4 priced transfer policies as strategy_layer4_mupost_priced, but open from a non-μ crowd template 15 (shared across arms)",
+    "role": "same L3 vs L4 priced transfer policies as strategy_layer4_mupost_priced, but open from a non-\u03bc crowd template 15 (shared across arms)",
     "source": "src/strategy/layer4_mupost_fresh_open.py",
     "trial": "src/strategy/layer4_mupost_fresh_open_trial.py",
     "report": "reports/layer4_mupost_fresh_open.md",
@@ -1116,102 +1116,102 @@
     "squad_label": "template",
     "priced_path": "identical to strategy_layer4_mupost_priced (t:t+1 hard stop)",
     "baseline": "layer3_one_week on the same template open",
-    "contrast": "locked priced path opens on shared μ_post wildcard — this arm asks whether L4−L3 is robust off that ridge",
-    "eval": "paired-by-GW realised XI+captain-hits; L4 − L3 on four closed seasons",
+    "contrast": "locked priced path opens on shared \u03bc_post wildcard \u2014 this arm asks whether L4\u2212L3 is robust off that ridge",
+    "eval": "paired-by-GW realised XI+captain-hits; L4 \u2212 L3 on four closed seasons",
     "any_later_change": "dated protocol update required"
   },
   "strategy_layer4_mupost_beyond_e_decay": {
     "locked": "2026-10-16",
-    "role": "combined: strength pots × γ_fill + minutes decay ρ=0.7 on projections vs A hard-stop",
+    "role": "combined: strength pots \u00d7 \u03b3_fill + minutes decay \u03c1=0.7 on projections vs A hard-stop",
     "source": "src/strategy/layer4_mupost_beyond E_strength_gamma_decay",
     "trial": "src/strategy/layer4_mupost_beyond_e_decay_trial.py",
     "report": "reports/layer4_mupost_beyond_e_decay.md",
     "treatment": "E_strength_gamma_decay",
     "baseline": "A_hard_stop",
-    "priced": "BOOKIE_DEPTH=2; t+1 uses minutes decay ρ=0.7 last-3",
-    "fill": "strength pots → score_xp_v2 × GAMMA_FILL^{k+1}; same minutes decay",
+    "priced": "BOOKIE_DEPTH=2; t+1 uses minutes decay \u03c1=0.7 last-3",
+    "fill": "strength pots \u2192 score_xp_v2 \u00d7 GAMMA_FILL^{k+1}; same minutes decay",
     "not": "separate minutes-decay likelihood; FDR rescale; bookie beyond t+1",
-    "promote_if": "paired E_decay−A interval lo > 0 on four closed seasons",
+    "promote_if": "paired E_decay\u2212A interval lo > 0 on four closed seasons",
     "result": {
       "mean_d_per_gw": -1.919,
       "lo": -4.049,
       "hi": 0.404,
       "covers_zero": true,
       "pooled_d_vs_l3": -45,
-      "note": "worse than E alone (+0.10 vs A); all four seasons ≤0 vs A on mean",
-      "verdict": "inconclusive lean lose — park; keep A hard-stop + expanding minutes"
+      "note": "worse than E alone (+0.10 vs A); all four seasons \u22640 vs A on mean",
+      "verdict": "inconclusive lean lose \u2014 park; keep A hard-stop + expanding minutes"
     },
     "any_later_change": "dated protocol update required"
   },
   "strategy_layer4_mupost_beyond_e": {
     "locked": "2026-10-16",
-    "role": "beyond priced window: strength-only score_xp_v2 pots × γ_fill^{k+1} vs A hard-stop",
+    "role": "beyond priced window: strength-only score_xp_v2 pots \u00d7 \u03b3_fill^{k+1} vs A hard-stop",
     "source": "src/strategy/layer4_mupost_beyond.extend_strength_gamma",
     "trial": "src/strategy/layer4_mupost_beyond_e_trial.py",
     "report": "reports/layer4_mupost_beyond_e.md",
     "treatment": "E_strength_gamma",
     "baseline": "A_hard_stop",
     "priced": "BOOKIE_DEPTH=2 (t, t+1)",
-    "fill": "project_week_calendar strength pots → score_xp_v2; μ *= GAMMA_FILL^{k+1}",
-    "not": "FDR rescale of priced μ; bookie pots beyond t+1; L5 beam",
-    "promote_if": "paired E−A interval lo > 0 on four closed seasons",
+    "fill": "project_week_calendar strength pots \u2192 score_xp_v2; \u03bc *= GAMMA_FILL^{k+1}",
+    "not": "FDR rescale of priced \u03bc; bookie pots beyond t+1; L5 beam",
+    "promote_if": "paired E\u2212A interval lo > 0 on four closed seasons",
     "result": {
       "mean_d_per_gw": 0.097,
       "lo": -1.871,
       "hi": 1.984,
       "covers_zero": true,
       "pooled_d": 12,
-      "verdict": "inconclusive — park E; keep A hard-stop"
+      "verdict": "inconclusive \u2014 park E; keep A hard-stop"
     },
     "any_later_change": "dated protocol update required"
   },
   "live_xmi_numeric_sidecar": {
     "locked": "2026-10-16",
-    "role": "live sidecar: LLM/structured {p_start, m_if_start, m_if_bench} → xmi + σ_m",
+    "role": "live sidecar: LLM/structured {p_start, m_if_start, m_if_bench} \u2192 xmi + \u03c3_m",
     "source": "src/live/news_packets.compile_xmi_from_numeric",
     "not": "closed-season likelihood gate (no pre-deadline packet archive); free-text invented minutes",
-    "default": "tag→bucket compile_player_xmi remains live default until a gated live shadow clears",
+    "default": "tag\u2192bucket compile_player_xmi remains live default until a gated live shadow clears",
     "any_later_change": "dated protocol update required"
   },
   "strategy_layer4_mupost_beyond": {
     "locked": "2026-10-15",
-    "role": "priced mu_post path beyond-t+2 arms A/B/C (not cov-as-μ)",
+    "role": "priced mu_post path beyond-t+2 arms A/B/C (not cov-as-\u03bc)",
     "source": "src/strategy/layer4_mupost_beyond.py",
     "trial": "src/strategy/layer4_mupost_beyond_trial.py",
     "report": "reports/layer4_mupost_beyond.md",
     "priced_window": "identical to strategy_layer4_mupost_priced (t:t+1); historical trial under prior depth-3",
     "beyond_t2_arms": {
-      "A_hard_stop": "H = n_priced only (typically ≤2)",
-      "B_crude_fdr": "extend to H=5; μ = mean(priced μ_post) × as-of FDR vs opponent (schedule only, no that-week line)",
-      "C_decay": "extend to H=5; μ = γ_fill^k · last_priced_μ + (1−γ_fill^k) · position mean"
+      "A_hard_stop": "H = n_priced only (typically \u22642)",
+      "B_crude_fdr": "extend to H=5; \u03bc = mean(priced \u03bc_post) \u00d7 as-of FDR vs opponent (schedule only, no that-week line)",
+      "C_decay": "extend to H=5; \u03bc = \u03b3_fill^k \u00b7 last_priced_\u03bc + (1\u2212\u03b3_fill^k) \u00b7 position mean"
     },
     "H_extend": 5,
     "gamma_fill": 0.9,
     "gamma": 0.9,
     "terminal_mu_weight": 0.0,
-    "baseline": "layer3_one_week; secondary B−A and C−A",
+    "baseline": "layer3_one_week; secondary B\u2212A and C\u2212A",
     "eval": "paired-by-GW realised XI+captain-hits on four closed seasons",
     "any_later_change": "dated protocol update required"
   },
   "strategy_layer4_mupost_beyond_d": {
     "locked": "2026-10-16",
-    "role": "beyond-t+2 arm D: mean(priced μ)×raw expanding team-form FDR vs A hard-stop",
+    "role": "beyond-t+2 arm D: mean(priced \u03bc)\u00d7raw expanding team-form FDR vs A hard-stop",
     "source": "src/strategy/layer4_mupost_beyond.py",
     "trial": "src/strategy/layer4_mupost_beyond_d_trial.py",
     "report": "reports/layer4_mupost_beyond_d.md",
-    "priced_window": "identical to strategy_layer4_mupost_priced (t:t+1); γ=1; unconstrained hits; historical trial under prior depth-3",
+    "priced_window": "identical to strategy_layer4_mupost_priced (t:t+1); \u03b3=1; unconstrained hits; historical trial under prior depth-3",
     "beyond_t2": {
       "A_hard_stop": "H = n_priced only (control)",
-      "D_team_form": "H=5; μ = mean(priced μ_post) × (1 + 0.35·tanh(FDR/8)) clipped [0.55,1.35]; FDR = expanding club Σpts μ_own−μ_opp (managers stripped); schedule only"
+      "D_team_form": "H=5; \u03bc = mean(priced \u03bc_post) \u00d7 (1 + 0.35\u00b7tanh(FDR/8)) clipped [0.55,1.35]; FDR = expanding club \u03a3pts \u03bc_own\u2212\u03bc_opp (managers stripped); schedule only"
     },
     "H_extend": 5,
     "gamma": 1.0,
     "terminal_mu_weight": 0.0,
     "no_bookie_beyond_t2": true,
-    "baseline": "A_hard_stop (primary D−A); secondary D−L3 and A−L3",
-    "eval": "paired-by-GW realised XI+captain−hits on four closed seasons",
-    "promote_rule": "promote D only if D−A interval clear of 0 above; else park fill keep A",
-    "result": "D−A −2.27/GW clear lose — parked",
+    "baseline": "A_hard_stop (primary D\u2212A); secondary D\u2212L3 and A\u2212L3",
+    "eval": "paired-by-GW realised XI+captain\u2212hits on four closed seasons",
+    "promote_rule": "promote D only if D\u2212A interval clear of 0 above; else park fill keep A",
+    "result": "D\u2212A \u22122.27/GW clear lose \u2014 parked",
     "any_later_change": "dated protocol update required"
   },
   "strategy_layer4_mupost_terminal": {
@@ -1220,39 +1220,39 @@
     "source": "src/strategy/layer4_week.py (terminal_by_player); src/strategy/layer4_mupost_beyond.py",
     "trial": "src/strategy/layer4_mupost_terminal_trial.py",
     "report": "reports/layer4_mupost_terminal.md",
-    "priced_window": "identical to strategy_layer4_mupost_priced (t:t+1); γ=1; unconstrained hits; historical trial under prior depth-3",
+    "priced_window": "identical to strategy_layer4_mupost_priced (t:t+1); \u03b3=1; unconstrained hits; historical trial under prior depth-3",
     "arms": {
-      "A_hard_stop": "H≤2; terminal=0",
-      "T_form_terminal": "same boards; credit_i = amp·Σ_k tanh(FDR_{t+2+k})·mean_priced_μ_i; amp as-of OLS; γ^H·credit on squad x"
+      "A_hard_stop": "H\u22642; terminal=0",
+      "T_form_terminal": "same boards; credit_i = amp\u00b7\u03a3_k tanh(FDR_{t+2+k})\u00b7mean_priced_\u03bc_i; amp as-of OLS; \u03b3^H\u00b7credit on squad x"
     },
     "n_beyond": 2,
     "no_bookie_beyond_t2": true,
     "no_fill_boards": true,
-    "baseline": "A_hard_stop (primary T−A)",
-    "eval": "paired-by-GW realised XI+captain−hits on four closed seasons",
-    "promote_rule": "promote T only if T−A interval clear of 0 above",
+    "baseline": "A_hard_stop (primary T\u2212A)",
+    "eval": "paired-by-GW realised XI+captain\u2212hits on four closed seasons",
+    "promote_rule": "promote T only if T\u2212A interval clear of 0 above",
     "any_later_change": "dated protocol update required"
   },
   "strategy_layer4_mupost_beyond_d_adapt": {
     "locked": "2026-10-16",
-    "role": "beyond-t+2 D fills with as-of-tuned amp (const) vs amp·ρ^k (decay) vs A",
+    "role": "beyond-t+2 D fills with as-of-tuned amp (const) vs amp\u00b7\u03c1^k (decay) vs A",
     "source": "src/strategy/layer4_mupost_beyond.py",
     "trial": "src/strategy/layer4_mupost_beyond_d_adapt_trial.py",
     "report": "reports/layer4_mupost_beyond_d_adapt.md",
-    "priced_window": "identical to strategy_layer4_mupost_priced (t:t+1); γ=1; unconstrained hits; historical trial under prior depth-3",
+    "priced_window": "identical to strategy_layer4_mupost_priced (t:t+1); \u03b3=1; unconstrained hits; historical trial under prior depth-3",
     "beyond_t2": {
       "A_hard_stop": "H = n_priced only (control)",
-      "D_adapt_const": "H=5; amp from as-of OLS y_rel ~ amp·tanh(FDR/τ); scale=1+amp·tanh; target_gw<decision only",
-      "D_adapt_decay": "H=5; amp+ρ from as-of grid on y_rel ~ amp·ρ^k·tanh; k=0 at first beyond week"
+      "D_adapt_const": "H=5; amp from as-of OLS y_rel ~ amp\u00b7tanh(FDR/\u03c4); scale=1+amp\u00b7tanh; target_gw<decision only",
+      "D_adapt_decay": "H=5; amp+\u03c1 from as-of grid on y_rel ~ amp\u00b7\u03c1^k\u00b7tanh; k=0 at first beyond week"
     },
     "tau": 8.0,
-    "rho_grid": "0.40…1.00 step 0.05",
+    "rho_grid": "0.40\u20261.00 step 0.05",
     "min_pairs": 40,
     "H_extend": 5,
     "gamma": 1.0,
     "no_bookie_beyond_t2": true,
     "baseline": "A_hard_stop (primary); secondary vs L3",
-    "eval": "paired-by-GW realised XI+captain−hits on four closed seasons",
+    "eval": "paired-by-GW realised XI+captain\u2212hits on four closed seasons",
     "promote_rule": "promote adapt arm only if vs A interval clear of 0 above",
     "any_later_change": "dated protocol update required"
   },
@@ -1263,31 +1263,31 @@
     "trial": "src/strategy/layer4_mupost_risk_trial.py",
     "report": "reports/layer4_mupost_risk.md",
     "mean_board": "identical to strategy_layer4_mupost_priced (mu_post intact)",
-    "decision_mu": "mu_dec = mu_post + λ (w_se z(se_post) + w_cov z(sd_cov)); within-position z",
-    "se_post": "K · xp_se under constant-K shrink (posterior SE of mu_post)",
+    "decision_mu": "mu_dec = mu_post + \u03bb (w_se z(se_post) + w_cov z(sd_cov)); within-position z",
+    "se_post": "K \u00b7 xp_se under constant-K shrink (posterior SE of mu_post)",
     "sd_cov": "fixture_covariance draw SD (RSS over DGW fixtures); as-of decision GW; n_scenarios=32",
     "lambda_risk": 0.35,
     "w_se": 0.5,
     "w_cov": 0.5,
     "posture": "risk_seeking (chase / diverge)",
-    "covariance": "risk SD only — never replaces mu_post (cov-as-μ parked)",
+    "covariance": "risk SD only \u2014 never replaces mu_post (cov-as-\u03bc parked)",
     "beyond_t2": "hard stop at priced window",
     "H": "n_priced in {1,2,3}",
     "gamma": 0.9,
     "terminal_mu_weight": 0.0,
     "baseline": "layer3_one_week on mu_post",
-    "H1_identity": "λ=0 and H=1 recovers solve_week_transfers on week-t mu_post",
-    "eval": "paired-by-GW realised XI+captain-hits; L4_risk − L3 on four closed seasons",
+    "H1_identity": "\u03bb=0 and H=1 recovers solve_week_transfers on week-t mu_post",
+    "eval": "paired-by-GW realised XI+captain-hits; L4_risk \u2212 L3 on four closed seasons",
     "any_later_change": "dated protocol update required"
   },
   "strategy_layer4_mupost_se_pm": {
     "locked": "2026-10-15",
-    "role": "quick trial: priced mu_post path with mu_dec = mu_post ± se_post; no fixture-cov draws",
+    "role": "quick trial: priced mu_post path with mu_dec = mu_post \u00b1 se_post; no fixture-cov draws",
     "source": "src/strategy/layer4_mupost_se_pm_trial.py",
     "report": "reports/layer4_mupost_se_pm.md",
     "mean_board": "identical to strategy_layer4_mupost_priced (mu_post intact)",
-    "decision_mu": "mu_dec = mu_post + sign · se_post; sign ∈ {+1, −1}",
-    "se_post": "K · xp_se under constant-K shrink (posterior SE of mu_post); raw scale, no z, no cov",
+    "decision_mu": "mu_dec = mu_post + sign \u00b7 se_post; sign \u2208 {+1, \u22121}",
+    "se_post": "K \u00b7 xp_se under constant-K shrink (posterior SE of mu_post); raw scale, no z, no cov",
     "covariance": "not used",
     "beyond_t2": "hard stop at priced window",
     "H": "n_priced in {1,2,3}",
@@ -1298,7 +1298,7 @@
       "l4_plus",
       "l4_minus"
     ],
-    "eval": "paired-by-GW realised XI+captain-hits; each arm − L3 on four closed seasons",
+    "eval": "paired-by-GW realised XI+captain-hits; each arm \u2212 L3 on four closed seasons",
     "any_later_change": "dated protocol update required"
   },
   "strategy_layer4_mupost_window": {
@@ -1309,7 +1309,7 @@
     "report": "reports/layer4_mupost_window.md",
     "arms": {
       "l4_exp": "strategy_layer4_mupost_priced (expanding hist + expanding cohort moments; week-t = L3 mu_post)",
-      "l4_w3": "rates/priors/minutes + cohort moments on GW ∈ [t−3, t); project t:t+2 then constant-K shrink",
+      "l4_w3": "rates/priors/minutes + cohort moments on GW \u2208 [t\u22123, t); project t:t+2 then constant-K shrink",
       "l4_w5": "same with W=5"
     },
     "window_fallback": "if fewer than W prior GWs exist, use all GW < t",
@@ -1319,23 +1319,23 @@
     "gamma": 0.9,
     "terminal_mu_weight": 0.0,
     "baseline": "layer3_one_week on expanding mu_post",
-    "eval": "paired-by-GW realised XI+captain-hits; each L4 arm − L3; secondary window − expanding",
+    "eval": "paired-by-GW realised XI+captain-hits; each L4 arm \u2212 L3; secondary window \u2212 expanding",
     "any_later_change": "dated protocol update required"
   },
   "strategy_layer4_mupost_chase": {
     "locked": "2026-10-15",
-    "role": "L4 chase posture: priced mu_post + λ·z(upside semi-SD from fixture-cov draws); always-on stress test",
+    "role": "L4 chase posture: priced mu_post + \u03bb\u00b7z(upside semi-SD from fixture-cov draws); always-on stress test",
     "source": "src/strategy/layer4_mupost_chase.py",
     "trial": "src/strategy/layer4_mupost_chase_trial.py",
     "report": "reports/layer4_mupost_chase.md",
     "mean_board": "identical to strategy_layer4_mupost_priced (mu_post intact)",
-    "decision_mu": "mu_dec = mu_post + λ · z(upside_semi_sd); within-position z",
-    "upside_semi_sd": "sqrt(E[(xp−μ)_+²]) from fixture_covariance draws; RSS over DGW fixtures",
+    "decision_mu": "mu_dec = mu_post + \u03bb \u00b7 z(upside_semi_sd); within-position z",
+    "upside_semi_sd": "sqrt(E[(xp\u2212\u03bc)_+\u00b2]) from fixture_covariance draws; RSS over DGW fixtures",
     "lambda_chase": 0.35,
     "n_scenarios": 32,
     "posture": "chase always-on (no rank schedule this arm)",
     "no_se_blend": true,
-    "covariance": "upside risk only — never replaces mu_post",
+    "covariance": "upside risk only \u2014 never replaces mu_post",
     "beyond_t2": "hard stop",
     "H": "n_priced in {1,2,3}",
     "gamma": 0.9,
@@ -1345,21 +1345,21 @@
       "l4_exp",
       "l4_chase"
     ],
-    "baseline": "layer3_one_week; secondary l4_chase − l4_exp",
+    "baseline": "layer3_one_week; secondary l4_chase \u2212 l4_exp",
     "eval": "paired-by-GW realised XI+captain-hits on four closed seasons",
     "any_later_change": "dated protocol update required"
   },
   "strategy_layer4_mupost_posture": {
     "locked": "2026-10-15",
-    "role": "L4 adaptive λ from as-of cumulative gap vs shadow L3; chase/consolidate/neutral",
+    "role": "L4 adaptive \u03bb from as-of cumulative gap vs shadow L3; chase/consolidate/neutral",
     "source": "src/strategy/layer4_mupost_posture.py",
     "trial": "src/strategy/layer4_mupost_posture_trial.py",
     "report": "reports/layer4_mupost_posture.md",
-    "gap": "L3_cum(t-1) − L4_adapt_cum(t-1); no same-week realised points",
-    "lambda_schedule": "λ_chase = λ_max·tanh(max(gap,0)/scale); λ_cons = λ_max·tanh(max(−gap,0)/scale)",
+    "gap": "L3_cum(t-1) \u2212 L4_adapt_cum(t-1); no same-week realised points",
+    "lambda_schedule": "\u03bb_chase = \u03bb_max\u00b7tanh(max(gap,0)/scale); \u03bb_cons = \u03bb_max\u00b7tanh(max(\u2212gap,0)/scale)",
     "lambda_max": 0.35,
     "gap_scale": 30,
-    "decision_mu": "mu_dec = mu_post + λ_chase·z(upside_semi_sd) − λ_cons·z(downside_semi_sd)",
+    "decision_mu": "mu_dec = mu_post + \u03bb_chase\u00b7z(upside_semi_sd) \u2212 \u03bb_cons\u00b7z(downside_semi_sd)",
     "mean_board": "priced mu_post path (expanding); mu_post intact",
     "n_scenarios": 32,
     "arms": [
@@ -1370,7 +1370,7 @@
     "beyond_t2": "hard stop",
     "gamma": 0.9,
     "terminal_mu_weight": 0.0,
-    "eval": "paired-by-GW realised XI+captain-hits; adapt−L3 and adapt−exp on four closed seasons",
+    "eval": "paired-by-GW realised XI+captain-hits; adapt\u2212L3 and adapt\u2212exp on four closed seasons",
     "any_later_change": "dated protocol update required"
   },
   "strategy_layer4_mupost_chase_behind": {
@@ -1379,12 +1379,12 @@
     "source": "src/strategy/layer4_mupost_posture.py",
     "trial": "src/strategy/layer4_mupost_posture_trial.py --chase-only",
     "report": "reports/layer4_mupost_chase_behind.md",
-    "gap": "L3_cum(t-1) − L4_adapt_cum(t-1); no same-week realised points",
-    "lambda_schedule": "λ_chase = λ_max·tanh(max(gap,0)/scale); λ_cons = 0",
+    "gap": "L3_cum(t-1) \u2212 L4_adapt_cum(t-1); no same-week realised points",
+    "lambda_schedule": "\u03bb_chase = \u03bb_max\u00b7tanh(max(gap,0)/scale); \u03bb_cons = 0",
     "lambda_max": 0.35,
     "gap_scale": 30,
     "chase_only": true,
-    "decision_mu": "mu_dec = mu_post + λ_chase·z(upside_semi_sd) when behind; else mu_post",
+    "decision_mu": "mu_dec = mu_post + \u03bb_chase\u00b7z(upside_semi_sd) when behind; else mu_post",
     "mean_board": "priced mu_post path (expanding); mu_post intact",
     "n_scenarios": 32,
     "arms": [
@@ -1395,28 +1395,28 @@
     "beyond_t2": "hard stop",
     "gamma": 0.9,
     "terminal_mu_weight": 0.0,
-    "eval": "paired-by-GW realised XI+captain-hits; adapt−L3 and adapt−exp on four closed seasons",
+    "eval": "paired-by-GW realised XI+captain-hits; adapt\u2212L3 and adapt\u2212exp on four closed seasons",
     "any_later_change": "dated protocol update required"
   },
   "strategy_layer4_bookie_trial": {
     "locked": "2026-10-15",
-    "role": "trial: bookie-informed GW(t:t+1) horizon path + beyond arms A/B/C; not a μ likelihood gate",
+    "role": "trial: bookie-informed GW(t:t+1) horizon path + beyond arms A/B/C; not a \u03bc likelihood gate",
     "source": "src/strategy/layer4_bookie_path.py",
     "report": "reports/layer4_bookie_trial.md",
-    "priors": "rates/minutes/α/competition pairs frozen on merged GW < t",
+    "priors": "rates/minutes/\u03b1/competition pairs frozen on merged GW < t",
     "bookie_window": [
       0,
       1
     ],
     "bookie_depth": 2,
-    "bookie_depth_note": "PI 2026-10-16: cut from [0,1,2] — live Odds API only prices t and t+1; historical trial JSON still records depth-3 runs",
-    "bookie_source": "football-data opening AH+OU → scoreline_fd_moments (xg/xcs/xgc); historical stand-in for live published lines",
-    "bookie_scoring": "fixture_covariance draws (M→minutes→shares→xP); board μ = draw mean; n_scenarios=48",
+    "bookie_depth_note": "PI 2026-10-16: cut from [0,1,2] \u2014 live Odds API only prices t and t+1; historical trial JSON still records depth-3 runs",
+    "bookie_source": "football-data opening AH+OU \u2192 scoreline_fd_moments (xg/xcs/xgc); historical stand-in for live published lines",
+    "bookie_scoring": "fixture_covariance draws (M\u2192minutes\u2192shares\u2192xP); board \u03bc = draw mean; n_scenarios=48",
     "minutes_prior": "as-of mean minutes (not future actual minutes)",
     "beyond_t2_arms": {
-      "A_hard_stop": "H = n_priced only (typically ≤2); no filler weeks",
-      "B_crude_fdr": "extend to H=5; unpriced weeks μ = mean(priced μ) × crude as-of FDR vs opponent (no that-week opening line)",
-      "C_decay": "extend to H=5; unpriced μ = γ_fill^k * last_priced_μ + (1-γ_fill^k) * as-of position mean"
+      "A_hard_stop": "H = n_priced only (typically \u22642); no filler weeks",
+      "B_crude_fdr": "extend to H=5; unpriced weeks \u03bc = mean(priced \u03bc) \u00d7 crude as-of FDR vs opponent (no that-week opening line)",
+      "C_decay": "extend to H=5; unpriced \u03bc = \u03b3_fill^k * last_priced_\u03bc + (1-\u03b3_fill^k) * as-of position mean"
     },
     "H_extend": 5,
     "gamma": 0.9,
@@ -1424,16 +1424,16 @@
     "terminal_mu_weight": 0.0,
     "terminal_note": "terminal off for this trial so arm contrast is the path, not the lump",
     "baseline": "layer3_one_week on decision-week mu_post (shrink)",
-    "eval": "paired-by-GW realised XI+captain-hits; L4 arm − L3; all four closed seasons",
+    "eval": "paired-by-GW realised XI+captain-hits; L4 arm \u2212 L3; all four closed seasons",
     "asof": "must not read GW>=t outcomes into priors; FD opening for week h is allowed as the published line for that fixture",
     "any_later_change": "dated protocol update required"
   },
   "fixture_planning_glue": {
     "locked": "2026-10-15",
-    "role": "decision diagnostics on fixture-covariance draws; not a μ gate; not a free-transfer climb; not Layer-4 yet",
+    "role": "decision diagnostics on fixture-covariance draws; not a \u03bc gate; not a free-transfer climb; not Layer-4 yet",
     "source": "src/markets/fixture_planning_glue.py",
     "report": "reports/fixture_planning_glue.md",
-    "draws": "M → sparse minutes → Dirichlet shares → xP (fixture_covariance.draw_fixture_covariant)",
+    "draws": "M \u2192 sparse minutes \u2192 Dirichlet shares \u2192 xP (fixture_covariance.draw_fixture_covariant)",
     "asof": "club sides + competition pairs from GW < t only; poison audit required",
     "population": "all scheduled fixtures with GW >= min_hist_gw on the four closed seasons",
     "min_hist_gw": 8,
@@ -1456,8 +1456,8 @@
       "captain_cvar_minus_captain_mu",
       "stack_same_minus_diversify"
     ],
-    "contrast_units": "realised points; captain arms use 2× player points; agree → Δ=0 for that fixture",
-    "aggregation": "mean fixture Δ within GW, then cluster_interval across seasons (bootstrap GWs)",
+    "contrast_units": "realised points; captain arms use 2\u00d7 player points; agree \u2192 \u0394=0 for that fixture",
+    "aggregation": "mean fixture \u0394 within GW, then cluster_interval across seasons (bootstrap GWs)",
     "gates": "as-of poison + write_gated_report with certified score_xp_minus_score_exp_points intervals",
     "milp": false,
     "climb": false,
@@ -1735,7 +1735,7 @@
     "screen": "src/eval/share_seed_screen.py",
     "report": "reports/share_seed_screen.md",
     "control": "score_xp_v2 frozen mean shares",
-    "candidate": "E[xP] over N=20 rate draws r'=max(0,r+Z·dr)",
+    "candidate": "E[xP] over N=20 rate draws r'=max(0,r+Z\u00b7dr)",
     "decision": "keep_frozen_shares",
     "promote": false,
     "interval": {
@@ -1749,8 +1749,8 @@
     "locked": "2026-10-20",
     "screen": "src/eval/assist_alpha_screen.py",
     "report": "reports/assist_alpha_screen.md",
-    "control": "pooled α_A from fpl_score_rates",
-    "candidate": "club as-of ΣxA/ΣxG clipped [0.35,1.25]",
+    "control": "pooled \u03b1_A from fpl_score_rates",
+    "candidate": "club as-of \u03a3xA/\u03a3xG clipped [0.35,1.25]",
     "decision": "keep_pooled_alpha_a",
     "promote": false,
     "interval": {
@@ -1758,18 +1758,18 @@
       "lo": -0.00255,
       "hi": -0.00097
     },
-    "note": "Legacy score_xp team-xA/xG promote does not transfer to Numagent α_A"
+    "note": "Legacy score_xp team-xA/xG promote does not transfer to Numagent \u03b1_A"
   },
   "strand_handoff_priced_to_opta": {
     "locked": "2026-10-20",
     "module": "src/models/strand_handoff.py",
     "report": "reports/strand_handoff_smoke.md",
     "status": "plumbing_only_no_likelihood_arm",
-    "note": "Priced centreline M→k∼M observe on ClubPath before Opta t+2…; likelihood via cascade_viability_batch B3"
+    "note": "Priced centreline M\u2192k\u223cM observe on ClubPath before Opta t+2\u2026; likelihood via cascade_viability_batch B3"
   },
   "cascade_viability_batch": {
     "locked": "2026-10-20",
-    "role": "overnight integrity + likelihood + FT/captain sanity for short→long",
+    "role": "overnight integrity + likelihood + FT/captain sanity for short\u2192long",
     "module": "src/eval/cascade_viability_batch.py",
     "report": "reports/cascade_short_long_viability_results.md",
     "design": "reports/cascade_short_long_viability_audits.md",
@@ -1784,14 +1784,14 @@
       "2025-26"
     ],
     "arms": {
-      "A": "integrity (as-of, no λ jitter, k∈M, routing, MILP units)",
-      "B1": "short_gen − short_mean (FD centreline)",
-      "B2": "long_gen − long_mean (oracle-rank Opta map; diagnostic ranks)",
-      "B3": "short_gen − long_gen (priced info vs Opta-only)",
+      "A": "integrity (as-of, no \u03bb jitter, k\u2208M, routing, MILP units)",
+      "B1": "short_gen \u2212 short_mean (FD centreline)",
+      "B2": "long_gen \u2212 long_mean (oracle-rank Opta map; diagnostic ranks)",
+      "B3": "short_gen \u2212 long_gen (priced info vs Opta-only)",
       "C": "xi_plus_captain_ft + xi_plus_captain N=12 smoke (not path-V promote)",
       "D": "unit regression + contaminated banner"
     },
-    "metric": "gaussian_log_score on point mean; paired treatment−baseline by GW then cluster_interval",
+    "metric": "gaussian_log_score on point mean; paired treatment\u2212baseline by GW then cluster_interval",
     "lambda_jitter": false,
     "any_later_change": "dated protocol update required"
   },
@@ -1804,8 +1804,8 @@
     "report": "reports/cascade_short_mean_tt1_vs_gen.md",
     "baseline": "score_team_side on FD centreline M for GW(t) and GW(t+1)",
     "treatment": "short generative MC-mean (N_MC=20) on same FD fits for t and t+1",
-    "metric": "player-GW gaussian_log_score; paired Δ by decision_gw then cluster_interval on CLOSED_SEASONS",
-    "window": "decision GW8–27 (score weeks t and t+1); MIN_FITS=5 each week",
+    "metric": "player-GW gaussian_log_score; paired \u0394 by decision_gw then cluster_interval on CLOSED_SEASONS",
+    "window": "decision GW8\u201327 (score weeks t and t+1); MIN_FITS=5 each week",
     "n_mc": 20,
     "sigma": 3.0,
     "seed": 7,
@@ -1823,15 +1823,15 @@
     "status": "done",
     "role": "trial: freeze minutes (lineup_cov=False) on short gen vs mean",
     "lineup_on_stack": "club_matchday_resample (no corr threshold)",
-    "verdict_primary": "gen_off clearly_loses to mean (Δ≈−0.021)",
-    "verdict_diagnostic": "matchday gen_on clearly_wins vs gen_off (Δ≈+0.009); clearly_loses to mean (Δ≈−0.011)",
+    "verdict_primary": "gen_off clearly_loses to mean (\u0394\u2248\u22120.021)",
+    "verdict_diagnostic": "matchday gen_on clearly_wins vs gen_off (\u0394\u2248+0.009); clearly_loses to mean (\u0394\u2248\u22120.011)",
     "module": "src/eval/cascade_lineup_off_tt1.py",
     "report": "reports/cascade_lineup_off_tt1.md",
-    "treatment": "generative MC-mean N_MC=20 with lineup_cov=False (mean minutes; k∼M→attack→CS/GC)",
+    "treatment": "generative MC-mean N_MC=20 with lineup_cov=False (mean minutes; k\u223cM\u2192attack\u2192CS/GC)",
     "baseline": "score_team_side on same FD centreline fits for decision GW(t:t+1)",
-    "diagnostic": "gen lineup_cov=True − gen_off; gen_on − mean",
-    "metric": "player-GW gaussian_log_score; paired Δ by decision_gw; cluster_interval CLOSED_SEASONS",
-    "window": "decision GW8–27",
+    "diagnostic": "gen lineup_cov=True \u2212 gen_off; gen_on \u2212 mean",
+    "metric": "player-GW gaussian_log_score; paired \u0394 by decision_gw; cluster_interval CLOSED_SEASONS",
+    "window": "decision GW8\u201327",
     "n_mc": 20,
     "sigma": 3.0,
     "seed": 7,
@@ -1850,24 +1850,24 @@
     "role": "path-V diagnostic: generative FT+cap strands vs mean-layer FT+cap strands",
     "module": "src/eval/cascade_pathv_gen_vs_mean.py",
     "report": "reports/cascade_pathv_gen_vs_mean.md",
-    "treatment": "xi_plus_captain_ft + generative_attack=True, N=20, GW6→8–19, priced GW8",
-    "baseline": "xi_plus_captain_ft + generative_attack=False (mean score_team_side on scenario λ), N=20 same seeds/horizon",
-    "metric": "diagnostic: squads solved, mean hits/transfers, captain concentration, top-freq overlap — not a gated path-V promote",
+    "treatment": "xi_plus_captain_ft + generative_attack=True, N=20, GW6\u21928\u201319, priced GW8",
+    "baseline": "xi_plus_captain_ft + generative_attack=False (mean score_team_side on scenario \u03bb), N=20 same seeds/horizon",
+    "metric": "diagnostic: squads solved, mean hits/transfers, captain concentration, top-freq overlap \u2014 not a gated path-V promote",
     "note": "Strategy-layer smoke matching PI aim; full four-season realised path-V gate deferred.",
     "any_later_change": "dated protocol update required"
   },
   "cascade_mc_vs_mean_hist": {
     "locked": "2026-10-21",
     "status": "done_diagnostic",
-    "result": "2025-26 N=12: path 72 squads; Jaccard top15∩mean15=0.30; 7/15 mean in path-top; mean cap Haaland in path-top; path top-cap Cash 0.51; hits≈6.1; ~90s",
+    "result": "2025-26 N=12: path 72 squads; Jaccard top15\u2229mean15=0.30; 7/15 mean in path-top; mean cap Haaland in path-top; path top-cap Cash 0.51; hits\u22486.1; ~90s",
     "role": "one closed-season diagnostic: path-frequency MILP vs priced mean MILP (strategy emergence)",
     "module": "src/eval/cascade_mc_vs_mean_hist.py",
     "report": "reports/cascade_mc_vs_mean_hist.md",
     "season": "2025-26",
-    "treatment": "N=12 xi_plus_captain_ft strands; FD short on priced GW8–9; oracle post-GW38 ranks + LOSO prior GF/GA±bands for GW10–19; generative attack; freq aggregate",
-    "baseline": "single xi_plus_captain MILP on discounted FD mean boards GW8+γ·GW9 only (hard stop)",
-    "metric": "top-15 freq Jaccard vs mean-15; mean picks in path-top; captain overlap — not gated / not live-comparable",
-    "pool": "as-of minutes>60 (n_apps≥2); no FFScout",
+    "treatment": "N=12 xi_plus_captain_ft strands; FD short on priced GW8\u20139; oracle post-GW38 ranks + LOSO prior GF/GA\u00b1bands for GW10\u201319; generative attack; freq aggregate",
+    "baseline": "single xi_plus_captain MILP on discounted FD mean boards GW8+\u03b3\u00b7GW9 only (hard stop)",
+    "metric": "top-15 freq Jaccard vs mean-15; mean picks in path-top; captain overlap \u2014 not gated / not live-comparable",
+    "pool": "as-of minutes>60 (n_apps\u22652); no FFScout",
     "not": "live Opta ranks; four-season gate; realised path-V climb",
     "n": 12,
     "seed": 7,
@@ -1878,7 +1878,7 @@
     "status": "locked",
     "gamma": 1.0,
     "decision": "undiscounted cascade path objective",
-    "removed": "DEFAULT_GAMMA=0.9 inherited from season_climb_ft — never screened for cascade; L4 already prefers γ=1",
+    "removed": "DEFAULT_GAMMA=0.9 inherited from season_climb_ft \u2014 never screened for cascade; L4 already prefers \u03b3=1",
     "modules": [
       "src/models/multistage_mc_milp.py",
       "src/models/short_horizon_cascade.py",
@@ -1889,23 +1889,23 @@
   },
   "cascade_joint_path_plan": {
     "locked": "2026-10-21",
-    "revised": "2026-10-24 — xi_ft; FT bank pot separate from objective (DEFAULT_FT_PE_NU=0)",
+    "revised": "2026-10-24 \u2014 xi_ft; FT bank pot separate from objective (DEFAULT_FT_PE_NU=0)",
     "status": "wired",
     "role": "joint multi-GW transfer schedule (not myopic per-snapshot FT MILP)",
     "module": "src/models/path_transfer_plan.py",
     "wired_into": "src/models/multistage_mc_milp.run_strand",
     "objectives": {
-      "xi_plus_captain_ft": "Σ(XI+captain) − hits",
-      "xi_ft": "Σ XI − hits — captaincy not valued; isolate transfer rule"
+      "xi_plus_captain_ft": "\u03a3(XI+captain) \u2212 hits",
+      "xi_ft": "\u03a3 XI \u2212 hits \u2014 captaincy not valued; isolate transfer rule"
     },
-    "design": "roll full horizon → per-GW scores → one MILP over all horizon GWs: free open + FT/hit-linked squads/XI; undiscounted Σ (γ=1); top_n=48 candidates",
-    "replaces": "myopic loop: discounted remaining μ → single-deadline _pick_squad_xi_captain_ft each snapshot",
+    "design": "roll full horizon \u2192 per-GW scores \u2192 one MILP over all horizon GWs: free open + FT/hit-linked squads/XI; undiscounted \u03a3 (\u03b3=1); top_n=48 candidates",
+    "replaces": "myopic loop: discounted remaining \u03bc \u2192 single-deadline _pick_squad_xi_captain_ft each snapshot",
     "gamma": 1.0,
     "snapshot_every": "ignored for FT objectives (every horizon GW is a decision week)",
     "bank_pot": "constrained FT state ft_before/ft_after per GW; returned as plan.bank_pot; not in V",
-    "ft_pe": "default off (DEFAULT_FT_PE_NU=0); optional diagnostic U(f_H)=ν·f_H when ν>0 explicitly set",
+    "ft_pe": "default off (DEFAULT_FT_PE_NU=0); optional diagnostic U(f_H)=\u03bd\u00b7f_H when \u03bd>0 explicitly set",
     "transfer_rule_screen": "use objective=xi_ft until captain screens reopen",
-    "not": "four-season gate; chips; restore γ=0.9; revive concave φ·W; put bank PE back in default V",
+    "not": "four-season gate; chips; restore \u03b3=0.9; revive concave \u03c6\u00b7W; put bank PE back in default V",
     "any_later_change": "dated protocol update required"
   },
   "cascade_path_transfer_only": {
@@ -1915,7 +1915,7 @@
     "objective": "xi_ft",
     "value_captain": false,
     "ft_pe_nu": 0,
-    "bank_pot": "separate ledger (plan.bank_pot); V = Σ XI − hits only",
+    "bank_pot": "separate ledger (plan.bank_pot); V = \u03a3 XI \u2212 hits only",
     "note": "Legal captain still assigned in XI for FPL shape; does not enter the MILP objective. Re-enable xi_plus_captain_ft only when testing captain+transfer jointly.",
     "modules": [
       "src/models/path_transfer_plan.py",
@@ -1926,7 +1926,7 @@
   "cascade_mean_xi_ft_rolling": {
     "locked": "2026-10-24",
     "status": "done_diagnostic",
-    "result": "2025-26 N=100 steps GW8–10: GW8 sticks; GW9/10 each spend 1 FT (OL banks); J̄=0.88; 0 hits; future calendar rewritten",
+    "result": "2025-26 N=100 steps GW8\u201310: GW8 sticks; GW9/10 each spend 1 FT (OL banks); J\u0304=0.88; 0 hits; future calendar rewritten",
     "role": "receding mean-board xi_ft stick test vs open-loop plan",
     "module": "src.eval.cascade_mean_xi_ft_rolling",
     "report": "reports/cascade_mean_xi_ft_rolling.md",
@@ -1947,7 +1947,7 @@
   "cascade_mean_strand_convergence": {
     "locked": "2026-10-24",
     "status": "done_diagnostic",
-    "result": "2025-26 GW8–19 Nmax=200: gen-mean MAE vs centreline plateaus ~0.36 (not →0); self MAE(N=100 vs 200)=0.15; k∼M nearly unbiased",
+    "result": "2025-26 GW8\u201319 Nmax=200: gen-mean MAE vs centreline plateaus ~0.36 (not \u21920); self MAE(N=100 vs 200)=0.15; k\u223cM nearly unbiased",
     "role": "does large-N generative mean converge to centreline score_team_side?",
     "module": "src.eval.cascade_mean_strand_convergence",
     "report": "reports/cascade_mean_strand_convergence.md",
@@ -1955,16 +1955,16 @@
     "horizon": "8-19",
     "n_max": 200,
     "seed": 7,
-    "centreline": "FD/oracle mid λ → score_team_side",
-    "gen": "band-sample (long) + k∼M + attack dice; average N strands",
-    "answer": "converges to generative expectation, not centreline — nonlinear CS/attack gap",
+    "centreline": "FD/oracle mid \u03bb \u2192 score_team_side",
+    "gen": "band-sample (long) + k\u223cM + attack dice; average N strands",
+    "answer": "converges to generative expectation, not centreline \u2014 nonlinear CS/attack gap",
     "not": "four-season likelihood gate; claim gen-mean is a better forecast",
     "any_later_change": "dated protocol update required"
   },
   "cascade_mean_xi_ft_hist": {
     "locked": "2026-10-24",
     "status": "done_diagnostic",
-    "result": "2025-26 GW8–19 N=500: 12 FT / 0 hits; banks to MAX_FT=5 before GW12/13 and GW16/17 spends; wall ~856s (boards ~845s)",
+    "result": "2025-26 GW8\u201319 N=500: 12 FT / 0 hits; banks to MAX_FT=5 before GW12/13 and GW16/17 spends; wall ~856s (boards ~845s)",
     "role": "closed-season mean-board xi_ft path (follow-on to live mean-strand probe)",
     "module": "src.eval.cascade_mean_xi_ft_hist",
     "report": "reports/cascade_mean_xi_ft_hist.md",
@@ -1973,25 +1973,25 @@
     "horizon": "8-19",
     "n": 500,
     "seed": 7,
-    "treatment": "average N generative strands → one joint xi_ft plan",
+    "treatment": "average N generative strands \u2192 one joint xi_ft plan",
     "ranks": "oracle_post_gw38",
     "gf_ga_profile": "loso_prior_seasons_rankmean (exclude scored E0)",
     "rate_baseline": "prior_plus_season_before_decision (score_xp_v2_rate_baseline_prior)",
-    "short": "FD AH+OU priced head (GW8–9)",
-    "long": "oracle-rank hierarchical λ→M→k",
+    "short": "FD AH+OU priced head (GW8\u20139)",
+    "long": "oracle-rank hierarchical \u03bb\u2192M\u2192k",
     "objective": "xi_ft (value_captain=false, ft_pe_nu=0)",
-    "metric": "transfers / hits / FT ledger / objective — diagnostic, not a four-season gate",
+    "metric": "transfers / hits / FT ledger / objective \u2014 diagnostic, not a four-season gate",
     "not": "live Opta; per-strand MILP frequencies; captain in V; holdout 2026/27",
     "any_later_change": "dated protocol update required"
   },
   "cascade_ft_pe_path": {
     "locked": "2026-10-21",
-    "revised": "2026-10-21 — simple PE: U(b)=ν·b, ν=HIT_COST; hard must-spend before hits; retired φ·W",
+    "revised": "2026-10-21 \u2014 simple PE: U(b)=\u03bd\u00b7b, \u03bd=HIT_COST; hard must-spend before hits; retired \u03c6\u00b7W",
     "status": "done_diagnostic",
     "decision": "keep_watching_pe_small",
-    "result": "joint-plan γ=1 N=12 ν=HIT_COST: Δtransfers −0.08, Δpaid 0, Δhit_pts 0, terminal ft 1.00→1.08, path actual +0.6. PE form correct; schedule effect small.",
-    "prior_myopic_result": "2025-26 N=12 myopic snapshots: cand−ctrl transfers −0.33/strand, paid −0.33, hit pts −1.3, path actual +1.7 — superseded",
-    "prior_phi_w_result": "joint-plan γ=1 N=12 ν=2 φ·W: cand≡ctrl — superseded by linear hit-value PE",
+    "result": "joint-plan \u03b3=1 N=12 \u03bd=HIT_COST: \u0394transfers \u22120.08, \u0394paid 0, \u0394hit_pts 0, terminal ft 1.00\u21921.08, path actual +0.6. PE form correct; schedule effect small.",
+    "prior_myopic_result": "2025-26 N=12 myopic snapshots: cand\u2212ctrl transfers \u22120.33/strand, paid \u22120.33, hit pts \u22121.3, path actual +1.7 \u2014 superseded",
+    "prior_phi_w_result": "joint-plan \u03b3=1 N=12 \u03bd=2 \u03c6\u00b7W: cand\u2261ctrl \u2014 superseded by linear hit-value PE",
     "role": "path FT objective with potential energy on terminal ft bank vs joint schedule without PE",
     "module": "src/eval/cascade_ft_pe_path.py",
     "report": "reports/cascade_ft_pe_path.md",
@@ -1999,39 +1999,39 @@
     "setup": "same as cascade_mean_path_gw_resid path arm under cascade_joint_path_plan",
     "planner": "joint_path_transfer_plan",
     "gamma": 1.0,
-    "control": "xi_plus_captain_ft joint plan: V = Σ(XI+cap) − hit_pts (ft_pe_nu=0, γ=1)",
-    "candidate": "V + U(f_H); U(b)=ν·b; ν=HIT_COST (+4 per stored FT, +20 at five); no φ, no W",
-    "default_engine": "DEFAULT_FT_PE_NU=0 (bank pot ledger only; PE diagnostic via explicit ν>0)",
-    "must_spend": "hard MILP: e=max(0,k−f) via hit_flag big-M (not objective-soft)",
+    "control": "xi_plus_captain_ft joint plan: V = \u03a3(XI+cap) \u2212 hit_pts (ft_pe_nu=0, \u03b3=1)",
+    "candidate": "V + U(f_H); U(b)=\u03bd\u00b7b; \u03bd=HIT_COST (+4 per stored FT, +20 at five); no \u03c6, no W",
+    "default_engine": "DEFAULT_FT_PE_NU=0 (bank pot ledger only; PE diagnostic via explicit \u03bd>0)",
+    "must_spend": "hard MILP: e=max(0,k\u2212f) via hit_flag big-M (not objective-soft)",
     "n": 12,
     "seed": 7,
-    "metric": "diagnostic: mean transfers / paid / hit pts; terminal ft; path actual sum; path resid bias — not a four-season promote gate",
+    "metric": "diagnostic: mean transfers / paid / hit pts; terminal ft; path actual sum; path resid bias \u2014 not a four-season promote gate",
     "promote_rule": "none this batch",
-    "not": "retune ν on resid; four-season climb; L4 ft_dp thresholds revive; revive myopic snapshot PE; restore γ=0.9; revive concave φ·W",
-    "note": "FT bank value = hit avoidance. Hold → next bank +1 → PE +4; at cap PE grant is +0 unless one FT is used.",
+    "not": "retune \u03bd on resid; four-season climb; L4 ft_dp thresholds revive; revive myopic snapshot PE; restore \u03b3=0.9; revive concave \u03c6\u00b7W",
+    "note": "FT bank value = hit avoidance. Hold \u2192 next bank +1 \u2192 PE +4; at cap PE grant is +0 unless one FT is used.",
     "any_later_change": "dated protocol update required"
   },
   "cascade_mean_path_gw_resid": {
     "locked": "2026-10-21",
-    "revised": "2026-10-21 — full-side shares; semi-oracle is buy filter only; minutes-oracle boards; autosub+VC; path arm now joint transfer plan (cascade_joint_path_plan)",
+    "revised": "2026-10-21 \u2014 full-side shares; semi-oracle is buy filter only; minutes-oracle boards; autosub+VC; path arm now joint transfer plan (cascade_joint_path_plan)",
     "status": "done_diagnostic",
-    "result": "2025-26 GW8–19 N=12 after share fix: mean/path sum actual ≈647/646; mean resid bias +12.7 MAE 14.9; path +1.1 MAE 11.1; ~95s",
+    "result": "2025-26 GW8\u201319 N=12 after share fix: mean/path sum actual \u2248647/646; mean resid bias +12.7 MAE 14.9; path +1.1 MAE 11.1; ~95s",
     "role": "per-GW residual mean XI vs stable cascade path XI (strand-mean held lineups) against actual points",
     "module": "src/eval/cascade_mean_path_gw_resid.py",
     "report": "reports/cascade_mean_path_gw_resid.md",
     "season": "2025-26",
     "decision_gw": 6,
     "horizon": "8-19",
-    "shares": "full minutes-oracle club side (mean boards) / as-of share roster (path generative) — not cut to buy pool before share renormalisation",
+    "shares": "full minutes-oracle club side (mean boards) / as-of share roster (path generative) \u2014 not cut to buy pool before share renormalisation",
     "pool": "semi-oracle buy filter only: actual minutes > 60 in decision GW t",
-    "minutes": "oracle on residual/mean boards (actual m, σ_m=0 per scored GW); path generative uses as-of m with GW-t overlay on buy-eligible only",
+    "minutes": "oracle on residual/mean boards (actual m, \u03c3_m=0 per scored GW); path generative uses as-of m with GW-t overlay on buy-eligible only",
     "mean": "locked xi_plus_captain from priced t:t+1 oracle-minute boards; held all horizon GWs",
     "path": "N=12 xi_plus_captain_ft strands; selectable_ids=buy filter; joint multi-GW transfer plan over all horizon GWs (free open + FT/hit schedule; cascade_joint_path_plan)",
     "snapshot_every": 1,
     "pred": "FD centreline score_xp_v2 with minutes oracle on planned XI (+captain)",
     "actual": "locked XI + FPL bench autosub + VC if captain blanks",
     "residual": "pred - actual",
-    "bugfix": "incomplete buy roster must not absorb full G_team/A_team (was ~1.65× E[G] inflation)",
+    "bugfix": "incomplete buy roster must not absorb full G_team/A_team (was ~1.65\u00d7 E[G] inflation)",
     "not": "gated; live Opta; four-season; full future-minute oracle inside generative multi-GW scores",
     "n": 12,
     "seed": 7,
@@ -2039,11 +2039,11 @@
   },
   "cascade_path_bench_weight": {
     "locked": "2026-10-22",
-    "revised": "2026-10-22 — PI rejected; α removed from path objective",
+    "revised": "2026-10-22 \u2014 PI rejected; \u03b1 removed from path objective",
     "status": "rejected",
     "decision": "reject_bench_alpha",
-    "result": "α=0.10: Δpaid +0.25, actual +4.3. α=0.50: Δpaid +5.75, hit_pts +23, actual +2.0. Form rejected as inelegant; code removed.",
-    "role": "was: credit bench cover via α·squad+(1-α)·XI; retired",
+    "result": "\u03b1=0.10: \u0394paid +0.25, actual +4.3. \u03b1=0.50: \u0394paid +5.75, hit_pts +23, actual +2.0. Form rejected as inelegant; code removed.",
+    "role": "was: credit bench cover via \u03b1\u00b7squad+(1-\u03b1)\u00b7XI; retired",
     "report": "reports/cascade_path_bench_weight.md",
     "not": "restore bench_alpha in path MILP; revive climb first-sub transfer value",
     "any_later_change": "dated protocol update required"
@@ -2052,7 +2052,7 @@
     "locked": "2026-10-22",
     "status": "done_diagnostic",
     "decision": "keep_watching_causal_moves",
-    "result": "2025-26 N=12: causal vs open-loop Δtransfers +27.8, Δpaid +27.7, Δhit_pts +110.7, terminal ft −0.08, path actual +11.8. Minutes shocks drive hit-heavy replan; FT bank does not rise.",
+    "result": "2025-26 N=12: causal vs open-loop \u0394transfers +27.8, \u0394paid +27.7, \u0394hit_pts +110.7, terminal ft \u22120.08, path actual +11.8. Minutes shocks drive hit-heavy replan; FT bank does not rise.",
     "role": "FT banking as insurance: reveal oracle minutes only at each GW deadline and replan vs open-loop frozen minutes",
     "module": "src/eval/cascade_deadline_causal_minutes.py",
     "report": "reports/cascade_deadline_causal_minutes.md",
@@ -2065,7 +2065,7 @@
     "motivation": "stored FTs cover unexpected rotations/minutes drops; open-loop foresight removes that risk",
     "n": 12,
     "seed": 7,
-    "metric": "diagnostic: transfers / paid / terminal ft / path actual — not a four-season promote",
+    "metric": "diagnostic: transfers / paid / terminal ft / path actual \u2014 not a four-season promote",
     "promote_rule": "none this batch",
     "not": "four-season gate; change mean-board oracle residuals; chips; promote causal as default without hit-brake work",
     "note": "Causal minutes make the path react; PE=+4 does not induce banking under deadline shocks (hits absorb the news).",
@@ -2074,8 +2074,8 @@
   "cascade_long_fd_opta_form_resid": {
     "pre_registered": "2026-10-29",
     "status": "done",
-    "result": "2025-26: raw form flat on Opta−FD; conditional on rank+venue partial r(L5 GD, resid)=−0.23; FD responds to form (+0.24), Opta place-locked (+0.03); +1 SD form → FD up ~0.09 vs Opta",
-    "role": "Does as-of recent form swing FD λ vs place-locked Opta ranking λ?",
+    "result": "2025-26: raw form flat on Opta\u2212FD; conditional on rank+venue partial r(L5 GD, resid)=\u22120.23; FD responds to form (+0.24), Opta place-locked (+0.03); +1 SD form \u2192 FD up ~0.09 vs Opta",
+    "role": "Does as-of recent form swing FD \u03bb vs place-locked Opta ranking \u03bb?",
     "season": "2025-26",
     "form": "last-5 mean GD / pts / GF before GW",
     "does_not_change_default": true
@@ -2083,20 +2083,20 @@
   "cascade_long_fd_opta_resid_drivers": {
     "pre_registered": "2026-10-29",
     "status": "done",
-    "result": "Form too weak to lean on (univ R²≈0; ΔR² +0.03 after structure). Better drivers: venue + rank_gap/Opta margin (R²≈0.40). Form secondary only.",
-    "role": "Horse-race drivers of Opta−FD residual; judge whether form is lean-worthy",
+    "result": "Form too weak to lean on (univ R\u00b2\u22480; \u0394R\u00b2 +0.03 after structure). Better drivers: venue + rank_gap/Opta margin (R\u00b2\u22480.40). Form secondary only.",
+    "role": "Horse-race drivers of Opta\u2212FD residual; judge whether form is lean-worthy",
     "season": "2025-26",
     "does_not_change_default": true
   },
   "cascade_long_margin_shrink_lam_screen": {
     "pre_registered": "2026-10-29",
     "status": "done_reject",
-    "role": "Trial strength-mismatch lever: compress Opta fixture λ margins toward match mean",
-    "formula": "m=(λ_H+λ_A)/2; λ'=m+α·(λ−m) per side; match total preserved",
-    "baseline": "α=1.0 (blind Opta)",
+    "role": "Trial strength-mismatch lever: compress Opta fixture \u03bb margins toward match mean",
+    "formula": "m=(\u03bb_H+\u03bb_A)/2; \u03bb'=m+\u03b1\u00b7(\u03bb\u2212m) per side; match total preserved",
+    "baseline": "\u03b1=1.0 (blind Opta)",
     "candidates": {
-      "margin_shrink_fit": "train-fit α on MAE(λ,act), grid 0.50..1.00 step 0.05 on 2022-23..2024-25",
-      "margin_shrink_075": "fixed α=0.75 diagnostic"
+      "margin_shrink_fit": "train-fit \u03b1 on MAE(\u03bb,act), grid 0.50..1.00 step 0.05 on 2022-23..2024-25",
+      "margin_shrink_075": "fixed \u03b1=0.75 diagnostic"
     },
     "holdout": "2025-26 GW8-38 team-sides",
     "oos_seasons": [
@@ -2105,19 +2105,19 @@
       "2024-25",
       "2025-26"
     ],
-    "promote_rule": "vs blind: |away bias| ↓ ≥0.10 AND home |bias| ↑ ≤0.05 AND MAE ↑ ≤0.02; OOS ≥3/4 before default flip; PI re-approval",
-    "lever_source": "Opta−FD residual drivers — rank_gap / Opta margin (not form)",
+    "promote_rule": "vs blind: |away bias| \u2193 \u22650.10 AND home |bias| \u2191 \u22640.05 AND MAE \u2191 \u22640.02; OOS \u22653/4 before default flip; PI re-approval",
+    "lever_source": "Opta\u2212FD residual drivers \u2014 rank_gap / Opta margin (not form)",
     "modules": [
       "src/eval/cascade_long_margin_shrink_lam_screen.py"
     ],
     "does_not_change_default": true,
-    "result": "holdout FAIL / OOS 0/4; fit α=0.90 barely moves venue biases — inert when E[λ_H]≈E[λ_A] under blind; keep α=1"
+    "result": "holdout FAIL / OOS 0/4; fit \u03b1=0.90 barely moves venue biases \u2014 inert when E[\u03bb_H]\u2248E[\u03bb_A] under blind; keep \u03b1=1"
   },
   "cascade_long_fd_venue_scale_lam_screen": {
     "pre_registered": "2026-10-29",
     "status": "done_holdout_pass_oos_fail",
-    "role": "Trial venue mean-ratio scale Opta→FD levels (dominant Opta−FD residual driver)",
-    "formula": "λ'_H=r_H·λ_H; λ'_A=r_A·λ_A; r_ha=mean(FD_ha)/mean(Opta_ha) on train",
+    "role": "Trial venue mean-ratio scale Opta\u2192FD levels (dominant Opta\u2212FD residual driver)",
+    "formula": "\u03bb'_H=r_H\u00b7\u03bb_H; \u03bb'_A=r_A\u00b7\u03bb_A; r_ha=mean(FD_ha)/mean(Opta_ha) on train",
     "baseline": "r_H=r_A=1 (blind)",
     "candidates": {
       "fd_venue_fit": "train-fit (r_H,r_A) on 2022-23..2024-25 FD/Opta venue means",
@@ -2131,19 +2131,19 @@
       "2024-25",
       "2025-26"
     ],
-    "promote_rule": "vs blind: |away bias| ↓ ≥0.10 AND home |bias| ↑ ≤0.05 AND MAE ↑ ≤0.02; OOS ≥3/4; PI re-approval",
-    "prior": "margin_shrink FAIL — venue means unchanged; this arm moves them",
+    "promote_rule": "vs blind: |away bias| \u2193 \u22650.10 AND home |bias| \u2191 \u22640.05 AND MAE \u2191 \u22640.02; OOS \u22653/4; PI re-approval",
+    "prior": "margin_shrink FAIL \u2014 venue means unchanged; this arm moves them",
     "modules": [
       "src/eval/cascade_long_fd_venue_scale_lam_screen.py"
     ],
     "does_not_change_default": true,
-    "result": "holdout fd_venue_away_only PASS (A +0.255→+0.146, H flat); fd_venue_fit FAIL home; OOS away_only 2/4 — keep r=1; same class as place×venue/expanding_away"
+    "result": "holdout fd_venue_away_only PASS (A +0.255\u2192+0.146, H flat); fd_venue_fit FAIL home; OOS away_only 2/4 \u2014 keep r=1; same class as place\u00d7venue/expanding_away"
   },
   "cascade_long_fd_opta_gap_all_seasons": {
     "pre_registered": "2026-10-29",
     "status": "done",
-    "result": "pooled Opta−FD −0.024 (misleading); signs flip (+22/25, −23/24); home Opta<FD all 4; away Opta>FD in 3/4 (not 2023-24)",
-    "role": "Opta−FD residual gap on all four closed seasons GW8–38",
+    "result": "pooled Opta\u2212FD \u22120.024 (misleading); signs flip (+22/25, \u221223/24); home Opta<FD all 4; away Opta>FD in 3/4 (not 2023-24)",
+    "role": "Opta\u2212FD residual gap on all four closed seasons GW8\u201338",
     "seasons": [
       "2022-23",
       "2023-24",
@@ -2155,31 +2155,31 @@
   "cascade_long_fd_opta_venue_resid_drivers": {
     "pre_registered": "2026-10-29",
     "status": "done",
-    "result": "One mechanism: Opta venue-blind level vs FD HA≈+0.32; resid_ha≈Opta_level−FD_ha. Season gaps = Opta level bias + whether FD away is soft. 2023-24 odd away because FD_A≈Opta_A.",
-    "role": "Coherent per-season drivers of home/away Opta−FD residual",
+    "result": "One mechanism: Opta venue-blind level vs FD HA\u2248+0.32; resid_ha\u2248Opta_level\u2212FD_ha. Season gaps = Opta level bias + whether FD away is soft. 2023-24 odd away because FD_A\u2248Opta_A.",
+    "role": "Coherent per-season drivers of home/away Opta\u2212FD residual",
     "does_not_change_default": true
   },
   "opta_fd_lag1_resid_correction": {
     "pre_registered": "2026-10-29",
     "status": "done_reject",
-    "result": "lag-1 Opta−FD correction tracks the book not the ball; MAE vs act worse or flat — keep blind",
-    "role": "Causal lag-1 subtract prior GW Opta−FD residual from current Opta λ",
+    "result": "lag-1 Opta\u2212FD correction tracks the book not the ball; MAE vs act worse or flat \u2014 keep blind",
+    "role": "Causal lag-1 subtract prior GW Opta\u2212FD residual from current Opta \u03bb",
     "does_not_change_default": true,
     "report": "reports/opta_fd_lag1_resid_correction.md"
   },
   "opta_act_lag1_resid_correction": {
     "pre_registered": "2026-10-29",
     "status": "done_reject",
-    "result": "lag-1 Opta−actual correction hurts MAE vs blind — keep blind",
-    "role": "Causal lag-1 subtract prior GW Opta−actual residual from current Opta λ",
+    "result": "lag-1 Opta\u2212actual correction hurts MAE vs blind \u2014 keep blind",
+    "role": "Causal lag-1 subtract prior GW Opta\u2212actual residual from current Opta \u03bb",
     "does_not_change_default": true,
     "report": "reports/opta_act_lag1_resid_correction.md"
   },
   "opta_remaining_balance_lam": {
     "pre_registered": "2026-10-29",
     "status": "done_reject",
-    "result": "remaining-balance MAE 1.047 vs blind 0.949 (Δ+0.098); pace→underprint corr −0.041 — keep blind",
-    "role": "Remaining-season GF/GA balance λ vs blind place/38 Opta rates",
+    "result": "remaining-balance MAE 1.047 vs blind 0.949 (\u0394+0.098); pace\u2192underprint corr \u22120.041 \u2014 keep blind",
+    "role": "Remaining-season GF/GA balance \u03bb vs blind place/38 Opta rates",
     "does_not_change_default": true,
     "report": "reports/opta_remaining_balance_lam.md"
   },
@@ -2187,7 +2187,7 @@
     "locked": "2026-10-29",
     "pi_approved": "2026-10-29",
     "status": "locked",
-    "role": "Lock cascade_long club λ defaults after Opta−FD lever digs",
+    "role": "Lock cascade_long club \u03bb defaults after Opta\u2212FD lever digs",
     "defaults": {
       "venue_mode": "blind",
       "AWAY_SHRINK": 1.0,
@@ -2196,13 +2196,13 @@
     },
     "verdict": "PI: blind Opta best left as-is; lock as default. All screened venue/scale/lag/balance levers failed OOS or hurt MAE.",
     "parked_arms": [
-      "place×venue / venue_away",
+      "place\u00d7venue / venue_away",
       "expanding H/A",
       "FD venue-scale",
       "margin-shrink",
-      "away_shrink s≠1 / lam_shrink",
-      "lag-1 Opta−FD",
-      "lag-1 Opta−actual",
+      "away_shrink s\u22601 / lam_shrink",
+      "lag-1 Opta\u2212FD",
+      "lag-1 Opta\u2212actual",
       "remaining-season balance"
     ],
     "modules": [
@@ -2220,43 +2220,43 @@
     "pool_generate": "full-club share pool m>0 as-of before each decision GW (shares not re-normalised on thin board)",
     "pool_residual": "actual minutes>60 that GW; n_prior>=3; join players scored by all arms",
     "arms": {
-      "cascade_short": "FD centreline λ → generative MC-mean xp_goals/xp_cs/xp_gc (goal_weight=rate_minutes)",
-      "cascade_long": "Opta/oracle place GF/GA venue_mode=blind → generative MC-mean (same goal_weight)",
+      "cascade_short": "FD centreline \u03bb \u2192 generative MC-mean xp_goals/xp_cs/xp_gc (goal_weight=rate_minutes)",
+      "cascade_long": "Opta/oracle place GF/GA venue_mode=blind \u2192 generative MC-mean (same goal_weight)",
       "l3": "as-of score_xp_v2 centreline components via score_team_side"
     },
-    "stepping": "as-of hist refresh each decision GW t; score decision GW only; repeat t=8…38",
-    "metric_primary": "player-GW residual (xP−P) bias / MAE / RMSE / corr on G, CS, GC",
+    "stepping": "as-of hist refresh each decision GW t; score decision GW only; repeat t=8\u202638",
+    "metric_primary": "player-GW residual (xP\u2212P) bias / MAE / RMSE / corr on G, CS, GC",
     "metric_secondary": [
-      "paired MAE and mean residual: short−L3, long−L3",
-      "per-GW and block (8-12 / 13-19 / 20-26 / 27-33 / 34-38) Σ residuals"
+      "paired MAE and mean residual: short\u2212L3, long\u2212L3",
+      "per-GW and block (8-12 / 13-19 / 20-26 / 27-33 / 34-38) \u03a3 residuals"
     ],
     "n_strands": 40,
     "does_not_change_default": true,
-    "note": "Decision-GW-only residual — NOT the intended t:horizon snapshot. Superseded by cascade_eligible_horizon_snapshot.",
+    "note": "Decision-GW-only residual \u2014 NOT the intended t:horizon snapshot. Superseded by cascade_eligible_horizon_snapshot.",
     "modules": [
       "src/eval/cascade_eligible_component_resid.py",
       "src/eval/cascade_mean_xi_ft_step_pool_resid.py",
       "src/eval/cascade_vs_l3_component_xp.py"
     ],
     "report": "reports/cascade_eligible_component_resid.md",
-    "result": "2025-26 GW8-38 m>60 n=5892: G MAE L3 0.814 < short 0.859 < long 0.876; CS MAE L3 0.749 < long 0.793 < short 0.799; short−L3 G ΔMAE +0.045; long−L3 G ΔMAE +0.062 — L3 closer on G/CS; defaults unchanged"
+    "result": "2025-26 GW8-38 m>60 n=5892: G MAE L3 0.814 < short 0.859 < long 0.876; CS MAE L3 0.749 < long 0.793 < short 0.799; short\u2212L3 G \u0394MAE +0.045; long\u2212L3 G \u0394MAE +0.062 \u2014 L3 closer on G/CS; defaults unchanged"
   },
   "cascade_eligible_horizon_snapshot": {
     "pre_registered": "2026-10-30",
     "status": "done",
-    "role": "Stepped as-of-t horizon snapshots: cascade_short+long E[G,CS,GC] for g=t…end vs contemporaneous L3 and actuals",
+    "role": "Stepped as-of-t horizon snapshots: cascade_short+long E[G,CS,GC] for g=t\u2026end vs contemporaneous L3 and actuals",
     "supersedes": "cascade_eligible_component_resid",
     "season": "2025-26",
-    "decision_gws": "8…horizon_end (step t → t+1)",
-    "horizon": "snapshot at t covers target GWs t…horizon_end (default 38; CLI --horizon-end)",
+    "decision_gws": "8\u2026horizon_end (step t \u2192 t+1)",
+    "horizon": "snapshot at t covers target GWs t\u2026horizon_end (default 38; CLI --horizon-end)",
     "cascade_freeze": "as-of hist / share pool / alphas frozen at decision GW t",
     "arms": {
-      "cascade_short": "generative MC-mean; FD centreline λ only for g∈{t,t+1} (causal short book); no future-FD leak",
-      "cascade_long": "generative MC-mean; Opta place GF/GA venue_mode=blind for all g∈[t,end]",
+      "cascade_short": "generative MC-mean; FD centreline \u03bb only for g\u2208{t,t+1} (causal short book); no future-FD leak",
+      "cascade_long": "generative MC-mean; Opta place GF/GA venue_mode=blind for all g\u2208[t,end]",
       "l3": "contemporaneous score_xp_v2 at each target g: as-of hist before g + FD priced near g"
     },
-    "pool_residual": "at target g: actual minutes>60, n_prior≥3 as-of t (freeze), scored by the arm(s) under comparison",
-    "metric_primary": "player-GW residual (xP−P) bias/MAE by horizon_offset=g−t; paired vs L3",
+    "pool_residual": "at target g: actual minutes>60, n_prior\u22653 as-of t (freeze), scored by the arm(s) under comparison",
+    "metric_primary": "player-GW residual (xP\u2212P) bias/MAE by horizon_offset=g\u2212t; paired vs L3",
     "metric_secondary": [
       "per decision-t horizon totals",
       "revision of fixed target g as t approaches"
@@ -2267,24 +2267,24 @@
       "src/eval/cascade_eligible_horizon_snapshot.py"
     ],
     "report": "reports/cascade_eligible_horizon_snapshot.md",
-    "result": "2025-26: 31 decisions, horizon_end=38, n=85601 freeze×target cells. long−L3 G ΔMAE near(0–1) +0.054 / far(≥2) +0.021; overall long G MAE 0.846 vs L3 0.820; short t:t+1 G MAE 0.859 vs L3-same-rows. L3@g closer at all horizons; defaults unchanged"
+    "result": "2025-26: 31 decisions, horizon_end=38, n=85601 freeze\u00d7target cells. long\u2212L3 G \u0394MAE near(0\u20131) +0.054 / far(\u22652) +0.021; overall long G MAE 0.846 vs L3 0.820; short t:t+1 G MAE 0.859 vs L3-same-rows. L3@g closer at all horizons; defaults unchanged"
   },
   "l3_opta_lambda_horizon": {
     "pre_registered": "2026-10-30",
     "status": "locked_strategy_horizon",
-    "role": "Alternative to cascade gen: L3/L4 centreline mechanics at freeze t, driven by Opta centreline λ for every target g=t…end",
+    "role": "Alternative to cascade gen: L3/L4 centreline mechanics at freeze t, driven by Opta centreline \u03bb for every target g=t\u2026end",
     "season": "2025-26",
-    "decision_gws": "8…horizon_end",
-    "horizon": "g ∈ [t, horizon_end] (default 38)",
+    "decision_gws": "8\u2026horizon_end",
+    "horizon": "g \u2208 [t, horizon_end] (default 38)",
     "treatment": "l3_opta_at_t",
-    "formula": "freeze build_frozen_side_table + alphas at t; for each g, Opta match_prediction λ (venue_mode=blind, place rankmean centres) → Dixon–Coles moments → score_team_side (L3 score_xp_v2 components)",
+    "formula": "freeze build_frozen_side_table + alphas at t; for each g, Opta match_prediction \u03bb (venue_mode=blind, place rankmean centres) \u2192 Dixon\u2013Coles moments \u2192 score_team_side (L3 score_xp_v2 components)",
     "baselines": {
-      "l3_fd_at_g": "contemporaneous L3: as-of before g + FD λ near g",
+      "l3_fd_at_g": "contemporaneous L3: as-of before g + FD \u03bb near g",
       "actuals": "FPL P_G / P_CS / P_GC on minutes>60"
     },
-    "pool_residual": "actual minutes>60 at g; n_prior≥3 as-of t; on both boards",
-    "metric_primary": "player-GW residual bias/MAE by horizon_offset; paired l3_opta@t − L3@g",
-    "why": "Audit whether Opta λ + L3 centreline is a feasible strategy scorer vs generative cascade_short/long",
+    "pool_residual": "actual minutes>60 at g; n_prior\u22653 as-of t; on both boards",
+    "metric_primary": "player-GW residual bias/MAE by horizon_offset; paired l3_opta@t \u2212 L3@g",
+    "why": "Audit whether Opta \u03bb + L3 centreline is a feasible strategy scorer vs generative cascade_short/long",
     "does_not_change_default": false,
     "modules": [
       "src/eval/l3_opta_lambda_horizon.py",
@@ -2292,7 +2292,7 @@
       "src/markets/numagent_xp.py"
     ],
     "report": "reports/l3_opta_lambda_horizon.md",
-    "result": "2025-26: 31 decisions, n=89444. L3@t+Opta G MAE 0.818 vs L3@g+FD 0.805 (near ΔMAE +0.013, far +0.012). Beats prior generative cascade_long @t (G MAE ≈0.846). CS near slightly better than L3@g (ΔMAE −0.006). Defaults unchanged — promising alternative to cascade gen for strategy scores. → locked_strategy_horizon 2026-10-30 under l3_centreline_forecast.",
+    "result": "2025-26: 31 decisions, n=89444. L3@t+Opta G MAE 0.818 vs L3@g+FD 0.805 (near \u0394MAE +0.013, far +0.012). Beats prior generative cascade_long @t (G MAE \u22480.846). CS near slightly better than L3@g (\u0394MAE \u22120.006). Defaults unchanged \u2014 promising alternative to cascade gen for strategy scores. \u2192 locked_strategy_horizon 2026-10-30 under l3_centreline_forecast.",
     "locked": "2026-10-30",
     "lock_parent": "l3_centreline_forecast",
     "note": "Locked 2026-10-30 as strategy horizon board under l3_centreline_forecast. MAE diagnostic vs L3@g + beats gen @t; not a player-GW log-score promote pair."
@@ -2300,24 +2300,24 @@
   "m_discrete_event_likelihood_screen": {
     "pre_registered": "2026-10-30",
     "status": "done_park_clear_lose",
-    "role": "Does a discrete M-event predictive likelihood beat Gaussian(centreline μ, σ) on player-GW points, without changing locked score_xp_v2 means?",
+    "role": "Does a discrete M-event predictive likelihood beat Gaussian(centreline \u03bc, \u03c3) on player-GW points, without changing locked score_xp_v2 means?",
     "claim": "Integrated M is kept as the mean board; discreteness is modeled in the predictive distribution (CS Bernoulli, GC count from M), not by mode/median point boards.",
     "baseline": "l3_gaussian_total",
     "treatment": "l3_factored_m_events",
-    "baseline_formula": "log p(y) = gaussian_log_score(total_points, μ=score_xp_v2 xp, σ=protocol.sigma); μ from FD centreline score_team_side (locked mean layer)",
-    "treatment_formula": "log p(y) = log p_G + log p_A + log p_CS + log p_GC + log p_rest; μ components from the same locked score_xp_v2 board; p_CS = Bernoulli(P(CS from M)) on whether P_CS>0; p_GC = categorical over k=⌊GA/2⌋ from M marginal for GKP/DEF (0 else); p_G/p_A = gaussian on xp_goals/xp_assists; p_rest = gaussian on (total_points − P_G − P_A − P_CS − P_GC) vs (xp − xp_goals − xp_assists − xp_cs − xp_gc)",
-    "mean_layer": "unchanged — no edit to score_team_side, α_G/α_A, shares, or cascade defaults",
+    "baseline_formula": "log p(y) = gaussian_log_score(total_points, \u03bc=score_xp_v2 xp, \u03c3=protocol.sigma); \u03bc from FD centreline score_team_side (locked mean layer)",
+    "treatment_formula": "log p(y) = log p_G + log p_A + log p_CS + log p_GC + log p_rest; \u03bc components from the same locked score_xp_v2 board; p_CS = Bernoulli(P(CS from M)) on whether P_CS>0; p_GC = categorical over k=\u230aGA/2\u230b from M marginal for GKP/DEF (0 else); p_G/p_A = gaussian on xp_goals/xp_assists; p_rest = gaussian on (total_points \u2212 P_G \u2212 P_A \u2212 P_CS \u2212 P_GC) vs (xp \u2212 xp_goals \u2212 xp_assists \u2212 xp_cs \u2212 xp_gc)",
+    "mean_layer": "unchanged \u2014 no edit to score_team_side, \u03b1_G/\u03b1_A, shares, or cascade defaults",
     "not": [
-      "mode/median M boards as μ",
-      "fitted β on event features (no OF search)",
-      "generative MC-mean as replacement μ (already clearly_loses — viability B1)",
+      "mode/median M boards as \u03bc",
+      "fitted \u03b2 on event features (no OF search)",
+      "generative MC-mean as replacement \u03bc (already clearly_loses \u2014 viability B1)",
       "2026-27 holdout",
-      "Opta λ in this screen (FD centreline only; Opta follow-up only if FD treatment wins)"
+      "Opta \u03bb in this screen (FD centreline only; Opta follow-up only if FD treatment wins)"
     ],
-    "pool": "minutes>60 at scored GW; ≥3 prior apps as-of GW; FD AH+OU priced weeks; GW8–38; four closed seasons",
-    "metric": "mean log predictive density per player-GW; paired treatment−baseline by GW; cluster_interval across protocol.closed_seasons",
+    "pool": "minutes>60 at scored GW; \u22653 prior apps as-of GW; FD AH+OU priced weeks; GW8\u201338; four closed seasons",
+    "metric": "mean log predictive density per player-GW; paired treatment\u2212baseline by GW; cluster_interval across protocol.closed_seasons",
     "promote_if": "paired interval lo > 0 on four closed seasons",
-    "sanity_if_not_clear_lose": "DEF/GKP pick_xi tie-break using P(CS) and P(⌊GC/2⌋≥1) vs xp-only; realized XI points — climb sanity only, not the gate",
+    "sanity_if_not_clear_lose": "DEF/GKP pick_xi tie-break using P(CS) and P(\u230aGC/2\u230b\u22651) vs xp-only; realized XI points \u2014 climb sanity only, not the gate",
     "sigma": 3.0,
     "modules": [
       "src/eval/m_discrete_event_likelihood_screen.py",
@@ -2329,7 +2329,7 @@
     "report": "reports/m_discrete_event_likelihood_screen.md",
     "does_not_change_default": true,
     "note": "Locks the discreteness question as a predictive-likelihood comparison. Mean board stays integrated M. Mode/median path parked.",
-    "result": "Δ log -4.6171 [-4.6323,-4.6018] → park_clear_lose; mean layer unchanged"
+    "result": "\u0394 log -4.6171 [-4.6323,-4.6018] \u2192 park_clear_lose; mean layer unchanged"
   },
   "m_skel_cs_gc_likelihood_screen": {
     "pre_registered": "2026-10-30",
@@ -2338,19 +2338,19 @@
     "claim": "Discreteness of CS/GC belongs in the predictive law from M; clean same-skeleton comparison on GKP/DEF only (avoids MID/FWD null-term inflation from the post-hoc diagnostic).",
     "baseline": "l3_skel_gauss_cs_gc",
     "treatment": "l3_skel_disc_cs_gc",
-    "baseline_formula": "log = log_G + log_A + N(P_CS|xp_cs,σ) + N(P_GC|xp_gc,σ) + log_rest; μ from FD centreline score_team_side",
-    "treatment_formula": "log = log_G + log_A + Bern(P(CS) from M) + cat(⌊GA/2⌋ from M) + log_rest; same locked μ for G/A/rest",
-    "mean_layer": "unchanged — no edit to score_team_side, α_G/α_A, shares, or cascade defaults",
+    "baseline_formula": "log = log_G + log_A + N(P_CS|xp_cs,\u03c3) + N(P_GC|xp_gc,\u03c3) + log_rest; \u03bc from FD centreline score_team_side",
+    "treatment_formula": "log = log_G + log_A + Bern(P(CS) from M) + cat(\u230aGA/2\u230b from M) + log_rest; same locked \u03bc for G/A/rest",
+    "mean_layer": "unchanged \u2014 no edit to score_team_side, \u03b1_G/\u03b1_A, shares, or cascade defaults",
     "not": [
       "MID/FWD in pool (null CS/GC terms inflate discrete vs Gaussian)",
-      "factored five-term vs single Gaussian-on-total (parked — incommensurate)",
-      "mode/median M boards as μ",
-      "fitted β / OF search",
+      "factored five-term vs single Gaussian-on-total (parked \u2014 incommensurate)",
+      "mode/median M boards as \u03bc",
+      "fitted \u03b2 / OF search",
       "2026-27 holdout",
-      "Opta λ in this screen"
+      "Opta \u03bb in this screen"
     ],
-    "pool": "GKP/DEF; minutes>60 at scored GW; ≥3 prior apps as-of GW; FD AH+OU priced weeks; GW8–38; four closed seasons",
-    "metric": "mean log predictive density per player-GW; paired treatment−baseline by GW; cluster_interval across protocol.closed_seasons",
+    "pool": "GKP/DEF; minutes>60 at scored GW; \u22653 prior apps as-of GW; FD AH+OU priced weeks; GW8\u201338; four closed seasons",
+    "metric": "mean log predictive density per player-GW; paired treatment\u2212baseline by GW; cluster_interval across protocol.closed_seasons",
     "promote_if": "paired interval lo > 0 on four closed seasons",
     "follows": "m_discrete_event_likelihood_screen (park_clear_lose) + same-skeleton diagnostic note",
     "artifacts": [
@@ -2362,7 +2362,7 @@
     "report": "reports/m_skel_cs_gc_likelihood_screen.md",
     "does_not_change_default": true,
     "note": "Locks the cleaned discreteness claim: same skeleton, CS/GC laws only, GKP/DEF pool.",
-    "result": "Δ log +2.8276 [+2.7980,+2.8579] → promote → locked 2026-10-30; mean layer unchanged; eval default for GKP/DEF CS/GC likelihood",
+    "result": "\u0394 log +2.8276 [+2.7980,+2.8579] \u2192 promote \u2192 locked 2026-10-30; mean layer unchanged; eval default for GKP/DEF CS/GC likelihood",
     "locked": "2026-10-30",
     "lock_report": "reports/l3_discrete_cs_gc_likelihood_lock.md",
     "eval_default": true
@@ -2370,20 +2370,20 @@
   "l3_discrete_cs_gc_likelihood": {
     "locked": "2026-10-30",
     "status": "locked",
-    "role": "Eval default: discrete CS/GC predictive likelihood from Dixon–Coles M for GKP/DEF, under factored player-GW log score with locked centreline means.",
+    "role": "Eval default: discrete CS/GC predictive likelihood from Dixon\u2013Coles M for GKP/DEF, under factored player-GW log score with locked centreline means.",
     "screen": "m_skel_cs_gc_likelihood_screen",
     "delta_log": "+2.8276 [+2.7980, +2.8579]",
     "law": {
       "CS": "Bernoulli(P(CS) from M) on {P_CS>0}",
-      "GC": "categorical P(⌊GA/2⌋=k) from M marginal",
+      "GC": "categorical P(\u230aGA/2\u230b=k) from M marginal",
       "G_A_rest": "unchanged Gaussian on locked score_xp_v2 components (same-skeleton)"
     },
-    "mean_layer": "unchanged — score_team_side / α / shares / cascade μ defaults untouched",
-    "pool": "GKP/DEF; minutes>60; ≥3 prior apps; FD priced; GW8–38; four closed seasons",
+    "mean_layer": "unchanged \u2014 score_team_side / \u03b1 / shares / cascade \u03bc defaults untouched",
+    "pool": "GKP/DEF; minutes>60; \u22653 prior apps; FD priced; GW8\u201338; four closed seasons",
     "not": [
-      "replacement of μ by mode/median M",
-      "generative MC-mean as μ (parked — viability B1/B2)",
-      "factored-vs-Gaussian-total (parked — incommensurate)",
+      "replacement of \u03bc by mode/median M",
+      "generative MC-mean as \u03bc (parked \u2014 viability B1/B2)",
+      "factored-vs-Gaussian-total (parked \u2014 incommensurate)",
       "MID/FWD null-term same-skeleton diagnostic as gate",
       "player G/A count laws (not yet screened)"
     ],
@@ -2398,11 +2398,11 @@
   "l3_centreline_forecast": {
     "locked": "2026-10-30",
     "status": "locked",
-    "role": "Product forecast μ: L3/score_xp_v2 centreline mechanics; Odds API/FD λ near; Opta blind λ far; generative MC-mean is not μ.",
-    "near": "Odds API AH+OU+BTTS (live) / FD AH+OU hist → Dixon–Coles M moments → score_team_side (t, t+1 priced)",
-    "far": "Opta place rankmean venue_mode=blind → λ → M moments → score_team_side (t+2…)",
+    "role": "Product forecast \u03bc: L3/score_xp_v2 centreline mechanics; Odds API/FD \u03bb near; Opta blind \u03bb far; generative MC-mean is not \u03bc.",
+    "near": "Odds API AH+OU+BTTS (live) / FD AH+OU hist \u2192 Dixon\u2013Coles M moments \u2192 score_team_side (t, t+1 priced)",
+    "far": "Opta place rankmean venue_mode=blind \u2192 \u03bb \u2192 M moments \u2192 score_team_side (t+2\u2026)",
     "default_horizon": 12,
-    "strategy_horizon_board": "l3_opta_lambda_horizon — freeze rates/shares/α at t; Opta λ for every g∈[t,end]",
+    "strategy_horizon_board": "l3_opta_lambda_horizon \u2014 freeze rates/shares/\u03b1 at t; Opta \u03bb for every g\u2208[t,end]",
     "strategiser_factory": "src/strategy/l3_centreline_horizon.py",
     "live_entrypoint": "src/live/numagent_live_pick.py --centreline-horizon",
     "depends": [
@@ -2413,17 +2413,17 @@
       "l3_opta_lambda_horizon",
       "l3_discrete_cs_gc_likelihood"
     ],
-    "mean_layer": "score_team_side / score_xp_v2 — unchanged assembler",
+    "mean_layer": "score_team_side / score_xp_v2 \u2014 unchanged assembler",
     "not_mu": [
       "generative MC-mean xP",
       "mode/median M boards",
-      "Opta own-λ ×α≠1",
-      "place×venue / expanding H/A / FD venue-scale / margin-shrink / lag-1 / remaining-balance"
+      "Opta own-\u03bb \u00d7\u03b1\u22601",
+      "place\u00d7venue / expanding H/A / FD venue-scale / margin-shrink / lag-1 / remaining-balance"
     ],
     "evidence": [
       "viability B1/B2 gen-as-mean clearly_loses",
       "cascade_eligible_horizon_snapshot (gen long MAE 0.846 vs L3@g 0.820)",
-      "l3_opta_lambda_horizon (L3@t+Opta MAE 0.818 ≈ L3@g 0.805)",
+      "l3_opta_lambda_horizon (L3@t+Opta MAE 0.818 \u2248 L3@g 0.805)",
       "cascade_long_blind_venue_lock 2026-10-29"
     ],
     "report": "reports/L3_CENTRELINE_FORECAST_LOCK.md",
@@ -2433,28 +2433,53 @@
   "l3_component_climb_gate": {
     "pre_registered": "2026-10-30",
     "status": "park_clear_lose",
-    "role": "Strip-down L3 climb: each centreline xP component as μ vs full score_xp_v2",
-    "baseline": "full — score_xp_v2 on as-of FD centreline board",
-    "treatments": ["xp_goals", "xp_assists", "xp_cs", "xp_gc"],
+    "role": "Strip-down L3 climb: each centreline xP component as \u03bc vs full score_xp_v2",
+    "baseline": "full \u2014 score_xp_v2 on as-of FD centreline board",
+    "treatments": [
+      "xp_goals",
+      "xp_assists",
+      "xp_cs",
+      "xp_gc"
+    ],
     "shared": "same FD centreline board; shared wildcard open on full score_xp_v2",
     "rules": {
       "value_captain": false,
       "realised": "XI total_points only (no captain double)",
-      "max_hits": "SQUAD_SIZE (uncapped; −4/hit)"
+      "max_hits": "SQUAD_SIZE (uncapped; \u22124/hit)"
     },
-    "metric": "paired-by-GW realised XI−hits; component − full; cluster_interval four closed seasons",
+    "metric": "paired-by-GW realised XI\u2212hits; component \u2212 full; cluster_interval four closed seasons",
     "promote_if": "paired interval lo > 0 (per component)",
     "park_if": "hi < 0",
     "result": {
-      "xp_goals": {"mean": -7.412, "lo": -10.757, "hi": -3.898, "verdict": "park_clear_lose"},
-      "xp_assists": {"mean": -6.773, "lo": -9.937, "hi": -3.604, "verdict": "park_clear_lose"},
-      "xp_cs": {"mean": -15.151, "lo": -18.530, "hi": -11.865, "verdict": "park_clear_lose"},
-      "xp_gc": {"mean": -26.328, "lo": -31.650, "hi": -21.504, "verdict": "park_clear_lose"}
+      "xp_goals": {
+        "mean": -7.412,
+        "lo": -10.757,
+        "hi": -3.898,
+        "verdict": "park_clear_lose"
+      },
+      "xp_assists": {
+        "mean": -6.773,
+        "lo": -9.937,
+        "hi": -3.604,
+        "verdict": "park_clear_lose"
+      },
+      "xp_cs": {
+        "mean": -15.151,
+        "lo": -18.53,
+        "hi": -11.865,
+        "verdict": "park_clear_lose"
+      },
+      "xp_gc": {
+        "mean": -26.328,
+        "lo": -31.65,
+        "hi": -21.504,
+        "verdict": "park_clear_lose"
+      }
     },
-    "note": "All four components clear-lose vs full. Component arms took ~0 hits (smaller μ scale vs HIT_COST=4); full took hits — scale confound for hit economics.",
+    "note": "All four components clear-lose vs full. Component arms took ~0 hits (smaller \u03bc scale vs HIT_COST=4); full took hits \u2014 scale confound for hit economics.",
     "gw_start": 8,
     "gw_end": 38,
-    "holdout": "2026-27 frozen — not in comparison",
+    "holdout": "2026-27 frozen \u2014 not in comparison",
     "entry": "src/eval/l3_component_climb_gate.py",
     "report": "reports/l3_component_climb_gate.md",
     "any_later_change": "dated protocol update required"
@@ -2462,11 +2487,11 @@
   "l3_centreline_horizon_h12_climb": {
     "pre_registered": "2026-10-30",
     "status": "inconclusive",
-    "role": "Strategiser horizon: H=12 centreline (FD near + Opta blind far) vs H=2 priced-only L4 on the same locked μ recipes",
-    "treatment": "l3_centreline_h12 — build_l3_centreline_horizon(H=12); γ=1; hard-stop at available boards",
-    "baseline": "l3_priced_h2 — build_mupost_priced_horizon (BOOKIE_DEPTH=2); γ=1",
-    "shared": "mu_post ≡ score_xp_v2 mode=none; shared μ_post wildcard open at gw_start; unconstrained hits (max_hits=15); −4/hit",
-    "metric": "paired-by-GW realised XI+captain−hits; treatment − baseline; cluster_interval four closed seasons",
+    "role": "Strategiser horizon: H=12 centreline (FD near + Opta blind far) vs H=2 priced-only L4 on the same locked \u03bc recipes",
+    "treatment": "l3_centreline_h12 \u2014 build_l3_centreline_horizon(H=12); \u03b3=1; hard-stop at available boards",
+    "baseline": "l3_priced_h2 \u2014 build_mupost_priced_horizon (BOOKIE_DEPTH=2); \u03b3=1",
+    "shared": "mu_post \u2261 score_xp_v2 mode=none; shared \u03bc_post wildcard open at gw_start; unconstrained hits (max_hits=15); \u22124/hit",
+    "metric": "paired-by-GW realised XI+captain\u2212hits; treatment \u2212 baseline; cluster_interval four closed seasons",
     "promote_if": "paired interval lo > 0 on four closed seasons",
     "park_if": "hi < 0",
     "result": {
@@ -2479,8 +2504,8 @@
     },
     "gw_start": 8,
     "gw_end": 38,
-    "holdout": "2026-27 frozen — not in comparison",
-    "note": "Transfer-rule / strategiser screen on locked centreline μ — not a μ promote. Opta place = season-final ranks (same as locked horizon dig).",
+    "holdout": "2026-27 frozen \u2014 not in comparison",
+    "note": "Transfer-rule / strategiser screen on locked centreline \u03bc \u2014 not a \u03bc promote. Opta place = season-final ranks (same as locked horizon dig).",
     "entry": "src/eval/l3_centreline_h12_climb_gate.py",
     "report": "reports/l3_centreline_h12_climb_gate.md",
     "any_later_change": "dated protocol update required"
@@ -2488,33 +2513,58 @@
   "l4_component_horizon_climb": {
     "pre_registered": "2026-10-30",
     "status": "reported",
-    "role": "Strip-down strategiser: L4+Opta H=12 vs L4 H=2 with μ = one centreline xP component (isolates which pieces hurt long-horizon decisions)",
-    "treatment": "h12_<C> — build_l3_centreline_horizon(H=12); mu_post := C; γ=1",
-    "baseline": "h2_<C> — build_mupost_priced_horizon (BOOKIE_DEPTH=2); mu_post := C; γ=1",
-    "components": ["xp_goals", "xp_assists", "xp_cs", "xp_gc"],
+    "role": "Strip-down strategiser: L4+Opta H=12 vs L4 H=2 with \u03bc = one centreline xP component (isolates which pieces hurt long-horizon decisions)",
+    "treatment": "h12_<C> \u2014 build_l3_centreline_horizon(H=12); mu_post := C; \u03b3=1",
+    "baseline": "h2_<C> \u2014 build_mupost_priced_horizon (BOOKIE_DEPTH=2); mu_post := C; \u03b3=1",
+    "components": [
+      "xp_goals",
+      "xp_assists",
+      "xp_cs",
+      "xp_gc"
+    ],
     "near_scorer": "L4 score_xp_v2 / priced FD (default t:t+1; L4 beat L3 on gated climb)",
-    "far": "Opta blind place λ → score_team_side",
+    "far": "Opta blind place \u03bb \u2192 score_team_side",
     "shared": "wildcard open on full score_xp_v2 at gw_start; same component on both arms",
     "rules": {
       "value_captain": false,
       "realised": "XI total_points only (no captain double)",
       "chips": false,
-      "max_hits": "SQUAD_SIZE (uncapped; −4/hit)",
+      "max_hits": "SQUAD_SIZE (uncapped; \u22124/hit)",
       "transfers_xi_bench": true
     },
-    "metric": "paired-by-GW realised XI−hits; H12 − H2 per component; cluster_interval four closed seasons",
+    "metric": "paired-by-GW realised XI\u2212hits; H12 \u2212 H2 per component; cluster_interval four closed seasons",
     "promote_if": "paired interval lo > 0 (per component)",
     "park_if": "hi < 0",
     "result": {
-      "xp_goals": {"mean": 2.692, "lo": 0.583, "hi": 4.734, "verdict": "promote"},
-      "xp_assists": {"mean": 2.292, "lo": 0.575, "hi": 4.117, "verdict": "promote"},
-      "xp_cs": {"mean": 0.267, "lo": -2.275, "hi": 2.758, "verdict": "inconclusive"},
-      "xp_gc": {"mean": -0.858, "lo": -2.359, "hi": 0.758, "verdict": "inconclusive"}
+      "xp_goals": {
+        "mean": 2.692,
+        "lo": 0.583,
+        "hi": 4.734,
+        "verdict": "promote"
+      },
+      "xp_assists": {
+        "mean": 2.292,
+        "lo": 0.575,
+        "hi": 4.117,
+        "verdict": "promote"
+      },
+      "xp_cs": {
+        "mean": 0.267,
+        "lo": -2.275,
+        "hi": 2.758,
+        "verdict": "inconclusive"
+      },
+      "xp_gc": {
+        "mean": -0.858,
+        "lo": -2.359,
+        "hi": 0.758,
+        "verdict": "inconclusive"
+      }
     },
     "gw_start": 8,
     "gw_end": 38,
-    "holdout": "2026-27 frozen — not in comparison",
-    "note": "H=12 helps when μ is goals or assists alone; CS/GC inconclusive (not clear-lose). Full-μ H=12 vs H=2 remains inconclusive (l3_centreline_horizon_h12_climb). Not a μ promote. Supersedes mis-aimed l3_component_climb_gate for the long-horizon question.",
+    "holdout": "2026-27 frozen \u2014 not in comparison",
+    "note": "H=12 helps when \u03bc is goals or assists alone; CS/GC inconclusive (not clear-lose). Full-\u03bc H=12 vs H=2 remains inconclusive (l3_centreline_horizon_h12_climb). Not a \u03bc promote. Supersedes mis-aimed l3_component_climb_gate for the long-horizon question.",
     "entry": "src/eval/l4_component_horizon_climb_gate.py",
     "report": "reports/l4_component_horizon_climb_gate.md",
     "any_later_change": "dated protocol update required"
@@ -2522,11 +2572,11 @@
   "l4_opta_joint_path_climb": {
     "pre_registered": "2026-10-31",
     "status": "reported",
-    "role": "Joint multi-GW path plan vs L4 oneshot on identical L4+Opta H=12 boards; second arm decays Opta far μ",
-    "boards": "build_l3_centreline_horizon(H=12) — L4/FD priced t:t+1 + Opta blind far; full μ (mu_post≡score_xp_v2)",
-    "baseline": "l4_opta_h12 — solve_horizon_transfers (transfers at t=0 only; re-lineups later); undecayed boards",
-    "treatment_a": "joint_path — pick_path_transfer_plan every-GW x/FT; from_owned seeded 15; full board (no top-48); undecayed boards",
-    "treatment_b": "joint_path_decay — same planner; Opta far boards (t≥near) μ and xp components × ρ^(t−near+1) toward 0; ρ=0.85",
+    "role": "Joint multi-GW path plan vs L4 oneshot on identical L4+Opta H=12 boards; second arm decays Opta far \u03bc",
+    "boards": "build_l3_centreline_horizon(H=12) \u2014 L4/FD priced t:t+1 + Opta blind far; full \u03bc (mu_post\u2261score_xp_v2)",
+    "baseline": "l4_opta_h12 \u2014 solve_horizon_transfers (transfers at t=0 only; re-lineups later); undecayed boards",
+    "treatment_a": "joint_path \u2014 pick_path_transfer_plan every-GW x/FT; from_owned seeded 15; full board (no top-48); undecayed boards",
+    "treatment_b": "joint_path_decay \u2014 same planner; Opta far boards (t\u2265near) \u03bc and xp components \u00d7 \u03c1^(t\u2212near+1) toward 0; \u03c1=0.85",
     "comparisons": [
       "joint_path_minus_l4_opta_h12",
       "joint_path_decay_minus_l4_opta_h12",
@@ -2538,19 +2588,19 @@
       "candidates": "full week-0 pool (no DEFAULT_TOP_N=48 cap)",
       "value_captain": false,
       "ft_pe_nu": 0,
-      "realised": "XI total_points − hits (no captain double)",
+      "realised": "XI total_points \u2212 hits (no captain double)",
       "chips": false,
-      "max_hits": "SQUAD_SIZE (uncapped; −4/hit)",
+      "max_hits": "SQUAD_SIZE (uncapped; \u22124/hit)",
       "gamma": 1.0,
       "horizon": 12
     },
     "decay": {
       "scope": "t+2:end (near priced depth unchanged)",
-      "formula": "mu_t ← mu_t * rho^(t - near + 1); same factor on xp_* / score_xp_v2 / mu_post",
+      "formula": "mu_t \u2190 mu_t * rho^(t - near + 1); same factor on xp_* / score_xp_v2 / mu_post",
       "target": 0,
       "rho": 0.85
     },
-    "metric": "paired-by-GW realised XI−hits; cluster_interval four closed seasons",
+    "metric": "paired-by-GW realised XI\u2212hits; cluster_interval four closed seasons",
     "promote_if": "paired interval lo > 0",
     "park_if": "hi < 0",
     "result": {
@@ -2563,7 +2613,7 @@
       },
       "joint_path_decay_minus_l4_opta_h12": {
         "mean": 1.783,
-        "lo": -0.150,
+        "lo": -0.15,
         "hi": 3.884,
         "covers_zero": true,
         "verdict": "inconclusive"
@@ -2578,21 +2628,26 @@
     },
     "gw_start": 8,
     "gw_end": 38,
-    "holdout": "2026-27 frozen — not in comparison",
-    "note": "Planner isolation on locked L4+Opta μ — not a μ promote. Joint every-GW path promotes vs L4 oneshot on full μ. Opta far decay inconclusive vs both L4 and undecayed path.",
+    "holdout": "2026-27 frozen \u2014 not in comparison",
+    "note": "Planner isolation on locked L4+Opta \u03bc \u2014 not a \u03bc promote. Joint every-GW path promotes vs L4 oneshot on full \u03bc. Opta far decay inconclusive vs both L4 and undecayed path.",
     "entry": "src/eval/l4_opta_joint_path_climb_gate.py",
     "report": "reports/l4_opta_joint_path_climb_gate.md",
     "any_later_change": "dated protocol update required"
   },
   "l4_opta_joint_path_component_climb": {
     "pre_registered": "2026-10-31",
-    "status": "pending",
+    "status": "reported",
     "role": "Same joint-path vs L4 oneshot planner screen as l4_opta_joint_path_climb, but mu_post := one centreline xP component (G/A/CS/GC)",
     "boards": "build_l3_centreline_horizon(H=12); mu_post := component on every horizon board",
-    "baseline": "l4_opta_h12_<C> — solve_horizon_transfers; undecayed component boards",
-    "treatment_a": "joint_path_<C> — pick_path_transfer_plan; full board; from_owned; undecayed",
-    "treatment_b": "joint_path_decay_<C> — same planner; Opta far × ρ^(t−near+1) → 0; ρ=0.85",
-    "components": ["xp_goals", "xp_assists", "xp_cs", "xp_gc"],
+    "baseline": "l4_opta_h12_<C> \u2014 solve_horizon_transfers; undecayed component boards",
+    "treatment_a": "joint_path_<C> \u2014 pick_path_transfer_plan; full board; from_owned; undecayed",
+    "treatment_b": "joint_path_decay_<C> \u2014 same planner; Opta far \u00d7 \u03c1^(t\u2212near+1) \u2192 0; \u03c1=0.85",
+    "components": [
+      "xp_goals",
+      "xp_assists",
+      "xp_cs",
+      "xp_gc"
+    ],
     "comparisons_per_component": [
       "joint_path_<C>_minus_l4_opta_h12_<C>",
       "joint_path_decay_<C>_minus_l4_opta_h12_<C>",
@@ -2604,7 +2659,7 @@
       "candidates": "full week-0 pool",
       "value_captain": false,
       "ft_pe_nu": 0,
-      "realised": "XI total_points − hits",
+      "realised": "XI total_points \u2212 hits",
       "chips": false,
       "max_hits": "SQUAD_SIZE",
       "gamma": 1.0,
@@ -2612,19 +2667,117 @@
     },
     "decay": {
       "scope": "t+2:end",
-      "formula": "mu_t ← mu_t * rho^(t - near + 1) on mu_post and xp_*",
+      "formula": "mu_t \u2190 mu_t * rho^(t - near + 1) on mu_post and xp_*",
       "target": 0,
       "rho": 0.85
     },
-    "metric": "paired-by-GW realised XI−hits; cluster_interval four closed seasons; per component",
+    "metric": "paired-by-GW realised XI\u2212hits; cluster_interval four closed seasons; per component",
     "promote_if": "paired interval lo > 0 (per component comparison)",
     "park_if": "hi < 0",
     "gw_start": 8,
     "gw_end": 38,
-    "holdout": "2026-27 frozen — not in comparison",
-    "note": "Planner isolation under component-only μ. Complements l4_component_horizon_climb (H12 vs H2 on L4 oneshot) and full-μ l4_opta_joint_path_climb. Not a μ promote.",
+    "holdout": "2026-27 frozen \u2014 not in comparison",
+    "note": "Planner isolation under component-only \u03bc. All joint_path / decay comparisons inconclusive vs L4 oneshot (intervals cover 0). Complements full-\u03bc promote on l4_opta_joint_path_climb and H12-vs-H2 l4_component_horizon_climb. Not a \u03bc promote.",
     "entry": "src/eval/l4_opta_joint_path_component_climb_gate.py",
     "report": "reports/l4_opta_joint_path_component_climb_gate.md",
-    "any_later_change": "dated protocol update required"
+    "any_later_change": "dated protocol update required",
+    "result": {
+      "joint_path_xp_assists_minus_l4_opta_h12_xp_assists": {
+        "mean": 0.117,
+        "lo": -1.426,
+        "hi": 1.725,
+        "covers_zero": true,
+        "verdict": "inconclusive",
+        "component": "xp_assists"
+      },
+      "joint_path_decay_xp_assists_minus_l4_opta_h12_xp_assists": {
+        "mean": -0.15,
+        "lo": -1.917,
+        "hi": 1.717,
+        "covers_zero": true,
+        "verdict": "inconclusive",
+        "component": "xp_assists"
+      },
+      "joint_path_decay_xp_assists_minus_joint_path_xp_assists": {
+        "mean": -0.267,
+        "lo": -1.642,
+        "hi": 1.075,
+        "covers_zero": true,
+        "verdict": "inconclusive",
+        "component": "xp_assists"
+      },
+      "joint_path_xp_cs_minus_l4_opta_h12_xp_cs": {
+        "mean": 1.542,
+        "lo": -0.783,
+        "hi": 3.742,
+        "covers_zero": true,
+        "verdict": "inconclusive",
+        "component": "xp_cs"
+      },
+      "joint_path_decay_xp_cs_minus_l4_opta_h12_xp_cs": {
+        "mean": 1.917,
+        "lo": -0.309,
+        "hi": 4.159,
+        "covers_zero": true,
+        "verdict": "inconclusive",
+        "component": "xp_cs"
+      },
+      "joint_path_decay_xp_cs_minus_joint_path_xp_cs": {
+        "mean": 0.375,
+        "lo": -1.567,
+        "hi": 2.117,
+        "covers_zero": true,
+        "verdict": "inconclusive",
+        "component": "xp_cs"
+      },
+      "joint_path_xp_gc_minus_l4_opta_h12_xp_gc": {
+        "mean": 0.767,
+        "lo": -0.851,
+        "hi": 2.367,
+        "covers_zero": true,
+        "verdict": "inconclusive",
+        "component": "xp_gc"
+      },
+      "joint_path_decay_xp_gc_minus_l4_opta_h12_xp_gc": {
+        "mean": 1.492,
+        "lo": -0.267,
+        "hi": 3.295,
+        "covers_zero": true,
+        "verdict": "inconclusive",
+        "component": "xp_gc"
+      },
+      "joint_path_decay_xp_gc_minus_joint_path_xp_gc": {
+        "mean": 0.725,
+        "lo": -0.742,
+        "hi": 2.217,
+        "covers_zero": true,
+        "verdict": "inconclusive",
+        "component": "xp_gc"
+      },
+      "joint_path_xp_goals_minus_l4_opta_h12_xp_goals": {
+        "mean": -1.417,
+        "lo": -3.417,
+        "hi": 0.635,
+        "covers_zero": true,
+        "verdict": "inconclusive",
+        "component": "xp_goals"
+      },
+      "joint_path_decay_xp_goals_minus_l4_opta_h12_xp_goals": {
+        "mean": -0.833,
+        "lo": -2.925,
+        "hi": 1.233,
+        "covers_zero": true,
+        "verdict": "inconclusive",
+        "component": "xp_goals"
+      },
+      "joint_path_decay_xp_goals_minus_joint_path_xp_goals": {
+        "mean": 0.583,
+        "lo": -0.909,
+        "hi": 2.043,
+        "covers_zero": true,
+        "verdict": "inconclusive",
+        "component": "xp_goals"
+      }
+    }
   }
 }
