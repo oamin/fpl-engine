@@ -364,6 +364,16 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="single season 2025-26, GW8–10 only; skip gated report",
     )
+    ap.add_argument(
+        "--rows-out",
+        default="",
+        help="write raw week rows JSON and exit (no gated report; for parallel seasons)",
+    )
+    ap.add_argument(
+        "--from-rows",
+        default="",
+        help="comma-separated row-dump JSON paths; merge and write gated report",
+    )
     args = ap.parse_args(argv)
 
     protocol = load_protocol()
@@ -398,49 +408,82 @@ def main(argv: list[str] | None = None) -> int:
         )
     audit_out = {"passed": True, "failures": [], "score_xp_v2": v2_asof}
 
-    print("loading closed score_xp_v2 …", flush=True)
-    from src.strategy.shrink_climb import SeasonStore
-
-    v2_all = pd.read_csv(CLOSED_V2)
     t0 = _now()
     all_rows: list[dict[str, Any]] = []
-    for season in seasons:
-        merged = _load_merged_enriched(season)
-        fd = _fd_index(season)
-        prices = pd.read_csv(
-            PROCESSED / f"score_xp_{season.replace('-', '_')}.csv",
-            usecols=["element", "gw", "value", "team_norm", "position", "player_id"],
+
+    if args.from_rows:
+        paths = [Path(p.strip()) for p in str(args.from_rows).split(",") if p.strip()]
+        if not paths:
+            raise RuntimeError("--from-rows needs at least one path")
+        for path in paths:
+            blob = json.loads(path.read_text(encoding="utf-8"))
+            all_rows.extend(blob.get("rows") or [])
+        print(
+            f"[l4-opta-path] merged {len(all_rows)} rows from {len(paths)} dumps",
+            flush=True,
         )
-        prices["gw"] = pd.to_numeric(prices["gw"], errors="coerce").astype(int)
-        store = SeasonStore(season, v2_all)
-        for arm in arms:
-            print(f"climbing {season} arm={arm} …", flush=True)
-            all_rows.extend(
-                climb_season(
-                    store,
-                    arm=arm,
-                    merged=merged,
-                    fd=fd,
-                    prices=prices,
-                    gw_start=gw_start,
-                    gw_end=gw_end,
-                    time_limit_l4=float(args.time_limit_l4),
-                    time_limit_path=float(args.time_limit_path),
-                    rho=float(args.rho),
-                )
+        seasons = sorted({str(r["season"]) for r in all_rows})
+        arms = tuple(sorted({str(r["arm"]) for r in all_rows}))
+        gw_start = int(min(int(r["gw"]) for r in all_rows))
+        gw_end = int(max(int(r["gw"]) for r in all_rows))
+    else:
+        print("loading closed score_xp_v2 …", flush=True)
+        from src.strategy.shrink_climb import SeasonStore
+
+        v2_all = pd.read_csv(CLOSED_V2)
+        for season in seasons:
+            merged = _load_merged_enriched(season)
+            fd = _fd_index(season)
+            prices = pd.read_csv(
+                PROCESSED / f"score_xp_{season.replace('-', '_')}.csv",
+                usecols=[
+                    "element",
+                    "gw",
+                    "value",
+                    "team_norm",
+                    "position",
+                    "player_id",
+                ],
             )
+            prices["gw"] = pd.to_numeric(prices["gw"], errors="coerce").astype(int)
+            store = SeasonStore(season, v2_all)
+            for arm in arms:
+                print(f"climbing {season} arm={arm} …", flush=True)
+                all_rows.extend(
+                    climb_season(
+                        store,
+                        arm=arm,
+                        merged=merged,
+                        fd=fd,
+                        prices=prices,
+                        gw_start=gw_start,
+                        gw_end=gw_end,
+                        time_limit_l4=float(args.time_limit_l4),
+                        time_limit_path=float(args.time_limit_path),
+                        rho=float(args.rho),
+                    )
+                )
 
     elapsed = _now() - t0
 
-    if args.smoke:
+    if (args.smoke or args.rows_out) and not args.from_rows:
         df = pd.DataFrame(all_rows)
         print(df.to_string(index=False), flush=True)
-        smoke_path = PROCESSED / "l4_opta_joint_path_climb_smoke.json"
         PROCESSED.mkdir(parents=True, exist_ok=True)
-        smoke_path.write_text(
+        out_path = (
+            Path(args.rows_out)
+            if args.rows_out
+            else PROCESSED / "l4_opta_joint_path_climb_smoke.json"
+        )
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        out_path.write_text(
             json.dumps(
                 {
-                    "smoke": True,
+                    "smoke": bool(args.smoke),
+                    "seasons": seasons,
+                    "arms": list(arms),
+                    "gw_start": gw_start,
+                    "gw_end": gw_end,
                     "elapsed_s": elapsed,
                     "rows": all_rows,
                     "rho": float(args.rho),
@@ -455,18 +498,28 @@ def main(argv: list[str] | None = None) -> int:
             json.dumps(
                 {
                     "task": "l4_opta_joint_path_climb",
-                    "status": "smoke_ok",
+                    "status": "rows_dump" if args.rows_out else "smoke_ok",
                     "as_of_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                    "change": "Smoke joint path vs L4 on L4+Opta H=12 (+decay arm)",
+                    "change": "Joint path climb rows dump / smoke",
                     "elapsed_s": elapsed,
-                    "smoke": str(smoke_path.relative_to(ROOT)),
+                    "rows_out": str(out_path),
                 },
                 indent=2,
             )
             + "\n",
             encoding="utf-8",
         )
-        print(json.dumps({"smoke": True, "elapsed_s": elapsed}, indent=2))
+        print(
+            json.dumps(
+                {
+                    "smoke": bool(args.smoke),
+                    "rows_out": str(out_path),
+                    "elapsed_s": elapsed,
+                    "n_rows": len(all_rows),
+                },
+                indent=2,
+            )
+        )
         return 0
 
     # Full gate needs all three arms.
