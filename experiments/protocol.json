@@ -2521,7 +2521,7 @@
   },
   "l4_opta_joint_path_climb": {
     "pre_registered": "2026-10-31",
-    "status": "pending",
+    "status": "reported",
     "role": "Joint multi-GW path plan vs L4 oneshot on identical L4+Opta H=12 boards; second arm decays Opta far μ",
     "boards": "build_l3_centreline_horizon(H=12) — L4/FD priced t:t+1 + Opta blind far; full μ (mu_post≡score_xp_v2)",
     "baseline": "l4_opta_h12 — solve_horizon_transfers (transfers at t=0 only; re-lineups later); undecayed boards",
@@ -2553,10 +2553,33 @@
     "metric": "paired-by-GW realised XI−hits; cluster_interval four closed seasons",
     "promote_if": "paired interval lo > 0",
     "park_if": "hi < 0",
+    "result": {
+      "joint_path_minus_l4_opta_h12": {
+        "mean": 1.925,
+        "lo": 0.083,
+        "hi": 3.692,
+        "covers_zero": false,
+        "verdict": "promote"
+      },
+      "joint_path_decay_minus_l4_opta_h12": {
+        "mean": 1.783,
+        "lo": -0.150,
+        "hi": 3.884,
+        "covers_zero": true,
+        "verdict": "inconclusive"
+      },
+      "joint_path_decay_minus_joint_path": {
+        "mean": -0.142,
+        "lo": -1.609,
+        "hi": 1.359,
+        "covers_zero": true,
+        "verdict": "inconclusive"
+      }
+    },
     "gw_start": 8,
     "gw_end": 38,
     "holdout": "2026-27 frozen — not in comparison",
-    "note": "Planner isolation on locked L4+Opta μ — not a μ promote. Decay arm tests whether damping Opta far xp toward 0 improves the joint path.",
+    "note": "Planner isolation on locked L4+Opta μ — not a μ promote. Joint every-GW path promotes vs L4 oneshot on full μ. Opta far decay inconclusive vs both L4 and undecayed path.",
     "entry": "src/eval/l4_opta_joint_path_climb_gate.py",
     "report": "reports/l4_opta_joint_path_climb_gate.md",
     "any_later_change": "dated protocol update required"

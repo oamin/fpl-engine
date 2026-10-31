@@ -28,6 +28,8 @@ Product **μ**: Odds API / FD centreline near (`t`/`t+1`); **Opta blind** λ far
 
 **Component climb gate (2026-10-30):** mis-aimed L3 component-vs-full one-week — parked. **Corrected:** `l4_component_horizon_climb` — L4 H=12 (Opta far) vs L4 H=2, `mu_post :=` one component, no captain/chips. **G/A promote** (+2.69 / +2.29); CS/GC inconclusive. `reports/l4_component_horizon_climb_gate.md`.
 
+**Joint path vs L4 oneshot (2026-10-31):** `l4_opta_joint_path_climb` on full L4+Opta H=12 μ — **promote** (+1.925/GW [+0.08, +3.69]; lo>0). Every-GW `pick_path_transfer_plan` (full board, xi_ft, from_owned) beats L4 oneshot. Opta far decay ρ=0.85 **inconclusive** vs L4 and vs undecayed path. Component-μ sibling `l4_opta_joint_path_component_climb` still running. `reports/l4_opta_joint_path_climb_gate.md`.
+
 ## Repo freeze sequence (2026-10-20)
 
 | Step | Status | Note |

@@ -1,23 +1,28 @@
 {
-  "task": "gw09_numagent_lock_and_stragent",
+  "task": "l4_opta_joint_path_climb",
   "status": "done",
-  "as_of_utc": "2026-10-31T08:30:00Z",
-  "change": "PI-locked GW9 numagent; froze GW9 stragent paper pick (Muniz→Barry)",
-  "numagent": {
-    "lock": "data/predictions/2026-27/gw09/numagent_lock.json",
-    "report": "reports/numagent_live_pick_gw09.md",
-    "transfers": "B.Fernandes+Wissa → Ødegaard+Isak (−4)",
-    "captain": "Haaland",
-    "vice": "Isak"
+  "as_of_utc": "2026-10-31T10:23:00Z",
+  "change": "Gated joint path vs L4 on L4+Opta H=12 (+Opta far decay)",
+  "verdicts": {
+    "joint_path_minus_l4_opta_h12": {
+      "verdict": "promote",
+      "mean": 1.925,
+      "lo": 0.08291666666666668,
+      "hi": 3.691875
+    },
+    "joint_path_decay_minus_l4_opta_h12": {
+      "verdict": "inconclusive",
+      "mean": 1.7833333333333334,
+      "lo": -0.15041666666666664,
+      "hi": 3.8835416666666664
+    },
+    "joint_path_decay_minus_joint_path": {
+      "verdict": "inconclusive",
+      "mean": -0.14166666666666666,
+      "lo": -1.6089583333333333,
+      "hi": 1.3585416666666665
+    }
   },
-  "stragent": {
-    "plan": "data/predictions/2026-27/string_plans/gw09.json",
-    "ledger": "data/predictions/2026-27/string_agent_freeze.jsonl",
-    "report": "reports/stragent_live_pick_gw09.md",
-    "trawl_sources": 197,
-    "transfers": "Muniz → Barry (0 hits)",
-    "captain": "Haaland",
-    "vice": "Rogers",
-    "horizon": "GW10 Guéhi→Van Hecke; GW11 hold"
-  }
+  "report": "reports/l4_opta_joint_path_climb_gate.md",
+  "elapsed_s": 0.0011925697326660156
 }
