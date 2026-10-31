@@ -1,11 +1,21 @@
 {
   "task": "mu_wire_and_climb_sanity",
-  "status": "running",
-  "as_of_utc": "2026-10-31T14:08:00Z",
-  "change": "Wired rate baseline + full-club shares; rebuilt closed score_xp_v2; mu-wire climb dumps running",
+  "status": "done",
+  "as_of_utc": "2026-10-31T14:42:00Z",
+  "change": "μ wire kept after climb sanity (wired−legacy inconclusive −0.25; wired decay leans +1.13 vs wired L4)",
   "screens": {
-    "l4_opta_joint_path_mu_wire_climb": "running — 8 season×arm dumps"
+    "l4_opta_joint_path_mu_wire_climb": {
+      "status": "reported",
+      "wired_minus_legacy": {"mean": -0.25, "lo": -2.167, "hi": 1.725, "verdict": "inconclusive"},
+      "wired_decay_minus_wired_l4": {"mean": 1.125, "lo": -0.667, "hi": 2.951, "verdict": "inconclusive"}
+    }
   },
+  "keep_wire": true,
+  "reports": [
+    "reports/l4_opta_joint_path_mu_wire_climb_gate.md",
+    "reports/rate_baseline_share_pool_likelihood_gate.md",
+    "reports/l4_opta_joint_path_decay_tune_gate.md"
+  ],
   "branch": "cursor/decay-rho-rate-share-gates-cc3d",
   "pr": 122
 }

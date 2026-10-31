@@ -1,10 +1,17 @@
+## Kept — rate baseline + full-club share wire (2026-10-31)
+
+Climb sanity `l4_opta_joint_path_mu_wire_climb`: wired−legacy **inconclusive**
+(−0.25 [−2.17, +1.73]); wired decay − wired L4 **+1.13** [−0.67, +2.95]
+inconclusive. Keep wire (likelihood promotes stand). Report:
+`reports/l4_opta_joint_path_mu_wire_climb_gate.md`.
+
 ## Inconclusive — Opta-far decay ρ / pos_mean tune (2026-10-31)
 
 `l4_opta_joint_path_decay_tune` on locked joint path: ρ=0.70 (−0.62), ρ=0.95
 (−0.33), ρ=0.85→pos_mean (−0.40) all cover 0 vs locked ρ=0.85→0. Keep
 `joint_path_opta_decay` defaults. `reports/l4_opta_joint_path_decay_tune_gate.md`.
 
-## Wired pending climb — rate baseline + full-club shares (2026-10-31)
+## Kept — rate baseline + full-club share wire (2026-10-31)
 
 Closed-season player-GW likelihood gates both **promote**:
 

@@ -2953,7 +2953,7 @@
   },
   "l4_opta_joint_path_mu_wire_climb": {
     "pre_registered": "2026-10-31",
-    "status": "running",
+    "status": "reported",
     "role": "Climb sanity after wiring rate baseline + full-club shares into published/centreline μ",
     "boards_wired": "score_gameweek historical_rate_baseline; project_week_score_xp_v2 + Opta centreline full_club_shares m>0",
     "baseline_legacy": "joint_path_decay_legacy — prior joint_path_decay dumps (pre-wire μ)",
@@ -2976,11 +2976,40 @@
       "score_xp_v2_full_share_likelihood",
       "joint_path_opta_decay"
     ],
-    "any_later_change": "dated protocol update required"
+    "any_later_change": "dated protocol update required",
+    "result": {
+      "joint_path_decay_wired_minus_joint_path_decay_legacy": {
+        "mean": -0.25,
+        "lo": -2.167,
+        "hi": 1.725,
+        "covers_zero": true,
+        "verdict": "inconclusive",
+        "by_season_mean": {
+          "2022-23": -0.167,
+          "2023-24": 0.433,
+          "2024-25": -0.767,
+          "2025-26": -0.5
+        }
+      },
+      "joint_path_decay_wired_minus_l4_opta_h12_wired": {
+        "mean": 1.125,
+        "lo": -0.667,
+        "hi": 2.951,
+        "covers_zero": true,
+        "verdict": "inconclusive",
+        "by_season_mean": {
+          "2022-23": -0.033,
+          "2023-24": 2.967,
+          "2024-25": 2.9,
+          "2025-26": -1.333
+        }
+      }
+    },
+    "note": "Keep μ wire. Wired−legacy inconclusive (−0.25). Wired decay still leans ahead of wired L4 (+1.13). Not a park of rate baseline / full-club shares."
   },
   "score_xp_v2_full_share_wire": {
     "locked": "2026-10-31",
-    "status": "wired_pending_climb_sanity",
+    "status": "wired",
     "role": "Full-club m>0 share_players on centreline/L4 mean boards after likelihood promote",
     "likelihood": "score_xp_v2_full_share_likelihood",
     "wired": [
@@ -2988,6 +3017,7 @@
       "src/strategy/l3_centreline_horizon.project_week_opta_centreline"
     ],
     "climb_sanity": "l4_opta_joint_path_mu_wire_climb",
-    "any_later_change": "dated protocol update required"
+    "any_later_change": "dated protocol update required",
+    "climb_sanity_result": "keep wire — wired−legacy inconclusive"
   }
 }
