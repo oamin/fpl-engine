@@ -14,7 +14,7 @@ MC-mean is not used.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Mapping
 
 import pandas as pd
 
@@ -214,8 +214,13 @@ def build_l3_centreline_horizon(
     near_depth: int = NEAR_DEPTH,
     minutes_rho: float = 1.0,
     minutes_window: int = 3,
+    minutes_by_element: Mapping[int, float] | None = None,
 ) -> L3CentrelineHorizon:
-    """Pools length ≤ ``horizon``: FD/priced near + Opta blind far."""
+    """Pools length ≤ ``horizon``: FD/priced near + Opta blind far.
+
+    ``minutes_by_element``: optional as-of map applied to near projections and
+    Opta far side tables (e.g. sticky xmi portfolio).
+    """
     H = max(1, int(horizon))
     near = max(1, min(int(near_depth), H))
 
@@ -236,6 +241,7 @@ def build_l3_centreline_horizon(
         prices=prices,
         minutes_rho=minutes_rho,
         minutes_window=minutes_window,
+        minutes_by_element=minutes_by_element,
     )
     pools = [p.copy() for p in priced.pools[:near]]
     priced_gws = list(priced.priced_gws[:near])
@@ -256,6 +262,7 @@ def build_l3_centreline_horizon(
                 "near_depth": near,
                 "opta_gws": [],
                 "protocol": "l3_centreline_forecast",
+                "minutes_map": minutes_by_element is not None,
             },
         )
 
@@ -263,22 +270,46 @@ def build_l3_centreline_horizon(
         merged, before_gw=int(decision_gw), season=season
     )
     alpha_g, alpha_a = _asof_alphas(hist)
-    side, alpha_g, alpha_a = build_frozen_side_table(
-        hist,
-        alpha_g=float(alpha_g),
-        alpha_a=float(alpha_a),
-        season=season,
-        historical_rate_baseline=True,
-    )
-    share_side: pd.DataFrame | None = None
-    share_roster = _mean_minutes_asof(hist, min_m=0.0)
-    if not share_roster.empty and len(share_roster) > len(side):
-        share_side = _attach_rates_priors_baseline(
-            share_roster,
+    if minutes_by_element is not None:
+        from src.strategy.layer4_mupost_priced import _roster_from_minutes_map
+
+        sel = _roster_from_minutes_map(hist, minutes_by_element, min_m=0.0)
+        side = _attach_rates_priors_baseline(
+            sel,
             hist,
             season=season,
             historical_rate_baseline=True,
         )
+        share_roster = _roster_from_minutes_map(
+            hist, minutes_by_element, min_m=0.0
+        )
+        share_side: pd.DataFrame | None = None
+        if not share_roster.empty and len(share_roster) > len(side):
+            share_side = _attach_rates_priors_baseline(
+                share_roster,
+                hist,
+                season=season,
+                historical_rate_baseline=True,
+            )
+        elif not share_roster.empty:
+            share_side = side
+    else:
+        side, alpha_g, alpha_a = build_frozen_side_table(
+            hist,
+            alpha_g=float(alpha_g),
+            alpha_a=float(alpha_a),
+            season=season,
+            historical_rate_baseline=True,
+        )
+        share_side = None
+        share_roster = _mean_minutes_asof(hist, min_m=0.0)
+        if not share_roster.empty and len(share_roster) > len(side):
+            share_side = _attach_rates_priors_baseline(
+                share_roster,
+                hist,
+                season=season,
+                historical_rate_baseline=True,
+            )
     e0 = _opta_e0(season)
     ranks = season_final_ranks(e0)
     profile = rank_gf_ga_profile_excluding(e0)
@@ -343,6 +374,7 @@ def build_l3_centreline_horizon(
             "opta_e0": e0,
             "protocol": "l3_centreline_forecast",
             "lambda_far": "opta_blind_rankmean",
+            "minutes_map": minutes_by_element is not None,
         },
     )
 

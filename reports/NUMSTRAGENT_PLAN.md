@@ -3,7 +3,7 @@
 **Named:** 2026-11-01  
 **Revised:** 2026-11-01 — Layer 1 = number cruncher only  
 **Status:** parked plan — not a protocol screen; live product architecture on top of locked Numagent / joint path  
-**Next hist focus:** as-of / causal **xmi** on joint-path boards (scout’s job in live; proxy in closed seasons)
+**Hist minutes note:** `l4_opta_joint_path_xmi_sticky` **parked clear lose** (−2.56/GW). Keep expanding as-of m on Layer 1; scout live needs richer “out N weeks” tags, not one-blank sticky.
 
 ## Idea
 
@@ -41,7 +41,7 @@ Manager with a backroom, not LLM-replaces-MILP. **Joint path is only Layer 1** �
 
 ## Build order (numstragent live)
 
-1. Hist xmi proxy gate (above) → lock scout minutes contract.  
+1. Hist one-blank sticky **parked**. Next scout contract: tagged multi-GW availability (live/news), optional softer hist proxy (e.g. consecutive blanks ≥2) only with a new pre-reg.  
 2. Structured brief schema (Layers 1–2).  
 3. Coach deltas + accountant.  
 4. Overseer on live GW; chips only via coach/accountant, never Layer‑1 search.

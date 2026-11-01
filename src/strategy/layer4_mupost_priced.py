@@ -270,6 +270,48 @@ def oracle_minutes_by_element(
     return {int(k): float(v) for k, v in summed.items()}
 
 
+def xmi_sticky_minutes_by_element(
+    hist: pd.DataFrame,
+    *,
+    window: int = 3,
+    element_col: str = "element",
+    gw_col: str = "GW",
+    minutes_col: str = "minutes",
+) -> dict[int, float]:
+    """As-of scout-like minutes: rolling-``window`` mean; sticky 0 if last GW blank.
+
+    ``hist`` must already be GW ``< decision`` (as-of). Includes zeros in the
+    rolling window. If the most recent completed GW has ``minutes==0``, set
+    ``m=0`` (carry "out" across the horizon). Pre-registered:
+    ``protocol.l4_opta_joint_path_xmi_sticky``.
+    """
+    from src.live.news_packets import rolling_game_minutes
+
+    if hist.empty:
+        return {}
+    gcol = gw_col if gw_col in hist.columns else ("gw" if "gw" in hist.columns else None)
+    if gcol is None or element_col not in hist.columns or minutes_col not in hist.columns:
+        return {}
+    h = hist.copy()
+    h[element_col] = pd.to_numeric(h[element_col], errors="coerce")
+    h[gcol] = pd.to_numeric(h[gcol], errors="coerce")
+    h[minutes_col] = pd.to_numeric(h[minutes_col], errors="coerce").fillna(0.0)
+    h = h.dropna(subset=[element_col, gcol])
+    out: dict[int, float] = {}
+    w = max(1, int(window))
+    for eid, g in h.groupby(element_col, sort=False):
+        by_gw = g.sort_values(gcol).groupby(gcol, sort=True)[minutes_col].sum()
+        series = [float(v) for v in by_gw.tolist()]
+        if not series:
+            continue
+        base = rolling_game_minutes(series, window=w, rho=1.0)
+        if base is None:
+            continue
+        m_val = 0.0 if float(series[-1]) <= 0.0 else float(base)
+        out[int(eid)] = float(m_val)
+    return out
+
+
 def project_week_score_xp_v2(
     hist: pd.DataFrame,
     merged: pd.DataFrame,
@@ -303,13 +345,14 @@ def project_week_score_xp_v2(
     if season_key is None and "season" in hist.columns and len(hist):
         season_key = str(hist["season"].iloc[0])
     if minutes_by_element is not None:
+        # Explicit maps (oracle / xmi_sticky) keep m=0 rows so blanks zero μ.
         roster = _roster_from_minutes_map(
-            hist, minutes_by_element, min_m=float(MIN_MEAN_M)
+            hist, minutes_by_element, min_m=0.0
         )
-        # Keep owned / low-minute rows out of the hard floor by also allowing
-        # any mapped player with m>=0 into the share pool below.
         if roster.empty:
-            roster = _roster_from_minutes_map(hist, minutes_by_element, min_m=0.0)
+            roster = _roster_from_minutes_map(
+                hist, minutes_by_element, min_m=float(MIN_MEAN_M)
+            )
     else:
         roster = _mean_minutes_asof(hist, rho=minutes_rho, window=minutes_window)
     if roster.empty:
@@ -525,14 +568,16 @@ def rebuild_week0_with_minutes_mode(
     minutes_rho: float = 1.0,
     minutes_window: int = 3,
 ) -> tuple[pd.DataFrame, dict[str, Any]]:
-    """Rebuild week-0 μ under as-of or oracle minutes; keep week0 player universe.
+    """Rebuild week-0 μ under as-of / oracle / xmi_sticky minutes.
 
     ``mode='asof'``: ``m`` = as-of mean (GW ``< t``).
     ``mode='oracle'``: ``m`` = actual minutes at decision GW ``t``.
-    Far-horizon boards are unchanged (caller still uses as-of via centreline).
+    ``mode='xmi_sticky'``: rolling-3 as-of; last GW blank → ``m=0``.
+    Far boards: caller must pass the same map into the horizon builder for
+    sticky; oracle mode leaves far boards as-of (deadline-causal ceiling).
     """
     mode_key = str(mode).strip().lower()
-    if mode_key not in {"asof", "oracle"}:
+    if mode_key not in {"asof", "oracle", "xmi_sticky"}:
         raise ValueError(f"unknown minutes mode {mode!r}")
     hist = merged.loc[
         pd.to_numeric(merged["GW"], errors="coerce") < int(decision_gw)
@@ -542,6 +587,13 @@ def rebuild_week0_with_minutes_mode(
     if mode_key == "oracle":
         # Prefer enriched/merged actuals; fall back empty → as-of.
         minutes_map = oracle_minutes_by_element(merged, int(decision_gw))
+        if not minutes_map:
+            minutes_map = None
+            mode_key = "asof"
+    elif mode_key == "xmi_sticky":
+        minutes_map = xmi_sticky_minutes_by_element(
+            hist, window=int(minutes_window)
+        )
         if not minutes_map:
             minutes_map = None
             mode_key = "asof"
@@ -564,8 +616,13 @@ def rebuild_week0_with_minutes_mode(
         "week0_minutes_mode": mode_key,
         "n_projected_fixtures": int(n_fx),
         "n_oracle_minutes": int(len(minutes_map or {})),
+        "n_minutes_map": int(len(minutes_map or {})),
+        "n_sticky_zero": int(
+            sum(1 for v in (minutes_map or {}).values() if float(v) <= 0.0)
+        ),
         "alpha_g": float(alpha_g),
         "alpha_a": float(alpha_a),
+        "minutes_map": dict(minutes_map) if minutes_map is not None else None,
     }
     if raw.empty:
         return week0_pool.copy(), {**meta, "fallback": "empty_projection"}
@@ -597,6 +654,7 @@ def build_mupost_priced_horizon(
     prices: pd.DataFrame | None = None,
     minutes_rho: float = 1.0,
     minutes_window: int = 3,
+    minutes_by_element: Mapping[int, float] | None = None,
 ) -> MupostPricedHorizon:
     """Return pools length ≤ 2: week0 mu_post + projected mu_post for t+1."""
     if merged is None:
@@ -644,6 +702,7 @@ def build_mupost_priced_horizon(
             season=season,
             historical_rate_baseline=True,
             full_club_shares=True,
+            minutes_by_element=minutes_by_element,
         )
         if raw.empty:
             continue
