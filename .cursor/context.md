@@ -46,6 +46,8 @@ Product **μ**: Odds API / FD centreline near (`t`/`t+1`); **Opta blind** λ far
 
 **μ-band strand roll (2026-10-31):** `l4_opta_joint_path_mu_band_roll` — N=8 rolls of μ inside ±2·xp_se (σ decays with μ); modal week-0 vs product mean. **Park clear lose** (−2.500/GW [−4.58, −0.53]; all seasons ≤0). Reshuffles heavily; does not load high-σ. Keep mean boards. `reports/l4_opta_joint_path_mu_band_roll_gate.md`.
 
+**Sticky xmi climb (2026-11-01):** `l4_opta_joint_path_xmi_sticky` — rolling-3 + last blank→0 vs expanding mean on path (`value_captain=false`). **Park clear lose** (−2.558/GW [−4.89, −0.20]; all seasons ≤0). Keep expanding as-of m; scout needs richer tags. `reports/l4_opta_joint_path_xmi_sticky_gate.md`.
+
 **numstragent plan (2026-11-01):** parked live architecture — backroom = **μ + joint-path transfers only** (no chips, no σ; cap isolated off for Layer‑1 hist) → scout (**xmi** portfolio) → coach → accountant → overseer. Next hist focus: as-of/causal xmi proxy vs expanding mean on path. Plan: [`reports/NUMSTRAGENT_PLAN.md`](../reports/NUMSTRAGENT_PLAN.md).
 
 ## Repo freeze sequence (2026-10-20)

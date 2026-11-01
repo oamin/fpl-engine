@@ -397,6 +397,15 @@ Next hist focus: deadline-causal / as-of xmi proxy on closed seasons vs
 expanding mean (toward the +2.07 oracle@t ceiling, no leakage).
 See `reports/NUMSTRAGENT_PLAN.md`.
 
+## Parked — sticky xmi (one-blank → 0) on joint path (2026-11-01)
+
+`protocol.l4_opta_joint_path_xmi_sticky`: rolling-3 as-of; last GW blank → m=0
+on all H boards; vs expanding mean; `value_captain=false`. **Park clear lose**
+(−2.558/GW [−4.892, −0.200]; all seasons ≤0). Too aggressive vs rebounders;
+more hits/blanks. Keep product expanding as-of m. Live scout: tagged out-N-weeks,
+not one-blank sticky. Oracle@t ceiling unchanged. Report:
+`reports/l4_opta_joint_path_xmi_sticky_gate.md`.
+
 ## Parked — live multi-GW minutes / xmi propagation (2026-10-31)
 
 Live still: week-t `xmi`, t+1 rolling3, far as-of — news “out N weeks” does

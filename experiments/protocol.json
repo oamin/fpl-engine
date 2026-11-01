@@ -3287,7 +3287,7 @@
   },
   "l4_opta_joint_path_xmi_sticky": {
     "pre_registered": "2026-11-01",
-    "status": "pre_registered",
+    "status": "parked",
     "role": "As-of sticky xmi minutes portfolio on joint path (Layer-1 isolation: no captain/chips/σ)",
     "boards": "build_l3_centreline_horizon(H=12); wired μ; Opta far ρ=0.85→0; same minutes law on week-0 and far",
     "baseline": "expanding — product expanding as-of mean m (GW < t) on all horizon boards",
@@ -3330,6 +3330,22 @@
       "change ρ / ν",
       "live FFScout packets"
     ],
-    "any_later_change": "dated protocol update required"
+    "any_later_change": "dated protocol update required",
+    "result": {
+      "xmi_sticky_minus_expanding": {
+        "mean": -2.558,
+        "lo": -4.892,
+        "hi": -0.2,
+        "covers_zero": false,
+        "verdict": "park_clear_lose",
+        "by_season_mean": {
+          "2022-23": -2.933,
+          "2023-24": -4.667,
+          "2024-25": -0.767,
+          "2025-26": -1.867
+        }
+      }
+    },
+    "note": "Park clear lose. Last-GW blank→m=0 is too aggressive vs expanding mean: more hits, many more intended blanks, autosubs fire but net pts fall. All four seasons ≤0. Keep product expanding as-of m for Layer 1. Scout live xmi should use richer tags (injured/out N weeks), not one-blank sticky. Oracle@t ceiling (+2.07) still stands as info value — this proxy does not close it."
   }
 }

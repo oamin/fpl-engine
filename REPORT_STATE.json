@@ -1,7 +1,20 @@
 {
   "task": "l4_opta_joint_path_xmi_sticky",
-  "status": "pre_registered_running",
-  "as_of_utc": "2026-11-01T08:50:00Z",
-  "change": "Pre-register sticky xmi climb; smoke OK; 4-season launching",
-  "protocol": "l4_opta_joint_path_xmi_sticky"
+  "status": "done",
+  "as_of_utc": "2026-11-01T09:50:16Z",
+  "change": "Sticky xmi climb: park clear lose (\u22122.558/GW [\u22124.892, \u22120.200])",
+  "verdict": "park_clear_lose",
+  "mean": -2.558,
+  "lo": -4.892,
+  "hi": -0.2,
+  "by_season_mean": {
+    "2022-23": -2.933,
+    "2023-24": -4.667,
+    "2024-25": -0.767,
+    "2025-26": -1.867
+  },
+  "decision": "park \u2014 keep expanding as-of m; scout needs richer tags than one-blank sticky",
+  "report": "reports/l4_opta_joint_path_xmi_sticky_gate.md",
+  "branch": "cursor/joint-path-xmi-sticky-cc3d",
+  "pr": 127
 }
