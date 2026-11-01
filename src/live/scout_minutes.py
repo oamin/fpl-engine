@@ -2,13 +2,16 @@
 
 Product default (everyone): expanding as-of mean ``m``, flat across the
 horizon. Scout treatment is **sparse**: only keyed players (FFScout Out /
-Banned / Doubts first) get step overlays. Goal/assist shares stay frozen from
-expanding m when scout minutes are applied
-(``reports/SCOUT_M_SHARE_FREEZE_LOCK.md``).
+Banned / Doubts first) get a step-0 minutes anchor. Farther horizon steps
+**decay** from that anchor back toward expanding mean:
 
-FFScout is the first live port of call. It does not yet encode return
-horizons — Out/Banned force ``m=0`` at step 0 only; later steps revert to
-expanding until structured ``out_for_n_gws`` exists.
+  m(h) = expand + (m0 − expand) · ρ^h
+
+Default ``ρ=0.85`` (same family as joint-path Opta decay). Structured
+``out_for_n_gws`` can still hard-pin early steps via ``force_steps``.
+
+Goal/assist shares stay frozen from expanding m
+(``reports/SCOUT_M_SHARE_FREEZE_LOCK.md``).
 
   PYTHONPATH=. python3 -m src.live.scout_minutes --gw 9 --from-json \\
     data/scratch/ffscout_gw09/ffscout_team_news.json --smoke
@@ -27,6 +30,7 @@ import pandas as pd
 
 from src.live.ffscout_team_news import match_ffs_name_to_fpl, parse_team_news, pull_team_news
 from src.live.news_tags import minutes_for_tag, prior_minutes
+from src.strategy.centreline_path_plan import DEFAULT_DECAY_RHO
 from src.strategy.layer4_mupost_priced import expanding_minutes_by_element
 from src.teams import norm_team
 
@@ -35,20 +39,23 @@ PRED = ROOT / "data" / "predictions" / "2026-27"
 LIVE = ROOT / "data" / "live"
 CACHE = ROOT / "data" / "cache"
 POS = {1: "GKP", 2: "DEF", 3: "MID", 4: "FWD"}
+DEFAULT_SCOUT_RHO = float(DEFAULT_DECAY_RHO)  # 0.85
 
 
 @dataclass
 class ScoutOverlay:
-    """One scout override for a player at one or more horizon steps."""
+    """Scout minutes anchor at decision week (step 0), with optional hard pins."""
 
     element: int
     name: str
     club: str
     tag: str
-    steps: dict[int, float]
+    m0: float
     reason: str
     source: str = "ffscout"
     chance: float | None = None
+    # Optional hard minutes for specific steps (e.g. out_for_n_gws); otherwise decay.
+    force_steps: dict[int, float] = field(default_factory=dict)
 
 
 @dataclass
@@ -56,8 +63,8 @@ class ScoutMinutesPacket:
     """Sparse scout minutes on an expanding-mean baseline.
 
     ``baseline_m[element]`` = expanding as-of mean (GW ``< decision_gw``).
-    ``overlays`` keyed by element; each maps horizon step → minutes.
-    Missing overlay steps fall back to baseline.
+    ``overlays[element].m0`` = scout minutes at step 0; later steps decay
+    toward baseline with ``decay_rho`` unless ``force_steps`` pins them.
     """
 
     season: str
@@ -67,29 +74,39 @@ class ScoutMinutesPacket:
     fetched_at: str
     baseline_m: dict[int, float] = field(default_factory=dict)
     overlays: dict[int, ScoutOverlay] = field(default_factory=dict)
+    decay_rho: float = DEFAULT_SCOUT_RHO
     meta: dict[str, Any] = field(default_factory=dict)
 
     def m_at(self, element: int, step: int = 0) -> float:
         eid = int(element)
+        base = float(self.baseline_m.get(eid, 0.0))
         ov = self.overlays.get(eid)
-        if ov is not None and int(step) in ov.steps:
-            return float(ov.steps[int(step)])
-        return float(self.baseline_m.get(eid, 0.0))
+        if ov is None:
+            return base
+        h = max(0, int(step))
+        if h in ov.force_steps:
+            return float(ov.force_steps[h])
+        rho = float(self.decay_rho)
+        # m(h) = expand + (m0 − expand) · ρ^h
+        return float(base + (float(ov.m0) - base) * (rho**h))
 
     def step_map(self, step: int = 0) -> dict[int, float]:
-        """Full element→m map for one horizon step (baseline ⊕ overlays)."""
+        """Full element→m map for one horizon step (baseline ⊕ decayed overlays)."""
         out = {int(e): float(m) for e, m in self.baseline_m.items()}
-        for eid, ov in self.overlays.items():
-            if int(step) in ov.steps:
-                out[int(eid)] = float(ov.steps[int(step)])
+        for eid in self.overlays:
+            out[int(eid)] = self.m_at(int(eid), int(step))
         return out
 
     def week0_xmi_map(self) -> dict[int, float]:
-        """Step-0 map for live pick / probe CSV (overlay elements only + baseline)."""
+        """Step-0 map for live pick / probe CSV."""
         return self.step_map(0)
 
     def overlay_elements(self) -> list[int]:
         return sorted(int(e) for e in self.overlays)
+
+    def decayed_path(self, element: int) -> list[float]:
+        """Minutes path length ``horizon`` for one element."""
+        return [self.m_at(int(element), h) for h in range(max(1, int(self.horizon)))]
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -101,14 +118,25 @@ class ScoutMinutesPacket:
             "protocol": "scout_minutes_ffscout_v1",
             "share_policy": "share_freeze",
             "lock": "reports/SCOUT_M_SHARE_FREEZE_LOCK.md",
+            "decay_rho": float(self.decay_rho),
+            "decay_law": "m(h)=expand+(m0-expand)*rho**h",
             "baseline_n": len(self.baseline_m),
             "n_overlays": len(self.overlays),
             "baseline_m": {str(k): float(v) for k, v in sorted(self.baseline_m.items())},
             "overlays": {
                 str(eid): {
-                    **{k: v for k, v in asdict(ov).items() if k != "element"},
                     "element": int(eid),
-                    "steps": {str(s): float(m) for s, m in sorted(ov.steps.items())},
+                    "name": ov.name,
+                    "club": ov.club,
+                    "tag": ov.tag,
+                    "m0": float(ov.m0),
+                    "reason": ov.reason,
+                    "source": ov.source,
+                    "chance": ov.chance,
+                    "force_steps": {
+                        str(s): float(m) for s, m in sorted(ov.force_steps.items())
+                    },
+                    "path": self.decayed_path(eid),
                 }
                 for eid, ov in sorted(self.overlays.items())
             },
@@ -136,13 +164,26 @@ def load_scout_packet(path: Path) -> ScoutMinutesPacket:
     overlays: dict[int, ScoutOverlay] = {}
     for key, raw in (doc.get("overlays") or {}).items():
         eid = int(raw.get("element") or key)
-        steps = {int(s): float(m) for s, m in (raw.get("steps") or {}).items()}
+        force = {
+            int(s): float(m) for s, m in (raw.get("force_steps") or {}).items()
+        }
+        # Backward compat: old packets stored steps={0: m0} only.
+        legacy_steps = {
+            int(s): float(m) for s, m in (raw.get("steps") or {}).items()
+        }
+        if "m0" in raw and raw["m0"] is not None:
+            m0 = float(raw["m0"])
+        elif 0 in legacy_steps:
+            m0 = float(legacy_steps[0])
+            force = {**legacy_steps, **force}
+        else:
+            m0 = 0.0
         overlays[eid] = ScoutOverlay(
             element=eid,
             name=str(raw.get("name") or ""),
             club=str(raw.get("club") or ""),
             tag=str(raw.get("tag") or ""),
-            steps=steps,
+            m0=m0,
             reason=str(raw.get("reason") or ""),
             source=str(raw.get("source") or "ffscout"),
             chance=(
@@ -150,6 +191,7 @@ def load_scout_packet(path: Path) -> ScoutMinutesPacket:
                 if raw.get("chance") is not None and raw.get("chance") != ""
                 else None
             ),
+            force_steps=force,
         )
     baseline = {int(k): float(v) for k, v in (doc.get("baseline_m") or {}).items()}
     return ScoutMinutesPacket(
@@ -160,6 +202,7 @@ def load_scout_packet(path: Path) -> ScoutMinutesPacket:
         fetched_at=str(doc.get("fetched_at") or ""),
         baseline_m=baseline,
         overlays=overlays,
+        decay_rho=float(doc.get("decay_rho") or DEFAULT_SCOUT_RHO),
         meta=dict(doc.get("meta") or {}),
     )
 
@@ -271,7 +314,7 @@ def overlays_from_ffscout(
                 name=str(el.get("web_name") or name),
                 club=club_name,
                 tag="injured",
-                steps={0: 0.0},
+                m0=0.0,
                 reason=f"FFScout Out: {name}",
                 source="ffscout",
                 chance=0.0,
@@ -290,7 +333,7 @@ def overlays_from_ffscout(
                 name=str(el.get("web_name") or name),
                 club=club_name,
                 tag="injured",
-                steps={0: 0.0},
+                m0=0.0,
                 reason=f"FFScout Banned: {name}",
                 source="ffscout",
                 chance=0.0,
@@ -311,7 +354,7 @@ def overlays_from_ffscout(
                 unmatched.append({"club": club_name, "name": name, "bucket": "doubt"})
                 continue
             eid = int(el["id"])
-            if eid in overlays and overlays[eid].steps.get(0, 1.0) <= 0.0:
+            if eid in overlays and float(overlays[eid].m0) <= 0.0:
                 # Already Out/Banned — keep zero.
                 continue
             pos = POS.get(int(el.get("element_type") or 3), "MID")
@@ -328,7 +371,7 @@ def overlays_from_ffscout(
                 name=str(el.get("web_name") or name),
                 club=club_name,
                 tag="injured" if chance is not None else "50/50",
-                steps={0: float(m_val)},
+                m0=float(m_val),
                 reason=f"FFScout Doubt: {name}"
                 + (f" ({chance:.0f}%)" if chance is not None else ""),
                 source="ffscout",
@@ -360,6 +403,7 @@ def build_scout_packet_from_ffscout(
     horizon: int = 2,
     season: str = "2026-27",
     fetch_out_dir: Path | None = None,
+    decay_rho: float = DEFAULT_SCOUT_RHO,
 ) -> ScoutMinutesPacket:
     """Assemble expanding baseline + FFScout sparse overlays for a live GW."""
     if ffs_payload is None:
@@ -388,6 +432,7 @@ def build_scout_packet_from_ffscout(
         hist=hist,
         decision_gw=int(decision_gw),
     )
+    rho = float(decay_rho)
     return ScoutMinutesPacket(
         season=season,
         decision_gw=int(decision_gw),
@@ -399,10 +444,13 @@ def build_scout_packet_from_ffscout(
         ),
         baseline_m=baseline,
         overlays=overlays,
+        decay_rho=rho,
         meta={
             "ffscout": diag,
             "default": "expanding_mean_flat_horizon",
-            "overlay_policy": "ffscout_out_banned_doubts_step0_only",
+            "overlay_policy": "ffscout_out_banned_doubts_m0_decay_to_expanding",
+            "decay_rho": rho,
+            "decay_law": "m(h)=expand+(m0-expand)*rho**h",
             "share_policy": "share_freeze",
         },
     )
@@ -434,7 +482,8 @@ def default_packet_path(gw: int) -> Path:
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--gw", type=int, required=True)
-    ap.add_argument("--horizon", type=int, default=2)
+    ap.add_argument("--horizon", type=int, default=12)
+    ap.add_argument("--rho", type=float, default=DEFAULT_SCOUT_RHO)
     ap.add_argument("--season", default="2026-27")
     ap.add_argument("--from-json", type=Path, default=None)
     ap.add_argument("--from-html", type=Path, default=None)
@@ -460,6 +509,7 @@ def main(argv: list[str] | None = None) -> int:
         horizon=int(args.horizon),
         season=str(args.season),
         fetch_out_dir=fetch_dir,
+        decay_rho=float(args.rho),
     )
     out = args.out or default_packet_path(gw)
     packet.write_json(out)
@@ -472,6 +522,7 @@ def main(argv: list[str] | None = None) -> int:
     summary = {
         "gw": gw,
         "horizon": packet.horizon,
+        "decay_rho": packet.decay_rho,
         "baseline_n": len(packet.baseline_m),
         "n_overlays": len(packet.overlays),
         "ffscout": packet.meta.get("ffscout"),
@@ -482,7 +533,8 @@ def main(argv: list[str] | None = None) -> int:
                 "element": ov.element,
                 "name": ov.name,
                 "tag": ov.tag,
-                "m0": ov.steps.get(0),
+                "m0": ov.m0,
+                "path": packet.decayed_path(ov.element)[:6],
                 "reason": ov.reason,
             }
             for ov in list(packet.overlays.values())[:12]
@@ -490,17 +542,26 @@ def main(argv: list[str] | None = None) -> int:
     }
     print(json.dumps(summary, indent=2))
     if args.smoke:
-        # Sanity: Out overlays are 0; baseline has mass; step 1 equals baseline for Out.
-        zeros = [
-            e
-            for e, ov in packet.overlays.items()
-            if ov.steps.get(0) == 0.0
-        ]
+        zeros = [e for e, ov in packet.overlays.items() if float(ov.m0) <= 0.0]
         if not zeros:
             raise SystemExit("smoke: expected some Out/Banned zeros")
         e0 = zeros[0]
-        if abs(packet.m_at(e0, 1) - packet.baseline_m.get(e0, 0.0)) > 1e-9:
-            raise SystemExit("smoke: step1 should revert to baseline for Out")
+        base = float(packet.baseline_m.get(e0, 0.0))
+        m0 = packet.m_at(e0, 0)
+        m1 = packet.m_at(e0, 1)
+        m2 = packet.m_at(e0, 2)
+        if abs(m0) > 1e-9:
+            raise SystemExit("smoke: Out m0 should be 0")
+        # Decay toward baseline: 0 < m1 < m2 ≤ base (when base > 0)
+        if base > 1.0:
+            if not (m0 < m1 < m2 <= base + 1e-9):
+                raise SystemExit(
+                    f"smoke: expected monotone decay toward base; "
+                    f"got m=[{m0:.2f},{m1:.2f},{m2:.2f}] base={base:.2f}"
+                )
+            expected_m1 = base + (0.0 - base) * float(packet.decay_rho)
+            if abs(m1 - expected_m1) > 1e-6:
+                raise SystemExit(f"smoke: m1={m1} != expand*(1-rho)={expected_m1}")
         print("smoke_ok", flush=True)
     return 0
 
