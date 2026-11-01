@@ -1,8 +1,8 @@
 {
   "task": "numstragent_plan",
-  "status": "parked_plan",
-  "as_of_utc": "2026-11-01T08:30:00Z",
-  "change": "Wrote reports/NUMSTRAGENT_PLAN.md — backroom/scout/coach/accountant/overseer; joint-path hist leftovers noted in chat",
+  "status": "parked_plan_revised",
+  "as_of_utc": "2026-11-01T08:38:00Z",
+  "change": "Layer 1 = μ+transfers only (no chips/σ; cap isolated for hist); next focus hist xmi proxy for scout portfolio",
   "report": "reports/NUMSTRAGENT_PLAN.md",
-  "branch": "cursor/joint-path-mu-band-roll-cc3d"
+  "next": "pre-register as-of/causal xmi-proxy climb on joint path, value_captain=false"
 }

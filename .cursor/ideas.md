@@ -389,17 +389,23 @@ for this bias first. Report: `reports/top_mid_fwd_ga_mismatch.md`.
 
 ## Parked plan — numstragent (2026-11-01)
 
-Live manager stack: backroom → scout → coach → accountant → overseer.
-Layer 1 remains locked joint path; LLM is coach on a brief, not μ.
-See `reports/NUMSTRAGENT_PLAN.md`. Reopen after scout multi-GW xmi
-and/or remaining joint-path hist screens below are settled.
+Live manager: backroom → scout → coach → accountant → overseer.
+**Layer 1 = number cruncher only** — joint-path μ + transfers; no chips, no
+σ_μ in the path; captain isolated off for Layer‑1 hist (product lock may
+keep cap separately). **Scout owns the minutes portfolio (xmi).**
+Next hist focus: deadline-causal / as-of xmi proxy on closed seasons vs
+expanding mean (toward the +2.07 oracle@t ceiling, no leakage).
+See `reports/NUMSTRAGENT_PLAN.md`.
 
 ## Parked — live multi-GW minutes / xmi propagation (2026-10-31)
 
 Live still: week-t `xmi`, t+1 rolling3, far as-of — news “out N weeks” does
 not yet carry across the horizon. Deadline-causal ceiling (+2.07/GW) shows
-week-t minutes value; live minutes-layer redesign deferred until L4+Opta
-strategiser is finely tuned. Reopen with a dated protocol arm after that.
+week-t minutes value. **PI 2026-11-01:** joint path treated as Layer‑1
+number cruncher only; **hist focus = xmi portfolio** (scout’s job in
+numstragent). Reopen with a pre-registered as-of/causal xmi-proxy climb
+(`value_captain=false`, no chips, no σ) before live scout polish.
+See `reports/NUMSTRAGENT_PLAN.md`.
 
 ## Noted — deadline-causal oracle@t promote = ceiling (2026-10-31)
 
