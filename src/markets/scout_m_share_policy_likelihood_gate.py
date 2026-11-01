@@ -1,6 +1,8 @@
 """Gated likelihood: scout-m share recompute vs freeze.
 
 Pre-registered: ``protocol.score_xp_v2_scout_m_share_policy``.
+**Locked 2026-11-01 (PI):** freeze under scout m —
+``reports/SCOUT_M_SHARE_FREEZE_LOCK.md``.
 
 Same as-of scout ``m`` = rolling-3 for both arms. Treatment freezes ``sG``/``sA``
 from expanding as-of ``m``; baseline recomputes shares with scout ``m``.

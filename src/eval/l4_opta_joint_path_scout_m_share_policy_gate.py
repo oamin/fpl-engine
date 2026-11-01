@@ -1,6 +1,9 @@
 """Gated climb: scout-m share recompute vs freeze on joint path.
 
 Pre-registered: ``protocol.l4_opta_joint_path_scout_m_share_policy``.
+**Locked 2026-11-01 (PI):** freeze under scout m —
+``reports/SCOUT_M_SHARE_FREEZE_LOCK.md`` (climb was inconclusive; likelihood
+promote stands).
 
 Likelihood ``score_xp_v2_scout_m_share_policy`` must not clearly lose first.
 
