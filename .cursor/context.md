@@ -48,6 +48,8 @@ Product **μ**: Odds API / FD centreline near (`t`/`t+1`); **Opta blind** λ far
 
 **Sticky xmi climb (2026-11-01):** `l4_opta_joint_path_xmi_sticky` — rolling-3 + last blank→0 vs expanding mean on path (`value_captain=false`). **Park clear lose** (−2.558/GW [−4.89, −0.20]; all seasons ≤0). Keep expanding as-of m; scout needs richer tags. `reports/l4_opta_joint_path_xmi_sticky_gate.md`.
 
+**Scout-m share policy (2026-11-01):** under scout rolling-3 m, freeze sG/sA from expanding m vs recompute from scout m. Likelihood **promote** (+0.0064 log/GW [+0.0048, +0.0082]). Path climb **inconclusive** (+0.88/GW [−1.21, +2.98]; freeze cuts hits hard but loses 2024-25). Do not wire a product change from the climb alone; when scout m is applied, freeze remains the likelihood pick. `reports/score_xp_v2_scout_m_share_policy.md` · `reports/l4_opta_joint_path_scout_m_share_policy_gate.md`.
+
 **numstragent plan (2026-11-01):** parked live architecture — backroom = **μ + joint-path transfers only** (no chips, no σ; cap isolated off for Layer‑1 hist) → scout (**xmi** portfolio) → coach → accountant → overseer. Next hist focus: as-of/causal xmi proxy vs expanding mean on path. Plan: [`reports/NUMSTRAGENT_PLAN.md`](../reports/NUMSTRAGENT_PLAN.md).
 
 ## Repo freeze sequence (2026-10-20)

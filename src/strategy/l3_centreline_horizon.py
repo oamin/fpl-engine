@@ -78,12 +78,19 @@ def _club_slice(side: pd.DataFrame, team: str, team_n: str) -> pd.DataFrame:
 
 
 def _share_club_for(
-    share_side: pd.DataFrame | None, club: pd.DataFrame, team: str, team_n: str
+    share_side: pd.DataFrame | None,
+    club: pd.DataFrame,
+    team: str,
+    team_n: str,
+    *,
+    require_wider: bool = True,
 ) -> pd.DataFrame | None:
     if share_side is None or share_side.empty or club.empty:
         return None
     share_club = _club_slice(share_side, team, team_n)
-    if share_club.empty or len(share_club) <= len(club):
+    if share_club.empty:
+        return None
+    if require_wider and len(share_club) <= len(club):
         return None
     return share_club
 
@@ -102,11 +109,14 @@ def project_week_opta_centreline(
     side: pd.DataFrame | None = None,
     share_side: pd.DataFrame | None = None,
     season: str | None = None,
+    share_require_wider: bool = True,
 ) -> tuple[pd.DataFrame, int]:
     """``score_team_side`` for ``target_gw`` with Opta blind λ (frozen side).
 
     Full-club ``m>0`` shares are projected onto the selection side when
     ``share_side`` is wider (``protocol.score_xp_v2_full_share_likelihood``).
+    Set ``share_require_wider=False`` when ``share_side`` carries a different
+    minutes law (scout-m share freeze).
     """
     if side is None:
         side, _, _ = build_frozen_side_table(
@@ -153,7 +163,13 @@ def project_week_opta_centreline(
                 xgc=float(fit[f"xgc_{prefix}"]),
                 alpha_g=float(alpha_g),
                 alpha_a=float(alpha_a),
-                share_players=_share_club_for(share_side, club, team, str(team_n)),
+                share_players=_share_club_for(
+                    share_side,
+                    club,
+                    team,
+                    str(team_n),
+                    require_wider=bool(share_require_wider),
+                ),
             ).copy()
             scored["element"] = club["element"].to_numpy()
             scored["team"] = team
@@ -215,14 +231,17 @@ def build_l3_centreline_horizon(
     minutes_rho: float = 1.0,
     minutes_window: int = 3,
     minutes_by_element: Mapping[int, float] | None = None,
+    share_minutes_by_element: Mapping[int, float] | None = None,
 ) -> L3CentrelineHorizon:
     """Pools length ≤ ``horizon``: FD/priced near + Opta blind far.
 
     ``minutes_by_element``: optional as-of map applied to near projections and
     Opta far side tables (e.g. sticky xmi portfolio).
+    ``share_minutes_by_element``: optional separate share map (scout-m freeze).
     """
     H = max(1, int(horizon))
     near = max(1, min(int(near_depth), H))
+    explicit_share_map = share_minutes_by_element is not None
 
     if merged is None:
         merged = _load_merged_enriched(season)
@@ -242,6 +261,7 @@ def build_l3_centreline_horizon(
         minutes_rho=minutes_rho,
         minutes_window=minutes_window,
         minutes_by_element=minutes_by_element,
+        share_minutes_by_element=share_minutes_by_element,
     )
     pools = [p.copy() for p in priced.pools[:near]]
     priced_gws = list(priced.priced_gws[:near])
@@ -263,6 +283,7 @@ def build_l3_centreline_horizon(
                 "opta_gws": [],
                 "protocol": "l3_centreline_forecast",
                 "minutes_map": minutes_by_element is not None,
+                "share_minutes_map": explicit_share_map,
             },
         )
 
@@ -270,6 +291,11 @@ def build_l3_centreline_horizon(
         merged, before_gw=int(decision_gw), season=season
     )
     alpha_g, alpha_a = _asof_alphas(hist)
+    share_map = (
+        share_minutes_by_element
+        if explicit_share_map
+        else minutes_by_element
+    )
     if minutes_by_element is not None:
         from src.strategy.layer4_mupost_priced import _roster_from_minutes_map
 
@@ -280,19 +306,25 @@ def build_l3_centreline_horizon(
             season=season,
             historical_rate_baseline=True,
         )
-        share_roster = _roster_from_minutes_map(
-            hist, minutes_by_element, min_m=0.0
-        )
         share_side: pd.DataFrame | None = None
-        if not share_roster.empty and len(share_roster) > len(side):
-            share_side = _attach_rates_priors_baseline(
-                share_roster,
-                hist,
-                season=season,
-                historical_rate_baseline=True,
-            )
-        elif not share_roster.empty:
-            share_side = side
+        if share_map is not None:
+            share_roster = _roster_from_minutes_map(hist, share_map, min_m=0.0)
+            if not share_roster.empty:
+                share_roster = share_roster.loc[
+                    pd.to_numeric(share_roster["m"], errors="coerce").fillna(0.0)
+                    > 0.0
+                ].copy()
+            if not share_roster.empty and (
+                explicit_share_map or len(share_roster) > len(side)
+            ):
+                share_side = _attach_rates_priors_baseline(
+                    share_roster,
+                    hist,
+                    season=season,
+                    historical_rate_baseline=True,
+                )
+            elif not share_roster.empty and not explicit_share_map:
+                share_side = side
     else:
         side, alpha_g, alpha_a = build_frozen_side_table(
             hist,
@@ -343,6 +375,7 @@ def build_l3_centreline_horizon(
             side=side,
             share_side=share_side,
             season=season,
+            share_require_wider=not explicit_share_map,
         )
         if raw.empty:
             break
@@ -375,6 +408,7 @@ def build_l3_centreline_horizon(
             "protocol": "l3_centreline_forecast",
             "lambda_far": "opta_blind_rankmean",
             "minutes_map": minutes_by_element is not None,
+            "share_minutes_map": explicit_share_map,
         },
     )
 

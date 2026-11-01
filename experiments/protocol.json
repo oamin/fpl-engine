@@ -3347,5 +3347,98 @@
       }
     },
     "note": "Park clear lose. Last-GW blank→m=0 is too aggressive vs expanding mean: more hits, many more intended blanks, autosubs fire but net pts fall. All four seasons ≤0. Keep product expanding as-of m for Layer 1. Scout live xmi should use richer tags (injured/out N weeks), not one-blank sticky. Oracle@t ceiling (+2.07) still stands as info value — this proxy does not close it."
+  },
+  "score_xp_v2_scout_m_share_policy": {
+    "pre_registered": "2026-11-01",
+    "status": "promoted",
+    "role": "When scout m is applied: recompute shares (w∝r·m/90) vs freeze shares from expanding-m backroom",
+    "scout_m": "as-of rolling_game_minutes window=3 (zeros included); NOT one-blank sticky",
+    "backroom_freeze_m": "as-of expanding mean minutes (GW < t)",
+    "baseline": "share_recompute — sG/sA from scout m (rate_minutes)",
+    "treatment": "share_freeze — sG/sA from expanding m; appear/CS/GC from scout m (sG/sA overrides)",
+    "comparisons": [
+      "share_freeze_minus_share_recompute"
+    ],
+    "pool": "minutes>60 actual, FD AH+OU, GW≥5, four closed seasons, σ=3",
+    "metric": "gaussian_log_score; paired by GW then cluster_interval",
+    "rates": "wired historical rate baseline + full-club share pool when projecting",
+    "promote_if": "paired interval lo > 0",
+    "park_if": "hi < 0",
+    "climb_if": "likelihood does not clearly lose → l4_opta_joint_path_scout_m_share_policy",
+    "entry": "src/markets/scout_m_share_policy_likelihood_gate.py",
+    "report": "reports/score_xp_v2_scout_m_share_policy.md",
+    "depends": [
+      "numstragent",
+      "score_xp_v2_goal_share_rate"
+    ],
+    "not": [
+      "one-blank sticky",
+      "goal_weight=rate (parked)",
+      "oracle scout m",
+      "chips / captain / σ in path"
+    ],
+    "any_later_change": "dated protocol update required",
+    "result": {
+      "share_freeze_minus_share_recompute": {
+        "mean": 0.006439336716388615,
+        "lo": 0.004845603739993261,
+        "hi": 0.008153864244857957,
+        "covers_zero": false,
+        "verdict": "promote",
+        "by_season_mean": {
+          "2022-23": 0.003966380004026223,
+          "2023-24": 0.0052847948255086,
+          "2024-25": 0.007990266718240505,
+          "2025-26": 0.008443171296827303
+        }
+      }
+    }
+  },
+  "l4_opta_joint_path_scout_m_share_policy": {
+    "pre_registered": "2026-11-01",
+    "status": "reported",
+    "role": "Climb: scout rolling-3 m with share_recompute vs share_freeze on joint path",
+    "baseline": "share_recompute",
+    "treatment": "share_freeze",
+    "comparisons": [
+      "share_freeze_minus_share_recompute"
+    ],
+    "shared": {
+      "planner": "pick_path_transfer_plan",
+      "value_captain": false,
+      "ft_pe_nu": 0,
+      "decay": "ρ=0.85 → 0",
+      "horizon": 12,
+      "scout_m": "rolling-3 as-of",
+      "chips": false
+    },
+    "realised_both_arms": "autosub XI − hits (no captain bank)",
+    "metric": "paired-by-GW realised autosub XI−hits; cluster_interval four closed seasons",
+    "promote_if": "paired interval lo > 0",
+    "park_if": "hi < 0",
+    "run_if": "score_xp_v2_scout_m_share_policy does not clearly lose",
+    "entry": "src/eval/l4_opta_joint_path_scout_m_share_policy_gate.py",
+    "report": "reports/l4_opta_joint_path_scout_m_share_policy_gate.md",
+    "depends": [
+      "score_xp_v2_scout_m_share_policy",
+      "joint_path_opta_decay"
+    ],
+    "any_later_change": "dated protocol update required",
+    "note": "Inconclusive climb; likelihood still prefers freeze — do not change product without a clear path win.",
+    "result": {
+      "share_freeze_minus_share_recompute": {
+        "mean": 0.8833333333333333,
+        "lo": -1.2085416666666666,
+        "hi": 2.9833333333333334,
+        "covers_zero": true,
+        "verdict": "inconclusive",
+        "by_season_mean": {
+          "2022-23": 2.8333333333333335,
+          "2023-24": 1.9333333333333333,
+          "2024-25": -1.6333333333333333,
+          "2025-26": 0.4
+        }
+      }
+    }
   }
 }
