@@ -1,23 +1,19 @@
 {
-  "task": "l4_opta_joint_path_scout_m_share_policy",
+  "task": "scout_m_share_freeze_lock",
   "status": "done",
-  "as_of_utc": "2026-11-01T13:47:58Z",
-  "change": "Gated scout_m share_policy: likelihood promote; climb inconclusive",
+  "as_of_utc": "2026-11-01T13:54:40Z",
+  "change": "PI lock: freeze sG/sA under scout rolling-3 m",
+  "lock_report": "reports/SCOUT_M_SHARE_FREEZE_LOCK.md",
   "likelihood": {
     "verdict": "promote",
     "mean": 0.006439336716388615,
     "lo": 0.004845603739993261,
     "hi": 0.008153864244857957
   },
-  "verdicts": {
-    "share_freeze_minus_share_recompute": {
-      "verdict": "inconclusive",
-      "mean": 0.8833333333333333,
-      "lo": -1.2085416666666666,
-      "hi": 2.9833333333333334
-    }
-  },
-  "report": "reports/l4_opta_joint_path_scout_m_share_policy_gate.md",
-  "likelihood_report": "reports/score_xp_v2_scout_m_share_policy.md",
-  "elapsed_s": 6120.0
+  "climb": {
+    "verdict": "inconclusive",
+    "mean": 0.8833333333333333,
+    "lo": -1.2085416666666666,
+    "hi": 2.9833333333333334
+  }
 }

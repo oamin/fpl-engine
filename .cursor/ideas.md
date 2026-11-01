@@ -1006,11 +1006,9 @@ Audit: `reports/cascade_pre_numagent2_audit.md`.
 Opta multistage + oracle-rank via `cascade_score_v2` (oracle viable;
 `reports/long_horizon_numagent2_rerun.md`).
 
-## Scout-m share freeze climb (2026-11-01)
+## Scout-m share freeze (2026-11-01) — locked
 
-Likelihood `score_xp_v2_scout_m_share_policy` **promotes** freeze (+0.0064 log/GW).
-Path climb `l4_opta_joint_path_scout_m_share_policy` **inconclusive** (+0.88/GW
-[−1.21, +2.98]): freeze cuts hits (e.g. 72→16 in 2022-23) but loses 2024-25.
-Do not retune product μ from the climb; if scout rolling-3 m is used, prefer
-freeze shares on the likelihood evidence. Sticky one-blank→0 remains parked.
+Likelihood promote (+0.0064); climb inconclusive (+0.88). **PI locked freeze**
+under scout rolling-3 m: `reports/SCOUT_M_SHARE_FREEZE_LOCK.md`. Do not reopen
+recompute without a dated arm. Sticky one-blank→0 remains parked.
 

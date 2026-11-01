@@ -5,6 +5,8 @@
 **Status:** parked plan — not a protocol screen; live product architecture on top of locked Numagent / joint path  
 **Hist minutes note:** `l4_opta_joint_path_xmi_sticky` **parked clear lose** (−2.56/GW). Keep expanding as-of m on Layer 1; scout live needs richer “out N weeks” tags, not one-blank sticky.
 
+**Scout-m shares locked (PI 2026-11-01):** when scout rolling-3 m is applied, **freeze** sG/sA from expanding backroom m — [`SCOUT_M_SHARE_FREEZE_LOCK.md`](SCOUT_M_SHARE_FREEZE_LOCK.md).
+
 ## Idea
 
 Manager with a backroom, not LLM-replaces-MILP. **Joint path is only Layer 1** — μ boards + transfer MILP reference. Risk (σ), chips, and (for Layer‑1 isolation) captaincy sit above or beside it; the scout owns the minutes portfolio.

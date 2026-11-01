@@ -402,9 +402,11 @@ def project_week_score_xp_v2(
     target week (deadline-causal week-0). When set, replaces as-of mean
     minutes for the selection roster (appear / CS / GC).
 
-    ``share_minutes_by_element``: optional separate map for ``sG``/``sA``
-    (``protocol.score_xp_v2_scout_m_share_policy`` freeze arm). When omitted,
-    share roster follows ``minutes_by_element`` or the as-of mean.
+    ``share_minutes_by_element``: optional separate map for ``sG``/``sA``.
+    When applying scout rolling-3 ``minutes_by_element``, pass expanding
+    as-of minutes here (**locked** freeze —
+    ``reports/SCOUT_M_SHARE_FREEZE_LOCK.md``). When omitted, share roster
+    follows ``minutes_by_element`` or the as-of mean.
     """
     hist = numagent_xp.asof_share_history(hist, before_gw=int(decision_gw))
     season_key = season
@@ -735,15 +737,15 @@ def rebuild_week0_with_scout_share_policy(
     fd: pd.DataFrame,
     prices: pd.DataFrame,
     moments: dict[str, CohortMoments] | None,
-    share_policy: str,
+    share_policy: str = "share_freeze",
     minutes_window: int = 3,
 ) -> tuple[pd.DataFrame, dict[str, Any]]:
     """Rebuild week-0 μ under scout rolling-m with share recompute or freeze.
 
     Both policies use scout rolling-``minutes_window`` m for appear/CS/GC.
-    ``share_recompute``: ``sG``/``sA`` from scout m.
-    ``share_freeze``: ``sG``/``sA`` from expanding as-of m
-    (``protocol.l4_opta_joint_path_scout_m_share_policy``).
+    **Locked default** ``share_freeze``: ``sG``/``sA`` from expanding as-of m
+    (``reports/SCOUT_M_SHARE_FREEZE_LOCK.md``). ``share_recompute`` is the
+    screen baseline only.
     """
     policy = str(share_policy).strip().lower()
     if policy not in {"share_recompute", "share_freeze"}:

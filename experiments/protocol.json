@@ -3350,7 +3350,7 @@
   },
   "score_xp_v2_scout_m_share_policy": {
     "pre_registered": "2026-11-01",
-    "status": "promoted",
+    "status": "locked",
     "role": "When scout m is applied: recompute shares (w∝r·m/90) vs freeze shares from expanding-m backroom",
     "scout_m": "as-of rolling_game_minutes window=3 (zeros included); NOT one-blank sticky",
     "backroom_freeze_m": "as-of expanding mean minutes (GW < t)",
@@ -3392,11 +3392,14 @@
           "2025-26": 0.008443171296827303
         }
       }
-    }
+    },
+    "locked": "2026-11-01",
+    "lock_report": "reports/SCOUT_M_SHARE_FREEZE_LOCK.md",
+    "note": "PI locked: when scout rolling-3 m is applied, freeze sG/sA from expanding m. Likelihood promote +0.0064; climb inconclusive (+0.88) not a park."
   },
   "l4_opta_joint_path_scout_m_share_policy": {
     "pre_registered": "2026-11-01",
-    "status": "reported",
+    "status": "locked",
     "role": "Climb: scout rolling-3 m with share_recompute vs share_freeze on joint path",
     "baseline": "share_recompute",
     "treatment": "share_freeze",
@@ -3424,7 +3427,7 @@
       "joint_path_opta_decay"
     ],
     "any_later_change": "dated protocol update required",
-    "note": "Inconclusive climb; likelihood still prefers freeze — do not change product without a clear path win.",
+    "note": "PI locked freeze under scout m despite inconclusive climb. Likelihood promote stands; freeze cuts hits; do not reopen recompute without a dated arm.",
     "result": {
       "share_freeze_minus_share_recompute": {
         "mean": 0.8833333333333333,
@@ -3439,6 +3442,8 @@
           "2025-26": 0.4
         }
       }
-    }
+    },
+    "locked": "2026-11-01",
+    "lock_report": "reports/SCOUT_M_SHARE_FREEZE_LOCK.md"
   }
 }
