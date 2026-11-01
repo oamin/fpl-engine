@@ -270,6 +270,76 @@ def oracle_minutes_by_element(
     return {int(k): float(v) for k, v in summed.items()}
 
 
+def _minutes_series_by_element(
+    hist: pd.DataFrame,
+    *,
+    element_col: str = "element",
+    gw_col: str = "GW",
+    minutes_col: str = "minutes",
+) -> dict[int, list[float]]:
+    if hist.empty:
+        return {}
+    gcol = gw_col if gw_col in hist.columns else ("gw" if "gw" in hist.columns else None)
+    if gcol is None or element_col not in hist.columns or minutes_col not in hist.columns:
+        return {}
+    h = hist.copy()
+    h[element_col] = pd.to_numeric(h[element_col], errors="coerce")
+    h[gcol] = pd.to_numeric(h[gcol], errors="coerce")
+    h[minutes_col] = pd.to_numeric(h[minutes_col], errors="coerce").fillna(0.0)
+    h = h.dropna(subset=[element_col, gcol])
+    out: dict[int, list[float]] = {}
+    for eid, g in h.groupby(element_col, sort=False):
+        by_gw = g.sort_values(gcol).groupby(gcol, sort=True)[minutes_col].sum()
+        out[int(eid)] = [float(v) for v in by_gw.tolist()]
+    return out
+
+
+def expanding_minutes_by_element(
+    hist: pd.DataFrame,
+    *,
+    element_col: str = "element",
+    gw_col: str = "GW",
+    minutes_col: str = "minutes",
+) -> dict[int, float]:
+    """As-of expanding mean minutes (GW ``< t``), zeros included."""
+    series_map = _minutes_series_by_element(
+        hist, element_col=element_col, gw_col=gw_col, minutes_col=minutes_col
+    )
+    return {
+        eid: float(sum(s) / len(s))
+        for eid, s in series_map.items()
+        if s
+    }
+
+
+def scout_rolling_minutes_by_element(
+    hist: pd.DataFrame,
+    *,
+    window: int = 3,
+    element_col: str = "element",
+    gw_col: str = "GW",
+    minutes_col: str = "minutes",
+) -> dict[int, float]:
+    """As-of rolling-``window`` mean (zeros included). Default scout m.
+
+    Unlike ``xmi_sticky_minutes_by_element``, does **not** force 0 on a blank.
+    Pre-registered: ``protocol.score_xp_v2_scout_m_share_policy``.
+    """
+    from src.live.news_packets import rolling_game_minutes
+
+    series_map = _minutes_series_by_element(
+        hist, element_col=element_col, gw_col=gw_col, minutes_col=minutes_col
+    )
+    w = max(1, int(window))
+    out: dict[int, float] = {}
+    for eid, series in series_map.items():
+        base = rolling_game_minutes(series, window=w, rho=1.0)
+        if base is None:
+            continue
+        out[eid] = float(base)
+    return out
+
+
 def xmi_sticky_minutes_by_element(
     hist: pd.DataFrame,
     *,
@@ -285,30 +355,21 @@ def xmi_sticky_minutes_by_element(
     ``m=0`` (carry "out" across the horizon). Pre-registered:
     ``protocol.l4_opta_joint_path_xmi_sticky``.
     """
+    series_map = _minutes_series_by_element(
+        hist, element_col=element_col, gw_col=gw_col, minutes_col=minutes_col
+    )
     from src.live.news_packets import rolling_game_minutes
 
-    if hist.empty:
-        return {}
-    gcol = gw_col if gw_col in hist.columns else ("gw" if "gw" in hist.columns else None)
-    if gcol is None or element_col not in hist.columns or minutes_col not in hist.columns:
-        return {}
-    h = hist.copy()
-    h[element_col] = pd.to_numeric(h[element_col], errors="coerce")
-    h[gcol] = pd.to_numeric(h[gcol], errors="coerce")
-    h[minutes_col] = pd.to_numeric(h[minutes_col], errors="coerce").fillna(0.0)
-    h = h.dropna(subset=[element_col, gcol])
-    out: dict[int, float] = {}
     w = max(1, int(window))
-    for eid, g in h.groupby(element_col, sort=False):
-        by_gw = g.sort_values(gcol).groupby(gcol, sort=True)[minutes_col].sum()
-        series = [float(v) for v in by_gw.tolist()]
+    out: dict[int, float] = {}
+    for eid, series in series_map.items():
         if not series:
             continue
         base = rolling_game_minutes(series, window=w, rho=1.0)
         if base is None:
             continue
         m_val = 0.0 if float(series[-1]) <= 0.0 else float(base)
-        out[int(eid)] = float(m_val)
+        out[eid] = float(m_val)
     return out
 
 
@@ -327,6 +388,7 @@ def project_week_score_xp_v2(
     historical_rate_baseline: bool = True,
     full_club_shares: bool = True,
     minutes_by_element: Mapping[int, float] | None = None,
+    share_minutes_by_element: Mapping[int, float] | None = None,
 ) -> tuple[pd.DataFrame, int]:
     """Point ``score_xp_v2`` for target_gw with frozen priors + FD pots.
 
@@ -338,7 +400,13 @@ def project_week_score_xp_v2(
 
     ``minutes_by_element``: optional oracle/explicit minutes map for this
     target week (deadline-causal week-0). When set, replaces as-of mean
-    minutes for both selection and full-club share rosters.
+    minutes for the selection roster (appear / CS / GC).
+
+    ``share_minutes_by_element``: optional separate map for ``sG``/``sA``.
+    When applying scout rolling-3 ``minutes_by_element``, pass expanding
+    as-of minutes here (**locked** freeze —
+    ``reports/SCOUT_M_SHARE_FREEZE_LOCK.md``). When omitted, share roster
+    follows ``minutes_by_element`` or the as-of mean.
     """
     hist = numagent_xp.asof_share_history(hist, before_gw=int(decision_gw))
     season_key = season
@@ -364,16 +432,30 @@ def project_week_score_xp_v2(
         historical_rate_baseline=bool(historical_rate_baseline),
     )
     share_side = side
+    explicit_share_map = share_minutes_by_element is not None
+    share_map = (
+        share_minutes_by_element
+        if explicit_share_map
+        else minutes_by_element
+    )
     if full_club_shares:
-        if minutes_by_element is not None:
+        if share_map is not None:
             share_roster = _roster_from_minutes_map(
-                hist, minutes_by_element, min_m=0.0
+                hist, share_map, min_m=0.0
             )
+            if not share_roster.empty:
+                # Compositional shares among minutes-bearing teammates.
+                share_roster = share_roster.loc[
+                    pd.to_numeric(share_roster["m"], errors="coerce").fillna(0.0)
+                    > 0.0
+                ].copy()
         else:
             share_roster = _mean_minutes_asof(
                 hist, rho=minutes_rho, window=minutes_window, min_m=0.0
             )
-        if not share_roster.empty and len(share_roster) > len(roster):
+        if not share_roster.empty and (
+            explicit_share_map or len(share_roster) > len(roster)
+        ):
             share_side = _attach_rates_priors_baseline(
                 share_roster,
                 hist,
@@ -406,7 +488,10 @@ def project_week_score_xp_v2(
                     share_club = share_side.loc[
                         share_side["team_n"] == team_n
                     ].copy()
-                if share_club.empty or len(share_club) <= len(club):
+                if share_club.empty:
+                    share_club = None
+                elif not explicit_share_map and len(share_club) <= len(club):
+                    # Default full-club path: only project when wider.
                     share_club = None
             fr = fd_row.iloc[0]
             scored = numagent_xp.score_team_side(
@@ -643,6 +728,83 @@ def rebuild_week0_with_minutes_mode(
     return out, meta
 
 
+def rebuild_week0_with_scout_share_policy(
+    week0_pool: pd.DataFrame,
+    *,
+    season: str,
+    decision_gw: int,
+    merged: pd.DataFrame,
+    fd: pd.DataFrame,
+    prices: pd.DataFrame,
+    moments: dict[str, CohortMoments] | None,
+    share_policy: str = "share_freeze",
+    minutes_window: int = 3,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Rebuild week-0 μ under scout rolling-m with share recompute or freeze.
+
+    Both policies use scout rolling-``minutes_window`` m for appear/CS/GC.
+    **Locked default** ``share_freeze``: ``sG``/``sA`` from expanding as-of m
+    (``reports/SCOUT_M_SHARE_FREEZE_LOCK.md``). ``share_recompute`` is the
+    screen baseline only.
+    """
+    policy = str(share_policy).strip().lower()
+    if policy not in {"share_recompute", "share_freeze"}:
+        raise ValueError(f"unknown share_policy {share_policy!r}")
+    hist = merged.loc[
+        pd.to_numeric(merged["GW"], errors="coerce") < int(decision_gw)
+    ].copy()
+    alpha_g, alpha_a = _asof_alphas(hist)
+    scout_m = scout_rolling_minutes_by_element(
+        hist, window=int(minutes_window)
+    )
+    expand_m = expanding_minutes_by_element(hist)
+    share_map = expand_m if policy == "share_freeze" else None
+    raw, n_fx = project_week_score_xp_v2(
+        hist,
+        merged,
+        fd,
+        decision_gw=int(decision_gw),
+        target_gw=int(decision_gw),
+        alpha_g=float(alpha_g),
+        alpha_a=float(alpha_a),
+        minutes_rho=1.0,
+        minutes_window=int(minutes_window),
+        season=season,
+        historical_rate_baseline=True,
+        full_club_shares=True,
+        minutes_by_element=scout_m if scout_m else None,
+        share_minutes_by_element=share_map if share_map else None,
+    )
+    meta = {
+        "week0_share_policy": policy,
+        "n_projected_fixtures": int(n_fx),
+        "n_scout_minutes": int(len(scout_m)),
+        "n_expand_minutes": int(len(expand_m)),
+        "alpha_g": float(alpha_g),
+        "alpha_a": float(alpha_a),
+        "minutes_map": dict(scout_m) if scout_m else None,
+        "share_minutes_map": dict(expand_m)
+        if policy == "share_freeze" and expand_m
+        else None,
+    }
+    if raw.empty or not scout_m:
+        return week0_pool.copy(), {**meta, "fallback": "empty_projection"}
+    board = _attach_store_ids(raw, prices, int(decision_gw), season)
+    board, _ = attach_mu_post(
+        board,
+        mu_col="score_xp_v2",
+        se_col="xp_se",
+        mode="none",
+        moments_by_pos=moments,
+        out_col="mu_post",
+    )
+    out = _align_to_week0(week0_pool, board)
+    for col in ("total_points", "minutes"):
+        if col in week0_pool.columns:
+            out[col] = week0_pool[col].to_numpy()
+    return out, meta
+
+
 def build_mupost_priced_horizon(
     season: str,
     decision_gw: int,
@@ -655,6 +817,7 @@ def build_mupost_priced_horizon(
     minutes_rho: float = 1.0,
     minutes_window: int = 3,
     minutes_by_element: Mapping[int, float] | None = None,
+    share_minutes_by_element: Mapping[int, float] | None = None,
 ) -> MupostPricedHorizon:
     """Return pools length ≤ 2: week0 mu_post + projected mu_post for t+1."""
     if merged is None:
@@ -703,6 +866,7 @@ def build_mupost_priced_horizon(
             historical_rate_baseline=True,
             full_club_shares=True,
             minutes_by_element=minutes_by_element,
+            share_minutes_by_element=share_minutes_by_element,
         )
         if raw.empty:
             continue
@@ -731,6 +895,7 @@ def build_mupost_priced_horizon(
             "H": len(pools),
             "minutes_rho": float(minutes_rho),
             "minutes_window": int(minutes_window),
+            "share_minutes_map": share_minutes_by_element is not None,
         },
     )
 

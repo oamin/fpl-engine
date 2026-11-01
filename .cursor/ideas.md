@@ -1005,3 +1005,10 @@ Audit: `reports/cascade_pre_numagent2_audit.md`.
 **Kept / aligned earlier:** short-horizon scenario advisor; long-horizon
 Opta multistage + oracle-rank via `cascade_score_v2` (oracle viable;
 `reports/long_horizon_numagent2_rerun.md`).
+
+## Scout-m share freeze (2026-11-01) — locked
+
+Likelihood promote (+0.0064); climb inconclusive (+0.88). **PI locked freeze**
+under scout rolling-3 m: `reports/SCOUT_M_SHARE_FREEZE_LOCK.md`. Do not reopen
+recompute without a dated arm. Sticky one-blank→0 remains parked.
+
