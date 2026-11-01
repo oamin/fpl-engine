@@ -1,0 +1,1773 @@
+{
+  "season": "2026-27",
+  "decision_gw": 9,
+  "horizon": 2,
+  "source": "https://www.fantasyfootballscout.co.uk/team-news",
+  "fetched_at": "2026-10-31T07:45:32.860375+00:00",
+  "protocol": "scout_minutes_ffscout_v1",
+  "share_policy": "share_freeze",
+  "lock": "reports/SCOUT_M_SHARE_FREEZE_LOCK.md",
+  "baseline_n": 669,
+  "n_overlays": 89,
+  "baseline_m": {
+    "1": 90.0,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 90.0,
+    "5": 17.333333333333332,
+    "6": 0.0,
+    "7": 56.333333333333336,
+    "8": 73.0,
+    "9": 5.333333333333333,
+    "10": 67.5,
+    "11": 28.0,
+    "12": 69.33333333333333,
+    "13": 81.66666666666667,
+    "14": 27.333333333333332,
+    "15": 77.83333333333333,
+    "16": 18.833333333333332,
+    "17": 24.666666666666668,
+    "18": 0.0,
+    "19": 16.5,
+    "20": 3.1666666666666665,
+    "21": 0.0,
+    "22": 0.0,
+    "23": 0.0,
+    "24": 0.0,
+    "25": 16.0,
+    "26": 76.5,
+    "27": 0.0,
+    "28": 60.0,
+    "29": 15.0,
+    "30": 0.0,
+    "31": 61.833333333333336,
+    "32": 64.33333333333333,
+    "33": 43.5,
+    "34": 46.166666666666664,
+    "35": 2.6666666666666665,
+    "36": 70.83333333333333,
+    "37": 90.0,
+    "38": 0.0,
+    "39": 0.0,
+    "40": 87.83333333333333,
+    "41": 70.83333333333333,
+    "42": 9.0,
+    "43": 74.5,
+    "44": 0.0,
+    "45": 83.16666666666667,
+    "46": 55.333333333333336,
+    "47": 88.83333333333333,
+    "48": 0.0,
+    "49": 0.0,
+    "50": 0.0,
+    "51": 49.5,
+    "52": 24.166666666666668,
+    "53": 27.166666666666668,
+    "54": 35.0,
+    "55": 0.0,
+    "56": 11.833333333333334,
+    "57": 90.0,
+    "58": 0.0,
+    "59": 0.0,
+    "60": 90.0,
+    "61": 90.0,
+    "62": 0.5,
+    "63": 0.0,
+    "64": 86.83333333333333,
+    "65": 0.0,
+    "66": 0.0,
+    "67": 87.33333333333333,
+    "68": 85.0,
+    "69": 74.33333333333333,
+    "70": 59.333333333333336,
+    "71": 42.333333333333336,
+    "72": 6.5,
+    "73": 61.5,
+    "74": 7.5,
+    "75": 19.5,
+    "76": 2.8333333333333335,
+    "77": 0.5,
+    "78": 0.5,
+    "79": 85.0,
+    "80": 0.0,
+    "81": 1.6666666666666667,
+    "82": 90.0,
+    "83": 0.0,
+    "84": 32.666666666666664,
+    "85": 15.0,
+    "86": 80.5,
+    "87": 90.0,
+    "88": 64.0,
+    "89": 0.3333333333333333,
+    "90": 35.5,
+    "91": 62.0,
+    "92": 0.0,
+    "93": 42.166666666666664,
+    "94": 84.66666666666667,
+    "95": 42.666666666666664,
+    "96": 51.833333333333336,
+    "97": 26.0,
+    "98": 75.0,
+    "99": 0.0,
+    "100": 0.5,
+    "101": 30.0,
+    "102": 36.0,
+    "103": 0.0,
+    "104": 56.166666666666664,
+    "105": 49.166666666666664,
+    "106": 88.66666666666667,
+    "107": 0.0,
+    "108": 4.166666666666667,
+    "109": 90.0,
+    "110": 90.0,
+    "111": 0.0,
+    "112": 90.0,
+    "113": 56.166666666666664,
+    "114": 80.33333333333333,
+    "115": 85.5,
+    "116": 75.0,
+    "117": 0.0,
+    "118": 0.0,
+    "119": 25.333333333333332,
+    "120": 0.6666666666666666,
+    "121": 0.0,
+    "122": 0.0,
+    "123": 18.0,
+    "124": 90.0,
+    "125": 19.833333333333332,
+    "126": 1.6666666666666667,
+    "127": 87.16666666666667,
+    "128": 0.0,
+    "129": 67.83333333333333,
+    "130": 26.0,
+    "131": 11.833333333333334,
+    "132": 0.0,
+    "133": 0.0,
+    "134": 0.0,
+    "135": 2.0,
+    "136": 14.5,
+    "137": 0.0,
+    "138": 73.83333333333333,
+    "139": 0.0,
+    "140": 15.0,
+    "141": 0.0,
+    "142": 48.666666666666664,
+    "143": 0.0,
+    "144": 45.333333333333336,
+    "145": 52.0,
+    "146": 0.0,
+    "147": 0.8333333333333334,
+    "148": 53.666666666666664,
+    "149": 71.83333333333333,
+    "150": 0.0,
+    "151": 51.833333333333336,
+    "152": 4.166666666666667,
+    "153": 38.166666666666664,
+    "154": 86.83333333333333,
+    "155": 60.166666666666664,
+    "156": 69.83333333333333,
+    "157": 6.833333333333333,
+    "158": 0.0,
+    "159": 17.166666666666668,
+    "160": 5.166666666666667,
+    "161": 43.0,
+    "162": 28.666666666666668,
+    "163": 0.0,
+    "164": 16.333333333333332,
+    "165": 60.0,
+    "166": 61.166666666666664,
+    "167": 61.166666666666664,
+    "168": 0.0,
+    "169": 0.0,
+    "170": 0.0,
+    "171": 0.0,
+    "172": 0.0,
+    "173": 82.66666666666667,
+    "174": 0.0,
+    "175": 75.0,
+    "176": 89.0,
+    "177": 0.0,
+    "178": 0.0,
+    "179": 0.16666666666666666,
+    "180": 0.0,
+    "181": 0.0,
+    "182": 60.0,
+    "183": 64.5,
+    "184": 88.83333333333333,
+    "185": 19.333333333333332,
+    "186": 42.333333333333336,
+    "187": 0.0,
+    "188": 8.833333333333334,
+    "189": 0.0,
+    "190": 35.166666666666664,
+    "191": 0.0,
+    "192": 0.0,
+    "193": 0.0,
+    "194": 48.833333333333336,
+    "195": 17.333333333333332,
+    "196": 0.0,
+    "197": 0.0,
+    "198": 45.0,
+    "199": 45.0,
+    "200": 75.66666666666667,
+    "201": 57.833333333333336,
+    "202": 90.0,
+    "203": 75.0,
+    "204": 84.83333333333333,
+    "205": 0.0,
+    "206": 12.0,
+    "207": 2.6666666666666665,
+    "208": 1.3333333333333333,
+    "209": 51.5,
+    "210": 87.66666666666667,
+    "211": 66.16666666666667,
+    "212": 4.833333333333333,
+    "213": 8.5,
+    "214": 88.5,
+    "215": 0.0,
+    "216": 0.0,
+    "217": 0.0,
+    "218": 0.0,
+    "219": 0.0,
+    "220": 0.0,
+    "221": 0.0,
+    "222": 49.666666666666664,
+    "223": 20.5,
+    "224": 33.833333333333336,
+    "225": 0.0,
+    "226": 90.0,
+    "227": 0.0,
+    "228": 0.0,
+    "229": 90.0,
+    "230": 75.0,
+    "231": 0.0,
+    "232": 17.666666666666668,
+    "233": 87.16666666666667,
+    "234": 0.0,
+    "235": 0.0,
+    "236": 89.16666666666667,
+    "237": 75.5,
+    "238": 22.5,
+    "239": 69.66666666666667,
+    "240": 23.5,
+    "241": 24.333333333333332,
+    "242": 66.5,
+    "243": 1.5,
+    "244": 89.33333333333333,
+    "245": 7.0,
+    "246": 56.5,
+    "247": 25.5,
+    "248": 5.166666666666667,
+    "249": 84.5,
+    "250": 90.0,
+    "251": 0.0,
+    "252": 0.0,
+    "253": 31.666666666666668,
+    "254": 86.5,
+    "255": 15.0,
+    "256": 6.0,
+    "257": 90.0,
+    "258": 83.0,
+    "259": 90.0,
+    "260": 35.0,
+    "261": 80.16666666666667,
+    "262": 6.333333333333333,
+    "263": 10.166666666666666,
+    "264": 70.5,
+    "265": 62.666666666666664,
+    "266": 1.5,
+    "267": 66.66666666666667,
+    "268": 84.16666666666667,
+    "269": 8.333333333333334,
+    "270": 0.0,
+    "271": 9.0,
+    "272": 0.0,
+    "273": 0.0,
+    "274": 0.0,
+    "275": 0.0,
+    "276": 0.0,
+    "277": 87.83333333333333,
+    "278": 0.0,
+    "279": 85.5,
+    "280": 68.66666666666667,
+    "281": 10.833333333333334,
+    "282": 84.66666666666667,
+    "283": 0.0,
+    "284": 0.0,
+    "285": 4.333333333333333,
+    "286": 79.83333333333333,
+    "287": 8.333333333333334,
+    "288": 0.0,
+    "289": 33.833333333333336,
+    "290": 87.83333333333333,
+    "291": 0.0,
+    "292": 0.0,
+    "293": 0.0,
+    "294": 0.0,
+    "295": 87.66666666666667,
+    "296": 0.0,
+    "297": 0.0,
+    "298": 0.0,
+    "299": 0.0,
+    "300": 30.0,
+    "301": 0.0,
+    "302": 0.0,
+    "303": 0.0,
+    "304": 90.0,
+    "305": 90.0,
+    "306": 59.5,
+    "307": 0.0,
+    "308": 2.8333333333333335,
+    "309": 23.333333333333332,
+    "310": 0.8333333333333334,
+    "311": 0.0,
+    "312": 0.0,
+    "313": 33.166666666666664,
+    "314": 0.0,
+    "315": 70.66666666666667,
+    "316": 62.666666666666664,
+    "317": 0.0,
+    "318": 18.666666666666668,
+    "319": 0.0,
+    "320": 13.666666666666666,
+    "321": 1.6666666666666667,
+    "322": 0.0,
+    "323": 7.0,
+    "324": 0.0,
+    "325": 0.0,
+    "326": 0.0,
+    "327": 42.333333333333336,
+    "328": 16.333333333333332,
+    "329": 20.5,
+    "330": 75.83333333333333,
+    "331": 57.0,
+    "332": 90.0,
+    "333": 0.0,
+    "334": 90.0,
+    "335": 78.5,
+    "336": 54.0,
+    "337": 43.0,
+    "338": 90.0,
+    "339": 1.8333333333333333,
+    "340": 1.8333333333333333,
+    "341": 0.0,
+    "342": 0.0,
+    "343": 8.666666666666666,
+    "344": 0.0,
+    "345": 57.166666666666664,
+    "346": 83.83333333333333,
+    "347": 11.5,
+    "348": 0.0,
+    "349": 0.0,
+    "350": 90.0,
+    "351": 0.0,
+    "352": 0.0,
+    "353": 0.0,
+    "354": 0.0,
+    "355": 0.0,
+    "356": 90.0,
+    "357": 29.666666666666668,
+    "358": 78.66666666666667,
+    "359": 0.0,
+    "360": 0.0,
+    "361": 0.0,
+    "362": 84.16666666666667,
+    "363": 0.0,
+    "364": 11.0,
+    "365": 0.0,
+    "366": 77.66666666666667,
+    "367": 76.66666666666667,
+    "368": 73.33333333333333,
+    "369": 18.666666666666668,
+    "370": 0.0,
+    "371": 46.666666666666664,
+    "372": 66.0,
+    "373": 0.0,
+    "374": 0.0,
+    "375": 10.5,
+    "376": 0.0,
+    "377": 42.833333333333336,
+    "378": 0.0,
+    "379": 81.5,
+    "380": 0.0,
+    "381": 5.833333333333333,
+    "382": 0.0,
+    "383": 0.0,
+    "384": 90.0,
+    "385": 90.0,
+    "386": 0.0,
+    "387": 27.166666666666668,
+    "388": 82.5,
+    "389": 35.5,
+    "390": 90.0,
+    "391": 87.33333333333333,
+    "392": 0.0,
+    "393": 59.666666666666664,
+    "394": 0.0,
+    "395": 16.833333333333332,
+    "396": 0.16666666666666666,
+    "397": 75.0,
+    "398": 43.666666666666664,
+    "399": 57.833333333333336,
+    "400": 17.5,
+    "401": 67.16666666666667,
+    "402": 0.0,
+    "403": 40.0,
+    "404": 0.0,
+    "405": 42.333333333333336,
+    "406": 7.0,
+    "407": 0.0,
+    "408": 0.0,
+    "409": 0.0,
+    "410": 0.0,
+    "411": 90.0,
+    "412": 90.0,
+    "413": 0.0,
+    "414": 0.0,
+    "415": 28.5,
+    "416": 0.0,
+    "417": 72.66666666666667,
+    "418": 90.0,
+    "419": 64.16666666666667,
+    "420": 18.666666666666668,
+    "421": 25.666666666666668,
+    "422": 16.166666666666668,
+    "423": 55.833333333333336,
+    "424": 0.0,
+    "425": 0.0,
+    "426": 75.0,
+    "427": 90.0,
+    "428": 75.33333333333333,
+    "429": 58.5,
+    "430": 16.666666666666668,
+    "431": 12.833333333333334,
+    "432": 59.0,
+    "433": 0.0,
+    "434": 0.0,
+    "435": 3.6666666666666665,
+    "436": 0.0,
+    "437": 0.0,
+    "438": 0.0,
+    "439": 12.666666666666666,
+    "440": 6.333333333333333,
+    "441": 0.0,
+    "442": 0.0,
+    "443": 0.0,
+    "444": 0.0,
+    "445": 75.16666666666667,
+    "446": 19.166666666666668,
+    "447": 75.0,
+    "448": 15.0,
+    "449": 89.83333333333333,
+    "450": 5.5,
+    "451": 0.0,
+    "452": 24.166666666666668,
+    "453": 87.66666666666667,
+    "454": 40.833333333333336,
+    "455": 86.16666666666667,
+    "456": 13.666666666666666,
+    "457": 45.166666666666664,
+    "458": 14.0,
+    "459": 66.0,
+    "460": 60.0,
+    "461": 8.333333333333334,
+    "462": 38.0,
+    "463": 3.1666666666666665,
+    "464": 75.66666666666667,
+    "465": 21.833333333333332,
+    "466": 0.0,
+    "467": 90.0,
+    "468": 0.0,
+    "469": 88.83333333333333,
+    "470": 0.0,
+    "471": 60.0,
+    "472": 89.83333333333333,
+    "473": 51.0,
+    "474": 75.0,
+    "475": 0.0,
+    "476": 0.0,
+    "477": 0.0,
+    "478": 5.5,
+    "479": 0.0,
+    "480": 90.0,
+    "481": 83.83333333333333,
+    "482": 3.6666666666666665,
+    "483": 64.0,
+    "484": 0.0,
+    "485": 0.0,
+    "486": 84.33333333333333,
+    "487": 0.16666666666666666,
+    "488": 17.5,
+    "489": 0.0,
+    "490": 10.5,
+    "491": 42.833333333333336,
+    "492": 42.5,
+    "493": 0.16666666666666666,
+    "494": 0.0,
+    "495": 0.0,
+    "496": 90.0,
+    "497": 0.0,
+    "498": 15.0,
+    "499": 37.166666666666664,
+    "500": 0.0,
+    "501": 45.0,
+    "502": 71.66666666666667,
+    "503": 75.0,
+    "504": 87.83333333333333,
+    "505": 0.0,
+    "506": 14.333333333333334,
+    "507": 0.0,
+    "508": 0.16666666666666666,
+    "509": 0.0,
+    "510": 0.0,
+    "511": 0.0,
+    "512": 35.166666666666664,
+    "513": 0.0,
+    "514": 57.5,
+    "515": 18.166666666666668,
+    "516": 61.666666666666664,
+    "517": 0.0,
+    "518": 0.0,
+    "519": 28.833333333333332,
+    "520": 13.0,
+    "521": 0.16666666666666666,
+    "522": 66.16666666666667,
+    "523": 14.833333333333334,
+    "524": 0.0,
+    "525": 56.5,
+    "526": 32.5,
+    "527": 11.166666666666666,
+    "528": 0.0,
+    "529": 90.0,
+    "530": 0.0,
+    "531": 0.0,
+    "532": 75.0,
+    "533": 68.5,
+    "534": 49.333333333333336,
+    "535": 10.166666666666666,
+    "536": 75.0,
+    "537": 0.0,
+    "538": 0.0,
+    "539": 26.0,
+    "540": 0.0,
+    "541": 66.0,
+    "542": 86.0,
+    "543": 6.5,
+    "544": 90.0,
+    "545": 83.33333333333333,
+    "546": 0.0,
+    "547": 0.16666666666666666,
+    "548": 17.833333333333332,
+    "549": 7.0,
+    "550": 0.0,
+    "551": 65.16666666666667,
+    "552": 77.16666666666667,
+    "553": 19.5,
+    "554": 0.0,
+    "555": 0.0,
+    "556": 0.8333333333333334,
+    "557": 60.333333333333336,
+    "558": 77.66666666666667,
+    "559": 4.5,
+    "560": 15.0,
+    "561": 0.0,
+    "562": 46.0,
+    "563": 10.5,
+    "564": 60.0,
+    "565": 68.5,
+    "566": 90.0,
+    "567": 90.0,
+    "568": 19.166666666666668,
+    "569": 83.0,
+    "570": 40.333333333333336,
+    "571": 19.0,
+    "572": 90.0,
+    "573": 0.0,
+    "574": 1.3333333333333333,
+    "575": 55.166666666666664,
+    "576": 56.5,
+    "577": 31.5,
+    "578": 2.6666666666666665,
+    "579": 62.333333333333336,
+    "580": 65.5,
+    "581": 27.166666666666668,
+    "582": 1.3333333333333333,
+    "583": 34.666666666666664,
+    "584": 6.0,
+    "585": 47.833333333333336,
+    "586": 41.5,
+    "587": 0.0,
+    "588": 78.16666666666667,
+    "589": 23.0,
+    "590": 0.0,
+    "591": 83.0,
+    "592": 36.833333333333336,
+    "593": 69.5,
+    "594": 3.8333333333333335,
+    "595": 4.666666666666667,
+    "596": 18.833333333333332,
+    "597": 75.0,
+    "598": 54.333333333333336,
+    "599": 16.0,
+    "600": 6.666666666666667,
+    "601": 0.0,
+    "602": 0.0,
+    "603": 0.0,
+    "604": 0.0,
+    "605": 45.333333333333336,
+    "606": 0.0,
+    "607": 0.0,
+    "608": 5.166666666666667,
+    "609": 0.0,
+    "610": 0.0,
+    "611": 30.4,
+    "612": 18.0,
+    "613": 0.0,
+    "614": 0.0,
+    "615": 0.0,
+    "616": 4.4,
+    "617": 19.4,
+    "618": 1.6,
+    "619": 73.0,
+    "620": 10.2,
+    "621": 6.4,
+    "622": 0.2,
+    "623": 0.0,
+    "624": 0.0,
+    "625": 0.0,
+    "626": 0.0,
+    "627": 61.0,
+    "628": 0.0,
+    "629": 0.0,
+    "630": 0.0,
+    "631": 16.0,
+    "632": 0.0,
+    "633": 22.5,
+    "634": 39.25,
+    "635": 24.75,
+    "636": 0.0,
+    "637": 6.0,
+    "638": 14.75,
+    "639": 40.5,
+    "640": 22.5,
+    "641": 4.5,
+    "642": 29.75,
+    "643": 7.25,
+    "644": 63.25,
+    "645": 0.0,
+    "646": 15.0,
+    "647": 7.0,
+    "648": 0.25,
+    "649": 44.25,
+    "650": 67.5,
+    "651": 0.0,
+    "652": 0.0,
+    "653": 0.0,
+    "654": 0.0,
+    "655": 0.0,
+    "656": 40.0,
+    "657": 0.0,
+    "658": 0.0,
+    "659": 0.0,
+    "660": 0.0,
+    "661": 0.0,
+    "662": 1.5,
+    "663": 0.0,
+    "664": 0.0,
+    "665": 0.0,
+    "666": 0.0,
+    "667": 0.0,
+    "668": 25.0,
+    "669": 0.0
+  },
+  "overlays": {
+    "6": {
+      "name": "Saliba",
+      "club": "Arsenal",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Saliba",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 6
+    },
+    "8": {
+      "name": "Calafiori",
+      "club": "Arsenal",
+      "tag": "injured",
+      "steps": {
+        "0": 50.5
+      },
+      "reason": "FFScout Doubt: Calafiori (75%)",
+      "source": "ffscout",
+      "chance": 75.0,
+      "element": 8
+    },
+    "12": {
+      "name": "Saka",
+      "club": "Arsenal",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Saka",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 12
+    },
+    "13": {
+      "name": "Rice",
+      "club": "Arsenal",
+      "tag": "injured",
+      "steps": {
+        "0": 62.25
+      },
+      "reason": "FFScout Doubt: Rice (75%)",
+      "source": "ffscout",
+      "chance": 75.0,
+      "element": 13
+    },
+    "16": {
+      "name": "Madueke",
+      "club": "Arsenal",
+      "tag": "injured",
+      "steps": {
+        "0": 28.25
+      },
+      "reason": "FFScout Doubt: Madueke (75%)",
+      "source": "ffscout",
+      "chance": 75.0,
+      "element": 16
+    },
+    "20": {
+      "name": "Dowman",
+      "club": "Arsenal",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Banned: Dowman",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 20
+    },
+    "28": {
+      "name": "Martinez",
+      "club": "Chelsea",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Martinez",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 28
+    },
+    "48": {
+      "name": "Onana",
+      "club": "Aston Villa",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Mvom Onana",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 48
+    },
+    "63": {
+      "name": "Milosavljevi\u0107",
+      "club": "Bournemouth",
+      "tag": "injured",
+      "steps": {
+        "0": 22.5
+      },
+      "reason": "FFScout Doubt: Milosavljevic (25%)",
+      "source": "ffscout",
+      "chance": 25.0,
+      "element": 63
+    },
+    "65": {
+      "name": "J.Araujo",
+      "club": "Bournemouth",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Araujo",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 65
+    },
+    "69": {
+      "name": "Scott",
+      "club": "Bournemouth",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Scott",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 69
+    },
+    "76": {
+      "name": "T\u00f3th.A",
+      "club": "Bournemouth",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: T\u00f3th",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 76
+    },
+    "89": {
+      "name": "Henry",
+      "club": "Brentford",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Henry",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 89
+    },
+    "99": {
+      "name": "Milambo",
+      "club": "Brentford",
+      "tag": "injured",
+      "steps": {
+        "0": 22.5
+      },
+      "reason": "FFScout Doubt: Milambo (25%)",
+      "source": "ffscout",
+      "chance": 25.0,
+      "element": 99
+    },
+    "100": {
+      "name": "Carvalho",
+      "club": "Brentford",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Carvalho",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 100
+    },
+    "102": {
+      "name": "Yarmoliuk",
+      "club": "Brentford",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Banned: Yarmolyuk",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 102
+    },
+    "103": {
+      "name": "Dasilva",
+      "club": "Brentford",
+      "tag": "injured",
+      "steps": {
+        "0": 22.5
+      },
+      "reason": "FFScout Doubt: Dasilva (25%)",
+      "source": "ffscout",
+      "chance": 25.0,
+      "element": 103
+    },
+    "107": {
+      "name": "Furo",
+      "club": "Brentford",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Furo",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 107
+    },
+    "113": {
+      "name": "F.Kad\u0131o\u011flu",
+      "club": "Brighton",
+      "tag": "injured",
+      "steps": {
+        "0": 42.5
+      },
+      "reason": "FFScout Doubt: Kadioglu (75%)",
+      "source": "ffscout",
+      "chance": 75.0,
+      "element": 113
+    },
+    "121": {
+      "name": "Mitoma",
+      "club": "Brighton",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Mitoma",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 121
+    },
+    "135": {
+      "name": "Yohanna",
+      "club": "Brighton",
+      "tag": "injured",
+      "steps": {
+        "0": 3.0
+      },
+      "reason": "FFScout Doubt: Yohanna (25%)",
+      "source": "ffscout",
+      "chance": 25.0,
+      "element": 135
+    },
+    "137": {
+      "name": "Tzimas",
+      "club": "Brighton",
+      "tag": "injured",
+      "steps": {
+        "0": 22.5
+      },
+      "reason": "FFScout Doubt: Tzimas (25%)",
+      "source": "ffscout",
+      "chance": 25.0,
+      "element": 137
+    },
+    "139": {
+      "name": "Ferguson",
+      "club": "Brighton",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Ferguson",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 139
+    },
+    "142": {
+      "name": "James",
+      "club": "Chelsea",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: James",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 142
+    },
+    "147": {
+      "name": "Tosin",
+      "club": "Spurs",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Tosin",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 147
+    },
+    "148": {
+      "name": "Hato",
+      "club": "Chelsea",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Hato",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 148
+    },
+    "158": {
+      "name": "Gittens",
+      "club": "Chelsea",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Gittens",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 158
+    },
+    "165": {
+      "name": "Jo\u00e3o Pedro",
+      "club": "Chelsea",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Jo\u00e3o Pedro",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 165
+    },
+    "173": {
+      "name": "Thomas",
+      "club": "Coventry",
+      "tag": "injured",
+      "steps": {
+        "0": 59.75
+      },
+      "reason": "FFScout Doubt: Thomas (75%)",
+      "source": "ffscout",
+      "chance": 75.0,
+      "element": 173
+    },
+    "180": {
+      "name": "Woolfenden",
+      "club": "Coventry",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Woolfenden",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 180
+    },
+    "182": {
+      "name": "Amenda",
+      "club": "Coventry",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Amenda",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 182
+    },
+    "187": {
+      "name": "Eccles",
+      "club": "Coventry",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Eccles",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 187
+    },
+    "193": {
+      "name": "Wright",
+      "club": "Coventry",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Wright",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 193
+    },
+    "200": {
+      "name": "Lacroix",
+      "club": "Chelsea",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Lacroix",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 200
+    },
+    "206": {
+      "name": "Chadi Riad",
+      "club": "Crystal Palace",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Riad",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 206
+    },
+    "208": {
+      "name": "Sarr",
+      "club": "Crystal Palace",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Ismaila Sarr",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 208
+    },
+    "222": {
+      "name": "Strand Larsen",
+      "club": "Crystal Palace",
+      "tag": "injured",
+      "steps": {
+        "0": 52.25
+      },
+      "reason": "FFScout Doubt: Strand Larsen (75%)",
+      "source": "ffscout",
+      "chance": 75.0,
+      "element": 222
+    },
+    "230": {
+      "name": "Branthwaite",
+      "club": "Everton",
+      "tag": "injured",
+      "steps": {
+        "0": 67.5
+      },
+      "reason": "FFScout Doubt: Branthwaite (75%)",
+      "source": "ffscout",
+      "chance": 75.0,
+      "element": 230
+    },
+    "238": {
+      "name": "Grealish",
+      "club": "Everton",
+      "tag": "injured",
+      "steps": {
+        "0": 21.166666666666668
+      },
+      "reason": "FFScout Doubt: Grealish (50%)",
+      "source": "ffscout",
+      "chance": 50.0,
+      "element": 238
+    },
+    "267": {
+      "name": "Luki\u0107",
+      "club": "Ipswich",
+      "tag": "injured",
+      "steps": {
+        "0": 59.5
+      },
+      "reason": "FFScout Doubt: Lukic (75%)",
+      "source": "ffscout",
+      "chance": 75.0,
+      "element": 267
+    },
+    "269": {
+      "name": "Sessegnon",
+      "club": "Fulham",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Banned: Sessegnon (Ryan)",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 269
+    },
+    "274": {
+      "name": "Butland",
+      "club": "Hull",
+      "tag": "injured",
+      "steps": {
+        "0": 67.5
+      },
+      "reason": "FFScout Doubt: Butland (75%)",
+      "source": "ffscout",
+      "chance": 75.0,
+      "element": 274
+    },
+    "278": {
+      "name": "Hughes",
+      "club": "Hull",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Hughes",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 278
+    },
+    "291": {
+      "name": "Matazo",
+      "club": "Hull",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Matazo",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 291
+    },
+    "328": {
+      "name": "Struijk",
+      "club": "Brighton",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Struijk",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 328
+    },
+    "329": {
+      "name": "Rodon",
+      "club": "Leeds",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Rodon",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 329
+    },
+    "335": {
+      "name": "Stach",
+      "club": "Leeds",
+      "tag": "injured",
+      "steps": {
+        "0": 50.25
+      },
+      "reason": "FFScout Doubt: Stach (75%)",
+      "source": "ffscout",
+      "chance": 75.0,
+      "element": 335
+    },
+    "349": {
+      "name": "Mateo Joseph",
+      "club": "Leeds",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Mateo Joseph",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 349
+    },
+    "357": {
+      "name": "Frimpong",
+      "club": "Liverpool",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Frimpong",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 357
+    },
+    "363": {
+      "name": "Leoni",
+      "club": "Liverpool",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Leoni",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 363
+    },
+    "368": {
+      "name": "Szoboszlai",
+      "club": "Liverpool",
+      "tag": "injured",
+      "steps": {
+        "0": 43.333333333333336
+      },
+      "reason": "FFScout Doubt: Szoboszlai (50%)",
+      "source": "ffscout",
+      "chance": 50.0,
+      "element": 368
+    },
+    "377": {
+      "name": "Munoz",
+      "club": "Liverpool",
+      "tag": "injured",
+      "steps": {
+        "0": 23.333333333333332
+      },
+      "reason": "FFScout Doubt: V\u00edctor Mu\u00f1oz (50%)",
+      "source": "ffscout",
+      "chance": 50.0,
+      "element": 377
+    },
+    "380": {
+      "name": "Ekitik\u00e9",
+      "club": "Liverpool",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Ekitik\u00e9",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 380
+    },
+    "397": {
+      "name": "Semenyo",
+      "club": "Man City",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Semenyo",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 397
+    },
+    "415": {
+      "name": "Dorgu",
+      "club": "Man Utd",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Dorgu",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 415
+    },
+    "423": {
+      "name": "Shaw",
+      "club": "Man Utd",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Shaw",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 423
+    },
+    "429": {
+      "name": "Rashford",
+      "club": "Man Utd",
+      "tag": "injured",
+      "steps": {
+        "0": 18.916666666666668
+      },
+      "reason": "FFScout Doubt: Rashford (25%)",
+      "source": "ffscout",
+      "chance": 25.0,
+      "element": 429
+    },
+    "432": {
+      "name": "Mainoo",
+      "club": "Man Utd",
+      "tag": "injured",
+      "steps": {
+        "0": 63.0
+      },
+      "reason": "FFScout Doubt: Mainoo (75%)",
+      "source": "ffscout",
+      "chance": 75.0,
+      "element": 432
+    },
+    "433": {
+      "name": "Ugarte",
+      "club": "Man Utd",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Ugarte",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 433
+    },
+    "439": {
+      "name": "\u0160e\u0161ko",
+      "club": "Man Utd",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Sesko",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 439
+    },
+    "444": {
+      "name": "Jaouen",
+      "club": "Newcastle",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Jaouen",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 444
+    },
+    "450": {
+      "name": "Livramento",
+      "club": "Newcastle",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Livramento",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 450
+    },
+    "459": {
+      "name": "L.Miley",
+      "club": "Newcastle",
+      "tag": "injured",
+      "steps": {
+        "0": 57.75
+      },
+      "reason": "FFScout Doubt: Miley (75%)",
+      "source": "ffscout",
+      "chance": 75.0,
+      "element": 459
+    },
+    "465": {
+      "name": "Osula",
+      "club": "Newcastle",
+      "tag": "injured",
+      "steps": {
+        "0": 49.125
+      },
+      "reason": "FFScout Doubt: Osula (75%)",
+      "source": "ffscout",
+      "chance": 75.0,
+      "element": 465
+    },
+    "475": {
+      "name": "Savona",
+      "club": "Nott'm Forest",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Savona",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 475
+    },
+    "483": {
+      "name": "Ndoye",
+      "club": "Nott'm Forest",
+      "tag": "injured",
+      "steps": {
+        "0": 50.0
+      },
+      "reason": "FFScout Doubt: Ndoye (75%)",
+      "source": "ffscout",
+      "chance": 75.0,
+      "element": 483
+    },
+    "487": {
+      "name": "Dominguez",
+      "club": "Nott'm Forest",
+      "tag": "injured",
+      "steps": {
+        "0": 0.75
+      },
+      "reason": "FFScout Doubt: Nicol\u00e1s Dom\u00ednguez (75%)",
+      "source": "ffscout",
+      "chance": 75.0,
+      "element": 487
+    },
+    "491": {
+      "name": "Igor Jesus",
+      "club": "Nott'm Forest",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Igor Jesus",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 491
+    },
+    "513": {
+      "name": "Xavi",
+      "club": "Spurs",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Simons",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 513
+    },
+    "516": {
+      "name": "Bentancur",
+      "club": "Spurs",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Banned: Bentancur",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 516
+    },
+    "517": {
+      "name": "Odobert",
+      "club": "Spurs",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Odobert",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 517
+    },
+    "520": {
+      "name": "Bergvall",
+      "club": "Spurs",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Bergvall",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 520
+    },
+    "532": {
+      "name": "Ballard",
+      "club": "Sunderland",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Ballard",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 532
+    },
+    "533": {
+      "name": "Mukiele",
+      "club": "Sunderland",
+      "tag": "injured",
+      "steps": {
+        "0": 57.75
+      },
+      "reason": "FFScout Doubt: Mukiele (75%)",
+      "source": "ffscout",
+      "chance": 75.0,
+      "element": 533
+    },
+    "547": {
+      "name": "Mundle",
+      "club": "Sunderland",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Mundle",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 547
+    },
+    "553": {
+      "name": "Isidor",
+      "club": "Sunderland",
+      "tag": "injured",
+      "steps": {
+        "0": 17.0
+      },
+      "reason": "FFScout Doubt: Isidor (75%)",
+      "source": "ffscout",
+      "chance": 75.0,
+      "element": 553
+    },
+    "556": {
+      "name": "Targett",
+      "club": "Hull",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Targett",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 556
+    },
+    "557": {
+      "name": "Tzolis",
+      "club": "Arsenal",
+      "tag": "injured",
+      "steps": {
+        "0": 60.5
+      },
+      "reason": "FFScout Doubt: Tzolis (75%)",
+      "source": "ffscout",
+      "chance": 75.0,
+      "element": 557
+    },
+    "561": {
+      "name": "Anselmino",
+      "club": "Chelsea",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Anselmino",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 561
+    },
+    "577": {
+      "name": "Tomiyasu",
+      "club": "Crystal Palace",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Tomiyasu",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 577
+    },
+    "578": {
+      "name": "Mudryk",
+      "club": "Spurs",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Mudryk",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 578
+    },
+    "596": {
+      "name": "Ruggeri",
+      "club": "Aston Villa",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Ruggeri",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 596
+    },
+    "611": {
+      "name": "Wan-Bissaka",
+      "club": "Aston Villa",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Wan-Bissaka",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 611
+    },
+    "627": {
+      "name": "Barcola",
+      "club": "Liverpool",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Bradley",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 627
+    },
+    "632": {
+      "name": "Ansah",
+      "club": "Hull",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Ansah",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 632
+    },
+    "634": {
+      "name": "Fernandez-Pardo",
+      "club": "Newcastle",
+      "tag": "injured",
+      "steps": {
+        "0": 39.25
+      },
+      "reason": "FFScout Doubt: Fernandez-Pardo (75%)",
+      "source": "ffscout",
+      "chance": 75.0,
+      "element": 634
+    },
+    "639": {
+      "name": "Andr\u00e9s",
+      "club": "Brighton",
+      "tag": "injured",
+      "steps": {
+        "0": 40.5
+      },
+      "reason": "FFScout Doubt: Chema Andr\u00e9s (75%)",
+      "source": "ffscout",
+      "chance": 75.0,
+      "element": 639
+    },
+    "644": {
+      "name": "Timber",
+      "club": "Crystal Palace",
+      "tag": "injured",
+      "steps": {
+        "0": 63.25
+      },
+      "reason": "FFScout Doubt: Timber (75%)",
+      "source": "ffscout",
+      "chance": 75.0,
+      "element": 644
+    },
+    "652": {
+      "name": "Azeez",
+      "club": "Brighton",
+      "tag": "injured",
+      "steps": {
+        "0": 0.0
+      },
+      "reason": "FFScout Out: Azeez",
+      "source": "ffscout",
+      "chance": 0.0,
+      "element": 652
+    }
+  },
+  "meta": {
+    "ffscout": {
+      "n_out": 55,
+      "n_banned": 4,
+      "n_doubt": 30,
+      "n_overlays": 89,
+      "n_unmatched": 1,
+      "unmatched": [
+        {
+          "club": "Spurs",
+          "name": "Savinho",
+          "bucket": "out"
+        }
+      ],
+      "els_known": 669
+    },
+    "default": "expanding_mean_flat_horizon",
+    "overlay_policy": "ffscout_out_banned_doubts_step0_only",
+    "share_policy": "share_freeze"
+  }
+}

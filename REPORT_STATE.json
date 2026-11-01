@@ -1,19 +1,10 @@
 {
-  "task": "scout_m_share_freeze_lock",
+  "task": "scout_live_ffscout_v1",
   "status": "done",
-  "as_of_utc": "2026-11-01T13:54:40Z",
-  "change": "PI lock: freeze sG/sA under scout rolling-3 m",
-  "lock_report": "reports/SCOUT_M_SHARE_FREEZE_LOCK.md",
-  "likelihood": {
-    "verdict": "promote",
-    "mean": 0.006439336716388615,
-    "lo": 0.004845603739993261,
-    "hi": 0.008153864244857957
-  },
-  "climb": {
-    "verdict": "inconclusive",
-    "mean": 0.8833333333333333,
-    "lo": -1.2085416666666666,
-    "hi": 2.9833333333333334
-  }
+  "as_of_utc": "2026-11-01T14:40:03Z",
+  "change": "Live scout v1: FFScout sparse minutes packet on expanding baseline",
+  "report": "reports/SCOUT_LIVE_FFSCOUT.md",
+  "module": "src/live/scout_minutes.py",
+  "gw09_overlays": 89,
+  "gw09_unmatched": 1
 }

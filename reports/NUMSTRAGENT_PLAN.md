@@ -43,10 +43,12 @@ Manager with a backroom, not LLM-replaces-MILP. **Joint path is only Layer 1** �
 
 ## Build order (numstragent live)
 
-1. Hist one-blank sticky **parked**. Next scout contract: tagged multi-GW availability (live/news), optional softer hist proxy (e.g. consecutive blanks ≥2) only with a new pre-reg.  
-2. Structured brief schema (Layers 1–2).  
-3. Coach deltas + accountant.  
-4. Overseer on live GW; chips only via coach/accountant, never Layer‑1 search.
+1. Hist one-blank sticky **parked**.  
+2. **Live scout v1 (started 2026-11-01):** FFScout → sparse minutes packet on expanding baseline — [`SCOUT_LIVE_FFSCOUT.md`](SCOUT_LIVE_FFSCOUT.md) · `src/live/scout_minutes.py`. Out/Banned/Doubts step-0 only; share freeze; `--scout-packet` on live pick.  
+3. Structured multi-GW tags (`out_for_n_gws` / permanent rotation) + Opta-far per-step maps.  
+4. Structured brief schema (Layers 1–2).  
+5. Coach deltas + accountant.  
+6. Overseer on live GW; chips only via coach/accountant, never Layer‑1 search.
 
 ## Out of scope
 

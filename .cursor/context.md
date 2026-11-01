@@ -50,7 +50,9 @@ Product **μ**: Odds API / FD centreline near (`t`/`t+1`); **Opta blind** λ far
 
 **Scout-m share freeze locked (PI 2026-11-01):** when scout rolling-3 m is applied, freeze sG/sA from expanding m (appear/CS/GC from scout m). Likelihood **promote** (+0.0064); climb inconclusive (+0.88) not a park. [`SCOUT_M_SHARE_FREEZE_LOCK.md`](../reports/SCOUT_M_SHARE_FREEZE_LOCK.md).
 
-**numstragent plan (2026-11-01):** parked live architecture — backroom = **μ + joint-path transfers only** (no chips, no σ; cap isolated off for Layer‑1 hist) → scout (**xmi** portfolio) → coach → accountant → overseer. Next hist focus: as-of/causal xmi proxy vs expanding mean on path. Plan: [`reports/NUMSTRAGENT_PLAN.md`](../reports/NUMSTRAGENT_PLAN.md).
+**numstragent plan (2026-11-01):** parked live architecture — backroom = **μ + joint-path transfers only** (no chips, no σ; cap isolated off for Layer‑1 hist) → scout (**xmi** portfolio) → coach → accountant → overseer. Plan: [`reports/NUMSTRAGENT_PLAN.md`](../reports/NUMSTRAGENT_PLAN.md).
+
+**Live scout v1 (2026-11-01):** FFScout Out/Banned/Doubts overlays on expanding-mean baseline; share freeze; packet `scout_minutes.json`. Doc: [`SCOUT_LIVE_FFSCOUT.md`](../reports/SCOUT_LIVE_FFSCOUT.md).
 
 ## Repo freeze sequence (2026-10-20)
 
