@@ -839,6 +839,18 @@ Tried 2026-10-16 (`protocol.strategy_layer4_mupost_beyond_e_decay`). Same fills 
 
 Trialled 2026-10-15 (`protocol.strategy_layer4_mupost_risk`, `reports/layer4_mupost_risk.md`). Mean boards = priced μ_post; MILP on `mu_dec = mu_post + 0.35 · (0.5 z(se_post) + 0.5 z(sd_cov))`. L4_risk−L3 **+1.48/GW** [−0.71, +3.86] **covers 0** → park as default. All four seasons ≥0 (2024-25 flipped to +0.29 vs mean-only −1.29) but pooled edge weaker than mean-only priced; more hits in 2022-23. Do not promote over priced μ_post. Reopen only with a new λ/posture protocol (e.g. chase dial), not by retuning on these totals.
 
+## Parked — μ-band strand roll on joint path (2026-10-31)
+
+`protocol.l4_opta_joint_path_mu_band_roll`: N=8 independent rolls
+`μ̂=clip(μ+σZ, μ±2σ)` after Opta-far decay on μ and `xp_se`; week-0 = modal
+squad among strands; vs product mean boards + captain. **Park clear lose**
+(−2.500/GW [−4.575, −0.525]; all four seasons ≤0). Strand noise real
+(modal ~2–3/8; ≤10% transfer agreement) but XI σ flat and buy σ only mildly
+higher — joint path does not favour risky high-σ picks under this commit rule.
+More hits. Keep mean boards. Do not reopen without a new commit rule
+(e.g. asymmetric haul band) or a different σ construction — not by retuning N/a/b on these totals.
+Report: `reports/l4_opta_joint_path_mu_band_roll_gate.md`.
+
 ## L4 mu_post ± se_post (no cov)
 
 Quick trial 2026-10-15 (`protocol.strategy_layer4_mupost_se_pm`, `reports/layer4_mupost_se_pm.md`). `mu_dec = mu_post ± K·xp_se`. Both cover 0 vs L3 (+SE +0.88; −SE +2.05, lo −0.16). −SE closer than +SE but neither beats mean-only priced (+2.90). 2024-25 still negative on both. `se_post` is player estimation SE, not fixture covariance — intuition that it already embeds cov is not supported for this decision use. Parked.

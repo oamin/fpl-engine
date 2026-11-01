@@ -3211,7 +3211,7 @@
   },
   "l4_opta_joint_path_mu_band_roll": {
     "pre_registered": "2026-10-31",
-    "status": "pre_registered",
+    "status": "parked",
     "role": "Dice-roll μ within player uncertainty bands on locked joint_path_opta_decay+captain; strand-average week-0 actions",
     "boards": "build_l3_centreline_horizon(H=12); wired μ; Opta far ρ=0.85→0 on μ and xp_se; value_captain=true; ft_pe_nu=0",
     "sigma": "published xp_se (quadrature of share/rate/minutes/soft-prior component SEs from score_team_side); decayed with μ (ρ→0)",
@@ -3266,6 +3266,23 @@
       "strategy_layer4_mupost_se_pm": "single board μ±se; no strand path average",
       "strategy_layer4_mupost_risk": "additive risk tilt on mean board"
     },
-    "any_later_change": "dated protocol update required"
+    "any_later_change": "dated protocol update required",
+    "result": {
+      "mu_band_8_minus_mean": {
+        "mean": -2.5,
+        "lo": -4.575,
+        "hi": -0.525,
+        "covers_zero": false,
+        "verdict": "park_clear_lose",
+        "by_season_mean": {
+          "2022-23": -3.9,
+          "2023-24": -2.5,
+          "2024-25": -3.2,
+          "2025-26": -0.4
+        }
+      }
+    },
+    "note": "Park clear lose. Strand rolls reshuffle week-0 heavily (modal ~2–3/8; ~0–10% transfer agreement with mean) but do not systematically load high-σ names (XI σ flat; buy σ only mildly higher in later seasons). More hits. Keep product mean boards. Not cascade; not μ±SE single-board tilt.",
+    "path_time_limit_note": "Climb used mixed per-strand path TL (180s early seasons under parallel; 45s for 2024-25/2023-24 after stall). Does not change park verdict direction."
   }
 }

@@ -1,8 +1,20 @@
 {
   "task": "l4_opta_joint_path_mu_band_roll",
-  "status": "pre_registered_running",
-  "as_of_utc": "2026-10-31T20:00:00Z",
-  "change": "Pre-register μ-band strand roll (N=8, ±2σ, σ decays with μ); smoke OK; 4-season climb launching",
-  "protocol": "l4_opta_joint_path_mu_band_roll",
-  "smoke_elapsed_s": 71.0
+  "status": "done",
+  "as_of_utc": "2026-11-01T02:13:47Z",
+  "change": "\u03bc-band strand roll climb: park clear lose (\u22122.500/GW [\u22124.575, \u22120.525])",
+  "verdict": "park_clear_lose",
+  "mean": -2.5,
+  "lo": -4.575,
+  "hi": -0.525,
+  "by_season_mean": {
+    "2022-23": -3.9,
+    "2023-24": -2.5,
+    "2024-25": -3.2,
+    "2025-26": -0.4
+  },
+  "decision": "park \u2014 keep product mean boards; no \u03bc-band strand commit",
+  "report": "reports/l4_opta_joint_path_mu_band_roll_gate.md",
+  "branch": "cursor/joint-path-mu-band-roll-cc3d",
+  "pr": 126
 }
