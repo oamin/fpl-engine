@@ -3,7 +3,7 @@
 **Named:** 2026-11-01  
 **Revised:** 2026-11-01 — Layer 1 = number cruncher only  
 **Status:** parked plan — not a protocol screen; live product architecture on top of locked Numagent / joint path  
-**Next hist focus:** as-of / causal **xmi** on joint-path boards (scout’s job in live; proxy in closed seasons)
+**Next hist focus:** `protocol.l4_opta_joint_path_xmi_sticky` running — sticky rolling-3 / last-blank→0 vs expanding mean (`value_captain=false`)
 
 ## Idea
 

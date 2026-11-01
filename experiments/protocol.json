@@ -3284,5 +3284,52 @@
     },
     "note": "Park clear lose. Strand rolls reshuffle week-0 heavily (modal ~2–3/8; ~0–10% transfer agreement with mean) but do not systematically load high-σ names (XI σ flat; buy σ only mildly higher in later seasons). More hits. Keep product mean boards. Not cascade; not μ±SE single-board tilt.",
     "path_time_limit_note": "Climb used mixed per-strand path TL (180s early seasons under parallel; 45s for 2024-25/2023-24 after stall). Does not change park verdict direction."
+  },
+  "l4_opta_joint_path_xmi_sticky": {
+    "pre_registered": "2026-11-01",
+    "status": "pre_registered",
+    "role": "As-of sticky xmi minutes portfolio on joint path (Layer-1 isolation: no captain/chips/σ)",
+    "boards": "build_l3_centreline_horizon(H=12); wired μ; Opta far ρ=0.85→0; same minutes law on week-0 and far",
+    "baseline": "expanding — product expanding as-of mean m (GW < t) on all horizon boards",
+    "treatment": "xmi_sticky — rolling-3 as-of base; if last completed GW minutes==0 → m=0 on all horizon boards",
+    "comparisons": [
+      "xmi_sticky_minus_expanding"
+    ],
+    "shared": {
+      "planner": "pick_path_transfer_plan",
+      "wildcard_open": "full score_xp_v2 at gw_start",
+      "seed": "from_owned held 15 after wildcard",
+      "candidates": "full week-0 pool",
+      "value_captain": false,
+      "ft_pe_nu": 0,
+      "decay": "ρ=0.85 → 0",
+      "chips": false,
+      "max_hits": "SQUAD_SIZE",
+      "gamma": 1.0,
+      "horizon": 12
+    },
+    "realised_both_arms": "FPL bench autosubs XI − hits (no captain bank)",
+    "metric": "paired-by-GW realised autosub XI−hits; cluster_interval four closed seasons",
+    "promote_if": "paired interval lo > 0",
+    "park_if": "hi < 0",
+    "gw_start": 8,
+    "gw_end": 38,
+    "holdout": "2026-27 frozen — not in comparison",
+    "entry": "src/eval/l4_opta_joint_path_xmi_sticky_gate.py",
+    "report": "reports/l4_opta_joint_path_xmi_sticky_gate.md",
+    "depends": [
+      "joint_path_opta_decay",
+      "l4_opta_joint_path_deadline_causal_minutes"
+    ],
+    "ceiling_note": "oracle@t +2.07/GW is information ceiling only — not an arm",
+    "not": [
+      "oracle actual minutes",
+      "value_captain",
+      "chips",
+      "μ-band / σ in objective",
+      "change ρ / ν",
+      "live FFScout packets"
+    ],
+    "any_later_change": "dated protocol update required"
   }
 }

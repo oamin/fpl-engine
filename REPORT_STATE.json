@@ -1,8 +1,7 @@
 {
-  "task": "numstragent_plan",
-  "status": "parked_plan_revised",
-  "as_of_utc": "2026-11-01T08:38:00Z",
-  "change": "Layer 1 = μ+transfers only (no chips/σ; cap isolated for hist); next focus hist xmi proxy for scout portfolio",
-  "report": "reports/NUMSTRAGENT_PLAN.md",
-  "next": "pre-register as-of/causal xmi-proxy climb on joint path, value_captain=false"
+  "task": "l4_opta_joint_path_xmi_sticky",
+  "status": "pre_registered_running",
+  "as_of_utc": "2026-11-01T08:50:00Z",
+  "change": "Pre-register sticky xmi climb; smoke OK; 4-season launching",
+  "protocol": "l4_opta_joint_path_xmi_sticky"
 }
