@@ -42,7 +42,11 @@ Product **μ**: Odds API / FD centreline near (`t`/`t+1`); **Opta blind** λ far
 
 **Captain climb (2026-10-31):** `l4_opta_joint_path_captain_climb` — `value_captain=true` vs `false` on locked joint path; realised autosub+VC−hits both arms. **Promote → locked** (+3.483/GW [+1.87, +5.27]; all seasons ≥0). Product default `value_captain=True`. [`JOINT_PATH_CAPTAIN_LOCK.md`](../reports/JOINT_PATH_CAPTAIN_LOCK.md).
 
-**Deadline-causal minutes (2026-10-31):** `l4_opta_joint_path_deadline_causal_minutes` — oracle minutes @ GW t vs as-of week-0 on locked path+captain. **Promote** (+2.067/GW [+0.33, +3.88]) as information ceiling — **do not wire oracle into product μ**. Autosubs 137→8; hits rise. Next: live-like week-t xmi. `reports/l4_opta_joint_path_deadline_causal_minutes_gate.md`.
+**Deadline-causal minutes (2026-10-31):** `l4_opta_joint_path_deadline_causal_minutes` — oracle minutes @ GW t vs as-of week-0 on locked path+captain. **Promote** (+2.067/GW [+0.33, +3.88]) as information ceiling — **do not wire oracle into product μ**. Autosubs 137→8; hits rise. Live multi-GW xmi/news propagation **parked** until L4+Opta strategiser is finely tuned. `reports/l4_opta_joint_path_deadline_causal_minutes_gate.md`.
+
+**μ-band strand roll (2026-10-31):** `l4_opta_joint_path_mu_band_roll` — N=8 rolls of μ inside ±2·xp_se (σ decays with μ); modal week-0 vs product mean. **Park clear lose** (−2.500/GW [−4.58, −0.53]; all seasons ≤0). Reshuffles heavily; does not load high-σ. Keep mean boards. `reports/l4_opta_joint_path_mu_band_roll_gate.md`.
+
+**numstragent plan (2026-11-01):** parked live architecture — backroom = **μ + joint-path transfers only** (no chips, no σ; cap isolated off for Layer‑1 hist) → scout (**xmi** portfolio) → coach → accountant → overseer. Next hist focus: as-of/causal xmi proxy vs expanding mean on path. Plan: [`reports/NUMSTRAGENT_PLAN.md`](../reports/NUMSTRAGENT_PLAN.md).
 
 ## Repo freeze sequence (2026-10-20)
 

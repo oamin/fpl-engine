@@ -12,6 +12,7 @@ Optional ``value_captain=True`` for ``xi_plus_captain`` screens.
 
 from __future__ import annotations
 
+from collections import Counter
 from typing import Any, Sequence
 
 import numpy as np
@@ -39,6 +40,10 @@ from src.strategy.layer4_mupost_priced import COMPONENT_MU_COLS
 # Pre-registered: protocol.l4_opta_joint_path_climb
 DEFAULT_DECAY_RHO = 0.85
 DEFAULT_DECAY_TARGET = 0.0  # toward zero (not a positional mean)
+# Pre-registered: protocol.l4_opta_joint_path_mu_band_roll
+DEFAULT_MU_BAND_STRANDS = 8
+DEFAULT_MU_BAND_A = 2.0
+DEFAULT_MU_BAND_B = 2.0
 
 _DECAY_COLS = (
     "mu_post",
@@ -121,6 +126,246 @@ def apply_opta_far_decay(
                 ) * factor
         out.append(q)
     return out
+
+
+def roll_mu_within_band(
+    pools: Sequence[pd.DataFrame],
+    rng: np.random.Generator,
+    *,
+    mu_col: str = "mu_post",
+    se_col: str = "xp_se",
+    band_a: float = DEFAULT_MU_BAND_A,
+    band_b: float = DEFAULT_MU_BAND_B,
+) -> list[pd.DataFrame]:
+    """Independent Gaussian roll of ``mu_col`` inside ``[μ−aσ, μ+bσ]`` per row.
+
+    ``σ`` is ``se_col`` (product ``xp_se``). Call **after** Opta-far decay so
+    both μ and σ have already shrunk toward 0 on far boards.
+    """
+    a = float(band_a)
+    b = float(band_b)
+    if a < 0.0 or b < 0.0:
+        raise ValueError(f"band_a/band_b must be ≥0, got {a}, {b}")
+    out: list[pd.DataFrame] = []
+    for pool in pools:
+        q = pool.copy()
+        if mu_col not in q.columns:
+            raise RuntimeError(f"roll board missing {mu_col!r}")
+        mu = pd.to_numeric(q[mu_col], errors="coerce").fillna(0.0).to_numpy(float)
+        if se_col in q.columns:
+            se = pd.to_numeric(q[se_col], errors="coerce").fillna(0.0).to_numpy(float)
+        else:
+            se = np.zeros(len(q), dtype=float)
+        se = np.maximum(se, 0.0)
+        z = rng.normal(0.0, 1.0, size=len(q))
+        tilde = mu + se * z
+        lo = mu - a * se
+        hi = mu + b * se
+        q[mu_col] = np.clip(tilde, lo, hi)
+        out.append(q)
+    return out
+
+
+def _modal_week0_from_strands(
+    strand_plans: Sequence[TransferWeekPlan],
+    strand_raw: Sequence[dict[str, Any]],
+    held: HeldState,
+    week0_pool: pd.DataFrame,
+    *,
+    mu_col: str,
+    value_captain: bool,
+) -> tuple[TransferWeekPlan, dict[str, Any]]:
+    """Commit week-0 by modal squad among strands (tie → highest path obj)."""
+    if not strand_plans:
+        raise ValueError("need at least one strand plan")
+    squad_keys = [
+        frozenset(str(p) for p in plan.squad["player_id"].astype(str).tolist())
+        for plan in strand_plans
+    ]
+    counts = Counter(squad_keys)
+    best_count = max(counts.values())
+    contenders = [k for k, c in counts.items() if c == best_count]
+    if len(contenders) == 1:
+        chosen_key = contenders[0]
+    else:
+        # Tie: highest mean path objective among strands with that squad.
+        best_obj = -float("inf")
+        chosen_key = contenders[0]
+        for key in contenders:
+            objs = [
+                float(raw.get("objective", float("nan")))
+                for key_i, raw in zip(squad_keys, strand_raw)
+                if key_i == key
+            ]
+            objs = [o for o in objs if o == o]
+            mean_obj = float(np.mean(objs)) if objs else -float("inf")
+            if mean_obj > best_obj:
+                best_obj = mean_obj
+                chosen_key = key
+
+    idx = [i for i, k in enumerate(squad_keys) if k == chosen_key]
+    # Modal XI among matching strands.
+    xi_keys = [
+        frozenset(
+            str(p) for p in strand_plans[i].xi["player_id"].astype(str).tolist()
+        )
+        for i in idx
+    ]
+    xi_counts = Counter(xi_keys)
+    xi_best = max(xi_counts.values())
+    xi_contenders = [k for k, c in xi_counts.items() if c == xi_best]
+    if len(xi_contenders) == 1:
+        xi_key = xi_contenders[0]
+    else:
+        # Prefer XI from the highest-objective matching strand.
+        best_i = max(idx, key=lambda i: float(strand_raw[i].get("objective", -1e30)))
+        xi_key = frozenset(
+            str(p) for p in strand_plans[best_i].xi["player_id"].astype(str).tolist()
+        )
+    xi_idx = [
+        i
+        for i in idx
+        if frozenset(
+            str(p) for p in strand_plans[i].xi["player_id"].astype(str).tolist()
+        )
+        == xi_key
+    ]
+    cap_counts = Counter(str(strand_plans[i].captain_id) for i in xi_idx)
+    captain_id = cap_counts.most_common(1)[0][0]
+    # Rebuild from a representative strand that matches squad+xi+cap when possible.
+    rep = None
+    for i in xi_idx:
+        if str(strand_plans[i].captain_id) == captain_id:
+            rep = i
+            break
+    if rep is None:
+        rep = xi_idx[0]
+    plan = strand_plans[rep]
+    path_week = {
+        "player_ids": [str(p) for p in plan.squad["player_id"].astype(str).tolist()],
+        "xi_ids": [str(p) for p in plan.xi["player_id"].astype(str).tolist()],
+        "captain_id": captain_id,
+    }
+    week0 = week0_to_transfer_plan(
+        path_week,
+        held,
+        week0_pool,
+        mu_col=mu_col,
+        status="mu_band_modal",
+        value_captain=value_captain,
+    )
+    meta = {
+        "n_strands": int(len(strand_plans)),
+        "modal_squad_count": int(best_count),
+        "n_distinct_squads": int(len(counts)),
+        "modal_xi_count": int(xi_best),
+        "n_distinct_xi_among_modal_squad": int(len(xi_counts)),
+        "strand_objectives": [
+            float(r.get("objective", float("nan"))) for r in strand_raw
+        ],
+        "commit_strand": int(rep),
+    }
+    return week0, meta
+
+
+def plan_centreline_path_mu_band_roll(
+    pools: Sequence[pd.DataFrame],
+    held: HeldState,
+    *,
+    mu_col: str = "mu_post",
+    se_col: str = "xp_se",
+    n_strands: int = DEFAULT_MU_BAND_STRANDS,
+    band_a: float = DEFAULT_MU_BAND_A,
+    band_b: float = DEFAULT_MU_BAND_B,
+    seed: int = 0,
+    decay: bool = True,
+    near_depth: int = NEAR_DEPTH,
+    rho: float = DEFAULT_DECAY_RHO,
+    decay_target: float | str = DEFAULT_DECAY_TARGET,
+    gamma: float = 1.0,
+    max_hits: int = MAX_HITS_SNAPSHOT,
+    ft_pe_nu: float = DEFAULT_FT_PE_NU,
+    value_captain: bool = True,
+    time_limit: float = 180.0,
+    mip_rel_gap: float = 1e-3,
+    decision_gw: int | None = None,
+) -> tuple[TransferWeekPlan, dict[str, Any]]:
+    """N independent μ-band path solves; commit modal week-0 squad.
+
+    Decay μ and ``xp_se`` first (ρ→0), then roll inside bands, then solve each
+    strand with ``decay=False`` (already applied).
+    """
+    n = int(n_strands)
+    if n < 1:
+        raise ValueError(f"n_strands must be ≥1, got {n}")
+    boards = list(pools)
+    if decay:
+        boards = apply_opta_far_decay(
+            boards, near_depth=near_depth, rho=rho, target=decay_target
+        )
+    week0_mean = _ensure_team_cols(boards[0])
+    rng = np.random.default_rng(int(seed))
+    strand_plans: list[TransferWeekPlan] = []
+    strand_raw: list[dict[str, Any]] = []
+    for s in range(n):
+        # Independent stream per strand (stable if n changes upward).
+        strand_rng = np.random.default_rng(rng.integers(0, 2**31 - 1))
+        rolled = roll_mu_within_band(
+            boards,
+            strand_rng,
+            mu_col=mu_col,
+            se_col=se_col,
+            band_a=band_a,
+            band_b=band_b,
+        )
+        plan, raw = plan_centreline_path(
+            rolled,
+            held,
+            mu_col=mu_col,
+            decay=False,
+            near_depth=near_depth,
+            rho=rho,
+            decay_target=decay_target,
+            gamma=gamma,
+            max_hits=max_hits,
+            ft_pe_nu=ft_pe_nu,
+            value_captain=value_captain,
+            time_limit=time_limit,
+            mip_rel_gap=mip_rel_gap,
+            decision_gw=decision_gw,
+        )
+        strand_plans.append(plan)
+        strand_raw.append(raw)
+    week0, commit_meta = _modal_week0_from_strands(
+        strand_plans,
+        strand_raw,
+        held,
+        week0_mean,
+        mu_col=mu_col,
+        value_captain=value_captain,
+    )
+    meta = {
+        "objective": float(np.nanmean(commit_meta["strand_objectives"])),
+        "n_candidates": int(strand_raw[0].get("n_candidates", 0)) if strand_raw else 0,
+        "horizon": int(len(boards)),
+        "decay": bool(decay),
+        "rho": float(rho) if decay else None,
+        "decay_target": decay_target if decay else None,
+        "near_depth": int(near_depth),
+        "from_owned": True,
+        "value_captain": bool(value_captain),
+        "ft_pe_nu": float(ft_pe_nu),
+        "mu_band": {
+            "n_strands": n,
+            "band_a": float(band_a),
+            "band_b": float(band_b),
+            "se_col": se_col,
+            "seed": int(seed),
+            **commit_meta,
+        },
+        "status": "mu_band_modal",
+    }
+    return week0, {"meta": meta, "strand_raw": strand_raw}
 
 
 def _ensure_team_cols(df: pd.DataFrame) -> pd.DataFrame:

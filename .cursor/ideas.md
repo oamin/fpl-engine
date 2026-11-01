@@ -387,6 +387,26 @@ shares ≈OK when the side scores). Assists miss ≈ **pot** (≈0.72) **and** f
 `sA` on the hot μ tail (share factor ≈0.85). Do not chase goal-share retunes
 for this bias first. Report: `reports/top_mid_fwd_ga_mismatch.md`.
 
+## Parked plan — numstragent (2026-11-01)
+
+Live manager: backroom → scout → coach → accountant → overseer.
+**Layer 1 = number cruncher only** — joint-path μ + transfers; no chips, no
+σ_μ in the path; captain isolated off for Layer‑1 hist (product lock may
+keep cap separately). **Scout owns the minutes portfolio (xmi).**
+Next hist focus: deadline-causal / as-of xmi proxy on closed seasons vs
+expanding mean (toward the +2.07 oracle@t ceiling, no leakage).
+See `reports/NUMSTRAGENT_PLAN.md`.
+
+## Parked — live multi-GW minutes / xmi propagation (2026-10-31)
+
+Live still: week-t `xmi`, t+1 rolling3, far as-of — news “out N weeks” does
+not yet carry across the horizon. Deadline-causal ceiling (+2.07/GW) shows
+week-t minutes value. **PI 2026-11-01:** joint path treated as Layer‑1
+number cruncher only; **hist focus = xmi portfolio** (scout’s job in
+numstragent). Reopen with a pre-registered as-of/causal xmi-proxy climb
+(`value_captain=false`, no chips, no σ) before live scout polish.
+See `reports/NUMSTRAGENT_PLAN.md`.
+
 ## Noted — deadline-causal oracle@t promote = ceiling (2026-10-31)
 
 `l4_opta_joint_path_deadline_causal_minutes`: oracle week-0 minutes vs
@@ -831,6 +851,18 @@ Tried 2026-10-16 (`protocol.strategy_layer4_mupost_beyond_e_decay`). Same fills 
 ## L4 risk-seeking mu_dec (cov SD + posterior SE)
 
 Trialled 2026-10-15 (`protocol.strategy_layer4_mupost_risk`, `reports/layer4_mupost_risk.md`). Mean boards = priced μ_post; MILP on `mu_dec = mu_post + 0.35 · (0.5 z(se_post) + 0.5 z(sd_cov))`. L4_risk−L3 **+1.48/GW** [−0.71, +3.86] **covers 0** → park as default. All four seasons ≥0 (2024-25 flipped to +0.29 vs mean-only −1.29) but pooled edge weaker than mean-only priced; more hits in 2022-23. Do not promote over priced μ_post. Reopen only with a new λ/posture protocol (e.g. chase dial), not by retuning on these totals.
+
+## Parked — μ-band strand roll on joint path (2026-10-31)
+
+`protocol.l4_opta_joint_path_mu_band_roll`: N=8 independent rolls
+`μ̂=clip(μ+σZ, μ±2σ)` after Opta-far decay on μ and `xp_se`; week-0 = modal
+squad among strands; vs product mean boards + captain. **Park clear lose**
+(−2.500/GW [−4.575, −0.525]; all four seasons ≤0). Strand noise real
+(modal ~2–3/8; ≤10% transfer agreement) but XI σ flat and buy σ only mildly
+higher — joint path does not favour risky high-σ picks under this commit rule.
+More hits. Keep mean boards. Do not reopen without a new commit rule
+(e.g. asymmetric haul band) or a different σ construction — not by retuning N/a/b on these totals.
+Report: `reports/l4_opta_joint_path_mu_band_roll_gate.md`.
 
 ## L4 mu_post ± se_post (no cov)
 
