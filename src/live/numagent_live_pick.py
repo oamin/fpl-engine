@@ -447,13 +447,20 @@ def score_pool_from_odds(
     fixture_pairs: list[tuple[str, str]] | None = None,
     minutes_mode: str = "xmi_then_rolling",
     use_props: bool = False,
+    share_xmi: dict[int, float] | None = None,
 ) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Score the live pool.
+
+    Optional ``share_xmi``: freeze ``sG``/``sA`` from that minutes map while
+    appear/CS/GC use ``xmi`` (``reports/SCOUT_M_SHARE_FREEZE_LOCK.md``).
+    """
     alpha_g, alpha_a, _, _ = numagent_xp.load_alphas()
     meta: dict[str, Any] = {
         "alpha_g": alpha_g,
         "alpha_a": alpha_a,
         "minutes_mode": minutes_mode,
         "use_props": bool(use_props),
+        "share_freeze": share_xmi is not None,
         "fixtures_scored": [],
         "fixtures_failed": [],
     }
@@ -468,6 +475,18 @@ def score_pool_from_odds(
         xmi=xmi,
         minutes_mode=minutes_mode,
     )
+    share_base = None
+    if share_xmi is not None:
+        share_base = build_player_table(
+            bootstrap=bootstrap,
+            hist=hist,
+            before_gw=before_gw,
+            xmi=share_xmi,
+            minutes_mode="xmi_then_rolling",
+        )
+        share_base = share_base.loc[
+            pd.to_numeric(share_base["m"], errors="coerce").fillna(0.0) > 0.0
+        ].copy()
     xp = pd.Series(0.0, index=base["element"].astype(int))
     se = pd.Series(0.0, index=base["element"].astype(int))
     props_block = odds_doc.get("props") or {}
@@ -507,6 +526,13 @@ def score_pool_from_odds(
             )
             if club_df.empty:
                 continue
+            share_players = None
+            if share_base is not None and not share_base.empty:
+                share_club = share_base.loc[
+                    share_base["club"].map(lambda t: norm_team(str(t)) == norm_team(club))
+                ].copy()
+                if not share_club.empty:
+                    share_players = share_club
             mom = moments[side_name]
             scored = numagent_xp.score_team_side(
                 club_df,
@@ -516,6 +542,7 @@ def score_pool_from_odds(
                 alpha_g=float(alpha_g),
                 alpha_a=float(alpha_a),
                 prop_p_by_player=by_id or None,
+                share_players=share_players,
             )
             for i in range(len(scored)):
                 eid = int(club_df.iloc[i]["element"])
@@ -594,6 +621,7 @@ def run_pick(
     use_l4: bool = True,
     use_props: bool = False,
     centreline_horizon: int = CENTRELINE_HORIZON,
+    scout_packet_path: Path | None = None,
 ) -> dict[str, Any]:
     played_gw = int(gw) - 1
     bootstrap = fetch_bootstrap()
@@ -627,7 +655,25 @@ def run_pick(
     scratch_hist = SCRATCH / f"player_gw_2026_27_through_gw{played_gw:02d}.csv"
     hist_raw.to_csv(scratch_hist, index=False)
 
-    xmi = load_xmi_map(xmi_path, gw)
+    scout_meta: dict[str, Any] | None = None
+    share_xmi: dict[int, float] | None = None
+    xmi_t1: dict[int, float] | None = None
+    if scout_packet_path is not None:
+        from src.live.scout_minutes import load_scout_packet
+
+        scout = load_scout_packet(Path(scout_packet_path))
+        xmi = scout.step_map(0)
+        xmi_t1 = scout.step_map(1)
+        share_xmi = dict(scout.baseline_m)
+        scout_meta = {
+            "path": str(scout_packet_path),
+            "n_overlays": len(scout.overlays),
+            "baseline_n": len(scout.baseline_m),
+            "source": scout.source,
+            "share_policy": "share_freeze",
+        }
+    else:
+        xmi = load_xmi_map(xmi_path, gw)
 
     odds_docs: list[dict[str, Any]] = []
     if fetch_odds:
@@ -663,6 +709,7 @@ def run_pick(
         fixture_pairs=pairs_t,
         minutes_mode="xmi_then_rolling",
         use_props=use_props,
+        share_xmi=share_xmi,
     )
     work_t, _ = attach_mu_post(pool_t, mu_col="score_xp_v2", se_col="xp_se", mode="none")
 
@@ -673,11 +720,14 @@ def run_pick(
             bootstrap=bootstrap,
             hist=hist,
             before_gw=gw,
-            xmi=xmi,
+            xmi=xmi_t1 if xmi_t1 is not None else xmi,
             odds_doc=odds_doc,
             fixture_pairs=pairs_t1,
-            minutes_mode="rolling3",
+            minutes_mode=(
+                "xmi_then_rolling" if xmi_t1 is not None else "rolling3"
+            ),
             use_props=use_props,
+            share_xmi=share_xmi,
         )
         work_t1, _ = attach_mu_post(
             pool_t1, mu_col="score_xp_v2", se_col="xp_se", mode="none"
@@ -880,6 +930,7 @@ def run_pick(
         "score_meta_t": meta_t,
         "score_meta_t1": meta_t1,
         "xmi_path": str(xmi_path),
+        "scout": scout_meta,
         "history_scratch": str(scratch_hist),
         "board_path": str(board_path),
         "board_t1_path": str(board_t1_path) if board_t1_path else None,
@@ -1072,6 +1123,15 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="apply anytime-scorer prop overlay (default: off)",
     )
+    ap.add_argument(
+        "--scout-packet",
+        type=Path,
+        default=None,
+        help=(
+            "scout_minutes.json (FFScout overlays on expanding baseline). "
+            "Week-t / t+1 use step maps; shares freeze from expanding m."
+        ),
+    )
     ap.add_argument("--time-limit", type=float, default=90.0)
     args = ap.parse_args(argv)
 
@@ -1097,6 +1157,7 @@ def main(argv: list[str] | None = None) -> int:
         use_l4=not bool(args.l3_only),
         use_props=bool(args.with_props),
         centreline_horizon=int(args.centreline_horizon),
+        scout_packet_path=args.scout_packet,
     )
     out_json = PRED / f"gw{int(args.gw):02d}" / "numagent_pick.json"
     out_md = ROOT / "reports" / f"numagent_live_pick_gw{int(args.gw):02d}.md"
