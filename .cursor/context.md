@@ -46,6 +46,8 @@ Product **μ**: Odds API / FD centreline near (`t`/`t+1`); **Opta blind** λ far
 
 **μ-band strand roll (2026-10-31):** `l4_opta_joint_path_mu_band_roll` — N=8 rolls of μ inside ±2·xp_se (σ decays with μ); modal week-0 vs product mean. **Park clear lose** (−2.500/GW [−4.58, −0.53]; all seasons ≤0). Reshuffles heavily; does not load high-σ. Keep mean boards. `reports/l4_opta_joint_path_mu_band_roll_gate.md`.
 
+**numstragent plan (2026-11-01):** parked live architecture — backroom (L4+Opta+MILP ref) → scout (news/xmi+props) → coach (LLM multi-GW deltas) → accountant (rules) → overseer (PI). Not a climb; Layer 1 stays product commit. Plan: [`reports/NUMSTRAGENT_PLAN.md`](../reports/NUMSTRAGENT_PLAN.md).
+
 ## Repo freeze sequence (2026-10-20)
 
 | Step | Status | Note |

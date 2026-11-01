@@ -387,6 +387,13 @@ shares ≈OK when the side scores). Assists miss ≈ **pot** (≈0.72) **and** f
 `sA` on the hot μ tail (share factor ≈0.85). Do not chase goal-share retunes
 for this bias first. Report: `reports/top_mid_fwd_ga_mismatch.md`.
 
+## Parked plan — numstragent (2026-11-01)
+
+Live manager stack: backroom → scout → coach → accountant → overseer.
+Layer 1 remains locked joint path; LLM is coach on a brief, not μ.
+See `reports/NUMSTRAGENT_PLAN.md`. Reopen after scout multi-GW xmi
+and/or remaining joint-path hist screens below are settled.
+
 ## Parked — live multi-GW minutes / xmi propagation (2026-10-31)
 
 Live still: week-t `xmi`, t+1 rolling3, far as-of — news “out N weeks” does
