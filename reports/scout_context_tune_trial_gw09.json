@@ -1,0 +1,602 @@
+{
+  "gw": 9,
+  "before_counts": {
+    "doubt": 30,
+    "injured_expected_back": 4,
+    "injured_unknown_return": 50,
+    "suspected_single_week_rotation": 36,
+    "suspended": 4
+  },
+  "after_counts": {
+    "doubt": 30,
+    "injured_expected_back": 2,
+    "injured_unknown_return": 53,
+    "suspected_single_week_rotation": 25,
+    "suspended": 4
+  },
+  "before_n_overlays": 124,
+  "after_n_overlays": 114,
+  "before_rotation_n": 36,
+  "after_rotation_n": 25,
+  "removed_rotation": [
+    {
+      "name": "A.Becker",
+      "club": "Liverpool"
+    },
+    {
+      "name": "Enzo",
+      "club": "Man City"
+    },
+    {
+      "name": "Gabriel",
+      "club": "Arsenal"
+    },
+    {
+      "name": "Gonzalo",
+      "club": "Fulham"
+    },
+    {
+      "name": "Konsa",
+      "club": "Arsenal"
+    },
+    {
+      "name": "Raya",
+      "club": "Arsenal"
+    },
+    {
+      "name": "R\u00faben",
+      "club": "Man City"
+    },
+    {
+      "name": "Scherpen",
+      "club": "Ipswich"
+    },
+    {
+      "name": "Thomas-Asante",
+      "club": "Coventry"
+    },
+    {
+      "name": "Virgil",
+      "club": "Liverpool"
+    },
+    {
+      "name": "Yeremy",
+      "club": "Crystal Palace"
+    }
+  ],
+  "added_rotation": [],
+  "after_rotation_list": [
+    {
+      "element": 447,
+      "name": "Botman",
+      "club": "Newcastle",
+      "context_label": "suspected single-week rotation",
+      "m0": 15.0,
+      "expand_m": 90.0,
+      "recent": "[90.0, 90.0, 90.0]"
+    },
+    {
+      "element": 388,
+      "name": "Gu\u00e9hi",
+      "club": "Man City",
+      "context_label": "suspected single-week rotation",
+      "m0": 15.0,
+      "expand_m": 90.0,
+      "recent": "[90.0, 90.0, 90.0]"
+    },
+    {
+      "element": 445,
+      "name": "Thiaw",
+      "club": "Newcastle",
+      "context_label": "suspected single-week rotation",
+      "m0": 15.0,
+      "expand_m": 90.0,
+      "recent": "[90.0, 90.0, 90.0]"
+    },
+    {
+      "element": 43,
+      "name": "Tielemans",
+      "club": "Man Utd",
+      "context_label": "suspected single-week rotation",
+      "m0": 15.0,
+      "expand_m": 80.4,
+      "recent": "[90.0, 66.0, 90.0]"
+    },
+    {
+      "element": 41,
+      "name": "Buend\u00eda",
+      "club": "Aston Villa",
+      "context_label": "suspected single-week rotation",
+      "m0": 15.0,
+      "expand_m": 80.2,
+      "recent": "[74.0, 62.0, 90.0]"
+    },
+    {
+      "element": 541,
+      "name": "Meunier",
+      "club": "Sunderland",
+      "context_label": "suspected single-week rotation",
+      "m0": 15.0,
+      "expand_m": 79.2,
+      "recent": "[63.0, 75.0, 78.0]"
+    },
+    {
+      "element": 306,
+      "name": "Greaves",
+      "club": "Ipswich",
+      "context_label": "suspected single-week rotation",
+      "m0": 15.0,
+      "expand_m": 71.4,
+      "recent": "[90.0, 87.0, 0.0]"
+    },
+    {
+      "element": 46,
+      "name": "Barkley",
+      "club": "Aston Villa",
+      "context_label": "suspected single-week rotation",
+      "m0": 15.0,
+      "expand_m": 61.6,
+      "recent": "[90.0, 62.0, 6.0]"
+    },
+    {
+      "element": 522,
+      "name": "Gray",
+      "club": "Spurs",
+      "context_label": "suspected single-week rotation",
+      "m0": 15.0,
+      "expand_m": 61.4,
+      "recent": "[0.0, 84.0, 71.0]"
+    },
+    {
+      "element": 473,
+      "name": "Aina",
+      "club": "Nott'm Forest",
+      "context_label": "suspected single-week rotation",
+      "m0": 15.0,
+      "expand_m": 61.2,
+      "recent": "[58.0, 90.0, 0.0]"
+    },
+    {
+      "element": 399,
+      "name": "Cherki",
+      "club": "Man City",
+      "context_label": "suspected single-week rotation",
+      "m0": 15.0,
+      "expand_m": 60.4,
+      "recent": "[65.0, 45.0, 84.0]"
+    },
+    {
+      "element": 51,
+      "name": "George Hemmings",
+      "club": "Aston Villa",
+      "context_label": "suspected single-week rotation",
+      "m0": 15.0,
+      "expand_m": 59.4,
+      "recent": "[74.0, 45.0, 18.0]"
+    },
+    {
+      "element": 649,
+      "name": "Maitland-Niles",
+      "club": "Everton",
+      "context_label": "suspected single-week rotation",
+      "m0": 15.0,
+      "expand_m": 59.0,
+      "recent": "[13.0, 74.0, 90.0]"
+    },
+    {
+      "element": 96,
+      "name": "Damsgaard",
+      "club": "Brentford",
+      "context_label": "suspected single-week rotation",
+      "m0": 15.0,
+      "expand_m": 56.6,
+      "recent": "[85.0, 30.0, 86.0]"
+    },
+    {
+      "element": 144,
+      "name": "Gusto",
+      "club": "Chelsea",
+      "context_label": "suspected single-week rotation",
+      "m0": 15.0,
+      "expand_m": 54.4,
+      "recent": "[30.0, 77.0, 0.0]"
+    },
+    {
+      "element": 7,
+      "name": "Lewis-Skelly",
+      "club": "Arsenal",
+      "context_label": "suspected single-week rotation",
+      "m0": 15.0,
+      "expand_m": 54.2,
+      "recent": "[66.0, 45.0, 0.0]"
+    },
+    {
+      "element": 501,
+      "name": "Danso",
+      "club": "Sunderland",
+      "context_label": "suspected single-week rotation",
+      "m0": 15.0,
+      "expand_m": 54.0,
+      "recent": "[90.0, 90.0, 90.0]"
+    },
+    {
+      "element": 105,
+      "name": "Anthony",
+      "club": "Brentford",
+      "context_label": "suspected single-week rotation",
+      "m0": 15.0,
+      "expand_m": 53.4,
+      "recent": "[45.0, 59.0, 80.0]"
+    },
+    {
+      "element": 575,
+      "name": "Yirenkyi",
+      "club": "Coventry",
+      "context_label": "suspected single-week rotation",
+      "m0": 15.0,
+      "expand_m": 53.0,
+      "recent": "[27.0, 17.0, 90.0]"
+    },
+    {
+      "element": 33,
+      "name": "Mings",
+      "club": "Aston Villa",
+      "context_label": "suspected single-week rotation",
+      "m0": 15.0,
+      "expand_m": 52.2,
+      "recent": "[90.0, 65.0, 90.0]"
+    },
+    {
+      "element": 161,
+      "name": "Lavia",
+      "club": "Chelsea",
+      "context_label": "suspected single-week rotation",
+      "m0": 15.0,
+      "expand_m": 51.6,
+      "recent": "[59.0, 68.0, 0.0]"
+    },
+    {
+      "element": 93,
+      "name": "Schuster",
+      "club": "Brentford",
+      "context_label": "suspected single-week rotation",
+      "m0": 15.0,
+      "expand_m": 50.6,
+      "recent": "[73.0, 90.0, 90.0]"
+    },
+    {
+      "element": 403,
+      "name": "S\u00e1vio",
+      "club": "Spurs",
+      "context_label": "suspected single-week rotation",
+      "m0": 15.0,
+      "expand_m": 48.0,
+      "recent": "[60.0, 90.0, 90.0]"
+    },
+    {
+      "element": 605,
+      "name": "Yalcouy\u00e9",
+      "club": "Brighton",
+      "context_label": "suspected single-week rotation",
+      "m0": 15.0,
+      "expand_m": 47.2,
+      "recent": "[90.0, 64.0, 5.0]"
+    },
+    {
+      "element": 570,
+      "name": "Palacios",
+      "club": "Fulham",
+      "context_label": "suspected single-week rotation",
+      "m0": 15.0,
+      "expand_m": 45.2,
+      "recent": "[60.0, 0.0, 19.0]"
+    }
+  ],
+  "score_before": {
+    "suspected_single_week_rotation": {
+      "n": 36,
+      "n_low_minutes": 22,
+      "precision": 0.6111111111111112,
+      "false_positives": [
+        {
+          "element": 1,
+          "name": "Raya",
+          "club": "Arsenal",
+          "actual_m": 90.0,
+          "expand_m": null
+        },
+        {
+          "element": 4,
+          "name": "Gabriel",
+          "club": "Arsenal",
+          "actual_m": 90.0,
+          "expand_m": null
+        },
+        {
+          "element": 31,
+          "name": "Konsa",
+          "club": "Arsenal",
+          "actual_m": 90.0,
+          "expand_m": null
+        },
+        {
+          "element": 155,
+          "name": "Enzo",
+          "club": "Man City",
+          "actual_m": 63.0,
+          "expand_m": null
+        },
+        {
+          "element": 161,
+          "name": "Lavia",
+          "club": "Chelsea",
+          "actual_m": 90.0,
+          "expand_m": null
+        },
+        {
+          "element": 211,
+          "name": "Yeremy",
+          "club": "Crystal Palace",
+          "actual_m": 59.0,
+          "expand_m": null
+        },
+        {
+          "element": 350,
+          "name": "A.Becker",
+          "club": "Liverpool",
+          "actual_m": 90.0,
+          "expand_m": null
+        },
+        {
+          "element": 356,
+          "name": "Virgil",
+          "club": "Liverpool",
+          "actual_m": 90.0,
+          "expand_m": null
+        },
+        {
+          "element": 390,
+          "name": "R\u00faben",
+          "club": "Man City",
+          "actual_m": 90.0,
+          "expand_m": null
+        },
+        {
+          "element": 399,
+          "name": "Cherki",
+          "club": "Man City",
+          "actual_m": 35.0,
+          "expand_m": null
+        },
+        {
+          "element": 473,
+          "name": "Aina",
+          "club": "Nott'm Forest",
+          "actual_m": 45.0,
+          "expand_m": null
+        },
+        {
+          "element": 522,
+          "name": "Gray",
+          "club": "Spurs",
+          "actual_m": 45.0,
+          "expand_m": null
+        },
+        {
+          "element": 569,
+          "name": "Gonzalo",
+          "club": "Fulham",
+          "actual_m": 86.0,
+          "expand_m": null
+        },
+        {
+          "element": 575,
+          "name": "Yirenkyi",
+          "club": "Coventry",
+          "actual_m": 90.0,
+          "expand_m": null
+        }
+      ]
+    },
+    "sustained_rotation": {
+      "n": 0
+    }
+  },
+  "score_after": {
+    "suspected_single_week_rotation": {
+      "n": 25,
+      "n_low_minutes": 20,
+      "precision": 0.8,
+      "false_positives": [
+        {
+          "element": 161,
+          "name": "Lavia",
+          "club": "Chelsea",
+          "actual_m": 90.0,
+          "expand_m": 51.6
+        },
+        {
+          "element": 399,
+          "name": "Cherki",
+          "club": "Man City",
+          "actual_m": 35.0,
+          "expand_m": 60.4
+        },
+        {
+          "element": 473,
+          "name": "Aina",
+          "club": "Nott'm Forest",
+          "actual_m": 45.0,
+          "expand_m": 61.2
+        },
+        {
+          "element": 522,
+          "name": "Gray",
+          "club": "Spurs",
+          "actual_m": 45.0,
+          "expand_m": 61.4
+        },
+        {
+          "element": 575,
+          "name": "Yirenkyi",
+          "club": "Coventry",
+          "actual_m": 90.0,
+          "expand_m": 53.0
+        }
+      ]
+    },
+    "sustained_rotation": {
+      "n": 0
+    }
+  },
+  "xi_match_quality": [
+    {
+      "club": "Arsenal",
+      "n_xi": 11,
+      "n_matched": 11,
+      "ok": true,
+      "unmatched": []
+    },
+    {
+      "club": "Aston Villa",
+      "n_xi": 11,
+      "n_matched": 11,
+      "ok": true,
+      "unmatched": []
+    },
+    {
+      "club": "Brighton",
+      "n_xi": 11,
+      "n_matched": 11,
+      "ok": true,
+      "unmatched": []
+    },
+    {
+      "club": "Bournemouth",
+      "n_xi": 11,
+      "n_matched": 11,
+      "ok": true,
+      "unmatched": []
+    },
+    {
+      "club": "Brentford",
+      "n_xi": 11,
+      "n_matched": 11,
+      "ok": true,
+      "unmatched": []
+    },
+    {
+      "club": "Chelsea",
+      "n_xi": 11,
+      "n_matched": 11,
+      "ok": true,
+      "unmatched": []
+    },
+    {
+      "club": "Coventry",
+      "n_xi": 11,
+      "n_matched": 11,
+      "ok": true,
+      "unmatched": []
+    },
+    {
+      "club": "Crystal Palace",
+      "n_xi": 11,
+      "n_matched": 11,
+      "ok": true,
+      "unmatched": []
+    },
+    {
+      "club": "Everton",
+      "n_xi": 11,
+      "n_matched": 11,
+      "ok": true,
+      "unmatched": []
+    },
+    {
+      "club": "Fulham",
+      "n_xi": 11,
+      "n_matched": 11,
+      "ok": true,
+      "unmatched": []
+    },
+    {
+      "club": "Hull",
+      "n_xi": 11,
+      "n_matched": 11,
+      "ok": true,
+      "unmatched": []
+    },
+    {
+      "club": "Ipswich",
+      "n_xi": 11,
+      "n_matched": 11,
+      "ok": true,
+      "unmatched": []
+    },
+    {
+      "club": "Leeds",
+      "n_xi": 11,
+      "n_matched": 11,
+      "ok": true,
+      "unmatched": []
+    },
+    {
+      "club": "Liverpool",
+      "n_xi": 11,
+      "n_matched": 11,
+      "ok": true,
+      "unmatched": []
+    },
+    {
+      "club": "Man City",
+      "n_xi": 11,
+      "n_matched": 11,
+      "ok": true,
+      "unmatched": []
+    },
+    {
+      "club": "Man Utd",
+      "n_xi": 11,
+      "n_matched": 11,
+      "ok": true,
+      "unmatched": []
+    },
+    {
+      "club": "Newcastle",
+      "n_xi": 11,
+      "n_matched": 11,
+      "ok": true,
+      "unmatched": []
+    },
+    {
+      "club": "Nott'm Forest",
+      "n_xi": 11,
+      "n_matched": 11,
+      "ok": true,
+      "unmatched": []
+    },
+    {
+      "club": "Sunderland",
+      "n_xi": 11,
+      "n_matched": 11,
+      "ok": true,
+      "unmatched": []
+    },
+    {
+      "club": "Spurs",
+      "n_xi": 11,
+      "n_matched": 11,
+      "ok": true,
+      "unmatched": []
+    }
+  ],
+  "tune": {
+    "xi_resolve_first": true,
+    "min_xi_matched": "n_matched >= max(9, n_xi-2)",
+    "gk_slot_guard": true,
+    "rest_cup_blurb_veto": true,
+    "sustained_rule": "expand>=45 and last 3 GWs all <=30"
+  },
+  "after_packet": "/agent/repos/fpl-engine/data/predictions/2026-27/gw09/scout_minutes_context_tuned.json"
+}
