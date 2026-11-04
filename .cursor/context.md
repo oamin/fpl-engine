@@ -137,3 +137,10 @@ Highlights: anytime props as live default; share-SE all-minutes / scorers-only; 
 - Odds API: estimate cost first; region=`us`; prefer snapshots (quota rule)
 - Fewer comparisons; objective-function search parked; captain/chip sims deferred until a pre-registered likelihood arm asks
 - After a discrete sub-task: write `REPORT_STATE.json`
+
+## Dig — scout minutes drop recovery (2025-26)
+
+Exploratory only (PR #130). Expanding regulars: drop `m<μ−σ`, recover `m≥μ−0.5σ`.
+794 events, median recovery **2 GW**; zero-drops split quick vs long (≥4).
+Unconditional return-path RMSE prefers **ρ≈0.70** over 0.85. Report:
+`reports/scout_minutes_drop_recovery_dig_2025_26.md`.
