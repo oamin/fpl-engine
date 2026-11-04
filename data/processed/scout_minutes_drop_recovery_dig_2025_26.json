@@ -1,0 +1,400 @@
+{
+  "season": "2025-26",
+  "defs": {
+    "k_drop": 1.0,
+    "k_recover": 0.5,
+    "min_hist_gw": 5,
+    "min_expand_mean": 45.0,
+    "min_expand_sd": 5.0
+  },
+  "n_events": 794,
+  "n_uncensored": 700,
+  "n_censored": 94,
+  "n_players_with_event": 277,
+  "duration_uncensored": {
+    "n": 700,
+    "mean": 2.8714285714285714,
+    "median": 2.0,
+    "p25": 1.0,
+    "p75": 4.0,
+    "p90": 6.0,
+    "share_1gw": 0.4642857142857143,
+    "share_le3": 0.7442857142857143,
+    "share_ge6": 0.13142857142857142
+  },
+  "duration_zero_drop": {
+    "n": 340,
+    "mean": 3.5029411764705882,
+    "median": 2.0,
+    "p25": 1.0,
+    "p75": 5.0,
+    "p90": 8.0,
+    "share_1gw": 0.3588235294117647,
+    "share_le3": 0.6676470588235294,
+    "share_ge6": 0.19411764705882353
+  },
+  "duration_soft_drop": {
+    "n": 233,
+    "mean": 2.4377682403433476,
+    "median": 1.0,
+    "p25": 1.0,
+    "p75": 3.0,
+    "p90": 5.0,
+    "share_1gw": 0.5064377682403434,
+    "share_le3": 0.776824034334764,
+    "share_ge6": 0.0815450643776824
+  },
+  "duration_other_drop": {
+    "n": 127,
+    "mean": 1.9763779527559056,
+    "median": 1.0,
+    "p25": 1.0,
+    "p75": 2.0,
+    "p90": 4.0,
+    "share_1gw": 0.6692913385826772,
+    "share_le3": 0.889763779527559,
+    "share_ge6": 0.05511811023622047
+  },
+  "duration_by_position": {
+    "DEF": {
+      "n": 264,
+      "mean": 2.727272727272727,
+      "median": 2.0,
+      "p25": 1.0,
+      "p75": 3.0,
+      "p90": 6.0,
+      "share_1gw": 0.4659090909090909,
+      "share_le3": 0.7537878787878788,
+      "share_ge6": 0.11742424242424243
+    },
+    "FWD": {
+      "n": 78,
+      "mean": 2.730769230769231,
+      "median": 1.0,
+      "p25": 1.0,
+      "p75": 3.0,
+      "p90": 5.299999999999997,
+      "share_1gw": 0.5256410256410257,
+      "share_le3": 0.7692307692307693,
+      "share_ge6": 0.10256410256410256
+    },
+    "GK": {
+      "n": 24,
+      "mean": 5.125,
+      "median": 3.0,
+      "p25": 1.0,
+      "p75": 6.25,
+      "p90": 12.399999999999999,
+      "share_1gw": 0.375,
+      "share_le3": 0.5833333333333334,
+      "share_ge6": 0.2916666666666667
+    },
+    "MID": {
+      "n": 334,
+      "mean": 2.856287425149701,
+      "median": 2.0,
+      "p25": 1.0,
+      "p75": 4.0,
+      "p90": 6.0,
+      "share_1gw": 0.4550898203592814,
+      "share_le3": 0.7425149700598802,
+      "share_ge6": 0.1377245508982036
+    }
+  },
+  "zero_drop_share": 0.5125944584382871,
+  "soft_drop_share": 0.31863979848866497,
+  "events_per_player": {
+    "mean": 2.8664259927797833,
+    "share_ge2": 0.7364620938628159,
+    "share_ge3": 0.5270758122743683
+  },
+  "path_curve": {
+    "by_h": [
+      {
+        "h": 0,
+        "n": 700,
+        "mean_minutes": 17.27285714285714,
+        "median_minutes": 1.0,
+        "share_zero": 0.4857142857142857,
+        "pred_rho_0.5": 17.27285714285714,
+        "pred_rho_0.7": 17.27285714285714,
+        "pred_rho_0.85": 17.27285714285714,
+        "pred_rho_0.95": 17.27285714285714
+      },
+      {
+        "h": 1,
+        "n": 691,
+        "mean_minutes": 45.31693198263386,
+        "median_minutes": 45.0,
+        "share_zero": 0.32706222865412443,
+        "pred_rho_0.5": 43.87711882419424,
+        "pred_rho_0.7": 33.265200382794404,
+        "pred_rho_0.85": 25.306261551744527,
+        "pred_rho_0.95": 20.000302331044608
+      },
+      {
+        "h": 2,
+        "n": 683,
+        "mean_minutes": 49.194729136163986,
+        "median_minutes": 65.0,
+        "share_zero": 0.2796486090775988,
+        "pred_rho_0.5": 57.20145269232442,
+        "pred_rho_0.7": 44.51924258919935,
+        "pred_rho_0.85": 32.23335155179694,
+        "pred_rho_0.95": 22.721693974453128
+      },
+      {
+        "h": 3,
+        "n": 677,
+        "mean_minutes": 51.14623338257016,
+        "median_minutes": 67.0,
+        "share_zero": 0.2614475627769572,
+        "pred_rho_0.5": 63.782645484540566,
+        "pred_rho_0.7": 52.255887068872454,
+        "pred_rho_0.85": 37.92014222736777,
+        "pred_rho_0.95": 25.0582890869491
+      },
+      {
+        "h": 4,
+        "n": 644,
+        "mean_minutes": 52.8416149068323,
+        "median_minutes": 73.0,
+        "share_zero": 0.2484472049689441,
+        "pred_rho_0.5": 67.28835796828284,
+        "pred_rho_0.7": 57.87851354657258,
+        "pred_rho_0.85": 42.94217371544783,
+        "pred_rho_0.95": 27.444541433070288
+      },
+      {
+        "h": 5,
+        "n": 638,
+        "mean_minutes": 54.64890282131662,
+        "median_minutes": 74.5,
+        "share_zero": 0.2304075235109718,
+        "pred_rho_0.5": 68.97421958290461,
+        "pred_rho_0.7": 61.732225419714865,
+        "pred_rho_0.85": 47.14262357573022,
+        "pred_rho_0.95": 29.671451600425407
+      },
+      {
+        "h": 6,
+        "n": 632,
+        "mean_minutes": 56.04113924050633,
+        "median_minutes": 78.5,
+        "share_zero": 0.22784810126582278,
+        "pred_rho_0.5": 69.95755349367312,
+        "pred_rho_0.7": 64.55445530506546,
+        "pred_rho_0.85": 50.81154416733131,
+        "pred_rho_0.95": 31.85524174840616
+      },
+      {
+        "h": 7,
+        "n": 597,
+        "mean_minutes": 55.608040201005025,
+        "median_minutes": 75.0,
+        "share_zero": 0.22445561139028475,
+        "pred_rho_0.5": 70.63273046084704,
+        "pred_rho_0.7": 66.71776282733686,
+        "pred_rho_0.85": 54.206198769510934,
+        "pred_rho_0.95": 34.366068979057474
+      },
+      {
+        "h": 8,
+        "n": 587,
+        "mean_minutes": 55.59795570698467,
+        "median_minutes": 76.0,
+        "share_zero": 0.21976149914821125,
+        "pred_rho_0.5": 70.76939127870942,
+        "pred_rho_0.7": 67.93917001088695,
+        "pred_rho_0.85": 56.62484284154927,
+        "pred_rho_0.95": 36.03716326245477
+      }
+    ],
+    "note": "unconditional on recovery (all uncensored events with a row at drop_gw+h)",
+    "rmse_h1_6": {
+      "0.5": 40.609102578432655,
+      "0.7": 39.68799147250991,
+      "0.85": 41.9565388770282,
+      "0.95": 48.47833392434857
+    },
+    "mixture": {
+      "zero_quick_le1": {
+        "n": 122,
+        "mean_m_h0_to_4": [
+          0.0,
+          83.22950819672131,
+          69.7280701754386,
+          62.743362831858406,
+          68.75675675675676
+        ]
+      },
+      "zero_long_ge4": {
+        "n": 113,
+        "mean_m_h0_to_4": [
+          0.0,
+          1.2342342342342343,
+          1.9821428571428572,
+          2.4107142857142856,
+          15.589285714285714
+        ]
+      }
+    }
+  },
+  "examples_long": [
+    {
+      "name": "Chris Wood",
+      "position": "FWD",
+      "team": "Nott'm Forest",
+      "drop_gw": 7,
+      "drop_minutes": 63.0,
+      "expand_mean": 76.5,
+      "recovery_gws": 25,
+      "recover_minutes": 25.0
+    },
+    {
+      "name": "Altay Bay\u0131nd\u0131r",
+      "position": "GK",
+      "team": "Man Utd",
+      "drop_gw": 7,
+      "drop_minutes": 0.0,
+      "expand_mean": 90.0,
+      "recovery_gws": 24,
+      "recover_minutes": 0.0
+    },
+    {
+      "name": "James Ward-Prowse",
+      "position": "MID",
+      "team": "West Ham",
+      "drop_gw": 6,
+      "drop_minutes": 0.0,
+      "expand_mean": 82.8,
+      "recovery_gws": 19,
+      "recover_minutes": 0.0
+    },
+    {
+      "name": "Tyrone Mings",
+      "position": "DEF",
+      "team": "Aston Villa",
+      "drop_gw": 6,
+      "drop_minutes": 31.0,
+      "expand_mean": 90.0,
+      "recovery_gws": 17,
+      "recover_minutes": 15.0
+    },
+    {
+      "name": "Justin Kluivert",
+      "position": "MID",
+      "team": "Bournemouth",
+      "drop_gw": 21,
+      "drop_minutes": 0.0,
+      "expand_mean": 45.7,
+      "recovery_gws": 16,
+      "recover_minutes": 14.0
+    },
+    {
+      "name": "Jo\u0161ko Gvardiol",
+      "position": "DEF",
+      "team": "Man City",
+      "drop_gw": 21,
+      "drop_minutes": 0.0,
+      "expand_mean": 65.05,
+      "recovery_gws": 15,
+      "recover_minutes": 57.0
+    },
+    {
+      "name": "Oscar Bobb",
+      "position": "MID",
+      "team": "Man City",
+      "drop_gw": 10,
+      "drop_minutes": 0.0,
+      "expand_mean": 50.111111111111114,
+      "recovery_gws": 15,
+      "recover_minutes": 7.0
+    },
+    {
+      "name": "Mads Hermansen",
+      "position": "GK",
+      "team": "West Ham",
+      "drop_gw": 6,
+      "drop_minutes": 0.0,
+      "expand_mean": 72.0,
+      "recovery_gws": 15,
+      "recover_minutes": 0.0
+    }
+  ],
+  "examples_zero_quick": [
+    {
+      "name": "William Saliba",
+      "position": "DEF",
+      "team": "Arsenal",
+      "drop_gw": 29,
+      "expand_mean": 70.85714285714286,
+      "recovery_gws": 1,
+      "recover_minutes": 90.0
+    },
+    {
+      "name": "Riccardo Calafiori",
+      "position": "DEF",
+      "team": "Arsenal",
+      "drop_gw": 16,
+      "expand_mean": 77.73333333333333,
+      "recovery_gws": 1,
+      "recover_minutes": 90.0
+    },
+    {
+      "name": "Jurri\u00ebn Timber",
+      "position": "DEF",
+      "team": "Arsenal",
+      "drop_gw": 18,
+      "expand_mean": 81.0,
+      "recovery_gws": 1,
+      "recover_minutes": 82.0
+    },
+    {
+      "name": "Declan Rice",
+      "position": "MID",
+      "team": "Arsenal",
+      "drop_gw": 19,
+      "expand_mean": 84.16666666666667,
+      "recovery_gws": 1,
+      "recover_minutes": 90.0
+    },
+    {
+      "name": "Emiliano Mart\u00ednez Romero",
+      "position": "GK",
+      "team": "Aston Villa",
+      "drop_gw": 14,
+      "expand_mean": 76.15384615384616,
+      "recovery_gws": 1,
+      "recover_minutes": 90.0
+    },
+    {
+      "name": "Emiliano Mart\u00ednez Romero",
+      "position": "GK",
+      "team": "Aston Villa",
+      "drop_gw": 16,
+      "expand_mean": 72.0,
+      "recovery_gws": 1,
+      "recover_minutes": 90.0
+    },
+    {
+      "name": "Emiliano Mart\u00ednez Romero",
+      "position": "GK",
+      "team": "Aston Villa",
+      "drop_gw": 32,
+      "expand_mean": 76.93548387096774,
+      "recovery_gws": 1,
+      "recover_minutes": 90.0
+    },
+    {
+      "name": "Matty Cash",
+      "position": "DEF",
+      "team": "Aston Villa",
+      "drop_gw": 19,
+      "expand_mean": 88.44444444444444,
+      "recovery_gws": 1,
+      "recover_minutes": 89.0
+    }
+  ],
+  "elapsed_s": 0.7969169616699219
+}
