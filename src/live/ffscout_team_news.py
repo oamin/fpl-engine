@@ -211,7 +211,7 @@ def parse_team_news(html: str) -> list[ClubTeamNews]:
             banned=banned,
             firm=firm,
             firm_selection=firm_selection,
-            news=news[:500],
+            news=news[:2500],
         )
         prev = best.get(code)
         if prev is None or len(row.predicted_xi) >= len(prev.predicted_xi):

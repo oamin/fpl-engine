@@ -1,20 +1,15 @@
 {
-  "task": "scout_minutes_drop_recovery_dig_2025_26",
+  "task": "scout_context_combined_ffscout_fpl_blurb",
   "status": "done",
-  "as_of_utc": "2026-11-04T19:33:54Z",
-  "n_events": 794,
-  "median_recovery_gws": 2.0,
-  "rmse_h1_6": {
-    "0.5": 40.609102578432655,
-    "0.7": 39.68799147250991,
-    "0.85": 41.9565388770282,
-    "0.95": 48.47833392434857
-  },
-  "report": "reports/scout_minutes_drop_recovery_dig_2025_26.md",
-  "elapsed_s": 0.7969169616699219,
-  "signals": {
-    "median_recovery_gws": 2.0,
-    "zero_drop_mixture": "\u22481/3 back in 1GW, \u22481/3 out \u22654GW",
-    "best_rho_rmse": "0.70"
+  "as_of_utc": "2026-11-04T20:16:54Z",
+  "example_md": "reports/scout_context_example_gw09.md",
+  "example_json": "reports/scout_context_example_gw09.json",
+  "packet": "data/predictions/2026-27/gw09/scout_minutes_context.json",
+  "context_counts": {
+    "doubt": 30,
+    "injured_expected_back": 3,
+    "injured_unknown_return": 51,
+    "suspected_single_week_rotation": 36,
+    "suspended": 4
   }
 }
