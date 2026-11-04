@@ -149,3 +149,29 @@ def test_classify_suspended() -> None:
         recent=[90.0],
     )
     assert ctx == CTX_SUSPENDED
+
+
+def test_xi_name_matches_raya_martin() -> None:
+    from src.live.scout_context import xi_name_matches_element
+
+    el = {
+        "id": 1,
+        "web_name": "Raya",
+        "first_name": "David",
+        "second_name": "Raya Martín",
+        "element_type": 1,
+    }
+    assert xi_name_matches_element("Raya Martin", el)
+
+
+def test_xi_name_matches_alisson_alias() -> None:
+    from src.live.scout_context import xi_name_matches_element
+
+    el = {
+        "id": 2,
+        "web_name": "A.Becker",
+        "first_name": "Alisson",
+        "second_name": "Becker",
+        "element_type": 1,
+    }
+    assert xi_name_matches_element("Alisson", el)

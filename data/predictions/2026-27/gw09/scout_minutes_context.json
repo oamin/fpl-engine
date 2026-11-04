@@ -10,7 +10,7 @@
   "decay_rho": 0.85,
   "decay_law": "m(h)=expand+(m0-expand)*rho**h",
   "baseline_n": 667,
-  "n_overlays": 124,
+  "n_overlays": 114,
   "baseline_m": {
     "1": 90.0,
     "2": 0.0,
@@ -681,72 +681,6 @@
     "667": 0.0
   },
   "overlays": {
-    "1": {
-      "element": 1,
-      "name": "Raya",
-      "club": "Arsenal",
-      "tag": "benched",
-      "m0": 0.0,
-      "reason": "FFScout XI omit (regular): Raya",
-      "source": "ffscout_xi_omit",
-      "chance": null,
-      "force_steps": {
-        "0": 0.0
-      },
-      "context": "suspected_single_week_rotation",
-      "context_label": "suspected single-week rotation",
-      "context_detail": "regular left out of predicted XI (not listed Out)",
-      "return_gws": 1,
-      "return_date": null,
-      "evidence": [
-        "expand_m=90.0",
-        "recent=[90.0, 90.0, 90.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
-      ],
-      "path": [
-        0.0,
-        13.5,
-        24.97500000000001,
-        34.728750000000005,
-        43.01943750000001,
-        50.06652187500001,
-        56.05654359375001,
-        61.14806205468751
-      ]
-    },
-    "4": {
-      "element": 4,
-      "name": "Gabriel",
-      "club": "Arsenal",
-      "tag": "benched",
-      "m0": 15.0,
-      "reason": "FFScout XI omit (regular): Gabriel",
-      "source": "ffscout_xi_omit",
-      "chance": null,
-      "force_steps": {
-        "0": 15.0
-      },
-      "context": "suspected_single_week_rotation",
-      "context_label": "suspected single-week rotation",
-      "context_detail": "regular left out of predicted XI (not listed Out)",
-      "return_gws": 1,
-      "return_date": null,
-      "evidence": [
-        "expand_m=90.0",
-        "recent=[90.0, 90.0, 90.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
-      ],
-      "path": [
-        15.0,
-        26.25,
-        35.81250000000001,
-        43.940625000000004,
-        50.849531250000005,
-        56.7221015625,
-        61.713786328125,
-        65.95671837890626
-      ]
-    },
     "6": {
       "element": 6,
       "name": "Saliba",
@@ -759,13 +693,11 @@
       "force_steps": {},
       "context": "injured_unknown_return",
       "context_label": "injured, unknown return",
-      "context_detail": "FPL unknown return date",
+      "context_detail": "out; no parsed return horizon",
       "return_gws": null,
       "return_date": null,
       "evidence": [
-        "ffscout:FFScout Out: Saliba",
-        "fpl:Back injury - Unknown return date",
-        "hint:fpl_unknown_return:Unknown return date"
+        "ffscout:FFScout Out: Saliba"
       ],
       "path": [
         0.0,
@@ -798,7 +730,8 @@
       "evidence": [
         "expand_m=54.2",
         "recent=[66.0, 45.0, 0.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
+        "xi_matched=11/11",
+        "not in resolved predicted XI; not Out/Banned/Doubt"
       ],
       "path": [
         15.0,
@@ -852,11 +785,13 @@
       "force_steps": {},
       "context": "injured_unknown_return",
       "context_label": "injured, unknown return",
-      "context_detail": "out; no parsed return horizon",
+      "context_detail": "FPL unknown return date",
       "return_gws": null,
       "return_date": null,
       "evidence": [
-        "ffscout:FFScout Out: Saka"
+        "ffscout:FFScout Out: Saka",
+        "fpl:Thigh injury - Unknown return date",
+        "hint:fpl_unknown_return:Unknown return date"
       ],
       "path": [
         0.0,
@@ -941,9 +876,11 @@
       "context_label": "suspended",
       "context_detail": "suspended / banned",
       "return_gws": null,
-      "return_date": null,
+      "return_date": "2027-11-29",
       "evidence": [
-        "ffscout:FFScout Banned: Dowman"
+        "ffscout:FFScout Banned: Dowman",
+        "fpl:Suspended until 29 Nov",
+        "hint:fpl_return_date_due_still_out:Suspended until 29 Nov"
       ],
       "path": [
         0.0,
@@ -968,11 +905,13 @@
       "force_steps": {},
       "context": "injured_unknown_return",
       "context_label": "injured, unknown return",
-      "context_detail": "out; no parsed return horizon",
+      "context_detail": "FPL unknown return date",
       "return_gws": null,
       "return_date": null,
       "evidence": [
-        "ffscout:FFScout Out: Martinez"
+        "ffscout:FFScout Out: Martinez",
+        "fpl:Head injury - Unknown return date",
+        "hint:fpl_unknown_return:Unknown return date"
       ],
       "path": [
         0.0,
@@ -983,39 +922,6 @@
         40.0532175,
         44.845234875,
         48.91844964375001
-      ]
-    },
-    "31": {
-      "element": 31,
-      "name": "Konsa",
-      "club": "Arsenal",
-      "tag": "benched",
-      "m0": 15.0,
-      "reason": "FFScout XI omit (regular): Konsa",
-      "source": "ffscout_xi_omit",
-      "chance": null,
-      "force_steps": {
-        "0": 15.0
-      },
-      "context": "suspected_single_week_rotation",
-      "context_label": "suspected single-week rotation",
-      "context_detail": "regular left out of predicted XI (not listed Out)",
-      "return_gws": 1,
-      "return_date": null,
-      "evidence": [
-        "expand_m=56.2",
-        "recent=[90.0, 90.0, 90.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
-      ],
-      "path": [
-        15.0,
-        21.18,
-        26.433000000000003,
-        30.898050000000005,
-        34.69334250000001,
-        37.919341125,
-        40.66143995625001,
-        42.9922239628125
       ]
     },
     "33": {
@@ -1038,7 +944,8 @@
       "evidence": [
         "expand_m=52.2",
         "recent=[90.0, 65.0, 90.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
+        "xi_matched=11/11",
+        "not in resolved predicted XI; not Out/Banned/Doubt"
       ],
       "path": [
         15.0,
@@ -1071,7 +978,8 @@
       "evidence": [
         "expand_m=80.2",
         "recent=[74.0, 62.0, 90.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
+        "xi_matched=11/11",
+        "not in resolved predicted XI; not Out/Banned/Doubt"
       ],
       "path": [
         15.0,
@@ -1104,7 +1012,8 @@
       "evidence": [
         "expand_m=80.4",
         "recent=[90.0, 66.0, 90.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
+        "xi_matched=11/11",
+        "not in resolved predicted XI; not Out/Banned/Doubt"
       ],
       "path": [
         15.0,
@@ -1137,7 +1046,8 @@
       "evidence": [
         "expand_m=61.6",
         "recent=[90.0, 62.0, 6.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
+        "xi_matched=11/11",
+        "not in resolved predicted XI; not Out/Banned/Doubt"
       ],
       "path": [
         15.0,
@@ -1202,7 +1112,8 @@
       "evidence": [
         "expand_m=59.4",
         "recent=[74.0, 45.0, 18.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
+        "xi_matched=11/11",
+        "not in resolved predicted XI; not Out/Banned/Doubt"
       ],
       "path": [
         15.0,
@@ -1228,12 +1139,12 @@
       "context": "doubt",
       "context_label": "doubt (25% chance)",
       "context_detail": "doubt chance=25.0",
-      "return_gws": null,
-      "return_date": null,
+      "return_gws": 0,
+      "return_date": "2027-10-31",
       "evidence": [
         "ffscout:FFScout Doubt: Milosavljevic (25%)",
-        "fpl:Thigh injury - Unknown return date",
-        "hint:fpl_unknown_return:Unknown return date"
+        "fpl:Thigh injury - Expected back 31 Oct",
+        "hint:fpl_expected_back:Expected back 31 Oct"
       ],
       "path": [
         22.5,
@@ -1286,19 +1197,17 @@
       "reason": "FFScout Out: Scott",
       "source": "ffscout",
       "chance": 0.0,
-      "force_steps": {
-        "0": 0.0
-      },
-      "context": "injured_expected_back",
-      "context_label": "injured, expected back in 1 week",
-      "context_detail": "return_gws=1 via blurb_until_gw",
-      "return_gws": 1,
-      "return_date": null,
+      "force_steps": {},
+      "context": "injured_unknown_return",
+      "context_label": "injured, unknown return",
+      "context_detail": "out; no parsed return horizon",
+      "return_gws": null,
+      "return_date": "2027-11-21",
       "evidence": [
         "ffscout:FFScout Out: Scott",
-        "fpl:Thigh injury - Unknown return date",
+        "fpl:Thigh injury - Expected back 21 Nov",
         "blurb:Alex Scott (tendon) won't return until Gameweek 10 at the earliest.",
-        "hint:blurb_until_gw:until Gameweek 10 at the earliest"
+        "hint:fpl_return_date_due_still_out:Expected back 21 Nov"
       ],
       "path": [
         0.0,
@@ -1323,11 +1232,13 @@
       "force_steps": {},
       "context": "injured_unknown_return",
       "context_label": "injured, unknown return",
-      "context_detail": "out; no parsed return horizon",
+      "context_detail": "FPL unknown return date",
       "return_gws": null,
       "return_date": null,
       "evidence": [
-        "ffscout:FFScout Out: T\u00f3th"
+        "ffscout:FFScout Out: T\u00f3th",
+        "fpl:Hamstring injury - Unknown return date",
+        "hint:fpl_unknown_return:Unknown return date"
       ],
       "path": [
         0.0,
@@ -1352,11 +1263,13 @@
       "force_steps": {},
       "context": "injured_unknown_return",
       "context_label": "injured, unknown return",
-      "context_detail": "out; no parsed return horizon",
+      "context_detail": "FPL unknown return date",
       "return_gws": null,
       "return_date": null,
       "evidence": [
-        "ffscout:FFScout Out: Henry"
+        "ffscout:FFScout Out: Henry",
+        "fpl:Hip injury - Unknown return date",
+        "hint:fpl_unknown_return:Unknown return date"
       ],
       "path": [
         0.0,
@@ -1389,7 +1302,8 @@
       "evidence": [
         "expand_m=50.6",
         "recent=[73.0, 90.0, 90.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
+        "xi_matched=11/11",
+        "not in resolved predicted XI; not Out/Banned/Doubt"
       ],
       "path": [
         15.0,
@@ -1422,7 +1336,8 @@
       "evidence": [
         "expand_m=56.6",
         "recent=[85.0, 30.0, 86.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
+        "xi_matched=11/11",
+        "not in resolved predicted XI; not Out/Banned/Doubt"
       ],
       "path": [
         15.0,
@@ -1480,9 +1395,11 @@
       "context_label": "injured, unknown return",
       "context_detail": "out; no parsed return horizon",
       "return_gws": null,
-      "return_date": null,
+      "return_date": "2027-11-23",
       "evidence": [
-        "ffscout:FFScout Out: Carvalho"
+        "ffscout:FFScout Out: Carvalho",
+        "fpl:Knock - Expected back 23 Nov",
+        "hint:fpl_return_date_due_still_out:Expected back 23 Nov"
       ],
       "path": [
         0.0,
@@ -1581,7 +1498,8 @@
       "evidence": [
         "expand_m=53.4",
         "recent=[45.0, 59.0, 80.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
+        "xi_matched=11/11",
+        "not in resolved predicted XI; not Out/Banned/Doubt"
       ],
       "path": [
         15.0,
@@ -1641,7 +1559,8 @@
       "return_gws": null,
       "return_date": null,
       "evidence": [
-        "ffscout:FFScout Doubt: Kadioglu (75%)"
+        "ffscout:FFScout Doubt: Kadioglu (75%)",
+        "fpl:Hip injury - 75% chance of playing"
       ],
       "path": [
         60.5,
@@ -1668,11 +1587,11 @@
       "context_label": "injured, unknown return",
       "context_detail": "out; no parsed return horizon",
       "return_gws": null,
-      "return_date": "2027-10-18",
+      "return_date": "2027-11-22",
       "evidence": [
         "ffscout:FFScout Out: Mitoma",
-        "fpl:Hamstring injury - Expected back 18 Oct",
-        "hint:fpl_return_date_due_still_out:Expected back 18 Oct"
+        "fpl:Hamstring injury - Expected back 22 Nov",
+        "hint:fpl_return_date_due_still_out:Expected back 22 Nov"
       ],
       "path": [
         0.0,
@@ -1699,11 +1618,11 @@
       "context_label": "doubt (25% chance)",
       "context_detail": "doubt chance=25.0",
       "return_gws": 0,
-      "return_date": "2027-10-18",
+      "return_date": "2027-11-22",
       "evidence": [
         "ffscout:FFScout Doubt: Yohanna (25%)",
-        "fpl:Unspecified injury - Expected back 18 Oct",
-        "hint:fpl_expected_back:Expected back 18 Oct"
+        "fpl:Unspecified injury - Expected back 22 Nov",
+        "hint:fpl_expected_back:Expected back 22 Nov"
       ],
       "path": [
         3.0,
@@ -1759,13 +1678,13 @@
       "force_steps": {},
       "context": "injured_unknown_return",
       "context_label": "injured, unknown return",
-      "context_detail": "out; no parsed return horizon",
+      "context_detail": "FPL unknown return date",
       "return_gws": null,
-      "return_date": "2027-10-18",
+      "return_date": null,
       "evidence": [
         "ffscout:FFScout Out: Ferguson",
-        "fpl:Ankle injury - Expected back 18 Oct",
-        "hint:fpl_return_date_due_still_out:Expected back 18 Oct"
+        "fpl:Ankle injury - Unknown return date",
+        "hint:fpl_unknown_return:Unknown return date"
       ],
       "path": [
         0.0,
@@ -1829,7 +1748,8 @@
       "evidence": [
         "expand_m=54.4",
         "recent=[30.0, 77.0, 0.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
+        "xi_matched=11/11",
+        "not in resolved predicted XI; not Out/Banned/Doubt"
       ],
       "path": [
         15.0,
@@ -1854,11 +1774,13 @@
       "force_steps": {},
       "context": "injured_unknown_return",
       "context_label": "injured, unknown return",
-      "context_detail": "out; no parsed return horizon",
+      "context_detail": "FPL unknown return date",
       "return_gws": null,
       "return_date": null,
       "evidence": [
-        "ffscout:FFScout Out: Tosin"
+        "ffscout:FFScout Out: Tosin",
+        "fpl:Calf injury - Unknown return date",
+        "hint:fpl_unknown_return:Unknown return date"
       ],
       "path": [
         0.0,
@@ -1883,11 +1805,13 @@
       "force_steps": {},
       "context": "injured_unknown_return",
       "context_label": "injured, unknown return",
-      "context_detail": "out; no parsed return horizon",
+      "context_detail": "FPL unknown return date",
       "return_gws": null,
       "return_date": null,
       "evidence": [
-        "ffscout:FFScout Out: Hato"
+        "ffscout:FFScout Out: Hato",
+        "fpl:Unspecified injury - Unknown return date",
+        "hint:fpl_unknown_return:Unknown return date"
       ],
       "path": [
         0.0,
@@ -1898,39 +1822,6 @@
         28.704805875,
         32.139084993750004,
         35.05822224468751
-      ]
-    },
-    "155": {
-      "element": 155,
-      "name": "Enzo",
-      "club": "Man City",
-      "tag": "benched",
-      "m0": 15.0,
-      "reason": "FFScout XI omit (regular): Enzo",
-      "source": "ffscout_xi_omit",
-      "chance": null,
-      "force_steps": {
-        "0": 15.0
-      },
-      "context": "suspected_single_week_rotation",
-      "context_label": "suspected single-week rotation",
-      "context_detail": "regular left out of predicted XI (not listed Out)",
-      "return_gws": 1,
-      "return_date": null,
-      "evidence": [
-        "expand_m=54.2",
-        "recent=[75.0, 81.0, 90.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
-      ],
-      "path": [
-        15.0,
-        20.880000000000003,
-        25.878000000000004,
-        30.126300000000004,
-        33.73735500000001,
-        36.806751750000004,
-        39.415738987500006,
-        41.633378139375004
       ]
     },
     "158": {
@@ -1984,7 +1875,8 @@
       "evidence": [
         "expand_m=51.6",
         "recent=[59.0, 68.0, 0.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
+        "xi_matched=11/11",
+        "not in resolved predicted XI; not Out/Banned/Doubt"
       ],
       "path": [
         15.0,
@@ -2009,11 +1901,13 @@
       "force_steps": {},
       "context": "injured_unknown_return",
       "context_label": "injured, unknown return",
-      "context_detail": "out; no parsed return horizon",
+      "context_detail": "FPL unknown return date",
       "return_gws": null,
       "return_date": null,
       "evidence": [
-        "ffscout:FFScout Out: Jo\u00e3o Pedro"
+        "ffscout:FFScout Out: Jo\u00e3o Pedro",
+        "fpl:Thigh injury - Unknown return date",
+        "hint:fpl_unknown_return:Unknown return date"
       ],
       "path": [
         0.0,
@@ -2042,7 +1936,8 @@
       "return_gws": null,
       "return_date": null,
       "evidence": [
-        "ffscout:FFScout Doubt: Thomas (75%)"
+        "ffscout:FFScout Doubt: Thomas (75%)",
+        "fpl:Calf injury - 50% chance of playing"
       ],
       "path": [
         67.5,
@@ -2179,39 +2074,6 @@
         0.0
       ]
     },
-    "194": {
-      "element": 194,
-      "name": "Thomas-Asante",
-      "club": "Coventry",
-      "tag": "benched",
-      "m0": 15.0,
-      "reason": "FFScout XI omit (regular): Thomas-Asante",
-      "source": "ffscout_xi_omit",
-      "chance": null,
-      "force_steps": {
-        "0": 15.0
-      },
-      "context": "suspected_single_week_rotation",
-      "context_label": "suspected single-week rotation",
-      "context_detail": "regular left out of predicted XI (not listed Out)",
-      "return_gws": 1,
-      "return_date": null,
-      "evidence": [
-        "expand_m=45.4",
-        "recent=[19.0, 17.0, 90.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
-      ],
-      "path": [
-        15.0,
-        19.56,
-        23.436000000000003,
-        26.730600000000003,
-        29.531010000000002,
-        31.9113585,
-        33.934654725,
-        35.65445651625
-      ]
-    },
     "200": {
       "element": 200,
       "name": "Lacroix",
@@ -2232,6 +2094,7 @@
       "return_date": null,
       "evidence": [
         "ffscout:FFScout Out: Lacroix",
+        "fpl:Hamstring injury - Unknown return date",
         "blurb:Xabi Alonso confirmed that Maxence Lacroix is out of the next two Gameweeks with the hamstring issue he picked up in midweek.",
         "hint:blurb_next_n_gw:out of the next two Gameweeks"
       ],
@@ -2291,9 +2154,11 @@
       "context_label": "injured, unknown return",
       "context_detail": "out; no parsed return horizon",
       "return_gws": null,
-      "return_date": null,
+      "return_date": "2027-11-08",
       "evidence": [
-        "ffscout:FFScout Out: Ismaila Sarr"
+        "ffscout:FFScout Out: Ismaila Sarr",
+        "fpl:Groin injury - Expected back 8 Nov",
+        "hint:fpl_return_date_due_still_out:Expected back 8 Nov"
       ],
       "path": [
         0.0,
@@ -2304,39 +2169,6 @@
         0.8900715000000001,
         0.9965607750000002,
         1.08707665875
-      ]
-    },
-    "211": {
-      "element": 211,
-      "name": "Yeremy",
-      "club": "Crystal Palace",
-      "tag": "benched",
-      "m0": 15.0,
-      "reason": "FFScout XI omit (regular): Yeremy",
-      "source": "ffscout_xi_omit",
-      "chance": null,
-      "force_steps": {
-        "0": 15.0
-      },
-      "context": "suspected_single_week_rotation",
-      "context_label": "suspected single-week rotation",
-      "context_detail": "regular left out of predicted XI (not listed Out)",
-      "return_gws": 1,
-      "return_date": null,
-      "evidence": [
-        "expand_m=61.4",
-        "recent=[88.0, 36.0, 81.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
-      ],
-      "path": [
-        15.0,
-        21.96,
-        27.876000000000005,
-        32.9046,
-        37.17891,
-        40.8120735,
-        43.900262475000005,
-        46.52522310375
       ]
     },
     "222": {
@@ -2355,7 +2187,8 @@
       "return_gws": null,
       "return_date": null,
       "evidence": [
-        "ffscout:FFScout Doubt: Strand Larsen (75%)"
+        "ffscout:FFScout Doubt: Strand Larsen (75%)",
+        "fpl:Ankle injury - 75% chance of playing"
       ],
       "path": [
         52.25,
@@ -2443,6 +2276,7 @@
       "return_date": null,
       "evidence": [
         "ffscout:FFScout Doubt: Lukic (75%)",
+        "fpl:Groin injury - 75% chance of playing",
         "blurb:No surprise that O'Neil didn't commit one way or another regarding a start for Lukic, but he did say that the Serbian has \"looked good\" and is \"an important player\", and the previous indication was that he wasn't rushed ",
         "hint:blurb_until_gw:for Gameweek 8 "
       ],
@@ -2503,8 +2337,7 @@
       "return_date": null,
       "evidence": [
         "ffscout:FFScout Doubt: Butland (75%)",
-        "fpl:Arm injury - Unknown return date",
-        "hint:fpl_unknown_return:Unknown return date"
+        "fpl:Arm injury - 50% chance of playing"
       ],
       "path": [
         67.5,
@@ -2599,7 +2432,8 @@
       "evidence": [
         "expand_m=71.4",
         "recent=[90.0, 87.0, 0.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
+        "xi_matched=11/11",
+        "not in resolved predicted XI; not Out/Banned/Doubt"
       ],
       "path": [
         15.0,
@@ -2626,9 +2460,11 @@
       "context_label": "injured, unknown return",
       "context_detail": "out; no parsed return horizon",
       "return_gws": null,
-      "return_date": null,
+      "return_date": "2027-11-08",
       "evidence": [
-        "ffscout:FFScout Out: Struijk"
+        "ffscout:FFScout Out: Struijk",
+        "fpl:Hamstring injury - Expected back 8 Nov",
+        "hint:fpl_return_date_due_still_out:Expected back 8 Nov"
       ],
       "path": [
         0.0,
@@ -2732,72 +2568,6 @@
         0.0
       ]
     },
-    "350": {
-      "element": 350,
-      "name": "A.Becker",
-      "club": "Liverpool",
-      "tag": "benched",
-      "m0": 0.0,
-      "reason": "FFScout XI omit (regular): A.Becker",
-      "source": "ffscout_xi_omit",
-      "chance": null,
-      "force_steps": {
-        "0": 0.0
-      },
-      "context": "suspected_single_week_rotation",
-      "context_label": "suspected single-week rotation",
-      "context_detail": "regular left out of predicted XI (not listed Out)",
-      "return_gws": 1,
-      "return_date": null,
-      "evidence": [
-        "expand_m=90.0",
-        "recent=[90.0, 90.0, 90.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
-      ],
-      "path": [
-        0.0,
-        13.5,
-        24.97500000000001,
-        34.728750000000005,
-        43.01943750000001,
-        50.06652187500001,
-        56.05654359375001,
-        61.14806205468751
-      ]
-    },
-    "356": {
-      "element": 356,
-      "name": "Virgil",
-      "club": "Liverpool",
-      "tag": "benched",
-      "m0": 15.0,
-      "reason": "FFScout XI omit (regular): Virgil",
-      "source": "ffscout_xi_omit",
-      "chance": null,
-      "force_steps": {
-        "0": 15.0
-      },
-      "context": "suspected_single_week_rotation",
-      "context_label": "suspected single-week rotation",
-      "context_detail": "regular left out of predicted XI (not listed Out)",
-      "return_gws": 1,
-      "return_date": null,
-      "evidence": [
-        "expand_m=90.0",
-        "recent=[90.0, 90.0, 90.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
-      ],
-      "path": [
-        15.0,
-        26.25,
-        35.81250000000001,
-        43.940625000000004,
-        50.849531250000005,
-        56.7221015625,
-        61.713786328125,
-        65.95671837890626
-      ]
-    },
     "357": {
       "element": 357,
       "name": "Frimpong",
@@ -2810,11 +2580,13 @@
       "force_steps": {},
       "context": "injured_unknown_return",
       "context_label": "injured, unknown return",
-      "context_detail": "out; no parsed return horizon",
+      "context_detail": "FPL unknown return date",
       "return_gws": null,
       "return_date": null,
       "evidence": [
-        "ffscout:FFScout Out: Frimpong"
+        "ffscout:FFScout Out: Frimpong",
+        "fpl:Hamstring injury - Unknown return date",
+        "hint:fpl_unknown_return:Unknown return date"
       ],
       "path": [
         0.0,
@@ -2825,37 +2597,6 @@
         19.804090875,
         22.173477243750003,
         24.187455657187506
-      ]
-    },
-    "360": {
-      "element": 360,
-      "name": "Bradley",
-      "club": "Liverpool",
-      "tag": "injured",
-      "m0": 0.0,
-      "reason": "FFScout Out: Bradley",
-      "source": "ffscout",
-      "chance": 0.0,
-      "force_steps": {},
-      "context": "injured_unknown_return",
-      "context_label": "injured, unknown return",
-      "context_detail": "FPL unknown return date",
-      "return_gws": null,
-      "return_date": null,
-      "evidence": [
-        "ffscout:FFScout Out: Bradley",
-        "fpl:Knee injury - Unknown return date",
-        "hint:fpl_unknown_return:Unknown return date"
-      ],
-      "path": [
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0
       ]
     },
     "363": {
@@ -2905,8 +2646,7 @@
       "return_gws": null,
       "return_date": null,
       "evidence": [
-        "ffscout:FFScout Doubt: Szoboszlai (50%)",
-        "fpl:Hamstring injury - 25% chance of playing"
+        "ffscout:FFScout Doubt: Szoboszlai (50%)"
       ],
       "path": [
         43.333333333333336,
@@ -2999,40 +2739,8 @@
       "evidence": [
         "expand_m=90.0",
         "recent=[90.0, 90.0, 90.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
-      ],
-      "path": [
-        15.0,
-        26.25,
-        35.81250000000001,
-        43.940625000000004,
-        50.849531250000005,
-        56.7221015625,
-        61.713786328125,
-        65.95671837890626
-      ]
-    },
-    "390": {
-      "element": 390,
-      "name": "R\u00faben",
-      "club": "Man City",
-      "tag": "benched",
-      "m0": 15.0,
-      "reason": "FFScout XI omit (regular): R\u00faben",
-      "source": "ffscout_xi_omit",
-      "chance": null,
-      "force_steps": {
-        "0": 15.0
-      },
-      "context": "suspected_single_week_rotation",
-      "context_label": "suspected single-week rotation",
-      "context_detail": "regular left out of predicted XI (not listed Out)",
-      "return_gws": 1,
-      "return_date": null,
-      "evidence": [
-        "expand_m=90.0",
-        "recent=[90.0, 90.0, 90.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
+        "xi_matched=11/11",
+        "not in resolved predicted XI; not Out/Banned/Doubt"
       ],
       "path": [
         15.0,
@@ -3057,11 +2765,13 @@
       "force_steps": {},
       "context": "injured_unknown_return",
       "context_label": "injured, unknown return",
-      "context_detail": "out; no parsed return horizon",
+      "context_detail": "FPL unknown return date",
       "return_gws": null,
       "return_date": null,
       "evidence": [
-        "ffscout:FFScout Out: Semenyo"
+        "ffscout:FFScout Out: Semenyo",
+        "fpl:Knee injury - Unknown return date",
+        "hint:fpl_unknown_return:Unknown return date"
       ],
       "path": [
         0.0,
@@ -3094,7 +2804,8 @@
       "evidence": [
         "expand_m=60.4",
         "recent=[65.0, 45.0, 84.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
+        "xi_matched=11/11",
+        "not in resolved predicted XI; not Out/Banned/Doubt"
       ],
       "path": [
         15.0,
@@ -3127,7 +2838,8 @@
       "evidence": [
         "expand_m=48.0",
         "recent=[60.0, 90.0, 90.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
+        "xi_matched=11/11",
+        "not in resolved predicted XI; not Out/Banned/Doubt"
       ],
       "path": [
         15.0,
@@ -3152,13 +2864,13 @@
       "force_steps": {},
       "context": "injured_unknown_return",
       "context_label": "injured, unknown return",
-      "context_detail": "out; no parsed return horizon",
+      "context_detail": "FPL unknown return date",
       "return_gws": null,
-      "return_date": "2027-10-25",
+      "return_date": null,
       "evidence": [
         "ffscout:FFScout Out: Dorgu",
-        "fpl:Hamstring injury - Expected back 25 Oct",
-        "hint:fpl_return_date_due_still_out:Expected back 25 Oct"
+        "fpl:Hamstring injury - Unknown return date",
+        "hint:fpl_unknown_return:Unknown return date"
       ],
       "path": [
         0.0,
@@ -3183,12 +2895,13 @@
       "force_steps": {},
       "context": "injured_unknown_return",
       "context_label": "injured, unknown return",
-      "context_detail": "out; no parsed return horizon",
+      "context_detail": "FPL unknown return date",
       "return_gws": null,
       "return_date": null,
       "evidence": [
         "ffscout:FFScout Out: Shaw",
-        "fpl:Unspecified injury - 75% chance of playing"
+        "fpl:Unspecified injury - Unknown return date",
+        "hint:fpl_unknown_return:Unknown return date"
       ],
       "path": [
         0.0,
@@ -3217,7 +2930,8 @@
       "return_gws": null,
       "return_date": null,
       "evidence": [
-        "ffscout:FFScout Doubt: Rashford (25%)"
+        "ffscout:FFScout Doubt: Rashford (25%)",
+        "fpl:Hip injury - 75% chance of playing"
       ],
       "path": [
         18.91666666666667,
@@ -3246,8 +2960,7 @@
       "return_gws": null,
       "return_date": null,
       "evidence": [
-        "ffscout:FFScout Doubt: Mainoo (75%)",
-        "fpl:Unspecified injury - 75% chance of playing"
+        "ffscout:FFScout Doubt: Mainoo (75%)"
       ],
       "path": [
         63.0,
@@ -3303,13 +3016,13 @@
       "force_steps": {},
       "context": "injured_unknown_return",
       "context_label": "injured, unknown return",
-      "context_detail": "out; no parsed return horizon",
+      "context_detail": "FPL unknown return date",
       "return_gws": null,
-      "return_date": "2027-10-18",
+      "return_date": null,
       "evidence": [
         "ffscout:FFScout Out: Sesko",
-        "fpl:Shin injury - Expected back 18 Oct",
-        "hint:fpl_return_date_due_still_out:Expected back 18 Oct"
+        "fpl:Shin injury - Unknown return date",
+        "hint:fpl_unknown_return:Unknown return date"
       ],
       "path": [
         0.0,
@@ -3373,7 +3086,8 @@
       "evidence": [
         "expand_m=90.0",
         "recent=[90.0, 90.0, 90.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
+        "xi_matched=11/11",
+        "not in resolved predicted XI; not Out/Banned/Doubt"
       ],
       "path": [
         15.0,
@@ -3406,7 +3120,8 @@
       "evidence": [
         "expand_m=90.0",
         "recent=[90.0, 90.0, 90.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
+        "xi_matched=11/11",
+        "not in resolved predicted XI; not Out/Banned/Doubt"
       ],
       "path": [
         15.0,
@@ -3431,12 +3146,13 @@
       "force_steps": {},
       "context": "injured_unknown_return",
       "context_label": "injured, unknown return",
-      "context_detail": "out; no parsed return horizon",
+      "context_detail": "FPL unknown return date",
       "return_gws": null,
       "return_date": null,
       "evidence": [
         "ffscout:FFScout Out: Livramento",
-        "fpl:Unspecified injury - 50% chance of playing"
+        "fpl:Knee injury - Unknown return date",
+        "hint:fpl_unknown_return:Unknown return date"
       ],
       "path": [
         0.0,
@@ -3465,7 +3181,8 @@
       "return_gws": null,
       "return_date": null,
       "evidence": [
-        "ffscout:FFScout Doubt: Miley (75%)"
+        "ffscout:FFScout Doubt: Miley (75%)",
+        "fpl:Muscular injury - 75% chance of playing"
       ],
       "path": [
         57.75,
@@ -3527,7 +3244,8 @@
       "evidence": [
         "expand_m=61.2",
         "recent=[58.0, 90.0, 0.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
+        "xi_matched=11/11",
+        "not in resolved predicted XI; not Out/Banned/Doubt"
       ],
       "path": [
         15.0,
@@ -3616,7 +3334,8 @@
       "return_gws": null,
       "return_date": null,
       "evidence": [
-        "ffscout:FFScout Doubt: Nicol\u00e1s Dom\u00ednguez (75%)"
+        "ffscout:FFScout Doubt: Nicol\u00e1s Dom\u00ednguez (75%)",
+        "fpl:Muscular injury - 75% chance of playing"
       ],
       "path": [
         0.75,
@@ -3680,7 +3399,8 @@
       "evidence": [
         "expand_m=54.0",
         "recent=[90.0, 90.0, 90.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
+        "xi_matched=11/11",
+        "not in resolved predicted XI; not Out/Banned/Doubt"
       ],
       "path": [
         15.0,
@@ -3691,6 +3411,37 @@
         36.69549281250001,
         39.291168890625,
         41.497493557031255
+      ]
+    },
+    "513": {
+      "element": 513,
+      "name": "Xavi",
+      "club": "Spurs",
+      "tag": "injured",
+      "m0": 0.0,
+      "reason": "FFScout Out: Simons",
+      "source": "ffscout",
+      "chance": 0.0,
+      "force_steps": {},
+      "context": "injured_unknown_return",
+      "context_label": "injured, unknown return",
+      "context_detail": "FPL unknown return date",
+      "return_gws": null,
+      "return_date": null,
+      "evidence": [
+        "ffscout:FFScout Out: Simons",
+        "fpl:Knee injury - Unknown return date",
+        "hint:fpl_unknown_return:Unknown return date"
+      ],
+      "path": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
       ]
     },
     "516": {
@@ -3707,11 +3458,9 @@
       "context_label": "suspended",
       "context_detail": "suspended / banned",
       "return_gws": null,
-      "return_date": "2027-11-07",
+      "return_date": null,
       "evidence": [
-        "ffscout:FFScout Banned: Bentancur",
-        "fpl:Suspended until 7 Nov",
-        "hint:fpl_return_date_due_still_out:Suspended until 7 Nov"
+        "ffscout:FFScout Banned: Bentancur"
       ],
       "path": [
         0.0,
@@ -3769,9 +3518,11 @@
       "context_label": "injured, unknown return",
       "context_detail": "out; no parsed return horizon",
       "return_gws": null,
-      "return_date": null,
+      "return_date": "2027-10-31",
       "evidence": [
-        "ffscout:FFScout Out: Bergvall"
+        "ffscout:FFScout Out: Bergvall",
+        "fpl:Knee injury - Expected back 31 Oct",
+        "hint:fpl_return_date_due_still_out:Expected back 31 Oct"
       ],
       "path": [
         0.0,
@@ -3804,7 +3555,8 @@
       "evidence": [
         "expand_m=61.4",
         "recent=[0.0, 84.0, 71.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
+        "xi_matched=11/11",
+        "not in resolved predicted XI; not Out/Banned/Doubt"
       ],
       "path": [
         15.0,
@@ -3864,7 +3616,8 @@
       "return_gws": null,
       "return_date": null,
       "evidence": [
-        "ffscout:FFScout Doubt: Mukiele (75%)"
+        "ffscout:FFScout Doubt: Mukiele (75%)",
+        "fpl:Concussion - 75% chance of playing"
       ],
       "path": [
         67.5,
@@ -3897,7 +3650,8 @@
       "evidence": [
         "expand_m=79.2",
         "recent=[63.0, 75.0, 78.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
+        "xi_matched=11/11",
+        "not in resolved predicted XI; not Out/Banned/Doubt"
       ],
       "path": [
         15.0,
@@ -3957,8 +3711,7 @@
       "return_gws": null,
       "return_date": null,
       "evidence": [
-        "ffscout:FFScout Doubt: Isidor (75%)",
-        "fpl:Knock - 50% chance of playing"
+        "ffscout:FFScout Doubt: Isidor (75%)"
       ],
       "path": [
         17.0,
@@ -4015,12 +3768,10 @@
       "context": "doubt",
       "context_label": "doubt (75% chance)",
       "context_detail": "doubt chance=75.0",
-      "return_gws": 0,
-      "return_date": "2027-11-01",
+      "return_gws": null,
+      "return_date": null,
       "evidence": [
-        "ffscout:FFScout Doubt: Tzolis (75%)",
-        "fpl:Hamstring injury - Expected back 1 Nov",
-        "hint:fpl_expected_back:Expected back 1 Nov"
+        "ffscout:FFScout Doubt: Tzolis (75%)"
       ],
       "path": [
         60.5,
@@ -4045,11 +3796,13 @@
       "force_steps": {},
       "context": "injured_unknown_return",
       "context_label": "injured, unknown return",
-      "context_detail": "out; no parsed return horizon",
+      "context_detail": "FPL unknown return date",
       "return_gws": null,
       "return_date": null,
       "evidence": [
-        "ffscout:FFScout Out: Anselmino"
+        "ffscout:FFScout Out: Anselmino",
+        "fpl:Unspecified injury - Unknown return date",
+        "hint:fpl_unknown_return:Unknown return date"
       ],
       "path": [
         0.0,
@@ -4060,72 +3813,6 @@
         0.0,
         0.0,
         0.0
-      ]
-    },
-    "564": {
-      "element": 564,
-      "name": "Scherpen",
-      "club": "Ipswich",
-      "tag": "benched",
-      "m0": 0.0,
-      "reason": "FFScout XI omit (regular): Scherpen",
-      "source": "ffscout_xi_omit",
-      "chance": null,
-      "force_steps": {
-        "0": 0.0
-      },
-      "context": "suspected_single_week_rotation",
-      "context_label": "suspected single-week rotation",
-      "context_detail": "regular left out of predicted XI (not listed Out)",
-      "return_gws": 1,
-      "return_date": null,
-      "evidence": [
-        "expand_m=72.0",
-        "recent=[90.0, 90.0, 0.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
-      ],
-      "path": [
-        0.0,
-        10.800000000000004,
-        19.980000000000004,
-        27.78300000000001,
-        34.41555000000001,
-        40.0532175,
-        44.845234875,
-        48.91844964375001
-      ]
-    },
-    "569": {
-      "element": 569,
-      "name": "Gonzalo",
-      "club": "Fulham",
-      "tag": "benched",
-      "m0": 15.0,
-      "reason": "FFScout XI omit (regular): Gonzalo",
-      "source": "ffscout_xi_omit",
-      "chance": null,
-      "force_steps": {
-        "0": 15.0
-      },
-      "context": "suspected_single_week_rotation",
-      "context_label": "suspected single-week rotation",
-      "context_detail": "regular left out of predicted XI (not listed Out)",
-      "return_gws": 1,
-      "return_date": null,
-      "evidence": [
-        "expand_m=85.0",
-        "recent=[90.0, 76.0, 79.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
-      ],
-      "path": [
-        15.0,
-        25.5,
-        34.425000000000004,
-        42.011250000000004,
-        48.459562500000004,
-        53.940628125,
-        58.59953390625,
-        62.5596038203125
       ]
     },
     "570": {
@@ -4148,7 +3835,8 @@
       "evidence": [
         "expand_m=45.2",
         "recent=[60.0, 0.0, 19.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
+        "xi_matched=11/11",
+        "not in resolved predicted XI; not Out/Banned/Doubt"
       ],
       "path": [
         15.0,
@@ -4181,7 +3869,8 @@
       "evidence": [
         "expand_m=53.0",
         "recent=[27.0, 17.0, 90.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
+        "xi_matched=11/11",
+        "not in resolved predicted XI; not Out/Banned/Doubt"
       ],
       "path": [
         15.0,
@@ -4208,11 +3897,11 @@
       "context_label": "injured, unknown return",
       "context_detail": "out; no parsed return horizon",
       "return_gws": null,
-      "return_date": "2027-10-18",
+      "return_date": "2027-11-08",
       "evidence": [
         "ffscout:FFScout Out: Tomiyasu",
-        "fpl:Calf injury - Expected back 18 Oct",
-        "hint:fpl_return_date_due_still_out:Expected back 18 Oct"
+        "fpl:Calf injury - Expected back 8 Nov",
+        "hint:fpl_return_date_due_still_out:Expected back 8 Nov"
       ],
       "path": [
         0.0,
@@ -4268,28 +3957,36 @@
       "force_steps": {
         "0": 0.0,
         "1": 0.0,
-        "2": 0.0
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0,
+        "10": 0.0
       },
       "context": "injured_expected_back",
-      "context_label": "injured, expected back in 3 weeks",
-      "context_detail": "return_gws=3 via blurb_few_weeks",
-      "return_gws": 3,
-      "return_date": null,
+      "context_label": "injured, expected back in 11 weeks",
+      "context_detail": "return_gws=11 via fpl_expected_back",
+      "return_gws": 11,
+      "return_date": "2027-01-02",
       "evidence": [
         "ffscout:FFScout Out: Ruggeri",
-        "fpl:Hamstring injury - Unknown return date",
+        "fpl:Hamstring injury - Expected back 2 Jan",
         "blurb:The broadcast section of Unai Emery\u2019s presser was short on team news, so we\u2019re not aware of any issues beyond Aaron Wan-Bissaka and Matteo Ruggeri (both hamstring), who will both be out for a few more weeks",
-        "hint:blurb_few_weeks:a few weeks"
+        "hint:fpl_expected_back:Expected back 2 Jan"
       ],
       "path": [
         0.0,
         0.0,
         0.0,
-        8.720775000000001,
-        10.802658750000003,
-        12.572259937500002,
-        14.076420946875002,
-        15.354957804843753
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
       ]
     },
     "605": {
@@ -4312,7 +4009,8 @@
       "evidence": [
         "expand_m=47.2",
         "recent=[90.0, 64.0, 5.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
+        "xi_matched=11/11",
+        "not in resolved predicted XI; not Out/Banned/Doubt"
       ],
       "path": [
         15.0,
@@ -4334,30 +4032,56 @@
       "reason": "FFScout Out: Wan-Bissaka",
       "source": "ffscout",
       "chance": 0.0,
-      "force_steps": {
-        "0": 0.0,
-        "1": 0.0,
-        "2": 0.0
-      },
-      "context": "injured_expected_back",
-      "context_label": "injured, expected back in 3 weeks",
-      "context_detail": "return_gws=3 via blurb_few_weeks",
-      "return_gws": 3,
-      "return_date": null,
+      "force_steps": {},
+      "context": "injured_unknown_return",
+      "context_label": "injured, unknown return",
+      "context_detail": "out; no parsed return horizon",
+      "return_gws": null,
+      "return_date": "2027-11-21",
       "evidence": [
         "ffscout:FFScout Out: Wan-Bissaka",
+        "fpl:Hamstring injury - Expected back 21 Nov",
         "blurb:The broadcast section of Unai Emery\u2019s presser was short on team news, so we\u2019re not aware of any issues beyond Aaron Wan-Bissaka and Matteo Ruggeri (both hamstring), who will both be out for a few more weeks",
-        "hint:blurb_few_weeks:a few weeks"
+        "hint:fpl_return_date_due_still_out:Expected back 21 Nov"
       ],
       "path": [
         0.0,
-        0.0,
-        0.0,
+        5.700000000000003,
+        10.545000000000002,
         14.663250000000001,
         18.163762500000004,
         21.139198125000004,
         23.668318406250002,
         25.818070645312503
+      ]
+    },
+    "627": {
+      "element": 627,
+      "name": "Barcola",
+      "club": "Liverpool",
+      "tag": "injured",
+      "m0": 0.0,
+      "reason": "FFScout Out: Bradley",
+      "source": "ffscout",
+      "chance": 0.0,
+      "force_steps": {},
+      "context": "injured_unknown_return",
+      "context_label": "injured, unknown return",
+      "context_detail": "out; no parsed return horizon",
+      "return_gws": null,
+      "return_date": null,
+      "evidence": [
+        "ffscout:FFScout Out: Bradley"
+      ],
+      "path": [
+        0.0,
+        8.399999999999999,
+        15.540000000000006,
+        21.609,
+        26.767650000000007,
+        31.152502500000004,
+        34.879627125,
+        38.04768305625001
       ]
     },
     "632": {
@@ -4407,7 +4131,8 @@
       "return_gws": null,
       "return_date": null,
       "evidence": [
-        "ffscout:FFScout Doubt: Fernandez-Pardo (75%)"
+        "ffscout:FFScout Doubt: Fernandez-Pardo (75%)",
+        "fpl:Illness - 75% chance of playing"
       ],
       "path": [
         39.25,
@@ -4465,7 +4190,8 @@
       "return_gws": null,
       "return_date": null,
       "evidence": [
-        "ffscout:FFScout Doubt: Timber (75%)"
+        "ffscout:FFScout Doubt: Timber (75%)",
+        "fpl:Hamstring injury - 75% chance of playing"
       ],
       "path": [
         63.25,
@@ -4498,7 +4224,8 @@
       "evidence": [
         "expand_m=59.0",
         "recent=[13.0, 74.0, 90.0]",
-        "not in predicted XI; not Out/Banned/Doubt"
+        "xi_matched=11/11",
+        "not in resolved predicted XI; not Out/Banned/Doubt"
       ],
       "path": [
         15.0,
@@ -4525,11 +4252,11 @@
       "context_label": "injured, unknown return",
       "context_detail": "out; no parsed return horizon",
       "return_gws": null,
-      "return_date": "2027-10-18",
+      "return_date": "2027-11-08",
       "evidence": [
         "ffscout:FFScout Out: Azeez",
-        "fpl:Hamstring injury - Expected back 18 Oct",
-        "hint:fpl_return_date_due_still_out:Expected back 18 Oct"
+        "fpl:Hamstring injury - Expected back 8 Nov",
+        "hint:fpl_return_date_due_still_out:Expected back 8 Nov"
       ],
       "path": [
         0.0,
@@ -4545,38 +4272,184 @@
   },
   "meta": {
     "ffscout": {
-      "n_out": 54,
+      "n_out": 55,
       "n_banned": 4,
       "n_doubt": 30,
-      "n_overlays": 88,
-      "n_unmatched": 2,
+      "n_overlays": 89,
+      "n_unmatched": 1,
       "unmatched": [
         {
           "club": "Spurs",
           "name": "Savinho",
           "bucket": "out"
+        }
+      ],
+      "els_known": 670
+    },
+    "context": {
+      "n_context_rows": 114,
+      "n_rotation_overlays": 25,
+      "n_rotation_veto_rest_cup": 0,
+      "n_clubs_skipped_xi_quality": 0,
+      "xi_match_quality": [
+        {
+          "club": "Arsenal",
+          "n_xi": 11,
+          "n_matched": 11,
+          "ok": true,
+          "unmatched": []
+        },
+        {
+          "club": "Aston Villa",
+          "n_xi": 11,
+          "n_matched": 11,
+          "ok": true,
+          "unmatched": []
+        },
+        {
+          "club": "Brighton",
+          "n_xi": 11,
+          "n_matched": 11,
+          "ok": true,
+          "unmatched": []
+        },
+        {
+          "club": "Bournemouth",
+          "n_xi": 11,
+          "n_matched": 11,
+          "ok": true,
+          "unmatched": []
+        },
+        {
+          "club": "Brentford",
+          "n_xi": 11,
+          "n_matched": 11,
+          "ok": true,
+          "unmatched": []
+        },
+        {
+          "club": "Chelsea",
+          "n_xi": 11,
+          "n_matched": 11,
+          "ok": true,
+          "unmatched": []
+        },
+        {
+          "club": "Coventry",
+          "n_xi": 11,
+          "n_matched": 11,
+          "ok": true,
+          "unmatched": []
+        },
+        {
+          "club": "Crystal Palace",
+          "n_xi": 11,
+          "n_matched": 11,
+          "ok": true,
+          "unmatched": []
+        },
+        {
+          "club": "Everton",
+          "n_xi": 11,
+          "n_matched": 11,
+          "ok": true,
+          "unmatched": []
+        },
+        {
+          "club": "Fulham",
+          "n_xi": 11,
+          "n_matched": 11,
+          "ok": true,
+          "unmatched": []
+        },
+        {
+          "club": "Hull",
+          "n_xi": 11,
+          "n_matched": 11,
+          "ok": true,
+          "unmatched": []
+        },
+        {
+          "club": "Ipswich",
+          "n_xi": 11,
+          "n_matched": 11,
+          "ok": true,
+          "unmatched": []
+        },
+        {
+          "club": "Leeds",
+          "n_xi": 11,
+          "n_matched": 11,
+          "ok": true,
+          "unmatched": []
+        },
+        {
+          "club": "Liverpool",
+          "n_xi": 11,
+          "n_matched": 11,
+          "ok": true,
+          "unmatched": []
+        },
+        {
+          "club": "Man City",
+          "n_xi": 11,
+          "n_matched": 11,
+          "ok": true,
+          "unmatched": []
+        },
+        {
+          "club": "Man Utd",
+          "n_xi": 11,
+          "n_matched": 11,
+          "ok": true,
+          "unmatched": []
+        },
+        {
+          "club": "Newcastle",
+          "n_xi": 11,
+          "n_matched": 11,
+          "ok": true,
+          "unmatched": []
+        },
+        {
+          "club": "Nott'm Forest",
+          "n_xi": 11,
+          "n_matched": 11,
+          "ok": true,
+          "unmatched": []
+        },
+        {
+          "club": "Sunderland",
+          "n_xi": 11,
+          "n_matched": 11,
+          "ok": true,
+          "unmatched": []
         },
         {
           "club": "Spurs",
-          "name": "Simons",
-          "bucket": "out"
+          "n_xi": 11,
+          "n_matched": 11,
+          "ok": true,
+          "unmatched": []
         }
       ],
-      "els_known": 667
-    },
-    "context": {
-      "n_context_rows": 124,
-      "n_rotation_overlays": 36,
       "context_counts": {
         "doubt": 30,
-        "injured_expected_back": 4,
-        "injured_unknown_return": 50,
-        "suspected_single_week_rotation": 36,
+        "injured_expected_back": 2,
+        "injured_unknown_return": 53,
+        "suspected_single_week_rotation": 25,
         "suspended": 4
       },
-      "n_with_return_gws": 44,
+      "n_with_return_gws": 31,
       "n_with_blurb_evidence": 7,
-      "n_with_fpl_news": 53
+      "n_with_fpl_news": 71,
+      "rotation_tune": {
+        "xi_resolve_first": true,
+        "min_xi_matched": "n_matched >= max(9, n_xi-2)",
+        "gk_slot_guard": true,
+        "rest_cup_blurb_veto": true,
+        "sustained_rule": "expand>=45 and last 3 GWs all <=30"
+      }
     },
     "context_samples": [
       {
@@ -4605,23 +4478,24 @@
         "m0": 59.5,
         "evidence": [
           "ffscout:FFScout Doubt: Lukic (75%)",
+          "fpl:Groin injury - 75% chance of playing",
           "blurb:No surprise that O'Neil didn't commit one way or another regarding a start for Lukic, but he did say that the Serbian has \"looked good\" and is \"an important player\", and the previous indication was that he wasn't rushed ",
           "hint:blurb_until_gw:for Gameweek 8 "
         ]
       },
       {
-        "element": 557,
-        "name": "Tzolis",
-        "club": "Arsenal",
+        "element": 63,
+        "name": "Milosavljevi\u0107",
+        "club": "Bournemouth",
         "bucket": "doubt",
-        "context_label": "doubt (75% chance)",
+        "context_label": "doubt (25% chance)",
         "return_gws": 0,
-        "return_date": "2027-11-01",
-        "m0": 60.5,
+        "return_date": "2027-10-31",
+        "m0": 22.5,
         "evidence": [
-          "ffscout:FFScout Doubt: Tzolis (75%)",
-          "fpl:Hamstring injury - Expected back 1 Nov",
-          "hint:fpl_expected_back:Expected back 1 Nov"
+          "ffscout:FFScout Doubt: Milosavljevic (25%)",
+          "fpl:Thigh injury - Expected back 31 Oct",
+          "hint:fpl_expected_back:Expected back 31 Oct"
         ]
       },
       {
@@ -4631,12 +4505,12 @@
         "bucket": "doubt",
         "context_label": "doubt (25% chance)",
         "return_gws": 0,
-        "return_date": "2027-10-18",
+        "return_date": "2027-11-22",
         "m0": 3.0,
         "evidence": [
           "ffscout:FFScout Doubt: Yohanna (25%)",
-          "fpl:Unspecified injury - Expected back 18 Oct",
-          "hint:fpl_expected_back:Expected back 18 Oct"
+          "fpl:Unspecified injury - Expected back 22 Nov",
+          "hint:fpl_expected_back:Expected back 22 Nov"
         ]
       },
       {
@@ -4650,6 +4524,7 @@
         "m0": 0.0,
         "evidence": [
           "ffscout:FFScout Out: Lacroix",
+          "fpl:Hamstring injury - Unknown return date",
           "blurb:Xabi Alonso confirmed that Maxence Lacroix is out of the next two Gameweeks with the hamstring issue he picked up in midweek.",
           "hint:blurb_next_n_gw:out of the next two Gameweeks"
         ]
@@ -4659,61 +4534,15 @@
         "name": "Ruggeri",
         "club": "Aston Villa",
         "bucket": "out",
-        "context_label": "injured, expected back in 3 weeks",
-        "return_gws": 3,
-        "return_date": null,
+        "context_label": "injured, expected back in 11 weeks",
+        "return_gws": 11,
+        "return_date": "2027-01-02",
         "m0": 0.0,
         "evidence": [
           "ffscout:FFScout Out: Ruggeri",
-          "fpl:Hamstring injury - Unknown return date",
+          "fpl:Hamstring injury - Expected back 2 Jan",
           "blurb:The broadcast section of Unai Emery\u2019s presser was short on team news, so we\u2019re not aware of any issues beyond Aaron Wan-Bissaka and Matteo Ruggeri (both hamstring), who will both be out for a few more weeks",
-          "hint:blurb_few_weeks:a few weeks"
-        ]
-      },
-      {
-        "element": 69,
-        "name": "Scott",
-        "club": "Bournemouth",
-        "bucket": "out",
-        "context_label": "injured, expected back in 1 week",
-        "return_gws": 1,
-        "return_date": null,
-        "m0": 0.0,
-        "evidence": [
-          "ffscout:FFScout Out: Scott",
-          "fpl:Thigh injury - Unknown return date",
-          "blurb:Alex Scott (tendon) won't return until Gameweek 10 at the earliest.",
-          "hint:blurb_until_gw:until Gameweek 10 at the earliest"
-        ]
-      },
-      {
-        "element": 611,
-        "name": "Wan-Bissaka",
-        "club": "Aston Villa",
-        "bucket": "out",
-        "context_label": "injured, expected back in 3 weeks",
-        "return_gws": 3,
-        "return_date": null,
-        "m0": 0.0,
-        "evidence": [
-          "ffscout:FFScout Out: Wan-Bissaka",
-          "blurb:The broadcast section of Unai Emery\u2019s presser was short on team news, so we\u2019re not aware of any issues beyond Aaron Wan-Bissaka and Matteo Ruggeri (both hamstring), who will both be out for a few more weeks",
-          "hint:blurb_few_weeks:a few weeks"
-        ]
-      },
-      {
-        "element": 350,
-        "name": "A.Becker",
-        "club": "Liverpool",
-        "bucket": "xi_omit",
-        "context_label": "suspected single-week rotation",
-        "return_gws": 1,
-        "return_date": null,
-        "m0": 0.0,
-        "evidence": [
-          "expand_m=90.0",
-          "recent=[90.0, 90.0, 90.0]",
-          "not in predicted XI; not Out/Banned/Doubt"
+          "hint:fpl_expected_back:Expected back 2 Jan"
         ]
       },
       {
@@ -4728,7 +4557,8 @@
         "evidence": [
           "expand_m=61.2",
           "recent=[58.0, 90.0, 0.0]",
-          "not in predicted XI; not Out/Banned/Doubt"
+          "xi_matched=11/11",
+          "not in resolved predicted XI; not Out/Banned/Doubt"
         ]
       },
       {
@@ -4743,7 +4573,8 @@
         "evidence": [
           "expand_m=53.4",
           "recent=[45.0, 59.0, 80.0]",
-          "not in predicted XI; not Out/Banned/Doubt"
+          "xi_matched=11/11",
+          "not in resolved predicted XI; not Out/Banned/Doubt"
         ]
       },
       {
@@ -4758,7 +4589,8 @@
         "evidence": [
           "expand_m=61.6",
           "recent=[90.0, 62.0, 6.0]",
-          "not in predicted XI; not Out/Banned/Doubt"
+          "xi_matched=11/11",
+          "not in resolved predicted XI; not Out/Banned/Doubt"
         ]
       },
       {
@@ -4773,7 +4605,8 @@
         "evidence": [
           "expand_m=90.0",
           "recent=[90.0, 90.0, 90.0]",
-          "not in predicted XI; not Out/Banned/Doubt"
+          "xi_matched=11/11",
+          "not in resolved predicted XI; not Out/Banned/Doubt"
         ]
       },
       {
@@ -4788,7 +4621,8 @@
         "evidence": [
           "expand_m=80.2",
           "recent=[74.0, 62.0, 90.0]",
-          "not in predicted XI; not Out/Banned/Doubt"
+          "xi_matched=11/11",
+          "not in resolved predicted XI; not Out/Banned/Doubt"
         ]
       },
       {
@@ -4803,7 +4637,8 @@
         "evidence": [
           "expand_m=60.4",
           "recent=[65.0, 45.0, 84.0]",
-          "not in predicted XI; not Out/Banned/Doubt"
+          "xi_matched=11/11",
+          "not in resolved predicted XI; not Out/Banned/Doubt"
         ]
       },
       {
@@ -4818,7 +4653,8 @@
         "evidence": [
           "expand_m=56.6",
           "recent=[85.0, 30.0, 86.0]",
-          "not in predicted XI; not Out/Banned/Doubt"
+          "xi_matched=11/11",
+          "not in resolved predicted XI; not Out/Banned/Doubt"
         ]
       },
       {
@@ -4833,37 +4669,8 @@
         "evidence": [
           "expand_m=54.0",
           "recent=[90.0, 90.0, 90.0]",
-          "not in predicted XI; not Out/Banned/Doubt"
-        ]
-      },
-      {
-        "element": 155,
-        "name": "Enzo",
-        "club": "Man City",
-        "bucket": "xi_omit",
-        "context_label": "suspected single-week rotation",
-        "return_gws": 1,
-        "return_date": null,
-        "m0": 15.0,
-        "evidence": [
-          "expand_m=54.2",
-          "recent=[75.0, 81.0, 90.0]",
-          "not in predicted XI; not Out/Banned/Doubt"
-        ]
-      },
-      {
-        "element": 4,
-        "name": "Gabriel",
-        "club": "Arsenal",
-        "bucket": "xi_omit",
-        "context_label": "suspected single-week rotation",
-        "return_gws": 1,
-        "return_date": null,
-        "m0": 15.0,
-        "evidence": [
-          "expand_m=90.0",
-          "recent=[90.0, 90.0, 90.0]",
-          "not in predicted XI; not Out/Banned/Doubt"
+          "xi_matched=11/11",
+          "not in resolved predicted XI; not Out/Banned/Doubt"
         ]
       },
       {
@@ -4878,22 +4685,8 @@
         "evidence": [
           "expand_m=59.4",
           "recent=[74.0, 45.0, 18.0]",
-          "not in predicted XI; not Out/Banned/Doubt"
-        ]
-      },
-      {
-        "element": 569,
-        "name": "Gonzalo",
-        "club": "Fulham",
-        "bucket": "xi_omit",
-        "context_label": "suspected single-week rotation",
-        "return_gws": 1,
-        "return_date": null,
-        "m0": 15.0,
-        "evidence": [
-          "expand_m=85.0",
-          "recent=[90.0, 76.0, 79.0]",
-          "not in predicted XI; not Out/Banned/Doubt"
+          "xi_matched=11/11",
+          "not in resolved predicted XI; not Out/Banned/Doubt"
         ]
       },
       {
@@ -4908,7 +4701,8 @@
         "evidence": [
           "expand_m=61.4",
           "recent=[0.0, 84.0, 71.0]",
-          "not in predicted XI; not Out/Banned/Doubt"
+          "xi_matched=11/11",
+          "not in resolved predicted XI; not Out/Banned/Doubt"
         ]
       },
       {
@@ -4923,7 +4717,8 @@
         "evidence": [
           "expand_m=71.4",
           "recent=[90.0, 87.0, 0.0]",
-          "not in predicted XI; not Out/Banned/Doubt"
+          "xi_matched=11/11",
+          "not in resolved predicted XI; not Out/Banned/Doubt"
         ]
       },
       {
@@ -4938,7 +4733,8 @@
         "evidence": [
           "expand_m=54.4",
           "recent=[30.0, 77.0, 0.0]",
-          "not in predicted XI; not Out/Banned/Doubt"
+          "xi_matched=11/11",
+          "not in resolved predicted XI; not Out/Banned/Doubt"
         ]
       },
       {
@@ -4953,22 +4749,8 @@
         "evidence": [
           "expand_m=90.0",
           "recent=[90.0, 90.0, 90.0]",
-          "not in predicted XI; not Out/Banned/Doubt"
-        ]
-      },
-      {
-        "element": 31,
-        "name": "Konsa",
-        "club": "Arsenal",
-        "bucket": "xi_omit",
-        "context_label": "suspected single-week rotation",
-        "return_gws": 1,
-        "return_date": null,
-        "m0": 15.0,
-        "evidence": [
-          "expand_m=56.2",
-          "recent=[90.0, 90.0, 90.0]",
-          "not in predicted XI; not Out/Banned/Doubt"
+          "xi_matched=11/11",
+          "not in resolved predicted XI; not Out/Banned/Doubt"
         ]
       },
       {
@@ -4983,7 +4765,8 @@
         "evidence": [
           "expand_m=51.6",
           "recent=[59.0, 68.0, 0.0]",
-          "not in predicted XI; not Out/Banned/Doubt"
+          "xi_matched=11/11",
+          "not in resolved predicted XI; not Out/Banned/Doubt"
         ]
       },
       {
@@ -4998,7 +4781,8 @@
         "evidence": [
           "expand_m=54.2",
           "recent=[66.0, 45.0, 0.0]",
-          "not in predicted XI; not Out/Banned/Doubt"
+          "xi_matched=11/11",
+          "not in resolved predicted XI; not Out/Banned/Doubt"
         ]
       },
       {
@@ -5013,7 +4797,8 @@
         "evidence": [
           "expand_m=59.0",
           "recent=[13.0, 74.0, 90.0]",
-          "not in predicted XI; not Out/Banned/Doubt"
+          "xi_matched=11/11",
+          "not in resolved predicted XI; not Out/Banned/Doubt"
         ]
       },
       {
@@ -5028,7 +4813,8 @@
         "evidence": [
           "expand_m=79.2",
           "recent=[63.0, 75.0, 78.0]",
-          "not in predicted XI; not Out/Banned/Doubt"
+          "xi_matched=11/11",
+          "not in resolved predicted XI; not Out/Banned/Doubt"
         ]
       },
       {
@@ -5043,7 +4829,8 @@
         "evidence": [
           "expand_m=52.2",
           "recent=[90.0, 65.0, 90.0]",
-          "not in predicted XI; not Out/Banned/Doubt"
+          "xi_matched=11/11",
+          "not in resolved predicted XI; not Out/Banned/Doubt"
         ]
       },
       {
@@ -5058,52 +4845,8 @@
         "evidence": [
           "expand_m=45.2",
           "recent=[60.0, 0.0, 19.0]",
-          "not in predicted XI; not Out/Banned/Doubt"
-        ]
-      },
-      {
-        "element": 1,
-        "name": "Raya",
-        "club": "Arsenal",
-        "bucket": "xi_omit",
-        "context_label": "suspected single-week rotation",
-        "return_gws": 1,
-        "return_date": null,
-        "m0": 0.0,
-        "evidence": [
-          "expand_m=90.0",
-          "recent=[90.0, 90.0, 90.0]",
-          "not in predicted XI; not Out/Banned/Doubt"
-        ]
-      },
-      {
-        "element": 390,
-        "name": "R\u00faben",
-        "club": "Man City",
-        "bucket": "xi_omit",
-        "context_label": "suspected single-week rotation",
-        "return_gws": 1,
-        "return_date": null,
-        "m0": 15.0,
-        "evidence": [
-          "expand_m=90.0",
-          "recent=[90.0, 90.0, 90.0]",
-          "not in predicted XI; not Out/Banned/Doubt"
-        ]
-      },
-      {
-        "element": 564,
-        "name": "Scherpen",
-        "club": "Ipswich",
-        "bucket": "xi_omit",
-        "context_label": "suspected single-week rotation",
-        "return_gws": 1,
-        "return_date": null,
-        "m0": 0.0,
-        "evidence": [
-          "expand_m=72.0",
-          "recent=[90.0, 90.0, 0.0]",
-          "not in predicted XI; not Out/Banned/Doubt"
+          "xi_matched=11/11",
+          "not in resolved predicted XI; not Out/Banned/Doubt"
         ]
       },
       {
@@ -5118,7 +4861,8 @@
         "evidence": [
           "expand_m=50.6",
           "recent=[73.0, 90.0, 90.0]",
-          "not in predicted XI; not Out/Banned/Doubt"
+          "xi_matched=11/11",
+          "not in resolved predicted XI; not Out/Banned/Doubt"
         ]
       },
       {
@@ -5133,7 +4877,8 @@
         "evidence": [
           "expand_m=48.0",
           "recent=[60.0, 90.0, 90.0]",
-          "not in predicted XI; not Out/Banned/Doubt"
+          "xi_matched=11/11",
+          "not in resolved predicted XI; not Out/Banned/Doubt"
         ]
       },
       {
@@ -5148,22 +4893,8 @@
         "evidence": [
           "expand_m=90.0",
           "recent=[90.0, 90.0, 90.0]",
-          "not in predicted XI; not Out/Banned/Doubt"
-        ]
-      },
-      {
-        "element": 194,
-        "name": "Thomas-Asante",
-        "club": "Coventry",
-        "bucket": "xi_omit",
-        "context_label": "suspected single-week rotation",
-        "return_gws": 1,
-        "return_date": null,
-        "m0": 15.0,
-        "evidence": [
-          "expand_m=45.4",
-          "recent=[19.0, 17.0, 90.0]",
-          "not in predicted XI; not Out/Banned/Doubt"
+          "xi_matched=11/11",
+          "not in resolved predicted XI; not Out/Banned/Doubt"
         ]
       },
       {
@@ -5178,7 +4909,163 @@
         "evidence": [
           "expand_m=80.4",
           "recent=[90.0, 66.0, 90.0]",
-          "not in predicted XI; not Out/Banned/Doubt"
+          "xi_matched=11/11",
+          "not in resolved predicted XI; not Out/Banned/Doubt"
+        ]
+      },
+      {
+        "element": 605,
+        "name": "Yalcouy\u00e9",
+        "club": "Brighton",
+        "bucket": "xi_omit",
+        "context_label": "suspected single-week rotation",
+        "return_gws": 1,
+        "return_date": null,
+        "m0": 15.0,
+        "evidence": [
+          "expand_m=47.2",
+          "recent=[90.0, 64.0, 5.0]",
+          "xi_matched=11/11",
+          "not in resolved predicted XI; not Out/Banned/Doubt"
+        ]
+      },
+      {
+        "element": 575,
+        "name": "Yirenkyi",
+        "club": "Coventry",
+        "bucket": "xi_omit",
+        "context_label": "suspected single-week rotation",
+        "return_gws": 1,
+        "return_date": null,
+        "m0": 15.0,
+        "evidence": [
+          "expand_m=53.0",
+          "recent=[27.0, 17.0, 90.0]",
+          "xi_matched=11/11",
+          "not in resolved predicted XI; not Out/Banned/Doubt"
+        ]
+      },
+      {
+        "element": 516,
+        "name": "Bentancur",
+        "club": "Spurs",
+        "bucket": "banned",
+        "context_label": "suspended",
+        "return_gws": null,
+        "return_date": null,
+        "m0": 0.0,
+        "evidence": [
+          "ffscout:FFScout Banned: Bentancur"
+        ]
+      },
+      {
+        "element": 20,
+        "name": "Dowman",
+        "club": "Arsenal",
+        "bucket": "banned",
+        "context_label": "suspended",
+        "return_gws": null,
+        "return_date": "2027-11-29",
+        "m0": 0.0,
+        "evidence": [
+          "ffscout:FFScout Banned: Dowman",
+          "fpl:Suspended until 29 Nov",
+          "hint:fpl_return_date_due_still_out:Suspended until 29 Nov"
+        ]
+      },
+      {
+        "element": 269,
+        "name": "Sessegnon",
+        "club": "Fulham",
+        "bucket": "banned",
+        "context_label": "suspended",
+        "return_gws": null,
+        "return_date": null,
+        "m0": 0.0,
+        "evidence": [
+          "ffscout:FFScout Banned: Sessegnon (Ryan)"
+        ]
+      },
+      {
+        "element": 639,
+        "name": "Andr\u00e9s",
+        "club": "Brighton",
+        "bucket": "doubt",
+        "context_label": "doubt (75% chance)",
+        "return_gws": null,
+        "return_date": null,
+        "m0": 40.875,
+        "evidence": [
+          "ffscout:FFScout Doubt: Chema Andr\u00e9s (75%)"
+        ]
+      },
+      {
+        "element": 230,
+        "name": "Branthwaite",
+        "club": "Everton",
+        "bucket": "doubt",
+        "context_label": "doubt (75% chance)",
+        "return_gws": null,
+        "return_date": null,
+        "m0": 67.5,
+        "evidence": [
+          "ffscout:FFScout Doubt: Branthwaite (75%)"
+        ]
+      },
+      {
+        "element": 274,
+        "name": "Butland",
+        "club": "Hull",
+        "bucket": "doubt",
+        "context_label": "doubt (75% chance)",
+        "return_gws": null,
+        "return_date": null,
+        "m0": 67.5,
+        "evidence": [
+          "ffscout:FFScout Doubt: Butland (75%)",
+          "fpl:Arm injury - 50% chance of playing"
+        ]
+      },
+      {
+        "element": 8,
+        "name": "Calafiori",
+        "club": "Arsenal",
+        "bucket": "doubt",
+        "context_label": "doubt (75% chance)",
+        "return_gws": null,
+        "return_date": null,
+        "m0": 61.5,
+        "evidence": [
+          "ffscout:FFScout Doubt: Calafiori (75%)"
+        ]
+      },
+      {
+        "element": 103,
+        "name": "Dasilva",
+        "club": "Brentford",
+        "bucket": "doubt",
+        "context_label": "doubt (25% chance)",
+        "return_gws": null,
+        "return_date": null,
+        "m0": 22.5,
+        "evidence": [
+          "ffscout:FFScout Doubt: Dasilva (25%)",
+          "fpl:Hamstring injury - Unknown return date",
+          "hint:fpl_unknown_return:Unknown return date"
+        ]
+      },
+      {
+        "element": 487,
+        "name": "Dominguez",
+        "club": "Nott'm Forest",
+        "bucket": "doubt",
+        "context_label": "doubt (75% chance)",
+        "return_gws": null,
+        "return_date": null,
+        "m0": 0.75,
+        "evidence": [
+          "ffscout:FFScout Doubt: Nicol\u00e1s Dom\u00ednguez (75%)",
+          "fpl:Muscular injury - 75% chance of playing"
         ]
       }
     ],

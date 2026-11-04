@@ -1,15 +1,10 @@
 {
-  "task": "scout_context_combined_ffscout_fpl_blurb",
+  "task": "scout_context_rotation_tune_trial_gw09",
   "status": "done",
-  "as_of_utc": "2026-11-04T20:16:54Z",
-  "example_md": "reports/scout_context_example_gw09.md",
-  "example_json": "reports/scout_context_example_gw09.json",
-  "packet": "data/predictions/2026-27/gw09/scout_minutes_context.json",
-  "context_counts": {
-    "doubt": 30,
-    "injured_expected_back": 3,
-    "injured_unknown_return": 51,
-    "suspected_single_week_rotation": 36,
-    "suspended": 4
-  }
+  "as_of_utc": "2026-11-04T20:56:34Z",
+  "report": "reports/scout_context_tune_trial_gw09.md",
+  "before_rotation_n": 36,
+  "after_rotation_n": 25,
+  "precision_before": 0.611,
+  "precision_after": 0.8
 }

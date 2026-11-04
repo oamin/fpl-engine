@@ -60,8 +60,10 @@ Week-t uses step 0; t+1 uses step 1 (Out revert to expanding). Share freeze on.
 
 Example inspect: [`scout_context_example_gw09.md`](scout_context_example_gw09.md) · JSON highlights [`scout_context_example_gw09.json`](scout_context_example_gw09.json).
 
+**Rotation tune trial (GW9):** XI→id resolve + match-quality gate + GK guard + rest/cup veto. Rotation labels 36→25; precision vs actual minutes 61%→80%. Report: [`scout_context_tune_trial_gw09.md`](scout_context_tune_trial_gw09.md).
+
 ## Next
 
-- Tune XI-omit false positives (Raya/Alisson when cup XI etc.)  
+- Further cut remaining FPs (Guéhi/Botman-style nailed CBs on alternate XI)  
 - Opta-far horizon boards consume per-step maps  
 - Coach brief consumes overlay list only

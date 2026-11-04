@@ -443,6 +443,142 @@ def _recent_minutes(series: Sequence[float], n: int = 3) -> list[float]:
     return xs[-n:] if xs else []
 
 
+# FFScout XI label → FPL web_name when transliteration / marketing names diverge.
+_XI_WEB_ALIASES: dict[str, str] = {
+    "alisson": "a.becker",
+    "alisson becker": "a.becker",
+    "david raya": "raya",
+    "raya martin": "raya",
+    "virgil van dijk": "virgil",
+    "van dijk": "virgil",
+    "gabriel magalhaes": "gabriel",
+    "gabriel magalhães": "gabriel",
+    "ruben dias": "rúben",
+    "rúben dias": "rúben",
+    "bruno guimaraes": "bruno g.",
+    "bruno guimarães": "bruno g.",
+}
+
+
+_REST_CUP = re.compile(
+    r"\b(breather|rested|rotation|rotated|cup\s+side|midweek\s+rest|"
+    r"managed|minutes\s+managed|freshness|spared)\b",
+    re.I,
+)
+
+
+def xi_name_matches_element(ffs_name: str, el: Mapping[str, Any]) -> bool:
+    """True when an FFScout XI string refers to this FPL element."""
+    if match_ffs_name_to_fpl(ffs_name, [dict(el)]) is not None:
+        return True
+    ffs_n = _norm_player(ffs_name)
+    web = _norm_player(str(el.get("web_name") or ""))
+    first = _norm_player(str(el.get("first_name") or ""))
+    second = _norm_player(str(el.get("second_name") or ""))
+    if not ffs_n:
+        return False
+    alias = _XI_WEB_ALIASES.get(ffs_n)
+    if alias and web == alias:
+        return True
+    if web and (web == ffs_n or ffs_n.startswith(web + " ") or web in ffs_n.split()):
+        return True
+    # "A.Becker" compact vs "Alisson Becker"
+    web_c = web.replace(".", "").replace(" ", "")
+    ffs_c = ffs_n.replace(" ", "")
+    if web_c and (web_c in ffs_c or ffs_c in web_c):
+        return True
+    if second and second in ffs_n.split():
+        if not first or first in ffs_n or first[:1] == (ffs_n.split()[0][:1] if ffs_n else ""):
+            return True
+    return False
+
+
+def resolve_predicted_xi(
+    club: Mapping[str, Any],
+    candidates: Sequence[Mapping[str, Any]],
+) -> dict[str, Any]:
+    """Map predicted XI names → FPL element ids; report match quality."""
+    xi_names = [str(n) for n in (club.get("predicted_xi") or [])]
+    matched: dict[int, str] = {}
+    unmatched: list[str] = []
+    by_pos: dict[int, list[int]] = {}
+    for xn in xi_names:
+        hit = None
+        for el in candidates:
+            if xi_name_matches_element(xn, el):
+                hit = el
+                break
+        if hit is None:
+            # fallback to library matcher across candidates
+            hit = match_ffs_name_to_fpl(xn, list(candidates))
+        if hit is None:
+            unmatched.append(xn)
+            continue
+        eid = int(hit["id"])
+        matched[eid] = xn
+        pos = int(hit.get("element_type") or 0)
+        by_pos.setdefault(pos, []).append(eid)
+    return {
+        "xi_names": xi_names,
+        "matched_ids": set(matched),
+        "matched": matched,
+        "unmatched": unmatched,
+        "n_xi": len(xi_names),
+        "n_matched": len(matched),
+        "by_pos": by_pos,
+        "ok": len(matched) >= max(9, len(xi_names) - 2) if xi_names else False,
+    }
+
+
+def blurb_rest_cup_veto(player_name: str, blurb: str) -> str | None:
+    """If club news implies rest/cup rather than demotion, return a veto reason."""
+    if not blurb:
+        return None
+    about = _sentences_about(player_name, blurb)
+    for sent in about or []:
+        if _REST_CUP.search(sent):
+            return sent[:180]
+    return None
+
+
+def score_rotation_against_minutes(
+    rows: Sequence[ScoutContextRow],
+    *,
+    actual_minutes: Mapping[int, float],
+    low_minutes: float = 30.0,
+) -> dict[str, Any]:
+    """Precision of rotation labels vs actual GW minutes (low = hit)."""
+    out: dict[str, Any] = {}
+    for ctx in (CTX_ROTATION_SINGLE, CTX_ROTATION_SUSTAINED):
+        subset = [r for r in rows if r.context == ctx]
+        if not subset:
+            out[ctx] = {"n": 0}
+            continue
+        hits = [
+            r
+            for r in subset
+            if float(actual_minutes.get(int(r.element), 99.0)) <= float(low_minutes)
+        ]
+        misses = [
+            {
+                "element": r.element,
+                "name": r.name,
+                "club": r.club,
+                "actual_m": float(actual_minutes.get(int(r.element), -1.0)),
+                "expand_m": r.expand_m,
+            }
+            for r in subset
+            if float(actual_minutes.get(int(r.element), 99.0)) > float(low_minutes)
+        ]
+        out[ctx] = {
+            "n": len(subset),
+            "n_low_minutes": len(hits),
+            "precision": len(hits) / len(subset) if subset else None,
+            "false_positives": misses[:20],
+        }
+    return out
+
+
 def classify_context(
     *,
     bucket: str,
@@ -665,55 +801,95 @@ def enrich_overlays_with_context(
         rows.append(label)
         counts[ctx] = counts.get(ctx, 0) + 1
 
-    # Predicted-XI omissions → rotation contexts (not already overlaid)
+    # Predicted-XI omissions → rotation contexts (not already overlaid).
+    # Tuned path: resolve XI → element ids first; require club match quality;
+    # GK slot sanity; rest/cup blurb veto; single vs sustained from recent mins.
     n_rot = 0
+    n_rot_veto_rest = 0
+    n_rot_skip_xi_quality = 0
+    xi_quality: list[dict[str, Any]] = []
     if include_xi_omissions:
+        from src.live.news_tags import minutes_for_tag, prior_minutes
+        from src.live.scout_minutes import ScoutOverlay
+
         overlaid = set(overlays)
         for club in ffs_payload.get("clubs") or []:
             club_name = str(club.get("club") or "")
             cnorm = str(club.get("club_norm") or norm_team(club_name))
-            xi = club_xi.get(cnorm) or set()
             listed = club_listed.get(cnorm) or set()
             cands = by_club.get(cnorm) or []
+            resolved = resolve_predicted_xi(club, cands)
+            xi_quality.append(
+                {
+                    "club": club_name,
+                    "n_xi": resolved["n_xi"],
+                    "n_matched": resolved["n_matched"],
+                    "ok": resolved["ok"],
+                    "unmatched": list(resolved["unmatched"])[:6],
+                }
+            )
+            if not resolved["ok"]:
+                n_rot_skip_xi_quality += 1
+                continue
+            xi_ids: set[int] = set(resolved["matched_ids"])
+            gk_ids = set(resolved["by_pos"].get(1) or [])
+
             for el in cands:
                 eid = int(el["id"])
-                if eid in overlaid:
+                if eid in overlaid or eid in xi_ids:
                     continue
                 expand = float(baseline_m.get(eid, 0.0))
                 if expand < float(rotation_expand_min):
                     continue
                 web = str(el.get("web_name") or "")
-                second = str(el.get("second_name") or "")
-                # Must be identifiable on the FFS page: match against XI∪listed fails
-                # and player is a regular — treat as left out of predicted XI.
-                names = {_norm_player(web), _norm_player(second)}
-                first = _norm_player(str(el.get("first_name") or ""))
-                if first and second:
-                    names.add(_norm_player(f"{first} {second}"))
-                names.discard("")
-                if names & xi:
+                # Listed Out/Banned/Doubt under any FFS spelling → skip (injury path)
+                listed_hit = False
+                for raw in list(club.get("out") or []) + list(club.get("banned") or []):
+                    if xi_name_matches_element(str(raw), el):
+                        listed_hit = True
+                        break
+                if not listed_hit:
+                    for d in club.get("doubts") or []:
+                        dn = d.get("name") if isinstance(d, dict) else d
+                        if xi_name_matches_element(str(dn), el):
+                            listed_hit = True
+                            break
+                if listed_hit:
                     continue
+                # Norm-set fallback for odd spellings already in listed
+                names = {
+                    _norm_player(web),
+                    _norm_player(str(el.get("second_name") or "")),
+                }
+                names.discard("")
                 if names & listed:
                     continue
-                # Also try FFScout-style match against XI names
-                xi_hit = False
-                for xn in club.get("predicted_xi") or []:
-                    if match_ffs_name_to_fpl(str(xn), [el]) is not None:
-                        xi_hit = True
-                        break
-                if xi_hit:
-                    continue
-                # Skip transferred / unavailable FPL
+
                 st = str(el.get("status") or "")
                 news = str(el.get("news") or "")
                 if st == "u" or "joined" in news.lower():
                     continue
+
+                # GK: if XI already has a matched keeper, omit other GKs only when
+                # expand is huge *and* recent minutes collapsed — else cup backup noise.
+                pos_i = int(el.get("element_type") or 0)
                 recent = _recent_minutes(series_by_element.get(eid) or [])
-                # Only flag if they were recently involved OR strong expand regular
+                if pos_i == 1 and gk_ids:
+                    if not recent or max(recent[-3:] or [0.0]) >= 45.0:
+                        continue
+
                 if not recent or max(recent[-3:] or [0.0]) < 45.0:
-                    # still allow expand≥60′
                     if expand < 60.0:
                         continue
+
+                blurb = club_blurbs.get(cnorm, "")
+                veto = blurb_rest_cup_veto(web, blurb) or blurb_rest_cup_veto(
+                    str(el.get("second_name") or web), blurb
+                )
+                if veto:
+                    n_rot_veto_rest += 1
+                    continue
+
                 ctx, detail = classify_context(
                     bucket="xi_omit",
                     tag="benched",
@@ -724,19 +900,11 @@ def enrich_overlays_with_context(
                     expand_m=expand,
                     recent=recent,
                 )
-                # Soft m0: rotation → benched minutes via prior path left to caller;
-                # here we only annotate context rows + optional soft overlay.
-                from src.live.news_tags import minutes_for_tag, prior_minutes
-
-                pos = {1: "GKP", 2: "DEF", 3: "MID", 4: "FWD"}.get(
-                    int(el.get("element_type") or 3), "MID"
-                )
+                pos = {1: "GKP", 2: "DEF", 3: "MID", 4: "FWD"}.get(pos_i, "MID")
                 prior = prior_minutes(list(series_by_element.get(eid) or []))
                 m_val = minutes_for_tag("benched", pos, prior, None, st or "a")
                 if m_val is None:
                     m_val = 15.0
-                # Local import avoids cycle at module load (scout_minutes → scout_context).
-                from src.live.scout_minutes import ScoutOverlay
 
                 ov = ScoutOverlay(
                     element=eid,
@@ -760,7 +928,8 @@ def enrich_overlays_with_context(
                 ov.evidence = [
                     f"expand_m={expand:.1f}",
                     f"recent={recent}",
-                    "not in predicted XI; not Out/Banned/Doubt",
+                    f"xi_matched={resolved['n_matched']}/{resolved['n_xi']}",
+                    "not in resolved predicted XI; not Out/Banned/Doubt",
                 ]
                 if ctx == CTX_ROTATION_SINGLE:
                     ov.force_steps = {0: float(m_val)}
@@ -791,9 +960,19 @@ def enrich_overlays_with_context(
     diag = {
         "n_context_rows": len(rows),
         "n_rotation_overlays": n_rot,
+        "n_rotation_veto_rest_cup": n_rot_veto_rest,
+        "n_clubs_skipped_xi_quality": n_rot_skip_xi_quality,
+        "xi_match_quality": xi_quality,
         "context_counts": dict(sorted(counts.items())),
         "n_with_return_gws": sum(1 for r in rows if r.return_gws is not None),
         "n_with_blurb_evidence": sum(1 for r in rows if r.blurb_snippet),
         "n_with_fpl_news": sum(1 for r in rows if r.fpl_news),
+        "rotation_tune": {
+            "xi_resolve_first": True,
+            "min_xi_matched": "n_matched >= max(9, n_xi-2)",
+            "gk_slot_guard": True,
+            "rest_cup_blurb_veto": True,
+            "sustained_rule": "expand>=45 and last 3 GWs all <=30",
+        },
     }
     return overlays, rows, diag
