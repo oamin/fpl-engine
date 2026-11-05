@@ -54,6 +54,11 @@ Pre-deadline squad advisor under 2026/27 rules. Cursor implements and screens; G
 accountant → LLM coach as product layers on those boards (see **Current working
 plan** above).
 
+**Scorer note (2026-11-05):** scout share-freeze / renorm / handoff is getting too
+patchy for outs→replacements. Further share patches parked — see ideas
+“rethink pots × rates × minutes”. Scout keeps owning **minutes**; pot×rate law
+may need a clean redesign (not more freeze knobs).
+
 ## Locked stack — Numagent 2.0
 
 | Layer | What | Status | Entry |

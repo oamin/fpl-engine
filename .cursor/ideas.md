@@ -22,6 +22,23 @@ mean `score_xp_v2` boards. That is the live + strategiser scoring spine.
 Do **not** promote generative MC-mean as the mean board. See
 `.cursor/context.md` → Current working plan.
 
+## Parked — rethink pots × rates × minutes (2026-11-05)
+
+Scout share-freeze + renorm + replacement handoff got too intricate (Saka out
+⇒ mass leak; global renorm ⇒ Havertz-style over-absorb; directed handoff ⇒
+special cases). **Do not patch further.** Need a clean law that:
+
+- stays coupled to book/Opta team pots;
+- lets minutes move without inventing attack for the wrong teammates;
+- has simple low-minute rate safety (existing M0 / baseline prior).
+
+Candidate direction (not implemented): **XI-gated pot allocation** — allocate
+`G_team` only among a small expected-on-pitch set (predicted/expand XI),
+weights `∝ r·u(m)` with shrunk `r`; outs drop out of the set; stand-ins enter
+only if scout/XI puts them there. Appear still uses raw `m`. Park until a
+pre-registered scorer comparison is opened. Scout keeps owning **minutes**
+either way.
+
 ## Parked — scout partner blurbs + cup_starter (2026-11-05)
 
 Removed from the live scout packet (weak for scoring). Module
