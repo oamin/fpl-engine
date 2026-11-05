@@ -24,11 +24,15 @@ roll over `M`, not a second invented λ axis. Contaminated diagnostic:
 
 ## Dig — next-GW event sequence NN (outline 2026-11-05)
 
-Small ablation only: does last-K GW component history add predictive value
-beyond as-of player/fixture context? MLP-B (no sequence) vs MLP/GRU-C
-(+ sequence). Shared across players. Chronological as-of. Not a scorer
-replace. Full input/assessment outline in the agent note / to be coded as
-`src/eval/next_event_sequence_dig.py` when opened. Live 2026/27 holdout off.
+Small ablation: discrete GW channel sequences (the bar-plot ticks), **not**
+expanding means/rates. Preserve per-GW discreteness: last-K vectors of
+points / minutes / G / A / CS / GC / DefCon / bonus / cards / appear flags.
+Fixture context for \(t\) is allowed (home/away, opponent id/strength) —
+that is not an expanding player summary. Arms: B = position + fixture-\(t\)
+only; C = B + last-K discrete channels. Assess event log loss / Brier
+(G, A, Appear60, DefCon, …), C vs B, chronological as-of. Not a scorer
+replace. Live 2026/27 holdout off. Code when opened:
+`src/eval/next_event_sequence_dig.py`.
 
 ## Dig — player expanding actuals view (2026-11-05)
 
