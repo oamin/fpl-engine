@@ -7,10 +7,10 @@
   "protocol": "scout_minutes_ffscout_v1",
   "share_policy": "share_freeze",
   "lock": "reports/SCOUT_M_SHARE_FREEZE_LOCK.md",
-  "decay_rho": 0.85,
-  "decay_law": "m(h)=expand+(m0-expand)*rho**h",
+  "horizon_law": "pin_then_snap_expand",
+  "horizon_law_detail": "m(h)=force_steps[h] | m0 if h<return_gws or h==0 | else expand",
   "baseline_n": 669,
-  "n_overlays": 105,
+  "n_overlays": 107,
   "baseline_m": {
     "1": 90.0,
     "2": 0.0,
@@ -695,11 +695,13 @@
       "force_steps": {},
       "context": "injured_unknown_return",
       "context_label": "injured, unknown return",
-      "context_detail": "out; no parsed return horizon",
+      "context_detail": "FPL unknown return date",
       "return_gws": null,
       "return_date": null,
       "evidence": [
-        "ffscout:FFScout Out: Saliba"
+        "ffscout:FFScout Out: Saliba",
+        "fpl:Back injury - Unknown return date",
+        "hint:fpl_unknown_return:Unknown return date"
       ],
       "partner_blurb": "",
       "anti_element": null,
@@ -746,13 +748,13 @@
       "anti_corr": -0.9301478185039179,
       "path": [
         15.0,
-        20.25,
-        24.712500000000002,
-        28.505625000000002,
-        31.729781250000002,
-        34.4703140625,
-        36.799766953125,
-        38.77980191015625
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0
       ]
     },
     "8": {
@@ -780,13 +782,13 @@
       "anti_corr": -0.45074860121929866,
       "path": [
         48.25,
-        52.431250000000006,
-        55.985312500000006,
-        59.006265625,
-        61.57407578125,
-        63.7567144140625,
-        65.61195725195313,
-        67.18891366416015
+        76.125,
+        76.125,
+        76.125,
+        76.125,
+        76.125,
+        76.125,
+        76.125
       ]
     },
     "12": {
@@ -801,13 +803,11 @@
       "force_steps": {},
       "context": "injured_unknown_return",
       "context_label": "injured, unknown return; Minutes anti-correlated with Merino (\u03c1=-0.89) \u2014 when one sits, the other tends to take minutes",
-      "context_detail": "FPL unknown return date",
+      "context_detail": "out; no parsed return horizon",
       "return_gws": null,
       "return_date": null,
       "evidence": [
         "ffscout:FFScout Out: Saka",
-        "fpl:Thigh injury - Unknown return date",
-        "hint:fpl_unknown_return:Unknown return date",
         "partner:Minutes anti-correlated with Merino (\u03c1=-0.89) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with Merino (\u03c1=-0.89) \u2014 when one sits, the other tends to take minutes",
@@ -816,13 +816,13 @@
       "anti_corr": -0.8850090372030093,
       "path": [
         0.0,
-        11.175000000000004,
-        20.673750000000005,
-        28.747687500000005,
-        35.61053437500001,
-        41.44395421875,
-        46.40236108593751,
-        50.61700692304688
+        74.5,
+        74.5,
+        74.5,
+        74.5,
+        74.5,
+        74.5,
+        74.5
       ]
     },
     "13": {
@@ -850,13 +850,13 @@
       "anti_corr": -0.6158524222399746,
       "path": [
         64.75,
-        67.6,
-        70.02250000000001,
-        72.081625,
-        73.83188125000001,
-        75.3195990625,
-        76.584159203125,
-        77.65903532265625
+        83.75,
+        83.75,
+        83.75,
+        83.75,
+        83.75,
+        83.75,
+        83.75
       ]
     },
     "16": {
@@ -884,13 +884,13 @@
       "anti_corr": -0.8629652172282826,
       "path": [
         56.25,
-        52.4625,
-        49.243125,
-        46.50665625,
-        44.1806578125,
-        42.203559140624996,
-        40.523025269531246,
-        39.09457147910156
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0
       ]
     },
     "20": {
@@ -907,11 +907,9 @@
       "context_label": "suspended; Minutes anti-correlated with Saka (\u03c1=-0.72) \u2014 when one sits, the other tends to take minutes",
       "context_detail": "suspended / banned",
       "return_gws": null,
-      "return_date": "2027-11-29",
+      "return_date": null,
       "evidence": [
         "ffscout:FFScout Banned: Dowman",
-        "fpl:Suspended until 29 Nov",
-        "hint:fpl_return_date_due_still_out:Suspended until 29 Nov",
         "partner:Minutes anti-correlated with Saka (\u03c1=-0.72) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with Saka (\u03c1=-0.72) \u2014 when one sits, the other tends to take minutes",
@@ -920,13 +918,13 @@
       "anti_corr": -0.7231320031744206,
       "path": [
         0.0,
-        0.3562500000000002,
-        0.6590625000000001,
-        0.9164531250000001,
-        1.1352351562500003,
-        1.3211998828125002,
-        1.4792699003906251,
-        1.6136294153320314
+        2.375,
+        2.375,
+        2.375,
+        2.375,
+        2.375,
+        2.375,
+        2.375
       ]
     },
     "28": {
@@ -941,13 +939,11 @@
       "force_steps": {},
       "context": "injured_unknown_return",
       "context_label": "injured, unknown return; Minutes anti-correlated with S\u00e1nchez (\u03c1=-0.65) \u2014 when one sits, the other tends to take minutes",
-      "context_detail": "FPL unknown return date",
+      "context_detail": "out; no parsed return horizon",
       "return_gws": null,
       "return_date": null,
       "evidence": [
         "ffscout:FFScout Out: Martinez",
-        "fpl:Head injury - Unknown return date",
-        "hint:fpl_unknown_return:Unknown return date",
         "partner:Minutes anti-correlated with S\u00e1nchez (\u03c1=-0.65) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with S\u00e1nchez (\u03c1=-0.65) \u2014 when one sits, the other tends to take minutes",
@@ -956,13 +952,13 @@
       "anti_corr": -0.648634084962353,
       "path": [
         0.0,
-        9.825000000000003,
-        18.176250000000003,
-        25.274812500000003,
-        31.308590625000008,
-        36.43730203125,
-        40.796706726562505,
-        44.502200717578134
+        65.5,
+        65.5,
+        65.5,
+        65.5,
+        65.5,
+        65.5,
+        65.5
       ]
     },
     "33": {
@@ -985,7 +981,7 @@
       "evidence": [
         "expand_m=55.1",
         "recent=[90.0, 90.0, 0.0]",
-        "xi_matched=11/11",
+        "xi_matched=10/11",
         "not in resolved predicted XI; not Out/Banned/Doubt",
         "partner:Minutes anti-correlated with Pau (\u03c1=-0.99) \u2014 when one sits, the other tends to take minutes"
       ],
@@ -995,13 +991,13 @@
       "anti_corr": -0.9941440618033953,
       "path": [
         15.0,
-        21.018750000000004,
-        26.134687500000002,
-        30.483234375000002,
-        34.17949921875,
-        37.321324335937504,
-        39.99187568554688,
-        42.261844332714844
+        55.125,
+        55.125,
+        55.125,
+        55.125,
+        55.125,
+        55.125,
+        55.125
       ]
     },
     "41": {
@@ -1024,7 +1020,7 @@
       "evidence": [
         "expand_m=69.9",
         "recent=[63.0, 71.0, 24.0]",
-        "xi_matched=11/11",
+        "xi_matched=10/11",
         "not in resolved predicted XI; not Out/Banned/Doubt",
         "partner:Minutes anti-correlated with Mbaye (\u03c1=-0.82) \u2014 when one sits, the other tends to take minutes"
       ],
@@ -1034,13 +1030,13 @@
       "anti_corr": -0.821248380159602,
       "path": [
         15.0,
-        23.231250000000003,
-        30.227812500000006,
-        36.174890625,
-        41.22990703125001,
-        45.5266709765625,
-        49.17892033007813,
-        52.28333228056641
+        69.875,
+        69.875,
+        69.875,
+        69.875,
+        69.875,
+        69.875,
+        69.875
       ]
     },
     "43": {
@@ -1073,13 +1069,13 @@
       "anti_corr": -0.6762747073690129,
       "path": [
         15.0,
-        23.775,
-        31.233750000000008,
-        37.573687500000005,
-        42.96263437500001,
-        47.54323921875,
-        51.4367533359375,
-        54.74624033554688
+        73.5,
+        73.5,
+        73.5,
+        73.5,
+        73.5,
+        73.5,
+        73.5
       ]
     },
     "48": {
@@ -1131,12 +1127,12 @@
       "context": "doubt",
       "context_label": "doubt (25% chance)",
       "context_detail": "doubt chance=25.0",
-      "return_gws": 0,
-      "return_date": "2027-10-31",
+      "return_gws": null,
+      "return_date": null,
       "evidence": [
         "ffscout:FFScout Doubt: Milosavljevic (25%)",
-        "fpl:Thigh injury - Expected back 31 Oct",
-        "hint:fpl_expected_back:Expected back 31 Oct"
+        "fpl:Thigh injury - Unknown return date",
+        "hint:fpl_unknown_return:Unknown return date"
       ],
       "partner_blurb": "",
       "anti_element": null,
@@ -1144,13 +1140,13 @@
       "anti_corr": null,
       "path": [
         22.5,
-        19.125,
-        16.256249999999998,
-        13.817812499999999,
-        11.745140624999998,
-        9.983369531249998,
-        8.485864101562498,
-        7.212984486328123
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
       ]
     },
     "65": {
@@ -1197,17 +1193,19 @@
       "reason": "FFScout Out: Scott",
       "source": "ffscout",
       "chance": 0.0,
-      "force_steps": {},
-      "context": "injured_unknown_return",
-      "context_label": "injured, unknown return; Minutes anti-correlated with Gannon-Doak (\u03c1=-0.68) \u2014 when one sits, the other tends to take minutes",
-      "context_detail": "out; no parsed return horizon",
-      "return_gws": null,
-      "return_date": "2027-11-21",
+      "force_steps": {
+        "0": 0.0
+      },
+      "context": "injured_expected_back",
+      "context_label": "injured, expected back in 1 week; Minutes anti-correlated with Gannon-Doak (\u03c1=-0.68) \u2014 when one sits, the other tends to take minutes",
+      "context_detail": "return_gws=1 via blurb_until_gw",
+      "return_gws": 1,
+      "return_date": null,
       "evidence": [
         "ffscout:FFScout Out: Scott",
-        "fpl:Thigh injury - Expected back 21 Nov",
+        "fpl:Thigh injury - Unknown return date",
         "blurb:Alex Scott (tendon) won't return until Gameweek 10 at the earliest.",
-        "hint:fpl_return_date_due_still_out:Expected back 21 Nov",
+        "hint:blurb_until_gw:until Gameweek 10 at the earliest",
         "partner:Minutes anti-correlated with Gannon-Doak (\u03c1=-0.68) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with Gannon-Doak (\u03c1=-0.68) \u2014 when one sits, the other tends to take minutes",
@@ -1216,13 +1214,13 @@
       "anti_corr": -0.6829964516530469,
       "path": [
         0.0,
-        8.362500000000004,
-        15.470625000000005,
-        21.512531250000002,
-        26.648151562500004,
-        31.013428828125004,
-        34.72391450390626,
-        37.87782732832032
+        55.75,
+        55.75,
+        55.75,
+        55.75,
+        55.75,
+        55.75,
+        55.75
       ]
     },
     "76": {
@@ -1237,13 +1235,11 @@
       "force_steps": {},
       "context": "injured_unknown_return",
       "context_label": "injured, unknown return; Minutes anti-correlated with Adams (\u03c1=-0.66) \u2014 when one sits, the other tends to take minutes",
-      "context_detail": "FPL unknown return date",
+      "context_detail": "out; no parsed return horizon",
       "return_gws": null,
       "return_date": null,
       "evidence": [
         "ffscout:FFScout Out: T\u00f3th",
-        "fpl:Hamstring injury - Unknown return date",
-        "hint:fpl_unknown_return:Unknown return date",
         "partner:Minutes anti-correlated with Adams (\u03c1=-0.66) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with Adams (\u03c1=-0.66) \u2014 when one sits, the other tends to take minutes",
@@ -1252,13 +1248,13 @@
       "anti_corr": -0.6586800047409483,
       "path": [
         0.0,
-        0.3187500000000001,
-        0.5896875000000001,
-        0.8199843750000002,
-        1.0157367187500002,
-        1.1821262109375001,
-        1.323557279296875,
-        1.443773687402344
+        2.125,
+        2.125,
+        2.125,
+        2.125,
+        2.125,
+        2.125,
+        2.125
       ]
     },
     "89": {
@@ -1273,13 +1269,11 @@
       "force_steps": {},
       "context": "injured_unknown_return",
       "context_label": "injured, unknown return; Minutes anti-correlated with Hickey (\u03c1=-0.55) \u2014 when one sits, the other tends to take minutes",
-      "context_detail": "FPL unknown return date",
+      "context_detail": "out; no parsed return horizon",
       "return_gws": null,
       "return_date": null,
       "evidence": [
         "ffscout:FFScout Out: Henry",
-        "fpl:Hip injury - Unknown return date",
-        "hint:fpl_unknown_return:Unknown return date",
         "partner:Minutes anti-correlated with Hickey (\u03c1=-0.55) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with Hickey (\u03c1=-0.55) \u2014 when one sits, the other tends to take minutes",
@@ -1288,13 +1282,13 @@
       "anti_corr": -0.5459044610153565,
       "path": [
         0.0,
-        0.037500000000000006,
-        0.06937500000000002,
-        0.09646875000000002,
-        0.11949843750000003,
-        0.13907367187500003,
-        0.15571262109375,
-        0.1698557279296875
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25
       ]
     },
     "99": {
@@ -1323,13 +1317,13 @@
       "anti_corr": null,
       "path": [
         22.5,
-        19.125,
-        16.256249999999998,
-        13.817812499999999,
-        11.745140624999998,
-        9.983369531249998,
-        8.485864101562498,
-        7.212984486328123
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
       ]
     },
     "100": {
@@ -1346,11 +1340,9 @@
       "context_label": "injured, unknown return; Minutes anti-correlated with M.Sangar\u00e9 (\u03c1=-0.60) \u2014 when one sits, the other tends to take minutes",
       "context_detail": "out; no parsed return horizon",
       "return_gws": null,
-      "return_date": "2027-11-23",
+      "return_date": null,
       "evidence": [
         "ffscout:FFScout Out: Carvalho",
-        "fpl:Knock - Expected back 23 Nov",
-        "hint:fpl_return_date_due_still_out:Expected back 23 Nov",
         "partner:Minutes anti-correlated with M.Sangar\u00e9 (\u03c1=-0.60) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with M.Sangar\u00e9 (\u03c1=-0.60) \u2014 when one sits, the other tends to take minutes",
@@ -1359,13 +1351,13 @@
       "anti_corr": -0.5952831295677713,
       "path": [
         0.0,
-        0.05625000000000002,
-        0.10406250000000006,
-        0.14470312500000004,
-        0.17924765625000005,
-        0.2086105078125,
-        0.23356893164062503,
-        0.25478359189453126
+        0.375,
+        0.375,
+        0.375,
+        0.375,
+        0.375,
+        0.375,
+        0.375
       ]
     },
     "102": {
@@ -1401,11 +1393,11 @@
         0.0,
         0.0,
         0.0,
-        16.110281250000003,
-        19.956239062500003,
-        23.225303203125,
-        26.004007722656254,
-        28.365906564257816
+        41.75,
+        41.75,
+        41.75,
+        41.75,
+        41.75
       ]
     },
     "103": {
@@ -1434,13 +1426,13 @@
       "anti_corr": null,
       "path": [
         22.5,
-        19.125,
-        16.256249999999998,
-        13.817812499999999,
-        11.745140624999998,
-        9.983369531249998,
-        8.485864101562498,
-        7.212984486328123
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
       ]
     },
     "105": {
@@ -1463,7 +1455,7 @@
       "evidence": [
         "expand_m=56.9",
         "recent=[84.0, 76.0, 28.0]",
-        "xi_matched=11/11",
+        "xi_matched=10/11",
         "not in resolved predicted XI; not Out/Banned/Doubt",
         "partner:Minutes anti-correlated with O.Dango (\u03c1=-0.86) \u2014 when one sits, the other tends to take minutes"
       ],
@@ -1473,13 +1465,13 @@
       "anti_corr": -0.8580699242941585,
       "path": [
         15.0,
-        21.28125,
-        26.620312500000004,
-        31.158515625000003,
-        35.01598828125,
-        38.29484003906251,
-        41.08186403320313,
-        43.45083442822266
+        56.875,
+        56.875,
+        56.875,
+        56.875,
+        56.875,
+        56.875,
+        56.875
       ]
     },
     "107": {
@@ -1534,7 +1526,6 @@
       "return_date": null,
       "evidence": [
         "ffscout:FFScout Doubt: Kadioglu (75%)",
-        "fpl:Hip injury - 75% chance of playing",
         "partner:Minutes anti-correlated with Costinha (\u03c1=-0.75) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with Costinha (\u03c1=-0.75) \u2014 when one sits, the other tends to take minutes",
@@ -1543,13 +1534,13 @@
       "anti_corr": -0.7541119500530008,
       "path": [
         46.25,
-        49.00625,
-        51.3490625,
-        53.340453125,
-        55.03313515625,
-        56.4719148828125,
-        57.69487765039062,
-        58.734396002832035
+        64.625,
+        64.625,
+        64.625,
+        64.625,
+        64.625,
+        64.625,
+        64.625
       ]
     },
     "121": {
@@ -1566,11 +1557,11 @@
       "context_label": "injured, unknown return",
       "context_detail": "out; no parsed return horizon",
       "return_gws": null,
-      "return_date": "2027-11-22",
+      "return_date": "2027-10-18",
       "evidence": [
         "ffscout:FFScout Out: Mitoma",
-        "fpl:Hamstring injury - Expected back 22 Nov",
-        "hint:fpl_return_date_due_still_out:Expected back 22 Nov"
+        "fpl:Hamstring injury - Expected back 18 Oct",
+        "hint:fpl_return_date_due_still_out:Expected back 18 Oct"
       ],
       "partner_blurb": "",
       "anti_element": null,
@@ -1601,11 +1592,11 @@
       "context_label": "doubt (25% chance); Minutes anti-correlated with Andr\u00e9s (\u03c1=-0.42) \u2014 when one sits, the other tends to take minutes",
       "context_detail": "doubt chance=25.0",
       "return_gws": 0,
-      "return_date": "2027-11-22",
+      "return_date": "2027-10-18",
       "evidence": [
         "ffscout:FFScout Doubt: Yohanna (25%)",
-        "fpl:Unspecified injury - Expected back 22 Nov",
-        "hint:fpl_expected_back:Expected back 22 Nov",
+        "fpl:Unspecified injury - Expected back 18 Oct",
+        "hint:fpl_expected_back:Expected back 18 Oct",
         "partner:Minutes anti-correlated with Andr\u00e9s (\u03c1=-0.42) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with Andr\u00e9s (\u03c1=-0.42) \u2014 when one sits, the other tends to take minutes",
@@ -1614,13 +1605,13 @@
       "anti_corr": -0.4159943700228459,
       "path": [
         3.0,
-        2.775,
-        2.5837499999999998,
-        2.4211875,
-        2.283009375,
-        2.16555796875,
-        2.0657242734374996,
-        1.980865632421875
+        1.5,
+        1.5,
+        1.5,
+        1.5,
+        1.5,
+        1.5,
+        1.5
       ]
     },
     "137": {
@@ -1649,13 +1640,13 @@
       "anti_corr": null,
       "path": [
         22.5,
-        19.125,
-        16.256249999999998,
-        13.817812499999999,
-        11.745140624999998,
-        9.983369531249998,
-        8.485864101562498,
-        7.212984486328123
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
       ]
     },
     "139": {
@@ -1670,13 +1661,13 @@
       "force_steps": {},
       "context": "injured_unknown_return",
       "context_label": "injured, unknown return",
-      "context_detail": "FPL unknown return date",
+      "context_detail": "out; no parsed return horizon",
       "return_gws": null,
-      "return_date": null,
+      "return_date": "2027-10-18",
       "evidence": [
         "ffscout:FFScout Out: Ferguson",
-        "fpl:Ankle injury - Unknown return date",
-        "hint:fpl_unknown_return:Unknown return date"
+        "fpl:Ankle injury - Expected back 18 Oct",
+        "hint:fpl_return_date_due_still_out:Expected back 18 Oct"
       ],
       "partner_blurb": "",
       "anti_element": null,
@@ -1720,13 +1711,13 @@
       "anti_corr": -0.5078311201496533,
       "path": [
         0.0,
-        5.475000000000001,
-        10.128750000000004,
-        14.084437500000003,
-        17.446771875000003,
-        20.30475609375,
-        22.734042679687505,
-        24.798936277734377
+        36.5,
+        36.5,
+        36.5,
+        36.5,
+        36.5,
+        36.5,
+        36.5
       ]
     },
     "147": {
@@ -1741,13 +1732,11 @@
       "force_steps": {},
       "context": "injured_unknown_return",
       "context_label": "injured, unknown return",
-      "context_detail": "FPL unknown return date",
+      "context_detail": "out; no parsed return horizon",
       "return_gws": null,
       "return_date": null,
       "evidence": [
-        "ffscout:FFScout Out: Tosin",
-        "fpl:Calf injury - Unknown return date",
-        "hint:fpl_unknown_return:Unknown return date"
+        "ffscout:FFScout Out: Tosin"
       ],
       "partner_blurb": "",
       "anti_element": null,
@@ -1755,13 +1744,13 @@
       "anti_corr": null,
       "path": [
         0.0,
-        1.40625,
-        2.601562500000001,
-        3.6175781250000005,
-        4.481191406250001,
-        5.2152626953125,
-        5.839223291015625,
-        6.3695897973632825
+        9.375,
+        9.375,
+        9.375,
+        9.375,
+        9.375,
+        9.375,
+        9.375
       ]
     },
     "148": {
@@ -1776,13 +1765,11 @@
       "force_steps": {},
       "context": "injured_unknown_return",
       "context_label": "injured, unknown return; Minutes anti-correlated with Chavarria (\u03c1=-0.94) \u2014 when one sits, the other tends to take minutes",
-      "context_detail": "FPL unknown return date",
+      "context_detail": "out; no parsed return horizon",
       "return_gws": null,
       "return_date": null,
       "evidence": [
         "ffscout:FFScout Out: Hato",
-        "fpl:Unspecified injury - Unknown return date",
-        "hint:fpl_unknown_return:Unknown return date",
         "partner:Minutes anti-correlated with Chavarria (\u03c1=-0.94) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with Chavarria (\u03c1=-0.94) \u2014 when one sits, the other tends to take minutes",
@@ -1791,13 +1778,52 @@
       "anti_corr": -0.9440792777636338,
       "path": [
         0.0,
-        7.725000000000001,
-        14.291250000000005,
-        19.872562500000004,
-        24.616678125000007,
-        28.649176406250003,
-        32.0767999453125,
-        34.990279953515625
+        51.5,
+        51.5,
+        51.5,
+        51.5,
+        51.5,
+        51.5,
+        51.5
+      ]
+    },
+    "155": {
+      "element": 155,
+      "name": "Enzo",
+      "club": "Man City",
+      "tag": "benched",
+      "m0": 15.0,
+      "reason": "FFScout XI omit (regular): Enzo",
+      "source": "ffscout_xi_omit",
+      "chance": null,
+      "force_steps": {
+        "0": 15.0
+      },
+      "context": "suspected_single_week_rotation",
+      "context_label": "suspected single-week rotation; Minutes anti-correlated with Foden (\u03c1=-0.88) \u2014 when one sits, the other tends to take minutes",
+      "context_detail": "regular left out of predicted XI (not listed Out)",
+      "return_gws": 1,
+      "return_date": null,
+      "evidence": [
+        "expand_m=60.0",
+        "recent=[79.0, 40.0, 90.0]",
+        "xi_matched=10/11",
+        "not in resolved predicted XI; not Out/Banned/Doubt",
+        "partner:Minutes anti-correlated with Foden (\u03c1=-0.88) \u2014 when one sits, the other tends to take minutes"
+      ],
+      "partner_blurb": "Minutes anti-correlated with Foden (\u03c1=-0.88) \u2014 when one sits, the other tends to take minutes",
+      "anti_element": 398,
+      "anti_name": "Foden",
+      "anti_corr": -0.8790588264561997,
+      "path": [
+        15.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0
       ]
     },
     "158": {
@@ -1847,13 +1873,11 @@
       "force_steps": {},
       "context": "injured_unknown_return",
       "context_label": "injured, unknown return; Minutes anti-correlated with Welbeck (\u03c1=-0.63) \u2014 when one sits, the other tends to take minutes",
-      "context_detail": "FPL unknown return date",
+      "context_detail": "out; no parsed return horizon",
       "return_gws": null,
       "return_date": null,
       "evidence": [
         "ffscout:FFScout Out: Jo\u00e3o Pedro",
-        "fpl:Thigh injury - Unknown return date",
-        "hint:fpl_unknown_return:Unknown return date",
         "partner:Minutes anti-correlated with Welbeck (\u03c1=-0.63) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with Welbeck (\u03c1=-0.63) \u2014 when one sits, the other tends to take minutes",
@@ -1862,13 +1886,13 @@
       "anti_corr": -0.6252641573741403,
       "path": [
         0.0,
-        9.768750000000004,
-        18.072187500000005,
-        25.130109375000004,
-        31.12934296875001,
-        36.228691523437504,
-        40.56313779492188,
-        44.2474171256836
+        65.125,
+        65.125,
+        65.125,
+        65.125,
+        65.125,
+        65.125,
+        65.125
       ]
     },
     "173": {
@@ -1887,8 +1911,7 @@
       "return_gws": null,
       "return_date": null,
       "evidence": [
-        "ffscout:FFScout Doubt: Thomas (75%)",
-        "fpl:Calf injury - 50% chance of playing"
+        "ffscout:FFScout Doubt: Thomas (75%)"
       ],
       "partner_blurb": "",
       "anti_element": null,
@@ -1896,13 +1919,13 @@
       "anti_corr": null,
       "path": [
         59.75,
-        63.462500000000006,
-        66.618125,
-        69.30040625000001,
-        71.5803453125,
-        73.518293515625,
-        75.16554948828126,
-        76.56571706503907
+        84.5,
+        84.5,
+        84.5,
+        84.5,
+        84.5,
+        84.5,
+        84.5
       ]
     },
     "180": {
@@ -1967,13 +1990,13 @@
       "anti_corr": -0.5753964555687505,
       "path": [
         0.0,
-        6.75,
-        12.487500000000004,
-        17.364375000000003,
-        21.509718750000005,
-        25.033260937500003,
-        28.028271796875003,
-        30.574031027343754
+        45.0,
+        45.0,
+        45.0,
+        45.0,
+        45.0,
+        45.0,
+        45.0
       ]
     },
     "187": {
@@ -2066,7 +2089,6 @@
       "return_date": null,
       "evidence": [
         "ffscout:FFScout Out: Lacroix",
-        "fpl:Hamstring injury - Unknown return date",
         "blurb:Xabi Alonso confirmed that Maxence Lacroix is out of the next two Gameweeks with the hamstring issue he picked up in midweek.",
         "hint:blurb_next_n_gw:out of the next two Gameweeks",
         "partner:Minutes anti-correlated with James (\u03c1=-0.48) \u2014 when one sits, the other tends to take minutes"
@@ -2078,12 +2100,12 @@
       "path": [
         0.0,
         0.0,
-        21.991875000000007,
-        30.580593750000006,
-        37.88100468750001,
-        44.086353984375,
-        49.36090088671875,
-        53.84426575371094
+        79.25,
+        79.25,
+        79.25,
+        79.25,
+        79.25,
+        79.25
       ]
     },
     "206": {
@@ -2113,13 +2135,13 @@
       "anti_corr": -0.957718172096929,
       "path": [
         0.0,
-        1.3500000000000005,
-        2.4975000000000005,
-        3.472875000000001,
-        4.301943750000001,
-        5.0066521875,
-        5.605654359375,
-        6.114806205468751
+        9.0,
+        9.0,
+        9.0,
+        9.0,
+        9.0,
+        9.0,
+        9.0
       ]
     },
     "208": {
@@ -2136,11 +2158,9 @@
       "context_label": "injured, unknown return; Minutes anti-correlated with McNeil (\u03c1=-0.51) \u2014 when one sits, the other tends to take minutes",
       "context_detail": "out; no parsed return horizon",
       "return_gws": null,
-      "return_date": "2027-11-08",
+      "return_date": null,
       "evidence": [
         "ffscout:FFScout Out: Ismaila Sarr",
-        "fpl:Groin injury - Expected back 8 Nov",
-        "hint:fpl_return_date_due_still_out:Expected back 8 Nov",
         "partner:Minutes anti-correlated with McNeil (\u03c1=-0.51) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with McNeil (\u03c1=-0.51) \u2014 when one sits, the other tends to take minutes",
@@ -2149,13 +2169,52 @@
       "anti_corr": -0.5124823441096791,
       "path": [
         0.0,
-        0.28125,
-        0.5203125000000002,
-        0.7235156250000001,
-        0.8962382812500002,
-        1.0430525390625,
-        1.167844658203125,
-        1.2739179594726564
+        1.875,
+        1.875,
+        1.875,
+        1.875,
+        1.875,
+        1.875,
+        1.875
+      ]
+    },
+    "211": {
+      "element": 211,
+      "name": "Yeremy",
+      "club": "Crystal Palace",
+      "tag": "benched",
+      "m0": 15.0,
+      "reason": "FFScout XI omit (regular): Yeremy",
+      "source": "ffscout_xi_omit",
+      "chance": null,
+      "force_steps": {
+        "0": 15.0
+      },
+      "context": "suspected_single_week_rotation",
+      "context_label": "suspected single-week rotation; Minutes anti-correlated with Guessand (\u03c1=-0.46) \u2014 when one sits, the other tends to take minutes",
+      "context_detail": "regular left out of predicted XI (not listed Out)",
+      "return_gws": 1,
+      "return_date": null,
+      "evidence": [
+        "expand_m=67.4",
+        "recent=[82.0, 60.0, 90.0]",
+        "xi_matched=10/11",
+        "not in resolved predicted XI; not Out/Banned/Doubt",
+        "partner:Minutes anti-correlated with Guessand (\u03c1=-0.46) \u2014 when one sits, the other tends to take minutes"
+      ],
+      "partner_blurb": "Minutes anti-correlated with Guessand (\u03c1=-0.46) \u2014 when one sits, the other tends to take minutes",
+      "anti_element": 42,
+      "anti_name": "Guessand",
+      "anti_corr": -0.4569900289730076,
+      "path": [
+        15.0,
+        67.375,
+        67.375,
+        67.375,
+        67.375,
+        67.375,
+        67.375,
+        67.375
       ]
     },
     "222": {
@@ -2175,7 +2234,6 @@
       "return_date": null,
       "evidence": [
         "ffscout:FFScout Doubt: Strand Larsen (75%)",
-        "fpl:Ankle injury - 75% chance of playing",
         "partner:Minutes anti-correlated with Mateta (\u03c1=-0.85) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with Mateta (\u03c1=-0.85) \u2014 when one sits, the other tends to take minutes",
@@ -2184,13 +2242,13 @@
       "anti_corr": -0.8475206823701043,
       "path": [
         55.75,
-        55.6375,
-        55.541875,
-        55.46059375,
-        55.3915046875,
-        55.332778984375,
-        55.28286213671875,
-        55.24043281621094
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        55.0
       ]
     },
     "230": {
@@ -2218,13 +2276,13 @@
       "anti_corr": -0.9806433306014145,
       "path": [
         67.5,
-        69.1875,
-        70.621875,
-        71.84109375,
-        72.8774296875,
-        73.758315234375,
-        74.50706794921875,
-        75.14350775683594
+        78.75,
+        78.75,
+        78.75,
+        78.75,
+        78.75,
+        78.75,
+        78.75
       ]
     },
     "238": {
@@ -2252,13 +2310,13 @@
       "anti_corr": -0.8752136511341393,
       "path": [
         41.166666666666664,
-        40.69166666666666,
-        40.28791666666667,
-        39.94472916666666,
-        39.653019791666665,
-        39.405066822916666,
-        39.194306799479165,
-        39.01516077955729
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0
       ]
     },
     "267": {
@@ -2278,7 +2336,6 @@
       "return_date": null,
       "evidence": [
         "ffscout:FFScout Doubt: Lukic (75%)",
-        "fpl:Groin injury - 75% chance of playing",
         "blurb:No surprise that O'Neil didn't commit one way or another regarding a start for Lukic, but he did say that the Serbian has \"looked good\" and is \"an important player\", and the previous indication was that he wasn't rushed ",
         "hint:blurb_until_gw:for Gameweek 8 ",
         "partner:Minutes anti-correlated with Matusiwa (\u03c1=-0.81) \u2014 when one sits, the other tends to take minutes"
@@ -2289,13 +2346,13 @@
       "anti_corr": -0.8122301930920127,
       "path": [
         59.5,
-        59.7625,
-        59.985625,
-        60.17528125,
-        60.3364890625,
-        60.473515703125,
-        60.58998834765625,
-        60.68899009550781
+        61.25,
+        61.25,
+        61.25,
+        61.25,
+        61.25,
+        61.25,
+        61.25
       ]
     },
     "269": {
@@ -2323,13 +2380,13 @@
       "anti_corr": -0.9637668870126597,
       "path": [
         0.0,
-        2.8500000000000014,
-        5.272500000000001,
-        7.331625000000001,
-        9.081881250000002,
-        10.569599062500002,
-        11.834159203125001,
-        12.909035322656251
+        19.0,
+        19.0,
+        19.0,
+        19.0,
+        19.0,
+        19.0,
+        19.0
       ]
     },
     "274": {
@@ -2349,7 +2406,8 @@
       "return_date": null,
       "evidence": [
         "ffscout:FFScout Doubt: Butland (75%)",
-        "fpl:Arm injury - 50% chance of playing"
+        "fpl:Arm injury - Unknown return date",
+        "hint:fpl_unknown_return:Unknown return date"
       ],
       "partner_blurb": "",
       "anti_element": null,
@@ -2357,13 +2415,13 @@
       "anti_corr": null,
       "path": [
         67.5,
-        57.375,
-        48.76875,
-        41.45343749999999,
-        35.23542187499999,
-        29.950108593749995,
-        25.457592304687495,
-        21.63895345898437
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
       ]
     },
     "278": {
@@ -2466,13 +2524,13 @@
       "anti_corr": -0.7656478548104929,
       "path": [
         15.0,
-        21.13125,
-        26.342812500000004,
-        30.772640625000005,
-        34.53799453125001,
-        37.73854535156251,
-        40.459013548828125,
-        42.77141151650391
+        55.875,
+        55.875,
+        55.875,
+        55.875,
+        55.875,
+        55.875,
+        55.875
       ]
     },
     "328": {
@@ -2489,11 +2547,9 @@
       "context_label": "injured, unknown return; Minutes anti-correlated with Dunk (\u03c1=-0.99) \u2014 when one sits, the other tends to take minutes",
       "context_detail": "out; no parsed return horizon",
       "return_gws": null,
-      "return_date": "2027-11-08",
+      "return_date": null,
       "evidence": [
         "ffscout:FFScout Out: Struijk",
-        "fpl:Hamstring injury - Expected back 8 Nov",
-        "hint:fpl_return_date_due_still_out:Expected back 8 Nov",
         "partner:Minutes anti-correlated with Dunk (\u03c1=-0.99) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with Dunk (\u03c1=-0.99) \u2014 when one sits, the other tends to take minutes",
@@ -2502,13 +2558,13 @@
       "anti_corr": -0.9918300599227271,
       "path": [
         0.0,
-        2.8874999999999993,
-        5.341875000000002,
-        7.428093750000002,
-        9.201379687500003,
-        10.708672734375002,
-        11.989871824218751,
-        13.078891050585938
+        19.25,
+        19.25,
+        19.25,
+        19.25,
+        19.25,
+        19.25,
+        19.25
       ]
     },
     "329": {
@@ -2538,13 +2594,13 @@
       "anti_corr": -0.871402812450861,
       "path": [
         0.0,
-        2.3062500000000004,
-        4.266562500000001,
-        5.932828125,
-        7.349153906250002,
-        8.5530308203125,
-        9.576326197265626,
-        10.446127267675783
+        15.375,
+        15.375,
+        15.375,
+        15.375,
+        15.375,
+        15.375,
+        15.375
       ]
     },
     "335": {
@@ -2572,13 +2628,13 @@
       "anti_corr": -0.5515085292231199,
       "path": [
         51.0,
-        55.556250000000006,
-        59.4290625,
-        62.720953125,
-        65.51906015625,
-        67.8974511328125,
-        69.91908346289063,
-        71.63747094345703
+        81.375,
+        81.375,
+        81.375,
+        81.375,
+        81.375,
+        81.375,
+        81.375
       ]
     },
     "349": {
@@ -2616,6 +2672,44 @@
         0.0
       ]
     },
+    "350": {
+      "element": 350,
+      "name": "A.Becker",
+      "club": "Liverpool",
+      "tag": "benched",
+      "m0": 0.0,
+      "reason": "FFScout XI omit (regular): A.Becker",
+      "source": "ffscout_xi_omit",
+      "chance": null,
+      "force_steps": {
+        "0": 0.0
+      },
+      "context": "suspected_single_week_rotation",
+      "context_label": "suspected single-week rotation",
+      "context_detail": "regular left out of predicted XI (not listed Out)",
+      "return_gws": 1,
+      "return_date": null,
+      "evidence": [
+        "expand_m=90.0",
+        "recent=[90.0, 90.0, 90.0]",
+        "xi_matched=10/11",
+        "not in resolved predicted XI; not Out/Banned/Doubt"
+      ],
+      "partner_blurb": "",
+      "anti_element": null,
+      "anti_name": null,
+      "anti_corr": null,
+      "path": [
+        0.0,
+        90.0,
+        90.0,
+        90.0,
+        90.0,
+        90.0,
+        90.0,
+        90.0
+      ]
+    },
     "357": {
       "element": 357,
       "name": "Frimpong",
@@ -2628,13 +2722,11 @@
       "force_steps": {},
       "context": "injured_unknown_return",
       "context_label": "injured, unknown return; Minutes anti-correlated with Jacquet (\u03c1=-0.98) \u2014 when one sits, the other tends to take minutes",
-      "context_detail": "FPL unknown return date",
+      "context_detail": "out; no parsed return horizon",
       "return_gws": null,
       "return_date": null,
       "evidence": [
         "ffscout:FFScout Out: Frimpong",
-        "fpl:Hamstring injury - Unknown return date",
-        "hint:fpl_unknown_return:Unknown return date",
         "partner:Minutes anti-correlated with Jacquet (\u03c1=-0.98) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with Jacquet (\u03c1=-0.98) \u2014 when one sits, the other tends to take minutes",
@@ -2643,13 +2735,48 @@
       "anti_corr": -0.9824789155334658,
       "path": [
         0.0,
-        3.7312499999999993,
-        6.902812500000003,
-        9.598640625000002,
-        11.890094531250003,
-        13.837830351562502,
-        15.493405798828126,
-        16.90064492900391
+        24.875,
+        24.875,
+        24.875,
+        24.875,
+        24.875,
+        24.875,
+        24.875
+      ]
+    },
+    "360": {
+      "element": 360,
+      "name": "Bradley",
+      "club": "Liverpool",
+      "tag": "injured",
+      "m0": 0.0,
+      "reason": "FFScout Out: Bradley",
+      "source": "ffscout",
+      "chance": 0.0,
+      "force_steps": {},
+      "context": "injured_unknown_return",
+      "context_label": "injured, unknown return",
+      "context_detail": "FPL unknown return date",
+      "return_gws": null,
+      "return_date": null,
+      "evidence": [
+        "ffscout:FFScout Out: Bradley",
+        "fpl:Knee injury - Unknown return date",
+        "hint:fpl_unknown_return:Unknown return date"
+      ],
+      "partner_blurb": "",
+      "anti_element": null,
+      "anti_name": null,
+      "anti_corr": null,
+      "path": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
       ]
     },
     "363": {
@@ -2704,6 +2831,7 @@
       "return_date": null,
       "evidence": [
         "ffscout:FFScout Doubt: Szoboszlai (50%)",
+        "fpl:Hamstring injury - 25% chance of playing",
         "partner:Minutes anti-correlated with Barcola (\u03c1=-0.69) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with Barcola (\u03c1=-0.69) \u2014 when one sits, the other tends to take minutes",
@@ -2712,13 +2840,13 @@
       "anti_corr": -0.689999200177052,
       "path": [
         33.5,
-        37.306250000000006,
-        40.5415625,
-        43.291578125,
-        45.629091406250005,
-        47.6159776953125,
-        49.304831041015625,
-        50.74035638486328
+        58.875,
+        58.875,
+        58.875,
+        58.875,
+        58.875,
+        58.875,
+        58.875
       ]
     },
     "377": {
@@ -2746,13 +2874,13 @@
       "anti_corr": -0.6768580391035094,
       "path": [
         31.0,
-        34.31875,
-        37.1396875,
-        39.537484375000005,
-        41.575611718750004,
-        43.3080199609375,
-        44.780566966796876,
-        46.032231921777345
+        53.125,
+        53.125,
+        53.125,
+        53.125,
+        53.125,
+        53.125,
+        53.125
       ]
     },
     "380": {
@@ -2810,7 +2938,7 @@
       "evidence": [
         "expand_m=84.4",
         "recent=[90.0, 90.0, 45.0]",
-        "xi_matched=11/11",
+        "xi_matched=10/11",
         "not in resolved predicted XI; not Out/Banned/Doubt",
         "partner:Minutes anti-correlated with Lewis (\u03c1=-0.56) \u2014 when one sits, the other tends to take minutes"
       ],
@@ -2820,13 +2948,13 @@
       "anti_corr": -0.5552151875858653,
       "path": [
         15.0,
-        25.40625,
-        34.251562500000006,
-        41.770078125000005,
-        48.16081640625001,
-        53.5929439453125,
-        58.21025235351563,
-        62.13496450048829
+        84.375,
+        84.375,
+        84.375,
+        84.375,
+        84.375,
+        84.375,
+        84.375
       ]
     },
     "397": {
@@ -2841,13 +2969,11 @@
       "force_steps": {},
       "context": "injured_unknown_return",
       "context_label": "injured, unknown return; Minutes anti-correlated with Doku (\u03c1=-0.95) \u2014 when one sits, the other tends to take minutes",
-      "context_detail": "FPL unknown return date",
+      "context_detail": "out; no parsed return horizon",
       "return_gws": null,
       "return_date": null,
       "evidence": [
         "ffscout:FFScout Out: Semenyo",
-        "fpl:Knee injury - Unknown return date",
-        "hint:fpl_unknown_return:Unknown return date",
         "partner:Minutes anti-correlated with Doku (\u03c1=-0.95) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with Doku (\u03c1=-0.95) \u2014 when one sits, the other tends to take minutes",
@@ -2856,13 +2982,13 @@
       "anti_corr": -0.9466971477510251,
       "path": [
         0.0,
-        10.368749999999999,
-        19.182187500000005,
-        26.673609375000005,
-        33.04131796875001,
-        38.4538702734375,
-        43.05453973242188,
-        46.965108772558594
+        69.125,
+        69.125,
+        69.125,
+        69.125,
+        69.125,
+        69.125,
+        69.125
       ]
     },
     "399": {
@@ -2885,7 +3011,7 @@
       "evidence": [
         "expand_m=54.6",
         "recent=[90.0, 0.0, 45.0]",
-        "xi_matched=11/11",
+        "xi_matched=10/11",
         "not in resolved predicted XI; not Out/Banned/Doubt",
         "partner:Minutes anti-correlated with Kova\u010di\u0107 (\u03c1=-0.76) \u2014 when one sits, the other tends to take minutes"
       ],
@@ -2895,13 +3021,13 @@
       "anti_corr": -0.7593130619811641,
       "path": [
         15.0,
-        20.94375,
-        25.995937500000004,
-        30.290296875000003,
-        33.940502343750005,
-        37.0431769921875,
-        39.680450443359376,
-        41.92213287685547
+        54.625,
+        54.625,
+        54.625,
+        54.625,
+        54.625,
+        54.625,
+        54.625
       ]
     },
     "415": {
@@ -2916,13 +3042,13 @@
       "force_steps": {},
       "context": "injured_unknown_return",
       "context_label": "injured, unknown return; Minutes anti-correlated with Amad (\u03c1=-0.55) \u2014 when one sits, the other tends to take minutes",
-      "context_detail": "FPL unknown return date",
+      "context_detail": "out; no parsed return horizon",
       "return_gws": null,
-      "return_date": null,
+      "return_date": "2027-10-25",
       "evidence": [
         "ffscout:FFScout Out: Dorgu",
-        "fpl:Hamstring injury - Unknown return date",
-        "hint:fpl_unknown_return:Unknown return date",
+        "fpl:Hamstring injury - Expected back 25 Oct",
+        "hint:fpl_return_date_due_still_out:Expected back 25 Oct",
         "partner:Minutes anti-correlated with Amad (\u03c1=-0.55) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with Amad (\u03c1=-0.55) \u2014 when one sits, the other tends to take minutes",
@@ -2931,13 +3057,13 @@
       "anti_corr": -0.546240872760822,
       "path": [
         0.0,
-        3.2062500000000007,
-        5.931562500000002,
-        8.248078125000001,
-        10.217116406250002,
-        11.8907989453125,
-        13.313429103515626,
-        14.522664737988283
+        21.375,
+        21.375,
+        21.375,
+        21.375,
+        21.375,
+        21.375,
+        21.375
       ]
     },
     "423": {
@@ -2952,13 +3078,12 @@
       "force_steps": {},
       "context": "injured_unknown_return",
       "context_label": "injured, unknown return; Minutes anti-correlated with Dalot (\u03c1=-0.58) \u2014 when one sits, the other tends to take minutes",
-      "context_detail": "FPL unknown return date",
+      "context_detail": "out; no parsed return horizon",
       "return_gws": null,
       "return_date": null,
       "evidence": [
         "ffscout:FFScout Out: Shaw",
-        "fpl:Unspecified injury - Unknown return date",
-        "hint:fpl_unknown_return:Unknown return date",
+        "fpl:Unspecified injury - 75% chance of playing",
         "partner:Minutes anti-correlated with Dalot (\u03c1=-0.58) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with Dalot (\u03c1=-0.58) \u2014 when one sits, the other tends to take minutes",
@@ -2967,13 +3092,13 @@
       "anti_corr": -0.5848042983665371,
       "path": [
         0.0,
-        7.96875,
-        14.742187500000007,
-        20.499609375000006,
-        25.393417968750004,
-        29.553155273437504,
-        33.08893198242188,
-        36.09434218505859
+        53.125,
+        53.125,
+        53.125,
+        53.125,
+        53.125,
+        53.125,
+        53.125
       ]
     },
     "429": {
@@ -2993,7 +3118,6 @@
       "return_date": null,
       "evidence": [
         "ffscout:FFScout Doubt: Rashford (25%)",
-        "fpl:Hip injury - 75% chance of playing",
         "partner:Minutes anti-correlated with Amad (\u03c1=-0.93) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with Amad (\u03c1=-0.93) \u2014 when one sits, the other tends to take minutes",
@@ -3002,13 +3126,13 @@
       "anti_corr": -0.9337771627796935,
       "path": [
         13.25,
-        17.8625,
-        21.783125000000002,
-        25.11565625,
-        27.948307812500005,
-        30.356061640625,
-        32.40265239453125,
-        34.14225453535157
+        44.0,
+        44.0,
+        44.0,
+        44.0,
+        44.0,
+        44.0,
+        44.0
       ]
     },
     "432": {
@@ -3028,6 +3152,7 @@
       "return_date": null,
       "evidence": [
         "ffscout:FFScout Doubt: Mainoo (75%)",
+        "fpl:Unspecified injury - 75% chance of playing",
         "partner:Minutes anti-correlated with Andrey Santos (\u03c1=-1.00) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with Andrey Santos (\u03c1=-1.00) \u2014 when one sits, the other tends to take minutes",
@@ -3036,13 +3161,13 @@
       "anti_corr": -0.9961614203300374,
       "path": [
         64.75,
-        63.3625,
-        62.183125,
-        61.18065625,
-        60.3285578125,
-        59.604274140625,
-        58.98863301953125,
-        58.46533806660156
+        55.5,
+        55.5,
+        55.5,
+        55.5,
+        55.5,
+        55.5,
+        55.5
       ]
     },
     "433": {
@@ -3092,13 +3217,13 @@
       "force_steps": {},
       "context": "injured_unknown_return",
       "context_label": "injured, unknown return; Minutes anti-correlated with Zirkzee (\u03c1=-0.57) \u2014 when one sits, the other tends to take minutes",
-      "context_detail": "FPL unknown return date",
+      "context_detail": "out; no parsed return horizon",
       "return_gws": null,
-      "return_date": null,
+      "return_date": "2027-10-18",
       "evidence": [
         "ffscout:FFScout Out: Sesko",
-        "fpl:Shin injury - Unknown return date",
-        "hint:fpl_unknown_return:Unknown return date",
+        "fpl:Shin injury - Expected back 18 Oct",
+        "hint:fpl_return_date_due_still_out:Expected back 18 Oct",
         "partner:Minutes anti-correlated with Zirkzee (\u03c1=-0.57) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with Zirkzee (\u03c1=-0.57) \u2014 when one sits, the other tends to take minutes",
@@ -3107,13 +3232,13 @@
       "anti_corr": -0.5676101182716714,
       "path": [
         0.0,
-        1.4250000000000007,
-        2.6362500000000004,
-        3.6658125000000004,
-        4.540940625000001,
-        5.284799531250001,
-        5.9170796015625005,
-        6.454517661328126
+        9.5,
+        9.5,
+        9.5,
+        9.5,
+        9.5,
+        9.5,
+        9.5
       ]
     },
     "444": {
@@ -3181,13 +3306,13 @@
       "anti_corr": -0.999898591434772,
       "path": [
         15.0,
-        24.581250000000004,
-        32.72531250000001,
-        39.647765625000005,
-        45.53185078125001,
-        50.5333231640625,
-        54.78457468945313,
-        58.398138486035165
+        78.875,
+        78.875,
+        78.875,
+        78.875,
+        78.875,
+        78.875,
+        78.875
       ]
     },
     "447": {
@@ -3220,13 +3345,13 @@
       "anti_corr": -0.9998985914347718,
       "path": [
         15.0,
-        24.5625,
-        32.690625000000004,
-        39.599531250000005,
-        45.47210156250001,
-        50.463786328125,
-        54.70671837890626,
-        58.313210622070315
+        78.75,
+        78.75,
+        78.75,
+        78.75,
+        78.75,
+        78.75,
+        78.75
       ]
     },
     "450": {
@@ -3241,13 +3366,12 @@
       "force_steps": {},
       "context": "injured_unknown_return",
       "context_label": "injured, unknown return",
-      "context_detail": "FPL unknown return date",
+      "context_detail": "out; no parsed return horizon",
       "return_gws": null,
       "return_date": null,
       "evidence": [
         "ffscout:FFScout Out: Livramento",
-        "fpl:Knee injury - Unknown return date",
-        "hint:fpl_unknown_return:Unknown return date"
+        "fpl:Unspecified injury - 50% chance of playing"
       ],
       "partner_blurb": "",
       "anti_element": null,
@@ -3255,13 +3379,13 @@
       "anti_corr": null,
       "path": [
         0.0,
-        0.6187499999999999,
-        1.1446875000000003,
-        1.5917343750000001,
-        1.9717242187500004,
-        2.2947155859375004,
-        2.569258248046875,
-        2.802619510839844
+        4.125,
+        4.125,
+        4.125,
+        4.125,
+        4.125,
+        4.125,
+        4.125
       ]
     },
     "459": {
@@ -3281,7 +3405,6 @@
       "return_date": null,
       "evidence": [
         "ffscout:FFScout Doubt: Miley (75%)",
-        "fpl:Muscular injury - 75% chance of playing",
         "partner:Minutes anti-correlated with J.Murphy (\u03c1=-0.50) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with J.Murphy (\u03c1=-0.50) \u2014 when one sits, the other tends to take minutes",
@@ -3290,13 +3413,13 @@
       "anti_corr": -0.4993050827374401,
       "path": [
         59.5,
-        60.775,
-        61.85875,
-        62.7799375,
-        63.562946875,
-        64.22850484375,
-        64.7942291171875,
-        65.27509474960938
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0
       ]
     },
     "465": {
@@ -3324,13 +3447,13 @@
       "anti_corr": -0.6896921464501983,
       "path": [
         30.5,
-        29.24375,
-        28.1759375,
-        27.268296874999997,
-        26.496802343749998,
-        25.8410319921875,
-        25.283627193359376,
-        24.809833114355467
+        22.125,
+        22.125,
+        22.125,
+        22.125,
+        22.125,
+        22.125,
+        22.125
       ]
     },
     "473": {
@@ -3363,13 +3486,13 @@
       "anti_corr": -0.5419647910211265,
       "path": [
         15.0,
-        20.025000000000002,
-        24.296250000000004,
-        27.926812500000004,
-        31.012790625000004,
-        33.63587203125,
-        35.865491226562504,
-        37.760667542578126
+        48.5,
+        48.5,
+        48.5,
+        48.5,
+        48.5,
+        48.5,
+        48.5
       ]
     },
     "475": {
@@ -3432,13 +3555,13 @@
       "anti_corr": -0.38931826838247946,
       "path": [
         52.75,
-        54.71875,
-        56.3921875,
-        57.814609375,
-        59.023667968750004,
-        60.0513677734375,
-        60.924912607421874,
-        61.66742571630859
+        65.875,
+        65.875,
+        65.875,
+        65.875,
+        65.875,
+        65.875,
+        65.875
       ]
     },
     "487": {
@@ -3458,7 +3581,6 @@
       "return_date": null,
       "evidence": [
         "ffscout:FFScout Doubt: Nicol\u00e1s Dom\u00ednguez (75%)",
-        "fpl:Muscular injury - 75% chance of playing",
         "partner:Minutes anti-correlated with Gibbs-White (\u03c1=-1.00) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with Gibbs-White (\u03c1=-1.00) \u2014 when one sits, the other tends to take minutes",
@@ -3467,13 +3589,13 @@
       "anti_corr": -0.9999077405662766,
       "path": [
         27.75,
-        24.975,
-        22.61625,
-        20.611312499999997,
-        18.907115624999996,
-        17.45854828125,
-        16.2272660390625,
-        15.180676133203123
+        9.25,
+        9.25,
+        9.25,
+        9.25,
+        9.25,
+        9.25,
+        9.25
       ]
     },
     "491": {
@@ -3503,13 +3625,13 @@
       "anti_corr": -0.9069948156928285,
       "path": [
         0.0,
-        4.818750000000001,
-        8.914687500000003,
-        12.396234375000002,
-        15.355549218750003,
-        17.8709668359375,
-        20.009071810546878,
-        21.826461038964844
+        32.125,
+        32.125,
+        32.125,
+        32.125,
+        32.125,
+        32.125,
+        32.125
       ]
     },
     "501": {
@@ -3542,48 +3664,13 @@
       "anti_corr": -0.7362526565936155,
       "path": [
         15.0,
-        19.8,
-        23.880000000000003,
-        27.348000000000003,
-        30.295800000000003,
-        32.80143,
-        34.9312155,
-        36.741533175
-      ]
-    },
-    "513": {
-      "element": 513,
-      "name": "Xavi",
-      "club": "Spurs",
-      "tag": "injured",
-      "m0": 0.0,
-      "reason": "FFScout Out: Simons",
-      "source": "ffscout",
-      "chance": 0.0,
-      "force_steps": {},
-      "context": "injured_unknown_return",
-      "context_label": "injured, unknown return",
-      "context_detail": "FPL unknown return date",
-      "return_gws": null,
-      "return_date": null,
-      "evidence": [
-        "ffscout:FFScout Out: Simons",
-        "fpl:Knee injury - Unknown return date",
-        "hint:fpl_unknown_return:Unknown return date"
-      ],
-      "partner_blurb": "",
-      "anti_element": null,
-      "anti_name": null,
-      "anti_corr": null,
-      "path": [
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0
+        47.0,
+        47.0,
+        47.0,
+        47.0,
+        47.0,
+        47.0,
+        47.0
       ]
     },
     "516": {
@@ -3600,9 +3687,11 @@
       "context_label": "suspended; Minutes anti-correlated with Maddison (\u03c1=-0.80) \u2014 when one sits, the other tends to take minutes",
       "context_detail": "suspended / banned",
       "return_gws": null,
-      "return_date": null,
+      "return_date": "2027-11-07",
       "evidence": [
         "ffscout:FFScout Banned: Bentancur",
+        "fpl:Suspended until 7 Nov",
+        "hint:fpl_return_date_due_still_out:Suspended until 7 Nov",
         "partner:Minutes anti-correlated with Maddison (\u03c1=-0.80) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with Maddison (\u03c1=-0.80) \u2014 when one sits, the other tends to take minutes",
@@ -3611,13 +3700,13 @@
       "anti_corr": -0.7951715502082055,
       "path": [
         0.0,
-        7.143750000000004,
-        13.215937500000003,
-        18.377296875000003,
-        22.764452343750005,
-        26.493534492187504,
-        29.663254318359378,
-        32.35751617060547
+        47.625,
+        47.625,
+        47.625,
+        47.625,
+        47.625,
+        47.625,
+        47.625
       ]
     },
     "517": {
@@ -3669,11 +3758,9 @@
       "context_label": "injured, unknown return; Minutes anti-correlated with Fernandes (\u03c1=-0.39) \u2014 when one sits, the other tends to take minutes",
       "context_detail": "out; no parsed return horizon",
       "return_gws": null,
-      "return_date": "2027-10-31",
+      "return_date": null,
       "evidence": [
         "ffscout:FFScout Out: Bergvall",
-        "fpl:Knee injury - Expected back 31 Oct",
-        "hint:fpl_return_date_due_still_out:Expected back 31 Oct",
         "partner:Minutes anti-correlated with Fernandes (\u03c1=-0.39) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with Fernandes (\u03c1=-0.39) \u2014 when one sits, the other tends to take minutes",
@@ -3682,13 +3769,13 @@
       "anti_corr": -0.3895175742348226,
       "path": [
         0.0,
-        2.6812500000000004,
-        4.960312500000001,
-        6.897515625000002,
-        8.544138281250001,
-        9.9437675390625,
-        11.133452408203127,
-        12.144684546972657
+        17.875,
+        17.875,
+        17.875,
+        17.875,
+        17.875,
+        17.875,
+        17.875
       ]
     },
     "522": {
@@ -3721,13 +3808,13 @@
       "anti_corr": -0.9567454402780022,
       "path": [
         15.0,
-        23.56875,
-        30.852187500000007,
-        37.04310937500001,
-        42.305392968750006,
-        46.7783340234375,
-        50.580333919921884,
-        53.8120338319336
+        72.125,
+        72.125,
+        72.125,
+        72.125,
+        72.125,
+        72.125,
+        72.125
       ]
     },
     "532": {
@@ -3757,13 +3844,13 @@
       "anti_corr": -0.6337911768456762,
       "path": [
         0.0,
-        8.4375,
-        15.609375000000007,
-        21.70546875,
-        26.887148437500006,
-        31.291576171875004,
-        35.035339746093754,
-        38.217538784179695
+        56.25,
+        56.25,
+        56.25,
+        56.25,
+        56.25,
+        56.25,
+        56.25
       ]
     },
     "533": {
@@ -3783,7 +3870,6 @@
       "return_date": null,
       "evidence": [
         "ffscout:FFScout Doubt: Mukiele (75%)",
-        "fpl:Concussion - 75% chance of playing",
         "partner:Minutes anti-correlated with O'Nien (\u03c1=-0.78) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with O'Nien (\u03c1=-0.78) \u2014 when one sits, the other tends to take minutes",
@@ -3792,13 +3878,13 @@
       "anti_corr": -0.7790890132653615,
       "path": [
         57.75,
-        60.16875,
-        62.2246875,
-        63.972234375,
-        65.45764921875,
-        66.7202518359375,
-        67.79346406054688,
-        68.70569445146485
+        73.875,
+        73.875,
+        73.875,
+        73.875,
+        73.875,
+        73.875,
+        73.875
       ]
     },
     "547": {
@@ -3827,13 +3913,13 @@
       "anti_corr": null,
       "path": [
         0.0,
-        0.018750000000000003,
-        0.03468750000000001,
-        0.04823437500000001,
-        0.05974921875000001,
-        0.06953683593750001,
-        0.077856310546875,
-        0.08492786396484375
+        0.125,
+        0.125,
+        0.125,
+        0.125,
+        0.125,
+        0.125,
+        0.125
       ]
     },
     "553": {
@@ -3853,6 +3939,7 @@
       "return_date": null,
       "evidence": [
         "ffscout:FFScout Doubt: Isidor (75%)",
+        "fpl:Knock - 50% chance of playing",
         "partner:Minutes anti-correlated with Brobbey (\u03c1=-0.37) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with Brobbey (\u03c1=-0.37) \u2014 when one sits, the other tends to take minutes",
@@ -3861,13 +3948,13 @@
       "anti_corr": -0.36570658583616206,
       "path": [
         33.0,
-        31.93125,
-        31.0228125,
-        30.250640625,
-        29.59429453125,
-        29.0364003515625,
-        28.562190298828124,
-        28.159111754003906
+        25.875,
+        25.875,
+        25.875,
+        25.875,
+        25.875,
+        25.875,
+        25.875
       ]
     },
     "556": {
@@ -3897,13 +3984,13 @@
       "anti_corr": -0.9999999999999999,
       "path": [
         0.0,
-        0.09375,
-        0.17343750000000002,
-        0.24117187500000004,
-        0.29874609375000005,
-        0.34768417968750004,
-        0.38928155273437504,
-        0.42463931982421876
+        0.625,
+        0.625,
+        0.625,
+        0.625,
+        0.625,
+        0.625,
+        0.625
       ]
     },
     "557": {
@@ -3919,10 +4006,12 @@
       "context": "doubt",
       "context_label": "doubt (75% chance); Minutes anti-correlated with Madueke (\u03c1=-0.86) \u2014 when one sits, the other tends to take minutes",
       "context_detail": "doubt chance=75.0",
-      "return_gws": null,
-      "return_date": null,
+      "return_gws": 0,
+      "return_date": "2027-11-01",
       "evidence": [
         "ffscout:FFScout Doubt: Tzolis (75%)",
+        "fpl:Hamstring injury - Expected back 1 Nov",
+        "hint:fpl_expected_back:Expected back 1 Nov",
         "partner:Minutes anti-correlated with Madueke (\u03c1=-0.86) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with Madueke (\u03c1=-0.86) \u2014 when one sits, the other tends to take minutes",
@@ -3931,13 +4020,13 @@
       "anti_corr": -0.8629652172282826,
       "path": [
         60.5,
-        58.2125,
-        56.268125,
-        54.61540625,
-        53.2105953125,
-        52.016506015625,
-        51.00153011328125,
-        50.13880059628906
+        45.25,
+        45.25,
+        45.25,
+        45.25,
+        45.25,
+        45.25,
+        45.25
       ]
     },
     "561": {
@@ -3952,13 +4041,11 @@
       "force_steps": {},
       "context": "injured_unknown_return",
       "context_label": "injured, unknown return",
-      "context_detail": "FPL unknown return date",
+      "context_detail": "out; no parsed return horizon",
       "return_gws": null,
       "return_date": null,
       "evidence": [
-        "ffscout:FFScout Out: Anselmino",
-        "fpl:Unspecified injury - Unknown return date",
-        "hint:fpl_unknown_return:Unknown return date"
+        "ffscout:FFScout Out: Anselmino"
       ],
       "partner_blurb": "",
       "anti_element": null,
@@ -4004,13 +4091,13 @@
       "anti_corr": null,
       "path": [
         15.0,
-        21.50625,
-        27.036562500000002,
-        31.737328125000005,
-        35.732978906250004,
-        39.1292820703125,
-        42.01613975976563,
-        44.46996879580078
+        58.375,
+        58.375,
+        58.375,
+        58.375,
+        58.375,
+        58.375,
+        58.375
       ]
     },
     "577": {
@@ -4027,11 +4114,11 @@
       "context_label": "injured, unknown return; Minutes anti-correlated with Canvot (\u03c1=-0.40) \u2014 when one sits, the other tends to take minutes",
       "context_detail": "out; no parsed return horizon",
       "return_gws": null,
-      "return_date": "2027-11-08",
+      "return_date": "2027-10-18",
       "evidence": [
         "ffscout:FFScout Out: Tomiyasu",
-        "fpl:Calf injury - Expected back 8 Nov",
-        "hint:fpl_return_date_due_still_out:Expected back 8 Nov",
+        "fpl:Calf injury - Expected back 18 Oct",
+        "hint:fpl_return_date_due_still_out:Expected back 18 Oct",
         "partner:Minutes anti-correlated with Canvot (\u03c1=-0.40) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with Canvot (\u03c1=-0.40) \u2014 when one sits, the other tends to take minutes",
@@ -4040,13 +4127,13 @@
       "anti_corr": -0.4046764957371388,
       "path": [
         0.0,
-        3.5437499999999993,
-        6.555937500000002,
-        9.116296875000002,
-        11.292602343750003,
-        13.142461992187501,
-        14.714842693359376,
-        16.05136628935547
+        23.625,
+        23.625,
+        23.625,
+        23.625,
+        23.625,
+        23.625,
+        23.625
       ]
     },
     "578": {
@@ -4076,13 +4163,13 @@
       "anti_corr": -0.9567454402780022,
       "path": [
         0.0,
-        0.30000000000000004,
-        0.5550000000000002,
-        0.7717500000000002,
-        0.9559875000000002,
-        1.1125893750000002,
-        1.24570096875,
-        1.3588458234375
+        2.0,
+        2.0,
+        2.0,
+        2.0,
+        2.0,
+        2.0,
+        2.0
       ]
     },
     "596": {
@@ -4097,26 +4184,18 @@
       "force_steps": {
         "0": 0.0,
         "1": 0.0,
-        "2": 0.0,
-        "3": 0.0,
-        "4": 0.0,
-        "5": 0.0,
-        "6": 0.0,
-        "7": 0.0,
-        "8": 0.0,
-        "9": 0.0,
-        "10": 0.0
+        "2": 0.0
       },
       "context": "injured_expected_back",
-      "context_label": "injured, expected back in 11 weeks; Minutes anti-correlated with Maatsen (\u03c1=-0.66) \u2014 when one sits, the other tends to take minutes",
-      "context_detail": "return_gws=11 via fpl_expected_back",
-      "return_gws": 11,
-      "return_date": "2027-01-02",
+      "context_label": "injured, expected back in 3 weeks; Minutes anti-correlated with Maatsen (\u03c1=-0.66) \u2014 when one sits, the other tends to take minutes",
+      "context_detail": "return_gws=3 via blurb_few_weeks",
+      "return_gws": 3,
+      "return_date": null,
       "evidence": [
         "ffscout:FFScout Out: Ruggeri",
-        "fpl:Hamstring injury - Expected back 2 Jan",
+        "fpl:Hamstring injury - Unknown return date",
         "blurb:The broadcast section of Unai Emery\u2019s presser was short on team news, so we\u2019re not aware of any issues beyond Aaron Wan-Bissaka and Matteo Ruggeri (both hamstring), who will both be out for a few more weeks",
-        "hint:fpl_expected_back:Expected back 2 Jan",
+        "hint:blurb_few_weeks:a few weeks",
         "partner:Minutes anti-correlated with Maatsen (\u03c1=-0.66) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with Maatsen (\u03c1=-0.66) \u2014 when one sits, the other tends to take minutes",
@@ -4127,11 +4206,11 @@
         0.0,
         0.0,
         0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0
+        19.75,
+        19.75,
+        19.75,
+        19.75,
+        19.75
       ]
     },
     "611": {
@@ -4143,17 +4222,20 @@
       "reason": "FFScout Out: Wan-Bissaka",
       "source": "ffscout",
       "chance": 0.0,
-      "force_steps": {},
-      "context": "injured_unknown_return",
-      "context_label": "injured, unknown return; Minutes anti-correlated with Cash (\u03c1=-0.63) \u2014 when one sits, the other tends to take minutes",
-      "context_detail": "out; no parsed return horizon",
-      "return_gws": null,
-      "return_date": "2027-11-21",
+      "force_steps": {
+        "0": 0.0,
+        "1": 0.0,
+        "2": 0.0
+      },
+      "context": "injured_expected_back",
+      "context_label": "injured, expected back in 3 weeks; Minutes anti-correlated with Cash (\u03c1=-0.63) \u2014 when one sits, the other tends to take minutes",
+      "context_detail": "return_gws=3 via blurb_few_weeks",
+      "return_gws": 3,
+      "return_date": null,
       "evidence": [
         "ffscout:FFScout Out: Wan-Bissaka",
-        "fpl:Hamstring injury - Expected back 21 Nov",
         "blurb:The broadcast section of Unai Emery\u2019s presser was short on team news, so we\u2019re not aware of any issues beyond Aaron Wan-Bissaka and Matteo Ruggeri (both hamstring), who will both be out for a few more weeks",
-        "hint:fpl_return_date_due_still_out:Expected back 21 Nov",
+        "hint:blurb_few_weeks:a few weeks",
         "partner:Minutes anti-correlated with Cash (\u03c1=-0.63) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with Cash (\u03c1=-0.63) \u2014 when one sits, the other tends to take minutes",
@@ -4162,47 +4244,13 @@
       "anti_corr": -0.6287312416441744,
       "path": [
         0.0,
-        5.850000000000001,
-        10.822500000000002,
-        15.049125000000004,
-        18.641756250000004,
-        21.695492812500003,
-        24.291168890625002,
-        26.497493557031255
-      ]
-    },
-    "627": {
-      "element": 627,
-      "name": "Barcola",
-      "club": "Liverpool",
-      "tag": "injured",
-      "m0": 0.0,
-      "reason": "FFScout Out: Bradley",
-      "source": "ffscout",
-      "chance": 0.0,
-      "force_steps": {},
-      "context": "injured_unknown_return",
-      "context_label": "injured, unknown return; Minutes anti-correlated with Szoboszlai (\u03c1=-0.69) \u2014 when one sits, the other tends to take minutes",
-      "context_detail": "out; no parsed return horizon",
-      "return_gws": null,
-      "return_date": null,
-      "evidence": [
-        "ffscout:FFScout Out: Bradley",
-        "partner:Minutes anti-correlated with Szoboszlai (\u03c1=-0.69) \u2014 when one sits, the other tends to take minutes"
-      ],
-      "partner_blurb": "Minutes anti-correlated with Szoboszlai (\u03c1=-0.69) \u2014 when one sits, the other tends to take minutes",
-      "anti_element": 368,
-      "anti_name": "Szoboszlai",
-      "anti_corr": -0.689999200177052,
-      "path": [
         0.0,
-        10.525000000000006,
-        19.471250000000005,
-        27.07556250000001,
-        33.53922812500001,
-        39.03334390625001,
-        43.70334232031251,
-        47.67284097226563
+        0.0,
+        39.0,
+        39.0,
+        39.0,
+        39.0,
+        39.0
       ]
     },
     "632": {
@@ -4257,7 +4305,6 @@
       "return_date": null,
       "evidence": [
         "ffscout:FFScout Doubt: Fernandez-Pardo (75%)",
-        "fpl:Illness - 75% chance of playing",
         "partner:Minutes anti-correlated with Osula (\u03c1=-0.50) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with Osula (\u03c1=-0.50) \u2014 when one sits, the other tends to take minutes",
@@ -4266,13 +4313,13 @@
       "anti_corr": -0.49930640255716247,
       "path": [
         54.5,
-        53.875,
-        53.34375,
-        52.8921875,
-        52.508359375,
-        52.18210546875,
-        51.9047896484375,
-        51.669071201171874
+        50.333333333333336,
+        50.333333333333336,
+        50.333333333333336,
+        50.333333333333336,
+        50.333333333333336,
+        50.333333333333336,
+        50.333333333333336
       ]
     },
     "639": {
@@ -4300,13 +4347,13 @@
       "anti_corr": -0.6919827237046119,
       "path": [
         58.25,
-        58.0625,
-        57.903125,
-        57.76765625,
-        57.6525078125,
-        57.554631640625,
-        57.47143689453125,
-        57.40072136035156
+        57.0,
+        57.0,
+        57.0,
+        57.0,
+        57.0,
+        57.0,
+        57.0
       ]
     },
     "642": {
@@ -4339,13 +4386,13 @@
       "anti_corr": -0.9258184026895463,
       "path": [
         15.0,
-        19.525,
-        23.371250000000003,
-        26.6405625,
-        29.419478125,
-        31.78155640625,
-        33.7893229453125,
-        35.495924503515624
+        45.166666666666664,
+        45.166666666666664,
+        45.166666666666664,
+        45.166666666666664,
+        45.166666666666664,
+        45.166666666666664,
+        45.166666666666664
       ]
     },
     "644": {
@@ -4365,7 +4412,6 @@
       "return_date": null,
       "evidence": [
         "ffscout:FFScout Doubt: Timber (75%)",
-        "fpl:Hamstring injury - 75% chance of playing",
         "partner:Minutes anti-correlated with McNeil (\u03c1=-0.85) \u2014 when one sits, the other tends to take minutes"
       ],
       "partner_blurb": "Minutes anti-correlated with McNeil (\u03c1=-0.85) \u2014 when one sits, the other tends to take minutes",
@@ -4374,13 +4420,13 @@
       "anti_corr": -0.8496317720766401,
       "path": [
         56.25,
-        57.5125,
-        58.585625,
-        59.49778125,
-        60.2731140625,
-        60.932146953125006,
-        61.492324910156256,
-        61.968476173632816
+        64.66666666666667,
+        64.66666666666667,
+        64.66666666666667,
+        64.66666666666667,
+        64.66666666666667,
+        64.66666666666667,
+        64.66666666666667
       ]
     },
     "649": {
@@ -4412,13 +4458,13 @@
       "anti_corr": null,
       "path": [
         15.0,
-        20.450000000000003,
-        25.082500000000003,
-        29.020125000000004,
-        32.367106250000006,
-        35.21204031250001,
-        37.630234265625006,
-        39.685699125781255
+        51.333333333333336,
+        51.333333333333336,
+        51.333333333333336,
+        51.333333333333336,
+        51.333333333333336,
+        51.333333333333336,
+        51.333333333333336
       ]
     },
     "652": {
@@ -4435,11 +4481,11 @@
       "context_label": "injured, unknown return",
       "context_detail": "out; no parsed return horizon",
       "return_gws": null,
-      "return_date": "2027-11-08",
+      "return_date": "2027-10-18",
       "evidence": [
         "ffscout:FFScout Out: Azeez",
-        "fpl:Hamstring injury - Expected back 8 Nov",
-        "hint:fpl_return_date_due_still_out:Expected back 8 Nov"
+        "fpl:Hamstring injury - Expected back 18 Oct",
+        "hint:fpl_return_date_due_still_out:Expected back 18 Oct"
       ],
       "partner_blurb": "",
       "anti_element": null,
@@ -4459,23 +4505,28 @@
   },
   "meta": {
     "ffscout": {
-      "n_out": 55,
+      "n_out": 54,
       "n_banned": 4,
       "n_doubt": 30,
-      "n_overlays": 89,
-      "n_unmatched": 1,
+      "n_overlays": 88,
+      "n_unmatched": 2,
       "unmatched": [
         {
           "club": "Spurs",
           "name": "Savinho",
           "bucket": "out"
+        },
+        {
+          "club": "Spurs",
+          "name": "Simons",
+          "bucket": "out"
         }
       ],
-      "els_known": 670
+      "els_known": 667
     },
     "context": {
-      "n_context_rows": 105,
-      "n_rotation_overlays": 16,
+      "n_context_rows": 107,
+      "n_rotation_overlays": 19,
       "n_rotation_veto_rest_cup": 0,
       "n_clubs_skipped_xi_quality": 0,
       "xi_match_quality": [
@@ -4489,9 +4540,11 @@
         {
           "club": "Aston Villa",
           "n_xi": 11,
-          "n_matched": 11,
+          "n_matched": 10,
           "ok": true,
-          "unmatched": []
+          "unmatched": [
+            "Torres"
+          ]
         },
         {
           "club": "Brighton",
@@ -4510,9 +4563,11 @@
         {
           "club": "Brentford",
           "n_xi": 11,
-          "n_matched": 11,
+          "n_matched": 10,
           "ok": true,
-          "unmatched": []
+          "unmatched": [
+            "Dango Ouattara"
+          ]
         },
         {
           "club": "Chelsea",
@@ -4531,9 +4586,11 @@
         {
           "club": "Crystal Palace",
           "n_xi": 11,
-          "n_matched": 11,
+          "n_matched": 10,
           "ok": true,
-          "unmatched": []
+          "unmatched": [
+            "Pino"
+          ]
         },
         {
           "club": "Everton",
@@ -4573,16 +4630,20 @@
         {
           "club": "Liverpool",
           "n_xi": 11,
-          "n_matched": 11,
+          "n_matched": 10,
           "ok": true,
-          "unmatched": []
+          "unmatched": [
+            "Alisson"
+          ]
         },
         {
           "club": "Man City",
           "n_xi": 11,
-          "n_matched": 11,
+          "n_matched": 10,
           "ok": true,
-          "unmatched": []
+          "unmatched": [
+            "Fern\u00e1ndez"
+          ]
         },
         {
           "club": "Man Utd",
@@ -4622,14 +4683,14 @@
       ],
       "context_counts": {
         "doubt": 30,
-        "injured_expected_back": 2,
-        "injured_unknown_return": 53,
-        "suspected_single_week_rotation": 16,
+        "injured_expected_back": 4,
+        "injured_unknown_return": 50,
+        "suspected_single_week_rotation": 19,
         "suspended": 4
       },
-      "n_with_return_gws": 22,
+      "n_with_return_gws": 27,
       "n_with_blurb_evidence": 7,
-      "n_with_fpl_news": 70,
+      "n_with_fpl_news": 49,
       "rotation_tune": {
         "xi_resolve_first": true,
         "min_xi_matched": "n_matched >= max(9, n_xi-2)",
@@ -4640,7 +4701,7 @@
     },
     "partner_context": {
       "n_partner_blurbs_available": 380,
-      "n_overlays_with_partner": 71,
+      "n_overlays_with_partner": 72,
       "min_prior_gws": 8,
       "anticorr_max": -0.35,
       "applies_minutes_rating": false
@@ -4672,24 +4733,23 @@
         "m0": 59.5,
         "evidence": [
           "ffscout:FFScout Doubt: Lukic (75%)",
-          "fpl:Groin injury - 75% chance of playing",
           "blurb:No surprise that O'Neil didn't commit one way or another regarding a start for Lukic, but he did say that the Serbian has \"looked good\" and is \"an important player\", and the previous indication was that he wasn't rushed ",
           "hint:blurb_until_gw:for Gameweek 8 "
         ]
       },
       {
-        "element": 63,
-        "name": "Milosavljevi\u0107",
-        "club": "Bournemouth",
+        "element": 557,
+        "name": "Tzolis",
+        "club": "Arsenal",
         "bucket": "doubt",
-        "context_label": "doubt (25% chance)",
+        "context_label": "doubt (75% chance)",
         "return_gws": 0,
-        "return_date": "2027-10-31",
-        "m0": 22.5,
+        "return_date": "2027-11-01",
+        "m0": 60.5,
         "evidence": [
-          "ffscout:FFScout Doubt: Milosavljevic (25%)",
-          "fpl:Thigh injury - Expected back 31 Oct",
-          "hint:fpl_expected_back:Expected back 31 Oct"
+          "ffscout:FFScout Doubt: Tzolis (75%)",
+          "fpl:Hamstring injury - Expected back 1 Nov",
+          "hint:fpl_expected_back:Expected back 1 Nov"
         ]
       },
       {
@@ -4699,12 +4759,12 @@
         "bucket": "doubt",
         "context_label": "doubt (25% chance)",
         "return_gws": 0,
-        "return_date": "2027-11-22",
+        "return_date": "2027-10-18",
         "m0": 3.0,
         "evidence": [
           "ffscout:FFScout Doubt: Yohanna (25%)",
-          "fpl:Unspecified injury - Expected back 22 Nov",
-          "hint:fpl_expected_back:Expected back 22 Nov"
+          "fpl:Unspecified injury - Expected back 18 Oct",
+          "hint:fpl_expected_back:Expected back 18 Oct"
         ]
       },
       {
@@ -4718,7 +4778,6 @@
         "m0": 0.0,
         "evidence": [
           "ffscout:FFScout Out: Lacroix",
-          "fpl:Hamstring injury - Unknown return date",
           "blurb:Xabi Alonso confirmed that Maxence Lacroix is out of the next two Gameweeks with the hamstring issue he picked up in midweek.",
           "hint:blurb_next_n_gw:out of the next two Gameweeks"
         ]
@@ -4728,15 +4787,62 @@
         "name": "Ruggeri",
         "club": "Aston Villa",
         "bucket": "out",
-        "context_label": "injured, expected back in 11 weeks",
-        "return_gws": 11,
-        "return_date": "2027-01-02",
+        "context_label": "injured, expected back in 3 weeks",
+        "return_gws": 3,
+        "return_date": null,
         "m0": 0.0,
         "evidence": [
           "ffscout:FFScout Out: Ruggeri",
-          "fpl:Hamstring injury - Expected back 2 Jan",
+          "fpl:Hamstring injury - Unknown return date",
           "blurb:The broadcast section of Unai Emery\u2019s presser was short on team news, so we\u2019re not aware of any issues beyond Aaron Wan-Bissaka and Matteo Ruggeri (both hamstring), who will both be out for a few more weeks",
-          "hint:fpl_expected_back:Expected back 2 Jan"
+          "hint:blurb_few_weeks:a few weeks"
+        ]
+      },
+      {
+        "element": 69,
+        "name": "Scott",
+        "club": "Bournemouth",
+        "bucket": "out",
+        "context_label": "injured, expected back in 1 week",
+        "return_gws": 1,
+        "return_date": null,
+        "m0": 0.0,
+        "evidence": [
+          "ffscout:FFScout Out: Scott",
+          "fpl:Thigh injury - Unknown return date",
+          "blurb:Alex Scott (tendon) won't return until Gameweek 10 at the earliest.",
+          "hint:blurb_until_gw:until Gameweek 10 at the earliest"
+        ]
+      },
+      {
+        "element": 611,
+        "name": "Wan-Bissaka",
+        "club": "Aston Villa",
+        "bucket": "out",
+        "context_label": "injured, expected back in 3 weeks",
+        "return_gws": 3,
+        "return_date": null,
+        "m0": 0.0,
+        "evidence": [
+          "ffscout:FFScout Out: Wan-Bissaka",
+          "blurb:The broadcast section of Unai Emery\u2019s presser was short on team news, so we\u2019re not aware of any issues beyond Aaron Wan-Bissaka and Matteo Ruggeri (both hamstring), who will both be out for a few more weeks",
+          "hint:blurb_few_weeks:a few weeks"
+        ]
+      },
+      {
+        "element": 350,
+        "name": "A.Becker",
+        "club": "Liverpool",
+        "bucket": "xi_omit",
+        "context_label": "suspected single-week rotation",
+        "return_gws": 1,
+        "return_date": null,
+        "m0": 0.0,
+        "evidence": [
+          "expand_m=90.0",
+          "recent=[90.0, 90.0, 90.0]",
+          "xi_matched=10/11",
+          "not in resolved predicted XI; not Out/Banned/Doubt"
         ]
       },
       {
@@ -4767,7 +4873,7 @@
         "evidence": [
           "expand_m=56.9",
           "recent=[84.0, 76.0, 28.0]",
-          "xi_matched=11/11",
+          "xi_matched=10/11",
           "not in resolved predicted XI; not Out/Banned/Doubt"
         ]
       },
@@ -4799,7 +4905,7 @@
         "evidence": [
           "expand_m=69.9",
           "recent=[63.0, 71.0, 24.0]",
-          "xi_matched=11/11",
+          "xi_matched=10/11",
           "not in resolved predicted XI; not Out/Banned/Doubt"
         ]
       },
@@ -4815,7 +4921,7 @@
         "evidence": [
           "expand_m=54.6",
           "recent=[90.0, 0.0, 45.0]",
-          "xi_matched=11/11",
+          "xi_matched=10/11",
           "not in resolved predicted XI; not Out/Banned/Doubt"
         ]
       },
@@ -4832,6 +4938,22 @@
           "expand_m=47.0",
           "recent=[90.0, 16.0, 0.0]",
           "xi_matched=11/11",
+          "not in resolved predicted XI; not Out/Banned/Doubt"
+        ]
+      },
+      {
+        "element": 155,
+        "name": "Enzo",
+        "club": "Man City",
+        "bucket": "xi_omit",
+        "context_label": "suspected single-week rotation",
+        "return_gws": 1,
+        "return_date": null,
+        "m0": 15.0,
+        "evidence": [
+          "expand_m=60.0",
+          "recent=[79.0, 40.0, 90.0]",
+          "xi_matched=10/11",
           "not in resolved predicted XI; not Out/Banned/Doubt"
         ]
       },
@@ -4879,7 +5001,7 @@
         "evidence": [
           "expand_m=84.4",
           "recent=[90.0, 90.0, 45.0]",
-          "xi_matched=11/11",
+          "xi_matched=10/11",
           "not in resolved predicted XI; not Out/Banned/Doubt"
         ]
       },
@@ -4927,7 +5049,7 @@
         "evidence": [
           "expand_m=55.1",
           "recent=[90.0, 90.0, 0.0]",
-          "xi_matched=11/11",
+          "xi_matched=10/11",
           "not in resolved predicted XI; not Out/Banned/Doubt"
         ]
       },
@@ -4980,6 +5102,22 @@
         ]
       },
       {
+        "element": 211,
+        "name": "Yeremy",
+        "club": "Crystal Palace",
+        "bucket": "xi_omit",
+        "context_label": "suspected single-week rotation",
+        "return_gws": 1,
+        "return_date": null,
+        "m0": 15.0,
+        "evidence": [
+          "expand_m=67.4",
+          "recent=[82.0, 60.0, 90.0]",
+          "xi_matched=10/11",
+          "not in resolved predicted XI; not Out/Banned/Doubt"
+        ]
+      },
+      {
         "element": 575,
         "name": "Yirenkyi",
         "club": "Coventry",
@@ -5002,10 +5140,12 @@
         "bucket": "banned",
         "context_label": "suspended",
         "return_gws": null,
-        "return_date": null,
+        "return_date": "2027-11-07",
         "m0": 0.0,
         "evidence": [
-          "ffscout:FFScout Banned: Bentancur"
+          "ffscout:FFScout Banned: Bentancur",
+          "fpl:Suspended until 7 Nov",
+          "hint:fpl_return_date_due_still_out:Suspended until 7 Nov"
         ]
       },
       {
@@ -5015,12 +5155,10 @@
         "bucket": "banned",
         "context_label": "suspended",
         "return_gws": null,
-        "return_date": "2027-11-29",
+        "return_date": null,
         "m0": 0.0,
         "evidence": [
-          "ffscout:FFScout Banned: Dowman",
-          "fpl:Suspended until 29 Nov",
-          "hint:fpl_return_date_due_still_out:Suspended until 29 Nov"
+          "ffscout:FFScout Banned: Dowman"
         ]
       },
       {
@@ -5073,7 +5211,8 @@
         "m0": 67.5,
         "evidence": [
           "ffscout:FFScout Doubt: Butland (75%)",
-          "fpl:Arm injury - 50% chance of playing"
+          "fpl:Arm injury - Unknown return date",
+          "hint:fpl_unknown_return:Unknown return date"
         ]
       },
       {
@@ -5114,8 +5253,7 @@
         "return_date": null,
         "m0": 27.75,
         "evidence": [
-          "ffscout:FFScout Doubt: Nicol\u00e1s Dom\u00ednguez (75%)",
-          "fpl:Muscular injury - 75% chance of playing"
+          "ffscout:FFScout Doubt: Nicol\u00e1s Dom\u00ednguez (75%)"
         ]
       },
       {
@@ -5128,8 +5266,7 @@
         "return_date": null,
         "m0": 46.25,
         "evidence": [
-          "ffscout:FFScout Doubt: Kadioglu (75%)",
-          "fpl:Hip injury - 75% chance of playing"
+          "ffscout:FFScout Doubt: Kadioglu (75%)"
         ]
       },
       {
@@ -5142,8 +5279,7 @@
         "return_date": null,
         "m0": 54.5,
         "evidence": [
-          "ffscout:FFScout Doubt: Fernandez-Pardo (75%)",
-          "fpl:Illness - 75% chance of playing"
+          "ffscout:FFScout Doubt: Fernandez-Pardo (75%)"
         ]
       },
       {
@@ -5169,83 +5305,14 @@
         "return_date": null,
         "m0": 33.0,
         "evidence": [
-          "ffscout:FFScout Doubt: Isidor (75%)"
-        ]
-      },
-      {
-        "element": 459,
-        "name": "L.Miley",
-        "club": "Newcastle",
-        "bucket": "doubt",
-        "context_label": "doubt (75% chance)",
-        "return_gws": null,
-        "return_date": null,
-        "m0": 59.5,
-        "evidence": [
-          "ffscout:FFScout Doubt: Miley (75%)",
-          "fpl:Muscular injury - 75% chance of playing"
-        ]
-      },
-      {
-        "element": 16,
-        "name": "Madueke",
-        "club": "Arsenal",
-        "bucket": "doubt",
-        "context_label": "doubt (75% chance)",
-        "return_gws": null,
-        "return_date": null,
-        "m0": 56.25,
-        "evidence": [
-          "ffscout:FFScout Doubt: Madueke (75%)"
-        ]
-      },
-      {
-        "element": 432,
-        "name": "Mainoo",
-        "club": "Man Utd",
-        "bucket": "doubt",
-        "context_label": "doubt (75% chance)",
-        "return_gws": null,
-        "return_date": null,
-        "m0": 64.75,
-        "evidence": [
-          "ffscout:FFScout Doubt: Mainoo (75%)"
-        ]
-      },
-      {
-        "element": 99,
-        "name": "Milambo",
-        "club": "Brentford",
-        "bucket": "doubt",
-        "context_label": "doubt (25% chance)",
-        "return_gws": null,
-        "return_date": null,
-        "m0": 22.5,
-        "evidence": [
-          "ffscout:FFScout Doubt: Milambo (25%)",
-          "fpl:Knee injury - Unknown return date",
-          "hint:fpl_unknown_return:Unknown return date"
-        ]
-      },
-      {
-        "element": 533,
-        "name": "Mukiele",
-        "club": "Sunderland",
-        "bucket": "doubt",
-        "context_label": "doubt (75% chance)",
-        "return_gws": null,
-        "return_date": null,
-        "m0": 57.75,
-        "evidence": [
-          "ffscout:FFScout Doubt: Mukiele (75%)",
-          "fpl:Concussion - 75% chance of playing"
+          "ffscout:FFScout Doubt: Isidor (75%)",
+          "fpl:Knock - 50% chance of playing"
         ]
       }
     ],
     "default": "expanding_mean_flat_horizon",
     "overlay_policy": "ffscout_out_banned_doubts_plus_xi_omit_rotation;context=fpl_news+blurb+xi;partner_blurb=within_season_anticorr_no_rating",
-    "decay_rho": 0.85,
-    "decay_law": "m(h)=expand+(m0-expand)*rho**h",
+    "horizon_law": "pin_then_snap_expand",
     "share_policy": "share_freeze"
   }
 }

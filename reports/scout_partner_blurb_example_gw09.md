@@ -1,39 +1,44 @@
 # Scout context example — GW9
 
-Source: `https://www.fantasyfootballscout.co.uk/team-news` · fetched `2026-10-31T07:45:32.860375+00:00` · ρ=0.85 · overlays **105**
+Source: `https://www.fantasyfootballscout.co.uk/team-news` · fetched `2026-10-31T07:45:32.860375+00:00` · law=`pin_then_snap_expand` · overlays **107**
 
 Combined signals: FFScout Out/Banned/Doubts + predicted-XI omissions + FPL `news`/status + club Latest News blurb parse.
 
 ## Counts
 
 - `doubt`: 30
-- `injured_expected_back`: 2
-- `injured_unknown_return`: 53
-- `suspected_single_week_rotation`: 16
+- `injured_expected_back`: 4
+- `injured_unknown_return`: 50
+- `suspected_single_week_rotation`: 19
 - `suspended`: 4
 
-- with `return_gws`: 22
+- with `return_gws`: 27
 - with blurb evidence: 7
-- with FPL news: 70
+- with FPL news: 49
 
 ## Overlay table (all)
 
 | player | club | bucket/tag | context | partner | return_gws | m0 | force |
 | --- | --- | --- | --- | --- | ---: | ---: | --- |
-| Milosavljević | Bournemouth | injured/ffscout | doubt (25% chance) | — | 0 | 22 | — |
+| Tzolis | Arsenal | injured/ffscout | doubt (75% chance); Minutes anti-correlated with Madueke (ρ=-0.86) — when one… | Madueke (ρ=-0.86) | 0 | 60 | — |
 | Yohanna | Brighton | injured/ffscout | doubt (25% chance); Minutes anti-correlated with Andrés (ρ=-0.42) — when one … | Andrés (ρ=-0.42) | 0 | 3 | — |
 | Lukić | Ipswich | injured/ffscout | doubt (75% chance); Minutes anti-correlated with Matusiwa (ρ=-0.81) — when on… | Matusiwa (ρ=-0.81) | 0 | 60 | — |
-| Ruggeri | Aston Villa | injured/ffscout | injured, expected back in 11 weeks; Minutes anti-correlated with Maatsen (ρ=-… | Maatsen (ρ=-0.66) | 11 | 0 | 0:0,1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0 |
+| Ruggeri | Aston Villa | injured/ffscout | injured, expected back in 3 weeks; Minutes anti-correlated with Maatsen (ρ=-0… | Maatsen (ρ=-0.66) | 3 | 0 | 0:0,1:0,2:0 |
+| Wan-Bissaka | Aston Villa | injured/ffscout | injured, expected back in 3 weeks; Minutes anti-correlated with Cash (ρ=-0.63… | Cash (ρ=-0.63) | 3 | 0 | 0:0,1:0,2:0 |
+| Scott | Bournemouth | injured/ffscout | injured, expected back in 1 week; Minutes anti-correlated with Gannon-Doak (ρ… | Gannon-Doak (ρ=-0.68) | 1 | 0 | 0:0 |
 | Lacroix | Chelsea | injured/ffscout | injured, expected back in 2 weeks; Minutes anti-correlated with James (ρ=-0.4… | James (ρ=-0.48) | 2 | 0 | 0:0,1:0 |
 | Lewis-Skelly | Arsenal | benched/ffscout_xi_omit | suspected single-week rotation; Minutes anti-correlated with Bruno G. (ρ=-0.9… | Bruno G. (ρ=-0.93) | 1 | 15 | 0:15 |
 | Buendía | Aston Villa | benched/ffscout_xi_omit | suspected single-week rotation; Minutes anti-correlated with Mbaye (ρ=-0.82) … | Mbaye (ρ=-0.82) | 1 | 15 | 0:15 |
 | Mings | Aston Villa | benched/ffscout_xi_omit | suspected single-week rotation; Minutes anti-correlated with Pau (ρ=-0.99) — … | Pau (ρ=-0.99) | 1 | 15 | 0:15 |
 | Anthony | Brentford | benched/ffscout_xi_omit | suspected single-week rotation; Minutes anti-correlated with O.Dango (ρ=-0.86… | O.Dango (ρ=-0.86) | 1 | 15 | 0:15 |
 | Yirenkyi | Coventry | benched/ffscout_xi_omit | suspected single-week rotation | — | 1 | 15 | 0:15 |
+| Yeremy | Crystal Palace | benched/ffscout_xi_omit | suspected single-week rotation; Minutes anti-correlated with Guessand (ρ=-0.4… | Guessand (ρ=-0.46) | 1 | 15 | 0:15 |
 | Maitland-Niles | Everton | benched/ffscout_xi_omit | suspected single-week rotation | — | 1 | 15 | 0:15 |
 | Thomas | Hull | benched/ffscout_xi_omit | suspected single-week rotation; Minutes anti-correlated with Slater (ρ=-0.93)… | Slater (ρ=-0.93) | 1 | 15 | 0:15 |
 | Greaves | Ipswich | benched/ffscout_xi_omit | suspected single-week rotation; Minutes anti-correlated with Ouattara (ρ=-0.7… | Ouattara (ρ=-0.77) | 1 | 15 | 0:15 |
+| A.Becker | Liverpool | benched/ffscout_xi_omit | suspected single-week rotation | — | 1 | 0 | 0:0 |
 | Cherki | Man City | benched/ffscout_xi_omit | suspected single-week rotation; Minutes anti-correlated with Kovačić (ρ=-0.76… | Kovačić (ρ=-0.76) | 1 | 15 | 0:15 |
+| Enzo | Man City | benched/ffscout_xi_omit | suspected single-week rotation; Minutes anti-correlated with Foden (ρ=-0.88) … | Foden (ρ=-0.88) | 1 | 15 | 0:15 |
 | Guéhi | Man City | benched/ffscout_xi_omit | suspected single-week rotation; Minutes anti-correlated with Lewis (ρ=-0.56) … | Lewis (ρ=-0.56) | 1 | 15 | 0:15 |
 | Tielemans | Man Utd | benched/ffscout_xi_omit | suspected single-week rotation; Minutes anti-correlated with Lacey (ρ=-0.68) … | Lacey (ρ=-0.68) | 1 | 15 | 0:15 |
 | Botman | Newcastle | benched/ffscout_xi_omit | suspected single-week rotation; Minutes anti-correlated with Burn (ρ=-1.00) —… | Burn (ρ=-1.00) | 1 | 15 | 0:15 |
@@ -45,7 +50,7 @@ Combined signals: FFScout Out/Banned/Doubts + predicted-XI omissions + FPL `news
 | Calafiori | Arsenal | injured/ffscout | doubt (75% chance); Minutes anti-correlated with White (ρ=-0.45) — when one s… | White (ρ=-0.45) |  | 48 | — |
 | Madueke | Arsenal | injured/ffscout | doubt (75% chance); Minutes anti-correlated with Tzolis (ρ=-0.86) — when one … | Tzolis (ρ=-0.86) |  | 56 | — |
 | Rice | Arsenal | injured/ffscout | doubt (75% chance); Minutes anti-correlated with Lewis-Skelly (ρ=-0.62) — whe… | Lewis-Skelly (ρ=-0.62) |  | 65 | — |
-| Tzolis | Arsenal | injured/ffscout | doubt (75% chance); Minutes anti-correlated with Madueke (ρ=-0.86) — when one… | Madueke (ρ=-0.86) |  | 60 | — |
+| Milosavljević | Bournemouth | injured/ffscout | doubt (25% chance) | — |  | 22 | — |
 | Dasilva | Brentford | injured/ffscout | doubt (25% chance) | — |  | 22 | — |
 | Milambo | Brentford | injured/ffscout | doubt (25% chance) | — |  | 22 | — |
 | Andrés | Brighton | injured/ffscout | doubt (75% chance); Minutes anti-correlated with Osman (ρ=-0.69) — when one s… | Osman (ρ=-0.69) |  | 58 | — |
@@ -72,9 +77,7 @@ Combined signals: FFScout Out/Banned/Doubts + predicted-XI omissions + FPL `news
 | Saka | Arsenal | injured/ffscout | injured, unknown return; Minutes anti-correlated with Merino (ρ=-0.89) — when… | Merino (ρ=-0.89) |  | 0 | — |
 | Saliba | Arsenal | injured/ffscout | injured, unknown return | — |  | 0 | — |
 | Onana | Aston Villa | injured/ffscout | injured, unknown return | — |  | 0 | — |
-| Wan-Bissaka | Aston Villa | injured/ffscout | injured, unknown return; Minutes anti-correlated with Cash (ρ=-0.63) — when o… | Cash (ρ=-0.63) |  | 0 | — |
 | J.Araujo | Bournemouth | injured/ffscout | injured, unknown return | — |  | 0 | — |
-| Scott | Bournemouth | injured/ffscout | injured, unknown return; Minutes anti-correlated with Gannon-Doak (ρ=-0.68) —… | Gannon-Doak (ρ=-0.68) |  | 0 | — |
 | Tóth.A | Bournemouth | injured/ffscout | injured, unknown return; Minutes anti-correlated with Adams (ρ=-0.66) — when … | Adams (ρ=-0.66) |  | 0 | — |
 | Carvalho | Brentford | injured/ffscout | injured, unknown return; Minutes anti-correlated with M.Sangaré (ρ=-0.60) — w… | M.Sangaré (ρ=-0.60) |  | 0 | — |
 | Furo | Brentford | injured/ffscout | injured, unknown return | — |  | 0 | — |
@@ -102,7 +105,7 @@ Combined signals: FFScout Out/Banned/Doubts + predicted-XI omissions + FPL `news
 | Targett | Hull | injured/ffscout | injured, unknown return; Minutes anti-correlated with Ajayi (ρ=-1.00) — when … | Ajayi (ρ=-1.00) |  | 0 | — |
 | Mateo Joseph | Leeds | injured/ffscout | injured, unknown return | — |  | 0 | — |
 | Rodon | Leeds | injured/ffscout | injured, unknown return; Minutes anti-correlated with Gudmundsson (ρ=-0.87) —… | Gudmundsson (ρ=-0.87) |  | 0 | — |
-| Barcola | Liverpool | injured/ffscout | injured, unknown return; Minutes anti-correlated with Szoboszlai (ρ=-0.69) — … | Szoboszlai (ρ=-0.69) |  | 0 | — |
+| Bradley | Liverpool | injured/ffscout | injured, unknown return | — |  | 0 | — |
 | Ekitiké | Liverpool | injured/ffscout | injured, unknown return | — |  | 0 | — |
 | Frimpong | Liverpool | injured/ffscout | injured, unknown return; Minutes anti-correlated with Jacquet (ρ=-0.98) — whe… | Jacquet (ρ=-0.98) |  | 0 | — |
 | Leoni | Liverpool | injured/ffscout | injured, unknown return | — |  | 0 | — |
@@ -119,7 +122,6 @@ Combined signals: FFScout Out/Banned/Doubts + predicted-XI omissions + FPL `news
 | Mudryk | Spurs | injured/ffscout | injured, unknown return; Minutes anti-correlated with Gray (ρ=-0.96) — when o… | Gray (ρ=-0.96) |  | 0 | — |
 | Odobert | Spurs | injured/ffscout | injured, unknown return | — |  | 0 | — |
 | Tosin | Spurs | injured/ffscout | injured, unknown return | — |  | 0 | — |
-| Xavi | Spurs | injured/ffscout | injured, unknown return | — |  | 0 | — |
 | Ballard | Sunderland | injured/ffscout | injured, unknown return; Minutes anti-correlated with Hume (ρ=-0.63) — when o… | Hume (ρ=-0.63) |  | 0 | — |
 | Mundle | Sunderland | injured/ffscout | injured, unknown return | — |  | 0 | — |
 | Dowman | Arsenal | injured/ffscout | suspended; Minutes anti-correlated with Saka (ρ=-0.72) — when one sits, the o… | Saka (ρ=-0.72) |  | 0 | — |

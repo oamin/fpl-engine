@@ -9,13 +9,12 @@
 | Layer | Rule |
 | --- | --- |
 | **Default (everyone)** | Expanding as-of mean `m` (GW `< t`), flat across the horizon |
-| **Scout overlay (sparse)** | FFScout **Out / Banned / Doubts** → step-0 anchor `m0` |
-| **Horizon return** | Decay to expanding: `m(h) = expand + (m0 − expand) · ρ^h` (default **ρ=0.85**) |
-| **Hard pins (later)** | Structured `out_for_n_gws` can force early steps via `force_steps` |
+| **Scout overlay (sparse)** | FFScout **Out / Banned / Doubts** (+ XI-omit rotation) → known-horizon pins |
+| **Horizon return** | **Pin then snap** — no ρ-decay. `force_steps` / `return_gws` / step-0 `m0`; after that → expanding `m` |
+| **Hard pins** | Structured `out_for_n_gws` / FPL+blurb return horizon via `force_steps` |
 | **Shares** | Freeze `sG`/`sA` from expanding baseline when scout minutes are applied |
-| **Not scout (yet)** | Blanket firm-XI minutes overrides; prose-parsed return length |
 
-Predicted XI still drives the **selectable pool** (WHO), not the minutes overlay.
+Predicted XI still drives the **selectable pool** (WHO); XI-omit also soft-pins week-0 minutes for regulars left out.
 
 ## Build
 
@@ -37,13 +36,15 @@ python -m src.live.numagent_live_pick --gw N --scout-packet \
   data/predictions/2026-27/gwNN/scout_minutes.json …
 ```
 
-Week-t uses step 0; t+1 uses step 1 (Out revert to expanding). Share freeze on.
+Week-t uses step 0; t+1 uses step 1 (snap to expanding unless still pinned). Share freeze on.
 
 ## GW9 smoke (saved FFScout page)
 
 - Baseline players: ~669  
-- Overlays: Out / Banned / Doubts (~89 after name match)  
-- Saka example (expand≈69′, ρ=0.85): GW9 **0′** → GW10 **≈10′** → GW11 **≈19′** → … → expanding  
+- Overlays: Out / Banned / Doubts (+ XI-omit) after name match  
+- Cherki (single-week XI omit, expand≈55′): GW9 **15′** → GW10+ **expand** (snap, no climb)  
+- Known return (e.g. 2 GW out): pin zeros for steps 0–1 → snap to expand at step 2  
+
 
 ## Context labels (combined)
 

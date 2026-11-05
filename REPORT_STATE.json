@@ -1,10 +1,17 @@
 {
-  "task": "scout_partner_blurb_commit_no_rating",
+  "task": "scout_pin_then_snap_expand",
   "status": "done",
-  "as_of_utc": "2026-11-05T07:59:22Z",
-  "module": "src/live/minutes_partner_context.py",
-  "applies_minutes_rating": false,
-  "example": "reports/scout_partner_blurb_example_gw09.md",
-  "packet": "data/predictions/2026-27/gw09/scout_minutes_with_partners.json",
-  "n_overlays_with_partner": 71
+  "as_of_utc": "2026-11-05T08:40:00Z",
+  "module": "src/live/scout_minutes.py",
+  "horizon_law": "pin_then_snap_expand",
+  "removed": "rho_decay m(h)=expand+(m0-expand)*rho**h",
+  "rule": "force_steps / return_gws / step-0 m0; after known horizon snap to expanding m",
+  "example_cherki_gw09": {
+    "m0": 15.0,
+    "expand": 54.625,
+    "path": [15.0, 54.625, 54.625]
+  },
+  "tests": "tests/test_scout_minutes_snap.py",
+  "packet": "data/predictions/2026-27/gw09/scout_minutes.json",
+  "smoke_log": "LOGS/scout_snap_expand_smoke.log"
 }
