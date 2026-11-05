@@ -45,6 +45,8 @@ from src.teams import norm_team
 # Locked L4 priced path: γ=1, hard-stop, no terminal lump.
 L4_GAMMA = 1.0
 BOOKIE_DEPTH = 2
+# L4 + Opta far under protocol.l3_centreline_forecast (t … t+11).
+CENTRELINE_HORIZON = 12
 
 ROOT = Path(__file__).resolve().parents[2]
 SCRATCH = ROOT / "data" / "scratch"
@@ -418,13 +420,20 @@ def score_pool_from_odds(
     fixture_pairs: list[tuple[str, str]] | None = None,
     minutes_mode: str = "xmi_then_rolling",
     use_props: bool = False,
+    share_xmi: dict[int, float] | None = None,
 ) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Score the live pool.
+
+    Optional ``share_xmi``: freeze ``sG``/``sA`` from that minutes map while
+    appear/CS/GC use ``xmi`` (scout share-freeze lock).
+    """
     alpha_g, alpha_a, _, _ = numagent_xp.load_alphas()
     meta: dict[str, Any] = {
         "alpha_g": alpha_g,
         "alpha_a": alpha_a,
         "minutes_mode": minutes_mode,
         "use_props": bool(use_props),
+        "share_freeze": share_xmi is not None,
         "fixtures_scored": [],
         "fixtures_failed": [],
     }
@@ -439,6 +448,18 @@ def score_pool_from_odds(
         xmi=xmi,
         minutes_mode=minutes_mode,
     )
+    share_base = None
+    if share_xmi is not None:
+        share_base = build_player_table(
+            bootstrap=bootstrap,
+            hist=hist,
+            before_gw=before_gw,
+            xmi=share_xmi,
+            minutes_mode="xmi_then_rolling",
+        )
+        share_base = share_base.loc[
+            pd.to_numeric(share_base["m"], errors="coerce").fillna(0.0) > 0.0
+        ].copy()
     xp = pd.Series(0.0, index=base["element"].astype(int))
     se = pd.Series(0.0, index=base["element"].astype(int))
     props_block = odds_doc.get("props") or {}
@@ -478,6 +499,15 @@ def score_pool_from_odds(
             )
             if club_df.empty:
                 continue
+            share_players = None
+            if share_base is not None and not share_base.empty:
+                share_club = share_base.loc[
+                    share_base["club"].map(
+                        lambda t: norm_team(str(t)) == norm_team(club)
+                    )
+                ].copy()
+                if not share_club.empty:
+                    share_players = share_club
             mom = moments[side_name]
             scored = numagent_xp.score_team_side(
                 club_df,
@@ -487,6 +517,7 @@ def score_pool_from_odds(
                 alpha_g=float(alpha_g),
                 alpha_a=float(alpha_a),
                 prop_p_by_player=by_id or None,
+                share_players=share_players,
             )
             for i in range(len(scored)):
                 eid = int(club_df.iloc[i]["element"])
@@ -564,6 +595,8 @@ def run_pick(
     time_limit: float = 60.0,
     use_l4: bool = True,
     use_props: bool = False,
+    scout_packet_path: Path | None = None,
+    centreline_horizon: int = CENTRELINE_HORIZON,
 ) -> dict[str, Any]:
     played_gw = int(gw) - 1
     bootstrap = fetch_bootstrap()
@@ -597,8 +630,35 @@ def run_pick(
     scratch_hist = SCRATCH / f"player_gw_2026_27_through_gw{played_gw:02d}.csv"
     hist_raw.to_csv(scratch_hist, index=False)
 
-    xmi = load_xmi_map(xmi_path, gw)
+    scout_meta: dict[str, Any] | None = None
+    share_xmi: dict[int, float] | None = None
+    xmi_t1: dict[int, float] | None = None
+    scout_step_maps: dict[int, dict[int, float]] | None = None
+    H_centre = max(BOOKIE_DEPTH, int(centreline_horizon))
+    if scout_packet_path is not None:
+        from src.live.scout_minutes import load_scout_packet
 
+        scout = load_scout_packet(Path(scout_packet_path))
+        xmi = scout.step_map(0)
+        xmi_t1 = scout.step_map(1)
+        share_xmi = dict(scout.baseline_m)
+        # Precompute step maps for the full centreline horizon (near + Opta far).
+        scout_step_maps = {
+            h: scout.step_map(h) for h in range(max(H_centre, int(scout.horizon)))
+        }
+        scout_meta = {
+            "path": str(scout_packet_path),
+            "n_overlays": len(scout.overlays),
+            "baseline_n": len(scout.baseline_m),
+            "source": scout.source,
+            "share_policy": "share_freeze",
+            "horizon_law": "pin_then_snap_expand",
+            "packet_horizon": int(scout.horizon),
+            "centreline_horizon": int(H_centre),
+            "steps_wired": list(range(H_centre)),
+        }
+    else:
+        xmi = load_xmi_map(xmi_path, gw)
     odds_docs: list[dict[str, Any]] = []
     if fetch_odds:
         want = pairs_t + (pairs_t1 if use_l4 else [])
@@ -633,6 +693,7 @@ def run_pick(
         fixture_pairs=pairs_t,
         minutes_mode="xmi_then_rolling",
         use_props=use_props,
+        share_xmi=share_xmi,
     )
     work_t, _ = attach_mu_post(pool_t, mu_col="score_xp_v2", se_col="xp_se", mode="none")
 
@@ -643,11 +704,14 @@ def run_pick(
             bootstrap=bootstrap,
             hist=hist,
             before_gw=gw,
-            xmi=xmi,
+            xmi=xmi_t1 if xmi_t1 is not None else xmi,
             odds_doc=odds_doc,
             fixture_pairs=pairs_t1,
-            minutes_mode="rolling3",
+            minutes_mode=(
+                "xmi_then_rolling" if xmi_t1 is not None else "rolling3"
+            ),
             use_props=use_props,
+            share_xmi=share_xmi,
         )
         work_t1, _ = attach_mu_post(
             pool_t1, mu_col="score_xp_v2", se_col="xp_se", mode="none"
@@ -696,12 +760,64 @@ def run_pick(
     l3_block = _plan_block(l3, els=els, label="L3")
 
     l4_block = None
+    centreline_meta: dict[str, Any] = {}
     if use_l4 and work_t1 is not None:
+        pools: list[pd.DataFrame] = [work_t, work_t1]
+        if H_centre > BOOKIE_DEPTH:
+            try:
+                from src.live.scout_horizon_boards import (
+                    extend_pools_opta_far_with_scout,
+                )
+
+                def _fx(g: int) -> list[dict[str, Any]]:
+                    raw = _get_json(
+                        f"https://fantasy.premierleague.com/api/fixtures/?event={int(g)}"
+                    )
+                    return list(raw or [])
+
+                pools, centreline_meta = extend_pools_opta_far_with_scout(
+                    pools,
+                    decision_gw=int(gw),
+                    week0_pool=work_t,
+                    hist=hist,
+                    teams=teams,
+                    fetch_fixtures=_fx,
+                    horizon=int(H_centre),
+                    season="2026-27",
+                    alpha_g=float(meta_t.get("alpha_g") or 0.96),
+                    alpha_a=float(meta_t.get("alpha_a") or 0.90),
+                    scout_step_maps=scout_step_maps,
+                    share_baseline_m=share_xmi,
+                    near_depth=BOOKIE_DEPTH,
+                )
+                print(
+                    f"L4 centreline horizon={len(pools)} "
+                    f"(Opta far GWs {centreline_meta.get('opta_gws') or '—'}; "
+                    f"scout_steps={centreline_meta.get('scout_steps_applied')})",
+                    flush=True,
+                )
+            except Exception as exc:  # noqa: BLE001 — fall back to priced-only
+                print(f"L4 centreline Opta extend skipped: {exc}", flush=True)
+                centreline_meta = {
+                    "protocol": "l3_centreline_forecast",
+                    "horizon": BOOKIE_DEPTH,
+                    "opta_gws": [],
+                    "error": str(exc),
+                    "fallback": "priced_only",
+                }
+        else:
+            centreline_meta = {
+                "protocol": "l3_centreline_forecast",
+                "horizon": BOOKIE_DEPTH,
+                "opta_gws": [],
+                "near": "priced_odds_t_t1",
+                "far": "none",
+            }
         hz = solve_horizon_transfers(
-            [work_t, work_t1],
+            pools,
             held,
             mu_col="mu_post",
-            horizon=BOOKIE_DEPTH,
+            horizon=len(pools),
             gamma=L4_GAMMA,
             terminal_mu_weight=0.0,
             terminal_value_weight=0.0,
@@ -715,6 +831,7 @@ def run_pick(
         l4_block["week_xi_mu"] = list(hz.week_xi_mu)
         l4_block["week_captain_mu"] = list(hz.week_captain_mu)
         l4_block["status_horizon"] = hz.status
+        l4_block["centreline"] = centreline_meta
 
     out_dir = PRED / f"gw{gw:02d}"
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -746,6 +863,7 @@ def run_pick(
         "score_meta_t": meta_t,
         "score_meta_t1": meta_t1,
         "xmi_path": str(xmi_path),
+        "scout": scout_meta,
         "history_scratch": str(scratch_hist),
         "board_path": str(board_path),
         "board_t1_path": str(board_t1_path) if board_t1_path else None,
@@ -867,7 +985,13 @@ def write_report(doc: dict[str, Any], path: Path) -> None:
             if (doc.get("score_meta_t") or {}).get("use_props")
             else "- Props: off (AH+OU+BTTS pots only)."
         ),
-        "- Week t minutes: xmi probe then rolling3; t+1: rolling3 only.",
+        (
+            "- Minutes: scout ``step_map`` across full L4+Opta centreline horizon; "
+            "shares freeze from expanding m."
+            if doc.get("scout")
+            else "- Week t minutes: xmi probe then rolling3; t+1: rolling3 only; "
+            "Opta far uses frozen expanding minutes unless --scout-packet."
+        ),
         "",
     ]
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -910,6 +1034,25 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="apply anytime-scorer prop overlay (default: off)",
     )
+    ap.add_argument(
+        "--scout-packet",
+        type=Path,
+        default=None,
+        help=(
+            "scout_minutes.json (FFScout overlays on expanding baseline). "
+            "Applies step_map across the full L4+Opta centreline horizon; "
+            "shares freeze from expanding m."
+        ),
+    )
+    ap.add_argument(
+        "--centreline-horizon",
+        type=int,
+        default=CENTRELINE_HORIZON,
+        help=(
+            "L4 centreline horizon under l3_centreline_forecast "
+            f"(default {CENTRELINE_HORIZON}: priced t:t+1 + Opta far)"
+        ),
+    )
     ap.add_argument("--time-limit", type=float, default=90.0)
     args = ap.parse_args(argv)
 
@@ -934,6 +1077,8 @@ def main(argv: list[str] | None = None) -> int:
         time_limit=float(args.time_limit),
         use_l4=not bool(args.l3_only),
         use_props=bool(args.with_props),
+        scout_packet_path=args.scout_packet,
+        centreline_horizon=int(args.centreline_horizon),
     )
     out_json = PRED / f"gw{int(args.gw):02d}" / "numagent_pick.json"
     out_md = ROOT / "reports" / f"numagent_live_pick_gw{int(args.gw):02d}.md"

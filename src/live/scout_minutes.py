@@ -2,13 +2,15 @@
 
 Product default (everyone): expanding as-of mean ``m``, flat across the
 horizon. Scout treatment is **sparse**: only keyed players (FFScout Out /
-Banned / Doubts first) get a step-0 minutes anchor. Farther horizon steps
-**decay** from that anchor back toward expanding mean:
+Banned / Doubts / XI-omit) get a minutes pin for the **known horizon**,
+then **snap** back to expanding mean (no ρ-decay):
 
-  m(h) = expand + (m0 − expand) · ρ^h
+  m(h) = force_steps[h] if pinned
+       = m0             if h == 0 or h < return_gws
+       = expand         otherwise
 
-Default ``ρ=0.85`` (same family as joint-path Opta decay). Structured
-``out_for_n_gws`` can still hard-pin early steps via ``force_steps``.
+Structured ``out_for_n_gws`` / return parses hard-pin early steps via
+``force_steps``; after that horizon xmi is expanding ``m``.
 
 Goal/assist shares stay frozen from expanding m
 (``reports/SCOUT_M_SHARE_FREEZE_LOCK.md``).
@@ -37,8 +39,32 @@ PRED = ROOT / "data" / "predictions" / "2026-27"
 LIVE = ROOT / "data" / "live"
 CACHE = ROOT / "data" / "cache"
 POS = {1: "GKP", 2: "DEF", 3: "MID", 4: "FWD"}
-# Same family as joint-path Opta decay (centreline DEFAULT_DECAY_RHO).
-DEFAULT_SCOUT_RHO = 0.85
+
+
+def _is_unknown_return_overlay(ov: "ScoutOverlay") -> bool:
+    """True when absence has no usable return horizon (stay on m0)."""
+    ctx = str(getattr(ov, "context", "") or "")
+    if ctx == "injured_unknown_return":
+        return True
+    if ctx == "suspended" and getattr(ov, "return_gws", None) is None:
+        # Open-ended ban / no parsed return — do not snap to expand.
+        if not getattr(ov, "force_steps", None):
+            return True
+    return False
+
+
+def pin_unknown_return_overlays(
+    overlays: Mapping[int, "ScoutOverlay"], *, horizon: int
+) -> int:
+    """Hard-pin unknown-return overlays at ``m0`` for the full packet horizon."""
+    n = 0
+    hz = max(1, int(horizon))
+    for ov in overlays.values():
+        if not _is_unknown_return_overlay(ov):
+            continue
+        ov.force_steps = {h: float(ov.m0) for h in range(hz)}
+        n += 1
+    return n
 
 
 @dataclass
@@ -53,7 +79,7 @@ class ScoutOverlay:
     reason: str
     source: str = "ffscout"
     chance: float | None = None
-    # Optional hard minutes for specific steps (e.g. out_for_n_gws); otherwise decay.
+    # Hard minutes for known-horizon steps (e.g. out_for_n_gws); else snap to expand.
     force_steps: dict[int, float] = field(default_factory=dict)
     # Combined FFScout + FPL + blurb context (see ``scout_context``).
     context: str = ""
@@ -62,11 +88,9 @@ class ScoutOverlay:
     return_gws: int | None = None
     return_date: str | None = None
     evidence: list[str] = field(default_factory=list)
-    # Within-season anti-corr teammate blurb only (no minutes rating).
-    partner_blurb: str = ""
-    anti_element: int | None = None
-    anti_name: str | None = None
-    anti_corr: float | None = None
+    # Closed role tag (see ``scout_role.ROLE_TAGS``).
+    role: str = ""
+    role_reason: str = ""
 
 
 @dataclass
@@ -74,8 +98,10 @@ class ScoutMinutesPacket:
     """Sparse scout minutes on an expanding-mean baseline.
 
     ``baseline_m[element]`` = expanding as-of mean (GW ``< decision_gw``).
-    ``overlays[element].m0`` = scout minutes at step 0; later steps decay
-    toward baseline with ``decay_rho`` unless ``force_steps`` pins them.
+    ``overlays[element]`` pins minutes for the known horizon (``force_steps`` /
+    ``return_gws`` / step-0 ``m0``); after that horizon ``m_at`` snaps to
+    expanding baseline — no ρ-decay.
+    ``roles`` covers the full as-of pool (firm starters included, not only overlays).
     """
 
     season: str
@@ -85,7 +111,7 @@ class ScoutMinutesPacket:
     fetched_at: str
     baseline_m: dict[int, float] = field(default_factory=dict)
     overlays: dict[int, ScoutOverlay] = field(default_factory=dict)
-    decay_rho: float = DEFAULT_SCOUT_RHO
+    roles: dict[int, dict[str, Any]] = field(default_factory=dict)
     meta: dict[str, Any] = field(default_factory=dict)
 
     def m_at(self, element: int, step: int = 0) -> float:
@@ -97,12 +123,20 @@ class ScoutMinutesPacket:
         h = max(0, int(step))
         if h in ov.force_steps:
             return float(ov.force_steps[h])
-        rho = float(self.decay_rho)
-        # m(h) = expand + (m0 − expand) · ρ^h
-        return float(base + (float(ov.m0) - base) * (rho**h))
+        # Unknown return / open-ended absence: stay on m0 for the whole horizon.
+        if _is_unknown_return_overlay(ov):
+            return float(ov.m0)
+        # Known return horizon without an explicit pin for this step.
+        if ov.return_gws is not None and h < int(ov.return_gws):
+            return float(ov.m0)
+        # Step-0 scout anchor (doubts / single-week pins with empty maps).
+        if h == 0:
+            return float(ov.m0)
+        # Past known horizon → snap to expanding mean.
+        return base
 
     def step_map(self, step: int = 0) -> dict[int, float]:
-        """Full element→m map for one horizon step (baseline ⊕ decayed overlays)."""
+        """Full element→m map for one horizon step (baseline ⊕ scout pins)."""
         out = {int(e): float(m) for e, m in self.baseline_m.items()}
         for eid in self.overlays:
             out[int(eid)] = self.m_at(int(eid), int(step))
@@ -115,9 +149,13 @@ class ScoutMinutesPacket:
     def overlay_elements(self) -> list[int]:
         return sorted(int(e) for e in self.overlays)
 
-    def decayed_path(self, element: int) -> list[float]:
-        """Minutes path length ``horizon`` for one element."""
+    def minutes_path(self, element: int) -> list[float]:
+        """Minutes path length ``horizon`` for one element (pin then snap)."""
         return [self.m_at(int(element), h) for h in range(max(1, int(self.horizon)))]
+
+    def decayed_path(self, element: int) -> list[float]:
+        """Alias for ``minutes_path`` (legacy name; no ρ-decay)."""
+        return self.minutes_path(element)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -129,17 +167,25 @@ class ScoutMinutesPacket:
             "protocol": "scout_minutes_ffscout_v1",
             "share_policy": "share_freeze",
             "lock": "reports/SCOUT_M_SHARE_FREEZE_LOCK.md",
-            "decay_rho": float(self.decay_rho),
-            "decay_law": "m(h)=expand+(m0-expand)*rho**h",
+            "horizon_law": "pin_then_snap_expand",
+            "horizon_law_detail": (
+                "m(h)=force_steps[h] | m0 if h<return_gws or h==0 | else expand"
+            ),
             "baseline_n": len(self.baseline_m),
             "n_overlays": len(self.overlays),
+            "n_roles": len(self.roles),
             "baseline_m": {str(k): float(v) for k, v in sorted(self.baseline_m.items())},
+            "roles": {
+                str(eid): dict(row) for eid, row in sorted(self.roles.items())
+            },
             "overlays": {
                 str(eid): {
                     "element": int(eid),
                     "name": ov.name,
                     "club": ov.club,
                     "tag": ov.tag,
+                    "role": ov.role,
+                    "role_reason": ov.role_reason,
                     "m0": float(ov.m0),
                     "reason": ov.reason,
                     "source": ov.source,
@@ -153,11 +199,7 @@ class ScoutMinutesPacket:
                     "return_gws": ov.return_gws,
                     "return_date": ov.return_date,
                     "evidence": list(ov.evidence),
-                    "partner_blurb": ov.partner_blurb,
-                    "anti_element": ov.anti_element,
-                    "anti_name": ov.anti_name,
-                    "anti_corr": ov.anti_corr,
-                    "path": self.decayed_path(eid),
+                    "path": self.minutes_path(eid),
                 }
                 for eid, ov in sorted(self.overlays.items())
             },
@@ -227,24 +269,20 @@ def load_scout_packet(path: Path) -> ScoutMinutesPacket:
                 else None
             ),
             evidence=[str(x) for x in (raw.get("evidence") or [])],
-            partner_blurb=str(raw.get("partner_blurb") or ""),
-            anti_element=(
-                int(raw["anti_element"])
-                if raw.get("anti_element") is not None and raw.get("anti_element") != ""
-                else None
-            ),
-            anti_name=(
-                str(raw.get("anti_name"))
-                if raw.get("anti_name") not in (None, "")
-                else None
-            ),
-            anti_corr=(
-                float(raw["anti_corr"])
-                if raw.get("anti_corr") is not None and raw.get("anti_corr") != ""
-                else None
-            ),
+            role=str(raw.get("role") or ""),
+            role_reason=str(raw.get("role_reason") or ""),
         )
     baseline = {int(k): float(v) for k, v in (doc.get("baseline_m") or {}).items()}
+    roles_raw = doc.get("roles") or {}
+    roles: dict[int, dict[str, Any]] = {}
+    for key, raw in roles_raw.items():
+        eid = int(raw.get("element") or key)
+        roles[eid] = dict(raw)
+        roles[eid]["element"] = eid
+    meta = dict(doc.get("meta") or {})
+    # Legacy packets may still carry decay_rho; ignored under pin-then-snap.
+    meta.pop("decay_rho", None)
+    meta.pop("decay_law", None)
     return ScoutMinutesPacket(
         season=str(doc.get("season") or "2026-27"),
         decision_gw=int(doc["decision_gw"]),
@@ -253,8 +291,8 @@ def load_scout_packet(path: Path) -> ScoutMinutesPacket:
         fetched_at=str(doc.get("fetched_at") or ""),
         baseline_m=baseline,
         overlays=overlays,
-        decay_rho=float(doc.get("decay_rho") or DEFAULT_SCOUT_RHO),
-        meta=dict(doc.get("meta") or {}),
+        roles=roles,
+        meta=meta,
     )
 
 
@@ -465,7 +503,6 @@ def build_scout_packet_from_ffscout(
     horizon: int = 2,
     season: str = "2026-27",
     fetch_out_dir: Path | None = None,
-    decay_rho: float = DEFAULT_SCOUT_RHO,
 ) -> ScoutMinutesPacket:
     """Assemble expanding baseline + FFScout sparse overlays for a live GW."""
     if ffs_payload is None:
@@ -494,8 +531,8 @@ def build_scout_packet_from_ffscout(
         hist=hist,
         decision_gw=int(decision_gw),
     )
-    from src.live.minutes_partner_context import attach_partner_blurbs_to_overlays
     from src.live.scout_context import enrich_overlays_with_context
+    from src.live.scout_role import ROLE_TAGS, attach_roles
 
     series = _series_by_element(hist, before_gw=int(decision_gw))
     overlays, context_rows, ctx_diag = enrich_overlays_with_context(
@@ -507,15 +544,28 @@ def build_scout_packet_from_ffscout(
         series_by_element=series,
         include_xi_omissions=True,
     )
-    # Partner blurbs: within-season anti-corr text only — never a minutes rating.
-    min_prior = max(5, min(8, int(decision_gw) - 1))
-    partner_diag = attach_partner_blurbs_to_overlays(
-        overlays,
-        hist,
-        decision_gw=int(decision_gw),
-        min_prior_gws=min_prior,
+    n_unknown_pinned = pin_unknown_return_overlays(
+        overlays, horizon=int(horizon)
     )
-    rho = float(decay_rho)
+    role_rows, role_counts = attach_roles(
+        bootstrap=bootstrap,
+        series_by_element=series,
+        baseline_m=baseline,
+        overlays=overlays,
+    )
+    roles_out = {
+        eid: {
+            "element": int(eid),
+            "name": row.name,
+            "club": row.club,
+            "role": row.role,
+            "role_reason": row.reason,
+            "expand_m": round(row.features.expand_m, 2),
+            "start60_rate": round(row.features.start60_rate, 3),
+            "early_sub_rate": round(row.features.early_sub_rate, 3),
+        }
+        for eid, row in role_rows.items()
+    }
     return ScoutMinutesPacket(
         season=season,
         decision_gw=int(decision_gw),
@@ -527,11 +577,13 @@ def build_scout_packet_from_ffscout(
         ),
         baseline_m=baseline,
         overlays=overlays,
-        decay_rho=rho,
+        roles=roles_out,
         meta={
             "ffscout": diag,
             "context": ctx_diag,
-            "partner_context": partner_diag,
+            "n_unknown_return_pinned": n_unknown_pinned,
+            "role_counts": role_counts,
+            "role_tags": list(ROLE_TAGS),
             "context_samples": [
                 {
                     "element": r.element,
@@ -557,10 +609,10 @@ def build_scout_packet_from_ffscout(
             "overlay_policy": (
                 "ffscout_out_banned_doubts_plus_xi_omit_rotation;"
                 "context=fpl_news+blurb+xi;"
-                "partner_blurb=within_season_anticorr_no_rating"
+                "unknown_return=pin_m0_full_horizon;"
+                "role=scout_role_v1"
             ),
-            "decay_rho": rho,
-            "decay_law": "m(h)=expand+(m0-expand)*rho**h",
+            "horizon_law": "pin_then_snap_expand",
             "share_policy": "share_freeze",
         },
     )
@@ -605,14 +657,18 @@ def _write_example_md(packet: ScoutMinutesPacket, path: Path) -> None:
         f"# Scout context example — GW{packet.decision_gw}",
         "",
         f"Source: `{packet.source}` · fetched `{packet.fetched_at}` · "
-        f"ρ={packet.decay_rho} · overlays **{len(packet.overlays)}**",
+        f"law=`pin_then_snap_expand` · overlays **{len(packet.overlays)}** · "
+        f"roles **{len(packet.roles)}**",
         "",
         "Combined signals: FFScout Out/Banned/Doubts + predicted-XI omissions "
-        "+ FPL `news`/status + club Latest News blurb parse.",
+        "+ FPL `news`/status + club Latest News blurb parse + role tags.",
         "",
-        "## Counts",
+        "## Role tags (full pool)",
         "",
     ]
+    for k, v in sorted(((packet.meta or {}).get("role_counts") or {}).items()):
+        lines.append(f"- `{k}`: {v}")
+    lines += ["", "## Context counts", ""]
     ctx = (packet.meta or {}).get("context") or {}
     for k, v in (ctx.get("context_counts") or {}).items():
         lines.append(f"- `{k}`: {v}")
@@ -624,20 +680,17 @@ def _write_example_md(packet: ScoutMinutesPacket, path: Path) -> None:
         "",
         "## Overlay table (all)",
         "",
-        "| player | club | bucket/tag | context | partner | return_gws | m0 | force |",
+        "| player | club | role | bucket/tag | context | return_gws | m0 | force |",
         "| --- | --- | --- | --- | --- | ---: | ---: | --- |",
     ]
     for ov in rows:
         force = ",".join(f"{h}:{m:g}" for h, m in sorted(ov.force_steps.items())) or "—"
-        partner = (ov.anti_name or "—") + (
-            f" (ρ={ov.anti_corr:.2f})" if ov.anti_corr is not None else ""
-        )
-        ctx = (ov.context_label or ov.context or "").replace("|", "/")
-        if len(ctx) > 80:
-            ctx = ctx[:77] + "…"
+        ctx_l = (ov.context_label or ov.context or "").replace("|", "/")
+        if len(ctx_l) > 80:
+            ctx_l = ctx_l[:77] + "…"
         lines.append(
-            f"| {ov.name} | {ov.club} | {ov.tag}/{ov.source} | "
-            f"{ctx} | {partner} | "
+            f"| {ov.name} | {ov.club} | {ov.role or '—'} | {ov.tag}/{ov.source} | "
+            f"{ctx_l} | "
             f"{'' if ov.return_gws is None else ov.return_gws} | "
             f"{ov.m0:.0f} | {force} |"
         )
@@ -654,7 +707,6 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--gw", type=int, required=True)
     ap.add_argument("--horizon", type=int, default=12)
-    ap.add_argument("--rho", type=float, default=DEFAULT_SCOUT_RHO)
     ap.add_argument("--season", default="2026-27")
     ap.add_argument("--from-json", type=Path, default=None)
     ap.add_argument("--from-html", type=Path, default=None)
@@ -686,7 +738,6 @@ def main(argv: list[str] | None = None) -> int:
         horizon=int(args.horizon),
         season=str(args.season),
         fetch_out_dir=fetch_dir,
-        decay_rho=float(args.rho),
     )
     out = args.out or default_packet_path(gw)
     packet.write_json(out)
@@ -702,7 +753,7 @@ def main(argv: list[str] | None = None) -> int:
     summary = {
         "gw": gw,
         "horizon": packet.horizon,
-        "decay_rho": packet.decay_rho,
+        "horizon_law": "pin_then_snap_expand",
         "baseline_n": len(packet.baseline_m),
         "n_overlays": len(packet.overlays),
         "ffscout": packet.meta.get("ffscout"),
@@ -718,7 +769,7 @@ def main(argv: list[str] | None = None) -> int:
                 "context_label": ov.context_label,
                 "return_gws": ov.return_gws,
                 "force_steps": ov.force_steps,
-                "path": packet.decayed_path(ov.element)[:6],
+                "path": packet.minutes_path(ov.element)[:6],
                 "reason": ov.reason,
             }
             for ov in list(packet.overlays.values())[:12]
@@ -729,10 +780,16 @@ def main(argv: list[str] | None = None) -> int:
         zeros = [
             e
             for e, ov in packet.overlays.items()
-            if float(ov.m0) <= 0.0 and not ov.force_steps
+            if float(ov.m0) <= 0.0 and not _is_unknown_return_overlay(ov)
         ]
         if not zeros:
-            # Fall back: any zero Out/Banned (force pins skip decay check).
+            zeros = [
+                e
+                for e, ov in packet.overlays.items()
+                if float(ov.m0) <= 0.0 and not _is_unknown_return_overlay(ov)
+            ]
+        if not zeros:
+            # Fall back to any zero overlay (may be unknown-return).
             zeros = [e for e, ov in packet.overlays.items() if float(ov.m0) <= 0.0]
         if not zeros:
             raise SystemExit("smoke: expected some Out/Banned zeros")
@@ -744,16 +801,57 @@ def main(argv: list[str] | None = None) -> int:
         if abs(m0) > 1e-9:
             raise SystemExit("smoke: Out m0 should be 0")
         ov0 = packet.overlays[e0]
-        # Decay toward baseline when steps are not hard-pinned.
-        if base > 1.0 and not ov0.force_steps:
-            if not (m0 < m1 < m2 <= base + 1e-9):
+        # Pin then snap: after known horizon (or step 0 only), m → expand.
+        # Unknown-return overlays stay pinned — checked separately below.
+        if ov0.force_steps and not _is_unknown_return_overlay(ov0):
+            last = max(ov0.force_steps)
+            after = packet.m_at(e0, last + 1)
+            if abs(after - base) > 1e-6:
                 raise SystemExit(
-                    f"smoke: expected monotone decay toward base; "
+                    f"smoke: expected snap to expand after pin; "
+                    f"got m({last + 1})={after:.2f} base={base:.2f}"
+                )
+        elif base > 1.0 and not ov0.force_steps and not _is_unknown_return_overlay(ov0):
+            if abs(m1 - base) > 1e-6 or abs(m2 - base) > 1e-6:
+                raise SystemExit(
+                    f"smoke: expected snap to expand after step 0; "
                     f"got m=[{m0:.2f},{m1:.2f},{m2:.2f}] base={base:.2f}"
                 )
-            expected_m1 = base + (0.0 - base) * float(packet.decay_rho)
-            if abs(m1 - expected_m1) > 1e-6:
-                raise SystemExit(f"smoke: m1={m1} != expand*(1-rho)={expected_m1}")
+        # Cherki-style single-week pin: m0 then expand.
+        single = [
+            e
+            for e, ov in packet.overlays.items()
+            if ov.return_gws == 1 and 0 in ov.force_steps
+        ]
+        if single:
+            e1 = single[0]
+            b1 = float(packet.baseline_m.get(e1, 0.0))
+            p0 = packet.m_at(e1, 0)
+            p1 = packet.m_at(e1, 1)
+            if abs(p0 - float(packet.overlays[e1].m0)) > 1e-6:
+                raise SystemExit("smoke: step-0 pin mismatch")
+            if abs(p1 - b1) > 1e-6:
+                raise SystemExit(
+                    f"smoke: single-week should snap at step 1; "
+                    f"got {p1:.2f} vs expand {b1:.2f}"
+                )
+        if not packet.roles:
+            raise SystemExit("smoke: expected full-pool roles map")
+        firm = [r for r in packet.roles.values() if r.get("role") == "firm_starter"]
+        if len(firm) < 5:
+            raise SystemExit(f"smoke: too few firm_starters ({len(firm)})")
+        unknown = [
+            ov
+            for ov in packet.overlays.values()
+            if ov.context == "injured_unknown_return"
+        ]
+        if unknown:
+            u0 = unknown[0]
+            path = packet.minutes_path(u0.element)
+            if any(abs(x) > 1e-9 for x in path):
+                raise SystemExit(
+                    f"smoke: unknown return should stay 0; {u0.name} path={path[:4]}"
+                )
         print("smoke_ok", flush=True)
     return 0
 

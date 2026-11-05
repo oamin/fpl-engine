@@ -9,13 +9,14 @@
 | Layer | Rule |
 | --- | --- |
 | **Default (everyone)** | Expanding as-of mean `m` (GW `< t`), flat across the horizon |
-| **Scout overlay (sparse)** | FFScout **Out / Banned / Doubts** → step-0 anchor `m0` |
-| **Horizon return** | Decay to expanding: `m(h) = expand + (m0 − expand) · ρ^h` (default **ρ=0.85**) |
-| **Hard pins (later)** | Structured `out_for_n_gws` can force early steps via `force_steps` |
+| **Scout overlay (sparse)** | FFScout **Out / Banned / Doubts** (+ XI-omit rotation) → known-horizon pins |
+| **Horizon return** | **Pin then snap** — no ρ-decay. `force_steps` / `return_gws` / step-0 `m0`; after that → expanding `m` |
+| **Hard pins** | Structured `out_for_n_gws` / FPL+blurb return horizon via `force_steps` |
 | **Shares** | Freeze `sG`/`sA` from expanding baseline when scout minutes are applied |
-| **Not scout (yet)** | Blanket firm-XI minutes overrides; prose-parsed return length |
+| **Unknown return** | Stay on `m0` (usually 0) for the **full horizon** until a return parse exists |
+| **Role** | Closed tags on full pool + overlays: `firm_starter` / `tactical_starter` / `rotational` / `impact_sub` / `fringe` |
 
-Predicted XI still drives the **selectable pool** (WHO), not the minutes overlay.
+Predicted XI still drives the **selectable pool** (WHO); XI-omit also soft-pins week-0 minutes for regulars left out (imminent-GW signal — broaden team-news trawl to cut FPs). Role is the playing pattern when available (separate from injury context). Partner blurbs / `cup_starter` removed from the live packet.
 
 ## Build
 
@@ -34,16 +35,22 @@ Writes `data/predictions/2026-27/gwNN/scout_minutes.json` (+ optional `scout_xmi
 
 ```bash
 python -m src.live.numagent_live_pick --gw N --scout-packet \
-  data/predictions/2026-27/gwNN/scout_minutes.json …
+  data/predictions/2026-27/gwNN/scout_minutes.json \
+  --centreline-horizon 12 …
 ```
 
-Week-t uses step 0; t+1 uses step 1 (Out revert to expanding). Share freeze on.
+Scout ``step_map(h)`` is applied across the **full L4+Opta centreline horizon**
+(default H=12: priced t/t+1 + Opta blind far). Share freeze from expanding
+``baseline_m`` on every step. Build the packet with ``--horizon 12`` (CLI default)
+so pins cover the Opta far window.
 
 ## GW9 smoke (saved FFScout page)
 
 - Baseline players: ~669  
-- Overlays: Out / Banned / Doubts (~89 after name match)  
-- Saka example (expand≈69′, ρ=0.85): GW9 **0′** → GW10 **≈10′** → GW11 **≈19′** → … → expanding  
+- Overlays: Out / Banned / Doubts (+ XI-omit) after name match  
+- Cherki (single-week XI omit, expand≈55′): GW9 **15′** → GW10+ **expand** (snap, no climb)  
+- Known return (e.g. 2 GW out): pin zeros for steps 0–1 → snap to expand at step 2  
+
 
 ## Context labels (combined)
 

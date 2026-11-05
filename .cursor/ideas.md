@@ -4,6 +4,52 @@ Cursor chooses the next pre-registered comparison. The PI is not asked to pick. 
 
 **Numagent 2.0 is locked on main** — see `.cursor/context.md` and `reports/LOCKED.md` (`protocol.numagent_2_0`). Engine primary scorer is `score_xp_v2`. Numagent 1.0 and `score_xp` are **archived in-place** (`reports/ARCHIVE_NUMAGENT_1_0.md`). This file is the **park log**. Everything from “Procedure, locked 2026-10-07” downward is **Numagent 1.0 / stage archaeology** — not instructions for the live path.
 
+## Active — product layers on short/long μ boards (2026-11-05)
+
+**Primary scoring engine basis:** extend short-horizon (priced t:t+1) and
+long-horizon (Opta far) **μ boards** — centreline / `l3_centreline_forecast`
+mean `score_xp_v2` boards. That is the live + strategiser scoring spine.
+
+**Building now (in order):**
+
+1. **Scout layer** — minutes/availability/role packet → `step_map` on full
+   centreline H (in progress; PR stack `scout-snap-expand`).
+2. **Accountant layer** — bank, FT, hits, sell prices, chip constraints as an
+   explicit layer over the boards (next; not yet a named module).
+3. **LLM coach** — narrative brief over scout + μ boards + accountant
+   (after 1–2 feed it; captain/chip sims still deferred).
+
+Do **not** promote generative MC-mean as the mean board. See
+`.cursor/context.md` → Current working plan.
+
+## Parked — rethink pots × rates × minutes (2026-11-05)
+
+Scout share-freeze + renorm + replacement handoff got too intricate (Saka out
+⇒ mass leak; global renorm ⇒ Havertz-style over-absorb; directed handoff ⇒
+special cases). **Do not patch further.** Need a clean law that:
+
+- stays coupled to book/Opta team pots;
+- lets minutes move without inventing attack for the wrong teammates;
+- has simple low-minute rate safety (existing M0 / baseline prior).
+
+Candidate direction (not implemented): **XI-gated pot allocation** — allocate
+`G_team` only among a small expected-on-pitch set (predicted/expand XI),
+weights `∝ r·u(m)` with shrunk `r`; outs drop out of the set; stand-ins enter
+only if scout/XI puts them there. Appear still uses raw `m`. Park until a
+pre-registered scorer comparison is opened. Scout keeps owning **minutes**
+either way.
+
+## Parked — scout partner blurbs + cup_starter (2026-11-05)
+
+Removed from the live scout packet (weak for scoring). Module
+`minutes_partner_context.py` kept for digs. Revisit only if a pre-registered
+comparison asks.
+
+## Next — broaden team-news trawl for XI-omit FPs (2026-11-05)
+
+XI-omit rotation soft pins are imminent-GW only (~1/5 FP). Improve by richer
+team-news sources beyond FFScout predicted XI / Latest News blurbs.
+
 ## Parked — cascade generative MC-mean vs mean layer (2026-10-20 overnight)
 
 `cascade_viability_batch` B1/B2: player-GW log of N_MC=6 generative mean xP
