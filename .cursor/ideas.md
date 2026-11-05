@@ -22,6 +22,14 @@ book/FD (or Opta) centreline → `M` → categorical `k ∼ M`. Outcome noise is
 roll over `M`, not a second invented λ axis. Contaminated diagnostic:
 `reports/multistage_xi_captain_ft_short_long_trial.md` (GW8 used ±15%).
 
+## Dig — next-GW event sequence NN (outline 2026-11-05)
+
+Small ablation only: does last-K GW component history add predictive value
+beyond as-of player/fixture context? MLP-B (no sequence) vs MLP/GRU-C
+(+ sequence). Shared across players. Chronological as-of. Not a scorer
+replace. Full input/assessment outline in the agent note / to be coded as
+`src/eval/next_event_sequence_dig.py` when opened. Live 2026/27 holdout off.
+
 ## Dig — player expanding actuals view (2026-11-05)
 
 Scorer-simplify sketch: plot expanding mean of player GW actuals (points, m,
