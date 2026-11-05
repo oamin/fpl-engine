@@ -1,10 +1,11 @@
 {
-  "task": "minutes_anticorr_role_dig_2025_26",
+  "task": "minutes_anticorr_role_dig_2026_27",
   "status": "done",
-  "as_of_utc": "2026-11-05T07:45:25Z",
-  "report": "reports/minutes_anticorr_role_dig_2025_26.md",
-  "delta_mae_all": 0.324337137962587,
-  "tactical_delta_mae": 0.04931123930643366,
-  "replacement_hit_rate": 0.6658905704307334,
-  "elapsed_s": 10.75335168838501
+  "as_of_utc": "2026-11-05T07:53:59Z",
+  "season": "2026-27",
+  "report": "reports/minutes_anticorr_role_dig_2026_27.md",
+  "delta_mae_all": -0.052741669916375855,
+  "tactical_delta_mae": -0.5808629232039628,
+  "replacement_hit_rate": 0.6555183946488294,
+  "elapsed_s": 1.4951114654541016
 }

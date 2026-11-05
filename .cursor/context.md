@@ -151,3 +151,9 @@ As-of club minutes corr → blurb → rating (`src/eval/minutes_anticorr_role_di
 Anti-corr replacement hit ~67% (A≤30′ ⇒ partner ≥45′). Role rating ≈ flat vs expand
 overall (ΔMAE +0.32′); value is **context/blurb**, not a big MAE win. Live: within-season only.
 Report: `reports/minutes_anticorr_role_dig_2025_26.md`.
+
+## Dig — anti-corr roles on live 2026-27 (through GW9)
+
+Same within-season method on live hist GW1–9 (`min_prior=5`, score GW6–9).
+Replacement hit **~66%** (≈ closed-season). Role rating ≈ flat vs expand.
+Report: `reports/minutes_anticorr_role_dig_2026_27.md`.

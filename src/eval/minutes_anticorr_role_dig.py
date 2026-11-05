@@ -33,15 +33,18 @@ PROCESSED = ROOT / "data" / "processed"
 REPORTS = ROOT / "reports"
 STATE = ROOT / "REPORT_STATE.json"
 
-SEASON = "2025-26"
-HIST = CACHE / "merged_gw_2025_26.csv"
-MIN_PRIOR_GWS = 8
+SEASON_DEFAULT = "2025-26"
+HIST_DEFAULT = CACHE / "merged_gw_2025_26.csv"
+MIN_PRIOR_GWS_DEFAULT = 8
 MIN_PAIR_GWS = 6
 MIN_EXPAND = 25.0
 ANTICORR_MAX = -0.35
 TACTICAL_MED_LO = 50.0
 TACTICAL_MED_HI = 75.0
 TACTICAL_START_RATE = 0.35
+
+# Runtime knobs set in main() for live vs closed-season trials.
+MIN_PRIOR_GWS = MIN_PRIOR_GWS_DEFAULT
 
 
 @dataclass
@@ -65,8 +68,15 @@ class RoleSnapshot:
 
 def _load_hist(path: Path) -> pd.DataFrame:
     h = pd.read_csv(path)
+    # Live cache uses player_id / player_name / gw.
+    if "element" not in h.columns and "player_id" in h.columns:
+        h["element"] = h["player_id"]
+    if "name" not in h.columns and "player_name" in h.columns:
+        h["name"] = h["player_name"]
     if "GW" not in h.columns and "gw" in h.columns:
         h["GW"] = h["gw"]
+    if "position" not in h.columns:
+        h["position"] = "MID"
     h["GW"] = pd.to_numeric(h["GW"], errors="coerce")
     h["element"] = pd.to_numeric(h["element"], errors="coerce")
     h["minutes"] = pd.to_numeric(h["minutes"], errors="coerce").fillna(0.0)
@@ -117,7 +127,8 @@ def _series_maps(
 
 
 def _pearson(a: np.ndarray, b: np.ndarray) -> float | None:
-    if len(a) < MIN_PAIR_GWS:
+    need = max(4, min(int(MIN_PAIR_GWS), int(MIN_PRIOR_GWS)))
+    if len(a) < need:
         return None
     if float(np.std(a)) < 1e-6 or float(np.std(b)) < 1e-6:
         return None
@@ -368,12 +379,19 @@ def score_season(hist: pd.DataFrame, *, gw_from: int, gw_to: int) -> dict[str, A
     }
 
 
-def write_report(doc: dict[str, Any], mid_snaps: list[RoleSnapshot]) -> Path:
-    path = REPORTS / "minutes_anticorr_role_dig_2025_26.md"
+def write_report(
+    doc: dict[str, Any],
+    mid_snaps: list[RoleSnapshot],
+    *,
+    season: str,
+    report_path: Path,
+    reproduce: str,
+) -> Path:
     ts = doc.get("tactical_starter") or {}
     rep = doc.get("replacement") or {}
+    example_gw = doc.get("example_as_of_gw")
     lines = [
-        "# Within-season anti-corr roles → blurb → minutes rating (2025-26)",
+        f"# Within-season anti-corr roles → blurb → minutes rating ({season})",
         "",
         "As-of only (`GW < t`). **No cross-season history.** Live seasons must "
         "fit roles from the current season's completed GWs only.",
@@ -389,6 +407,7 @@ def write_report(doc: dict[str, Any], mid_snaps: list[RoleSnapshot]) -> Path:
         "`P(start)·median|start + P(bench)·8′`; nailed uses max(expand, 0.95·med|start); "
         "others keep expanding mean.",
         "- Anti-corr pairs restricted to the **same position** (no GK↔outfield).",
+        "- Within-season only (no prior-season bleed into live).",
         "",
         "## Next-GW minutes accuracy",
         "",
@@ -401,10 +420,17 @@ def write_report(doc: dict[str, Any], mid_snaps: list[RoleSnapshot]) -> Path:
         "",
         "### Tactical starters only",
         "",
-        f"- n={ts.get('n')}; mean actual={ts.get('mean_y')}; "
-        f"mean expand={ts.get('mean_expand')}; mean rating={ts.get('mean_rating')}",
-        f"- MAE expand **{ts.get('mae_expand'):.2f}′** vs rating "
-        f"**{ts.get('mae_rating'):.2f}′** (Δ={ts.get('delta_mae'):.2f}′).",
+    ]
+    if ts.get("n"):
+        lines += [
+            f"- n={ts.get('n')}; mean actual={ts.get('mean_y')}; "
+            f"mean expand={ts.get('mean_expand')}; mean rating={ts.get('mean_rating')}",
+            f"- MAE expand **{ts.get('mae_expand'):.2f}′** vs rating "
+            f"**{ts.get('mae_rating'):.2f}′** (Δ={ts.get('delta_mae'):.2f}′).",
+        ]
+    else:
+        lines.append("- _No tactical-starter rows in this window._")
+    lines += [
         "",
         "### By role",
         "",
@@ -416,83 +442,115 @@ def write_report(doc: dict[str, Any], mid_snaps: list[RoleSnapshot]) -> Path:
             f"| `{role}` | {b['n']} | {b['mae_expand']:.2f} | "
             f"{b['mae_rating']:.2f} | {b['delta_mae']:.2f} |"
         )
+    hit = rep.get("hit_rate")
+    hit_s = f"**{100.0 * hit:.1f}%**" if hit is not None else "_n/a_"
     lines += [
         "",
         "## Anti-corr replacement check",
         "",
         f"- Rule: {rep.get('rule')}",
         f"- Events: {rep.get('n_events_a_le_30')}; partner ≥45′: "
-        f"{rep.get('n_partner_ge_45')}; hit rate "
-        f"**{(rep.get('hit_rate') or 0)*100:.1f}%**",
+        f"{rep.get('n_partner_ge_45')}; hit rate {hit_s}",
         "",
-        "## Example blurbs (as-of GW20 tactical starters with a partner)",
+        f"## Example blurbs (as-of GW{example_gw})",
         "",
     ]
-    mid = [s for s in mid_snaps if s.role == "tactical_starter"]
+    mid = [s for s in mid_snaps if s.role == "tactical_starter" and s.anti_name]
+    if len(mid) < 6:
+        mid = [s for s in mid_snaps if s.anti_name]
     mid = sorted(
         mid,
-        key=lambda s: (s.anti_corr is None, s.anti_corr if s.anti_corr is not None else 0.0, s.name),
+        key=lambda s: (
+            s.anti_corr is None,
+            s.anti_corr if s.anti_corr is not None else 0.0,
+            s.name,
+        ),
     )[:12]
-    if not mid:
-        for e in (doc.get("example_blurbs") or [])[:12]:
-            lines.append(f"- **{e['name']}** ({e['team']}): {e['blurb']}")
-            lines.append(
-                f"  - rating={e['rating_m']:.1f}′ expand={e['expand_m']:.1f}′ "
-                f"role=`{e['role']}`"
-            )
     for s in mid:
         lines.append(f"- **{s.name}** ({s.team}): {s.blurb}")
         lines.append(
             f"  - rating={s.rating_m:.1f}′ expand={s.expand_m:.1f}′ role=`{s.role}`"
         )
+    if not mid:
+        lines.append("_No anti-corr partners at this as-of GW (short history)._")
     lines += [
         "",
         "## Reproduce",
         "",
         "```bash",
-        "PYTHONPATH=. python3 -m src.eval.minutes_anticorr_role_dig",
+        reproduce,
         "```",
         "",
     ]
-    path.write_text("\n".join(lines), encoding="utf-8")
-    return path
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    report_path.write_text("\n".join(lines), encoding="utf-8")
+    return report_path
 
 
 def main(argv: list[str] | None = None) -> int:
+    global MIN_PRIOR_GWS
+
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--season-csv", type=Path, default=HIST)
+    ap.add_argument("--season-csv", type=Path, default=HIST_DEFAULT)
+    ap.add_argument("--season", default=SEASON_DEFAULT)
     ap.add_argument("--gw-from", type=int, default=10)
     ap.add_argument("--gw-to", type=int, default=37)
     ap.add_argument("--example-as-of", type=int, default=20)
+    ap.add_argument("--min-prior-gws", type=int, default=MIN_PRIOR_GWS_DEFAULT)
+    ap.add_argument("--report", type=Path, default=None)
     args = ap.parse_args(argv)
+
+    MIN_PRIOR_GWS = int(args.min_prior_gws)
+    season = str(args.season)
+    slug = season.replace("/", "-").replace(" ", "_")
+    file_slug = slug.replace("-", "_")
 
     t0 = time.time()
     hist = _load_hist(Path(args.season_csv))
     print(
-        f"loaded {SEASON}: rows={len(hist)} players={hist['element'].nunique()} "
-        f"GW {hist['GW'].min()}–{hist['GW'].max()}",
+        f"loaded {season}: rows={len(hist)} players={hist['element'].nunique()} "
+        f"GW {hist['GW'].min()}–{hist['GW'].max()} min_prior={MIN_PRIOR_GWS}",
         flush=True,
     )
     doc = score_season(hist, gw_from=int(args.gw_from), gw_to=int(args.gw_to))
     mid_snaps = snapshots_for_gw(hist, int(args.example_as_of))
     doc["example_as_of_gw"] = int(args.example_as_of)
     doc["elapsed_s"] = time.time() - t0
-    doc["season"] = SEASON
+    doc["season"] = season
     doc["within_season_only"] = True
+    doc["min_prior_gws"] = MIN_PRIOR_GWS
 
     PROCESSED.mkdir(parents=True, exist_ok=True)
-    snaps_path = PROCESSED / "minutes_anticorr_roles_asof_gw20_2025_26.csv"
+    snaps_path = (
+        PROCESSED
+        / f"minutes_anticorr_roles_asof_gw{int(args.example_as_of):02d}_{file_slug}.csv"
+    )
     pd.DataFrame([asdict(s) for s in mid_snaps]).to_csv(snaps_path, index=False)
-    json_path = PROCESSED / "minutes_anticorr_role_dig_2025_26.json"
+    json_path = PROCESSED / f"minutes_anticorr_role_dig_{file_slug}.json"
     json_path.write_text(json.dumps(doc, indent=2, default=str) + "\n", encoding="utf-8")
-    report = write_report(doc, mid_snaps)
+
+    report_path = Path(args.report) if args.report else (
+        REPORTS / f"minutes_anticorr_role_dig_{file_slug}.md"
+    )
+    if not report_path.is_absolute():
+        report_path = ROOT / report_path
+    reproduce = (
+        f"PYTHONPATH=. python3 -m src.eval.minutes_anticorr_role_dig \\\n"
+        f"  --season {season} --season-csv {args.season_csv} \\\n"
+        f"  --gw-from {args.gw_from} --gw-to {args.gw_to} \\\n"
+        f"  --example-as-of {args.example_as_of} --min-prior-gws {MIN_PRIOR_GWS}"
+    )
+    report = write_report(
+        doc, mid_snaps, season=season, report_path=report_path, reproduce=reproduce
+    )
 
     STATE.write_text(
         json.dumps(
             {
-                "task": "minutes_anticorr_role_dig_2025_26",
+                "task": f"minutes_anticorr_role_dig_{file_slug}",
                 "status": "done",
                 "as_of_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                "season": season,
                 "report": str(report.relative_to(ROOT)),
                 "delta_mae_all": doc.get("delta_mae_all"),
                 "tactical_delta_mae": (doc.get("tactical_starter") or {}).get(
@@ -509,6 +567,7 @@ def main(argv: list[str] | None = None) -> int:
     print(
         json.dumps(
             {
+                "season": season,
                 "mae_expand_all": doc.get("mae_expand_all"),
                 "mae_rating_all": doc.get("mae_rating_all"),
                 "delta_mae_all": doc.get("delta_mae_all"),
@@ -522,6 +581,7 @@ def main(argv: list[str] | None = None) -> int:
         )
     )
     return 0
+
 
 
 if __name__ == "__main__":
