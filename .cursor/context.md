@@ -144,3 +144,10 @@ Exploratory only (PR #130). Expanding regulars: drop `m<μ−σ`, recover `m≥�
 794 events, median recovery **2 GW**; zero-drops split quick vs long (≥4).
 Unconditional return-path RMSE prefers **ρ≈0.70** over 0.85. Report:
 `reports/scout_minutes_drop_recovery_dig_2025_26.md`.
+
+## Dig — within-season minutes anti-corr roles (2025-26)
+
+As-of club minutes corr → blurb → rating (`src/eval/minutes_anticorr_role_dig.py`).
+Anti-corr replacement hit ~67% (A≤30′ ⇒ partner ≥45′). Role rating ≈ flat vs expand
+overall (ΔMAE +0.32′); value is **context/blurb**, not a big MAE win. Live: within-season only.
+Report: `reports/minutes_anticorr_role_dig_2025_26.md`.

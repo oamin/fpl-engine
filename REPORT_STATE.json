@@ -1,10 +1,10 @@
 {
-  "task": "scout_context_rotation_tune_trial_gw09",
+  "task": "minutes_anticorr_role_dig_2025_26",
   "status": "done",
-  "as_of_utc": "2026-11-04T20:56:34Z",
-  "report": "reports/scout_context_tune_trial_gw09.md",
-  "before_rotation_n": 36,
-  "after_rotation_n": 25,
-  "precision_before": 0.611,
-  "precision_after": 0.8
+  "as_of_utc": "2026-11-05T07:45:25Z",
+  "report": "reports/minutes_anticorr_role_dig_2025_26.md",
+  "delta_mae_all": 0.324337137962587,
+  "tactical_delta_mae": 0.04931123930643366,
+  "replacement_hit_rate": 0.6658905704307334,
+  "elapsed_s": 10.75335168838501
 }
