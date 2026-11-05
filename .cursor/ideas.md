@@ -22,6 +22,13 @@ book/FD (or Opta) centreline → `M` → categorical `k ∼ M`. Outcome noise is
 roll over `M`, not a second invented λ axis. Contaminated diagnostic:
 `reports/multistage_xi_captain_ft_short_long_trial.md` (GW8 used ±15%).
 
+## Dig — player expanding actuals view (2026-11-05)
+
+Scorer-simplify sketch: plot expanding mean of player GW actuals (points, m,
+G, A, CS, GC, …) beside GW team scoreline / Opta xscoreline. No shares/pots.
+Script: `scripts/plot_player_expanding_view.py`. Example: Saka 2025-26
+`reports/player_expanding_view_saka_2025_26.md`.
+
 ## Dig — team G/A covariance 2025-26 (2026-11-05)
 
 Fixture-level player G×G / A×A / cross G_i×A_j on MID+FWD
