@@ -1,14 +1,15 @@
 {
   "updated": "2026-11-05",
-  "branch": "cursor/ga-team-cov-2025-26-cc3d",
-  "task": "ga_team_covariance_2025_26",
+  "branch": "cursor/next-event-seq-dig-cc3d",
+  "task": "next_event_sequence_dig",
   "status": "done_diagnostic",
-  "report": "reports/ga_team_covariance_2025_26.md",
+  "report": "reports/next_event_sequence_dig_2025_26.md",
   "headline": {
-    "team_g_vs_a_median": 0.922,
-    "attack_active_cross_median": 0.063,
-    "attack_active_cross_frac_pos": 0.575,
-    "attack_active_gg_median": -0.050
-  },
-  "note": "Diagnostic only — not a μ-board scorer law. Weak player-level G/A co-movement after volume filter."
+    "mean_d_log_loss_c_minus_b": -0.0748,
+    "mean_d_brier_c_minus_b": -0.0215,
+    "n_train": 57701,
+    "n_test": 23478,
+    "k": 5,
+    "note": "Lift dominated by Appear60; G/A smaller. Dig only — not a scorer promote."
+  }
 }

@@ -22,19 +22,13 @@ book/FD (or Opta) centreline → `M` → categorical `k ∼ M`. Outcome noise is
 roll over `M`, not a second invented λ axis. Contaminated diagnostic:
 `reports/multistage_xi_captain_ft_short_long_trial.md` (GW8 used ±15%).
 
-## Dig — next-GW event sequence NN (outline 2026-11-05)
+## Dig — next-GW event sequence NN (ran 2026-11-05)
 
-Small ablation: discrete GW channel sequences (the bar-plot ticks), **not**
-expanding means/rates. Preserve per-GW discreteness: last-K vectors of
-points / minutes / G / A / CS / GC / DefCon / bonus / cards / appear flags.
-Fixture context for \(t\) is allowed (home/away, opponent id/strength) —
-that is not an expanding player summary. Arms: B = position + fixture-\(t\)
-only; C = B + last-K discrete channels. **No padding:** a player-GW enters
-the dig only once \(K\) completed prior GWs exist in that season (first
-eligible label GW = \(K+1\)); B and C share that pool. Assess event log
-loss / Brier (G, A, Appear60, DefCon, …), C vs B, chronological as-of.
-Not a scorer replace. Live 2026/27 holdout off. Code when opened:
-`src/eval/next_event_sequence_dig.py`.
+Discrete last-K component channels + minutes (no total_points, no expanding,
+no padding). B = position+home+opponent; C = B+history. Train 2022-23…2024-25
+→ test 2025-26, K=5. **C beats B** mean Δll **−0.075** (Appear60 drives most
+of the lift; G/A smaller). Report: `reports/next_event_sequence_dig_2025_26.md`.
+Not a scorer promote — dig only.
 
 ## Dig — player expanding actuals view (2026-11-05)
 

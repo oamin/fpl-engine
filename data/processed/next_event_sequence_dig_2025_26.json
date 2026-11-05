@@ -1,0 +1,159 @@
+{
+  "defs": {
+    "k": 5,
+    "history_channels": [
+      "minutes",
+      "pts_appear",
+      "pts_goals",
+      "pts_assists",
+      "pts_cs",
+      "pts_gc",
+      "pts_saves",
+      "pts_defcon",
+      "pts_bonus",
+      "pts_cards",
+      "pts_own_goal",
+      "pts_pens"
+    ],
+    "targets": [
+      "y_goal",
+      "y_assist",
+      "y_appear60",
+      "y_defcon",
+      "y_bonus",
+      "y_cs"
+    ],
+    "no_total_points": true,
+    "no_padding": true,
+    "no_expanding_inputs": true,
+    "arm_b": "position one-hot + was_home + opponent one-hot",
+    "arm_c": "B + flat last-K discrete channel vector",
+    "model": "sklearn MLPClassifier (64,32) + StandardScaler; one head per target",
+    "split": "train ['2022-23', '2023-24', '2024-25'] \u2192 test 2025-26",
+    "note": "negative \u0394log_loss means C better than B"
+  },
+  "n_train": 57701,
+  "n_test": 23478,
+  "n_positions": 4,
+  "n_opponents": 25,
+  "metrics_b": {
+    "y_goal": {
+      "log_loss": 0.1375841311669195,
+      "brier": 0.031576087261355815,
+      "base_rate": 0.031604054859868815,
+      "mean_p": 0.0398268310093504,
+      "n": 23478
+    },
+    "y_assist": {
+      "log_loss": 0.1417997446620729,
+      "brier": 0.031616530387028295,
+      "base_rate": 0.031135531135531136,
+      "mean_p": 0.041413490229929045,
+      "n": 23478
+    },
+    "y_appear60": {
+      "log_loss": 0.5790697162701364,
+      "brier": 0.19521708859417045,
+      "base_rate": 0.2651418349092768,
+      "mean_p": 0.27517036563381075,
+      "n": 23478
+    },
+    "y_defcon": {
+      "log_loss": 0.7061348900063151,
+      "brier": 0.05111157679629773,
+      "base_rate": 0.051111679018655765,
+      "mean_p": 0.0,
+      "n": 23478
+    },
+    "y_bonus": {
+      "log_loss": 0.1755202696886707,
+      "brier": 0.04057320229129142,
+      "base_rate": 0.04114490161001789,
+      "mean_p": 0.05078526133800295,
+      "n": 23478
+    },
+    "y_cs": {
+      "log_loss": 0.2654536668959708,
+      "brier": 0.06875207069011102,
+      "base_rate": 0.07300451486497998,
+      "mean_p": 0.0754974969473745,
+      "n": 23478
+    },
+    "mean_log_loss": 0.3342604031150142,
+    "mean_brier": 0.06980775933670912
+  },
+  "metrics_c": {
+    "y_goal": {
+      "log_loss": 0.1126298705083052,
+      "brier": 0.028614688909916742,
+      "base_rate": 0.031604054859868815,
+      "mean_p": 0.036084248875126165,
+      "n": 23478
+    },
+    "y_assist": {
+      "log_loss": 0.11904747558240164,
+      "brier": 0.029147998265488403,
+      "base_rate": 0.031135531135531136,
+      "mean_p": 0.03159149363464555,
+      "n": 23478
+    },
+    "y_appear60": {
+      "log_loss": 0.2682435840283822,
+      "brier": 0.08258205960281043,
+      "base_rate": 0.2651418349092768,
+      "mean_p": 0.26965293515230354,
+      "n": 23478
+    },
+    "y_defcon": {
+      "log_loss": 0.7061348900063151,
+      "brier": 0.05111157679629773,
+      "base_rate": 0.051111679018655765,
+      "mean_p": 0.0,
+      "n": 23478
+    },
+    "y_bonus": {
+      "log_loss": 0.1418527096143926,
+      "brier": 0.03737909303201536,
+      "base_rate": 0.04114490161001789,
+      "mean_p": 0.04318343733844787,
+      "n": 23478
+    },
+    "y_cs": {
+      "log_loss": 0.2086841107046383,
+      "brier": 0.06113357833460196,
+      "base_rate": 0.07300451486497998,
+      "mean_p": 0.0752548722874903,
+      "n": 23478
+    },
+    "mean_log_loss": 0.2594321067407392,
+    "mean_brier": 0.04832816582352178
+  },
+  "delta_c_minus_b": {
+    "y_goal": {
+      "d_log_loss": -0.024954260658614308,
+      "d_brier": -0.002961398351439073
+    },
+    "y_assist": {
+      "d_log_loss": -0.02275226907967126,
+      "d_brier": -0.0024685321215398917
+    },
+    "y_appear60": {
+      "d_log_loss": -0.31082613224175415,
+      "d_brier": -0.11263502899136002
+    },
+    "y_defcon": {
+      "d_log_loss": 0.0,
+      "d_brier": 0.0
+    },
+    "y_bonus": {
+      "d_log_loss": -0.0336675600742781,
+      "d_brier": -0.0031941092592760595
+    },
+    "y_cs": {
+      "d_log_loss": -0.056769556191332476,
+      "d_brier": -0.007618492355509064
+    },
+    "mean_d_log_loss": -0.07482829637427502,
+    "mean_d_brier": -0.021479593513187338
+  }
+}
