@@ -1,4 +1,4 @@
-"""Closed scout role tags from as-of minutes (+ light context cues).
+"""Closed scout role tags from as-of minutes.
 
 Handful of roles so the live packet can isolate similar players quickly.
 Role is the **playing** pattern when available — not injury/suspension state
@@ -10,7 +10,6 @@ Tags
 - ``tactical_starter`` — often starts, managed/early-sub minutes (Cherki)
 - ``rotational`` — shares starts; volatile week-to-week
 - ``impact_sub`` — rarely starts; short/mid cameo minutes
-- ``cup_starter`` — thin league minutes + cup/rest cue in club news
 - ``fringe`` — rarely used
 
   Within-season only (``GW < decision_gw``).
@@ -18,7 +17,6 @@ Tags
 
 from __future__ import annotations
 
-import re
 from dataclasses import dataclass
 from typing import Any, Mapping, Sequence
 
@@ -26,7 +24,6 @@ ROLE_FIRM = "firm_starter"
 ROLE_TACTICAL = "tactical_starter"
 ROLE_ROTATIONAL = "rotational"
 ROLE_IMPACT = "impact_sub"
-ROLE_CUP = "cup_starter"
 ROLE_FRINGE = "fringe"
 
 ROLE_TAGS: tuple[str, ...] = (
@@ -34,15 +31,7 @@ ROLE_TAGS: tuple[str, ...] = (
     ROLE_TACTICAL,
     ROLE_ROTATIONAL,
     ROLE_IMPACT,
-    ROLE_CUP,
     ROLE_FRINGE,
-)
-
-_CUP_CUE = re.compile(
-    r"\b(cup\s+side|cup\s+tie|carabao|league\s+cup|efl\s+cup|fa\s+cup|"
-    r"europe(?:an)?\s+rest|midweek\s+(?:cup|rest)|rested\s+for|"
-    r"rotated\s+for\s+the\s+cup)\b",
-    re.I,
 )
 
 
@@ -99,32 +88,9 @@ def minutes_features(series: Sequence[float]) -> RoleFeatures:
     )
 
 
-def blurb_cup_cue(name: str, blurb: str) -> bool:
-    """True when a blurb sentence both names the player and has a cup/rest cue.
-
-    Club-wide “EFL Cup win …” lines must not tag the whole squad.
-    """
-    web = str(name or "").strip()
-    if not web or not blurb:
-        return False
-    if not _CUP_CUE.search(blurb):
-        return False
-    parts = re.split(r"(?<=[.!?])\s+", blurb)
-    keys = {web.lower(), web.split()[-1].lower()}
-    keys.discard("")
-    for sent in parts:
-        low = sent.lower()
-        if not any(k in low for k in keys):
-            continue
-        if _CUP_CUE.search(sent):
-            return True
-    return False
-
 def classify_role(
     series: Sequence[float],
     *,
-    anti_corr: float | None = None,
-    cup_cue: bool = False,
     xi_omit: bool = False,
 ) -> tuple[str, str]:
     """Return ``(role_tag, short_reason)`` from as-of minutes (+ light cues)."""
@@ -132,24 +98,16 @@ def classify_role(
     if f.n_gws < 2:
         return ROLE_FRINGE, "too_few_gws"
 
-    # Cup starter: thin league role + explicit cup/rest cue.
-    if cup_cue and f.start60_rate <= 0.45 and f.expand_m < 55.0:
-        return ROLE_CUP, "cup/rest cue + thin league starts"
-
     # Firm starter: almost always starts and finishes (or huge expand).
     if f.start60_rate >= 0.75 and f.expand_m >= 65.0 and (
         f.early_sub_rate < 0.55 or f.on_mean >= 78.0
     ):
         return ROLE_FIRM, f"start60={f.start60_rate:.2f} expand={f.expand_m:.0f}"
 
-    # Tactical starter: regularly involved in XI but managed minutes / partner swap.
+    # Tactical starter: regularly involved in XI but managed minutes.
     managed = f.early_sub_rate >= 0.35 and f.start45_rate >= 0.35
-    partner = anti_corr is not None and float(anti_corr) <= -0.35
-    if f.expand_m >= 40.0 and f.start45_rate >= 0.35 and (
-        managed or (partner and f.start60_rate >= 0.35)
-    ):
-        why = "managed_minutes" if managed else "anti_corr_partner"
-        return ROLE_TACTICAL, why
+    if f.expand_m >= 40.0 and f.start45_rate >= 0.35 and managed:
+        return ROLE_TACTICAL, "managed_minutes"
 
     # Impact sub: rare starts, cameo on-pitch mean.
     if f.start60_rate <= 0.20 and f.zero_rate >= 0.35 and 10.0 <= f.on_mean <= 45.0:
@@ -182,14 +140,10 @@ def attach_roles(
     series_by_element: Mapping[int, Sequence[float]],
     baseline_m: Mapping[int, float],
     overlays: Mapping[int, Any] | None = None,
-    club_blurbs: Mapping[str, str] | None = None,
 ) -> tuple[dict[int, RoleRow], dict[str, int]]:
     """Classify roles for the full as-of pool; stamp ``role`` onto overlays."""
-    from src.teams import norm_team
-
     teams = {int(t["id"]): str(t["name"]) for t in bootstrap["teams"]}
     overlays = overlays or {}
-    club_blurbs = club_blurbs or {}
     rows: dict[int, RoleRow] = {}
     counts: dict[str, int] = {r: 0 for r in ROLE_TAGS}
 
@@ -198,19 +152,11 @@ def attach_roles(
         name = str(el.get("web_name") or "")
         club = teams.get(int(el["team"]), "")
         series = list(series_by_element.get(eid) or [])
-        if not series and eid in baseline_m:
-            # No GW rows yet — treat as fringe.
-            series = []
         ov = overlays.get(eid)
-        anti = getattr(ov, "anti_corr", None) if ov is not None else None
-        xi_omit = bool(ov is not None and str(getattr(ov, "source", "")) == "ffscout_xi_omit")
-        blurb = club_blurbs.get(norm_team(club), "") or club_blurbs.get(club, "")
-        cup = blurb_cup_cue(name, blurb) or blurb_cup_cue(
-            str(el.get("second_name") or ""), blurb
+        xi_omit = bool(
+            ov is not None and str(getattr(ov, "source", "")) == "ffscout_xi_omit"
         )
-        role, reason = classify_role(
-            series, anti_corr=anti, cup_cue=cup, xi_omit=xi_omit
-        )
+        role, reason = classify_role(series, xi_omit=xi_omit)
         feat = minutes_features(series)
         rows[eid] = RoleRow(
             element=eid,

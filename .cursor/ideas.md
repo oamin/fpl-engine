@@ -4,6 +4,17 @@ Cursor chooses the next pre-registered comparison. The PI is not asked to pick. 
 
 **Numagent 2.0 is locked on main** — see `.cursor/context.md` and `reports/LOCKED.md` (`protocol.numagent_2_0`). Engine primary scorer is `score_xp_v2`. Numagent 1.0 and `score_xp` are **archived in-place** (`reports/ARCHIVE_NUMAGENT_1_0.md`). This file is the **park log**. Everything from “Procedure, locked 2026-10-07” downward is **Numagent 1.0 / stage archaeology** — not instructions for the live path.
 
+## Parked — scout partner blurbs + cup_starter (2026-11-05)
+
+Removed from the live scout packet (weak for scoring). Module
+`minutes_partner_context.py` kept for digs. Revisit only if a pre-registered
+comparison asks.
+
+## Next — broaden team-news trawl for XI-omit FPs (2026-11-05)
+
+XI-omit rotation soft pins are imminent-GW only (~1/5 FP). Improve by richer
+team-news sources beyond FFScout predicted XI / Latest News blurbs.
+
 ## Parked — cascade generative MC-mean vs mean layer (2026-10-20 overnight)
 
 `cascade_viability_batch` B1/B2: player-GW log of N_MC=6 generative mean xP

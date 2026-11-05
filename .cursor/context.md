@@ -147,9 +147,16 @@ Cherki GW9: 15′ → expand. Module: `src/live/scout_minutes.py`.
 ## Scout role tags
 
 Closed pool roles (`src/live/scout_role.py`): `firm_starter`, `tactical_starter`,
-`rotational`, `impact_sub`, `cup_starter`, `fringe`. Full-pool `roles` map +
-`overlay.role`. Cherki=`tactical_starter`, Virgil=`firm_starter`. Cup cue is
-player-sentence scoped (not club-wide EFL Cup mentions).
+`rotational`, `impact_sub`, `fringe`. Full-pool `roles` map + `overlay.role`.
+Cherki=`tactical_starter`, Virgil=`firm_starter`. `cup_starter` and partner
+blurbs removed from the live packet.
+
+## Scout → live pick
+
+`numagent_live_pick --scout-packet …/scout_minutes.json`: week-t / t+1 use
+`step_map(0/1)`; `sG`/`sA` freeze from expanding `baseline_m`. Unknown return
+stays on `m0` (0) for the full horizon. XI-omit is an imminent-GW soft pin —
+broaden team-news trawl later to cut FPs.
 
 ## Dig — scout minutes drop recovery (2025-26)
 

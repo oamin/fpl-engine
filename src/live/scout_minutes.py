@@ -41,6 +41,32 @@ CACHE = ROOT / "data" / "cache"
 POS = {1: "GKP", 2: "DEF", 3: "MID", 4: "FWD"}
 
 
+def _is_unknown_return_overlay(ov: "ScoutOverlay") -> bool:
+    """True when absence has no usable return horizon (stay on m0)."""
+    ctx = str(getattr(ov, "context", "") or "")
+    if ctx == "injured_unknown_return":
+        return True
+    if ctx == "suspended" and getattr(ov, "return_gws", None) is None:
+        # Open-ended ban / no parsed return — do not snap to expand.
+        if not getattr(ov, "force_steps", None):
+            return True
+    return False
+
+
+def pin_unknown_return_overlays(
+    overlays: Mapping[int, "ScoutOverlay"], *, horizon: int
+) -> int:
+    """Hard-pin unknown-return overlays at ``m0`` for the full packet horizon."""
+    n = 0
+    hz = max(1, int(horizon))
+    for ov in overlays.values():
+        if not _is_unknown_return_overlay(ov):
+            continue
+        ov.force_steps = {h: float(ov.m0) for h in range(hz)}
+        n += 1
+    return n
+
+
 @dataclass
 class ScoutOverlay:
     """Scout minutes anchor at decision week (step 0), with optional hard pins."""
@@ -62,11 +88,6 @@ class ScoutOverlay:
     return_gws: int | None = None
     return_date: str | None = None
     evidence: list[str] = field(default_factory=list)
-    # Within-season anti-corr teammate blurb only (no minutes rating).
-    partner_blurb: str = ""
-    anti_element: int | None = None
-    anti_name: str | None = None
-    anti_corr: float | None = None
     # Closed role tag (see ``scout_role.ROLE_TAGS``).
     role: str = ""
     role_reason: str = ""
@@ -102,10 +123,13 @@ class ScoutMinutesPacket:
         h = max(0, int(step))
         if h in ov.force_steps:
             return float(ov.force_steps[h])
+        # Unknown return / open-ended absence: stay on m0 for the whole horizon.
+        if _is_unknown_return_overlay(ov):
+            return float(ov.m0)
         # Known return horizon without an explicit pin for this step.
         if ov.return_gws is not None and h < int(ov.return_gws):
             return float(ov.m0)
-        # Step-0 scout anchor (doubts / unknown-return Out with empty pins).
+        # Step-0 scout anchor (doubts / single-week pins with empty maps).
         if h == 0:
             return float(ov.m0)
         # Past known horizon → snap to expanding mean.
@@ -175,10 +199,6 @@ class ScoutMinutesPacket:
                     "return_gws": ov.return_gws,
                     "return_date": ov.return_date,
                     "evidence": list(ov.evidence),
-                    "partner_blurb": ov.partner_blurb,
-                    "anti_element": ov.anti_element,
-                    "anti_name": ov.anti_name,
-                    "anti_corr": ov.anti_corr,
                     "path": self.minutes_path(eid),
                 }
                 for eid, ov in sorted(self.overlays.items())
@@ -249,22 +269,6 @@ def load_scout_packet(path: Path) -> ScoutMinutesPacket:
                 else None
             ),
             evidence=[str(x) for x in (raw.get("evidence") or [])],
-            partner_blurb=str(raw.get("partner_blurb") or ""),
-            anti_element=(
-                int(raw["anti_element"])
-                if raw.get("anti_element") is not None and raw.get("anti_element") != ""
-                else None
-            ),
-            anti_name=(
-                str(raw.get("anti_name"))
-                if raw.get("anti_name") not in (None, "")
-                else None
-            ),
-            anti_corr=(
-                float(raw["anti_corr"])
-                if raw.get("anti_corr") is not None and raw.get("anti_corr") != ""
-                else None
-            ),
             role=str(raw.get("role") or ""),
             role_reason=str(raw.get("role_reason") or ""),
         )
@@ -527,8 +531,8 @@ def build_scout_packet_from_ffscout(
         hist=hist,
         decision_gw=int(decision_gw),
     )
-    from src.live.minutes_partner_context import attach_partner_blurbs_to_overlays
     from src.live.scout_context import enrich_overlays_with_context
+    from src.live.scout_role import ROLE_TAGS, attach_roles
 
     series = _series_by_element(hist, before_gw=int(decision_gw))
     overlays, context_rows, ctx_diag = enrich_overlays_with_context(
@@ -540,28 +544,14 @@ def build_scout_packet_from_ffscout(
         series_by_element=series,
         include_xi_omissions=True,
     )
-    # Partner blurbs: within-season anti-corr text only — never a minutes rating.
-    min_prior = max(5, min(8, int(decision_gw) - 1))
-    partner_diag = attach_partner_blurbs_to_overlays(
-        overlays,
-        hist,
-        decision_gw=int(decision_gw),
-        min_prior_gws=min_prior,
+    n_unknown_pinned = pin_unknown_return_overlays(
+        overlays, horizon=int(horizon)
     )
-    from src.live.scout_role import ROLE_TAGS, attach_roles
-
-    club_blurbs = {
-        str(c.get("club_norm") or norm_team(str(c.get("club") or ""))): str(
-            c.get("news") or ""
-        )
-        for c in (ffs_payload.get("clubs") or [])
-    }
     role_rows, role_counts = attach_roles(
         bootstrap=bootstrap,
         series_by_element=series,
         baseline_m=baseline,
         overlays=overlays,
-        club_blurbs=club_blurbs,
     )
     roles_out = {
         eid: {
@@ -591,7 +581,7 @@ def build_scout_packet_from_ffscout(
         meta={
             "ffscout": diag,
             "context": ctx_diag,
-            "partner_context": partner_diag,
+            "n_unknown_return_pinned": n_unknown_pinned,
             "role_counts": role_counts,
             "role_tags": list(ROLE_TAGS),
             "context_samples": [
@@ -619,7 +609,7 @@ def build_scout_packet_from_ffscout(
             "overlay_policy": (
                 "ffscout_out_banned_doubts_plus_xi_omit_rotation;"
                 "context=fpl_news+blurb+xi;"
-                "partner_blurb=within_season_anticorr_no_rating;"
+                "unknown_return=pin_m0_full_horizon;"
                 "role=scout_role_v1"
             ),
             "horizon_law": "pin_then_snap_expand",
@@ -690,20 +680,17 @@ def _write_example_md(packet: ScoutMinutesPacket, path: Path) -> None:
         "",
         "## Overlay table (all)",
         "",
-        "| player | club | role | bucket/tag | context | partner | return_gws | m0 | force |",
-        "| --- | --- | --- | --- | --- | --- | ---: | ---: | --- |",
+        "| player | club | role | bucket/tag | context | return_gws | m0 | force |",
+        "| --- | --- | --- | --- | --- | ---: | ---: | --- |",
     ]
     for ov in rows:
         force = ",".join(f"{h}:{m:g}" for h, m in sorted(ov.force_steps.items())) or "—"
-        partner = (ov.anti_name or "—") + (
-            f" (ρ={ov.anti_corr:.2f})" if ov.anti_corr is not None else ""
-        )
         ctx_l = (ov.context_label or ov.context or "").replace("|", "/")
         if len(ctx_l) > 80:
             ctx_l = ctx_l[:77] + "…"
         lines.append(
             f"| {ov.name} | {ov.club} | {ov.role or '—'} | {ov.tag}/{ov.source} | "
-            f"{ctx_l} | {partner} | "
+            f"{ctx_l} | "
             f"{'' if ov.return_gws is None else ov.return_gws} | "
             f"{ov.m0:.0f} | {force} |"
         )
@@ -793,9 +780,16 @@ def main(argv: list[str] | None = None) -> int:
         zeros = [
             e
             for e, ov in packet.overlays.items()
-            if float(ov.m0) <= 0.0 and not ov.force_steps
+            if float(ov.m0) <= 0.0 and not _is_unknown_return_overlay(ov)
         ]
         if not zeros:
+            zeros = [
+                e
+                for e, ov in packet.overlays.items()
+                if float(ov.m0) <= 0.0 and not _is_unknown_return_overlay(ov)
+            ]
+        if not zeros:
+            # Fall back to any zero overlay (may be unknown-return).
             zeros = [e for e, ov in packet.overlays.items() if float(ov.m0) <= 0.0]
         if not zeros:
             raise SystemExit("smoke: expected some Out/Banned zeros")
@@ -808,7 +802,8 @@ def main(argv: list[str] | None = None) -> int:
             raise SystemExit("smoke: Out m0 should be 0")
         ov0 = packet.overlays[e0]
         # Pin then snap: after known horizon (or step 0 only), m → expand.
-        if ov0.force_steps:
+        # Unknown-return overlays stay pinned — checked separately below.
+        if ov0.force_steps and not _is_unknown_return_overlay(ov0):
             last = max(ov0.force_steps)
             after = packet.m_at(e0, last + 1)
             if abs(after - base) > 1e-6:
@@ -816,7 +811,7 @@ def main(argv: list[str] | None = None) -> int:
                     f"smoke: expected snap to expand after pin; "
                     f"got m({last + 1})={after:.2f} base={base:.2f}"
                 )
-        elif base > 1.0:
+        elif base > 1.0 and not ov0.force_steps and not _is_unknown_return_overlay(ov0):
             if abs(m1 - base) > 1e-6 or abs(m2 - base) > 1e-6:
                 raise SystemExit(
                     f"smoke: expected snap to expand after step 0; "
@@ -845,6 +840,18 @@ def main(argv: list[str] | None = None) -> int:
         firm = [r for r in packet.roles.values() if r.get("role") == "firm_starter"]
         if len(firm) < 5:
             raise SystemExit(f"smoke: too few firm_starters ({len(firm)})")
+        unknown = [
+            ov
+            for ov in packet.overlays.values()
+            if ov.context == "injured_unknown_return"
+        ]
+        if unknown:
+            u0 = unknown[0]
+            path = packet.minutes_path(u0.element)
+            if any(abs(x) > 1e-9 for x in path):
+                raise SystemExit(
+                    f"smoke: unknown return should stay 0; {u0.name} path={path[:4]}"
+                )
         print("smoke_ok", flush=True)
     return 0
 

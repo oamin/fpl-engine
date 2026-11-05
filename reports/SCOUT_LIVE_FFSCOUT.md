@@ -13,9 +13,10 @@
 | **Horizon return** | **Pin then snap** — no ρ-decay. `force_steps` / `return_gws` / step-0 `m0`; after that → expanding `m` |
 | **Hard pins** | Structured `out_for_n_gws` / FPL+blurb return horizon via `force_steps` |
 | **Shares** | Freeze `sG`/`sA` from expanding baseline when scout minutes are applied |
-| **Role** | Closed tags on full pool + overlays: `firm_starter` / `tactical_starter` / `rotational` / `impact_sub` / `cup_starter` / `fringe` (`src/live/scout_role.py`) |
+| **Unknown return** | Stay on `m0` (usually 0) for the **full horizon** until a return parse exists |
+| **Role** | Closed tags on full pool + overlays: `firm_starter` / `tactical_starter` / `rotational` / `impact_sub` / `fringe` |
 
-Predicted XI still drives the **selectable pool** (WHO); XI-omit also soft-pins week-0 minutes for regulars left out. Role is the playing pattern when available (separate from injury context).
+Predicted XI still drives the **selectable pool** (WHO); XI-omit also soft-pins week-0 minutes for regulars left out (imminent-GW signal — broaden team-news trawl to cut FPs). Role is the playing pattern when available (separate from injury context). Partner blurbs / `cup_starter` removed from the live packet.
 
 ## Build
 

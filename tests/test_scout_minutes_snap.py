@@ -93,3 +93,19 @@ def test_return_gws_without_force_map() -> None:
     assert p.m_at(1, 0) == 0.0
     assert p.m_at(1, 1) == 0.0
     assert p.m_at(1, 2) == 60.0
+
+
+def test_unknown_return_stays_zero() -> None:
+    ov = ScoutOverlay(
+        element=12,
+        name="Saka",
+        club="Arsenal",
+        tag="injured",
+        m0=0.0,
+        reason="out",
+        context="injured_unknown_return",
+        force_steps={},
+        return_gws=None,
+    )
+    p = _packet(ov)
+    assert p.minutes_path(12) == [0.0, 0.0, 0.0, 0.0]

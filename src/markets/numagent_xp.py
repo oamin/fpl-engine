@@ -276,6 +276,77 @@ def load_alphas(path=None) -> tuple[float, float, float, float]:
     return ag, aa, se_g, se_a
 
 
+def _element_keys(frame: pd.DataFrame) -> list[int]:
+    if "element" in frame.columns:
+        return [int(x) for x in pd.to_numeric(frame["element"], errors="coerce").fillna(-1)]
+    if "player_id" in frame.columns:
+        out: list[int] = []
+        for raw in frame["player_id"].tolist():
+            s = str(raw)
+            try:
+                out.append(int(s.split(":")[-1]))
+            except ValueError:
+                out.append(-1)
+        return out
+    return [-1] * len(frame)
+
+
+def project_shares_from_minutes_frame(
+    share_players: pd.DataFrame,
+    players: pd.DataFrame,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """Build club ``sG``/``sA`` on ``share_players`` minutes; map onto ``players``.
+
+    Used for scout share-freeze: appear/CS use scout ``m``, shares stay on
+    expanding baseline minutes. Shares are **not** re-normalised on ``players``.
+    """
+    n = len(players)
+    sG = np.zeros(n, dtype=float)
+    sA = np.zeros(n, dtype=float)
+    dsG = np.zeros(n, dtype=float)
+    dsA = np.zeros(n, dtype=float)
+    if share_players is None or share_players.empty or players.empty:
+        return sG, sA, dsG, dsA
+
+    club = share_players.copy()
+    if "m" in club.columns:
+        club = club.loc[pd.to_numeric(club["m"], errors="coerce").fillna(0.0) > 0.0]
+    if club.empty:
+        return sG, sA, dsG, dsA
+
+    def col(frame: pd.DataFrame, name: str, default: float = 0.0) -> np.ndarray:
+        if name in frame.columns:
+            return pd.to_numeric(frame[name], errors="coerce").fillna(default).to_numpy(float)
+        return np.full(len(frame), float(default), dtype=float)
+
+    m = col(club, "m")
+    sm = col(club, "sigma_m")
+    rG = col(club, "rG")
+    drG = col(club, "drG")
+    rA = col(club, "rA")
+    drA = col(club, "drA")
+    nc = len(club)
+    wG = np.zeros(nc)
+    dwG = np.zeros(nc)
+    wA = np.zeros(nc)
+    dwA = np.zeros(nc)
+    for i in range(nc):
+        wG[i], dwG[i] = weight_and_delta(rG[i], drG[i], m[i], sm[i])
+        wA[i], dwA[i] = weight_and_delta(rA[i], drA[i], m[i], sm[i])
+    sG_c, dsG_c = shares_and_deltas(wG, dwG)
+    sA_c, dsA_c = shares_and_deltas(wA, dwA)
+    by_el = {eid: i for i, eid in enumerate(_element_keys(club)) if eid >= 0}
+    for j, eid in enumerate(_element_keys(players)):
+        i = by_el.get(eid)
+        if i is None:
+            continue
+        sG[j] = float(sG_c[i])
+        sA[j] = float(sA_c[i])
+        dsG[j] = float(dsG_c[i])
+        dsA[j] = float(dsA_c[i])
+    return sG, sA, dsG, dsA
+
+
 def score_team_side(
     players: pd.DataFrame,
     *,
@@ -290,6 +361,7 @@ def score_team_side(
     d_xgc: float = 0.0,
     sG_override: np.ndarray | None = None,
     sA_override: np.ndarray | None = None,
+    share_players: pd.DataFrame | None = None,
     prop_p_by_player: Mapping[str | int, float] | None = None,
     share_se_shrink: bool = True,
     share_se_tau2: float | None = None,
@@ -306,6 +378,9 @@ def score_team_side(
 
     Optional ``sG_override`` / ``sA_override``: compositional shares from a
     correlated-draw sampler (must be length n and sum ≈ 1 on the playing set).
+
+    Optional ``share_players``: club frame whose minutes drive ``sG``/``sA``
+    (scout share-freeze from expanding baseline) while appear/CS use ``players``.
 
     Optional ``prop_p_by_player``: FPL id (or ``player_id`` string) → fair
     P(anytime scorer). When set, goal shares are **shaped** by props
@@ -352,8 +427,17 @@ def score_team_side(
         wG[i], dwG[i] = weight_and_delta(rG[i], drG[i], m[i], sm[i])
         wA[i], dwA[i] = weight_and_delta(rA[i], drA[i], m[i], sm[i])
 
-    sG, dsG = shares_and_deltas(wG, dwG)
-    sA, dsA = shares_and_deltas(wA, dwA)
+    used_share_club = (
+        share_players is not None
+        and not share_players.empty
+        and sG_override is None
+        and sA_override is None
+    )
+    if used_share_club:
+        sG, sA, dsG, dsA = project_shares_from_minutes_frame(share_players, out)
+    else:
+        sG, dsG = shares_and_deltas(wG, dwG)
+        sA, dsA = shares_and_deltas(wA, dwA)
     if sG_override is not None:
         sG = np.asarray(sG_override, dtype=float)
         if sG.shape != (n,):
@@ -366,7 +450,12 @@ def score_team_side(
         dsA = np.zeros(n)
 
     share_shrink_diag: dict[str, float] | None = None
-    if share_se_shrink and sG_override is None and sA_override is None:
+    if (
+        share_se_shrink
+        and sG_override is None
+        and sA_override is None
+        and not used_share_club
+    ):
         sG_raw, sA_raw = sG.copy(), sA.copy()
         pos_list = [str(p) for p in pos.tolist()]
         sG, g_diag = shrink_shares_by_se(
