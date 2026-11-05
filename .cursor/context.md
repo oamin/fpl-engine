@@ -153,10 +153,10 @@ blurbs removed from the live packet.
 
 ## Scout → live pick
 
-`numagent_live_pick --scout-packet …/scout_minutes.json`: week-t / t+1 use
-`step_map(0/1)`; `sG`/`sA` freeze from expanding `baseline_m`. Unknown return
-stays on `m0` (0) for the full horizon. XI-omit is an imminent-GW soft pin —
-broaden team-news trawl later to cut FPs.
+`numagent_live_pick --scout-packet …/scout_minutes.json --centreline-horizon 12`:
+`step_map(h)` across the full L4+Opta centreline (priced t/t+1 + Opta far);
+`sG`/`sA` freeze from expanding `baseline_m`. Unknown return stays on `m0` (0)
+for every wired step. Module: `src/live/scout_horizon_boards.py`.
 
 ## Dig — scout minutes drop recovery (2025-26)
 

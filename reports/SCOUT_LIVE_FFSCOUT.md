@@ -35,10 +35,14 @@ Writes `data/predictions/2026-27/gwNN/scout_minutes.json` (+ optional `scout_xmi
 
 ```bash
 python -m src.live.numagent_live_pick --gw N --scout-packet \
-  data/predictions/2026-27/gwNN/scout_minutes.json …
+  data/predictions/2026-27/gwNN/scout_minutes.json \
+  --centreline-horizon 12 …
 ```
 
-Week-t uses step 0; t+1 uses step 1 (snap to expanding unless still pinned). Share freeze on.
+Scout ``step_map(h)`` is applied across the **full L4+Opta centreline horizon**
+(default H=12: priced t/t+1 + Opta blind far). Share freeze from expanding
+``baseline_m`` on every step. Build the packet with ``--horizon 12`` (CLI default)
+so pins cover the Opta far window.
 
 ## GW9 smoke (saved FFScout page)
 
