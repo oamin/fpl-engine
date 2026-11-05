@@ -22,6 +22,7 @@ Updated: 2026-10-23. **Numagent 2.0** is the product on main (`protocol.numagent
 | **12. Historical rate baseline** | **cascade default** | Start at prior (player else positional); update with each completed GW. `src/markets/rate_baseline.py` · `protocol.score_xp_v2_rate_baseline_prior`. Full mu_post gate deferred. |
 | **13. Mean vs path GW residual** | **done (diagnostic)** | Full-side shares; semi-oracle buy-only. 2025-26: mean/path actual ≈647/646; resid bias +12.7 / +1.1. `reports/cascade_mean_path_gw_resid.md`. |
 | **14. Top MID+FWD G/A mismatch** | **done (diagnostic)** | Top xp decile: g/EG≈0.85 (pot≈0.82, shares OK); a/EA≈0.61 (pot≈0.72 **and** sA too fat). `reports/top_mid_fwd_ga_mismatch.md`. |
+| **14b. Team G/A covariance 2025-26** | **done (diagnostic)** | Club ΣG–ΣA +0.92; active MID/FWD cross G_i×A_j median +0.06; G×G median −0.05. `reports/ga_team_covariance_2025_26.md`. |
 | **15. Path FT potential energy** | **default on (diagnostic)** | `U(b)=ν·b`, ν=`HIT_COST` (+4/FT, +20 at cap). N=12: schedule Δ small (terminal ft 1.00→1.08). `reports/cascade_ft_pe_path.md`. |
 | **16. Path every-GW transfers** | **locked** | Joint path plan schedules every horizon GW (`cascade_joint_path_plan`). Hard must-spend: `e=max(0,k−f)`. |
 | **17. Cascade γ** | **locked γ=1** | Removed climb `γ=0.9` contamination from cascade/multistage defaults (`cascade_gamma`). |

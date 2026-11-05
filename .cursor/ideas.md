@@ -22,6 +22,35 @@ book/FD (or Opta) centreline → `M` → categorical `k ∼ M`. Outcome noise is
 roll over `M`, not a second invented λ axis. Contaminated diagnostic:
 `reports/multistage_xi_captain_ft_short_long_trial.md` (GW8 used ±15%).
 
+## Dig — next-GW event sequence NN (outline 2026-11-05)
+
+Small ablation: discrete GW channel sequences (the bar-plot ticks), **not**
+expanding means/rates. Preserve per-GW discreteness: last-K vectors of
+points / minutes / G / A / CS / GC / DefCon / bonus / cards / appear flags.
+Fixture context for \(t\) is allowed (home/away, opponent id/strength) —
+that is not an expanding player summary. Arms: B = position + fixture-\(t\)
+only; C = B + last-K discrete channels. **No padding:** a player-GW enters
+the dig only once \(K\) completed prior GWs exist in that season (first
+eligible label GW = \(K+1\)); B and C share that pool. Assess event log
+loss / Brier (G, A, Appear60, DefCon, …), C vs B, chronological as-of.
+Not a scorer replace. Live 2026/27 holdout off. Code when opened:
+`src/eval/next_event_sequence_dig.py`.
+
+## Dig — player expanding actuals view (2026-11-05)
+
+Scorer-simplify sketch: plot expanding mean of player GW actuals (points, m,
+G, A, CS, GC, …) beside GW team scoreline / Opta xscoreline. No shares/pots.
+Script: `scripts/plot_player_expanding_view.py`. Example: Saka 2025-26
+`reports/player_expanding_view_saka_2025_26.md`.
+
+## Dig — team G/A covariance 2025-26 (2026-11-05)
+
+Fixture-level player G×G / A×A / cross G_i×A_j on MID+FWD
+(`src/eval/ga_team_covariance.py`). Club ΣG–ΣA median **+0.92**. Active
+cross (scorer≥3G, assister≥3A) median **+0.063** (57.5% pos); active G×G
+median **−0.05**. Weak player-level co-movement — not a dense μ-board cov
+matrix. Report: `reports/ga_team_covariance_2025_26.md`.
+
 ## Parked — cascade_short bonus-from-roll (2026-10-20)
 
 Scenario soft terms stay expanding-mean `bonus_mu` / `card_mu` / DefCon / saves.
