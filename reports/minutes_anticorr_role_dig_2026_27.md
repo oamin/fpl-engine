@@ -69,7 +69,7 @@ As-of only (`GW < t`). **No cross-season history.** Live seasons must fit roles 
 
 ```bash
 PYTHONPATH=. python3 -m src.eval.minutes_anticorr_role_dig \
-  --season 2026-27 --season-csv data/scratch/player_gw_2026_27_through_gw09.csv \
+  --season 2026-27 --season-csv data/processed/player_gw_2026_27_through_gw09.csv \
   --gw-from 6 --gw-to 9 \
   --example-as-of 9 --min-prior-gws 5
 ```
