@@ -144,6 +144,13 @@ Live scout minutes no longer use `m(h)=expand+(m0−expand)·ρ^h`. Known horizo
 pins (`force_steps` / `return_gws` / step-0 `m0`) then **snap** to expanding `m`.
 Cherki GW9: 15′ → expand. Module: `src/live/scout_minutes.py`.
 
+## Scout role tags
+
+Closed pool roles (`src/live/scout_role.py`): `firm_starter`, `tactical_starter`,
+`rotational`, `impact_sub`, `cup_starter`, `fringe`. Full-pool `roles` map +
+`overlay.role`. Cherki=`tactical_starter`, Virgil=`firm_starter`. Cup cue is
+player-sentence scoped (not club-wide EFL Cup mentions).
+
 ## Dig — scout minutes drop recovery (2025-26)
 
 Exploratory only (PR #130). Expanding regulars: drop `m<μ−σ`, recover `m≥μ−0.5σ`.

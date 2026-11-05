@@ -67,6 +67,9 @@ class ScoutOverlay:
     anti_element: int | None = None
     anti_name: str | None = None
     anti_corr: float | None = None
+    # Closed role tag (see ``scout_role.ROLE_TAGS``).
+    role: str = ""
+    role_reason: str = ""
 
 
 @dataclass
@@ -77,6 +80,7 @@ class ScoutMinutesPacket:
     ``overlays[element]`` pins minutes for the known horizon (``force_steps`` /
     ``return_gws`` / step-0 ``m0``); after that horizon ``m_at`` snaps to
     expanding baseline — no ρ-decay.
+    ``roles`` covers the full as-of pool (firm starters included, not only overlays).
     """
 
     season: str
@@ -86,6 +90,7 @@ class ScoutMinutesPacket:
     fetched_at: str
     baseline_m: dict[int, float] = field(default_factory=dict)
     overlays: dict[int, ScoutOverlay] = field(default_factory=dict)
+    roles: dict[int, dict[str, Any]] = field(default_factory=dict)
     meta: dict[str, Any] = field(default_factory=dict)
 
     def m_at(self, element: int, step: int = 0) -> float:
@@ -144,13 +149,19 @@ class ScoutMinutesPacket:
             ),
             "baseline_n": len(self.baseline_m),
             "n_overlays": len(self.overlays),
+            "n_roles": len(self.roles),
             "baseline_m": {str(k): float(v) for k, v in sorted(self.baseline_m.items())},
+            "roles": {
+                str(eid): dict(row) for eid, row in sorted(self.roles.items())
+            },
             "overlays": {
                 str(eid): {
                     "element": int(eid),
                     "name": ov.name,
                     "club": ov.club,
                     "tag": ov.tag,
+                    "role": ov.role,
+                    "role_reason": ov.role_reason,
                     "m0": float(ov.m0),
                     "reason": ov.reason,
                     "source": ov.source,
@@ -254,8 +265,16 @@ def load_scout_packet(path: Path) -> ScoutMinutesPacket:
                 if raw.get("anti_corr") is not None and raw.get("anti_corr") != ""
                 else None
             ),
+            role=str(raw.get("role") or ""),
+            role_reason=str(raw.get("role_reason") or ""),
         )
     baseline = {int(k): float(v) for k, v in (doc.get("baseline_m") or {}).items()}
+    roles_raw = doc.get("roles") or {}
+    roles: dict[int, dict[str, Any]] = {}
+    for key, raw in roles_raw.items():
+        eid = int(raw.get("element") or key)
+        roles[eid] = dict(raw)
+        roles[eid]["element"] = eid
     meta = dict(doc.get("meta") or {})
     # Legacy packets may still carry decay_rho; ignored under pin-then-snap.
     meta.pop("decay_rho", None)
@@ -268,6 +287,7 @@ def load_scout_packet(path: Path) -> ScoutMinutesPacket:
         fetched_at=str(doc.get("fetched_at") or ""),
         baseline_m=baseline,
         overlays=overlays,
+        roles=roles,
         meta=meta,
     )
 
@@ -528,6 +548,34 @@ def build_scout_packet_from_ffscout(
         decision_gw=int(decision_gw),
         min_prior_gws=min_prior,
     )
+    from src.live.scout_role import ROLE_TAGS, attach_roles
+
+    club_blurbs = {
+        str(c.get("club_norm") or norm_team(str(c.get("club") or ""))): str(
+            c.get("news") or ""
+        )
+        for c in (ffs_payload.get("clubs") or [])
+    }
+    role_rows, role_counts = attach_roles(
+        bootstrap=bootstrap,
+        series_by_element=series,
+        baseline_m=baseline,
+        overlays=overlays,
+        club_blurbs=club_blurbs,
+    )
+    roles_out = {
+        eid: {
+            "element": int(eid),
+            "name": row.name,
+            "club": row.club,
+            "role": row.role,
+            "role_reason": row.reason,
+            "expand_m": round(row.features.expand_m, 2),
+            "start60_rate": round(row.features.start60_rate, 3),
+            "early_sub_rate": round(row.features.early_sub_rate, 3),
+        }
+        for eid, row in role_rows.items()
+    }
     return ScoutMinutesPacket(
         season=season,
         decision_gw=int(decision_gw),
@@ -539,10 +587,13 @@ def build_scout_packet_from_ffscout(
         ),
         baseline_m=baseline,
         overlays=overlays,
+        roles=roles_out,
         meta={
             "ffscout": diag,
             "context": ctx_diag,
             "partner_context": partner_diag,
+            "role_counts": role_counts,
+            "role_tags": list(ROLE_TAGS),
             "context_samples": [
                 {
                     "element": r.element,
@@ -568,7 +619,8 @@ def build_scout_packet_from_ffscout(
             "overlay_policy": (
                 "ffscout_out_banned_doubts_plus_xi_omit_rotation;"
                 "context=fpl_news+blurb+xi;"
-                "partner_blurb=within_season_anticorr_no_rating"
+                "partner_blurb=within_season_anticorr_no_rating;"
+                "role=scout_role_v1"
             ),
             "horizon_law": "pin_then_snap_expand",
             "share_policy": "share_freeze",
@@ -615,14 +667,18 @@ def _write_example_md(packet: ScoutMinutesPacket, path: Path) -> None:
         f"# Scout context example — GW{packet.decision_gw}",
         "",
         f"Source: `{packet.source}` · fetched `{packet.fetched_at}` · "
-        f"law=`pin_then_snap_expand` · overlays **{len(packet.overlays)}**",
+        f"law=`pin_then_snap_expand` · overlays **{len(packet.overlays)}** · "
+        f"roles **{len(packet.roles)}**",
         "",
         "Combined signals: FFScout Out/Banned/Doubts + predicted-XI omissions "
-        "+ FPL `news`/status + club Latest News blurb parse.",
+        "+ FPL `news`/status + club Latest News blurb parse + role tags.",
         "",
-        "## Counts",
+        "## Role tags (full pool)",
         "",
     ]
+    for k, v in sorted(((packet.meta or {}).get("role_counts") or {}).items()):
+        lines.append(f"- `{k}`: {v}")
+    lines += ["", "## Context counts", ""]
     ctx = (packet.meta or {}).get("context") or {}
     for k, v in (ctx.get("context_counts") or {}).items():
         lines.append(f"- `{k}`: {v}")
@@ -634,20 +690,20 @@ def _write_example_md(packet: ScoutMinutesPacket, path: Path) -> None:
         "",
         "## Overlay table (all)",
         "",
-        "| player | club | bucket/tag | context | partner | return_gws | m0 | force |",
-        "| --- | --- | --- | --- | --- | ---: | ---: | --- |",
+        "| player | club | role | bucket/tag | context | partner | return_gws | m0 | force |",
+        "| --- | --- | --- | --- | --- | --- | ---: | ---: | --- |",
     ]
     for ov in rows:
         force = ",".join(f"{h}:{m:g}" for h, m in sorted(ov.force_steps.items())) or "—"
         partner = (ov.anti_name or "—") + (
             f" (ρ={ov.anti_corr:.2f})" if ov.anti_corr is not None else ""
         )
-        ctx = (ov.context_label or ov.context or "").replace("|", "/")
-        if len(ctx) > 80:
-            ctx = ctx[:77] + "…"
+        ctx_l = (ov.context_label or ov.context or "").replace("|", "/")
+        if len(ctx_l) > 80:
+            ctx_l = ctx_l[:77] + "…"
         lines.append(
-            f"| {ov.name} | {ov.club} | {ov.tag}/{ov.source} | "
-            f"{ctx} | {partner} | "
+            f"| {ov.name} | {ov.club} | {ov.role or '—'} | {ov.tag}/{ov.source} | "
+            f"{ctx_l} | {partner} | "
             f"{'' if ov.return_gws is None else ov.return_gws} | "
             f"{ov.m0:.0f} | {force} |"
         )
@@ -784,6 +840,11 @@ def main(argv: list[str] | None = None) -> int:
                     f"smoke: single-week should snap at step 1; "
                     f"got {p1:.2f} vs expand {b1:.2f}"
                 )
+        if not packet.roles:
+            raise SystemExit("smoke: expected full-pool roles map")
+        firm = [r for r in packet.roles.values() if r.get("role") == "firm_starter"]
+        if len(firm) < 5:
+            raise SystemExit(f"smoke: too few firm_starters ({len(firm)})")
         print("smoke_ok", flush=True)
     return 0
 

@@ -1,17 +1,30 @@
 {
-  "task": "scout_pin_then_snap_expand",
+  "task": "scout_role_tags",
   "status": "done",
-  "as_of_utc": "2026-11-05T08:40:00Z",
-  "module": "src/live/scout_minutes.py",
-  "horizon_law": "pin_then_snap_expand",
-  "removed": "rho_decay m(h)=expand+(m0-expand)*rho**h",
-  "rule": "force_steps / return_gws / step-0 m0; after known horizon snap to expanding m",
-  "example_cherki_gw09": {
-    "m0": 15.0,
-    "expand": 54.625,
-    "path": [15.0, 54.625, 54.625]
+  "as_of_utc": "2026-11-05T08:50:00Z",
+  "module": "src/live/scout_role.py",
+  "role_tags": [
+    "firm_starter",
+    "tactical_starter",
+    "rotational",
+    "impact_sub",
+    "cup_starter",
+    "fringe"
+  ],
+  "gw09_counts": {
+    "firm_starter": 148,
+    "tactical_starter": 63,
+    "rotational": 64,
+    "impact_sub": 149,
+    "cup_starter": 3,
+    "fringe": 240
   },
-  "tests": "tests/test_scout_minutes_snap.py",
+  "examples": {
+    "Cherki": "tactical_starter",
+    "Virgil": "firm_starter",
+    "Lacroix": "firm_starter",
+    "Doku": "rotational"
+  },
   "packet": "data/predictions/2026-27/gw09/scout_minutes.json",
-  "smoke_log": "LOGS/scout_snap_expand_smoke.log"
+  "tests": "tests/test_scout_role.py"
 }

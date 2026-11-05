@@ -1,0 +1,431 @@
+{
+  "gw": 9,
+  "horizon": 8,
+  "horizon_law": "pin_then_snap_expand",
+  "baseline_n": 669,
+  "n_overlays": 107,
+  "ffscout": {
+    "n_out": 54,
+    "n_banned": 4,
+    "n_doubt": 30,
+    "n_overlays": 88,
+    "n_unmatched": 2,
+    "unmatched": [
+      {
+        "club": "Spurs",
+        "name": "Savinho",
+        "bucket": "out"
+      },
+      {
+        "club": "Spurs",
+        "name": "Simons",
+        "bucket": "out"
+      }
+    ],
+    "els_known": 667
+  },
+  "context": {
+    "n_context_rows": 107,
+    "n_rotation_overlays": 19,
+    "n_rotation_veto_rest_cup": 0,
+    "n_clubs_skipped_xi_quality": 0,
+    "xi_match_quality": [
+      {
+        "club": "Arsenal",
+        "n_xi": 11,
+        "n_matched": 11,
+        "ok": true,
+        "unmatched": []
+      },
+      {
+        "club": "Aston Villa",
+        "n_xi": 11,
+        "n_matched": 10,
+        "ok": true,
+        "unmatched": [
+          "Torres"
+        ]
+      },
+      {
+        "club": "Brighton",
+        "n_xi": 11,
+        "n_matched": 11,
+        "ok": true,
+        "unmatched": []
+      },
+      {
+        "club": "Bournemouth",
+        "n_xi": 11,
+        "n_matched": 11,
+        "ok": true,
+        "unmatched": []
+      },
+      {
+        "club": "Brentford",
+        "n_xi": 11,
+        "n_matched": 10,
+        "ok": true,
+        "unmatched": [
+          "Dango Ouattara"
+        ]
+      },
+      {
+        "club": "Chelsea",
+        "n_xi": 11,
+        "n_matched": 11,
+        "ok": true,
+        "unmatched": []
+      },
+      {
+        "club": "Coventry",
+        "n_xi": 11,
+        "n_matched": 11,
+        "ok": true,
+        "unmatched": []
+      },
+      {
+        "club": "Crystal Palace",
+        "n_xi": 11,
+        "n_matched": 10,
+        "ok": true,
+        "unmatched": [
+          "Pino"
+        ]
+      },
+      {
+        "club": "Everton",
+        "n_xi": 11,
+        "n_matched": 11,
+        "ok": true,
+        "unmatched": []
+      },
+      {
+        "club": "Fulham",
+        "n_xi": 11,
+        "n_matched": 11,
+        "ok": true,
+        "unmatched": []
+      },
+      {
+        "club": "Hull",
+        "n_xi": 11,
+        "n_matched": 11,
+        "ok": true,
+        "unmatched": []
+      },
+      {
+        "club": "Ipswich",
+        "n_xi": 11,
+        "n_matched": 11,
+        "ok": true,
+        "unmatched": []
+      },
+      {
+        "club": "Leeds",
+        "n_xi": 11,
+        "n_matched": 11,
+        "ok": true,
+        "unmatched": []
+      },
+      {
+        "club": "Liverpool",
+        "n_xi": 11,
+        "n_matched": 10,
+        "ok": true,
+        "unmatched": [
+          "Alisson"
+        ]
+      },
+      {
+        "club": "Man City",
+        "n_xi": 11,
+        "n_matched": 10,
+        "ok": true,
+        "unmatched": [
+          "Fern\u00e1ndez"
+        ]
+      },
+      {
+        "club": "Man Utd",
+        "n_xi": 11,
+        "n_matched": 11,
+        "ok": true,
+        "unmatched": []
+      },
+      {
+        "club": "Newcastle",
+        "n_xi": 11,
+        "n_matched": 11,
+        "ok": true,
+        "unmatched": []
+      },
+      {
+        "club": "Nott'm Forest",
+        "n_xi": 11,
+        "n_matched": 11,
+        "ok": true,
+        "unmatched": []
+      },
+      {
+        "club": "Sunderland",
+        "n_xi": 11,
+        "n_matched": 11,
+        "ok": true,
+        "unmatched": []
+      },
+      {
+        "club": "Spurs",
+        "n_xi": 11,
+        "n_matched": 11,
+        "ok": true,
+        "unmatched": []
+      }
+    ],
+    "context_counts": {
+      "doubt": 30,
+      "injured_expected_back": 4,
+      "injured_unknown_return": 50,
+      "suspected_single_week_rotation": 19,
+      "suspended": 4
+    },
+    "n_with_return_gws": 27,
+    "n_with_blurb_evidence": 7,
+    "n_with_fpl_news": 49,
+    "rotation_tune": {
+      "xi_resolve_first": true,
+      "min_xi_matched": "n_matched >= max(9, n_xi-2)",
+      "gk_slot_guard": true,
+      "rest_cup_blurb_veto": true,
+      "sustained_rule": "expand>=45 and last 3 GWs all <=30"
+    }
+  },
+  "out": "data/predictions/2026-27/gw09/scout_minutes.json",
+  "xmi_out": "data/predictions/2026-27/gw09/scout_xmi_week0.csv",
+  "sample_overlays": [
+    {
+      "element": 12,
+      "name": "Saka",
+      "tag": "injured",
+      "m0": 0.0,
+      "context_label": "injured, unknown return; Minutes anti-correlated with Merino (\u03c1=-0.89) \u2014 when one sits, the other tends to take minutes",
+      "return_gws": null,
+      "force_steps": {},
+      "path": [
+        0.0,
+        74.5,
+        74.5,
+        74.5,
+        74.5,
+        74.5
+      ],
+      "reason": "FFScout Out: Saka"
+    },
+    {
+      "element": 6,
+      "name": "Saliba",
+      "tag": "injured",
+      "m0": 0.0,
+      "context_label": "injured, unknown return",
+      "return_gws": null,
+      "force_steps": {},
+      "path": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "FFScout Out: Saliba"
+    },
+    {
+      "element": 20,
+      "name": "Dowman",
+      "tag": "injured",
+      "m0": 0.0,
+      "context_label": "suspended; Minutes anti-correlated with Saka (\u03c1=-0.72) \u2014 when one sits, the other tends to take minutes",
+      "return_gws": null,
+      "force_steps": {},
+      "path": [
+        0.0,
+        2.375,
+        2.375,
+        2.375,
+        2.375,
+        2.375
+      ],
+      "reason": "FFScout Banned: Dowman"
+    },
+    {
+      "element": 8,
+      "name": "Calafiori",
+      "tag": "injured",
+      "m0": 48.25,
+      "context_label": "doubt (75% chance); Minutes anti-correlated with White (\u03c1=-0.45) \u2014 when one sits, the other tends to take minutes",
+      "return_gws": null,
+      "force_steps": {},
+      "path": [
+        48.25,
+        76.125,
+        76.125,
+        76.125,
+        76.125,
+        76.125
+      ],
+      "reason": "FFScout Doubt: Calafiori (75%)"
+    },
+    {
+      "element": 16,
+      "name": "Madueke",
+      "tag": "injured",
+      "m0": 56.25,
+      "context_label": "doubt (75% chance); Minutes anti-correlated with Tzolis (\u03c1=-0.86) \u2014 when one sits, the other tends to take minutes",
+      "return_gws": null,
+      "force_steps": {},
+      "path": [
+        56.25,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0
+      ],
+      "reason": "FFScout Doubt: Madueke (75%)"
+    },
+    {
+      "element": 13,
+      "name": "Rice",
+      "tag": "injured",
+      "m0": 64.75,
+      "context_label": "doubt (75% chance); Minutes anti-correlated with Lewis-Skelly (\u03c1=-0.62) \u2014 when one sits, the other tends to take minutes",
+      "return_gws": null,
+      "force_steps": {},
+      "path": [
+        64.75,
+        83.75,
+        83.75,
+        83.75,
+        83.75,
+        83.75
+      ],
+      "reason": "FFScout Doubt: Rice (75%)"
+    },
+    {
+      "element": 557,
+      "name": "Tzolis",
+      "tag": "injured",
+      "m0": 60.5,
+      "context_label": "doubt (75% chance); Minutes anti-correlated with Madueke (\u03c1=-0.86) \u2014 when one sits, the other tends to take minutes",
+      "return_gws": 0,
+      "force_steps": {},
+      "path": [
+        60.5,
+        45.25,
+        45.25,
+        45.25,
+        45.25,
+        45.25
+      ],
+      "reason": "FFScout Doubt: Tzolis (75%)"
+    },
+    {
+      "element": 48,
+      "name": "Onana",
+      "tag": "injured",
+      "m0": 0.0,
+      "context_label": "injured, unknown return",
+      "return_gws": null,
+      "force_steps": {},
+      "path": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "FFScout Out: Mvom Onana"
+    },
+    {
+      "element": 596,
+      "name": "Ruggeri",
+      "tag": "injured",
+      "m0": 0.0,
+      "context_label": "injured, expected back in 3 weeks; Minutes anti-correlated with Maatsen (\u03c1=-0.66) \u2014 when one sits, the other tends to take minutes",
+      "return_gws": 3,
+      "force_steps": {
+        "0": 0.0,
+        "1": 0.0,
+        "2": 0.0
+      },
+      "path": [
+        0.0,
+        0.0,
+        0.0,
+        19.75,
+        19.75,
+        19.75
+      ],
+      "reason": "FFScout Out: Ruggeri"
+    },
+    {
+      "element": 611,
+      "name": "Wan-Bissaka",
+      "tag": "injured",
+      "m0": 0.0,
+      "context_label": "injured, expected back in 3 weeks; Minutes anti-correlated with Cash (\u03c1=-0.63) \u2014 when one sits, the other tends to take minutes",
+      "return_gws": 3,
+      "force_steps": {
+        "0": 0.0,
+        "1": 0.0,
+        "2": 0.0
+      },
+      "path": [
+        0.0,
+        0.0,
+        0.0,
+        39.0,
+        39.0,
+        39.0
+      ],
+      "reason": "FFScout Out: Wan-Bissaka"
+    },
+    {
+      "element": 652,
+      "name": "Azeez",
+      "tag": "injured",
+      "m0": 0.0,
+      "context_label": "injured, unknown return",
+      "return_gws": null,
+      "force_steps": {},
+      "path": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "FFScout Out: Azeez"
+    },
+    {
+      "element": 139,
+      "name": "Ferguson",
+      "tag": "injured",
+      "m0": 0.0,
+      "context_label": "injured, unknown return",
+      "return_gws": null,
+      "force_steps": {},
+      "path": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "FFScout Out: Ferguson"
+    }
+  ]
+}
+smoke_ok
