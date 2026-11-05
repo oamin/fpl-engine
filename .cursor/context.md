@@ -1,6 +1,24 @@
 # Architectural state
 
-Updated: 2026-10-23. **Numagent 2.0** is the product on main (`protocol.numagent_2_0`) — **supersedes Numagent 1.0**. Parked hypotheses: `.cursor/ideas.md`. Stage archaeology: root `CONTEXT.md` and `reports/SUPERSEDED.md`. Canonical index: `reports/LOCKED.md`. Cascade locked index: [`reports/CASCADE_LOCKED.md`](../reports/CASCADE_LOCKED.md).
+Updated: 2026-11-05. **Numagent 2.0** is the product on main (`protocol.numagent_2_0`) — **supersedes Numagent 1.0**. Parked hypotheses: `.cursor/ideas.md`. Stage archaeology: root `CONTEXT.md` and `reports/SUPERSEDED.md`. Canonical index: `reports/LOCKED.md`. Cascade locked index: [`reports/CASCADE_LOCKED.md`](../reports/CASCADE_LOCKED.md).
+
+## Current working plan (2026-11-05)
+
+**Primary scoring basis:** extend the short-horizon (priced t:t+1) and long-horizon
+(Opta far) **μ boards** — L4 centreline / `l3_centreline_forecast` mean boards on
+`score_xp_v2`. That stack is the intended **primary scoring engine** for the live
+path and strategiser (not generative MC-mean as the mean forecast).
+
+**Layers on top of those boards** (active build, this stack):
+
+| Layer | Job | Status |
+| --- | --- | --- |
+| **Scout** | Minutes / availability / role overlays → `step_map` on full centreline H | **in progress** (pin-then-snap, roles, `--scout-packet`, Opta far) |
+| **Accountant** | Bank / FT / hits / sell-price / chip constraints as a first-class layer | **next** (not started as a named module) |
+| **LLM coach** | Human brief over scout + boards + accountant (transfers narrative) | **deferred until scout+accountant feed it** |
+
+Do not treat generative scenario xP as the mean board. Captain/chip sims stay
+deferred until a pre-registered likelihood arm asks. Park log: `.cursor/ideas.md`.
 
 **Cascade consolidation (2026-10-23):** locked / cascade_default pieces from #101–#106 (rate baseline, joint path, γ=1, FT PE, bench α reject; deadline-causal diagnostic) fast-forwarded onto `cursor/club-expanding-gf-ga-2025-26-cc3d` for landing on `main`.
 
@@ -31,6 +49,10 @@ Updated: 2026-10-23. **Numagent 2.0** is the product on main (`protocol.numagent
 ## Plan
 
 Pre-deadline squad advisor under 2026/27 rules. Cursor implements and screens; Gemini proposes formulae; the PI reads gated batches. A result needs the as-of audit and paired intervals on 2022-23…2025-26 (`write_gated_report`). **Numagent 2.0 pots** use The Odds API (AH+OU+BTTS; quota-aware — `.cursor/rules/odds-api-quota.mdc`). Classic climb `gw_lines` may use Betfair. The live 2026/27 holdout is frozen — do not fit on it.
+
+**Engine direction (active):** short + long μ boards → primary scorer; then scout →
+accountant → LLM coach as product layers on those boards (see **Current working
+plan** above).
 
 ## Locked stack — Numagent 2.0
 

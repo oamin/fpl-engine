@@ -4,6 +4,24 @@ Cursor chooses the next pre-registered comparison. The PI is not asked to pick. 
 
 **Numagent 2.0 is locked on main** — see `.cursor/context.md` and `reports/LOCKED.md` (`protocol.numagent_2_0`). Engine primary scorer is `score_xp_v2`. Numagent 1.0 and `score_xp` are **archived in-place** (`reports/ARCHIVE_NUMAGENT_1_0.md`). This file is the **park log**. Everything from “Procedure, locked 2026-10-07” downward is **Numagent 1.0 / stage archaeology** — not instructions for the live path.
 
+## Active — product layers on short/long μ boards (2026-11-05)
+
+**Primary scoring engine basis:** extend short-horizon (priced t:t+1) and
+long-horizon (Opta far) **μ boards** — centreline / `l3_centreline_forecast`
+mean `score_xp_v2` boards. That is the live + strategiser scoring spine.
+
+**Building now (in order):**
+
+1. **Scout layer** — minutes/availability/role packet → `step_map` on full
+   centreline H (in progress; PR stack `scout-snap-expand`).
+2. **Accountant layer** — bank, FT, hits, sell prices, chip constraints as an
+   explicit layer over the boards (next; not yet a named module).
+3. **LLM coach** — narrative brief over scout + μ boards + accountant
+   (after 1–2 feed it; captain/chip sims still deferred).
+
+Do **not** promote generative MC-mean as the mean board. See
+`.cursor/context.md` → Current working plan.
+
 ## Parked — scout partner blurbs + cup_starter (2026-11-05)
 
 Removed from the live scout packet (weak for scoring). Module

@@ -1,11 +1,15 @@
 {
-  "task": "scout_step_map_full_centreline_horizon",
+  "task": "note_working_plan_mu_boards_plus_layers",
   "status": "done",
-  "as_of_utc": "2026-11-05T10:25:00Z",
-  "horizon": 12,
-  "near": "priced t/t+1 step_map(0/1)",
-  "far": "Opta blind step_map(2..11) via scout_horizon_boards",
-  "example_lacroix": [0.0, 0.0, 79.2, 79.2, 79.2, 79.2, 79.2, 79.2, 79.2, 79.2, 79.2, 79.2],
-  "module": "src/live/scout_horizon_boards.py",
-  "cli": "numagent_live_pick --scout-packet … --centreline-horizon 12"
+  "as_of_utc": "2026-11-05T10:30:00Z",
+  "primary_scoring_basis": "short_and_long_horizon_mu_boards (l3_centreline_forecast / score_xp_v2)",
+  "layers": {
+    "scout": "in_progress",
+    "accountant": "next",
+    "llm_coach": "deferred_until_scout_and_accountant"
+  },
+  "docs": [
+    ".cursor/context.md",
+    ".cursor/ideas.md"
+  ]
 }
