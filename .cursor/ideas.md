@@ -29,9 +29,11 @@ expanding means/rates. Preserve per-GW discreteness: last-K vectors of
 points / minutes / G / A / CS / GC / DefCon / bonus / cards / appear flags.
 Fixture context for \(t\) is allowed (home/away, opponent id/strength) —
 that is not an expanding player summary. Arms: B = position + fixture-\(t\)
-only; C = B + last-K discrete channels. Assess event log loss / Brier
-(G, A, Appear60, DefCon, …), C vs B, chronological as-of. Not a scorer
-replace. Live 2026/27 holdout off. Code when opened:
+only; C = B + last-K discrete channels. **No padding:** a player-GW enters
+the dig only once \(K\) completed prior GWs exist in that season (first
+eligible label GW = \(K+1\)); B and C share that pool. Assess event log
+loss / Brier (G, A, Appear60, DefCon, …), C vs B, chronological as-of.
+Not a scorer replace. Live 2026/27 holdout off. Code when opened:
 `src/eval/next_event_sequence_dig.py`.
 
 ## Dig — player expanding actuals view (2026-11-05)
