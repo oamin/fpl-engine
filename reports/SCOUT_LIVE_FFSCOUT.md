@@ -62,6 +62,8 @@ Example inspect: [`scout_context_example_gw09.md`](scout_context_example_gw09.md
 
 **Rotation tune trial (GW9):** XI→id resolve + match-quality gate + GK guard + rest/cup veto. Rotation labels 36→25; precision vs actual minutes 61%→80%. Report: [`scout_context_tune_trial_gw09.md`](scout_context_tune_trial_gw09.md).
 
+**Partner blurb (committed):** within-season same-position anti-corr teammate text on overlays (`src/live/minutes_partner_context.py`). Context only — **no minutes rating**. Dig: [`minutes_anticorr_role_dig_2026_27.md`](minutes_anticorr_role_dig_2026_27.md).
+
 ## Next
 
 - Further cut remaining FPs (Guéhi/Botman-style nailed CBs on alternate XI)  

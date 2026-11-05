@@ -1,11 +1,10 @@
 {
-  "task": "minutes_anticorr_role_dig_2026_27",
+  "task": "scout_partner_blurb_commit_no_rating",
   "status": "done",
-  "as_of_utc": "2026-11-05T07:53:59Z",
-  "season": "2026-27",
-  "report": "reports/minutes_anticorr_role_dig_2026_27.md",
-  "delta_mae_all": -0.052741669916375855,
-  "tactical_delta_mae": -0.5808629232039628,
-  "replacement_hit_rate": 0.6555183946488294,
-  "elapsed_s": 1.4951114654541016
+  "as_of_utc": "2026-11-05T07:59:22Z",
+  "module": "src/live/minutes_partner_context.py",
+  "applies_minutes_rating": false,
+  "example": "reports/scout_partner_blurb_example_gw09.md",
+  "packet": "data/predictions/2026-27/gw09/scout_minutes_with_partners.json",
+  "n_overlays_with_partner": 71
 }

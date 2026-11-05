@@ -62,6 +62,11 @@ class ScoutOverlay:
     return_gws: int | None = None
     return_date: str | None = None
     evidence: list[str] = field(default_factory=list)
+    # Within-season anti-corr teammate blurb only (no minutes rating).
+    partner_blurb: str = ""
+    anti_element: int | None = None
+    anti_name: str | None = None
+    anti_corr: float | None = None
 
 
 @dataclass
@@ -148,6 +153,10 @@ class ScoutMinutesPacket:
                     "return_gws": ov.return_gws,
                     "return_date": ov.return_date,
                     "evidence": list(ov.evidence),
+                    "partner_blurb": ov.partner_blurb,
+                    "anti_element": ov.anti_element,
+                    "anti_name": ov.anti_name,
+                    "anti_corr": ov.anti_corr,
                     "path": self.decayed_path(eid),
                 }
                 for eid, ov in sorted(self.overlays.items())
@@ -218,6 +227,22 @@ def load_scout_packet(path: Path) -> ScoutMinutesPacket:
                 else None
             ),
             evidence=[str(x) for x in (raw.get("evidence") or [])],
+            partner_blurb=str(raw.get("partner_blurb") or ""),
+            anti_element=(
+                int(raw["anti_element"])
+                if raw.get("anti_element") is not None and raw.get("anti_element") != ""
+                else None
+            ),
+            anti_name=(
+                str(raw.get("anti_name"))
+                if raw.get("anti_name") not in (None, "")
+                else None
+            ),
+            anti_corr=(
+                float(raw["anti_corr"])
+                if raw.get("anti_corr") is not None and raw.get("anti_corr") != ""
+                else None
+            ),
         )
     baseline = {int(k): float(v) for k, v in (doc.get("baseline_m") or {}).items()}
     return ScoutMinutesPacket(
@@ -469,6 +494,7 @@ def build_scout_packet_from_ffscout(
         hist=hist,
         decision_gw=int(decision_gw),
     )
+    from src.live.minutes_partner_context import attach_partner_blurbs_to_overlays
     from src.live.scout_context import enrich_overlays_with_context
 
     series = _series_by_element(hist, before_gw=int(decision_gw))
@@ -480,6 +506,14 @@ def build_scout_packet_from_ffscout(
         baseline_m=baseline,
         series_by_element=series,
         include_xi_omissions=True,
+    )
+    # Partner blurbs: within-season anti-corr text only — never a minutes rating.
+    min_prior = max(5, min(8, int(decision_gw) - 1))
+    partner_diag = attach_partner_blurbs_to_overlays(
+        overlays,
+        hist,
+        decision_gw=int(decision_gw),
+        min_prior_gws=min_prior,
     )
     rho = float(decay_rho)
     return ScoutMinutesPacket(
@@ -497,6 +531,7 @@ def build_scout_packet_from_ffscout(
         meta={
             "ffscout": diag,
             "context": ctx_diag,
+            "partner_context": partner_diag,
             "context_samples": [
                 {
                     "element": r.element,
@@ -521,7 +556,8 @@ def build_scout_packet_from_ffscout(
             "default": "expanding_mean_flat_horizon",
             "overlay_policy": (
                 "ffscout_out_banned_doubts_plus_xi_omit_rotation;"
-                "context=fpl_news+blurb+xi"
+                "context=fpl_news+blurb+xi;"
+                "partner_blurb=within_season_anticorr_no_rating"
             ),
             "decay_rho": rho,
             "decay_law": "m(h)=expand+(m0-expand)*rho**h",
@@ -588,19 +624,22 @@ def _write_example_md(packet: ScoutMinutesPacket, path: Path) -> None:
         "",
         "## Overlay table (all)",
         "",
-        "| player | club | bucket/tag | context | return_gws | m0 | force | evidence |",
-        "| --- | --- | --- | --- | ---: | ---: | --- | --- |",
+        "| player | club | bucket/tag | context | partner | return_gws | m0 | force |",
+        "| --- | --- | --- | --- | --- | ---: | ---: | --- |",
     ]
     for ov in rows:
-        ev = "; ".join(ov.evidence[:2]).replace("|", "/")
-        if len(ev) > 120:
-            ev = ev[:117] + "…"
         force = ",".join(f"{h}:{m:g}" for h, m in sorted(ov.force_steps.items())) or "—"
+        partner = (ov.anti_name or "—") + (
+            f" (ρ={ov.anti_corr:.2f})" if ov.anti_corr is not None else ""
+        )
+        ctx = (ov.context_label or ov.context or "").replace("|", "/")
+        if len(ctx) > 80:
+            ctx = ctx[:77] + "…"
         lines.append(
             f"| {ov.name} | {ov.club} | {ov.tag}/{ov.source} | "
-            f"{ov.context_label or ov.context} | "
+            f"{ctx} | {partner} | "
             f"{'' if ov.return_gws is None else ov.return_gws} | "
-            f"{ov.m0:.0f} | {force} | {ev} |"
+            f"{ov.m0:.0f} | {force} |"
         )
     lines += ["", "## Reproduce", "", "```bash"]
     lines.append(
