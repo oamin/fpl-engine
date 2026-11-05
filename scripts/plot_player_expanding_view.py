@@ -106,65 +106,32 @@ def build_frame(df: pd.DataFrame, player: str) -> pd.DataFrame:
 
 
 def plot_frame(agg: pd.DataFrame, player: str, season: str, path: Path) -> None:
+    """Six GW actual bar panels: points, minutes, G, A, CS, GC. No expanding overlay."""
     gw = agg["GW"].to_numpy()
+    panels = [
+        ("total_points", "Points", "#5c6b7a"),
+        ("minutes", "Minutes", "#3d6b4f"),
+        ("goals", r"$G_i$", "#a33b2b"),
+        ("assists", r"$A_i$", "#8a5a00"),
+        ("clean_sheets", "CS", "#2f5f8a"),
+        ("goals_conceded", "GA", "#4a4a6a"),
+    ]
     fig, axes = plt.subplots(
-        3, 1, figsize=(11, 9), sharex=True, gridspec_kw={"hspace": 0.08}
+        len(panels),
+        1,
+        figsize=(11, 11),
+        sharex=True,
+        gridspec_kw={"hspace": 0.12},
     )
-
-    ax = axes[0]
-    ax.bar(gw, agg["total_points"], color="#b0b7c3", alpha=0.45, label="GW points", width=0.7)
-    ax.plot(
-        gw,
-        agg["exp_total_points"],
-        color="#1f4e79",
-        lw=2.2,
-        label="Expanding mean total_points",
-    )
-    ax.set_ylabel("Points")
-    ax.set_title(f"{player} — {season}: expanding actuals, minutes, team scoreline")
-    ax.legend(loc="upper right", frameon=False, fontsize=9)
-    ax.grid(True, axis="y", alpha=0.25)
-
-    ax = axes[1]
-    ax.bar(gw, agg["minutes"], color="#c5d5c5", alpha=0.55, label="GW minutes", width=0.7)
-    ax.plot(
-        gw, agg["exp_minutes"], color="#2f6f4e", lw=2.2, label="Expanding mean minutes"
-    )
-    ax.axhline(60, color="#666", ls=":", lw=1, alpha=0.7)
-    ax.set_ylabel("Minutes")
-    ax.legend(loc="upper right", frameon=False, fontsize=9)
-    ax.grid(True, axis="y", alpha=0.25)
-
-    ax = axes[2]
-    ax.plot(gw, agg["gf"], color="#c0392b", lw=1.8, marker="o", ms=3.5, label="GF (actual)")
-    ax.plot(
-        gw,
-        agg["team_xg"],
-        color="#c0392b",
-        lw=1.4,
-        ls="--",
-        marker="o",
-        ms=3,
-        alpha=0.75,
-        label="xGF (team Opta Σ)",
-    )
-    ax.plot(gw, agg["ga"], color="#2980b9", lw=1.8, marker="s", ms=3.5, label="GA (actual)")
-    ax.plot(
-        gw,
-        agg["team_xga"],
-        color="#2980b9",
-        lw=1.4,
-        ls="--",
-        marker="s",
-        ms=3,
-        alpha=0.75,
-        label="xGA (opp Opta Σ)",
-    )
-    ax.set_ylabel("Goals")
-    ax.set_xlabel("Gameweek")
-    ax.legend(loc="upper right", frameon=False, fontsize=8, ncol=2)
-    ax.grid(True, axis="y", alpha=0.25)
-    ax.set_xticks(list(range(1, int(gw.max()) + 1, 2)))
+    for ax, (col, ylabel, color) in zip(axes, panels):
+        ax.bar(gw, agg[col], color=color, alpha=0.75, width=0.7)
+        ax.set_ylabel(ylabel)
+        ax.grid(True, axis="y", alpha=0.25)
+        if col == "minutes":
+            ax.axhline(60, color="#888", ls=":", lw=1, alpha=0.7)
+    axes[0].set_title(f"{player} — {season}: GW actuals")
+    axes[-1].set_xlabel("Gameweek")
+    axes[-1].set_xticks(list(range(1, int(gw.max()) + 1, 2)))
 
     path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(path, dpi=140, bbox_inches="tight")
@@ -195,39 +162,23 @@ def write_report(agg: pd.DataFrame, player: str, season: str, png_name: str, csv
         c
         for c in (
             "GW",
-            "minutes",
-            "exp_minutes",
             "total_points",
-            "exp_total_points",
+            "minutes",
             "goals",
-            "exp_goals",
             "assists",
-            "exp_assists",
             "clean_sheets",
-            "exp_clean_sheets",
             "goals_conceded",
-            "exp_goals_conceded",
-            "gf",
-            "ga",
-            "team_xg",
-            "team_xga",
         )
         if c in agg.columns
     ]
     sample = agg.loc[agg["GW"].isin(sample_gws), cols]
     lines = [
-        f"# Player expanding view — {player} ({season})",
+        f"# Player GW actuals — {player} ({season})",
         "",
-        "Scorer-simplify dig: raw expanding actuals + GW team scoreline / xscoreline.",
-        "No shares, no pots, no renorm — just what the player and the match produced.",
+        "Scorer-simplify dig: bar plots of GW actuals only "
+        "(points, minutes, $G_i$, $A_i$, CS, GA). No expanding overlay.",
         "",
         f"![plot](../data/plots/{png_name})",
-        "",
-        "## Definitions",
-        "",
-        "- **Expanding mean** of player GW totals through GW t (DGW rows summed into the GW).",
-        "- **GF / GA**: team scoreline for that GW (mean across fixtures if DGW).",
-        "- **xGF**: sum of team-mate `expected_goals` that fixture; **xGA**: opponent team Σ xG.",
         "",
         "## Snapshot rows",
         "",
@@ -235,16 +186,8 @@ def write_report(agg: pd.DataFrame, player: str, season: str, png_name: str, csv
         "",
         f"Full CSV: `{csv.as_posix()}`",
         "",
-        "## End-of-season expanding means",
-        "",
-        f"- minutes: **{agg['exp_minutes'].iloc[-1]:.1f}**",
-        f"- total_points: **{agg['exp_total_points'].iloc[-1]:.2f}**",
-        f"- goals: **{agg['exp_goals'].iloc[-1]:.2f}**",
-        f"- assists: **{agg['exp_assists'].iloc[-1]:.2f}**",
-        f"- clean_sheets: **{agg['exp_clean_sheets'].iloc[-1]:.2f}**",
-        f"- goals_conceded: **{agg['exp_goals_conceded'].iloc[-1]:.2f}**",
-        "",
     ]
+
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     return path
