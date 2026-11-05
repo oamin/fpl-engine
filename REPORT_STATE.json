@@ -1,10 +1,10 @@
 {
-  "task": "scout_context_rotation_tune_trial_gw09",
+  "task": "scout_partner_blurb_commit_no_rating",
   "status": "done",
-  "as_of_utc": "2026-11-04T20:56:34Z",
-  "report": "reports/scout_context_tune_trial_gw09.md",
-  "before_rotation_n": 36,
-  "after_rotation_n": 25,
-  "precision_before": 0.611,
-  "precision_after": 0.8
+  "as_of_utc": "2026-11-05T07:59:22Z",
+  "module": "src/live/minutes_partner_context.py",
+  "applies_minutes_rating": false,
+  "example": "reports/scout_partner_blurb_example_gw09.md",
+  "packet": "data/predictions/2026-27/gw09/scout_minutes_with_partners.json",
+  "n_overlays_with_partner": 71
 }

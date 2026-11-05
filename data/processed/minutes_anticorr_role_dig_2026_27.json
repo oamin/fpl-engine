@@ -1,0 +1,61 @@
+{
+  "n_pred_rows": 1099,
+  "gw_from": 6,
+  "gw_to": 9,
+  "mae_expand_all": 24.039728757745134,
+  "mae_rating_all": 24.09247042766151,
+  "delta_mae_all": -0.052741669916375855,
+  "by_role": {
+    "expanding_default": {
+      "n": 9,
+      "mae_expand": 30.73611111111111,
+      "mae_rating": 30.73611111111111,
+      "delta_mae": 0.0
+    },
+    "impact_sub": {
+      "n": 18,
+      "mae_expand": 32.009126984126986,
+      "mae_rating": 32.1313492063492,
+      "delta_mae": -0.1222222222222129
+    },
+    "nailed_starter": {
+      "n": 725,
+      "mae_expand": 19.909793103448273,
+      "mae_rating": 19.848101806239736,
+      "delta_mae": 0.06169129720853661
+    },
+    "rotate_pair": {
+      "n": 174,
+      "mae_expand": 34.9487205801861,
+      "mae_rating": 34.9487205801861,
+      "delta_mae": 0.0
+    },
+    "tactical_starter": {
+      "n": 173,
+      "mae_expand": 29.197660335810625,
+      "mae_rating": 29.778523259014587,
+      "delta_mae": -0.5808629232039628
+    }
+  },
+  "tactical_starter": {
+    "n": 173,
+    "mae_expand": 29.197660335810625,
+    "mae_rating": 29.778523259014587,
+    "delta_mae": -0.5808629232039628,
+    "mean_y": 44.75722543352601,
+    "mean_rating": 48.41953619598129,
+    "mean_expand": 49.96146435452794
+  },
+  "replacement": {
+    "n_events_a_le_30": 299,
+    "n_partner_ge_45": 196,
+    "hit_rate": 0.6555183946488294,
+    "rule": "when A \u226430' next GW, anti-corr B \u226545'"
+  },
+  "example_blurbs": [],
+  "example_as_of_gw": 9,
+  "elapsed_s": 1.4951114654541016,
+  "season": "2026-27",
+  "within_season_only": true,
+  "min_prior_gws": 5
+}
