@@ -1,0 +1,21 @@
+# Live team lock (hard rule)
+
+When the PI says any of: **team locked**, **locked in**, **submitted**,
+**entered into FPL**, **this is the team** (for the live GW):
+
+1. **Immediately** run
+   `PYTHONPATH=. python3 -m src.live.numagent_lock --gw N --entry E --arm l3|l4|recommendation`
+   (use the arm they actually submitted; default **l3** if they followed the
+   deadline recommendation). Repeat per entry (ojaminFC `2632584`, stragent
+   `3271409`) when both are in play.
+2. **Same turn:** `git add` the new
+   `data/predictions/2026-27/gwNN/numagent_lock*.json`,
+   `numagent_board_locked*.csv`, `numagent_pick_locked*.json`, and
+   `reports/numagent_lock_gwNN*.md`, then **commit and push**.
+3. Do **not** overwrite an existing `numagent_lock.json` for that GW/entry.
+4. Do **not** wait for a later “save artifacts” step — the lock **is** the save.
+5. After the GW completes, μ-vs-actual uses these locked boards/picks — not a
+   retrospective rebuild.
+
+GW9 lesson: picks without a lock file are not recoverable as “the scorer’s
+prediction.” Always lock when told.

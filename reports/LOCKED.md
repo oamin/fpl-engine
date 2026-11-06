@@ -20,6 +20,7 @@ Do not treat stage_* / GW1–5 / stragent / GW6 `ep_next` dry runs as the live p
 | **GW7 PI lock** | `data/predictions/2026-27/gw07/numagent_lock.json` |
 | Pick report | `reports/numagent_live_pick_gw07.md` |
 | Live entrypoint | `python -m src.live.numagent_live_pick --gw N` |
+| **Team lock** | `python -m src.live.numagent_lock --gw N --entry E --arm l3` → `numagent_lock.json` + locked boards; **commit same turn** (`.cursor/rules/live-team-lock.mdc`) |
 | Odds refresh | `… --fetch-odds` (region=`us`; quota rule) |
 
 ## Scorer (`score_xp_v2` — Numagent 2.0 primary)
