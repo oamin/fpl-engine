@@ -54,11 +54,37 @@ ENTRY_ID = 2632584
 POS_MAP = {1: "GKP", 2: "DEF", 3: "MID", 4: "FWD"}
 
 
-def _get_json(url: str) -> Any:
-    with httpx.Client(timeout=60.0) as client:
-        r = client.get(url)
-        r.raise_for_status()
-        return r.json()
+_FPL_HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/120.0.0.0 Safari/537.36"
+    ),
+    "Accept": "application/json",
+    "Referer": "https://fantasy.premierleague.com/",
+}
+
+
+def _get_json(url: str, *, retries: int = 4) -> Any:
+    import time
+
+    last_exc: Exception | None = None
+    with httpx.Client(timeout=60.0, headers=_FPL_HEADERS) as client:
+        for attempt in range(max(1, int(retries))):
+            try:
+                r = client.get(url)
+                if r.status_code == 403 and attempt + 1 < retries:
+                    time.sleep(1.5 * (attempt + 1))
+                    continue
+                r.raise_for_status()
+                return r.json()
+            except Exception as exc:  # noqa: BLE001 — retry network/403
+                last_exc = exc
+                if attempt + 1 >= retries:
+                    break
+                time.sleep(1.5 * (attempt + 1))
+    assert last_exc is not None
+    raise last_exc
 
 
 def fetch_bootstrap() -> dict[str, Any]:

@@ -111,7 +111,25 @@ python -m src.live.numagent_live_pick --gw N --fetch-odds   # Odds API, region=u
 
 Prefer `--from-snapshot` / `data/scratch/gwNN_odds_*.json` when the book is already pulled. `--fetch-odds` refreshes AH+OU+BTTS for Dixon–Coles pots (props off unless `--with-props`). Classic climb `gw_lines` readers may still use Betfair folders; frozen `data/live/gw_lines.csv` is not a live book.
 
-### Latest PI lock — GW7 (2026-10-17)
+### Team lock (hard — do not skip)
+
+When the PI says the team is **locked / submitted**, **same turn**:
+
+```
+python -m src.live.numagent_lock --gw N --entry E --arm l3   # or l4 / recommendation
+# then git add + commit + push the gwNN lock artifacts immediately
+```
+
+Writes `data/predictions/2026-27/gwNN/numagent_lock.json` (+ locked board copies).
+Rule: `.cursor/rules/live-team-lock.mdc`. Without this file there is no μ-vs-actual
+next week (GW9 miss).
+
+### Latest PI lock — GW10 (2026-11-06)
+
+- **ojaminFC (2632584)** L3: Khalaili → Tarkowski · C Haaland · [`numagent_lock.json`](../data/predictions/2026-27/gw10/numagent_lock.json)
+- **stragent / hiking w djed spence (3271409)** L3: João Pedro → Isak · C Haaland · [`numagent_lock_3271409.json`](../data/predictions/2026-27/gw10/numagent_lock_3271409.json)
+
+### Prior PI lock — GW7 (2026-10-17)
 
 [`data/predictions/2026-27/gw07/numagent_lock.json`](../data/predictions/2026-27/gw07/numagent_lock.json)
 

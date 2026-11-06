@@ -1,0 +1,208 @@
+{
+  "kind": "numagent_live_lock",
+  "gw": 10,
+  "season": "2026-27",
+  "deadline_utc": null,
+  "locked_at_utc": "2026-11-06T14:50:44Z",
+  "entry_id": 2632584,
+  "team_name": "ojaminFC",
+  "status": "locked",
+  "note": "PI confirmed 2026-11-06: locked suggested L3 team into FPL (Khalaili \u2192 Tarkowski, C Haaland). Frozen for post-GW \u03bc-vs-actual.",
+  "arm_locked": "l3",
+  "decision": {
+    "chip_played": null,
+    "transfers": {
+      "n": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "sold": [
+        "Khalaili"
+      ],
+      "bought": [
+        "Tarkowski"
+      ]
+    },
+    "formation": "1-3-4-3",
+    "squad_15": [
+      1,
+      15,
+      86,
+      40,
+      229,
+      249,
+      650,
+      379,
+      411,
+      427,
+      449,
+      109,
+      173,
+      183,
+      472
+    ],
+    "starting_11": [
+      1,
+      15,
+      86,
+      40,
+      229,
+      249,
+      650,
+      379,
+      411,
+      427,
+      449
+    ],
+    "captain": 411,
+    "captain_name": "Haaland",
+    "vice_captain": null,
+    "vice_captain_name": null,
+    "bench_order": [
+      109,
+      173,
+      183,
+      472
+    ],
+    "xi": [
+      {
+        "element": 1,
+        "name": "Raya",
+        "position": "GKP",
+        "club": "Arsenal",
+        "mu_post": 5.125783780661227,
+        "captain": false
+      },
+      {
+        "element": 15,
+        "name": "\u00d8degaard",
+        "position": "MID",
+        "club": "Arsenal",
+        "mu_post": 6.05816769338356,
+        "captain": false
+      },
+      {
+        "element": 86,
+        "name": "Lewis-Potter",
+        "position": "MID",
+        "club": "Brentford",
+        "mu_post": 4.054868618876902,
+        "captain": false
+      },
+      {
+        "element": 40,
+        "name": "Rogers",
+        "position": "MID",
+        "club": "Chelsea",
+        "mu_post": 5.40797542171378,
+        "captain": false
+      },
+      {
+        "element": 229,
+        "name": "Tarkowski",
+        "position": "DEF",
+        "club": "Everton",
+        "mu_post": 6.872025771391228,
+        "captain": false
+      },
+      {
+        "element": 249,
+        "name": "Barry",
+        "position": "FWD",
+        "club": "Everton",
+        "mu_post": 6.185181065495192,
+        "captain": false
+      },
+      {
+        "element": 650,
+        "name": "Affengruber",
+        "position": "DEF",
+        "club": "Fulham",
+        "mu_post": 4.464502231133316,
+        "captain": false
+      },
+      {
+        "element": 379,
+        "name": "Isak",
+        "position": "FWD",
+        "club": "Liverpool",
+        "mu_post": 7.269375521329204,
+        "captain": false
+      },
+      {
+        "element": 411,
+        "name": "Haaland",
+        "position": "FWD",
+        "club": "Man City",
+        "mu_post": 7.311983388496628,
+        "captain": true
+      },
+      {
+        "element": 427,
+        "name": "Mbeumo",
+        "position": "MID",
+        "club": "Man Utd",
+        "mu_post": 5.015916751171318,
+        "captain": false
+      },
+      {
+        "element": 449,
+        "name": "Hall",
+        "position": "DEF",
+        "club": "Newcastle",
+        "mu_post": 4.755502408893914,
+        "captain": false
+      }
+    ],
+    "bench": [
+      {
+        "element": 109,
+        "name": "Verbruggen",
+        "position": "GKP",
+        "club": null,
+        "mu_post": 4.094666419634536
+      },
+      {
+        "element": 173,
+        "name": "Thomas",
+        "position": "DEF",
+        "club": null,
+        "mu_post": 0.981814075290952
+      },
+      {
+        "element": 183,
+        "name": "Rudoni",
+        "position": "MID",
+        "club": null,
+        "mu_post": 3.980931882009741
+      },
+      {
+        "element": 472,
+        "name": "Murillo",
+        "position": "DEF",
+        "club": null,
+        "mu_post": 3.5277497395933257
+      }
+    ],
+    "bank_after_tenths": 7,
+    "ft_after": 1,
+    "horizon_objective": null,
+    "week0_objective": 69.8332660410429
+  },
+  "model": {
+    "primary_solver": "L4",
+    "scorer": "score_xp_v2",
+    "odds_source": "snapshot",
+    "odds_fetched_at": "2026-11-06T14:41:38.833421+00:00",
+    "n_odds_ok": 12,
+    "board_path": "/agent/repos/fpl-engine/data/predictions/2026-27/gw10/numagent_board_20261106T144319Z.csv",
+    "board_t1_path": "/agent/repos/fpl-engine/data/predictions/2026-27/gw10/numagent_board_t1_20261106T144319Z.csv",
+    "xmi_path": "data/scratch/gw10_xmi_probe.csv",
+    "pick_source_arm": "l3"
+  },
+  "source_pick": {
+    "entry_id": 2632584,
+    "primary": "L4",
+    "bank": 19,
+    "ft": 1
+  }
+}

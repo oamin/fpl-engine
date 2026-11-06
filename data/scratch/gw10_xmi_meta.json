@@ -1,0 +1,21 @@
+{
+  "gw": 10,
+  "built_at": "2026-11-06T14:35:44.815726+00:00",
+  "method": "rolling3_asof + FFScout out/banned\u21920, doubt\u00d7chance",
+  "n_players": 670,
+  "n_overlay": 88,
+  "n_zero": 300,
+  "unmatched": [
+    {
+      "club": "Newcastle",
+      "name": "Miley",
+      "bucket": "doubt"
+    },
+    {
+      "club": "Spurs",
+      "name": "Savinho",
+      "bucket": "out"
+    }
+  ],
+  "news_fetched_at": "2026-11-06T14:35:01.915340+00:00"
+}

@@ -1,0 +1,1212 @@
+{
+  "source": "https://www.fantasyfootballscout.co.uk/team-news",
+  "fetched_at": "2026-11-06T14:35:01.915340+00:00",
+  "n_clubs": 20,
+  "availability": {
+    "predicted_xi": true,
+    "out_doubt_banned": true,
+    "nailed_on_label": false,
+    "firm_label": false,
+    "members_projections": false,
+    "mapping": "firm/nailed_on := predicted XI minus Out, Banned, and Doubts; firm_selection := predicted XI minus Out/Banned"
+  },
+  "clubs": [
+    {
+      "code": "ars",
+      "club": "Arsenal",
+      "club_norm": "arsenal",
+      "opponent": "Hull City (H)",
+      "predicted_xi": [
+        "Raya Martin",
+        "Jurri\u00ebn Timber",
+        "Konsa Ngoyo",
+        "Gabriel Magalh\u00e3es",
+        "Calafiori",
+        "Lewis-Skelly",
+        "Bruno Guimar\u00e3es",
+        "Madueke",
+        "Odegaard",
+        "Tzolis",
+        "Havertz"
+      ],
+      "out": [
+        "Saka"
+      ],
+      "doubts": [
+        {
+          "name": "Konsa Ngoyo",
+          "chance": "75%"
+        }
+      ],
+      "banned": [
+        "Dowman"
+      ],
+      "firm": [
+        "Raya Martin",
+        "Jurri\u00ebn Timber",
+        "Gabriel Magalh\u00e3es",
+        "Calafiori",
+        "Lewis-Skelly",
+        "Bruno Guimar\u00e3es",
+        "Madueke",
+        "Odegaard",
+        "Tzolis",
+        "Havertz"
+      ],
+      "firm_selection": [
+        "Raya Martin",
+        "Jurri\u00ebn Timber",
+        "Konsa Ngoyo",
+        "Gabriel Magalh\u00e3es",
+        "Calafiori",
+        "Lewis-Skelly",
+        "Bruno Guimar\u00e3es",
+        "Madueke",
+        "Odegaard",
+        "Tzolis",
+        "Havertz"
+      ],
+      "news": "Last Updated Thu 5th Nov"
+    },
+    {
+      "code": "avl",
+      "club": "Aston Villa",
+      "club_norm": "aston villa",
+      "opponent": "Manchester United (A)",
+      "predicted_xi": [
+        "Suzuki",
+        "Bogarde",
+        "Lindelof",
+        "Torres",
+        "Maatsen",
+        "Kamara",
+        "Jo\u00e3o Gomes",
+        "Alysson Edward",
+        "McGinn",
+        "Manzambi",
+        "Jackson"
+      ],
+      "out": [
+        "Mvom Onana",
+        "Ruggeri"
+      ],
+      "doubts": [
+        {
+          "name": "Wan-Bissaka",
+          "chance": "50%"
+        }
+      ],
+      "banned": [
+        "Cash"
+      ],
+      "firm": [
+        "Suzuki",
+        "Bogarde",
+        "Lindelof",
+        "Torres",
+        "Maatsen",
+        "Kamara",
+        "Jo\u00e3o Gomes",
+        "Alysson Edward",
+        "McGinn",
+        "Manzambi",
+        "Jackson"
+      ],
+      "firm_selection": [
+        "Suzuki",
+        "Bogarde",
+        "Lindelof",
+        "Torres",
+        "Maatsen",
+        "Kamara",
+        "Jo\u00e3o Gomes",
+        "Alysson Edward",
+        "McGinn",
+        "Manzambi",
+        "Jackson"
+      ],
+      "news": "Last Updated Tue 3rd Nov"
+    },
+    {
+      "code": "bha",
+      "club": "Brighton",
+      "club_norm": "brighton",
+      "opponent": "Brentford (H)",
+      "predicted_xi": [
+        "Verbruggen",
+        "Kadioglu",
+        "Vuskovic",
+        "Dunk",
+        "Boscagli",
+        "Chema Andr\u00e9s",
+        "Gro\u00df",
+        "G\u00f3mez",
+        "Ayari",
+        "De Cuyper",
+        "Kostoulas"
+      ],
+      "out": [
+        "Ferguson",
+        "Mitoma"
+      ],
+      "doubts": [
+        {
+          "name": "Azeez",
+          "chance": "50%"
+        },
+        {
+          "name": "Kadioglu",
+          "chance": "50%"
+        },
+        {
+          "name": "Struijk",
+          "chance": "50%"
+        },
+        {
+          "name": "Tzimas",
+          "chance": "25%"
+        },
+        {
+          "name": "Yohanna",
+          "chance": "50%"
+        }
+      ],
+      "banned": [],
+      "firm": [
+        "Verbruggen",
+        "Vuskovic",
+        "Dunk",
+        "Boscagli",
+        "Chema Andr\u00e9s",
+        "Gro\u00df",
+        "G\u00f3mez",
+        "Ayari",
+        "De Cuyper",
+        "Kostoulas"
+      ],
+      "firm_selection": [
+        "Verbruggen",
+        "Kadioglu",
+        "Vuskovic",
+        "Dunk",
+        "Boscagli",
+        "Chema Andr\u00e9s",
+        "Gro\u00df",
+        "G\u00f3mez",
+        "Ayari",
+        "De Cuyper",
+        "Kostoulas"
+      ],
+      "news": "Last Updated Tue 3rd Nov"
+    },
+    {
+      "code": "bou",
+      "club": "Bournemouth",
+      "club_norm": "bournemouth",
+      "opponent": "Ipswich Town (A)",
+      "predicted_xi": [
+        "Petrovic",
+        "Smith",
+        "Hill",
+        "Ant\u00f3nio Silva",
+        "Truffert",
+        "Adams",
+        "Christie",
+        "Rayan",
+        "Kluivert",
+        "Tavernier",
+        "Evanilson"
+      ],
+      "out": [
+        "Araujo",
+        "S\u00e1nchez",
+        "T\u00f3th"
+      ],
+      "doubts": [
+        {
+          "name": "Milosavljevic",
+          "chance": "25%"
+        },
+        {
+          "name": "Scott",
+          "chance": "50%"
+        }
+      ],
+      "banned": [],
+      "firm": [
+        "Petrovic",
+        "Smith",
+        "Hill",
+        "Ant\u00f3nio Silva",
+        "Truffert",
+        "Adams",
+        "Christie",
+        "Rayan",
+        "Kluivert",
+        "Tavernier",
+        "Evanilson"
+      ],
+      "firm_selection": [
+        "Petrovic",
+        "Smith",
+        "Hill",
+        "Ant\u00f3nio Silva",
+        "Truffert",
+        "Adams",
+        "Christie",
+        "Rayan",
+        "Kluivert",
+        "Tavernier",
+        "Evanilson"
+      ],
+      "news": "Last Updated Tue 3rd Nov"
+    },
+    {
+      "code": "bre",
+      "club": "Brentford",
+      "club_norm": "brentford",
+      "opponent": "Brighton and Hove Albion (A)",
+      "predicted_xi": [
+        "Kelleher",
+        "Kayode",
+        "van den Berg",
+        "Ajer",
+        "Lewis-Potter",
+        "Janelt",
+        "Yarmolyuk",
+        "Anthony",
+        "Jensen",
+        "Schade",
+        "Thiago"
+      ],
+      "out": [
+        "Carvalho",
+        "Furo",
+        "Henry",
+        "Milambo"
+      ],
+      "doubts": [
+        {
+          "name": "Dasilva",
+          "chance": "25%"
+        }
+      ],
+      "banned": [],
+      "firm": [
+        "Kelleher",
+        "Kayode",
+        "van den Berg",
+        "Ajer",
+        "Lewis-Potter",
+        "Janelt",
+        "Yarmolyuk",
+        "Anthony",
+        "Jensen",
+        "Schade",
+        "Thiago"
+      ],
+      "firm_selection": [
+        "Kelleher",
+        "Kayode",
+        "van den Berg",
+        "Ajer",
+        "Lewis-Potter",
+        "Janelt",
+        "Yarmolyuk",
+        "Anthony",
+        "Jensen",
+        "Schade",
+        "Thiago"
+      ],
+      "news": "Last Updated Thu 5th Nov"
+    },
+    {
+      "code": "che",
+      "club": "Chelsea",
+      "club_norm": "chelsea",
+      "opponent": "Sunderland (A)",
+      "predicted_xi": [
+        "Penders",
+        "Acheampong",
+        "Fofana",
+        "Colwill",
+        "Chavarr\u00eda",
+        "Moises Caicedo",
+        "Lavia",
+        "Est\u00eav\u00e3o",
+        "Palmer",
+        "Rogers",
+        "Neto"
+      ],
+      "out": [
+        "Gittens",
+        "Hato",
+        "James",
+        "Jo\u00e3o Pedro",
+        "Lacroix"
+      ],
+      "doubts": [
+        {
+          "name": "Anselmino",
+          "chance": "50%"
+        },
+        {
+          "name": "Martinez",
+          "chance": "50%"
+        }
+      ],
+      "banned": [],
+      "firm": [
+        "Penders",
+        "Acheampong",
+        "Fofana",
+        "Colwill",
+        "Chavarr\u00eda",
+        "Moises Caicedo",
+        "Lavia",
+        "Est\u00eav\u00e3o",
+        "Palmer",
+        "Rogers",
+        "Neto"
+      ],
+      "firm_selection": [
+        "Penders",
+        "Acheampong",
+        "Fofana",
+        "Colwill",
+        "Chavarr\u00eda",
+        "Moises Caicedo",
+        "Lavia",
+        "Est\u00eav\u00e3o",
+        "Palmer",
+        "Rogers",
+        "Neto"
+      ],
+      "news": "Last Updated Tue 3rd Nov"
+    },
+    {
+      "code": "cov",
+      "club": "Coventry",
+      "club_norm": "coventry",
+      "opponent": "Everton (A)",
+      "predicted_xi": [
+        "Rushworth",
+        "van Ewijk",
+        "Mfuni",
+        "Pinnock",
+        "Jay da Silva",
+        "Yirenkyi",
+        "Torp",
+        "Sakamoto",
+        "Rudoni",
+        "Gboho",
+        "Awoniyi"
+      ],
+      "out": [
+        "Amenda",
+        "Eccles",
+        "Woolfenden",
+        "Wright"
+      ],
+      "doubts": [
+        {
+          "name": "Onyeka",
+          "chance": "75%"
+        },
+        {
+          "name": "Thomas",
+          "chance": "75%"
+        }
+      ],
+      "banned": [],
+      "firm": [
+        "Rushworth",
+        "van Ewijk",
+        "Mfuni",
+        "Pinnock",
+        "Jay da Silva",
+        "Yirenkyi",
+        "Torp",
+        "Sakamoto",
+        "Rudoni",
+        "Gboho",
+        "Awoniyi"
+      ],
+      "firm_selection": [
+        "Rushworth",
+        "van Ewijk",
+        "Mfuni",
+        "Pinnock",
+        "Jay da Silva",
+        "Yirenkyi",
+        "Torp",
+        "Sakamoto",
+        "Rudoni",
+        "Gboho",
+        "Awoniyi"
+      ],
+      "news": "Frank Lampard was playing it cool with his team news on Wednesday, saying only \"we'll see\" when asked about Bobby Thomas (calf) and Frank Onyeka (groin). Luke Woolfenden (knee), Aurele Amenda (calf), Josh Eccles (ankle) and Haji Wright (quad) remain out, meanwhile. Lampard's unwillingness to share any more information on Thomas makes it very difficult to say whether he's going to return for Gameweek 10 but after Stephen Mfuni and Ethan Pinnock performed admirably at centre-half in the win over S"
+    },
+    {
+      "code": "cry",
+      "club": "Crystal Palace",
+      "club_norm": "crystal palace",
+      "opponent": "Liverpool (H)",
+      "predicted_xi": [
+        "Henderson",
+        "Richards",
+        "Disasi",
+        "Canvot",
+        "Mingueza",
+        "Kamada",
+        "Wharton",
+        "Mitchell",
+        "McNeil",
+        "Pino",
+        "Strand Larsen"
+      ],
+      "out": [
+        "Riad",
+        "Ismaila Sarr",
+        "Tomiyasu"
+      ],
+      "doubts": [],
+      "banned": [
+        "Mateta"
+      ],
+      "firm": [
+        "Henderson",
+        "Richards",
+        "Disasi",
+        "Canvot",
+        "Mingueza",
+        "Kamada",
+        "Wharton",
+        "Mitchell",
+        "McNeil",
+        "Pino",
+        "Strand Larsen"
+      ],
+      "firm_selection": [
+        "Henderson",
+        "Richards",
+        "Disasi",
+        "Canvot",
+        "Mingueza",
+        "Kamada",
+        "Wharton",
+        "Mitchell",
+        "McNeil",
+        "Pino",
+        "Strand Larsen"
+      ],
+      "news": "Last Updated Tue 3rd Nov"
+    },
+    {
+      "code": "eve",
+      "club": "Everton",
+      "club_norm": "everton",
+      "opponent": "Coventry City (H)",
+      "predicted_xi": [
+        "Pickford",
+        "O'Brien",
+        "Tarkowski",
+        "Branthwaite",
+        "Mykolenko",
+        "Armstrong",
+        "Garner",
+        "R\u00f6hl",
+        "Dewsbury-Hall",
+        "George",
+        "Barry"
+      ],
+      "out": [
+        "Grealish"
+      ],
+      "doubts": [
+        {
+          "name": "Branthwaite",
+          "chance": "75%"
+        }
+      ],
+      "banned": [],
+      "firm": [
+        "Pickford",
+        "O'Brien",
+        "Tarkowski",
+        "Mykolenko",
+        "Armstrong",
+        "Garner",
+        "R\u00f6hl",
+        "Dewsbury-Hall",
+        "George",
+        "Barry"
+      ],
+      "firm_selection": [
+        "Pickford",
+        "O'Brien",
+        "Tarkowski",
+        "Branthwaite",
+        "Mykolenko",
+        "Armstrong",
+        "Garner",
+        "R\u00f6hl",
+        "Dewsbury-Hall",
+        "George",
+        "Barry"
+      ],
+      "news": "Last Updated Tue 3rd Nov"
+    },
+    {
+      "code": "ful",
+      "club": "Fulham",
+      "club_norm": "fulham",
+      "opponent": "Newcastle United (H)",
+      "predicted_xi": [
+        "Leno",
+        "Castagne",
+        "Affengruber",
+        "Bassey",
+        "Robinson",
+        "Berge",
+        "Charles",
+        "Bobb",
+        "King",
+        "Iwobi",
+        "Gonzalo Garc\u00eda"
+      ],
+      "out": [
+        "Cairney"
+      ],
+      "doubts": [],
+      "banned": [],
+      "firm": [
+        "Leno",
+        "Castagne",
+        "Affengruber",
+        "Bassey",
+        "Robinson",
+        "Berge",
+        "Charles",
+        "Bobb",
+        "King",
+        "Iwobi",
+        "Gonzalo Garc\u00eda"
+      ],
+      "firm_selection": [
+        "Leno",
+        "Castagne",
+        "Affengruber",
+        "Bassey",
+        "Robinson",
+        "Berge",
+        "Charles",
+        "Bobb",
+        "King",
+        "Iwobi",
+        "Gonzalo Garc\u00eda"
+      ],
+      "news": "Last Updated Tue 3rd Nov"
+    },
+    {
+      "code": "hul",
+      "club": "Hull",
+      "club_norm": "hull",
+      "opponent": "Arsenal (A)",
+      "predicted_xi": [
+        "Tzolakis",
+        "Ajayi",
+        "Egan",
+        "Mendy",
+        "Coyle",
+        "Iroegbunam",
+        "Slater",
+        "Giles",
+        "Belloumi",
+        "McBurnie",
+        "Stroud"
+      ],
+      "out": [
+        "Ansah",
+        "Hughes",
+        "Matazo",
+        "Morita",
+        "Targett"
+      ],
+      "doubts": [],
+      "banned": [
+        "Crooks"
+      ],
+      "firm": [
+        "Tzolakis",
+        "Ajayi",
+        "Egan",
+        "Mendy",
+        "Coyle",
+        "Iroegbunam",
+        "Slater",
+        "Giles",
+        "Belloumi",
+        "McBurnie",
+        "Stroud"
+      ],
+      "firm_selection": [
+        "Tzolakis",
+        "Ajayi",
+        "Egan",
+        "Mendy",
+        "Coyle",
+        "Iroegbunam",
+        "Slater",
+        "Giles",
+        "Belloumi",
+        "McBurnie",
+        "Stroud"
+      ],
+      "news": "Last Updated Tue 3rd Nov"
+    },
+    {
+      "code": "ips",
+      "club": "Ipswich",
+      "club_norm": "ipswich",
+      "opponent": "Bournemouth (H)",
+      "predicted_xi": [
+        "Walton",
+        "Ouattara",
+        "Diop",
+        "O'Shea",
+        "Davis",
+        "Florentino",
+        "Palacios",
+        "Fatawu",
+        "Enciso",
+        "Philogene-Bidace",
+        "Emersonn"
+      ],
+      "out": [],
+      "doubts": [
+        {
+          "name": "Lukic",
+          "chance": "75%"
+        }
+      ],
+      "banned": [],
+      "firm": [
+        "Walton",
+        "Ouattara",
+        "Diop",
+        "O'Shea",
+        "Davis",
+        "Florentino",
+        "Palacios",
+        "Fatawu",
+        "Enciso",
+        "Philogene-Bidace",
+        "Emersonn"
+      ],
+      "firm_selection": [
+        "Walton",
+        "Ouattara",
+        "Diop",
+        "O'Shea",
+        "Davis",
+        "Florentino",
+        "Palacios",
+        "Fatawu",
+        "Enciso",
+        "Philogene-Bidace",
+        "Emersonn"
+      ],
+      "news": "Last Updated Tue 3rd Nov"
+    },
+    {
+      "code": "lee",
+      "club": "Leeds",
+      "club_norm": "leeds",
+      "opponent": "Tottenham Hotspur (H)",
+      "predicted_xi": [
+        "Trafford",
+        "Justin",
+        "Elvedi",
+        "Muharemovic",
+        "Bogle",
+        "Ampadu",
+        "Tanaka",
+        "Gudmundsson",
+        "Wilson",
+        "Calvert-Lewin",
+        "Okafor"
+      ],
+      "out": [
+        "Mateo Joseph"
+      ],
+      "doubts": [
+        {
+          "name": "Calvert-Lewin",
+          "chance": "75%"
+        },
+        {
+          "name": "Okafor",
+          "chance": "50%"
+        },
+        {
+          "name": "Rodon",
+          "chance": "75%"
+        },
+        {
+          "name": "Stach",
+          "chance": "50%"
+        }
+      ],
+      "banned": [],
+      "firm": [
+        "Trafford",
+        "Justin",
+        "Elvedi",
+        "Muharemovic",
+        "Bogle",
+        "Ampadu",
+        "Tanaka",
+        "Gudmundsson",
+        "Wilson"
+      ],
+      "firm_selection": [
+        "Trafford",
+        "Justin",
+        "Elvedi",
+        "Muharemovic",
+        "Bogle",
+        "Ampadu",
+        "Tanaka",
+        "Gudmundsson",
+        "Wilson",
+        "Calvert-Lewin",
+        "Okafor"
+      ],
+      "news": "Last Updated Tue 3rd Nov"
+    },
+    {
+      "code": "liv",
+      "club": "Liverpool",
+      "club_norm": "liverpool",
+      "opponent": "Crystal Palace (A)",
+      "predicted_xi": [
+        "Alisson",
+        "Ara\u00fajo",
+        "Jacquet",
+        "van Dijk",
+        "Kerkez",
+        "Szoboszlai",
+        "Mac Allister",
+        "Gakpo",
+        "Wirtz",
+        "Barcola",
+        "Isak"
+      ],
+      "out": [
+        "Bradley",
+        "Ekitik\u00e9",
+        "Frimpong",
+        "Leoni"
+      ],
+      "doubts": [
+        {
+          "name": "Gravenberch",
+          "chance": "75%"
+        }
+      ],
+      "banned": [],
+      "firm": [
+        "Alisson",
+        "Ara\u00fajo",
+        "Jacquet",
+        "van Dijk",
+        "Kerkez",
+        "Szoboszlai",
+        "Mac Allister",
+        "Gakpo",
+        "Wirtz",
+        "Barcola",
+        "Isak"
+      ],
+      "firm_selection": [
+        "Alisson",
+        "Ara\u00fajo",
+        "Jacquet",
+        "van Dijk",
+        "Kerkez",
+        "Szoboszlai",
+        "Mac Allister",
+        "Gakpo",
+        "Wirtz",
+        "Barcola",
+        "Isak"
+      ],
+      "news": "Last Updated Tue 3rd Nov"
+    },
+    {
+      "code": "mci",
+      "club": "Man City",
+      "club_norm": "man city",
+      "opponent": "Nottingham Forest (A)",
+      "predicted_xi": [
+        "Donnarumma",
+        "Matheus Nunes",
+        "R\u00faben Dias",
+        "Khusanov",
+        "Gvardiol",
+        "Fern\u00e1ndez",
+        "Anderson",
+        "Ndiaye",
+        "Cherki",
+        "Doku",
+        "Haaland"
+      ],
+      "out": [
+        "Semenyo"
+      ],
+      "doubts": [],
+      "banned": [],
+      "firm": [
+        "Donnarumma",
+        "Matheus Nunes",
+        "R\u00faben Dias",
+        "Khusanov",
+        "Gvardiol",
+        "Fern\u00e1ndez",
+        "Anderson",
+        "Ndiaye",
+        "Cherki",
+        "Doku",
+        "Haaland"
+      ],
+      "firm_selection": [
+        "Donnarumma",
+        "Matheus Nunes",
+        "R\u00faben Dias",
+        "Khusanov",
+        "Gvardiol",
+        "Fern\u00e1ndez",
+        "Anderson",
+        "Ndiaye",
+        "Cherki",
+        "Doku",
+        "Haaland"
+      ],
+      "news": "Last Updated Thu 5th Nov"
+    },
+    {
+      "code": "mun",
+      "club": "Man Utd",
+      "club_norm": "man utd",
+      "opponent": "Aston Villa (H)",
+      "predicted_xi": [
+        "Lammens",
+        "Yoro",
+        "de Ligt",
+        "Heaven",
+        "Dalot",
+        "Tielemans",
+        "Mainoo",
+        "Amad Diallo",
+        "Bruno Fernandes",
+        "Matheus Cunha",
+        "Mbeumo"
+      ],
+      "out": [
+        "Sesko",
+        "Shaw",
+        "Ugarte"
+      ],
+      "doubts": [
+        {
+          "name": "Baleba",
+          "chance": "50%"
+        },
+        {
+          "name": "Dorgu",
+          "chance": "50%"
+        },
+        {
+          "name": "Rashford",
+          "chance": "50%"
+        }
+      ],
+      "banned": [
+        "Mart\u00ednez"
+      ],
+      "firm": [
+        "Lammens",
+        "Yoro",
+        "de Ligt",
+        "Heaven",
+        "Dalot",
+        "Tielemans",
+        "Mainoo",
+        "Amad Diallo",
+        "Bruno Fernandes",
+        "Matheus Cunha",
+        "Mbeumo"
+      ],
+      "firm_selection": [
+        "Lammens",
+        "Yoro",
+        "de Ligt",
+        "Heaven",
+        "Dalot",
+        "Tielemans",
+        "Mainoo",
+        "Amad Diallo",
+        "Bruno Fernandes",
+        "Matheus Cunha",
+        "Mbeumo"
+      ],
+      "news": "Last Updated Tue 3rd Nov"
+    },
+    {
+      "code": "new",
+      "club": "Newcastle",
+      "club_norm": "newcastle",
+      "opponent": "Fulham (A)",
+      "predicted_xi": [
+        "Horn\u00edcek",
+        "Dedic",
+        "Sch\u00e4r",
+        "Burn",
+        "Lewis Hall",
+        "Gonz\u00e1lez",
+        "Steur",
+        "Elanga",
+        "Wissa",
+        "Barnes",
+        "Osula"
+      ],
+      "out": [
+        "Joelinton",
+        "Jaouen",
+        "Livramento"
+      ],
+      "doubts": [
+        {
+          "name": "Fernandez-Pardo",
+          "chance": "75%"
+        },
+        {
+          "name": "Miley",
+          "chance": "75%"
+        }
+      ],
+      "banned": [
+        "Ramsey (Jacob)"
+      ],
+      "firm": [
+        "Horn\u00edcek",
+        "Dedic",
+        "Sch\u00e4r",
+        "Burn",
+        "Lewis Hall",
+        "Gonz\u00e1lez",
+        "Steur",
+        "Elanga",
+        "Wissa",
+        "Barnes",
+        "Osula"
+      ],
+      "firm_selection": [
+        "Horn\u00edcek",
+        "Dedic",
+        "Sch\u00e4r",
+        "Burn",
+        "Lewis Hall",
+        "Gonz\u00e1lez",
+        "Steur",
+        "Elanga",
+        "Wissa",
+        "Barnes",
+        "Osula"
+      ],
+      "news": "Last Updated Tue 3rd Nov"
+    },
+    {
+      "code": "nfo",
+      "club": "Nott'm Forest",
+      "club_norm": "nottm forest",
+      "opponent": "Manchester City (H)",
+      "predicted_xi": [
+        "Sels",
+        "Jair",
+        "Diomande",
+        "Murillo",
+        "Mu\u00f1oz",
+        "Mcatee",
+        "Yates",
+        "Williams",
+        "Gibbs-White",
+        "Nicol\u00e1s Dom\u00ednguez",
+        "Wood"
+      ],
+      "out": [
+        "Nicol\u00e1s Dom\u00ednguez",
+        "Savona"
+      ],
+      "doubts": [
+        {
+          "name": "Igor Jesus",
+          "chance": "75%"
+        }
+      ],
+      "banned": [],
+      "firm": [
+        "Sels",
+        "Jair",
+        "Diomande",
+        "Murillo",
+        "Mu\u00f1oz",
+        "Mcatee",
+        "Yates",
+        "Williams",
+        "Gibbs-White",
+        "Wood"
+      ],
+      "firm_selection": [
+        "Sels",
+        "Jair",
+        "Diomande",
+        "Murillo",
+        "Mu\u00f1oz",
+        "Mcatee",
+        "Yates",
+        "Williams",
+        "Gibbs-White",
+        "Wood"
+      ],
+      "news": "Last Updated Tue 3rd Nov"
+    },
+    {
+      "code": "sun",
+      "club": "Sunderland",
+      "club_norm": "sunderland",
+      "opponent": "Chelsea (H)",
+      "predicted_xi": [
+        "Roefs",
+        "Hume",
+        "Mukiele",
+        "O'Nien",
+        "Reinildo",
+        "Xhaka",
+        "Sadiki",
+        "Meunier",
+        "Le F\u00e9e",
+        "Nilson Angulo",
+        "Brobbey"
+      ],
+      "out": [
+        "Ballard",
+        "Diarra",
+        "Mundle"
+      ],
+      "doubts": [
+        {
+          "name": "Juan Riquelme Angulo",
+          "chance": "75%"
+        },
+        {
+          "name": "Mukiele",
+          "chance": "75%"
+        }
+      ],
+      "banned": [
+        "Alderete"
+      ],
+      "firm": [
+        "Roefs",
+        "Hume",
+        "O'Nien",
+        "Reinildo",
+        "Xhaka",
+        "Sadiki",
+        "Meunier",
+        "Le F\u00e9e",
+        "Nilson Angulo",
+        "Brobbey"
+      ],
+      "firm_selection": [
+        "Roefs",
+        "Hume",
+        "Mukiele",
+        "O'Nien",
+        "Reinildo",
+        "Xhaka",
+        "Sadiki",
+        "Meunier",
+        "Le F\u00e9e",
+        "Nilson Angulo",
+        "Brobbey"
+      ],
+      "news": "Last Updated Tue 3rd Nov"
+    },
+    {
+      "code": "tot",
+      "club": "Spurs",
+      "club_norm": "spurs",
+      "opponent": "Leeds United (A)",
+      "predicted_xi": [
+        "Kinsky",
+        "Gray (Archie)",
+        "van Hecke",
+        "van de Ven",
+        "Robertson",
+        "Tonali",
+        "Mateus Fernandes",
+        "Kudus",
+        "Gallagher",
+        "Tel",
+        "Solanke"
+      ],
+      "out": [
+        "Savinho",
+        "Mudryk",
+        "Odobert",
+        "Simons"
+      ],
+      "doubts": [
+        {
+          "name": "Tosin",
+          "chance": "50%"
+        },
+        {
+          "name": "Bergvall",
+          "chance": "50%"
+        }
+      ],
+      "banned": [],
+      "firm": [
+        "Kinsky",
+        "Gray (Archie)",
+        "van Hecke",
+        "van de Ven",
+        "Robertson",
+        "Tonali",
+        "Mateus Fernandes",
+        "Kudus",
+        "Gallagher",
+        "Tel",
+        "Solanke"
+      ],
+      "firm_selection": [
+        "Kinsky",
+        "Gray (Archie)",
+        "van Hecke",
+        "van de Ven",
+        "Robertson",
+        "Tonali",
+        "Mateus Fernandes",
+        "Kudus",
+        "Gallagher",
+        "Tel",
+        "Solanke"
+      ],
+      "news": "Last Updated Tue 3rd Nov"
+    }
+  ]
+}
