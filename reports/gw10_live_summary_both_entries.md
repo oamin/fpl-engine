@@ -24,6 +24,13 @@ Full: `reports/numagent_live_pick_gw10_2632584.md` · `data/predictions/2026-27/
 
 Full: `reports/numagent_live_pick_gw10_3271409.md` · `data/predictions/2026-27/gw10/numagent_pick_3271409.json`
 
+## Locks (PI 2026-11-06)
+
+| Entry | Arm | Transfer | C | Lock |
+| --- | --- | --- | --- | --- |
+| ojaminFC 2632584 | L3 | Khalaili → Tarkowski | Haaland | `numagent_lock.json` |
+| stragent 3271409 | L3 | João Pedro → Isak | Haaland | `numagent_lock_3271409.json` |
+
 ## GW9 performance (actuals)
 
-No locked GW9 μ board was on disk — actuals only in `reports/gw09_performance_both_entries.md`. GW10 boards are saved so next week’s μ-vs-actual works.
+No locked GW9 μ board was on disk — actuals only in `reports/gw09_performance_both_entries.md`. GW10 boards are locked above for next week’s μ-vs-actual.

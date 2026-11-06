@@ -1,0 +1,208 @@
+{
+  "kind": "numagent_live_lock",
+  "gw": 10,
+  "season": "2026-27",
+  "deadline_utc": null,
+  "locked_at_utc": "2026-11-06T15:02:50Z",
+  "entry_id": 3271409,
+  "team_name": "hiking w djed spence",
+  "status": "locked",
+  "note": "PI instructed 2026-11-06: lock suggested L3 for stragent (Jo\u00e3o Pedro \u2192 Isak, C Haaland). Frozen for post-GW \u03bc-vs-actual.",
+  "arm_locked": "l3",
+  "decision": {
+    "chip_played": null,
+    "transfers": {
+      "n": 1,
+      "hits": 0,
+      "hit_points": 0,
+      "sold": [
+        "Jo\u00e3o Pedro"
+      ],
+      "bought": [
+        "Isak"
+      ]
+    },
+    "formation": "1-3-4-3",
+    "squad_15": [
+      8,
+      94,
+      109,
+      124,
+      40,
+      229,
+      569,
+      379,
+      411,
+      427,
+      112,
+      115,
+      173,
+      453,
+      496
+    ],
+    "starting_11": [
+      8,
+      94,
+      109,
+      124,
+      40,
+      229,
+      569,
+      379,
+      411,
+      427,
+      112
+    ],
+    "captain": 411,
+    "captain_name": "Haaland",
+    "vice_captain": null,
+    "vice_captain_name": null,
+    "bench_order": [
+      115,
+      173,
+      453,
+      496
+    ],
+    "xi": [
+      {
+        "element": 8,
+        "name": "Calafiori",
+        "position": "DEF",
+        "club": "Arsenal",
+        "mu_post": 5.9093946456059845,
+        "captain": false
+      },
+      {
+        "element": 94,
+        "name": "Schade",
+        "position": "MID",
+        "club": "Brentford",
+        "mu_post": 4.645021557833153,
+        "captain": false
+      },
+      {
+        "element": 109,
+        "name": "Verbruggen",
+        "position": "GKP",
+        "club": "Brighton",
+        "mu_post": 4.094666419634536,
+        "captain": false
+      },
+      {
+        "element": 124,
+        "name": "Gro\u00df",
+        "position": "MID",
+        "club": "Brighton",
+        "mu_post": 5.682884318830639,
+        "captain": false
+      },
+      {
+        "element": 40,
+        "name": "Rogers",
+        "position": "MID",
+        "club": "Chelsea",
+        "mu_post": 5.40797542171378,
+        "captain": false
+      },
+      {
+        "element": 229,
+        "name": "Tarkowski",
+        "position": "DEF",
+        "club": "Everton",
+        "mu_post": 6.872025771391228,
+        "captain": false
+      },
+      {
+        "element": 569,
+        "name": "Gonzalo",
+        "position": "FWD",
+        "club": "Fulham",
+        "mu_post": 4.65516789644305,
+        "captain": false
+      },
+      {
+        "element": 379,
+        "name": "Isak",
+        "position": "FWD",
+        "club": "Liverpool",
+        "mu_post": 7.269375521329204,
+        "captain": false
+      },
+      {
+        "element": 411,
+        "name": "Haaland",
+        "position": "FWD",
+        "club": "Man City",
+        "mu_post": 7.311983388496628,
+        "captain": true
+      },
+      {
+        "element": 427,
+        "name": "Mbeumo",
+        "position": "MID",
+        "club": "Man Utd",
+        "mu_post": 5.015916751171318,
+        "captain": false
+      },
+      {
+        "element": 112,
+        "name": "Van Hecke",
+        "position": "DEF",
+        "club": "Spurs",
+        "mu_post": 5.333642407351623,
+        "captain": false
+      }
+    ],
+    "bench": [
+      {
+        "element": 115,
+        "name": "De Cuyper",
+        "position": "DEF",
+        "club": null,
+        "mu_post": 4.039715820752921
+      },
+      {
+        "element": 173,
+        "name": "Thomas",
+        "position": "DEF",
+        "club": null,
+        "mu_post": 0.981814075290952
+      },
+      {
+        "element": 453,
+        "name": "Barnes",
+        "position": "MID",
+        "club": null,
+        "mu_post": 4.618153019740133
+      },
+      {
+        "element": 496,
+        "name": "Kinsky",
+        "position": "GKP",
+        "club": null,
+        "mu_post": 3.515050367295916
+      }
+    ],
+    "bank_after_tenths": 2,
+    "ft_after": 1,
+    "horizon_objective": null,
+    "week0_objective": 69.51003748829777
+  },
+  "model": {
+    "primary_solver": "L4",
+    "scorer": "score_xp_v2",
+    "odds_source": "snapshot",
+    "odds_fetched_at": "2026-11-06T14:41:38.833421+00:00",
+    "n_odds_ok": 12,
+    "board_path": "/agent/repos/fpl-engine/data/predictions/2026-27/gw10/numagent_board_20261106T144350Z.csv",
+    "board_t1_path": "/agent/repos/fpl-engine/data/predictions/2026-27/gw10/numagent_board_t1_20261106T144350Z.csv",
+    "xmi_path": "data/scratch/gw10_xmi_probe.csv",
+    "pick_source_arm": "l3"
+  },
+  "source_pick": {
+    "entry_id": 3271409,
+    "primary": "L4",
+    "bank": 17,
+    "ft": 1
+  }
+}

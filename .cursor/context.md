@@ -124,7 +124,12 @@ Writes `data/predictions/2026-27/gwNN/numagent_lock.json` (+ locked board copies
 Rule: `.cursor/rules/live-team-lock.mdc`. Without this file there is no μ-vs-actual
 next week (GW9 miss).
 
-### Latest PI lock — GW7 (2026-10-17)
+### Latest PI lock — GW10 (2026-11-06)
+
+- **ojaminFC (2632584)** L3: Khalaili → Tarkowski · C Haaland · [`numagent_lock.json`](../data/predictions/2026-27/gw10/numagent_lock.json)
+- **stragent / hiking w djed spence (3271409)** L3: João Pedro → Isak · C Haaland · [`numagent_lock_3271409.json`](../data/predictions/2026-27/gw10/numagent_lock_3271409.json)
+
+### Prior PI lock — GW7 (2026-10-17)
 
 [`data/predictions/2026-27/gw07/numagent_lock.json`](../data/predictions/2026-27/gw07/numagent_lock.json)
 

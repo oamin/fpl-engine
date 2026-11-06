@@ -2,7 +2,7 @@
 
 Locked at `2026-11-06T14:50:44Z`. Arm: **l3**.
 
-PI locked selection into FPL. Frozen for post-GW μ-vs-actual.
+PI confirmed 2026-11-06: locked suggested L3 team into FPL (Khalaili → Tarkowski, C Haaland). Frozen for post-GW μ-vs-actual.
 
 - Transfers: 1 (hits 0, −0)
 - Sold: Khalaili
