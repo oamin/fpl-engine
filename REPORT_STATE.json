@@ -2,14 +2,27 @@
   "updated": "2026-11-06",
   "branch": "cursor/gw10-live-pick-cc3d",
   "task": "gw10_live_l4_pick",
-  "status": "blocked_odds_api_key",
+  "status": "done",
   "deadline_utc": "2026-11-06T18:30:00Z",
-  "done": [
-    "FFScout team news pulled → data/scratch/ffscout_gw10/",
-    "GW10 xmi built (rolling3 + out/banned→0, doubt×chance) → data/scratch/gw10_xmi_probe.csv",
-    "GW9 actuals logged for entries 2632584 and 3271409 → reports/gw09_performance_both_entries.md",
-    "FPL API User-Agent + retry hardening in numagent_live_pick"
-  ],
-  "blocked": "ODDS_API_KEY empty in Cloud Agent env — cannot --fetch-odds for L4 pots",
-  "next": "Add ODDS_API_KEY to Cloud Agent environment secrets, then re-run numagent_live_pick --gw 10 --fetch-odds for both entries"
+  "odds": {
+    "source": "Odds API live",
+    "region": "us",
+    "markets": "AH+OU+BTTS",
+    "priced": "12/20",
+    "t": "10/10",
+    "t1": "2/10",
+    "remaining_after": 448
+  },
+  "entries": {
+    "2632584": {
+      "l3": "Khalaili→Tarkowski, C Haaland",
+      "l4": "6 transfers / 5 hits, C Haaland"
+    },
+    "3271409": {
+      "l3": "João Pedro→Isak, C Haaland",
+      "l4": "6 transfers / 5 hits, C Haaland"
+    }
+  },
+  "summary": "reports/gw10_live_summary_both_entries.md",
+  "note": "Prefer L3 for deadline submit; L4 hit-heavy with thin t+1 book."
 }
