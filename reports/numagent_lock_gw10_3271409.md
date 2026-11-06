@@ -4,8 +4,6 @@ Locked at `2026-11-06T15:02:50Z`. Arm: **l3**.
 
 PI instructed 2026-11-06: lock suggested L3 for stragent (João Pedro → Isak, C Haaland). Frozen for post-GW μ-vs-actual.
 
-PI locked selection into FPL. Frozen for post-GW μ-vs-actual.
-
 - Transfers: 1 (hits 0, −0)
 - Sold: João Pedro
 - Bought: Isak
