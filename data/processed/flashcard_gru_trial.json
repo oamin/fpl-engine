@@ -1,0 +1,170 @@
+{
+  "n_train": 2348,
+  "n_test": 818,
+  "train_nll": [
+    0.4814,
+    0.2634,
+    0.2422,
+    0.2336,
+    0.2301,
+    0.2289,
+    0.2215,
+    0.2231,
+    0.2189,
+    0.2151
+  ],
+  "gru": {
+    "nll_all": {
+      "goals": 0.6540022599829174,
+      "assists": 0.5691361838307003,
+      "clean_sheets": 0.6530534939584266,
+      "goals_conceded": 0.6261240679069133
+    },
+    "nll_played_blank": {
+      "goals": 1.3328076389628967,
+      "assists": 1.260804633653927,
+      "clean_sheets": 1.813073453472894,
+      "goals_conceded": 1.6590678564273798
+    },
+    "nll_played_teacher": {
+      "goals": 0.3198738768618605,
+      "assists": 0.3292879673016159,
+      "clean_sheets": 0.6065738954173806,
+      "goals_conceded": 1.3567972793659158
+    },
+    "p_positive_played": {
+      "goals": 0.6630513760625754,
+      "assists": 0.6691259312104328,
+      "clean_sheets": 0.8599846090374813,
+      "goals_conceded": 0.9137620855853791
+    },
+    "rate_positive_played": {
+      "goals": 0.09942287513116474,
+      "assists": 0.09679958027282266,
+      "clean_sheets": 0.27229800629590767,
+      "goals_conceded": 0.7277019937040924
+    },
+    "mean_argmax_sum": {
+      "goals": 0.0,
+      "assists": 0.0,
+      "clean_sheets": 0.0745721271393643,
+      "goals_conceded": 4.723716381418093
+    },
+    "mean_sample_sum": {
+      "goals": 0.6418092909535452,
+      "assists": 0.6687041564792175,
+      "clean_sheets": 1.2477842298288508,
+      "goals_conceded": 6.637454156479218
+    },
+    "mean_actual_sum": {
+      "goals": 0.6002444987775061,
+      "assists": 0.558679706601467,
+      "clean_sheets": 1.2689486552567237,
+      "goals_conceded": 6.663814180929095
+    },
+    "mae_sample_sum": {
+      "goals": 0.4984718826405868,
+      "assists": 0.5082518337408313,
+      "clean_sheets": 0.6970507334963325,
+      "goals_conceded": 2.1466228606356967
+    },
+    "spike_on_zero_minutes": 0.0694980694980695,
+    "n_columns": 14804,
+    "n_played": 3812
+  },
+  "baseline": {
+    "nll_all": {
+      "goals": 0.1021329351189673,
+      "assists": 0.10379113464681275,
+      "clean_sheets": 0.1507359500408328,
+      "goals_conceded": 0.44832884638420517
+    },
+    "nll_played": {
+      "goals": 0.3211962492068796,
+      "assists": 0.3285284103459952,
+      "clean_sheets": 0.5850241479932717,
+      "goals_conceded": 1.3298785640523203
+    },
+    "mean_remainder_sum": {
+      "goals": 0.6002444987775061,
+      "assists": 0.558679706601467,
+      "clean_sheets": 1.2689486552567237,
+      "goals_conceded": 6.663814180929095
+    },
+    "mean_expected_sum": {
+      "goals": 0.6647404018074532,
+      "assists": 0.5959035638324983,
+      "clean_sheets": 1.2474232595087633,
+      "goals_conceded": 7.087770439925689
+    },
+    "mae_sum": {
+      "goals": 0.4790559514256056,
+      "assists": 0.4457303713910745,
+      "clean_sheets": 0.5520309967402119,
+      "goals_conceded": 1.6381963481483846
+    },
+    "n_columns": 14804,
+    "n_played": 3812
+  },
+  "gru_goal_deciles": [
+    {
+      "n": 164,
+      "mean_expected": 0.0,
+      "mean_actual": 0.006097560975609756
+    },
+    {
+      "n": 164,
+      "mean_expected": 0.042301829268292686,
+      "mean_actual": 0.024390243902439025
+    },
+    {
+      "n": 164,
+      "mean_expected": 0.17797256097560976,
+      "mean_actual": 0.06097560975609756
+    },
+    {
+      "n": 163,
+      "mean_expected": 0.5260736196319018,
+      "mean_actual": 0.4601226993865031
+    },
+    {
+      "n": 163,
+      "mean_expected": 2.473159509202454,
+      "mean_actual": 2.460122699386503
+    }
+  ],
+  "baseline_goal_deciles": [
+    {
+      "n": 164,
+      "mean_expected": 0.005119619706273746,
+      "mean_actual": 0.0
+    },
+    {
+      "n": 164,
+      "mean_expected": 0.01191131660170401,
+      "mean_actual": 0.0
+    },
+    {
+      "n": 164,
+      "mean_expected": 0.13402510954493133,
+      "mean_actual": 0.09146341463414634
+    },
+    {
+      "n": 163,
+      "mean_expected": 0.6661020457669564,
+      "mean_actual": 0.49079754601226994
+    },
+    {
+      "n": 163,
+      "mean_expected": 2.5178516791325496,
+      "mean_actual": 2.4294478527607364
+    }
+  ],
+  "example": {
+    "name": "Morgan Gibbs-White",
+    "team": "Nott'm Forest",
+    "position": "MID",
+    "cut": 19
+  },
+  "plot": "data/plots/flashcard_gru_trial.png"
+}
