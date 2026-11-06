@@ -1,6 +1,8 @@
 # Architectural state
 
-Updated: 2026-10-20. **Numagent 2.0** is the product on main (`protocol.numagent_2_0`) — **supersedes Numagent 1.0**. Parked hypotheses: `.cursor/ideas.md`. Stage archaeology: root `CONTEXT.md` and `reports/SUPERSEDED.md`. Canonical index: `reports/LOCKED.md`.
+Updated: 2026-10-23. **Numagent 2.0** is the product on main (`protocol.numagent_2_0`) — **supersedes Numagent 1.0**. Parked hypotheses: `.cursor/ideas.md`. Stage archaeology: root `CONTEXT.md` and `reports/SUPERSEDED.md`. Canonical index: `reports/LOCKED.md`. Cascade locked index: [`reports/CASCADE_LOCKED.md`](../reports/CASCADE_LOCKED.md).
+
+**Cascade consolidation (2026-10-23):** locked / cascade_default pieces from #101–#106 (rate baseline, joint path, γ=1, FT PE, bench α reject; deadline-causal diagnostic) fast-forwarded onto `cursor/club-expanding-gf-ga-2025-26-cc3d` for landing on `main`.
 
 ## Repo freeze sequence (2026-10-20)
 
@@ -10,7 +12,21 @@ Updated: 2026-10-20. **Numagent 2.0** is the product on main (`protocol.numagent
 | **2. Archive Numagent 1.0 / `score_xp` in-place** | **done** | Index [`reports/ARCHIVE_NUMAGENT_1_0.md`](../reports/ARCHIVE_NUMAGENT_1_0.md); protocol roles; GW6 entrypoint docstrings; leftover PRs #59/#60/#69/#71/#72 **closed**. Modules stay importable for the gate baseline. |
 | **3. Decompose v2 for cascade** | **done** | [`CASCADE_CONTRACT.md`](../reports/CASCADE_CONTRACT.md); `src/strategy/layer4_mu_inject.py` (`pools_from_mu_boards` → `solve_horizon_transfers`). Long-horizon λ→xP stays `cascade_score_v2`. |
 | **4. Cascade rebuild plan** | **done** | [`CASCADE_PLAN.md`](../reports/CASCADE_PLAN.md): **cascade_short** / **cascade_long**, shared [`player_pool`](../src/models/player_pool.py). Scorer gate: [`SCORE_XP_V2_CHECKLIST.md`](../reports/SCORE_XP_V2_CHECKLIST.md) — confirm before path-V screens. |
-| **5. cascade_short generative** | **done** | `protocol.cascade_short_generative` locked 2026-10-20 (PR #96): scenario `k∼M`→lineup→attack→CS/GC from roll; soft priors = `score_xp_v2` helpers; firm XI deferred. |
+| **5. cascade_short generative** | **done** | `protocol.cascade_short_generative` locked 2026-10-20 (PR #96 / #97): centreline `M`→`k∼M` (**no λ ±15% jitter**)→lineup→attack→CS/GC; soft priors = `score_xp_v2` helpers; firm XI deferred. |
+| **6. cascade_long Opta generative** | **done** | `protocol.cascade_long_match_outcome`: Opta place→GF/GA±MAE→`M`→`k∼M` (no ClubPath λ blend, no λ % jitter); player stack = cascade_short generative **without props**. |
+| **7. Cascade viability overnight** | **done** | `cascade_viability_batch` A/D green; C FT+cap smoke OK; B1/B2 gen MC-mean **clearly_loses** vs centreline mean (Δ≈−0.09); B3 inconclusive. Gen-as-mean **parked** — `reports/cascade_short_long_viability_results.md`. |
+| **8. Mean t:t+1 vs short gen** | **done** | N_MC=20 product horizon: still **clearly_loses** (Δ≈−0.054). `reports/cascade_short_mean_tt1_vs_gen.md`. |
+| **9. Path-V gen vs mean MILP** | **done (diagnostic)** | FT+cap N=20: both solve; gen hits≈7.2 vs mean≈1.6; top-15 Jaccard≈0.36. Not a path-V promote. `reports/cascade_pathv_gen_vs_mean.md`. |
+| **10. Minutes on gen paths** | **locked** | `DEFAULT_LINEUP_COV=False` — freeze as-of mean / live xmi. FFScout = pool WHO only. `reports/cascade_live_minutes_layers.md`. |
+| **11. Hist MC freq vs mean MILP** | **done (diagnostic)** | 2025-26 N=12: oracle ranks + LOSO GF/GA path vs priced t:t+1 mean. After rate baseline: Haaland top-cap 0.46 (Cash pathology gone). `reports/cascade_mc_vs_mean_hist.md`. |
+| **12. Historical rate baseline** | **cascade default** | Start at prior (player else positional); update with each completed GW. `src/markets/rate_baseline.py` · `protocol.score_xp_v2_rate_baseline_prior`. Full mu_post gate deferred. |
+| **13. Mean vs path GW residual** | **done (diagnostic)** | Full-side shares; semi-oracle buy-only. 2025-26: mean/path actual ≈647/646; resid bias +12.7 / +1.1. `reports/cascade_mean_path_gw_resid.md`. |
+| **14. Top MID+FWD G/A mismatch** | **done (diagnostic)** | Top xp decile: g/EG≈0.85 (pot≈0.82, shares OK); a/EA≈0.61 (pot≈0.72 **and** sA too fat). `reports/top_mid_fwd_ga_mismatch.md`. |
+| **15. Path FT potential energy** | **default on (diagnostic)** | `U(b)=ν·b`, ν=`HIT_COST` (+4/FT, +20 at cap). N=12: schedule Δ small (terminal ft 1.00→1.08). `reports/cascade_ft_pe_path.md`. |
+| **16. Path every-GW transfers** | **locked** | Joint path plan schedules every horizon GW (`cascade_joint_path_plan`). Hard must-spend: `e=max(0,k−f)`. |
+| **17. Cascade γ** | **locked γ=1** | Removed climb `γ=0.9` contamination from cascade/multistage defaults (`cascade_gamma`). |
+| **18. Deadline-causal minutes** | **done (diagnostic)** | Oracle m only at deadline GW; as-of for later; rolling replan. N=12: +hits, actual +12, terminal FT flat. `reports/cascade_deadline_causal_minutes.md`. |
+| **19. Path bench weight α** | **rejected** | α·squad form screened then removed from path objective. `reports/cascade_path_bench_weight.md`. |
 
 ## Plan
 
@@ -27,7 +43,10 @@ Pre-deadline squad advisor under 2026/27 rules. Cursor implements and screens; G
 | **Transfers** | L3 single-deadline | locked | `src/strategy/layer3_week.py` |
 | **Horizon** | L4 μ_post priced, `BOOKIE_DEPTH=2`, γ=1 | **strategiser default** | `src/strategy/layer4_week.py` · `reports/layer4_mupost_gamma1.md` |
 | **Live pick** | `numagent_live_pick` (props **off**) | GW7 PI lock | `src/live/numagent_live_pick.py` |
-| **cascade_short** | priced t:t+1 generative scenarios | locked 2026-10-20 | `cascade_short` / `short_horizon_generative` · `protocol.cascade_short_generative` |
+| **cascade_short** | priced t:t+1 generative: centreline `M`→`k∼M` (no λ jitter) | locked 2026-10-20 | `cascade_short` / `short_horizon_generative` · `protocol.cascade_short_generative` |
+| **cascade_long** | Opta place→GF/GA±MAE→`M`→`k∼M`; generative xP, props off | locked 2026-10-20 | `cascade_long` / `multistage_mc_milp` · `protocol.cascade_long_match_outcome` |
+| **cascade rates** | historical player/positional rate baseline | cascade_default | `src/markets/rate_baseline.py` · `protocol.score_xp_v2_rate_baseline_prior` |
+| **cascade path** | joint every-GW FT plan; γ=1; FT PE=+4/FT; minutes frozen | locked / default-on | `path_transfer_plan` · `cascade_joint_path_plan` · `cascade_gamma` · `DEFAULT_LINEUP_COV=False` |
 
 **Numagent 1.0 and `score_xp` are superseded** (2026-10-19). Keep 1.0/`score_xp` only for historical climb replay and as the named gate baseline. New screens and the live path are Numagent 2.0 (`score_xp_v2` + L4).
 
@@ -39,13 +58,17 @@ Today’s pre-merge cloud cascade work initially scored with **`xp_on_pot` /
 **Aligned + re-run on `score_xp_v2`:**
 
 - Short-horizon advisor — `src/models/short_horizon_cascade.py` (L4 corr 1.0;
-  `keep_scenario_advisor`). Priced scenario strands: generative
-  `k∼M` → lineup cov → attack dice → CS/GC from rolled GA; soft priors =
-  locked `score_xp_v2` DefCon/bonus/cards/saves helpers (`short_horizon_generative`;
-  firm XI later; bonus-from-roll parked). Mean layer stays `score_team_side`.
+  `keep_scenario_advisor`). Priced scenario strands: centreline `M` →
+  categorical `k∼M` (**λ Uniform±15% retired**) → lineup cov → attack dice →
+  CS/GC from rolled GA; soft priors = locked `score_xp_v2` helpers
+  (`short_horizon_generative`; firm XI later; bonus-from-roll parked). Mean
+  layer stays `score_team_side`.
 - Long-horizon Opta multistage (`squad_sum` / `xi_plus_captain` /
   `xi_plus_captain_ft` ± minutes overlay) via
-  `src/markets/cascade_score_v2.py`
+  `src/markets/cascade_score_v2.py` — Opta place GF/GA ±MAE → `M` → `k∼M`.
+  **`xi_plus_captain_ft`** = joint multi-GW transfer plan
+  (`src/models/path_transfer_plan.py`): roll horizon → per-GW scores → one
+  MILP schedules opening 15 + holds/transfers/hits (not myopic snapshot FT).
 - Oracle-rank cascade 2025/26 — **viable**; oracle − market log **+0.0187**
 - Match-band / player G/A finish / rank tracker — rewired + rejudged 2026-10-19
   (all three **park** under `score_xp_v2`; keep baseline z=1.0 / blend=0.5,

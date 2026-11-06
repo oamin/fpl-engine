@@ -137,9 +137,14 @@ def _categorical(rng: Any, weights: np.ndarray) -> int:
 
 
 def dice_for_lineup(dice: SideAttackDice, world: LineupWorld) -> SideAttackDice:
-    """Renormalise ``π`` / ``ρ`` onto lineup-eligible players (m ≥ gate)."""
-    pi = gate_dice_weights(dice.pi, world.eligible)
-    rho = gate_dice_weights(dice.rho, world.eligible)
+    """Renormalise ``π`` / ``ρ`` onto players with minutes > 0.
+
+    CS still uses the 60′ gate via ``world.eligible`` / defence roll; impact
+    subs (e.g. 30′) must remain on the attack dice.
+    """
+    playing = np.asarray(world.minutes, dtype=float) > 0.0
+    pi = gate_dice_weights(dice.pi, playing)
+    rho = gate_dice_weights(dice.rho, playing)
     return SideAttackDice(
         names=list(dice.names),
         pi=pi,

@@ -223,7 +223,7 @@ class FixtureGenerative(unittest.TestCase):
 class CascadeScenarioWire(unittest.TestCase):
     def test_default_generative_on(self) -> None:
         self.assertTrue(sh.DEFAULT_GENERATIVE_ATTACK)
-        self.assertTrue(sh.DEFAULT_LINEUP_COV)
+        self.assertFalse(sh.DEFAULT_LINEUP_COV)
 
     def test_score_week_scenario_routes_generative(self) -> None:
         side = pd.DataFrame(

@@ -1,0 +1,46 @@
+{
+  "top_n": 15,
+  "jaccard_top_vs_mean15": 0.25,
+  "n_mean_in_path_top": 6,
+  "mean_in_path_top": [
+    {
+      "player_id": "2025-26:249",
+      "name": "Jo\u00e3o Pedro Junqueira de Jesus"
+    },
+    {
+      "player_id": "2025-26:430",
+      "name": "Erling Haaland"
+    },
+    {
+      "player_id": "2025-26:449",
+      "name": "Bruno Borges Fernandes"
+    },
+    {
+      "player_id": "2025-26:565",
+      "name": "Guglielmo Vicario"
+    },
+    {
+      "player_id": "2025-26:694",
+      "name": "Nordi Mukiele"
+    },
+    {
+      "player_id": "2025-26:72",
+      "name": "Marcos Senesi Bar\u00f3n"
+    }
+  ],
+  "path_top_captain": {
+    "player_id": "2025-26:430",
+    "name": "Erling Haaland",
+    "freq_captain": 0.4583333333333333
+  },
+  "mean_captain_id": "2025-26:430",
+  "mean_captain_in_path_top": true,
+  "mean_xi_in_path_top": [
+    "2025-26:249",
+    "2025-26:430",
+    "2025-26:449",
+    "2025-26:565",
+    "2025-26:694",
+    "2025-26:72"
+  ]
+}

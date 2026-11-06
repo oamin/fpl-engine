@@ -1,0 +1,1190 @@
+{
+  "n_rows": 2800,
+  "n_with_market": 2730,
+  "h1_gf": [
+    {
+      "pred": "lam_gf_mkt",
+      "y": "gf",
+      "n": 2730,
+      "pearson": 0.363,
+      "spearman": 0.342,
+      "r2": 0.132,
+      "mae": 0.923,
+      "scope": "H1"
+    },
+    {
+      "pred": "p_win",
+      "y": "gf",
+      "n": 2730,
+      "pearson": 0.352,
+      "spearman": 0.334,
+      "r2": 0.1241,
+      "mae": 0.928,
+      "scope": "H1"
+    },
+    {
+      "pred": "atk_mkt",
+      "y": "gf",
+      "n": 2730,
+      "pearson": 0.344,
+      "spearman": 0.331,
+      "r2": 0.1183,
+      "mae": 0.933,
+      "scope": "H1"
+    },
+    {
+      "pred": "opp_ga_r3",
+      "y": "gf",
+      "n": 2800,
+      "pearson": 0.327,
+      "spearman": 0.326,
+      "r2": 0.1068,
+      "mae": 0.932,
+      "scope": "H1"
+    },
+    {
+      "pred": "lam_gf_avg",
+      "y": "gf",
+      "n": 2800,
+      "pearson": 0.331,
+      "spearman": 0.317,
+      "r2": 0.1093,
+      "mae": 0.947,
+      "scope": "H1"
+    },
+    {
+      "pred": "lam_gf_dc",
+      "y": "gf",
+      "n": 2800,
+      "pearson": 0.269,
+      "spearman": 0.249,
+      "r2": 0.0724,
+      "mae": 0.968,
+      "scope": "H1"
+    },
+    {
+      "pred": "opp_xgc_r3",
+      "y": "gf",
+      "n": 2800,
+      "pearson": 0.218,
+      "spearman": 0.243,
+      "r2": 0.0476,
+      "mae": 0.979,
+      "scope": "H1"
+    },
+    {
+      "pred": "opp_ga_exp",
+      "y": "gf",
+      "n": 2800,
+      "pearson": 0.247,
+      "spearman": 0.236,
+      "r2": 0.061,
+      "mae": 0.975,
+      "scope": "H1"
+    },
+    {
+      "pred": "lam_gf_x",
+      "y": "gf",
+      "n": 2800,
+      "pearson": 0.204,
+      "spearman": 0.225,
+      "r2": 0.0416,
+      "mae": 0.986,
+      "scope": "H1"
+    },
+    {
+      "pred": "own_gf_exp",
+      "y": "gf",
+      "n": 2800,
+      "pearson": 0.228,
+      "spearman": 0.219,
+      "r2": 0.0519,
+      "mae": 0.982,
+      "scope": "H1"
+    },
+    {
+      "pred": "opp_xgc_exp",
+      "y": "gf",
+      "n": 2800,
+      "pearson": 0.159,
+      "spearman": 0.182,
+      "r2": 0.0254,
+      "mae": 1.0,
+      "scope": "H1"
+    },
+    {
+      "pred": "own_xg_exp",
+      "y": "gf",
+      "n": 2800,
+      "pearson": 0.147,
+      "spearman": 0.17,
+      "r2": 0.0216,
+      "mae": 1.003,
+      "scope": "H1"
+    },
+    {
+      "pred": "own_xg_r3",
+      "y": "gf",
+      "n": 2800,
+      "pearson": 0.125,
+      "spearman": 0.128,
+      "r2": 0.0156,
+      "mae": 1.013,
+      "scope": "H1"
+    },
+    {
+      "pred": "own_gf_r3",
+      "y": "gf",
+      "n": 2800,
+      "pearson": 0.142,
+      "spearman": 0.124,
+      "r2": 0.0202,
+      "mae": 1.011,
+      "scope": "H1"
+    },
+    {
+      "pred": "home",
+      "y": "gf",
+      "n": 2800,
+      "pearson": 0.115,
+      "spearman": 0.113,
+      "r2": 0.0132,
+      "mae": 1.015,
+      "scope": "H1"
+    }
+  ],
+  "h1_ga": [
+    {
+      "pred": "opp_gf_r3",
+      "y": "ga",
+      "n": 2800,
+      "pearson": 0.398,
+      "spearman": 0.366,
+      "r2": 0.1585,
+      "mae": 0.915,
+      "scope": "H1"
+    },
+    {
+      "pred": "def_mkt",
+      "y": "ga",
+      "n": 2730,
+      "pearson": 0.344,
+      "spearman": 0.33,
+      "r2": 0.118,
+      "mae": 0.932,
+      "scope": "H1"
+    },
+    {
+      "pred": "p_win",
+      "y": "ga",
+      "n": 2730,
+      "pearson": -0.33,
+      "spearman": -0.327,
+      "r2": 0.1091,
+      "mae": 0.938,
+      "scope": "H1"
+    },
+    {
+      "pred": "lam_ga_avg",
+      "y": "ga",
+      "n": 2800,
+      "pearson": 0.342,
+      "spearman": 0.324,
+      "r2": 0.1173,
+      "mae": 0.944,
+      "scope": "H1"
+    },
+    {
+      "pred": "opp_gf_exp",
+      "y": "ga",
+      "n": 2800,
+      "pearson": 0.316,
+      "spearman": 0.295,
+      "r2": 0.1,
+      "mae": 0.95,
+      "scope": "H1"
+    },
+    {
+      "pred": "lam_ga_dc",
+      "y": "ga",
+      "n": 2800,
+      "pearson": 0.279,
+      "spearman": 0.251,
+      "r2": 0.0779,
+      "mae": 0.964,
+      "scope": "H1"
+    },
+    {
+      "pred": "opp_xg_r3",
+      "y": "ga",
+      "n": 2800,
+      "pearson": 0.217,
+      "spearman": 0.225,
+      "r2": 0.0469,
+      "mae": 0.983,
+      "scope": "H1"
+    },
+    {
+      "pred": "lam_ga_x",
+      "y": "ga",
+      "n": 2800,
+      "pearson": 0.199,
+      "spearman": 0.223,
+      "r2": 0.0395,
+      "mae": 0.987,
+      "scope": "H1"
+    },
+    {
+      "pred": "opp_xg_exp",
+      "y": "ga",
+      "n": 2800,
+      "pearson": 0.166,
+      "spearman": 0.191,
+      "r2": 0.0276,
+      "mae": 0.995,
+      "scope": "H1"
+    },
+    {
+      "pred": "own_xgc_exp",
+      "y": "ga",
+      "n": 2800,
+      "pearson": 0.137,
+      "spearman": 0.157,
+      "r2": 0.0189,
+      "mae": 1.006,
+      "scope": "H1"
+    },
+    {
+      "pred": "own_ga_exp",
+      "y": "ga",
+      "n": 2800,
+      "pearson": 0.162,
+      "spearman": 0.155,
+      "r2": 0.0263,
+      "mae": 1.002,
+      "scope": "H1"
+    },
+    {
+      "pred": "own_xgc_r3",
+      "y": "ga",
+      "n": 2800,
+      "pearson": 0.127,
+      "spearman": 0.142,
+      "r2": 0.0162,
+      "mae": 1.008,
+      "scope": "H1"
+    },
+    {
+      "pred": "home",
+      "y": "ga",
+      "n": 2800,
+      "pearson": -0.116,
+      "spearman": -0.114,
+      "r2": 0.0135,
+      "mae": 1.013,
+      "scope": "H1"
+    },
+    {
+      "pred": "p_over",
+      "y": "ga",
+      "n": 2730,
+      "pearson": 0.114,
+      "spearman": 0.101,
+      "r2": 0.013,
+      "mae": 1.008,
+      "scope": "H1"
+    },
+    {
+      "pred": "own_ga_r3",
+      "y": "ga",
+      "n": 2800,
+      "pearson": 0.093,
+      "spearman": 0.096,
+      "r2": 0.0086,
+      "mae": 1.016,
+      "scope": "H1"
+    }
+  ],
+  "all": [
+    {
+      "pred": "own_gf_exp",
+      "y": "gf",
+      "n": 2800,
+      "pearson": 0.228,
+      "spearman": 0.219,
+      "r2": 0.0519,
+      "mae": 0.982,
+      "scope": "H1"
+    },
+    {
+      "pred": "own_gf_r3",
+      "y": "gf",
+      "n": 2800,
+      "pearson": 0.142,
+      "spearman": 0.124,
+      "r2": 0.0202,
+      "mae": 1.011,
+      "scope": "H1"
+    },
+    {
+      "pred": "own_xg_exp",
+      "y": "gf",
+      "n": 2800,
+      "pearson": 0.147,
+      "spearman": 0.17,
+      "r2": 0.0216,
+      "mae": 1.003,
+      "scope": "H1"
+    },
+    {
+      "pred": "own_xg_r3",
+      "y": "gf",
+      "n": 2800,
+      "pearson": 0.125,
+      "spearman": 0.128,
+      "r2": 0.0156,
+      "mae": 1.013,
+      "scope": "H1"
+    },
+    {
+      "pred": "opp_ga_exp",
+      "y": "gf",
+      "n": 2800,
+      "pearson": 0.247,
+      "spearman": 0.236,
+      "r2": 0.061,
+      "mae": 0.975,
+      "scope": "H1"
+    },
+    {
+      "pred": "opp_ga_r3",
+      "y": "gf",
+      "n": 2800,
+      "pearson": 0.327,
+      "spearman": 0.326,
+      "r2": 0.1068,
+      "mae": 0.932,
+      "scope": "H1"
+    },
+    {
+      "pred": "opp_xgc_exp",
+      "y": "gf",
+      "n": 2800,
+      "pearson": 0.159,
+      "spearman": 0.182,
+      "r2": 0.0254,
+      "mae": 1.0,
+      "scope": "H1"
+    },
+    {
+      "pred": "opp_xgc_r3",
+      "y": "gf",
+      "n": 2800,
+      "pearson": 0.218,
+      "spearman": 0.243,
+      "r2": 0.0476,
+      "mae": 0.979,
+      "scope": "H1"
+    },
+    {
+      "pred": "lam_gf_avg",
+      "y": "gf",
+      "n": 2800,
+      "pearson": 0.331,
+      "spearman": 0.317,
+      "r2": 0.1093,
+      "mae": 0.947,
+      "scope": "H1"
+    },
+    {
+      "pred": "lam_gf_x",
+      "y": "gf",
+      "n": 2800,
+      "pearson": 0.204,
+      "spearman": 0.225,
+      "r2": 0.0416,
+      "mae": 0.986,
+      "scope": "H1"
+    },
+    {
+      "pred": "lam_gf_dc",
+      "y": "gf",
+      "n": 2800,
+      "pearson": 0.269,
+      "spearman": 0.249,
+      "r2": 0.0724,
+      "mae": 0.968,
+      "scope": "H1"
+    },
+    {
+      "pred": "atk_mkt",
+      "y": "gf",
+      "n": 2730,
+      "pearson": 0.344,
+      "spearman": 0.331,
+      "r2": 0.1183,
+      "mae": 0.933,
+      "scope": "H1"
+    },
+    {
+      "pred": "p_win",
+      "y": "gf",
+      "n": 2730,
+      "pearson": 0.352,
+      "spearman": 0.334,
+      "r2": 0.1241,
+      "mae": 0.928,
+      "scope": "H1"
+    },
+    {
+      "pred": "p_over",
+      "y": "gf",
+      "n": 2730,
+      "pearson": 0.114,
+      "spearman": 0.101,
+      "r2": 0.013,
+      "mae": 1.01,
+      "scope": "H1"
+    },
+    {
+      "pred": "lam_gf_mkt",
+      "y": "gf",
+      "n": 2730,
+      "pearson": 0.363,
+      "spearman": 0.342,
+      "r2": 0.132,
+      "mae": 0.923,
+      "scope": "H1"
+    },
+    {
+      "pred": "home",
+      "y": "gf",
+      "n": 2800,
+      "pearson": 0.115,
+      "spearman": 0.113,
+      "r2": 0.0132,
+      "mae": 1.015,
+      "scope": "H1"
+    },
+    {
+      "pred": "own_ga_exp",
+      "y": "ga",
+      "n": 2800,
+      "pearson": 0.162,
+      "spearman": 0.155,
+      "r2": 0.0263,
+      "mae": 1.002,
+      "scope": "H1"
+    },
+    {
+      "pred": "own_ga_r3",
+      "y": "ga",
+      "n": 2800,
+      "pearson": 0.093,
+      "spearman": 0.096,
+      "r2": 0.0086,
+      "mae": 1.016,
+      "scope": "H1"
+    },
+    {
+      "pred": "own_xgc_exp",
+      "y": "ga",
+      "n": 2800,
+      "pearson": 0.137,
+      "spearman": 0.157,
+      "r2": 0.0189,
+      "mae": 1.006,
+      "scope": "H1"
+    },
+    {
+      "pred": "own_xgc_r3",
+      "y": "ga",
+      "n": 2800,
+      "pearson": 0.127,
+      "spearman": 0.142,
+      "r2": 0.0162,
+      "mae": 1.008,
+      "scope": "H1"
+    },
+    {
+      "pred": "opp_gf_exp",
+      "y": "ga",
+      "n": 2800,
+      "pearson": 0.316,
+      "spearman": 0.295,
+      "r2": 0.1,
+      "mae": 0.95,
+      "scope": "H1"
+    },
+    {
+      "pred": "opp_gf_r3",
+      "y": "ga",
+      "n": 2800,
+      "pearson": 0.398,
+      "spearman": 0.366,
+      "r2": 0.1585,
+      "mae": 0.915,
+      "scope": "H1"
+    },
+    {
+      "pred": "opp_xg_exp",
+      "y": "ga",
+      "n": 2800,
+      "pearson": 0.166,
+      "spearman": 0.191,
+      "r2": 0.0276,
+      "mae": 0.995,
+      "scope": "H1"
+    },
+    {
+      "pred": "opp_xg_r3",
+      "y": "ga",
+      "n": 2800,
+      "pearson": 0.217,
+      "spearman": 0.225,
+      "r2": 0.0469,
+      "mae": 0.983,
+      "scope": "H1"
+    },
+    {
+      "pred": "lam_ga_avg",
+      "y": "ga",
+      "n": 2800,
+      "pearson": 0.342,
+      "spearman": 0.324,
+      "r2": 0.1173,
+      "mae": 0.944,
+      "scope": "H1"
+    },
+    {
+      "pred": "lam_ga_x",
+      "y": "ga",
+      "n": 2800,
+      "pearson": 0.199,
+      "spearman": 0.223,
+      "r2": 0.0395,
+      "mae": 0.987,
+      "scope": "H1"
+    },
+    {
+      "pred": "lam_ga_dc",
+      "y": "ga",
+      "n": 2800,
+      "pearson": 0.279,
+      "spearman": 0.251,
+      "r2": 0.0779,
+      "mae": 0.964,
+      "scope": "H1"
+    },
+    {
+      "pred": "def_mkt",
+      "y": "ga",
+      "n": 2730,
+      "pearson": 0.344,
+      "spearman": 0.33,
+      "r2": 0.118,
+      "mae": 0.932,
+      "scope": "H1"
+    },
+    {
+      "pred": "p_win",
+      "y": "ga",
+      "n": 2730,
+      "pearson": -0.33,
+      "spearman": -0.327,
+      "r2": 0.1091,
+      "mae": 0.938,
+      "scope": "H1"
+    },
+    {
+      "pred": "p_over",
+      "y": "ga",
+      "n": 2730,
+      "pearson": 0.114,
+      "spearman": 0.101,
+      "r2": 0.013,
+      "mae": 1.008,
+      "scope": "H1"
+    },
+    {
+      "pred": "home",
+      "y": "ga",
+      "n": 2800,
+      "pearson": -0.116,
+      "spearman": -0.114,
+      "r2": 0.0135,
+      "mae": 1.013,
+      "scope": "H1"
+    },
+    {
+      "pred": "lam_gf_avg",
+      "y": "gf_h3",
+      "n": 2640,
+      "pearson": 0.356,
+      "spearman": 0.358,
+      "r2": 0.1267,
+      "mae": 0.587,
+      "scope": "H3"
+    },
+    {
+      "pred": "lam_gf_x",
+      "y": "gf_h3",
+      "n": 2640,
+      "pearson": 0.235,
+      "spearman": 0.258,
+      "r2": 0.0554,
+      "mae": 0.613,
+      "scope": "H3"
+    },
+    {
+      "pred": "lam_gf_dc",
+      "y": "gf_h3",
+      "n": 2640,
+      "pearson": 0.301,
+      "spearman": 0.292,
+      "r2": 0.0908,
+      "mae": 0.603,
+      "scope": "H3"
+    },
+    {
+      "pred": "own_xg_exp",
+      "y": "gf_h3",
+      "n": 2640,
+      "pearson": 0.237,
+      "spearman": 0.267,
+      "r2": 0.0559,
+      "mae": 0.61,
+      "scope": "H3"
+    },
+    {
+      "pred": "own_gf_exp",
+      "y": "gf_h3",
+      "n": 2640,
+      "pearson": 0.358,
+      "spearman": 0.359,
+      "r2": 0.1279,
+      "mae": 0.587,
+      "scope": "H3"
+    },
+    {
+      "pred": "opp_ga_exp",
+      "y": "gf_h3",
+      "n": 2640,
+      "pearson": 0.135,
+      "spearman": 0.133,
+      "r2": 0.0182,
+      "mae": 0.627,
+      "scope": "H3"
+    },
+    {
+      "pred": "opp_ga_r3",
+      "y": "gf_h3",
+      "n": 2640,
+      "pearson": 0.207,
+      "spearman": 0.201,
+      "r2": 0.0427,
+      "mae": 0.617,
+      "scope": "H3"
+    },
+    {
+      "pred": "atk_mkt",
+      "y": "gf_h3",
+      "n": 2574,
+      "pearson": 0.353,
+      "spearman": 0.343,
+      "r2": 0.1248,
+      "mae": 0.591,
+      "scope": "H3"
+    },
+    {
+      "pred": "lam_gf_mkt",
+      "y": "gf_h3",
+      "n": 2574,
+      "pearson": 0.389,
+      "spearman": 0.374,
+      "r2": 0.1514,
+      "mae": 0.582,
+      "scope": "H3"
+    },
+    {
+      "pred": "p_win",
+      "y": "gf_h3",
+      "n": 2574,
+      "pearson": 0.366,
+      "spearman": 0.349,
+      "r2": 0.1342,
+      "mae": 0.588,
+      "scope": "H3"
+    },
+    {
+      "pred": "lam_ga_avg",
+      "y": "ga_h3",
+      "n": 2640,
+      "pearson": 0.286,
+      "spearman": 0.277,
+      "r2": 0.0817,
+      "mae": 0.586,
+      "scope": "H3"
+    },
+    {
+      "pred": "lam_ga_x",
+      "y": "ga_h3",
+      "n": 2640,
+      "pearson": 0.225,
+      "spearman": 0.236,
+      "r2": 0.0506,
+      "mae": 0.6,
+      "scope": "H3"
+    },
+    {
+      "pred": "lam_ga_dc",
+      "y": "ga_h3",
+      "n": 2640,
+      "pearson": 0.266,
+      "spearman": 0.251,
+      "r2": 0.071,
+      "mae": 0.592,
+      "scope": "H3"
+    },
+    {
+      "pred": "own_xgc_exp",
+      "y": "ga_h3",
+      "n": 2640,
+      "pearson": 0.225,
+      "spearman": 0.24,
+      "r2": 0.0507,
+      "mae": 0.599,
+      "scope": "H3"
+    },
+    {
+      "pred": "own_ga_exp",
+      "y": "ga_h3",
+      "n": 2640,
+      "pearson": 0.258,
+      "spearman": 0.25,
+      "r2": 0.0666,
+      "mae": 0.592,
+      "scope": "H3"
+    },
+    {
+      "pred": "opp_gf_exp",
+      "y": "ga_h3",
+      "n": 2640,
+      "pearson": 0.157,
+      "spearman": 0.156,
+      "r2": 0.0245,
+      "mae": 0.606,
+      "scope": "H3"
+    },
+    {
+      "pred": "opp_gf_r3",
+      "y": "ga_h3",
+      "n": 2640,
+      "pearson": 0.229,
+      "spearman": 0.222,
+      "r2": 0.0525,
+      "mae": 0.595,
+      "scope": "H3"
+    },
+    {
+      "pred": "def_mkt",
+      "y": "ga_h3",
+      "n": 2574,
+      "pearson": 0.317,
+      "spearman": 0.309,
+      "r2": 0.1003,
+      "mae": 0.569,
+      "scope": "H3"
+    },
+    {
+      "pred": "p_win",
+      "y": "ga_h3",
+      "n": 2574,
+      "pearson": -0.311,
+      "spearman": -0.307,
+      "r2": 0.0966,
+      "mae": 0.57,
+      "scope": "H3"
+    },
+    {
+      "pred": "lam_gf_avg",
+      "y": "gf_h5",
+      "n": 2480,
+      "pearson": 0.382,
+      "spearman": 0.388,
+      "r2": 0.1456,
+      "mae": 0.48,
+      "scope": "H5"
+    },
+    {
+      "pred": "lam_gf_x",
+      "y": "gf_h5",
+      "n": 2480,
+      "pearson": 0.263,
+      "spearman": 0.291,
+      "r2": 0.069,
+      "mae": 0.502,
+      "scope": "H5"
+    },
+    {
+      "pred": "lam_gf_dc",
+      "y": "gf_h5",
+      "n": 2480,
+      "pearson": 0.325,
+      "spearman": 0.333,
+      "r2": 0.1058,
+      "mae": 0.49,
+      "scope": "H5"
+    },
+    {
+      "pred": "own_xg_exp",
+      "y": "gf_h5",
+      "n": 2480,
+      "pearson": 0.291,
+      "spearman": 0.327,
+      "r2": 0.0849,
+      "mae": 0.496,
+      "scope": "H5"
+    },
+    {
+      "pred": "own_gf_exp",
+      "y": "gf_h5",
+      "n": 2480,
+      "pearson": 0.429,
+      "spearman": 0.436,
+      "r2": 0.1841,
+      "mae": 0.468,
+      "scope": "H5"
+    },
+    {
+      "pred": "opp_ga_exp",
+      "y": "gf_h5",
+      "n": 2480,
+      "pearson": 0.092,
+      "spearman": 0.087,
+      "r2": 0.0084,
+      "mae": 0.519,
+      "scope": "H5"
+    },
+    {
+      "pred": "opp_ga_r3",
+      "y": "gf_h5",
+      "n": 2480,
+      "pearson": 0.161,
+      "spearman": 0.154,
+      "r2": 0.0258,
+      "mae": 0.515,
+      "scope": "H5"
+    },
+    {
+      "pred": "atk_mkt",
+      "y": "gf_h5",
+      "n": 2417,
+      "pearson": 0.374,
+      "spearman": 0.364,
+      "r2": 0.1399,
+      "mae": 0.481,
+      "scope": "H5"
+    },
+    {
+      "pred": "lam_gf_mkt",
+      "y": "gf_h5",
+      "n": 2417,
+      "pearson": 0.418,
+      "spearman": 0.407,
+      "r2": 0.1747,
+      "mae": 0.471,
+      "scope": "H5"
+    },
+    {
+      "pred": "p_win",
+      "y": "gf_h5",
+      "n": 2417,
+      "pearson": 0.389,
+      "spearman": 0.372,
+      "r2": 0.1514,
+      "mae": 0.478,
+      "scope": "H5"
+    },
+    {
+      "pred": "lam_ga_avg",
+      "y": "ga_h5",
+      "n": 2480,
+      "pearson": 0.304,
+      "spearman": 0.289,
+      "r2": 0.0922,
+      "mae": 0.477,
+      "scope": "H5"
+    },
+    {
+      "pred": "lam_ga_x",
+      "y": "ga_h5",
+      "n": 2480,
+      "pearson": 0.262,
+      "spearman": 0.266,
+      "r2": 0.0686,
+      "mae": 0.486,
+      "scope": "H5"
+    },
+    {
+      "pred": "lam_ga_dc",
+      "y": "ga_h5",
+      "n": 2480,
+      "pearson": 0.295,
+      "spearman": 0.275,
+      "r2": 0.087,
+      "mae": 0.481,
+      "scope": "H5"
+    },
+    {
+      "pred": "own_xgc_exp",
+      "y": "ga_h5",
+      "n": 2480,
+      "pearson": 0.278,
+      "spearman": 0.288,
+      "r2": 0.0771,
+      "mae": 0.481,
+      "scope": "H5"
+    },
+    {
+      "pred": "own_ga_exp",
+      "y": "ga_h5",
+      "n": 2480,
+      "pearson": 0.315,
+      "spearman": 0.306,
+      "r2": 0.0994,
+      "mae": 0.472,
+      "scope": "H5"
+    },
+    {
+      "pred": "opp_gf_exp",
+      "y": "ga_h5",
+      "n": 2480,
+      "pearson": 0.131,
+      "spearman": 0.121,
+      "r2": 0.017,
+      "mae": 0.498,
+      "scope": "H5"
+    },
+    {
+      "pred": "opp_gf_r3",
+      "y": "ga_h5",
+      "n": 2480,
+      "pearson": 0.193,
+      "spearman": 0.182,
+      "r2": 0.0373,
+      "mae": 0.491,
+      "scope": "H5"
+    },
+    {
+      "pred": "def_mkt",
+      "y": "ga_h5",
+      "n": 2417,
+      "pearson": 0.326,
+      "spearman": 0.315,
+      "r2": 0.1061,
+      "mae": 0.459,
+      "scope": "H5"
+    },
+    {
+      "pred": "p_win",
+      "y": "ga_h5",
+      "n": 2417,
+      "pearson": -0.322,
+      "spearman": -0.314,
+      "r2": 0.1034,
+      "mae": 0.46,
+      "scope": "H5"
+    },
+    {
+      "pred": "lam_gf_avg",
+      "y": "gf_h8",
+      "n": 2240,
+      "pearson": 0.414,
+      "spearman": 0.433,
+      "r2": 0.1717,
+      "mae": 0.405,
+      "scope": "H8"
+    },
+    {
+      "pred": "lam_gf_x",
+      "y": "gf_h8",
+      "n": 2240,
+      "pearson": 0.292,
+      "spearman": 0.329,
+      "r2": 0.085,
+      "mae": 0.429,
+      "scope": "H8"
+    },
+    {
+      "pred": "lam_gf_dc",
+      "y": "gf_h8",
+      "n": 2240,
+      "pearson": 0.352,
+      "spearman": 0.372,
+      "r2": 0.1238,
+      "mae": 0.415,
+      "scope": "H8"
+    },
+    {
+      "pred": "own_xg_exp",
+      "y": "gf_h8",
+      "n": 2240,
+      "pearson": 0.342,
+      "spearman": 0.382,
+      "r2": 0.1169,
+      "mae": 0.421,
+      "scope": "H8"
+    },
+    {
+      "pred": "own_gf_exp",
+      "y": "gf_h8",
+      "n": 2240,
+      "pearson": 0.491,
+      "spearman": 0.502,
+      "r2": 0.2406,
+      "mae": 0.387,
+      "scope": "H8"
+    },
+    {
+      "pred": "opp_ga_exp",
+      "y": "gf_h8",
+      "n": 2240,
+      "pearson": 0.07,
+      "spearman": 0.076,
+      "r2": 0.0049,
+      "mae": 0.45,
+      "scope": "H8"
+    },
+    {
+      "pred": "opp_ga_r3",
+      "y": "gf_h8",
+      "n": 2240,
+      "pearson": 0.14,
+      "spearman": 0.142,
+      "r2": 0.0197,
+      "mae": 0.445,
+      "scope": "H8"
+    },
+    {
+      "pred": "atk_mkt",
+      "y": "gf_h8",
+      "n": 2184,
+      "pearson": 0.408,
+      "spearman": 0.399,
+      "r2": 0.1663,
+      "mae": 0.406,
+      "scope": "H8"
+    },
+    {
+      "pred": "lam_gf_mkt",
+      "y": "gf_h8",
+      "n": 2184,
+      "pearson": 0.461,
+      "spearman": 0.453,
+      "r2": 0.2128,
+      "mae": 0.393,
+      "scope": "H8"
+    },
+    {
+      "pred": "p_win",
+      "y": "gf_h8",
+      "n": 2184,
+      "pearson": 0.425,
+      "spearman": 0.408,
+      "r2": 0.1809,
+      "mae": 0.402,
+      "scope": "H8"
+    },
+    {
+      "pred": "lam_ga_avg",
+      "y": "ga_h8",
+      "n": 2240,
+      "pearson": 0.317,
+      "spearman": 0.291,
+      "r2": 0.1003,
+      "mae": 0.399,
+      "scope": "H8"
+    },
+    {
+      "pred": "lam_ga_x",
+      "y": "ga_h8",
+      "n": 2240,
+      "pearson": 0.29,
+      "spearman": 0.289,
+      "r2": 0.0839,
+      "mae": 0.406,
+      "scope": "H8"
+    },
+    {
+      "pred": "lam_ga_dc",
+      "y": "ga_h8",
+      "n": 2240,
+      "pearson": 0.312,
+      "spearman": 0.291,
+      "r2": 0.0973,
+      "mae": 0.401,
+      "scope": "H8"
+    },
+    {
+      "pred": "own_xgc_exp",
+      "y": "ga_h8",
+      "n": 2240,
+      "pearson": 0.326,
+      "spearman": 0.322,
+      "r2": 0.106,
+      "mae": 0.403,
+      "scope": "H8"
+    },
+    {
+      "pred": "own_ga_exp",
+      "y": "ga_h8",
+      "n": 2240,
+      "pearson": 0.359,
+      "spearman": 0.34,
+      "r2": 0.1287,
+      "mae": 0.393,
+      "scope": "H8"
+    },
+    {
+      "pred": "opp_gf_exp",
+      "y": "ga_h8",
+      "n": 2240,
+      "pearson": 0.109,
+      "spearman": 0.097,
+      "r2": 0.0119,
+      "mae": 0.418,
+      "scope": "H8"
+    },
+    {
+      "pred": "opp_gf_r3",
+      "y": "ga_h8",
+      "n": 2240,
+      "pearson": 0.152,
+      "spearman": 0.146,
+      "r2": 0.023,
+      "mae": 0.416,
+      "scope": "H8"
+    },
+    {
+      "pred": "def_mkt",
+      "y": "ga_h8",
+      "n": 2184,
+      "pearson": 0.346,
+      "spearman": 0.332,
+      "r2": 0.1198,
+      "mae": 0.382,
+      "scope": "H8"
+    },
+    {
+      "pred": "p_win",
+      "y": "ga_h8",
+      "n": 2184,
+      "pearson": -0.344,
+      "spearman": -0.331,
+      "r2": 0.1182,
+      "mae": 0.382,
+      "scope": "H8"
+    }
+  ]
+}

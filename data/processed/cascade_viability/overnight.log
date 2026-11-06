@@ -1,0 +1,31 @@
+START 2026-10-20T22:11:00Z
+[D] smoke passed=True
+[A] integrity passed=True (1.7s)
+[B] season 2022-23…
+  GW12 done (5 weeks)
+  GW17 done (10 weeks)
+  GW22 done (15 weeks)
+  GW27 done (20 weeks)
+[B] season 2023-24…
+  GW12 done (5 weeks)
+  GW17 done (10 weeks)
+  GW22 done (15 weeks)
+  GW27 done (20 weeks)
+[B] season 2024-25…
+  GW12 done (5 weeks)
+  GW17 done (10 weeks)
+  GW22 done (15 weeks)
+  GW27 done (20 weeks)
+[B] season 2025-26…
+  GW12 done (5 weeks)
+  GW17 done (10 weeks)
+  GW22 done (15 weeks)
+  GW27 done (20 weeks)
+[B] done verdicts={'short_gen_minus_short_mean': 'clearly_loses', 'long_gen_minus_long_mean': 'clearly_loses', 'short_gen_minus_long_gen': 'does_not_clearly_lose'} (650.1s)
+[C] running FT+captain N=12…
+[C] running xi_plus_captain N=12…
+[C] FT squads=72 hits=7.533333333333333 (698.1s)
+[batch] finished in 1352.0s errors=[]
+BATCH_DONE 2026-10-20T22:33:34Z
+NO_CHANGES_TO_COMMIT
+END 2026-10-20T22:33:34Z

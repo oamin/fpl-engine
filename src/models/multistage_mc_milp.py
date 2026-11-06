@@ -4,16 +4,19 @@ Numagent 2.0 scoring (locked ``score_xp_v2``)
 --------------------------------------------
 From decision gameweek ``t``, for each of ``N`` Monte Carlo strands:
 
-1. **Match scenario (GW t+2…t+n).** For each fixture, take Opta predicted
-   ranks → season GF/GA (±MAE bands) → match λ via Dixon–Coles
-   (``match_prediction``). Sample λ inside those bands, then Poisson
-   scorelines. Sampled goals update the strand's club rates so later
-   weeks stay coherent.
+1. **Match scenario (GW t+2…t+n).** Every fixture baselines from Opta
+   predicted place → season GF/GA (±MAE bands) → match λ. 1st place
+   rolls from 1st-place GF/GA rates; 20th from 20th. Sample GF/GA inside
+   the rank bands (``sample_match_from_opta_ranks``), build Dixon–Coles
+   ``M`` (``match_outcome_probs_from_lambdas``), then ``k ∼ M``
+   (``match_outcome_roll``). No ClubPath blend on λ — Opta ranks stay
+   the centreline for the whole horizon.
 
-2. **Player xP (``score_xp_v2``).** At each snapshot, freeze same-season
-   as-of rates / priors / rolling minutes (``numagent_xp``) and score
-   each club side with ``score_team_side`` on Dixon–Coles moments from
-   the scenario λ pair — not ``xp_on_pot`` / share×λ.
+2. **Player xP (``score_xp_v2`` generative).** Same stack as cascade_short
+   at each snapshot: lineup cov → attack dice → CS/GC from rolled GA →
+   soft priors (DefCon/bonus/cards/saves). **No player props** (unavailable
+   beyond priced weeks). Future weeks in the remaining horizon scratch
+   ``k ∼ M`` from the same Opta-rank baseline (ClubPath unused for λ).
 
 3. **MILP + frequency.** Selectable-pool squad MILP on discounted path
    xP; aggregate selection frequency across strands × snapshots.
@@ -23,8 +26,9 @@ Objective modes
 - ``squad_sum`` (original): maximise Σ score over the 15 (bench = full weight).
 - ``xi_plus_captain``: maximise Σ score over a legal XI **plus** one captain
   double (``c ≤ y ≤ x``), so premiums are valued as captain candidates.
-- ``xi_plus_captain_ft``: first snapshot free rebuild; later snapshots keep a
-  path squad under FT/hit cost (``V = XI + captain − 4·hits``).
+- ``xi_plus_captain_ft``: **joint** multi-GW transfer plan over the full
+  horizon (free open + FT/hit schedule). One MILP chooses the starting 15
+  and every later transfer / hold / hit; see ``path_transfer_plan``.
 
 Optional **minutes overlay** (``--minutes-overlay``): scale xmi/shares by FPL
 ``chance_of_playing_*`` / status so injured or doubtful pool players are not
@@ -52,8 +56,16 @@ from src.markets import numagent_xp
 from src.markets.cascade_score_v2 import (
     SCORER as SCORE_XP_V2,
     build_frozen_pool,
+    normalize_live_history,
+    score_pool_generative_on_scenarios,
     score_pool_on_lam_pots,
 )
+from src.live.odds_props import match_anytime_props
+from src.markets.match_outcome import (
+    match_outcome_probs_from_lambdas,
+    match_outcome_roll,
+)
+from src.markets.short_horizon_generative import hist_by_team_norm
 from src.models.opta_gf_ga_horizon import (
     N_MATCHES,
     gf_ga_from_rank,
@@ -62,9 +74,12 @@ from src.models.opta_gf_ga_horizon import (
     match_prediction,
     pots_from_season_gf_ga,
     rank_gf_ga_profile,
+    sample_match_from_opta_ranks,
 )
+from src.models.short_horizon_cascade import MARKET_BAND
 from src.models.minutes_overlay import apply_availability_overlay, overlay_summary
 from src.models.player_pool import POOL_JSON as DEFAULT_POOL_JSON, load_player_pool_ids
+from src.rules.fpl_2026 import HIT_COST, SQUAD_SIZE
 from src.teams import norm_team
 
 
@@ -73,7 +88,9 @@ def _clip(x: float, lo: float, hi: float) -> float:
 
 ROOT = Path(__file__).resolve().parents[2]
 POS_MAP = {1: "GKP", 2: "DEF", 3: "MID", 4: "FWD"}
-DEFAULT_GAMMA = 0.9
+# Undiscounted path objective. γ=0.9 was climb leftover contamination — not a
+# cascade lock. L4 priced boards already screened γ=1 over γ=0.9.
+DEFAULT_GAMMA = 1.0
 LOG_CSV = ROOT / "data" / "cache" / "player_gw_2026_27.csv"
 # v1: do not sample shares. Match λ already moves team-level uncertainty;
 # share jitter is a second axis — open only after a calibration screen.
@@ -82,8 +99,71 @@ OBJECTIVE_SQUAD_SUM = "squad_sum"
 OBJECTIVE_XI_CAPTAIN = "xi_plus_captain"
 OBJECTIVE_XI_CAPTAIN_FT = "xi_plus_captain_ft"
 OBJECTIVES = (OBJECTIVE_SQUAD_SUM, OBJECTIVE_XI_CAPTAIN, OBJECTIVE_XI_CAPTAIN_FT)
-# Path FT mode: allow this many hits beyond the free-transfer bank at a snapshot.
-MAX_HITS_SNAPSHOT = 2
+# Path planner information set for minutes:
+# - open_loop: freeze pool minutes; one joint MILP over the horizon
+# - deadline_causal: at each deadline, oracle minutes for that GW only;
+#   as-of (GW < d) for later weeks; commit week d and replan
+PATH_PLAN_OPEN_LOOP = "open_loop"
+PATH_PLAN_DEADLINE_CAUSAL = "deadline_causal"
+PATH_PLAN_MODES = (PATH_PLAN_OPEN_LOOP, PATH_PLAN_DEADLINE_CAUSAL)
+# Receding look-ahead (GWs) for deadline-causal rolling replans.
+DEFAULT_CAUSAL_LOOKAHEAD = 4
+DEFAULT_CAUSAL_MILP_TIME = 12.0
+# Path FT hits: no artificial cap — bound = SQUAD_SIZE (same as L3/L4).
+# Objective still −HIT_COST per paid transfer. Do not restore max_hits=2.
+MAX_HITS_SNAPSHOT = int(SQUAD_SIZE)
+# FT bank PE: U(b) = ν · b, b capped at MAX_FT. Default ν = HIT_COST so each
+# stored FT is worth one hit (+4); five FTs = +20. Holding below the cap grows
+# next-deadline bank by +1 (+ν PE); at the cap the weekly grant adds +0 PE
+# unless a transfer is used first. Concave φ·W form is retired.
+DEFAULT_FT_PE_NU = float(HIT_COST)
+
+
+def ft_bank_phi(bank: int, *, max_ft: int | None = None) -> float:
+    """Retired concave shape — kept as ``min(b, MAX_FT)`` for old call sites."""
+    from src.rules.fpl_2026 import MAX_FT as _MAX_FT
+
+    if int(bank) <= 0:
+        return 0.0
+    m = int(_MAX_FT if max_ft is None else max_ft)
+    return float(min(int(bank), m))
+
+
+def ft_horizon_weight(n_remaining: int, *, gamma: float = DEFAULT_GAMMA) -> float:
+    """Legacy helper (PE no longer scales by W). Returns remaining-GW count at γ=1."""
+    h = max(0, int(n_remaining))
+    g = float(gamma)
+    if h <= 0:
+        return 0.0
+    if abs(g - 1.0) < 1e-12:
+        return float(h)
+    return float((1.0 - g**h) / (1.0 - g))
+
+
+def ft_bank_potential(
+    bank: int,
+    *,
+    nu: float | None = None,
+    max_ft: int | None = None,
+    horizon_weight: float = 1.0,
+) -> float:
+    """Potential energy of an FT bank: ``U(b) = ν · b`` (b capped at MAX_FT).
+
+    Default ``ν = HIT_COST`` (+4 per stored FT, +20 at cap). ``horizon_weight``
+    is ignored (API compat); PE is not multi-week-scaled.
+    """
+    del horizon_weight
+    from src.rules.fpl_2026 import MAX_FT as _MAX_FT
+
+    n = float(DEFAULT_FT_PE_NU if nu is None else nu)
+    if n <= 0.0 or int(bank) <= 0:
+        return 0.0
+    m = int(_MAX_FT if max_ft is None else max_ft)
+    return n * float(min(int(bank), m))
+# Scenario player scoring matches cascade_short generative (props off).
+DEFAULT_GENERATIVE_ATTACK = True
+# Align with cascade_short: freeze as-of mean minutes on gen paths (PI 2026-10-21).
+DEFAULT_LINEUP_COV = False
 
 
 @dataclass
@@ -115,19 +195,29 @@ class StrandResult:
     strand_id: int
     scorelines: list[dict[str, Any]] = field(default_factory=list)
     squads: list[dict[str, Any]] = field(default_factory=list)
+    meta: dict[str, Any] = field(default_factory=dict)
 
 
-def _poisson(rng: random.Random, lam: float) -> int:
-    # Knuth for small λ; normal approx avoided — PL λ are small.
-    lam = max(0.05, float(lam))
-    L = math.exp(-lam)
-    k = 0
-    p = 1.0
-    while True:
-        k += 1
-        p *= rng.random()
-        if p <= L:
-            return k - 1
+def sample_match_lams(
+    lam_h: float,
+    lam_a: float,
+    *,
+    lam_h_lo: float,
+    lam_h_hi: float,
+    lam_a_lo: float,
+    lam_a_hi: float,
+    rng: random.Random,
+    centre_blend: float = 0.5,
+) -> tuple[float, float]:
+    """Sample λ inside Opta/path predicted bands (match-band centre_blend)."""
+    lo_h, hi_h = min(lam_h_lo, lam_h_hi), max(lam_h_lo, lam_h_hi)
+    lo_a, hi_a = min(lam_a_lo, lam_a_hi), max(lam_a_lo, lam_a_hi)
+    u_h = lo_h + (hi_h - lo_h) * rng.random()
+    u_a = lo_a + (hi_a - lo_a) * rng.random()
+    w = float(min(1.0, max(0.0, centre_blend)))
+    sh = max(1e-6, w * float(lam_h) + (1.0 - w) * u_h)
+    sa = max(1e-6, w * float(lam_a) + (1.0 - w) * u_a)
+    return sh, sa
 
 
 def sample_scoreline(
@@ -140,31 +230,33 @@ def sample_scoreline(
     lam_a_hi: float,
     rng: random.Random,
     centre_blend: float = 0.5,
+    rho: float = 0.0,
 ) -> tuple[int, int, float, float]:
-    """Sample λ inside predicted bounds, then Poisson goals.
+    """Sample λ inside predicted bands, build ``M``, then ``k ∼ M``.
 
-    ``centre_blend`` ∈ [0, 1] weights the centreline λ vs a uniform draw
-    inside the predicted band (match-band calibration grid).
+    Match outcome distribution comes from Opta rank → GF/GA → λ (caller),
+    not independent Poissons. ``rho`` defaults to 0 on the long path
+    (no AH/OU fit); Dixon–Coles low-score mass stays available if set.
     """
-    lo_h, hi_h = min(lam_h_lo, lam_h_hi), max(lam_h_lo, lam_h_hi)
-    lo_a, hi_a = min(lam_a_lo, lam_a_hi), max(lam_a_lo, lam_a_hi)
-    u_h = lo_h + (hi_h - lo_h) * rng.random()
-    u_a = lo_a + (hi_a - lo_a) * rng.random()
-    w = float(min(1.0, max(0.0, centre_blend)))
-    sh = w * float(lam_h) + (1.0 - w) * u_h
-    sa = w * float(lam_a) + (1.0 - w) * u_a
-    gh = _poisson(rng, sh)
-    ga = _poisson(rng, sa)
-    # Soft clip: reject extreme outliers beyond ceil(hi)+2 once
-    if gh > math.ceil(hi_h) + 2:
-        gh = int(round(sh))
-    if ga > math.ceil(hi_a) + 2:
-        ga = int(round(sa))
-    return gh, ga, sh, sa
+    sh, sa = sample_match_lams(
+        lam_h,
+        lam_a,
+        lam_h_lo=lam_h_lo,
+        lam_h_hi=lam_h_hi,
+        lam_a_lo=lam_a_lo,
+        lam_a_hi=lam_a_hi,
+        rng=rng,
+        centre_blend=centre_blend,
+    )
+    probs = match_outcome_probs_from_lambdas(sh, sa, float(rho))
+    roll = match_outcome_roll(probs, rng)
+    return int(roll.goals_home), int(roll.goals_away), float(sh), float(sa)
 
 
 def init_paths_from_opta(
     ranks: Mapping[str, float] | None = None,
+    *,
+    profile: Mapping[int, Mapping[str, float]] | None = None,
 ) -> dict[str, ClubPath]:
     opta = load_opta_ranks() if ranks is None else None
     rank_map = (
@@ -172,10 +264,10 @@ def init_paths_from_opta(
         if ranks is None
         else {norm_team(k): float(v) for k, v in ranks.items()}
     )
-    profile = rank_gf_ga_profile()
+    prof = rank_gf_ga_profile() if profile is None else profile
     paths: dict[str, ClubPath] = {}
     for club, rk in rank_map.items():
-        rates = gf_ga_from_rank(rk, profile=profile, method="ols")
+        rates = gf_ga_from_rank(rk, profile=prof, method="ols")
         paths[club] = ClubPath(
             att=float(rates["gf"]) / N_MATCHES,
             dfn=float(rates["ga"]) / N_MATCHES,
@@ -310,39 +402,53 @@ def sample_opta_scenario(
     paths: Mapping[str, ClubPath],
     league_gf: float,
     rng: random.Random,
+    centre_blend: float = 0.5,
+    ranks: Mapping[str, float] | None = None,
+    profile: Mapping[int, Mapping[str, float]] | None = None,
 ) -> dict[str, Any]:
-    """Sample λ from Opta rank→GF/GA bands (match-specific), then scoreline.
+    """Baseline roll: place → GF/GA ± bands → λ → ``M`` → ``k ∼ M``.
 
-    Falls back to path ±15% only if a club is missing from Opta ranks.
+    Rank 1 always draws from 1st-place GF/GA rates; rank 20 from 20th.
+    Pass ``ranks`` / ``profile`` for closed-season oracle + LOSO bands;
+    defaults keep the live Opta JSON path.
+    ``ClubPath`` is unused for λ (kept only as KeyError fallback).
     """
     try:
-        pred = match_prediction(home, away)
-        # Light blend toward path rates after early rolls (coherence), still
-        # anchored on Opta mean/bands for the fixture quality (1st vs 20th).
-        path_pred = path_match_pots(paths, home, away, league_gf=league_gf)
-        lam_h = 0.7 * pred["lam_home"] + 0.3 * path_pred["lam_home"]
-        lam_a = 0.7 * pred["lam_away"] + 0.3 * path_pred["lam_away"]
-        lo_h, hi_h = pred["lam_home_lo"], pred["lam_home_hi"]
-        lo_a, hi_a = pred["lam_away_lo"], pred["lam_away_hi"]
-        home_rank = pred["home_rank"]
-        away_rank = pred["away_rank"]
+        draw = sample_match_from_opta_ranks(
+            home,
+            away,
+            rng,
+            ranks=ranks,
+            profile=profile,
+            centre_blend=centre_blend,
+            league_gf=league_gf,
+        )
+        # λ already sampled inside rank GF/GA bands — roll k∼M at that λ.
+        sh = float(draw["lam_home"])
+        sa = float(draw["lam_away"])
+        probs = match_outcome_probs_from_lambdas(sh, sa, 0.0)
+        roll = match_outcome_roll(probs, rng)
+        gh, ga = int(roll.goals_home), int(roll.goals_away)
+        lo_h, hi_h = float(draw["lam_home_lo"]), float(draw["lam_home_hi"])
+        lo_a, hi_a = float(draw["lam_away_lo"]), float(draw["lam_away_hi"])
+        home_rank = draw["home_rank"]
+        away_rank = draw["away_rank"]
     except KeyError:
         path_pred = path_match_pots(paths, home, away, league_gf=league_gf)
-        lam_h = path_pred["lam_home"]
-        lam_a = path_pred["lam_away"]
+        gh, ga, sh, sa = sample_scoreline(
+            path_pred["lam_home"],
+            path_pred["lam_away"],
+            lam_h_lo=path_pred["lam_home_lo"],
+            lam_h_hi=path_pred["lam_home_hi"],
+            lam_a_lo=path_pred["lam_away_lo"],
+            lam_a_hi=path_pred["lam_away_hi"],
+            rng=rng,
+            centre_blend=centre_blend,
+        )
         lo_h, hi_h = path_pred["lam_home_lo"], path_pred["lam_home_hi"]
         lo_a, hi_a = path_pred["lam_away_lo"], path_pred["lam_away_hi"]
         home_rank = away_rank = None
 
-    gh, ga, sh, sa = sample_scoreline(
-        lam_h,
-        lam_a,
-        lam_h_lo=lo_h,
-        lam_h_hi=hi_h,
-        lam_a_lo=lo_a,
-        lam_a_hi=hi_a,
-        rng=rng,
-    )
     return {
         "home": home,
         "away": away,
@@ -356,7 +462,495 @@ def sample_opta_scenario(
         "lam_h_hi": hi_h,
         "lam_a_lo": lo_a,
         "lam_a_hi": hi_a,
+        "source": (
+            "cascade_long_oracle_rank" if ranks is not None else "cascade_long_opta"
+        ),
     }
+
+
+def load_priced_week_fits(
+    odds_path: Path,
+    bootstrap: Mapping[str, Any],
+    *,
+    gw: int = 8,
+) -> list[dict[str, Any]]:
+    """Load cascade_short priced fits (+ anytime props) for one GW."""
+    raw = json.loads(Path(odds_path).read_text(encoding="utf-8"))
+    props_root = raw.get("props") or {}
+    out: list[dict[str, Any]] = []
+    for m in raw.get("matches") or []:
+        home = str(m.get("home") or "")
+        away = str(m.get("away") or "")
+        if not home or not away:
+            continue
+        label = f"{home} v {away}"
+        home_props: dict[int, float] = {}
+        away_props: dict[int, float] = {}
+        prop_block = props_root.get(label) or {}
+        prop_rows = prop_block.get("all") if isinstance(prop_block, Mapping) else None
+        n_matched = 0
+        if prop_rows:
+            matched = match_anytime_props(
+                prop_rows, home=home, away=away, bootstrap=bootstrap
+            )
+            n_matched = int(matched.get("n_matched") or 0)
+            for row in matched.get("rows") or []:
+                pid = int(row["element"])
+                p = float(row["p_anytime"])
+                if row.get("side") == "home":
+                    home_props[pid] = p
+                else:
+                    away_props[pid] = p
+        out.append(
+            {
+                "gw": int(gw),
+                "home": norm_team(home),
+                "away": norm_team(away),
+                "home_raw": home,
+                "away_raw": away,
+                "lam_h": float(m["lam_h"]),
+                "lam_a": float(m["lam_a"]),
+                "rho": float(m.get("rho") or 0.0),
+                "home_props": home_props,
+                "away_props": away_props,
+                "n_props_matched": n_matched,
+                "source": "cascade_short_priced",
+            }
+        )
+    return out
+
+
+def sample_priced_scenario(
+    fit: Mapping[str, Any],
+    rng: random.Random,
+    *,
+    band: float = MARKET_BAND,
+) -> dict[str, Any]:
+    """cascade_short match roll: priced centreline λ → ``M`` → ``k ∼ M``.
+
+    ``band`` is retired (must be 0 on the locked path). Diversity is the
+    categorical draw over ``M``, not artificial λ jitter.
+    """
+    if float(band) != 0.0:
+        raise ValueError(
+            "priced λ jitter is retired (band must be 0); use centreline M → k∼M"
+        )
+    sh = float(fit["lam_h"])
+    sa = float(fit["lam_a"])
+    rho = float(fit.get("rho") or 0.0)
+    probs = match_outcome_probs_from_lambdas(sh, sa, rho)
+    roll = match_outcome_roll(probs, rng)
+    return {
+        "home": norm_team(str(fit["home"])),
+        "away": norm_team(str(fit["away"])),
+        "home_rank": None,
+        "away_rank": None,
+        "hg": int(roll.goals_home),
+        "ag": int(roll.goals_away),
+        "lam_h": sh,
+        "lam_a": sa,
+        "rho": rho,
+        "source": "cascade_short_priced",
+        "home_props": dict(fit.get("home_props") or {}),
+        "away_props": dict(fit.get("away_props") or {}),
+    }
+
+
+def _priced_index(
+    priced_by_gw: Mapping[int, Sequence[Mapping[str, Any]]] | None,
+) -> dict[int, dict[tuple[str, str], Mapping[str, Any]]]:
+    out: dict[int, dict[tuple[str, str], Mapping[str, Any]]] = {}
+    if not priced_by_gw:
+        return out
+    for gw, fits in priced_by_gw.items():
+        idx: dict[tuple[str, str], Mapping[str, Any]] = {}
+        for fit in fits:
+            key = (norm_team(str(fit["home"])), norm_team(str(fit["away"])))
+            idx[key] = fit
+        out[int(gw)] = idx
+    return out
+
+
+def sample_week_scenario(
+    home: str,
+    away: str,
+    *,
+    gw: int,
+    priced_index: Mapping[int, Mapping[tuple[str, str], Mapping[str, Any]]],
+    paths: Mapping[str, ClubPath],
+    league_gf: float,
+    rng: random.Random,
+    ranks: Mapping[str, float] | None = None,
+    profile: Mapping[int, Mapping[str, float]] | None = None,
+) -> dict[str, Any]:
+    """Priced cascade_short when a fit exists; else Opta / oracle cascade_long."""
+    key = (norm_team(home), norm_team(away))
+    fit = (priced_index.get(int(gw)) or {}).get(key)
+    if fit is not None:
+        return sample_priced_scenario(fit, rng)
+    return sample_opta_scenario(
+        home,
+        away,
+        paths=paths,
+        league_gf=league_gf,
+        rng=rng,
+        ranks=ranks,
+        profile=profile,
+    )
+
+
+def _scenarios_for_remaining(
+    *,
+    remaining: Sequence[int],
+    snapshot_gw: int,
+    fixtures_gw: Mapping[int, list[dict[str, str]]],
+    rolled: Mapping[int, list[dict[str, Any]]],
+    paths: Mapping[str, ClubPath],
+    league_gf: float,
+    rng: random.Random,
+    priced_index: Mapping[int, Mapping[tuple[str, str], Mapping[str, Any]]]
+    | None = None,
+    ranks: Mapping[str, float] | None = None,
+    profile: Mapping[int, Mapping[str, float]] | None = None,
+) -> dict[int, list[dict[str, Any]]]:
+    """Current GW: stored rolls. Later GWs: scratch short (priced) or Opta/oracle."""
+    pidx = priced_index or {}
+    out: dict[int, list[dict[str, Any]]] = {}
+    for g in remaining:
+        g_i = int(g)
+        if g_i == int(snapshot_gw) and g_i in rolled:
+            out[g_i] = list(rolled[g_i])
+            continue
+        rows: list[dict[str, Any]] = []
+        for fx in fixtures_gw.get(g_i, []):
+            if fx["home"] not in paths or fx["away"] not in paths:
+                continue
+            rows.append(
+                sample_week_scenario(
+                    fx["home"],
+                    fx["away"],
+                    gw=g_i,
+                    priced_index=pidx,
+                    paths=paths,
+                    league_gf=league_gf,
+                    rng=rng,
+                    ranks=ranks,
+                    profile=profile,
+                )
+            )
+        out[g_i] = rows
+    return out
+
+
+def _undiscounted_scores_by_gw(
+    pool: pd.DataFrame,
+    *,
+    plan_gws: Sequence[int],
+    rolled_by_gw: Mapping[int, list[dict[str, Any]]],
+    fixtures_gw: Mapping[int, list[dict[str, str]]],
+    paths: Mapping[str, ClubPath],
+    league_gf: float,
+    alpha_g: float,
+    alpha_a: float,
+    rng: random.Random,
+    hist_by_team: Mapping[str, pd.DataFrame] | None,
+    generative_attack: bool,
+    lineup_cov: bool,
+) -> dict[int, np.ndarray]:
+    """Per-GW player xP aligned to ``pool`` rows (undiscounted; MILP applies γ)."""
+    out: dict[int, np.ndarray] = {}
+    for gw in plan_gws:
+        g = int(gw)
+        if generative_attack:
+            scenarios = {g: list(rolled_by_gw.get(g, []))}
+            scored = score_pool_generative_on_scenarios(
+                pool,
+                scenarios,
+                gws=[g],
+                alpha_g=float(alpha_g),
+                alpha_a=float(alpha_a),
+                rng=rng,
+                hist_by_team=hist_by_team,
+                gamma=1.0,
+                lineup_cov=lineup_cov,
+            )
+        else:
+            scenario_lams = {
+                (str(sc["home"]), str(sc["away"])): (
+                    float(sc["lam_h"]),
+                    float(sc["lam_a"]),
+                )
+                for sc in rolled_by_gw.get(g, [])
+            }
+            pots = pots_for_gw_from_paths(
+                paths,
+                fixtures_gw.get(g, []),
+                g,
+                league_gf=league_gf,
+                scenario_lams=scenario_lams or None,
+            )
+            scored = score_pool_on_pots(
+                pool,
+                pots,
+                gws=[g],
+                gamma=1.0,
+                alpha_g=alpha_g,
+                alpha_a=alpha_a,
+            )
+        arr = pd.to_numeric(scored["mc_score"], errors="coerce").fillna(0.0).to_numpy(
+            dtype=float
+        )
+        if len(arr) != len(pool):
+            raise RuntimeError(
+                f"score length {len(arr)} != pool {len(pool)} at GW{g}"
+            )
+        out[g] = arr
+    return out
+
+
+def _append_plan_week(
+    result: StrandResult,
+    week: Mapping[str, Any],
+    *,
+    plan_tag: str,
+) -> None:
+    result.squads.append(
+        {
+            "gw": int(week["gw"]),
+            "player_ids": list(week["player_ids"]),
+            "names": list(week["names"]),
+            "score_sum": float(week["week_score"]),
+            "objective": OBJECTIVE_XI_CAPTAIN_FT,
+            "objective_value": float(week["week_score"]) - float(week["hits"]),
+            "captain_id": week["captain_id"],
+            "xi_ids": list(week["xi_ids"]),
+            "n_transfers": int(week["n_transfers"]),
+            "hits": int(week["hits"]),
+            "ft_before": int(week["ft_before"]),
+            "ft_after": int(week["ft_after"]),
+            "plan": plan_tag,
+        }
+    )
+
+
+def _emit_joint_ft_plan(
+    result: StrandResult,
+    *,
+    pool: pd.DataFrame,
+    plan_gws: Sequence[int],
+    scores_by_gw: Mapping[int, np.ndarray],
+    buy_ids: set[str] | None,
+    gamma: float,
+    milp_time_limit: float,
+    ft_pe_nu: float,
+) -> StrandResult:
+    """Solve one joint path schedule and append weekly squads."""
+    from src.models.path_transfer_plan import (
+        pick_path_transfer_plan,
+        score_matrix_for_candidates,
+        select_plan_candidates,
+    )
+
+    cands = select_plan_candidates(
+        pool,
+        scores_by_gw,
+        gws=plan_gws,
+        buy_ids=buy_ids,
+    )
+    S = score_matrix_for_candidates(cands, pool, scores_by_gw, plan_gws)
+    # Joint solve needs more wall than a single-GW pick; scale with horizon.
+    tlim = max(float(milp_time_limit) * max(1, len(plan_gws)), 30.0)
+    plan = pick_path_transfer_plan(
+        cands,
+        S,
+        plan_gws,
+        gamma=float(gamma),
+        max_hits=MAX_HITS_SNAPSHOT,
+        ft_pe_nu=float(ft_pe_nu),
+        time_limit=tlim,
+    )
+    for week in plan["weeks"]:
+        _append_plan_week(result, week, plan_tag="joint_path")
+    result.meta["path_plan"] = {
+        "n_candidates": plan["n_candidates"],
+        "horizon": plan["horizon"],
+        "objective": plan["objective"],
+        "status": plan["status"],
+        "terminal_ft": plan["terminal_ft"],
+        "terminal_pe": plan["terminal_pe"],
+        "ft_pe_nu": plan["ft_pe_nu"],
+        "path_plan_mode": PATH_PLAN_OPEN_LOOP,
+    }
+    return result
+
+
+def _scores_causal_at_deadline(
+    pool: pd.DataFrame,
+    *,
+    deadline_gw: int,
+    remaining: Sequence[int],
+    rolled_by_gw: Mapping[int, list[dict[str, Any]]],
+    fixtures_gw: Mapping[int, list[dict[str, str]]],
+    paths: Mapping[str, ClubPath],
+    league_gf: float,
+    alpha_g: float,
+    alpha_a: float,
+    rng: random.Random,
+    hist_by_team: Mapping[str, pd.DataFrame] | None,
+    generative_attack: bool,
+    lineup_cov: bool,
+    merged: pd.DataFrame,
+    season: str,
+) -> dict[int, np.ndarray]:
+    """Score remaining weeks with deadline-causal minutes.
+
+    GW ``deadline_gw`` uses oracle minutes; later weeks use as-of (GW < d).
+    """
+    from src.models.deadline_minutes import deadline_minute_views, pool_with_minutes
+
+    views = deadline_minute_views(
+        pool, merged, deadline_gw=int(deadline_gw), season=str(season)
+    )
+    out: dict[int, np.ndarray] = {}
+    for gw in remaining:
+        g = int(gw)
+        m_vec = views["this_gw"] if g == int(deadline_gw) else views["asof"]
+        scored_pool = pool_with_minutes(pool, m_vec)
+        part = _undiscounted_scores_by_gw(
+            scored_pool,
+            plan_gws=[g],
+            rolled_by_gw=rolled_by_gw,
+            fixtures_gw=fixtures_gw,
+            paths=paths,
+            league_gf=league_gf,
+            alpha_g=alpha_g,
+            alpha_a=alpha_a,
+            rng=rng,
+            hist_by_team=hist_by_team,
+            generative_attack=generative_attack,
+            lineup_cov=lineup_cov,
+        )
+        out[g] = part[g]
+    return out
+
+
+def _emit_rolling_causal_ft_plan(
+    result: StrandResult,
+    *,
+    pool: pd.DataFrame,
+    plan_gws: Sequence[int],
+    rolled_by_gw: Mapping[int, list[dict[str, Any]]],
+    fixtures_gw: Mapping[int, list[dict[str, str]]],
+    paths: Mapping[str, ClubPath],
+    league_gf: float,
+    alpha_g: float,
+    alpha_a: float,
+    rng: random.Random,
+    hist_by_team: Mapping[str, pd.DataFrame] | None,
+    generative_attack: bool,
+    lineup_cov: bool,
+    buy_ids: set[str] | None,
+    gamma: float,
+    milp_time_limit: float,
+    ft_pe_nu: float,
+    merged: pd.DataFrame,
+    season: str,
+    lookahead: int = DEFAULT_CAUSAL_LOOKAHEAD,
+) -> StrandResult:
+    """Rolling replan: oracle minutes only at the current deadline GW.
+
+    Solves a receding joint window of ``lookahead`` GWs, commits week 0 only.
+    """
+    from src.models.path_transfer_plan import (
+        pick_path_transfer_plan,
+        score_matrix_for_candidates,
+        select_plan_candidates,
+    )
+
+    owned: list[str] | None = None
+    ft_bank = 1
+    n_cands_last = 0
+    statuses: list[str] = []
+    L = max(1, int(lookahead))
+    tlim = float(DEFAULT_CAUSAL_MILP_TIME)
+    if milp_time_limit and float(milp_time_limit) > 0:
+        tlim = max(tlim, min(25.0, float(milp_time_limit) * 2.0))
+    for i, d in enumerate(plan_gws):
+        remaining = [int(g) for g in plan_gws[i:]]
+        window = remaining[:L]
+        scores_by_gw = _scores_causal_at_deadline(
+            pool,
+            deadline_gw=int(d),
+            remaining=window,
+            rolled_by_gw=rolled_by_gw,
+            fixtures_gw=fixtures_gw,
+            paths=paths,
+            league_gf=league_gf,
+            alpha_g=float(alpha_g),
+            alpha_a=float(alpha_a),
+            rng=rng,
+            hist_by_team=hist_by_team,
+            generative_attack=generative_attack,
+            lineup_cov=lineup_cov,
+            merged=merged,
+            season=str(season),
+        )
+        force = set(owned) if owned is not None else None
+        cands = select_plan_candidates(
+            pool,
+            scores_by_gw,
+            gws=window,
+            buy_ids=buy_ids,
+            force_ids=force,
+        )
+        S = score_matrix_for_candidates(cands, pool, scores_by_gw, window)
+        if owned is None:
+            plan = pick_path_transfer_plan(
+                cands,
+                S,
+                window,
+                gamma=float(gamma),
+                max_hits=MAX_HITS_SNAPSHOT,
+                ft_pe_nu=float(ft_pe_nu),
+                time_limit=tlim,
+            )
+        else:
+            plan = pick_path_transfer_plan(
+                cands,
+                S,
+                window,
+                gamma=float(gamma),
+                max_hits=MAX_HITS_SNAPSHOT,
+                ft_pe_nu=float(ft_pe_nu),
+                time_limit=tlim,
+                start_owned_ids=owned,
+                start_ft=int(ft_bank),
+            )
+        week0 = plan["weeks"][0]
+        _append_plan_week(result, week0, plan_tag="rolling_causal")
+        owned = list(week0["player_ids"])
+        ft_bank = int(week0["ft_after"])
+        n_cands_last = int(plan["n_candidates"])
+        statuses.append(str(plan["status"]))
+
+    terminal_ft = int(result.squads[-1]["ft_after"]) if result.squads else 0
+    result.meta["path_plan"] = {
+        "n_candidates": n_cands_last,
+        "horizon": len(plan_gws),
+        "status": statuses[-1] if statuses else "",
+        "terminal_ft": terminal_ft,
+        "terminal_pe": float(
+            ft_bank_potential(terminal_ft, nu=float(ft_pe_nu))
+            if float(ft_pe_nu) > 0
+            else 0.0
+        ),
+        "ft_pe_nu": float(ft_pe_nu),
+        "path_plan_mode": PATH_PLAN_DEADLINE_CAUSAL,
+        "n_replans": len(plan_gws),
+        "lookahead": L,
+        "milp_time_limit": tlim,
+    }
+    return result
 
 
 def run_strand(
@@ -374,10 +968,33 @@ def run_strand(
     objective: str = OBJECTIVE_SQUAD_SUM,
     alpha_g: float | None = None,
     alpha_a: float | None = None,
+    hist_by_team: Mapping[str, pd.DataFrame] | None = None,
+    generative_attack: bool = DEFAULT_GENERATIVE_ATTACK,
+    lineup_cov: bool = DEFAULT_LINEUP_COV,
+    priced_by_gw: Mapping[int, Sequence[Mapping[str, Any]]] | None = None,
+    ranks: Mapping[str, float] | None = None,
+    profile: Mapping[int, Mapping[str, float]] | None = None,
+    selectable_ids: set[str] | None = None,
+    ft_pe_nu: float = DEFAULT_FT_PE_NU,
+    path_plan_mode: str = PATH_PLAN_OPEN_LOOP,
+    merged: pd.DataFrame | None = None,
+    season: str | None = None,
 ) -> StrandResult:
-    """One coherent MC strand: Opta scenarios → score_xp_v2 → MILP."""
+    """One coherent MC strand: short/Opta scenarios → score_xp_v2 → MILP.
+
+    ``selectable_ids``: when set, generative/mean scores may use the full
+    ``pool`` for club share context, but MILP only buys from this id set.
+
+    ``xi_plus_captain_ft``: roll the full horizon, then plan transfers.
+    ``path_plan_mode=open_loop`` (default): one joint MILP on frozen pool
+    minutes. ``deadline_causal``: at each deadline, oracle minutes for that
+    GW only and as-of for later weeks; commit and replan. Requires
+    ``merged`` + ``season``. ``ft_pe_nu`` weights terminal FT-bank PE.
+    """
     if objective not in OBJECTIVES:
         raise ValueError(f"unknown objective: {objective!r}")
+    if path_plan_mode not in PATH_PLAN_MODES:
+        raise ValueError(f"unknown path_plan_mode: {path_plan_mode!r}")
     if alpha_g is None or alpha_a is None:
         ag, aa, _, _ = numagent_xp.load_alphas()
         alpha_g = ag if alpha_g is None else alpha_g
@@ -385,42 +1002,40 @@ def run_strand(
     paths = {
         c: ClubPath(att=p.att, dfn=p.dfn, n=p.n) for c, p in paths0.items()
     }
+    priced_index = _priced_index(priced_by_gw)
+    buy_ids = {str(x) for x in selectable_ids} if selectable_ids is not None else None
     result = StrandResult(strand_id=strand_id)
-    # Sampled λ by (home, away) for each GW — used when scoring that GW's pot.
-    scenario_by_gw: dict[int, dict[tuple[str, str], tuple[float, float]]] = {}
-    owned_ids: set[str] | None = None
-    owned_frame: pd.DataFrame | None = None
-    ft_bank = 1
-    prev_snapshot_gw: int | None = None
-
-    from src.rules.fpl_2026 import advance_ft
+    # Full rolled scenarios by GW (hg/ag/lam) for generative player scoring.
+    rolled_by_gw: dict[int, list[dict[str, Any]]] = {}
 
     for gw in horizon_gws:
         week_fix = fixtures_gw.get(int(gw), [])
-        scenario_by_gw[int(gw)] = {}
+        rolled_by_gw[int(gw)] = []
         for fx in week_fix:
             if fx["home"] not in paths or fx["away"] not in paths:
                 continue
-            sc = sample_opta_scenario(
+            sc = sample_week_scenario(
                 fx["home"],
                 fx["away"],
+                gw=int(gw),
+                priced_index=priced_index,
                 paths=paths,
                 league_gf=league_gf,
                 rng=rng,
+                ranks=ranks,
+                profile=profile,
             )
             paths[fx["home"]].observe(sc["hg"], sc["ag"])
             paths[fx["away"]].observe(sc["ag"], sc["hg"])
-            scenario_by_gw[int(gw)][(fx["home"], fx["away"])] = (
-                float(sc["lam_h"]),
-                float(sc["lam_a"]),
-            )
+            rolled_by_gw[int(gw)].append(sc)
             result.scorelines.append(
                 {
                     "gw": int(gw),
                     "home": fx["home"],
                     "away": fx["away"],
-                    "home_rank": sc["home_rank"],
-                    "away_rank": sc["away_rank"],
+                    "source": sc.get("source", "cascade_long_opta"),
+                    "home_rank": sc.get("home_rank"),
+                    "away_rank": sc.get("away_rank"),
                     "hg": sc["hg"],
                     "ag": sc["ag"],
                     "lam_h": round(sc["lam_h"], 3),
@@ -428,75 +1043,133 @@ def run_strand(
                 }
             )
 
-        if int(gw) not in set(int(x) for x in snapshot_gws):
+    # FT path: open-loop joint schedule, or rolling deadline-causal minutes.
+    if objective == OBJECTIVE_XI_CAPTAIN_FT:
+        plan_gws = [int(g) for g in horizon_gws]
+        if not plan_gws:
+            return result
+        try:
+            if path_plan_mode == PATH_PLAN_DEADLINE_CAUSAL:
+                if merged is None or not season:
+                    raise ValueError(
+                        "deadline_causal path plan requires merged + season"
+                    )
+                return _emit_rolling_causal_ft_plan(
+                    result,
+                    pool=pool,
+                    plan_gws=plan_gws,
+                    rolled_by_gw=rolled_by_gw,
+                    fixtures_gw=fixtures_gw,
+                    paths=paths,
+                    league_gf=league_gf,
+                    alpha_g=float(alpha_g),
+                    alpha_a=float(alpha_a),
+                    rng=rng,
+                    hist_by_team=hist_by_team,
+                    generative_attack=generative_attack,
+                    lineup_cov=lineup_cov,
+                    buy_ids=buy_ids,
+                    gamma=float(gamma),
+                    milp_time_limit=float(milp_time_limit),
+                    ft_pe_nu=float(ft_pe_nu),
+                    merged=merged,
+                    season=str(season),
+                )
+            scores_by_gw = _undiscounted_scores_by_gw(
+                pool,
+                plan_gws=plan_gws,
+                rolled_by_gw=rolled_by_gw,
+                fixtures_gw=fixtures_gw,
+                paths=paths,
+                league_gf=league_gf,
+                alpha_g=float(alpha_g),
+                alpha_a=float(alpha_a),
+                rng=rng,
+                hist_by_team=hist_by_team,
+                generative_attack=generative_attack,
+                lineup_cov=lineup_cov,
+            )
+            return _emit_joint_ft_plan(
+                result,
+                pool=pool,
+                plan_gws=plan_gws,
+                scores_by_gw=scores_by_gw,
+                buy_ids=buy_ids,
+                gamma=float(gamma),
+                milp_time_limit=float(milp_time_limit),
+                ft_pe_nu=float(ft_pe_nu),
+            )
+        except RuntimeError:
+            return result
+
+    # Non-FT objectives: myopic snapshot MILP on discounted remaining μ.
+    snap_set = {int(x) for x in snapshot_gws}
+    for gw in horizon_gws:
+        if int(gw) not in snap_set:
             continue
 
-        # Remaining horizon: this GW uses sampled scenario λ; later GWs use
-        # path-updated Opta-style rates (mean path, not re-sampled here).
         remaining = [g for g in horizon_gws if int(g) >= int(gw)]
-        pots: dict[tuple[int, str], list[dict[str, float]]] = {}
-        for g2 in remaining:
-            pots.update(
-                pots_for_gw_from_paths(
-                    paths,
-                    fixtures_gw.get(int(g2), []),
-                    int(g2),
-                    league_gf=league_gf,
-                    scenario_lams=scenario_by_gw.get(int(g2))
-                    if int(g2) == int(gw)
-                    else None,
-                )
+        if generative_attack:
+            scenarios = _scenarios_for_remaining(
+                remaining=remaining,
+                snapshot_gw=int(gw),
+                fixtures_gw=fixtures_gw,
+                rolled=rolled_by_gw,
+                paths=paths,
+                league_gf=league_gf,
+                rng=rng,
+                priced_index=priced_index,
+                ranks=ranks,
+                profile=profile,
             )
-        scored = score_pool_on_pots(
-            pool,
-            pots,
-            gws=remaining,
-            gamma=gamma,
-            alpha_g=alpha_g,
-            alpha_a=alpha_a,
-        )
+            scored = score_pool_generative_on_scenarios(
+                pool,
+                scenarios,
+                gws=remaining,
+                alpha_g=float(alpha_g),
+                alpha_a=float(alpha_a),
+                rng=rng,
+                hist_by_team=hist_by_team,
+                gamma=gamma,
+                lineup_cov=lineup_cov,
+            )
+        else:
+            scenario_lams = {
+                (str(sc["home"]), str(sc["away"])): (
+                    float(sc["lam_h"]),
+                    float(sc["lam_a"]),
+                )
+                for sc in rolled_by_gw.get(int(gw), [])
+            }
+            pots: dict[tuple[int, str], list[dict[str, float]]] = {}
+            for g2 in remaining:
+                pots.update(
+                    pots_for_gw_from_paths(
+                        paths,
+                        fixtures_gw.get(int(g2), []),
+                        int(g2),
+                        league_gf=league_gf,
+                        scenario_lams=scenario_lams if int(g2) == int(gw) else None,
+                    )
+                )
+            scored = score_pool_on_pots(
+                pool,
+                pots,
+                gws=remaining,
+                gamma=gamma,
+                alpha_g=alpha_g,
+                alpha_a=alpha_a,
+            )
         scored = scored.loc[np.isfinite(scored["mc_score"])]
+        if buy_ids is not None:
+            scored = scored.loc[
+                scored["player_id"].astype(str).isin(buy_ids)
+            ].copy()
         if len(scored) < 15 or scored["position"].nunique() < 4:
             continue
 
-        n_transfers = 0
-        hits = 0
-        ft_before = int(ft_bank)
         try:
-            if objective == OBJECTIVE_XI_CAPTAIN_FT:
-                # Hold weeks between snapshots still roll the FT bank.
-                if prev_snapshot_gw is not None:
-                    for _gap in range(int(prev_snapshot_gw) + 1, int(gw)):
-                        ft_bank = advance_ft(ft_bank, 0)
-                    ft_before = int(ft_bank)
-                if owned_ids is None:
-                    picked = _pick_squad_xi_captain(
-                        scored, "mc_score", time_limit=milp_time_limit
-                    )
-                    # Opening rebuild is free (wildcard-like); bank starts at 1.
-                    n_transfers, hits = 0, 0
-                    ft_bank = 1
-                    obj_value = float(picked["objective"])
-                else:
-                    scored_ft = _merge_owned_into_scored(scored, owned_frame)
-                    picked = _pick_squad_xi_captain_ft(
-                        scored_ft,
-                        "mc_score",
-                        owned_ids=owned_ids,
-                        ft=ft_before,
-                        time_limit=milp_time_limit,
-                    )
-                    n_transfers = int(picked["n_transfers"])
-                    hits = int(picked["hits"])
-                    obj_value = float(picked["net_objective"])
-                    ft_bank = advance_ft(ft_before, n_transfers)
-                squad = picked["squad"]
-                captain_id = picked["captain_id"]
-                xi_ids = picked["xi_ids"]
-                owned_ids = {str(x) for x in squad["player_id"].tolist()}
-                owned_frame = squad.copy()
-                prev_snapshot_gw = int(gw)
-            elif objective == OBJECTIVE_XI_CAPTAIN:
+            if objective == OBJECTIVE_XI_CAPTAIN:
                 picked = _pick_squad_xi_captain(
                     scored, "mc_score", time_limit=milp_time_limit
                 )
@@ -523,10 +1196,10 @@ def run_strand(
                 "objective_value": float(obj_value),
                 "captain_id": captain_id,
                 "xi_ids": xi_ids,
-                "n_transfers": int(n_transfers),
-                "hits": int(hits),
-                "ft_before": int(ft_before),
-                "ft_after": int(ft_bank) if objective == OBJECTIVE_XI_CAPTAIN_FT else None,
+                "n_transfers": 0,
+                "hits": 0,
+                "ft_before": None,
+                "ft_after": None,
             }
         )
     return result
@@ -753,9 +1426,17 @@ def _pick_squad_xi_captain_ft(
     ft: int,
     max_hits: int = MAX_HITS_SNAPSHOT,
     time_limit: float = 8.0,
+    ft_pe_nu: float = DEFAULT_FT_PE_NU,
+    ft_pe_horizon_weight: float = 1.0,
 ) -> dict[str, Any]:
-    """Choose transfers maximising XI+captain − 4·hits given the FT bank."""
-    from src.rules.fpl_2026 import hit_cost
+    """Choose transfers maximising S − hit_pts + U(ft_after).
+
+    ``max_hits`` defaults to ``SQUAD_SIZE`` (unconstrained aside from squad
+    feasibility); the −4/hit term is the only hit brake. Legacy control is
+    ``ft_pe_nu=0`` (``S − hit_pts`` only). With ``ft_pe_nu>0``, unused bank
+    has potential energy via :func:`ft_bank_potential`.
+    """
+    from src.rules.fpl_2026 import advance_ft, hit_cost
 
     owned = {str(x) for x in owned_ids}
     frame = gw_df
@@ -763,6 +1444,8 @@ def _pick_squad_xi_captain_ft(
     best_v = -1e18
     k_max = int(ft) + int(max_hits)
     per_k = max(2.0, float(time_limit) / float(k_max + 1))
+    nu = float(ft_pe_nu)
+    w = float(ft_pe_horizon_weight)
     for k in range(0, k_max + 1):
         try:
             picked = _pick_squad_xi_captain(
@@ -775,7 +1458,9 @@ def _pick_squad_xi_captain_ft(
         except RuntimeError:
             continue
         hits = int(hit_cost(int(ft), k))
-        value = float(picked["objective"]) - float(hits)
+        ft_after = int(advance_ft(int(ft), int(k)))
+        pe = ft_bank_potential(ft_after, nu=nu, horizon_weight=w)
+        value = float(picked["objective"]) - float(hits) + float(pe)
         if value > best_v:
             best_v = value
             best = {
@@ -783,6 +1468,10 @@ def _pick_squad_xi_captain_ft(
                 "n_transfers": k,
                 "hits": hits,
                 "ft_before": int(ft),
+                "ft_after": ft_after,
+                "ft_pe": float(pe),
+                "ft_pe_nu": nu,
+                "ft_pe_horizon_weight": w,
                 "net_objective": value,
             }
     if best is None:
@@ -882,6 +1571,11 @@ def run_multistage_trial(
     snapshot_every: int = 1,
     objective: str = OBJECTIVE_SQUAD_SUM,
     minutes_overlay: bool = True,
+    generative_attack: bool = DEFAULT_GENERATIVE_ATTACK,
+    lineup_cov: bool = DEFAULT_LINEUP_COV,
+    priced_odds_path: Path | None = None,
+    priced_gw: int = 8,
+    use_priced_short: bool = True,
 ) -> dict[str, Any]:
     """Run N coherent strands and return frequency table + metadata."""
     if objective not in OBJECTIVES:
@@ -889,6 +1583,12 @@ def run_multistage_trial(
     team_names = {int(t["id"]): str(t["name"]) for t in bootstrap["teams"]}
     selectable = load_player_pool_ids(pool_path or DEFAULT_POOL_JSON)
     logs = pd.read_csv(logs_path or LOG_CSV)
+    hist = numagent_xp.asof_share_history(
+        normalize_live_history(logs),
+        before_gw=int(decision_gw),
+        season="2026-27",
+    )
+    team_hist = hist_by_team_norm(hist) if generative_attack else {}
     pool = build_frozen_pool(
         bootstrap,
         selectable,
@@ -915,6 +1615,25 @@ def run_multistage_trial(
         g for i, g in enumerate(horizon_gws) if i % max(1, int(snapshot_every)) == 0
     ]
 
+    priced_by_gw: dict[int, list[dict[str, Any]]] = {}
+    priced_meta: dict[str, Any] = {"gws": [], "n_fits": 0, "n_props_matched": 0}
+    default_odds = ROOT / "data/scratch/gw08_odds_full.json"
+    odds_path = Path(priced_odds_path) if priced_odds_path else default_odds
+    if (
+        use_priced_short
+        and odds_path.is_file()
+        and int(priced_gw) in set(horizon_gws)
+    ):
+        fits = load_priced_week_fits(odds_path, bootstrap, gw=int(priced_gw))
+        if fits:
+            priced_by_gw[int(priced_gw)] = fits
+            priced_meta = {
+                "gws": [int(priced_gw)],
+                "n_fits": len(fits),
+                "n_props_matched": int(sum(f.get("n_props_matched", 0) for f in fits)),
+                "odds_path": str(odds_path),
+            }
+
     profile = rank_gf_ga_profile()
     league_gf = league_avg_gf(profile)
     paths0 = init_paths_from_opta()
@@ -937,16 +1656,40 @@ def run_multistage_trial(
                 objective=objective,
                 alpha_g=alpha_g,
                 alpha_a=alpha_a,
+                hist_by_team=team_hist,
+                generative_attack=generative_attack,
+                lineup_cov=lineup_cov,
+                priced_by_gw=priced_by_gw,
             )
         )
 
     freq = aggregate_frequencies(strands, pool)
     n_squads = int(freq.attrs.get("n_squads") or 0)
+    props_on = bool(priced_by_gw) and generative_attack
+    scenario_note = (
+        "generative lineup→attack→CS/GC; soft priors from score_xp_v2 helpers"
+        if generative_attack
+        else f"mean score_team_side ({SCORE_XP_V2}) on scenario λ moments"
+    )
+    short_note = (
+        f"GW{priced_meta['gws'][0]} cascade_short priced centreline M→k∼M"
+        f" (props matched={priced_meta['n_props_matched']}; no λ jitter); "
+        if priced_by_gw
+        else ""
+    )
     return {
         "decision_gw": int(decision_gw),
         "objective": objective,
         "scorer": SCORE_XP_V2,
-        "assembler": "src/markets/numagent_xp.py",
+        "assembler": (
+            "src/markets/short_horizon_generative.py"
+            if generative_attack
+            else "src/markets/numagent_xp.py"
+        ),
+        "generative_attack": bool(generative_attack),
+        "lineup_cov": bool(lineup_cov),
+        "props": props_on,
+        "priced": priced_meta,
         "horizon": {"start": start, "end": end, "gws": horizon_gws},
         "snapshot_gws": snapshot_gws,
         "n_strands": int(n_strands),
@@ -960,8 +1703,9 @@ def run_multistage_trial(
         "alpha_g": float(alpha_g),
         "alpha_a": float(alpha_a),
         "scoring": (
-            "Opta match_prediction λ bands → Dixon–Coles M → "
-            f"numagent_xp.score_team_side ({SCORE_XP_V2}); "
+            f"{short_note}"
+            "GW≥t+2 Opta place→GF/GA±MAE→M→k∼M; "
+            f"{scenario_note}; "
             "same-season as-of rates/priors/rolling m frozen at decision GW"
             + ("; FPL availability overlay on m" if minutes_overlay else "")
         ),
@@ -1007,17 +1751,24 @@ def write_trial_outputs(result: dict[str, Any], *, out_dir: Path) -> dict[str, s
         "",
         f"- Decision GW **{result['decision_gw']}**; roll fixtures "
         f"GW{result['horizon']['start']}–{result['horizon']['end']}.",
-        f"- **{result['n_strands']}** coherent strands: each fixture samples λ "
-        "from **Opta rank→GF/GA bands** (`match_prediction`, e.g. 2nd vs 20th), "
-        "Poisson scoreline, path rate update.",
-        f"- Player xP: **`{result.get('scorer', SCORE_XP_V2)}`** via "
-        "`numagent_xp.score_team_side` on Dixon–Coles moments from scenario λ; "
-        f"same-season as-of rates frozen at decision GW. Share seeding: "
-        f"**{result.get('seed_shares')}**.",
+        f"- **{result['n_strands']}** coherent strands: priced weeks use "
+        f"**cascade_short** (`priced`={result.get('priced')}); unpriced weeks "
+        "use **cascade_long** Opta place→GF/GA±MAE → `M` → `k ∼ M`.",
+        f"- Player xP: **{result.get('scoring', '')}** "
+        f"(props={result.get('props', False)}; "
+        f"generative={result.get('generative_attack')}). "
+        f"Share seeding: **{result.get('seed_shares')}**.",
         f"- Minutes overlay: **{result.get('minutes_overlay')}** "
         f"({result.get('overlay')}).",
-        f"- Snapshots at GW {result['snapshot_gws']} → selectable-pool MILP "
-        f"(`{obj}`).",
+        (
+            f"- Joint path transfer plan over GW {result['horizon']['gws']} "
+            f"(`{obj}`: free open + FT/hit schedule)."
+            if obj == OBJECTIVE_XI_CAPTAIN_FT
+            else (
+                f"- Snapshots at GW {result['snapshot_gws']} → selectable-pool MILP "
+                f"(`{obj}`)."
+            )
+        ),
         f"- Solved squads: **{result['n_squads_solved']}** · selectable "
         f"**{result['n_selectable']}** ({result.get('n_with_nonzero_rate', result.get('n_with_nonzero_share'))} with "
         f"nonzero rG) · seed {result['seed']}.",
@@ -1065,7 +1816,12 @@ def main() -> None:
     p.add_argument("--horizon-end", type=int, default=19)
     p.add_argument("--n", type=int, default=12, help="Number of MC strands")
     p.add_argument("--seed", type=int, default=7)
-    p.add_argument("--snapshot-every", type=int, default=2)
+    p.add_argument(
+        "--snapshot-every",
+        type=int,
+        default=1,
+        help="Transfer decision every N horizon GWs (default 1 = all GWs)",
+    )
     p.add_argument(
         "--bootstrap",
         type=Path,
@@ -1096,6 +1852,24 @@ def main() -> None:
         default=True,
         help="Scale xmi/shares by FPL chance_of_playing / status (default on)",
     )
+    p.add_argument(
+        "--generative-attack",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Generative lineup→attack→CS/GC (default on); --no-generative-attack uses mean layer",
+    )
+    p.add_argument(
+        "--priced-odds",
+        type=Path,
+        default=ROOT / "data/scratch/gw08_odds_full.json",
+        help="cascade_short priced odds JSON (GW --priced-gw)",
+    )
+    p.add_argument("--priced-gw", type=int, default=8)
+    p.add_argument(
+        "--no-priced",
+        action="store_true",
+        help="Disable cascade_short priced week (Opta for all horizon GWs)",
+    )
     args = p.parse_args()
     bootstrap = json.loads(args.bootstrap.read_text())
     fixtures = json.loads(args.fixtures.read_text())
@@ -1110,6 +1884,10 @@ def main() -> None:
         logs_path=args.logs,
         objective=args.objective,
         minutes_overlay=bool(args.minutes_overlay),
+        generative_attack=bool(args.generative_attack),
+        priced_odds_path=args.priced_odds,
+        priced_gw=args.priced_gw,
+        use_priced_short=not bool(args.no_priced),
     )
     paths = write_trial_outputs(result, out_dir=args.out)
     print(

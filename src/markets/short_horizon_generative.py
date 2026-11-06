@@ -3,7 +3,8 @@
 Per fixture path:
 
 1. ``k ∼ M`` (``match_outcome_roll`` from priced / FD λ).
-2. Lineup world (minutes-corr competitor pairs; firm XI override later).
+2. Lineup world: frozen as-of mean minutes by default (``lineup_cov=False``);
+   matchday/pair rolls parked.
 3. Scorer / assist dice (``π`` props-shape or shares; ``ρ`` assists; α empties).
 4. Defence from the **rolled** scoreline (``defence_roll``: CS if GA=0;
    GC = ⌊GA/2⌋) — no separate xCS / xGC moments on scenario strands.
@@ -28,6 +29,7 @@ from src.markets.lineup_roll import (
     START_GATE,
     LineupWorld,
     minutes_corr_pairs,
+    roll_club_gw_lineup,
     roll_lineup_world,
     select_disjoint_pairs,
 )
@@ -160,6 +162,8 @@ def competitor_pairs_for_club(
 ) -> list:
     if hist is None or hist.empty or club.empty:
         return []
+    from src.markets.lineup_roll import minutes_panel
+
     idc = _id_col(club)
     name_h = "player_name" if "player_name" in hist.columns else "name"
     id_h = "element" if "element" in hist.columns else ("player_id" if "player_id" in hist.columns else idc)
@@ -173,8 +177,9 @@ def competitor_pairs_for_club(
     if gw_col != "gw":
         h = h.rename(columns={gw_col: "gw"})
     table = minutes_corr_pairs(h, id_col=id_h, name_col=name_h)
+    panel = minutes_panel(h, id_col=id_h, gw_col="gw")
     ids = club[idc].astype(int).tolist()
-    return select_disjoint_pairs(ids, table)
+    return select_disjoint_pairs(ids, table, panel=panel)
 
 
 def xp_soft_priors_expanding(
@@ -322,15 +327,8 @@ def _roll_or_trivial_lineup(
     mean_m = club["m"].to_numpy(float)
     if not lineup_cov:
         return trivial_lineup(mean_m)
-    pairs = competitor_pairs_for_club(hist, club)
-    if not pairs:
-        return trivial_lineup(mean_m)
-    return roll_lineup_world(
-        mean_m=mean_m,
-        names=club[_name_col(club)].astype(str),
-        pairs=pairs,
-        rng=rng,
-    )
+    # Club matchday resample — full GW minutes vector, no corr threshold.
+    return roll_club_gw_lineup(club, hist, rng, id_col_club=_id_col(club))
 
 
 def score_fixture_generative(
@@ -348,10 +346,26 @@ def score_fixture_generative(
     home_props: Mapping[int, float] | None = None,
     away_props: Mapping[int, float] | None = None,
     lineup_cov: bool = True,
+    goals_home: int | None = None,
+    goals_away: int | None = None,
 ) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, Any]]:
-    """One generative path for both sides of a priced fixture."""
+    """One generative path for both sides of a fixture.
+
+    Scoreline: use ``goals_home`` / ``goals_away`` when already rolled
+    (cascade_long Opta path); otherwise ``k ∼ M`` from λ. Props optional —
+    cascade_long always passes ``None`` (unavailable beyond priced weeks).
+    """
     probs = match_outcome_probs_from_lambdas(lam_h, lam_a, rho)
-    roll = match_outcome_roll(probs, rng)
+    if goals_home is None or goals_away is None:
+        roll = match_outcome_roll(probs, rng)
+        gh, ga = int(roll.goals_home), int(roll.goals_away)
+        roll_p = float(roll.p)
+    else:
+        gh, ga = int(goals_home), int(goals_away)
+        n = probs.matrix.shape[0]
+        i, j = min(gh, n - 1), min(ga, n - 1)
+        mass = float(probs.matrix.sum())
+        roll_p = float(probs.matrix[i, j] / mass) if mass > 0 else 0.0
     g_home = float(alpha_g) * float(probs.moments["xg_home"])
     g_away = float(alpha_g) * float(probs.moments["xg_away"])
 
@@ -371,10 +385,10 @@ def score_fixture_generative(
             home_c, hist=home_hist, rng=rng, lineup_cov=lineup_cov
         )
         home_att = roll_side_attack(
-            home_dice, roll.goals_home, rng, team="home", lineup=home_lineup
+            home_dice, gh, rng, team="home", lineup=home_lineup
         )
         home_xp = xp_board_from_side_roll(
-            home_c, attack=home_att, lineup=home_lineup, goals_against=roll.goals_away
+            home_c, attack=home_att, lineup=home_lineup, goals_against=ga
         )
 
     if away_dice is None or away_c.empty:
@@ -385,22 +399,22 @@ def score_fixture_generative(
             away_c, hist=away_hist, rng=rng, lineup_cov=lineup_cov
         )
         away_att = roll_side_attack(
-            away_dice, roll.goals_away, rng, team="away", lineup=away_lineup
+            away_dice, ga, rng, team="away", lineup=away_lineup
         )
         away_xp = xp_board_from_side_roll(
-            away_c, attack=away_att, lineup=away_lineup, goals_against=roll.goals_home
+            away_c, attack=away_att, lineup=away_lineup, goals_against=gh
         )
 
     meta = {
-        "goals_home": roll.goals_home,
-        "goals_away": roll.goals_away,
-        "p": roll.p,
+        "goals_home": gh,
+        "goals_away": ga,
+        "p": roll_p,
         "lam_h": float(lam_h),
         "lam_a": float(lam_a),
-        "home_cs": int(roll.goals_away) == 0,
-        "away_cs": int(roll.goals_home) == 0,
-        "home_ga": int(roll.goals_away),
-        "away_ga": int(roll.goals_home),
+        "home_cs": ga == 0,
+        "away_cs": gh == 0,
+        "home_ga": ga,
+        "away_ga": gh,
         "n_home_scorers": 0 if home_att is None else len(home_att.scorers),
         "n_away_scorers": 0 if away_att is None else len(away_att.scorers),
     }

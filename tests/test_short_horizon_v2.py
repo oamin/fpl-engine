@@ -22,7 +22,7 @@ class ScorerIdentity(unittest.TestCase):
 
 
 class SampleMoments(unittest.TestCase):
-    def test_sample_rebuilds_dixon_coles_moments(self) -> None:
+    def test_centreline_moments_no_jitter(self) -> None:
         fit = {
             "fixture": 1,
             "lam_h": 1.6,
@@ -38,7 +38,8 @@ class SampleMoments(unittest.TestCase):
             "xgc_away": 0.5,
         }
         rng = random.Random(0)
-        ov = sh.sample_fixture_moments(fit, rng, band=0.15)
+        self.assertEqual(sh.MARKET_BAND, 0.0)
+        ov = sh.sample_fixture_moments(fit, rng)  # default band=0
         for key in (
             "xg_home",
             "xg_away",
@@ -48,13 +49,12 @@ class SampleMoments(unittest.TestCase):
             "xgc_away",
         ):
             self.assertTrue(math_isfinite(ov[key]))
-        # Moments must match rebuild from the sampled λ.
+        # Locked path: λ unchanged; moments rebuild from centreline.
+        self.assertAlmostEqual(ov["lam_h"], fit["lam_h"], places=12)
+        self.assertAlmostEqual(ov["lam_a"], fit["lam_a"], places=12)
         mom = team_moments(build_matrix(ov["lam_h"], ov["lam_a"], fit["rho"]))
         self.assertAlmostEqual(ov["xg_home"], mom["xg_home"], places=9)
         self.assertAlmostEqual(ov["xcs_away"], mom["xcs_away"], places=9)
-        # Band respects ±15% on λ.
-        self.assertGreaterEqual(ov["lam_h"], fit["lam_h"] * 0.85 - 1e-9)
-        self.assertLessEqual(ov["lam_h"], fit["lam_h"] * 1.15 + 1e-9)
 
 
 class CentrelineMatchesBuild(unittest.TestCase):

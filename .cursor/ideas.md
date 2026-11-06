@@ -4,11 +4,134 @@ Cursor chooses the next pre-registered comparison. The PI is not asked to pick. 
 
 **Numagent 2.0 is locked on main** — see `.cursor/context.md` and `reports/LOCKED.md` (`protocol.numagent_2_0`). Engine primary scorer is `score_xp_v2`. Numagent 1.0 and `score_xp` are **archived in-place** (`reports/ARCHIVE_NUMAGENT_1_0.md`). This file is the **park log**. Everything from “Procedure, locked 2026-10-07” downward is **Numagent 1.0 / stage archaeology** — not instructions for the live path.
 
+## Parked — cascade generative MC-mean vs mean layer (2026-10-20 overnight)
+
+`cascade_viability_batch` B1/B2: player-GW log of N_MC=6 generative mean xP
+**clearly loses** to centreline `score_team_side` on the same `M`
+(short Δ≈−0.089; long Δ≈−0.090; intervals wholly below 0). B3 short_gen vs
+long_gen inconclusive. Integrity A/D green; FT+cap smoke OK without λ jitter.
+Do **not** promote generative scenario xP as a mean forecast until a better
+aggregator (or path-V-only use) is designed. Report:
+`reports/cascade_short_long_viability_results.md`.
+
+## Rejected — artificial λ Uniform(±15%) on cascade_short (2026-10-20)
+
+Agent-era scenario spice (`MARKET_BAND=0.15`): multiply fitted λ by
+`Uniform(0.85,1.15)` before rebuilding `M`. Never PI-approved. Locked path is
+book/FD (or Opta) centreline → `M` → categorical `k ∼ M`. Outcome noise is the
+roll over `M`, not a second invented λ axis. Contaminated diagnostic:
+`reports/multistage_xi_captain_ft_short_long_trial.md` (GW8 used ±15%).
+
 ## Parked — cascade_short bonus-from-roll (2026-10-20)
 
 Scenario soft terms stay expanding-mean `bonus_mu` / `card_mu` / DefCon / saves.
 Tying bonus to the rolled scoreline (BPS proxy from G/A/CS) is possible later but
 parked as overkill until a path-V screen asks for it (`protocol.cascade_short_generative`).
+
+## Parked — mean t:t+1 vs short gen as mean forecast (2026-10-21)
+
+`cascade_short_mean_tt1_vs_gen` N_MC=20: gen MC-mean on decision GW(t:t+1)
+**clearly loses** vs mean boards on the same fits
+(Δ≈−0.054 [−0.060, −0.048], 80 decision-GW pairs). Product-horizon reframing
+does not rescue gen-as-mean. Report: `reports/cascade_short_mean_tt1_vs_gen.md`.
+
+## Noted — path-V gen vs mean MILP diagnostic (2026-10-21)
+
+`cascade_pathv_gen_vs_mean_milp` N=20 FT+cap: both arms solve (120 squads).
+Gen hits≈7.2 / xfers≈3.8; mean-layer hits≈1.6 / xfers≈2.4; top-15 Jaccard≈0.36.
+Strategy policies diverge — generative strands are not a no-op vs μ boards.
+Not a gated path-V promote. Report: `reports/cascade_pathv_gen_vs_mean.md`.
+
+## Noted — hist MC frequency vs priced mean MILP (2026-10-21)
+
+`cascade_mc_vs_mean_hist` on **2025-26** (decision GW6 → 8–19, N=12):
+path = FD short + **oracle post-GW38 ranks** + **LOSO prior GF/GA±bands**
+(generative FT+cap freqs); mean = single xi+cap on priced GW8+γ·GW9 only.
+**v1 (same-season rates):** Cash path-cap 0.51 via sG=1.0 (only Villa scorer
+GW1–5). **v2 (historical rate baseline):** Haaland path-cap 0.46; Cash out of
+top-15; Jaccard≈0.25. Not live-comparable / not gated. Report:
+`reports/cascade_mc_vs_mean_hist.md`.
+
+## Noted — mean vs path per-GW residual (2026-10-21)
+
+`cascade_mean_path_gw_resid` on **2025-26** GW8–19 (N=12): full-side shares
+(buy filter = semi-oracle m>60 @ GW t only), minutes-oracle boards, autosub+VC.
+Bugfix: cutting the roster before share renormalisation handed the full
+`G_team` pot to ~60% of scorers (~1.65× E[G]). After fix: mean/path sum actual
+≈**647/646**; resid bias **+12.7 / +1.1**. Diagnostic only.
+Report: `reports/cascade_mean_path_gw_resid.md`.
+
+## Noted — top MID+FWD G/A mismatch (2026-10-21)
+
+On the same oracle boards, top xp-decile MID+FWD: goals/E[G]≈**0.85**,
+assists/E[A]≈**0.61**. Pool-relative: goals miss ≈ **pot** (team_pool/G_team≈0.82;
+shares ≈OK when the side scores). Assists miss ≈ **pot** (≈0.72) **and** fat
+`sA` on the hot μ tail (share factor ≈0.85). Do not chase goal-share retunes
+for this bias first. Report: `reports/top_mid_fwd_ga_mismatch.md`.
+
+## Noted — path FT potential energy (2026-10-21)
+
+Simple hit-value PE locked: `U(b)=ν·b`, ν=`HIT_COST` (+4 per stored FT,
++20 at five). Hold below cap → next bank +1 → PE +4; at cap grant +0 unless
+one FT used. Concave φ·W and ν=HIT_COST/2 retired. Joint-plan N=12 under γ=1:
+Δtransfers −0.08, Δpaid 0, terminal ft 1.00→1.08, actual +0.6
+(`keep_watching_pe_small`). `DEFAULT_FT_PE_NU=HIT_COST` on for
+`xi_plus_captain_ft`. Report: `reports/cascade_ft_pe_path.md`.
+
+## Rejected — path bench-cover weight α (2026-10-22)
+
+`V = α·Σ squad_s + (1-α)·Σ XI_s + captain` screened at α=0.10 / 0.50 then
+**rejected** as inelegant. α removed from the path objective. Report kept as
+record: `reports/cascade_path_bench_weight.md`. Climb “first-sub into transfer
+value” remains rejected.
+
+## Noted — deadline-causal minutes (2026-10-22)
+
+Hypothesis: FT bank is insurance for unexpected minutes drops; open-loop
+frozen minutes hide that risk. Implemented rolling replan with oracle minutes
+only at the current deadline (as-of for later). N=12 vs open-loop: path
+**hits much more** (Δpaid +28) and actual rises (~+12), but terminal FT does
+not bank. PE=+4 is not a strong enough hold through deadline shocks.
+`keep_watching_causal_moves`. Report:
+`reports/cascade_deadline_causal_minutes.md`.
+
+## Rejected — concave φ·W FT PE (2026-10-21)
+
+`U=ν·φ(b)·W` with ν=HIT_COST/2 was inert under joint-plan γ=1 and mis-scaled
+the bank vs a hit. Replaced by linear hit-value PE.
+
+## Noted — cascade γ=0.9 removed (2026-10-21)
+
+Climb leftover `DEFAULT_GAMMA=0.9` had crept into multistage/cascade without a
+cascade screen. Locked `cascade_gamma=1` (undiscounted). Leave
+`season_climb_ft.GAMMA=0.9` for the legacy published climb only.
+
+## Noted — historical rate baseline for cascade (2026-10-21)
+
+`score_xp_v2_rate_baseline_prior`: season start = player prior (all prior
+closed seasons, name key + RATE_M0) else positional; each completed GW adds
+same-season appearance G/A/M into the rate. Soft priors/minutes stay
+same-season. Fixes early-season share collapse. Wired into
+`build_frozen_side_table` / cascade pool. **Not** share-seed jitter. Full
+`score_xp_v2` gated promote deferred. Module: `src/markets/rate_baseline.py`.
+
+## Parked — lineup_cov=False / freeze minutes (2026-10-21)
+
+`cascade_lineup_off_tt1`: gen with frozen mean minutes **clearly loses** to mean
+(Δ≈−0.021). Diagnostic: gen with joint pair lineup beat gen_off (Δ≈+0.016).
+Report: `reports/cascade_lineup_off_tt1.md` (pair-threshold stack; superseded).
+
+## Parked — club matchday / pair minutes rolls (2026-10-21)
+
+PI: freeze as-of mean minutes on gen paths. `DEFAULT_LINEUP_COV=False`.
+Matchday resample and corr-pair joints parked. Live: FFScout = **pool
+eligibility** (WHO); minutes = as-of m / xmi (+ optional availability overlay),
+not an FFScout-driven minutes MC.
+
+## Active — club matchday minutes (superseded same day)
+
+Matchday gen_on−mean clearly_loses (−0.011); gen_off−mean (−0.021). Kept as
+diagnostic only — default is now lineup_cov=False.
 
 ## Active / next (sparse)
 
@@ -438,6 +561,20 @@ Superseded 2026-10-15 as priced-path default. γ=1 (undiscounted Σ over priced 
 ## L4 max_hits=2 (artificial cap)
 
 Removed 2026-10-15. Default `DEFAULT_MAX_HITS = SQUAD_SIZE`; objective still `−HIT_COST·hits`. Re-screen priced path: L4−L3 **+2.55/GW** [+0.41, +4.64] (`reports/layer4_mupost_priced.md`). Do not restore a hit cap without a dated protocol arm. Older parked arms that hardcode `MAX_HITS=2` are frozen historical trials.
+
+## Path MILP max_hits=2 (leftover cap)
+
+Removed 2026-10-21. `multistage_mc_milp.MAX_HITS_SNAPSHOT` had stayed at 2 after
+L3/L4 went to `SQUAD_SIZE`. Aligned to `SQUAD_SIZE`; PI did not specify a hit
+cap. Prior path resid / FT-PE diagnostics used the old cap — do not cite their
+transfer counts as unconstrained-hit behaviour.
+
+## Path snapshot_every=2 (forced hold)
+
+Removed 2026-10-21. Default is now **every horizon GW** (`SNAPSHOT_EVERY=1`).
+Every-2 forced the path to hold on odd weeks, so FT strategy could be
+unexecutable week-to-week. Prior resid / FT-PE / hist-MC path totals used
+every-2 — re-run before citing transfer behaviour.
 
 ## L4 fresh open (crowd template vs μ-wildcard)
 

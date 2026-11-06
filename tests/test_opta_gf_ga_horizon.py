@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import random
 import unittest
 
 from src.models.opta_gf_ga_horizon import (
@@ -9,6 +10,8 @@ from src.models.opta_gf_ga_horizon import (
     load_opta_ranks,
     match_prediction,
     pots_from_season_gf_ga,
+    sample_match_from_opta_ranks,
+    sample_season_gf_ga_for_rank,
 )
 
 
@@ -38,6 +41,26 @@ class OptaGfGaHorizonTest(unittest.TestCase):
         self.assertGreater(pred["lam_home"], pred["lam_away"])
         self.assertLessEqual(pred["lam_home_lo"], pred["lam_home"])
         self.assertGreaterEqual(pred["lam_home_hi"], pred["lam_home"])
+
+    def test_rank1_vs_rank20_baseline_rates(self) -> None:
+        rng = random.Random(0)
+        top = sample_season_gf_ga_for_rank(1, rng, centre_blend=1.0)
+        bot = sample_season_gf_ga_for_rank(20, rng, centre_blend=1.0)
+        self.assertAlmostEqual(top["gf"], gf_ga_from_rank(1)["gf"])
+        self.assertAlmostEqual(bot["gf"], gf_ga_from_rank(20)["gf"])
+        self.assertGreater(top["gf"], bot["gf"])
+        self.assertLess(top["ga"], bot["ga"])
+
+    def test_sample_match_keeps_rank_ordering(self) -> None:
+        # Arsenal (top) home vs bottom side should tend to higher home λ.
+        ranks = {r["club_norm"]: float(r["rank"]) for r in load_opta_ranks()}
+        top = min(ranks, key=ranks.get)
+        bot = max(ranks, key=ranks.get)
+        rng = random.Random(1)
+        draw = sample_match_from_opta_ranks(top, bot, rng, ranks=ranks, centre_blend=1.0)
+        self.assertEqual(draw["home_rank"], ranks[top])
+        self.assertEqual(draw["away_rank"], ranks[bot])
+        self.assertGreater(draw["lam_home"], draw["lam_away"])
 
 
 if __name__ == "__main__":

@@ -1,0 +1,86 @@
+{
+  "task": "cascade_lineup_off_tt1",
+  "started_unix": 1792587776.4313192,
+  "n_mc": 20,
+  "sigma": 3.0,
+  "seed": 7,
+  "gw_start": 8,
+  "gw_end": 27,
+  "lineup_cov_treatment": false,
+  "asof_audit": {
+    "passed": true,
+    "failures": []
+  },
+  "progress": {
+    "2022-23": {
+      "elapsed_s": 380.12122631073,
+      "n_decision_gws": 20,
+      "n_rows": 7341
+    },
+    "2023-24": {
+      "elapsed_s": 378.20741271972656,
+      "n_decision_gws": 20,
+      "n_rows": 7428
+    },
+    "2024-25": {
+      "elapsed_s": 2024.10138297081,
+      "n_decision_gws": 20,
+      "n_rows": 7587
+    },
+    "2025-26": {
+      "elapsed_s": 375.3736958503723,
+      "n_decision_gws": 20,
+      "n_rows": 7674
+    }
+  },
+  "elapsed_s": 3158.3312244415283,
+  "n_decision_pairs": 80,
+  "primary": {
+    "comparison": "gen_off_minus_mean_xp",
+    "interval": {
+      "mean": -0.020552779940024326,
+      "lo": -0.02430371394092495,
+      "hi": -0.016982718134409342,
+      "n_gws": {
+        "2022-23": 20,
+        "2023-24": 20,
+        "2024-25": 20,
+        "2025-26": 20
+      }
+    },
+    "verdict": "clearly_loses"
+  },
+  "diagnostic_on_minus_off": {
+    "comparison": "gen_on_minus_gen_off",
+    "interval": {
+      "mean": 0.009192743371959633,
+      "lo": 0.0047969099892394024,
+      "hi": 0.01406469250994813,
+      "n_gws": {
+        "2022-23": 20,
+        "2023-24": 20,
+        "2024-25": 20,
+        "2025-26": 20
+      }
+    },
+    "verdict": "clearly_wins"
+  },
+  "diagnostic_on_minus_mean": {
+    "comparison": "gen_on_minus_mean_xp",
+    "interval": {
+      "mean": -0.011360036568064695,
+      "lo": -0.016694124014056518,
+      "hi": -0.005958575527546122,
+      "n_gws": {
+        "2022-23": 20,
+        "2023-24": 20,
+        "2024-25": 20,
+        "2025-26": 20
+      }
+    },
+    "verdict": "clearly_loses",
+    "note": "Replay of tt1-shaped gen-with-lineup vs mean (this stack)"
+  },
+  "finished_unix": 1792590934.762556,
+  "report": "/workspace/reports/cascade_lineup_off_tt1.md"
+}

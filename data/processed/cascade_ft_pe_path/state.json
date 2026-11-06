@@ -1,0 +1,2858 @@
+{
+  "task": "cascade_ft_pe_path",
+  "planner": "joint_path_transfer_plan",
+  "season": "2025-26",
+  "decision_gw": 6,
+  "horizon": [
+    8,
+    19
+  ],
+  "n": 12,
+  "seed": 7,
+  "snapshot_gws": [
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+  ],
+  "candidate_nu": 4.0,
+  "pe_form": "terminal U(f_H)=\u03bd\u00b7f_H with \u03bd=HIT_COST (+4 per stored FT, +20 at cap)",
+  "U": {
+    "0": 0.0,
+    "1": 4.0,
+    "2": 8.0,
+    "3": 12.0,
+    "4": 16.0,
+    "5": 20.0
+  },
+  "arms": {
+    "control": {
+      "ft_pe_nu": 0.0,
+      "elapsed_s": 53.69525694847107,
+      "path_elapsed_s": 50.37048125267029,
+      "transfers": {
+        "n_squad_rows": 144,
+        "mean_transfers_per_strand": 26.583333333333332,
+        "mean_hit_pts_per_strand": 62.333333333333336,
+        "mean_paid_per_strand": 15.583333333333334,
+        "mean_free_used_per_strand": 11.0,
+        "per_gw": [
+          {
+            "gw": 9,
+            "mean_transfers": 1.333,
+            "mean_hit_pts": 2.0,
+            "mean_paid": 0.5,
+            "mean_free_used": 0.833,
+            "mean_ft_after": 1.167
+          },
+          {
+            "gw": 10,
+            "mean_transfers": 2.583,
+            "mean_hit_pts": 5.667,
+            "mean_paid": 1.417,
+            "mean_free_used": 1.167,
+            "mean_ft_after": 1.0
+          },
+          {
+            "gw": 11,
+            "mean_transfers": 2.917,
+            "mean_hit_pts": 7.667,
+            "mean_paid": 1.917,
+            "mean_free_used": 1.0,
+            "mean_ft_after": 1.0
+          },
+          {
+            "gw": 12,
+            "mean_transfers": 2.75,
+            "mean_hit_pts": 7.0,
+            "mean_paid": 1.75,
+            "mean_free_used": 1.0,
+            "mean_ft_after": 1.0
+          },
+          {
+            "gw": 13,
+            "mean_transfers": 2.583,
+            "mean_hit_pts": 6.333,
+            "mean_paid": 1.583,
+            "mean_free_used": 1.0,
+            "mean_ft_after": 1.0
+          },
+          {
+            "gw": 14,
+            "mean_transfers": 2.333,
+            "mean_hit_pts": 5.333,
+            "mean_paid": 1.333,
+            "mean_free_used": 1.0,
+            "mean_ft_after": 1.0
+          },
+          {
+            "gw": 15,
+            "mean_transfers": 2.417,
+            "mean_hit_pts": 6.0,
+            "mean_paid": 1.5,
+            "mean_free_used": 0.917,
+            "mean_ft_after": 1.083
+          },
+          {
+            "gw": 16,
+            "mean_transfers": 2.25,
+            "mean_hit_pts": 4.667,
+            "mean_paid": 1.167,
+            "mean_free_used": 1.083,
+            "mean_ft_after": 1.0
+          },
+          {
+            "gw": 17,
+            "mean_transfers": 3.167,
+            "mean_hit_pts": 8.667,
+            "mean_paid": 2.167,
+            "mean_free_used": 1.0,
+            "mean_ft_after": 1.0
+          },
+          {
+            "gw": 18,
+            "mean_transfers": 2.25,
+            "mean_hit_pts": 5.333,
+            "mean_paid": 1.333,
+            "mean_free_used": 0.917,
+            "mean_ft_after": 1.083
+          },
+          {
+            "gw": 19,
+            "mean_transfers": 2.0,
+            "mean_hit_pts": 3.667,
+            "mean_paid": 0.917,
+            "mean_free_used": 1.083,
+            "mean_ft_after": 1.0
+          }
+        ]
+      },
+      "per_gw": [
+        {
+          "gw": 8,
+          "path_pred": 50.791098233521375,
+          "path_actual": 61.083333333333336,
+          "path_resid": -10.292235099811961,
+          "n_strands": 12
+        },
+        {
+          "gw": 9,
+          "path_pred": 50.21439858063627,
+          "path_actual": 51.0,
+          "path_resid": -0.7856014193637293,
+          "n_strands": 12
+        },
+        {
+          "gw": 10,
+          "path_pred": 50.366482427382806,
+          "path_actual": 55.25,
+          "path_resid": -4.883517572617194,
+          "n_strands": 12
+        },
+        {
+          "gw": 11,
+          "path_pred": 50.677830625217105,
+          "path_actual": 44.583333333333336,
+          "path_resid": 6.094497291883769,
+          "n_strands": 12
+        },
+        {
+          "gw": 12,
+          "path_pred": 50.11758578237575,
+          "path_actual": 41.416666666666664,
+          "path_resid": 8.700919115709084,
+          "n_strands": 12
+        },
+        {
+          "gw": 13,
+          "path_pred": 50.181060730606724,
+          "path_actual": 32.583333333333336,
+          "path_resid": 17.59772739727339,
+          "n_strands": 12
+        },
+        {
+          "gw": 14,
+          "path_pred": 48.08264869038343,
+          "path_actual": 55.833333333333336,
+          "path_resid": -7.750684642949906,
+          "n_strands": 12
+        },
+        {
+          "gw": 15,
+          "path_pred": 49.00773940103648,
+          "path_actual": 55.416666666666664,
+          "path_resid": -6.408927265630183,
+          "n_strands": 12
+        },
+        {
+          "gw": 16,
+          "path_pred": 48.28671165343321,
+          "path_actual": 54.916666666666664,
+          "path_resid": -6.629955013233456,
+          "n_strands": 12
+        },
+        {
+          "gw": 17,
+          "path_pred": 55.05931436023693,
+          "path_actual": 74.08333333333333,
+          "path_resid": -19.024018973096396,
+          "n_strands": 12
+        },
+        {
+          "gw": 18,
+          "path_pred": 47.377024317377355,
+          "path_actual": 52.416666666666664,
+          "path_resid": -5.039642349289309,
+          "n_strands": 12
+        },
+        {
+          "gw": 19,
+          "path_pred": 44.27279191483413,
+          "path_actual": 51.083333333333336,
+          "path_resid": -6.810541418499206,
+          "n_strands": 12
+        }
+      ],
+      "path_actual_sum": 629.6666666666667,
+      "path_resid_bias": -2.935998329135425,
+      "path_resid_mae": 8.334855629946466
+    },
+    "candidate": {
+      "ft_pe_nu": 4.0,
+      "elapsed_s": 58.04885292053223,
+      "path_elapsed_s": 54.714598417282104,
+      "transfers": {
+        "n_squad_rows": 144,
+        "mean_transfers_per_strand": 26.5,
+        "mean_hit_pts_per_strand": 62.333333333333336,
+        "mean_paid_per_strand": 15.583333333333334,
+        "mean_free_used_per_strand": 10.916666666666666,
+        "per_gw": [
+          {
+            "gw": 9,
+            "mean_transfers": 1.333,
+            "mean_hit_pts": 2.0,
+            "mean_paid": 0.5,
+            "mean_free_used": 0.833,
+            "mean_ft_after": 1.167
+          },
+          {
+            "gw": 10,
+            "mean_transfers": 2.667,
+            "mean_hit_pts": 6.0,
+            "mean_paid": 1.5,
+            "mean_free_used": 1.167,
+            "mean_ft_after": 1.0
+          },
+          {
+            "gw": 11,
+            "mean_transfers": 2.833,
+            "mean_hit_pts": 7.333,
+            "mean_paid": 1.833,
+            "mean_free_used": 1.0,
+            "mean_ft_after": 1.0
+          },
+          {
+            "gw": 12,
+            "mean_transfers": 2.667,
+            "mean_hit_pts": 6.667,
+            "mean_paid": 1.667,
+            "mean_free_used": 1.0,
+            "mean_ft_after": 1.0
+          },
+          {
+            "gw": 13,
+            "mean_transfers": 2.667,
+            "mean_hit_pts": 6.667,
+            "mean_paid": 1.667,
+            "mean_free_used": 1.0,
+            "mean_ft_after": 1.0
+          },
+          {
+            "gw": 14,
+            "mean_transfers": 2.417,
+            "mean_hit_pts": 5.667,
+            "mean_paid": 1.417,
+            "mean_free_used": 1.0,
+            "mean_ft_after": 1.0
+          },
+          {
+            "gw": 15,
+            "mean_transfers": 2.333,
+            "mean_hit_pts": 5.667,
+            "mean_paid": 1.417,
+            "mean_free_used": 0.917,
+            "mean_ft_after": 1.083
+          },
+          {
+            "gw": 16,
+            "mean_transfers": 2.333,
+            "mean_hit_pts": 5.0,
+            "mean_paid": 1.25,
+            "mean_free_used": 1.083,
+            "mean_ft_after": 1.0
+          },
+          {
+            "gw": 17,
+            "mean_transfers": 2.917,
+            "mean_hit_pts": 7.667,
+            "mean_paid": 1.917,
+            "mean_free_used": 1.0,
+            "mean_ft_after": 1.0
+          },
+          {
+            "gw": 18,
+            "mean_transfers": 2.417,
+            "mean_hit_pts": 6.0,
+            "mean_paid": 1.5,
+            "mean_free_used": 0.917,
+            "mean_ft_after": 1.083
+          },
+          {
+            "gw": 19,
+            "mean_transfers": 1.917,
+            "mean_hit_pts": 3.667,
+            "mean_paid": 0.917,
+            "mean_free_used": 1.0,
+            "mean_ft_after": 1.083
+          }
+        ]
+      },
+      "per_gw": [
+        {
+          "gw": 8,
+          "path_pred": 50.791098233521375,
+          "path_actual": 61.916666666666664,
+          "path_resid": -11.12556843314529,
+          "n_strands": 12
+        },
+        {
+          "gw": 9,
+          "path_pred": 50.21439858063627,
+          "path_actual": 50.666666666666664,
+          "path_resid": -0.4522680860303936,
+          "n_strands": 12
+        },
+        {
+          "gw": 10,
+          "path_pred": 50.7274436615522,
+          "path_actual": 55.25,
+          "path_resid": -4.522556338447799,
+          "n_strands": 12
+        },
+        {
+          "gw": 11,
+          "path_pred": 50.677830625217105,
+          "path_actual": 44.583333333333336,
+          "path_resid": 6.094497291883769,
+          "n_strands": 12
+        },
+        {
+          "gw": 12,
+          "path_pred": 50.11758578237575,
+          "path_actual": 41.833333333333336,
+          "path_resid": 8.284252449042413,
+          "n_strands": 12
+        },
+        {
+          "gw": 13,
+          "path_pred": 50.181060730606724,
+          "path_actual": 32.583333333333336,
+          "path_resid": 17.59772739727339,
+          "n_strands": 12
+        },
+        {
+          "gw": 14,
+          "path_pred": 48.08264869038343,
+          "path_actual": 55.833333333333336,
+          "path_resid": -7.750684642949906,
+          "n_strands": 12
+        },
+        {
+          "gw": 15,
+          "path_pred": 49.05811261102116,
+          "path_actual": 55.416666666666664,
+          "path_resid": -6.358554055645506,
+          "n_strands": 12
+        },
+        {
+          "gw": 16,
+          "path_pred": 48.28671165343321,
+          "path_actual": 54.75,
+          "path_resid": -6.463288346566792,
+          "n_strands": 12
+        },
+        {
+          "gw": 17,
+          "path_pred": 55.05931436023693,
+          "path_actual": 73.66666666666667,
+          "path_resid": -18.60735230642974,
+          "n_strands": 12
+        },
+        {
+          "gw": 18,
+          "path_pred": 47.81928787966393,
+          "path_actual": 52.25,
+          "path_resid": -4.430712120336068,
+          "n_strands": 12
+        },
+        {
+          "gw": 19,
+          "path_pred": 44.27279191483413,
+          "path_actual": 51.5,
+          "path_resid": -7.22720808516587,
+          "n_strands": 12
+        }
+      ],
+      "path_actual_sum": 630.25,
+      "path_resid_bias": -2.9134762730431496,
+      "path_resid_mae": 8.242889129409745
+    }
+  },
+  "strands": {
+    "control": [
+      {
+        "strand_id": 0,
+        "squads": [
+          {
+            "gw": 8,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:597"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 2,
+            "captain_id": "2025-26:624"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 3,
+            "hits": 4,
+            "ft_before": 2,
+            "ft_after": 1,
+            "captain_id": "2025-26:160"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:160"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:64"
+          },
+          {
+            "gw": 14,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:449"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:119"
+          },
+          {
+            "gw": 16,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:47"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 18,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:120"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:427"
+          }
+        ]
+      },
+      {
+        "strand_id": 1,
+        "squads": [
+          {
+            "gw": 8,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:449"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:119"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:660"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:668"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:120"
+          },
+          {
+            "gw": 14,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:449"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:476"
+          },
+          {
+            "gw": 16,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:21"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:119"
+          },
+          {
+            "gw": 18,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:283"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:668"
+          }
+        ]
+      },
+      {
+        "strand_id": 2,
+        "squads": [
+          {
+            "gw": 8,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:106"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:427"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:491"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:449"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:160"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:47"
+          },
+          {
+            "gw": 14,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:249"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 16,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:64"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:47"
+          },
+          {
+            "gw": 18,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:673"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:648"
+          }
+        ]
+      },
+      {
+        "strand_id": 3,
+        "squads": [
+          {
+            "gw": 8,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:82"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 5,
+            "hits": 16,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:328"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:373"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:82"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:295"
+          },
+          {
+            "gw": 14,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:119"
+          },
+          {
+            "gw": 16,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:237"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 6,
+            "hits": 20,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:387"
+          },
+          {
+            "gw": 18,
+            "n_transfers": 5,
+            "hits": 16,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:666"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          }
+        ]
+      },
+      {
+        "strand_id": 4,
+        "squads": [
+          {
+            "gw": 8,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:200"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:648"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:597"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:419"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:160"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:82"
+          },
+          {
+            "gw": 14,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:660"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:157"
+          },
+          {
+            "gw": 16,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:668"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 18,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:419"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:120"
+          }
+        ]
+      },
+      {
+        "strand_id": 5,
+        "squads": [
+          {
+            "gw": 8,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:224"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:582"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:668"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:200"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:120"
+          },
+          {
+            "gw": 14,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:660"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:157"
+          },
+          {
+            "gw": 16,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:328"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:249"
+          },
+          {
+            "gw": 18,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:21"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:373"
+          }
+        ]
+      },
+      {
+        "strand_id": 6,
+        "squads": [
+          {
+            "gw": 8,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:21"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:660"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:119"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:517"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:26"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:381"
+          },
+          {
+            "gw": 14,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:82"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 2,
+            "captain_id": "2025-26:381"
+          },
+          {
+            "gw": 16,
+            "n_transfers": 3,
+            "hits": 4,
+            "ft_before": 2,
+            "ft_after": 1,
+            "captain_id": "2025-26:200"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:342"
+          },
+          {
+            "gw": 18,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:668"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:82"
+          }
+        ]
+      },
+      {
+        "strand_id": 7,
+        "squads": [
+          {
+            "gw": 8,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:224"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:5"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:120"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:449"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 14,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:119"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 16,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:668"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:317"
+          },
+          {
+            "gw": 18,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:205"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:449"
+          }
+        ]
+      },
+      {
+        "strand_id": 8,
+        "squads": [
+          {
+            "gw": 8,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:160"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:488"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:8"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:476"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:200"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:160"
+          },
+          {
+            "gw": 14,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:119"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:302"
+          },
+          {
+            "gw": 16,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:348"
+          },
+          {
+            "gw": 18,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:119"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:660"
+          }
+        ]
+      },
+      {
+        "strand_id": 9,
+        "squads": [
+          {
+            "gw": 8,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:160"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:381"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:72"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:449"
+          },
+          {
+            "gw": 14,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 16,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:7"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:648"
+          },
+          {
+            "gw": 18,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:119"
+          }
+        ]
+      },
+      {
+        "strand_id": 10,
+        "squads": [
+          {
+            "gw": 8,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 2,
+            "captain_id": "2025-26:427"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 4,
+            "hits": 8,
+            "ft_before": 2,
+            "ft_after": 1,
+            "captain_id": "2025-26:7"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:7"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 14,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:97"
+          },
+          {
+            "gw": 16,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:106"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:694"
+          },
+          {
+            "gw": 18,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:120"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:64"
+          }
+        ]
+      },
+      {
+        "strand_id": 11,
+        "squads": [
+          {
+            "gw": 8,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:64"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:660"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:694"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:47"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:120"
+          },
+          {
+            "gw": 14,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:64"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:381"
+          },
+          {
+            "gw": 16,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:660"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 18,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 2,
+            "captain_id": "2025-26:317"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 2,
+            "hits": 0,
+            "ft_before": 2,
+            "ft_after": 1,
+            "captain_id": "2025-26:488"
+          }
+        ]
+      }
+    ],
+    "candidate": [
+      {
+        "strand_id": 0,
+        "squads": [
+          {
+            "gw": 8,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:597"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 2,
+            "captain_id": "2025-26:624"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 3,
+            "hits": 4,
+            "ft_before": 2,
+            "ft_after": 1,
+            "captain_id": "2025-26:160"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:160"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:64"
+          },
+          {
+            "gw": 14,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:449"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:119"
+          },
+          {
+            "gw": 16,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:47"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 18,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:120"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:427"
+          }
+        ]
+      },
+      {
+        "strand_id": 1,
+        "squads": [
+          {
+            "gw": 8,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:449"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:119"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:660"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:668"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:120"
+          },
+          {
+            "gw": 14,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:449"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:476"
+          },
+          {
+            "gw": 16,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:21"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:119"
+          },
+          {
+            "gw": 18,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:283"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 2,
+            "captain_id": "2025-26:668"
+          }
+        ]
+      },
+      {
+        "strand_id": 2,
+        "squads": [
+          {
+            "gw": 8,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:106"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:427"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:491"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:449"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:160"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:47"
+          },
+          {
+            "gw": 14,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:249"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 16,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:64"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:47"
+          },
+          {
+            "gw": 18,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:673"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:648"
+          }
+        ]
+      },
+      {
+        "strand_id": 3,
+        "squads": [
+          {
+            "gw": 8,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:82"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 5,
+            "hits": 16,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:328"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:373"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:82"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:295"
+          },
+          {
+            "gw": 14,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:119"
+          },
+          {
+            "gw": 16,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:237"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 5,
+            "hits": 16,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:387"
+          },
+          {
+            "gw": 18,
+            "n_transfers": 6,
+            "hits": 20,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:666"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          }
+        ]
+      },
+      {
+        "strand_id": 4,
+        "squads": [
+          {
+            "gw": 8,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:200"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:648"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:597"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:419"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:160"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:82"
+          },
+          {
+            "gw": 14,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:660"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:157"
+          },
+          {
+            "gw": 16,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:668"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 18,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:419"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:120"
+          }
+        ]
+      },
+      {
+        "strand_id": 5,
+        "squads": [
+          {
+            "gw": 8,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:224"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:582"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:668"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:200"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:120"
+          },
+          {
+            "gw": 14,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:660"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:157"
+          },
+          {
+            "gw": 16,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:328"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:249"
+          },
+          {
+            "gw": 18,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:21"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:373"
+          }
+        ]
+      },
+      {
+        "strand_id": 6,
+        "squads": [
+          {
+            "gw": 8,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:21"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:660"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:119"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:517"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:26"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:381"
+          },
+          {
+            "gw": 14,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:82"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 2,
+            "captain_id": "2025-26:381"
+          },
+          {
+            "gw": 16,
+            "n_transfers": 3,
+            "hits": 4,
+            "ft_before": 2,
+            "ft_after": 1,
+            "captain_id": "2025-26:200"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:342"
+          },
+          {
+            "gw": 18,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:668"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:82"
+          }
+        ]
+      },
+      {
+        "strand_id": 7,
+        "squads": [
+          {
+            "gw": 8,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:224"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:5"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:120"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:449"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 14,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:119"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 16,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:668"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:317"
+          },
+          {
+            "gw": 18,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:205"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:449"
+          }
+        ]
+      },
+      {
+        "strand_id": 8,
+        "squads": [
+          {
+            "gw": 8,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:160"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:488"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:8"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:476"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:200"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:160"
+          },
+          {
+            "gw": 14,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:119"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:302"
+          },
+          {
+            "gw": 16,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:348"
+          },
+          {
+            "gw": 18,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:119"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:660"
+          }
+        ]
+      },
+      {
+        "strand_id": 9,
+        "squads": [
+          {
+            "gw": 8,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:160"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:381"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:72"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:449"
+          },
+          {
+            "gw": 14,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 16,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:7"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:648"
+          },
+          {
+            "gw": 18,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:119"
+          }
+        ]
+      },
+      {
+        "strand_id": 10,
+        "squads": [
+          {
+            "gw": 8,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 2,
+            "captain_id": "2025-26:427"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 4,
+            "hits": 8,
+            "ft_before": 2,
+            "ft_after": 1,
+            "captain_id": "2025-26:7"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:7"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 14,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:97"
+          },
+          {
+            "gw": 16,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:106"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:694"
+          },
+          {
+            "gw": 18,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:120"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:64"
+          }
+        ]
+      },
+      {
+        "strand_id": 11,
+        "squads": [
+          {
+            "gw": 8,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 0,
+            "ft_after": 1,
+            "captain_id": "2025-26:64"
+          },
+          {
+            "gw": 9,
+            "n_transfers": 1,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:660"
+          },
+          {
+            "gw": 10,
+            "n_transfers": 2,
+            "hits": 4,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:694"
+          },
+          {
+            "gw": 11,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:47"
+          },
+          {
+            "gw": 12,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 13,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:120"
+          },
+          {
+            "gw": 14,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:64"
+          },
+          {
+            "gw": 15,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:381"
+          },
+          {
+            "gw": 16,
+            "n_transfers": 4,
+            "hits": 12,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:660"
+          },
+          {
+            "gw": 17,
+            "n_transfers": 3,
+            "hits": 8,
+            "ft_before": 1,
+            "ft_after": 1,
+            "captain_id": "2025-26:430"
+          },
+          {
+            "gw": 18,
+            "n_transfers": 0,
+            "hits": 0,
+            "ft_before": 1,
+            "ft_after": 2,
+            "captain_id": "2025-26:317"
+          },
+          {
+            "gw": 19,
+            "n_transfers": 2,
+            "hits": 0,
+            "ft_before": 2,
+            "ft_after": 1,
+            "captain_id": "2025-26:488"
+          }
+        ]
+      }
+    ]
+  },
+  "delta_candidate_minus_control": {
+    "transfers_per_strand": -0.08333333333333215,
+    "paid_per_strand": 0.0,
+    "hit_pts_per_strand": 0.0,
+    "path_actual_sum": 0.5833333333332575,
+    "path_resid_bias": 0.0225220560922752
+  },
+  "elapsed_s": 114.11944460868835
+}

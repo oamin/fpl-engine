@@ -1,0 +1,269 @@
+{
+  "task": "cascade_pathv_gen_vs_mean_milp",
+  "started_unix": 1792573150.4669313,
+  "n": 20,
+  "seed": 7,
+  "decision_gw": 6,
+  "horizon_end": 19,
+  "gen": {
+    "generative_attack": true,
+    "returncode": 0,
+    "elapsed_s": 599.4399573802948,
+    "n_squads": 120,
+    "strands_with_squads": 20,
+    "mean_transfers": 3.79,
+    "mean_hits": 7.16,
+    "scoring": "GW8 cascade_short priced centreline M\u2192k\u223cM (props matched=330; no \u03bb jitter); GW\u2265t+2 Opta place\u2192GF/GA\u00b1MAE\u2192M\u2192k\u223cM; generative lineup\u2192attack\u2192CS/GC; soft priors from score_xp_v2 helpers; same-season as-of rates/priors/rolling m frozen at decision GW",
+    "sources": [
+      "cascade_long_opta",
+      "cascade_short_priced"
+    ],
+    "top15": [
+      {
+        "name": "Tzolakis",
+        "freq": 0.9333333333333333,
+        "freq_xi": 0.14166666666666666,
+        "freq_captain": 0.0,
+        "team": "hull"
+      },
+      {
+        "name": "Gro\u00df",
+        "freq": 0.9166666666666666,
+        "freq_xi": 0.9083333333333333,
+        "freq_captain": 0.15,
+        "team": "brighton"
+      },
+      {
+        "name": "Tarkowski",
+        "freq": 0.9083333333333333,
+        "freq_xi": 0.875,
+        "freq_captain": 0.15,
+        "team": "everton"
+      },
+      {
+        "name": "Dasilva",
+        "freq": 0.8666666666666667,
+        "freq_xi": 0.7,
+        "freq_captain": 0.09166666666666666,
+        "team": "coventry"
+      },
+      {
+        "name": "Hall",
+        "freq": 0.8666666666666667,
+        "freq_xi": 0.775,
+        "freq_captain": 0.13333333333333333,
+        "team": "newcastle"
+      },
+      {
+        "name": "Van Hecke",
+        "freq": 0.825,
+        "freq_xi": 0.6666666666666666,
+        "freq_captain": 0.125,
+        "team": "spurs"
+      },
+      {
+        "name": "Wirtz",
+        "freq": 0.6583333333333333,
+        "freq_xi": 0.6166666666666667,
+        "freq_captain": 0.058333333333333334,
+        "team": "liverpool"
+      },
+      {
+        "name": "Hume",
+        "freq": 0.525,
+        "freq_xi": 0.0,
+        "freq_captain": 0.0,
+        "team": "sunderland"
+      },
+      {
+        "name": "Belloumi",
+        "freq": 0.5083333333333333,
+        "freq_xi": 0.43333333333333335,
+        "freq_captain": 0.0,
+        "team": "hull"
+      },
+      {
+        "name": "N.Jackson",
+        "freq": 0.48333333333333334,
+        "freq_xi": 0.36666666666666664,
+        "freq_captain": 0.008333333333333333,
+        "team": "aston villa"
+      },
+      {
+        "name": "Saka",
+        "freq": 0.4583333333333333,
+        "freq_xi": 0.44166666666666665,
+        "freq_captain": 0.058333333333333334,
+        "team": "arsenal"
+      },
+      {
+        "name": "A.Becker",
+        "freq": 0.44166666666666665,
+        "freq_xi": 0.4083333333333333,
+        "freq_captain": 0.0,
+        "team": "liverpool"
+      },
+      {
+        "name": "Haaland",
+        "freq": 0.425,
+        "freq_xi": 0.38333333333333336,
+        "freq_captain": 0.008333333333333333,
+        "team": "man city"
+      },
+      {
+        "name": "Barnes",
+        "freq": 0.4083333333333333,
+        "freq_xi": 0.39166666666666666,
+        "freq_captain": 0.016666666666666666,
+        "team": "newcastle"
+      },
+      {
+        "name": "Jo\u00e3o Pedro",
+        "freq": 0.4,
+        "freq_xi": 0.3416666666666667,
+        "freq_captain": 0.03333333333333333,
+        "team": "chelsea"
+      }
+    ],
+    "top_captain": {
+      "name": "Gro\u00df",
+      "freq_captain": 0.15
+    },
+    "trial_path": "/workspace/data/predictions/2026-27/cascade_pathv_gen/multistage_xi_captain_ft_trial.json",
+    "stdout_tail": "\"n_strands\": 20,\n  \"n_squads_solved\": 120,\n  \"strands_with_squads\": 20,\n  \"top5\": [\n    {\n      \"name\": \"Tzolakis\",\n      \"freq\": 0.933,\n      \"freq_captain\": 0.0\n    },\n    {\n      \"name\": \"Gro\\u00df\",\n      \"freq\": 0.917,\n      \"freq_captain\": 0.15\n    },\n    {\n      \"name\": \"Tarkowski\",\n      \"freq\": 0.908,\n      \"freq_captain\": 0.15\n    },\n    {\n      \"name\": \"Dasilva\",\n      \"freq\": 0.867,\n      \"freq_captain\": 0.092\n    },\n    {\n      \"name\": \"Hall\",\n      \"freq\": 0.867,\n      \"freq_captain\": 0.133\n    }\n  ],\n  \"json\": \"/workspace/data/predictions/2026-27/cascade_pathv_gen/multistage_xi_captain_ft_trial.json\",\n  \"csv\": \"/workspace/data/predictions/2026-27/cascade_pathv_gen/multistage_xi_captain_ft_player_freq.csv\",\n  \"report\": \"/workspace/reports/multistage_xi_captain_ft_trial.md\"\n}\n",
+    "stderr_tail": ""
+  },
+  "mean": {
+    "generative_attack": false,
+    "returncode": 0,
+    "elapsed_s": 466.1119213104248,
+    "n_squads": 120,
+    "strands_with_squads": 20,
+    "mean_transfers": 2.39,
+    "mean_hits": 1.64,
+    "scoring": "GW8 cascade_short priced centreline M\u2192k\u223cM (props matched=330; no \u03bb jitter); GW\u2265t+2 Opta place\u2192GF/GA\u00b1MAE\u2192M\u2192k\u223cM; mean score_team_side (score_xp_v2) on scenario \u03bb moments; same-season as-of rates/priors/rolling m frozen at decision GW",
+    "sources": [
+      "cascade_long_opta",
+      "cascade_short_priced"
+    ],
+    "top15": [
+      {
+        "name": "Tzolakis",
+        "freq": 0.9333333333333333,
+        "freq_xi": 0.175,
+        "freq_captain": 0.0,
+        "team": "hull"
+      },
+      {
+        "name": "Lewis-Potter",
+        "freq": 0.8583333333333333,
+        "freq_xi": 0.85,
+        "freq_captain": 0.4083333333333333,
+        "team": "brentford"
+      },
+      {
+        "name": "Tarkowski",
+        "freq": 0.725,
+        "freq_xi": 0.725,
+        "freq_captain": 0.075,
+        "team": "everton"
+      },
+      {
+        "name": "Hall",
+        "freq": 0.7166666666666667,
+        "freq_xi": 0.6916666666666667,
+        "freq_captain": 0.008333333333333333,
+        "team": "newcastle"
+      },
+      {
+        "name": "Gro\u00df",
+        "freq": 0.7,
+        "freq_xi": 0.7,
+        "freq_captain": 0.13333333333333333,
+        "team": "brighton"
+      },
+      {
+        "name": "Jo\u00e3o Pedro",
+        "freq": 0.6666666666666666,
+        "freq_xi": 0.6666666666666666,
+        "freq_captain": 0.09166666666666666,
+        "team": "chelsea"
+      },
+      {
+        "name": "Haaland",
+        "freq": 0.625,
+        "freq_xi": 0.6166666666666667,
+        "freq_captain": 0.05,
+        "team": "man city"
+      },
+      {
+        "name": "Hume",
+        "freq": 0.6,
+        "freq_xi": 0.0,
+        "freq_captain": 0.0,
+        "team": "sunderland"
+      },
+      {
+        "name": "Trafford",
+        "freq": 0.5583333333333333,
+        "freq_xi": 0.4583333333333333,
+        "freq_captain": 0.0,
+        "team": "leeds"
+      },
+      {
+        "name": "Tanaka",
+        "freq": 0.48333333333333334,
+        "freq_xi": 0.0,
+        "freq_captain": 0.0,
+        "team": "leeds"
+      },
+      {
+        "name": "Dasilva",
+        "freq": 0.4583333333333333,
+        "freq_xi": 0.20833333333333334,
+        "freq_captain": 0.025,
+        "team": "coventry"
+      },
+      {
+        "name": "Havertz",
+        "freq": 0.44166666666666665,
+        "freq_xi": 0.44166666666666665,
+        "freq_captain": 0.041666666666666664,
+        "team": "arsenal"
+      },
+      {
+        "name": "Vuskovic",
+        "freq": 0.4,
+        "freq_xi": 0.375,
+        "freq_captain": 0.0,
+        "team": "brighton"
+      },
+      {
+        "name": "B.Fernandes",
+        "freq": 0.375,
+        "freq_xi": 0.375,
+        "freq_captain": 0.10833333333333334,
+        "team": "man utd"
+      },
+      {
+        "name": "Luki\u0107",
+        "freq": 0.35833333333333334,
+        "freq_xi": 0.0,
+        "freq_captain": 0.0,
+        "team": "ipswich"
+      }
+    ],
+    "top_captain": {
+      "name": "Lewis-Potter",
+      "freq_captain": 0.4083333333333333
+    },
+    "trial_path": "/workspace/data/predictions/2026-27/cascade_pathv_mean/multistage_xi_captain_ft_trial.json",
+    "stdout_tail": "nds\": 20,\n  \"n_squads_solved\": 120,\n  \"strands_with_squads\": 20,\n  \"top5\": [\n    {\n      \"name\": \"Tzolakis\",\n      \"freq\": 0.933,\n      \"freq_captain\": 0.0\n    },\n    {\n      \"name\": \"Lewis-Potter\",\n      \"freq\": 0.858,\n      \"freq_captain\": 0.408\n    },\n    {\n      \"name\": \"Tarkowski\",\n      \"freq\": 0.725,\n      \"freq_captain\": 0.075\n    },\n    {\n      \"name\": \"Hall\",\n      \"freq\": 0.717,\n      \"freq_captain\": 0.008\n    },\n    {\n      \"name\": \"Gro\\u00df\",\n      \"freq\": 0.7,\n      \"freq_captain\": 0.133\n    }\n  ],\n  \"json\": \"/workspace/data/predictions/2026-27/cascade_pathv_mean/multistage_xi_captain_ft_trial.json\",\n  \"csv\": \"/workspace/data/predictions/2026-27/cascade_pathv_mean/multistage_xi_captain_ft_player_freq.csv\",\n  \"report\": \"/workspace/reports/multistage_xi_captain_ft_trial.md\"\n}\n",
+    "stderr_tail": ""
+  },
+  "top15_jaccard": 0.36363636363636365,
+  "elapsed_s": 1065.5570304393768,
+  "passed_smoke": true,
+  "finished_unix": 1792574216.0239782,
+  "report": "/workspace/reports/cascade_pathv_gen_vs_mean.md"
+}
