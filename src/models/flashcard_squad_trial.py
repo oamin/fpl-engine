@@ -393,9 +393,7 @@ class Coupler(nn.Module):
         self.pos_assist_min = nn.Embedding(5, 4)
         self.col_pos = nn.Parameter(torch.zeros(1, 1, COLS, D))
         nn.init.normal_(self.col_pos, std=0.02)
-        for layer in (
-            self.skip_goal, self.skip_assist,
-        ):
+        for layer in (self.goal, self.assist, self.skip_goal, self.skip_assist):
             nn.init.zeros_(layer.weight)
             nn.init.zeros_(layer.bias)
         for table in (self.pos_goal, self.pos_assist, self.pos_goal_min, self.pos_assist_min):
@@ -512,11 +510,15 @@ def _stack(views: list[dict[str, np.ndarray]]) -> dict[str, torch.Tensor]:
 
 
 def sample_cut(card: SquadCard, rng: np.random.Generator) -> int:
-    """A gameweek in the middle of this club's fixture list."""
+    """Reveal a prefix from gameweek 1, between 20% and 80% of the fixtures."""
+    return cut_at_fraction(card, float(rng.uniform(0.2, 0.8)))
+
+
+def cut_at_fraction(card: SquadCard, revealed: float) -> int:
+    """Gameweek of the last visible fixture when the first `revealed` share is shown."""
     n = card.n_fixtures
-    lo = max(1, int(round(0.3 * n)))
-    hi = max(lo + 1, min(n - 1, int(round(0.7 * n))))
-    return int(card.gw[int(rng.integers(lo, hi))])
+    visible = max(1, min(n - 1, int(round(revealed * n))))
+    return int(card.gw[visible - 1])
 
 
 def _nll(logits: torch.Tensor, labels: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
@@ -535,7 +537,13 @@ def train_model(
     lr: float = LR,
     batch_size: int = BATCH,
 ) -> list[float]:
-    opt = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-4)
+    fast = [p for name, p in model.named_parameters() if "pos_" in name or name.startswith("position")]
+    fast_ids = {id(p) for p in fast}
+    rest = [p for p in model.parameters() if id(p) not in fast_ids]
+    opt = torch.optim.AdamW(
+        [{"params": rest, "lr": lr}, {"params": fast, "lr": lr * 10}],
+        weight_decay=1e-4,
+    )
     history = []
     model.train()
     for epoch in range(epochs):
@@ -758,13 +766,17 @@ def appearance_hit_rate(
 
 
 def positive_by_position(
-    probs: np.ndarray, cards: list[SquadCard], cut_gw: int
+    probs: np.ndarray,
+    cards: list[SquadCard],
+    cut_gw: int,
+    cuts: list[int] | None = None,
 ) -> list[float]:
     """Mean probability of a bar, by position, on hidden appearances."""
     totals = np.zeros(4)
     counts = np.zeros(4)
     for index, card in enumerate(cards):
-        hidden = (card.gw > cut_gw) & (card.gw > 0)
+        cut = cuts[index] if cuts is not None else cut_gw
+        hidden = (card.gw > cut) & (card.gw > 0)
         for row in range(card.n_players):
             pos = int(card.position[row])
             if pos < 0:
@@ -786,10 +798,11 @@ def sample_bars(probs: np.ndarray, rng: np.random.Generator) -> np.ndarray:
     return classes.reshape(probs.shape[:-1]).astype(np.int64)
 
 
-def _hidden_mask(cards: list[SquadCard], cut_gw: int) -> np.ndarray:
+def _hidden_mask(cards: list[SquadCard], cut_gw: int, cuts: list[int] | None = None) -> np.ndarray:
     masks = []
-    for card in cards:
-        hidden = (card.gw > cut_gw) & (card.gw > 0)
+    for index, card in enumerate(cards):
+        cut = cuts[index] if cuts is not None else cut_gw
+        hidden = (card.gw > cut) & (card.gw > 0)
         masks.append(card.present & hidden.reshape(1, COLS))
     return np.stack(masks)
 
@@ -801,13 +814,14 @@ def bar_correspondence(
     cut_gw: int,
     rng: np.random.Generator,
     draws: int = 20,
+    cuts: list[int] | None = None,
 ) -> dict[str, float]:
     """Count and week overlap between sampled bars and the actual bars.
 
     A bar is an appearance whose height is at least 1. Totals cover every
     hidden appearance of every club, which is the run of gameweeks after the cut.
     """
-    mask = _hidden_mask(cards, cut_gw)
+    mask = _hidden_mask(cards, cut_gw, cuts)
     actual = np.where(mask, labels, 0)
     actual_bars = int((actual > 0).sum())
     actual_height = int(actual.sum())
@@ -841,9 +855,10 @@ def random_same_count(
     cut_gw: int,
     rng: np.random.Generator,
     draws: int = 20,
+    cuts: list[int] | None = None,
 ) -> dict[str, float]:
     """Place each player's actual bars on random appearances of that player."""
-    mask = _hidden_mask(cards, cut_gw)
+    mask = _hidden_mask(cards, cut_gw, cuts)
     actual = np.where(mask, labels > 0, False)
     actual_bars = int(actual.sum())
     covered = 0.0
@@ -968,6 +983,32 @@ def write_report(payload: dict[str, object], path) -> None:
             f"One vision draw for {example['team']}, gameweeks {example['gw_from']}–{example['gw_to']}: "
             "`data/plots/flashcard_squad_bars.png`.",
             "",
+            "## Remainders from gameweek 1",
+            "",
+            "Each card is shown from gameweek 1 through 80%, 60%, 40%, or 20% of its fixtures.",
+            "The reader then draws the hidden remainder. Covered is the share of actual remainder",
+            "bars that sit on the same appearance as a drawn bar. On a real week is the share of",
+            "drawn bars that sit on an actual bar. The goalkeeper and forward columns are the",
+            "model's probability of a goal bar on the hidden appearances.",
+            "",
+            "| revealed | reader | channel | actual bars | drawn bars | covered | on a real week | GK | FWD |",
+            "|---|---|---|---:|---:|---:|---:|---:|---:|",
+        ]
+    )
+    for item in payload["reveals"]:
+        for reader in ("vision", "sequence", "prefix"):
+            for channel in ("goals", "assists"):
+                bar = item[reader][channel]
+                lines.append(
+                    f"| {item['revealed']:.0%} | {reader} | {channel} | {bar['actual_bars']:.0f} | "
+                    f"{bar['drawn_bars']:.1f} | {bar['actual_covered']:.1%} | {bar['drawn_on_actual']:.1%} | "
+                    f"{item[reader]['gk']:.1%} | {item[reader]['fwd']:.1%} |"
+                )
+    lines.extend(
+        [
+            "",
+            f"Four vision draws for {payload['reveal_card']}: `data/plots/flashcard_squad_reveals.png`.",
+            "",
         ]
     )
     path.write_text("\n".join(lines), encoding="utf-8")
@@ -1061,6 +1102,49 @@ def plot_bar_card(
     plt.close(fig)
 
 
+def plot_reveals(card: SquadCard, draws: list[dict], path) -> None:
+    """Four prefixes from gameweek 1. The line is where the revealed card ends."""
+    played = np.where(card.gw > 0)[0]
+    rows = [row for row in range(card.n_players) if (card.goals[row, played] > 0).any()]
+    colors = np.array(
+        [
+            [1.0, 1.0, 1.0],
+            [0.93, 0.93, 0.93],
+            [0.89, 0.43, 0.13],
+            [0.30, 0.47, 0.66],
+            [0.18, 0.62, 0.45],
+        ]
+    )
+    fig, axes = plt.subplots(len(draws), 1, figsize=(10.5, max(6.5, 0.32 * len(rows) * len(draws) * 0.45)), sharex=True)
+    labels = [card.names[row].split()[-1][:16] for row in rows]
+    gws = [str(int(card.gw[col])) for col in played]
+    if len(draws) == 1:
+        axes = [axes]
+    for axis, item in zip(axes, draws, strict=True):
+        grid = np.ones((len(rows), len(played)), dtype=np.int64)
+        cut = item["cut"]
+        for i, row in enumerate(rows):
+            for j, col in enumerate(played):
+                if card.gw[col] <= cut:
+                    grid[i, j] = 1
+                    continue
+                has_actual = card.goals[row, col] > 0
+                has_drawn = item["goals"][row, col] > 0
+                grid[i, j] = 4 if has_actual and has_drawn else 2 if has_actual else 3 if has_drawn else 0
+        axis.imshow(colors[grid], aspect="auto", interpolation="nearest")
+        axis.axvline(int(np.sum(card.gw[played] <= cut)) - 0.5, color="black", linewidth=1)
+        axis.set_yticks(range(len(rows)))
+        axis.set_yticklabels(labels, fontsize=6)
+        axis.set_title(f"{card.team} goals, first {item['revealed']:.0%} revealed")
+    axes[-1].set_xticks(range(len(played)))
+    axes[-1].set_xticklabels(gws, fontsize=6)
+    axes[-1].set_xlabel("Gameweek from 1. Left of the line is shown. Right is the drawn remainder.")
+    fig.tight_layout()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(path, dpi=130)
+    plt.close(fig)
+
+
 def main() -> None:
     started = time.perf_counter()
     print("loading squad cards", flush=True)
@@ -1115,6 +1199,45 @@ def main() -> None:
         "goal": positive_by_position(vis_g, test, CUT_GW),
         "assist": positive_by_position(vis_a, test, CUT_GW),
     }
+    reveals = []
+    reveal_draws = []
+    show = next((card for card in test if card.team == "Man Utd"), test[example_index])
+    show_at = test.index(show)
+    for revealed in (0.8, 0.6, 0.4, 0.2):
+        cuts = [cut_at_fraction(card, revealed) for card in test]
+        entry = {"revealed": revealed}
+        drawn_goal = None
+        for reader, model in (("vision", vision), ("sequence", sequence)):
+            probs_g = np.zeros((len(test), ROWS, COLS, 4), dtype=np.float64)
+            probs_a = np.zeros_like(probs_g)
+            for index, card in enumerate(test):
+                one_g, one_a = predict(model, [card], league, cuts[index], reader)
+                probs_g[index] = one_g[0]
+                probs_a[index] = one_a[0]
+            goal_bars = bar_correspondence(test, probs_g, labels, 0, bar_rng, cuts=cuts)
+            assist_bars = bar_correspondence(test, probs_a, assist_labels, 0, bar_rng, cuts=cuts)
+            rates = positive_by_position(probs_g, test, 0, cuts)
+            entry[reader] = {"goals": goal_bars, "assists": assist_bars, "gk": rates[0], "fwd": rates[3]}
+            if reader == "vision":
+                drawn_goal = sample_bars(probs_g[show_at], np.random.default_rng(SEED))
+        prefix_g = np.stack([prefix_probability(card, cut, group, 0) for card, cut in zip(test, cuts, strict=True)])
+        prefix_a = np.stack([prefix_probability(card, cut, group, 1) for card, cut in zip(test, cuts, strict=True)])
+        rates = positive_by_position(prefix_g, test, 0, cuts)
+        entry["prefix"] = {
+            "goals": bar_correspondence(test, prefix_g, labels, 0, bar_rng, cuts=cuts),
+            "assists": bar_correspondence(test, prefix_a, assist_labels, 0, bar_rng, cuts=cuts),
+            "gk": rates[0],
+            "fwd": rates[3],
+        }
+        reveals.append(entry)
+        reveal_draws.append({"revealed": revealed, "cut": cuts[show_at], "goals": drawn_goal})
+        vision_goals = entry["vision"]["goals"]
+        print(
+            f"reveal {revealed:.0%} vision goals actual {vision_goals['actual_bars']} "
+            f"drawn {vision_goals['drawn_bars']:.1f} covered {vision_goals['actual_covered']:.3f} "
+            f"gk {entry['vision']['gk']:.3f} fwd {entry['vision']['fwd']:.3f}",
+            flush=True,
+        )
     example_draw = np.random.default_rng(SEED)
     goal_drawn = sample_bars(vis_g[example_index], example_draw)
     assist_drawn = sample_bars(vis_a[example_index], example_draw)
@@ -1137,6 +1260,8 @@ def main() -> None:
         "bars": bars,
         "bar_example": bar_example,
         "role_rate": role_rate,
+        "reveals": reveals,
+        "reveal_card": show.team,
     }
     ROOT_PROCESSED.mkdir(parents=True, exist_ok=True)
     ROOT_REPORTS.mkdir(parents=True, exist_ok=True)
@@ -1145,6 +1270,8 @@ def main() -> None:
     plot_results(payload, ROOT_PLOTS / "flashcard_squad_trial.png")
     ARTIFACTS.mkdir(parents=True, exist_ok=True)
     plot_results(payload, ARTIFACTS / "squad_trial.png")
+    plot_reveals(show, reveal_draws, ROOT_PLOTS / "flashcard_squad_reveals.png")
+    plot_reveals(show, reveal_draws, ARTIFACTS / "squad_reveals.png")
     plot_bar_card(
         example_card,
         example_card.goals,

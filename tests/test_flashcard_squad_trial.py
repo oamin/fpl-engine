@@ -27,6 +27,7 @@ from src.models.flashcard_squad_trial import (
     SquadVision,
     apply_cut,
     bar_correspondence,
+    cut_at_fraction,
     render_grid,
     sample_bars,
     train_model,
@@ -216,6 +217,12 @@ class SquadCutTests(unittest.TestCase):
         hidden = np.where(cards[0].gw > 3)[0]
         self.assertLess(float(prob[0, hidden, 1:].sum(-1).mean()), 0.2)
         self.assertGreater(float(prob[1, hidden, 1:].sum(-1).mean()), 0.7)
+
+    def test_reveal_starts_at_gameweek_one(self) -> None:
+        card = _card()
+        self.assertEqual(cut_at_fraction(card, 0.5), 15)
+        self.assertEqual(cut_at_fraction(card, 0.8), 24)
+        self.assertLess(cut_at_fraction(card, 0.2), cut_at_fraction(card, 0.8))
 
 
 def _role_card() -> SquadCard:

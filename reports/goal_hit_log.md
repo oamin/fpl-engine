@@ -30,12 +30,16 @@ The flash-card GRU was trained on the player card and scored on log-loss and sea
 | 7 Nov 2026, 20:27 | prefix rate, strength 8 | squad card, all minutes | 19.3% | 37.4% | 75.8% |
 | 7 Nov 2026, 20:27 | group rate | squad card, all minutes | 20.0% | 37.8% | 75.8% |
 | 7 Nov 2026, 20:27 | minutes | squad card, all minutes | 21.9% | 38.4% | 77.9% |
+| 7 Nov 2026, 23:42 | squad sequence, position-rate head | squad card, all minutes | 21.2% | 39.3% | 77.3% |
+| 7 Nov 2026, 23:42 | squad vision, position-rate head | squad card, all minutes | 22.8% | 42.6% | 80.5% |
+| 7 Nov 2026, 23:42 | prefix rate, strength 8 | squad card, all minutes | 19.3% | 37.4% | 75.8% |
+| 7 Nov 2026, 23:42 | group rate | squad card, all minutes | 20.0% | 37.8% | 75.8% |
 
-Best on the player card: minutes, 11.4%. Best on the squad card: squad vision with the marked chart, 13.1%. Best on the squad card with every appearance counted: squad vision, 22.3%.
+Best on the player card: minutes, 11.4%. Best on the squad card: squad vision with the marked chart, 13.1%. Best on the squad card with every appearance counted: squad vision with the position-rate head, 22.8%.
 
 The marked chart adds a position color, a solid band at 60 minutes, and an eight-pixel opponent conceded bar. The top 10% rose from 12.2% to 13.1%. The top 20% fell from 23.5% to 21.6%. Expected goals on played weeks were 28.1 against 21.4 actual.
 
-The all-minutes rows drop that 60-minute rule. The readers take the minute count itself, and a bench row stays in the ranking. Sorting by minutes catches 21.9%. Squad vision catches 22.3%.
+The all-minutes rows drop that 60-minute rule. The readers take the minute count itself, and a bench row stays in the ranking. Sorting by minutes catches 21.9%. Squad vision at 20:27 catches 22.3%. The 23:42 position-rate head catches 22.8%, and the sequence reader on that same exam rises from 15.8% to 21.2%.
 
 Add the next model as one row. Keep the exam name when the card, the cut, and the player rule stay the same. Give a changed setup a new exam name.
 
@@ -57,3 +61,26 @@ A bar is an appearance with at least one goal or assist. The window is every clu
 | 7 Nov 2026, 23:15 | same count, random weeks | assists | 445 | 445.0 | 15.1% | 15.1% |
 
 The 23:33 run gives the goal and assist heads a learned position term, the player's own minutes and visible bars, and the match-up header. Nothing is removed for goalkeepers. Vision's probability of a goal bar on a hidden appearance is 5.4% for a goalkeeper and 7.2% for a forward. Drawn goal bars: 533.6 against 459 actual, 12.3% of actual bars covered, 10.6% of drawn bars on a real goal week.
+
+## Remainders from gameweek 1
+
+The 23:42 run changes the fit. The shared goal and assist heads start at zero, so a position-by-minutes table has to explain the labels, and those position parameters take ten times the learning rate. Each training card shows a random 20–80% prefix starting at gameweek 1. Nothing is blanked for a goalkeeper.
+
+After training, every 2025-26 card is shown from gameweek 1 through 80%, 60%, 40%, or 20% of its fixtures. The reader draws the hidden remainder. Totals are 20 draws. GK and FWD are the probability of a goal bar on a hidden appearance.
+
+| logged (UK) | revealed | reader | channel | actual bars | drawn bars | covered | on a real week | GK | FWD |
+|---|---|---|---|---:|---:|---:|---:|---:|---:|
+| 7 Nov 2026, 23:42 | 80% | squad vision | goals | 199 | 184.9 | 15.4% | 16.5% | 0.5% | 11.6% |
+| 7 Nov 2026, 23:42 | 80% | squad sequence | goals | 199 | 228.8 | 15.7% | 13.6% | 0.3% | 12.7% |
+| 7 Nov 2026, 23:42 | 80% | prefix rate, strength 8 | goals | 199 | 202.7 | 17.9% | 17.6% | 0.1% | 12.9% |
+| 7 Nov 2026, 23:42 | 60% | squad vision | goals | 360 | 354.9 | 14.4% | 14.6% | 0.5% | 11.4% |
+| 7 Nov 2026, 23:42 | 60% | squad sequence | goals | 360 | 402.9 | 15.3% | 13.7% | 0.3% | 11.8% |
+| 7 Nov 2026, 23:42 | 60% | prefix rate, strength 8 | goals | 360 | 384.6 | 16.0% | 15.0% | 0.1% | 13.2% |
+| 7 Nov 2026, 23:42 | 40% | squad vision | goals | 544 | 538.4 | 14.6% | 14.7% | 0.5% | 11.4% |
+| 7 Nov 2026, 23:42 | 40% | squad sequence | goals | 544 | 557.3 | 13.8% | 13.5% | 0.3% | 10.9% |
+| 7 Nov 2026, 23:42 | 40% | prefix rate, strength 8 | goals | 544 | 602.1 | 16.8% | 15.2% | 0.1% | 13.2% |
+| 7 Nov 2026, 23:42 | 20% | squad vision | goals | 730 | 688.9 | 14.4% | 15.3% | 0.5% | 11.2% |
+| 7 Nov 2026, 23:42 | 20% | squad sequence | goals | 730 | 658.3 | 11.6% | 12.9% | 0.3% | 9.7% |
+| 7 Nov 2026, 23:42 | 20% | prefix rate, strength 8 | goals | 730 | 775.8 | 16.0% | 15.1% | 0.1% | 13.4% |
+
+On the gameweek-19 exam the same vision model puts a goal bar at 0.5% for a goalkeeper, 1.9% for a defender, 5.1% for a midfielder, and 11.5% for a forward. Drawn goal bars on gameweeks 20–38: 445.8 against 459 actual, 14.1% covered, 14.6% on a real week. A shuffle of the correct count still covers 20.4%. Assist remainders stay thinner: at 20% revealed, vision draws 614.9 assist bars against 707 actual and covers 9.9%.
