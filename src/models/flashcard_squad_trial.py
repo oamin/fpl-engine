@@ -58,7 +58,6 @@ SEED = 0
 POS = {"GKP": 0, "DEF": 1, "MID": 2, "FWD": 3}
 
 MINUTES_C = (0, 114, 178)
-PLAYED_C = (0, 0, 128)
 GOALS_C = (213, 94, 0)
 ASSISTS_C = (204, 121, 167)
 HOME_C = (0, 158, 115)
@@ -287,7 +286,6 @@ def apply_cut(card: SquadCard, league: dict, cut_gw: int) -> dict[str, np.ndarra
     loss = card.present & hidden.reshape(1, COLS)
     return {
         "minutes": card.minutes.astype(np.float32),
-        "played60": (card.minutes >= 60).astype(np.float32),
         "present": card.present.astype(np.float32),
         "goal_token": goal_token,
         "assist_token": assist_token,
@@ -312,6 +310,17 @@ def _hatch(img: np.ndarray, y0: int, x0: int, height: int) -> None:
     img[y0 : y0 + height, x0 : x0 + CELL_W] = np.where(mark[..., None], HATCH_FG, HATCH_BG)
 
 
+def _minutes_bar(img: np.ndarray, y0: int, x0: int, minutes: float) -> None:
+    """Paint the minute count across two bands. Zero stays empty. No 60-minute step."""
+    height = BAND_H * 2
+    img[y0 : y0 + height, x0 : x0 + CELL_W] = 255
+    img[y0 + height - 1, x0 : x0 + CELL_W] = BASE_C
+    if minutes <= 0:
+        return
+    pixels = min(height, max(1, int(round(minutes / 90 * height))))
+    img[y0 + height - pixels : y0 + height, x0 : x0 + CELL_W] = MINUTES_C
+
+
 def _bar(img: np.ndarray, y0: int, x0: int, pixels: int, color: tuple[int, int, int]) -> None:
     img[y0 : y0 + BAND_H, x0 : x0 + CELL_W] = 255
     img[y0 + BAND_H - 1, x0 : x0 + CELL_W] = BASE_C
@@ -322,9 +331,9 @@ def _bar(img: np.ndarray, y0: int, x0: int, pixels: int, color: tuple[int, int, 
 def render_grid(view: dict[str, np.ndarray]) -> np.ndarray:
     """Paint one card. Labels and names are not in the picture.
 
-    Each player cell is five bands: minutes, a solid mark at 60 minutes,
-    goals, assists, and a position color. The conceded header uses the full
-    eight-pixel band, so rates that shared a height before are separate.
+    Each player cell carries the minute count across sixteen pixels, then goals,
+    assists, and a position color. The conceded header uses the full eight-pixel
+    band, so rates that shared a height before are separate.
     """
     img = np.full((IMG_H, IMG_W, 3), 255, dtype=np.uint8)
     for col in range(COLS):
@@ -353,10 +362,7 @@ def render_grid(view: dict[str, np.ndarray]) -> np.ndarray:
             if view["present"][row, col] < 0.5:
                 _hatch(img, y, x0, BAND_H * 4)
                 continue
-            minutes = float(view["minutes"][row, col])
-            minute_px = 0 if minutes <= 0 else min(BAND_H, max(1, int(round(minutes / 90 * BAND_H))))
-            _bar(img, y, x0, minute_px, MINUTES_C)
-            _bar(img, y + BAND_H, x0, BAND_H if minutes >= 60 else 0, PLAYED_C)
+            _minutes_bar(img, y, x0, float(view["minutes"][row, col]))
             for offset, token, color in (
                 (BAND_H * 2, int(view["goal_token"][row, col]), GOALS_C),
                 (BAND_H * 3, int(view["assist_token"][row, col]), ASSISTS_C),
@@ -404,7 +410,7 @@ class SquadSequence(nn.Module):
 
     def __init__(self, dropout: float = 0.1) -> None:
         super().__init__()
-        self.cell = nn.Linear(3, D)
+        self.cell = nn.Linear(2, D)
         self.position = nn.Embedding(5, D)
         self.goal_in = nn.Embedding(5, D)
         self.assist_in = nn.Embedding(5, D)
@@ -412,9 +418,7 @@ class SquadSequence(nn.Module):
         self.couple = Coupler(dropout)
 
     def forward(self, batch: dict[str, torch.Tensor]) -> tuple[torch.Tensor, torch.Tensor]:
-        stats = torch.stack(
-            [batch["minutes"] / 90.0, batch["played60"], batch["present"]], dim=-1
-        )
+        stats = torch.stack([batch["minutes"] / 90.0, batch["present"]], dim=-1)
         cells = self.cell(stats)
         pos = torch.where(batch["row_pad"], torch.full_like(batch["position"], 4), batch["position"])
         cells = cells + self.position(pos)[:, :, None, :]
@@ -451,7 +455,7 @@ def _stack(views: list[dict[str, np.ndarray]]) -> dict[str, torch.Tensor]:
     long_keys = {"goal_token", "assist_token", "goal_label", "assist_label", "position"}
     batch: dict[str, torch.Tensor] = {}
     for key in (
-        "minutes", "played60", "present", "goal_token", "assist_token", "position", "home",
+        "minutes", "present", "goal_token", "assist_token", "position", "home",
         "concede", "concede_missing", "regulars", "regulars_missing", "column_on",
         "goal_label", "assist_label", "loss",
     ):
@@ -603,7 +607,6 @@ def _channel_scores(
     labels: np.ndarray,
     cards: list[SquadCard],
     cut_gw: int,
-    played_only: bool,
 ) -> dict[str, float]:
     nll = 0.0
     weight = 0.0
@@ -617,8 +620,6 @@ def _channel_scores(
     for index, card in enumerate(cards):
         hidden = (card.gw > cut_gw) & (card.gw > 0)
         mask = card.present & hidden.reshape(1, COLS)
-        if played_only:
-            mask = mask & (card.minutes >= 60)
         if not mask.any():
             continue
         p = probs[index]
@@ -656,12 +657,12 @@ def capture_table(
     cut_gw: int,
     seeds: int = 20,
 ) -> dict[str, object]:
-    """Share of a player's hidden goal weeks caught by ranking his played fixtures."""
+    """Share of a player's hidden goal weeks caught by ranking his appearances."""
     rows = []
     for index, card in enumerate(cards):
         hidden = (card.gw > cut_gw) & (card.gw > 0)
         for row in range(card.n_players):
-            cols = np.where(hidden & card.present[row] & (card.minutes[row] >= 60))[0]
+            cols = np.where(hidden & card.present[row])[0]
             if len(cols) < 8:
                 continue
             hit = card.goals[row, cols] > 0
@@ -682,6 +683,35 @@ def capture_table(
     return {"n_players": len(rows), **{name: (totals[name] / scale).tolist() for name in names}}
 
 
+def appearance_hit_rate(
+    cards: list[SquadCard],
+    score: np.ndarray,
+    cut_gw: int,
+    seeds: int = 20,
+) -> dict[str, float]:
+    """Share of highlighted appearances that contain a goal. Same players as the capture table."""
+    rows = []
+    for index, card in enumerate(cards):
+        hidden = (card.gw > cut_gw) & (card.gw > 0)
+        for row in range(card.n_players):
+            cols = np.where(hidden & card.present[row])[0]
+            if len(cols) < 8:
+                continue
+            hit = card.goals[row, cols] > 0
+            if int(hit.sum()) < 1:
+                continue
+            rows.append((hit.astype(np.float64), score[index, row, cols], card.minutes[row, cols]))
+    base = float(np.mean([hit.mean() for hit, _, _ in rows])) if rows else 0.0
+    chosen = []
+    for seed in range(seeds):
+        rng = np.random.default_rng(seed)
+        for hit, sc, _minutes in rows:
+            order = np.argsort(-(sc + rng.random(len(sc)) * 1e-6))
+            take = max(1, int(round(0.1 * len(hit))))
+            chosen.append(float(hit[order[:take]].mean()))
+    return {"players": len(rows), "base": base, "top10": float(np.mean(chosen)) if chosen else 0.0}
+
+
 def write_report(payload: dict[str, object], path) -> None:
     goals = payload["goals"]
     capture = payload["capture"]
@@ -700,23 +730,23 @@ def write_report(payload: dict[str, object], path) -> None:
         "",
         "## Readers",
         "",
-        "Sequence: minutes, the 60-minute flag, position, and the visible bars as tokens.",
-        "Vision: the same grid painted in pixels, with a position color, a 60-minute mark,",
-        "and an eight-pixel opponent conceded bar. A shared cell encoder reads each patch.",
+        "Sequence: the minute count, presence, position, and the visible bars as tokens.",
+        "Vision: the same grid painted in pixels. Minutes use sixteen pixels, with no",
+        "60-minute step, plus a position color and an eight-pixel opponent conceded bar.",
         "Both then attend across the 40 rows and across all 40 columns.",
         "The personal baseline is the player's visible bars pulled toward the position-and-minutes rate",
         f"with strength {PRIOR_STRENGTH}. The group baseline is that rate alone.",
         "",
-        "## Played hidden weeks",
+        "## Hidden appearances",
         "",
-        "A played week has at least 60 minutes. Lower negative log-likelihood is better.",
+        "Every recorded appearance is included, at whatever minutes. Lower negative log-likelihood is better.",
         "",
         "| reader | goal nll | assist nll | goal P | goal rate | expected goals | actual goals |",
         "|---|---:|---:|---:|---:|---:|---:|",
     ]
     for name in ("sequence", "vision", "prefix", "group"):
-        goal = goals["goals"][name]["played"]
-        assist = goals["assists"][name]["played"]
+        goal = goals["goals"][name]
+        assist = goals["assists"][name]
         lines.append(
             f"| {name} | {goal['nll']:.3f} | {assist['nll']:.3f} | {goal['positive_p']:.3f} | "
             f"{goal['positive_rate']:.3f} | {goal['expected_sum']:.2f} | {goal['actual_sum']:.2f} |"
@@ -726,7 +756,10 @@ def write_report(payload: dict[str, object], path) -> None:
             "",
             "## Where the goals land",
             "",
-            f"Players with a goal and at least eight played weeks after the cut: {capture['n_players']}.",
+            f"Players with a goal and at least eight appearances after the cut: {capture['n_players']}.",
+            "An appearance is any recorded minutes, including a zero-minute bench row.",
+            f"A random appearance in that group is a goal {payload['hit_rate']['vision']['base']:.1%} of the time.",
+            f"The vision model's top 10% of appearances are goals {payload['hit_rate']['vision']['top10']:.1%} of the time.",
             "",
             "| rank by | top 10% | top 20% | top 50% |",
             "|---|---:|---:|---:|",
@@ -750,9 +783,9 @@ def plot_results(payload: dict[str, object], path) -> None:
     capture = payload["capture"]
     fig, axes = plt.subplots(1, 2, figsize=(9.2, 4.2))
     names = ["sequence", "vision", "prefix", "group"]
-    goal_nll = [payload["goals"]["goals"][name]["played"]["nll"] for name in names]
+    goal_nll = [payload["goals"]["goals"][name]["nll"] for name in names]
     axes[0].bar(names, goal_nll, color=["#e45756", "#4c78a8", "#54a24b", "#b0b0b0"])
-    axes[0].set_ylabel("Played-week goal NLL")
+    axes[0].set_ylabel("Appearance goal NLL")
     axes[0].set_title("Lower is better")
     fracs = [10, 20, 50]
     for name, color in (
@@ -764,7 +797,7 @@ def plot_results(payload: dict[str, object], path) -> None:
     ):
         vals = [10, 20, 50] if name == "chance" else [v * 100 for v in capture[name]]
         axes[1].plot(fracs, vals, marker="o", label=name, color=color)
-    axes[1].set_xlabel("Played weeks kept (%)")
+    axes[1].set_xlabel("Appearances kept (%)")
     axes[1].set_ylabel("Goal weeks caught (%)")
     axes[1].set_title(f"{capture['n_players']} players, 2025-26 after GW19")
     axes[1].legend(frameon=False, fontsize=8)
@@ -800,15 +833,14 @@ def main() -> None:
     assist_probs = {"sequence": seq_a, "vision": vis_a, "prefix": prefix_a, "group": group_a}
     goals = {"goals": {}, "assists": {}}
     for name in goal_probs:
-        goals["goals"][name] = {
-            "played": _channel_scores(goal_probs[name], labels, test, CUT_GW, True),
-            "all": _channel_scores(goal_probs[name], labels, test, CUT_GW, False),
-        }
-        goals["assists"][name] = {
-            "played": _channel_scores(assist_probs[name], assist_labels, test, CUT_GW, True),
-        }
+        goals["goals"][name] = _channel_scores(goal_probs[name], labels, test, CUT_GW)
+        goals["assists"][name] = _channel_scores(assist_probs[name], assist_labels, test, CUT_GW)
     capture_scores = {name: 1.0 - goal_probs[name][:, :, :, 0] for name in goal_probs}
     capture = capture_table(test, capture_scores, CUT_GW)
+    hit_rate = {
+        "vision": appearance_hit_rate(test, capture_scores["vision"], CUT_GW),
+        "minutes": appearance_hit_rate(test, np.stack([card.minutes for card in test]), CUT_GW),
+    }
     elapsed = time.perf_counter() - started
     payload = {
         "n_train": len(train),
@@ -818,6 +850,7 @@ def main() -> None:
         "vision_history": vis_hist,
         "goals": goals,
         "capture": capture,
+        "hit_rate": hit_rate,
     }
     ROOT_PROCESSED.mkdir(parents=True, exist_ok=True)
     ROOT_REPORTS.mkdir(parents=True, exist_ok=True)
@@ -828,10 +861,10 @@ def main() -> None:
     plot_results(payload, ARTIFACTS / "squad_trial.png")
     print(f"done in {elapsed:.0f}s", flush=True)
     for name in ("sequence", "vision", "prefix", "group"):
-        played = goals["goals"][name]["played"]
+        scored = goals["goals"][name]
         print(
-            f"{name} goal nll {played['nll']:.3f} expected {played['expected_sum']:.2f} "
-            f"actual {played['actual_sum']:.2f} capture10 {capture[name][0]:.3f}",
+            f"{name} goal nll {scored['nll']:.3f} expected {scored['expected_sum']:.2f} "
+            f"actual {scored['actual_sum']:.2f} capture10 {capture[name][0]:.3f}",
             flush=True,
         )
 

@@ -17,7 +17,7 @@ from src.models.flashcard_squad_trial import (
     IMG_W,
     MASK_C,
     MASK_ID,
-    PLAYED_C,
+    MINUTES_C,
     PLAYER_H,
     POS_C,
     ROWS,
@@ -143,7 +143,7 @@ class SquadCutTests(unittest.TestCase):
         self.assertGreater(float(np.mean(out_probs)), 0.7)
         self.assertLess(float(np.mean(in_probs)), 0.3)
 
-    def test_picture_marks_position_the_hour_and_finer_concede(self) -> None:
+    def test_picture_uses_the_minute_count_position_and_finer_concede(self) -> None:
         card = _card()
         card.minutes = card.minutes.copy()
         card.present = card.present.copy()
@@ -161,12 +161,10 @@ class SquadCutTests(unittest.TestCase):
         view["concede_missing"][0] = 0.0
         view["concede_missing"][1] = 0.0
         image = render_grid(view)
-        minutes_band = image[HEADER_H : HEADER_H + BAND_H]
-        self.assertTrue(np.array_equal(minutes_band[:, 0:CELL_W], minutes_band[:, CELL_W : 2 * CELL_W]))
-        played_y = HEADER_H + BAND_H
-        played = image[played_y : played_y + BAND_H]
-        self.assertFalse(np.any(np.all(played[:, 0:CELL_W] == PLAYED_C, axis=-1)))
-        self.assertTrue(np.all(played[:, CELL_W : 2 * CELL_W] == PLAYED_C))
+        minutes_band = image[HEADER_H : HEADER_H + 2 * BAND_H]
+        self.assertFalse(np.array_equal(minutes_band[:, 0:CELL_W], minutes_band[:, CELL_W : 2 * CELL_W]))
+        self.assertTrue(np.any(np.all(minutes_band[:, 0:CELL_W] == MINUTES_C, axis=-1)))
+        self.assertTrue(np.any(np.all(minutes_band[:, CELL_W : 2 * CELL_W] == MINUTES_C, axis=-1)))
         pos_y = HEADER_H + 4 * BAND_H
         self.assertTrue(np.array_equal(image[pos_y, 0], np.array(POS_C[2])))
         self.assertTrue(np.array_equal(image[pos_y + PLAYER_H, 0], np.array(POS_C[3])))
