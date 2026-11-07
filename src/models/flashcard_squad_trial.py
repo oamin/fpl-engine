@@ -712,6 +712,99 @@ def appearance_hit_rate(
     return {"players": len(rows), "base": base, "top10": float(np.mean(chosen)) if chosen else 0.0}
 
 
+def sample_bars(probs: np.ndarray, rng: np.random.Generator) -> np.ndarray:
+    """Draw one bar height per cell from the class probabilities."""
+    flat = np.asarray(probs, dtype=np.float64).reshape(-1, probs.shape[-1])
+    cdf = np.cumsum(flat, axis=1)
+    draw = rng.random(flat.shape[0])[:, None]
+    classes = np.minimum((draw > cdf).sum(axis=1), probs.shape[-1] - 1)
+    return classes.reshape(probs.shape[:-1]).astype(np.int64)
+
+
+def _hidden_mask(cards: list[SquadCard], cut_gw: int) -> np.ndarray:
+    masks = []
+    for card in cards:
+        hidden = (card.gw > cut_gw) & (card.gw > 0)
+        masks.append(card.present & hidden.reshape(1, COLS))
+    return np.stack(masks)
+
+
+def bar_correspondence(
+    cards: list[SquadCard],
+    probs: np.ndarray,
+    labels: np.ndarray,
+    cut_gw: int,
+    rng: np.random.Generator,
+    draws: int = 20,
+) -> dict[str, float]:
+    """Count and week overlap between sampled bars and the actual bars.
+
+    A bar is an appearance whose height is at least 1. Totals cover every
+    hidden appearance of every club, which is the run of gameweeks after the cut.
+    """
+    mask = _hidden_mask(cards, cut_gw)
+    actual = np.where(mask, labels, 0)
+    actual_bars = int((actual > 0).sum())
+    actual_height = int(actual.sum())
+    drawn_bars = 0.0
+    drawn_height = 0.0
+    covered = 0.0
+    on_actual = 0.0
+    shared_height = 0.0
+    for _ in range(draws):
+        drawn = np.where(mask, sample_bars(probs, rng), 0)
+        both = (actual > 0) & (drawn > 0)
+        drawn_bars += float((drawn > 0).sum())
+        drawn_height += float(drawn.sum())
+        covered += float(both.sum())
+        on_actual += float(both.sum())
+        shared_height += float(np.minimum(actual, drawn).sum())
+    return {
+        "actual_bars": actual_bars,
+        "drawn_bars": drawn_bars / draws,
+        "actual_height": actual_height,
+        "drawn_height": drawn_height / draws,
+        "actual_covered": covered / draws / max(actual_bars, 1),
+        "drawn_on_actual": on_actual / draws / max(drawn_bars / draws, 1.0),
+        "shared_height": shared_height / draws / max(actual_height, 1),
+    }
+
+
+def random_same_count(
+    cards: list[SquadCard],
+    labels: np.ndarray,
+    cut_gw: int,
+    rng: np.random.Generator,
+    draws: int = 20,
+) -> dict[str, float]:
+    """Place each player's actual bars on random appearances of that player."""
+    mask = _hidden_mask(cards, cut_gw)
+    actual = np.where(mask, labels > 0, False)
+    actual_bars = int(actual.sum())
+    covered = 0.0
+    for _ in range(draws):
+        both = 0
+        for index, card in enumerate(cards):
+            for row in range(card.n_players):
+                cols = np.where(mask[index, row])[0]
+                hits = cols[actual[index, row, cols]]
+                if len(hits) == 0 or len(cols) == 0:
+                    continue
+                picked = rng.choice(cols, size=len(hits), replace=False)
+                both += int(np.isin(picked, hits).sum())
+        covered += both
+    rate = covered / draws / max(actual_bars, 1)
+    return {
+        "actual_bars": actual_bars,
+        "drawn_bars": float(actual_bars),
+        "actual_height": int(np.where(mask, labels, 0).sum()),
+        "drawn_height": float(np.where(mask, labels, 0).sum()),
+        "actual_covered": rate,
+        "drawn_on_actual": rate,
+        "shared_height": rate,
+    }
+
+
 def write_report(payload: dict[str, object], path) -> None:
     goals = payload["goals"]
     capture = payload["capture"]
@@ -774,6 +867,33 @@ def write_report(payload: dict[str, object], path) -> None:
             "",
             "Plot: `data/plots/flashcard_squad_trial.png`.",
             "",
+            "## Bars across the hidden gameweeks",
+            "",
+            "A bar is an appearance with height at least 1. Each reader draws one by sampling",
+            "its probabilities. The totals are every club, every appearance after the cut,",
+            "averaged over 20 draws. Covered is the share of actual bars that sit on the same",
+            "appearance as a drawn bar. On a real week is the share of drawn bars that sit on",
+            "an actual bar. Same count, random weeks keeps each player's bar count and shuffles",
+            "the appearances.",
+            "",
+            "| reader | channel | actual bars | drawn bars | covered | on a real week |",
+            "|---|---|---:|---:|---:|---:|",
+        ]
+    )
+    for channel in ("goals", "assists"):
+        for name in ("vision", "sequence", "prefix", "group", "random"):
+            item = payload["bars"][channel][name]
+            lines.append(
+                f"| {name} | {channel} | {item['actual_bars']:.0f} | {item['drawn_bars']:.1f} | "
+                f"{item['actual_covered']:.1%} | {item['drawn_on_actual']:.1%} |"
+            )
+    example = payload["bar_example"]
+    lines.extend(
+        [
+            "",
+            f"One vision draw for {example['team']}, gameweeks {example['gw_from']}–{example['gw_to']}: "
+            "`data/plots/flashcard_squad_bars.png`.",
+            "",
         ]
     )
     path.write_text("\n".join(lines), encoding="utf-8")
@@ -801,6 +921,66 @@ def plot_results(payload: dict[str, object], path) -> None:
     axes[1].set_ylabel("Goal weeks caught (%)")
     axes[1].set_title(f"{capture['n_players']} players, 2025-26 after GW19")
     axes[1].legend(frameon=False, fontsize=8)
+    fig.tight_layout()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(path, dpi=140)
+    plt.close(fig)
+
+
+def plot_bar_card(
+    card: SquadCard,
+    goal_actual: np.ndarray,
+    goal_drawn: np.ndarray,
+    assist_actual: np.ndarray,
+    assist_drawn: np.ndarray,
+    path,
+) -> None:
+    """One club, hidden gameweeks. Green is a bar on the same appearance."""
+    hidden = np.where((card.gw > CUT_GW) & (card.gw > 0))[0]
+    rows = [
+        row
+        for row in range(card.n_players)
+        if (goal_actual[row, hidden] > 0).any()
+        or (goal_drawn[row, hidden] > 0).any()
+        or (assist_actual[row, hidden] > 0).any()
+        or (assist_drawn[row, hidden] > 0).any()
+    ]
+    colors = np.array(
+        [
+            [1.0, 1.0, 1.0],
+            [0.96, 0.96, 0.96],
+            [0.89, 0.43, 0.13],
+            [0.30, 0.47, 0.66],
+            [0.18, 0.62, 0.45],
+        ]
+    )
+
+    def panel(actual: np.ndarray, drawn: np.ndarray) -> np.ndarray:
+        grid = np.zeros((len(rows), len(hidden)), dtype=np.int64)
+        for i, row in enumerate(rows):
+            for j, col in enumerate(hidden):
+                if not card.present[row, col]:
+                    grid[i, j] = 1
+                    continue
+                has_actual = actual[row, col] > 0
+                has_drawn = drawn[row, col] > 0
+                grid[i, j] = 4 if has_actual and has_drawn else 2 if has_actual else 3 if has_drawn else 0
+        return colors[grid]
+
+    fig, axes = plt.subplots(2, 1, figsize=(10.5, max(3.2, 0.28 * len(rows) + 1.4)), sharex=True)
+    labels = [card.names[row].split()[-1][:16] for row in rows]
+    gws = [str(int(card.gw[col])) for col in hidden]
+    for axis, title, actual, drawn in (
+        (axes[0], "Goals", goal_actual, goal_drawn),
+        (axes[1], "Assists", assist_actual, assist_drawn),
+    ):
+        axis.imshow(panel(actual, drawn), aspect="auto", interpolation="nearest")
+        axis.set_yticks(range(len(rows)))
+        axis.set_yticklabels(labels, fontsize=7)
+        axis.set_title(f"{card.team} {card.season}  {title}")
+    axes[1].set_xticks(range(len(hidden)))
+    axes[1].set_xticklabels(gws, fontsize=7)
+    axes[1].set_xlabel("Gameweek. Orange is an actual bar, blue is a drawn bar, green is both.")
     fig.tight_layout()
     path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(path, dpi=140)
@@ -841,6 +1021,31 @@ def main() -> None:
         "vision": appearance_hit_rate(test, capture_scores["vision"], CUT_GW),
         "minutes": appearance_hit_rate(test, np.stack([card.minutes for card in test]), CUT_GW),
     }
+    bar_rng = np.random.default_rng(SEED)
+    bars = {"goals": {}, "assists": {}}
+    for channel, probs, channel_labels in (
+        ("goals", goal_probs, labels),
+        ("assists", assist_probs, assist_labels),
+    ):
+        for name in ("vision", "sequence", "prefix", "group"):
+            bars[channel][name] = bar_correspondence(
+                test, probs[name], channel_labels, CUT_GW, bar_rng
+            )
+        bars[channel]["random"] = random_same_count(test, channel_labels, CUT_GW, bar_rng)
+    example_index = int(
+        np.argmax([(card.goals * ((card.gw > CUT_GW) & card.present)).sum() for card in test])
+    )
+    example_card = test[example_index]
+    example_hidden = (example_card.gw > CUT_GW) & (example_card.gw > 0)
+    example_draw = np.random.default_rng(SEED)
+    goal_drawn = sample_bars(vis_g[example_index], example_draw)
+    assist_drawn = sample_bars(vis_a[example_index], example_draw)
+    bar_example = {
+        "team": example_card.team,
+        "season": example_card.season,
+        "gw_from": int(example_card.gw[example_hidden].min()),
+        "gw_to": int(example_card.gw[example_hidden].max()),
+    }
     elapsed = time.perf_counter() - started
     payload = {
         "n_train": len(train),
@@ -851,6 +1056,8 @@ def main() -> None:
         "goals": goals,
         "capture": capture,
         "hit_rate": hit_rate,
+        "bars": bars,
+        "bar_example": bar_example,
     }
     ROOT_PROCESSED.mkdir(parents=True, exist_ok=True)
     ROOT_REPORTS.mkdir(parents=True, exist_ok=True)
@@ -859,12 +1066,35 @@ def main() -> None:
     plot_results(payload, ROOT_PLOTS / "flashcard_squad_trial.png")
     ARTIFACTS.mkdir(parents=True, exist_ok=True)
     plot_results(payload, ARTIFACTS / "squad_trial.png")
+    plot_bar_card(
+        example_card,
+        example_card.goals,
+        goal_drawn,
+        example_card.assists,
+        assist_drawn,
+        ROOT_PLOTS / "flashcard_squad_bars.png",
+    )
+    plot_bar_card(
+        example_card,
+        example_card.goals,
+        goal_drawn,
+        example_card.assists,
+        assist_drawn,
+        ARTIFACTS / "squad_bars.png",
+    )
     print(f"done in {elapsed:.0f}s", flush=True)
     for name in ("sequence", "vision", "prefix", "group"):
         scored = goals["goals"][name]
         print(
             f"{name} goal nll {scored['nll']:.3f} expected {scored['expected_sum']:.2f} "
             f"actual {scored['actual_sum']:.2f} capture10 {capture[name][0]:.3f}",
+            flush=True,
+        )
+    for channel in ("goals", "assists"):
+        item = bars[channel]["vision"]
+        print(
+            f"vision {channel} bars actual {item['actual_bars']} drawn {item['drawn_bars']:.1f} "
+            f"covered {item['actual_covered']:.3f} on_actual {item['drawn_on_actual']:.3f}",
             flush=True,
         )
 

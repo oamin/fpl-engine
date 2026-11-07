@@ -25,7 +25,9 @@ from src.models.flashcard_squad_trial import (
     SquadSequence,
     SquadVision,
     apply_cut,
+    bar_correspondence,
     render_grid,
+    sample_bars,
     train_model,
 )
 
@@ -175,6 +177,28 @@ class SquadCutTests(unittest.TestCase):
         goals, assists = SquadVision(dropout=0.0)(batch["image"], batch["row_pad"], batch["column_on"])
         self.assertEqual(tuple(goals.shape), (1, ROWS, COLS, 4))
         self.assertEqual(tuple(assists.shape), (1, ROWS, COLS, 4))
+
+    def test_matching_bars_overlap_on_the_same_weeks(self) -> None:
+        card = _card()
+        labels = card.goals[None, :, :]
+        probs = np.zeros((1, ROWS, COLS, 4), dtype=np.float64)
+        probs[:, :, :, 0] = 1.0
+        hidden = (card.gw > 19) & card.present[0]
+        probs[0, 0, hidden] = 0.0
+        probs[0, 0, hidden, 3] = 1.0
+        matched = bar_correspondence([card], probs, labels, 19, np.random.default_rng(0), draws=5)
+        self.assertEqual(matched["actual_bars"], int(hidden.sum()))
+        self.assertEqual(matched["drawn_bars"], float(hidden.sum()))
+        self.assertEqual(matched["actual_covered"], 1.0)
+        self.assertEqual(matched["drawn_on_actual"], 1.0)
+        blank = np.zeros_like(probs)
+        blank[:, :, :, 0] = 1.0
+        missed = bar_correspondence([card], blank, labels, 19, np.random.default_rng(0), draws=3)
+        self.assertEqual(missed["drawn_bars"], 0.0)
+        self.assertEqual(missed["actual_covered"], 0.0)
+        certain = np.zeros((2, 4))
+        certain[:, 1] = 1.0
+        self.assertTrue(np.all(sample_bars(certain, np.random.default_rng(0)) == 1))
 
 
 def _coupled_card(rng: np.random.Generator) -> SquadCard:

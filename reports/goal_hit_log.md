@@ -38,3 +38,20 @@ The marked chart adds a position color, a solid band at 60 minutes, and an eight
 The all-minutes rows drop that 60-minute rule. The readers take the minute count itself, and a bench row stays in the ranking. Sorting by minutes catches 21.9%. Squad vision catches 22.3%.
 
 Add the next model as one row. Keep the exam name when the card, the cut, and the player rule stay the same. Give a changed setup a new exam name.
+
+## Bar correspondence
+
+A bar is an appearance with at least one goal or assist. The window is every club in 2025-26 from gameweek 20 to 38. Drawn bars are samples from the reader, averaged over 20 draws. Covered is the share of actual bars that land on the same appearance as a drawn bar. On a real week is the share of drawn bars that land on an actual bar.
+
+| logged (UK) | reader | channel | actual bars | drawn bars | covered | on a real week |
+|---|---|---|---:|---:|---:|---:|
+| 7 Nov 2026, 23:15 | squad vision | goals | 459 | 620.2 | 11.3% | 8.4% |
+| 7 Nov 2026, 23:15 | squad sequence | goals | 459 | 562.5 | 9.6% | 7.9% |
+| 7 Nov 2026, 23:15 | prefix rate, strength 8 | goals | 459 | 489.8 | 17.0% | 15.9% |
+| 7 Nov 2026, 23:15 | group rate | goals | 459 | 501.9 | 15.9% | 14.5% |
+| 7 Nov 2026, 23:15 | same count, random weeks | goals | 459 | 459.0 | 20.4% | 20.4% |
+| 7 Nov 2026, 23:15 | squad vision | assists | 445 | 590.8 | 9.4% | 7.1% |
+| 7 Nov 2026, 23:15 | squad sequence | assists | 445 | 519.6 | 8.2% | 7.0% |
+| 7 Nov 2026, 23:15 | prefix rate, strength 8 | assists | 445 | 443.6 | 11.6% | 11.6% |
+| 7 Nov 2026, 23:15 | group rate | assists | 445 | 453.7 | 10.4% | 10.2% |
+| 7 Nov 2026, 23:15 | same count, random weeks | assists | 445 | 445.0 | 15.1% | 15.1% |
