@@ -385,11 +385,29 @@ class Coupler(nn.Module):
         self.norm_col = nn.LayerNorm(D)
         self.goal = nn.Linear(D, 4)
         self.assist = nn.Linear(D, 4)
+        self.skip_goal = nn.Linear(D, 4)
+        self.skip_assist = nn.Linear(D, 4)
+        self.pos_goal = nn.Embedding(5, 4)
+        self.pos_assist = nn.Embedding(5, 4)
+        self.pos_goal_min = nn.Embedding(5, 4)
+        self.pos_assist_min = nn.Embedding(5, 4)
         self.col_pos = nn.Parameter(torch.zeros(1, 1, COLS, D))
         nn.init.normal_(self.col_pos, std=0.02)
+        for layer in (
+            self.skip_goal, self.skip_assist,
+        ):
+            nn.init.zeros_(layer.weight)
+            nn.init.zeros_(layer.bias)
+        for table in (self.pos_goal, self.pos_assist, self.pos_goal_min, self.pos_assist_min):
+            nn.init.zeros_(table.weight)
 
     def forward(
-        self, cells: torch.Tensor, row_pad: torch.Tensor, col_pad: torch.Tensor
+        self,
+        cells: torch.Tensor,
+        row_pad: torch.Tensor,
+        col_pad: torch.Tensor,
+        position: torch.Tensor,
+        minutes: torch.Tensor,
     ) -> tuple[torch.Tensor, torch.Tensor]:
         batch, _rows, cols, _dim = cells.shape
         hidden = self.norm_row(cells + self.col_pos[:, :, :cols])
@@ -402,7 +420,21 @@ class Coupler(nn.Module):
         mixed, _ = self.col(col_view, col_view, col_view, key_padding_mask=col_mask, need_weights=False)
         col_view = self.norm_col(col_view + mixed)
         out = col_view.reshape(batch, ROWS, cols, D)
-        return self.goal(out), self.assist(out)
+        pos = torch.where(position < 0, torch.full_like(position, 4), position)
+        played = (minutes / 90.0).unsqueeze(-1)
+        goal = (
+            self.goal(out)
+            + self.skip_goal(cells)
+            + self.pos_goal(pos)[:, :, None, :]
+            + self.pos_goal_min(pos)[:, :, None, :] * played
+        )
+        assist = (
+            self.assist(out)
+            + self.skip_assist(cells)
+            + self.pos_assist(pos)[:, :, None, :]
+            + self.pos_assist_min(pos)[:, :, None, :] * played
+        )
+        return goal, assist
 
 
 class SquadSequence(nn.Module):
@@ -430,7 +462,9 @@ class SquadSequence(nn.Module):
             )
         )
         cells = cells + header[:, None, :, :]
-        return self.couple(cells, batch["row_pad"], batch["column_on"] < 0.5)
+        return self.couple(
+            cells, batch["row_pad"], batch["column_on"] < 0.5, batch["position"], batch["minutes"]
+        )
 
 
 class SquadVision(nn.Module):
@@ -441,14 +475,21 @@ class SquadVision(nn.Module):
         self.patch = nn.Linear(3 * PLAYER_H * CELL_W, D)
         self.couple = Coupler(dropout)
 
-    def forward(self, images: torch.Tensor, row_pad: torch.Tensor, column_on: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+    def forward(
+        self,
+        images: torch.Tensor,
+        row_pad: torch.Tensor,
+        column_on: torch.Tensor,
+        position: torch.Tensor,
+        minutes: torch.Tensor,
+    ) -> tuple[torch.Tensor, torch.Tensor]:
         batch = images.shape[0]
         blocks = images.reshape(batch, 3, ROWS + 1, PLAYER_H, COLS, CELL_W)
         blocks = blocks.permute(0, 4, 2, 1, 3, 5).reshape(batch, COLS, ROWS + 1, -1)
         tokens = self.patch(blocks)
         header = tokens[:, :, 0, :]
         cells = tokens[:, :, 1:, :].permute(0, 2, 1, 3) + header[:, None, :, :]
-        return self.couple(cells, row_pad, column_on < 0.5)
+        return self.couple(cells, row_pad, column_on < 0.5, position, minutes)
 
 
 def _stack(views: list[dict[str, np.ndarray]]) -> dict[str, torch.Tensor]:
@@ -507,7 +548,9 @@ def train_model(
             batch = _stack([apply_cut(card, league, cut) for card, cut in zip(pick, cuts, strict=True)])
             opt.zero_grad()
             if kind == "vision":
-                goal_logits, assist_logits = model(batch["image"], batch["row_pad"], batch["column_on"])
+                goal_logits, assist_logits = model(
+                    batch["image"], batch["row_pad"], batch["column_on"], batch["position"], batch["minutes"]
+                )
             else:
                 goal_logits, assist_logits = model(batch)
             mask = batch["loss"]
@@ -536,7 +579,9 @@ def predict(
         pick = cards[start : start + BATCH]
         batch = _stack([apply_cut(card, league, cut_gw) for card in pick])
         if kind == "vision":
-            goal_logits, assist_logits = model(batch["image"], batch["row_pad"], batch["column_on"])
+            goal_logits, assist_logits = model(
+                batch["image"], batch["row_pad"], batch["column_on"], batch["position"], batch["minutes"]
+            )
         else:
             goal_logits, assist_logits = model(batch)
         goals[start : start + len(pick)] = F.softmax(goal_logits, dim=-1).numpy()
@@ -712,6 +757,26 @@ def appearance_hit_rate(
     return {"players": len(rows), "base": base, "top10": float(np.mean(chosen)) if chosen else 0.0}
 
 
+def positive_by_position(
+    probs: np.ndarray, cards: list[SquadCard], cut_gw: int
+) -> list[float]:
+    """Mean probability of a bar, by position, on hidden appearances."""
+    totals = np.zeros(4)
+    counts = np.zeros(4)
+    for index, card in enumerate(cards):
+        hidden = (card.gw > cut_gw) & (card.gw > 0)
+        for row in range(card.n_players):
+            pos = int(card.position[row])
+            if pos < 0:
+                continue
+            cols = np.where(card.present[row] & hidden)[0]
+            if len(cols) == 0:
+                continue
+            totals[pos] += float((1.0 - probs[index, row, cols, 0]).sum())
+            counts[pos] += len(cols)
+    return (totals / np.maximum(counts, 1.0)).tolist()
+
+
 def sample_bars(probs: np.ndarray, rng: np.random.Generator) -> np.ndarray:
     """Draw one bar height per cell from the class probabilities."""
     flat = np.asarray(probs, dtype=np.float64).reshape(-1, probs.shape[-1])
@@ -823,6 +888,15 @@ def write_report(payload: dict[str, object], path) -> None:
         "",
         "## Readers",
         "",
+        "Position, the player's own minutes and visible bars, and the match-up header",
+        "each have a learned effect on the goal and assist heads.",
+        (
+            "Learned vision probability of a goal bar on a hidden appearance: "
+            f"goalkeeper {payload['role_rate']['goal'][0]:.1%}, "
+            f"defender {payload['role_rate']['goal'][1]:.1%}, "
+            f"midfielder {payload['role_rate']['goal'][2]:.1%}, "
+            f"forward {payload['role_rate']['goal'][3]:.1%}."
+        ),
         "Sequence: the minute count, presence, position, and the visible bars as tokens.",
         "Vision: the same grid painted in pixels. Minutes use sixteen pixels, with no",
         "60-minute step, plus a position color and an eight-pixel opponent conceded bar.",
@@ -1037,6 +1111,10 @@ def main() -> None:
     )
     example_card = test[example_index]
     example_hidden = (example_card.gw > CUT_GW) & (example_card.gw > 0)
+    role_rate = {
+        "goal": positive_by_position(vis_g, test, CUT_GW),
+        "assist": positive_by_position(vis_a, test, CUT_GW),
+    }
     example_draw = np.random.default_rng(SEED)
     goal_drawn = sample_bars(vis_g[example_index], example_draw)
     assist_drawn = sample_bars(vis_a[example_index], example_draw)
@@ -1058,6 +1136,7 @@ def main() -> None:
         "hit_rate": hit_rate,
         "bars": bars,
         "bar_example": bar_example,
+        "role_rate": role_rate,
     }
     ROOT_PROCESSED.mkdir(parents=True, exist_ok=True)
     ROOT_REPORTS.mkdir(parents=True, exist_ok=True)

@@ -55,3 +55,5 @@ A bar is an appearance with at least one goal or assist. The window is every clu
 | 7 Nov 2026, 23:15 | prefix rate, strength 8 | assists | 445 | 443.6 | 11.6% | 11.6% |
 | 7 Nov 2026, 23:15 | group rate | assists | 445 | 453.7 | 10.4% | 10.2% |
 | 7 Nov 2026, 23:15 | same count, random weeks | assists | 445 | 445.0 | 15.1% | 15.1% |
+
+The 23:33 run gives the goal and assist heads a learned position term, the player's own minutes and visible bars, and the match-up header. Nothing is removed for goalkeepers. Vision's probability of a goal bar on a hidden appearance is 5.4% for a goalkeeper and 7.2% for a forward. Drawn goal bars: 533.6 against 459 actual, 12.3% of actual bars covered, 10.6% of drawn bars on a real goal week.

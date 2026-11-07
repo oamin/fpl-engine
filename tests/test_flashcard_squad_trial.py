@@ -23,6 +23,7 @@ from src.models.flashcard_squad_trial import (
     ROWS,
     SquadCard,
     SquadSequence,
+    POS,
     SquadVision,
     apply_cut,
     bar_correspondence,
@@ -174,7 +175,9 @@ class SquadCutTests(unittest.TestCase):
         self.assertFalse(np.array_equal(concede[:, 0:CELL_W], concede[:, CELL_W : 2 * CELL_W]))
         torch.manual_seed(0)
         batch = _one(view)
-        goals, assists = SquadVision(dropout=0.0)(batch["image"], batch["row_pad"], batch["column_on"])
+        goals, assists = SquadVision(dropout=0.0)(
+            batch["image"], batch["row_pad"], batch["column_on"], batch["position"], batch["minutes"]
+        )
         self.assertEqual(tuple(goals.shape), (1, ROWS, COLS, 4))
         self.assertEqual(tuple(assists.shape), (1, ROWS, COLS, 4))
 
@@ -199,6 +202,53 @@ class SquadCutTests(unittest.TestCase):
         certain = np.zeros((2, 4))
         certain[:, 1] = 1.0
         self.assertTrue(np.all(sample_bars(certain, np.random.default_rng(0)) == 1))
+
+    def test_position_is_learned_for_a_goalkeeper_and_a_forward(self) -> None:
+        cards = [_role_card() for _ in range(8)]
+        league = {"toy": {"Opp": {"fixtures": [], "by_id": {}}}}
+        torch.manual_seed(0)
+        model = SquadSequence(dropout=0.0)
+        train_model(model, cards, league, np.random.default_rng(0), epochs=20, kind="sequence", lr=2e-3, batch_size=4)
+        model.eval()
+        with torch.no_grad():
+            logits, _ = model(_one(apply_cut(cards[0], league, 3)))
+        prob = torch.softmax(logits, dim=-1)[0]
+        hidden = np.where(cards[0].gw > 3)[0]
+        self.assertLess(float(prob[0, hidden, 1:].sum(-1).mean()), 0.2)
+        self.assertGreater(float(prob[1, hidden, 1:].sum(-1).mean()), 0.7)
+
+
+def _role_card() -> SquadCard:
+    """A goalkeeper never scores. A forward scores every week. Minutes match."""
+    n = 6
+    gw = np.zeros(COLS, dtype=np.int64)
+    gw[:n] = np.arange(1, n + 1)
+    minutes = np.zeros((ROWS, COLS), dtype=np.float32)
+    goals = np.zeros((ROWS, COLS), dtype=np.int64)
+    present = np.zeros((ROWS, COLS), dtype=bool)
+    minutes[:2, :n] = 90
+    present[:2, :n] = True
+    goals[1, :n] = 1
+    position = np.full(ROWS, -1, dtype=np.int64)
+    position[0] = POS["GKP"]
+    position[1] = POS["FWD"]
+    return SquadCard(
+        season="toy",
+        team="Home",
+        names=tuple(["Keeper", "Forward"] + ["spare"] * (ROWS - 2)),
+        position=position,
+        gw=gw,
+        kickoff=gw.copy(),
+        home=np.zeros(COLS, dtype=np.int64),
+        opponent=tuple([""] * COLS),
+        fixture_id=np.zeros(COLS, dtype=np.int64),
+        minutes=minutes,
+        goals=goals,
+        assists=np.zeros((ROWS, COLS), dtype=np.int64),
+        present=present,
+        n_players=2,
+        n_fixtures=n,
+    )
 
 
 def _coupled_card(rng: np.random.Generator) -> SquadCard:

@@ -8,10 +8,13 @@ Cards: train 60, test 20. One card is a club-season.
 Grid: 40 players by 40 fixtures. Cut after gameweek 19 for every club.
 Minutes, venue, opponent goals conceded, and regulars-on-the-pitch stay visible.
 Goals and assists after the cut are hidden. The segment is predicted in one pass.
-Wall clock: 66 seconds on CPU.
+Wall clock: 65 seconds on CPU.
 
 ## Readers
 
+Position, the player's own minutes and visible bars, and the match-up header
+each have a learned effect on the goal and assist heads.
+Learned vision probability of a goal bar on a hidden appearance: goalkeeper 5.4%, defender 3.7%, midfielder 6.1%, forward 7.2%.
 Sequence: the minute count, presence, position, and the visible bars as tokens.
 Vision: the same grid painted in pixels. Minutes use sixteen pixels, with no
 60-minute step, plus a position color and an eight-pixel opponent conceded bar.
@@ -25,8 +28,8 @@ Every recorded appearance is included, at whatever minutes. Lower negative log-l
 
 | reader | goal nll | assist nll | goal P | goal rate | expected goals | actual goals |
 |---|---:|---:|---:|---:|---:|---:|
-| sequence | 0.184 | 0.184 | 0.056 | 0.045 | 34.77 | 25.05 |
-| vision | 0.181 | 0.176 | 0.062 | 0.045 | 39.24 | 25.05 |
+| sequence | 0.165 | 0.166 | 0.054 | 0.045 | 30.76 | 25.05 |
+| vision | 0.165 | 0.161 | 0.053 | 0.045 | 29.95 | 25.05 |
 | prefix | 0.157 | 0.159 | 0.048 | 0.045 | 27.39 | 25.05 |
 | group | 0.153 | 0.156 | 0.050 | 0.045 | 28.20 | 25.05 |
 
@@ -35,12 +38,12 @@ Every recorded appearance is included, at whatever minutes. Lower negative log-l
 Players with a goal and at least eight appearances after the cut: 197.
 An appearance is any recorded minutes, including a zero-minute bench row.
 A random appearance in that group is a goal 12.4% of the time.
-The vision model's top 10% of appearances are goals 22.8% of the time.
+The vision model's top 10% of appearances are goals 22.6% of the time.
 
 | rank by | top 10% | top 20% | top 50% |
 |---|---:|---:|---:|
-| sequence | 0.158 | 0.312 | 0.628 |
-| vision | 0.223 | 0.404 | 0.758 |
+| sequence | 0.203 | 0.382 | 0.779 |
+| vision | 0.226 | 0.407 | 0.778 |
 | prefix | 0.193 | 0.374 | 0.758 |
 | group | 0.200 | 0.378 | 0.758 |
 | minutes | 0.219 | 0.384 | 0.779 |
@@ -59,13 +62,13 @@ the appearances.
 
 | reader | channel | actual bars | drawn bars | covered | on a real week |
 |---|---|---:|---:|---:|---:|
-| vision | goals | 459 | 620.2 | 11.3% | 8.4% |
-| sequence | goals | 459 | 562.5 | 9.6% | 7.9% |
+| vision | goals | 459 | 533.6 | 12.3% | 10.6% |
+| sequence | goals | 459 | 545.8 | 14.6% | 12.3% |
 | prefix | goals | 459 | 489.8 | 17.0% | 15.9% |
 | group | goals | 459 | 501.9 | 15.9% | 14.5% |
 | random | goals | 459 | 459.0 | 20.4% | 20.4% |
-| vision | assists | 445 | 590.8 | 9.4% | 7.1% |
-| sequence | assists | 445 | 519.6 | 8.2% | 7.0% |
+| vision | assists | 445 | 496.4 | 10.7% | 9.6% |
+| sequence | assists | 445 | 512.2 | 10.9% | 9.4% |
 | prefix | assists | 445 | 443.6 | 11.6% | 11.6% |
 | group | assists | 445 | 453.7 | 10.4% | 10.2% |
 | random | assists | 445 | 445.0 | 15.1% | 15.1% |
