@@ -39,10 +39,11 @@ ARTIFACTS = __import__("pathlib").Path("/opt/cursor/artifacts")
 
 ROWS = 40
 COLS = 40
-BAND_H = 4
+BAND_H = 8
 CELL_W = 4
-PLAYER_H = BAND_H * 3
-HEADER_H = BAND_H * 3
+PLAYER_BANDS = 5
+PLAYER_H = BAND_H * PLAYER_BANDS
+HEADER_H = PLAYER_H
 IMG_H = HEADER_H + ROWS * PLAYER_H
 IMG_W = COLS * CELL_W
 MASK_ID = 4
@@ -57,6 +58,7 @@ SEED = 0
 POS = {"GKP": 0, "DEF": 1, "MID": 2, "FWD": 3}
 
 MINUTES_C = (0, 114, 178)
+PLAYED_C = (0, 0, 128)
 GOALS_C = (213, 94, 0)
 ASSISTS_C = (204, 121, 167)
 HOME_C = (0, 158, 115)
@@ -67,6 +69,12 @@ MASK_C = (176, 176, 176)
 BASE_C = (226, 226, 226)
 HATCH_BG = (214, 214, 214)
 HATCH_FG = (168, 168, 168)
+POS_C = (
+    (180, 0, 80),
+    (0, 90, 50),
+    (90, 0, 160),
+    (150, 90, 0),
+)
 
 
 @dataclass
@@ -312,7 +320,12 @@ def _bar(img: np.ndarray, y0: int, x0: int, pixels: int, color: tuple[int, int, 
 
 
 def render_grid(view: dict[str, np.ndarray]) -> np.ndarray:
-    """Paint one card. Labels and names are not in the picture."""
+    """Paint one card. Labels and names are not in the picture.
+
+    Each player cell is five bands: minutes, a solid mark at 60 minutes,
+    goals, assists, and a position color. The conceded header uses the full
+    eight-pixel band, so rates that shared a height before are separate.
+    """
     img = np.full((IMG_H, IMG_W, 3), 255, dtype=np.uint8)
     for col in range(COLS):
         x0 = col * CELL_W
@@ -332,15 +345,21 @@ def render_grid(view: dict[str, np.ndarray]) -> np.ndarray:
             _bar(img, BAND_H * 2, x0, pixels, REG_C)
         for row in range(ROWS):
             y = HEADER_H + row * PLAYER_H
-            if view["present"][row, col] < 0.5:
+            if view["position"][row] < 0:
                 _hatch(img, y, x0, PLAYER_H)
+                continue
+            pos_y = y + 4 * BAND_H
+            img[pos_y : pos_y + BAND_H, x0 : x0 + CELL_W] = POS_C[int(view["position"][row])]
+            if view["present"][row, col] < 0.5:
+                _hatch(img, y, x0, BAND_H * 4)
                 continue
             minutes = float(view["minutes"][row, col])
             minute_px = 0 if minutes <= 0 else min(BAND_H, max(1, int(round(minutes / 90 * BAND_H))))
             _bar(img, y, x0, minute_px, MINUTES_C)
+            _bar(img, y + BAND_H, x0, BAND_H if minutes >= 60 else 0, PLAYED_C)
             for offset, token, color in (
-                (BAND_H, int(view["goal_token"][row, col]), GOALS_C),
-                (BAND_H * 2, int(view["assist_token"][row, col]), ASSISTS_C),
+                (BAND_H * 2, int(view["goal_token"][row, col]), GOALS_C),
+                (BAND_H * 3, int(view["assist_token"][row, col]), ASSISTS_C),
             ):
                 if token == MASK_ID:
                     img[y + offset : y + offset + BAND_H, x0 : x0 + CELL_W] = MASK_C
@@ -682,7 +701,8 @@ def write_report(payload: dict[str, object], path) -> None:
         "## Readers",
         "",
         "Sequence: minutes, the 60-minute flag, position, and the visible bars as tokens.",
-        "Vision: the same grid painted in pixels. A shared cell encoder reads each patch.",
+        "Vision: the same grid painted in pixels, with a position color, a 60-minute mark,",
+        "and an eight-pixel opponent conceded bar. A shared cell encoder reads each patch.",
         "Both then attend across the 40 rows and across all 40 columns.",
         "The personal baseline is the player's visible bars pulled toward the position-and-minutes rate",
         f"with strength {PRIOR_STRENGTH}. The group baseline is that rate alone.",

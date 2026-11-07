@@ -8,15 +8,22 @@ import numpy as np
 import torch
 
 from src.models.flashcard_squad_trial import (
+    BAND_H,
+    CELL_W,
     COLS,
     GOALS_C,
+    HEADER_H,
     IMG_H,
     IMG_W,
     MASK_C,
     MASK_ID,
+    PLAYED_C,
+    PLAYER_H,
+    POS_C,
     ROWS,
     SquadCard,
     SquadSequence,
+    SquadVision,
     apply_cut,
     render_grid,
     train_model,
@@ -88,9 +95,10 @@ class SquadCutTests(unittest.TestCase):
         self.assertTrue(np.all(view["goal_label"][0, 19:30] == 3))
         image = render_grid(view)
         self.assertEqual(image.shape, (IMG_H, IMG_W, 3))
-        hidden_band = image[HEADER_GOALS, 19 * 4 : 20 * 4]
+        goal_y = HEADER_H + 2 * BAND_H
+        hidden_band = image[goal_y, 19 * CELL_W : 20 * CELL_W]
         self.assertTrue(np.all(hidden_band == MASK_C))
-        visible_band = image[HEADER_GOALS : HEADER_GOALS + 4, 0:4]
+        visible_band = image[goal_y : goal_y + BAND_H, 0:CELL_W]
         self.assertTrue(np.any(np.all(visible_band == GOALS_C, axis=-1)))
 
     def test_changing_a_hidden_goal_does_not_change_the_input(self) -> None:
@@ -135,8 +143,40 @@ class SquadCutTests(unittest.TestCase):
         self.assertGreater(float(np.mean(out_probs)), 0.7)
         self.assertLess(float(np.mean(in_probs)), 0.3)
 
-
-HEADER_GOALS = 12 + 4
+    def test_picture_marks_position_the_hour_and_finer_concede(self) -> None:
+        card = _card()
+        card.minutes = card.minutes.copy()
+        card.present = card.present.copy()
+        card.position = card.position.copy()
+        card.minutes[0, 0] = 59
+        card.minutes[0, 1] = 60
+        card.position[1] = 3
+        card.minutes[1, 0] = 90
+        card.present[1, 0] = True
+        view = apply_cut(card, _league(), 19)
+        view["concede"] = view["concede"].copy()
+        view["concede_missing"] = view["concede_missing"].copy()
+        view["concede"][0] = 0.74
+        view["concede"][1] = 1.12
+        view["concede_missing"][0] = 0.0
+        view["concede_missing"][1] = 0.0
+        image = render_grid(view)
+        minutes_band = image[HEADER_H : HEADER_H + BAND_H]
+        self.assertTrue(np.array_equal(minutes_band[:, 0:CELL_W], minutes_band[:, CELL_W : 2 * CELL_W]))
+        played_y = HEADER_H + BAND_H
+        played = image[played_y : played_y + BAND_H]
+        self.assertFalse(np.any(np.all(played[:, 0:CELL_W] == PLAYED_C, axis=-1)))
+        self.assertTrue(np.all(played[:, CELL_W : 2 * CELL_W] == PLAYED_C))
+        pos_y = HEADER_H + 4 * BAND_H
+        self.assertTrue(np.array_equal(image[pos_y, 0], np.array(POS_C[2])))
+        self.assertTrue(np.array_equal(image[pos_y + PLAYER_H, 0], np.array(POS_C[3])))
+        concede = image[BAND_H : BAND_H * 2]
+        self.assertFalse(np.array_equal(concede[:, 0:CELL_W], concede[:, CELL_W : 2 * CELL_W]))
+        torch.manual_seed(0)
+        batch = _one(view)
+        goals, assists = SquadVision(dropout=0.0)(batch["image"], batch["row_pad"], batch["column_on"])
+        self.assertEqual(tuple(goals.shape), (1, ROWS, COLS, 4))
+        self.assertEqual(tuple(assists.shape), (1, ROWS, COLS, 4))
 
 
 def _coupled_card(rng: np.random.Generator) -> SquadCard:
