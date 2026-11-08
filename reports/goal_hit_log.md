@@ -40,6 +40,7 @@ The flash-card GRU was trained on the player card and scored on log-loss and sea
 | 8 Nov 2026, 15:17 | squad vision, squad coupling | squad card, all minutes | 24.7% | 41.5% | 80.1% |
 | 8 Nov 2026, 16:08 | squad sequence, opponent form | squad card, all minutes | 20.3% | 39.1% | 78.4% |
 | 8 Nov 2026, 16:08 | squad vision, opponent form | squad card, all minutes | 21.5% | 41.1% | 78.9% |
+| 8 Nov 2026, 17:15 | squad sequence, paired gameweeks | squad card, all minutes | 18.1% | 35.1% | 71.1% |
 
 Best on the player card: minutes, 11.4%. Best on the squad card: squad vision with the marked chart, 13.1%. Best on the squad card with every appearance counted: squad vision with squad coupling, 24.7%.
 
@@ -116,3 +117,11 @@ The 15:17 run on 8 Nov keeps the club and match-up head and adds the other squad
 On the all-minutes exam the vision top 10% is 24.7% and the sequence top 10% is 20.6%. Goal-bar overlap on gameweeks 20–38 is 14.9% covered for vision, against 20.4% for a same-count random draw. Man Utd forwards at 40% revealed stay at 7.1%. Against a promoted opponent they are at 6.4%.
 
 The 16:08 run adds the opponent's goals scored and conceded over the previous five games, and the minutes of their leading scorer over the previous three. A hidden column stops at the cut. Vision's top 10% on the same exam is 21.5%.
+
+## Paired gameweeks
+
+The 17:15 run on 8 Nov trains the sequence reader on a pair of clubs. Each column reads the other squad at that gameweek and the two gameweeks before it. Minutes stay visible. Goals and assists after the shared cut stay masked on both cards. Vision is left as it was.
+
+On the all-minutes exam the top 10% is 18.1%. Goal remainders from gameweek 1: at 80% revealed, 199 actual and 238.8 drawn, 11.3% covered, 9.4% on a real week; at 20% revealed, 730 actual and 886.4 drawn, 11.2% covered, 9.2% on a real week. A goalkeeper's hidden appearance is a goal bar at 1.9% when 80% is revealed and at 1.8% when 20% is revealed. A forward is at 12.9% and 12.7%.
+
+Assist remainders: at 80% revealed, 192 actual and 223.4 drawn, 8.3% covered, 7.1% on a real week; at 20% revealed, 707 actual and 823.9 drawn, 7.9% covered, 6.8% on a real week.
