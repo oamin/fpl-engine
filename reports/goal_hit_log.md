@@ -45,6 +45,7 @@ The flash-card GRU was trained on the player card and scored on log-loss and sea
 | 8 Nov 2026, 17:15 | squad sequence, paired gameweeks | squad card, all minutes | 18.1% | 35.1% | 71.1% |
 | 8 Nov 2026, 18:14 | squad sequence, opponent form | squad card, all minutes | 20.3% | 39.1% | 78.4% |
 | 8 Nov 2026, 18:14 | squad vision, player rows only | squad card, all minutes | 20.6% | 39.4% | 78.8% |
+| 8 Nov 2026, 22:16 | squad vision, flat marks and match budget | squad card, all minutes | 22.1% | 37.6% | 75.0% |
 
 Best on the player card: minutes, 11.4%. Best on the squad card: squad vision with the marked chart, 13.1%. Working default on the squad card with every appearance counted: squad vision with squad coupling, 24.7%.
 
@@ -135,3 +136,11 @@ Assist remainders: at 80% revealed, 192 actual and 223.4 drawn, 8.3% covered, 7.
 The 18:14 run on 8 Nov uses the 16:08 training procedure and removes the five header rows from the picture: venue, opponent goals conceded, regulars, earlier-season goals per game, and earlier-season goals conceded per game. Each player row is minutes, goals, assists, and a position color. The numeric match-up and the other squad stay. Sequence is unchanged, and its top 10% reproduces at 20.3%.
 
 Vision's top 10% on the all-minutes exam is 20.6%. With the header still painted, the same procedure scored 21.5%. The best line on this exam stays the 15:17 squad-coupling vision at 24.7%. Goal remainders from gameweek 1, vision: at 80% revealed, 199 actual and 202.9 drawn, 16.6% covered, 16.3% on a real week; at 20% revealed, 730 actual and 778.2 drawn, 16.1% covered, 15.1% on a real week. A goalkeeper is at 0.1% and a forward at 11.7%.
+
+## Flat marks and a match budget
+
+The 22:16 run on 8 Nov keeps the locked vision reader and changes the event paint. A goal or assist band is white, red, green, or blue for 0, 1, 2, or 3. Hidden events stay gray. The conceded-rate band is hatched after the cut. A second head predicts the fixture total, and that total is placed onto players with minutes in order of expected count. The cell loss stays.
+
+On the all-minutes exam the top 10% is 22.1%. The locked default stays at 24.7%. Cell samples on gameweeks 20–38 draw 464.7 goal bars against 459 actual, cover 15.1%, and land 14.9% on a real week. Budget placement draws 533.6 bars, covers 25.4%, and lands 21.8% on a real week. A same-count shuffle of the real bars covers 20.3%.
+
+Goal remainders from gameweek 1, budget placement: at 80% revealed, 199 actual and 223.4 drawn, 27.9% covered, 24.8% on a real week; at 20% revealed, 730 actual and 823.9 drawn, 25.3% covered, 22.4% on a real week. Cell samples at those cuts draw 197.6 and 730.5. A goalkeeper's hidden appearance is a goal bar at 1.0%. A forward is at 12.7% when 80% is revealed and at 12.2% when 20% is revealed.
