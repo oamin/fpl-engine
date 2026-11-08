@@ -34,7 +34,9 @@ from src.models.flashcard_squad_trial import (
     prior_table,
     render_grid,
     sample_bars,
+    squad_index,
     train_model,
+    _stack,
 )
 
 
@@ -288,6 +290,56 @@ class SquadCutTests(unittest.TestCase):
         opp_band = image[BAND_H * 4 : BAND_H * 5, 0:CELL_W]
         self.assertTrue(np.any(np.all(opp_band == OPP_HIST_C, axis=-1)))
 
+    def test_the_other_squad_keeps_hidden_events_masked(self) -> None:
+        home, opp = _facing("2023-24", defenders=90, goals=0)
+        opp.goals = opp.goals.copy()
+        opp.goals[0, 0] = 2
+        opp.goals[0, 4] = 3
+        league = _flat_league()
+        view = apply_cut(home, league, 1, squads=squad_index([home, opp]))
+        self.assertEqual(int(view["opp_position"][0, 0]), POS["DEF"])
+        self.assertEqual(float(view["opp_minutes"][0, 0]), 90.0)
+        self.assertEqual(int(view["opp_goal_token"][0, 0]), 2)
+        self.assertEqual(int(view["opp_goal_token"][0, 4]), MASK_ID)
+        self.assertTrue(bool(view["opp_pad"][4, 0]))
+        opp.goals[0, 4] = 1
+        again = apply_cut(home, league, 1, squads=squad_index([home, opp]))
+        self.assertTrue(np.array_equal(view["opp_goal_token"], again["opp_goal_token"]))
+        self.assertEqual(int(again["goal_label"][0, 4]), 0)
+
+    def test_a_squad_reads_the_other_squad(self) -> None:
+        open_pair = [_facing("2022-23", defenders=0, goals=1) for _ in range(6)]
+        shut_pair = [_facing("2023-24", defenders=90, goals=0) for _ in range(6)]
+        cards = [card for pair in open_pair + shut_pair for card in pair]
+        league = _flat_league()
+        clubs = fit_clubs(cards)
+        index = squad_index(cards)
+        torch.manual_seed(0)
+        model = SquadSequence(dropout=0.0, n_clubs=max(clubs.values()) + 1)
+        opt = torch.optim.AdamW(model.parameters(), lr=2e-3)
+        rng = np.random.default_rng(0)
+        model.train()
+        for _ in range(40):
+            order = rng.permutation(len(cards))
+            for start in range(0, len(cards), 4):
+                pick = [cards[int(i)] for i in order[start : start + 4]]
+                batch = _stack([apply_cut(card, league, 1, clubs, index) for card in pick])
+                opt.zero_grad()
+                goal_logits, _ = model(batch)
+                loss = torch.nn.functional.cross_entropy(
+                    goal_logits.reshape(-1, 4), batch["goal_label"].reshape(-1), reduction="none"
+                ).reshape(batch["goal_label"].shape)
+                mask = batch["loss"]
+                (loss * mask).sum().div(mask.sum().clamp_min(1)).backward()
+                opt.step()
+        model.eval()
+        with torch.no_grad():
+            open_p = torch.softmax(model(_stack([apply_cut(open_pair[0][0], league, 1, clubs, index)]))[0], dim=-1)
+            shut_p = torch.softmax(model(_stack([apply_cut(shut_pair[0][0], league, 1, clubs, index)]))[0], dim=-1)
+        hidden = slice(1, 6)
+        self.assertGreater(float(open_p[0, 0, hidden, 1:].sum(-1).mean()), 0.6)
+        self.assertLess(float(shut_p[0, 0, hidden, 1:].sum(-1).mean()), 0.4)
+
     def test_reveal_starts_at_gameweek_one(self) -> None:
         card = _card()
         self.assertEqual(cut_at_fraction(card, 0.5), 15)
@@ -426,7 +478,71 @@ def _coupled_card(rng: np.random.Generator) -> SquadCard:
     )
 
 
-def _one(view: dict) -> dict:
-    from src.models.flashcard_squad_trial import _stack
+def _flat_league() -> dict:
+    return {
+        season: {"Home": _fixture_block(1.0, 1.0, 6), "Opp": _fixture_block(1.0, 1.0, 6)}
+        for season in ("2021-22", "2022-23", "2023-24")
+    }
 
+
+def _facing(season: str, defenders: int, goals: int) -> tuple[SquadCard, SquadCard]:
+    """Home scores on hidden weeks only when the other squad's defenders do not play."""
+    n = 6
+
+    def shell() -> tuple:
+        gw = np.zeros(COLS, dtype=np.int64)
+        gw[:n] = np.arange(1, n + 1)
+        minutes = np.zeros((ROWS, COLS), dtype=np.float32)
+        scored = np.zeros((ROWS, COLS), dtype=np.int64)
+        present = np.zeros((ROWS, COLS), dtype=bool)
+        position = np.full(ROWS, -1, dtype=np.int64)
+        return gw, minutes, scored, present, position
+
+    gw, minutes, scored, present, position = shell()
+    minutes[0, :n] = 90
+    present[0, :n] = True
+    scored[0, 1:n] = goals
+    position[0] = POS["FWD"]
+    home = SquadCard(
+        season=season,
+        team="Home",
+        names=tuple(["Forward"] + ["spare"] * (ROWS - 1)),
+        position=position,
+        gw=gw,
+        kickoff=gw.copy(),
+        home=np.ones(COLS, dtype=np.int64),
+        opponent=tuple(["Opp"] * n + [""] * (COLS - n)),
+        fixture_id=gw.copy(),
+        minutes=minutes,
+        goals=scored,
+        assists=np.zeros((ROWS, COLS), dtype=np.int64),
+        present=present,
+        n_players=1,
+        n_fixtures=n,
+    )
+    gw, minutes, scored, present, position = shell()
+    minutes[:4, :n] = defenders
+    present[:4, :n] = True
+    position[:4] = POS["DEF"]
+    opp = SquadCard(
+        season=season,
+        team="Opp",
+        names=tuple(["Defender"] * 4 + ["spare"] * (ROWS - 4)),
+        position=position,
+        gw=gw,
+        kickoff=gw.copy(),
+        home=np.zeros(COLS, dtype=np.int64),
+        opponent=tuple(["Home"] * n + [""] * (COLS - n)),
+        fixture_id=gw.copy(),
+        minutes=minutes,
+        goals=scored,
+        assists=np.zeros((ROWS, COLS), dtype=np.int64),
+        present=present,
+        n_players=4,
+        n_fixtures=n,
+    )
+    return home, opp
+
+
+def _one(view: dict) -> dict:
     return _stack([view])

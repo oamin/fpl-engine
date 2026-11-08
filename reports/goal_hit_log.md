@@ -36,8 +36,10 @@ The flash-card GRU was trained on the player card and scored on log-loss and sea
 | 7 Nov 2026, 23:42 | group rate | squad card, all minutes | 20.0% | 37.8% | 75.8% |
 | 8 Nov 2026, 00:16 | squad sequence, club and match-up | squad card, all minutes | 20.9% | 39.5% | 77.6% |
 | 8 Nov 2026, 00:16 | squad vision, club and match-up | squad card, all minutes | 23.8% | 41.9% | 79.5% |
+| 8 Nov 2026, 15:17 | squad sequence, squad coupling | squad card, all minutes | 20.6% | 39.3% | 77.6% |
+| 8 Nov 2026, 15:17 | squad vision, squad coupling | squad card, all minutes | 24.7% | 41.5% | 80.1% |
 
-Best on the player card: minutes, 11.4%. Best on the squad card: squad vision with the marked chart, 13.1%. Best on the squad card with every appearance counted: squad vision with the club and match-up head, 23.8%.
+Best on the player card: minutes, 11.4%. Best on the squad card: squad vision with the marked chart, 13.1%. Best on the squad card with every appearance counted: squad vision with squad coupling, 24.7%.
 
 The marked chart adds a position color, a solid band at 60 minutes, and an eight-pixel opponent conceded bar. The top 10% rose from 12.2% to 13.1%. The top 20% fell from 23.5% to 21.6%. Expected goals on played weeks were 28.1 against 21.4 actual.
 
@@ -104,3 +106,9 @@ Vision, forwards, 40% revealed from gameweek 1:
 | 8 Nov 2026, 00:16 | Sunderland | 0.00 | 21 | 21.6 | 10.2% |
 
 Man Utd's whole-club remainder, vision, mean of 20 draws: at 80% revealed, 14 real and 10.9 drawn; at 40%, 41 real and 29.8 drawn; at 20%, 54 real and 37.5 drawn. Man Utd forwards against a promoted opponent are at 6.3%. Against an established opponent they are at 7.2%.
+
+## Squad coupling
+
+The 15:17 run on 8 Nov keeps the club and match-up head and adds the other squad at each fixture. The reader sees that squad's positions, minutes, and the goals and assists already shown. The same cut masks both sides. A hidden goal on the other card does not enter the input.
+
+On the all-minutes exam the vision top 10% is 24.7% and the sequence top 10% is 20.6%. Goal-bar overlap on gameweeks 20–38 is 14.9% covered for vision, against 20.4% for a same-count random draw. Man Utd forwards at 40% revealed stay at 7.1%. Against a promoted opponent they are at 6.4%.

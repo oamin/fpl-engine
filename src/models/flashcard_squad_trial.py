@@ -1,9 +1,11 @@
 """Squad-card trial: one club grid, two readers, the hidden weeks filled in one pass.
 
 Each card is a club-season. Rows are teammates. Columns are the club's fixtures.
-Minutes stay visible. Goals and assists after the cut are hidden. The opponent
-is a header: venue, prior goals conceded, and the share of regular starters
-on the pitch. Clean sheets are not a target.
+Minutes stay visible. Goals and assists after the cut are hidden. Each fixture
+is coupled to the other squad: their positions, minutes, and the events already
+revealed. Hidden events stay masked on both sides. The header still carries
+venue, prior goals conceded, and the share of regular starters on the pitch.
+Clean sheets are not a target.
 
 The sequence reader gets those values as numbers. The vision reader gets the
 same grid painted as pixels. Both attend across the squad and across the
@@ -326,11 +328,64 @@ def _concede_rate(league: dict, season: str, team: str, kickoff: int, cut_gw: in
     return float(np.mean(vals))
 
 
+def squad_index(cards: list[SquadCard]) -> dict[tuple[str, str], SquadCard]:
+    """One card per club-season, so a fixture can find the other squad."""
+    return {(card.season, card.team): card for card in cards}
+
+
+def _opponent_squad(
+    card: SquadCard, cut_gw: int, squads: dict[tuple[str, str], SquadCard] | None
+) -> dict[str, np.ndarray]:
+    """The other squad at each fixture. Hidden goals and assists stay masked.
+
+    Rows are that opponent's players, so they are not the same people from one
+    column to the next. Spare rows are padded. A named player who did not play
+    keeps a zero once the week is visible.
+    """
+    position = np.full((ROWS, COLS), -1, dtype=np.int64)
+    minutes = np.zeros((ROWS, COLS), dtype=np.float32)
+    present = np.zeros((ROWS, COLS), dtype=np.float32)
+    goal_token = np.full((ROWS, COLS), MASK_ID, dtype=np.int64)
+    assist_token = np.full((ROWS, COLS), MASK_ID, dtype=np.int64)
+    pad = np.ones((ROWS, COLS), dtype=bool)
+    if squads:
+        for col in range(COLS):
+            if card.gw[col] <= 0 or not card.opponent[col]:
+                continue
+            other = squads.get((card.season, card.opponent[col]))
+            if other is None:
+                continue
+            matched = np.where(other.fixture_id == card.fixture_id[col])[0]
+            if len(matched) == 0:
+                continue
+            src = int(matched[0])
+            position[:, col] = other.position
+            minutes[:, col] = other.minutes[:, src]
+            present[:, col] = other.present[:, src].astype(np.float32)
+            pad[:, col] = other.position < 0
+            if int(other.gw[src]) <= cut_gw:
+                named = other.position >= 0
+                played = other.present[:, src]
+                goal_token[named & played, col] = other.goals[named & played, src]
+                assist_token[named & played, col] = other.assists[named & played, src]
+                goal_token[named & ~played, col] = 0
+                assist_token[named & ~played, col] = 0
+    return {
+        "opp_position": position,
+        "opp_minutes": minutes,
+        "opp_present": present,
+        "opp_goal_token": goal_token,
+        "opp_assist_token": assist_token,
+        "opp_pad": pad,
+    }
+
+
 def apply_cut(
     card: SquadCard,
     league: dict,
     cut_gw: int,
     clubs: dict[str, int] | None = None,
+    squads: dict[tuple[str, str], SquadCard] | None = None,
 ) -> dict[str, np.ndarray]:
     """Numbers the readers see. Hidden bars are the mask id, not zero.
 
@@ -438,6 +493,7 @@ def apply_cut(
         "assist_label": card.assists.astype(np.int64),
         "loss": loss.astype(np.float32),
         "row_pad": (card.position < 0),
+        **_opponent_squad(card, cut_gw, squads),
     }
 
 
@@ -523,14 +579,20 @@ def render_grid(view: dict[str, np.ndarray]) -> np.ndarray:
 
 
 class Coupler(nn.Module):
-    """Attend across the squad, then across every column of the segment."""
+    """Attend across the squad, then the other squad, then across the segment."""
 
     def __init__(self, dropout: float, n_clubs: int = 1) -> None:
         super().__init__()
         self.row = nn.MultiheadAttention(D, HEADS, dropout=dropout, batch_first=True)
         self.col = nn.MultiheadAttention(D, HEADS, dropout=dropout, batch_first=True)
+        self.cross = nn.MultiheadAttention(D, HEADS, dropout=dropout, batch_first=True)
         self.norm_row = nn.LayerNorm(D)
         self.norm_col = nn.LayerNorm(D)
+        self.norm_cross = nn.LayerNorm(D)
+        self.opp_in = nn.Linear(2, D)
+        self.opp_pos = nn.Embedding(5, D)
+        self.opp_goal_tok = nn.Embedding(5, D)
+        self.opp_assist_tok = nn.Embedding(5, D)
         self.goal = nn.Linear(D, 4)
         self.assist = nn.Linear(D, 4)
         self.skip_goal = nn.Linear(D, 4)
@@ -563,6 +625,9 @@ class Coupler(nn.Module):
             nn.init.zeros_(layer.bias)
         for table in (self.pos_goal, self.pos_assist, self.pos_goal_min, self.pos_assist_min, self.club_vec, self.opp_vec):
             nn.init.zeros_(table.weight)
+        # The link between squads starts at zero and is learned.
+        nn.init.zeros_(self.cross.out_proj.weight)
+        nn.init.zeros_(self.cross.out_proj.bias)
 
     def forward(
         self,
@@ -574,6 +639,7 @@ class Coupler(nn.Module):
         matchup: torch.Tensor,
         club: torch.Tensor,
         opponent: torch.Tensor,
+        opp: dict[str, torch.Tensor] | None = None,
     ) -> tuple[torch.Tensor, torch.Tensor]:
         batch, _rows, cols, _dim = cells.shape
         cells = cells + self.club_context(matchup)[:, None, :, :]
@@ -584,6 +650,7 @@ class Coupler(nn.Module):
         row_mask = row_pad[:, None, :].expand(batch, cols, ROWS).reshape(batch * cols, ROWS)
         mixed, _ = self.row(row_view, row_view, row_view, key_padding_mask=row_mask, need_weights=False)
         row_view = self.norm_row(row_view + mixed)
+        row_view = self._read_opponent(row_view, opp, batch, cols)
         col_view = row_view.reshape(batch, cols, ROWS, D).permute(0, 2, 1, 3).reshape(batch * ROWS, cols, D)
         col_mask = col_pad[:, None, :].expand(batch, ROWS, cols).reshape(batch * ROWS, cols)
         mixed, _ = self.col(col_view, col_view, col_view, key_padding_mask=col_mask, need_weights=False)
@@ -612,6 +679,25 @@ class Coupler(nn.Module):
             + form_assist
         )
         return goal, assist
+
+    def _read_opponent(
+        self, row_view: torch.Tensor, opp: dict[str, torch.Tensor] | None, batch: int, cols: int
+    ) -> torch.Tensor:
+        """Let each player read the other squad in that same fixture."""
+        if opp is None:
+            return row_view
+        pos = torch.where(opp["position"] < 0, torch.full_like(opp["position"], 4), opp["position"])
+        stats = torch.stack([opp["minutes"] / 90.0, opp["present"]], dim=-1)
+        other = self.opp_in(stats) + self.opp_pos(pos)
+        other = other + self.opp_goal_tok(opp["goal_token"]) + self.opp_assist_tok(opp["assist_token"])
+        other = other.permute(0, 2, 1, 3).reshape(batch * cols, ROWS, D)
+        pad = opp["pad"].permute(0, 2, 1).reshape(batch * cols, ROWS)
+        empty = pad.all(dim=-1)
+        safe = pad.clone()
+        safe[empty, 0] = False
+        mixed, _ = self.cross(row_view, other, other, key_padding_mask=safe, need_weights=False)
+        mixed = mixed.masked_fill(empty[:, None, None], 0.0)
+        return self.norm_cross(row_view + mixed)
 
 
 def _by_position(level, slope, matchup, pos, played):
@@ -666,6 +752,7 @@ class SquadSequence(nn.Module):
             batch["matchup"],
             batch["club"],
             batch["opponent"],
+            _opp_batch(batch),
         )
 
 
@@ -687,6 +774,7 @@ class SquadVision(nn.Module):
         matchup: torch.Tensor,
         club: torch.Tensor,
         opponent: torch.Tensor,
+        opp: dict[str, torch.Tensor] | None = None,
     ) -> tuple[torch.Tensor, torch.Tensor]:
         batch = images.shape[0]
         blocks = images.reshape(batch, 3, ROWS + 1, PLAYER_H, COLS, CELL_W)
@@ -694,7 +782,9 @@ class SquadVision(nn.Module):
         tokens = self.patch(blocks)
         header = tokens[:, :, 0, :]
         cells = tokens[:, :, 1:, :].permute(0, 2, 1, 3) + header[:, None, :, :]
-        return self.couple(cells, row_pad, column_on < 0.5, position, minutes, matchup, club, opponent)
+        return self.couple(
+            cells, row_pad, column_on < 0.5, position, minutes, matchup, club, opponent, opp
+        )
 
 
 def _stack(views: list[dict[str, np.ndarray]]) -> dict[str, torch.Tensor]:
@@ -714,9 +804,27 @@ def _stack(views: list[dict[str, np.ndarray]]) -> dict[str, torch.Tensor]:
     batch["club"] = torch.from_numpy(np.array([int(view["club"]) for view in views], dtype=np.int64))
     batch["opponent"] = torch.from_numpy(np.stack([view["opponent"] for view in views]).astype(np.int64))
     batch["matchup"] = torch.from_numpy(np.stack([view["matchup"] for view in views]).astype(np.float32))
+    for key in ("opp_position", "opp_goal_token", "opp_assist_token"):
+        batch[key] = torch.from_numpy(np.stack([view[key] for view in views]).astype(np.int64))
+    for key in ("opp_minutes", "opp_present"):
+        batch[key] = torch.from_numpy(np.stack([view[key] for view in views]).astype(np.float32))
+    batch["opp_pad"] = torch.from_numpy(np.stack([view["opp_pad"] for view in views]))
     images = np.stack([render_grid(view) for view in views])
     batch["image"] = torch.from_numpy(images).permute(0, 3, 1, 2).float().div(255.0)
     return batch
+
+
+def _opp_batch(batch: dict[str, torch.Tensor]) -> dict[str, torch.Tensor] | None:
+    if "opp_pad" not in batch:
+        return None
+    return {
+        "position": batch["opp_position"],
+        "minutes": batch["opp_minutes"],
+        "present": batch["opp_present"],
+        "goal_token": batch["opp_goal_token"],
+        "assist_token": batch["opp_assist_token"],
+        "pad": batch["opp_pad"],
+    }
 
 
 def sample_cut(card: SquadCard, rng: np.random.Generator) -> int:
@@ -764,6 +872,7 @@ def train_model(
     )
     history = []
     model.train()
+    squads = squad_index(cards)
     for epoch in range(epochs):
         total = 0.0
         seen = 0.0
@@ -772,13 +881,16 @@ def train_model(
             pick = [cards[int(i)] for i in order[start : start + BATCH]]
             cuts = [sample_cut(card, rng) for card in pick]
             batch = _stack(
-                [apply_cut(card, league, cut, clubs) for card, cut in zip(pick, cuts, strict=True)]
+                [
+                    apply_cut(card, league, cut, clubs, squads)
+                    for card, cut in zip(pick, cuts, strict=True)
+                ]
             )
             opt.zero_grad()
             if kind == "vision":
                 goal_logits, assist_logits = model(
                     batch["image"], batch["row_pad"], batch["column_on"], batch["position"], batch["minutes"],
-                    batch["matchup"], batch["club"], batch["opponent"],
+                    batch["matchup"], batch["club"], batch["opponent"], _opp_batch(batch),
                 )
             else:
                 goal_logits, assist_logits = model(batch)
@@ -804,18 +916,20 @@ def predict(
     cut_gw: int,
     kind: str,
     clubs: dict[str, int] | None = None,
+    squads: dict[tuple[str, str], SquadCard] | None = None,
 ) -> tuple[np.ndarray, np.ndarray]:
     """Goal and assist probabilities, shape (cards, rows, cols, 4)."""
     model.eval()
+    squads = squads if squads is not None else squad_index(cards)
     goals = np.zeros((len(cards), ROWS, COLS, 4), dtype=np.float64)
     assists = np.zeros_like(goals)
     for start in range(0, len(cards), BATCH):
         pick = cards[start : start + BATCH]
-        batch = _stack([apply_cut(card, league, cut_gw, clubs) for card in pick])
+        batch = _stack([apply_cut(card, league, cut_gw, clubs, squads) for card in pick])
         if kind == "vision":
             goal_logits, assist_logits = model(
                 batch["image"], batch["row_pad"], batch["column_on"], batch["position"], batch["minutes"],
-                batch["matchup"], batch["club"], batch["opponent"],
+                batch["matchup"], batch["club"], batch["opponent"], _opp_batch(batch),
             )
         else:
             goal_logits, assist_logits = model(batch)
@@ -1207,6 +1321,8 @@ def write_report(payload: dict[str, object], path) -> None:
         "A club with no earlier season, once other clubs have one, is the promoted case.",
         "This season's own scoring rate and the opponent's conceding rate use only",
         "fixtures already played, and a hidden column stops at the cut.",
+        "Each fixture is coupled to the other squad's players: position, minutes,",
+        "and the goals and assists already shown. The same cut masks both sides.",
         (
             "Learned vision probability of a goal bar on a hidden appearance: "
             f"goalkeeper {payload['role_rate']['goal'][0]:.1%}, "
@@ -1217,7 +1333,8 @@ def write_report(payload: dict[str, object], path) -> None:
         "Sequence: the minute count, presence, position, and the visible bars as tokens.",
         "Vision: the same grid painted in pixels. Minutes use sixteen pixels, with no",
         "60-minute step, plus a position color and an eight-pixel opponent conceded bar.",
-        "Both then attend across the 40 rows and across all 40 columns.",
+        "Both then attend across the 40 rows, across the other squad in that fixture,",
+        "and across all 40 columns.",
         "The personal baseline is the player's visible bars pulled toward the position-and-minutes rate",
         f"with strength {PRIOR_STRENGTH}. The group baseline is that rate alone.",
         "",
@@ -1520,6 +1637,7 @@ def main() -> None:
     test = build_cards((TEST_SEASON,), league)
     print(f"train {len(train)} test {len(test)}", flush=True)
     clubs = fit_clubs(train)
+    test_squads = squad_index(test)
     n_clubs = max(clubs.values(), default=0) + 1
     torch.manual_seed(SEED)
     sequence = SquadSequence(dropout=0.1, n_clubs=n_clubs)
@@ -1598,7 +1716,7 @@ def main() -> None:
             probs_g = np.zeros((len(test), ROWS, COLS, 4), dtype=np.float64)
             probs_a = np.zeros_like(probs_g)
             for index, card in enumerate(test):
-                one_g, one_a = predict(model, [card], league, cuts[index], reader, clubs)
+                one_g, one_a = predict(model, [card], league, cuts[index], reader, clubs, test_squads)
                 probs_g[index] = one_g[0]
                 probs_a[index] = one_a[0]
             goal_bars = bar_correspondence(test, probs_g, labels, 0, bar_rng, cuts=cuts)
