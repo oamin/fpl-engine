@@ -11,6 +11,7 @@ from src.models.flashcard_squad_trial import (
     BAND_H,
     CELL_W,
     COLS,
+    CONCEDE_C,
     GOALS_C,
     HEADER_H,
     IMG_H,
@@ -171,6 +172,7 @@ class SquadCutTests(unittest.TestCase):
         view["concede_missing"][0] = 0.0
         view["concede_missing"][1] = 0.0
         image = render_grid(view)
+        self.assertEqual(image.shape[0], ROWS * PLAYER_H)
         minutes_band = image[HEADER_H : HEADER_H + 2 * BAND_H]
         self.assertFalse(np.array_equal(minutes_band[:, 0:CELL_W], minutes_band[:, CELL_W : 2 * CELL_W]))
         self.assertTrue(np.any(np.all(minutes_band[:, 0:CELL_W] == MINUTES_C, axis=-1)))
@@ -178,8 +180,8 @@ class SquadCutTests(unittest.TestCase):
         pos_y = HEADER_H + 4 * BAND_H
         self.assertTrue(np.array_equal(image[pos_y, 0], np.array(POS_C[2])))
         self.assertTrue(np.array_equal(image[pos_y + PLAYER_H, 0], np.array(POS_C[3])))
-        concede = image[BAND_H : BAND_H * 2]
-        self.assertFalse(np.array_equal(concede[:, 0:CELL_W], concede[:, CELL_W : 2 * CELL_W]))
+        for color in (OWN_HIST_C, OPP_HIST_C, CONCEDE_C):
+            self.assertFalse(np.any(np.all(image == color, axis=-1)))
         torch.manual_seed(0)
         batch = _one(view)
         goals, assists = SquadVision(dropout=0.0)(
@@ -283,12 +285,8 @@ class SquadCutTests(unittest.TestCase):
         self.assertGreater(float(high_p), 0.6)
         self.assertLess(float(low_p), 0.3)
         image = render_grid(apply_cut(strong[0], league, 0, clubs))
-        promoted = render_grid(apply_cut(_history_card("Promoted", "Strong", goals=0), league, 0, clubs))
-        own_band = image[BAND_H * 3 : BAND_H * 4, 0:CELL_W]
-        self.assertTrue(np.any(np.all(own_band == OWN_HIST_C, axis=-1)))
-        self.assertFalse(np.any(np.all(promoted[BAND_H * 3 : BAND_H * 4, 0:CELL_W] == OWN_HIST_C, axis=-1)))
-        opp_band = image[BAND_H * 4 : BAND_H * 5, 0:CELL_W]
-        self.assertTrue(np.any(np.all(opp_band == OPP_HIST_C, axis=-1)))
+        self.assertFalse(np.any(np.all(image == OWN_HIST_C, axis=-1)))
+        self.assertFalse(np.any(np.all(image == OPP_HIST_C, axis=-1)))
 
     def test_the_other_squad_keeps_hidden_events_masked(self) -> None:
         home, opp = _facing("2023-24", defenders=90, goals=0)

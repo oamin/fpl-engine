@@ -3,9 +3,8 @@
 Each card is a club-season. Rows are teammates. Columns are the club's fixtures.
 Minutes stay visible. Goals and assists after the cut are hidden. Each fixture
 is coupled to the other squad: their positions, minutes, and the events already
-revealed. Hidden events stay masked on both sides. The header still carries
-venue, prior goals conceded, and the share of regular starters on the pitch.
-Clean sheets are not a target.
+revealed. Hidden events stay masked on both sides. The picture is the player
+rows only. Clean sheets are not a target.
 
 The sequence reader gets those values as numbers. The vision reader gets the
 same grid painted as pixels. Both attend across the squad and across the
@@ -45,8 +44,8 @@ BAND_H = 8
 CELL_W = 4
 PLAYER_BANDS = 5
 PLAYER_H = BAND_H * PLAYER_BANDS
-HEADER_H = PLAYER_H
-IMG_H = HEADER_H + ROWS * PLAYER_H
+HEADER_H = 0
+IMG_H = ROWS * PLAYER_H
 IMG_W = COLS * CELL_W
 MASK_ID = 4
 D = 32
@@ -608,11 +607,10 @@ def _bar(img: np.ndarray, y0: int, x0: int, pixels: int, color: tuple[int, int, 
 
 
 def render_grid(view: dict[str, np.ndarray]) -> np.ndarray:
-    """Paint one card. Labels and names are not in the picture.
+    """Paint one card. Labels, names, and match summaries are not in the picture.
 
     Each player cell carries the minute count across sixteen pixels, then goals,
-    assists, and a position color. The conceded header uses the full eight-pixel
-    band, so rates that shared a height before are separate.
+    assists, and a position color.
     """
     img = np.full((IMG_H, IMG_W, 3), 255, dtype=np.uint8)
     for col in range(COLS):
@@ -620,27 +618,6 @@ def render_grid(view: dict[str, np.ndarray]) -> np.ndarray:
         if view["column_on"][col] < 0.5:
             _hatch(img, 0, x0, IMG_H)
             continue
-        _bar(img, 0, x0, BAND_H, HOME_C if view["home"][col] > 0.5 else AWAY_C)
-        if view["concede_missing"][col] > 0.5:
-            _hatch(img, BAND_H, x0, BAND_H)
-        else:
-            pixels = int(round(min(float(view["concede"][col]), 3.0) / 3.0 * BAND_H))
-            _bar(img, BAND_H, x0, pixels, CONCEDE_C)
-        if view["regulars_missing"][col] > 0.5:
-            _hatch(img, BAND_H * 2, x0, BAND_H)
-        else:
-            pixels = int(round(float(view["regulars"][col]) * BAND_H))
-            _bar(img, BAND_H * 2, x0, pixels, REG_C)
-        if view["own_hist_missing"][col] > 0.5:
-            _hatch(img, BAND_H * 3, x0, BAND_H)
-        else:
-            pixels = int(round(min(float(view["own_hist"][col]), 3.0) / 3.0 * BAND_H))
-            _bar(img, BAND_H * 3, x0, pixels, OWN_HIST_C)
-        if view["opp_hist_missing"][col] > 0.5:
-            _hatch(img, BAND_H * 4, x0, BAND_H)
-        else:
-            pixels = int(round(min(float(view["opp_hist"][col]), 3.0) / 3.0 * BAND_H))
-            _bar(img, BAND_H * 4, x0, pixels, OPP_HIST_C)
         for row in range(ROWS):
             y = HEADER_H + row * PLAYER_H
             if view["position"][row] < 0:
@@ -862,11 +839,10 @@ class SquadVision(nn.Module):
         opp: dict[str, torch.Tensor] | None = None,
     ) -> tuple[torch.Tensor, torch.Tensor]:
         batch = images.shape[0]
-        blocks = images.reshape(batch, 3, ROWS + 1, PLAYER_H, COLS, CELL_W)
-        blocks = blocks.permute(0, 4, 2, 1, 3, 5).reshape(batch, COLS, ROWS + 1, -1)
+        blocks = images.reshape(batch, 3, ROWS, PLAYER_H, COLS, CELL_W)
+        blocks = blocks.permute(0, 4, 2, 1, 3, 5).reshape(batch, COLS, ROWS, -1)
         tokens = self.patch(blocks)
-        header = tokens[:, :, 0, :]
-        cells = tokens[:, :, 1:, :].permute(0, 2, 1, 3) + header[:, None, :, :]
+        cells = tokens.permute(0, 2, 1, 3)
         return self.couple(
             cells, row_pad, column_on < 0.5, position, minutes, matchup, club, opponent, opp
         )
@@ -1393,7 +1369,7 @@ def write_report(payload: dict[str, object], path) -> None:
         f"Train: {', '.join(TRAIN_SEASONS)}. Test: {TEST_SEASON}.",
         f"Cards: train {payload['n_train']}, test {payload['n_test']}. One card is a club-season.",
         f"Grid: {ROWS} players by {COLS} fixtures. Cut after gameweek {CUT_GW} for every club.",
-        "Minutes, venue, opponent goals conceded, and regulars-on-the-pitch stay visible.",
+        "The picture is player rows only. Minutes stay visible.",
         "Goals and assists after the cut are hidden. The segment is predicted in one pass.",
         f"Wall clock: {payload['seconds']:.0f} seconds on CPU.",
         "",
@@ -1419,8 +1395,8 @@ def write_report(payload: dict[str, object], path) -> None:
             f"forward {payload['role_rate']['goal'][3]:.1%}."
         ),
         "Sequence: the minute count, presence, position, and the visible bars as tokens.",
-        "Vision: the same grid painted in pixels. Minutes use sixteen pixels, with no",
-        "60-minute step, plus a position color and an eight-pixel opponent conceded bar.",
+        "Vision: the player rows painted in pixels. Minutes use sixteen pixels, with no",
+        "60-minute step, plus goals, assists, and a position color.",
         "Both then attend across the 40 rows, across the other squad in that fixture,",
         "and across all 40 columns.",
         "The personal baseline is the player's visible bars pulled toward the position-and-minutes rate",

@@ -41,6 +41,8 @@ The flash-card GRU was trained on the player card and scored on log-loss and sea
 | 8 Nov 2026, 16:08 | squad sequence, opponent form | squad card, all minutes | 20.3% | 39.1% | 78.4% |
 | 8 Nov 2026, 16:08 | squad vision, opponent form | squad card, all minutes | 21.5% | 41.1% | 78.9% |
 | 8 Nov 2026, 17:15 | squad sequence, paired gameweeks | squad card, all minutes | 18.1% | 35.1% | 71.1% |
+| 8 Nov 2026, 18:14 | squad sequence, opponent form | squad card, all minutes | 20.3% | 39.1% | 78.4% |
+| 8 Nov 2026, 18:14 | squad vision, player rows only | squad card, all minutes | 20.6% | 39.4% | 78.8% |
 
 Best on the player card: minutes, 11.4%. Best on the squad card: squad vision with the marked chart, 13.1%. Best on the squad card with every appearance counted: squad vision with squad coupling, 24.7%.
 
@@ -125,3 +127,9 @@ The 17:15 run on 8 Nov trains the sequence reader on a pair of clubs. Each colum
 On the all-minutes exam the top 10% is 18.1%. Goal remainders from gameweek 1: at 80% revealed, 199 actual and 238.8 drawn, 11.3% covered, 9.4% on a real week; at 20% revealed, 730 actual and 886.4 drawn, 11.2% covered, 9.2% on a real week. A goalkeeper's hidden appearance is a goal bar at 1.9% when 80% is revealed and at 1.8% when 20% is revealed. A forward is at 12.9% and 12.7%.
 
 Assist remainders: at 80% revealed, 192 actual and 223.4 drawn, 8.3% covered, 7.1% on a real week; at 20% revealed, 707 actual and 823.9 drawn, 7.9% covered, 6.8% on a real week.
+
+## Player rows only
+
+The 18:14 run on 8 Nov uses the 16:08 training procedure and removes the five header rows from the picture: venue, opponent goals conceded, regulars, earlier-season goals per game, and earlier-season goals conceded per game. Each player row is minutes, goals, assists, and a position color. The numeric match-up and the other squad stay. Sequence is unchanged, and its top 10% reproduces at 20.3%.
+
+Vision's top 10% on the all-minutes exam is 20.6%. With the header still painted, the same procedure scored 21.5%. The best line on this exam stays the 15:17 squad-coupling vision at 24.7%. Goal remainders from gameweek 1, vision: at 80% revealed, 199 actual and 202.9 drawn, 16.6% covered, 16.3% on a real week; at 20% revealed, 730 actual and 778.2 drawn, 16.1% covered, 15.1% on a real week. A goalkeeper is at 0.1% and a forward at 11.7%.
