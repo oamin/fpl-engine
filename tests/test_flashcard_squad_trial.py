@@ -11,7 +11,6 @@ from src.models.flashcard_squad_trial import (
     BAND_H,
     CELL_W,
     COLS,
-    CONCEDE_C,
     GOALS_C,
     HEADER_H,
     IMG_H,
@@ -172,7 +171,6 @@ class SquadCutTests(unittest.TestCase):
         view["concede_missing"][0] = 0.0
         view["concede_missing"][1] = 0.0
         image = render_grid(view)
-        self.assertEqual(image.shape[0], ROWS * PLAYER_H)
         minutes_band = image[HEADER_H : HEADER_H + 2 * BAND_H]
         self.assertFalse(np.array_equal(minutes_band[:, 0:CELL_W], minutes_band[:, CELL_W : 2 * CELL_W]))
         self.assertTrue(np.any(np.all(minutes_band[:, 0:CELL_W] == MINUTES_C, axis=-1)))
@@ -180,8 +178,8 @@ class SquadCutTests(unittest.TestCase):
         pos_y = HEADER_H + 4 * BAND_H
         self.assertTrue(np.array_equal(image[pos_y, 0], np.array(POS_C[2])))
         self.assertTrue(np.array_equal(image[pos_y + PLAYER_H, 0], np.array(POS_C[3])))
-        for color in (OWN_HIST_C, OPP_HIST_C, CONCEDE_C):
-            self.assertFalse(np.any(np.all(image == color, axis=-1)))
+        concede = image[BAND_H : BAND_H * 2]
+        self.assertFalse(np.array_equal(concede[:, 0:CELL_W], concede[:, CELL_W : 2 * CELL_W]))
         torch.manual_seed(0)
         batch = _one(view)
         goals, assists = SquadVision(dropout=0.0)(
@@ -285,8 +283,12 @@ class SquadCutTests(unittest.TestCase):
         self.assertGreater(float(high_p), 0.6)
         self.assertLess(float(low_p), 0.3)
         image = render_grid(apply_cut(strong[0], league, 0, clubs))
-        self.assertFalse(np.any(np.all(image == OWN_HIST_C, axis=-1)))
-        self.assertFalse(np.any(np.all(image == OPP_HIST_C, axis=-1)))
+        promoted = render_grid(apply_cut(_history_card("Promoted", "Strong", goals=0), league, 0, clubs))
+        own_band = image[BAND_H * 3 : BAND_H * 4, 0:CELL_W]
+        self.assertTrue(np.any(np.all(own_band == OWN_HIST_C, axis=-1)))
+        self.assertFalse(np.any(np.all(promoted[BAND_H * 3 : BAND_H * 4, 0:CELL_W] == OWN_HIST_C, axis=-1)))
+        opp_band = image[BAND_H * 4 : BAND_H * 5, 0:CELL_W]
+        self.assertTrue(np.any(np.all(opp_band == OPP_HIST_C, axis=-1)))
 
     def test_the_other_squad_keeps_hidden_events_masked(self) -> None:
         home, opp = _facing("2023-24", defenders=90, goals=0)
@@ -337,19 +339,6 @@ class SquadCutTests(unittest.TestCase):
         hidden = slice(1, 6)
         self.assertGreater(float(open_p[0, 0, hidden, 1:].sum(-1).mean()), 0.6)
         self.assertLess(float(shut_p[0, 0, hidden, 1:].sum(-1).mean()), 0.4)
-
-    def test_a_hidden_column_does_not_see_a_later_absence(self) -> None:
-        home, opp = _absent_scorer()
-        league = _scorer_league()
-        index = squad_index([home, opp])
-        shown = apply_cut(home, league, 6, squads=index)
-        hidden = apply_cut(home, league, 3, squads=index)
-        self.assertEqual(shown["matchup"].shape[-1], 14)
-        self.assertAlmostEqual(float(shown["opp_form"][5]), 1.2)
-        self.assertAlmostEqual(float(hidden["opp_form"][5]), 0.0)
-        self.assertAlmostEqual(float(shown["key_play"][5]), 1.0 / 3.0)
-        self.assertAlmostEqual(float(hidden["key_play"][5]), 1.0)
-        self.assertEqual(float(hidden["key_missing"][5]), 0.0)
 
     def test_reveal_starts_at_gameweek_one(self) -> None:
         card = _card()
@@ -550,81 +539,6 @@ def _facing(season: str, defenders: int, goals: int) -> tuple[SquadCard, SquadCa
         assists=np.zeros((ROWS, COLS), dtype=np.int64),
         present=present,
         n_players=4,
-        n_fixtures=n,
-    )
-    return home, opp
-
-
-def _scorer_league() -> dict:
-    fixtures = []
-    for gw, goals in enumerate((0.0, 0.0, 0.0, 3.0, 3.0, 3.0), start=1):
-        fixtures.append(
-            {
-                "fixture": gw,
-                "gw": gw,
-                "kickoff": gw,
-                "gc": 1.0,
-                "gf": goals,
-                "played60": set(),
-                "played1": {1},
-            }
-        )
-    block = {"fixtures": fixtures, "by_id": {fx["fixture"]: fx for fx in fixtures}}
-    return {"2023-24": {"Home": block, "Opp": block}}
-
-
-def _absent_scorer() -> tuple[SquadCard, SquadCard]:
-    """The opponent's scorer plays the first three weeks and misses the next three."""
-    n = 6
-    gw = np.zeros(COLS, dtype=np.int64)
-    gw[:n] = np.arange(1, n + 1)
-    minutes = np.zeros((ROWS, COLS), dtype=np.float32)
-    goals = np.zeros((ROWS, COLS), dtype=np.int64)
-    present = np.zeros((ROWS, COLS), dtype=bool)
-    position = np.full(ROWS, -1, dtype=np.int64)
-    minutes[0, :n] = 90
-    present[0, :n] = True
-    position[0] = POS["FWD"]
-    home = SquadCard(
-        season="2023-24",
-        team="Home",
-        names=tuple(["Forward"] + ["spare"] * (ROWS - 1)),
-        position=position,
-        gw=gw,
-        kickoff=gw.copy(),
-        home=np.ones(COLS, dtype=np.int64),
-        opponent=tuple(["Opp"] * n + [""] * (COLS - n)),
-        fixture_id=gw.copy(),
-        minutes=minutes,
-        goals=goals,
-        assists=np.zeros((ROWS, COLS), dtype=np.int64),
-        present=present,
-        n_players=1,
-        n_fixtures=n,
-    )
-    minutes = np.zeros((ROWS, COLS), dtype=np.float32)
-    goals = np.zeros((ROWS, COLS), dtype=np.int64)
-    present = np.zeros((ROWS, COLS), dtype=bool)
-    position = np.full(ROWS, -1, dtype=np.int64)
-    minutes[0, :3] = 90
-    present[0, :n] = True
-    goals[0, :3] = 1
-    position[0] = POS["FWD"]
-    opp = SquadCard(
-        season="2023-24",
-        team="Opp",
-        names=tuple(["Scorer"] + ["spare"] * (ROWS - 1)),
-        position=position,
-        gw=gw,
-        kickoff=gw.copy(),
-        home=np.zeros(COLS, dtype=np.int64),
-        opponent=tuple(["Home"] * n + [""] * (COLS - n)),
-        fixture_id=gw.copy(),
-        minutes=minutes,
-        goals=goals,
-        assists=np.zeros((ROWS, COLS), dtype=np.int64),
-        present=present,
-        n_players=1,
         n_fixtures=n,
     )
     return home, opp

@@ -3,8 +3,9 @@
 Each card is a club-season. Rows are teammates. Columns are the club's fixtures.
 Minutes stay visible. Goals and assists after the cut are hidden. Each fixture
 is coupled to the other squad: their positions, minutes, and the events already
-revealed. Hidden events stay masked on both sides. The picture is the player
-rows only. Clean sheets are not a target.
+revealed. Hidden events stay masked on both sides. The header still carries
+venue, prior goals conceded, and the share of regular starters on the pitch.
+Clean sheets are not a target.
 
 The sequence reader gets those values as numbers. The vision reader gets the
 same grid painted as pixels. Both attend across the squad and across the
@@ -13,7 +14,9 @@ whole segment at once. Neither walks column by column.
 Train on 2022-23, 2023-24, and 2024-25. Score 2025-26 at a cut after gameweek 19.
 2026-27 is not read.
 
-This is an exploratory trial, not a gated score comparison.
+This is the locked default for the squad-card method. Squad vision with squad
+coupling scored 24.7% top 10% on the all-minutes exam at 15:17 UK on 8 Nov 2026.
+A later change replaces it only by beating that number on the same exam.
 """
 
 from __future__ import annotations
@@ -44,8 +47,8 @@ BAND_H = 8
 CELL_W = 4
 PLAYER_BANDS = 5
 PLAYER_H = BAND_H * PLAYER_BANDS
-HEADER_H = 0
-IMG_H = ROWS * PLAYER_H
+HEADER_H = PLAYER_H
+IMG_H = HEADER_H + ROWS * PLAYER_H
 IMG_W = COLS * CELL_W
 MASK_ID = 4
 D = 32
@@ -56,9 +59,6 @@ LR = 1e-3
 CUT_GW = 19
 PRIOR_STRENGTH = 8
 SEED = 0
-MATCHUP_F = 14
-RECENT_GAMES = 5
-KEY_WINDOW = 3
 POS = {"GKP": 0, "DEF": 1, "MID": 2, "FWD": 3}
 
 MINUTES_C = (0, 114, 178)
@@ -317,55 +317,6 @@ def _rate_before(
     return float(np.mean(vals))
 
 
-def _prior_fixtures(league: dict, season: str, team: str, kickoff: int, cut_gw: int, hidden: bool) -> list[dict]:
-    """Earlier fixtures only. A hidden column cannot see a week after the cut."""
-    info = league.get(season, {}).get(team)
-    if info is None:
-        return []
-    rows = []
-    for fx in info["fixtures"]:
-        if fx["kickoff"] >= kickoff or fx.get("gf") is None or fx.get("gc") is None:
-            continue
-        if hidden and fx["gw"] > cut_gw:
-            continue
-        rows.append(fx)
-    rows.sort(key=lambda fx: fx["kickoff"])
-    return rows
-
-
-def _recent_mean(rows: list[dict], key: str, window: int) -> float | None:
-    if not rows:
-        return None
-    return float(np.mean([fx[key] for fx in rows[-window:]]))
-
-
-def _key_minutes(other: SquadCard, kickoff: int, cut_gw: int, hidden: bool) -> float | None:
-    """Minutes of the opponent's leading scorer over the previous three fixtures.
-
-    The scorer is chosen from goals already played. A hidden column drops any
-    fixture after the cut, so an absence that has not been revealed yet stays out.
-    """
-    cols = []
-    for col in range(other.n_fixtures):
-        if other.gw[col] <= 0 or int(other.kickoff[col]) >= kickoff:
-            continue
-        if hidden and int(other.gw[col]) > cut_gw:
-            continue
-        cols.append(col)
-    if not cols:
-        return None
-    cols.sort(key=lambda col: int(other.kickoff[col]))
-    named = other.position >= 0
-    goals = other.goals[:, cols].sum(axis=1)
-    minutes = other.minutes[:, cols].sum(axis=1)
-    rank = np.where(named, goals * 10000 + minutes, -1.0)
-    if float(rank.max()) < 0:
-        return None
-    key = int(np.argmax(rank))
-    last = cols[-KEY_WINDOW:]
-    return float(other.minutes[key, last].mean() / 90.0)
-
-
 def _concede_rate(league: dict, season: str, team: str, kickoff: int, cut_gw: int, hidden: bool) -> float | None:
     vals = []
     for fx in league[season][team]["fixtures"]:
@@ -461,12 +412,6 @@ def apply_cut(
     opp_hist_missing = np.zeros(COLS, dtype=np.float32)
     own_form = np.zeros(COLS, dtype=np.float32)
     own_form_missing = np.ones(COLS, dtype=np.float32)
-    opp_form = np.zeros(COLS, dtype=np.float32)
-    opp_form_missing = np.ones(COLS, dtype=np.float32)
-    opp_against = np.zeros(COLS, dtype=np.float32)
-    opp_against_missing = np.ones(COLS, dtype=np.float32)
-    key_play = np.zeros(COLS, dtype=np.float32)
-    key_missing = np.ones(COLS, dtype=np.float32)
     opponent_id = np.zeros(COLS, dtype=np.int64)
     column_on = (card.gw > 0).astype(np.float32)
     clubs = clubs or {}
@@ -495,21 +440,6 @@ def apply_cut(
                 opp_hist_missing[col] = 1.0
             else:
                 opp_hist[col] = opp[1]
-        earlier_rows = _prior_fixtures(league, card.season, opponent, kickoff, cut_gw, is_hidden) if opponent else []
-        recent_for = _recent_mean(earlier_rows, "gf", RECENT_GAMES)
-        recent_against = _recent_mean(earlier_rows, "gc", RECENT_GAMES)
-        if recent_for is not None:
-            opp_form[col] = recent_for
-            opp_form_missing[col] = 0.0
-        if recent_against is not None:
-            opp_against[col] = recent_against
-            opp_against_missing[col] = 0.0
-        if squads and opponent:
-            other = squads.get((card.season, opponent))
-            played = _key_minutes(other, kickoff, cut_gw, is_hidden) if other is not None else None
-            if played is not None:
-                key_play[col] = played
-                key_missing[col] = 0.0
         if not opponent or opponent not in league.get(card.season, {}):
             continue
         rate = _concede_rate(league, card.season, opponent, kickoff, cut_gw, is_hidden)
@@ -537,12 +467,6 @@ def apply_cut(
             own_form_missing,
             concede / 3.0,
             concede_missing,
-            opp_form / 3.0,
-            opp_form_missing,
-            opp_against / 3.0,
-            opp_against_missing,
-            key_play,
-            key_missing,
         ],
         axis=-1,
     ).astype(np.float32)
@@ -563,12 +487,6 @@ def apply_cut(
         "opp_hist_missing": opp_hist_missing,
         "own_form": own_form,
         "own_form_missing": own_form_missing,
-        "opp_form": opp_form,
-        "opp_form_missing": opp_form_missing,
-        "opp_against": opp_against,
-        "opp_against_missing": opp_against_missing,
-        "key_play": key_play,
-        "key_missing": key_missing,
         "matchup": matchup,
         "club": np.int64(clubs.get(card.team, 0)),
         "opponent": opponent_id,
@@ -607,10 +525,11 @@ def _bar(img: np.ndarray, y0: int, x0: int, pixels: int, color: tuple[int, int, 
 
 
 def render_grid(view: dict[str, np.ndarray]) -> np.ndarray:
-    """Paint one card. Labels, names, and match summaries are not in the picture.
+    """Paint one card. Labels and names are not in the picture.
 
     Each player cell carries the minute count across sixteen pixels, then goals,
-    assists, and a position color.
+    assists, and a position color. The conceded header uses the full eight-pixel
+    band, so rates that shared a height before are separate.
     """
     img = np.full((IMG_H, IMG_W, 3), 255, dtype=np.uint8)
     for col in range(COLS):
@@ -618,6 +537,27 @@ def render_grid(view: dict[str, np.ndarray]) -> np.ndarray:
         if view["column_on"][col] < 0.5:
             _hatch(img, 0, x0, IMG_H)
             continue
+        _bar(img, 0, x0, BAND_H, HOME_C if view["home"][col] > 0.5 else AWAY_C)
+        if view["concede_missing"][col] > 0.5:
+            _hatch(img, BAND_H, x0, BAND_H)
+        else:
+            pixels = int(round(min(float(view["concede"][col]), 3.0) / 3.0 * BAND_H))
+            _bar(img, BAND_H, x0, pixels, CONCEDE_C)
+        if view["regulars_missing"][col] > 0.5:
+            _hatch(img, BAND_H * 2, x0, BAND_H)
+        else:
+            pixels = int(round(float(view["regulars"][col]) * BAND_H))
+            _bar(img, BAND_H * 2, x0, pixels, REG_C)
+        if view["own_hist_missing"][col] > 0.5:
+            _hatch(img, BAND_H * 3, x0, BAND_H)
+        else:
+            pixels = int(round(min(float(view["own_hist"][col]), 3.0) / 3.0 * BAND_H))
+            _bar(img, BAND_H * 3, x0, pixels, OWN_HIST_C)
+        if view["opp_hist_missing"][col] > 0.5:
+            _hatch(img, BAND_H * 4, x0, BAND_H)
+        else:
+            pixels = int(round(min(float(view["opp_hist"][col]), 3.0) / 3.0 * BAND_H))
+            _bar(img, BAND_H * 4, x0, pixels, OPP_HIST_C)
         for row in range(ROWS):
             y = HEADER_H + row * PLAYER_H
             if view["position"][row] < 0:
@@ -675,11 +615,11 @@ class Coupler(nn.Module):
         self.club_assist_min = nn.Parameter(torch.zeros(n_clubs, 5, 4))
         self.opp_assist = nn.Parameter(torch.zeros(n_clubs, 5, 4))
         self.opp_assist_min = nn.Parameter(torch.zeros(n_clubs, 5, 4))
-        self.form_goal = nn.Parameter(torch.zeros(5, MATCHUP_F, 4))
-        self.form_goal_min = nn.Parameter(torch.zeros(5, MATCHUP_F, 4))
-        self.form_assist = nn.Parameter(torch.zeros(5, MATCHUP_F, 4))
-        self.form_assist_min = nn.Parameter(torch.zeros(5, MATCHUP_F, 4))
-        self.club_context = nn.Linear(MATCHUP_F, D)
+        self.form_goal = nn.Parameter(torch.zeros(5, 8, 4))
+        self.form_goal_min = nn.Parameter(torch.zeros(5, 8, 4))
+        self.form_assist = nn.Parameter(torch.zeros(5, 8, 4))
+        self.form_assist_min = nn.Parameter(torch.zeros(5, 8, 4))
+        self.club_context = nn.Linear(8, D)
         self.col_pos = nn.Parameter(torch.zeros(1, 1, COLS, D))
         nn.init.normal_(self.col_pos, std=0.02)
         for layer in (self.goal, self.assist, self.skip_goal, self.skip_assist, self.club_context):
@@ -839,10 +779,11 @@ class SquadVision(nn.Module):
         opp: dict[str, torch.Tensor] | None = None,
     ) -> tuple[torch.Tensor, torch.Tensor]:
         batch = images.shape[0]
-        blocks = images.reshape(batch, 3, ROWS, PLAYER_H, COLS, CELL_W)
-        blocks = blocks.permute(0, 4, 2, 1, 3, 5).reshape(batch, COLS, ROWS, -1)
+        blocks = images.reshape(batch, 3, ROWS + 1, PLAYER_H, COLS, CELL_W)
+        blocks = blocks.permute(0, 4, 2, 1, 3, 5).reshape(batch, COLS, ROWS + 1, -1)
         tokens = self.patch(blocks)
-        cells = tokens.permute(0, 2, 1, 3)
+        header = tokens[:, :, 0, :]
+        cells = tokens[:, :, 1:, :].permute(0, 2, 1, 3) + header[:, None, :, :]
         return self.couple(
             cells, row_pad, column_on < 0.5, position, minutes, matchup, club, opponent, opp
         )
@@ -1369,7 +1310,7 @@ def write_report(payload: dict[str, object], path) -> None:
         f"Train: {', '.join(TRAIN_SEASONS)}. Test: {TEST_SEASON}.",
         f"Cards: train {payload['n_train']}, test {payload['n_test']}. One card is a club-season.",
         f"Grid: {ROWS} players by {COLS} fixtures. Cut after gameweek {CUT_GW} for every club.",
-        "The picture is player rows only. Minutes stay visible.",
+        "Minutes, venue, opponent goals conceded, and regulars-on-the-pitch stay visible.",
         "Goals and assists after the cut are hidden. The segment is predicted in one pass.",
         f"Wall clock: {payload['seconds']:.0f} seconds on CPU.",
         "",
@@ -1384,9 +1325,6 @@ def write_report(payload: dict[str, object], path) -> None:
         "fixtures already played, and a hidden column stops at the cut.",
         "Each fixture is coupled to the other squad's players: position, minutes,",
         "and the goals and assists already shown. The same cut masks both sides.",
-        "Over the previous five games the reader sees the opponent's goals scored",
-        "and conceded. Over the previous three it sees how many minutes their",
-        "leading scorer played. A hidden column stops at the cut.",
         (
             "Learned vision probability of a goal bar on a hidden appearance: "
             f"goalkeeper {payload['role_rate']['goal'][0]:.1%}, "
@@ -1395,8 +1333,8 @@ def write_report(payload: dict[str, object], path) -> None:
             f"forward {payload['role_rate']['goal'][3]:.1%}."
         ),
         "Sequence: the minute count, presence, position, and the visible bars as tokens.",
-        "Vision: the player rows painted in pixels. Minutes use sixteen pixels, with no",
-        "60-minute step, plus goals, assists, and a position color.",
+        "Vision: the same grid painted in pixels. Minutes use sixteen pixels, with no",
+        "60-minute step, plus a position color and an eight-pixel opponent conceded bar.",
         "Both then attend across the 40 rows, across the other squad in that fixture,",
         "and across all 40 columns.",
         "The personal baseline is the player's visible bars pulled toward the position-and-minutes rate",

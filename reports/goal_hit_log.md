@@ -4,6 +4,8 @@ The score is the share of a player's hidden goal weeks that land in the top 10% 
 
 Compare a new row with earlier rows on the same exam. A higher top-10% score on that exam is an improvement.
 
+The working default is squad vision with squad coupling, logged at 15:17 UK on 8 Nov 2026. On the all-minutes squad card its top 10% is 24.7%, its top 20% is 41.5%, and its top 50% is 80.1%. A new model replaces that default only by scoring higher than 24.7% on this same exam. The rows below it stay in the log and do not move the gate.
+
 Train seasons for every row so far: 2022-23, 2023-24, 2024-25. Test season: 2025-26.
 
 | exam | what is held fixed |
@@ -44,7 +46,7 @@ The flash-card GRU was trained on the player card and scored on log-loss and sea
 | 8 Nov 2026, 18:14 | squad sequence, opponent form | squad card, all minutes | 20.3% | 39.1% | 78.4% |
 | 8 Nov 2026, 18:14 | squad vision, player rows only | squad card, all minutes | 20.6% | 39.4% | 78.8% |
 
-Best on the player card: minutes, 11.4%. Best on the squad card: squad vision with the marked chart, 13.1%. Best on the squad card with every appearance counted: squad vision with squad coupling, 24.7%.
+Best on the player card: minutes, 11.4%. Best on the squad card: squad vision with the marked chart, 13.1%. Working default on the squad card with every appearance counted: squad vision with squad coupling, 24.7%.
 
 The marked chart adds a position color, a solid band at 60 minutes, and an eight-pixel opponent conceded bar. The top 10% rose from 12.2% to 13.1%. The top 20% fell from 23.5% to 21.6%. Expected goals on played weeks were 28.1 against 21.4 actual.
 
