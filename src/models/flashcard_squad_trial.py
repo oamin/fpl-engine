@@ -64,6 +64,8 @@ HOME_C = (0, 158, 115)
 AWAY_C = (230, 159, 0)
 CONCEDE_C = (86, 180, 233)
 REG_C = (30, 30, 30)
+OWN_HIST_C = (140, 70, 20)
+OPP_HIST_C = (20, 70, 120)
 MASK_C = (176, 176, 176)
 BASE_C = (226, 226, 226)
 HATCH_BG = (214, 214, 214)
@@ -123,6 +125,7 @@ def build_league(seasons: tuple[str, ...]) -> dict:
                     "gw": int(row.gw),
                     "kickoff": int(row.kickoff.value),
                     "gc": gc,
+                    "gf": float(block["goals_scored"].sum()),
                     "played60": set(int(i) for i in long["element"]),
                     "played1": set(int(i) for i in block.loc[block["minutes"] >= 1, "element"]),
                 }
@@ -235,6 +238,81 @@ def _regulars(league: dict, season: str, team: str, cut_gw: int) -> set[int]:
     return {element for element, count in counts.items() if count >= need}
 
 
+def fit_clubs(cards: list[SquadCard]) -> dict[str, int]:
+    """Club ids from the training cards. Index 0 is a club this run has not trained on."""
+    names = {card.team for card in cards}
+    names.update(opp for card in cards for opp in card.opponent if opp)
+    return {name: index + 1 for index, name in enumerate(sorted(names))}
+
+
+_PRIOR_CACHE: dict[int, dict] = {}
+
+
+def prior_table(league: dict) -> dict[tuple[str, str], tuple[float, float, int, int]]:
+    """Goals and concessions per game from seasons strictly before the card's season.
+
+    The value is (goals for, goals conceded, games scored, games conceded). A club
+    missing from the table has no earlier season in this league.
+    """
+    cached = _PRIOR_CACHE.get(id(league))
+    if cached is not None:
+        return cached
+    per_season: dict[tuple[str, str], tuple[float, float, int, int]] = {}
+    for season, clubs in league.items():
+        for team, info in clubs.items():
+            scored = [fx["gf"] for fx in info["fixtures"] if fx.get("gf") is not None]
+            conceded = [fx["gc"] for fx in info["fixtures"] if fx.get("gc") is not None]
+            if not scored and not conceded:
+                continue
+            gf = float(np.mean(scored)) if scored else 0.0
+            gc = float(np.mean(conceded)) if conceded else 0.0
+            per_season[(season, team)] = (gf, gc, len(scored), len(conceded))
+    prior: dict[tuple[str, str], tuple[float, float, int, int]] = {}
+    for season in league:
+        earlier = [name for name in league if name < season]
+        teams = {team for name in earlier for team in league[name]}
+        for team in teams:
+            gf_sum = gc_sum = 0.0
+            gf_n = gc_n = 0
+            for name in earlier:
+                item = per_season.get((name, team))
+                if item is None:
+                    continue
+                gf, gc, n_for, n_against = item
+                gf_sum += gf * n_for
+                gc_sum += gc * n_against
+                gf_n += n_for
+                gc_n += n_against
+            if gf_n or gc_n:
+                prior[(season, team)] = (
+                    gf_sum / gf_n if gf_n else 0.0,
+                    gc_sum / gc_n if gc_n else 0.0,
+                    gf_n,
+                    gc_n,
+                )
+    _PRIOR_CACHE[id(league)] = prior
+    return prior
+
+
+def _rate_before(
+    league: dict, season: str, team: str, kickoff: int, cut_gw: int, hidden: bool, key: str
+) -> float | None:
+    """Mean of an earlier fixture's team total. A hidden column cannot see past the cut."""
+    info = league.get(season, {}).get(team)
+    if info is None:
+        return None
+    vals = []
+    for fx in info["fixtures"]:
+        if fx["kickoff"] >= kickoff or fx.get(key) is None:
+            continue
+        if hidden and fx["gw"] > cut_gw:
+            continue
+        vals.append(fx[key])
+    if not vals:
+        return None
+    return float(np.mean(vals))
+
+
 def _concede_rate(league: dict, season: str, team: str, kickoff: int, cut_gw: int, hidden: bool) -> float | None:
     vals = []
     for fx in league[season][team]["fixtures"]:
@@ -248,8 +326,19 @@ def _concede_rate(league: dict, season: str, team: str, kickoff: int, cut_gw: in
     return float(np.mean(vals))
 
 
-def apply_cut(card: SquadCard, league: dict, cut_gw: int) -> dict[str, np.ndarray]:
-    """Numbers the sequence model reads. Hidden bars are the mask id, not zero."""
+def apply_cut(
+    card: SquadCard,
+    league: dict,
+    cut_gw: int,
+    clubs: dict[str, int] | None = None,
+) -> dict[str, np.ndarray]:
+    """Numbers the readers see. Hidden bars are the mask id, not zero.
+
+    Club history comes from earlier seasons only. A club with no earlier season,
+    in a league where other clubs have one, is marked missing: that is a promoted
+    side. The first season in the file has no earlier season for anyone, so its
+    history features stay zero and do not pretend every club is new.
+    """
     hidden = (card.gw > cut_gw) & (card.gw > 0)
     goal_token = np.full((ROWS, COLS), MASK_ID, dtype=np.int64)
     assist_token = np.full((ROWS, COLS), MASK_ID, dtype=np.int64)
@@ -260,16 +349,43 @@ def apply_cut(card: SquadCard, league: dict, cut_gw: int) -> dict[str, np.ndarra
     concede_missing = np.ones(COLS, dtype=np.float32)
     regulars = np.zeros(COLS, dtype=np.float32)
     regulars_missing = np.ones(COLS, dtype=np.float32)
+    own_hist = np.zeros(COLS, dtype=np.float32)
+    own_hist_missing = np.zeros(COLS, dtype=np.float32)
+    opp_hist = np.zeros(COLS, dtype=np.float32)
+    opp_hist_missing = np.zeros(COLS, dtype=np.float32)
+    own_form = np.zeros(COLS, dtype=np.float32)
+    own_form_missing = np.ones(COLS, dtype=np.float32)
+    opponent_id = np.zeros(COLS, dtype=np.int64)
     column_on = (card.gw > 0).astype(np.float32)
+    clubs = clubs or {}
+    prior = prior_table(league)
+    earlier = any(name < card.season for name in league)
+    own = prior.get((card.season, card.team))
+    if earlier and (own is None or own[2] == 0):
+        own_hist_missing[:] = 1.0
+    elif own is not None and own[2] > 0:
+        own_hist[:] = own[0]
     cache: dict[str, set[int]] = {}
     for col in range(COLS):
         if card.gw[col] <= 0:
             continue
-        opponent = card.opponent[col]
-        if not opponent or opponent not in league[card.season]:
-            continue
         is_hidden = bool(hidden[col])
-        rate = _concede_rate(league, card.season, opponent, int(card.kickoff[col]), cut_gw, is_hidden)
+        kickoff = int(card.kickoff[col])
+        form = _rate_before(league, card.season, card.team, kickoff, cut_gw, is_hidden, "gf")
+        if form is not None:
+            own_form[col] = form
+            own_form_missing[col] = 0.0
+        opponent = card.opponent[col]
+        opponent_id[col] = int(clubs.get(opponent, 0)) if opponent else 0
+        if earlier:
+            opp = prior.get((card.season, opponent)) if opponent else None
+            if opp is None or opp[3] == 0:
+                opp_hist_missing[col] = 1.0
+            else:
+                opp_hist[col] = opp[1]
+        if not opponent or opponent not in league.get(card.season, {}):
+            continue
+        rate = _concede_rate(league, card.season, opponent, kickoff, cut_gw, is_hidden)
         if rate is not None:
             concede[col] = rate
             concede_missing[col] = 0.0
@@ -284,6 +400,19 @@ def apply_cut(card: SquadCard, league: dict, cut_gw: int) -> dict[str, np.ndarra
         regulars[col] = len(regs & current["played1"]) / len(regs)
         regulars_missing[col] = 0.0
     loss = card.present & hidden.reshape(1, COLS)
+    matchup = np.stack(
+        [
+            own_hist / 3.0,
+            own_hist_missing,
+            opp_hist / 3.0,
+            opp_hist_missing,
+            own_form / 3.0,
+            own_form_missing,
+            concede / 3.0,
+            concede_missing,
+        ],
+        axis=-1,
+    ).astype(np.float32)
     return {
         "minutes": card.minutes.astype(np.float32),
         "present": card.present.astype(np.float32),
@@ -295,6 +424,15 @@ def apply_cut(card: SquadCard, league: dict, cut_gw: int) -> dict[str, np.ndarra
         "concede_missing": concede_missing,
         "regulars": regulars,
         "regulars_missing": regulars_missing,
+        "own_hist": own_hist,
+        "own_hist_missing": own_hist_missing,
+        "opp_hist": opp_hist,
+        "opp_hist_missing": opp_hist_missing,
+        "own_form": own_form,
+        "own_form_missing": own_form_missing,
+        "matchup": matchup,
+        "club": np.int64(clubs.get(card.team, 0)),
+        "opponent": opponent_id,
         "column_on": column_on,
         "goal_label": card.goals.astype(np.int64),
         "assist_label": card.assists.astype(np.int64),
@@ -352,6 +490,16 @@ def render_grid(view: dict[str, np.ndarray]) -> np.ndarray:
         else:
             pixels = int(round(float(view["regulars"][col]) * BAND_H))
             _bar(img, BAND_H * 2, x0, pixels, REG_C)
+        if view["own_hist_missing"][col] > 0.5:
+            _hatch(img, BAND_H * 3, x0, BAND_H)
+        else:
+            pixels = int(round(min(float(view["own_hist"][col]), 3.0) / 3.0 * BAND_H))
+            _bar(img, BAND_H * 3, x0, pixels, OWN_HIST_C)
+        if view["opp_hist_missing"][col] > 0.5:
+            _hatch(img, BAND_H * 4, x0, BAND_H)
+        else:
+            pixels = int(round(min(float(view["opp_hist"][col]), 3.0) / 3.0 * BAND_H))
+            _bar(img, BAND_H * 4, x0, pixels, OPP_HIST_C)
         for row in range(ROWS):
             y = HEADER_H + row * PLAYER_H
             if view["position"][row] < 0:
@@ -377,7 +525,7 @@ def render_grid(view: dict[str, np.ndarray]) -> np.ndarray:
 class Coupler(nn.Module):
     """Attend across the squad, then across every column of the segment."""
 
-    def __init__(self, dropout: float) -> None:
+    def __init__(self, dropout: float, n_clubs: int = 1) -> None:
         super().__init__()
         self.row = nn.MultiheadAttention(D, HEADS, dropout=dropout, batch_first=True)
         self.col = nn.MultiheadAttention(D, HEADS, dropout=dropout, batch_first=True)
@@ -391,12 +539,29 @@ class Coupler(nn.Module):
         self.pos_assist = nn.Embedding(5, 4)
         self.pos_goal_min = nn.Embedding(5, 4)
         self.pos_assist_min = nn.Embedding(5, 4)
+        self.club_vec = nn.Embedding(n_clubs, D)
+        self.opp_vec = nn.Embedding(n_clubs, D)
+        # Position by club, and position by match-up. A keeper and a forward at
+        # the same club do not share the tilt.
+        self.club_goal = nn.Parameter(torch.zeros(n_clubs, 5, 4))
+        self.club_goal_min = nn.Parameter(torch.zeros(n_clubs, 5, 4))
+        self.opp_goal = nn.Parameter(torch.zeros(n_clubs, 5, 4))
+        self.opp_goal_min = nn.Parameter(torch.zeros(n_clubs, 5, 4))
+        self.club_assist = nn.Parameter(torch.zeros(n_clubs, 5, 4))
+        self.club_assist_min = nn.Parameter(torch.zeros(n_clubs, 5, 4))
+        self.opp_assist = nn.Parameter(torch.zeros(n_clubs, 5, 4))
+        self.opp_assist_min = nn.Parameter(torch.zeros(n_clubs, 5, 4))
+        self.form_goal = nn.Parameter(torch.zeros(5, 8, 4))
+        self.form_goal_min = nn.Parameter(torch.zeros(5, 8, 4))
+        self.form_assist = nn.Parameter(torch.zeros(5, 8, 4))
+        self.form_assist_min = nn.Parameter(torch.zeros(5, 8, 4))
+        self.club_context = nn.Linear(8, D)
         self.col_pos = nn.Parameter(torch.zeros(1, 1, COLS, D))
         nn.init.normal_(self.col_pos, std=0.02)
-        for layer in (self.goal, self.assist, self.skip_goal, self.skip_assist):
+        for layer in (self.goal, self.assist, self.skip_goal, self.skip_assist, self.club_context):
             nn.init.zeros_(layer.weight)
             nn.init.zeros_(layer.bias)
-        for table in (self.pos_goal, self.pos_assist, self.pos_goal_min, self.pos_assist_min):
+        for table in (self.pos_goal, self.pos_assist, self.pos_goal_min, self.pos_assist_min, self.club_vec, self.opp_vec):
             nn.init.zeros_(table.weight)
 
     def forward(
@@ -406,8 +571,14 @@ class Coupler(nn.Module):
         col_pad: torch.Tensor,
         position: torch.Tensor,
         minutes: torch.Tensor,
+        matchup: torch.Tensor,
+        club: torch.Tensor,
+        opponent: torch.Tensor,
     ) -> tuple[torch.Tensor, torch.Tensor]:
         batch, _rows, cols, _dim = cells.shape
+        cells = cells + self.club_context(matchup)[:, None, :, :]
+        cells = cells + self.club_vec(club)[:, None, None, :]
+        cells = cells + self.opp_vec(opponent)[:, None, :, :]
         hidden = self.norm_row(cells + self.col_pos[:, :, :cols])
         row_view = hidden.permute(0, 2, 1, 3).reshape(batch * cols, ROWS, D)
         row_mask = row_pad[:, None, :].expand(batch, cols, ROWS).reshape(batch * cols, ROWS)
@@ -420,32 +591,58 @@ class Coupler(nn.Module):
         out = col_view.reshape(batch, ROWS, cols, D)
         pos = torch.where(position < 0, torch.full_like(position, 4), position)
         played = (minutes / 90.0).unsqueeze(-1)
+        form_goal = _by_position(self.form_goal, self.form_goal_min, matchup, pos, played)
+        form_assist = _by_position(self.form_assist, self.form_assist_min, matchup, pos, played)
         goal = (
             self.goal(out)
             + self.skip_goal(cells)
             + self.pos_goal(pos)[:, :, None, :]
             + self.pos_goal_min(pos)[:, :, None, :] * played
+            + _by_club(self.club_goal, self.club_goal_min, club, pos, played)
+            + _by_club(self.opp_goal, self.opp_goal_min, opponent, pos, played)
+            + form_goal
         )
         assist = (
             self.assist(out)
             + self.skip_assist(cells)
             + self.pos_assist(pos)[:, :, None, :]
             + self.pos_assist_min(pos)[:, :, None, :] * played
+            + _by_club(self.club_assist, self.club_assist_min, club, pos, played)
+            + _by_club(self.opp_assist, self.opp_assist_min, opponent, pos, played)
+            + form_assist
         )
         return goal, assist
+
+
+def _by_position(level, slope, matchup, pos, played):
+    """Match-up features, with a separate weight for each position."""
+    base = torch.einsum("bcf,brfk->brck", matchup, level[pos])
+    tilt = torch.einsum("bcf,brfk->brck", matchup, slope[pos])
+    return base + tilt * played
+
+
+def _by_club(level, slope, index, pos, played):
+    """Club identity, with a separate weight for each position."""
+    if index.ndim == 1:
+        base = level[index[:, None], pos][:, :, None, :]
+        tilt = slope[index[:, None], pos][:, :, None, :]
+    else:
+        base = level[index[:, None, :], pos[:, :, None]]
+        tilt = slope[index[:, None, :], pos[:, :, None]]
+    return base + tilt * played
 
 
 class SquadSequence(nn.Module):
     """Numeric reader. Hidden bars are an empty token."""
 
-    def __init__(self, dropout: float = 0.1) -> None:
+    def __init__(self, dropout: float = 0.1, n_clubs: int = 1) -> None:
         super().__init__()
         self.cell = nn.Linear(2, D)
         self.position = nn.Embedding(5, D)
         self.goal_in = nn.Embedding(5, D)
         self.assist_in = nn.Embedding(5, D)
         self.header = nn.Linear(4, D)
-        self.couple = Coupler(dropout)
+        self.couple = Coupler(dropout, n_clubs)
 
     def forward(self, batch: dict[str, torch.Tensor]) -> tuple[torch.Tensor, torch.Tensor]:
         stats = torch.stack([batch["minutes"] / 90.0, batch["present"]], dim=-1)
@@ -461,17 +658,24 @@ class SquadSequence(nn.Module):
         )
         cells = cells + header[:, None, :, :]
         return self.couple(
-            cells, batch["row_pad"], batch["column_on"] < 0.5, batch["position"], batch["minutes"]
+            cells,
+            batch["row_pad"],
+            batch["column_on"] < 0.5,
+            batch["position"],
+            batch["minutes"],
+            batch["matchup"],
+            batch["club"],
+            batch["opponent"],
         )
 
 
 class SquadVision(nn.Module):
     """Pixel reader. Each cell is a patch. The grid is the only input."""
 
-    def __init__(self, dropout: float = 0.1) -> None:
+    def __init__(self, dropout: float = 0.1, n_clubs: int = 1) -> None:
         super().__init__()
         self.patch = nn.Linear(3 * PLAYER_H * CELL_W, D)
-        self.couple = Coupler(dropout)
+        self.couple = Coupler(dropout, n_clubs)
 
     def forward(
         self,
@@ -480,6 +684,9 @@ class SquadVision(nn.Module):
         column_on: torch.Tensor,
         position: torch.Tensor,
         minutes: torch.Tensor,
+        matchup: torch.Tensor,
+        club: torch.Tensor,
+        opponent: torch.Tensor,
     ) -> tuple[torch.Tensor, torch.Tensor]:
         batch = images.shape[0]
         blocks = images.reshape(batch, 3, ROWS + 1, PLAYER_H, COLS, CELL_W)
@@ -487,7 +694,7 @@ class SquadVision(nn.Module):
         tokens = self.patch(blocks)
         header = tokens[:, :, 0, :]
         cells = tokens[:, :, 1:, :].permute(0, 2, 1, 3) + header[:, None, :, :]
-        return self.couple(cells, row_pad, column_on < 0.5, position, minutes)
+        return self.couple(cells, row_pad, column_on < 0.5, position, minutes, matchup, club, opponent)
 
 
 def _stack(views: list[dict[str, np.ndarray]]) -> dict[str, torch.Tensor]:
@@ -504,6 +711,9 @@ def _stack(views: list[dict[str, np.ndarray]]) -> dict[str, torch.Tensor]:
         else:
             batch[key] = torch.from_numpy(array.astype(np.float32))
     batch["row_pad"] = torch.from_numpy(np.stack([view["row_pad"] for view in views]))
+    batch["club"] = torch.from_numpy(np.array([int(view["club"]) for view in views], dtype=np.int64))
+    batch["opponent"] = torch.from_numpy(np.stack([view["opponent"] for view in views]).astype(np.int64))
+    batch["matchup"] = torch.from_numpy(np.stack([view["matchup"] for view in views]).astype(np.float32))
     images = np.stack([render_grid(view) for view in views])
     batch["image"] = torch.from_numpy(images).permute(0, 3, 1, 2).float().div(255.0)
     return batch
@@ -536,13 +746,21 @@ def train_model(
     kind: str,
     lr: float = LR,
     batch_size: int = BATCH,
+    clubs: dict[str, int] | None = None,
 ) -> list[float]:
-    fast = [p for name, p in model.named_parameters() if "pos_" in name or name.startswith("position")]
+    fast_name = ("pos_", "position", "club_", "opp_", "form_")
+    fast = [
+        p
+        for name, p in model.named_parameters()
+        if any(token in name or name.startswith(token) for token in fast_name)
+    ]
     fast_ids = {id(p) for p in fast}
     rest = [p for p in model.parameters() if id(p) not in fast_ids]
     opt = torch.optim.AdamW(
-        [{"params": rest, "lr": lr}, {"params": fast, "lr": lr * 10}],
-        weight_decay=1e-4,
+        [
+            {"params": rest, "lr": lr, "weight_decay": 1e-4},
+            {"params": fast, "lr": lr * 10, "weight_decay": 0.0},
+        ]
     )
     history = []
     model.train()
@@ -553,11 +771,14 @@ def train_model(
         for start in range(0, len(cards), batch_size):
             pick = [cards[int(i)] for i in order[start : start + BATCH]]
             cuts = [sample_cut(card, rng) for card in pick]
-            batch = _stack([apply_cut(card, league, cut) for card, cut in zip(pick, cuts, strict=True)])
+            batch = _stack(
+                [apply_cut(card, league, cut, clubs) for card, cut in zip(pick, cuts, strict=True)]
+            )
             opt.zero_grad()
             if kind == "vision":
                 goal_logits, assist_logits = model(
-                    batch["image"], batch["row_pad"], batch["column_on"], batch["position"], batch["minutes"]
+                    batch["image"], batch["row_pad"], batch["column_on"], batch["position"], batch["minutes"],
+                    batch["matchup"], batch["club"], batch["opponent"],
                 )
             else:
                 goal_logits, assist_logits = model(batch)
@@ -577,7 +798,12 @@ def train_model(
 
 @torch.no_grad()
 def predict(
-    model: nn.Module, cards: list[SquadCard], league: dict, cut_gw: int, kind: str
+    model: nn.Module,
+    cards: list[SquadCard],
+    league: dict,
+    cut_gw: int,
+    kind: str,
+    clubs: dict[str, int] | None = None,
 ) -> tuple[np.ndarray, np.ndarray]:
     """Goal and assist probabilities, shape (cards, rows, cols, 4)."""
     model.eval()
@@ -585,10 +811,11 @@ def predict(
     assists = np.zeros_like(goals)
     for start in range(0, len(cards), BATCH):
         pick = cards[start : start + BATCH]
-        batch = _stack([apply_cut(card, league, cut_gw) for card in pick])
+        batch = _stack([apply_cut(card, league, cut_gw, clubs) for card in pick])
         if kind == "vision":
             goal_logits, assist_logits = model(
-                batch["image"], batch["row_pad"], batch["column_on"], batch["position"], batch["minutes"]
+                batch["image"], batch["row_pad"], batch["column_on"], batch["position"], batch["minutes"],
+                batch["matchup"], batch["club"], batch["opponent"],
             )
         else:
             goal_logits, assist_logits = model(batch)
@@ -789,6 +1016,66 @@ def positive_by_position(
     return (totals / np.maximum(counts, 1.0)).tolist()
 
 
+def forward_goal_rate(
+    probs: np.ndarray, card: SquadCard, cut: int, columns: np.ndarray | None = None
+) -> float:
+    """Mean probability of a goal bar for forwards on the hidden appearances."""
+    hidden = (card.gw > cut) & (card.gw > 0)
+    if columns is not None:
+        hidden = hidden & columns
+    total = 0.0
+    count = 0
+    for row in range(card.n_players):
+        if int(card.position[row]) != POS["FWD"]:
+            continue
+        cols = np.where(card.present[row] & hidden)[0]
+        if len(cols) == 0:
+            continue
+        total += float((1.0 - probs[row, cols, 0]).sum())
+        count += len(cols)
+    if count == 0:
+        return float("nan")
+    return total / count
+
+
+def club_remainder(
+    cards: list[SquadCard],
+    probs: np.ndarray,
+    labels: np.ndarray,
+    cuts: list[int],
+    prior: dict,
+    rng: np.random.Generator,
+) -> dict[str, float]:
+    """Goal bars and the forward goal rate for one group of clubs."""
+    if not cards:
+        return {"prior_gf": 0.0, "actual_bars": 0, "drawn_bars": 0.0, "fwd": float("nan")}
+    bars = bar_correspondence(cards, probs, labels, 0, rng, cuts=cuts)
+    total = 0.0
+    count = 0
+    gf_sum = 0.0
+    gf_n = 0
+    for card, prob, cut in zip(cards, probs, cuts, strict=True):
+        hidden = (card.gw > cut) & (card.gw > 0)
+        for row in range(card.n_players):
+            if int(card.position[row]) != POS["FWD"]:
+                continue
+            cols = np.where(card.present[row] & hidden)[0]
+            if len(cols) == 0:
+                continue
+            total += float((1.0 - prob[row, cols, 0]).sum())
+            count += len(cols)
+        own = prior.get((card.season, card.team))
+        if own is not None and own[2] > 0:
+            gf_sum += own[0] * own[2]
+            gf_n += own[2]
+    return {
+        "prior_gf": gf_sum / gf_n if gf_n else 0.0,
+        "actual_bars": bars["actual_bars"],
+        "drawn_bars": bars["drawn_bars"],
+        "fwd": total / count if count else float("nan"),
+    }
+
+
 def sample_bars(probs: np.ndarray, rng: np.random.Generator) -> np.ndarray:
     """Draw one bar height per cell from the class probabilities."""
     flat = np.asarray(probs, dtype=np.float64).reshape(-1, probs.shape[-1])
@@ -885,6 +1172,16 @@ def random_same_count(
     }
 
 
+def previous_name(payload: dict) -> str:
+    return str(payload.get("previous_season", "the previous season"))
+
+
+def _blank_nan(value: float) -> str:
+    if value != value:
+        return ""
+    return f"{value:.1%}"
+
+
 def write_report(payload: dict[str, object], path) -> None:
     goals = payload["goals"]
     capture = payload["capture"]
@@ -903,8 +1200,13 @@ def write_report(payload: dict[str, object], path) -> None:
         "",
         "## Readers",
         "",
-        "Position, the player's own minutes and visible bars, and the match-up header",
+        "Position, the player's own minutes and visible bars, and the match-up",
         "each have a learned effect on the goal and assist heads.",
+        "A club's earlier-season goals per game, and the opponent's earlier-season",
+        "goals conceded per game, are shared across every card of that club.",
+        "A club with no earlier season, once other clubs have one, is the promoted case.",
+        "This season's own scoring rate and the opponent's conceding rate use only",
+        "fixtures already played, and a hidden column stops at the cut.",
         (
             "Learned vision probability of a goal bar on a hidden appearance: "
             f"goalkeeper {payload['role_rate']['goal'][0]:.1%}, "
@@ -1008,9 +1310,57 @@ def write_report(payload: dict[str, object], path) -> None:
         [
             "",
             f"Four vision draws for {payload['reveal_card']}: `data/plots/flashcard_squad_reveals.png`.",
+            "The title on each panel is that one draw for the whole club.",
             "",
+            "## Club and match-up",
+            "",
+            "Vision's goal-bar rate for forwards on the hidden remainder. The club and",
+            "match-up shift is learned separately for each position. Promoted clubs",
+            f"are the sides missing from {previous_name(payload)}.",
+            "A forward at a club that has been scoring, against a side that has been conceding,",
+            "is where that shift should show.",
+            "",
+            "| revealed | group | prior goals/game | actual bars | drawn bars | forward goal rate |",
+            "|---|---|---:|---:|---:|---:|",
         ]
     )
+    for item in payload["club_balance"]:
+        for key, label in (
+            ("man_utd", payload["reveal_card"]),
+            ("established", "established"),
+            ("promoted", "promoted"),
+        ):
+            row = item[key]
+            lines.append(
+                f"| {item['revealed']:.0%} | {label} | {row['prior_gf']:.2f} | {row['actual_bars']:.0f} | "
+                f"{row['drawn_bars']:.1f} | {_blank_nan(row['fwd'])} |"
+            )
+        lines.append(
+            f"| {item['revealed']:.0%} | {payload['reveal_card']} vs promoted |  |  |  | "
+            f"{_blank_nan(item['man_utd_vs_promoted'])} |"
+        )
+        lines.append(
+            f"| {item['revealed']:.0%} | {payload['reveal_card']} vs established |  |  |  | "
+            f"{_blank_nan(item['man_utd_vs_established'])} |"
+        )
+    names = ", ".join(payload["promoted_teams"]) or "none"
+    lines.extend(
+        [
+            "",
+            f"Promoted sides in {TEST_SEASON}, absent from the previous season: {names}.",
+            "",
+            "Forwards at 40% revealed, one club at a time.",
+            "",
+            "| club | prior goals/game | actual bars | drawn bars | forward goal rate |",
+            "|---|---:|---:|---:|---:|",
+        ]
+    )
+    for row in payload["named_clubs"]:
+        lines.append(
+            f"| {row['team']} | {row['prior_gf']:.2f} | {row['actual_bars']:.0f} | "
+            f"{row['drawn_bars']:.1f} | {_blank_nan(row['fwd'])} |"
+        )
+    lines.append("")
     path.write_text("\n".join(lines), encoding="utf-8")
 
 
@@ -1103,9 +1453,20 @@ def plot_bar_card(
 
 
 def plot_reveals(card: SquadCard, draws: list[dict], path) -> None:
-    """Four prefixes from gameweek 1. The line is where the revealed card ends."""
+    """Four prefixes from gameweek 1. The line is where the revealed card ends.
+
+    A row stays when that player scored, or when this draw gave them a goal bar.
+    The title counts the whole club, including players who are not drawn as rows.
+    """
     played = np.where(card.gw > 0)[0]
-    rows = [row for row in range(card.n_players) if (card.goals[row, played] > 0).any()]
+    drawn_any = np.zeros(card.n_players, dtype=bool)
+    for item in draws:
+        drawn_any |= (np.asarray(item["goals"])[: card.n_players, played] > 0).any(axis=1)
+    rows = [
+        row
+        for row in range(card.n_players)
+        if (card.goals[row, played] > 0).any() or drawn_any[row]
+    ]
     colors = np.array(
         [
             [1.0, 1.0, 1.0],
@@ -1135,7 +1496,13 @@ def plot_reveals(card: SquadCard, draws: list[dict], path) -> None:
         axis.axvline(int(np.sum(card.gw[played] <= cut)) - 0.5, color="black", linewidth=1)
         axis.set_yticks(range(len(rows)))
         axis.set_yticklabels(labels, fontsize=6)
-        axis.set_title(f"{card.team} goals, first {item['revealed']:.0%} revealed")
+        hidden_cols = card.gw[played] > cut
+        whole_actual = int(((card.goals[: card.n_players, played] > 0) & hidden_cols).sum())
+        whole_drawn = int(((np.asarray(item["goals"])[: card.n_players, played] > 0) & hidden_cols).sum())
+        axis.set_title(
+            f"{card.team} goals, first {item['revealed']:.0%} revealed. "
+            f"Whole club: {whole_actual} real, {whole_drawn} drawn"
+        )
     axes[-1].set_xticks(range(len(played)))
     axes[-1].set_xticklabels(gws, fontsize=6)
     axes[-1].set_xlabel("Gameweek from 1. Left of the line is shown. Right is the drawn remainder.")
@@ -1152,14 +1519,20 @@ def main() -> None:
     train = build_cards(TRAIN_SEASONS, league)
     test = build_cards((TEST_SEASON,), league)
     print(f"train {len(train)} test {len(test)}", flush=True)
+    clubs = fit_clubs(train)
+    n_clubs = max(clubs.values(), default=0) + 1
     torch.manual_seed(SEED)
-    sequence = SquadSequence(dropout=0.1)
-    vision = SquadVision(dropout=0.1)
-    seq_hist = train_model(sequence, train, league, np.random.default_rng(SEED), EPOCHS, "sequence")
-    vis_hist = train_model(vision, train, league, np.random.default_rng(SEED), EPOCHS, "vision")
+    sequence = SquadSequence(dropout=0.1, n_clubs=n_clubs)
+    vision = SquadVision(dropout=0.1, n_clubs=n_clubs)
+    seq_hist = train_model(
+        sequence, train, league, np.random.default_rng(SEED), EPOCHS, "sequence", clubs=clubs
+    )
+    vis_hist = train_model(
+        vision, train, league, np.random.default_rng(SEED), EPOCHS, "vision", clubs=clubs
+    )
     print("scoring", flush=True)
-    seq_g, seq_a = predict(sequence, test, league, CUT_GW, "sequence")
-    vis_g, vis_a = predict(vision, test, league, CUT_GW, "vision")
+    seq_g, seq_a = predict(sequence, test, league, CUT_GW, "sequence", clubs)
+    vis_g, vis_a = predict(vision, test, league, CUT_GW, "vision", clubs)
     group = GroupRate(train)
     labels = np.stack([card.goals for card in test])
     assist_labels = np.stack([card.assists for card in test])
@@ -1201,17 +1574,31 @@ def main() -> None:
     }
     reveals = []
     reveal_draws = []
+    club_balance = []
+    prior = prior_table(league)
+    previous = max(season for season in league if season < TEST_SEASON)
+    previous_teams = set(league[previous])
+    promoted_index = [index for index, card in enumerate(test) if card.team not in previous_teams]
+    established_index = [index for index in range(len(test)) if index not in set(promoted_index)]
     show = next((card for card in test if card.team == "Man Utd"), test[example_index])
     show_at = test.index(show)
+    named_clubs: list[dict] = []
+    show_vs_promoted = np.array(
+        [
+            (opp_prior := prior.get((show.season, opp))) is None or opp_prior[3] == 0
+            for opp in show.opponent
+        ]
+    )
     for revealed in (0.8, 0.6, 0.4, 0.2):
         cuts = [cut_at_fraction(card, revealed) for card in test]
         entry = {"revealed": revealed}
         drawn_goal = None
+        vision_probs = None
         for reader, model in (("vision", vision), ("sequence", sequence)):
             probs_g = np.zeros((len(test), ROWS, COLS, 4), dtype=np.float64)
             probs_a = np.zeros_like(probs_g)
             for index, card in enumerate(test):
-                one_g, one_a = predict(model, [card], league, cuts[index], reader)
+                one_g, one_a = predict(model, [card], league, cuts[index], reader, clubs)
                 probs_g[index] = one_g[0]
                 probs_a[index] = one_a[0]
             goal_bars = bar_correspondence(test, probs_g, labels, 0, bar_rng, cuts=cuts)
@@ -1219,6 +1606,7 @@ def main() -> None:
             rates = positive_by_position(probs_g, test, 0, cuts)
             entry[reader] = {"goals": goal_bars, "assists": assist_bars, "gk": rates[0], "fwd": rates[3]}
             if reader == "vision":
+                vision_probs = probs_g
                 drawn_goal = sample_bars(probs_g[show_at], np.random.default_rng(SEED))
         prefix_g = np.stack([prefix_probability(card, cut, group, 0) for card, cut in zip(test, cuts, strict=True)])
         prefix_a = np.stack([prefix_probability(card, cut, group, 1) for card, cut in zip(test, cuts, strict=True)])
@@ -1231,11 +1619,66 @@ def main() -> None:
         }
         reveals.append(entry)
         reveal_draws.append({"revealed": revealed, "cut": cuts[show_at], "goals": drawn_goal})
+        balance_rng = np.random.default_rng(SEED)
+        man_row = club_remainder(
+            [show],
+            vision_probs[show_at : show_at + 1],
+            labels[show_at : show_at + 1],
+            [cuts[show_at]],
+            prior,
+            balance_rng,
+        )
+        promoted_row = club_remainder(
+            [test[index] for index in promoted_index],
+            vision_probs[promoted_index],
+            labels[promoted_index],
+            [cuts[index] for index in promoted_index],
+            prior,
+            balance_rng,
+        )
+        established_row = club_remainder(
+            [test[index] for index in established_index],
+            vision_probs[established_index],
+            labels[established_index],
+            [cuts[index] for index in established_index],
+            prior,
+            balance_rng,
+        )
+        balance = {
+            "revealed": revealed,
+            "man_utd": man_row,
+            "promoted": promoted_row,
+            "established": established_row,
+            "man_utd_vs_promoted": forward_goal_rate(
+                vision_probs[show_at], show, cuts[show_at], show_vs_promoted
+            ),
+            "man_utd_vs_established": forward_goal_rate(
+                vision_probs[show_at], show, cuts[show_at], ~show_vs_promoted & (show.gw > 0)
+            ),
+        }
+        club_balance.append(balance)
+        if abs(revealed - 0.4) < 1e-9:
+            for team in ("Man City", "Arsenal", "Liverpool", "Man Utd", "Leeds", "Burnley", "Sunderland"):
+                found = next((index for index, card in enumerate(test) if card.team == team), None)
+                if found is None:
+                    continue
+                row = club_remainder(
+                    [test[found]],
+                    vision_probs[found : found + 1],
+                    labels[found : found + 1],
+                    [cuts[found]],
+                    prior,
+                    balance_rng,
+                )
+                row["team"] = team
+                named_clubs.append(row)
         vision_goals = entry["vision"]["goals"]
         print(
             f"reveal {revealed:.0%} vision goals actual {vision_goals['actual_bars']} "
             f"drawn {vision_goals['drawn_bars']:.1f} covered {vision_goals['actual_covered']:.3f} "
-            f"gk {entry['vision']['gk']:.3f} fwd {entry['vision']['fwd']:.3f}",
+            f"gk {entry['vision']['gk']:.3f} fwd {entry['vision']['fwd']:.3f} "
+            f"manutd {man_row['actual_bars']:.0f}/{man_row['drawn_bars']:.1f} "
+            f"fwd {man_row['fwd']:.3f} promoted fwd {promoted_row['fwd']:.3f}",
             flush=True,
         )
     example_draw = np.random.default_rng(SEED)
@@ -1262,6 +1705,10 @@ def main() -> None:
         "role_rate": role_rate,
         "reveals": reveals,
         "reveal_card": show.team,
+        "club_balance": club_balance,
+        "promoted_teams": [test[index].team for index in promoted_index],
+        "named_clubs": named_clubs,
+        "previous_season": previous,
     }
     ROOT_PROCESSED.mkdir(parents=True, exist_ok=True)
     ROOT_REPORTS.mkdir(parents=True, exist_ok=True)

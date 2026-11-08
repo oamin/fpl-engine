@@ -34,8 +34,10 @@ The flash-card GRU was trained on the player card and scored on log-loss and sea
 | 7 Nov 2026, 23:42 | squad vision, position-rate head | squad card, all minutes | 22.8% | 42.6% | 80.5% |
 | 7 Nov 2026, 23:42 | prefix rate, strength 8 | squad card, all minutes | 19.3% | 37.4% | 75.8% |
 | 7 Nov 2026, 23:42 | group rate | squad card, all minutes | 20.0% | 37.8% | 75.8% |
+| 8 Nov 2026, 00:16 | squad sequence, club and match-up | squad card, all minutes | 20.9% | 39.5% | 77.6% |
+| 8 Nov 2026, 00:16 | squad vision, club and match-up | squad card, all minutes | 23.8% | 41.9% | 79.5% |
 
-Best on the player card: minutes, 11.4%. Best on the squad card: squad vision with the marked chart, 13.1%. Best on the squad card with every appearance counted: squad vision with the position-rate head, 22.8%.
+Best on the player card: minutes, 11.4%. Best on the squad card: squad vision with the marked chart, 13.1%. Best on the squad card with every appearance counted: squad vision with the club and match-up head, 23.8%.
 
 The marked chart adds a position color, a solid band at 60 minutes, and an eight-pixel opponent conceded bar. The top 10% rose from 12.2% to 13.1%. The top 20% fell from 23.5% to 21.6%. Expected goals on played weeks were 28.1 against 21.4 actual.
 
@@ -84,3 +86,21 @@ After training, every 2025-26 card is shown from gameweek 1 through 80%, 60%, 40
 | 7 Nov 2026, 23:42 | 20% | prefix rate, strength 8 | goals | 730 | 775.8 | 16.0% | 15.1% | 0.1% | 13.4% |
 
 On the gameweek-19 exam the same vision model puts a goal bar at 0.5% for a goalkeeper, 1.9% for a defender, 5.1% for a midfielder, and 11.5% for a forward. Drawn goal bars on gameweeks 20–38: 445.8 against 459 actual, 14.1% covered, 14.6% on a real week. A shuffle of the correct count still covers 20.4%. Assist remainders stay thinner: at 20% revealed, vision draws 614.9 assist bars against 707 actual and covers 9.9%.
+
+## Club and match-up
+
+The 00:16 run on 8 Nov gives each position its own weight on the club and on the match-up. The match-up is the club's goals per game in earlier seasons, the opponent's goals conceded per game in earlier seasons, and both clubs' rates so far this season, using only fixtures already played. A club missing from 2024-25 is the promoted case: Leeds, Burnley, and Sunderland. Sunderland has no earlier season in the file.
+
+Vision, forwards, 40% revealed from gameweek 1:
+
+| logged (UK) | club | prior goals/game | actual bars | drawn bars | forward goal rate |
+|---|---|---:|---:|---:|---:|
+| 8 Nov 2026, 00:16 | Man City | 2.25 | 38 | 33.4 | 37.3% |
+| 8 Nov 2026, 00:16 | Liverpool | 2.07 | 35 | 43.9 | 13.6% |
+| 8 Nov 2026, 00:16 | Arsenal | 2.07 | 34 | 37.7 | 9.9% |
+| 8 Nov 2026, 00:16 | Man Utd | 1.36 | 41 | 29.0 | 7.1% |
+| 8 Nov 2026, 00:16 | Leeds | 1.18 | 26 | 24.9 | 8.5% |
+| 8 Nov 2026, 00:16 | Burnley | 1.05 | 19 | 23.4 | 5.0% |
+| 8 Nov 2026, 00:16 | Sunderland | 0.00 | 21 | 21.6 | 10.2% |
+
+Man Utd's whole-club remainder, vision, mean of 20 draws: at 80% revealed, 14 real and 10.9 drawn; at 40%, 41 real and 29.8 drawn; at 20%, 54 real and 37.5 drawn. Man Utd forwards against a promoted opponent are at 6.3%. Against an established opponent they are at 7.2%.

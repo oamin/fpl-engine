@@ -25,9 +25,13 @@ from src.models.flashcard_squad_trial import (
     SquadSequence,
     POS,
     SquadVision,
+    OWN_HIST_C,
+    OPP_HIST_C,
     apply_cut,
     bar_correspondence,
     cut_at_fraction,
+    fit_clubs,
+    prior_table,
     render_grid,
     sample_bars,
     train_model,
@@ -177,7 +181,14 @@ class SquadCutTests(unittest.TestCase):
         torch.manual_seed(0)
         batch = _one(view)
         goals, assists = SquadVision(dropout=0.0)(
-            batch["image"], batch["row_pad"], batch["column_on"], batch["position"], batch["minutes"]
+            batch["image"],
+            batch["row_pad"],
+            batch["column_on"],
+            batch["position"],
+            batch["minutes"],
+            batch["matchup"],
+            batch["club"],
+            batch["opponent"],
         )
         self.assertEqual(tuple(goals.shape), (1, ROWS, COLS, 4))
         self.assertEqual(tuple(assists.shape), (1, ROWS, COLS, 4))
@@ -218,11 +229,131 @@ class SquadCutTests(unittest.TestCase):
         self.assertLess(float(prob[0, hidden, 1:].sum(-1).mean()), 0.2)
         self.assertGreater(float(prob[1, hidden, 1:].sum(-1).mean()), 0.7)
 
+    def test_history_uses_earlier_seasons_only(self) -> None:
+        league = _two_season_league()
+        prior = prior_table(league)
+        self.assertAlmostEqual(prior[("2023-24", "Strong")][0], 2.5)
+        self.assertAlmostEqual(prior[("2023-24", "Weak")][1], 2.2)
+        self.assertNotIn(("2022-23", "Strong"), prior)
+        self.assertNotIn(("2023-24", "Promoted"), prior)
+        card = _history_card("Strong", "Weak", goals=1)
+        early = apply_cut(card, league, 0)
+        late = apply_cut(card, league, 4)
+        self.assertAlmostEqual(float(early["own_hist"][3]), 2.5)
+        self.assertAlmostEqual(float(early["opp_hist"][3]), 2.2, places=5)
+        self.assertEqual(float(early["own_form_missing"][3]), 1.0)
+        self.assertEqual(float(early["own_hist_missing"][3]), 0.0)
+        self.assertGreater(float(late["own_form"][5]), 2.0)
+        self.assertLess(float(late["own_form"][5]), 3.0)
+        promoted = _history_card("Promoted", "Strong", goals=0)
+        view = apply_cut(promoted, league, 4)
+        self.assertEqual(float(view["own_hist_missing"][3]), 1.0)
+        self.assertAlmostEqual(float(view["opp_hist"][3]), 0.4, places=5)
+        clubs = fit_clubs([card])
+        self.assertEqual(int(apply_cut(card, league, 4, clubs)["club"]), clubs["Strong"])
+        self.assertEqual(int(apply_cut(promoted, league, 4, clubs)["club"]), 0)
+
+    def test_a_promoted_side_is_not_given_the_strong_club_rate(self) -> None:
+        league = _two_season_league()
+        strong = [_history_card("Strong", "Weak", goals=1) for _ in range(8)]
+        weak = [_history_card("Weak", "Strong", goals=0) for _ in range(8)]
+        cards = strong + weak
+        clubs = fit_clubs(cards)
+        torch.manual_seed(0)
+        model = SquadSequence(dropout=0.0, n_clubs=max(clubs.values()) + 1)
+        train_model(
+            model,
+            cards,
+            league,
+            np.random.default_rng(0),
+            epochs=25,
+            kind="sequence",
+            lr=2e-3,
+            batch_size=4,
+            clubs=clubs,
+        )
+        model.eval()
+        with torch.no_grad():
+            high, _ = model(_one(apply_cut(strong[0], league, 0, clubs)))
+            low, _ = model(_one(apply_cut(weak[0], league, 0, clubs)))
+        high_p = torch.softmax(high, dim=-1)[0, 0, :8, 1:].sum(-1).mean()
+        low_p = torch.softmax(low, dim=-1)[0, 0, :8, 1:].sum(-1).mean()
+        self.assertGreater(float(high_p), 0.6)
+        self.assertLess(float(low_p), 0.3)
+        image = render_grid(apply_cut(strong[0], league, 0, clubs))
+        promoted = render_grid(apply_cut(_history_card("Promoted", "Strong", goals=0), league, 0, clubs))
+        own_band = image[BAND_H * 3 : BAND_H * 4, 0:CELL_W]
+        self.assertTrue(np.any(np.all(own_band == OWN_HIST_C, axis=-1)))
+        self.assertFalse(np.any(np.all(promoted[BAND_H * 3 : BAND_H * 4, 0:CELL_W] == OWN_HIST_C, axis=-1)))
+        opp_band = image[BAND_H * 4 : BAND_H * 5, 0:CELL_W]
+        self.assertTrue(np.any(np.all(opp_band == OPP_HIST_C, axis=-1)))
+
     def test_reveal_starts_at_gameweek_one(self) -> None:
         card = _card()
         self.assertEqual(cut_at_fraction(card, 0.5), 15)
         self.assertEqual(cut_at_fraction(card, 0.8), 24)
         self.assertLess(cut_at_fraction(card, 0.2), cut_at_fraction(card, 0.8))
+
+
+def _fixture_block(gf: float, gc: float, n: int) -> dict:
+    fixtures = []
+    for gw in range(1, n + 1):
+        fixtures.append(
+            {
+                "fixture": gw,
+                "gw": gw,
+                "kickoff": gw,
+                "gc": gc,
+                "gf": gf,
+                "played60": set(),
+                "played1": set(),
+            }
+        )
+    return {"fixtures": fixtures, "by_id": {fx["fixture"]: fx for fx in fixtures}}
+
+
+def _two_season_league() -> dict:
+    return {
+        "2022-23": {
+            "Strong": _fixture_block(2.5, 0.4, 10),
+            "Weak": _fixture_block(0.4, 2.2, 10),
+        },
+        "2023-24": {
+            "Strong": _fixture_block(2.5, 0.4, 8),
+            "Weak": _fixture_block(0.4, 2.2, 8),
+        },
+    }
+
+
+def _history_card(team: str, opponent: str, goals: int) -> SquadCard:
+    n = 8
+    gw = np.zeros(COLS, dtype=np.int64)
+    gw[:n] = np.arange(1, n + 1)
+    minutes = np.zeros((ROWS, COLS), dtype=np.float32)
+    scored = np.zeros((ROWS, COLS), dtype=np.int64)
+    present = np.zeros((ROWS, COLS), dtype=bool)
+    minutes[0, :n] = 90
+    present[0, :n] = True
+    scored[0, :n] = goals
+    position = np.full(ROWS, -1, dtype=np.int64)
+    position[0] = POS["FWD"]
+    return SquadCard(
+        season="2023-24",
+        team=team,
+        names=tuple(["Forward"] + ["spare"] * (ROWS - 1)),
+        position=position,
+        gw=gw,
+        kickoff=gw.copy(),
+        home=np.ones(COLS, dtype=np.int64),
+        opponent=tuple([opponent] * n + [""] * (COLS - n)),
+        fixture_id=gw.copy(),
+        minutes=minutes,
+        goals=scored,
+        assists=np.zeros((ROWS, COLS), dtype=np.int64),
+        present=present,
+        n_players=1,
+        n_fixtures=n,
+    )
 
 
 def _role_card() -> SquadCard:
