@@ -57,6 +57,9 @@ LR = 1e-3
 CUT_GW = 19
 PRIOR_STRENGTH = 8
 SEED = 0
+MATCHUP_F = 14
+RECENT_GAMES = 5
+KEY_WINDOW = 3
 POS = {"GKP": 0, "DEF": 1, "MID": 2, "FWD": 3}
 
 MINUTES_C = (0, 114, 178)
@@ -315,6 +318,55 @@ def _rate_before(
     return float(np.mean(vals))
 
 
+def _prior_fixtures(league: dict, season: str, team: str, kickoff: int, cut_gw: int, hidden: bool) -> list[dict]:
+    """Earlier fixtures only. A hidden column cannot see a week after the cut."""
+    info = league.get(season, {}).get(team)
+    if info is None:
+        return []
+    rows = []
+    for fx in info["fixtures"]:
+        if fx["kickoff"] >= kickoff or fx.get("gf") is None or fx.get("gc") is None:
+            continue
+        if hidden and fx["gw"] > cut_gw:
+            continue
+        rows.append(fx)
+    rows.sort(key=lambda fx: fx["kickoff"])
+    return rows
+
+
+def _recent_mean(rows: list[dict], key: str, window: int) -> float | None:
+    if not rows:
+        return None
+    return float(np.mean([fx[key] for fx in rows[-window:]]))
+
+
+def _key_minutes(other: SquadCard, kickoff: int, cut_gw: int, hidden: bool) -> float | None:
+    """Minutes of the opponent's leading scorer over the previous three fixtures.
+
+    The scorer is chosen from goals already played. A hidden column drops any
+    fixture after the cut, so an absence that has not been revealed yet stays out.
+    """
+    cols = []
+    for col in range(other.n_fixtures):
+        if other.gw[col] <= 0 or int(other.kickoff[col]) >= kickoff:
+            continue
+        if hidden and int(other.gw[col]) > cut_gw:
+            continue
+        cols.append(col)
+    if not cols:
+        return None
+    cols.sort(key=lambda col: int(other.kickoff[col]))
+    named = other.position >= 0
+    goals = other.goals[:, cols].sum(axis=1)
+    minutes = other.minutes[:, cols].sum(axis=1)
+    rank = np.where(named, goals * 10000 + minutes, -1.0)
+    if float(rank.max()) < 0:
+        return None
+    key = int(np.argmax(rank))
+    last = cols[-KEY_WINDOW:]
+    return float(other.minutes[key, last].mean() / 90.0)
+
+
 def _concede_rate(league: dict, season: str, team: str, kickoff: int, cut_gw: int, hidden: bool) -> float | None:
     vals = []
     for fx in league[season][team]["fixtures"]:
@@ -410,6 +462,12 @@ def apply_cut(
     opp_hist_missing = np.zeros(COLS, dtype=np.float32)
     own_form = np.zeros(COLS, dtype=np.float32)
     own_form_missing = np.ones(COLS, dtype=np.float32)
+    opp_form = np.zeros(COLS, dtype=np.float32)
+    opp_form_missing = np.ones(COLS, dtype=np.float32)
+    opp_against = np.zeros(COLS, dtype=np.float32)
+    opp_against_missing = np.ones(COLS, dtype=np.float32)
+    key_play = np.zeros(COLS, dtype=np.float32)
+    key_missing = np.ones(COLS, dtype=np.float32)
     opponent_id = np.zeros(COLS, dtype=np.int64)
     column_on = (card.gw > 0).astype(np.float32)
     clubs = clubs or {}
@@ -438,6 +496,21 @@ def apply_cut(
                 opp_hist_missing[col] = 1.0
             else:
                 opp_hist[col] = opp[1]
+        earlier_rows = _prior_fixtures(league, card.season, opponent, kickoff, cut_gw, is_hidden) if opponent else []
+        recent_for = _recent_mean(earlier_rows, "gf", RECENT_GAMES)
+        recent_against = _recent_mean(earlier_rows, "gc", RECENT_GAMES)
+        if recent_for is not None:
+            opp_form[col] = recent_for
+            opp_form_missing[col] = 0.0
+        if recent_against is not None:
+            opp_against[col] = recent_against
+            opp_against_missing[col] = 0.0
+        if squads and opponent:
+            other = squads.get((card.season, opponent))
+            played = _key_minutes(other, kickoff, cut_gw, is_hidden) if other is not None else None
+            if played is not None:
+                key_play[col] = played
+                key_missing[col] = 0.0
         if not opponent or opponent not in league.get(card.season, {}):
             continue
         rate = _concede_rate(league, card.season, opponent, kickoff, cut_gw, is_hidden)
@@ -465,6 +538,12 @@ def apply_cut(
             own_form_missing,
             concede / 3.0,
             concede_missing,
+            opp_form / 3.0,
+            opp_form_missing,
+            opp_against / 3.0,
+            opp_against_missing,
+            key_play,
+            key_missing,
         ],
         axis=-1,
     ).astype(np.float32)
@@ -485,6 +564,12 @@ def apply_cut(
         "opp_hist_missing": opp_hist_missing,
         "own_form": own_form,
         "own_form_missing": own_form_missing,
+        "opp_form": opp_form,
+        "opp_form_missing": opp_form_missing,
+        "opp_against": opp_against,
+        "opp_against_missing": opp_against_missing,
+        "key_play": key_play,
+        "key_missing": key_missing,
         "matchup": matchup,
         "club": np.int64(clubs.get(card.team, 0)),
         "opponent": opponent_id,
@@ -613,11 +698,11 @@ class Coupler(nn.Module):
         self.club_assist_min = nn.Parameter(torch.zeros(n_clubs, 5, 4))
         self.opp_assist = nn.Parameter(torch.zeros(n_clubs, 5, 4))
         self.opp_assist_min = nn.Parameter(torch.zeros(n_clubs, 5, 4))
-        self.form_goal = nn.Parameter(torch.zeros(5, 8, 4))
-        self.form_goal_min = nn.Parameter(torch.zeros(5, 8, 4))
-        self.form_assist = nn.Parameter(torch.zeros(5, 8, 4))
-        self.form_assist_min = nn.Parameter(torch.zeros(5, 8, 4))
-        self.club_context = nn.Linear(8, D)
+        self.form_goal = nn.Parameter(torch.zeros(5, MATCHUP_F, 4))
+        self.form_goal_min = nn.Parameter(torch.zeros(5, MATCHUP_F, 4))
+        self.form_assist = nn.Parameter(torch.zeros(5, MATCHUP_F, 4))
+        self.form_assist_min = nn.Parameter(torch.zeros(5, MATCHUP_F, 4))
+        self.club_context = nn.Linear(MATCHUP_F, D)
         self.col_pos = nn.Parameter(torch.zeros(1, 1, COLS, D))
         nn.init.normal_(self.col_pos, std=0.02)
         for layer in (self.goal, self.assist, self.skip_goal, self.skip_assist, self.club_context):
@@ -1323,6 +1408,9 @@ def write_report(payload: dict[str, object], path) -> None:
         "fixtures already played, and a hidden column stops at the cut.",
         "Each fixture is coupled to the other squad's players: position, minutes,",
         "and the goals and assists already shown. The same cut masks both sides.",
+        "Over the previous five games the reader sees the opponent's goals scored",
+        "and conceded. Over the previous three it sees how many minutes their",
+        "leading scorer played. A hidden column stops at the cut.",
         (
             "Learned vision probability of a goal bar on a hidden appearance: "
             f"goalkeeper {payload['role_rate']['goal'][0]:.1%}, "

@@ -38,6 +38,8 @@ The flash-card GRU was trained on the player card and scored on log-loss and sea
 | 8 Nov 2026, 00:16 | squad vision, club and match-up | squad card, all minutes | 23.8% | 41.9% | 79.5% |
 | 8 Nov 2026, 15:17 | squad sequence, squad coupling | squad card, all minutes | 20.6% | 39.3% | 77.6% |
 | 8 Nov 2026, 15:17 | squad vision, squad coupling | squad card, all minutes | 24.7% | 41.5% | 80.1% |
+| 8 Nov 2026, 16:08 | squad sequence, opponent form | squad card, all minutes | 20.3% | 39.1% | 78.4% |
+| 8 Nov 2026, 16:08 | squad vision, opponent form | squad card, all minutes | 21.5% | 41.1% | 78.9% |
 
 Best on the player card: minutes, 11.4%. Best on the squad card: squad vision with the marked chart, 13.1%. Best on the squad card with every appearance counted: squad vision with squad coupling, 24.7%.
 
@@ -112,3 +114,5 @@ Man Utd's whole-club remainder, vision, mean of 20 draws: at 80% revealed, 14 re
 The 15:17 run on 8 Nov keeps the club and match-up head and adds the other squad at each fixture. The reader sees that squad's positions, minutes, and the goals and assists already shown. The same cut masks both sides. A hidden goal on the other card does not enter the input.
 
 On the all-minutes exam the vision top 10% is 24.7% and the sequence top 10% is 20.6%. Goal-bar overlap on gameweeks 20–38 is 14.9% covered for vision, against 20.4% for a same-count random draw. Man Utd forwards at 40% revealed stay at 7.1%. Against a promoted opponent they are at 6.4%.
+
+The 16:08 run adds the opponent's goals scored and conceded over the previous five games, and the minutes of their leading scorer over the previous three. A hidden column stops at the cut. Vision's top 10% on the same exam is 21.5%.
