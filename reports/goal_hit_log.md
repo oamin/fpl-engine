@@ -157,3 +157,15 @@ A blank zero is left out of the score. Precision is the share of painted bars on
 On gameweeks 20–38 the ranked decoder draws 440 goal bars against 459. Precision is 27.0%, recall is 25.9%, and the harmonic mean is 26.5%. Cell samples on the same probabilities draw 464.9 bars, with precision 14.8%, recall 14.9%, and a harmonic mean of 14.9%. A same-count shuffle scores 19.6% on all three.
 
 From gameweek 1, ranked goals: at 80% revealed, 185 drawn against 199, precision 29.2%, recall 27.1%, harmonic mean 28.1%. At 20% revealed, 676 drawn against 730, precision 27.4%, recall 25.3%, harmonic mean 26.3%. A goalkeeper is at 0.1% and a forward is at 11.3% when 80% is revealed.
+
+## Temporal distance
+
+The 12:42 run on 9 Nov retrains the locked reader and measures where the misses sit. The top 10% reproduces at 24.7%, so the capture gate is unchanged. Mean hidden appearances in that exam: 18.8.
+
+Of a player's hidden goal weeks, 24.7% are inside the vision top 10%, 0.9% are the other fixture in that gameweek, 17.3% are one gameweek away, 13.0% are two away, and 44.0% are three or more away. Of the weeks outside the top 10%, 24.2% are within one gameweek and 41.5% are within two. A random top 10% leaves 21.5% of its misses within one gameweek. Minutes leaves 27.7%, from an exact rate of 21.6%.
+
+Matching a player's expected goals to the actual goals costs 4.29 gameweeks on average. A flat spread costs 4.86 and a permutation of the predicted spikes costs 4.90. For 1.5% of players the move is one gameweek or less. The probability of a bar has the same mean transport.
+
+The ranked fixture bars land on 17.9% of a player's goal weeks. Of the other weeks, 9.7% are within one gameweek, against 10.2% for the same count on random weeks. 71.0% are three or more gameweeks away. A player who receives no bar counts as a miss on every goal week in this average.
+
+Assists, same player rule: top 10% exact 20.2%, and 24.3% of the misses are within one gameweek. Expected-assist transport is 4.67 gameweeks, against 5.16 uniform and 5.19 permuted.
