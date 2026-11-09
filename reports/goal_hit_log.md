@@ -79,6 +79,19 @@ The 15:53 UK pass on 9 Nov drops concede, regulars, own history, and opponent hi
 
 The no-odds rows of this pass are the gate above. With the odds bar, at 20% revealed, the same card puts 192 goal bars on the same appearance and 259 within one gameweek.
 
+## Stripped step
+
+The 16:06 UK pass trains the next gameweek on the stripped card. Each example shows the true past, keeps venue and minutes on the next gameweek, and removes every later column. The loss is only that gameweek.
+
+| revealed | model | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
+|---|---|---|---:|---:|---:|---:|---:|
+| 20% | stripped step | goals | 730 | 624 | 168 | 217 | 343 |
+| 20% | stripped step | assists | 707 | 674 | 89 | 172 | 207 |
+| 80% | stripped step | goals | 199 | 165 | 47 | 60 | 86 |
+| 80% | stripped step | assists | 192 | 178 | 24 | 49 | 54 |
+
+At 20% revealed the step puts 168 goal bars on the same appearance and 217 within one gameweek. The gate puts 190 and 258. The gate stays the one-shot stripped card.
+
 The table below is an older per-player ranking. It is a record of past runs. It is not the score.
 
 Train seasons for every row so far: 2022-23, 2023-24, 2024-25. Test season: 2025-26.

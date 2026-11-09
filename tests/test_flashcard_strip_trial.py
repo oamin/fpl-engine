@@ -12,9 +12,13 @@ from src.models.flashcard_squad_trial import (
     CELL_W,
     COLS,
     CONCEDE_C,
+    GOALS_C,
     HEADER_H,
     HOME_C,
+    HATCH_FG,
     IMG_W,
+    MASK_ID,
+    MINUTES_C,
     PLAYER_H,
     ROWS,
     render_grid,
@@ -55,6 +59,22 @@ class StripTests(unittest.TestCase):
         self.assertAlmostEqual(float(view["matchup"][0, 4]), 0.4)
         self.assertEqual(full.shape[0], HEADER_H + ROWS * PLAYER_H)
         self.assertEqual(stripped.shape[1], IMG_W)
+
+    def test_the_step_keeps_venue_and_minutes_on_the_short_card(self) -> None:
+        view = strip_features(_view())
+        view["goal_token"][0, 0] = 2
+        view["minutes"][0, 2] = 90
+        view["goal_token"][:, 2] = MASK_ID
+        view["column_on"][3] = 0
+        image = compose_stripped(view, np.array([2]))
+        self.assertEqual(image.shape[0], BAND_H + ROWS * PLAYER_H)
+        self.assertEqual(tuple(int(v) for v in image[0, 2 * CELL_W]), HOME_C)
+        goal_y = BAND_H + 3 * BAND_H - 1
+        self.assertEqual(tuple(int(v) for v in image[goal_y, 0]), GOALS_C)
+        self.assertNotEqual(tuple(int(v) for v in image[goal_y, 2 * CELL_W]), GOALS_C)
+        minute_y = BAND_H + 2 * BAND_H - 1
+        self.assertEqual(tuple(int(v) for v in image[minute_y, 2 * CELL_W]), MINUTES_C)
+        self.assertEqual(tuple(int(v) for v in image[0, 3 * CELL_W]), HATCH_FG)
 
     def test_the_short_header_runs_through_the_reader(self) -> None:
         model = StripVision(BAND_H, n_clubs=2)

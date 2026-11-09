@@ -3,6 +3,8 @@
 Concede, regulars, own history, and opponent history are absent from the
 picture and from the numeric match-up. The recent scoring rate stays.
 Opening odds, when used, sit above the venue band and are not part of the gate.
+The stepped reader uses this same card: true past, venue and minutes on the
+next week, and every later column removed.
 """
 
 from __future__ import annotations
@@ -15,7 +17,9 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+from src.models.flashcard_calibrated_trial import place_expected
 from src.models.flashcard_card_score import _paint, tally_cards
+from src.models.flashcard_step_trial import chop_future
 from src.models.flashcard_odds_trial import (
     column_odds,
     load_odds,
@@ -218,6 +222,104 @@ def paint_stripped(
     return F.softmax(goal_logits, dim=-1).numpy(), F.softmax(assist_logits, dim=-1).numpy()
 
 
+def _step_view(card, league, clubs, squads, target: int) -> dict:
+    """True past, then one grey week. The four header rows are already gone."""
+    view = apply_cut(card, league, target - 1, clubs, squads)
+    chop_future(view, card.gw, target)
+    strip_features(view)
+    view["loss"] = np.zeros_like(view["loss"])
+    view["loss"][card.present & (card.gw == target).reshape(1, -1)] = 1.0
+    return view
+
+
+def _step_image(view: dict, gameweeks: np.ndarray, target: int) -> np.ndarray:
+    return compose_stripped(view, np.flatnonzero(gameweeks == target))
+
+
+def _gameweeks(cards: list) -> dict[int, list[int]]:
+    by_gw: dict[int, list[int]] = {}
+    for index, card in enumerate(cards):
+        seen: set[int] = set()
+        for gw in card.gw:
+            number = int(gw)
+            if number > 0 and number not in seen:
+                seen.add(number)
+                by_gw.setdefault(number, []).append(index)
+    return by_gw
+
+
+def _target_gw(card, rng: np.random.Generator) -> int:
+    return int(rng.choice(sorted(_gameweeks([card]))))
+
+
+def train_stripped_steps(model: nn.Module, cards: list, league: dict, rng: np.random.Generator, clubs: dict) -> None:
+    """One random gameweek per card. The loss is only that week."""
+    opt = _optimizer(model)
+    squads = squad_index(cards)
+    model.train()
+    for epoch in range(EPOCHS):
+        total = 0.0
+        seen = 0.0
+        order = rng.permutation(len(cards))
+        for start in range(0, len(cards), BATCH):
+            pick = [cards[int(i)] for i in order[start : start + BATCH]]
+            views = []
+            pictures = []
+            for card in pick:
+                target = _target_gw(card, rng)
+                view = _step_view(card, league, clubs, squads, target)
+                views.append(view)
+                pictures.append(_step_image(view, card.gw, target))
+            batch = _stack(views)
+            batch["image"] = torch.from_numpy(np.stack(pictures)).permute(0, 3, 1, 2).float().div(255.0)
+            opt.zero_grad()
+            goal_logits, assist_logits = model(
+                batch["image"], batch["row_pad"], batch["column_on"], batch["position"], batch["minutes"],
+                batch["matchup"], batch["club"], batch["opponent"], _opp_batch(batch),
+            )
+            mask = batch["loss"]
+            loss = 0.5 * (
+                _nll(goal_logits, batch["goal_label"], mask) + _nll(assist_logits, batch["assist_label"], mask)
+            )
+            loss.backward()
+            nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+            opt.step()
+            weight = float(mask.sum().detach())
+            total += float(loss.detach()) * weight
+            seen += weight
+        print(f"stripped step epoch {epoch + 1} train nll {total / max(seen, 1.0):.3f}", flush=True)
+
+
+def paint_stripped_steps(model: nn.Module, cards: list, league: dict, clubs: dict, squads: dict) -> tuple[np.ndarray, np.ndarray]:
+    """Walk every gameweek with the true past and keep that week's bars."""
+    goals = np.zeros((len(cards),) + cards[0].goals.shape, dtype=np.int64)
+    assists = np.zeros_like(goals)
+    model.eval()
+    for gw, indexes in sorted(_gameweeks(cards).items()):
+        views = []
+        pictures = []
+        for index in indexes:
+            card = cards[index]
+            view = _step_view(card, league, clubs, squads, gw)
+            views.append(view)
+            pictures.append(_step_image(view, card.gw, gw))
+        batch = _stack(views)
+        batch["image"] = torch.from_numpy(np.stack(pictures)).permute(0, 3, 1, 2).float().div(255.0)
+        with torch.no_grad():
+            goal_logits, assist_logits = model(
+                batch["image"], batch["row_pad"], batch["column_on"], batch["position"], batch["minutes"],
+                batch["matchup"], batch["club"], batch["opponent"], _opp_batch(batch),
+            )
+        goal_p = F.softmax(goal_logits, dim=-1).numpy()
+        assist_p = F.softmax(assist_logits, dim=-1).numpy()
+        for slot, index in enumerate(indexes):
+            card = cards[index]
+            mask = card.present & (card.gw == gw).reshape(1, -1)
+            goals[index] += place_expected(goal_p[slot], card.minutes, mask)
+            assists[index] += place_expected(assist_p[slot], card.minutes, mask)
+    return goals, assists
+
+
 def _row(revealed: float, name: str, channel: str, totals: dict[str, int]) -> str:
     return (
         f"| {revealed:.0%} | {name} | {channel} | {totals['actual']} | {totals['painted']} | "
@@ -245,6 +347,8 @@ def main() -> None:
         "and opponent history. Those values are also removed from the numeric",
         "match-up. The recent scoring rate stays. A second reader adds the odds",
         "bar above the venue band, on every known week and every grey week.",
+        "The stepped reader uses the same card, asks for one gameweek, and",
+        "removes every later column.",
         "",
         f"Train: {', '.join(TRAIN_SEASONS)}. Test: {TEST_SEASON}.",
         "",
@@ -271,6 +375,21 @@ def main() -> None:
                     f"exact {totals['exact']} within {totals['actual_within']}",
                     flush=True,
                 )
+    print("training stripped step", flush=True)
+    torch.manual_seed(SEED)
+    stepper = StripVision(BAND_H, dropout=0.1, n_clubs=n_clubs)
+    train_stripped_steps(stepper, train, league, np.random.default_rng(SEED), clubs)
+    step_g, step_a = paint_stripped_steps(stepper, test, league, clubs, squads)
+    for revealed in (0.2, 0.4, 0.6, 0.8):
+        cuts = [cut_at_fraction(card, revealed) for card in test]
+        for channel, painted, actual in (("goals", step_g, labels), ("assists", step_a, assist_labels)):
+            totals = tally_cards(test, actual, painted, 0, cuts)
+            lines.append(_row(revealed, "stripped step", channel, totals))
+            print(
+                f"stripped step {revealed:.0%} {channel} painted {totals['painted']} "
+                f"exact {totals['exact']} within {totals['actual_within']}",
+                flush=True,
+            )
     seconds = time.perf_counter() - started
     lines.extend(
         [
