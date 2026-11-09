@@ -53,6 +53,19 @@ The bar is opening home, draw, and away prices after the Shin de-vig. Blue is ho
 
 At 20% revealed the stepped reader, with venue kept on the greyed week, puts 183 goal bars on the same appearance and 233 within one gameweek. With the blue, yellow, and purple odds bar it puts 184 and 231. The full painter puts 193 and 259, against 192 and 257 for the gate. At 40% and 60% the painter is still short of the gate. The gate stays the one-shot card without the odds bar.
 
+## Header rows removed
+
+The 15:53 UK pass on 9 Nov drops concede, regulars, own history, and opponent history from the picture and from the numeric match-up. Venue stays. The recent scoring rate stays.
+
+| revealed | model | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
+|---|---|---|---:|---:|---:|---:|---:|
+| 20% | stripped | goals | 730 | 746 | 190 | 258 | 382 |
+| 20% | stripped odds | goals | 730 | 744 | 192 | 259 | 385 |
+| 80% | stripped | goals | 199 | 201 | 56 | 70 | 97 |
+| 80% | stripped odds | goals | 199 | 201 | 57 | 72 | 99 |
+
+At 20% revealed the stripped card puts 190 goal bars on the same appearance and 258 within one gameweek. With the odds bar it puts 192 and 259. The gate puts 192 and 257. The gate stays the one-shot card with the four rows.
+
 The table below is an older per-player ranking. It is a record of past runs. It is not the score.
 
 Train seasons for every row so far: 2022-23, 2023-24, 2024-25. Test season: 2025-26.
