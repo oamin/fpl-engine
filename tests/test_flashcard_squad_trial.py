@@ -11,12 +11,14 @@ from src.models.flashcard_squad_trial import (
     BAND_H,
     CELL_W,
     COLS,
+    EVENT_H,
     GOALS_C,
     HEADER_H,
     IMG_H,
     IMG_W,
     MASK_C,
     MASK_ID,
+    MINUTE_H,
     MINUTES_C,
     PLAYER_H,
     POS_C,
@@ -175,7 +177,7 @@ class SquadCutTests(unittest.TestCase):
         self.assertFalse(np.array_equal(minutes_band[:, 0:CELL_W], minutes_band[:, CELL_W : 2 * CELL_W]))
         self.assertTrue(np.any(np.all(minutes_band[:, 0:CELL_W] == MINUTES_C, axis=-1)))
         self.assertTrue(np.any(np.all(minutes_band[:, CELL_W : 2 * CELL_W] == MINUTES_C, axis=-1)))
-        pos_y = HEADER_H + 4 * BAND_H
+        pos_y = HEADER_H + MINUTE_H + 2 * EVENT_H
         self.assertTrue(np.array_equal(image[pos_y, 0], np.array(POS_C[2])))
         self.assertTrue(np.array_equal(image[pos_y + PLAYER_H, 0], np.array(POS_C[3])))
         concede = image[BAND_H : BAND_H * 2]

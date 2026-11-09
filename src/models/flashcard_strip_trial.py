@@ -3,8 +3,9 @@
 Concede, regulars, own history, and opponent history are absent from the
 picture and from the numeric match-up. The recent scoring rate stays.
 Opening odds, when used, sit above the venue band and are not part of the gate.
-The stepped reader uses this same card: true past, venue and minutes on the
-next week, and every later column removed.
+Goals and assists each fill a sixteen-pixel band, the same height as the
+minute bar. The stepped reader uses this same card: true past, venue and
+minutes on the next week, and every later column removed.
 """
 
 from __future__ import annotations
@@ -133,9 +134,10 @@ class StripVision(nn.Module):
 
 def _optimizer(model: nn.Module) -> torch.optim.Optimizer:
     fast_name = ("pos_", "position", "club_", "opp_", "form_")
-    fast = [p for name, p in model.named_parameters() if any(token in name or name.startswith(token) for token in fast_name)]
-    fast_ids = {id(p) for p in fast}
-    rest = [p for p in model.parameters() if id(p) not in fast_ids]
+    named = [(name, param) for name, param in model.named_parameters() if param.requires_grad]
+    fast = [param for name, param in named if any(token in name or name.startswith(token) for token in fast_name)]
+    fast_ids = {id(param) for param in fast}
+    rest = [param for _, param in named if id(param) not in fast_ids]
     return torch.optim.AdamW(
         [
             {"params": rest, "lr": LR, "weight_decay": 1e-4},

@@ -4,7 +4,7 @@ The score is the painted card against the actual card. Training and test cuts ar
 
 The reader is squad vision with squad coupling on the stripped card. Venue stays. Concede, regulars, own history, and opponent history are absent from the picture and from the match-up. The recent scoring rate stays. There is no odds bar. In training, each card draws one of those four cuts at random. The test scores all four. Each future fixture is given a number of bars equal to the sum of its bar probabilities. Those bars go to the rows with minutes and the highest probabilities. A bar matches a goal or an assist on the same row only. Within one gameweek includes the same appearance.
 
-This table is the gate, logged at 15:53 UK on 9 Nov 2026. Test season 2025-26.
+This table is the gate, logged at 15:53 UK on 9 Nov 2026. Test season 2025-26. The goal and assist bands in that run are eight pixels. A later pass paints those bands at sixteen pixels and does not replace this table.
 
 | revealed | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
 |---|---|---:|---:|---:|---:|---:|
@@ -91,6 +91,21 @@ The 16:06 UK pass trains the next gameweek on the stripped card. Each example sh
 | 80% | stripped step | assists | 192 | 178 | 24 | 49 | 54 |
 
 At 20% revealed the step puts 168 goal bars on the same appearance and 217 within one gameweek. The gate puts 190 and 258. The gate stays the one-shot stripped card.
+
+## Taller event bands
+
+The 21:54 UK pass on 9 Nov makes the goal band and the assist band sixteen pixels, the same height as the minute bar. One event fills five pixels, two fill eleven, and three fill the band. A hidden event is still the whole band in grey. The same reader is retrained on that picture. A second reader freezes ImageNet ResNet-18 through its first residual stage, stretches each cell to a square, and trains only the coupler.
+
+| revealed | model | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
+|---|---|---|---:|---:|---:|---:|---:|
+| 20% | taller | goals | 730 | 740 | 189 | 249 | 383 |
+| 20% | taller | assists | 707 | 678 | 100 | 158 | 221 |
+| 20% | imagenet | goals | 730 | 661 | 182 | 241 | 364 |
+| 20% | imagenet | assists | 707 | 601 | 89 | 147 | 195 |
+| 80% | taller | goals | 199 | 200 | 55 | 71 | 99 |
+| 80% | imagenet | goals | 199 | 176 | 49 | 66 | 92 |
+
+At 20% revealed the taller bands put 189 goal bars on the same appearance and 249 within one gameweek. The ImageNet reader puts 182 and 241. The gate puts 190 and 258. The gate stays the stripped card measured at 15:53.
 
 The table below is an older per-player ranking. It is a record of past runs. It is not the score.
 

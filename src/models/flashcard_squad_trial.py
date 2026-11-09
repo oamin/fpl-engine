@@ -9,8 +9,10 @@ the picture and from the match-up. The recent scoring rate stays. Clean sheets
 are not a target.
 
 The sequence reader gets those values as numbers. The vision reader gets the
-same grid painted as pixels. Both attend across the squad and across the
-whole segment at once. Neither walks column by column.
+same grid painted as pixels. A goal or an assist fills a band as tall as the
+minute bar: one event is a third of that band, three events fill it. Both
+readers attend across the squad and across the whole segment at once. Neither
+walks column by column.
 
 Train on 2022-23, 2023-24, and 2024-25. Each card is cut after 20%, 40%, 60%,
 or 80% of its fixtures, starting from gameweek 1. The test scores each of
@@ -47,9 +49,11 @@ ROWS = 40
 COLS = 40
 BAND_H = 8
 CELL_W = 4
-PLAYER_BANDS = 5
-PLAYER_H = BAND_H * PLAYER_BANDS
-HEADER_H = PLAYER_H
+HEADER_H = BAND_H * 5
+MINUTE_H = BAND_H * 2
+EVENT_H = BAND_H * 2
+POS_H = BAND_H
+PLAYER_H = MINUTE_H + EVENT_H + EVENT_H + POS_H
 IMG_H = HEADER_H + ROWS * PLAYER_H
 IMG_W = COLS * CELL_W
 MASK_ID = 4
@@ -519,19 +523,35 @@ def _minutes_bar(img: np.ndarray, y0: int, x0: int, minutes: float) -> None:
     img[y0 + height - pixels : y0 + height, x0 : x0 + CELL_W] = MINUTES_C
 
 
-def _bar(img: np.ndarray, y0: int, x0: int, pixels: int, color: tuple[int, int, int]) -> None:
-    img[y0 : y0 + BAND_H, x0 : x0 + CELL_W] = 255
-    img[y0 + BAND_H - 1, x0 : x0 + CELL_W] = BASE_C
+def event_pixels(count: int) -> int:
+    """Map a goal or assist count onto the event band. Zero stays empty."""
+    if count <= 0:
+        return 0
+    return min(EVENT_H, max(1, int(round(count / 3 * EVENT_H))))
+
+
+def _bar(
+    img: np.ndarray,
+    y0: int,
+    x0: int,
+    pixels: int,
+    color: tuple[int, int, int],
+    height: int = BAND_H,
+) -> None:
+    img[y0 : y0 + height, x0 : x0 + CELL_W] = 255
+    img[y0 + height - 1, x0 : x0 + CELL_W] = BASE_C
     if pixels > 0:
-        img[y0 + BAND_H - pixels : y0 + BAND_H, x0 : x0 + CELL_W] = color
+        pixels = min(int(pixels), height)
+        img[y0 + height - pixels : y0 + height, x0 : x0 + CELL_W] = color
 
 
 def render_grid(view: dict[str, np.ndarray]) -> np.ndarray:
     """Paint one card. Labels and names are not in the picture.
 
-    Each player cell carries the minute count across sixteen pixels, then goals,
-    assists, and a position color. The conceded header uses the full eight-pixel
-    band, so rates that shared a height before are separate.
+    Each player cell carries the minute count across sixteen pixels. Goals and
+    assists each have their own sixteen-pixel band, and the count fills it.
+    A position color sits under those bands. The conceded header uses the full
+    eight-pixel band, so rates that shared a height before are separate.
     """
     img = np.full((IMG_H, IMG_W, 3), 255, dtype=np.uint8)
     for col in range(COLS):
@@ -565,20 +585,20 @@ def render_grid(view: dict[str, np.ndarray]) -> np.ndarray:
             if view["position"][row] < 0:
                 _hatch(img, y, x0, PLAYER_H)
                 continue
-            pos_y = y + 4 * BAND_H
-            img[pos_y : pos_y + BAND_H, x0 : x0 + CELL_W] = POS_C[int(view["position"][row])]
+            pos_y = y + MINUTE_H + 2 * EVENT_H
+            img[pos_y : pos_y + POS_H, x0 : x0 + CELL_W] = POS_C[int(view["position"][row])]
             if view["present"][row, col] < 0.5:
-                _hatch(img, y, x0, BAND_H * 4)
+                _hatch(img, y, x0, PLAYER_H - POS_H)
                 continue
             _minutes_bar(img, y, x0, float(view["minutes"][row, col]))
             for offset, token, color in (
-                (BAND_H * 2, int(view["goal_token"][row, col]), GOALS_C),
-                (BAND_H * 3, int(view["assist_token"][row, col]), ASSISTS_C),
+                (MINUTE_H, int(view["goal_token"][row, col]), GOALS_C),
+                (MINUTE_H + EVENT_H, int(view["assist_token"][row, col]), ASSISTS_C),
             ):
                 if token == MASK_ID:
-                    img[y + offset : y + offset + BAND_H, x0 : x0 + CELL_W] = MASK_C
+                    img[y + offset : y + offset + EVENT_H, x0 : x0 + CELL_W] = MASK_C
                 else:
-                    _bar(img, y + offset, x0, token, color)
+                    _bar(img, y + offset, x0, event_pixels(token), color, EVENT_H)
     return img
 
 
@@ -765,6 +785,7 @@ class SquadVision(nn.Module):
 
     def __init__(self, dropout: float = 0.1, n_clubs: int = 1) -> None:
         super().__init__()
+        self.header = nn.Linear(3 * HEADER_H * CELL_W, D)
         self.patch = nn.Linear(3 * PLAYER_H * CELL_W, D)
         self.couple = Coupler(dropout, n_clubs)
 
@@ -781,11 +802,12 @@ class SquadVision(nn.Module):
         opp: dict[str, torch.Tensor] | None = None,
     ) -> tuple[torch.Tensor, torch.Tensor]:
         batch = images.shape[0]
-        blocks = images.reshape(batch, 3, ROWS + 1, PLAYER_H, COLS, CELL_W)
-        blocks = blocks.permute(0, 4, 2, 1, 3, 5).reshape(batch, COLS, ROWS + 1, -1)
-        tokens = self.patch(blocks)
-        header = tokens[:, :, 0, :]
-        cells = tokens[:, :, 1:, :].permute(0, 2, 1, 3) + header[:, None, :, :]
+        header = images[:, :, :HEADER_H, :].reshape(batch, 3, HEADER_H, COLS, CELL_W)
+        header = header.permute(0, 3, 1, 2, 4).reshape(batch, COLS, -1)
+        header_tok = self.header(header)
+        body = images[:, :, HEADER_H:, :].reshape(batch, 3, ROWS, PLAYER_H, COLS, CELL_W)
+        body = body.permute(0, 4, 2, 1, 3, 5).reshape(batch, COLS, ROWS, -1)
+        cells = self.patch(body).permute(0, 2, 1, 3) + header_tok[:, None, :, :]
         return self.couple(
             cells, row_pad, column_on < 0.5, position, minutes, matchup, club, opponent, opp
         )
@@ -798,7 +820,7 @@ def grey_except_minutes(img: np.ndarray, columns: np.ndarray) -> None:
         _hatch(img, BAND_H, x0, HEADER_H - BAND_H)
         for row in range(ROWS):
             y = HEADER_H + row * PLAYER_H
-            _hatch(img, y + 2 * BAND_H, x0, 3 * BAND_H)
+            _hatch(img, y + MINUTE_H, x0, PLAYER_H - MINUTE_H)
 
 
 def _stack(

@@ -11,16 +11,21 @@ from src.models.flashcard_squad_trial import (
     BAND_H,
     CELL_W,
     COLS,
+    ASSISTS_C,
     CONCEDE_C,
+    EVENT_H,
     GOALS_C,
     HEADER_H,
     HOME_C,
     HATCH_FG,
     IMG_W,
+    MASK_C,
     MASK_ID,
+    MINUTE_H,
     MINUTES_C,
     PLAYER_H,
     ROWS,
+    event_pixels,
     render_grid,
 )
 from src.models.flashcard_strip_trial import StripVision, compose_stripped, strip_features
@@ -69,10 +74,10 @@ class StripTests(unittest.TestCase):
         image = compose_stripped(view, np.array([2]))
         self.assertEqual(image.shape[0], BAND_H + ROWS * PLAYER_H)
         self.assertEqual(tuple(int(v) for v in image[0, 2 * CELL_W]), HOME_C)
-        goal_y = BAND_H + 3 * BAND_H - 1
+        goal_y = BAND_H + MINUTE_H + EVENT_H - 1
         self.assertEqual(tuple(int(v) for v in image[goal_y, 0]), GOALS_C)
         self.assertNotEqual(tuple(int(v) for v in image[goal_y, 2 * CELL_W]), GOALS_C)
-        minute_y = BAND_H + 2 * BAND_H - 1
+        minute_y = BAND_H + MINUTE_H - 1
         self.assertEqual(tuple(int(v) for v in image[minute_y, 2 * CELL_W]), MINUTES_C)
         self.assertEqual(tuple(int(v) for v in image[0, 3 * CELL_W]), HATCH_FG)
 
@@ -92,3 +97,24 @@ class StripTests(unittest.TestCase):
             None,
         )
         self.assertEqual(tuple(out.shape), (1, ROWS, COLS, 4))
+
+    def test_one_goal_is_several_pixels_and_three_goals_fill_the_band(self) -> None:
+        view = strip_features(_view())
+        view["goal_token"][0, 0] = 1
+        view["goal_token"][0, 1] = 3
+        view["goal_token"][0, 2] = MASK_ID
+        view["assist_token"][0, 0] = 1
+        image = compose_stripped(view)
+        y0 = BAND_H + MINUTE_H
+        one = np.all(image[y0 : y0 + EVENT_H, 0:CELL_W] == GOALS_C, axis=-1).all(axis=1)
+        self.assertEqual(int(one.sum()), event_pixels(1))
+        self.assertEqual(event_pixels(1), 5)
+        self.assertTrue(bool(one[-1]))
+        self.assertFalse(bool(one[0]))
+        three = image[y0 : y0 + EVENT_H, CELL_W : 2 * CELL_W]
+        self.assertTrue(np.all(three == GOALS_C))
+        hidden = image[y0 : y0 + EVENT_H, 2 * CELL_W : 3 * CELL_W]
+        self.assertTrue(np.all(hidden == MASK_C))
+        assist_y = y0 + EVENT_H
+        assist = np.all(image[assist_y : assist_y + EVENT_H, 0:CELL_W] == ASSISTS_C, axis=-1).all(axis=1)
+        self.assertEqual(int(assist.sum()), event_pixels(1))
