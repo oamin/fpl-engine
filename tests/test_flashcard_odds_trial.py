@@ -32,10 +32,10 @@ class OddsTests(unittest.TestCase):
         self.assertEqual(tuple(int(v) for v in image[int(counts[0]), 0]), DRAW_ODDS)
         self.assertEqual(tuple(int(v) for v in image[int(counts[0] + counts[1]), 0]), AWAY_ODDS)
 
-    def test_the_painter_shows_only_the_next_two_gameweeks(self) -> None:
+    def test_the_painter_shows_known_weeks_and_the_grey_remainder(self) -> None:
         gameweeks = np.array([10, 11, 12, 13, 14, 0])
         show = visible_odds(gameweeks, "painter", cut=11)
-        self.assertEqual(show.tolist(), [False, False, True, True, False, False])
+        self.assertEqual(show.tolist(), [True, True, True, True, True, False])
 
     def test_the_step_shows_the_past_and_the_next_week_only(self) -> None:
         gameweeks = np.array([10, 11, 12, 13])

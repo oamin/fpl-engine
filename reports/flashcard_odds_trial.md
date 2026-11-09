@@ -5,7 +5,7 @@ Stepped training shows the true past and asks only for the next gameweek,
 with every later column removed. The odds bar is opening 1X2 prices after
 the Shin de-vig: green home, grey draw, red away, from the top.
 The stepped card shows that bar on known weeks and the step week.
-The full painter shows it only on the first two grey gameweeks.
+The full painter shows it on every known week and every grey week.
 
 Train: 2022-23, 2023-24, 2024-25. Test: 2025-26.
 
@@ -27,14 +27,14 @@ Train: 2022-23, 2023-24, 2024-25. Test: 2025-26.
 | 60% | stepped odds | assists | 351 | 419 | 62 | 92 | 126 |
 | 80% | stepped odds | goals | 199 | 183 | 50 | 62 | 93 |
 | 80% | stepped odds | assists | 192 | 223 | 40 | 53 | 72 |
-| 20% | painter odds | goals | 730 | 763 | 194 | 250 | 392 |
-| 20% | painter odds | assists | 707 | 685 | 93 | 152 | 216 |
-| 40% | painter odds | goals | 544 | 595 | 151 | 195 | 306 |
-| 40% | painter odds | assists | 531 | 534 | 75 | 120 | 169 |
-| 60% | painter odds | goals | 360 | 390 | 99 | 136 | 203 |
-| 60% | painter odds | assists | 351 | 348 | 49 | 80 | 103 |
-| 80% | painter odds | goals | 199 | 209 | 58 | 73 | 104 |
-| 80% | painter odds | assists | 192 | 187 | 28 | 44 | 56 |
+| 20% | painter odds | goals | 730 | 764 | 191 | 246 | 388 |
+| 20% | painter odds | assists | 707 | 687 | 98 | 159 | 225 |
+| 40% | painter odds | goals | 544 | 595 | 153 | 195 | 308 |
+| 40% | painter odds | assists | 531 | 536 | 75 | 122 | 171 |
+| 60% | painter odds | goals | 360 | 387 | 97 | 135 | 199 |
+| 60% | painter odds | assists | 351 | 348 | 45 | 76 | 99 |
+| 80% | painter odds | goals | 199 | 207 | 58 | 76 | 105 |
+| 80% | painter odds | assists | 192 | 186 | 28 | 44 | 56 |
 
 The gate stays the one-shot card without an odds bar: at 20% revealed,
 192 goal bars on the same appearance and 257 actual goal bars within one gameweek.

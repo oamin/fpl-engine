@@ -5,7 +5,7 @@ and chops every later column. Its odds bar is on the known weeks and that
 next week.
 
 The full painter still fills the whole remainder in one pass. Its odds bar
-is only the first two gameweeks of the grey remainder.
+is on every known week and on every grey week still on the card.
 
 Odds are opening 1X2 prices, turned into probabilities with the Shin de-vig.
 The bar runs from the top: green home, grey draw, red away. A missing price
@@ -100,14 +100,7 @@ def visible_odds(gameweeks: np.ndarray, kind: str, cut: int | None = None, targe
     if kind == "step":
         show[(gameweeks > 0) & (gameweeks <= int(target))] = True
         return show
-    future: list[int] = []
-    for gw in gameweeks:
-        number = int(gw)
-        if number > int(cut) and number not in future:
-            future.append(number)
-    allow = set(future[:2])
-    for index, gw in enumerate(gameweeks):
-        show[index] = int(gw) in allow
+    show[gameweeks > 0] = True
     return show
 
 
@@ -382,7 +375,7 @@ def main() -> None:
         "with every later column removed. The odds bar is opening 1X2 prices after",
         "the Shin de-vig: green home, grey draw, red away, from the top.",
         "The stepped card shows that bar on known weeks and the step week.",
-        "The full painter shows it only on the first two grey gameweeks.",
+        "The full painter shows it on every known week and every grey week.",
         "",
         f"Train: {', '.join(TRAIN_SEASONS)}. Test: {TEST_SEASON}.",
         "",

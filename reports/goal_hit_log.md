@@ -38,20 +38,20 @@ A rerun of the gate on the same weights matches the table above, except the 40% 
 
 ## Stepped training and match odds
 
-The 14:30 run on 9 Nov trains the next-gameweek task. Each example shows the true past, greys the next gameweek except minutes, and chops every later column. The loss is only that gameweek. A second reader adds an odds row. A third reader is the full painter with the same odds row.
+The 14:30 run on 9 Nov trains the next-gameweek task. Each example shows the true past, greys the next gameweek except minutes, and chops every later column. The loss is only that gameweek. A second reader adds an odds row. A third reader is the full painter with the same odds row. The painter rows below are from the 14:42 UK pass, after the odds bar was extended to every known week and every grey week.
 
-The bar is opening home, draw, and away prices after the Shin de-vig. Green is home, grey is draw, red is away, from the top of the row. The stepped reader sees that bar on known weeks and the step week. The full painter sees it only on the first two grey gameweeks.
+The bar is opening home, draw, and away prices after the Shin de-vig. Green is home, grey is draw, red is away, from the top of the row. The stepped reader sees that bar on known weeks and the step week. The full painter sees it on every known week and every grey week. The row is 8 pixels tall, so a 89/9/2 price is painted as 7 green pixels and 1 grey pixel.
 
 | revealed | model | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
 |---|---|---|---:|---:|---:|---:|---:|
 | 20% | stepped | goals | 730 | 699 | 180 | 228 | 373 |
 | 20% | stepped odds | goals | 730 | 675 | 180 | 224 | 371 |
-| 20% | painter odds | goals | 730 | 763 | 194 | 250 | 392 |
+| 20% | painter odds | goals | 730 | 764 | 191 | 246 | 388 |
 | 80% | stepped | goals | 199 | 189 | 50 | 61 | 93 |
 | 80% | stepped odds | goals | 199 | 183 | 50 | 62 | 93 |
-| 80% | painter odds | goals | 199 | 209 | 58 | 73 | 104 |
+| 80% | painter odds | goals | 199 | 207 | 58 | 76 | 105 |
 
-At 20% revealed the stepped reader puts 180 goal bars on the same appearance. The earlier step, using the one-shot reader, put 137 there. The gate puts 192. Adding the odds bar leaves the stepped goal count at 180. The full painter with odds on the first two grey weeks puts 194 on the same appearance and 250 within one gameweek, against 192 and 257 for the gate. The gate stays the one-shot card without the odds bar.
+At 20% revealed the stepped reader puts 180 goal bars on the same appearance. The earlier step, using the one-shot reader, put 137 there. The gate puts 192. Adding the odds bar leaves the stepped goal count at 180. The full painter, with the odds bar on the known weeks and the whole grey remainder, puts 191 goal bars on the same appearance and 246 within one gameweek, against 192 and 257 for the gate. The gate stays the one-shot card without the odds bar.
 
 The table below is an older per-player ranking. It is a record of past runs. It is not the score.
 
