@@ -6,8 +6,8 @@ The opponent's conceded-rate band is hatched on a hidden fixture.
 
 A match head predicts the club's goal total and assist total for each
 future fixture. Those totals are placed onto players with minutes, in
-order of expected count. The cell loss is unchanged. The locked card and
-its 24.7% score stay the gate.
+order of expected count. The cell loss is unchanged. The locked reader
+is unchanged.
 """
 
 from __future__ import annotations

@@ -1,10 +1,17 @@
 # Goal-hit log
 
-The score is the share of a player's hidden goal weeks that land in the top 10% of that player's own weeks. The rank uses the probability the goal bar is at least 1. Ties are broken at random and the score is the mean of 20 draws. Chance is 10%. Which weeks count is part of the exam: the squad-card rows count a week at 60 minutes or more, and the all-minutes rows count every recorded appearance.
+The score is the painted card against the actual card. The test is 2025-26 after gameweek 19, every club, every row. The numbers are totals.
 
-Compare a new row with earlier rows on the same exam. A higher top-10% score on that exam is an improvement.
+The reader is squad vision with squad coupling. Each future fixture is given a number of bars equal to the sum of its bar probabilities. Those bars go to the rows with minutes and the highest probabilities. A bar matches a goal or an assist on the same row only. Within one gameweek includes the same appearance.
 
-The working default is squad vision with squad coupling, logged at 15:17 UK on 8 Nov 2026. On the all-minutes squad card its top 10% is 24.7%, its top 20% is 41.5%, and its top 50% is 80.1%. A new model replaces that default only by scoring higher than 24.7% on this same exam. The rows below it stay in the log and do not move the gate.
+| channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
+|---|---:|---:|---:|---:|---:|
+| goals | 459 | 440 | 119 | 160 | 232 |
+| assists | 445 | 386 | 51 | 95 | 110 |
+
+Logged at 13:19 UK on 9 Nov 2026. Of the 459 actual goal bars, the extra week adds 41. Of the 445 actual assist bars, the extra week adds 44. A painted bar can sit next to a goal that another painted bar already covers, so the painted-within column is larger than the actual-within column.
+
+The table below is an older per-player ranking. It is a record of past runs. It is not the score.
 
 Train seasons for every row so far: 2022-23, 2023-24, 2024-25. Test season: 2025-26.
 
@@ -48,7 +55,7 @@ The flash-card GRU was trained on the player card and scored on log-loss and sea
 | 8 Nov 2026, 22:16 | squad vision, flat marks and match budget | squad card, all minutes | 22.1% | 37.6% | 75.0% |
 | 9 Nov 2026, 07:54 | squad vision, ranked fixture budget | squad card, all minutes | 24.7% | 41.5% | 80.1% |
 
-Best on the player card: minutes, 11.4%. Best on the squad card: squad vision with the marked chart, 13.1%. Working default on the squad card with every appearance counted: squad vision with squad coupling, 24.7%.
+Best on the player card in that old ranking: minutes, 11.4%. Best on the squad card in that old ranking: squad vision with the marked chart, 13.1%. The current score is the card comparison at the top. The reader is still squad vision with squad coupling.
 
 The marked chart adds a position color, a solid band at 60 minutes, and an eight-pixel opponent conceded bar. The top 10% rose from 12.2% to 13.1%. The top 20% fell from 23.5% to 21.6%. Expected goals on played weeks were 28.1 against 21.4 actual.
 

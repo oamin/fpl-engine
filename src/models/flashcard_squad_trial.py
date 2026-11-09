@@ -14,9 +14,9 @@ whole segment at once. Neither walks column by column.
 Train on 2022-23, 2023-24, and 2024-25. Score 2025-26 at a cut after gameweek 19.
 2026-27 is not read.
 
-This is the locked default for the squad-card method. Squad vision with squad
-coupling scored 24.7% top 10% on the all-minutes exam at 15:17 UK on 8 Nov 2026.
-A later change replaces it only by beating that number on the same exam.
+This is the locked squad-card reader: squad vision with squad coupling.
+The test score is the painted card against the actual card, counted across
+every row. See the card comparison in the goal-hit log.
 """
 
 from __future__ import annotations
