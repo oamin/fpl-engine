@@ -46,6 +46,7 @@ The flash-card GRU was trained on the player card and scored on log-loss and sea
 | 8 Nov 2026, 18:14 | squad sequence, opponent form | squad card, all minutes | 20.3% | 39.1% | 78.4% |
 | 8 Nov 2026, 18:14 | squad vision, player rows only | squad card, all minutes | 20.6% | 39.4% | 78.8% |
 | 8 Nov 2026, 22:16 | squad vision, flat marks and match budget | squad card, all minutes | 22.1% | 37.6% | 75.0% |
+| 9 Nov 2026, 07:54 | squad vision, ranked fixture budget | squad card, all minutes | 24.7% | 41.5% | 80.1% |
 
 Best on the player card: minutes, 11.4%. Best on the squad card: squad vision with the marked chart, 13.1%. Working default on the squad card with every appearance counted: squad vision with squad coupling, 24.7%.
 
@@ -144,3 +145,15 @@ The 22:16 run on 8 Nov keeps the locked vision reader and changes the event pain
 On the all-minutes exam the top 10% is 22.1%. The locked default stays at 24.7%. Cell samples on gameweeks 20–38 draw 464.7 goal bars against 459 actual, cover 15.1%, and land 14.9% on a real week. Budget placement draws 533.6 bars, covers 25.4%, and lands 21.8% on a real week. A same-count shuffle of the real bars covers 20.3%.
 
 Goal remainders from gameweek 1, budget placement: at 80% revealed, 199 actual and 223.4 drawn, 27.9% covered, 24.8% on a real week; at 20% revealed, 730 actual and 823.9 drawn, 25.3% covered, 22.4% on a real week. Cell samples at those cuts draw 197.6 and 730.5. A goalkeeper's hidden appearance is a goal bar at 1.0%. A forward is at 12.7% when 80% is revealed and at 12.2% when 20% is revealed.
+
+## Ranked fixture budget
+
+The 07:54 run on 9 Nov retrains the locked vision reader. Its top 10% reproduces at 24.7%, so the capture gate is unchanged. The new piece is the decoder and the score.
+
+Each future fixture receives a number of bars equal to the sum of its bar probabilities. Rounding is done so the fixtures add up to the season total. Those bars go to the players in that fixture with the highest probabilities and with minutes.
+
+A blank zero is left out of the score. Precision is the share of painted bars on a real event. Recall is the share of real events that were painted. The harmonic mean is zero when the card is left blank, and it falls when extra bars land on zeros.
+
+On gameweeks 20–38 the ranked decoder draws 440 goal bars against 459. Precision is 27.0%, recall is 25.9%, and the harmonic mean is 26.5%. Cell samples on the same probabilities draw 464.9 bars, with precision 14.8%, recall 14.9%, and a harmonic mean of 14.9%. A same-count shuffle scores 19.6% on all three.
+
+From gameweek 1, ranked goals: at 80% revealed, 185 drawn against 199, precision 29.2%, recall 27.1%, harmonic mean 28.1%. At 20% revealed, 676 drawn against 730, precision 27.4%, recall 25.3%, harmonic mean 26.3%. A goalkeeper is at 0.1% and a forward is at 11.3% when 80% is revealed.
