@@ -1,6 +1,10 @@
 # Card comparison
 
-Test: 2025-26, every club, every row, appearances after gameweek 19.
+Train: 2022-23, 2023-24, 2024-25. Test: 2025-26.
+Each training card is cut after 20%, 40%, 60%, or 80% of its fixtures,
+chosen at random, starting from gameweek 1. The test scores all four cuts.
+Every club and every row is included.
+
 The reader is squad vision with squad coupling. Each future fixture is given
 a number of bars equal to the sum of its bar probabilities. Those bars go to
 the rows with minutes and the highest probabilities.
@@ -8,20 +12,16 @@ the rows with minutes and the highest probabilities.
 A bar matches on the same row only. Within one gameweek includes the same
 appearance and either neighboring gameweek. The numbers are totals.
 
-| channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
-|---|---:|---:|---:|---:|---:|
-| goals | 459 | 440 | 119 | 160 | 232 |
-| assists | 445 | 386 | 51 | 95 | 110 |
+| revealed | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
+|---|---|---:|---:|---:|---:|---:|
+| 20% | goals | 730 | 738 | 192 | 257 | 382 |
+| 20% | assists | 707 | 659 | 98 | 175 | 216 |
+| 40% | goals | 544 | 584 | 153 | 204 | 303 |
+| 40% | assists | 531 | 517 | 67 | 129 | 150 |
+| 60% | goals | 360 | 381 | 97 | 134 | 192 |
+| 60% | assists | 351 | 339 | 44 | 86 | 92 |
+| 80% | goals | 199 | 201 | 56 | 72 | 99 |
+| 80% | assists | 192 | 178 | 19 | 43 | 45 |
 
-Of the 459 actual goal bars, 119 are the same appearance
-and 160 have a painted bar within one gameweek.
-The extra week adds 41 actual goal bars.
-232 painted goal bars sit within one gameweek of an actual bar
-on their row. One goal can have more than one painted bar inside that window.
-
-Of the 445 actual assist bars, 51 are the same appearance
-and 95 have a painted bar within one gameweek.
-110 painted assist bars sit within one gameweek of an actual bar.
-
-Wall clock: 76 seconds on CPU.
+Wall clock: 77 seconds on CPU.
 

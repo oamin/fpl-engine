@@ -1,8 +1,9 @@
 """Compare the painted test card with the actual card, as totals.
 
-Every club in 2025-26 after gameweek 19 is one comparison. Every row is
-included. A bar on one row does not match a goal on another row. The totals
-are sums, not an average of per-player rates.
+Every club in 2025-26 is cut after 20%, 40%, 60%, and 80% of its fixtures,
+starting from gameweek 1. Every row is included. A bar on one row does not
+match a goal on another row. The totals are sums, not an average of per-player
+rates.
 
 The painted card comes from the locked vision reader. Each future fixture
 gets a number of bars equal to the sum of its bar probabilities. Those bars
@@ -20,13 +21,13 @@ import torch
 from src.models.flashcard_calibrated_trial import place_expected
 from src.models.flashcard_trial import TEST_SEASON, TRAIN_SEASONS
 from src.models.flashcard_squad_trial import (
-    CUT_GW,
     EPOCHS,
     SEED,
     SquadSequence,
     SquadVision,
     build_cards,
     build_league,
+    cut_at_fraction,
     fit_clubs,
     predict,
     squad_index,
@@ -80,18 +81,18 @@ def tally_cards(
     return totals
 
 
-def _paint(probs: np.ndarray, minutes: np.ndarray, cards: list, cut_gw: int) -> np.ndarray:
+def _paint(probs: np.ndarray, minutes: np.ndarray, cards: list, cuts: list[int]) -> np.ndarray:
     painted = np.zeros(minutes.shape, dtype=np.int64)
     for index, card in enumerate(cards):
-        hidden = (card.gw > cut_gw) & (card.gw > 0)
+        hidden = (card.gw > cuts[index]) & (card.gw > 0)
         mask = card.present & hidden.reshape(1, -1)
         painted[index] = place_expected(probs[index], minutes[index], mask)
     return painted
 
 
-def _line(channel: str, totals: dict[str, int]) -> str:
+def _line(revealed: float, channel: str, totals: dict[str, int]) -> str:
     return (
-        f"| {channel} | {totals['actual']} | {totals['painted']} | {totals['exact']} | "
+        f"| {revealed:.0%} | {channel} | {totals['actual']} | {totals['painted']} | {totals['exact']} | "
         f"{totals['actual_within']} | {totals['painted_within']} |"
     )
 
@@ -118,18 +119,17 @@ def main() -> None:
     train_model(sequence, train, league, np.random.default_rng(SEED), EPOCHS, "sequence", clubs=clubs)
     train_model(vision, train, league, np.random.default_rng(SEED), EPOCHS, "vision", clubs=clubs)
     print("scoring", flush=True)
-    goal_p, assist_p = predict(vision, test, league, CUT_GW, "vision", clubs, test_squads)
     labels = np.stack([card.goals for card in test])
     assist_labels = np.stack([card.assists for card in test])
     minutes = np.stack([card.minutes for card in test])
-    goal_paint = _paint(goal_p, minutes, test, CUT_GW)
-    assist_paint = _paint(assist_p, minutes, test, CUT_GW)
-    goals = tally_cards(test, labels, goal_paint, CUT_GW)
-    assists = tally_cards(test, assist_labels, assist_paint, CUT_GW)
     lines = [
         "# Card comparison",
         "",
-        f"Test: {TEST_SEASON}, every club, every row, appearances after gameweek {CUT_GW}.",
+        f"Train: {', '.join(TRAIN_SEASONS)}. Test: {TEST_SEASON}.",
+        "Each training card is cut after 20%, 40%, 60%, or 80% of its fixtures,",
+        "chosen at random, starting from gameweek 1. The test scores all four cuts.",
+        "Every club and every row is included.",
+        "",
         "The reader is squad vision with squad coupling. Each future fixture is given",
         "a number of bars equal to the sum of its bar probabilities. Those bars go to",
         "the rows with minutes and the highest probabilities.",
@@ -137,31 +137,31 @@ def main() -> None:
         "A bar matches on the same row only. Within one gameweek includes the same",
         "appearance and either neighboring gameweek. The numbers are totals.",
         "",
-        "| channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |",
-        "|---|---:|---:|---:|---:|---:|",
-        _line("goals", goals),
-        _line("assists", assists),
-        "",
-        f"Of the {goals['actual']} actual goal bars, {goals['exact']} are the same appearance",
-        f"and {goals['actual_within']} have a painted bar within one gameweek.",
-        f"The extra week adds {goals['actual_within'] - goals['exact']} actual goal bars.",
-        f"{goals['painted_within']} painted goal bars sit within one gameweek of an actual bar",
-        "on their row. One goal can have more than one painted bar inside that window.",
-        "",
-        f"Of the {assists['actual']} actual assist bars, {assists['exact']} are the same appearance",
-        f"and {assists['actual_within']} have a painted bar within one gameweek.",
-        f"{assists['painted_within']} painted assist bars sit within one gameweek of an actual bar.",
-        "",
+        "| revealed | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |",
+        "|---|---|---:|---:|---:|---:|---:|",
     ]
+    for revealed in (0.2, 0.4, 0.6, 0.8):
+        cuts = [cut_at_fraction(card, revealed) for card in test]
+        goal_p = np.zeros(minutes.shape + (4,), dtype=np.float64)
+        assist_p = np.zeros_like(goal_p)
+        for index, card in enumerate(test):
+            one_g, one_a = predict(vision, [card], league, cuts[index], "vision", clubs, test_squads)
+            goal_p[index] = one_g[0]
+            assist_p[index] = one_a[0]
+        goals = tally_cards(test, labels, _paint(goal_p, minutes, test, cuts), 0, cuts)
+        assists = tally_cards(test, assist_labels, _paint(assist_p, minutes, test, cuts), 0, cuts)
+        lines.append(_line(revealed, "goals", goals))
+        lines.append(_line(revealed, "assists", assists))
+        print(
+            f"reveal {revealed:.0%} goals {goals['actual']} painted {goals['painted']} "
+            f"exact {goals['exact']} within {goals['actual_within']} "
+            f"assists exact {assists['exact']} within {assists['actual_within']}",
+            flush=True,
+        )
     seconds = time.perf_counter() - started
-    lines.extend([f"Wall clock: {seconds:.0f} seconds on CPU.", ""])
+    lines.extend(["", f"Wall clock: {seconds:.0f} seconds on CPU.", ""])
     _report(lines)
-    print(
-        f"done in {seconds:.0f}s goals actual {goals['actual']} painted {goals['painted']} "
-        f"exact {goals['exact']} within {goals['actual_within']} "
-        f"assists exact {assists['exact']} within {assists['actual_within']}",
-        flush=True,
-    )
+    print(f"done in {seconds:.0f}s", flush=True)
 
 
 if __name__ == "__main__":

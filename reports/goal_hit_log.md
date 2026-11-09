@@ -1,15 +1,23 @@
 # Goal-hit log
 
-The score is the painted card against the actual card. The test is 2025-26 after gameweek 19, every club, every row. The numbers are totals.
+The score is the painted card against the actual card. Training and test cuts are 20%, 40%, 60%, and 80% of each club's fixtures, starting from gameweek 1. Every club and every row is included. The numbers are totals.
 
-The reader is squad vision with squad coupling. Each future fixture is given a number of bars equal to the sum of its bar probabilities. Those bars go to the rows with minutes and the highest probabilities. A bar matches a goal or an assist on the same row only. Within one gameweek includes the same appearance.
+The reader is squad vision with squad coupling. In training, each card draws one of those four cuts at random. The test scores all four. Each future fixture is given a number of bars equal to the sum of its bar probabilities. Those bars go to the rows with minutes and the highest probabilities. A bar matches a goal or an assist on the same row only. Within one gameweek includes the same appearance.
 
-| channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
-|---|---:|---:|---:|---:|---:|
-| goals | 459 | 440 | 119 | 160 | 232 |
-| assists | 445 | 386 | 51 | 95 | 110 |
+Logged at 13:26 UK on 9 Nov 2026. Test season 2025-26.
 
-Logged at 13:19 UK on 9 Nov 2026. Of the 459 actual goal bars, the extra week adds 41. Of the 445 actual assist bars, the extra week adds 44. A painted bar can sit next to a goal that another painted bar already covers, so the painted-within column is larger than the actual-within column.
+| revealed | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
+|---|---|---:|---:|---:|---:|---:|
+| 20% | goals | 730 | 738 | 192 | 257 | 382 |
+| 20% | assists | 707 | 659 | 98 | 175 | 216 |
+| 40% | goals | 544 | 584 | 153 | 204 | 303 |
+| 40% | assists | 531 | 517 | 67 | 129 | 150 |
+| 60% | goals | 360 | 381 | 97 | 134 | 192 |
+| 60% | assists | 351 | 339 | 44 | 86 | 92 |
+| 80% | goals | 199 | 201 | 56 | 72 | 99 |
+| 80% | assists | 192 | 178 | 19 | 43 | 45 |
+
+A painted bar can sit next to a goal that another painted bar already covers, so the painted-within column is larger than the actual-within column. The gameweek-19 cut used earlier is not this score.
 
 The table below is an older per-player ranking. It is a record of past runs. It is not the score.
 

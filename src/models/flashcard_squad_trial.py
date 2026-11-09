@@ -11,8 +11,9 @@ The sequence reader gets those values as numbers. The vision reader gets the
 same grid painted as pixels. Both attend across the squad and across the
 whole segment at once. Neither walks column by column.
 
-Train on 2022-23, 2023-24, and 2024-25. Score 2025-26 at a cut after gameweek 19.
-2026-27 is not read.
+Train on 2022-23, 2023-24, and 2024-25. Each card is cut after 20%, 40%, 60%,
+or 80% of its fixtures, starting from gameweek 1. The test scores each of
+those four cuts. 2026-27 is not read.
 
 This is the locked squad-card reader: squad vision with squad coupling.
 The test score is the painted card against the actual card, counted across
@@ -830,8 +831,8 @@ def _opp_batch(batch: dict[str, torch.Tensor]) -> dict[str, torch.Tensor] | None
 
 
 def sample_cut(card: SquadCard, rng: np.random.Generator) -> int:
-    """Reveal a prefix from gameweek 1, between 20% and 80% of the fixtures."""
-    return cut_at_fraction(card, float(rng.uniform(0.2, 0.8)))
+    """Reveal a prefix from gameweek 1: 20%, 40%, 60%, or 80% of the fixtures."""
+    return cut_at_fraction(card, float(rng.choice((0.2, 0.4, 0.6, 0.8))))
 
 
 def cut_at_fraction(card: SquadCard, revealed: float) -> int:

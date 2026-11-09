@@ -7,6 +7,13 @@ import unittest
 import numpy as np
 
 from src.models.flashcard_card_score import tally_cards, tally_row
+from src.models.flashcard_squad_trial import cut_at_fraction, sample_cut
+
+
+class _Season:
+    def __init__(self) -> None:
+        self.n_fixtures = 10
+        self.gw = np.arange(1, 11)
 
 
 class _Card:
@@ -17,6 +24,12 @@ class _Card:
 
 
 class CardScoreTests(unittest.TestCase):
+    def test_training_cuts_are_the_four_breaks(self) -> None:
+        card = _Season()
+        seen = {sample_cut(card, np.random.default_rng(seed)) for seed in range(40)}
+        expected = {cut_at_fraction(card, fraction) for fraction in (0.2, 0.4, 0.6, 0.8)}
+        self.assertEqual(seen, expected)
+
     def test_one_week_away_counts_in_the_window_only(self) -> None:
         gameweeks = np.array([24, 25, 26])
         exact = tally_row(gameweeks, np.array([1, 0, 0]), np.array([0, 1, 0]))
