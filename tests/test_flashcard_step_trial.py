@@ -12,6 +12,8 @@ from src.models.flashcard_squad_trial import (
     COLS,
     HEADER_H,
     MASK_ID,
+    MINUTE_H,
+    PLAYER_H,
     ROWS,
     grey_except_minutes,
 )
@@ -61,9 +63,9 @@ class StepTests(unittest.TestCase):
         self.assertTrue(bool(view["opp_pad"][0, 2]))
 
     def test_grey_leaves_the_minute_band_and_the_venue(self) -> None:
-        image = np.zeros((HEADER_H + ROWS * 5 * BAND_H, COLS * CELL_W, 3), dtype=np.uint8)
+        image = np.zeros((HEADER_H + ROWS * PLAYER_H, COLS * CELL_W, 3), dtype=np.uint8)
         minute_y = HEADER_H + 1
-        goal_y = HEADER_H + 2 * BAND_H + 1
+        goal_y = HEADER_H + MINUTE_H + 1
         image[0, 0, :] = (0, 158, 115)
         image[BAND_H, 0, :] = (86, 180, 233)
         image[minute_y, 0, :] = (0, 114, 178)

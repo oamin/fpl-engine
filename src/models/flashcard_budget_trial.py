@@ -28,8 +28,10 @@ from src.models.flashcard_squad_trial import (
     COLS,
     CUT_GW,
     EPOCHS,
+    EVENT_H,
     HEADER_H,
     LR,
+    MINUTE_H,
     PLAYER_H,
     MASK_C,
     MASK_ID,
@@ -80,16 +82,16 @@ def render_mark(view: dict[str, np.ndarray]) -> np.ndarray:
             if int(view["position"][row]) < 0 or view["present"][row, col] < 0.5:
                 continue
             y = HEADER_H + row * PLAYER_H
-            _paint_count(img, y + 2 * BAND_H, x0, int(view["goal_token"][row, col]))
-            _paint_count(img, y + 3 * BAND_H, x0, int(view["assist_token"][row, col]))
+            _paint_count(img, y + MINUTE_H, x0, int(view["goal_token"][row, col]))
+            _paint_count(img, y + MINUTE_H + EVENT_H, x0, int(view["assist_token"][row, col]))
     return img
 
 
 def _paint_count(img: np.ndarray, y0: int, x0: int, token: int) -> None:
     if token == MASK_ID:
-        img[y0 : y0 + BAND_H, x0 : x0 + CELL_W] = MASK_C
+        img[y0 : y0 + EVENT_H, x0 : x0 + CELL_W] = MASK_C
         return
-    img[y0 : y0 + BAND_H, x0 : x0 + CELL_W] = COUNT_C[min(max(token, 0), 3)]
+    img[y0 : y0 + EVENT_H, x0 : x0 + CELL_W] = COUNT_C[min(max(token, 0), 3)]
 
 
 def _mark_batch(views: list[dict[str, np.ndarray]]) -> dict[str, torch.Tensor]:

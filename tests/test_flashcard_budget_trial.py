@@ -12,8 +12,10 @@ from src.models.flashcard_squad_trial import (
     CELL_W,
     COLS,
     CONCEDE_C,
+    EVENT_H,
     HEADER_H,
     MASK_C,
+    MINUTE_H,
     ROWS,
     apply_cut,
 )
@@ -24,9 +26,9 @@ class MarkTests(unittest.TestCase):
     def test_a_goal_fills_its_band_and_a_hidden_week_stays_gray(self) -> None:
         view = apply_cut(_card(), _league(), 19)
         image = render_mark(view)
-        y = HEADER_H + 2 * BAND_H
-        shown = image[y : y + BAND_H, 0:CELL_W]
-        hidden = image[y : y + BAND_H, 19 * CELL_W : 20 * CELL_W]
+        y = HEADER_H + MINUTE_H
+        shown = image[y : y + EVENT_H, 0:CELL_W]
+        hidden = image[y : y + EVENT_H, 19 * CELL_W : 20 * CELL_W]
         self.assertTrue(np.all(shown == COUNT_C[3]))
         self.assertTrue(np.all(hidden == MASK_C))
         concede = image[BAND_H : BAND_H * 2, 19 * CELL_W : 20 * CELL_W]
