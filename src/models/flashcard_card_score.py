@@ -5,9 +5,11 @@ starting from gameweek 1. Every row is included. A bar on one row does not
 match a goal on another row. The totals are sums, not an average of per-player
 rates.
 
-The painted card comes from the locked vision reader. Each future fixture
-gets a number of bars equal to the sum of its bar probabilities. Those bars
-go to the rows with minutes and the highest probabilities.
+The painted card comes from the locked vision reader on the stripped card.
+Venue stays. Concede, regulars, own history, and opponent history are absent
+from the picture and from the match-up. Each future fixture gets a number of
+bars equal to the sum of its bar probabilities. Those bars go to the rows
+with minutes and the highest probabilities.
 """
 
 from __future__ import annotations
@@ -21,17 +23,12 @@ import torch
 from src.models.flashcard_calibrated_trial import place_expected
 from src.models.flashcard_trial import TEST_SEASON, TRAIN_SEASONS
 from src.models.flashcard_squad_trial import (
-    EPOCHS,
     SEED,
-    SquadSequence,
-    SquadVision,
     build_cards,
     build_league,
     cut_at_fraction,
     fit_clubs,
-    predict,
     squad_index,
-    train_model,
 )
 
 ROOT_REPORTS = Path(__file__).resolve().parents[2] / "reports"
@@ -110,14 +107,14 @@ def main() -> None:
     train = build_cards(TRAIN_SEASONS, league)
     test = build_cards((TEST_SEASON,), league)
     clubs = fit_clubs(train)
-    test_squads = squad_index(test)
+    test_squads = squad_index(train + test)
     n_clubs = max(clubs.values(), default=0) + 1
     print(f"train {len(train)} test {len(test)}", flush=True)
+    from src.models.flashcard_strip_trial import BAND_H, StripVision, paint_stripped, train_stripped
+
     torch.manual_seed(SEED)
-    sequence = SquadSequence(dropout=0.1, n_clubs=n_clubs)
-    vision = SquadVision(dropout=0.1, n_clubs=n_clubs)
-    train_model(sequence, train, league, np.random.default_rng(SEED), EPOCHS, "sequence", clubs=clubs)
-    train_model(vision, train, league, np.random.default_rng(SEED), EPOCHS, "vision", clubs=clubs)
+    vision = StripVision(BAND_H, dropout=0.1, n_clubs=n_clubs)
+    train_stripped(vision, train, league, np.random.default_rng(SEED), clubs, None, "stripped")
     print("scoring", flush=True)
     labels = np.stack([card.goals for card in test])
     assist_labels = np.stack([card.assists for card in test])
@@ -130,9 +127,11 @@ def main() -> None:
         "chosen at random, starting from gameweek 1. The test scores all four cuts.",
         "Every club and every row is included.",
         "",
-        "The reader is squad vision with squad coupling. Each future fixture is given",
-        "a number of bars equal to the sum of its bar probabilities. Those bars go to",
-        "the rows with minutes and the highest probabilities.",
+        "The reader is squad vision with squad coupling on the stripped card.",
+        "Venue stays. Concede, regulars, own history, and opponent history are",
+        "absent from the picture and from the match-up. Each future fixture is",
+        "given a number of bars equal to the sum of its bar probabilities. Those",
+        "bars go to the rows with minutes and the highest probabilities.",
         "",
         "A bar matches on the same row only. Within one gameweek includes the same",
         "appearance and either neighboring gameweek. The numbers are totals.",
@@ -142,12 +141,7 @@ def main() -> None:
     ]
     for revealed in (0.2, 0.4, 0.6, 0.8):
         cuts = [cut_at_fraction(card, revealed) for card in test]
-        goal_p = np.zeros(minutes.shape + (4,), dtype=np.float64)
-        assist_p = np.zeros_like(goal_p)
-        for index, card in enumerate(test):
-            one_g, one_a = predict(vision, [card], league, cuts[index], "vision", clubs, test_squads)
-            goal_p[index] = one_g[0]
-            assist_p[index] = one_a[0]
+        goal_p, assist_p = paint_stripped(vision, test, league, clubs, test_squads, None, cuts)
         goals = tally_cards(test, labels, _paint(goal_p, minutes, test, cuts), 0, cuts)
         assists = tally_cards(test, assist_labels, _paint(assist_p, minutes, test, cuts), 0, cuts)
         lines.append(_line(revealed, "goals", goals))

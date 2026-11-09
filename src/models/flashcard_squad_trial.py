@@ -3,9 +3,10 @@
 Each card is a club-season. Rows are teammates. Columns are the club's fixtures.
 Minutes stay visible. Goals and assists after the cut are hidden. Each fixture
 is coupled to the other squad: their positions, minutes, and the events already
-revealed. Hidden events stay masked on both sides. The header still carries
-venue, prior goals conceded, and the share of regular starters on the pitch.
-Clean sheets are not a target.
+revealed. Hidden events stay masked on both sides. The locked card keeps the
+venue band and drops concede, regulars, own history, and opponent history from
+the picture and from the match-up. The recent scoring rate stays. Clean sheets
+are not a target.
 
 The sequence reader gets those values as numbers. The vision reader gets the
 same grid painted as pixels. Both attend across the squad and across the
@@ -15,9 +16,9 @@ Train on 2022-23, 2023-24, and 2024-25. Each card is cut after 20%, 40%, 60%,
 or 80% of its fixtures, starting from gameweek 1. The test scores each of
 those four cuts. 2026-27 is not read.
 
-This is the locked squad-card reader: squad vision with squad coupling.
-The test score is the painted card against the actual card, counted across
-every row. See the card comparison in the goal-hit log.
+This is the locked squad-card reader: squad vision with squad coupling on
+the stripped card. The test score is the painted card against the actual card,
+counted across every row. See the card comparison in the goal-hit log.
 """
 
 from __future__ import annotations

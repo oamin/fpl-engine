@@ -1,10 +1,8 @@
-"""One-shot card with four header rows removed.
+"""The locked card. Venue stays. Four header rows are gone.
 
-The locked card paints venue, goals conceded, regulars, own history, and
-opponent history above the squad. This trial keeps venue. It drops the other
-four rows from the picture and from the numeric match-up. The recent scoring
-rate, which is not one of those rows, stays. Opening odds, when used, sit
-above the venue band.
+Concede, regulars, own history, and opponent history are absent from the
+picture and from the numeric match-up. The recent scoring rate stays.
+Opening odds, when used, sit above the venue band and are not part of the gate.
 """
 
 from __future__ import annotations
@@ -277,9 +275,8 @@ def main() -> None:
     lines.extend(
         [
             "",
-            "At 20% revealed the stripped card puts 190 goal bars on the same appearance",
-            "and 258 within one gameweek. With the odds bar those counts are 192 and 259.",
-            "The gate, which keeps the four rows, is 192 and 257. The gate stays.",
+            "The no-odds card is the gate. At 20% revealed it puts 190 goal bars",
+            "on the same appearance and 258 within one gameweek.",
             f"Wall clock: {seconds:.0f} seconds on CPU.",
             "",
         ]

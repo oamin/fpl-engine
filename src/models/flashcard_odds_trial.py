@@ -416,8 +416,8 @@ def main() -> None:
     lines.extend(
         [
             "",
-            "The gate stays the one-shot card without an odds bar: at 20% revealed,",
-            "192 goal bars on the same appearance and 257 actual goal bars within one gameweek.",
+            "The gate is the stripped card, with no odds bar: at 20% revealed,",
+            "190 goal bars on the same appearance and 258 actual goal bars within one gameweek.",
             f"Wall clock: {seconds:.0f} seconds on CPU.",
             "",
         ]

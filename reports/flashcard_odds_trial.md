@@ -37,8 +37,8 @@ Train: 2022-23, 2023-24, 2024-25. Test: 2025-26.
 | 80% | painter odds | goals | 199 | 207 | 56 | 73 | 101 |
 | 80% | painter odds | assists | 192 | 186 | 19 | 45 | 47 |
 
-The gate stays the one-shot card without an odds bar: at 20% revealed,
-192 goal bars on the same appearance and 257 actual goal bars within one gameweek.
+The gate is the stripped card, with no odds bar: at 20% revealed,
+190 goal bars on the same appearance and 258 actual goal bars within one gameweek.
 The stepped rows without odds are the 15:00 UK pass. The odds rows are the
 15:29 UK pass, after the bar moved to blue, yellow, and purple.
 

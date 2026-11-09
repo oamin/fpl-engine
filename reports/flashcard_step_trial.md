@@ -26,6 +26,6 @@ Train: 2022-23, 2023-24, 2024-25. Test: 2025-26.
 | 80% | one GW step | goals | 199 | 137 | 35 | 48 | 66 |
 | 80% | one GW step | assists | 192 | 125 | 20 | 35 | 37 |
 
-The gate is the one-shot card at these four cuts. The step is a comparison.
+The gate column is the previous card, which still painted the four header rows. The current gate is the stripped card.
 Wall clock: 85 seconds on CPU.
 

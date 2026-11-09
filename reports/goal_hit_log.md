@@ -2,9 +2,24 @@
 
 The score is the painted card against the actual card. Training and test cuts are 20%, 40%, 60%, and 80% of each club's fixtures, starting from gameweek 1. Every club and every row is included. The numbers are totals.
 
-The reader is squad vision with squad coupling. In training, each card draws one of those four cuts at random. The test scores all four. Each future fixture is given a number of bars equal to the sum of its bar probabilities. Those bars go to the rows with minutes and the highest probabilities. A bar matches a goal or an assist on the same row only. Within one gameweek includes the same appearance.
+The reader is squad vision with squad coupling on the stripped card. Venue stays. Concede, regulars, own history, and opponent history are absent from the picture and from the match-up. The recent scoring rate stays. There is no odds bar. In training, each card draws one of those four cuts at random. The test scores all four. Each future fixture is given a number of bars equal to the sum of its bar probabilities. Those bars go to the rows with minutes and the highest probabilities. A bar matches a goal or an assist on the same row only. Within one gameweek includes the same appearance.
 
-This table is the gate, logged at 13:26 UK on 9 Nov 2026. Test season 2025-26.
+This table is the gate, logged at 15:53 UK on 9 Nov 2026. Test season 2025-26.
+
+| revealed | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
+|---|---|---:|---:|---:|---:|---:|
+| 20% | goals | 730 | 746 | 190 | 258 | 382 |
+| 20% | assists | 707 | 681 | 103 | 183 | 221 |
+| 40% | goals | 544 | 576 | 150 | 201 | 295 |
+| 40% | assists | 531 | 523 | 74 | 134 | 156 |
+| 60% | goals | 360 | 377 | 99 | 132 | 189 |
+| 60% | assists | 351 | 341 | 45 | 87 | 94 |
+| 80% | goals | 199 | 201 | 56 | 70 | 97 |
+| 80% | assists | 192 | 182 | 24 | 49 | 52 |
+
+A painted bar can sit next to a goal that another painted bar already covers, so the painted-within column is larger than the actual-within column. The gameweek-19 cut used earlier is not this score.
+
+The previous gate, logged at 13:26 UK, kept concede, regulars, own history, and opponent history.
 
 | revealed | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
 |---|---|---:|---:|---:|---:|---:|
@@ -16,8 +31,6 @@ This table is the gate, logged at 13:26 UK on 9 Nov 2026. Test season 2025-26.
 | 60% | assists | 351 | 339 | 44 | 86 | 92 |
 | 80% | goals | 199 | 201 | 56 | 72 | 99 |
 | 80% | assists | 192 | 178 | 19 | 43 | 45 |
-
-A painted bar can sit next to a goal that another painted bar already covers, so the painted-within column is larger than the actual-within column. The gameweek-19 cut used earlier is not this score.
 
 ## One-gameweek step
 
@@ -64,7 +77,7 @@ The 15:53 UK pass on 9 Nov drops concede, regulars, own history, and opponent hi
 | 80% | stripped | goals | 199 | 201 | 56 | 70 | 97 |
 | 80% | stripped odds | goals | 199 | 201 | 57 | 72 | 99 |
 
-At 20% revealed the stripped card puts 190 goal bars on the same appearance and 258 within one gameweek. With the odds bar it puts 192 and 259. The gate puts 192 and 257. The gate stays the one-shot card with the four rows.
+The no-odds rows of this pass are the gate above. With the odds bar, at 20% revealed, the same card puts 192 goal bars on the same appearance and 259 within one gameweek.
 
 The table below is an older per-player ranking. It is a record of past runs. It is not the score.
 

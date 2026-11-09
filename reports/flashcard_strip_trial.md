@@ -26,8 +26,7 @@ Train: 2022-23, 2023-24, 2024-25. Test: 2025-26.
 | 80% | stripped odds | goals | 199 | 201 | 57 | 72 | 99 |
 | 80% | stripped odds | assists | 192 | 183 | 23 | 49 | 52 |
 
-At 20% revealed the stripped card puts 190 goal bars on the same appearance
-and 258 within one gameweek. With the odds bar those counts are 192 and 259.
-The gate, which keeps the four rows, is 192 and 257. The gate stays.
+The no-odds card is the gate. At 20% revealed it puts 190 goal bars
+on the same appearance and 258 within one gameweek.
 Wall clock: 125 seconds on CPU.
 
