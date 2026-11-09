@@ -790,7 +790,19 @@ class SquadVision(nn.Module):
         )
 
 
-def _stack(views: list[dict[str, np.ndarray]]) -> dict[str, torch.Tensor]:
+def grey_except_minutes(img: np.ndarray, columns: np.ndarray) -> None:
+    """Hatch a column except the minute bars."""
+    for col in np.asarray(columns, dtype=np.int64):
+        x0 = int(col) * CELL_W
+        _hatch(img, 0, x0, HEADER_H)
+        for row in range(ROWS):
+            y = HEADER_H + row * PLAYER_H
+            _hatch(img, y + 2 * BAND_H, x0, 3 * BAND_H)
+
+
+def _stack(
+    views: list[dict[str, np.ndarray]], grey_columns: list[np.ndarray] | None = None
+) -> dict[str, torch.Tensor]:
     long_keys = {"goal_token", "assist_token", "goal_label", "assist_label", "position"}
     batch: dict[str, torch.Tensor] = {}
     for key in (
@@ -813,6 +825,9 @@ def _stack(views: list[dict[str, np.ndarray]]) -> dict[str, torch.Tensor]:
         batch[key] = torch.from_numpy(np.stack([view[key] for view in views]).astype(np.float32))
     batch["opp_pad"] = torch.from_numpy(np.stack([view["opp_pad"] for view in views]))
     images = np.stack([render_grid(view) for view in views])
+    if grey_columns is not None:
+        for index, columns in enumerate(grey_columns):
+            grey_except_minutes(images[index], columns)
     batch["image"] = torch.from_numpy(images).permute(0, 3, 1, 2).float().div(255.0)
     return batch
 

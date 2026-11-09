@@ -4,7 +4,7 @@ The score is the painted card against the actual card. Training and test cuts ar
 
 The reader is squad vision with squad coupling. In training, each card draws one of those four cuts at random. The test scores all four. Each future fixture is given a number of bars equal to the sum of its bar probabilities. Those bars go to the rows with minutes and the highest probabilities. A bar matches a goal or an assist on the same row only. Within one gameweek includes the same appearance.
 
-Logged at 13:26 UK on 9 Nov 2026. Test season 2025-26.
+This table is the gate, logged at 13:26 UK on 9 Nov 2026. Test season 2025-26.
 
 | revealed | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
 |---|---|---:|---:|---:|---:|---:|
@@ -18,6 +18,23 @@ Logged at 13:26 UK on 9 Nov 2026. Test season 2025-26.
 | 80% | assists | 192 | 178 | 19 | 43 | 45 |
 
 A painted bar can sit next to a goal that another painted bar already covers, so the painted-within column is larger than the actual-within column. The gameweek-19 cut used earlier is not this score.
+
+## One-gameweek step
+
+The 14:00 run on 9 Nov uses the same reader. Each step reveals the true card through the previous gameweek, greys the next gameweek except player minutes, and chops every later column. The counts below use the same hidden fixtures as the gate.
+
+| revealed | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
+|---|---|---:|---:|---:|---:|---:|
+| 20% | goals | 730 | 521 | 137 | 182 | 276 |
+| 20% | assists | 707 | 461 | 55 | 103 | 126 |
+| 40% | goals | 544 | 403 | 100 | 138 | 211 |
+| 40% | assists | 531 | 359 | 43 | 80 | 100 |
+| 60% | goals | 360 | 263 | 68 | 90 | 134 |
+| 60% | assists | 351 | 241 | 29 | 54 | 62 |
+| 80% | goals | 199 | 137 | 35 | 48 | 66 |
+| 80% | assists | 192 | 125 | 20 | 35 | 37 |
+
+A rerun of the gate on the same weights matches the table above, except the 40% assist same-appearance count, which is 68 on that rerun. At 20% revealed the step puts 137 goal bars on the same appearance, against 192 for the gate, and 182 actual goal bars within one gameweek, against 257. The same gap shows at 40%, 60%, and 80%. The gate stays the one-shot card.
 
 The table below is an older per-player ranking. It is a record of past runs. It is not the score.
 
