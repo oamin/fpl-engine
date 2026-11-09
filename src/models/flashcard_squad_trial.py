@@ -791,10 +791,10 @@ class SquadVision(nn.Module):
 
 
 def grey_except_minutes(img: np.ndarray, columns: np.ndarray) -> None:
-    """Hatch a column except the minute bars."""
+    """Hatch a column except the minute bars and the venue band."""
     for col in np.asarray(columns, dtype=np.int64):
         x0 = int(col) * CELL_W
-        _hatch(img, 0, x0, HEADER_H)
+        _hatch(img, BAND_H, x0, HEADER_H - BAND_H)
         for row in range(ROWS):
             y = HEADER_H + row * PLAYER_H
             _hatch(img, y + 2 * BAND_H, x0, 3 * BAND_H)

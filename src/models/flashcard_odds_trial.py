@@ -1,8 +1,8 @@
 """Train the next-gameweek task, then paint opening match odds.
 
-The stepped card shows the true past, greys the next gameweek except minutes,
-and chops every later column. Its odds bar is on the known weeks and that
-next week.
+The stepped card shows the true past, greys the next gameweek except minutes
+and the venue, and chops every later column. Its odds bar is on the known
+weeks and that next week.
 
 The full painter still fills the whole remainder in one pass. Its odds bar
 is on every known week and on every grey week still on the card.
@@ -372,7 +372,8 @@ def main() -> None:
         "",
         "The gate paints the whole remainder at once and has no odds bar.",
         "Stepped training shows the true past and asks only for the next gameweek,",
-        "with every later column removed. The odds bar is opening 1X2 prices after",
+        "with every later column removed. That week keeps minutes and the venue.",
+        "The odds bar is opening 1X2 prices after",
         "the Shin de-vig: green home, grey draw, red away, from the top.",
         "The stepped card shows that bar on known weeks and the step week.",
         "The full painter shows it on every known week and every grey week.",

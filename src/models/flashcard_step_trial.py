@@ -2,8 +2,8 @@
 
 The gate paints the whole remainder at once. This test steps forward one
 gameweek at a time. Earlier gameweeks stay revealed. The next gameweek keeps
-player minutes and is grey everywhere else. Columns after that gameweek are
-turned off, so their minutes, opponents, and bars are not on the card.
+player minutes and the venue, and is grey everywhere else. Columns after that
+gameweek are turned off, so their minutes, opponents, and bars are not on the card.
 """
 
 from __future__ import annotations
@@ -46,7 +46,7 @@ BLANK_KEYS = (
 
 
 def chop_future(view: dict[str, np.ndarray], gameweeks: np.ndarray, target_gw: int) -> None:
-    """Drop columns after the target gameweek. Grey the target except minutes."""
+    """Drop columns after the target gameweek. The target keeps minutes and venue."""
     off = (gameweeks > target_gw) | (gameweeks <= 0)
     target = gameweeks == target_gw
     view["column_on"][off] = 0
@@ -58,7 +58,6 @@ def chop_future(view: dict[str, np.ndarray], gameweeks: np.ndarray, target_gw: i
     view["opponent"][off] = 0
     view["goal_token"][:, target] = MASK_ID
     view["assist_token"][:, target] = MASK_ID
-    view["home"][target] = 0
     view["opponent"][target] = 0
     for key in BLANK_KEYS:
         view[key][off] = 0
@@ -159,7 +158,7 @@ def main() -> None:
         "",
         "The gate paints every remaining fixture at once. The step shows the true",
         "card up to the previous gameweek, greys the next gameweek except player",
-        "minutes, and chops every column after that. The counts use the same",
+        "minutes and the venue, and chops every column after that. The counts use the same",
         "hidden fixtures as the gate.",
         "",
         f"Train: {', '.join(TRAIN_SEASONS)}. Test: {TEST_SEASON}.",

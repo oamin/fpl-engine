@@ -1,9 +1,9 @@
 # One-gameweek step
 
-The gate paints every remaining fixture at once. The step shows the true
-card up to the previous gameweek, greys the next gameweek except player
-minutes, and chops every column after that. The counts use the same
-hidden fixtures as the gate.
+The gate paints every remaining fixture at once. This table is the 14:00 run.
+That run greys the next gameweek except player minutes and chops every later
+column. The step now also keeps the venue band on that gameweek. The counts
+use the same hidden fixtures as the gate.
 
 Train: 2022-23, 2023-24, 2024-25. Test: 2025-26.
 
