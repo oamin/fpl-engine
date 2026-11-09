@@ -36,6 +36,23 @@ The 14:00 run on 9 Nov uses the same reader. Each step reveals the true card thr
 
 A rerun of the gate on the same weights matches the table above, except the 40% assist same-appearance count, which is 68 on that rerun. At 20% revealed the step puts 137 goal bars on the same appearance, against 192 for the gate, and 182 actual goal bars within one gameweek, against 257. The same gap shows at 40%, 60%, and 80%. The gate stays the one-shot card.
 
+## Stepped training and match odds
+
+The 14:30 run on 9 Nov trains the next-gameweek task. Each example shows the true past, greys the next gameweek except minutes, and chops every later column. The loss is only that gameweek. A second reader adds an odds row. A third reader is the full painter with the same odds row.
+
+The bar is opening home, draw, and away prices after the Shin de-vig. Green is home, grey is draw, red is away, from the top of the row. The stepped reader sees that bar on known weeks and the step week. The full painter sees it only on the first two grey gameweeks.
+
+| revealed | model | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
+|---|---|---|---:|---:|---:|---:|---:|
+| 20% | stepped | goals | 730 | 699 | 180 | 228 | 373 |
+| 20% | stepped odds | goals | 730 | 675 | 180 | 224 | 371 |
+| 20% | painter odds | goals | 730 | 763 | 194 | 250 | 392 |
+| 80% | stepped | goals | 199 | 189 | 50 | 61 | 93 |
+| 80% | stepped odds | goals | 199 | 183 | 50 | 62 | 93 |
+| 80% | painter odds | goals | 199 | 209 | 58 | 73 | 104 |
+
+At 20% revealed the stepped reader puts 180 goal bars on the same appearance. The earlier step, using the one-shot reader, put 137 there. The gate puts 192. Adding the odds bar leaves the stepped goal count at 180. The full painter with odds on the first two grey weeks puts 194 on the same appearance and 250 within one gameweek, against 192 and 257 for the gate. The gate stays the one-shot card without the odds bar.
+
 The table below is an older per-player ranking. It is a record of past runs. It is not the score.
 
 Train seasons for every row so far: 2022-23, 2023-24, 2024-25. Test season: 2025-26.
