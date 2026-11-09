@@ -1,4 +1,4 @@
-"""Odds stay inside the horizon, and the bar is green, grey, red from the top."""
+"""Odds stay inside the horizon, and the bar is blue, yellow, purple from the top."""
 
 from __future__ import annotations
 

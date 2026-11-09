@@ -4,7 +4,7 @@ The gate paints the whole remainder at once and has no odds bar.
 Stepped training shows the true past and asks only for the next gameweek,
 with every later column removed. That week keeps minutes and the venue.
 The odds bar is opening 1X2 prices after
-the Shin de-vig: green home, grey draw, red away, from the top.
+the Shin de-vig: blue home, yellow draw, purple away, from the top.
 The stepped card shows that bar on known weeks and the step week.
 The full painter shows it on every known week and every grey week.
 
@@ -20,25 +20,25 @@ Train: 2022-23, 2023-24, 2024-25. Test: 2025-26.
 | 60% | stepped | assists | 351 | 400 | 61 | 96 | 129 |
 | 80% | stepped | goals | 199 | 186 | 54 | 66 | 96 |
 | 80% | stepped | assists | 192 | 213 | 40 | 55 | 73 |
-| 20% | stepped odds | goals | 730 | 672 | 181 | 224 | 370 |
-| 20% | stepped odds | assists | 707 | 796 | 116 | 173 | 254 |
-| 40% | stepped odds | goals | 544 | 516 | 138 | 170 | 285 |
-| 40% | stepped odds | assists | 531 | 610 | 89 | 131 | 189 |
-| 60% | stepped odds | goals | 360 | 340 | 89 | 111 | 184 |
-| 60% | stepped odds | assists | 351 | 407 | 60 | 90 | 121 |
-| 80% | stepped odds | goals | 199 | 181 | 52 | 63 | 94 |
-| 80% | stepped odds | assists | 192 | 218 | 40 | 54 | 72 |
-| 20% | painter odds | goals | 730 | 764 | 191 | 246 | 388 |
-| 20% | painter odds | assists | 707 | 687 | 98 | 159 | 225 |
-| 40% | painter odds | goals | 544 | 595 | 153 | 195 | 308 |
-| 40% | painter odds | assists | 531 | 536 | 75 | 122 | 171 |
-| 60% | painter odds | goals | 360 | 387 | 97 | 135 | 199 |
-| 60% | painter odds | assists | 351 | 348 | 45 | 76 | 99 |
-| 80% | painter odds | goals | 199 | 207 | 58 | 76 | 105 |
-| 80% | painter odds | assists | 192 | 186 | 28 | 44 | 56 |
+| 20% | stepped odds | goals | 730 | 677 | 184 | 231 | 373 |
+| 20% | stepped odds | assists | 707 | 810 | 117 | 183 | 260 |
+| 40% | stepped odds | goals | 544 | 521 | 141 | 179 | 288 |
+| 40% | stepped odds | assists | 531 | 620 | 89 | 136 | 194 |
+| 60% | stepped odds | goals | 360 | 344 | 92 | 117 | 186 |
+| 60% | stepped odds | assists | 351 | 411 | 61 | 89 | 125 |
+| 80% | stepped odds | goals | 199 | 184 | 54 | 67 | 97 |
+| 80% | stepped odds | assists | 192 | 220 | 40 | 54 | 72 |
+| 20% | painter odds | goals | 730 | 764 | 193 | 259 | 390 |
+| 20% | painter odds | assists | 707 | 686 | 101 | 184 | 223 |
+| 40% | painter odds | goals | 544 | 598 | 150 | 200 | 303 |
+| 40% | painter odds | assists | 531 | 536 | 72 | 136 | 161 |
+| 60% | painter odds | goals | 360 | 387 | 95 | 128 | 193 |
+| 60% | painter odds | assists | 351 | 349 | 42 | 84 | 93 |
+| 80% | painter odds | goals | 199 | 207 | 56 | 73 | 101 |
+| 80% | painter odds | assists | 192 | 186 | 19 | 45 | 47 |
 
 The gate stays the one-shot card without an odds bar: at 20% revealed,
 192 goal bars on the same appearance and 257 actual goal bars within one gameweek.
-The stepped rows are the 15:00 UK pass, with venue kept on the greyed week.
-The painter rows are the 14:42 UK pass.
+The stepped rows without odds are the 15:00 UK pass. The odds rows are the
+15:29 UK pass, after the bar moved to blue, yellow, and purple.
 

@@ -8,7 +8,8 @@ The full painter still fills the whole remainder in one pass. Its odds bar
 is on every known week and on every grey week still on the card.
 
 Odds are opening 1X2 prices, turned into probabilities with the Shin de-vig.
-The bar runs from the top: green home, grey draw, red away. A missing price
+The bar runs from the top: blue home, yellow draw, purple away. Those three
+stay off the venue green and amber, and off the hatch grey. A missing price
 or a week outside the horizon is hatched.
 """
 
@@ -60,9 +61,9 @@ from src.teams import norm_team
 
 ROOT_REPORTS = Path(__file__).resolve().parents[2] / "reports"
 ODDS_H = HEADER_H + BAND_H
-HOME_ODDS = (0, 158, 115)
-DRAW_ODDS = (150, 150, 150)
-AWAY_ODDS = (190, 30, 45)
+HOME_ODDS = (32, 84, 220)
+DRAW_ODDS = (255, 214, 64)
+AWAY_ODDS = (156, 40, 186)
 SEASON_CODE = {
     "2022-23": "2223",
     "2023-24": "2324",
@@ -85,7 +86,7 @@ def split_heights(probs: np.ndarray, height: int) -> np.ndarray:
 
 
 def paint_odds_bar(img: np.ndarray, x0: int, probs: np.ndarray) -> None:
-    """Green, grey, red from the top of an 8-pixel bar."""
+    """Blue, yellow, and purple from the top of an 8-pixel bar."""
     y = 0
     for color, count in zip((HOME_ODDS, DRAW_ODDS, AWAY_ODDS), split_heights(probs, BAND_H), strict=True):
         if count <= 0:
@@ -374,7 +375,7 @@ def main() -> None:
         "Stepped training shows the true past and asks only for the next gameweek,",
         "with every later column removed. That week keeps minutes and the venue.",
         "The odds bar is opening 1X2 prices after",
-        "the Shin de-vig: green home, grey draw, red away, from the top.",
+        "the Shin de-vig: blue home, yellow draw, purple away, from the top.",
         "The stepped card shows that bar on known weeks and the step week.",
         "The full painter shows it on every known week and every grey week.",
         "",
