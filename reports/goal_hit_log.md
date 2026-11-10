@@ -109,16 +109,16 @@ At 20% revealed the taller bands put 189 goal bars on the same appearance and 24
 
 ## Pretrained tabular reader
 
-The 22:46 UK pass on 9 Nov reads the same stripped information as a table. TabPFN v2, the public checkpoint pretrained on synthetic tables, fits two classifiers on a stratified sample of 5,000 rows from 2022-23, 2023-24, and 2024-25. The columns are position, minutes, venue, the recent scoring rate, the player's revealed goals, assists, and minutes, and who is on the pitch. Concede, regulars, own history, and opponent history stay out. Bars are placed with the same fixture budget as the gate.
+The 10:30 UK pass on 10 Nov gives TabPFN v2 the stripped card as numbers. Each row is one cell: player slot, fixture slot, position, minutes, the sheet flag, venue, and the recent scoring rate. A hidden goal or assist is the mask. The same fixture adds its forty squad rows and forty opponent rows, as position and minutes. Club and opponent use a fixed code, the same number in every season. Concede, regulars, own history, and opponent history stay out. Bars use the same fixture budget as the gate.
 
 | revealed | model | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
 |---|---|---|---:|---:|---:|---:|---:|
-| 20% | tabpfn | goals | 730 | 584 | 158 | 239 | 331 |
-| 20% | tabpfn | assists | 707 | 596 | 88 | 146 | 194 |
-| 80% | tabpfn | goals | 199 | 188 | 63 | 84 | 111 |
-| 80% | tabpfn | assists | 192 | 179 | 31 | 49 | 62 |
+| 20% | tabpfn | goals | 730 | 1477 | 274 | 349 | 605 |
+| 20% | tabpfn | assists | 707 | 1568 | 210 | 304 | 483 |
+| 80% | tabpfn | goals | 199 | 680 | 109 | 131 | 214 |
+| 80% | tabpfn | assists | 192 | 795 | 95 | 109 | 201 |
 
-At 20% revealed this reader puts 158 goal bars on the same appearance and 239 within one gameweek. It paints 584 goal bars against 730 actual. The gate puts 190 and 258. The gate stays the stripped card measured at 15:53.
+At 20% revealed this reader puts 274 goal bars on the same appearance and 349 within one gameweek. It paints 1477 goal bars against 730 actual. The gate puts 190 and 258. The gate stays the stripped card measured at 15:53.
 
 The table below is an older per-player ranking. It is a record of past runs. It is not the score.
 

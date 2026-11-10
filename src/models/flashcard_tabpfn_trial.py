@@ -1,14 +1,14 @@
 """Pretrained tabular reader for the same card the vision gate paints.
 
-Each row is one player in one fixture after the cut. The columns are the
-facts the stripped card already shows: position, minutes, venue, the club's
-recent scoring rate, that player's revealed goals and assists, and who is
-on the pitch. Concede, regulars, and the two history rows stay out.
+Each row is one cell of that card. The cell is the player slot, the fixture
+slot, the position, the minutes, the sheet flag, the venue, and the club's
+recent scoring rate. Goal and assist tokens are the counts already on the
+card, or the mask where the cut has hidden them. The same fixture then
+contributes its forty squad rows and forty opponent rows, as position and
+minutes. Club and opponent are fixed codes, the same number in every season.
 
-TabPFN is a classifier pretrained on synthetic tables. It is not trained on
-these seasons. Two classifiers, one for goals and one for assists, read the
-training rows and return a probability for 0, 1, 2, and 3. Bars are placed
-with the same fixture budget as the gate.
+Concede, regulars, own history, and opponent history stay out. TabPFN is a
+classifier pretrained on synthetic tables. It is not trained on these seasons.
 """
 
 from __future__ import annotations
@@ -23,144 +23,240 @@ from src.models.flashcard_calibrated_trial import place_expected
 from src.models.flashcard_card_score import tally_cards
 from src.models.flashcard_squad_trial import (
     COLS,
+    MASK_ID,
     ROWS,
     SEED,
     apply_cut,
     build_cards,
     build_league,
     cut_at_fraction,
-    fit_clubs,
     squad_index,
 )
 from src.models.flashcard_trial import TEST_SEASON, TRAIN_SEASONS
 
 ROOT_REPORTS = Path(__file__).resolve().parents[2] / "reports"
 FRACTIONS = (0.2, 0.4, 0.6, 0.8)
-CATEGORICAL = ("position", "club", "opponent")
-COLUMNS = (
+CONTEXT = 4_000
+# Permanent club codes. A club keeps its number in every season. A club that
+# arrives later takes the next free number; existing numbers stay put.
+CLUB_CODE = {
+    "Arsenal": 1,
+    "Aston Villa": 2,
+    "Bournemouth": 3,
+    "Brentford": 4,
+    "Brighton": 5,
+    "Burnley": 6,
+    "Chelsea": 7,
+    "Crystal Palace": 8,
+    "Everton": 9,
+    "Fulham": 10,
+    "Ipswich": 11,
+    "Leeds": 12,
+    "Leicester": 13,
+    "Liverpool": 14,
+    "Luton": 15,
+    "Man City": 16,
+    "Man Utd": 17,
+    "Newcastle": 18,
+    "Nott'm Forest": 19,
+    "Sheffield Utd": 20,
+    "Southampton": 21,
+    "Spurs": 22,
+    "Sunderland": 23,
+    "West Ham": 24,
+    "Wolves": 25,
+}
+
+
+def club_code(name: str) -> int:
+    """The club's permanent code. An unseen name is 0."""
+    return int(CLUB_CODE.get(str(name), 0))
+
+
+def season_code(season: str) -> int:
+    """The opening year of the season, so two seasons of one club stay distinct."""
+    head = str(season)[:4]
+    return int(head) if head.isdigit() else 0
+
+
+def _indexed(prefix: str, field: str) -> tuple[str, ...]:
+    return tuple(f"{prefix}_{field}_{index:02d}" for index in range(ROWS))
+
+
+MATE_MINUTES = _indexed("mate", "minutes")
+MATE_POSITION = _indexed("mate", "position")
+OPP_MINUTES = _indexed("opp", "minutes")
+OPP_POSITION = _indexed("opp", "position")
+WIDE = MATE_MINUTES + MATE_POSITION + OPP_MINUTES + OPP_POSITION
+CELL = (
+    "row_slot",
+    "col_slot",
+    "side",
     "position",
     "minutes",
+    "present",
     "home",
     "own_form",
     "own_form_missing",
-    "games",
-    "goals_so_far",
-    "assists_so_far",
-    "minutes_so_far",
-    "goals_per_90",
-    "assists_per_90",
-    "team_goals_so_far",
-    "mates_playing",
-    "opp_playing",
+    "season",
     "club",
     "opponent",
+    "goal_visible",
+    "assist_visible",
 )
+FEATURES = CELL + WIDE
+POSITION_COLUMNS = ("position",) + MATE_POSITION + OPP_POSITION
+CATEGORICAL = (
+    "row_slot",
+    "side",
+    "position",
+    "season",
+    "club",
+    "opponent",
+    "goal_visible",
+    "assist_visible",
+) + MATE_POSITION + OPP_POSITION
 
 
-def _prefix(card, cut: int) -> dict[str, np.ndarray]:
-    """Totals from fixtures the cut has already revealed."""
-    visible = (card.gw > 0) & (card.gw <= cut)
-    present = card.present[:, visible]
-    games = present.sum(axis=1).astype(np.float64)
-    minutes = np.where(present, card.minutes[:, visible], 0.0).sum(axis=1)
-    goals = np.where(present, card.goals[:, visible], 0).sum(axis=1).astype(np.float64)
-    assists = np.where(present, card.assists[:, visible], 0).sum(axis=1).astype(np.float64)
-    return {
-        "games": games,
-        "minutes": minutes,
-        "goals": goals,
-        "assists": assists,
-        "team_goals": float(goals.sum()),
-    }
+def _column_block(view: dict[str, np.ndarray], col: int) -> np.ndarray:
+    """Position and minutes down the squad and the opposition at one fixture."""
+    return np.concatenate(
+        [
+            view["minutes"][:, col],
+            view["position"],
+            view["opp_minutes"][:, col],
+            view["opp_position"][:, col],
+        ]
+    )
 
 
-def _per_90(total: np.ndarray, minutes: np.ndarray) -> np.ndarray:
-    out = np.zeros_like(total, dtype=np.float64)
-    played = minutes > 0
-    out[played] = total[played] / (minutes[played] / 90.0)
-    return out
-
-
-def table_at(cards: list, league: dict, clubs: dict, squads: dict, cuts: list[int]) -> pd.DataFrame:
-    """One row per hidden appearance. Labels are the capped event counts."""
+def table_at(cards: list, league: dict, squads: dict, cuts: list[int]) -> pd.DataFrame:
+    """One row per visible cell. Hidden own appearances are included, with masked tokens."""
     rows: list[dict[str, float]] = []
+    wide: list[np.ndarray] = []
     for index, (card, cut) in enumerate(zip(cards, cuts, strict=True)):
-        view = apply_cut(card, league, cut, clubs, squads)
-        prefix = _prefix(card, cut)
-        goals_per_90 = _per_90(prefix["goals"], prefix["minutes"])
-        assists_per_90 = _per_90(prefix["assists"], prefix["minutes"])
-        hidden = (card.gw > cut) & (card.gw > 0)
-        mates = (card.minutes > 0).sum(axis=0)
-        opp_playing = (view["opp_minutes"] > 0).sum(axis=0)
-        club_id = int(clubs.get(card.team, 0))
-        for player in range(card.n_players):
-            if int(card.position[player]) < 0:
+        view = apply_cut(card, league, cut, {}, squads)
+        season = season_code(card.season)
+        own_club = club_code(card.team)
+        for col in range(COLS):
+            if int(card.gw[col]) <= 0:
                 continue
-            for col in np.flatnonzero(hidden & card.present[player]):
-                opponent = card.opponent[int(col)]
+            hidden = int(card.gw[col]) > cut
+            block = _column_block(view, col)
+            opponent = club_code(card.opponent[col]) if card.opponent[col] else 0
+            home = float(card.home[col])
+            form = float(view["own_form"][col])
+            form_missing = float(view["own_form_missing"][col])
+            for player in range(ROWS):
+                if int(card.position[player]) < 0 or not bool(card.present[player, col]):
+                    continue
                 rows.append(
                     {
                         "card_index": index,
                         "player": player,
-                        "fixture": int(col),
+                        "fixture": col,
+                        "row_slot": player,
+                        "col_slot": col,
+                        "side": 0,
                         "position": int(card.position[player]),
                         "minutes": float(card.minutes[player, col]),
-                        "home": float(card.home[col]),
-                        "own_form": float(view["own_form"][col]),
-                        "own_form_missing": float(view["own_form_missing"][col]),
-                        "games": float(prefix["games"][player]),
-                        "goals_so_far": float(prefix["goals"][player]),
-                        "assists_so_far": float(prefix["assists"][player]),
-                        "minutes_so_far": float(prefix["minutes"][player]),
-                        "goals_per_90": float(goals_per_90[player]),
-                        "assists_per_90": float(assists_per_90[player]),
-                        "team_goals_so_far": prefix["team_goals"],
-                        "mates_playing": float(mates[col]),
-                        "opp_playing": float(opp_playing[col]),
-                        "club": club_id,
-                        "opponent": int(clubs.get(opponent, 0)) if opponent else 0,
+                        "present": 1.0,
+                        "home": home,
+                        "own_form": form,
+                        "own_form_missing": form_missing,
+                        "season": season,
+                        "club": own_club,
+                        "opponent": opponent,
+                        "goal_visible": int(view["goal_token"][player, col]),
+                        "assist_visible": int(view["assist_token"][player, col]),
                         "y_goal": int(card.goals[player, col]),
                         "y_assist": int(card.assists[player, col]),
+                        "hidden": int(hidden),
                     }
                 )
-    return pd.DataFrame(rows)
+                wide.append(block)
+            if hidden:
+                continue
+            for player in range(ROWS):
+                if int(view["opp_position"][player, col]) < 0 or float(view["opp_present"][player, col]) < 0.5:
+                    continue
+                if int(view["opp_goal_token"][player, col]) >= MASK_ID or int(view["opp_assist_token"][player, col]) >= MASK_ID:
+                    continue
+                rows.append(
+                    {
+                        "card_index": index,
+                        "player": player,
+                        "fixture": col,
+                        "row_slot": player,
+                        "col_slot": col,
+                        "side": 1,
+                        "position": int(view["opp_position"][player, col]),
+                        "minutes": float(view["opp_minutes"][player, col]),
+                        "present": 1.0,
+                        "home": home,
+                        "own_form": 0.0,
+                        "own_form_missing": 1.0,
+                        "season": season,
+                        "club": opponent,
+                        "opponent": own_club,
+                        "goal_visible": int(view["opp_goal_token"][player, col]),
+                        "assist_visible": int(view["opp_assist_token"][player, col]),
+                        "y_goal": int(view["opp_goal_token"][player, col]),
+                        "y_assist": int(view["opp_assist_token"][player, col]),
+                        "hidden": 0,
+                    }
+                )
+                wide.append(block)
+    frame = pd.DataFrame(rows)
+    if frame.empty:
+        return frame
+    extra = pd.DataFrame(np.vstack(wide), columns=list(WIDE))
+    return pd.concat([frame, extra], axis=1)
 
 
 def features(frame: pd.DataFrame) -> pd.DataFrame:
-    return frame.loc[:, list(COLUMNS)].copy()
+    """Model matrix. A padded position uses the same spare index as the vision reader."""
+    out = frame.loc[:, list(FEATURES)].copy()
+    for name in POSITION_COLUMNS:
+        out[name] = np.where(out[name].to_numpy() < 0, 4, out[name].to_numpy()).astype(np.int64)
+    return out
 
 
 def align_probs(proba: np.ndarray, classes: np.ndarray) -> np.ndarray:
     """Map classifier columns onto counts 0, 1, 2, and 3."""
     out = np.zeros((len(proba), 4), dtype=np.float64)
     for slot, label in enumerate(classes):
-        out[:, int(label)] = proba[:, slot]
+        if 0 <= int(label) <= 3:
+            out[:, int(label)] = proba[:, slot]
     total = out.sum(axis=1, keepdims=True)
     total[total <= 0] = 1.0
     return out / total
 
 
-CONTEXT = 5_000
+def take_cards(blocks: list[pd.DataFrame], rng: np.random.Generator, limit: int) -> pd.DataFrame:
+    """Whole cards, in a random order, until the context is full."""
+    order = rng.permutation(len(blocks))
+    kept: list[pd.DataFrame] = []
+    total = 0
+    for index in order:
+        block = blocks[int(index)]
+        if block.empty:
+            continue
+        if kept and total + len(block) > limit:
+            continue
+        kept.append(block)
+        total += len(block)
+        if total >= limit:
+            break
+    if not kept:
+        return blocks[0].iloc[0:0].copy()
+    return pd.concat(kept, ignore_index=True)
 
 
-def stratified_sample(frame: pd.DataFrame, label: str, rng: np.random.Generator) -> pd.DataFrame:
-    """A sample that keeps each event count's share. The context is 5,000 rows."""
-    if len(frame) <= CONTEXT:
-        return frame
-    labels = frame[label].to_numpy()
-    classes, counts = np.unique(labels, return_counts=True)
-    raw = counts / counts.sum() * CONTEXT
-    take = np.floor(raw).astype(np.int64)
-    leftover = CONTEXT - int(take.sum())
-    if leftover > 0:
-        for index in np.argsort(-(raw - take))[:leftover]:
-            take[index] += 1
-    parts = []
-    for label_value, size in zip(classes, take, strict=True):
-        pool = frame.index[labels == label_value].to_numpy()
-        chosen = rng.choice(pool, size=int(min(size, len(pool))), replace=False)
-        parts.append(frame.loc[chosen])
-    return pd.concat(parts, ignore_index=True)
+def _blocks(frame: pd.DataFrame) -> list[pd.DataFrame]:
+    if frame.empty:
+        return []
+    return [block for _, block in frame.groupby("card_index", sort=False)]
 
 
 def _classifier():
@@ -171,22 +267,19 @@ def _classifier():
     os.environ["TABPFN_ALLOW_CPU_LARGE_DATASET"] = "1"
     return TabPFNClassifier(
         device="cpu",
-        n_estimators=2,
+        n_estimators=1,
         fit_mode="low_memory",
         ignore_pretraining_limits=True,
-        categorical_features_indices=[COLUMNS.index(name) for name in CATEGORICAL],
+        categorical_features_indices=[FEATURES.index(name) for name in CATEGORICAL],
         random_state=SEED,
         n_jobs=1,
     )
 
 
 def _predict_proba(model, frame: pd.DataFrame) -> np.ndarray:
-    matrix = features(frame)
-    parts = []
-    for start in range(0, len(matrix), 1000):
-        parts.append(model.predict_proba(matrix.iloc[start : start + 1000]))
-        print(f"  predicted {min(start + 1000, len(matrix))}/{len(matrix)}", flush=True)
-    return np.vstack(parts)
+    if len(frame) == 0:
+        return np.zeros((0, 4))
+    return np.asarray(model.predict_proba(features(frame)))
 
 
 def _scatter(frame: pd.DataFrame, probs: np.ndarray, n_cards: int) -> np.ndarray:
@@ -199,21 +292,6 @@ def _scatter(frame: pd.DataFrame, probs: np.ndarray, n_cards: int) -> np.ndarray
     fixtures = frame["fixture"].to_numpy()
     painted[cards, players, fixtures] = probs
     return painted
-
-
-def predict_cut(
-    goal_model,
-    assist_model,
-    cards: list,
-    league: dict,
-    clubs: dict,
-    squads: dict,
-    cuts: list[int],
-) -> tuple[np.ndarray, np.ndarray]:
-    frame = table_at(cards, league, clubs, squads, cuts)
-    goal_p = align_probs(_predict_proba(goal_model, frame), goal_model.classes_)
-    assist_p = align_probs(_predict_proba(assist_model, frame), assist_model.classes_)
-    return _scatter(frame, goal_p, len(cards)), _scatter(frame, assist_p, len(cards))
 
 
 def _place(probs: np.ndarray, cards: list, cuts: list[int]) -> np.ndarray:
@@ -232,45 +310,48 @@ def _line(revealed: float, channel: str, totals: dict[str, int]) -> str:
     )
 
 
+def _queries(block: pd.DataFrame) -> pd.DataFrame:
+    own = block[(block["side"] == 0) & (block["hidden"] == 1)]
+    return own.reset_index(drop=True)
+
+
+def _context(block: pd.DataFrame) -> pd.DataFrame:
+    return block[block["hidden"] == 0].reset_index(drop=True)
+
+
 def main() -> None:
     started = time.perf_counter()
     print("loading tabular cards", flush=True)
     league = build_league(TRAIN_SEASONS + (TEST_SEASON,))
     train = build_cards(TRAIN_SEASONS, league)
     test = build_cards((TEST_SEASON,), league)
-    clubs = fit_clubs(train)
     squads = squad_index(train + test)
-    frames = [
-        table_at(train, league, clubs, squads, [cut_at_fraction(card, fraction) for card in train])
-        for fraction in FRACTIONS
-    ]
-    train_frame = pd.concat(frames, ignore_index=True)
+    frames = []
+    for fraction in FRACTIONS:
+        frame = table_at(train, league, squads, [cut_at_fraction(card, fraction) for card in train])
+        frame["card_index"] = frame["card_index"] + len(frames) * len(train)
+        frames.append(frame)
+        print(f"train cells at {fraction:.0%}: {len(frame)}", flush=True)
+    pool = _blocks(pd.concat(frames, ignore_index=True))
+    rng = np.random.default_rng(SEED)
+    background = take_cards(pool, rng, CONTEXT)
     print(
-        f"train rows {len(train_frame)} goal events {(train_frame['y_goal'] > 0).sum()} "
-        f"assist events {(train_frame['y_assist'] > 0).sum()}",
+        f"context cells {len(background)} goal events {(background['y_goal'] > 0).sum()}",
         flush=True,
     )
-    rng = np.random.default_rng(SEED)
-    goal_rows = stratified_sample(train_frame, "y_goal", rng)
-    assist_rows = stratified_sample(train_frame, "y_assist", rng)
-    print(f"goal context {len(goal_rows)} assist context {len(assist_rows)}", flush=True)
-    print("fitting goal classifier", flush=True)
-    goal_model = _classifier()
-    goal_model.fit(features(goal_rows), goal_rows["y_goal"].to_numpy())
-    print("fitting assist classifier", flush=True)
-    assist_model = _classifier()
-    assist_model.fit(features(assist_rows), assist_rows["y_assist"].to_numpy())
     labels = np.stack([card.goals for card in test])
     assist_labels = np.stack([card.assists for card in test])
     goal_at_20: dict[str, int] | None = None
     lines = [
         "# Pretrained tabular reader",
         "",
-        "TabPFN v2 is a classifier pretrained on synthetic tables. Its public",
-        "checkpoint is the one used here. Each target gets a stratified sample",
-        "of 5,000 rows from 2022-23, 2023-24, and 2024-25, at the 20%, 40%,",
-        "60%, and 80% cuts, so the share of 0, 1, 2, and 3 stays as it is.",
-        "Concede, regulars, own history, and opponent history are not columns.",
+        "Each row is one cell of the stripped card. The cell carries the player",
+        "slot, the fixture slot, position, minutes, the sheet flag, venue, and",
+        "the club's recent scoring rate. Goal and assist tokens are the painted",
+        "counts, or the mask on a hidden cell. That fixture's forty squad rows",
+        "and forty opponent rows are on the same row, as position and minutes.",
+        "Club and opponent use a fixed code, the same number in every season.",
+        "Concede, regulars, own history, and opponent history are absent.",
         "",
         f"Train: {', '.join(TRAIN_SEASONS)}. Test: {TEST_SEASON}.",
         "",
@@ -283,10 +364,28 @@ def main() -> None:
     for revealed in FRACTIONS:
         cuts = [cut_at_fraction(card, revealed) for card in test]
         print(f"scoring {revealed:.0%}", flush=True)
-        goal_p, assist_p = predict_cut(goal_model, assist_model, test, league, clubs, squads, cuts)
+        frame = table_at(test, league, squads, cuts)
+        goal_probs = np.zeros((len(test), ROWS, COLS, 4), dtype=np.float64)
+        assist_probs = np.zeros_like(goal_probs)
+        goal_probs[..., 0] = 1.0
+        assist_probs[..., 0] = 1.0
+        for card_index, block in frame.groupby("card_index", sort=True):
+            query = _queries(block)
+            if query.empty:
+                continue
+            context = pd.concat([background, _context(block)], ignore_index=True)
+            print(f"  card {int(card_index) + 1}/{len(test)} context {len(context)} query {len(query)}", flush=True)
+            goal_model = _classifier()
+            goal_model.fit(features(context), context["y_goal"].to_numpy())
+            assist_model = _classifier()
+            assist_model.fit(features(context), context["y_assist"].to_numpy())
+            goal_p = align_probs(_predict_proba(goal_model, query), goal_model.classes_)
+            assist_p = align_probs(_predict_proba(assist_model, query), assist_model.classes_)
+            goal_probs[query["card_index"], query["player"], query["fixture"]] = goal_p
+            assist_probs[query["card_index"], query["player"], query["fixture"]] = assist_p
         for channel, probs, actual in (
-            ("goals", goal_p, labels),
-            ("assists", assist_p, assist_labels),
+            ("goals", goal_probs, labels),
+            ("assists", assist_probs, assist_labels),
         ):
             totals = tally_cards(test, actual, _place(probs, test, cuts), 0, cuts)
             lines.append(_line(revealed, channel, totals))
