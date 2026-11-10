@@ -76,8 +76,6 @@ PLAYER_H = MINUTE_H + EVENT_H + EVENT_H + POS_H
 HEADER_H = ODDS_H + VENUE_H + OPP_H
 INK = (0, 0, 0)
 WHITE = (255, 255, 255)
-DRAW_TEX = ("0000", "1111", "1111", "0000")
-AWAY_TEX = ("0110", "0110", "0110", "0110")
 RULE = 2
 
 # One 4 by 4 mark per club. Black is on. The opponent square uses these.
@@ -234,18 +232,18 @@ def _binary_squares(img: np.ndarray, y0: int, x0: int, count: int, height: int) 
 
 
 def _binary_odds(img: np.ndarray, x0: int, probs: np.ndarray) -> None:
-    """Home is solid black. Draw is a center band. Away is a pillar.
+    """Black home, a white draw band, then black away.
 
-    The sixteen squares stay in that order, so the counts are unchanged.
+    The white band's height is the draw share. Its position splits home,
+    above it, from away, below it. The sixteen squares keep the same counts.
     """
     y = 0
-    for texture, count in zip((None, DRAW_TEX, AWAY_TEX), split_heights(probs, ODDS_N), strict=True):
-        for _ in range(int(count)):
-            if texture is None:
-                img[y : y + SQ, x0 : x0 + SQ] = INK
-            else:
-                _mark(img, y, x0, texture)
-            y += SQ
+    for color, count in zip((INK, WHITE, INK), split_heights(probs, ODDS_N), strict=True):
+        pixels = int(count) * SQ
+        if pixels <= 0:
+            continue
+        img[y : y + pixels, x0 : x0 + SQ] = color
+        y += pixels
 
 
 def paint_binary(
@@ -257,8 +255,9 @@ def paint_binary(
 ) -> np.ndarray:
     """The square card in black and white. Not the default, and not scored.
 
-    Home is a black square and away is a white square. The position color is
-    a two-pixel rule between player blocks. A hidden event is a checker.
+    Odds are black, then a white draw band, then black. Venue is black for
+    home and white for away. The position color is a two-pixel rule between
+    player blocks. A hidden event is a checker.
     """
     img = np.full((HEADER_H + ROWS * PLAYER_H, COLS * SQ, 3), 255, dtype=np.uint8)
     grey = np.zeros(COLS, dtype=bool)

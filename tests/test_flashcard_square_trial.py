@@ -205,6 +205,10 @@ class SquareCardTests(unittest.TestCase):
         card = _card()
         image = compose_binary(view, card, _prices(card))
         self.assertEqual(tuple(int(v) for v in image[0, 0]), (0, 0, 0))
+        self.assertEqual(tuple(int(v) for v in image[51, 0]), (0, 0, 0))
+        self.assertEqual(tuple(int(v) for v in image[52, 0]), (255, 255, 255))
+        self.assertEqual(tuple(int(v) for v in image[59, 0]), (255, 255, 255))
+        self.assertEqual(tuple(int(v) for v in image[60, 0]), (0, 0, 0))
         self.assertEqual(tuple(int(v) for v in image[ODDS_H, 0]), (0, 0, 0))
         self.assertEqual(tuple(int(v) for v in image[ODDS_H, CELL_W]), (255, 255, 255))
         y = HEADER_H + MINUTE_H + 2 * EVENT_H
