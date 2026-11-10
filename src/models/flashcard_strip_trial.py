@@ -3,11 +3,12 @@
 Concede, regulars, own history, and opponent history are absent from the
 picture and from the numeric match-up. The recent scoring rate stays.
 The odds row is sixteen squares: blue home, yellow draw, purple away, from
-the Shin de-vig. The venue mark is one square. Minutes are six squares of
-fifteen minutes. One goal or assist is one square, and those rows are three
-squares tall. The one-shot card paints the odds on every fixture, including
-a grey week. The stepped reader uses this same card: true past, the odds,
-the venue, and the minutes on the next week, and every later column removed.
+the Shin de-vig. The venue mark is one square. The opponent is one square,
+a club symbol. Minutes are six squares of fifteen minutes. One goal or
+assist is one square, and those rows are three squares tall. The one-shot
+card paints the odds on every fixture, including a grey week. The stepped
+reader uses this same card: true past, the odds, the venue, the opponent,
+and the minutes on the next week, and every later column removed.
 The other squad is not an input.
 """
 

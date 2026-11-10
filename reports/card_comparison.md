@@ -6,7 +6,8 @@ chosen at random, starting from gameweek 1. The test scores all four cuts.
 Every club and every row is included.
 
 The reader is squad vision on the square card. The other squad is not an input.
-The odds row is sixteen squares. The venue mark is one square. Minutes
+The odds row is sixteen squares. The venue mark is one square. The opponent
+is one square, a club symbol. Minutes
 are six squares of fifteen minutes, filled from the bottom. One goal or
 assist is one square, and those rows are three squares tall. The position
 color is one square. Concede, regulars, own history, and opponent history
@@ -28,6 +29,6 @@ appearance and either neighboring gameweek. The numbers are totals.
 | 80% | goals | 199 | 204 | 55 | 73 | 102 |
 | 80% | assists | 192 | 185 | 36 | 51 | 62 |
 
-Logged from the 21:47 UK pass on 10 Nov 2026. This is the gate. It is the full painter. The other squad is not an input.
+Logged from the 21:47 UK pass on 10 Nov 2026. This is the gate. It is the full painter before the opponent symbol row. The other squad is not an input.
 
 The previous gate, logged at 20:00 UK on 10 Nov 2026, is the same square card while the reader still took the other squad. At 20% revealed it puts 196 goal bars on the same appearance and 264 within one gameweek. The 15:53 UK gate on 9 Nov, the stripped card with eight-pixel event bands and no odds bar, puts 190 and 258.

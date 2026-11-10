@@ -2,9 +2,9 @@
 
 The score is the painted card against the actual card. Training and test cuts are 20%, 40%, 60%, and 80% of each club's fixtures, starting from gameweek 1. Every club and every row is included. The numbers are totals.
 
-The reader is squad vision on the square card. The other squad is not an input. The odds row is sixteen squares. The venue mark is one square. Minutes are six squares of fifteen minutes, filled from the bottom. One goal or assist is one square, and those rows are three squares tall. The position color is one square. Concede, regulars, own history, and opponent history are absent from the picture and from the match-up. The recent scoring rate stays. The opponent club stays. In training, each card draws one of those four cuts at random. The test scores all four. Each future fixture is given a number of bars equal to the sum of its bar probabilities. Those bars go to the rows with minutes and the highest probabilities. A bar matches a goal or an assist on the same row only. Within one gameweek includes the same appearance.
+The reader is squad vision on the square card. The other squad is not an input. The odds row is sixteen squares. The venue mark is one square. The opponent is one square, a club symbol. Minutes are six squares of fifteen minutes, filled from the bottom. One goal or assist is one square, and those rows are three squares tall. The position color is one square. Concede, regulars, own history, and opponent history are absent from the picture and from the match-up. The recent scoring rate stays. The opponent club stays. In training, each card draws one of those four cuts at random. The test scores all four. Each future fixture is given a number of bars equal to the sum of its bar probabilities. Those bars go to the rows with minutes and the highest probabilities. A bar matches a goal or an assist on the same row only. Within one gameweek includes the same appearance.
 
-This table is the gate, logged at 21:47 UK on 10 Nov 2026. Test season 2025-26. It is the full painter. The other squad is not an input.
+This table is the gate, logged at 21:47 UK on 10 Nov 2026. Test season 2025-26. It is the full painter before the opponent symbol row. The other squad is not an input.
 
 | revealed | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
 |---|---|---:|---:|---:|---:|---:|
@@ -141,7 +141,7 @@ At that point the gate was still the 15:53 card, which has no odds bar. On the e
 
 ## Square card
 
-The default picture is the square card. The 21:47 UK pass on 10 Nov trains it without the other squad. The 20:00 UK pass on the same card still read that squad. The odds row is sixteen squares, the venue is one square, and minutes are six squares of fifteen minutes. One to fifteen minutes fills the bottom square, sixteen to thirty fills two, and seventy-six minutes or more fills all six. One goal or assist is one square. Those rows are three squares tall. The position color is one square. The full painter shows the remainder. The stepped painter keeps the odds, the venue, and the minutes on the next week and removes every later column. The other squad is not an input.
+The default picture is the square card. The 21:47 UK pass on 10 Nov trains it without the other squad. The 20:00 UK pass on the same card still read that squad. The opponent symbol row was added after that pass and has not been scored. The odds row is sixteen squares, the venue is one square, and minutes are six squares of fifteen minutes. One to fifteen minutes fills the bottom square, sixteen to thirty fills two, and seventy-six minutes or more fills all six. One goal or assist is one square. Those rows are three squares tall. The position color is one square. The full painter shows the remainder. The stepped painter keeps the odds, the venue, and the minutes on the next week and removes every later column. The other squad is not an input.
 
 | revealed | model | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
 |---|---|---|---:|---:|---:|---:|---:|

@@ -32,6 +32,7 @@ from src.models.flashcard_squad_trial import (
 from src.models.flashcard_square_trial import (
     EVENT_H,
     HEADER_H,
+    VENUE_H,
     MINUTE_H,
     ODDS_H,
     PLAYER_H,
@@ -174,7 +175,7 @@ def main() -> None:
         rows.append((name, g, a))
 
     run("white odds", lambda img, _b: blank_rows(img, 0, ODDS_H))
-    run("white venue", lambda img, _b: blank_rows(img, ODDS_H, HEADER_H))
+    run("white venue", lambda img, _b: blank_rows(img, ODDS_H, ODDS_H + VENUE_H))
     run("white minutes", lambda img, _b: blank_player_band(img, MINUTE_BAND))
     run("white goals", lambda img, _b: blank_player_band(img, GOAL_BAND))
     run("white assists", lambda img, _b: blank_player_band(img, ASSIST_BAND))

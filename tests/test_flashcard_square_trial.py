@@ -25,11 +25,14 @@ from src.models.flashcard_squad_trial import (
     ROWS,
 )
 from src.models.flashcard_square_trial import (
+    CLUB_MARKS,
     EVENT_H,
     HEADER_H,
     MINUTE_H,
     ODDS_H,
     PLAYER_H,
+    VENUE_H,
+    compose_binary,
     compose_square,
     minute_squares,
     paint_square,
@@ -179,6 +182,36 @@ class SquareCardTests(unittest.TestCase):
             None,
         )
         self.assertEqual(tuple(out.shape), (1, ROWS, COLS, 4))
+
+    def test_the_opponent_square_is_the_club_symbol(self) -> None:
+        card = _card()
+        image = compose_square(_view(), card, _prices(card), np.array([0]), target=1)
+        y = ODDS_H + VENUE_H
+        for yy, row in enumerate(CLUB_MARKS["Wolves"]):
+            for xx, bit in enumerate(row):
+                pixel = tuple(int(v) for v in image[y + yy, xx])
+                self.assertEqual(pixel, (0, 0, 0) if bit == "1" else (255, 255, 255))
+        for yy, row in enumerate(CLUB_MARKS["Spurs"]):
+            for xx, bit in enumerate(row):
+                pixel = tuple(int(v) for v in image[y + yy, CELL_W + xx])
+                self.assertEqual(pixel, (0, 0, 0) if bit == "1" else (255, 255, 255))
+
+    def test_the_binary_card_uses_black_white_and_a_rule(self) -> None:
+        view = _view()
+        view["minutes"][0, 0] = 15
+        view["goal_token"][0, 0] = 1
+        view["home"][1] = 0
+        view["column_on"][1] = 1
+        card = _card()
+        image = compose_binary(view, card, _prices(card))
+        self.assertEqual(tuple(int(v) for v in image[0, 0]), (0, 0, 0))
+        self.assertEqual(tuple(int(v) for v in image[ODDS_H, 0]), (0, 0, 0))
+        self.assertEqual(tuple(int(v) for v in image[ODDS_H, CELL_W]), (255, 255, 255))
+        y = HEADER_H + MINUTE_H + 2 * EVENT_H
+        self.assertEqual(tuple(int(v) for v in image[y, 0]), (255, 255, 255))
+        self.assertEqual(tuple(int(v) for v in image[y + 1, 0]), (255, 255, 255))
+        self.assertEqual(tuple(int(v) for v in image[y + 2, 0]), (0, 0, 0))
+        self.assertEqual(tuple(int(v) for v in image[y + 3, 8 * CELL_W]), (0, 0, 0))
 
 
 if __name__ == "__main__":
