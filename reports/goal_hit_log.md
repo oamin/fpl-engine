@@ -164,6 +164,31 @@ The default picture is the square card. The 21:47 UK pass on 10 Nov trains it wi
 
 These full-painter rows are the gate above. At 20% revealed the step puts 179 goal bars on the same appearance and 234 within one gameweek. The gate puts 192 and 256. The 20:00 step, which still read the other squad, put 182 and 237. The previous stripped step put 168 and 217.
 
+## Binary card
+
+The 22:46 UK pass on 10 Nov trains the same reader on the black-and-white card. Odds are black, then a white draw band, then black. The band's height is the draw share. Home is the black above it and away is the black below it. Venue is black for home and white for away. The opponent symbol stays. Minutes, goals, and assists are black squares filled from the bottom. A hidden event is a checker. The position color is a two-pixel rule between player blocks. The other squad is not an input. The detail is in `reports/flashcard_binary_trial.md`.
+
+| revealed | model | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
+|---|---|---|---:|---:|---:|---:|---:|
+| 20% | binary full | goals | 730 | 762 | 190 | 254 | 397 |
+| 20% | binary full | assists | 707 | 698 | 103 | 158 | 226 |
+| 40% | binary full | goals | 544 | 586 | 149 | 198 | 308 |
+| 40% | binary full | assists | 531 | 536 | 79 | 117 | 166 |
+| 60% | binary full | goals | 360 | 390 | 96 | 131 | 203 |
+| 60% | binary full | assists | 351 | 356 | 58 | 84 | 110 |
+| 80% | binary full | goals | 199 | 208 | 55 | 75 | 104 |
+| 80% | binary full | assists | 192 | 189 | 35 | 52 | 67 |
+| 20% | binary step | goals | 730 | 645 | 177 | 224 | 361 |
+| 20% | binary step | assists | 707 | 735 | 103 | 152 | 233 |
+| 40% | binary step | goals | 544 | 497 | 135 | 172 | 278 |
+| 40% | binary step | assists | 531 | 570 | 83 | 121 | 179 |
+| 60% | binary step | goals | 360 | 327 | 87 | 113 | 178 |
+| 60% | binary step | assists | 351 | 374 | 56 | 85 | 118 |
+| 80% | binary step | goals | 199 | 177 | 53 | 66 | 94 |
+| 80% | binary step | assists | 192 | 203 | 37 | 52 | 73 |
+
+The full painter does not replace the gate. At 20% revealed it puts 190 goal bars on the same appearance and 254 within one gameweek. The gate puts 192 and 256. Same-appearance goals are 2 behind at 20%, 2 ahead at 40%, 2 ahead at 60%, and level at 80%. Within one gameweek, goals are behind at 20%, 40%, and 60%, and 2 ahead at 80%. The step at 20% puts 177 and 224.
+
 ## What the square card uses
 
 The 21:16 UK pass on 10 Nov removes one signal at a time from the 20:00 full painter, which still read the other squad, and paints the 20% cut again. Whitening the whole picture leaves 10 goal bars on the same appearance. Whitening the minute squares leaves 28, and 95 bars painted. Whitening the odds row leaves 117, and 378 bars painted. Zeroing the position id still paints 665 bars, and 12 land on a goal. The position color, the venue, the past goals, the past assists, the recent scoring rate, and dropping the other squad each move the same-appearance count by about ten. That pass is a record of the reader that still took the squad. The locked reader does not. The detail is in `reports/flashcard_signal.md`.
