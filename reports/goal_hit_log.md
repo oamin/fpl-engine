@@ -107,6 +107,46 @@ The 21:54 UK pass on 9 Nov makes the goal band and the assist band sixteen pixel
 
 At 20% revealed the taller bands put 189 goal bars on the same appearance and 249 within one gameweek. The ImageNet reader puts 182 and 241. The gate puts 190 and 258. The gate stays the stripped card measured at 15:53.
 
+## Pretrained tabular reader
+
+The 10:30 UK pass on 10 Nov gives TabPFN v2 the stripped card as numbers. Each row is one cell: player slot, fixture slot, position, minutes, the sheet flag, venue, and the recent scoring rate. A hidden goal or assist is the mask. The same fixture adds its forty squad rows and forty opponent rows, as position and minutes. Club and opponent use a fixed code, the same number in every season. Concede, regulars, own history, and opponent history stay out. Bars use the same fixture budget as the gate.
+
+| revealed | model | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
+|---|---|---|---:|---:|---:|---:|---:|
+| 20% | tabpfn | goals | 730 | 1477 | 274 | 349 | 605 |
+| 20% | tabpfn | assists | 707 | 1568 | 210 | 304 | 483 |
+| 80% | tabpfn | goals | 199 | 680 | 109 | 131 | 214 |
+| 80% | tabpfn | assists | 192 | 795 | 95 | 109 | 201 |
+
+At 20% revealed this reader puts 274 goal bars on the same appearance and 349 within one gameweek. It paints 1477 goal bars against 730 actual. The gate puts 190 and 258. The gate stays the stripped card measured at 15:53.
+
+## Confirmed card in the tabular reader
+
+The 14:09 UK pass on 10 Nov gives TabPFN v2 the confirmed squad card. Each row is one player in one fixture. The columns are that card across the window: team, opponent, home or away, and the Shin de-vigged home win, draw, and away probabilities, then that player's minutes, goals, and assists. The squad's minutes and positions in the fixture being scored sit on the same row. A hidden event is the mask. Concede, regulars, own history, and opponent history stay out.
+
+The one-shot pass keeps every fixture. A cut hides later goals and assists and leaves minutes, venue, opponents, and odds in place. The stepped pass keeps the true past, keeps minutes, venue, and odds on the next gameweek, blanks that week's opponent, and drops every later column. Its loss is only that week. Bars use the same fixture budget as the gate.
+
+| revealed | model | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
+|---|---|---|---:|---:|---:|---:|---:|
+| 20% | one-shot | goals | 730 | 704 | 132 | 165 | 318 |
+| 20% | one-shot | assists | 707 | 492 | 51 | 68 | 127 |
+| 40% | one-shot | goals | 544 | 511 | 114 | 129 | 253 |
+| 40% | one-shot | assists | 531 | 333 | 45 | 56 | 98 |
+| 60% | one-shot | goals | 360 | 384 | 81 | 92 | 183 |
+| 60% | one-shot | assists | 351 | 222 | 30 | 36 | 64 |
+| 80% | one-shot | goals | 199 | 194 | 40 | 49 | 90 |
+| 80% | one-shot | assists | 192 | 109 | 14 | 18 | 32 |
+| 20% | stepped | goals | 730 | 868 | 198 | 236 | 429 |
+| 20% | stepped | assists | 707 | 597 | 68 | 84 | 169 |
+| 40% | stepped | goals | 544 | 673 | 161 | 181 | 344 |
+| 40% | stepped | assists | 531 | 456 | 54 | 61 | 130 |
+| 60% | stepped | goals | 360 | 455 | 112 | 124 | 230 |
+| 60% | stepped | assists | 351 | 303 | 36 | 41 | 84 |
+| 80% | stepped | goals | 199 | 232 | 64 | 71 | 122 |
+| 80% | stepped | assists | 192 | 159 | 19 | 21 | 37 |
+
+At 20% revealed the one-shot reader puts 132 goal bars on the same appearance and 165 within one gameweek. It paints 704 goal bars against 730 actual. The stepped reader puts 198 and 236, and paints 868. The gate puts 190 and 258. The gate stays the stripped card measured at 15:53.
+
 The table below is an older per-player ranking. It is a record of past runs. It is not the score.
 
 Train seasons for every row so far: 2022-23, 2023-24, 2024-25. Test season: 2025-26.
