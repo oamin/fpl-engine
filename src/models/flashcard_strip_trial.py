@@ -121,11 +121,18 @@ def compose_card(
 class StripVision(nn.Module):
     """Pixel reader for a header that is venue, or odds plus venue."""
 
-    def __init__(self, header_h: int, dropout: float = 0.1, n_clubs: int = 1) -> None:
+    def __init__(
+        self,
+        header_h: int,
+        dropout: float = 0.1,
+        n_clubs: int = 1,
+        player_h: int = PLAYER_H,
+    ) -> None:
         super().__init__()
         self.header_h = int(header_h)
+        self.player_h = int(player_h)
         self.header = nn.Linear(3 * self.header_h * CELL_W, D)
-        self.patch = nn.Linear(3 * PLAYER_H * CELL_W, D)
+        self.patch = nn.Linear(3 * self.player_h * CELL_W, D)
         self.couple = Coupler(dropout, n_clubs)
 
     def forward(
@@ -144,7 +151,7 @@ class StripVision(nn.Module):
         header = images[:, :, : self.header_h, :].reshape(batch, 3, self.header_h, COLS, CELL_W)
         header = header.permute(0, 3, 1, 2, 4).reshape(batch, COLS, -1)
         header_tok = self.header(header)
-        body = images[:, :, self.header_h :, :].reshape(batch, 3, ROWS, PLAYER_H, COLS, CELL_W)
+        body = images[:, :, self.header_h :, :].reshape(batch, 3, ROWS, self.player_h, COLS, CELL_W)
         body = body.permute(0, 4, 2, 1, 3, 5).reshape(batch, COLS, ROWS, -1)
         cells = self.patch(body).permute(0, 2, 1, 3) + header_tok[:, None, :, :]
         return self.couple(
@@ -166,13 +173,27 @@ def _optimizer(model: nn.Module) -> torch.optim.Optimizer:
     )
 
 
-def _batch_images(views: list[dict], cards: list, odds: dict | None) -> np.ndarray:
-    pictures = []
-    for view, card in zip(views, cards, strict=True):
-        if odds is None:
-            pictures.append(compose_stripped(view))
-            continue
-        pictures.append(compose_card(view, card, odds))
+def _paint_one(
+    view: dict,
+    card,
+    odds: dict | None,
+    grey_columns: np.ndarray | None,
+    target: int | None,
+    compose,
+) -> np.ndarray:
+    """The locked card, or a painter passed in for one trial."""
+    if compose is not None:
+        return compose(view, card, odds, grey_columns, target)
+    if odds is None:
+        return compose_stripped(view, grey_columns)
+    return compose_card(view, card, odds, grey_columns, target)
+
+
+def _batch_images(views: list[dict], cards: list, odds: dict | None, compose=None) -> np.ndarray:
+    pictures = [
+        _paint_one(view, card, odds, None, None, compose)
+        for view, card in zip(views, cards, strict=True)
+    ]
     return np.stack(pictures)
 
 
@@ -184,6 +205,7 @@ def train_stripped(
     clubs: dict,
     odds: dict | None,
     name: str,
+    compose=None,
 ) -> None:
     opt = _optimizer(model)
     squads = squad_index(cards)
@@ -197,7 +219,7 @@ def train_stripped(
             cuts = [sample_cut(card, rng) for card in pick]
             views = [strip_features(apply_cut(card, league, cut, clubs, squads)) for card, cut in zip(pick, cuts, strict=True)]
             batch = _stack(views)
-            batch["image"] = torch.from_numpy(_batch_images(views, pick, odds)).permute(0, 3, 1, 2).float().div(255.0)
+            batch["image"] = torch.from_numpy(_batch_images(views, pick, odds, compose)).permute(0, 3, 1, 2).float().div(255.0)
             opt.zero_grad()
             goal_logits, assist_logits = model(
                 batch["image"], batch["row_pad"], batch["column_on"], batch["position"], batch["minutes"],
@@ -224,10 +246,11 @@ def paint_stripped(
     squads: dict,
     odds: dict | None,
     cuts: list[int],
+    compose=None,
 ) -> tuple[np.ndarray, np.ndarray]:
     views = [strip_features(apply_cut(card, league, cut, clubs, squads)) for card, cut in zip(cards, cuts, strict=True)]
     batch = _stack(views)
-    batch["image"] = torch.from_numpy(_batch_images(views, cards, odds)).permute(0, 3, 1, 2).float().div(255.0)
+    batch["image"] = torch.from_numpy(_batch_images(views, cards, odds, compose)).permute(0, 3, 1, 2).float().div(255.0)
     model.eval()
     with torch.no_grad():
         goal_logits, assist_logits = model(
@@ -247,9 +270,9 @@ def _step_view(card, league, clubs, squads, target: int) -> dict:
     return view
 
 
-def _step_image(view: dict, card, odds: dict, target: int) -> np.ndarray:
+def _step_image(view: dict, card, odds: dict, target: int, compose=None) -> np.ndarray:
     """The same card, cut to one next week, with the odds bar through that week."""
-    return compose_card(view, card, odds, np.flatnonzero(card.gw == target), target)
+    return _paint_one(view, card, odds, np.flatnonzero(card.gw == target), target, compose)
 
 
 def _gameweeks(cards: list) -> dict[int, list[int]]:
@@ -269,7 +292,13 @@ def _target_gw(card, rng: np.random.Generator) -> int:
 
 
 def train_stripped_steps(
-    model: nn.Module, cards: list, league: dict, rng: np.random.Generator, clubs: dict, odds: dict
+    model: nn.Module,
+    cards: list,
+    league: dict,
+    rng: np.random.Generator,
+    clubs: dict,
+    odds: dict,
+    compose=None,
 ) -> None:
     """One random gameweek per card. The loss is only that week."""
     opt = _optimizer(model)
@@ -287,7 +316,7 @@ def train_stripped_steps(
                 target = _target_gw(card, rng)
                 view = _step_view(card, league, clubs, squads, target)
                 views.append(view)
-                pictures.append(_step_image(view, card, odds, target))
+                pictures.append(_step_image(view, card, odds, target, compose))
             batch = _stack(views)
             batch["image"] = torch.from_numpy(np.stack(pictures)).permute(0, 3, 1, 2).float().div(255.0)
             opt.zero_grad()
@@ -309,7 +338,13 @@ def train_stripped_steps(
 
 
 def paint_stripped_steps(
-    model: nn.Module, cards: list, league: dict, clubs: dict, squads: dict, odds: dict
+    model: nn.Module,
+    cards: list,
+    league: dict,
+    clubs: dict,
+    squads: dict,
+    odds: dict,
+    compose=None,
 ) -> tuple[np.ndarray, np.ndarray]:
     """Walk every gameweek with the true past and keep that week's bars."""
     goals = np.zeros((len(cards),) + cards[0].goals.shape, dtype=np.int64)
@@ -322,7 +357,7 @@ def paint_stripped_steps(
             card = cards[index]
             view = _step_view(card, league, clubs, squads, gw)
             views.append(view)
-            pictures.append(_step_image(view, card, odds, gw))
+            pictures.append(_step_image(view, card, odds, gw, compose))
         batch = _stack(views)
         batch["image"] = torch.from_numpy(np.stack(pictures)).permute(0, 3, 1, 2).float().div(255.0)
         with torch.no_grad():
