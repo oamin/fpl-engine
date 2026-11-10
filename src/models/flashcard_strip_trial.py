@@ -1,12 +1,13 @@
-"""The locked card. The odds bar sits above the venue. Four header rows are gone.
+"""The locked card is the square card. Four header rows are gone.
 
 Concede, regulars, own history, and opponent history are absent from the
 picture and from the numeric match-up. The recent scoring rate stays.
-Opening odds are the top band: blue home, yellow draw, purple away, from the
-Shin de-vig. The one-shot card paints that bar on every fixture, including a
-grey week. Goals and assists each fill a sixteen-pixel band, the same height
-as the minute bar. The stepped reader uses this same card: true past, the
-odds bar, venue, and minutes on the next week, and every later column removed.
+The odds row is sixteen squares: blue home, yellow draw, purple away, from
+the Shin de-vig. The venue mark is one square. Minutes are six squares of
+fifteen minutes. One goal or assist is one square, and those rows are three
+squares tall. The one-shot card paints the odds on every fixture, including
+a grey week. The stepped reader uses this same card: true past, the odds,
+the venue, and the minutes on the next week, and every later column removed.
 """
 
 from __future__ import annotations
@@ -22,12 +23,7 @@ import torch.nn.functional as F
 from src.models.flashcard_calibrated_trial import place_expected
 from src.models.flashcard_card_score import _paint, tally_cards
 from src.models.flashcard_step_trial import chop_future
-from src.models.flashcard_odds_trial import (
-    column_odds,
-    load_odds,
-    paint_odds_strip,
-    visible_odds,
-)
+from src.models.flashcard_odds_trial import load_odds, paint_odds_strip
 from src.models.flashcard_squad_trial import (
     BAND_H,
     BATCH,
@@ -106,16 +102,14 @@ def compose_card(
     grey_columns: np.ndarray | None = None,
     target: int | None = None,
 ) -> np.ndarray:
-    """The painter's picture: odds bar, venue, then the squad.
+    """The default picture: the square card.
 
-    A one-shot card paints the bar on every fixture. A stepped card, given
-    `target`, paints it on the true past and on that next week.
+    A one-shot card paints the odds on every fixture. A stepped card, given
+    `target`, paints them on the true past and on that next week.
     """
-    if target is None:
-        visible = visible_odds(card.gw, "painter")
-    else:
-        visible = visible_odds(card.gw, "step", target=target)
-    return compose_stripped(view, grey_columns, column_odds(card, odds), visible)
+    from src.models.flashcard_square_trial import compose_square
+
+    return compose_square(view, card, odds, grey_columns, target)
 
 
 class StripVision(nn.Module):
@@ -398,21 +392,25 @@ def main() -> None:
     lines = [
         "# Header rows removed",
         "",
-        "The default card paints the odds bar above the venue, on every fixture",
-        "including a grey week. It drops concede, regulars, own history, and",
-        "opponent history from the picture and from the numeric match-up. The",
-        "recent scoring rate stays. The no-odds reader is the comparison. The",
-        "stepped reader uses the same odds card, asks for one gameweek, and",
-        "removes every later column.",
+        "The default card is the square card. The odds row is sixteen squares,",
+        "the venue is one square, and minutes are six squares of fifteen",
+        "minutes. One event is one square. It drops concede, regulars, own",
+        "history, and opponent history from the picture and from the numeric",
+        "match-up. The recent scoring rate stays. The no-odds reader is the",
+        "comparison. The stepped reader uses the same square card, asks for",
+        "one gameweek, and removes every later column.",
         "",
         f"Train: {', '.join(TRAIN_SEASONS)}. Test: {TEST_SEASON}.",
         "",
         "| revealed | model | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |",
         "|---|---|---|---:|---:|---:|---:|---:|",
     ]
+    from src.models.flashcard_square_trial import HEADER_H as SQUARE_HEADER
+    from src.models.flashcard_square_trial import PLAYER_H as SQUARE_PLAYER
+
     readers = (
         ("stripped", StripVision(BAND_H, dropout=0.1, n_clubs=n_clubs), None),
-        ("stripped odds", StripVision(BAND_H * 2, dropout=0.1, n_clubs=n_clubs), odds),
+        ("square", StripVision(SQUARE_HEADER, dropout=0.1, n_clubs=n_clubs, player_h=SQUARE_PLAYER), odds),
     )
     for name, model, prices in readers:
         print(f"training {name}", flush=True)
@@ -432,7 +430,7 @@ def main() -> None:
                 )
     print("training stripped step", flush=True)
     torch.manual_seed(SEED)
-    stepper = StripVision(BAND_H * 2, dropout=0.1, n_clubs=n_clubs)
+    stepper = StripVision(SQUARE_HEADER, dropout=0.1, n_clubs=n_clubs, player_h=SQUARE_PLAYER)
     train_stripped_steps(stepper, train, league, np.random.default_rng(SEED), clubs, odds)
     step_g, step_a = paint_stripped_steps(stepper, test, league, clubs, squads, odds)
     for revealed in (0.2, 0.4, 0.6, 0.8):
@@ -449,9 +447,8 @@ def main() -> None:
     lines.extend(
         [
             "",
-            "The default picture paints the odds bar above the venue. The gate",
-            "totals stay the no-odds card, 190 and 258 at 20% revealed, until",
-            "the sixteen-pixel card with that bar is scored.",
+            "The default picture is the square card. The gate totals stay the",
+            "no-odds card, 190 and 258 at 20% revealed.",
             f"Wall clock: {seconds:.0f} seconds on CPU.",
             "",
         ]

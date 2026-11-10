@@ -5,11 +5,13 @@ starting from gameweek 1. Every row is included. A bar on one row does not
 match a goal on another row. The totals are sums, not an average of per-player
 rates.
 
-The painted card comes from the locked vision reader. The odds bar sits above
-the venue. Concede, regulars, own history, and opponent history are absent
-from the picture and from the match-up. Each future fixture gets a number of
-bars equal to the sum of its bar probabilities. Those bars go to the rows
-with minutes and the highest probabilities.
+The painted card comes from the locked vision reader. The picture is the
+square card: sixteen odds squares, one venue square, six minute squares of
+fifteen minutes, and one square per goal or assist. Concede, regulars, own
+history, and opponent history are absent from the picture and from the
+match-up. Each future fixture gets a number of bars equal to the sum of its
+bar probabilities. Those bars go to the rows with minutes and the highest
+probabilities.
 """
 
 from __future__ import annotations
@@ -111,12 +113,13 @@ def main() -> None:
     n_clubs = max(clubs.values(), default=0) + 1
     print(f"train {len(train)} test {len(test)}", flush=True)
     from src.models.flashcard_odds_trial import load_odds
-    from src.models.flashcard_strip_trial import BAND_H, StripVision, paint_stripped, train_stripped
+    from src.models.flashcard_square_trial import HEADER_H, PLAYER_H
+    from src.models.flashcard_strip_trial import StripVision, paint_stripped, train_stripped
 
     odds = load_odds()
     torch.manual_seed(SEED)
-    vision = StripVision(BAND_H * 2, dropout=0.1, n_clubs=n_clubs)
-    train_stripped(vision, train, league, np.random.default_rng(SEED), clubs, odds, "odds card")
+    vision = StripVision(HEADER_H, dropout=0.1, n_clubs=n_clubs, player_h=PLAYER_H)
+    train_stripped(vision, train, league, np.random.default_rng(SEED), clubs, odds, "square card")
     print("scoring", flush=True)
     labels = np.stack([card.goals for card in test])
     assist_labels = np.stack([card.assists for card in test])
@@ -129,8 +132,8 @@ def main() -> None:
         "chosen at random, starting from gameweek 1. The test scores all four cuts.",
         "Every club and every row is included.",
         "",
-        "The reader is squad vision with squad coupling. The odds bar sits above",
-        "the venue. Concede, regulars, own history, and opponent history are",
+        "The reader is squad vision with squad coupling. The picture is the",
+        "square card. Concede, regulars, own history, and opponent history are",
         "absent from the picture and from the match-up. Each future fixture is",
         "given a number of bars equal to the sum of its bar probabilities. Those",
         "bars go to the rows with minutes and the highest probabilities.",

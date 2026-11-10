@@ -39,7 +39,7 @@ Train: 2022-23, 2023-24, 2024-25. Test: 2025-26.
 
 The gate at this pass is the stripped card, with no odds bar: at 20% revealed,
 190 goal bars on the same appearance and 258 actual goal bars within one gameweek.
-The default picture now paints this bar. The sixteen-pixel card with it has not been scored.
+This bar was the default until the square card. The sixteen-pixel card with it has not been scored.
 The stepped rows without odds are the 15:00 UK pass. The odds rows are the
 15:29 UK pass, after the bar moved to blue, yellow, and purple.
 

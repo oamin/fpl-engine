@@ -27,7 +27,5 @@ appearance and either neighboring gameweek. The numbers are totals.
 
 Logged from the 15:53 UK pass on 9 Nov 2026. This is the gate.
 
-The default picture now paints the odds bar above the venue. These totals are the card without that bar. The sixteen-pixel card with the bar has not been scored.
-
-The square card is scored in `reports/flashcard_square_trial.md`. At 20% revealed its full painter puts 196 goal bars on the same appearance and 264 within one gameweek. At 40% the same-appearance count is 149 against 150 in the table above. This table stays the gate.
+The default picture is the square card: sixteen odds squares, six minute squares of fifteen minutes, and one square per event. These totals are the 15:53 card. The square card is scored in `reports/flashcard_square_trial.md`. At 20% revealed its full painter puts 196 goal bars on the same appearance and 264 within one gameweek. At 40% the same-appearance count is 149 against 150 in the table above. This table stays the gate.
 

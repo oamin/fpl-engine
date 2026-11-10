@@ -1,4 +1,4 @@
-"""Square card. One square is the column width.
+"""The default card. One square is the column width.
 
 The odds row is sixteen squares. Blue is the home win, yellow the draw,
 purple the away win, from the top, using the Shin de-vig of the opening

@@ -109,13 +109,13 @@ At 20% revealed the taller bands put 189 goal bars on the same appearance and 24
 
 ## Odds bar
 
-The default picture paints an eight-pixel odds bar above the venue. Blue is the home win, yellow the draw, purple the away win, from the Shin de-vig of the opening prices. A missing price is hatched. The one-shot card paints the bar on every fixture, including a grey week. The stepped card paints it on the true past and on the next week.
+That picture was an eight-pixel odds bar above the venue. Blue is the home win, yellow the draw, purple the away win, from the Shin de-vig of the opening prices. A missing price is hatched. The one-shot card painted the bar on every fixture, including a grey week. The stepped card painted it on the true past and on the next week. It was the default until the square card.
 
 The gate table is still the 15:53 card, which has no odds bar. On the eight-pixel event bands, that bar put 192 goal bars on the same appearance and 259 within one gameweek at 20% revealed. The event bands are now sixteen pixels. The sixteen-pixel card with the odds bar has not been scored.
 
 ## Square card
 
-The 20:00 UK pass on 10 Nov paints the odds row as sixteen squares, the venue as one square, and minutes as six squares of fifteen minutes. One to fifteen minutes fills the bottom square, sixteen to thirty fills two, and seventy-six minutes or more fills all six. One goal or assist is one square. Those rows are three squares tall. The position color is one square. The full painter shows the remainder. The stepped painter keeps the odds, the venue, and the minutes on the next week and removes every later column.
+The default picture is the square card, scored at 20:00 UK on 10 Nov. The odds row is sixteen squares, the venue is one square, and minutes are six squares of fifteen minutes. One to fifteen minutes fills the bottom square, sixteen to thirty fills two, and seventy-six minutes or more fills all six. One goal or assist is one square. Those rows are three squares tall. The position color is one square. The full painter shows the remainder. The stepped painter keeps the odds, the venue, and the minutes on the next week and removes every later column.
 
 | revealed | model | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
 |---|---|---|---:|---:|---:|---:|---:|

@@ -38,6 +38,6 @@ Train: 2022-23, 2023-24, 2024-25. Test: 2025-26.
 
 The no-odds card is the gate in this run. At 20% revealed it puts 190 goal bars
 on the same appearance and 258 within one gameweek. The stepped reader,
-scored at 16:06 UK, puts 168 and 217 there. The default picture now paints
-the odds bar above the venue. These rows are the run before that change.
+scored at 16:06 UK, puts 168 and 217 there. The default picture is now the
+square card. These rows are the run before that change.
 
