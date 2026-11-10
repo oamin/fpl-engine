@@ -28,7 +28,8 @@ from src.models.flashcard_squad_trial import (
     event_pixels,
     render_grid,
 )
-from src.models.flashcard_strip_trial import StripVision, compose_stripped, strip_features
+from src.models.flashcard_odds_trial import DRAW_ODDS, HOME_ODDS
+from src.models.flashcard_strip_trial import StripVision, compose_card, compose_stripped, strip_features
 
 
 def _view() -> dict[str, np.ndarray]:
@@ -49,6 +50,45 @@ def _view() -> dict[str, np.ndarray]:
         view[key + "_missing"] = np.zeros(COLS, dtype=np.float32)
     view["concede"][:] = 3.0
     return view
+
+
+def _card():
+    from types import SimpleNamespace
+
+    gw = np.zeros(COLS, dtype=np.int64)
+    gw[:3] = (1, 2, 3)
+    kick = np.zeros(COLS, dtype=np.int64)
+    kick[0] = 1_700_000_000
+    kick[2] = 1_700_086_400
+    home = np.zeros(COLS, dtype=np.float32)
+    home[0] = 1
+    return SimpleNamespace(
+        season="2024-25",
+        team="Arsenal",
+        n_fixtures=3,
+        gw=gw,
+        opponent=("Wolves", "Spurs", "Chelsea") + ("",) * (COLS - 3),
+        kickoff=kick,
+        home=home,
+    )
+
+
+def _prices(card) -> dict:
+    import pandas as pd
+
+    from src.teams import norm_team
+
+    table = {}
+    for col in (0, 2):
+        date = pd.to_datetime(int(card.kickoff[col]), utc=True).strftime("%Y-%m-%d")
+        team = norm_team(card.team)
+        opponent = norm_team(card.opponent[col])
+        if int(card.home[col]) == 1:
+            key = (card.season, date, team, opponent)
+        else:
+            key = (card.season, date, opponent, team)
+        table[key] = (0.844, 0.110, 0.046)
+    return table
 
 
 class StripTests(unittest.TestCase):
@@ -118,3 +158,18 @@ class StripTests(unittest.TestCase):
         assist_y = y0 + EVENT_H
         assist = np.all(image[assist_y : assist_y + EVENT_H, 0:CELL_W] == ASSISTS_C, axis=-1).all(axis=1)
         self.assertEqual(int(assist.sum()), event_pixels(1))
+
+    def test_the_default_card_paints_the_odds_bar_above_the_venue(self) -> None:
+        view = strip_features(_view())
+        view["column_on"][1] = 0
+        card = _card()
+        image = compose_card(view, card, _prices(card))
+        self.assertEqual(image.shape[0], BAND_H * 2 + ROWS * PLAYER_H)
+        self.assertEqual(tuple(int(v) for v in image[0, 0]), HOME_ODDS)
+        self.assertEqual(tuple(int(v) for v in image[7, 0]), DRAW_ODDS)
+        self.assertEqual(tuple(int(v) for v in image[BAND_H, 0]), HOME_C)
+        self.assertEqual(tuple(int(v) for v in image[0, CELL_W]), HATCH_FG)
+        fresh = strip_features(_view())
+        stepped = compose_card(fresh, card, _prices(card), target=1)
+        self.assertEqual(tuple(int(v) for v in stepped[0, 0]), HOME_ODDS)
+        self.assertEqual(tuple(int(v) for v in stepped[0, 2 * CELL_W]), HATCH_FG)

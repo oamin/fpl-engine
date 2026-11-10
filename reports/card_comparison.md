@@ -27,3 +27,5 @@ appearance and either neighboring gameweek. The numbers are totals.
 
 Logged from the 15:53 UK pass on 9 Nov 2026. This is the gate.
 
+The default picture now paints the odds bar above the venue. These totals are the card without that bar. The sixteen-pixel card with the bar has not been scored.
+
