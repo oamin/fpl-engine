@@ -5,8 +5,8 @@ starting from gameweek 1. Every row is included. A bar on one row does not
 match a goal on another row. The totals are sums, not an average of per-player
 rates.
 
-The painted card comes from the locked vision reader on the stripped card.
-Venue stays. Concede, regulars, own history, and opponent history are absent
+The painted card comes from the locked vision reader. The odds bar sits above
+the venue. Concede, regulars, own history, and opponent history are absent
 from the picture and from the match-up. Each future fixture gets a number of
 bars equal to the sum of its bar probabilities. Those bars go to the rows
 with minutes and the highest probabilities.
@@ -110,11 +110,13 @@ def main() -> None:
     test_squads = squad_index(train + test)
     n_clubs = max(clubs.values(), default=0) + 1
     print(f"train {len(train)} test {len(test)}", flush=True)
+    from src.models.flashcard_odds_trial import load_odds
     from src.models.flashcard_strip_trial import BAND_H, StripVision, paint_stripped, train_stripped
 
+    odds = load_odds()
     torch.manual_seed(SEED)
-    vision = StripVision(BAND_H, dropout=0.1, n_clubs=n_clubs)
-    train_stripped(vision, train, league, np.random.default_rng(SEED), clubs, None, "stripped")
+    vision = StripVision(BAND_H * 2, dropout=0.1, n_clubs=n_clubs)
+    train_stripped(vision, train, league, np.random.default_rng(SEED), clubs, odds, "odds card")
     print("scoring", flush=True)
     labels = np.stack([card.goals for card in test])
     assist_labels = np.stack([card.assists for card in test])
@@ -127,8 +129,8 @@ def main() -> None:
         "chosen at random, starting from gameweek 1. The test scores all four cuts.",
         "Every club and every row is included.",
         "",
-        "The reader is squad vision with squad coupling on the stripped card.",
-        "Venue stays. Concede, regulars, own history, and opponent history are",
+        "The reader is squad vision with squad coupling. The odds bar sits above",
+        "the venue. Concede, regulars, own history, and opponent history are",
         "absent from the picture and from the match-up. Each future fixture is",
         "given a number of bars equal to the sum of its bar probabilities. Those",
         "bars go to the rows with minutes and the highest probabilities.",
@@ -141,7 +143,7 @@ def main() -> None:
     ]
     for revealed in (0.2, 0.4, 0.6, 0.8):
         cuts = [cut_at_fraction(card, revealed) for card in test]
-        goal_p, assist_p = paint_stripped(vision, test, league, clubs, test_squads, None, cuts)
+        goal_p, assist_p = paint_stripped(vision, test, league, clubs, test_squads, odds, cuts)
         goals = tally_cards(test, labels, _paint(goal_p, minutes, test, cuts), 0, cuts)
         assists = tally_cards(test, assist_labels, _paint(assist_p, minutes, test, cuts), 0, cuts)
         lines.append(_line(revealed, "goals", goals))

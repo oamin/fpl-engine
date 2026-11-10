@@ -3,10 +3,10 @@
 Each card is a club-season. Rows are teammates. Columns are the club's fixtures.
 Minutes stay visible. Goals and assists after the cut are hidden. Each fixture
 is coupled to the other squad: their positions, minutes, and the events already
-revealed. Hidden events stay masked on both sides. The locked card keeps the
-venue band and drops concede, regulars, own history, and opponent history from
-the picture and from the match-up. The recent scoring rate stays. Clean sheets
-are not a target.
+revealed. Hidden events stay masked on both sides. The locked card paints the
+opening odds bar above the venue and drops concede, regulars, own history, and
+opponent history from the picture and from the match-up. The recent scoring
+rate stays. Clean sheets are not a target.
 
 The sequence reader gets those values as numbers. The vision reader gets the
 same grid painted as pixels. A goal or an assist fills a band as tall as the

@@ -107,6 +107,12 @@ The 21:54 UK pass on 9 Nov makes the goal band and the assist band sixteen pixel
 
 At 20% revealed the taller bands put 189 goal bars on the same appearance and 249 within one gameweek. The ImageNet reader puts 182 and 241. The gate puts 190 and 258. The gate stays the stripped card measured at 15:53.
 
+## Odds bar
+
+The default picture paints an eight-pixel odds bar above the venue. Blue is the home win, yellow the draw, purple the away win, from the Shin de-vig of the opening prices. A missing price is hatched. The one-shot card paints the bar on every fixture, including a grey week. The stepped card paints it on the true past and on the next week.
+
+The gate table is still the 15:53 card, which has no odds bar. On the eight-pixel event bands, that bar put 192 goal bars on the same appearance and 259 within one gameweek at 20% revealed. The event bands are now sixteen pixels. The sixteen-pixel card with the odds bar has not been scored.
+
 The table below is an older per-player ranking. It is a record of past runs. It is not the score.
 
 Train seasons for every row so far: 2022-23, 2023-24, 2024-25. Test season: 2025-26.
