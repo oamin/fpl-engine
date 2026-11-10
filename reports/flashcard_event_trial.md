@@ -35,7 +35,7 @@ appearance and 258 within one gameweek.
 At 20% revealed the taller linear reader puts 189 goal bars on the
 same appearance and 249 within one gameweek. The ImageNet reader
 puts 182 and 241, and paints 661 goal bars against 730 actual.
-Neither replaces the gate, which stays 190 and 258.
+Neither replaced the gate of that day, which was 190 and 258. The gate is now the square card, 196 and 264 at 20% revealed.
 
 Legend: `data/plots/flashcard_event_bars.png`.
 One 2025-26 card, top eight players and first twelve fixtures, at 20% revealed:

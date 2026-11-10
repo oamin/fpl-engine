@@ -36,8 +36,9 @@ Train: 2022-23, 2023-24, 2024-25. Test: 2025-26.
 | 80% | stripped step | goals | 199 | 165 | 47 | 60 | 86 |
 | 80% | stripped step | assists | 192 | 178 | 24 | 49 | 54 |
 
-The no-odds card is the gate in this run. At 20% revealed it puts 190 goal bars
+The no-odds card was the gate in this run. At 20% revealed it puts 190 goal bars
 on the same appearance and 258 within one gameweek. The stepped reader,
-scored at 16:06 UK, puts 168 and 217 there. The default picture is now the
-square card. These rows are the run before that change.
+scored at 16:06 UK, puts 168 and 217 there. The default picture is the
+square card, and its full painter is the gate: 196 and 264 at 20% revealed.
+These rows are the run before that change.
 

@@ -447,8 +447,8 @@ def main() -> None:
     lines.extend(
         [
             "",
-            "The default picture is the square card. The gate totals stay the",
-            "no-odds card, 190 and 258 at 20% revealed.",
+            "The default picture is the square card. The gate is that full",
+            "painter, 196 and 264 at 20% revealed.",
             f"Wall clock: {seconds:.0f} seconds on CPU.",
             "",
         ]

@@ -28,11 +28,9 @@ Train: 2022-23, 2023-24, 2024-25. Test: 2025-26.
 | 80% | square step | goals | 199 | 186 | 54 | 67 | 96 |
 | 80% | square step | assists | 192 | 219 | 39 | 58 | 75 |
 
-This picture is the default card. Logged at 20:00 UK on 10 Nov 2026. At 20% revealed the full painter puts
-196 goal bars on the same appearance and 264 within one gameweek. The gate
-puts 190 and 258. At 40% the same-appearance count is 149 against 150 for
-the gate, and the within-one-gameweek count is 201 against 201. The gate
-stays the stripped card measured at 15:53 UK on 9 Nov 2026.
+This picture is the default card. The full-painter rows are the gate, logged
+at 20:00 UK on 10 Nov 2026. At 20% revealed that painter puts 196 goal bars
+on the same appearance and 264 within one gameweek.
 
 At 20% revealed the step puts 182 goal bars on the same appearance and 237
 within one gameweek. The previous stripped step put 168 and 217.

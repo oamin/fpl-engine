@@ -2,9 +2,24 @@
 
 The score is the painted card against the actual card. Training and test cuts are 20%, 40%, 60%, and 80% of each club's fixtures, starting from gameweek 1. Every club and every row is included. The numbers are totals.
 
-The reader is squad vision with squad coupling on the stripped card. Venue stays. Concede, regulars, own history, and opponent history are absent from the picture and from the match-up. The recent scoring rate stays. There is no odds bar. In training, each card draws one of those four cuts at random. The test scores all four. Each future fixture is given a number of bars equal to the sum of its bar probabilities. Those bars go to the rows with minutes and the highest probabilities. A bar matches a goal or an assist on the same row only. Within one gameweek includes the same appearance.
+The reader is squad vision with squad coupling on the square card. The odds row is sixteen squares. The venue mark is one square. Minutes are six squares of fifteen minutes, filled from the bottom. One goal or assist is one square, and those rows are three squares tall. The position color is one square. Concede, regulars, own history, and opponent history are absent from the picture and from the match-up. The recent scoring rate stays. In training, each card draws one of those four cuts at random. The test scores all four. Each future fixture is given a number of bars equal to the sum of its bar probabilities. Those bars go to the rows with minutes and the highest probabilities. A bar matches a goal or an assist on the same row only. Within one gameweek includes the same appearance.
 
-This table is the gate, logged at 15:53 UK on 9 Nov 2026. Test season 2025-26. The goal and assist bands in that run are eight pixels. A later pass paints those bands at sixteen pixels and does not replace this table.
+This table is the gate, logged at 20:00 UK on 10 Nov 2026. Test season 2025-26. It is the full painter.
+
+| revealed | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
+|---|---|---:|---:|---:|---:|---:|
+| 20% | goals | 730 | 760 | 196 | 264 | 391 |
+| 20% | assists | 707 | 692 | 106 | 180 | 220 |
+| 40% | goals | 544 | 589 | 149 | 201 | 299 |
+| 40% | assists | 531 | 535 | 76 | 137 | 158 |
+| 60% | goals | 360 | 385 | 99 | 133 | 195 |
+| 60% | assists | 351 | 348 | 46 | 86 | 93 |
+| 80% | goals | 199 | 205 | 56 | 71 | 98 |
+| 80% | assists | 192 | 185 | 24 | 50 | 53 |
+
+A painted bar can sit next to a goal that another painted bar already covers, so the painted-within column is larger than the actual-within column. The gameweek-19 cut used earlier is not this score.
+
+The previous gate, logged at 15:53 UK on 9 Nov 2026, is the stripped card. Venue stays. There is no odds bar. The goal and assist bands are eight pixels.
 
 | revealed | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
 |---|---|---:|---:|---:|---:|---:|
@@ -17,9 +32,7 @@ This table is the gate, logged at 15:53 UK on 9 Nov 2026. Test season 2025-26. T
 | 80% | goals | 199 | 201 | 56 | 70 | 97 |
 | 80% | assists | 192 | 182 | 24 | 49 | 52 |
 
-A painted bar can sit next to a goal that another painted bar already covers, so the painted-within column is larger than the actual-within column. The gameweek-19 cut used earlier is not this score.
-
-The previous gate, logged at 13:26 UK, kept concede, regulars, own history, and opponent history.
+The gate before that, logged at 13:26 UK, kept concede, regulars, own history, and opponent history.
 
 | revealed | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
 |---|---|---:|---:|---:|---:|---:|
@@ -47,7 +60,7 @@ The 14:00 run on 9 Nov uses the same reader. Each step reveals the true card thr
 | 80% | goals | 199 | 137 | 35 | 48 | 66 |
 | 80% | assists | 192 | 125 | 20 | 35 | 37 |
 
-A rerun of the gate on the same weights matches the table above, except the 40% assist same-appearance count, which is 68 on that rerun. At 20% revealed the step puts 137 goal bars on the same appearance, against 192 for the gate, and 182 actual goal bars within one gameweek, against 257. The same gap shows at 40%, 60%, and 80%. The gate stays the one-shot card.
+A rerun of the gate on the same weights matches the table above, except the 40% assist same-appearance count, which is 68 on that rerun. At 20% revealed the step puts 137 goal bars on the same appearance, against 192 for the gate, and 182 actual goal bars within one gameweek, against 257. The same gap shows at 40%, 60%, and 80%. The gate at that pass stayed the one-shot card.
 
 ## Stepped training and match odds
 
@@ -64,7 +77,7 @@ The bar is opening home, draw, and away prices after the Shin de-vig. Blue is ho
 | 80% | stepped odds | goals | 199 | 184 | 54 | 67 | 97 |
 | 80% | painter odds | goals | 199 | 207 | 56 | 73 | 101 |
 
-At 20% revealed the stepped reader, with venue kept on the greyed week, puts 183 goal bars on the same appearance and 233 within one gameweek. With the blue, yellow, and purple odds bar it puts 184 and 231. The full painter puts 193 and 259, against 192 and 257 for the gate. At 40% and 60% the painter is still short of the gate. The gate stays the one-shot card without the odds bar.
+At 20% revealed the stepped reader, with venue kept on the greyed week, puts 183 goal bars on the same appearance and 233 within one gameweek. With the blue, yellow, and purple odds bar it puts 184 and 231. The full painter puts 193 and 259, against 192 and 257 for the gate. At 40% and 60% the painter is still short of the gate. The gate at that pass stayed the one-shot card without the odds bar.
 
 ## Header rows removed
 
@@ -77,7 +90,7 @@ The 15:53 UK pass on 9 Nov drops concede, regulars, own history, and opponent hi
 | 80% | stripped | goals | 199 | 201 | 56 | 70 | 97 |
 | 80% | stripped odds | goals | 199 | 201 | 57 | 72 | 99 |
 
-The no-odds rows of this pass are the gate above. With the odds bar, at 20% revealed, the same card puts 192 goal bars on the same appearance and 259 within one gameweek.
+The no-odds rows of this pass were the gate until the square card. With the odds bar, at 20% revealed, the same card puts 192 goal bars on the same appearance and 259 within one gameweek.
 
 ## Stripped step
 
@@ -90,7 +103,7 @@ The 16:06 UK pass trains the next gameweek on the stripped card. Each example sh
 | 80% | stripped step | goals | 199 | 165 | 47 | 60 | 86 |
 | 80% | stripped step | assists | 192 | 178 | 24 | 49 | 54 |
 
-At 20% revealed the step puts 168 goal bars on the same appearance and 217 within one gameweek. The gate puts 190 and 258. The gate stays the one-shot stripped card.
+At 20% revealed the step puts 168 goal bars on the same appearance and 217 within one gameweek. The gate at that pass put 190 and 258 and stayed the one-shot stripped card.
 
 ## Taller event bands
 
@@ -105,13 +118,13 @@ The 21:54 UK pass on 9 Nov makes the goal band and the assist band sixteen pixel
 | 80% | taller | goals | 199 | 200 | 55 | 71 | 99 |
 | 80% | imagenet | goals | 199 | 176 | 49 | 66 | 92 |
 
-At 20% revealed the taller bands put 189 goal bars on the same appearance and 249 within one gameweek. The ImageNet reader puts 182 and 241. The gate puts 190 and 258. The gate stays the stripped card measured at 15:53.
+At 20% revealed the taller bands put 189 goal bars on the same appearance and 249 within one gameweek. The ImageNet reader puts 182 and 241. The gate at that pass put 190 and 258 and stayed the stripped card measured at 15:53.
 
 ## Odds bar
 
 That picture was an eight-pixel odds bar above the venue. Blue is the home win, yellow the draw, purple the away win, from the Shin de-vig of the opening prices. A missing price is hatched. The one-shot card painted the bar on every fixture, including a grey week. The stepped card painted it on the true past and on the next week. It was the default until the square card.
 
-The gate table is still the 15:53 card, which has no odds bar. On the eight-pixel event bands, that bar put 192 goal bars on the same appearance and 259 within one gameweek at 20% revealed. The event bands are now sixteen pixels. The sixteen-pixel card with the odds bar has not been scored.
+At that point the gate was still the 15:53 card, which has no odds bar. On the eight-pixel event bands, that bar put 192 goal bars on the same appearance and 259 within one gameweek at 20% revealed. The event bands are now sixteen pixels. The sixteen-pixel card with the odds bar has not been scored.
 
 ## Square card
 
@@ -132,7 +145,7 @@ The default picture is the square card, scored at 20:00 UK on 10 Nov. The odds r
 | 80% | square step | goals | 199 | 186 | 54 | 67 | 96 |
 | 80% | square step | assists | 192 | 219 | 39 | 58 | 75 |
 
-At 20% revealed the full painter puts 196 goal bars on the same appearance and 264 within one gameweek. The gate puts 190 and 258. At 40% the same-appearance count is 149 against 150 for the gate, and the within-one-gameweek count is 201 against 201. The gate stays the stripped card measured at 15:53. At 20% revealed the step puts 182 and 237. The previous stripped step put 168 and 217.
+These full-painter rows are the gate above. At 20% revealed the step puts 182 goal bars on the same appearance and 237 within one gameweek. The gate puts 196 and 264. The previous stripped step put 168 and 217.
 
 The table below is an older per-player ranking. It is a record of past runs. It is not the score.
 

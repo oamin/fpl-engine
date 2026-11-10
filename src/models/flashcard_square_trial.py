@@ -224,9 +224,9 @@ def main() -> None:
     lines.extend(
         [
             "",
-            "The gate stays the stripped card measured at 15:53 UK on 9 Nov 2026,",
-            "190 goal bars on the same appearance and 258 within one gameweek at",
-            "20% revealed, unless this full painter is ahead at every cut.",
+            "The full painter is the gate. The 20:00 UK pass on 10 Nov 2026 put",
+            "196 goal bars on the same appearance and 264 within one gameweek",
+            "at 20% revealed.",
             f"Wall clock: {seconds:.0f} seconds on CPU.",
             "",
         ]
