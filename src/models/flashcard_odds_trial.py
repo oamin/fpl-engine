@@ -416,8 +416,9 @@ def main() -> None:
     lines.extend(
         [
             "",
-            "The gate is the square card's full painter: at 20% revealed,",
-            "196 goal bars on the same appearance and 264 within one gameweek.",
+            "The gate is the square card's full painter, and the other squad is",
+            "not an input. At 20% revealed it puts 192 goal bars on the same",
+            "appearance and 256 within one gameweek.",
             f"Wall clock: {seconds:.0f} seconds on CPU.",
             "",
         ]
