@@ -1,9 +1,9 @@
 """Squad-card trial: one club grid, two readers, the hidden weeks filled in one pass.
 
 Each card is a club-season. Rows are teammates. Columns are the club's fixtures.
-Minutes stay visible. Goals and assists after the cut are hidden. Each fixture
-is coupled to the other squad: their positions, minutes, and the events already
-revealed. Hidden events stay masked on both sides. The locked card is the
+Minutes stay visible. Goals and assists after the cut are hidden. The original
+squad trial couples each fixture to the other squad. The locked card does not.
+The locked card is the
 square card. The odds row is sixteen squares, the venue mark is one square,
 and minutes are six squares of fifteen minutes. One goal or assist is one
 square, and those rows are three squares tall. Concede, regulars, own
@@ -11,15 +11,16 @@ history, and opponent history are absent from the picture and from the
 match-up. The recent scoring rate stays. Clean sheets are not a target.
 
 The sequence reader gets those values as numbers. The locked vision reader
-gets the square card. Both readers attend across the squad and across the
-whole segment at once. Neither walks column by column.
+gets the square card and does not read the other squad. Both readers attend
+across the squad and across the whole segment at once. Neither walks column
+by column.
 
 Train on 2022-23, 2023-24, and 2024-25. Each card is cut after 20%, 40%, 60%,
 or 80% of its fixtures, starting from gameweek 1. The test scores each of
 those four cuts. 2026-27 is not read.
 
-This is the locked squad-card reader: squad vision with squad coupling on
-the stripped card. The test score is the painted card against the actual card,
+This is the locked squad-card reader: squad vision on the square card, without
+the other squad. The test score is the painted card against the actual card,
 counted across every row. See the card comparison in the goal-hit log.
 """
 

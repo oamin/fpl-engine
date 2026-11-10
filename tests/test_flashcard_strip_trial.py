@@ -199,3 +199,31 @@ class StripTests(unittest.TestCase):
         stepped = compose_card(fresh, card, _prices(card), target=1)
         self.assertEqual(tuple(int(v) for v in stepped[0, 0]), HOME_ODDS)
         self.assertEqual(tuple(int(v) for v in stepped[0, 2 * CELL_W]), HATCH_FG)
+
+    def test_the_locked_reader_drops_the_other_squad(self) -> None:
+        torch.manual_seed(0)
+        model = StripVision(BAND_H, n_clubs=2)
+        torch.nn.init.normal_(model.couple.cross.out_proj.weight, std=0.5)
+        image = torch.zeros(1, 3, BAND_H + ROWS * PLAYER_H, COLS * CELL_W)
+        common = (
+            image,
+            torch.zeros(1, ROWS, dtype=torch.bool),
+            torch.ones(1, COLS),
+            torch.zeros(1, ROWS, dtype=torch.long),
+            torch.ones(1, ROWS, COLS),
+            torch.zeros(1, COLS, 8),
+            torch.zeros(1, dtype=torch.long),
+            torch.zeros(1, COLS, dtype=torch.long),
+        )
+        opp = {
+            "position": torch.zeros(1, ROWS, COLS, dtype=torch.long),
+            "minutes": torch.full((1, ROWS, COLS), 90.0),
+            "present": torch.ones(1, ROWS, COLS),
+            "goal_token": torch.ones(1, ROWS, COLS, dtype=torch.long),
+            "assist_token": torch.ones(1, ROWS, COLS, dtype=torch.long),
+            "pad": torch.zeros(1, ROWS, COLS, dtype=torch.bool),
+        }
+        model.eval()
+        without, _assists = model(*common, None)
+        with_squad, _assists = model(*common, opp)
+        self.assertTrue(torch.equal(without, with_squad))

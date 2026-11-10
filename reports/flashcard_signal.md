@@ -70,6 +70,6 @@ The placement itself refuses a bar to a player on zero minutes. Among players wh
 
 A flat position rate with its own budgets paints 750 goal bars and hits 165. The minute fraction as its own budget paints 6524 bars, so that hit count is the result of covering almost every appearance.
 
-This run reproduces the goal gate: 760 painted, 196 on the same appearance, 264 within one gameweek. Assists come out at 105 and 180. The stored gate has 106 and 180.
+This run reproduces the 20:00 goal table: 760 painted, 196 on the same appearance, 264 within one gameweek. Assists come out at 105 and 180. That table still read the other squad. The locked reader, logged at 21:47 UK, does not take the other squad.
 Wall clock: 77 seconds on CPU.
 

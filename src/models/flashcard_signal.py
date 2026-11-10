@@ -21,7 +21,6 @@ from src.models.flashcard_squad_trial import (
     SEED,
     _by_club,
     _by_position,
-    _opp_batch,
     _stack,
     apply_cut,
     build_cards,
@@ -78,7 +77,7 @@ def place_ranked(key: np.ndarray, budgets: np.ndarray, mask: np.ndarray, minutes
     return drawn
 
 
-def _forward(model, batch: dict, images: torch.Tensor, keep_opponent: bool):
+def _forward(model, batch: dict, images: torch.Tensor):
     return model(
         images,
         batch["row_pad"],
@@ -88,7 +87,7 @@ def _forward(model, batch: dict, images: torch.Tensor, keep_opponent: bool):
         batch["matchup"],
         batch["club"],
         batch["opponent"],
-        _opp_batch(batch) if keep_opponent else None,
+        None,
     )
 
 
@@ -145,10 +144,10 @@ def main() -> None:
     batch = _stack(views)
     images = torch.from_numpy(_batch_images(views, test, odds, compose_square)).permute(0, 3, 1, 2).float().div(255.0)
 
-    def score(name: str, images_now: torch.Tensor, batch_now: dict, keep_opponent: bool = True):
+    def score(name: str, images_now: torch.Tensor, batch_now: dict):
         model.eval()
         with torch.no_grad():
-            goal_logits, assist_logits = _forward(model, batch_now, images_now, keep_opponent)
+            goal_logits, assist_logits = _forward(model, batch_now, images_now)
         goal_p = F.softmax(goal_logits, dim=-1).numpy()
         assist_p = F.softmax(assist_logits, dim=-1).numpy()
         goals = tally_cards(test, labels, _paint(goal_p, minutes, test, cuts), 0, cuts)
@@ -167,11 +166,11 @@ def main() -> None:
         parts = {name: term.expand_as(goal_logits) for name, term in goal_parts(model, batch).items()}
         parts["picture"] = goal_logits - sum(parts.values())
 
-    def run(name: str, edit, keep_opponent: bool = True) -> None:
+    def run(name: str, edit) -> None:
         images_now = images.clone()
         batch_now = _clone(batch)
         edit(images_now, batch_now)
-        _p, _logits, g, a = score(name, images_now, batch_now, keep_opponent)
+        _p, _logits, g, a = score(name, images_now, batch_now)
         rows.append((name, g, a))
 
     run("white odds", lambda img, _b: blank_rows(img, 0, ODDS_H))
@@ -185,7 +184,6 @@ def main() -> None:
     run("zero position id", lambda _img, b: b["position"].fill_(-1))
     run("zero matchup", lambda _img, b: b["matchup"].zero_())
     run("zero opponent id", lambda _img, b: b["opponent"].zero_())
-    run("no other squad", lambda _img, _b: None, keep_opponent=False)
 
     budgets = []
     for i, (card, cut) in enumerate(zip(test, cuts)):

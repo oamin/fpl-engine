@@ -8,6 +8,7 @@ fifteen minutes. One goal or assist is one square, and those rows are three
 squares tall. The one-shot card paints the odds on every fixture, including
 a grey week. The stepped reader uses this same card: true past, the odds,
 the venue, and the minutes on the next week, and every later column removed.
+The other squad is not an input.
 """
 
 from __future__ import annotations
@@ -38,7 +39,6 @@ from src.models.flashcard_squad_trial import (
     SEED,
     Coupler,
     _nll,
-    _opp_batch,
     _stack,
     apply_cut,
     build_cards,
@@ -148,8 +148,9 @@ class StripVision(nn.Module):
         body = images[:, :, self.header_h :, :].reshape(batch, 3, ROWS, self.player_h, COLS, CELL_W)
         body = body.permute(0, 4, 2, 1, 3, 5).reshape(batch, COLS, ROWS, -1)
         cells = self.patch(body).permute(0, 2, 1, 3) + header_tok[:, None, :, :]
+        del opp
         return self.couple(
-            cells, row_pad, column_on < 0.5, position, minutes, matchup, club, opponent, opp
+            cells, row_pad, column_on < 0.5, position, minutes, matchup, club, opponent, None
         )
 
 
@@ -217,7 +218,7 @@ def train_stripped(
             opt.zero_grad()
             goal_logits, assist_logits = model(
                 batch["image"], batch["row_pad"], batch["column_on"], batch["position"], batch["minutes"],
-                batch["matchup"], batch["club"], batch["opponent"], _opp_batch(batch),
+                batch["matchup"], batch["club"], batch["opponent"], None,
             )
             mask = batch["loss"]
             loss = 0.5 * (
@@ -249,7 +250,7 @@ def paint_stripped(
     with torch.no_grad():
         goal_logits, assist_logits = model(
             batch["image"], batch["row_pad"], batch["column_on"], batch["position"], batch["minutes"],
-            batch["matchup"], batch["club"], batch["opponent"], _opp_batch(batch),
+            batch["matchup"], batch["club"], batch["opponent"], None,
         )
     return F.softmax(goal_logits, dim=-1).numpy(), F.softmax(assist_logits, dim=-1).numpy()
 
@@ -316,7 +317,7 @@ def train_stripped_steps(
             opt.zero_grad()
             goal_logits, assist_logits = model(
                 batch["image"], batch["row_pad"], batch["column_on"], batch["position"], batch["minutes"],
-                batch["matchup"], batch["club"], batch["opponent"], _opp_batch(batch),
+                batch["matchup"], batch["club"], batch["opponent"], None,
             )
             mask = batch["loss"]
             loss = 0.5 * (
@@ -357,7 +358,7 @@ def paint_stripped_steps(
         with torch.no_grad():
             goal_logits, assist_logits = model(
                 batch["image"], batch["row_pad"], batch["column_on"], batch["position"], batch["minutes"],
-                batch["matchup"], batch["club"], batch["opponent"], _opp_batch(batch),
+                batch["matchup"], batch["club"], batch["opponent"], None,
             )
         goal_p = F.softmax(goal_logits, dim=-1).numpy()
         assist_p = F.softmax(assist_logits, dim=-1).numpy()
@@ -447,8 +448,8 @@ def main() -> None:
     lines.extend(
         [
             "",
-            "The default picture is the square card. The gate is that full",
-            "painter, 196 and 264 at 20% revealed.",
+            "The default picture is the square card. The other squad is not an input.",
+            "The gate is the full painter in reports/flashcard_square_trial.md.",
             f"Wall clock: {seconds:.0f} seconds on CPU.",
             "",
         ]

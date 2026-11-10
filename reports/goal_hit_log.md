@@ -2,9 +2,22 @@
 
 The score is the painted card against the actual card. Training and test cuts are 20%, 40%, 60%, and 80% of each club's fixtures, starting from gameweek 1. Every club and every row is included. The numbers are totals.
 
-The reader is squad vision with squad coupling on the square card. The odds row is sixteen squares. The venue mark is one square. Minutes are six squares of fifteen minutes, filled from the bottom. One goal or assist is one square, and those rows are three squares tall. The position color is one square. Concede, regulars, own history, and opponent history are absent from the picture and from the match-up. The recent scoring rate stays. In training, each card draws one of those four cuts at random. The test scores all four. Each future fixture is given a number of bars equal to the sum of its bar probabilities. Those bars go to the rows with minutes and the highest probabilities. A bar matches a goal or an assist on the same row only. Within one gameweek includes the same appearance.
+The reader is squad vision on the square card. The other squad is not an input. The odds row is sixteen squares. The venue mark is one square. Minutes are six squares of fifteen minutes, filled from the bottom. One goal or assist is one square, and those rows are three squares tall. The position color is one square. Concede, regulars, own history, and opponent history are absent from the picture and from the match-up. The recent scoring rate stays. The opponent club stays. In training, each card draws one of those four cuts at random. The test scores all four. Each future fixture is given a number of bars equal to the sum of its bar probabilities. Those bars go to the rows with minutes and the highest probabilities. A bar matches a goal or an assist on the same row only. Within one gameweek includes the same appearance.
 
-This table is the gate, logged at 20:00 UK on 10 Nov 2026. Test season 2025-26. It is the full painter.
+This table is the gate, logged at 21:47 UK on 10 Nov 2026. Test season 2025-26. It is the full painter. The other squad is not an input.
+
+| revealed | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
+|---|---|---:|---:|---:|---:|---:|
+| 20% | goals | 730 | 759 | 192 | 256 | 394 |
+| 20% | assists | 707 | 692 | 100 | 161 | 218 |
+| 40% | goals | 544 | 589 | 147 | 200 | 305 |
+| 40% | assists | 531 | 535 | 78 | 119 | 163 |
+| 60% | goals | 360 | 384 | 94 | 134 | 200 |
+| 60% | assists | 351 | 348 | 55 | 84 | 110 |
+| 80% | goals | 199 | 204 | 55 | 73 | 102 |
+| 80% | assists | 192 | 185 | 36 | 51 | 62 |
+
+The previous gate, logged at 20:00 UK on 10 Nov 2026, is the same square card while the reader still took the other squad.
 
 | revealed | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
 |---|---|---:|---:|---:|---:|---:|
@@ -19,7 +32,7 @@ This table is the gate, logged at 20:00 UK on 10 Nov 2026. Test season 2025-26. 
 
 A painted bar can sit next to a goal that another painted bar already covers, so the painted-within column is larger than the actual-within column. The gameweek-19 cut used earlier is not this score.
 
-The previous gate, logged at 15:53 UK on 9 Nov 2026, is the stripped card. Venue stays. There is no odds bar. The goal and assist bands are eight pixels.
+The gate before that, logged at 15:53 UK on 9 Nov 2026, is the stripped card. Venue stays. There is no odds bar. The goal and assist bands are eight pixels.
 
 | revealed | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
 |---|---|---:|---:|---:|---:|---:|
@@ -128,28 +141,32 @@ At that point the gate was still the 15:53 card, which has no odds bar. On the e
 
 ## Square card
 
-The default picture is the square card, scored at 20:00 UK on 10 Nov. The odds row is sixteen squares, the venue is one square, and minutes are six squares of fifteen minutes. One to fifteen minutes fills the bottom square, sixteen to thirty fills two, and seventy-six minutes or more fills all six. One goal or assist is one square. Those rows are three squares tall. The position color is one square. The full painter shows the remainder. The stepped painter keeps the odds, the venue, and the minutes on the next week and removes every later column.
+The default picture is the square card. The 21:47 UK pass on 10 Nov trains it without the other squad. The 20:00 UK pass on the same card still read that squad. The odds row is sixteen squares, the venue is one square, and minutes are six squares of fifteen minutes. One to fifteen minutes fills the bottom square, sixteen to thirty fills two, and seventy-six minutes or more fills all six. One goal or assist is one square. Those rows are three squares tall. The position color is one square. The full painter shows the remainder. The stepped painter keeps the odds, the venue, and the minutes on the next week and removes every later column. The other squad is not an input.
 
 | revealed | model | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
 |---|---|---|---:|---:|---:|---:|---:|
-| 20% | square full | goals | 730 | 760 | 196 | 264 | 391 |
-| 20% | square full | assists | 707 | 692 | 106 | 180 | 220 |
-| 40% | square full | goals | 544 | 589 | 149 | 201 | 299 |
-| 40% | square full | assists | 531 | 535 | 76 | 137 | 158 |
-| 60% | square full | goals | 360 | 385 | 99 | 133 | 195 |
-| 60% | square full | assists | 351 | 348 | 46 | 86 | 93 |
-| 80% | square full | goals | 199 | 205 | 56 | 71 | 98 |
-| 80% | square full | assists | 192 | 185 | 24 | 50 | 53 |
-| 20% | square step | goals | 730 | 677 | 182 | 237 | 374 |
-| 20% | square step | assists | 707 | 804 | 117 | 184 | 266 |
-| 80% | square step | goals | 199 | 186 | 54 | 67 | 96 |
-| 80% | square step | assists | 192 | 219 | 39 | 58 | 75 |
+| 20% | square full | goals | 730 | 759 | 192 | 256 | 394 |
+| 20% | square full | assists | 707 | 692 | 100 | 161 | 218 |
+| 40% | square full | goals | 544 | 589 | 147 | 200 | 305 |
+| 40% | square full | assists | 531 | 535 | 78 | 119 | 163 |
+| 60% | square full | goals | 360 | 384 | 94 | 134 | 200 |
+| 60% | square full | assists | 351 | 348 | 55 | 84 | 110 |
+| 80% | square full | goals | 199 | 204 | 55 | 73 | 102 |
+| 80% | square full | assists | 192 | 185 | 36 | 51 | 62 |
+| 20% | square step | goals | 730 | 664 | 179 | 234 | 364 |
+| 20% | square step | assists | 707 | 786 | 110 | 175 | 251 |
+| 40% | square step | goals | 544 | 510 | 138 | 182 | 280 |
+| 40% | square step | assists | 531 | 606 | 88 | 132 | 189 |
+| 60% | square step | goals | 360 | 334 | 86 | 115 | 175 |
+| 60% | square step | assists | 351 | 401 | 63 | 91 | 126 |
+| 80% | square step | goals | 199 | 182 | 54 | 68 | 97 |
+| 80% | square step | assists | 192 | 216 | 40 | 55 | 75 |
 
-These full-painter rows are the gate above. At 20% revealed the step puts 182 goal bars on the same appearance and 237 within one gameweek. The gate puts 196 and 264. The previous stripped step put 168 and 217.
+These full-painter rows are the gate above. At 20% revealed the step puts 179 goal bars on the same appearance and 234 within one gameweek. The gate puts 192 and 256. The 20:00 step, which still read the other squad, put 182 and 237. The previous stripped step put 168 and 217.
 
 ## What the square card uses
 
-The 21:16 UK pass on 10 Nov removes one signal at a time from the trained full painter and paints the 20% cut again. Whitening the whole picture leaves 10 goal bars on the same appearance. Whitening the minute squares leaves 28, and 95 bars painted. Whitening the odds row leaves 117, and 378 bars painted. Zeroing the position id still paints 665 bars, and 12 land on a goal. The position color, the venue, the past goals, the past assists, the recent scoring rate, and the other squad each move the same-appearance count by about ten. The detail is in `reports/flashcard_signal.md`.
+The 21:16 UK pass on 10 Nov removes one signal at a time from the 20:00 full painter, which still read the other squad, and paints the 20% cut again. Whitening the whole picture leaves 10 goal bars on the same appearance. Whitening the minute squares leaves 28, and 95 bars painted. Whitening the odds row leaves 117, and 378 bars painted. Zeroing the position id still paints 665 bars, and 12 land on a goal. The position color, the venue, the past goals, the past assists, the recent scoring rate, and dropping the other squad each move the same-appearance count by about ten. That pass is a record of the reader that still took the squad. The locked reader does not. The detail is in `reports/flashcard_signal.md`.
 
 The table below is an older per-player ranking. It is a record of past runs. It is not the score.
 
@@ -195,7 +212,7 @@ The flash-card GRU was trained on the player card and scored on log-loss and sea
 | 8 Nov 2026, 22:16 | squad vision, flat marks and match budget | squad card, all minutes | 22.1% | 37.6% | 75.0% |
 | 9 Nov 2026, 07:54 | squad vision, ranked fixture budget | squad card, all minutes | 24.7% | 41.5% | 80.1% |
 
-Best on the player card in that old ranking: minutes, 11.4%. Best on the squad card in that old ranking: squad vision with the marked chart, 13.1%. The current score is the card comparison at the top. The reader is still squad vision with squad coupling.
+Best on the player card in that old ranking: minutes, 11.4%. Best on the squad card in that old ranking: squad vision with the marked chart, 13.1%. The current score is the card comparison at the top. The locked reader does not take the other squad.
 
 The marked chart adds a position color, a solid band at 60 minutes, and an eight-pixel opponent conceded bar. The top 10% rose from 12.2% to 13.1%. The top 20% fell from 23.5% to 21.6%. Expected goals on played weeks were 28.1 against 21.4 actual.
 

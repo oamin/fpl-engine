@@ -10,8 +10,8 @@ are three squares tall. The position color is one square.
 
 The full painter shows that card for the whole remainder. The stepped painter
 shows the true past, keeps the odds, the venue, and the minutes on the next
-week, and removes every later column. The viewing grid is not part of the
-picture.
+week, and removes every later column. The other squad is not an input.
+The viewing grid is not part of the picture.
 """
 
 from __future__ import annotations
@@ -182,7 +182,7 @@ def main() -> None:
         "assist is one square, and those rows are three squares tall. The position",
         "color is one square. The full painter shows this card across the remainder.",
         "The stepped painter keeps the odds, the venue, and the minutes on the next",
-        "week and removes every later column.",
+        "week and removes every later column. The other squad is not an input.",
         "",
         f"Train: {', '.join(TRAIN_SEASONS)}. Test: {TEST_SEASON}.",
         "",
@@ -224,9 +224,7 @@ def main() -> None:
     lines.extend(
         [
             "",
-            "The full painter is the gate. The 20:00 UK pass on 10 Nov 2026 put",
-            "196 goal bars on the same appearance and 264 within one gameweek",
-            "at 20% revealed.",
+            "The full painter rows are the gate. The other squad is not an input.",
             f"Wall clock: {seconds:.0f} seconds on CPU.",
             "",
         ]
