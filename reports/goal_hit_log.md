@@ -147,6 +147,10 @@ The default picture is the square card, scored at 20:00 UK on 10 Nov. The odds r
 
 These full-painter rows are the gate above. At 20% revealed the step puts 182 goal bars on the same appearance and 237 within one gameweek. The gate puts 196 and 264. The previous stripped step put 168 and 217.
 
+## What the square card uses
+
+The 21:16 UK pass on 10 Nov removes one signal at a time from the trained full painter and paints the 20% cut again. Whitening the whole picture leaves 10 goal bars on the same appearance. Whitening the minute squares leaves 28, and 95 bars painted. Whitening the odds row leaves 117, and 378 bars painted. Zeroing the position id still paints 665 bars, and 12 land on a goal. The position color, the venue, the past goals, the past assists, the recent scoring rate, and the other squad each move the same-appearance count by about ten. The detail is in `reports/flashcard_signal.md`.
+
 The table below is an older per-player ranking. It is a record of past runs. It is not the score.
 
 Train seasons for every row so far: 2022-23, 2023-24, 2024-25. Test season: 2025-26.
