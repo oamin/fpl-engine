@@ -1,12 +1,15 @@
-"""The locked card. The odds bar sits above the venue. Four header rows are gone.
+"""The locked card is the square card. Four header rows are gone.
 
 Concede, regulars, own history, and opponent history are absent from the
 picture and from the numeric match-up. The recent scoring rate stays.
-Opening odds are the top band: blue home, yellow draw, purple away, from the
-Shin de-vig. The one-shot card paints that bar on every fixture, including a
-grey week. Goals and assists each fill a sixteen-pixel band, the same height
-as the minute bar. The stepped reader uses this same card: true past, the
-odds bar, venue, and minutes on the next week, and every later column removed.
+The odds row is sixteen squares: blue home, yellow draw, purple away, from
+the Shin de-vig. The venue mark is one square. The opponent is one square,
+a club symbol. Minutes are six squares of fifteen minutes. One goal or
+assist is one square, and those rows are three squares tall. The one-shot
+card paints the odds on every fixture, including a grey week. The stepped
+reader uses this same card: true past, the odds, the venue, the opponent,
+and the minutes on the next week, and every later column removed.
+The other squad is not an input.
 """
 
 from __future__ import annotations
@@ -19,15 +22,9 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from src.models.flashcard_calibrated_trial import place_expected
-from src.models.flashcard_card_score import _paint, tally_cards
+from src.models.flashcard_card_score import _paint, paint_row, tally_cards
 from src.models.flashcard_step_trial import chop_future
-from src.models.flashcard_odds_trial import (
-    column_odds,
-    load_odds,
-    paint_odds_strip,
-    visible_odds,
-)
+from src.models.flashcard_odds_trial import load_odds, paint_odds_strip
 from src.models.flashcard_squad_trial import (
     BAND_H,
     BATCH,
@@ -42,7 +39,6 @@ from src.models.flashcard_squad_trial import (
     SEED,
     Coupler,
     _nll,
-    _opp_batch,
     _stack,
     apply_cut,
     build_cards,
@@ -106,26 +102,31 @@ def compose_card(
     grey_columns: np.ndarray | None = None,
     target: int | None = None,
 ) -> np.ndarray:
-    """The painter's picture: odds bar, venue, then the squad.
+    """The default picture: the square card.
 
-    A one-shot card paints the bar on every fixture. A stepped card, given
-    `target`, paints it on the true past and on that next week.
+    A one-shot card paints the odds on every fixture. A stepped card, given
+    `target`, paints them on the true past and on that next week.
     """
-    if target is None:
-        visible = visible_odds(card.gw, "painter")
-    else:
-        visible = visible_odds(card.gw, "step", target=target)
-    return compose_stripped(view, grey_columns, column_odds(card, odds), visible)
+    from src.models.flashcard_square_trial import compose_square
+
+    return compose_square(view, card, odds, grey_columns, target)
 
 
 class StripVision(nn.Module):
     """Pixel reader for a header that is venue, or odds plus venue."""
 
-    def __init__(self, header_h: int, dropout: float = 0.1, n_clubs: int = 1) -> None:
+    def __init__(
+        self,
+        header_h: int,
+        dropout: float = 0.1,
+        n_clubs: int = 1,
+        player_h: int = PLAYER_H,
+    ) -> None:
         super().__init__()
         self.header_h = int(header_h)
+        self.player_h = int(player_h)
         self.header = nn.Linear(3 * self.header_h * CELL_W, D)
-        self.patch = nn.Linear(3 * PLAYER_H * CELL_W, D)
+        self.patch = nn.Linear(3 * self.player_h * CELL_W, D)
         self.couple = Coupler(dropout, n_clubs)
 
     def forward(
@@ -144,11 +145,12 @@ class StripVision(nn.Module):
         header = images[:, :, : self.header_h, :].reshape(batch, 3, self.header_h, COLS, CELL_W)
         header = header.permute(0, 3, 1, 2, 4).reshape(batch, COLS, -1)
         header_tok = self.header(header)
-        body = images[:, :, self.header_h :, :].reshape(batch, 3, ROWS, PLAYER_H, COLS, CELL_W)
+        body = images[:, :, self.header_h :, :].reshape(batch, 3, ROWS, self.player_h, COLS, CELL_W)
         body = body.permute(0, 4, 2, 1, 3, 5).reshape(batch, COLS, ROWS, -1)
         cells = self.patch(body).permute(0, 2, 1, 3) + header_tok[:, None, :, :]
+        del opp
         return self.couple(
-            cells, row_pad, column_on < 0.5, position, minutes, matchup, club, opponent, opp
+            cells, row_pad, column_on < 0.5, position, minutes, matchup, club, opponent, None
         )
 
 
@@ -166,13 +168,27 @@ def _optimizer(model: nn.Module) -> torch.optim.Optimizer:
     )
 
 
-def _batch_images(views: list[dict], cards: list, odds: dict | None) -> np.ndarray:
-    pictures = []
-    for view, card in zip(views, cards, strict=True):
-        if odds is None:
-            pictures.append(compose_stripped(view))
-            continue
-        pictures.append(compose_card(view, card, odds))
+def _paint_one(
+    view: dict,
+    card,
+    odds: dict | None,
+    grey_columns: np.ndarray | None,
+    target: int | None,
+    compose,
+) -> np.ndarray:
+    """The locked card, or a painter passed in for one trial."""
+    if compose is not None:
+        return compose(view, card, odds, grey_columns, target)
+    if odds is None:
+        return compose_stripped(view, grey_columns)
+    return compose_card(view, card, odds, grey_columns, target)
+
+
+def _batch_images(views: list[dict], cards: list, odds: dict | None, compose=None) -> np.ndarray:
+    pictures = [
+        _paint_one(view, card, odds, None, None, compose)
+        for view, card in zip(views, cards, strict=True)
+    ]
     return np.stack(pictures)
 
 
@@ -184,6 +200,7 @@ def train_stripped(
     clubs: dict,
     odds: dict | None,
     name: str,
+    compose=None,
 ) -> None:
     opt = _optimizer(model)
     squads = squad_index(cards)
@@ -197,11 +214,11 @@ def train_stripped(
             cuts = [sample_cut(card, rng) for card in pick]
             views = [strip_features(apply_cut(card, league, cut, clubs, squads)) for card, cut in zip(pick, cuts, strict=True)]
             batch = _stack(views)
-            batch["image"] = torch.from_numpy(_batch_images(views, pick, odds)).permute(0, 3, 1, 2).float().div(255.0)
+            batch["image"] = torch.from_numpy(_batch_images(views, pick, odds, compose)).permute(0, 3, 1, 2).float().div(255.0)
             opt.zero_grad()
             goal_logits, assist_logits = model(
                 batch["image"], batch["row_pad"], batch["column_on"], batch["position"], batch["minutes"],
-                batch["matchup"], batch["club"], batch["opponent"], _opp_batch(batch),
+                batch["matchup"], batch["club"], batch["opponent"], None,
             )
             mask = batch["loss"]
             loss = 0.5 * (
@@ -224,15 +241,16 @@ def paint_stripped(
     squads: dict,
     odds: dict | None,
     cuts: list[int],
+    compose=None,
 ) -> tuple[np.ndarray, np.ndarray]:
     views = [strip_features(apply_cut(card, league, cut, clubs, squads)) for card, cut in zip(cards, cuts, strict=True)]
     batch = _stack(views)
-    batch["image"] = torch.from_numpy(_batch_images(views, cards, odds)).permute(0, 3, 1, 2).float().div(255.0)
+    batch["image"] = torch.from_numpy(_batch_images(views, cards, odds, compose)).permute(0, 3, 1, 2).float().div(255.0)
     model.eval()
     with torch.no_grad():
         goal_logits, assist_logits = model(
             batch["image"], batch["row_pad"], batch["column_on"], batch["position"], batch["minutes"],
-            batch["matchup"], batch["club"], batch["opponent"], _opp_batch(batch),
+            batch["matchup"], batch["club"], batch["opponent"], None,
         )
     return F.softmax(goal_logits, dim=-1).numpy(), F.softmax(assist_logits, dim=-1).numpy()
 
@@ -247,9 +265,9 @@ def _step_view(card, league, clubs, squads, target: int) -> dict:
     return view
 
 
-def _step_image(view: dict, card, odds: dict, target: int) -> np.ndarray:
+def _step_image(view: dict, card, odds: dict, target: int, compose=None) -> np.ndarray:
     """The same card, cut to one next week, with the odds bar through that week."""
-    return compose_card(view, card, odds, np.flatnonzero(card.gw == target), target)
+    return _paint_one(view, card, odds, np.flatnonzero(card.gw == target), target, compose)
 
 
 def _gameweeks(cards: list) -> dict[int, list[int]]:
@@ -269,7 +287,13 @@ def _target_gw(card, rng: np.random.Generator) -> int:
 
 
 def train_stripped_steps(
-    model: nn.Module, cards: list, league: dict, rng: np.random.Generator, clubs: dict, odds: dict
+    model: nn.Module,
+    cards: list,
+    league: dict,
+    rng: np.random.Generator,
+    clubs: dict,
+    odds: dict,
+    compose=None,
 ) -> None:
     """One random gameweek per card. The loss is only that week."""
     opt = _optimizer(model)
@@ -287,13 +311,13 @@ def train_stripped_steps(
                 target = _target_gw(card, rng)
                 view = _step_view(card, league, clubs, squads, target)
                 views.append(view)
-                pictures.append(_step_image(view, card, odds, target))
+                pictures.append(_step_image(view, card, odds, target, compose))
             batch = _stack(views)
             batch["image"] = torch.from_numpy(np.stack(pictures)).permute(0, 3, 1, 2).float().div(255.0)
             opt.zero_grad()
             goal_logits, assist_logits = model(
                 batch["image"], batch["row_pad"], batch["column_on"], batch["position"], batch["minutes"],
-                batch["matchup"], batch["club"], batch["opponent"], _opp_batch(batch),
+                batch["matchup"], batch["club"], batch["opponent"], None,
             )
             mask = batch["loss"]
             loss = 0.5 * (
@@ -309,7 +333,13 @@ def train_stripped_steps(
 
 
 def paint_stripped_steps(
-    model: nn.Module, cards: list, league: dict, clubs: dict, squads: dict, odds: dict
+    model: nn.Module,
+    cards: list,
+    league: dict,
+    clubs: dict,
+    squads: dict,
+    odds: dict,
+    compose=None,
 ) -> tuple[np.ndarray, np.ndarray]:
     """Walk every gameweek with the true past and keep that week's bars."""
     goals = np.zeros((len(cards),) + cards[0].goals.shape, dtype=np.int64)
@@ -322,21 +352,21 @@ def paint_stripped_steps(
             card = cards[index]
             view = _step_view(card, league, clubs, squads, gw)
             views.append(view)
-            pictures.append(_step_image(view, card, odds, gw))
+            pictures.append(_step_image(view, card, odds, gw, compose))
         batch = _stack(views)
         batch["image"] = torch.from_numpy(np.stack(pictures)).permute(0, 3, 1, 2).float().div(255.0)
         with torch.no_grad():
             goal_logits, assist_logits = model(
                 batch["image"], batch["row_pad"], batch["column_on"], batch["position"], batch["minutes"],
-                batch["matchup"], batch["club"], batch["opponent"], _opp_batch(batch),
+                batch["matchup"], batch["club"], batch["opponent"], None,
             )
         goal_p = F.softmax(goal_logits, dim=-1).numpy()
         assist_p = F.softmax(assist_logits, dim=-1).numpy()
         for slot, index in enumerate(indexes):
             card = cards[index]
             mask = card.present & (card.gw == gw).reshape(1, -1)
-            goals[index] += place_expected(goal_p[slot], card.minutes, mask)
-            assists[index] += place_expected(assist_p[slot], card.minutes, mask)
+            goals[index] += paint_row(goal_p[slot], mask)
+            assists[index] += paint_row(assist_p[slot], mask)
     return goals, assists
 
 
@@ -363,21 +393,25 @@ def main() -> None:
     lines = [
         "# Header rows removed",
         "",
-        "The default card paints the odds bar above the venue, on every fixture",
-        "including a grey week. It drops concede, regulars, own history, and",
-        "opponent history from the picture and from the numeric match-up. The",
-        "recent scoring rate stays. The no-odds reader is the comparison. The",
-        "stepped reader uses the same odds card, asks for one gameweek, and",
-        "removes every later column.",
+        "The default card is the square card. The odds row is sixteen squares,",
+        "the venue is one square, and minutes are six squares of fifteen",
+        "minutes. One event is one square. It drops concede, regulars, own",
+        "history, and opponent history from the picture and from the numeric",
+        "match-up. The recent scoring rate stays. The no-odds reader is the",
+        "comparison. The stepped reader uses the same square card, asks for",
+        "one gameweek, and removes every later column.",
         "",
         f"Train: {', '.join(TRAIN_SEASONS)}. Test: {TEST_SEASON}.",
         "",
         "| revealed | model | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |",
         "|---|---|---|---:|---:|---:|---:|---:|",
     ]
+    from src.models.flashcard_square_trial import HEADER_H as SQUARE_HEADER
+    from src.models.flashcard_square_trial import PLAYER_H as SQUARE_PLAYER
+
     readers = (
         ("stripped", StripVision(BAND_H, dropout=0.1, n_clubs=n_clubs), None),
-        ("stripped odds", StripVision(BAND_H * 2, dropout=0.1, n_clubs=n_clubs), odds),
+        ("square", StripVision(SQUARE_HEADER, dropout=0.1, n_clubs=n_clubs, player_h=SQUARE_PLAYER), odds),
     )
     for name, model, prices in readers:
         print(f"training {name}", flush=True)
@@ -397,7 +431,7 @@ def main() -> None:
                 )
     print("training stripped step", flush=True)
     torch.manual_seed(SEED)
-    stepper = StripVision(BAND_H * 2, dropout=0.1, n_clubs=n_clubs)
+    stepper = StripVision(SQUARE_HEADER, dropout=0.1, n_clubs=n_clubs, player_h=SQUARE_PLAYER)
     train_stripped_steps(stepper, train, league, np.random.default_rng(SEED), clubs, odds)
     step_g, step_a = paint_stripped_steps(stepper, test, league, clubs, squads, odds)
     for revealed in (0.2, 0.4, 0.6, 0.8):
@@ -414,9 +448,8 @@ def main() -> None:
     lines.extend(
         [
             "",
-            "The default picture paints the odds bar above the venue. The gate",
-            "totals stay the no-odds card, 190 and 258 at 20% revealed, until",
-            "the sixteen-pixel card with that bar is scored.",
+            "The default picture is the square card. The other squad is not an input.",
+            "The gate is the full painter in reports/flashcard_square_trial.md.",
             f"Wall clock: {seconds:.0f} seconds on CPU.",
             "",
         ]

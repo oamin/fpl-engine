@@ -28,7 +28,11 @@ from src.models.flashcard_squad_trial import (
     event_pixels,
     render_grid,
 )
-from src.models.flashcard_odds_trial import DRAW_ODDS, HOME_ODDS
+from src.models.flashcard_odds_trial import AWAY_ODDS, DRAW_ODDS, HOME_ODDS
+from src.models.flashcard_square_trial import EVENT_H as SQUARE_EVENT
+from src.models.flashcard_square_trial import HEADER_H as SQUARE_HEADER
+from src.models.flashcard_square_trial import MINUTE_H as SQUARE_MINUTE
+from src.models.flashcard_square_trial import ODDS_H, PLAYER_H as SQUARE_PLAYER
 from src.models.flashcard_strip_trial import StripVision, compose_card, compose_stripped, strip_features
 
 
@@ -159,17 +163,67 @@ class StripTests(unittest.TestCase):
         assist = np.all(image[assist_y : assist_y + EVENT_H, 0:CELL_W] == ASSISTS_C, axis=-1).all(axis=1)
         self.assertEqual(int(assist.sum()), event_pixels(1))
 
-    def test_the_default_card_paints_the_odds_bar_above_the_venue(self) -> None:
+    def test_the_default_card_is_the_square_card(self) -> None:
         view = strip_features(_view())
+        view["minutes"][0, 0] = 15
+        view["goal_token"][0, 0] = 1
         view["column_on"][1] = 0
         card = _card()
         image = compose_card(view, card, _prices(card))
-        self.assertEqual(image.shape[0], BAND_H * 2 + ROWS * PLAYER_H)
+        self.assertEqual(image.shape[0], SQUARE_HEADER + ROWS * SQUARE_PLAYER)
         self.assertEqual(tuple(int(v) for v in image[0, 0]), HOME_ODDS)
-        self.assertEqual(tuple(int(v) for v in image[7, 0]), DRAW_ODDS)
-        self.assertEqual(tuple(int(v) for v in image[BAND_H, 0]), HOME_C)
+        self.assertEqual(tuple(int(v) for v in image[51, 0]), HOME_ODDS)
+        self.assertEqual(tuple(int(v) for v in image[52, 0]), DRAW_ODDS)
+        self.assertEqual(tuple(int(v) for v in image[60, 0]), AWAY_ODDS)
+        self.assertEqual(tuple(int(v) for v in image[ODDS_H, 0]), HOME_C)
+        minute_y = SQUARE_HEADER
+        self.assertEqual(tuple(int(v) for v in image[minute_y + SQUARE_MINUTE - 1, 0]), MINUTES_C)
+        self.assertNotEqual(tuple(int(v) for v in image[minute_y + SQUARE_MINUTE - CELL_W - 1, 0]), MINUTES_C)
+        self.assertEqual(tuple(int(v) for v in image[minute_y + SQUARE_MINUTE + SQUARE_EVENT - 1, 0]), GOALS_C)
         self.assertEqual(tuple(int(v) for v in image[0, CELL_W]), HATCH_FG)
+        model = StripVision(SQUARE_HEADER, n_clubs=2, player_h=SQUARE_PLAYER)
+        tensor = torch.from_numpy(image).permute(2, 0, 1).unsqueeze(0).float()
+        out, _assists = model(
+            tensor,
+            torch.zeros(1, ROWS, dtype=torch.bool),
+            torch.ones(1, COLS),
+            torch.zeros(1, ROWS, dtype=torch.long),
+            torch.zeros(1, ROWS, COLS),
+            torch.zeros(1, COLS, 8),
+            torch.zeros(1, dtype=torch.long),
+            torch.zeros(1, COLS, dtype=torch.long),
+            None,
+        )
+        self.assertEqual(tuple(out.shape), (1, ROWS, COLS, 4))
         fresh = strip_features(_view())
         stepped = compose_card(fresh, card, _prices(card), target=1)
         self.assertEqual(tuple(int(v) for v in stepped[0, 0]), HOME_ODDS)
         self.assertEqual(tuple(int(v) for v in stepped[0, 2 * CELL_W]), HATCH_FG)
+
+    def test_the_locked_reader_drops_the_other_squad(self) -> None:
+        torch.manual_seed(0)
+        model = StripVision(BAND_H, n_clubs=2)
+        torch.nn.init.normal_(model.couple.cross.out_proj.weight, std=0.5)
+        image = torch.zeros(1, 3, BAND_H + ROWS * PLAYER_H, COLS * CELL_W)
+        common = (
+            image,
+            torch.zeros(1, ROWS, dtype=torch.bool),
+            torch.ones(1, COLS),
+            torch.zeros(1, ROWS, dtype=torch.long),
+            torch.ones(1, ROWS, COLS),
+            torch.zeros(1, COLS, 8),
+            torch.zeros(1, dtype=torch.long),
+            torch.zeros(1, COLS, dtype=torch.long),
+        )
+        opp = {
+            "position": torch.zeros(1, ROWS, COLS, dtype=torch.long),
+            "minutes": torch.full((1, ROWS, COLS), 90.0),
+            "present": torch.ones(1, ROWS, COLS),
+            "goal_token": torch.ones(1, ROWS, COLS, dtype=torch.long),
+            "assist_token": torch.ones(1, ROWS, COLS, dtype=torch.long),
+            "pad": torch.zeros(1, ROWS, COLS, dtype=torch.bool),
+        }
+        model.eval()
+        without, _assists = model(*common, None)
+        with_squad, _assists = model(*common, opp)
+        self.assertTrue(torch.equal(without, with_squad))
