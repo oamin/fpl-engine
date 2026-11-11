@@ -61,9 +61,11 @@ FRACTIONS = (0.2, 0.4, 0.6, 0.8)
 HEADER_CELLS = HEADER_H // SQ
 PLAYER_CELLS = PLAYER_H // SQ
 CODES = 32
+RANK = 4
 WARMUP = 10
-BETA = 0.1
-POS_WEIGHT = 5.0
+BETA = 0.05
+POS_WEIGHT = 4.0
+ROW_RATE = 2.0
 CELL_ROWS = HEADER_CELLS + ROWS * PLAYER_CELLS
 
 
@@ -109,15 +111,17 @@ class RemainderPainter(nn.Module):
         self.full_head = nn.Linear(D, CODES)
         self.seen_head = nn.Linear(D, CODES)
         self.book = nn.Embedding(CODES, D)
-        self.from_code = nn.Linear(D, D)
-        self.scale = nn.Linear(D, D)
         self.paint = nn.Linear(D, EVENT_SLOTS)
+        self.player_goal = nn.Linear(D, ROWS * RANK)
+        self.player_assist = nn.Linear(D, ROWS * RANK)
+        self.week = nn.Linear(D, COLS * RANK)
+        self.goal_slots = nn.Parameter(torch.ones(3))
+        self.assist_slots = nn.Parameter(torch.ones(3))
         self.row_mark = nn.Parameter(torch.randn(1, ROWS, 1, D) * 0.02)
         self.column_mark = nn.Parameter(torch.randn(1, 1, COLS, D) * 0.02)
         nn.init.normal_(self.book.weight, std=0.1)
-        nn.init.zeros_(self.scale.weight)
-        nn.init.zeros_(self.scale.bias)
-        nn.init.constant_(self.paint.bias, -2.0)
+        nn.init.normal_(self.paint.weight, std=0.01)
+        nn.init.constant_(self.paint.bias, -0.5)
 
     def tokens_of(self, patches: torch.Tensor) -> torch.Tensor:
         local = F.gelu(self.embed(patches))
@@ -154,11 +158,23 @@ class RemainderPainter(nn.Module):
             choice = F.one_hot(index, CODES).to(dtype=probs.dtype)
         return choice @ self.book.weight
 
+    def pattern(self, code: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+        """Where a player factor meets a week factor. One code sets both."""
+        batch = code.shape[0]
+        players_g = self.player_goal(code).view(batch, ROWS, RANK)
+        players_a = self.player_assist(code).view(batch, ROWS, RANK)
+        weeks = self.week(code).view(batch, COLS, RANK)
+        goals = torch.einsum("bir,bcr->bic", players_g, weeks)
+        assists = torch.einsum("bir,bcr->bic", players_a, weeks)
+        return goals, assists
+
     def decode(self, tokens: torch.Tensor, code: torch.Tensor) -> torch.Tensor:
-        shift = self.from_code(code)[:, None, None, :]
-        scale = self.scale(code)[:, None, None, :]
-        placed = self.place(tokens * (1 + scale) + shift)
-        return self.paint(placed).permute(0, 1, 3, 2)
+        visual = self.paint(self.place(tokens))
+        goals, assists = self.pattern(code)
+        visual = visual.clone()
+        visual[..., :3] = visual[..., :3] + goals[..., None] * self.goal_slots
+        visual[..., 3:] = visual[..., 3:] + assists[..., None] * self.assist_slots
+        return visual.permute(0, 1, 3, 2)
 
     def forward(self, full: torch.Tensor, seen: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         full_tokens = self.tokens_of(full)
@@ -179,6 +195,21 @@ def _reconstruction(logits: torch.Tensor, target: torch.Tensor, mask: torch.Tens
     weight = torch.tensor(POS_WEIGHT, device=logits.device)
     per = F.binary_cross_entropy_with_logits(logits, target, reduction="none", pos_weight=weight)
     return (per * mask).sum() / mask.sum().clamp_min(1)
+
+
+def _string_rate(logits: torch.Tensor, target: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
+    """Each player's hidden weeks keep the rate on that player's own string."""
+    prob = torch.sigmoid(logits)
+    weight = mask.float()
+    total = logits.new_zeros(())
+    for slots in (slice(0, 3), slice(3, 6)):
+        covered = weight[:, :, slots].sum(dim=(2, 3)).clamp_min(1)
+        predicted = (prob[:, :, slots] * weight[:, :, slots]).sum(dim=(2, 3)) / covered
+        actual = (target[:, :, slots] * weight[:, :, slots]).sum(dim=(2, 3)) / covered
+        active = weight[:, :, slots].sum(dim=(2, 3)) > 0
+        if bool(active.any()):
+            total = total + (predicted - actual).abs()[active].mean()
+    return total
 
 
 def _optimizer(model: nn.Module) -> torch.optim.Optimizer:
@@ -214,7 +245,12 @@ def train_remainder(
             apply_blank(blank, hidden.cpu().numpy())
             opt.zero_grad()
             logits, full_logits, seen_logits = model(patches_of(full).to(device), patches_of(blank).to(device))
-            loss = _reconstruction(logits, target, hidden.float()) + beta * _kl(full_logits, seen_logits)
+            hidden_f = hidden.float()
+            loss = (
+                _reconstruction(logits, target, hidden_f)
+                + ROW_RATE * _string_rate(logits, target, hidden_f)
+                + beta * _kl(full_logits, seen_logits)
+            )
             loss.backward()
             nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             opt.step()
@@ -235,6 +271,41 @@ def train_remainder(
             f"ink {target_rate:.4f} train {painted_rate:.4f} draw {prior_rate:.4f}",
             flush=True,
         )
+
+
+def _pick_weeks(weights: torch.Tensor, allow: torch.Tensor, generator: torch.Generator) -> torch.Tensor:
+    """One count for the row, then that many weeks. The count is the row's own total."""
+    pick = torch.zeros_like(allow)
+    for batch in range(allow.shape[0]):
+        for row in range(allow.shape[1]):
+            index = allow[batch, row].nonzero(as_tuple=False).flatten()
+            if index.numel() == 0:
+                continue
+            score = weights[batch, row, index]
+            expected = score.sum()
+            if float(expected) <= 1e-8:
+                continue
+            count = int(torch.poisson(expected.detach(), generator=generator).item())
+            count = max(0, min(count, int(index.numel())))
+            if count == 0:
+                continue
+            choice = torch.multinomial(score.detach().clamp_min(1e-8), count, replacement=False, generator=generator)
+            pick[batch, row, index[choice]] = True
+    return pick
+
+
+def draw_strings(logits: torch.Tensor, hidden: torch.Tensor, generator: torch.Generator) -> torch.Tensor:
+    """Sparse strings for the whole card, drawn once from the player's own totals."""
+    probs = torch.sigmoid(logits)
+    bits = torch.zeros_like(hidden)
+    for band in ((2, 1, 0), (5, 4, 3)):
+        lower = None
+        for slot in band:
+            allow = hidden[:, :, slot] if lower is None else lower
+            pick = _pick_weeks(probs[:, :, slot], allow, generator)
+            bits[:, :, slot] = pick
+            lower = pick
+    return bits
 
 
 def _counts(ink: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
@@ -263,7 +334,8 @@ def paint_remainder(
         stop = min(start + BATCH, len(cards))
         tokens = model.tokens_of(patches_of(images[start:stop]).to(device))
         code = model.pick(model.seen_logits(tokens), generator)
-        bits = model.decode(tokens, code) > 0
+        allow = torch.from_numpy(hidden[start:stop]).to(device)
+        bits = draw_strings(model.decode(tokens, code), allow, generator)
         chosen[start:stop] = bits.cpu().numpy()
     apply_bits(images, chosen, hidden)
     ink = ink_of(images, hidden[:, :, 0, :]) & hidden
@@ -315,6 +387,28 @@ def assist_partners(
                 others[row] = False
                 paired += int(bool(others.any()))
     return paired, total
+
+
+def string_density(goals: np.ndarray, minutes: np.ndarray, cards: list, cuts: list[int]) -> dict[str, float]:
+    """The fullest hidden goal string, and the share of a regular's weeks that score."""
+    peaks: list[int] = []
+    shares: list[float] = []
+    for index, card in enumerate(cards):
+        hidden = np.flatnonzero((card.gw > cuts[index]) & (card.gw > 0))
+        if len(hidden) == 0:
+            continue
+        played = minutes[index, : card.n_players][:, hidden] > 0
+        scored = (goals[index, : card.n_players][:, hidden] > 0) & played
+        counts = scored.sum(axis=1)
+        peaks.append(int(counts.max()) if counts.size else 0)
+        regular = played.sum(axis=1) >= max(1, len(hidden) // 2)
+        if bool(regular.any()):
+            shares.append(float(scored[regular].sum() / played[regular].sum()))
+    return {
+        "peak": float(max(peaks) if peaks else 0),
+        "typical": float(np.median(peaks) if peaks else 0),
+        "share": float(np.mean(shares) if shares else 0),
+    }
 
 
 def form_runs(goals: np.ndarray, cards: list, cuts: list[int]) -> tuple[int, int]:
@@ -419,11 +513,14 @@ def execute() -> dict:
         "",
         "The training set is the rendered card. Each square is one cell.",
         "A future goal or assist square is gray. The painter reads the whole",
-        "card once, draws one code for the gray remainder, and paints every",
-        "gray square from that code and the visible card. Odds, venue, the",
-        "opponent mark, the minute stack, and the position color stay on the",
-        "picture, including on a future gameweek. The code is one of the",
-        "remainder patterns learned from the training pictures. Each finished",
+        "card once and draws one code for the gray remainder. The code sets a",
+        "player pattern and a week pattern, and a square is painted where they",
+        "meet on the visible card. Odds, venue, the opponent mark, the minute",
+        "stack, and the position color stay on the picture, including on a",
+        "future gameweek. The code is one of the remainder patterns learned",
+        "from the training pictures. Training matches the squares and each",
+        "player's own run of hidden weeks. The draw keeps that many weeks",
+        "for each player and paints those weeks. Each finished",
         "card is one draw at temperature 1. The other squad is not an input.",
         "",
         f"Train: {', '.join(TRAIN_SEASONS)}. Test: {TEST_SEASON}.",
@@ -435,6 +532,7 @@ def execute() -> dict:
     faults: list[str] = []
     partners: list[str] = []
     runs: list[str] = []
+    strings: list[str] = []
     chances: dict[float, dict] = {}
     arsenal = next(i for i, card in enumerate(test) if card.team == "Arsenal")
     kept = None
@@ -475,6 +573,18 @@ def execute() -> dict:
         actual_run = form_runs(labels, test, cuts)
         painted_run = form_runs(painted_g, test, cuts)
         runs.append(f"| {revealed:.0%} | {_rate(*actual_run)} | {_rate(*painted_run)} |")
+        actual_string = string_density(labels, minutes, test, cuts)
+        painted_string = string_density(painted_g, minutes, test, cuts)
+        strings.append(
+            f"| {revealed:.0%} | {actual_string['peak']:.0f} | {painted_string['peak']:.0f} | "
+            f"{actual_string['typical']:.0f} | {painted_string['typical']:.0f} | "
+            f"{actual_string['share']:.0%} | {painted_string['share']:.0%} |"
+        )
+        print(
+            f"remainder {revealed:.0%} busiest string actual {actual_string['peak']:.0f} "
+            f"painted {painted_string['peak']:.0f} regular share {painted_string['share']:.0%}",
+            flush=True,
+        )
         print(
             f"remainder {revealed:.0%} assist beside a goal {goal_pair[0]}/{goal_pair[1]} "
             f"actual {actual_pair[0]}/{actual_pair[1]}",
@@ -483,13 +593,23 @@ def execute() -> dict:
     lines.extend(
         [
             "",
-            "One code is drawn for the whole remainder. The paint of every future",
-            "event square is fixed by that code and the visible card. The stored",
+            "One code is drawn for the whole remainder. It sets which players and",
+            "which weeks carry the events, and a square is painted where the two",
+            "meet. The stored",
             "gate is the 21:47 UK full painter. This run does not replace it.",
             "",
             "| revealed | channel | actual bars | painted bars | same appearance | gate | difference | within 1 GW | gate | difference |",
             "|---|---|---:|---:|---:|---:|---:|---:|---:|---:|",
             *compared,
+            "",
+            "The busiest string is the most goal appearances one player has in the",
+            "hidden window. The typical string is the median of that count across",
+            "clubs. The regular share is the fraction of a regular's played weeks",
+            "that contain a goal. A regular plays at least half the hidden weeks.",
+            "",
+            "| revealed | actual busiest | painted busiest | actual typical | painted typical | actual regular share | painted regular share |",
+            "|---|---:|---:|---:|---:|---:|---:|",
+            *strings,
             "",
             "A goal is paired when another player with minutes in that gameweek",
             "has an assist. A run is a goal appearance with another goal by the",

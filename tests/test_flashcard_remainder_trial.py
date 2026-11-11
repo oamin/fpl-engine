@@ -19,10 +19,13 @@ from src.models.flashcard_remainder_trial import (
     CELL_ROWS,
     CODES,
     PLAYER_CELLS,
+    RANK,
     RemainderPainter,
     assist_partners,
+    draw_strings,
     form_runs,
     paint_remainder,
+    string_density,
 )
 from src.models.flashcard_squad_trial import ASSISTS_C, COLS, D, GOALS_C, MASK_C, MINUTES_C, ROWS
 from src.models.flashcard_square_trial import SQ
@@ -74,6 +77,48 @@ class RemainderPainterTests(unittest.TestCase):
         self.assertEqual(quiet.shape, (1, ROWS, 6, COLS))
         self.assertFalse(torch.allclose(quiet[:, :, :, 0], busy[:, :, :, 0]))
         self.assertFalse(torch.allclose(quiet[:, :, :, -1], busy[:, :, :, -1]))
+
+    def test_one_code_can_light_one_week_and_leave_the_next_dark(self) -> None:
+        torch.manual_seed(0)
+        model = RemainderPainter()
+        model.eval()
+        with torch.no_grad():
+            model.paint.weight.zero_()
+            model.week.weight.zero_()
+            model.week.bias.zero_()
+            model.player_goal.weight.zero_()
+            model.player_goal.bias.zero_()
+            model.week.bias.view(COLS, RANK)[3, 0] = 2
+            model.week.bias.view(COLS, RANK)[4, 0] = -2
+            model.player_goal.bias.view(ROWS, RANK)[0, 0] = 2
+        tokens = torch.zeros(1, ROWS, COLS, D)
+        paint = model.decode(tokens, torch.zeros(1, D)).detach()
+        self.assertGreater(float(paint[0, 0, 2, 3]), float(paint[0, 0, 2, 4]))
+        self.assertGreater(float(paint[0, 0, 2, 3]), 0.0)
+        self.assertLess(float(paint[0, 0, 2, 4]), 0.0)
+
+    def test_a_string_keeps_the_players_own_count(self) -> None:
+        generator = torch.Generator().manual_seed(0)
+        logits = torch.full((1, 1, 6, 8), -20.0)
+        logits[0, 0, 2, 1] = 8
+        hidden = torch.zeros(1, 1, 6, 8, dtype=torch.bool)
+        hidden[0, 0, :, :] = True
+        drawn = [draw_strings(logits, hidden, generator) for _ in range(40)]
+        counts = torch.stack([item[0, 0, 2].sum() for item in drawn]).float()
+        hot = torch.stack([item[0, 0, 2, 1] for item in drawn]).float()
+        self.assertLess(float(counts.mean()), 3.0)
+        self.assertGreater(float(hot.mean()), 0.5)
+        self.assertEqual(int(torch.stack([item[0, 0, 0].sum() + item[0, 0, 1].sum() for item in drawn]).sum()), 0)
+
+    def test_a_full_string_is_the_busiest_player(self) -> None:
+        goals = np.zeros((1, ROWS, COLS), dtype=np.int64)
+        minutes = np.zeros((1, ROWS, COLS), dtype=np.float32)
+        goals[0, 0, 2:8] = 1
+        goals[0, 1, 3] = 1
+        minutes[0, :, :] = 90
+        density = string_density(goals, minutes, [_card()], [0])
+        self.assertEqual(density["peak"], 6)
+        self.assertGreater(density["share"], 0)
 
     def test_a_later_column_reaches_an_earlier_one(self) -> None:
         torch.manual_seed(0)
