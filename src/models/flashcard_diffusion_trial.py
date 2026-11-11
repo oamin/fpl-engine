@@ -143,6 +143,7 @@ def train_denoiser(
     rng: np.random.Generator,
     device: torch.device,
     epochs: int = EPOCHS,
+    hide=apply_blank,
 ) -> None:
     clean = event_targets(cells).mean(axis=(-3, -2))
     opt = torch.optim.AdamW(model.parameters(), lr=LR, weight_decay=1e-4)
@@ -158,7 +159,7 @@ def train_denoiser(
             cuts = [sample_cut(card, rng) for card in batch_cards]
             hidden_np = hidden_events(batch_cards, cuts)
             blank = np.array(cells[indexes], copy=True)
-            apply_blank(blank, hidden_np)
+            hide(blank, hidden_np)
             hidden = torch.from_numpy(hidden_np).to(device)
             x0 = torch.from_numpy(clean[indexes]).to(device)
             t = torch.randint(0, steps, (len(indexes),), device=device)
@@ -204,11 +205,13 @@ def paint_diffusion(
     device: torch.device,
     generator: torch.Generator,
     keep: int | None = None,
+    hide=apply_blank,
+    read=ink_of,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray | None, np.ndarray, dict[str, int]]:
     model.eval()
     images = np.stack([cells[i] for i in range(len(cards))])
     hidden_np = hidden_events(cards, cuts)
-    apply_blank(images, hidden_np)
+    hide(images, hidden_np)
     colors = np.zeros((len(cards), ROWS, EVENT_SLOTS, COLS, 3), dtype=np.float32)
     for start in range(0, len(cards), BATCH):
         stop = min(start + BATCH, len(cards))
@@ -217,7 +220,7 @@ def paint_diffusion(
         colors[start:stop] = restore(model, patches, hidden, generator).cpu().numpy()
     stamped = stamp_colors(images, colors, hidden_np)
     present = hidden_np[:, :, 0, :]
-    ink = ink_of(stamped, present) & hidden_np
+    ink = read(stamped, present) & hidden_np
     goals = ink[:, :, :3].sum(axis=2).astype(np.int64)
     assists = ink[:, :, 3:].sum(axis=2).astype(np.int64)
     kept = stamped[keep] if keep is not None else None
