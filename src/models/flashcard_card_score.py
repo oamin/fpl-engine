@@ -9,9 +9,8 @@ The painted card comes from the locked vision reader. The picture is the
 square card: sixteen odds squares, one venue square, six minute squares of
 fifteen minutes, and one square per goal or assist. Concede, regulars, own
 history, and opponent history are absent from the picture and from the
-match-up. Each future fixture gets a number of bars equal to the sum of its
-bar probabilities. Those bars go to the rows with minutes and the highest
-probabilities.
+match-up. Each row paints the count with the highest probability. A row
+holds three squares, and that is the only cap.
 """
 
 from __future__ import annotations
@@ -22,7 +21,6 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from src.models.flashcard_calibrated_trial import place_expected
 from src.models.flashcard_trial import TEST_SEASON, TRAIN_SEASONS
 from src.models.flashcard_squad_trial import (
     SEED,
@@ -80,12 +78,23 @@ def tally_cards(
     return totals
 
 
+def paint_row(probs: np.ndarray, mask: np.ndarray) -> np.ndarray:
+    """Paint the count with the highest probability.
+
+    The event row is three squares tall, and the reader has one class for
+    zero and one class for each square. Nothing else limits the count.
+    """
+    count = np.argmax(np.asarray(probs), axis=-1)
+    return np.where(mask, count, 0).astype(np.int64)
+
+
 def _paint(probs: np.ndarray, minutes: np.ndarray, cards: list, cuts: list[int]) -> np.ndarray:
-    painted = np.zeros(minutes.shape, dtype=np.int64)
+    del minutes
+    painted = np.zeros(probs.shape[:-1], dtype=np.int64)
     for index, card in enumerate(cards):
         hidden = (card.gw > cuts[index]) & (card.gw > 0)
         mask = card.present & hidden.reshape(1, -1)
-        painted[index] = place_expected(probs[index], minutes[index], mask)
+        painted[index] = paint_row(probs[index], mask)
     return painted
 
 
@@ -135,9 +144,9 @@ def main() -> None:
         "The reader is squad vision on the square card. The opponent is one",
         "square, a club symbol. The other squad is not an input. Concede,",
         "regulars, own history, and opponent history are",
-        "absent from the picture and from the match-up. Each future fixture is",
-        "given a number of bars equal to the sum of its bar probabilities. Those",
-        "bars go to the rows with minutes and the highest probabilities.",
+        "absent from the picture and from the match-up. Each row paints the",
+        "count with the highest probability. A row holds three squares, and",
+        "that is the only cap.",
         "",
         "A bar matches on the same row only. Within one gameweek includes the same",
         "appearance and either neighboring gameweek. The numbers are totals.",

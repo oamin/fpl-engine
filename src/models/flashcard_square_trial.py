@@ -322,6 +322,18 @@ def compose_binary(
     return paint_binary(view, column_odds(card, odds), visible, grey_columns, card.opponent)
 
 
+_GATE = {
+    ("goals", 0.2): (192, 256),
+    ("assists", 0.2): (100, 161),
+    ("goals", 0.4): (147, 200),
+    ("assists", 0.4): (78, 119),
+    ("goals", 0.6): (94, 134),
+    ("assists", 0.6): (55, 84),
+    ("goals", 0.8): (55, 73),
+    ("assists", 0.8): (36, 51),
+}
+
+
 def main() -> None:
     from src.models.flashcard_squad_trial import build_cards, build_league, cut_at_fraction, fit_clubs, squad_index
 
@@ -357,6 +369,7 @@ def main() -> None:
     torch.manual_seed(SEED)
     full = StripVision(HEADER_H, dropout=0.1, n_clubs=n_clubs, player_h=PLAYER_H)
     train_stripped(full, train, league, np.random.default_rng(SEED), clubs, odds, "square full", compose_square)
+    compared: list[str] = []
     for revealed in (0.2, 0.4, 0.6, 0.8):
         cuts = [cut_at_fraction(card, revealed) for card in test]
         goal_p, assist_p = paint_stripped(full, test, league, clubs, squads, odds, cuts, compose_square)
@@ -364,6 +377,12 @@ def main() -> None:
             painted = _paint(probs, minutes, test, cuts)
             totals = tally_cards(test, actual, painted, 0, cuts)
             lines.append(_row(revealed, "square full", channel, totals))
+            exact, within = _GATE[(channel, revealed)]
+            compared.append(
+                f"| {revealed:.0%} | {channel} | {totals['actual']} | {totals['exact']} | {exact} | "
+                f"{totals['exact'] - exact:+d} | {totals['actual_within']} | {within} | "
+                f"{totals['actual_within'] - within:+d} |"
+            )
             print(
                 f"square full {revealed:.0%} {channel} painted {totals['painted']} "
                 f"exact {totals['exact']} within {totals['actual_within']}",
@@ -388,8 +407,17 @@ def main() -> None:
     lines.extend(
         [
             "",
-            "The stored gate is the 21:47 UK full painter, before this opponent row.",
-            "The other squad is not an input.",
+            "Each row paints the count with the highest probability. The class",
+            "for zero squares wins on almost every row, so the row stays empty.",
+            "A row holds three squares, and that is the only cap. There is no",
+            "fixture budget and no minutes gate. The stored gate is the 21:47 UK",
+            "full painter, which still used that budget. This run does not",
+            "replace it.",
+            "",
+            "| revealed | channel | actual bars | same appearance | gate | difference | within 1 GW | gate | difference |",
+            "|---|---|---:|---:|---:|---:|---:|---:|---:|",
+            *compared,
+            "",
             f"Wall clock: {seconds:.0f} seconds on CPU.",
             "",
         ]

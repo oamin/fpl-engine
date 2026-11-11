@@ -22,8 +22,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from src.models.flashcard_calibrated_trial import place_expected
-from src.models.flashcard_card_score import _paint, tally_cards
+from src.models.flashcard_card_score import _paint, paint_row, tally_cards
 from src.models.flashcard_step_trial import chop_future
 from src.models.flashcard_odds_trial import load_odds, paint_odds_strip
 from src.models.flashcard_squad_trial import (
@@ -366,8 +365,8 @@ def paint_stripped_steps(
         for slot, index in enumerate(indexes):
             card = cards[index]
             mask = card.present & (card.gw == gw).reshape(1, -1)
-            goals[index] += place_expected(goal_p[slot], card.minutes, mask)
-            assists[index] += place_expected(assist_p[slot], card.minutes, mask)
+            goals[index] += paint_row(goal_p[slot], mask)
+            assists[index] += paint_row(assist_p[slot], mask)
     return goals, assists
 
 

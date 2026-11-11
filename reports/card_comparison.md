@@ -12,8 +12,9 @@ are six squares of fifteen minutes, filled from the bottom. One goal or
 assist is one square, and those rows are three squares tall. The position
 color is one square. Concede, regulars, own history, and opponent history
 are absent from the picture and from the match-up. The opponent club stays.
-Each future fixture is given a number of bars equal to the sum of its bar
-probabilities. Those bars go to the rows with minutes and the highest probabilities.
+Each row paints the count with the highest probability. A row holds three
+squares, and that is the only cap. The table below was painted with a
+fixture budget.
 
 A bar matches on the same row only. Within one gameweek includes the same
 appearance and either neighboring gameweek. The numbers are totals.

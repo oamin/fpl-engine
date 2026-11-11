@@ -2,9 +2,9 @@
 
 The score is the painted card against the actual card. Training and test cuts are 20%, 40%, 60%, and 80% of each club's fixtures, starting from gameweek 1. Every club and every row is included. The numbers are totals.
 
-The reader is squad vision on the square card. The other squad is not an input. The odds row is sixteen squares. The venue mark is one square. The opponent is one square, a club symbol. Minutes are six squares of fifteen minutes, filled from the bottom. One goal or assist is one square, and those rows are three squares tall. The position color is one square. Concede, regulars, own history, and opponent history are absent from the picture and from the match-up. The recent scoring rate stays. The opponent club stays. In training, each card draws one of those four cuts at random. The test scores all four. Each future fixture is given a number of bars equal to the sum of its bar probabilities. Those bars go to the rows with minutes and the highest probabilities. A bar matches a goal or an assist on the same row only. Within one gameweek includes the same appearance.
+The reader is squad vision on the square card. The other squad is not an input. The odds row is sixteen squares. The venue mark is one square. The opponent is one square, a club symbol. Minutes are six squares of fifteen minutes, filled from the bottom. One goal or assist is one square, and those rows are three squares tall. The position color is one square. Concede, regulars, own history, and opponent history are absent from the picture and from the match-up. The recent scoring rate stays. The opponent club stays. In training, each card draws one of those four cuts at random. The test scores all four. Each row paints the count with the highest probability. A row holds three squares, and that is the only cap. A bar matches a goal or an assist on the same row only. Within one gameweek includes the same appearance.
 
-This table is the gate, logged at 21:47 UK on 10 Nov 2026. Test season 2025-26. It is the full painter before the opponent symbol row. The other squad is not an input.
+This table is the gate, logged at 21:47 UK on 10 Nov 2026. Test season 2025-26. It is the full painter before the opponent symbol row, and it still used a fixture budget. The other squad is not an input.
 
 | revealed | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
 |---|---|---:|---:|---:|---:|---:|
@@ -141,7 +141,7 @@ At that point the gate was still the 15:53 card, which has no odds bar. On the e
 
 ## Square card
 
-The default picture is the square card. The 21:47 UK pass on 10 Nov trains it without the other squad. The 20:00 UK pass on the same card still read that squad. The opponent symbol row was added after that pass and has not been scored. The odds row is sixteen squares, the venue is one square, and minutes are six squares of fifteen minutes. One to fifteen minutes fills the bottom square, sixteen to thirty fills two, and seventy-six minutes or more fills all six. One goal or assist is one square. Those rows are three squares tall. The position color is one square. The full painter shows the remainder. The stepped painter keeps the odds, the venue, and the minutes on the next week and removes every later column. The other squad is not an input.
+The default picture is the square card. The 21:47 UK pass on 10 Nov trains it without the other squad. The 20:00 UK pass on the same card still read that squad. The opponent symbol row was added after that pass. The unshackled pass below is the first score of the card with that row. The odds row is sixteen squares, the venue is one square, and minutes are six squares of fifteen minutes. One to fifteen minutes fills the bottom square, sixteen to thirty fills two, and seventy-six minutes or more fills all six. One goal or assist is one square. Those rows are three squares tall. The position color is one square. The full painter shows the remainder. The stepped painter keeps the odds, the venue, and the minutes on the next week and removes every later column. The other squad is not an input.
 
 | revealed | model | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
 |---|---|---|---:|---:|---:|---:|---:|
@@ -188,6 +188,31 @@ The 22:46 UK pass on 10 Nov trains the same reader on the black-and-white card. 
 | 80% | binary step | assists | 192 | 203 | 37 | 52 | 73 |
 
 The full painter does not replace the gate. At 20% revealed it puts 190 goal bars on the same appearance and 254 within one gameweek. The gate puts 192 and 256. Same-appearance goals are 2 behind at 20%, 2 ahead at 40%, 2 ahead at 60%, and level at 80%. Within one gameweek, goals are behind at 20%, 40%, and 60%, and 2 ahead at 80%. The step at 20% puts 177 and 224.
+
+## Unshackled paint
+
+The 08:07 UK pass on 11 Nov paints each row with the count whose class wins. A row holds three squares, and that is the only cap. There is no fixture budget and no minutes gate. The card includes the opponent symbol row. The class for zero squares wins on almost every row, so the row stays empty. The detail is in `reports/flashcard_square_trial.md`.
+
+| revealed | model | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
+|---|---|---|---:|---:|---:|---:|---:|
+| 20% | square full | goals | 730 | 0 | 0 | 0 | 0 |
+| 20% | square full | assists | 707 | 1 | 0 | 1 | 1 |
+| 40% | square full | goals | 544 | 2 | 2 | 4 | 2 |
+| 40% | square full | assists | 531 | 1 | 0 | 1 | 1 |
+| 60% | square full | goals | 360 | 1 | 1 | 2 | 1 |
+| 60% | square full | assists | 351 | 0 | 0 | 0 | 0 |
+| 80% | square full | goals | 199 | 1 | 1 | 2 | 1 |
+| 80% | square full | assists | 192 | 0 | 0 | 0 | 0 |
+| 20% | square step | goals | 730 | 1 | 0 | 0 | 0 |
+| 20% | square step | assists | 707 | 0 | 0 | 0 | 0 |
+| 40% | square step | goals | 544 | 1 | 0 | 0 | 0 |
+| 40% | square step | assists | 531 | 0 | 0 | 0 | 0 |
+| 60% | square step | goals | 360 | 1 | 0 | 0 | 0 |
+| 60% | square step | assists | 351 | 0 | 0 | 0 | 0 |
+| 80% | square step | goals | 199 | 1 | 0 | 0 | 0 |
+| 80% | square step | assists | 192 | 0 | 0 | 0 | 0 |
+
+This pass does not replace the gate. At 20% revealed the full painter puts 0 goal bars on the same appearance and 0 within one gameweek. The gate, which still used the fixture budget, puts 192 and 256.
 
 ## What the square card uses
 

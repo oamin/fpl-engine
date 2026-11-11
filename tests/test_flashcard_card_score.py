@@ -6,7 +6,7 @@ import unittest
 
 import numpy as np
 
-from src.models.flashcard_card_score import tally_cards, tally_row
+from src.models.flashcard_card_score import _paint, tally_cards, tally_row
 from src.models.flashcard_squad_trial import cut_at_fraction, sample_cut
 
 
@@ -71,3 +71,13 @@ class CardScoreTests(unittest.TestCase):
         self.assertEqual(totals["actual"], 2)
         self.assertEqual(totals["exact"], 2)
         self.assertEqual(totals["actual_within"], 2)
+
+    def test_each_row_paints_its_own_count(self) -> None:
+        probs = np.zeros((1, 2, 1, 4))
+        probs[0, 0, 0] = (0.05, 0.15, 0.70, 0.10)
+        probs[0, 1, 0] = (0.40, 0.60, 0.00, 0.00)
+        minutes = np.zeros((1, 2, 1))
+        present = np.ones((2, 1), dtype=bool)
+        painted = _paint(probs, minutes, [_Card(np.array([5]), present)], [0])
+        self.assertEqual(int(painted[0, 0, 0]), 2)
+        self.assertEqual(int(painted[0, 1, 0]), 1)
