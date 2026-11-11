@@ -19,7 +19,7 @@ import torch.nn.functional as F
 from PIL import Image, ImageDraw, ImageFont
 
 from src.models.flashcard_card_score import tally_cards
-from src.models.flashcard_generator_trial import MASKGIT_STEPS, cosine_ratio, still_masked
+from src.models.flashcard_generator_trial import MASKGIT_STEPS, still_masked
 from src.models.flashcard_odds_trial import load_odds
 from src.models.flashcard_squad_trial import (
     ASSISTS_C,
@@ -185,6 +185,16 @@ def repeat_blocks(bits: np.ndarray, side: int) -> np.ndarray:
     return np.repeat(np.repeat(bits, block, axis=1), block, axis=3)
 
 
+def band_picture(ink: np.ndarray, side: int) -> np.ndarray:
+    """A coarser card. Only the full card carries the second and third squares."""
+    pooled = pool_max(ink, side)
+    if side < COLS:
+        pooled = np.array(pooled, copy=True)
+        for slot in (0, 1, 3, 4):
+            pooled[:, :, slot] = False
+    return repeat_blocks(pooled, side)
+
+
 def patches_of(cells: np.ndarray) -> torch.Tensor:
     flat = cells.reshape(cells.shape[0], CELL_ROWS, COLS, SQ * SQ * 3)
     ordered = np.transpose(flat, (0, 3, 1, 2))
@@ -194,41 +204,54 @@ def patches_of(cells: np.ndarray) -> torch.Tensor:
 class CellPainter(nn.Module):
     """Read every square of the card and paint the six event squares of each row.
 
-    Band attention looks up and down a column, so a goal square sees the minute
-    stack, the odds, and the other rows. Column attention looks across gameweeks.
+    A square keeps its place in the column. The vertical window sees the
+    squares above and below it, so the bottom of a band is a different place
+    from the top, and the minute stack sits above the goal squares. Column
+    attention then looks across gameweeks.
     """
 
     def __init__(self, causal: bool) -> None:
         super().__init__()
         self.causal = causal
         self.embed = nn.Conv2d(SQ * SQ * 3, D, kernel_size=1)
+        self.vertical = nn.Conv2d(D, D, kernel_size=(PLAYER_CELLS, 1), padding=(PLAYER_CELLS // 2, 0))
         self.band = nn.MultiheadAttention(D, HEADS, dropout=0.1, batch_first=True)
         self.column = nn.MultiheadAttention(D, HEADS, dropout=0.1, batch_first=True)
         self.norm_band = nn.LayerNorm(D)
         self.norm_column = nn.LayerNorm(D)
-        self.head = nn.Sequential(nn.Linear(D * 2, D), nn.GELU(), nn.Linear(D, 1))
+        self.head = nn.Linear(D, 1)
 
-    def forward(self, patches: torch.Tensor) -> torch.Tensor:
-        embedded = self.embed(patches)
-        batch, width, _, columns = embedded.shape
-        header = embedded[:, :, :HEADER_CELLS].mean(dim=2)
-        body = embedded[:, :, HEADER_CELLS:].reshape(batch, width, ROWS, PLAYER_CELLS, columns)
-        bands = torch.cat([header.unsqueeze(2), body.mean(dim=3)], dim=2)
-        sequence = bands.permute(0, 3, 2, 1).reshape(batch * columns, BANDS, width)
+    def _column_mix(self, local: torch.Tensor) -> torch.Tensor:
+        batch, width, rows, columns = local.shape
+        sequence = local.permute(0, 2, 3, 1).reshape(batch * rows, columns, width)
+        attn_mask = None
+        if self.causal:
+            attn_mask = torch.triu(torch.ones(columns, columns, dtype=torch.bool, device=local.device), diagonal=1)
+        mixed, _ = self.column(sequence, sequence, sequence, attn_mask=attn_mask, need_weights=False)
+        sequence = self.norm_column(sequence + mixed)
+        return sequence.reshape(batch, rows, columns, width)
+
+    def _band_context(self, local: torch.Tensor) -> torch.Tensor:
+        batch, _, columns, width = local.shape
+        header = local[:, :HEADER_CELLS].mean(dim=1)
+        body = local[:, HEADER_CELLS:].reshape(batch, ROWS, PLAYER_CELLS, columns, width)
+        bands = torch.cat([header.unsqueeze(1), body.mean(dim=2)], dim=1)
+        sequence = bands.permute(0, 2, 1, 3).reshape(batch * columns, BANDS, width)
         mixed, _ = self.band(sequence, sequence, sequence, need_weights=False)
         sequence = self.norm_band(sequence + mixed)
         bands = sequence.reshape(batch, columns, BANDS, width).permute(0, 2, 1, 3)
-        sequence = bands.reshape(batch * BANDS, columns, width)
-        attn_mask = None
-        if self.causal:
-            attn_mask = torch.triu(torch.ones(columns, columns, dtype=torch.bool, device=patches.device), diagonal=1)
-        mixed, _ = self.column(sequence, sequence, sequence, attn_mask=attn_mask, need_weights=False)
-        sequence = self.norm_column(sequence + mixed)
-        bands = sequence.reshape(batch, BANDS, columns, width)
-        event = body[:, :, :, MINUTE_CELLS : MINUTE_CELLS + EVENT_SLOTS].permute(0, 2, 4, 3, 1)
-        player = bands[:, 1:].unsqueeze(3).expand_as(event)
-        logits = self.head(torch.cat([player, event], dim=-1)).squeeze(-1)
-        return logits.permute(0, 1, 3, 2)
+        context = torch.zeros_like(local)
+        context[:, :HEADER_CELLS] = bands[:, 0].unsqueeze(1)
+        spread = bands[:, 1:, None].expand(-1, -1, PLAYER_CELLS, -1, -1)
+        context[:, HEADER_CELLS:] = spread.reshape(batch, ROWS * PLAYER_CELLS, columns, width)
+        return context
+
+    def forward(self, patches: torch.Tensor) -> torch.Tensor:
+        local = F.gelu(self.vertical(self.embed(patches)))
+        local = self._column_mix(local)
+        logits = self.head(local + self._band_context(local)).squeeze(-1)
+        body = logits[:, HEADER_CELLS:].reshape(logits.shape[0], ROWS, PLAYER_CELLS, logits.shape[-1])
+        return body[:, :, MINUTE_CELLS : MINUTE_CELLS + EVENT_SLOTS]
 
 
 def _bce(logits: torch.Tensor, target: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
@@ -258,12 +281,8 @@ def train_maskgit(model: CellPainter, cards: list, cells: np.ndarray, ink: np.nd
             indexes = order[start : start + BATCH]
             cuts = [sample_cut(cards[int(i)], rng) for i in indexes]
             images, target, hidden = _batch(cells, ink, cards, indexes, cuts, device)
-            ratio = cosine_ratio(float(rng.random()))
-            drop_np = hidden.cpu().numpy() & (rng.random(hidden.shape) < ratio)
-            for index in range(drop_np.shape[0]):
-                if bool(hidden[index].any()) and not bool(drop_np[index].any()):
-                    drop_np[index] = hidden[index].cpu().numpy()
-            apply_blank(images, drop_np)
+            blank, drop_np = mask_from_bottom(hidden.cpu().numpy(), rng)
+            apply_blank(images, blank)
             opt.zero_grad()
             logits = model(patches_of(images).to(device))
             mask = torch.from_numpy(drop_np).to(device)
@@ -287,9 +306,10 @@ def train_column(model: CellPainter, cards: list, cells: np.ndarray, ink: np.nda
             indexes = order[start : start + BATCH]
             cuts = [sample_cut(cards[int(i)], rng) for i in indexes]
             images, target, hidden = _batch(cells, ink, cards, indexes, cuts, device)
-            apply_blank(images, hidden.cpu().numpy())
+            blank, drop_np = mask_from_bottom(hidden.cpu().numpy(), rng)
+            apply_blank(images, blank)
             opt.zero_grad()
-            loss = _bce(model(patches_of(images).to(device)), target.float(), hidden.float())
+            loss = _bce(model(patches_of(images).to(device)), target.float(), torch.from_numpy(drop_np).to(device).float())
             loss.backward()
             nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             opt.step()
@@ -311,22 +331,62 @@ def train_var(model: CellPainter, cards: list, cells: np.ndarray, ink: np.ndarra
             images, _, hidden = _batch(cells, ink, cards, indexes, cuts, device)
             side = int(SCALES[int(rng.integers(len(SCALES)))])
             picked = np.stack([ink[int(i)] for i in indexes])
-            target_np = repeat_blocks(pool_max(picked, side), side)
-            if side == SCALES[0]:
-                apply_blank(images, hidden.cpu().numpy())
-            else:
-                parent = repeat_blocks(pool_max(picked, side // 2), side // 2)
-                apply_bits(images, parent, hidden.cpu().numpy())
+            hidden_np = hidden.cpu().numpy()
+            blank, drop = mask_from_bottom(hidden_np, rng)
+            if side != SCALES[0]:
+                apply_bits(images, band_picture(picked, side // 2), hidden_np)
+            apply_blank(images, blank)
             opt.zero_grad()
             logits = model(patches_of(images).to(device))
-            target = torch.from_numpy(target_np).to(device).float()
-            loss = _bce(logits, target, hidden.float())
+            target = torch.from_numpy(np.ascontiguousarray(picked)).to(device).float()
+            loss = _bce(logits, target, torch.from_numpy(drop).to(device).float())
             loss.backward()
             nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             opt.step()
             total += float(loss.detach())
             seen += 1
         print(f"var epoch {epoch + 1} train bce {total / max(seen, 1):.3f}", flush=True)
+
+
+BAND_LEVELS = ((2, 5), (1, 4), (0, 3))
+
+
+def mask_from_bottom(hidden: np.ndarray, rng: np.random.Generator) -> tuple[np.ndarray, np.ndarray]:
+    """Hide a suffix of each band. The loss is the next square up.
+
+    The squares below that one stay as they were painted. A second square is
+    never a training target while the first square is hidden.
+    """
+    blank = np.zeros_like(hidden)
+    drop = np.zeros_like(hidden)
+    for bottom, middle, top in ((2, 1, 0), (5, 4, 3)):
+        base = hidden[:, :, bottom]
+        keep = rng.integers(0, 3, size=base.shape)
+        blank[:, :, bottom] = base & (keep == 0)
+        blank[:, :, middle] = base & (keep <= 1)
+        blank[:, :, top] = base & (keep <= 2)
+        drop[:, :, bottom] = base & (keep == 0)
+        drop[:, :, middle] = base & (keep == 1)
+        drop[:, :, top] = base & (keep == 2)
+    return blank, drop
+
+
+def stack_faults(ink: np.ndarray) -> dict[str, int]:
+    """Stacks with a higher square filled and a lower square empty."""
+
+    def part(slots: np.ndarray) -> tuple[int, int]:
+        top, mid, bottom = slots[:, :, 0], slots[:, :, 1], slots[:, :, 2]
+        bad = (top & ~mid) | (top & ~bottom) | (mid & ~bottom)
+        return int(bad.sum()), int((top | mid | bottom).sum())
+
+    goal_bad, goal_filled = part(ink[:, :, :3])
+    assist_bad, assist_filled = part(ink[:, :, 3:])
+    return {
+        "goal_bad": goal_bad,
+        "goal_filled": goal_filled,
+        "assist_bad": assist_bad,
+        "assist_filled": assist_filled,
+    }
 
 
 def _counts(ink: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
@@ -358,35 +418,40 @@ def paint_maskgit(
     device: torch.device,
     generator: torch.Generator,
     keep: int | None = None,
-) -> tuple[np.ndarray, np.ndarray, np.ndarray | None]:
+) -> tuple[np.ndarray, np.ndarray, np.ndarray | None, dict[str, int]]:
     model.eval()
     images = np.stack([cells[i] for i in range(len(cards))])
     hidden = hidden_events(cards, cuts)
     apply_blank(images, hidden)
-    unknown = hidden.copy()
-    original = unknown.reshape(len(cards), -1).sum(axis=1)
-    for step in range(MASKGIT_STEPS):
-        logits = model(patches_of(images).to(device))
-        probs = torch.sigmoid(logits)
-        draw = (torch.rand(probs.shape, generator=generator, device=probs.device) < probs).cpu().numpy()
-        confidence = torch.where(probs > 0.5, probs, 1 - probs).cpu().numpy()
-        commit = np.zeros_like(unknown)
-        for index in range(len(cards)):
-            nxt = still_masked(
-                confidence[index].ravel(),
-                unknown[index].ravel(),
-                step,
-                MASKGIT_STEPS,
-                int(original[index]),
-            )
-            nxt = nxt.reshape(unknown[index].shape)
-            commit[index] = unknown[index] & ~nxt
-            unknown[index] = nxt
-        apply_bits(images, draw, commit)
+    for level in BAND_LEVELS:
+        active = np.zeros_like(hidden)
+        for slot in level:
+            active[:, :, slot] = hidden[:, :, slot]
+        original = active.reshape(len(cards), -1).sum(axis=1)
+        for step in range(MASKGIT_STEPS):
+            if not bool(active.any()):
+                break
+            logits = model(patches_of(images).to(device))
+            probs = torch.sigmoid(logits)
+            draw = (torch.rand(probs.shape, generator=generator, device=probs.device) < probs).cpu().numpy()
+            confidence = torch.where(probs > 0.5, probs, 1 - probs).cpu().numpy()
+            commit = np.zeros_like(active)
+            for index in range(len(cards)):
+                nxt = still_masked(
+                    confidence[index].ravel(),
+                    active[index].ravel(),
+                    step,
+                    MASKGIT_STEPS,
+                    int(original[index]),
+                )
+                nxt = nxt.reshape(active[index].shape)
+                commit[index] = active[index] & ~nxt
+                active[index] = nxt
+            apply_bits(images, draw, commit)
     ink = ink_of(images, hidden[:, :, 0, :])
     goals, assists = _counts(ink)
     kept = images[keep] if keep is not None else None
-    return goals, assists, kept
+    return goals, assists, kept, stack_faults(ink)
 
 
 @torch.no_grad()
@@ -398,7 +463,7 @@ def paint_column(
     device: torch.device,
     generator: torch.Generator,
     keep: int | None = None,
-) -> tuple[np.ndarray, np.ndarray, np.ndarray | None]:
+) -> tuple[np.ndarray, np.ndarray, np.ndarray | None, dict[str, int]]:
     model.eval()
     images = np.stack([cells[i] for i in range(len(cards))])
     hidden = hidden_events(cards, cuts)
@@ -406,15 +471,17 @@ def paint_column(
     for col in range(COLS):
         if not bool(hidden[:, :, :, col].any()):
             continue
-        logits = model(patches_of(images).to(device))
-        draw = _sample_cells(logits, generator)
-        where = np.zeros_like(hidden)
-        where[:, :, :, col] = hidden[:, :, :, col]
-        apply_bits(images, draw, where)
+        for level in BAND_LEVELS:
+            logits = model(patches_of(images).to(device))
+            draw = _sample_cells(logits, generator)
+            where = np.zeros_like(hidden)
+            for slot in level:
+                where[:, :, slot, col] = hidden[:, :, slot, col]
+            apply_bits(images, draw, where)
     ink = ink_of(images, hidden[:, :, 0, :])
     goals, assists = _counts(ink)
     kept = images[keep] if keep is not None else None
-    return goals, assists, kept
+    return goals, assists, kept, stack_faults(ink)
 
 
 @torch.no_grad()
@@ -426,27 +493,35 @@ def paint_var(
     device: torch.device,
     generator: torch.Generator,
     keep: int | None = None,
-) -> tuple[np.ndarray, np.ndarray, np.ndarray | None]:
+) -> tuple[np.ndarray, np.ndarray, np.ndarray | None, dict[str, int]]:
     model.eval()
     images = np.stack([cells[i] for i in range(len(cards))])
     hidden_np = hidden_events(cards, cuts)
     apply_blank(images, hidden_np)
     hidden = torch.from_numpy(hidden_np).to(device)
     for side in SCALES:
-        logits = model(patches_of(images).to(device))
-        probs = torch.sigmoid(_block_mean(logits, hidden, side))
-        draw = torch.rand(probs.shape, generator=generator, device=probs.device) < probs
-        block = ROWS // side
-        up = draw.repeat_interleave(block, dim=1).repeat_interleave(block, dim=3).cpu().numpy()
-        apply_bits(images, up, hidden_np)
+        for level in BAND_LEVELS:
+            logits = model(patches_of(images).to(device))
+            level_hidden = hidden.clone()
+            for slot in range(EVENT_SLOTS):
+                if slot not in level:
+                    level_hidden[:, :, slot] = False
+            probs = torch.sigmoid(_block_mean(logits, level_hidden, side))
+            draw = torch.rand(probs.shape, generator=generator, device=probs.device) < probs
+            block = ROWS // side
+            up = draw.repeat_interleave(block, dim=1).repeat_interleave(block, dim=3).cpu().numpy()
+            where = np.zeros_like(hidden_np)
+            for slot in level:
+                where[:, :, slot] = hidden_np[:, :, slot]
+            apply_bits(images, up, where)
     ink = ink_of(images, hidden_np[:, :, 0, :])
     goals, assists = _counts(ink)
     kept = images[keep] if keep is not None else None
-    return goals, assists, kept
+    return goals, assists, kept, stack_faults(ink)
 
 
 @torch.no_grad()
-def paint_chance(model: CellPainter, cards: list, cells: np.ndarray, cuts: list[int], device: torch.device) -> dict[str, float]:
+def paint_chance(model: CellPainter, cards: list, cells: np.ndarray, cuts: list[int], device: torch.device) -> dict:
     """Chance a blank appearance gets any goal square, before the draw."""
     model.eval()
     images = np.stack([cells[i] for i in range(len(cards))])
@@ -462,7 +537,13 @@ def paint_chance(model: CellPainter, cards: list, cells: np.ndarray, cuts: list[
     def mean(mask: np.ndarray) -> float:
         return float(any_goal[mask].mean()) if bool(mask.any()) else 0.0
 
-    return {"zero": mean(zero), "played": mean(played)}
+    def slot_mean(mask: np.ndarray, slot: int) -> float:
+        return float(probs[:, :, slot][mask].mean()) if bool(mask.any()) else 0.0
+
+    out = {"zero": mean(zero), "played": mean(played)}
+    for label, mask in (("zero", zero), ("played", played)):
+        out[label + "_slots"] = [slot_mean(mask, slot) for slot in (2, 1, 0)]
+    return out
 
 
 def _row(revealed: float, name: str, channel: str, totals: dict[str, int]) -> str:
@@ -596,7 +677,8 @@ def execute() -> dict:
         "|---|---|---|---:|---:|---:|---:|---:|",
     ]
     compared: dict[str, list[str]] = {}
-    chances: dict[str, dict[str, float]] = {}
+    chances: dict[str, dict] = {}
+    faults: dict[str, list[str]] = {}
     arsenal = next(i for i, card in enumerate(test) if card.team == "Arsenal")
     kept: dict[str, np.ndarray] = {}
     runners = (
@@ -615,7 +697,10 @@ def execute() -> dict:
             generator = torch.Generator(device="cpu")
             generator.manual_seed(SEED)
             keep = arsenal if revealed == 0.2 else None
-            painted_g, painted_a, image = paint_fn(model, test, test_cells, cuts, device, generator, keep)
+            painted_g, painted_a, image, fault = paint_fn(model, test, test_cells, cuts, device, generator, keep)
+            faults.setdefault(name, []).append(
+                f"| {revealed:.0%} | {fault['goal_filled']} | {fault['goal_bad']} | {fault['assist_filled']} | {fault['assist_bad']} |"
+            )
             if image is not None:
                 kept[name] = image
             for channel, painted, actual in (("goals", painted_g, labels), ("assists", painted_a, assist_labels)):
@@ -641,9 +726,11 @@ def execute() -> dict:
             "MaskGIT fills the gray squares in eight passes, keeping the sure",
             "ones each time. The column raster paints the next gameweek from",
             "the picture on its left, then writes those squares before the next",
-            "week. VAR paints scales of 5, 10, 20, and 40. A coarse square is",
-            "filled when any square in its block is filled, and the next scale",
-            "repaints the block. The stored gate is the 21:47 UK full painter.",
+            "week. A band is drawn from the bottom square upward, and the square",
+            "above is drawn after the square below it is on the card. VAR paints",
+            "scales of 5, 10, 20, and 40. A coarse block carries the bottom",
+            "square only, and the full scale paints the squares above it. The",
+            "stored gate is the 21:47 UK full painter.",
             "These runs do not replace it.",
             "",
         ]
@@ -661,15 +748,34 @@ def execute() -> dict:
         )
     lines.extend(
         [
-            "With the future event squares left gray, the chance that an appearance",
-            "gets any goal square, before the draw:",
+            "A square keeps its row in the column. The bottom square of a band",
+            "sees a different window from the square above it, and the minute",
+            "stack is in that window. With the future event squares left gray,",
+            "the chance of painting each goal square, from the bottom, before",
+            "the draw:",
             "",
-            "| model | zero minutes | minutes played |",
-            "|---|---:|---:|",
+            "| model | minutes | 1st square | 2nd square | 3rd square | any square |",
+            "|---|---|---:|---:|---:|---:|",
         ]
     )
     for name in ("maskgit", "column", "var"):
-        lines.append(f"| {name} | {chances[name]['zero']:.3f} | {chances[name]['played']:.3f} |")
+        for label, title in (("zero", "zero"), ("played", "played")):
+            slots = chances[name][label + "_slots"]
+            lines.append(
+                f"| {name} | {title} | {slots[0]:.3f} | {slots[1]:.3f} | {slots[2]:.3f} | {chances[name][label]:.3f} |"
+            )
+    lines.extend(
+        [
+            "",
+            "A painted stack skips a lower square when a higher square is filled",
+            "and a square below it is empty.",
+        ]
+    )
+    for name in ("maskgit", "column", "var"):
+        lines.extend(["", f"### {name}", ""])
+        lines.append("| revealed | goal stacks | skipping | assist stacks | skipping |")
+        lines.append("|---|---:|---:|---:|---:|")
+        lines.extend(faults[name])
     lines.append("")
     path = ROOT_REPORTS / "flashcard_image_trial.md"
     path.write_text("\n".join(lines), encoding="utf-8")

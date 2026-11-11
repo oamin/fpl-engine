@@ -11,83 +11,121 @@ Train: 2022-23, 2023-24, 2024-25. Test: 2025-26.
 
 | revealed | model | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
 |---|---|---|---:|---:|---:|---:|---:|
-| 20% | maskgit | goals | 730 | 966 | 55 | 146 | 138 |
-| 20% | maskgit | assists | 707 | 1000 | 49 | 127 | 133 |
-| 40% | maskgit | goals | 544 | 708 | 36 | 96 | 91 |
-| 40% | maskgit | assists | 531 | 779 | 33 | 92 | 98 |
-| 60% | maskgit | goals | 360 | 460 | 26 | 68 | 66 |
-| 60% | maskgit | assists | 351 | 537 | 17 | 61 | 64 |
-| 80% | maskgit | goals | 199 | 264 | 18 | 45 | 43 |
-| 80% | maskgit | assists | 192 | 293 | 18 | 34 | 35 |
-| 20% | column | goals | 730 | 873 | 47 | 125 | 112 |
-| 20% | column | assists | 707 | 887 | 47 | 117 | 112 |
-| 40% | column | goals | 544 | 693 | 48 | 105 | 97 |
-| 40% | column | assists | 531 | 670 | 35 | 98 | 88 |
-| 60% | column | goals | 360 | 473 | 23 | 66 | 62 |
-| 60% | column | assists | 351 | 473 | 22 | 76 | 76 |
-| 80% | column | goals | 199 | 250 | 29 | 46 | 45 |
-| 80% | column | assists | 192 | 248 | 17 | 36 | 35 |
-| 20% | var | goals | 730 | 2294 | 107 | 255 | 246 |
-| 20% | var | assists | 707 | 1652 | 67 | 185 | 188 |
-| 40% | var | goals | 544 | 1801 | 86 | 198 | 193 |
-| 40% | var | assists | 531 | 1279 | 47 | 123 | 129 |
-| 60% | var | goals | 360 | 1212 | 53 | 120 | 119 |
-| 60% | var | assists | 351 | 873 | 30 | 87 | 92 |
-| 80% | var | goals | 199 | 680 | 28 | 61 | 64 |
-| 80% | var | assists | 192 | 446 | 12 | 39 | 43 |
+| 20% | maskgit | goals | 730 | 771 | 76 | 172 | 163 |
+| 20% | maskgit | assists | 707 | 730 | 60 | 160 | 158 |
+| 40% | maskgit | goals | 544 | 612 | 56 | 124 | 117 |
+| 40% | maskgit | assists | 531 | 622 | 48 | 121 | 123 |
+| 60% | maskgit | goals | 360 | 437 | 34 | 83 | 83 |
+| 60% | maskgit | assists | 351 | 421 | 35 | 93 | 93 |
+| 80% | maskgit | goals | 199 | 247 | 22 | 51 | 51 |
+| 80% | maskgit | assists | 192 | 249 | 19 | 51 | 49 |
+| 20% | column | goals | 730 | 1052 | 104 | 242 | 238 |
+| 20% | column | assists | 707 | 1039 | 100 | 213 | 204 |
+| 40% | column | goals | 544 | 826 | 73 | 163 | 161 |
+| 40% | column | assists | 531 | 832 | 55 | 145 | 148 |
+| 60% | column | goals | 360 | 537 | 46 | 121 | 121 |
+| 60% | column | assists | 351 | 510 | 38 | 109 | 108 |
+| 80% | column | goals | 199 | 278 | 25 | 55 | 54 |
+| 80% | column | assists | 192 | 290 | 29 | 57 | 60 |
+| 20% | var | goals | 730 | 606 | 51 | 137 | 119 |
+| 20% | var | assists | 707 | 598 | 32 | 100 | 96 |
+| 40% | var | goals | 544 | 464 | 39 | 101 | 87 |
+| 40% | var | assists | 531 | 449 | 22 | 73 | 66 |
+| 60% | var | goals | 360 | 305 | 27 | 65 | 57 |
+| 60% | var | assists | 351 | 296 | 16 | 51 | 46 |
+| 80% | var | goals | 199 | 158 | 12 | 25 | 23 |
+| 80% | var | assists | 192 | 162 | 7 | 22 | 19 |
 
 MaskGIT fills the gray squares in eight passes, keeping the sure
 ones each time. The column raster paints the next gameweek from
 the picture on its left, then writes those squares before the next
-week. VAR paints scales of 5, 10, 20, and 40. A coarse square is
-filled when any square in its block is filled, and the next scale
-repaints the block. The stored gate is the 21:47 UK full painter.
+week. A band is drawn from the bottom square upward, and the square
+above is drawn after the square below it is on the card. VAR paints
+scales of 5, 10, 20, and 40. A coarse block carries the bottom
+square only, and the full scale paints the squares above it. The
+stored gate is the 21:47 UK full painter.
 These runs do not replace it.
 
 ## maskgit
 
 | revealed | channel | actual bars | painted bars | same appearance | gate | difference | within 1 GW | gate | difference |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| 20% | goals | 730 | 966 | 55 | 192 | -137 | 146 | 256 | -110 |
-| 20% | assists | 707 | 1000 | 49 | 100 | -51 | 127 | 161 | -34 |
-| 40% | goals | 544 | 708 | 36 | 147 | -111 | 96 | 200 | -104 |
-| 40% | assists | 531 | 779 | 33 | 78 | -45 | 92 | 119 | -27 |
-| 60% | goals | 360 | 460 | 26 | 94 | -68 | 68 | 134 | -66 |
-| 60% | assists | 351 | 537 | 17 | 55 | -38 | 61 | 84 | -23 |
-| 80% | goals | 199 | 264 | 18 | 55 | -37 | 45 | 73 | -28 |
-| 80% | assists | 192 | 293 | 18 | 36 | -18 | 34 | 51 | -17 |
+| 20% | goals | 730 | 771 | 76 | 192 | -116 | 172 | 256 | -84 |
+| 20% | assists | 707 | 730 | 60 | 100 | -40 | 160 | 161 | -1 |
+| 40% | goals | 544 | 612 | 56 | 147 | -91 | 124 | 200 | -76 |
+| 40% | assists | 531 | 622 | 48 | 78 | -30 | 121 | 119 | +2 |
+| 60% | goals | 360 | 437 | 34 | 94 | -60 | 83 | 134 | -51 |
+| 60% | assists | 351 | 421 | 35 | 55 | -20 | 93 | 84 | +9 |
+| 80% | goals | 199 | 247 | 22 | 55 | -33 | 51 | 73 | -22 |
+| 80% | assists | 192 | 249 | 19 | 36 | -17 | 51 | 51 | +0 |
 
 ## column
 
 | revealed | channel | actual bars | painted bars | same appearance | gate | difference | within 1 GW | gate | difference |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| 20% | goals | 730 | 873 | 47 | 192 | -145 | 125 | 256 | -131 |
-| 20% | assists | 707 | 887 | 47 | 100 | -53 | 117 | 161 | -44 |
-| 40% | goals | 544 | 693 | 48 | 147 | -99 | 105 | 200 | -95 |
-| 40% | assists | 531 | 670 | 35 | 78 | -43 | 98 | 119 | -21 |
-| 60% | goals | 360 | 473 | 23 | 94 | -71 | 66 | 134 | -68 |
-| 60% | assists | 351 | 473 | 22 | 55 | -33 | 76 | 84 | -8 |
-| 80% | goals | 199 | 250 | 29 | 55 | -26 | 46 | 73 | -27 |
-| 80% | assists | 192 | 248 | 17 | 36 | -19 | 36 | 51 | -15 |
+| 20% | goals | 730 | 1052 | 104 | 192 | -88 | 242 | 256 | -14 |
+| 20% | assists | 707 | 1039 | 100 | 100 | +0 | 213 | 161 | +52 |
+| 40% | goals | 544 | 826 | 73 | 147 | -74 | 163 | 200 | -37 |
+| 40% | assists | 531 | 832 | 55 | 78 | -23 | 145 | 119 | +26 |
+| 60% | goals | 360 | 537 | 46 | 94 | -48 | 121 | 134 | -13 |
+| 60% | assists | 351 | 510 | 38 | 55 | -17 | 109 | 84 | +25 |
+| 80% | goals | 199 | 278 | 25 | 55 | -30 | 55 | 73 | -18 |
+| 80% | assists | 192 | 290 | 29 | 36 | -7 | 57 | 51 | +6 |
 
 ## var
 
 | revealed | channel | actual bars | painted bars | same appearance | gate | difference | within 1 GW | gate | difference |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| 20% | goals | 730 | 2294 | 107 | 192 | -85 | 255 | 256 | -1 |
-| 20% | assists | 707 | 1652 | 67 | 100 | -33 | 185 | 161 | +24 |
-| 40% | goals | 544 | 1801 | 86 | 147 | -61 | 198 | 200 | -2 |
-| 40% | assists | 531 | 1279 | 47 | 78 | -31 | 123 | 119 | +4 |
-| 60% | goals | 360 | 1212 | 53 | 94 | -41 | 120 | 134 | -14 |
-| 60% | assists | 351 | 873 | 30 | 55 | -25 | 87 | 84 | +3 |
-| 80% | goals | 199 | 680 | 28 | 55 | -27 | 61 | 73 | -12 |
-| 80% | assists | 192 | 446 | 12 | 36 | -24 | 39 | 51 | -12 |
+| 20% | goals | 730 | 606 | 51 | 192 | -141 | 137 | 256 | -119 |
+| 20% | assists | 707 | 598 | 32 | 100 | -68 | 100 | 161 | -61 |
+| 40% | goals | 544 | 464 | 39 | 147 | -108 | 101 | 200 | -99 |
+| 40% | assists | 531 | 449 | 22 | 78 | -56 | 73 | 119 | -46 |
+| 60% | goals | 360 | 305 | 27 | 94 | -67 | 65 | 134 | -69 |
+| 60% | assists | 351 | 296 | 16 | 55 | -39 | 51 | 84 | -33 |
+| 80% | goals | 199 | 158 | 12 | 55 | -43 | 25 | 73 | -48 |
+| 80% | assists | 192 | 162 | 7 | 36 | -29 | 22 | 51 | -29 |
 
-With the future event squares left gray, the chance that an appearance
-gets any goal square, before the draw:
+A square keeps its row in the column. The bottom square of a band
+sees a different window from the square above it, and the minute
+stack is in that window. With the future event squares left gray,
+the chance of painting each goal square, from the bottom, before
+the draw:
 
-| model | zero minutes | minutes played |
-|---|---:|---:|
-| maskgit | 0.043 | 0.063 |
-| column | 0.045 | 0.067 |
-| var | 0.279 | 0.300 |
+| model | minutes | 1st square | 2nd square | 3rd square | any square |
+|---|---|---:|---:|---:|---:|
+| maskgit | zero | 0.002 | 0.001 | 0.001 | 0.004 |
+| maskgit | played | 0.077 | 0.018 | 0.006 | 0.098 |
+| column | zero | 0.003 | 0.001 | 0.001 | 0.004 |
+| column | played | 0.085 | 0.019 | 0.006 | 0.107 |
+| var | zero | 0.003 | 0.001 | 0.001 | 0.004 |
+| var | played | 0.089 | 0.012 | 0.007 | 0.105 |
+
+A painted stack skips a lower square when a higher square is filled
+and a square below it is empty.
+
+### maskgit
+
+| revealed | goal stacks | skipping | assist stacks | skipping |
+|---|---:|---:|---:|---:|
+| 20% | 771 | 47 | 730 | 54 |
+| 40% | 612 | 40 | 622 | 41 |
+| 60% | 437 | 28 | 421 | 23 |
+| 80% | 247 | 12 | 249 | 16 |
+
+### column
+
+| revealed | goal stacks | skipping | assist stacks | skipping |
+|---|---:|---:|---:|---:|
+| 20% | 1052 | 41 | 1039 | 41 |
+| 40% | 826 | 37 | 832 | 35 |
+| 60% | 537 | 26 | 510 | 27 |
+| 80% | 278 | 10 | 290 | 13 |
+
+### var
+
+| revealed | goal stacks | skipping | assist stacks | skipping |
+|---|---:|---:|---:|---:|
+| 20% | 606 | 62 | 598 | 63 |
+| 40% | 464 | 48 | 449 | 47 |
+| 60% | 305 | 31 | 296 | 36 |
+| 80% | 158 | 12 | 162 | 19 |

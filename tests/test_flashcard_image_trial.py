@@ -14,14 +14,16 @@ from src.models.flashcard_image_trial import (
     MINUTE_CELLS,
     CellPainter,
     apply_blank,
+    band_picture,
     cells_of,
     hidden_events,
     image_of,
     ink_of,
+    mask_from_bottom,
     pool_max,
     repeat_blocks,
 )
-from src.models.flashcard_squad_trial import ASSISTS_C, COLS, GOALS_C, MINUTES_C, ROWS
+from src.models.flashcard_squad_trial import ASSISTS_C, COLS, GOALS_C, MASK_C, MINUTES_C, ROWS
 from src.models.flashcard_square_trial import SQ, paint_square
 
 
@@ -114,6 +116,41 @@ class ImagePainterTests(unittest.TestCase):
         self.assertTrue(bool(hidden[0, 2, :, 10].all()))
         self.assertFalse(bool(hidden[0, 2, :, 0].any()))
         self.assertFalse(bool(hidden[0, 3].any()))
+
+    def test_a_coarse_band_keeps_only_the_bottom_square(self) -> None:
+        bits = np.zeros((1, ROWS, 6, COLS), dtype=bool)
+        bits[0, 3, :, 7] = True
+        picture = band_picture(bits, 20)
+        self.assertTrue(bool(picture[0, 3, 2, 7]))
+        self.assertTrue(bool(picture[0, 3, 5, 7]))
+        self.assertFalse(bool(picture[0, :, 0].any()))
+        self.assertFalse(bool(picture[0, :, 1].any()))
+        self.assertFalse(bool(picture[0, :, 3].any()))
+        self.assertFalse(bool(picture[0, :, 4].any()))
+
+    def test_a_higher_square_is_not_a_target_while_the_lower_one_is_hidden(self) -> None:
+        hidden = np.ones((1, 2, 6, 3), dtype=bool)
+        _blank, drop = mask_from_bottom(hidden, np.random.default_rng(0))
+        self.assertFalse(bool((drop[:, :, 1] & _blank[:, :, 2]).any()))
+        self.assertFalse(bool((drop[:, :, 0] & (_blank[:, :, 1] | _blank[:, :, 2])).any()))
+        self.assertFalse(bool((drop[:, :, 4] & _blank[:, :, 5]).any()))
+        self.assertFalse(bool((drop[:, :, 3] & (_blank[:, :, 4] | _blank[:, :, 5])).any()))
+        self.assertGreater(int(drop.sum()), 0)
+
+    def test_three_gray_squares_keep_three_places(self) -> None:
+        torch.manual_seed(0)
+        model = CellPainter(causal=False)
+        model.eval()
+        patches = torch.zeros(1, SQ * SQ * 3, CELL_ROWS, COLS)
+        blue = torch.tensor(MINUTES_C, dtype=torch.float32).div(255).repeat(SQ * SQ)
+        gray = torch.tensor(MASK_C, dtype=torch.float32).div(255).repeat(SQ * SQ)
+        for slot in range(MINUTE_CELLS):
+            patches[0, :, HEADER_CELLS + slot, :] = blue[:, None]
+        for slot in range(6):
+            patches[0, :, HEADER_CELLS + MINUTE_CELLS + slot, :] = gray[:, None]
+        logits = model(patches)[0, 0, :3, 0].detach()
+        self.assertGreater(float((logits[0] - logits[1]).abs()), 1e-4)
+        self.assertGreater(float((logits[1] - logits[2]).abs()), 1e-4)
 
     def test_a_column_cannot_read_a_later_column(self) -> None:
         torch.manual_seed(0)
