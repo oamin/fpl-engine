@@ -13,6 +13,7 @@ from src.models.flashcard_generator_trial import (
     any_pool,
     context_tokens,
     cosine_ratio,
+    event_bits,
     max_pool,
     still_masked,
 )
@@ -75,6 +76,30 @@ class GeneratorTests(unittest.TestCase):
         goal[:, :, 3:] = 3
         second, _ = model(goal, assist, parent, parent, position, minutes, opponent, features, row_pad, col_pad)
         self.assertTrue(torch.equal(first[:, :, :3], second[:, :, :3]))
+
+    def test_a_count_is_three_squares_and_a_mask_bit(self) -> None:
+        bits = event_bits(np.array([0, 2, 3, MASK_ID]))
+        self.assertTrue(np.array_equal(bits[0], [0, 0, 0, 0]))
+        self.assertTrue(np.array_equal(bits[1], [1, 1, 0, 0]))
+        self.assertTrue(np.array_equal(bits[2], [1, 1, 1, 0]))
+        self.assertTrue(np.array_equal(bits[3], [0, 0, 0, 1]))
+
+    def test_the_binary_head_has_one_logit_per_square(self) -> None:
+        torch.manual_seed(0)
+        model = TokenGrid(n_clubs=4, causal=False, binary=True)
+        model.eval()
+        batch, rows, cols = 1, 4, 4
+        goal = torch.tensor([0, 1, 2, MASK_ID]).reshape(1, 1, 4).expand(batch, rows, cols).contiguous()
+        assist = torch.zeros_like(goal)
+        parent = torch.full_like(goal, MASK_ID)
+        position = torch.zeros(batch, rows, dtype=torch.long)
+        minutes = torch.zeros(batch, rows, cols)
+        opponent = torch.zeros(batch, cols, dtype=torch.long)
+        features = torch.zeros(batch, cols, 6)
+        row_pad = torch.zeros(batch, rows, dtype=torch.bool)
+        col_pad = torch.zeros(batch, cols, dtype=torch.bool)
+        out, _ = model(goal, assist, parent, parent, position, minutes, opponent, features, row_pad, col_pad)
+        self.assertEqual(tuple(out.shape), (batch, rows, cols, 3))
 
     def test_a_draw_stays_inside_the_row(self) -> None:
         generator = torch.Generator().manual_seed(0)

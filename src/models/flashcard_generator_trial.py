@@ -14,6 +14,8 @@ from pathlib import Path
 import numpy as np
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
+
 from src.models.flashcard_card_score import tally_cards
 from src.models.flashcard_odds_trial import column_odds, load_odds
 from src.models.flashcard_squad_trial import (
@@ -72,6 +74,30 @@ def any_pool(mask: np.ndarray, side: int) -> np.ndarray:
 def repeat_up(values: np.ndarray) -> np.ndarray:
     """Double a square map along both axes."""
     return np.repeat(np.repeat(values, 2, axis=1), 2, axis=2)
+
+
+def event_bits(tokens: np.ndarray) -> np.ndarray:
+    """Three on/off squares, then a mask bit.
+
+    Square k is on when the count reaches k. A masked square is off, and the
+    mask bit is on.
+    """
+    tokens = np.asarray(tokens)
+    masked = tokens == MASK_ID
+    count = np.minimum(tokens, 3)
+    bits = np.stack([(count >= 1), (count >= 2), (count >= 3)], axis=-1)
+    bits = bits & ~masked[..., None]
+    flag = masked[..., None]
+    return np.concatenate([bits.astype(np.float32), flag.astype(np.float32)], axis=-1)
+
+
+def _torch_bits(tokens: torch.Tensor) -> torch.Tensor:
+    masked = tokens == MASK_ID
+    count = tokens.clamp(max=3)
+    levels = torch.arange(1, 4, device=tokens.device)
+    bits = count.unsqueeze(-1) >= levels
+    bits = bits & ~masked.unsqueeze(-1)
+    return torch.cat([bits.float(), masked.unsqueeze(-1).float()], dim=-1)
 
 
 def context_tokens(labels: np.ndarray, hidden: np.ndarray) -> np.ndarray:
@@ -150,13 +176,10 @@ class TokenGrid(nn.Module):
     the weeks to its left and not the weeks to its right.
     """
 
-    def __init__(self, n_clubs: int, causal: bool) -> None:
+    def __init__(self, n_clubs: int, causal: bool, binary: bool = False) -> None:
         super().__init__()
         self.causal = causal
-        self.goal_tok = nn.Embedding(MASK_ID + 1, D)
-        self.assist_tok = nn.Embedding(MASK_ID + 1, D)
-        self.parent_goal = nn.Embedding(MASK_ID + 1, D)
-        self.parent_assist = nn.Embedding(MASK_ID + 1, D)
+        self.binary = binary
         self.position = nn.Embedding(5, D)
         self.opponent = nn.Embedding(n_clubs, D)
         self.minute = nn.Linear(1, D)
@@ -165,8 +188,25 @@ class TokenGrid(nn.Module):
         self.col = nn.MultiheadAttention(D, HEADS, dropout=0.1, batch_first=True)
         self.norm_row = nn.LayerNorm(D)
         self.norm_col = nn.LayerNorm(D)
-        self.goal = nn.Linear(D, 4)
-        self.assist = nn.Linear(D, 4)
+        if binary:
+            self.goal_tok = nn.Linear(4, D)
+            self.assist_tok = nn.Linear(4, D)
+            self.parent_goal = nn.Linear(4, D)
+            self.parent_assist = nn.Linear(4, D)
+            self.goal = nn.Linear(D, 3)
+            self.assist = nn.Linear(D, 3)
+        else:
+            self.goal_tok = nn.Embedding(MASK_ID + 1, D)
+            self.assist_tok = nn.Embedding(MASK_ID + 1, D)
+            self.parent_goal = nn.Embedding(MASK_ID + 1, D)
+            self.parent_assist = nn.Embedding(MASK_ID + 1, D)
+            self.goal = nn.Linear(D, 4)
+            self.assist = nn.Linear(D, 4)
+
+    def _code(self, tokens: torch.Tensor, layer: nn.Module) -> torch.Tensor:
+        if self.binary:
+            return layer(_torch_bits(tokens))
+        return layer(tokens)
 
     def forward(
         self,
@@ -183,10 +223,10 @@ class TokenGrid(nn.Module):
     ) -> tuple[torch.Tensor, torch.Tensor]:
         batch, rows, cols = goal_tok.shape
         cells = (
-            self.goal_tok(goal_tok)
-            + self.assist_tok(assist_tok)
-            + self.parent_goal(parent_goal)
-            + self.parent_assist(parent_assist)
+            self._code(goal_tok, self.goal_tok)
+            + self._code(assist_tok, self.assist_tok)
+            + self._code(parent_goal, self.parent_goal)
+            + self._code(parent_assist, self.parent_assist)
             + self.position(position)[:, :, None, :]
             + self.minute((minutes / 90.0).unsqueeze(-1))
             + self.opponent(opponent)[:, None, :, :]
@@ -215,10 +255,36 @@ def _blank_parent(goal_tok: torch.Tensor) -> torch.Tensor:
 def _draw(logits: torch.Tensor, generator: torch.Generator) -> tuple[torch.Tensor, torch.Tensor]:
     """One temperature-1 draw, and the probability of the drawn class."""
     probs = torch.softmax(logits, dim=-1)
-    flat = probs.reshape(-1, 4)
+    flat = probs.reshape(-1, probs.shape[-1])
     choice = torch.multinomial(flat, 1, generator=generator).reshape(probs.shape[:-1])
     picked = probs.gather(-1, choice.unsqueeze(-1)).squeeze(-1)
     return choice, picked
+
+
+def _draw_bits(logits: torch.Tensor, generator: torch.Generator) -> tuple[torch.Tensor, torch.Tensor]:
+    """Draw each square on or off. The count is how many squares are on."""
+    probs = torch.sigmoid(logits)
+    noise = torch.rand(*probs.shape, generator=generator, device=probs.device)
+    bits = noise < probs
+    count = bits.sum(dim=-1).to(dtype=torch.long)
+    chosen = torch.where(bits, probs, 1.0 - probs)
+    return count, chosen.mean(dim=-1)
+
+
+def _event_loss(model: TokenGrid, logits: torch.Tensor, counts: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
+    if not model.binary:
+        return _nll(logits, counts, mask)
+    levels = torch.arange(1, 4, device=logits.device)
+    target = (counts.unsqueeze(-1) >= levels).float()
+    per = F.binary_cross_entropy_with_logits(logits, target, reduction="none").mean(dim=-1)
+    weight = mask.sum().clamp_min(1.0)
+    return (per * mask).sum() / weight
+
+
+def _sample(model: TokenGrid, logits: torch.Tensor, generator: torch.Generator) -> tuple[torch.Tensor, torch.Tensor]:
+    if model.binary:
+        return _draw_bits(logits, generator)
+    return _draw(logits, generator)
 
 
 def _optimizer(model: nn.Module) -> torch.optim.Optimizer:
@@ -261,7 +327,8 @@ def train_maskgit(model: TokenGrid, cards: list, clubs: dict, odds: dict, rng: n
                 batch["row_pad"], ~batch["column_on"],
             )
             loss = 0.5 * (
-                _nll(goal_logits, batch["goals"], drop.float()) + _nll(assist_logits, batch["assists"], drop.float())
+                _event_loss(model, goal_logits, batch["goals"], drop.float())
+                + _event_loss(model, assist_logits, batch["assists"], drop.float())
             )
             loss.backward()
             nn.utils.clip_grad_norm_(model.parameters(), 1.0)
@@ -293,8 +360,8 @@ def paint_maskgit(model: TokenGrid, cards: list, clubs: dict, odds: dict, cuts: 
                 batch["position"], batch["minutes"], batch["opponent"], batch["features"],
                 batch["row_pad"], ~batch["column_on"],
             )
-            drawn_g, conf_g = _draw(goal_logits, generator)
-            drawn_a, conf_a = _draw(assist_logits, generator)
+            drawn_g, conf_g = _sample(model, goal_logits, generator)
+            drawn_a, conf_a = _sample(model, assist_logits, generator)
             confidence = ((conf_g + conf_a) * 0.5).cpu().numpy()
             unknown_np = unknown.cpu().numpy()
             goal_np = goal.cpu().numpy()
@@ -353,7 +420,8 @@ def train_column(model: TokenGrid, cards: list, clubs: dict, odds: dict, rng: np
             )
             drop = batch["hidden"].float()
             loss = 0.5 * (
-                _nll(goal_logits, batch["goals"], drop) + _nll(assist_logits, batch["assists"], drop)
+                _event_loss(model, goal_logits, batch["goals"], drop)
+                + _event_loss(model, assist_logits, batch["assists"], drop)
             )
             loss.backward()
             nn.utils.clip_grad_norm_(model.parameters(), 1.0)
@@ -385,8 +453,8 @@ def paint_column(model: TokenGrid, cards: list, clubs: dict, odds: dict, cuts: l
                 batch["position"], batch["minutes"], batch["opponent"], batch["features"],
                 batch["row_pad"], ~batch["column_on"],
             )
-            drawn_g, _ = _draw(goal_logits[:, :, col], generator)
-            drawn_a, _ = _draw(assist_logits[:, :, col], generator)
+            drawn_g, _ = _sample(model, goal_logits[:, :, col], generator)
+            drawn_a, _ = _sample(model, assist_logits[:, :, col], generator)
             take = hidden[:, :, col]
             goal[:, :, col] = torch.where(take, drawn_g, goal[:, :, col])
             assist[:, :, col] = torch.where(take, drawn_a, assist[:, :, col])
@@ -446,7 +514,8 @@ def _loss_scale(model: TokenGrid, packs: list[dict[str, np.ndarray]], device: to
     )
     drop = batch["hidden"].float()
     return 0.5 * (
-        _nll(goal_logits, batch["goals"], drop) + _nll(assist_logits, batch["assists"], drop)
+        _event_loss(model, goal_logits, batch["goals"], drop)
+        + _event_loss(model, assist_logits, batch["assists"], drop)
     )
 
 
@@ -511,8 +580,8 @@ def paint_var(model: TokenGrid, cards: list, clubs: dict, odds: dict, cuts: list
                 batch["position"], batch["minutes"], batch["opponent"], batch["features"],
                 batch["row_pad"], ~batch["column_on"],
             )
-            drawn_g, _ = _draw(goal_logits, generator)
-            drawn_a, _ = _draw(assist_logits, generator)
+            drawn_g, _ = _sample(model, goal_logits, generator)
+            drawn_a, _ = _sample(model, assist_logits, generator)
             hidden = batch["hidden"]
             sampled_g = torch.where(hidden, drawn_g, batch["goals"]).cpu().numpy()
             sampled_a = torch.where(hidden, drawn_a, batch["assists"]).cpu().numpy()
@@ -539,7 +608,7 @@ def _compare(revealed: float, channel: str, totals: dict[str, int]) -> str:
     )
 
 
-def main() -> None:
+def execute(binary: bool = False) -> dict | None:
     started = time.perf_counter()
     device = torch.device("cpu")
     print("loading generator cards", flush=True)
@@ -551,21 +620,37 @@ def main() -> None:
     n_clubs = max(clubs.values(), default=0) + 1
     labels = np.stack([card.goals for card in test])
     assist_labels = np.stack([card.assists for card in test])
+    if binary:
+        opening = [
+            "# Binary mask generators",
+            "",
+            "The same three painters, with a binary mask. Each event row is",
+            "three squares, and each square is on or off. A hidden square is",
+            "off, and its mask bit is on. A draw turns those bits into a count",
+            "from zero to three. Odds, venue, opponent, minutes, and position",
+            "stay visible. The other squad is not an input.",
+            "",
+        ]
+    else:
+        opening = [
+            "# Card generators",
+            "",
+            "Three painters train on the squares of the card. The known prefix",
+            "keeps its goal and assist squares. Odds, venue, opponent, minutes,",
+            "and position stay visible, including on a future gameweek. Each",
+            "finished card is one draw at temperature 1. The other squad is not",
+            "an input.",
+            "",
+        ]
     lines = [
-        "# Card generators",
-        "",
-        "Three painters train on the squares of the card. The known prefix",
-        "keeps its goal and assist squares. Odds, venue, opponent, minutes,",
-        "and position stay visible, including on a future gameweek. Each",
-        "finished card is one draw at temperature 1. The other squad is not",
-        "an input.",
-        "",
+        *opening,
         f"Train: {', '.join(TRAIN_SEASONS)}. Test: {TEST_SEASON}.",
         "",
         "| revealed | model | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |",
         "|---|---|---|---:|---:|---:|---:|---:|",
     ]
     compared: dict[str, list[str]] = {}
+    saved: dict[str, tuple[np.ndarray, np.ndarray]] = {}
     runners = (
         ("maskgit", False, train_maskgit, paint_maskgit),
         ("column", True, train_column, paint_column),
@@ -574,7 +659,7 @@ def main() -> None:
     for name, causal, train_fn, paint_fn in runners:
         print(f"training {name}", flush=True)
         torch.manual_seed(SEED)
-        model = TokenGrid(n_clubs, causal=causal).to(device)
+        model = TokenGrid(n_clubs, causal=causal, binary=binary).to(device)
         train_fn(model, train, clubs, odds, np.random.default_rng(SEED), device)
         generator = torch.Generator(device="cpu")
         generator.manual_seed(SEED)
@@ -582,6 +667,8 @@ def main() -> None:
         for revealed in FRACTIONS:
             cuts = [cut_at_fraction(card, revealed) for card in test]
             painted_g, painted_a = paint_fn(model, test, clubs, odds, cuts, device, generator)
+            if binary and revealed == 0.2:
+                saved[name] = (painted_g, painted_a)
             for channel, painted, actual in (("goals", painted_g, labels), ("assists", painted_a, assist_labels)):
                 totals = tally_cards(test, actual, painted, 0, cuts)
                 lines.append(_row(revealed, name, channel, totals))
@@ -598,9 +685,17 @@ def main() -> None:
             "",
             "MaskGIT fills the open squares in eight passes, keeping the sure",
             "ones each time. The column raster paints the next gameweek from",
-            "the weeks on its left. VAR paints scales of 5, 10, 20, and 40,",
-            "and a coarse square is the highest count in its block. The stored",
-            "gate is the 21:47 UK full painter. These runs do not replace it.",
+            "the weeks on its left. VAR paints scales of 5, 10, 20, and 40.",
+            *(
+                [
+                    "On the binary mask a coarse square is the highest count in its",
+                    "block, written as on/off squares.",
+                ]
+                if binary
+                else ["A coarse square is the highest count in its block."]
+            ),
+            "The stored gate is the 21:47 UK full painter. These runs do not",
+            "replace it.",
             "",
         ]
     )
@@ -616,9 +711,17 @@ def main() -> None:
             ]
         )
     lines.extend([f"Wall clock: {seconds:.0f} seconds on CPU.", ""])
-    path = ROOT_REPORTS / "flashcard_generator_trial.md"
+    name = "flashcard_generator_binary_trial.md" if binary else "flashcard_generator_trial.md"
+    path = ROOT_REPORTS / name
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(f"done in {seconds:.0f}s", flush=True)
+    if not binary:
+        return None
+    return {"paints": saved, "test": test, "league": league, "clubs": clubs, "odds": odds, "train": train}
+
+
+def main() -> None:
+    execute(False)
 
 
 if __name__ == "__main__":

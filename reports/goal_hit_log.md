@@ -229,6 +229,21 @@ The 09:12 UK pass on 11 Nov trains three painters on the squares themselves. Odd
 
 These runs do not replace the gate. At 20% revealed VAR puts 101 goal bars on the same appearance and 211 within one gameweek, from 1098 painted bars. The gate puts 192 and 256. MaskGIT paints 233 goal bars and lands 28. The column raster paints 861 and lands 51.
 
+## Binary mask generators
+
+The same three painters, with each of the three event squares on or off. A hidden square is off and its mask bit is on. A draw turns the bits into a count from zero to three. The detail is in `reports/flashcard_generator_binary_trial.md`.
+
+| revealed | model | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
+|---|---|---|---:|---:|---:|---:|---:|
+| 20% | maskgit | goals | 730 | 333 | 24 | 64 | 49 |
+| 20% | maskgit | assists | 707 | 302 | 11 | 39 | 36 |
+| 20% | column | goals | 730 | 1599 | 72 | 190 | 181 |
+| 20% | column | assists | 707 | 1390 | 67 | 184 | 171 |
+| 20% | var | goals | 730 | 2233 | 126 | 312 | 312 |
+| 20% | var | assists | 707 | 2035 | 102 | 263 | 269 |
+
+These runs do not replace the gate. At 20% revealed VAR puts 126 goal bars on the same appearance and 312 within one gameweek, from 2233 painted bars. The gate puts 192 and 256, from 759 painted bars. MaskGIT paints 333 and lands 24. The column raster paints 1599 and lands 72.
+
 ## What the square card uses
 
 The 21:16 UK pass on 10 Nov removes one signal at a time from the 20:00 full painter, which still read the other squad, and paints the 20% cut again. Whitening the whole picture leaves 10 goal bars on the same appearance. Whitening the minute squares leaves 28, and 95 bars painted. Whitening the odds row leaves 117, and 378 bars painted. Zeroing the position id still paints 665 bars, and 12 land on a goal. The position color, the venue, the past goals, the past assists, the recent scoring rate, and dropping the other squad each move the same-appearance count by about ten. That pass is a record of the reader that still took the squad. The locked reader does not. The detail is in `reports/flashcard_signal.md`.
