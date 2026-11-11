@@ -27,19 +27,21 @@ Train: 2022-23, 2023-24, 2024-25. Test: 2025-26.
 
 One code is drawn for the whole remainder. It sets which players and
 which weeks carry the events, and a square is painted where the two
-meet. The stored
-gate is the 21:47 UK full painter. This run does not replace it.
+meet. The rank is the hit rate times the bar-count match. Twice as
+many bars, or half as many, halves the score before the hits are
+counted. The stored gate is the 21:47 UK full painter. This run
+does not replace it.
 
-| revealed | channel | actual bars | painted bars | same appearance | gate | difference | within 1 GW | gate | difference |
-|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| 20% | goals | 730 | 884 | 131 | 192 | -61 | 272 | 256 | +16 |
-| 20% | assists | 707 | 808 | 76 | 100 | -24 | 169 | 161 | +8 |
-| 40% | goals | 544 | 619 | 84 | 147 | -63 | 186 | 200 | -14 |
-| 40% | assists | 531 | 596 | 54 | 78 | -24 | 128 | 119 | +9 |
-| 60% | goals | 360 | 439 | 64 | 94 | -30 | 125 | 134 | -9 |
-| 60% | assists | 351 | 402 | 28 | 55 | -27 | 84 | 84 | +0 |
-| 80% | goals | 199 | 231 | 23 | 55 | -32 | 61 | 73 | -12 |
-| 80% | assists | 192 | 222 | 24 | 36 | -12 | 46 | 51 | -5 |
+| revealed | channel | actual bars | gate bars | new bars | gate hits | new hits | gate score | new score |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+| 20% | goals | 730 | 759 | 884 | 192 | 131 | 0.248 | 0.134 |
+| 20% | assists | 707 | 692 | 808 | 100 | 76 | 0.140 | 0.088 |
+| 40% | goals | 544 | 589 | 619 | 147 | 84 | 0.240 | 0.127 |
+| 40% | assists | 531 | 535 | 596 | 78 | 54 | 0.145 | 0.085 |
+| 60% | goals | 360 | 384 | 439 | 94 | 64 | 0.237 | 0.131 |
+| 60% | assists | 351 | 348 | 402 | 55 | 28 | 0.156 | 0.065 |
+| 80% | goals | 199 | 204 | 231 | 55 | 23 | 0.266 | 0.092 |
+| 80% | assists | 192 | 185 | 222 | 36 | 24 | 0.184 | 0.100 |
 
 The busiest string is the most goal appearances one player has in the
 hidden window. The typical string is the median of that count across

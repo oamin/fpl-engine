@@ -19,7 +19,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from PIL import Image
 
-from src.models.flashcard_card_score import tally_cards
+from src.models.flashcard_card_score import GATE, balanced_score, tally_cards
 from src.models.flashcard_image_trial import (
     COLS_SHOWN,
     EVENT_SLOTS,
@@ -440,10 +440,11 @@ def _row(revealed: float, channel: str, totals: dict[str, int]) -> str:
 
 def _compare(revealed: float, channel: str, totals: dict[str, int]) -> str:
     exact, within = _GATE[(channel, revealed)]
+    gate = balanced_score(GATE[(channel, revealed)])
+    new = balanced_score(totals)
     return (
-        f"| {revealed:.0%} | {channel} | {totals['actual']} | {totals['painted']} | {totals['exact']} | {exact} | "
-        f"{totals['exact'] - exact:+d} | {totals['actual_within']} | {within} | "
-        f"{totals['actual_within'] - within:+d} |"
+        f"| {revealed:.0%} | {channel} | {totals['actual']} | {GATE[(channel, revealed)]['painted']} | "
+        f"{totals['painted']} | {exact} | {totals['exact']} | {gate['score']:.3f} | {new['score']:.3f} |"
     )
 
 
@@ -595,11 +596,13 @@ def execute() -> dict:
             "",
             "One code is drawn for the whole remainder. It sets which players and",
             "which weeks carry the events, and a square is painted where the two",
-            "meet. The stored",
-            "gate is the 21:47 UK full painter. This run does not replace it.",
+            "meet. The rank is the hit rate times the bar-count match. Twice as",
+            "many bars, or half as many, halves the score before the hits are",
+            "counted. The stored gate is the 21:47 UK full painter. This run",
+            "does not replace it.",
             "",
-            "| revealed | channel | actual bars | painted bars | same appearance | gate | difference | within 1 GW | gate | difference |",
-            "|---|---|---:|---:|---:|---:|---:|---:|---:|---:|",
+            "| revealed | channel | actual bars | gate bars | new bars | gate hits | new hits | gate score | new score |",
+            "|---|---|---:|---:|---:|---:|---:|---:|---:|",
             *compared,
             "",
             "The busiest string is the most goal appearances one player has in the",
