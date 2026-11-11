@@ -34,16 +34,16 @@ Train: 2022-23, 2023-24, 2024-25. Test: 2025-26.
 
 Full painter against the gate. A positive difference is ahead of the gate.
 
-| revealed | channel | same appearance | gate | difference | within 1 GW | gate | difference |
-|---|---|---:|---:|---:|---:|---:|---:|
-| 20% | goals | 190 | 192 | -2 | 254 | 256 | -2 |
-| 20% | assists | 103 | 100 | +3 | 158 | 161 | -3 |
-| 40% | goals | 149 | 147 | +2 | 198 | 200 | -2 |
-| 40% | assists | 79 | 78 | +1 | 117 | 119 | -2 |
-| 60% | goals | 96 | 94 | +2 | 131 | 134 | -3 |
-| 60% | assists | 58 | 55 | +3 | 84 | 84 | +0 |
-| 80% | goals | 55 | 55 | +0 | 75 | 73 | +2 |
-| 80% | assists | 35 | 36 | -1 | 52 | 51 | +1 |
+| revealed | channel | actual bars | same appearance | gate | difference | within 1 GW | gate | difference |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+| 20% | goals | 730 | 190 | 192 | -2 | 254 | 256 | -2 |
+| 20% | assists | 707 | 103 | 100 | +3 | 158 | 161 | -3 |
+| 40% | goals | 544 | 149 | 147 | +2 | 198 | 200 | -2 |
+| 40% | assists | 531 | 79 | 78 | +1 | 117 | 119 | -2 |
+| 60% | goals | 360 | 96 | 94 | +2 | 131 | 134 | -3 |
+| 60% | assists | 351 | 58 | 55 | +3 | 84 | 84 | +0 |
+| 80% | goals | 199 | 55 | 55 | +0 | 75 | 73 | +2 |
+| 80% | assists | 192 | 35 | 36 | -1 | 52 | 51 | +1 |
 
 The gate stays the 21:47 UK full painter.
 Wall clock: 165 seconds on CPU.

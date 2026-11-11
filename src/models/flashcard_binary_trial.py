@@ -44,7 +44,7 @@ GATE = {
 def _compare(channel: str, revealed: float, totals: dict[str, int]) -> str:
     exact, within = GATE[(channel, revealed)]
     return (
-        f"| {revealed:.0%} | {channel} | {totals['exact']} | {exact} | "
+        f"| {revealed:.0%} | {channel} | {totals['actual']} | {totals['exact']} | {exact} | "
         f"{totals['exact'] - exact:+d} | {totals['actual_within']} | {within} | "
         f"{totals['actual_within'] - within:+d} |"
     )
@@ -86,7 +86,7 @@ def main() -> None:
     ]
     compared = [
         "",
-        "| revealed | channel | same appearance | gate | difference | within 1 GW | gate | difference |",
+        "| revealed | channel | actual bars | same appearance | gate | difference | within 1 GW | gate | difference |",
         "|---|---|---:|---:|---:|---:|---:|---:|",
     ]
     print("training binary full", flush=True)
