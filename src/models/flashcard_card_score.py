@@ -34,6 +34,18 @@ from src.models.flashcard_squad_trial import (
 ROOT_REPORTS = Path(__file__).resolve().parents[2] / "reports"
 KEYS = ("actual", "painted", "exact", "actual_within", "painted_within")
 
+# The locked painter at 21:47 UK on 10 Nov 2026.
+GATE = {
+    ("goals", 0.2): {"actual": 730, "painted": 759, "exact": 192, "actual_within": 256, "painted_within": 394},
+    ("assists", 0.2): {"actual": 707, "painted": 692, "exact": 100, "actual_within": 161, "painted_within": 218},
+    ("goals", 0.4): {"actual": 544, "painted": 589, "exact": 147, "actual_within": 200, "painted_within": 305},
+    ("assists", 0.4): {"actual": 531, "painted": 535, "exact": 78, "actual_within": 119, "painted_within": 163},
+    ("goals", 0.6): {"actual": 360, "painted": 384, "exact": 94, "actual_within": 134, "painted_within": 200},
+    ("assists", 0.6): {"actual": 351, "painted": 348, "exact": 55, "actual_within": 84, "painted_within": 110},
+    ("goals", 0.8): {"actual": 199, "painted": 204, "exact": 55, "actual_within": 73, "painted_within": 102},
+    ("assists", 0.8): {"actual": 192, "painted": 185, "exact": 36, "actual_within": 51, "painted_within": 62},
+}
+
 
 def tally_row(gameweeks: np.ndarray, actual: np.ndarray, painted: np.ndarray) -> dict[str, int]:
     """Counts for one row. Within one gameweek includes the same appearance."""
@@ -54,6 +66,43 @@ def _close(left: np.ndarray, right: np.ndarray) -> int:
     if len(left) == 0 or len(right) == 0:
         return 0
     return int(np.any(np.abs(left.astype(np.int64)[:, None] - right.astype(np.int64)[None, :]) <= 1, axis=1).sum())
+
+
+def balanced_score(totals: dict[str, int]) -> dict[str, float]:
+    """Rank a painted card by hits and by how close the bar counts are.
+
+    The hit term is the harmonic mean of precision and recall. A painter that
+    doubles the bars raises the denominator by every extra bar, and a painter
+    that paints half the bars lowers the recall. The volume term is the
+    smaller bar count divided by the larger one, so twice as many bars, or
+    half as many, scores half before the hits are even considered.
+    """
+    actual = int(totals["actual"])
+    painted = int(totals["painted"])
+    exact = int(totals["exact"])
+    if actual + painted == 0:
+        hits = 1.0
+        volume = 1.0
+    else:
+        hits = (2 * exact) / (actual + painted)
+        volume = 0.0 if actual == 0 or painted == 0 else min(actual, painted) / max(actual, painted)
+    within_hits = _harmonic(
+        _rate(int(totals["actual_within"]), actual),
+        _rate(int(totals["painted_within"]), painted),
+    )
+    return {"hits": hits, "volume": volume, "score": hits * volume, "within": within_hits * volume}
+
+
+def _rate(hit: int, total: int) -> float:
+    if total == 0:
+        return 1.0 if hit == 0 else 0.0
+    return hit / total
+
+
+def _harmonic(precision: float, recall: float) -> float:
+    if precision + recall == 0:
+        return 0.0
+    return 2 * precision * recall / (precision + recall)
 
 
 def tally_cards(

@@ -6,7 +6,7 @@ import unittest
 
 import numpy as np
 
-from src.models.flashcard_card_score import _paint, tally_cards, tally_row
+from src.models.flashcard_card_score import _paint, balanced_score, tally_cards, tally_row
 from src.models.flashcard_squad_trial import cut_at_fraction, sample_cut
 
 
@@ -71,6 +71,23 @@ class CardScoreTests(unittest.TestCase):
         self.assertEqual(totals["actual"], 2)
         self.assertEqual(totals["exact"], 2)
         self.assertEqual(totals["actual_within"], 2)
+
+    def test_twice_the_bars_scores_below_a_matched_card(self) -> None:
+        matched = balanced_score(
+            {"actual": 100, "painted": 100, "exact": 40, "actual_within": 50, "painted_within": 50}
+        )
+        doubled = balanced_score(
+            {"actual": 100, "painted": 200, "exact": 80, "actual_within": 90, "painted_within": 100}
+        )
+        halved = balanced_score(
+            {"actual": 100, "painted": 50, "exact": 40, "actual_within": 40, "painted_within": 40}
+        )
+        self.assertAlmostEqual(matched["volume"], 1.0)
+        self.assertAlmostEqual(doubled["volume"], 0.5)
+        self.assertAlmostEqual(halved["volume"], 0.5)
+        self.assertGreater(matched["score"], doubled["score"])
+        self.assertGreater(matched["score"], halved["score"])
+        self.assertAlmostEqual(matched["score"], 2 * 40 / 200)
 
     def test_each_row_paints_its_own_count(self) -> None:
         probs = np.zeros((1, 2, 1, 4))
