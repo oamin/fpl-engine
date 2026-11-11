@@ -214,6 +214,21 @@ The 08:07 UK pass on 11 Nov paints each row with the count whose class wins. A r
 
 This pass does not replace the gate. At 20% revealed the full painter puts 0 goal bars on the same appearance and 0 within one gameweek. The gate, which still used the fixture budget, puts 192 and 256.
 
+## Card generators
+
+The 09:12 UK pass on 11 Nov trains three painters on the squares themselves. Odds, home or away, the opponent, minutes, and position stay visible. Each finished card is one draw. MaskGIT fills the open squares in eight passes. The column raster paints one gameweek at a time from the left. VAR paints scales of 5, 10, 20, and 40, and a coarse square is the highest count in its block. The detail is in `reports/flashcard_generator_trial.md`.
+
+| revealed | model | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
+|---|---|---|---:|---:|---:|---:|---:|
+| 20% | maskgit | goals | 730 | 233 | 28 | 84 | 69 |
+| 20% | maskgit | assists | 707 | 149 | 14 | 36 | 30 |
+| 20% | column | goals | 730 | 861 | 51 | 140 | 127 |
+| 20% | column | assists | 707 | 784 | 35 | 96 | 91 |
+| 20% | var | goals | 730 | 1098 | 101 | 211 | 214 |
+| 20% | var | assists | 707 | 1080 | 61 | 143 | 148 |
+
+These runs do not replace the gate. At 20% revealed VAR puts 101 goal bars on the same appearance and 211 within one gameweek, from 1098 painted bars. The gate puts 192 and 256. MaskGIT paints 233 goal bars and lands 28. The column raster paints 861 and lands 51.
+
 ## What the square card uses
 
 The 21:16 UK pass on 10 Nov removes one signal at a time from the 20:00 full painter, which still read the other squad, and paints the 20% cut again. Whitening the whole picture leaves 10 goal bars on the same appearance. Whitening the minute squares leaves 28, and 95 bars painted. Whitening the odds row leaves 117, and 378 bars painted. Zeroing the position id still paints 665 bars, and 12 land on a goal. The position color, the venue, the past goals, the past assists, the recent scoring rate, and dropping the other squad each move the same-appearance count by about ten. That pass is a record of the reader that still took the squad. The locked reader does not. The detail is in `reports/flashcard_signal.md`.
