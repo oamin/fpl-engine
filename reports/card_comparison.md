@@ -66,6 +66,8 @@ Column reader at the 20% cut, mean predicted/actual count and correlation: goals
 The two readers keep separate weights. A row whose horizon count
 is zero stays empty. A matching card total with the bars on the
 empty rows is an error. The flashcard is the only feature input.
+The picture, the layout, and both state dicts are stored in
+`reports/cards/current/`. The table above is scored from those files.
 
-Wall clock: 145 seconds on CPU.
+Wall clock: 149 seconds on CPU.
 

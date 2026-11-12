@@ -1,0 +1,9 @@
+{
+  "name": "horizon",
+  "header_h": 76,
+  "player_h": 52,
+  "role": "horizon",
+  "layout": "club-opponent-venue-1x2",
+  "dropout": 0.1,
+  "seed": 0
+}

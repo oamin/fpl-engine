@@ -1,0 +1,16 @@
+{
+  "id": "odds-venue-opponent",
+  "rows": [
+    "odds-1x2",
+    "venue",
+    "opponent"
+  ],
+  "header_h": 72,
+  "odds_h": 64,
+  "venue_h": 4,
+  "opponent_h": 4,
+  "seed": 0,
+  "epochs": 30,
+  "dropout": 0.1,
+  "source": "f3ecae4"
+}
