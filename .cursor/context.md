@@ -14,6 +14,8 @@ The reader is `StripVision` in `src/models/flashcard_strip_trial.py`. Its forwar
 
 The objective scores each hidden square and each row's own hidden bar count. A card whose total matches still fails when the bars sit on the empty rows. The paint keeps each row's count on that row. Do not score only the card's total, and do not go back to painting each square by its own most likely count.
 
+One reader is trained on two views of this card, and both losses update the same weights. The horizon view reveals the masked remainder in one shot. The column view keeps the true past, shows one next week, and scores only that week.
+
 `SquadSequence` is a separate numeric reader. It is not the gate. Do not connect it to the published painter, and do not put its numbers back onto `Coupler`.
 
 ## Repo freeze sequence (2026-10-20)

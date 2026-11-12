@@ -7,40 +7,61 @@ Every club and every row is included.
 
 The reader is squad vision on the square card. The flashcard is the
 only feature input. Each column shows the club symbol, the opponent
-symbol, home or away, then sixteen solid handicap squares scaled from
-giving 1.5 to receiving 1.5, and eight solid 2.5 squares. The
+symbol, home or away, then sixteen 1X2 squares. The
 other squad is not an input. Concede, regulars, own history,
 opponent history, and the team scoring rate are absent. Minutes,
-position, club, and opponent are not passed again as numbers. Each
-loss scores each hidden square and each row's own hidden bar count.
-The paint keeps that count on the same row. A row holds three
-squares, and that is the only cap.
+position, club, and opponent are not passed again as numbers.
+One reader trains on two views, and both losses update the same
+weights. The horizon view reveals the masked remainder in one shot.
+The column view keeps the true past, shows one next week, and scores
+only that week. Each loss scores each hidden square and each row's
+own hidden bar count. The paint keeps that count on the same row.
+A row holds three squares, and that is the only cap.
+
+Horizon, one shot. The test scores all four cuts of this view.
 
 A bar matches on the same row only. Within one gameweek includes the same
 appearance and either neighboring gameweek. The numbers are totals.
 
 | revealed | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
 |---|---|---:|---:|---:|---:|---:|
-| 20% | goals | 730 | 635 | 129 | 268 | 256 |
-| 20% | assists | 707 | 568 | 95 | 190 | 177 |
-| 40% | goals | 544 | 479 | 101 | 211 | 201 |
-| 40% | assists | 531 | 412 | 69 | 137 | 126 |
-| 60% | goals | 360 | 301 | 67 | 137 | 123 |
-| 60% | assists | 351 | 255 | 46 | 86 | 80 |
-| 80% | goals | 199 | 143 | 36 | 74 | 60 |
-| 80% | assists | 192 | 108 | 19 | 37 | 33 |
+| 20% | goals | 730 | 482 | 103 | 204 | 174 |
+| 20% | assists | 707 | 455 | 75 | 138 | 129 |
+| 40% | goals | 544 | 360 | 78 | 160 | 137 |
+| 40% | assists | 531 | 340 | 57 | 101 | 94 |
+| 60% | goals | 360 | 200 | 50 | 93 | 77 |
+| 60% | assists | 351 | 189 | 36 | 58 | 54 |
+| 80% | goals | 199 | 89 | 23 | 42 | 36 |
+| 80% | assists | 192 | 82 | 14 | 29 | 25 |
 
 Goal and assist bars by position at the 20% cut.
 
-goals: actual/painted GKP 0/0, DEF 103/65, MID 394/332, FWD 233/238.
-assists: actual/painted GKP 4/0, DEF 181/91, MID 434/386, FWD 88/91.
-goal chance: GKP 0.005, DEF 0.014, MID 0.048, FWD 0.127.
-assist chance: GKP 0.005, DEF 0.018, MID 0.053, FWD 0.050.
+goals: actual/painted GKP 0/21, DEF 103/67, MID 394/217, FWD 233/177.
+assists: actual/painted GKP 4/16, DEF 181/87, MID 434/270, FWD 88/82.
+goal chance: GKP 0.021, DEF 0.014, MID 0.031, FWD 0.098.
+assist chance: GKP 0.016, DEF 0.017, MID 0.039, FWD 0.043.
 
-The loss scores each hidden square and each row's own hidden bar count.
+Next column. The same weights see the true past and one next week.
+Each hidden week below is painted from that week's own column.
+
+| revealed | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
+|---|---|---:|---:|---:|---:|---:|
+| 20% | goals | 730 | 0 | 0 | 0 | 0 |
+| 20% | assists | 707 | 0 | 0 | 0 | 0 |
+| 40% | goals | 544 | 0 | 0 | 0 | 0 |
+| 40% | assists | 531 | 0 | 0 | 0 | 0 |
+| 60% | goals | 360 | 0 | 0 | 0 | 0 |
+| 60% | assists | 351 | 0 | 0 | 0 | 0 |
+| 80% | goals | 199 | 0 | 0 | 0 | 0 |
+| 80% | assists | 192 | 0 | 0 | 0 | 0 |
+
+Mean chance of a bar on the guessed column, on a real bar and on a blank: goals 0.106 / 0.041, assists 0.075 / 0.035.
+
+Both losses update the same weights. Each scores a hidden square and
+each row's own hidden bar count.
 A matching card total with the bars on the empty rows is an error.
 The paint keeps each row's count on that row. The flashcard is the
 only feature input.
 
-Wall clock: 73 seconds on CPU.
+Wall clock: 149 seconds on CPU.
 
