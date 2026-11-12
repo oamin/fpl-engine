@@ -27,12 +27,15 @@ from src.models.flashcard_squad_trial import (
     squad_index,
 )
 from src.models.flashcard_square_trial import (
+    CLUB_H,
     EVENT_H,
     HEADER_H,
-    VENUE_H,
     MINUTE_H,
     ODDS_H,
+    ODDS_Y,
+    OPP_H,
     PLAYER_H,
+    VENUE_H,
     compose_square,
 )
 from src.models.flashcard_strip_trial import StripVision, _batch_images, strip_features, train_stripped
@@ -144,8 +147,8 @@ def main() -> None:
         _p, _logits, g, a = score(name, images_now, batch_now)
         rows.append((name, g, a))
 
-    run("white odds", lambda img, _b: blank_rows(img, 0, ODDS_H))
-    run("white venue", lambda img, _b: blank_rows(img, ODDS_H, ODDS_H + VENUE_H))
+    run("white odds", lambda img, _b: blank_rows(img, ODDS_Y, ODDS_Y + ODDS_H))
+    run("white venue", lambda img, _b: blank_rows(img, CLUB_H + OPP_H, CLUB_H + OPP_H + VENUE_H))
     run("white minutes", lambda img, _b: blank_player_band(img, MINUTE_BAND))
     run("white goals", lambda img, _b: blank_player_band(img, GOAL_BAND))
     run("white assists", lambda img, _b: blank_player_band(img, ASSIST_BAND))

@@ -25,13 +25,15 @@ from src.models.flashcard_squad_trial import (
     ROWS,
 )
 from src.models.flashcard_square_trial import (
+    CLUB_H,
     CLUB_MARKS,
     EVENT_H,
     HEADER_H,
     MINUTE_H,
     ODDS_H,
+    ODDS_Y,
+    OPP_H,
     PLAYER_H,
-    VENUE_H,
     compose_binary,
     compose_square,
     minute_squares,
@@ -133,11 +135,11 @@ class SquareCardTests(unittest.TestCase):
         visible[0] = True
         image = paint_square(view, probs, visible)
         self.assertEqual(image.shape[0], HEADER_H + ROWS * PLAYER_H)
-        self.assertEqual(_color_rows(image, 0, ODDS_H, 0, HOME_ODDS), 13 * CELL_W)
-        self.assertEqual(_color_rows(image, 0, ODDS_H, 0, DRAW_ODDS), 2 * CELL_W)
-        self.assertEqual(_color_rows(image, 0, ODDS_H, 0, AWAY_ODDS), CELL_W)
-        self.assertEqual(tuple(int(v) for v in image[ODDS_H, 0]), HOME_C)
-        self.assertEqual(tuple(int(v) for v in image[ODDS_H, CELL_W]), AWAY_C)
+        self.assertEqual(_color_rows(image, ODDS_Y, ODDS_H, 0, HOME_ODDS), 13 * CELL_W)
+        self.assertEqual(_color_rows(image, ODDS_Y, ODDS_H, 0, DRAW_ODDS), 2 * CELL_W)
+        self.assertEqual(_color_rows(image, ODDS_Y, ODDS_H, 0, AWAY_ODDS), CELL_W)
+        self.assertEqual(tuple(int(v) for v in image[CLUB_H + OPP_H, 0]), HOME_C)
+        self.assertEqual(tuple(int(v) for v in image[CLUB_H + OPP_H, CELL_W]), AWAY_C)
         y = HEADER_H
         self.assertEqual(_color_rows(image, y, MINUTE_H, 0, MINUTES_C), CELL_W)
         self.assertEqual(_color_rows(image, y, MINUTE_H, CELL_W, MINUTES_C), 2 * CELL_W)
@@ -156,8 +158,8 @@ class SquareCardTests(unittest.TestCase):
         view["goal_token"][0, 0] = 2
         card = _card()
         image = compose_square(view, card, _prices(card), np.array([0]), target=1)
-        self.assertEqual(tuple(int(v) for v in image[0, 0]), HOME_ODDS)
-        self.assertEqual(tuple(int(v) for v in image[ODDS_H, 0]), HOME_C)
+        self.assertEqual(tuple(int(v) for v in image[ODDS_Y, 0]), HOME_ODDS)
+        self.assertEqual(tuple(int(v) for v in image[CLUB_H + OPP_H, 0]), HOME_C)
         self.assertEqual(tuple(int(v) for v in image[HEADER_H + MINUTE_H - 1, 0]), MINUTES_C)
         goal = tuple(int(v) for v in image[HEADER_H + MINUTE_H, 0])
         position = tuple(int(v) for v in image[HEADER_H + PLAYER_H - 1, 0])
@@ -165,7 +167,7 @@ class SquareCardTests(unittest.TestCase):
         self.assertIn(position, (HATCH_FG, HATCH_BG))
         self.assertNotEqual(goal, GOALS_C)
         self.assertNotEqual(position, POS_C[0])
-        self.assertEqual(tuple(int(v) for v in image[0, 2 * CELL_W]), HATCH_FG)
+        self.assertEqual(tuple(int(v) for v in image[ODDS_Y, 2 * CELL_W]), HATCH_FG)
 
     def test_the_square_picture_runs_through_the_reader(self) -> None:
         model = StripVision(HEADER_H, n_clubs=2, player_h=PLAYER_H)
@@ -176,7 +178,13 @@ class SquareCardTests(unittest.TestCase):
     def test_the_opponent_square_is_the_club_symbol(self) -> None:
         card = _card()
         image = compose_square(_view(), card, _prices(card), np.array([0]), target=1)
-        y = ODDS_H + VENUE_H
+        for yy, row in enumerate(CLUB_MARKS["Arsenal"]):
+            for xx, bit in enumerate(row):
+                pixel = tuple(int(v) for v in image[yy, xx])
+                self.assertEqual(pixel, (0, 0, 0) if bit == "1" else (255, 255, 255))
+                pixel = tuple(int(v) for v in image[yy, CELL_W + xx])
+                self.assertEqual(pixel, (0, 0, 0) if bit == "1" else (255, 255, 255))
+        y = CLUB_H
         for yy, row in enumerate(CLUB_MARKS["Wolves"]):
             for xx, bit in enumerate(row):
                 pixel = tuple(int(v) for v in image[y + yy, xx])
@@ -194,13 +202,13 @@ class SquareCardTests(unittest.TestCase):
         view["column_on"][1] = 1
         card = _card()
         image = compose_binary(view, card, _prices(card))
-        self.assertEqual(tuple(int(v) for v in image[0, 0]), (0, 0, 0))
-        self.assertEqual(tuple(int(v) for v in image[51, 0]), (0, 0, 0))
-        self.assertEqual(tuple(int(v) for v in image[52, 0]), (255, 255, 255))
-        self.assertEqual(tuple(int(v) for v in image[59, 0]), (255, 255, 255))
-        self.assertEqual(tuple(int(v) for v in image[60, 0]), (0, 0, 0))
-        self.assertEqual(tuple(int(v) for v in image[ODDS_H, 0]), (0, 0, 0))
-        self.assertEqual(tuple(int(v) for v in image[ODDS_H, CELL_W]), (255, 255, 255))
+        self.assertEqual(tuple(int(v) for v in image[ODDS_Y, 0]), (0, 0, 0))
+        self.assertEqual(tuple(int(v) for v in image[ODDS_Y + 51, 0]), (0, 0, 0))
+        self.assertEqual(tuple(int(v) for v in image[ODDS_Y + 52, 0]), (255, 255, 255))
+        self.assertEqual(tuple(int(v) for v in image[ODDS_Y + 59, 0]), (255, 255, 255))
+        self.assertEqual(tuple(int(v) for v in image[ODDS_Y + 60, 0]), (0, 0, 0))
+        self.assertEqual(tuple(int(v) for v in image[CLUB_H + OPP_H, 0]), (0, 0, 0))
+        self.assertEqual(tuple(int(v) for v in image[CLUB_H + OPP_H, CELL_W]), (255, 255, 255))
         y = HEADER_H + MINUTE_H + 2 * EVENT_H
         self.assertEqual(tuple(int(v) for v in image[y, 0]), (255, 255, 255))
         self.assertEqual(tuple(int(v) for v in image[y + 1, 0]), (255, 255, 255))

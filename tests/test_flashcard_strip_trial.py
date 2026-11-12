@@ -29,10 +29,10 @@ from src.models.flashcard_squad_trial import (
     render_grid,
 )
 from src.models.flashcard_odds_trial import AWAY_ODDS, DRAW_ODDS, HOME_ODDS
-from src.models.flashcard_square_trial import EVENT_H as SQUARE_EVENT
+from src.models.flashcard_square_trial import CLUB_H, EVENT_H as SQUARE_EVENT
 from src.models.flashcard_square_trial import HEADER_H as SQUARE_HEADER
 from src.models.flashcard_square_trial import MINUTE_H as SQUARE_MINUTE
-from src.models.flashcard_square_trial import ODDS_H, PLAYER_H as SQUARE_PLAYER
+from src.models.flashcard_square_trial import ODDS_Y, OPP_H, PLAYER_H as SQUARE_PLAYER
 from src.models.flashcard_strip_trial import StripVision, compose_card, compose_stripped, strip_features
 
 
@@ -160,11 +160,11 @@ class StripTests(unittest.TestCase):
         card = _card()
         image = compose_card(view, card, _prices(card))
         self.assertEqual(image.shape[0], SQUARE_HEADER + ROWS * SQUARE_PLAYER)
-        self.assertEqual(tuple(int(v) for v in image[0, 0]), HOME_ODDS)
-        self.assertEqual(tuple(int(v) for v in image[51, 0]), HOME_ODDS)
-        self.assertEqual(tuple(int(v) for v in image[52, 0]), DRAW_ODDS)
-        self.assertEqual(tuple(int(v) for v in image[60, 0]), AWAY_ODDS)
-        self.assertEqual(tuple(int(v) for v in image[ODDS_H, 0]), HOME_C)
+        self.assertEqual(tuple(int(v) for v in image[ODDS_Y, 0]), HOME_ODDS)
+        self.assertEqual(tuple(int(v) for v in image[ODDS_Y + 51, 0]), HOME_ODDS)
+        self.assertEqual(tuple(int(v) for v in image[ODDS_Y + 52, 0]), DRAW_ODDS)
+        self.assertEqual(tuple(int(v) for v in image[ODDS_Y + 60, 0]), AWAY_ODDS)
+        self.assertEqual(tuple(int(v) for v in image[CLUB_H + OPP_H, 0]), HOME_C)
         minute_y = SQUARE_HEADER
         self.assertEqual(tuple(int(v) for v in image[minute_y + SQUARE_MINUTE - 1, 0]), MINUTES_C)
         self.assertNotEqual(tuple(int(v) for v in image[minute_y + SQUARE_MINUTE - CELL_W - 1, 0]), MINUTES_C)
@@ -178,8 +178,8 @@ class StripTests(unittest.TestCase):
         self.assertEqual(tuple(out.shape), (1, ROWS, COLS, 4))
         fresh = strip_features(_view())
         stepped = compose_card(fresh, card, _prices(card), target=1)
-        self.assertEqual(tuple(int(v) for v in stepped[0, 0]), HOME_ODDS)
-        self.assertEqual(tuple(int(v) for v in stepped[0, 2 * CELL_W]), HATCH_FG)
+        self.assertEqual(tuple(int(v) for v in stepped[ODDS_Y, 0]), HOME_ODDS)
+        self.assertEqual(tuple(int(v) for v in stepped[ODDS_Y, 2 * CELL_W]), HATCH_FG)
 
     def test_a_goal_square_does_not_go_through_the_minute_embedding(self) -> None:
         model = StripVision(SQUARE_HEADER, n_clubs=2, player_h=SQUARE_PLAYER)

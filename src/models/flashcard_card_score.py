@@ -6,8 +6,9 @@ match a goal on another row. The totals are sums, not an average of per-player
 rates.
 
 The painted card comes from the locked vision reader. The picture is the
-only feature input. It is the square card: sixteen odds squares, one venue
-square, one opponent square, six minute squares of fifteen minutes, one
+only feature input. It is the square card: the club symbol, the opponent
+symbol, home or away, sixteen odds squares, six minute squares of fifteen
+minutes, one
 position square, and one square per goal or assist. Concede, regulars, own
 history, opponent history, and the team scoring rate are absent. Minutes,
 position, club, and opponent are not passed again as numbers. The loss
@@ -287,7 +288,8 @@ def main() -> None:
         "Every club and every row is included.",
         "",
         "The reader is squad vision on the square card. The flashcard is the",
-        "only feature input. The opponent is one square, a club symbol. The",
+        "only feature input. Each column shows the club symbol, the opponent",
+        "symbol, home or away, then the odds. The",
         "other squad is not an input. Concede, regulars, own history,",
         "opponent history, and the team scoring rate are absent. Minutes,",
         "position, club, and opponent are not passed again as numbers. Each",
