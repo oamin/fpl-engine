@@ -124,57 +124,17 @@ def column_odds(card, table: dict) -> np.ndarray:
     for col in range(card.n_fixtures):
         if int(card.gw[col]) <= 0 or not card.opponent[col]:
             continue
-        found = table.get(_fixture_key(card, col))
-        if found is not None and len(found) == 3:
+        date = pd.to_datetime(int(card.kickoff[col]), utc=True).strftime("%Y-%m-%d")
+        team = norm_team(card.team)
+        opponent = norm_team(card.opponent[col])
+        if int(card.home[col]) == 1:
+            key = (card.season, date, team, opponent)
+        else:
+            key = (card.season, date, opponent, team)
+        found = table.get(key)
+        if found is not None:
             probs[col] = found
     return probs
-
-
-def _fixture_key(card, col: int) -> tuple[str, str, str, str]:
-    date = pd.to_datetime(int(card.kickoff[col]), utc=True).strftime("%Y-%m-%d")
-    team = norm_team(card.team)
-    opponent = norm_team(card.opponent[col])
-    if int(card.home[col]) == 1:
-        return (card.season, date, team, opponent)
-    return (card.season, date, opponent, team)
-
-
-def load_market() -> dict[tuple[str, str, str, str], tuple[float, float, float, float, float]]:
-    """Opening handicap and the 2.5 total, from the home side.
-
-    The tuple is the home line, the home cover probability, the away cover
-    probability, over 2.5, and under 2.5. A fixture with no handicap is absent.
-    """
-    table: dict[tuple[str, str, str, str], tuple[float, float, float, float, float]] = {}
-    for season, code in SEASON_CODE.items():
-        frame = load_football_data(code=code)
-        for row in frame.itertuples(index=False):
-            values = (row.ah_line, row.p_ah_home, row.p_ah_away, row.p_over25, row.p_under25)
-            if any(value is None or not np.isfinite(value) for value in values):
-                continue
-            table[(season, str(row.date), str(row.home_norm), str(row.away_norm))] = tuple(
-                float(value) for value in values
-            )
-    return table
-
-
-def column_market(card, table: dict) -> np.ndarray:
-    """The assessed club's line, then over 2.5 and under 2.5.
-
-    A negative line means the club gives goals. Missing prices are NaN.
-    """
-    market = np.full((COLS, 3), np.nan, dtype=np.float64)
-    for col in range(getattr(card, "n_fixtures", 0)):
-        if int(card.gw[col]) <= 0 or not card.opponent[col]:
-            continue
-        found = table.get(_fixture_key(card, col))
-        if found is None or len(found) < 5:
-            continue
-        line, _home_cover, _away_cover, over, under = found[:5]
-        if int(card.home[col]) != 1:
-            line = -float(line)
-        market[col] = (line, over, under)
-    return market
 
 
 def paint_odds_strip(column_on: np.ndarray, probs: np.ndarray, visible: np.ndarray) -> np.ndarray:

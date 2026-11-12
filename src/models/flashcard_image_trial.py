@@ -20,7 +20,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 from src.models.flashcard_card_score import tally_cards
 from src.models.flashcard_generator_trial import MASKGIT_STEPS, still_masked
-from src.models.flashcard_odds_trial import load_market
+from src.models.flashcard_odds_trial import load_odds
 from src.models.flashcard_squad_trial import (
     ASSISTS_C,
     BASE_C,
@@ -654,7 +654,7 @@ def execute() -> dict:
     league = build_league(TRAIN_SEASONS + (TEST_SEASON,))
     train = build_cards(TRAIN_SEASONS, league)
     test = build_cards((TEST_SEASON,), league)
-    odds = load_market()
+    odds = load_odds()
     train_cells = np.stack([render_cells(card, odds) for card in train])
     test_cells = np.stack([render_cells(card, odds) for card in test])
     train_ink = ink_of(train_cells, np.stack([card.present for card in train]))

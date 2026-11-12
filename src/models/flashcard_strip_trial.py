@@ -4,12 +4,8 @@ Concede, regulars, own history, opponent history, and the team scoring rate
 are absent from the picture and from every tensor the reader sees. Minutes,
 position, club, and opponent are on the card as squares. They are not passed
 again as numbers. The match rows, from the top, are the assessed club's symbol, the opponent's
-symbol, home or away, then sixteen solid handicap squares and eight solid
-2.5 squares. Red from the top means the club gives goals. Blue from the
-bottom means the club receives them. The scale runs from giving 1.5 to
-receiving 1.5. Orange from the top of the shorter
-bar is over 2.5. The club symbol repeats
-on every column.
+symbol, home or away, then sixteen odds squares: blue home, yellow draw,
+purple away, from the Shin de-vig. The club symbol repeats on every column.
 Minutes are six squares of fifteen minutes. One
 goal or assist is one square, and those rows are three squares tall. The
 one-shot card paints the odds on every fixture, including a grey week. The
@@ -36,7 +32,7 @@ import torch.nn.functional as F
 
 from src.models.flashcard_card_score import _paint, paint_row, tally_cards, window_count
 from src.models.flashcard_step_trial import chop_future
-from src.models.flashcard_odds_trial import load_market, paint_odds_strip
+from src.models.flashcard_odds_trial import load_odds, paint_odds_strip
 from src.models.flashcard_squad_trial import (
     BAND_H,
     BATCH,
@@ -427,7 +423,7 @@ def main() -> None:
     test = build_cards((TEST_SEASON,), league)
     clubs = fit_clubs(train)
     squads = squad_index(train + test)
-    odds = load_market()
+    odds = load_odds()
     n_clubs = max(clubs.values(), default=0) + 1
     labels = np.stack([card.goals for card in test])
     assist_labels = np.stack([card.assists for card in test])

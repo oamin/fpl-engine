@@ -7,10 +7,8 @@ rates.
 
 The painted card comes from the locked vision reader. The picture is the
 only feature input. It is the square card: the club symbol, the opponent
-symbol, home or away, sixteen solid handicap squares scaled from giving
-1.5 to receiving 1.5, eight solid 2.5
-squares, six minute
-squares of fifteen minutes, one
+symbol, home or away, sixteen odds squares, six minute squares of fifteen
+minutes, one
 position square, and one square per goal or assist. Concede, regulars, own
 history, opponent history, and the team scoring rate are absent. Minutes,
 position, club, and opponent are not passed again as numbers. The loss
@@ -269,11 +267,11 @@ def main() -> None:
     test_squads = squad_index(train + test)
     n_clubs = max(clubs.values(), default=0) + 1
     print(f"train {len(train)} test {len(test)}", flush=True)
-    from src.models.flashcard_odds_trial import load_market
+    from src.models.flashcard_odds_trial import load_odds
     from src.models.flashcard_square_trial import HEADER_H, PLAYER_H
     from src.models.flashcard_strip_trial import StripVision, paint_stripped, train_stripped
 
-    odds = load_market()
+    odds = load_odds()
     torch.manual_seed(SEED)
     vision = StripVision(HEADER_H, dropout=0.1, n_clubs=n_clubs, player_h=PLAYER_H)
     train_stripped(vision, train, league, np.random.default_rng(SEED), clubs, odds, "square card")
@@ -291,8 +289,7 @@ def main() -> None:
         "",
         "The reader is squad vision on the square card. The flashcard is the",
         "only feature input. Each column shows the club symbol, the opponent",
-        "symbol, home or away, then sixteen solid handicap squares scaled from",
-        "giving 1.5 to receiving 1.5, and eight solid 2.5 squares. The",
+        "symbol, home or away, then the odds. The",
         "other squad is not an input. Concede, regulars, own history,",
         "opponent history, and the team scoring rate are absent. Minutes,",
         "position, club, and opponent are not passed again as numbers. Each",

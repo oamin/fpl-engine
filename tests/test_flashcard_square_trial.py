@@ -8,6 +8,7 @@ from types import SimpleNamespace
 import numpy as np
 import torch
 
+from src.models.flashcard_odds_trial import AWAY_ODDS, DRAW_ODDS, HOME_ODDS
 from src.models.flashcard_squad_trial import (
     ASSISTS_C,
     AWAY_C,
@@ -27,17 +28,12 @@ from src.models.flashcard_square_trial import (
     CLUB_H,
     CLUB_MARKS,
     EVENT_H,
-    GIVING,
     HEADER_H,
-    LINE_H,
     MINUTE_H,
+    ODDS_H,
     ODDS_Y,
     OPP_H,
-    OVER_C,
     PLAYER_H,
-    RECEIVING,
-    SQ,
-    UNDER_C,
     compose_binary,
     compose_square,
     minute_squares,
@@ -93,19 +89,13 @@ def _prices(card) -> dict:
             key = (card.season, date, team, opponent)
         else:
             key = (card.season, date, opponent, team)
-        table[key] = (-2.0, 0.5, 0.5, 0.75, 0.25)
+        table[key] = (0.844, 0.110, 0.046)
     return table
 
 
-def _pixel(image: np.ndarray, y: int, x: int) -> tuple[int, int, int]:
-    return tuple(int(v) for v in image[y, x])
-
-
-def _filled(image: np.ndarray, y0: int, height: int, x0: int, color: tuple[int, int, int]) -> int:
-    return sum(
-        _pixel(image, y, x0 + 1) == color
-        for y in range(y0 + 1, y0 + height, SQ)
-    )
+def _color_rows(image: np.ndarray, y0: int, height: int, x0: int, color: tuple[int, int, int]) -> int:
+    block = np.all(image[y0 : y0 + height, x0 : x0 + CELL_W] == color, axis=-1).all(axis=1)
+    return int(block.sum())
 
 
 class SquareCardTests(unittest.TestCase):
@@ -139,33 +129,28 @@ class SquareCardTests(unittest.TestCase):
         view["goal_token"][0, 2] = MASK_ID
         view["assist_token"][0, 0] = 1
         view["home"][1] = 0
-        market = np.full((COLS, 3), np.nan)
-        market[0] = (-2.0, 0.75, 0.25)
-        market[1] = (0.75, 0.5, 0.5)
+        probs = np.full((COLS, 3), np.nan)
+        probs[0] = (0.844, 0.110, 0.046)
         visible = np.zeros(COLS, dtype=bool)
-        visible[:2] = True
-        image = paint_square(view, market, visible, club="Arsenal")
+        visible[0] = True
+        image = paint_square(view, probs, visible)
         self.assertEqual(image.shape[0], HEADER_H + ROWS * PLAYER_H)
-        self.assertEqual(_pixel(image, ODDS_Y + 1, 1), GIVING)
-        self.assertEqual(_pixel(image, ODDS_Y + 15 * SQ + 1, 1), GIVING)
-        self.assertEqual(_pixel(image, ODDS_Y + 3 * SQ + 1, CELL_W + 1), GIVING)
-        self.assertEqual(_pixel(image, ODDS_Y + 4 * SQ + 1, CELL_W + 1), RECEIVING)
-        total = ODDS_Y + LINE_H
-        self.assertEqual(_pixel(image, total + 1, 1), OVER_C)
-        self.assertEqual(_pixel(image, total + 5 * SQ + 1, 1), OVER_C)
-        self.assertEqual(_pixel(image, total + 6 * SQ + 1, 1), UNDER_C)
-        self.assertEqual(_pixel(image, CLUB_H + OPP_H + 1, 1), HOME_C)
-        self.assertEqual(_pixel(image, CLUB_H + OPP_H + 1, CELL_W + 1), AWAY_C)
+        self.assertEqual(_color_rows(image, ODDS_Y, ODDS_H, 0, HOME_ODDS), 13 * CELL_W)
+        self.assertEqual(_color_rows(image, ODDS_Y, ODDS_H, 0, DRAW_ODDS), 2 * CELL_W)
+        self.assertEqual(_color_rows(image, ODDS_Y, ODDS_H, 0, AWAY_ODDS), CELL_W)
+        self.assertEqual(tuple(int(v) for v in image[CLUB_H + OPP_H, 0]), HOME_C)
+        self.assertEqual(tuple(int(v) for v in image[CLUB_H + OPP_H, CELL_W]), AWAY_C)
         y = HEADER_H
-        self.assertEqual(_filled(image, y, MINUTE_H, 0, MINUTES_C), 1)
-        self.assertEqual(_filled(image, y, MINUTE_H, CELL_W, MINUTES_C), 2)
-        self.assertEqual(_filled(image, y, MINUTE_H, 2 * CELL_W, MINUTES_C), 6)
+        self.assertEqual(_color_rows(image, y, MINUTE_H, 0, MINUTES_C), CELL_W)
+        self.assertEqual(_color_rows(image, y, MINUTE_H, CELL_W, MINUTES_C), 2 * CELL_W)
+        self.assertEqual(_color_rows(image, y, MINUTE_H, 2 * CELL_W, MINUTES_C), MINUTE_H)
         goal = y + MINUTE_H
-        self.assertEqual(_filled(image, goal, EVENT_H, 0, GOALS_C), 1)
-        self.assertEqual(_filled(image, goal, EVENT_H, CELL_W, GOALS_C), 3)
-        self.assertEqual(_pixel(image, goal + 1, 2 * CELL_W + 1), MASK_C)
-        self.assertEqual(_filled(image, goal + EVENT_H, EVENT_H, 0, ASSISTS_C), 1)
-        self.assertEqual(_pixel(image, y + PLAYER_H - SQ + 1, 1), POS_C[0])
+        self.assertEqual(_color_rows(image, goal, EVENT_H, 0, GOALS_C), CELL_W)
+        self.assertTrue(np.all(image[goal : goal + EVENT_H, CELL_W : 2 * CELL_W] == GOALS_C))
+        self.assertTrue(np.all(image[goal : goal + EVENT_H, 2 * CELL_W : 3 * CELL_W] == MASK_C))
+        assist = goal + EVENT_H
+        self.assertEqual(_color_rows(image, assist, EVENT_H, 0, ASSISTS_C), CELL_W)
+        self.assertEqual(tuple(int(v) for v in image[y + PLAYER_H - 1, 0]), POS_C[0])
 
     def test_a_step_keeps_odds_venue_and_minutes(self) -> None:
         view = _view()
@@ -173,16 +158,16 @@ class SquareCardTests(unittest.TestCase):
         view["goal_token"][0, 0] = 2
         card = _card()
         image = compose_square(view, card, _prices(card), np.array([0]), target=1)
-        self.assertEqual(_pixel(image, ODDS_Y + 1, 1), GIVING)
-        self.assertEqual(_pixel(image, CLUB_H + OPP_H + 1, 1), HOME_C)
-        self.assertEqual(_pixel(image, HEADER_H + MINUTE_H - SQ + 1, 1), MINUTES_C)
-        goal = _pixel(image, HEADER_H + MINUTE_H + 1, 1)
-        position = _pixel(image, HEADER_H + PLAYER_H - SQ + 1, 1)
+        self.assertEqual(tuple(int(v) for v in image[ODDS_Y, 0]), HOME_ODDS)
+        self.assertEqual(tuple(int(v) for v in image[CLUB_H + OPP_H, 0]), HOME_C)
+        self.assertEqual(tuple(int(v) for v in image[HEADER_H + MINUTE_H - 1, 0]), MINUTES_C)
+        goal = tuple(int(v) for v in image[HEADER_H + MINUTE_H, 0])
+        position = tuple(int(v) for v in image[HEADER_H + PLAYER_H - 1, 0])
         self.assertIn(goal, (HATCH_FG, HATCH_BG))
         self.assertIn(position, (HATCH_FG, HATCH_BG))
         self.assertNotEqual(goal, GOALS_C)
         self.assertNotEqual(position, POS_C[0])
-        self.assertEqual(_pixel(image, ODDS_Y + 1, 2 * CELL_W + 1), HATCH_FG)
+        self.assertEqual(tuple(int(v) for v in image[ODDS_Y, 2 * CELL_W]), HATCH_FG)
 
     def test_the_square_picture_runs_through_the_reader(self) -> None:
         model = StripVision(HEADER_H, n_clubs=2, player_h=PLAYER_H)
@@ -193,21 +178,21 @@ class SquareCardTests(unittest.TestCase):
     def test_the_opponent_square_is_the_club_symbol(self) -> None:
         card = _card()
         image = compose_square(_view(), card, _prices(card), np.array([0]), target=1)
-
-        def seen(bit: str) -> tuple[int, int, int]:
-            return (0, 0, 0) if bit == "1" else (255, 255, 255)
-
         for yy, row in enumerate(CLUB_MARKS["Arsenal"]):
             for xx, bit in enumerate(row):
-                self.assertEqual(_pixel(image, yy, xx), seen(bit))
-                self.assertEqual(_pixel(image, yy, CELL_W + xx), seen(bit))
+                pixel = tuple(int(v) for v in image[yy, xx])
+                self.assertEqual(pixel, (0, 0, 0) if bit == "1" else (255, 255, 255))
+                pixel = tuple(int(v) for v in image[yy, CELL_W + xx])
+                self.assertEqual(pixel, (0, 0, 0) if bit == "1" else (255, 255, 255))
         y = CLUB_H
         for yy, row in enumerate(CLUB_MARKS["Wolves"]):
             for xx, bit in enumerate(row):
-                self.assertEqual(_pixel(image, y + yy, xx), seen(bit))
+                pixel = tuple(int(v) for v in image[y + yy, xx])
+                self.assertEqual(pixel, (0, 0, 0) if bit == "1" else (255, 255, 255))
         for yy, row in enumerate(CLUB_MARKS["Spurs"]):
             for xx, bit in enumerate(row):
-                self.assertEqual(_pixel(image, y + yy, CELL_W + xx), seen(bit))
+                pixel = tuple(int(v) for v in image[y + yy, CELL_W + xx])
+                self.assertEqual(pixel, (0, 0, 0) if bit == "1" else (255, 255, 255))
 
     def test_the_binary_card_uses_black_white_and_a_rule(self) -> None:
         view = _view()
@@ -217,33 +202,18 @@ class SquareCardTests(unittest.TestCase):
         view["column_on"][1] = 1
         card = _card()
         image = compose_binary(view, card, _prices(card))
-        self.assertEqual(_pixel(image, ODDS_Y, 0), (0, 0, 0))
-        self.assertEqual(_pixel(image, ODDS_Y + 13 * SQ, 0), (0, 0, 0))
-        self.assertEqual(_pixel(image, ODDS_Y + 14 * SQ, 0), (0, 0, 0))
-        self.assertEqual(_pixel(image, ODDS_Y + 15 * SQ, 0), (0, 0, 0))
-        self.assertEqual(_pixel(image, ODDS_Y + LINE_H, 0), (0, 0, 0))
-        self.assertEqual(_pixel(image, ODDS_Y + LINE_H + 5 * SQ, 0), (0, 0, 0))
-        self.assertEqual(_pixel(image, ODDS_Y + LINE_H + 6 * SQ, 0), (255, 255, 255))
-        self.assertEqual(_pixel(image, CLUB_H + OPP_H, 0), (0, 0, 0))
-        self.assertEqual(_pixel(image, CLUB_H + OPP_H, CELL_W), (255, 255, 255))
+        self.assertEqual(tuple(int(v) for v in image[ODDS_Y, 0]), (0, 0, 0))
+        self.assertEqual(tuple(int(v) for v in image[ODDS_Y + 51, 0]), (0, 0, 0))
+        self.assertEqual(tuple(int(v) for v in image[ODDS_Y + 52, 0]), (255, 255, 255))
+        self.assertEqual(tuple(int(v) for v in image[ODDS_Y + 59, 0]), (255, 255, 255))
+        self.assertEqual(tuple(int(v) for v in image[ODDS_Y + 60, 0]), (0, 0, 0))
+        self.assertEqual(tuple(int(v) for v in image[CLUB_H + OPP_H, 0]), (0, 0, 0))
+        self.assertEqual(tuple(int(v) for v in image[CLUB_H + OPP_H, CELL_W]), (255, 255, 255))
         y = HEADER_H + MINUTE_H + 2 * EVENT_H
         self.assertEqual(tuple(int(v) for v in image[y, 0]), (255, 255, 255))
         self.assertEqual(tuple(int(v) for v in image[y + 1, 0]), (255, 255, 255))
         self.assertEqual(tuple(int(v) for v in image[y + 2, 0]), (0, 0, 0))
         self.assertEqual(tuple(int(v) for v in image[y + 3, 8 * CELL_W]), (0, 0, 0))
-
-    def test_the_line_has_no_ticks_or_grid(self) -> None:
-        view = _view()
-        market = np.full((COLS, 3), np.nan)
-        market[0] = (0.0, 0.5, 0.5)
-        market[1] = (-0.5, 0.5, 0.5)
-        visible = np.zeros(COLS, dtype=bool)
-        visible[:2] = True
-        image = paint_square(view, market, visible, club="Arsenal")
-        self.assertEqual(_pixel(image, ODDS_Y + 7 * SQ + 1, 1), GIVING)
-        self.assertEqual(_pixel(image, ODDS_Y + 8 * SQ + 1, 1), RECEIVING)
-        self.assertEqual(_pixel(image, ODDS_Y + 10 * SQ + 1, CELL_W + 1), GIVING)
-        self.assertEqual(_pixel(image, ODDS_Y + 11 * SQ + 1, CELL_W + 1), RECEIVING)
 
 
 if __name__ == "__main__":
