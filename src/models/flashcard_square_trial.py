@@ -1,20 +1,23 @@
 """The default card. One square is the column width.
 
 The match rows, from the top, are the assessed club's symbol, the opponent's
-symbol, home or away, then sixteen odds squares. Blue is the home win, yellow
-the draw, purple the away win, using the Shin de-vig of the opening prices.
-A missing price is hatched. The club symbol is the same mark on every column.
-Minutes are six squares and each
-square is fifteen minutes, filled from the bottom: 1 to 15 minutes is the
-first square, 16 to 30 is the second, and 76 minutes or more fills all six.
-A goal and an assist are one square each. Those rows are three squares tall.
-The position color is one square.
+symbol, home or away, the Asian handicap, then the 2.5-goal total. The
+handicap is the club's own line. Red grows up from a black zero when the club
+gives goals, and blue grows down when the club receives them. Each square is
+a quarter of a goal, from 2.75 down to 2.75 up. Orange is over 2.5 and pale
+blue is under, eight squares. A missing price is hatched. The club symbol is
+the same mark on every column. A faint outline is drawn on every square, and
+that outline is part of the picture.
+
+Minutes are six squares and each square is fifteen minutes, filled from the
+bottom: 1 to 15 minutes is the first square, 16 to 30 is the second, and 76
+minutes or more fills all six. A goal and an assist are one square each.
+Those rows are three squares tall. The position color is one square.
 
 The full painter shows that card for the whole remainder. The stepped painter
-shows the true past, keeps the club, the opponent, the venue, the odds, and the minutes
-on the next week, and removes every later column. The other squad is not an
-input.
-The viewing grid is not part of the picture.
+shows the true past, keeps the club, the opponent, the venue, the odds, and
+the minutes on the next week, and removes every later column. The other squad
+is not an input.
 """
 
 from __future__ import annotations
@@ -27,11 +30,8 @@ import torch
 
 from src.models.flashcard_card_score import _paint, tally_cards
 from src.models.flashcard_odds_trial import (
-    AWAY_ODDS,
-    DRAW_ODDS,
-    HOME_ODDS,
-    column_odds,
-    load_odds,
+    column_market,
+    load_market,
     split_heights,
     visible_odds,
 )
@@ -64,14 +64,25 @@ from src.models.flashcard_trial import TEST_SEASON, TRAIN_SEASONS
 ROOT_REPORTS = Path(__file__).resolve().parents[2] / "reports"
 
 SQ = CELL_W
-ODDS_N = 16
 MINUTE_N = 6
 EVENT_N = 3
 CLUB_H = SQ
 OPP_H = SQ
 VENUE_H = SQ
 ODDS_Y = CLUB_H + OPP_H + VENUE_H
-ODDS_H = SQ * ODDS_N
+LINE_STEPS = 11
+LINE_N = LINE_STEPS * 2 + 1
+OU_N = 8
+LINE_H = LINE_N * SQ
+OU_H = OU_N * SQ
+ODDS_H = LINE_H + OU_H
+GIVING = (176, 28, 46)
+RECEIVING = (28, 78, 166)
+ZERO = (24, 24, 24)
+OVER_C = (214, 96, 0)
+UNDER_C = (126, 176, 214)
+GRID_INK = (60, 60, 60)
+GRID_ALPHA = 0.14
 MINUTE_H = SQ * MINUTE_N
 EVENT_H = SQ * EVENT_N
 POS_H = SQ
@@ -144,9 +155,30 @@ def _squares(img: np.ndarray, y0: int, x0: int, count: int, color: tuple[int, in
         img[y0 + height - count * SQ : y0 + height, x0 : x0 + SQ] = color
 
 
-def _odds(img: np.ndarray, x0: int, probs: np.ndarray, y0: int) -> None:
+def _line(
+    img: np.ndarray,
+    x0: int,
+    y0: int,
+    line: float,
+    up: tuple[int, int, int],
+    down: tuple[int, int, int],
+    zero: tuple[int, int, int] = ZERO,
+) -> None:
+    """Fill quarter-goal squares away from the zero square. No scale ticks."""
+    img[y0 : y0 + LINE_H, x0 : x0 + SQ] = WHITE
+    steps = int(np.clip(np.round(float(line) / 0.25), -LINE_STEPS, LINE_STEPS))
+    center = y0 + LINE_STEPS * SQ
+    if steps < 0:
+        img[center + steps * SQ : center, x0 : x0 + SQ] = up
+    elif steps > 0:
+        img[center + SQ : center + SQ + steps * SQ, x0 : x0 + SQ] = down
+    img[center : center + SQ, x0 : x0 + SQ] = zero
+
+
+def _total(img: np.ndarray, x0: int, y0: int, over: float, under: float, colors: tuple[tuple[int, int, int], tuple[int, int, int]]) -> None:
     y = y0
-    for color, count in zip((HOME_ODDS, DRAW_ODDS, AWAY_ODDS), split_heights(probs, ODDS_N), strict=True):
+    pair = np.array([over, under], dtype=np.float64)
+    for color, count in zip(colors, split_heights(pair, OU_N), strict=True):
         pixels = int(count) * SQ
         if pixels <= 0:
             continue
@@ -154,9 +186,22 @@ def _odds(img: np.ndarray, x0: int, probs: np.ndarray, y0: int) -> None:
         y += pixels
 
 
+def overlay_grid(img: np.ndarray) -> None:
+    """Faint outline on every square. The outline is part of the picture."""
+    mask = np.zeros(img.shape[:2], dtype=bool)
+    mask[::SQ, :] = True
+    mask[SQ - 1 :: SQ, :] = True
+    mask[:, ::SQ] = True
+    mask[:, SQ - 1 :: SQ] = True
+    mixed = img.astype(np.float64)
+    ink = np.array(GRID_INK, dtype=np.float64)
+    mixed[mask] = mixed[mask] * (1.0 - GRID_ALPHA) + ink * GRID_ALPHA
+    img[mask] = np.rint(mixed[mask]).astype(np.uint8)
+
+
 def paint_square(
     view: dict[str, np.ndarray],
-    probs: np.ndarray,
+    market: np.ndarray,
     visible: np.ndarray,
     grey_columns: np.ndarray | None = None,
     opponents: tuple[str, ...] | None = None,
@@ -180,10 +225,11 @@ def paint_square(
         _opponent_square(img, 0, x0, club)
         _opponent_square(img, CLUB_H, x0, names[col] if col < len(names) else "")
         img[CLUB_H + OPP_H : ODDS_Y, x0 : x0 + SQ] = HOME_C if view["home"][col] > 0.5 else AWAY_C
-        if (not visible[col]) or (not np.isfinite(probs[col, 0])):
+        if (not visible[col]) or (not np.isfinite(market[col, 0])) or (not np.isfinite(market[col, 1])):
             _hatch(img, ODDS_Y, x0, ODDS_H)
         else:
-            _odds(img, x0, probs[col], ODDS_Y)
+            _line(img, x0, ODDS_Y, float(market[col, 0]), GIVING, RECEIVING)
+            _total(img, x0, ODDS_Y + LINE_H, float(market[col, 1]), float(market[col, 2]), (OVER_C, UNDER_C))
         for row in range(ROWS):
             y = HEADER_H + row * PLAYER_H
             if view["position"][row] < 0:
@@ -204,6 +250,7 @@ def paint_square(
                         _squares(img, y + offset, x0, min(token, EVENT_N), color, EVENT_H)
             if grey[col]:
                 _hatch(img, y + MINUTE_H, x0, PLAYER_H - MINUTE_H)
+    overlay_grid(img)
     return img
 
 
@@ -219,7 +266,7 @@ def compose_square(
         visible = visible_odds(card.gw, "painter")
     else:
         visible = visible_odds(card.gw, "step", target=target)
-    return paint_square(view, column_odds(card, odds), visible, grey_columns, card.opponent, card.team)
+    return paint_square(view, column_market(card, odds), visible, grey_columns, card.opponent, card.team)
 
 
 def _binary_hatch(img: np.ndarray, y0: int, x0: int, height: int) -> None:
@@ -236,24 +283,15 @@ def _binary_squares(img: np.ndarray, y0: int, x0: int, count: int, height: int) 
         img[y0 + height - count * SQ : y0 + height, x0 : x0 + SQ] = INK
 
 
-def _binary_odds(img: np.ndarray, x0: int, probs: np.ndarray, y0: int) -> None:
-    """Black home, a white draw band, then black away.
-
-    The white band's height is the draw share. Its position splits home,
-    above it, from away, below it. The sixteen squares keep the same counts.
-    """
-    y = y0
-    for color, count in zip((INK, WHITE, INK), split_heights(probs, ODDS_N), strict=True):
-        pixels = int(count) * SQ
-        if pixels <= 0:
-            continue
-        img[y : y + pixels, x0 : x0 + SQ] = color
-        y += pixels
+def _binary_odds(img: np.ndarray, x0: int, market_row: np.ndarray) -> None:
+    """Black either side of the zero, then black over 2.5 and white under."""
+    _line(img, x0, ODDS_Y, float(market_row[0]), INK, INK, INK)
+    _total(img, x0, ODDS_Y + LINE_H, float(market_row[1]), float(market_row[2]), (INK, WHITE))
 
 
 def paint_binary(
     view: dict[str, np.ndarray],
-    probs: np.ndarray,
+    market: np.ndarray,
     visible: np.ndarray,
     grey_columns: np.ndarray | None = None,
     opponents: tuple[str, ...] | None = None,
@@ -261,9 +299,10 @@ def paint_binary(
 ) -> np.ndarray:
     """The square card in black and white. Not the default, and not scored.
 
-    The match rows match the color card: club, opponent, home or away, then
-    the odds. Odds are black, then a white draw band, then black. Venue is
-    black for home and white for away. The position color is a two-pixel rule
+    The match rows match the color card: club, opponent, home or away, the
+    handicap, then the 2.5 total. The line is black on either side of a black
+    zero. Over 2.5 is black and under is white. Venue is black for home and
+    white for away. The position color is a two-pixel rule
     between player blocks. A hidden event is a checker.
     """
     img = np.full((HEADER_H + ROWS * PLAYER_H, COLS * SQ, 3), 255, dtype=np.uint8)
@@ -290,10 +329,10 @@ def paint_binary(
             _mark(img, CLUB_H, x0, rows)
         if view["home"][col] > 0.5:
             img[CLUB_H + OPP_H : ODDS_Y, x0 : x0 + SQ] = INK
-        if (not visible[col]) or (not np.isfinite(probs[col, 0])):
+        if (not visible[col]) or (not np.isfinite(market[col, 0])) or (not np.isfinite(market[col, 1])):
             _binary_hatch(img, ODDS_Y, x0, ODDS_H)
         else:
-            _binary_odds(img, x0, probs[col], ODDS_Y)
+            _binary_odds(img, x0, market[col])
         for row in range(ROWS):
             y = HEADER_H + row * PLAYER_H
             if view["position"][row] < 0:
@@ -331,7 +370,7 @@ def compose_binary(
         visible = visible_odds(card.gw, "painter")
     else:
         visible = visible_odds(card.gw, "step", target=target)
-    return paint_binary(view, column_odds(card, odds), visible, grey_columns, card.opponent, card.team)
+    return paint_binary(view, column_market(card, odds), visible, grey_columns, card.opponent, card.team)
 
 
 _GATE = {
@@ -356,7 +395,7 @@ def main() -> None:
     test = build_cards((TEST_SEASON,), league)
     clubs = fit_clubs(train)
     squads = squad_index(train + test)
-    odds = load_odds()
+    odds = load_market()
     n_clubs = max(clubs.values(), default=0) + 1
     labels = np.stack([card.goals for card in test])
     assist_labels = np.stack([card.assists for card in test])
@@ -365,7 +404,8 @@ def main() -> None:
         "# Square card",
         "",
         "Each column shows the club symbol, the opponent symbol, home or away,",
-        "then sixteen odds squares. Minutes are six squares of fifteen minutes,",
+        "the Asian handicap, and the 2.5-goal total. A faint grid outlines every",
+        "square. Minutes are six squares of fifteen minutes,",
         "filled from the bottom. One goal or assist is one square, and those rows",
         "are three squares tall. The position color is one square. The full painter",
         "shows this card across the remainder. The stepped painter keeps the club,",
