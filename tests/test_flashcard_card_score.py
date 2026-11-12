@@ -110,6 +110,17 @@ class CardScoreTests(unittest.TestCase):
         self.assertAlmostEqual(float(window_count(matched, labels, mask)), 0.0)
         self.assertAlmostEqual(float(window_count(empty, labels, mask)), 1.0)
 
+    def test_a_matching_total_on_the_wrong_rows_is_an_error(self) -> None:
+        labels = torch.zeros(1, 2, 4)
+        labels[0, 1, 0] = 1
+        labels[0, 1, 1] = 1
+        mask = torch.ones(1, 2, 4)
+        swapped = torch.zeros(1, 2, 4, 4)
+        swapped[..., 0] = 1.0
+        swapped[0, 0, :, 0] = 0.5
+        swapped[0, 0, :, 1] = 0.5
+        self.assertAlmostEqual(float(window_count(swapped, labels, mask)), 1.0)
+
     def test_the_window_places_its_expected_bars(self) -> None:
         probs = np.zeros((5, 4))
         probs[..., 0] = 0.95
