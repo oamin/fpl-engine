@@ -1,12 +1,11 @@
 """The default card. One square is the column width.
 
 The match rows, from the top, are the assessed club's symbol, the opponent's
-symbol, home or away, the Asian handicap, then the 2.5-goal total. The
-handicap is the club's own line. Red grows up from a black zero when the club
-gives goals, and blue grows down when the club receives them. Each square is
-a quarter of a goal, from 2.75 down to 2.75 up. Orange is over 2.5 and pale
-blue is under, eight squares. A missing price is hatched. The club symbol is
-the same mark on every column. There is no grid on the squares.
+symbol, home or away, then sixteen solid handicap squares. Red from the top
+means the club gives goals. Blue from the bottom means the club receives
+them. The scale runs from giving 2.75 to receiving 2.75, so a level match
+splits the bar in half. A missing price is hatched. The club symbol is the
+same mark on every column.
 
 Minutes are six squares and each square is fifteen minutes, filled from the
 bottom: 1 to 15 minutes is the first square, 16 to 30 is the second, and 76
@@ -69,15 +68,15 @@ CLUB_H = SQ
 OPP_H = SQ
 VENUE_H = SQ
 ODDS_Y = CLUB_H + OPP_H + VENUE_H
-LINE_STEPS = 11
-LINE_N = LINE_STEPS * 2 + 1
+BAR_N = 16
+LINE_SPAN = 2.75
+LINE_H = BAR_N * SQ
+PAINT_TOTAL = False
 OU_N = 8
-LINE_H = LINE_N * SQ
-OU_H = OU_N * SQ
+OU_H = OU_N * SQ if PAINT_TOTAL else 0
 ODDS_H = LINE_H + OU_H
 GIVING = (176, 28, 46)
 RECEIVING = (28, 78, 166)
-ZERO = (24, 24, 24)
 OVER_C = (214, 96, 0)
 UNDER_C = (126, 176, 214)
 MINUTE_H = SQ * MINUTE_N
@@ -152,35 +151,34 @@ def _squares(img: np.ndarray, y0: int, x0: int, count: int, color: tuple[int, in
         img[y0 + height - count * SQ : y0 + height, x0 : x0 + SQ] = color
 
 
-def _line(
+def _fill_bar(
     img: np.ndarray,
     x0: int,
     y0: int,
-    line: float,
-    up: tuple[int, int, int],
-    down: tuple[int, int, int],
-    zero: tuple[int, int, int] = ZERO,
+    left: float,
+    right: float,
+    colors: tuple[tuple[int, int, int], tuple[int, int, int]],
+    squares: int,
 ) -> None:
-    """Fill quarter-goal squares away from the zero square. No scale ticks."""
-    img[y0 : y0 + LINE_H, x0 : x0 + SQ] = WHITE
-    steps = int(np.clip(np.round(float(line) / 0.25), -LINE_STEPS, LINE_STEPS))
-    center = y0 + LINE_STEPS * SQ
-    if steps < 0:
-        img[center + steps * SQ : center, x0 : x0 + SQ] = up
-    elif steps > 0:
-        img[center + SQ : center + SQ + steps * SQ, x0 : x0 + SQ] = down
-    img[center : center + SQ, x0 : x0 + SQ] = zero
-
-
-def _total(img: np.ndarray, x0: int, y0: int, over: float, under: float, colors: tuple[tuple[int, int, int], tuple[int, int, int]]) -> None:
+    """Fill a whole bar. Both colors are solid, from the top."""
     y = y0
-    pair = np.array([over, under], dtype=np.float64)
-    for color, count in zip(colors, split_heights(pair, OU_N), strict=True):
+    pair = np.array([left, right], dtype=np.float64)
+    for color, count in zip(colors, split_heights(pair, squares), strict=True):
         pixels = int(count) * SQ
         if pixels <= 0:
             continue
         img[y : y + pixels, x0 : x0 + SQ] = color
         y += pixels
+
+
+def _line(img: np.ndarray, x0: int, y0: int, line: float, up: tuple[int, int, int], down: tuple[int, int, int]) -> None:
+    """Sixteen solid squares. Giving fills from the top, receiving from the bottom."""
+    share = float(np.clip((LINE_SPAN - float(line)) / (2.0 * LINE_SPAN), 0.0, 1.0))
+    _fill_bar(img, x0, y0, share, 1.0 - share, (up, down), BAR_N)
+
+
+def _total(img: np.ndarray, x0: int, y0: int, over: float, under: float, colors: tuple[tuple[int, int, int], tuple[int, int, int]]) -> None:
+    _fill_bar(img, x0, y0, over, under, colors, OU_N)
 
 
 def paint_square(
@@ -209,11 +207,12 @@ def paint_square(
         _opponent_square(img, 0, x0, club)
         _opponent_square(img, CLUB_H, x0, names[col] if col < len(names) else "")
         img[CLUB_H + OPP_H : ODDS_Y, x0 : x0 + SQ] = HOME_C if view["home"][col] > 0.5 else AWAY_C
-        if (not visible[col]) or (not np.isfinite(market[col, 0])) or (not np.isfinite(market[col, 1])):
+        if (not visible[col]) or (not np.isfinite(market[col, 0])):
             _hatch(img, ODDS_Y, x0, ODDS_H)
         else:
             _line(img, x0, ODDS_Y, float(market[col, 0]), GIVING, RECEIVING)
-            _total(img, x0, ODDS_Y + LINE_H, float(market[col, 1]), float(market[col, 2]), (OVER_C, UNDER_C))
+            if PAINT_TOTAL and np.isfinite(market[col, 1]):
+                _total(img, x0, ODDS_Y + LINE_H, float(market[col, 1]), float(market[col, 2]), (OVER_C, UNDER_C))
         for row in range(ROWS):
             y = HEADER_H + row * PLAYER_H
             if view["position"][row] < 0:
@@ -267,9 +266,10 @@ def _binary_squares(img: np.ndarray, y0: int, x0: int, count: int, height: int) 
 
 
 def _binary_odds(img: np.ndarray, x0: int, market_row: np.ndarray) -> None:
-    """Black either side of the zero, then black over 2.5 and white under."""
-    _line(img, x0, ODDS_Y, float(market_row[0]), INK, INK, INK)
-    _total(img, x0, ODDS_Y + LINE_H, float(market_row[1]), float(market_row[2]), (INK, WHITE))
+    """Black where the club gives goals, white where it receives them."""
+    _line(img, x0, ODDS_Y, float(market_row[0]), INK, WHITE)
+    if PAINT_TOTAL and np.isfinite(market_row[1]):
+        _total(img, x0, ODDS_Y + LINE_H, float(market_row[1]), float(market_row[2]), (INK, WHITE))
 
 
 def paint_binary(
@@ -282,9 +282,8 @@ def paint_binary(
 ) -> np.ndarray:
     """The square card in black and white. Not the default, and not scored.
 
-    The match rows match the color card: club, opponent, home or away, the
-    handicap, then the 2.5 total. The line is black on either side of a black
-    zero. Over 2.5 is black and under is white. Venue is black for home and
+    The match rows match the color card. The handicap is black where the club
+    gives goals and white where it receives them. Venue is black for home and
     white for away. The position color is a two-pixel rule
     between player blocks. A hidden event is a checker.
     """
@@ -312,7 +311,7 @@ def paint_binary(
             _mark(img, CLUB_H, x0, rows)
         if view["home"][col] > 0.5:
             img[CLUB_H + OPP_H : ODDS_Y, x0 : x0 + SQ] = INK
-        if (not visible[col]) or (not np.isfinite(market[col, 0])) or (not np.isfinite(market[col, 1])):
+        if (not visible[col]) or (not np.isfinite(market[col, 0])):
             _binary_hatch(img, ODDS_Y, x0, ODDS_H)
         else:
             _binary_odds(img, x0, market[col])
@@ -387,7 +386,7 @@ def main() -> None:
         "# Square card",
         "",
         "Each column shows the club symbol, the opponent symbol, home or away,",
-        "the Asian handicap, and the 2.5-goal total. Minutes are six squares of",
+        "then sixteen solid handicap squares. Minutes are six squares of",
         "fifteen minutes,",
         "filled from the bottom. One goal or assist is one square, and those rows",
         "are three squares tall. The position color is one square. The full painter",

@@ -7,7 +7,7 @@ Every club and every row is included.
 
 The reader is squad vision on the square card. The flashcard is the
 only feature input. Each column shows the club symbol, the opponent
-symbol, home or away, the handicap line, and the 2.5 total. The
+symbol, home or away, then sixteen solid handicap squares. The
 other squad is not an input. Concede, regulars, own history,
 opponent history, and the team scoring rate are absent. Minutes,
 position, club, and opponent are not passed again as numbers. Each
@@ -20,26 +20,26 @@ appearance and either neighboring gameweek. The numbers are totals.
 
 | revealed | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
 |---|---|---:|---:|---:|---:|---:|
-| 20% | goals | 730 | 538 | 108 | 227 | 205 |
-| 20% | assists | 707 | 521 | 87 | 176 | 165 |
-| 40% | goals | 544 | 404 | 87 | 187 | 166 |
-| 40% | assists | 531 | 386 | 66 | 129 | 121 |
-| 60% | goals | 360 | 243 | 56 | 112 | 101 |
-| 60% | assists | 351 | 247 | 46 | 84 | 81 |
-| 80% | goals | 199 | 114 | 29 | 62 | 51 |
-| 80% | assists | 192 | 96 | 19 | 35 | 31 |
+| 20% | goals | 730 | 449 | 97 | 202 | 174 |
+| 20% | assists | 707 | 445 | 79 | 159 | 144 |
+| 40% | goals | 544 | 313 | 71 | 152 | 131 |
+| 40% | assists | 531 | 310 | 58 | 108 | 101 |
+| 60% | goals | 360 | 188 | 53 | 105 | 88 |
+| 60% | assists | 351 | 181 | 30 | 62 | 58 |
+| 80% | goals | 199 | 93 | 25 | 56 | 45 |
+| 80% | assists | 192 | 82 | 16 | 32 | 28 |
 
 Goal and assist bars by position at the 20% cut.
 
-goals: actual/painted GKP 0/0, DEF 103/62, MID 394/277, FWD 233/199.
-assists: actual/painted GKP 4/0, DEF 181/94, MID 434/347, FWD 88/80.
-goal chance: GKP 0.006, DEF 0.014, MID 0.039, FWD 0.108.
-assist chance: GKP 0.006, DEF 0.019, MID 0.049, FWD 0.043.
+goals: actual/painted GKP 0/0, DEF 103/45, MID 394/248, FWD 233/156.
+assists: actual/painted GKP 4/0, DEF 181/75, MID 434/297, FWD 88/73.
+goal chance: GKP 0.006, DEF 0.012, MID 0.035, FWD 0.085.
+assist chance: GKP 0.006, DEF 0.015, MID 0.042, FWD 0.039.
 
 The loss scores each hidden square and each row's own hidden bar count.
 A matching card total with the bars on the empty rows is an error.
 The paint keeps each row's count on that row. The flashcard is the
 only feature input.
 
-Wall clock: 72 seconds on CPU.
+Wall clock: 71 seconds on CPU.
 

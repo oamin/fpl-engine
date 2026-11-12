@@ -28,7 +28,7 @@ from src.models.flashcard_squad_trial import (
     event_pixels,
     render_grid,
 )
-from src.models.flashcard_square_trial import GIVING, LINE_H, LINE_STEPS, OVER_C, ZERO
+from src.models.flashcard_square_trial import GIVING, RECEIVING, SQ
 from src.models.flashcard_square_trial import CLUB_H, EVENT_H as SQUARE_EVENT
 from src.models.flashcard_square_trial import HEADER_H as SQUARE_HEADER
 from src.models.flashcard_square_trial import MINUTE_H as SQUARE_MINUTE
@@ -160,10 +160,8 @@ class StripTests(unittest.TestCase):
         card = _card()
         image = compose_card(view, card, _prices(card))
         self.assertEqual(image.shape[0], SQUARE_HEADER + ROWS * SQUARE_PLAYER)
-        center = ODDS_Y + LINE_STEPS * 4
-        self.assertEqual(tuple(int(v) for v in image[center + 1, 1]), ZERO)
-        self.assertEqual(tuple(int(v) for v in image[center - 4 + 1, 1]), GIVING)
-        self.assertEqual(tuple(int(v) for v in image[ODDS_Y + LINE_H + 1, 1]), OVER_C)
+        self.assertEqual(tuple(int(v) for v in image[ODDS_Y + 1, 1]), GIVING)
+        self.assertEqual(tuple(int(v) for v in image[ODDS_Y + 14 * SQ + 1, 1]), RECEIVING)
         self.assertEqual(tuple(int(v) for v in image[CLUB_H + OPP_H + 1, 1]), HOME_C)
         minute_y = SQUARE_HEADER
         self.assertEqual(tuple(int(v) for v in image[minute_y + SQUARE_MINUTE - CELL_W + 1, 1]), MINUTES_C)
@@ -178,7 +176,7 @@ class StripTests(unittest.TestCase):
         self.assertEqual(tuple(out.shape), (1, ROWS, COLS, 4))
         fresh = strip_features(_view())
         stepped = compose_card(fresh, card, _prices(card), target=1)
-        self.assertEqual(tuple(int(v) for v in stepped[ODDS_Y + LINE_STEPS * 4 + 1, 1]), ZERO)
+        self.assertEqual(tuple(int(v) for v in stepped[ODDS_Y + 1, 1]), GIVING)
         self.assertEqual(tuple(int(v) for v in stepped[ODDS_Y + 1, 2 * CELL_W + 1]), HATCH_FG)
 
     def test_a_goal_square_does_not_go_through_the_minute_embedding(self) -> None:
