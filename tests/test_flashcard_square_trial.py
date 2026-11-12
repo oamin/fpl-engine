@@ -28,8 +28,6 @@ from src.models.flashcard_square_trial import (
     CLUB_MARKS,
     EVENT_H,
     GIVING,
-    GRID_ALPHA,
-    GRID_INK,
     HEADER_H,
     LINE_H,
     LINE_STEPS,
@@ -103,10 +101,6 @@ def _prices(card) -> dict:
 
 def _pixel(image: np.ndarray, y: int, x: int) -> tuple[int, int, int]:
     return tuple(int(v) for v in image[y, x])
-
-
-def _outline(color: tuple[int, int, int]) -> tuple[int, int, int]:
-    return tuple(int(np.rint(channel * (1.0 - GRID_ALPHA) + ink * GRID_ALPHA)) for channel, ink in zip(color, GRID_INK))
 
 
 def _filled(image: np.ndarray, y0: int, height: int, x0: int, color: tuple[int, int, int]) -> int:
@@ -208,23 +202,21 @@ class SquareCardTests(unittest.TestCase):
     def test_the_opponent_square_is_the_club_symbol(self) -> None:
         card = _card()
         image = compose_square(_view(), card, _prices(card), np.array([0]), target=1)
-        def seen(bit: str, yy: int, xx: int) -> tuple[int, int, int]:
-            color = (0, 0, 0) if bit == "1" else (255, 255, 255)
-            if yy in (0, SQ - 1) or xx in (0, SQ - 1):
-                return _outline(color)
-            return color
+
+        def seen(bit: str) -> tuple[int, int, int]:
+            return (0, 0, 0) if bit == "1" else (255, 255, 255)
 
         for yy, row in enumerate(CLUB_MARKS["Arsenal"]):
             for xx, bit in enumerate(row):
-                self.assertEqual(_pixel(image, yy, xx), seen(bit, yy, xx))
-                self.assertEqual(_pixel(image, yy, CELL_W + xx), seen(bit, yy, xx))
+                self.assertEqual(_pixel(image, yy, xx), seen(bit))
+                self.assertEqual(_pixel(image, yy, CELL_W + xx), seen(bit))
         y = CLUB_H
         for yy, row in enumerate(CLUB_MARKS["Wolves"]):
             for xx, bit in enumerate(row):
-                self.assertEqual(_pixel(image, y + yy, xx), seen(bit, yy, xx))
+                self.assertEqual(_pixel(image, y + yy, xx), seen(bit))
         for yy, row in enumerate(CLUB_MARKS["Spurs"]):
             for xx, bit in enumerate(row):
-                self.assertEqual(_pixel(image, y + yy, CELL_W + xx), seen(bit, yy, xx))
+                self.assertEqual(_pixel(image, y + yy, CELL_W + xx), seen(bit))
 
     def test_the_binary_card_uses_black_white_and_a_rule(self) -> None:
         view = _view()
@@ -251,7 +243,7 @@ class SquareCardTests(unittest.TestCase):
         self.assertEqual(tuple(int(v) for v in image[y + 2, 0]), (0, 0, 0))
         self.assertEqual(tuple(int(v) for v in image[y + 3, 8 * CELL_W]), (0, 0, 0))
 
-    def test_the_outline_is_faint_and_the_line_has_no_ticks(self) -> None:
+    def test_the_line_has_no_ticks_or_grid(self) -> None:
         view = _view()
         market = np.full((COLS, 3), np.nan)
         market[0] = (0.0, 0.5, 0.5)
@@ -259,11 +251,10 @@ class SquareCardTests(unittest.TestCase):
         visible[0] = True
         image = paint_square(view, market, visible, club="Arsenal")
         center = ODDS_Y + LINE_STEPS * SQ
+        self.assertEqual(_pixel(image, center - SQ, 0), (255, 255, 255))
         self.assertEqual(_pixel(image, center - SQ + 1, 1), (255, 255, 255))
-        self.assertEqual(_pixel(image, center - SQ, 0), _outline((255, 255, 255)))
+        self.assertEqual(_pixel(image, center, 0), ZERO)
         self.assertEqual(_pixel(image, center + 1, 1), ZERO)
-        self.assertEqual(_pixel(image, center, 1), _outline(ZERO))
-        self.assertNotEqual(_pixel(image, center - SQ, 0), (226, 226, 226))
 
 
 if __name__ == "__main__":
