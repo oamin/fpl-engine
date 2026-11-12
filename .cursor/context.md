@@ -8,7 +8,9 @@ The published flashcard painter reads one rendered card. That picture is the onl
 
 Do not add a numeric sidecar. Do not pass minutes, a minutes/90 fraction, a position id, a club id, an opponent id, a match-up vector, a team scoring rate, concede, regulars, own history, opponent history, or the other squad into the reader. If a fact belongs in the forecast, draw it on the card. An attention mask for an empty row or an empty column is allowed. It carries no value.
 
-The reader is `StripVision` in `src/models/flashcard_strip_trial.py`. Its forward arguments are the image, the row mask, and the column mask. `Coupler` attends over those image tokens. It has no embedding for position, club, opponent, minutes, or rate.
+The reader is `StripVision` in `src/models/flashcard_strip_trial.py`. Its forward arguments are the image, the row mask, and the column mask. `Coupler` attends over those image tokens. It has no embedding for position, club, opponent, minutes, or rate. Minutes, goals, assists, and the position square are separate bands of the same picture. Each band has its own embedding, and each embedding is normalized before they are added. Do not flatten a cell into one vector, and do not add the raw band vectors. The minute embedding otherwise grows until it owns the forecast.
+
+The objective scores each hidden square and each row's own hidden bar count. A card whose total matches still fails when the bars sit on the empty rows. The paint keeps each row's count on that row. Do not score only the card's total, and do not go back to painting each square by its own most likely count.
 
 `SquadSequence` is a separate numeric reader. It is not the gate. Do not connect it to the published painter, and do not put its numbers back onto `Coupler`.
 

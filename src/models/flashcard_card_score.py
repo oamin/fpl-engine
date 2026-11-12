@@ -10,8 +10,10 @@ only feature input. It is the square card: sixteen odds squares, one venue
 square, one opponent square, six minute squares of fifteen minutes, one
 position square, and one square per goal or assist. Concede, regulars, own
 history, opponent history, and the team scoring rate are absent. Minutes,
-position, club, and opponent are not passed again as numbers. Each row
-paints the count with the highest probability. A row holds three squares,
+position, club, and opponent are not passed again as numbers. The loss
+scores each hidden square and each row's own hidden bar count. A card
+whose total is right still fails when the bars sit on the empty rows.
+The paint keeps each row's count on that row. A row holds three squares,
 and that is the only cap.
 """
 
@@ -36,17 +38,17 @@ from src.models.flashcard_squad_trial import (
 ROOT_REPORTS = Path(__file__).resolve().parents[2] / "reports"
 KEYS = ("actual", "painted", "exact", "actual_within", "painted_within")
 
-# The locked painter after the numeric sidecar was removed, 12 Nov 2026.
-# Every hidden cell's highest class is zero, so the painted card is blank.
+# Flashcard painter, 12 Nov 2026. Each row's horizon is scored, and each band
+# of the cell is normalized before the bands are added. The flashcard is the only input.
 GATE = {
-    ("goals", 0.2): {"actual": 730, "painted": 0, "exact": 0, "actual_within": 0, "painted_within": 0},
-    ("assists", 0.2): {"actual": 707, "painted": 0, "exact": 0, "actual_within": 0, "painted_within": 0},
-    ("goals", 0.4): {"actual": 544, "painted": 0, "exact": 0, "actual_within": 0, "painted_within": 0},
-    ("assists", 0.4): {"actual": 531, "painted": 0, "exact": 0, "actual_within": 0, "painted_within": 0},
-    ("goals", 0.6): {"actual": 360, "painted": 0, "exact": 0, "actual_within": 0, "painted_within": 0},
-    ("assists", 0.6): {"actual": 351, "painted": 0, "exact": 0, "actual_within": 0, "painted_within": 0},
-    ("goals", 0.8): {"actual": 199, "painted": 0, "exact": 0, "actual_within": 0, "painted_within": 0},
-    ("assists", 0.8): {"actual": 192, "painted": 0, "exact": 0, "actual_within": 0, "painted_within": 0},
+    ("goals", 0.2): {"actual": 730, "painted": 798, "exact": 169, "actual_within": 322, "painted_within": 323},
+    ("assists", 0.2): {"actual": 707, "painted": 664, "exact": 107, "actual_within": 215, "painted_within": 203},
+    ("goals", 0.4): {"actual": 544, "painted": 594, "exact": 129, "actual_within": 241, "painted_within": 248},
+    ("assists", 0.4): {"actual": 531, "painted": 498, "exact": 80, "actual_within": 159, "painted_within": 147},
+    ("goals", 0.6): {"actual": 360, "painted": 368, "exact": 88, "actual_within": 153, "painted_within": 149},
+    ("assists", 0.6): {"actual": 351, "painted": 302, "exact": 53, "actual_within": 100, "painted_within": 96},
+    ("goals", 0.8): {"actual": 199, "painted": 184, "exact": 43, "actual_within": 84, "painted_within": 74},
+    ("assists", 0.8): {"actual": 192, "painted": 140, "exact": 30, "actual_within": 48, "painted_within": 43},
 }
 
 
@@ -130,6 +132,42 @@ def tally_cards(
     return totals
 
 
+def window_count(probs: torch.Tensor, labels: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
+    """Squared relative error of each row's hidden bar count.
+
+    The card's total can match while every bar sits on an empty row. Each
+    row is scored on its own, so that arrangement is a large error.
+    """
+    predicted = ((1.0 - probs[..., 0]) * mask).sum(dim=-1)
+    actual = ((labels > 0).to(probs.dtype) * mask).sum(dim=-1)
+    scale = torch.maximum(predicted, actual).clamp_min(1.0)
+    error = ((predicted - actual) / scale).square()
+    present = mask.sum(dim=-1) > 0
+    return (error * present).sum() / present.sum().clamp_min(1.0)
+
+
+def paint_horizon(probs: np.ndarray, mask: np.ndarray) -> np.ndarray:
+    """Place one row's expected bars on its most likely squares.
+
+    The expected count is the sum of that row's chance of a bar. Each chosen
+    square is painted with its most likely positive count. A row is three
+    squares tall, and that is the only cap.
+    """
+    probs = np.asarray(probs, dtype=np.float64)
+    mask = np.asarray(mask, dtype=bool)
+    chance = np.where(mask, np.clip(1.0 - probs[..., 0], 0.0, None), -np.inf)
+    available = int(mask.sum())
+    expected = float(chance[mask].sum()) if available else 0.0
+    count = int(np.clip(np.rint(expected), 0, available))
+    painted = np.zeros(mask.shape, dtype=np.int64)
+    if count == 0:
+        return painted
+    chosen = np.argsort(-chance, axis=None, kind="stable")[:count]
+    height = 1 + np.argmax(probs[..., 1:], axis=-1)
+    painted.ravel()[chosen] = height.ravel()[chosen]
+    return np.where(mask, painted, 0)
+
+
 def paint_row(probs: np.ndarray, mask: np.ndarray) -> np.ndarray:
     """Paint the count with the highest probability.
 
@@ -146,8 +184,63 @@ def _paint(probs: np.ndarray, minutes: np.ndarray, cards: list, cuts: list[int])
     for index, card in enumerate(cards):
         hidden = (card.gw > cuts[index]) & (card.gw > 0)
         mask = card.present & hidden.reshape(1, -1)
-        painted[index] = paint_row(probs[index], mask)
+        for row in range(mask.shape[0]):
+            painted[index, row] = paint_horizon(probs[index, row], mask[row])
     return painted
+
+
+def _chance_line(cards: list, probs: np.ndarray, cuts: list[int], channel: str) -> str:
+    """Mean chance of a bar on a hidden appearance, by position."""
+    names = ("GKP", "DEF", "MID", "FWD")
+    total = np.zeros(4)
+    count = np.zeros(4)
+    for index, card in enumerate(cards):
+        hidden = (card.gw > cuts[index]) & (card.gw > 0)
+        for row in range(card.n_players):
+            pos = int(card.position[row])
+            if pos < 0 or pos > 3:
+                continue
+            cols = np.where(card.present[row] & hidden)[0]
+            total[pos] += float((1.0 - probs[index, row, cols, 0]).sum())
+            count[pos] += len(cols)
+    rates = total / np.maximum(count, 1.0)
+    body = ", ".join(f"{name} {rates[pos]:.3f}" for pos, name in enumerate(names))
+    print(f"chance {channel} {body}", flush=True)
+    return f"{channel} chance: {body}."
+
+
+def _position_lines(
+    cards: list,
+    goals: np.ndarray,
+    goal_paint: np.ndarray,
+    assists: np.ndarray,
+    assist_paint: np.ndarray,
+    cuts: list[int],
+) -> list[str]:
+    """Actual and painted bars by position at one cut. Rows are GKP, DEF, MID, FWD."""
+    names = ("GKP", "DEF", "MID", "FWD")
+    actual = np.zeros((2, 4), dtype=np.int64)
+    painted = np.zeros((2, 4), dtype=np.int64)
+    for index, card in enumerate(cards):
+        hidden = (card.gw > cuts[index]) & (card.gw > 0)
+        for row in range(card.n_players):
+            pos = int(card.position[row])
+            if pos < 0 or pos > 3:
+                continue
+            cols = np.where(card.present[row] & hidden)[0]
+            actual[0, pos] += int((goals[index, row, cols] > 0).sum())
+            actual[1, pos] += int((assists[index, row, cols] > 0).sum())
+            painted[0, pos] += int((goal_paint[index, row, cols] > 0).sum())
+            painted[1, pos] += int((assist_paint[index, row, cols] > 0).sum())
+    lines = ["", "Goal and assist bars by position at the 20% cut.", ""]
+    for channel, index in (("goals", 0), ("assists", 1)):
+        body = ", ".join(
+            f"{name} {int(actual[index, pos])}/{int(painted[index, pos])}"
+            for pos, name in enumerate(names)
+        )
+        lines.append(f"{channel}: actual/painted {body}.")
+        print(f"position {channel} {body}", flush=True)
+    return lines
 
 
 def _line(revealed: float, channel: str, totals: dict[str, int]) -> str:
@@ -198,7 +291,8 @@ def main() -> None:
         "other squad is not an input. Concede, regulars, own history,",
         "opponent history, and the team scoring rate are absent. Minutes,",
         "position, club, and opponent are not passed again as numbers. Each",
-        "row paints the count with the highest probability. A row holds three",
+        "loss scores each hidden square and each row's own hidden bar count.",
+        "The paint keeps that count on the same row. A row holds three",
         "squares, and that is the only cap.",
         "",
         "A bar matches on the same row only. Within one gameweek includes the same",
@@ -207,13 +301,20 @@ def main() -> None:
         "| revealed | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |",
         "|---|---|---:|---:|---:|---:|---:|",
     ]
+    position_lines: list[str] = []
     for revealed in (0.2, 0.4, 0.6, 0.8):
         cuts = [cut_at_fraction(card, revealed) for card in test]
         goal_p, assist_p = paint_stripped(vision, test, league, clubs, test_squads, odds, cuts)
-        goals = tally_cards(test, labels, _paint(goal_p, minutes, test, cuts), 0, cuts)
-        assists = tally_cards(test, assist_labels, _paint(assist_p, minutes, test, cuts), 0, cuts)
+        goal_paint = _paint(goal_p, minutes, test, cuts)
+        assist_paint = _paint(assist_p, minutes, test, cuts)
+        goals = tally_cards(test, labels, goal_paint, 0, cuts)
+        assists = tally_cards(test, assist_labels, assist_paint, 0, cuts)
         lines.append(_line(revealed, "goals", goals))
         lines.append(_line(revealed, "assists", assists))
+        if revealed == 0.2:
+            position_lines = _position_lines(test, labels, goal_paint, assist_labels, assist_paint, cuts)
+            position_lines.append(_chance_line(test, goal_p, cuts, "goal"))
+            position_lines.append(_chance_line(test, assist_p, cuts, "assist"))
         print(
             f"reveal {revealed:.0%} goals {goals['actual']} painted {goals['painted']} "
             f"exact {goals['exact']} within {goals['actual_within']} "
@@ -221,12 +322,14 @@ def main() -> None:
             flush=True,
         )
     seconds = time.perf_counter() - started
+    lines.extend(position_lines)
     lines.extend(
         [
             "",
-            "This run replaces the 10 November 2026 gate. The numeric sidecar is gone.",
-            "The flashcard is the only feature input. Every hidden cell's highest",
-            "class is zero, so the painted card is blank.",
+            "The loss scores each hidden square and each row's own hidden bar count.",
+            "A matching card total with the bars on the empty rows is an error.",
+            "The paint keeps each row's count on that row. The flashcard is the",
+            "only feature input.",
             "",
             f"Wall clock: {seconds:.0f} seconds on CPU.",
             "",

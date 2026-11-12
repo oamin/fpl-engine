@@ -171,6 +171,8 @@ class StripTests(unittest.TestCase):
         self.assertEqual(tuple(int(v) for v in image[minute_y + SQUARE_MINUTE + SQUARE_EVENT - 1, 0]), GOALS_C)
         self.assertEqual(tuple(int(v) for v in image[0, CELL_W]), HATCH_FG)
         model = StripVision(SQUARE_HEADER, n_clubs=2, player_h=SQUARE_PLAYER)
+        self.assertEqual(len(model.bands), 4)
+        self.assertIsNone(model.patch)
         tensor = torch.from_numpy(image).permute(2, 0, 1).unsqueeze(0).float()
         out, _assists = model(tensor, torch.zeros(1, ROWS, dtype=torch.bool), torch.ones(1, COLS))
         self.assertEqual(tuple(out.shape), (1, ROWS, COLS, 4))
@@ -178,6 +180,26 @@ class StripTests(unittest.TestCase):
         stepped = compose_card(fresh, card, _prices(card), target=1)
         self.assertEqual(tuple(int(v) for v in stepped[0, 0]), HOME_ODDS)
         self.assertEqual(tuple(int(v) for v in stepped[0, 2 * CELL_W]), HATCH_FG)
+
+    def test_a_goal_square_does_not_go_through_the_minute_embedding(self) -> None:
+        model = StripVision(SQUARE_HEADER, n_clubs=2, player_h=SQUARE_PLAYER)
+        blank = torch.zeros(1, 3, SQUARE_HEADER + ROWS * SQUARE_PLAYER, COLS * CELL_W)
+        marked = blank.clone()
+        y0 = SQUARE_HEADER + SQUARE_MINUTE
+        marked[:, :, y0 : y0 + SQUARE_EVENT, :CELL_W] = 1
+        body = blank[:, :, SQUARE_HEADER:, :].reshape(1, 3, ROWS, SQUARE_PLAYER, COLS, CELL_W)
+        flat = body.permute(0, 4, 2, 1, 3, 5)
+        marked_body = marked[:, :, SQUARE_HEADER:, :].reshape(1, 3, ROWS, SQUARE_PLAYER, COLS, CELL_W)
+        marked_flat = marked_body.permute(0, 4, 2, 1, 3, 5)
+        with torch.no_grad():
+            minutes = model.bands[0](flat[:, :, :, :, :SQUARE_MINUTE, :].reshape(1, COLS, ROWS, -1))
+            minutes_after = model.bands[0](marked_flat[:, :, :, :, :SQUARE_MINUTE, :].reshape(1, COLS, ROWS, -1))
+            goals = model.bands[1](flat[:, :, :, :, SQUARE_MINUTE : SQUARE_MINUTE + SQUARE_EVENT, :].reshape(1, COLS, ROWS, -1))
+            goals_after = model.bands[1](
+                marked_flat[:, :, :, :, SQUARE_MINUTE : SQUARE_MINUTE + SQUARE_EVENT, :].reshape(1, COLS, ROWS, -1)
+            )
+        self.assertEqual(float((minutes - minutes_after).abs().sum()), 0.0)
+        self.assertGreater(float((goals - goals_after).abs().sum()), 0.0)
 
     def test_the_locked_reader_has_no_numeric_sidecar(self) -> None:
         model = StripVision(BAND_H, n_clubs=2)

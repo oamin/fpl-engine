@@ -10,7 +10,8 @@ only feature input. The opponent is one square, a club symbol. The
 other squad is not an input. Concede, regulars, own history,
 opponent history, and the team scoring rate are absent. Minutes,
 position, club, and opponent are not passed again as numbers. Each
-row paints the count with the highest probability. A row holds three
+loss scores each hidden square and each row's own hidden bar count.
+The paint keeps that count on the same row. A row holds three
 squares, and that is the only cap.
 
 A bar matches on the same row only. Within one gameweek includes the same
@@ -18,18 +19,26 @@ appearance and either neighboring gameweek. The numbers are totals.
 
 | revealed | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
 |---|---|---:|---:|---:|---:|---:|
-| 20% | goals | 730 | 0 | 0 | 0 | 0 |
-| 20% | assists | 707 | 0 | 0 | 0 | 0 |
-| 40% | goals | 544 | 0 | 0 | 0 | 0 |
-| 40% | assists | 531 | 0 | 0 | 0 | 0 |
-| 60% | goals | 360 | 0 | 0 | 0 | 0 |
-| 60% | assists | 351 | 0 | 0 | 0 | 0 |
-| 80% | goals | 199 | 0 | 0 | 0 | 0 |
-| 80% | assists | 192 | 0 | 0 | 0 | 0 |
+| 20% | goals | 730 | 798 | 169 | 322 | 323 |
+| 20% | assists | 707 | 664 | 107 | 215 | 203 |
+| 40% | goals | 544 | 594 | 129 | 241 | 248 |
+| 40% | assists | 531 | 498 | 80 | 159 | 147 |
+| 60% | goals | 360 | 368 | 88 | 153 | 149 |
+| 60% | assists | 351 | 302 | 53 | 100 | 96 |
+| 80% | goals | 199 | 184 | 43 | 84 | 74 |
+| 80% | assists | 192 | 140 | 30 | 48 | 43 |
 
-This run replaces the 10 November 2026 gate. The numeric sidecar is gone.
-The flashcard is the only feature input. Every hidden cell's highest
-class is zero, so the painted card is blank.
+Goal and assist bars by position at the 20% cut.
 
-Wall clock: 75 seconds on CPU.
+goals: actual/painted GKP 0/0, DEF 103/71, MID 394/422, FWD 233/305.
+assists: actual/painted GKP 4/0, DEF 181/90, MID 434/452, FWD 88/122.
+goal chance: GKP 0.007, DEF 0.014, MID 0.061, FWD 0.165.
+assist chance: GKP 0.007, DEF 0.018, MID 0.063, FWD 0.065.
+
+The loss scores each hidden square and each row's own hidden bar count.
+A matching card total with the bars on the empty rows is an error.
+The paint keeps each row's count on that row. The flashcard is the
+only feature input.
+
+Wall clock: 73 seconds on CPU.
 

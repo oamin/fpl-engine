@@ -10,7 +10,13 @@ goal or assist is one square, and those rows are three squares tall. The
 one-shot card paints the odds on every fixture, including a grey week. The
 stepped reader uses this same card: true past, the odds, the venue, the
 opponent, and the minutes on the next week, and every later column removed.
-The other squad is not an input.
+The other squad is not an input. Minutes, goals, assists, and the position
+square each have their own embedding. One vector for the whole cell lets
+the minute block, which is most of the pixels, own the forecast. The
+training loss is the cross-entropy of each hidden square plus the squared
+relative error of each row's hidden bar count. Bars on an empty row are an
+error even when the card's total matches. The paint keeps each row's count
+on that row.
 """
 
 from __future__ import annotations
@@ -23,7 +29,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from src.models.flashcard_card_score import _paint, paint_row, tally_cards
+from src.models.flashcard_card_score import _paint, paint_row, tally_cards, window_count
 from src.models.flashcard_step_trial import chop_future
 from src.models.flashcard_odds_trial import load_odds, paint_odds_strip
 from src.models.flashcard_squad_trial import (
@@ -113,6 +119,20 @@ def compose_card(
     return compose_square(view, card, odds, grey_columns, target)
 
 
+def _square_bands(player_h: int) -> tuple[int, int, int, int] | None:
+    """Minute, goal, assist, and position heights of the square card.
+
+    Each band is embedded on its own and normalized before the bands are
+    added. A raw sum lets the minute embedding grow until it drowns the
+    goal squares and the position square.
+    """
+    from src.models.flashcard_square_trial import EVENT_H, MINUTE_H, PLAYER_H, POS_H
+
+    if player_h != PLAYER_H or MINUTE_H + 2 * EVENT_H + POS_H != PLAYER_H:
+        return None
+    return (MINUTE_H, EVENT_H, EVENT_H, POS_H)
+
+
 class StripVision(nn.Module):
     """Pixel reader for a header that is venue, or odds plus venue."""
 
@@ -128,7 +148,16 @@ class StripVision(nn.Module):
         self.player_h = int(player_h)
         del n_clubs
         self.header = nn.Linear(3 * self.header_h * CELL_W, D)
-        self.patch = nn.Linear(3 * self.player_h * CELL_W, D)
+        self.band_h = _square_bands(self.player_h)
+        if self.band_h is None:
+            self.bands = nn.ModuleList()
+            self.band_norm = nn.ModuleList()
+            self.patch = nn.Linear(3 * self.player_h * CELL_W, D)
+        else:
+            self.bands = nn.ModuleList(nn.Linear(3 * height * CELL_W, D) for height in self.band_h)
+            self.band_norm = nn.ModuleList(nn.LayerNorm(D) for _ in self.band_h)
+            self.patch = None
+            self.header_norm = nn.LayerNorm(D)
         self.couple = Coupler(dropout)
 
     def forward(
@@ -142,9 +171,32 @@ class StripVision(nn.Module):
         header = header.permute(0, 3, 1, 2, 4).reshape(batch, COLS, -1)
         header_tok = self.header(header)
         body = images[:, :, self.header_h :, :].reshape(batch, 3, ROWS, self.player_h, COLS, CELL_W)
-        body = body.permute(0, 4, 2, 1, 3, 5).reshape(batch, COLS, ROWS, -1)
-        cells = self.patch(body).permute(0, 2, 1, 3) + header_tok[:, None, :, :]
+        flat = body.permute(0, 4, 2, 1, 3, 5)
+        if self.band_h is None:
+            cells = self.patch(flat.reshape(batch, COLS, ROWS, -1))
+        else:
+            header_tok = self.header_norm(header_tok)
+            cells = flat.new_zeros(batch, COLS, ROWS, D)
+            y0 = 0
+            for layer, norm, height in zip(self.bands, self.band_norm, self.band_h, strict=True):
+                part = flat[:, :, :, :, y0 : y0 + height, :].reshape(batch, COLS, ROWS, -1)
+                cells = cells + norm(layer(part))
+                y0 += height
+        cells = cells.permute(0, 2, 1, 3) + header_tok[:, None, :, :]
         return self.couple(cells, row_pad, column_on < 0.5)
+
+
+def _batch_loss(goal_logits: torch.Tensor, assist_logits: torch.Tensor, batch: dict) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    """Cell cross-entropy plus each row's hidden bar count."""
+    mask = batch["loss"]
+    cell = 0.5 * (
+        _nll(goal_logits, batch["goal_label"], mask) + _nll(assist_logits, batch["assist_label"], mask)
+    )
+    horizon = 0.5 * (
+        window_count(goal_logits.softmax(-1), batch["goal_label"], mask)
+        + window_count(assist_logits.softmax(-1), batch["assist_label"], mask)
+    )
+    return cell + horizon, cell.detach(), horizon.detach()
 
 
 def _optimizer(model: nn.Module) -> torch.optim.Optimizer:
@@ -198,6 +250,7 @@ def train_stripped(
     model.train()
     for epoch in range(EPOCHS):
         total = 0.0
+        horizon_total = 0.0
         seen = 0.0
         order = rng.permutation(len(cards))
         for start in range(0, len(cards), BATCH):
@@ -208,17 +261,19 @@ def train_stripped(
             batch["image"] = torch.from_numpy(_batch_images(views, pick, odds, compose)).permute(0, 3, 1, 2).float().div(255.0)
             opt.zero_grad()
             goal_logits, assist_logits = model(batch["image"], batch["row_pad"], batch["column_on"])
-            mask = batch["loss"]
-            loss = 0.5 * (
-                _nll(goal_logits, batch["goal_label"], mask) + _nll(assist_logits, batch["assist_label"], mask)
-            )
+            loss, cell, horizon = _batch_loss(goal_logits, assist_logits, batch)
             loss.backward()
             nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             opt.step()
-            weight = float(mask.sum().detach())
-            total += float(loss.detach()) * weight
+            weight = float(batch["loss"].sum().detach())
+            total += float(cell) * weight
             seen += weight
-        print(f"{name} epoch {epoch + 1} train nll {total / max(seen, 1.0):.3f}", flush=True)
+            horizon_total += float(horizon) * weight
+        print(
+            f"{name} epoch {epoch + 1} train nll {total / max(seen, 1.0):.3f} "
+            f"horizon {horizon_total / max(seen, 1.0):.3f}",
+            flush=True,
+        )
 
 
 def paint_stripped(
@@ -286,6 +341,7 @@ def train_stripped_steps(
     model.train()
     for epoch in range(EPOCHS):
         total = 0.0
+        horizon_total = 0.0
         seen = 0.0
         order = rng.permutation(len(cards))
         for start in range(0, len(cards), BATCH):
@@ -301,17 +357,19 @@ def train_stripped_steps(
             batch["image"] = torch.from_numpy(np.stack(pictures)).permute(0, 3, 1, 2).float().div(255.0)
             opt.zero_grad()
             goal_logits, assist_logits = model(batch["image"], batch["row_pad"], batch["column_on"])
-            mask = batch["loss"]
-            loss = 0.5 * (
-                _nll(goal_logits, batch["goal_label"], mask) + _nll(assist_logits, batch["assist_label"], mask)
-            )
+            loss, cell, horizon = _batch_loss(goal_logits, assist_logits, batch)
             loss.backward()
             nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             opt.step()
-            weight = float(mask.sum().detach())
-            total += float(loss.detach()) * weight
+            weight = float(batch["loss"].sum().detach())
+            total += float(cell) * weight
             seen += weight
-        print(f"stripped step epoch {epoch + 1} train nll {total / max(seen, 1.0):.3f}", flush=True)
+            horizon_total += float(horizon) * weight
+        print(
+            f"stripped step epoch {epoch + 1} train nll {total / max(seen, 1.0):.3f} "
+            f"horizon {horizon_total / max(seen, 1.0):.3f}",
+            flush=True,
+        )
 
 
 def paint_stripped_steps(
