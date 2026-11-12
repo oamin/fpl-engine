@@ -107,19 +107,39 @@ class CardScoreTests(unittest.TestCase):
         matched[..., 1] = 0.5
         empty = torch.zeros(1, 1, 4, 4)
         empty[..., 0] = 1
-        self.assertAlmostEqual(float(window_count(matched, labels, mask)), 0.0)
-        self.assertAlmostEqual(float(window_count(empty, labels, mask)), 1.0)
+        matched_nll = float(window_count(matched, labels, mask))
+        empty_nll = float(window_count(empty, labels, mask))
+        self.assertAlmostEqual(matched_nll, 2.0 - 2.0 * np.log(2.0), places=5)
+        self.assertGreater(empty_nll, matched_nll * 10)
 
     def test_a_matching_total_on_the_wrong_rows_is_an_error(self) -> None:
         labels = torch.zeros(1, 2, 4)
         labels[0, 1, 0] = 1
         labels[0, 1, 1] = 1
         mask = torch.ones(1, 2, 4)
+        matched = torch.zeros(1, 2, 4, 4)
+        matched[..., 0] = 1.0
+        matched[0, 1, 0, 0] = 0.0
+        matched[0, 1, 0, 1] = 1.0
+        matched[0, 1, 1, 0] = 0.0
+        matched[0, 1, 1, 1] = 1.0
         swapped = torch.zeros(1, 2, 4, 4)
         swapped[..., 0] = 1.0
         swapped[0, 0, :, 0] = 0.5
         swapped[0, 0, :, 1] = 0.5
-        self.assertAlmostEqual(float(window_count(swapped, labels, mask)), 1.0)
+        self.assertGreater(float(window_count(swapped, labels, mask)), float(window_count(matched, labels, mask)) * 5)
+
+    def test_a_cold_row_costs_more_than_a_matched_row(self) -> None:
+        labels = torch.zeros(1, 1, 4)
+        labels[0, 0, :2] = 1
+        mask = torch.ones(1, 1, 4)
+        matched = torch.zeros(1, 1, 4, 4)
+        matched[..., 0] = 0.5
+        matched[..., 1] = 0.5
+        cold = torch.zeros(1, 1, 4, 4)
+        cold[..., 0] = 0.8
+        cold[..., 1] = 0.2
+        self.assertGreater(float(window_count(cold, labels, mask)), float(window_count(matched, labels, mask)))
 
     def test_the_window_places_its_expected_bars(self) -> None:
         probs = np.zeros((5, 4))

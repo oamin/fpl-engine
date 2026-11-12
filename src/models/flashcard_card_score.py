@@ -13,12 +13,14 @@ position square, and one square per goal or assist. Concede, regulars, own
 history, opponent history, and the team scoring rate are absent. Minutes,
 position, club, and opponent are not passed again as numbers. Two readers
 see the card, and their weights stay separate. The horizon reader scores
-each hidden square and each row's own hidden bar count. The column reader
-scores each hidden column's bar count. The paint keeps each row's horizon
-count on that row and moves the bars toward the weeks the column reader
-scores highest. A row whose horizon count is zero stays empty. A card
-whose total is right still fails when the bars sit on the empty rows.
-A row holds three squares, and that is the only cap.
+each hidden square and each row's own hidden bar count with a Poisson
+rate. The column reader scores each hidden week's bar count the same way.
+Absolute row rates pin the card's volume; a relative row scale does not.
+The paint keeps each row's horizon count on that row and moves the bars
+toward the weeks the column reader scores highest. A row whose horizon
+count is zero stays empty. A card whose total is right still fails when
+the bars sit on the empty rows. A row holds three squares, and that is
+the only cap.
 """
 
 from __future__ import annotations
@@ -136,32 +138,42 @@ def tally_cards(
     return totals
 
 
+def _poisson_count(predicted: torch.Tensor, actual: torch.Tensor, present: torch.Tensor) -> torch.Tensor:
+    """Mean Poisson NLL of absolute bar counts.
+
+    The rate is the expected number of bars. Empty rows with a light rate
+    still pay for that mass, so the card's volume is pinned by the sum of
+    the row rates. A relative scale left that total free.
+    """
+    rate = predicted.clamp_min(1e-8)
+    nll = rate - actual * rate.log()
+    return (nll * present).sum() / present.sum().clamp_min(1.0)
+
+
 def window_count(probs: torch.Tensor, labels: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
-    """Squared relative error of each row's hidden bar count.
+    """Poisson NLL of each row's hidden bar count.
 
     The card's total can match while every bar sits on an empty row. Each
-    row is scored on its own, so that arrangement is a large error.
+    row is scored on its own, so that arrangement is a large error. The
+    rate is absolute, so a cold reader cannot hide a short season total
+    behind a matched average relative error.
     """
     predicted = ((1.0 - probs[..., 0]) * mask).sum(dim=-1)
     actual = ((labels > 0).to(probs.dtype) * mask).sum(dim=-1)
-    scale = torch.maximum(predicted, actual).clamp_min(1.0)
-    error = ((predicted - actual) / scale).square()
     present = mask.sum(dim=-1) > 0
-    return (error * present).sum() / present.sum().clamp_min(1.0)
+    return _poisson_count(predicted, actual, present)
 
 
 def column_count(probs: torch.Tensor, labels: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
-    """Squared relative error of each column's hidden bar count.
+    """Poisson NLL of each column's hidden bar count.
 
     The sum runs down the squad, so one week is one count. A column with no
-    hidden appearance is left out.
+    hidden appearance is left out. Absolute rates pin the week's volume.
     """
     predicted = ((1.0 - probs[..., 0]) * mask).sum(dim=1)
     actual = ((labels > 0).to(probs.dtype) * mask).sum(dim=1)
-    scale = torch.maximum(predicted, actual).clamp_min(1.0)
-    error = ((predicted - actual) / scale).square()
     present = mask.sum(dim=1) > 0
-    return (error * present).sum() / present.sum().clamp_min(1.0)
+    return _poisson_count(predicted, actual, present)
 
 
 def fit_margins(horizon: np.ndarray, column: np.ndarray, mask: np.ndarray, rounds: int = 25) -> np.ndarray:
@@ -238,6 +250,28 @@ def paint_horizon(probs: np.ndarray, mask: np.ndarray) -> np.ndarray:
     return np.where(mask, painted, 0)
 
 
+def paint_column(probs: np.ndarray, mask: np.ndarray) -> np.ndarray:
+    """Place one week's expected bars on its most likely squares down the squad.
+
+    The expected count is the sum of that column's chance of a bar. The week
+    is scored as a whole, so a column that holds one event is not painted
+    from single-cell chances that each round to zero.
+    """
+    probs = np.asarray(probs, dtype=np.float64)
+    mask = np.asarray(mask, dtype=bool)
+    chance = np.where(mask, np.clip(1.0 - probs[..., 0], 0.0, None), -np.inf)
+    available = int(mask.sum())
+    expected = float(chance[mask].sum()) if available else 0.0
+    count = int(np.clip(np.rint(expected), 0, available))
+    painted = np.zeros(mask.shape, dtype=np.int64)
+    if count == 0:
+        return painted
+    chosen = np.argsort(-chance, axis=None, kind="stable")[:count]
+    height = 1 + np.argmax(probs[..., 1:], axis=-1)
+    painted.ravel()[chosen] = height.ravel()[chosen]
+    return np.where(mask, painted, 0)
+
+
 def paint_row(probs: np.ndarray, mask: np.ndarray) -> np.ndarray:
     """Paint the count with the highest probability.
 
@@ -271,6 +305,17 @@ def _paint(probs: np.ndarray, minutes: np.ndarray, cards: list, cuts: list[int])
         mask = card.present & hidden.reshape(1, -1)
         for row in range(mask.shape[0]):
             painted[index, row] = paint_horizon(probs[index, row], mask[row])
+    return painted
+
+
+def _paint_columns(probs: np.ndarray, cards: list, cuts: list[int]) -> np.ndarray:
+    """Paint each hidden week as one count down the squad."""
+    painted = np.zeros(probs.shape[:-1], dtype=np.int64)
+    for index, card in enumerate(cards):
+        hidden = (card.gw > cuts[index]) & (card.gw > 0)
+        mask = card.present & hidden.reshape(1, -1)
+        for col in range(mask.shape[1]):
+            painted[index, :, col] = paint_column(probs[index, :, col], mask[:, col])
     return painted
 
 
@@ -455,12 +500,13 @@ def main() -> None:
         "opponent history, and the team scoring rate are absent. Minutes,",
         "position, club, and opponent are not passed again as numbers.",
         "Two readers see that card, and their weights stay separate. The",
-        "horizon reader scores each hidden square and each row's own hidden",
-        "bar count. The column reader scores each hidden week's bar count.",
-        "The paint keeps each row's horizon count on that row and moves the",
-        "bars toward the weeks the column reader scores highest. A row whose",
-        "horizon count is zero stays empty. A row holds three squares, and",
-        "that is the only cap.",
+        "horizon reader scores each hidden square and a Poisson rate on each",
+        "row's hidden bar count. The column reader scores each square, each",
+        "row's Poisson rate, and each week's Poisson rate. Absolute rates pin",
+        "the volume. The paint keeps each row's horizon count on that row and",
+        "moves the bars toward the weeks the column reader scores highest. A",
+        "row whose horizon count is zero stays empty. A row holds three",
+        "squares, and that is the only cap.",
         "",
         "A bar matches on the same row only. Within one gameweek includes the same",
         "appearance and either neighboring gameweek. The numbers are totals.",
@@ -471,6 +517,7 @@ def main() -> None:
         "|---|---|---:|---:|---:|---:|---:|",
     ]
     horizon_position: list[str] = []
+    column_position: list[str] = []
     fitted_position: list[str] = []
     column_note = ""
     for revealed in (0.2, 0.4, 0.6, 0.8):
@@ -484,7 +531,13 @@ def main() -> None:
         lines.append(_line(revealed, "assists", assists))
         if revealed == 0.2:
             horizon_position = _position_lines(
-                test, labels, goal_paint, assist_labels, assist_paint, cuts, "Horizon rows, by position at the 20% cut."
+                test,
+                labels,
+                goal_paint,
+                assist_labels,
+                assist_paint,
+                cuts,
+                "Horizon rows, by position at the 20% cut.",
             )
             horizon_position.append(_chance_line(test, goal_p, cuts, "goal"))
             horizon_position.append(_chance_line(test, assist_p, cuts, "assist"))
@@ -495,6 +548,44 @@ def main() -> None:
             flush=True,
         )
     lines.extend(horizon_position)
+    lines.extend(
+        [
+            "",
+            "Column weeks. This paint uses the column reader alone. Each row",
+            "keeps that reader's own count, and each week is one count down the",
+            "squad.",
+            "",
+            "| revealed | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |",
+            "|---|---|---:|---:|---:|---:|---:|",
+        ]
+    )
+    for revealed in (0.2, 0.4, 0.6, 0.8):
+        cuts = [cut_at_fraction(card, revealed) for card in test]
+        goal_c, assist_c = paint_stripped(weeks, test, league, clubs, test_squads, odds, cuts)
+        goal_paint = _paint_fitted(goal_c, goal_c, test, cuts)
+        assist_paint = _paint_fitted(assist_c, assist_c, test, cuts)
+        goals = tally_cards(test, labels, goal_paint, 0, cuts)
+        assists = tally_cards(test, assist_labels, assist_paint, 0, cuts)
+        lines.append(_line(revealed, "goals", goals))
+        lines.append(_line(revealed, "assists", assists))
+        if revealed == 0.2:
+            column_position = _position_lines(
+                test,
+                labels,
+                goal_paint,
+                assist_labels,
+                assist_paint,
+                cuts,
+                "Column weeks, by position at the 20% cut.",
+            )
+            column_note = _column_note(test, labels, assist_labels, goal_c, assist_c, cuts)
+        print(
+            f"column {revealed:.0%} goals {goals['actual']} painted {goals['painted']} "
+            f"exact {goals['exact']} within {goals['actual_within']} "
+            f"assists exact {assists['exact']} within {assists['actual_within']}",
+            flush=True,
+        )
+    lines.extend(column_position)
     lines.extend(
         [
             "",
@@ -517,9 +608,14 @@ def main() -> None:
         lines.append(_line(revealed, "assists", assists))
         if revealed == 0.2:
             fitted_position = _position_lines(
-                test, labels, goal_paint, assist_labels, assist_paint, cuts, "Fitted weeks, by position at the 20% cut."
+                test,
+                labels,
+                goal_paint,
+                assist_labels,
+                assist_paint,
+                cuts,
+                "Fitted weeks, by position at the 20% cut.",
             )
-            column_note = _column_note(test, labels, assist_labels, goal_c, assist_c, cuts)
         print(
             f"fitted {revealed:.0%} goals {goals['actual']} painted {goals['painted']} "
             f"exact {goals['exact']} within {goals['actual_within']} "
@@ -532,11 +628,13 @@ def main() -> None:
     lines.extend(
         [
             "",
-            "The two readers keep separate weights. A row whose horizon count",
-            "is zero stays empty. A matching card total with the bars on the",
-            "empty rows is an error. The flashcard is the only feature input.",
-            "The picture, the layout, and both state dicts are stored in",
-            "`reports/cards/current/`. The table above is scored from those files.",
+            "The two readers keep separate weights. Row and week counts are",
+            "Poisson rates, so the volume is absolute. A row whose horizon",
+            "count is zero stays empty. A matching card total with the bars",
+            "on the empty rows is an error. The flashcard is the only feature",
+            "input. The picture, the layout, and both state dicts are stored",
+            "in `reports/cards/current/`. The table above is scored from those",
+            "files.",
             "",
             f"Wall clock: {seconds:.0f} seconds on CPU.",
             "",

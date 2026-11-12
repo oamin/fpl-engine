@@ -7,7 +7,7 @@ import unittest
 import numpy as np
 import torch
 
-from src.models.flashcard_card_score import column_count, fit_margins
+from src.models.flashcard_card_score import column_count, fit_margins, paint_column
 
 
 class MarginTests(unittest.TestCase):
@@ -39,8 +39,24 @@ class MarginTests(unittest.TestCase):
         probs[0, :, 0, 1] = 1.0
         labels = torch.zeros(1, 2, 2)
         labels[0, :, 0] = 1
-        mask = torch.ones(1, 2, 2)
-        self.assertEqual(float(column_count(probs, labels, mask)), 0.0)
+        mask = torch.zeros(1, 2, 2)
+        mask[:, :, 0] = 1.0
+        matched = float(column_count(probs, labels, mask))
+        self.assertAlmostEqual(matched, 2.0 - 2.0 * float(np.log(2.0)), places=5)
+
+    def test_a_week_paints_its_expected_bars_down_the_squad(self) -> None:
+        probs = np.zeros((4, 4))
+        probs[..., 0] = 0.95
+        probs[..., 1] = 0.05
+        probs[1, 0] = 0.1
+        probs[1, 1] = 0.9
+        probs[2, 0] = 0.2
+        probs[2, 1] = 0.8
+        mask = np.ones(4, dtype=bool)
+        painted = paint_column(probs, mask)
+        self.assertEqual(int((painted > 0).sum()), 2)
+        self.assertGreater(painted[1], 0)
+        self.assertGreater(painted[2], 0)
 
 
 if __name__ == "__main__":
