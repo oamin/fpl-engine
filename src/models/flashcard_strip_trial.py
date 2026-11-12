@@ -6,7 +6,8 @@ position, club, and opponent are on the card as squares. They are not passed
 again as numbers. The match rows, from the top, are the assessed club's symbol, the opponent's
 symbol, home or away, then sixteen solid handicap squares and eight solid
 2.5 squares. Red from the top means the club gives goals. Blue from the
-bottom means the club receives them. Orange from the top of the shorter
+bottom means the club receives them. The scale runs from giving 1.5 to
+receiving 1.5. Orange from the top of the shorter
 bar is over 2.5. The club symbol repeats
 on every column.
 Minutes are six squares of fifteen minutes. One

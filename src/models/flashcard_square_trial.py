@@ -3,8 +3,9 @@
 The match rows, from the top, are the assessed club's symbol, the opponent's
 symbol, home or away, then sixteen solid handicap squares and eight solid
 2.5 squares. Red from the top means the club gives goals. Blue from the
-bottom means the club receives them. The scale runs from giving 2.75 to
-receiving 2.75, so a level match splits the bar in half. Orange from the
+bottom means the club receives them. The scale runs from giving 1.5 to
+receiving 1.5, so a level match splits the bar in half and a line past
+1.5 fills the bar. Orange from the
 top of the shorter bar is over 2.5 and pale blue is under. A missing price
 is hatched. The club symbol is the same mark on every column.
 
@@ -70,7 +71,7 @@ OPP_H = SQ
 VENUE_H = SQ
 ODDS_Y = CLUB_H + OPP_H + VENUE_H
 BAR_N = 16
-LINE_SPAN = 2.75
+LINE_SPAN = 1.5
 LINE_H = BAR_N * SQ
 PAINT_TOTAL = True
 OU_N = 8
