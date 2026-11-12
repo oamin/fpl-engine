@@ -4,6 +4,10 @@ Cursor chooses the next pre-registered comparison. The PI is not asked to pick. 
 
 **Numagent 2.0 is locked on main** — see `.cursor/context.md` and `reports/LOCKED.md` (`protocol.numagent_2_0`). Engine primary scorer is `score_xp_v2`. Numagent 1.0 and `score_xp` are **archived in-place** (`reports/ARCHIVE_NUMAGENT_1_0.md`). This file is the **park log**. Everything from “Procedure, locked 2026-10-07” downward is **Numagent 1.0 / stage archaeology** — not instructions for the live path.
 
+## Flashcard painter, locked 2026-11-12
+
+The published painter takes the rendered flashcard and nothing else. A numeric sidecar is not a candidate and is not a fallback. Minutes, position, club, opponent, and the team scoring rate stay on the card as squares, or they stay out. Do not pass them again as tensors. Do not divide minutes by 90 on a side path. Do not keep a match-up slot “just in case.” `SquadSequence` is not the gate. See `.cursor/context.md`.
+
 ## Parked — cascade_short bonus-from-roll (2026-10-20)
 
 Scenario soft terms stay expanding-mean `bonus_mu` / `card_mu` / DefCon / saves.

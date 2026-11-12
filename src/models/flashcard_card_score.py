@@ -6,11 +6,13 @@ match a goal on another row. The totals are sums, not an average of per-player
 rates.
 
 The painted card comes from the locked vision reader. The picture is the
-square card: sixteen odds squares, one venue square, six minute squares of
-fifteen minutes, and one square per goal or assist. Concede, regulars, own
-history, and opponent history are absent from the picture and from the
-match-up. Each row paints the count with the highest probability. A row
-holds three squares, and that is the only cap.
+only feature input. It is the square card: sixteen odds squares, one venue
+square, one opponent square, six minute squares of fifteen minutes, one
+position square, and one square per goal or assist. Concede, regulars, own
+history, opponent history, and the team scoring rate are absent. Minutes,
+position, club, and opponent are not passed again as numbers. Each row
+paints the count with the highest probability. A row holds three squares,
+and that is the only cap.
 """
 
 from __future__ import annotations
@@ -34,16 +36,17 @@ from src.models.flashcard_squad_trial import (
 ROOT_REPORTS = Path(__file__).resolve().parents[2] / "reports"
 KEYS = ("actual", "painted", "exact", "actual_within", "painted_within")
 
-# The locked painter at 21:47 UK on 10 Nov 2026.
+# The locked painter after the numeric sidecar was removed, 12 Nov 2026.
+# Every hidden cell's highest class is zero, so the painted card is blank.
 GATE = {
-    ("goals", 0.2): {"actual": 730, "painted": 759, "exact": 192, "actual_within": 256, "painted_within": 394},
-    ("assists", 0.2): {"actual": 707, "painted": 692, "exact": 100, "actual_within": 161, "painted_within": 218},
-    ("goals", 0.4): {"actual": 544, "painted": 589, "exact": 147, "actual_within": 200, "painted_within": 305},
-    ("assists", 0.4): {"actual": 531, "painted": 535, "exact": 78, "actual_within": 119, "painted_within": 163},
-    ("goals", 0.6): {"actual": 360, "painted": 384, "exact": 94, "actual_within": 134, "painted_within": 200},
-    ("assists", 0.6): {"actual": 351, "painted": 348, "exact": 55, "actual_within": 84, "painted_within": 110},
-    ("goals", 0.8): {"actual": 199, "painted": 204, "exact": 55, "actual_within": 73, "painted_within": 102},
-    ("assists", 0.8): {"actual": 192, "painted": 185, "exact": 36, "actual_within": 51, "painted_within": 62},
+    ("goals", 0.2): {"actual": 730, "painted": 0, "exact": 0, "actual_within": 0, "painted_within": 0},
+    ("assists", 0.2): {"actual": 707, "painted": 0, "exact": 0, "actual_within": 0, "painted_within": 0},
+    ("goals", 0.4): {"actual": 544, "painted": 0, "exact": 0, "actual_within": 0, "painted_within": 0},
+    ("assists", 0.4): {"actual": 531, "painted": 0, "exact": 0, "actual_within": 0, "painted_within": 0},
+    ("goals", 0.6): {"actual": 360, "painted": 0, "exact": 0, "actual_within": 0, "painted_within": 0},
+    ("assists", 0.6): {"actual": 351, "painted": 0, "exact": 0, "actual_within": 0, "painted_within": 0},
+    ("goals", 0.8): {"actual": 199, "painted": 0, "exact": 0, "actual_within": 0, "painted_within": 0},
+    ("assists", 0.8): {"actual": 192, "painted": 0, "exact": 0, "actual_within": 0, "painted_within": 0},
 }
 
 
@@ -190,12 +193,13 @@ def main() -> None:
         "chosen at random, starting from gameweek 1. The test scores all four cuts.",
         "Every club and every row is included.",
         "",
-        "The reader is squad vision on the square card. The opponent is one",
-        "square, a club symbol. The other squad is not an input. Concede,",
-        "regulars, own history, and opponent history are",
-        "absent from the picture and from the match-up. Each row paints the",
-        "count with the highest probability. A row holds three squares, and",
-        "that is the only cap.",
+        "The reader is squad vision on the square card. The flashcard is the",
+        "only feature input. The opponent is one square, a club symbol. The",
+        "other squad is not an input. Concede, regulars, own history,",
+        "opponent history, and the team scoring rate are absent. Minutes,",
+        "position, club, and opponent are not passed again as numbers. Each",
+        "row paints the count with the highest probability. A row holds three",
+        "squares, and that is the only cap.",
         "",
         "A bar matches on the same row only. Within one gameweek includes the same",
         "appearance and either neighboring gameweek. The numbers are totals.",
@@ -217,7 +221,17 @@ def main() -> None:
             flush=True,
         )
     seconds = time.perf_counter() - started
-    lines.extend(["", f"Wall clock: {seconds:.0f} seconds on CPU.", ""])
+    lines.extend(
+        [
+            "",
+            "This run replaces the 10 November 2026 gate. The numeric sidecar is gone.",
+            "The flashcard is the only feature input. Every hidden cell's highest",
+            "class is zero, so the painted card is blank.",
+            "",
+            f"Wall clock: {seconds:.0f} seconds on CPU.",
+            "",
+        ]
+    )
     _report(lines)
     print(f"done in {seconds:.0f}s", flush=True)
 

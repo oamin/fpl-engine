@@ -43,7 +43,6 @@ from src.models.flashcard_squad_trial import (
     _hatch,
     _hidden_mask,
     _nll,
-    _opp_batch,
     _stack,
     apply_cut,
     bar_correspondence,
@@ -115,16 +114,8 @@ class MarkVision(nn.Module):
         images: torch.Tensor,
         row_pad: torch.Tensor,
         column_on: torch.Tensor,
-        position: torch.Tensor,
-        minutes: torch.Tensor,
-        matchup: torch.Tensor,
-        club: torch.Tensor,
-        opponent: torch.Tensor,
-        opp: dict[str, torch.Tensor] | None = None,
     ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
-        goal, assist = self.vision(
-            images, row_pad, column_on, position, minutes, matchup, club, opponent, opp
-        )
+        goal, assist = self.vision(images, row_pad, column_on)
         return goal, assist, self._total(self.match_goal, goal), self._total(self.match_assist, assist)
 
     @staticmethod
@@ -155,12 +146,10 @@ def train_budget(
     fast = [p for name, p in model.named_parameters() if any(token in name for token in fast_name)]
     fast_ids = {id(p) for p in fast}
     rest = [p for p in model.parameters() if id(p) not in fast_ids]
-    opt = torch.optim.AdamW(
-        [
-            {"params": rest, "lr": lr, "weight_decay": 1e-4},
-            {"params": fast, "lr": lr * 10, "weight_decay": 0.0},
-        ]
-    )
+    groups = [{"params": rest, "lr": lr, "weight_decay": 1e-4}]
+    if fast:
+        groups.append({"params": fast, "lr": lr * 10, "weight_decay": 0.0})
+    opt = torch.optim.AdamW(groups)
     squads = squad_index(cards)
     history = []
     model.train()
@@ -173,10 +162,7 @@ def train_budget(
             views = [apply_cut(card, league, sample_cut(card, rng), clubs, squads) for card in pick]
             batch = _mark_batch(views)
             opt.zero_grad()
-            goal, assist, match_g, match_a = model(
-                batch["image"], batch["row_pad"], batch["column_on"], batch["position"], batch["minutes"],
-                batch["matchup"], batch["club"], batch["opponent"], _opp_batch(batch),
-            )
+            goal, assist, match_g, match_a = model(batch["image"], batch["row_pad"], batch["column_on"])
             cell = batch["loss"]
             column = cell.sum(dim=1) > 0
             loss = 0.5 * (
@@ -218,10 +204,7 @@ def predict_budget(
             apply_cut(cards[i], league, cuts[i], clubs, squads) for i in range(start, stop)
         ]
         batch = _mark_batch(views)
-        g, a, mg, ma = model(
-            batch["image"], batch["row_pad"], batch["column_on"], batch["position"], batch["minutes"],
-            batch["matchup"], batch["club"], batch["opponent"], _opp_batch(batch),
-        )
+        g, a, mg, ma = model(batch["image"], batch["row_pad"], batch["column_on"])
         goals[start:stop] = F.softmax(g, dim=-1).numpy()
         assists[start:stop] = F.softmax(a, dim=-1).numpy()
         match_g[start:stop] = F.softmax(mg, dim=-1).numpy()

@@ -32,7 +32,6 @@ from src.models.flashcard_squad_trial import (
     BATCH,
     Coupler,
     _nll,
-    _opp_batch,
     _stack,
     apply_cut,
     build_cards,
@@ -125,9 +124,10 @@ class ImageNetReader(nn.Module):
         super().__init__()
         self.header_h = int(header_h)
         self.stem = load_front(weights) if weights is not None else ResNet18Front()
+        del n_clubs
         self.header_proj = nn.Linear(64, D)
         self.cell_proj = nn.Linear(64, D)
-        self.couple = Coupler(dropout, n_clubs)
+        self.couple = Coupler(dropout)
         mean = torch.tensor([0.485, 0.456, 0.406]).view(1, 3, 1, 1)
         std = torch.tensor([0.229, 0.224, 0.225]).view(1, 3, 1, 1)
         self.register_buffer("mean", mean)
@@ -158,35 +158,19 @@ class ImageNetReader(nn.Module):
         body_f: torch.Tensor,
         row_pad: torch.Tensor,
         column_on: torch.Tensor,
-        position: torch.Tensor,
-        minutes: torch.Tensor,
-        matchup: torch.Tensor,
-        club: torch.Tensor,
-        opponent: torch.Tensor,
-        opp: dict[str, torch.Tensor] | None = None,
     ) -> tuple[torch.Tensor, torch.Tensor]:
         header_tok = self.header_proj(header_f)
         cells = self.cell_proj(body_f) + header_tok[:, None, :, :]
-        return self.couple(
-            cells, row_pad, column_on < 0.5, position, minutes, matchup, club, opponent, opp
-        )
+        return self.couple(cells, row_pad, column_on < 0.5)
 
     def forward(
         self,
         images: torch.Tensor,
         row_pad: torch.Tensor,
         column_on: torch.Tensor,
-        position: torch.Tensor,
-        minutes: torch.Tensor,
-        matchup: torch.Tensor,
-        club: torch.Tensor,
-        opponent: torch.Tensor,
-        opp: dict[str, torch.Tensor] | None = None,
     ) -> tuple[torch.Tensor, torch.Tensor]:
         header_f, body_f = self.extract(images)
-        return self.forward_from_features(
-            header_f, body_f, row_pad, column_on, position, minutes, matchup, club, opponent, opp
-        )
+        return self.forward_from_features(header_f, body_f, row_pad, column_on)
 
     def _embed(self, cells: torch.Tensor) -> torch.Tensor:
         parts = []
@@ -258,8 +242,7 @@ def train_cached(
             body = torch.stack([cache[i][cut][1] for i, cut in zip(pick_i, cuts, strict=True)])
             opt.zero_grad()
             goal_logits, assist_logits = model.forward_from_features(
-                header, body, batch["row_pad"], batch["column_on"], batch["position"], batch["minutes"],
-                batch["matchup"], batch["club"], batch["opponent"], _opp_batch(batch),
+                header, body, batch["row_pad"], batch["column_on"]
             )
             mask = batch["loss"]
             loss = 0.5 * (
@@ -290,8 +273,7 @@ def paint_cached(
     model.eval()
     with torch.no_grad():
         goal_logits, assist_logits = model.forward_from_features(
-            header, body, batch["row_pad"], batch["column_on"], batch["position"], batch["minutes"],
-            batch["matchup"], batch["club"], batch["opponent"], _opp_batch(batch),
+            header, body, batch["row_pad"], batch["column_on"]
         )
     return F.softmax(goal_logits, dim=-1).numpy(), F.softmax(assist_logits, dim=-1).numpy()
 

@@ -184,16 +184,7 @@ class SquadCutTests(unittest.TestCase):
         self.assertFalse(np.array_equal(concede[:, 0:CELL_W], concede[:, CELL_W : 2 * CELL_W]))
         torch.manual_seed(0)
         batch = _one(view)
-        goals, assists = SquadVision(dropout=0.0)(
-            batch["image"],
-            batch["row_pad"],
-            batch["column_on"],
-            batch["position"],
-            batch["minutes"],
-            batch["matchup"],
-            batch["club"],
-            batch["opponent"],
-        )
+        goals, assists = SquadVision(dropout=0.0)(batch["image"], batch["row_pad"], batch["column_on"])
         self.assertEqual(tuple(goals.shape), (1, ROWS, COLS, 4))
         self.assertEqual(tuple(assists.shape), (1, ROWS, COLS, 4))
 
@@ -259,33 +250,8 @@ class SquadCutTests(unittest.TestCase):
 
     def test_a_promoted_side_is_not_given_the_strong_club_rate(self) -> None:
         league = _two_season_league()
-        strong = [_history_card("Strong", "Weak", goals=1) for _ in range(8)]
-        weak = [_history_card("Weak", "Strong", goals=0) for _ in range(8)]
-        cards = strong + weak
-        clubs = fit_clubs(cards)
-        torch.manual_seed(0)
-        model = SquadSequence(dropout=0.0, n_clubs=max(clubs.values()) + 1)
-        train_model(
-            model,
-            cards,
-            league,
-            np.random.default_rng(0),
-            epochs=25,
-            kind="sequence",
-            lr=2e-3,
-            batch_size=4,
-            clubs=clubs,
-        )
-        model.eval()
-        with torch.no_grad():
-            high, _ = model(_one(apply_cut(strong[0], league, 0, clubs)))
-            low, _ = model(_one(apply_cut(weak[0], league, 0, clubs)))
-        high_p = torch.softmax(high, dim=-1)[0, 0, :8, 1:].sum(-1).mean()
-        low_p = torch.softmax(low, dim=-1)[0, 0, :8, 1:].sum(-1).mean()
-        self.assertGreater(float(high_p), 0.6)
-        self.assertLess(float(low_p), 0.3)
-        image = render_grid(apply_cut(strong[0], league, 0, clubs))
-        promoted = render_grid(apply_cut(_history_card("Promoted", "Strong", goals=0), league, 0, clubs))
+        image = render_grid(apply_cut(_history_card("Strong", "Weak", goals=1), league, 0))
+        promoted = render_grid(apply_cut(_history_card("Promoted", "Strong", goals=0), league, 0))
         own_band = image[BAND_H * 3 : BAND_H * 4, 0:CELL_W]
         self.assertTrue(np.any(np.all(own_band == OWN_HIST_C, axis=-1)))
         self.assertFalse(np.any(np.all(promoted[BAND_H * 3 : BAND_H * 4, 0:CELL_W] == OWN_HIST_C, axis=-1)))
@@ -309,38 +275,21 @@ class SquadCutTests(unittest.TestCase):
         self.assertTrue(np.array_equal(view["opp_goal_token"], again["opp_goal_token"]))
         self.assertEqual(int(again["goal_label"][0, 4]), 0)
 
-    def test_a_squad_reads_the_other_squad(self) -> None:
-        open_pair = [_facing("2022-23", defenders=0, goals=1) for _ in range(6)]
-        shut_pair = [_facing("2023-24", defenders=90, goals=0) for _ in range(6)]
-        cards = [card for pair in open_pair + shut_pair for card in pair]
+    def test_the_reader_does_not_read_the_other_squad(self) -> None:
+        home, opp = _facing("2023-24", defenders=90, goals=0)
         league = _flat_league()
-        clubs = fit_clubs(cards)
-        index = squad_index(cards)
-        torch.manual_seed(0)
-        model = SquadSequence(dropout=0.0, n_clubs=max(clubs.values()) + 1)
-        opt = torch.optim.AdamW(model.parameters(), lr=2e-3)
-        rng = np.random.default_rng(0)
-        model.train()
-        for _ in range(40):
-            order = rng.permutation(len(cards))
-            for start in range(0, len(cards), 4):
-                pick = [cards[int(i)] for i in order[start : start + 4]]
-                batch = _stack([apply_cut(card, league, 1, clubs, index) for card in pick])
-                opt.zero_grad()
-                goal_logits, _ = model(batch)
-                loss = torch.nn.functional.cross_entropy(
-                    goal_logits.reshape(-1, 4), batch["goal_label"].reshape(-1), reduction="none"
-                ).reshape(batch["goal_label"].shape)
-                mask = batch["loss"]
-                (loss * mask).sum().div(mask.sum().clamp_min(1)).backward()
-                opt.step()
+        view = apply_cut(home, league, 1, squads=squad_index([home, opp]))
+        model = SquadSequence(dropout=0.0, n_clubs=2)
         model.eval()
+        batch = _stack([view])
+        blank = {key: value.clone() if torch.is_tensor(value) else value for key, value in batch.items()}
+        blank["opp_minutes"] = torch.zeros_like(blank["opp_minutes"])
+        blank["opp_goal_token"] = torch.zeros_like(blank["opp_goal_token"])
+        blank["opp_assist_token"] = torch.zeros_like(blank["opp_assist_token"])
         with torch.no_grad():
-            open_p = torch.softmax(model(_stack([apply_cut(open_pair[0][0], league, 1, clubs, index)]))[0], dim=-1)
-            shut_p = torch.softmax(model(_stack([apply_cut(shut_pair[0][0], league, 1, clubs, index)]))[0], dim=-1)
-        hidden = slice(1, 6)
-        self.assertGreater(float(open_p[0, 0, hidden, 1:].sum(-1).mean()), 0.6)
-        self.assertLess(float(shut_p[0, 0, hidden, 1:].sum(-1).mean()), 0.4)
+            same, _assists = model(batch)
+            other, _assists = model(blank)
+        self.assertTrue(torch.equal(same, other))
 
     def test_reveal_starts_at_gameweek_one(self) -> None:
         card = _card()

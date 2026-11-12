@@ -170,17 +170,7 @@ class SquareCardTests(unittest.TestCase):
     def test_the_square_picture_runs_through_the_reader(self) -> None:
         model = StripVision(HEADER_H, n_clubs=2, player_h=PLAYER_H)
         image = torch.zeros(1, 3, HEADER_H + ROWS * PLAYER_H, COLS * CELL_W)
-        out, _assists = model(
-            image,
-            torch.zeros(1, ROWS, dtype=torch.bool),
-            torch.ones(1, COLS),
-            torch.zeros(1, ROWS, dtype=torch.long),
-            torch.zeros(1, ROWS, COLS),
-            torch.zeros(1, COLS, 8),
-            torch.zeros(1, dtype=torch.long),
-            torch.zeros(1, COLS, dtype=torch.long),
-            None,
-        )
+        out, _assists = model(image, torch.zeros(1, ROWS, dtype=torch.bool), torch.ones(1, COLS))
         self.assertEqual(tuple(out.shape), (1, ROWS, COLS, 4))
 
     def test_the_opponent_square_is_the_club_symbol(self) -> None:

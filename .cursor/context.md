@@ -1,6 +1,16 @@
 # Architectural state
 
-Updated: 2026-10-20. **Numagent 2.0** is the product on main (`protocol.numagent_2_0`) — **supersedes Numagent 1.0**. Parked hypotheses: `.cursor/ideas.md`. Stage archaeology: root `CONTEXT.md` and `reports/SUPERSEDED.md`. Canonical index: `reports/LOCKED.md`.
+Updated: 2026-11-12. **Numagent 2.0** is the product on main (`protocol.numagent_2_0`) — **supersedes Numagent 1.0**. Parked hypotheses: `.cursor/ideas.md`. Stage archaeology: root `CONTEXT.md` and `reports/SUPERSEDED.md`. Canonical index: `reports/LOCKED.md`.
+
+## Flashcard painter — picture only (locked 2026-11-12)
+
+The published flashcard painter reads one rendered card. That picture is the only feature input.
+
+Do not add a numeric sidecar. Do not pass minutes, a minutes/90 fraction, a position id, a club id, an opponent id, a match-up vector, a team scoring rate, concede, regulars, own history, opponent history, or the other squad into the reader. If a fact belongs in the forecast, draw it on the card. An attention mask for an empty row or an empty column is allowed. It carries no value.
+
+The reader is `StripVision` in `src/models/flashcard_strip_trial.py`. Its forward arguments are the image, the row mask, and the column mask. `Coupler` attends over those image tokens. It has no embedding for position, club, opponent, minutes, or rate.
+
+`SquadSequence` is a separate numeric reader. It is not the gate. Do not connect it to the published painter, and do not put its numbers back onto `Coupler`.
 
 ## Repo freeze sequence (2026-10-20)
 

@@ -19,17 +19,7 @@ class ImageNetReaderTests(unittest.TestCase):
         header, body = model.extract(image)
         self.assertEqual(tuple(header.shape), (1, COLS, 64))
         self.assertEqual(tuple(body.shape), (1, ROWS, COLS, 64))
-        goals, assists = model(
-            image,
-            torch.zeros(1, ROWS, dtype=torch.bool),
-            torch.ones(1, COLS),
-            torch.zeros(1, ROWS, dtype=torch.long),
-            torch.zeros(1, ROWS, COLS),
-            torch.zeros(1, COLS, 8),
-            torch.zeros(1, dtype=torch.long),
-            torch.zeros(1, COLS, dtype=torch.long),
-            None,
-        )
+        goals, assists = model(image, torch.zeros(1, ROWS, dtype=torch.bool), torch.ones(1, COLS))
         self.assertEqual(tuple(goals.shape), (1, ROWS, COLS, 4))
         self.assertEqual(tuple(assists.shape), (1, ROWS, COLS, 4))
         model.train()

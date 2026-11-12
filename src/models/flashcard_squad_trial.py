@@ -7,13 +7,14 @@ The locked card is the
 square card. The odds row is sixteen squares, the venue mark is one square,
 and minutes are six squares of fifteen minutes. One goal or assist is one
 square, and those rows are three squares tall. Concede, regulars, own
-history, and opponent history are absent from the picture and from the
-match-up. The recent scoring rate stays. Clean sheets are not a target.
+history, opponent history, and the team scoring rate are absent. The locked
+vision reader gets the square card and nothing else: no minutes number, no
+position id, no club id, no opponent id, no match-up, and no other squad.
+Clean sheets are not a target.
 
-The sequence reader gets those values as numbers. The locked vision reader
-gets the square card and does not read the other squad. Both readers attend
-across the squad and across the whole segment at once. Neither walks column
-by column.
+The sequence reader is a separate numeric model. It is not the published
+painter. Both readers attend across the squad and across the whole segment
+at once. Neither walks column by column.
 
 Train on 2022-23, 2023-24, and 2024-25. Each card is cut after 20%, 40%, 60%,
 or 80% of its fixtures, starting from gameweek 1. The test scores each of
@@ -604,143 +605,43 @@ def render_grid(view: dict[str, np.ndarray]) -> np.ndarray:
 
 
 class Coupler(nn.Module):
-    """Attend across the squad, then the other squad, then across the segment."""
+    """Attend across the squad, then across the weeks. The tokens are the picture."""
 
     def __init__(self, dropout: float, n_clubs: int = 1) -> None:
         super().__init__()
+        del n_clubs
         self.row = nn.MultiheadAttention(D, HEADS, dropout=dropout, batch_first=True)
         self.col = nn.MultiheadAttention(D, HEADS, dropout=dropout, batch_first=True)
-        self.cross = nn.MultiheadAttention(D, HEADS, dropout=dropout, batch_first=True)
         self.norm_row = nn.LayerNorm(D)
         self.norm_col = nn.LayerNorm(D)
-        self.norm_cross = nn.LayerNorm(D)
-        self.opp_in = nn.Linear(2, D)
-        self.opp_pos = nn.Embedding(5, D)
-        self.opp_goal_tok = nn.Embedding(5, D)
-        self.opp_assist_tok = nn.Embedding(5, D)
         self.goal = nn.Linear(D, 4)
         self.assist = nn.Linear(D, 4)
         self.skip_goal = nn.Linear(D, 4)
         self.skip_assist = nn.Linear(D, 4)
-        self.pos_goal = nn.Embedding(5, 4)
-        self.pos_assist = nn.Embedding(5, 4)
-        self.pos_goal_min = nn.Embedding(5, 4)
-        self.pos_assist_min = nn.Embedding(5, 4)
-        self.club_vec = nn.Embedding(n_clubs, D)
-        self.opp_vec = nn.Embedding(n_clubs, D)
-        # Position by club, and position by match-up. A keeper and a forward at
-        # the same club do not share the tilt.
-        self.club_goal = nn.Parameter(torch.zeros(n_clubs, 5, 4))
-        self.club_goal_min = nn.Parameter(torch.zeros(n_clubs, 5, 4))
-        self.opp_goal = nn.Parameter(torch.zeros(n_clubs, 5, 4))
-        self.opp_goal_min = nn.Parameter(torch.zeros(n_clubs, 5, 4))
-        self.club_assist = nn.Parameter(torch.zeros(n_clubs, 5, 4))
-        self.club_assist_min = nn.Parameter(torch.zeros(n_clubs, 5, 4))
-        self.opp_assist = nn.Parameter(torch.zeros(n_clubs, 5, 4))
-        self.opp_assist_min = nn.Parameter(torch.zeros(n_clubs, 5, 4))
-        self.form_goal = nn.Parameter(torch.zeros(5, 8, 4))
-        self.form_goal_min = nn.Parameter(torch.zeros(5, 8, 4))
-        self.form_assist = nn.Parameter(torch.zeros(5, 8, 4))
-        self.form_assist_min = nn.Parameter(torch.zeros(5, 8, 4))
-        self.club_context = nn.Linear(8, D)
         self.col_pos = nn.Parameter(torch.zeros(1, 1, COLS, D))
         nn.init.normal_(self.col_pos, std=0.02)
-        for layer in (self.goal, self.assist, self.skip_goal, self.skip_assist, self.club_context):
+        for layer in (self.goal, self.assist, self.skip_goal, self.skip_assist):
             nn.init.zeros_(layer.weight)
             nn.init.zeros_(layer.bias)
-        for table in (self.pos_goal, self.pos_assist, self.pos_goal_min, self.pos_assist_min, self.club_vec, self.opp_vec):
-            nn.init.zeros_(table.weight)
-        # The link between squads starts at zero and is learned.
-        nn.init.zeros_(self.cross.out_proj.weight)
-        nn.init.zeros_(self.cross.out_proj.bias)
 
     def forward(
         self,
         cells: torch.Tensor,
         row_pad: torch.Tensor,
         col_pad: torch.Tensor,
-        position: torch.Tensor,
-        minutes: torch.Tensor,
-        matchup: torch.Tensor,
-        club: torch.Tensor,
-        opponent: torch.Tensor,
-        opp: dict[str, torch.Tensor] | None = None,
     ) -> tuple[torch.Tensor, torch.Tensor]:
         batch, _rows, cols, _dim = cells.shape
-        cells = cells + self.club_context(matchup)[:, None, :, :]
-        cells = cells + self.club_vec(club)[:, None, None, :]
-        cells = cells + self.opp_vec(opponent)[:, None, :, :]
         hidden = self.norm_row(cells + self.col_pos[:, :, :cols])
         row_view = hidden.permute(0, 2, 1, 3).reshape(batch * cols, ROWS, D)
         row_mask = row_pad[:, None, :].expand(batch, cols, ROWS).reshape(batch * cols, ROWS)
         mixed, _ = self.row(row_view, row_view, row_view, key_padding_mask=row_mask, need_weights=False)
         row_view = self.norm_row(row_view + mixed)
-        row_view = self._read_opponent(row_view, opp, batch, cols)
         col_view = row_view.reshape(batch, cols, ROWS, D).permute(0, 2, 1, 3).reshape(batch * ROWS, cols, D)
         col_mask = col_pad[:, None, :].expand(batch, ROWS, cols).reshape(batch * ROWS, cols)
         mixed, _ = self.col(col_view, col_view, col_view, key_padding_mask=col_mask, need_weights=False)
         col_view = self.norm_col(col_view + mixed)
         out = col_view.reshape(batch, ROWS, cols, D)
-        pos = torch.where(position < 0, torch.full_like(position, 4), position)
-        played = (minutes / 90.0).unsqueeze(-1)
-        form_goal = _by_position(self.form_goal, self.form_goal_min, matchup, pos, played)
-        form_assist = _by_position(self.form_assist, self.form_assist_min, matchup, pos, played)
-        goal = (
-            self.goal(out)
-            + self.skip_goal(cells)
-            + self.pos_goal(pos)[:, :, None, :]
-            + self.pos_goal_min(pos)[:, :, None, :] * played
-            + _by_club(self.club_goal, self.club_goal_min, club, pos, played)
-            + _by_club(self.opp_goal, self.opp_goal_min, opponent, pos, played)
-            + form_goal
-        )
-        assist = (
-            self.assist(out)
-            + self.skip_assist(cells)
-            + self.pos_assist(pos)[:, :, None, :]
-            + self.pos_assist_min(pos)[:, :, None, :] * played
-            + _by_club(self.club_assist, self.club_assist_min, club, pos, played)
-            + _by_club(self.opp_assist, self.opp_assist_min, opponent, pos, played)
-            + form_assist
-        )
-        return goal, assist
-
-    def _read_opponent(
-        self, row_view: torch.Tensor, opp: dict[str, torch.Tensor] | None, batch: int, cols: int
-    ) -> torch.Tensor:
-        """Let each player read the other squad in that same fixture."""
-        if opp is None:
-            return row_view
-        pos = torch.where(opp["position"] < 0, torch.full_like(opp["position"], 4), opp["position"])
-        stats = torch.stack([opp["minutes"] / 90.0, opp["present"]], dim=-1)
-        other = self.opp_in(stats) + self.opp_pos(pos)
-        other = other + self.opp_goal_tok(opp["goal_token"]) + self.opp_assist_tok(opp["assist_token"])
-        other = other.permute(0, 2, 1, 3).reshape(batch * cols, ROWS, D)
-        pad = opp["pad"].permute(0, 2, 1).reshape(batch * cols, ROWS)
-        empty = pad.all(dim=-1)
-        safe = pad.clone()
-        safe[empty, 0] = False
-        mixed, _ = self.cross(row_view, other, other, key_padding_mask=safe, need_weights=False)
-        mixed = mixed.masked_fill(empty[:, None, None], 0.0)
-        return self.norm_cross(row_view + mixed)
-
-
-def _by_position(level, slope, matchup, pos, played):
-    """Match-up features, with a separate weight for each position."""
-    base = torch.einsum("bcf,brfk->brck", matchup, level[pos])
-    tilt = torch.einsum("bcf,brfk->brck", matchup, slope[pos])
-    return base + tilt * played
-
-
-def _by_club(level, slope, index, pos, played):
-    """Club identity, with a separate weight for each position."""
-    if index.ndim == 1:
-        base = level[index[:, None], pos][:, :, None, :]
-        tilt = slope[index[:, None], pos][:, :, None, :]
-    else:
-        base = level[index[:, None, :], pos[:, :, None]]
-        tilt = slope[index[:, None, :], pos[:, :, None]]
-    return base + tilt * played
+        return self.goal(out) + self.skip_goal(cells), self.assist(out) + self.skip_assist(cells)
 
 
 class SquadSequence(nn.Module):
@@ -768,17 +669,7 @@ class SquadSequence(nn.Module):
             )
         )
         cells = cells + header[:, None, :, :]
-        return self.couple(
-            cells,
-            batch["row_pad"],
-            batch["column_on"] < 0.5,
-            batch["position"],
-            batch["minutes"],
-            batch["matchup"],
-            batch["club"],
-            batch["opponent"],
-            _opp_batch(batch),
-        )
+        return self.couple(cells, batch["row_pad"], batch["column_on"] < 0.5)
 
 
 class SquadVision(nn.Module):
@@ -795,12 +686,6 @@ class SquadVision(nn.Module):
         images: torch.Tensor,
         row_pad: torch.Tensor,
         column_on: torch.Tensor,
-        position: torch.Tensor,
-        minutes: torch.Tensor,
-        matchup: torch.Tensor,
-        club: torch.Tensor,
-        opponent: torch.Tensor,
-        opp: dict[str, torch.Tensor] | None = None,
     ) -> tuple[torch.Tensor, torch.Tensor]:
         batch = images.shape[0]
         header = images[:, :, :HEADER_H, :].reshape(batch, 3, HEADER_H, COLS, CELL_W)
@@ -809,9 +694,7 @@ class SquadVision(nn.Module):
         body = images[:, :, HEADER_H:, :].reshape(batch, 3, ROWS, PLAYER_H, COLS, CELL_W)
         body = body.permute(0, 4, 2, 1, 3, 5).reshape(batch, COLS, ROWS, -1)
         cells = self.patch(body).permute(0, 2, 1, 3) + header_tok[:, None, :, :]
-        return self.couple(
-            cells, row_pad, column_on < 0.5, position, minutes, matchup, club, opponent, opp
-        )
+        return self.couple(cells, row_pad, column_on < 0.5)
 
 
 def grey_except_minutes(img: np.ndarray, columns: np.ndarray) -> None:
@@ -856,19 +739,6 @@ def _stack(
     return batch
 
 
-def _opp_batch(batch: dict[str, torch.Tensor]) -> dict[str, torch.Tensor] | None:
-    if "opp_pad" not in batch:
-        return None
-    return {
-        "position": batch["opp_position"],
-        "minutes": batch["opp_minutes"],
-        "present": batch["opp_present"],
-        "goal_token": batch["opp_goal_token"],
-        "assist_token": batch["opp_assist_token"],
-        "pad": batch["opp_pad"],
-    }
-
-
 def sample_cut(card: SquadCard, rng: np.random.Generator) -> int:
     """Reveal a prefix from gameweek 1: 20%, 40%, 60%, or 80% of the fixtures."""
     return cut_at_fraction(card, float(rng.choice((0.2, 0.4, 0.6, 0.8))))
@@ -906,12 +776,10 @@ def train_model(
     ]
     fast_ids = {id(p) for p in fast}
     rest = [p for p in model.parameters() if id(p) not in fast_ids]
-    opt = torch.optim.AdamW(
-        [
-            {"params": rest, "lr": lr, "weight_decay": 1e-4},
-            {"params": fast, "lr": lr * 10, "weight_decay": 0.0},
-        ]
-    )
+    groups = [{"params": rest, "lr": lr, "weight_decay": 1e-4}]
+    if fast:
+        groups.append({"params": fast, "lr": lr * 10, "weight_decay": 0.0})
+    opt = torch.optim.AdamW(groups)
     history = []
     model.train()
     squads = squad_index(cards)
@@ -930,10 +798,7 @@ def train_model(
             )
             opt.zero_grad()
             if kind == "vision":
-                goal_logits, assist_logits = model(
-                    batch["image"], batch["row_pad"], batch["column_on"], batch["position"], batch["minutes"],
-                    batch["matchup"], batch["club"], batch["opponent"], _opp_batch(batch),
-                )
+                goal_logits, assist_logits = model(batch["image"], batch["row_pad"], batch["column_on"])
             else:
                 goal_logits, assist_logits = model(batch)
             mask = batch["loss"]
@@ -969,10 +834,7 @@ def predict(
         pick = cards[start : start + BATCH]
         batch = _stack([apply_cut(card, league, cut_gw, clubs, squads) for card in pick])
         if kind == "vision":
-            goal_logits, assist_logits = model(
-                batch["image"], batch["row_pad"], batch["column_on"], batch["position"], batch["minutes"],
-                batch["matchup"], batch["club"], batch["opponent"], _opp_batch(batch),
-            )
+            goal_logits, assist_logits = model(batch["image"], batch["row_pad"], batch["column_on"])
         else:
             goal_logits, assist_logits = model(batch)
         goals[start : start + len(pick)] = F.softmax(goal_logits, dim=-1).numpy()
