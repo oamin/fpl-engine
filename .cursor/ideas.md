@@ -6,7 +6,7 @@ Cursor chooses the next pre-registered comparison. The PI is not asked to pick. 
 
 ## Flashcard painter, locked 2026-11-12
 
-The published painter takes the rendered flashcard and nothing else. A numeric sidecar is not a candidate and is not a fallback. Minutes, position, club, opponent, and the team scoring rate stay on the card as squares, or they stay out. Do not pass them again as tensors. Do not divide minutes by 90 on a side path. Do not keep a match-up slot “just in case.” `SquadSequence` is not the gate. See `.cursor/context.md`.
+The published painter takes the rendered flashcard and nothing else. A numeric sidecar is not a candidate and is not a fallback. Minutes, position, club, opponent, and the team scoring rate stay on the card as squares, or they stay out. Do not pass them again as tensors. Do not divide minutes by 90 on a side path. Do not keep a match-up slot “just in case.” The loss scores the hidden window's bar count as well as each square. Do not paint a square only because zero is its most likely count. `SquadSequence` is not the gate. See `.cursor/context.md`.
 
 ## Parked — cascade_short bonus-from-roll (2026-10-20)
 

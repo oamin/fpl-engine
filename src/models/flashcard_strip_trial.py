@@ -10,7 +10,10 @@ goal or assist is one square, and those rows are three squares tall. The
 one-shot card paints the odds on every fixture, including a grey week. The
 stepped reader uses this same card: true past, the odds, the venue, the
 opponent, and the minutes on the next week, and every later column removed.
-The other squad is not an input.
+The other squad is not an input. The training loss is the cross-entropy of
+each hidden square plus the squared relative error of that card's hidden
+bar count. The paint places that count on the squares most likely to hold
+a bar.
 """
 
 from __future__ import annotations
@@ -23,7 +26,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from src.models.flashcard_card_score import _paint, paint_row, tally_cards
+from src.models.flashcard_card_score import _paint, paint_row, tally_cards, window_count
 from src.models.flashcard_step_trial import chop_future
 from src.models.flashcard_odds_trial import load_odds, paint_odds_strip
 from src.models.flashcard_squad_trial import (
@@ -147,6 +150,19 @@ class StripVision(nn.Module):
         return self.couple(cells, row_pad, column_on < 0.5)
 
 
+def _batch_loss(goal_logits: torch.Tensor, assist_logits: torch.Tensor, batch: dict) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    """Cell cross-entropy plus the hidden window's bar count."""
+    mask = batch["loss"]
+    cell = 0.5 * (
+        _nll(goal_logits, batch["goal_label"], mask) + _nll(assist_logits, batch["assist_label"], mask)
+    )
+    horizon = 0.5 * (
+        window_count(goal_logits.softmax(-1), batch["goal_label"], mask)
+        + window_count(assist_logits.softmax(-1), batch["assist_label"], mask)
+    )
+    return cell + horizon, cell.detach(), horizon.detach()
+
+
 def _optimizer(model: nn.Module) -> torch.optim.Optimizer:
     fast_name = ("pos_", "position", "club_", "opp_", "form_")
     named = [(name, param) for name, param in model.named_parameters() if param.requires_grad]
@@ -198,6 +214,7 @@ def train_stripped(
     model.train()
     for epoch in range(EPOCHS):
         total = 0.0
+        horizon_total = 0.0
         seen = 0.0
         order = rng.permutation(len(cards))
         for start in range(0, len(cards), BATCH):
@@ -208,17 +225,19 @@ def train_stripped(
             batch["image"] = torch.from_numpy(_batch_images(views, pick, odds, compose)).permute(0, 3, 1, 2).float().div(255.0)
             opt.zero_grad()
             goal_logits, assist_logits = model(batch["image"], batch["row_pad"], batch["column_on"])
-            mask = batch["loss"]
-            loss = 0.5 * (
-                _nll(goal_logits, batch["goal_label"], mask) + _nll(assist_logits, batch["assist_label"], mask)
-            )
+            loss, cell, horizon = _batch_loss(goal_logits, assist_logits, batch)
             loss.backward()
             nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             opt.step()
-            weight = float(mask.sum().detach())
-            total += float(loss.detach()) * weight
+            weight = float(batch["loss"].sum().detach())
+            total += float(cell) * weight
             seen += weight
-        print(f"{name} epoch {epoch + 1} train nll {total / max(seen, 1.0):.3f}", flush=True)
+            horizon_total += float(horizon) * weight
+        print(
+            f"{name} epoch {epoch + 1} train nll {total / max(seen, 1.0):.3f} "
+            f"horizon {horizon_total / max(seen, 1.0):.3f}",
+            flush=True,
+        )
 
 
 def paint_stripped(
@@ -286,6 +305,7 @@ def train_stripped_steps(
     model.train()
     for epoch in range(EPOCHS):
         total = 0.0
+        horizon_total = 0.0
         seen = 0.0
         order = rng.permutation(len(cards))
         for start in range(0, len(cards), BATCH):
@@ -301,17 +321,19 @@ def train_stripped_steps(
             batch["image"] = torch.from_numpy(np.stack(pictures)).permute(0, 3, 1, 2).float().div(255.0)
             opt.zero_grad()
             goal_logits, assist_logits = model(batch["image"], batch["row_pad"], batch["column_on"])
-            mask = batch["loss"]
-            loss = 0.5 * (
-                _nll(goal_logits, batch["goal_label"], mask) + _nll(assist_logits, batch["assist_label"], mask)
-            )
+            loss, cell, horizon = _batch_loss(goal_logits, assist_logits, batch)
             loss.backward()
             nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             opt.step()
-            weight = float(mask.sum().detach())
-            total += float(loss.detach()) * weight
+            weight = float(batch["loss"].sum().detach())
+            total += float(cell) * weight
             seen += weight
-        print(f"stripped step epoch {epoch + 1} train nll {total / max(seen, 1.0):.3f}", flush=True)
+            horizon_total += float(horizon) * weight
+        print(
+            f"stripped step epoch {epoch + 1} train nll {total / max(seen, 1.0):.3f} "
+            f"horizon {horizon_total / max(seen, 1.0):.3f}",
+            flush=True,
+        )
 
 
 def paint_stripped_steps(

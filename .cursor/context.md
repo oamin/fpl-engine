@@ -10,6 +10,8 @@ Do not add a numeric sidecar. Do not pass minutes, a minutes/90 fraction, a posi
 
 The reader is `StripVision` in `src/models/flashcard_strip_trial.py`. Its forward arguments are the image, the row mask, and the column mask. `Coupler` attends over those image tokens. It has no embedding for position, club, opponent, minutes, or rate.
 
+The objective scores each hidden square and the bar count of that card's whole hidden window. An empty window is a large error. The paint places the window's expected number of bars on the squares most likely to hold one. Do not go back to painting each square by its own most likely count.
+
 `SquadSequence` is a separate numeric reader. It is not the gate. Do not connect it to the published painter, and do not put its numbers back onto `Coupler`.
 
 ## Repo freeze sequence (2026-10-20)

@@ -5,8 +5,16 @@ from __future__ import annotations
 import unittest
 
 import numpy as np
+import torch
 
-from src.models.flashcard_card_score import _paint, balanced_score, tally_cards, tally_row
+from src.models.flashcard_card_score import (
+    _paint,
+    balanced_score,
+    paint_horizon,
+    tally_cards,
+    tally_row,
+    window_count,
+)
 from src.models.flashcard_squad_trial import cut_at_fraction, sample_cut
 
 
@@ -88,6 +96,38 @@ class CardScoreTests(unittest.TestCase):
         self.assertGreater(matched["score"], doubled["score"])
         self.assertGreater(matched["score"], halved["score"])
         self.assertAlmostEqual(matched["score"], 2 * 40 / 200)
+
+    def test_an_empty_window_is_a_large_error(self) -> None:
+        labels = torch.zeros(1, 1, 4)
+        labels[0, 0, 0] = 1
+        labels[0, 0, 3] = 2
+        mask = torch.ones(1, 1, 4)
+        matched = torch.zeros(1, 1, 4, 4)
+        matched[..., 0] = 0.5
+        matched[..., 1] = 0.5
+        empty = torch.zeros(1, 1, 4, 4)
+        empty[..., 0] = 1
+        self.assertAlmostEqual(float(window_count(matched, labels, mask)), 0.0)
+        self.assertAlmostEqual(float(window_count(empty, labels, mask)), 1.0)
+
+    def test_the_window_places_its_expected_bars(self) -> None:
+        probs = np.zeros((5, 4))
+        probs[..., 0] = 0.95
+        probs[..., 1] = 0.05
+        probs[2, 0] = 0.20
+        probs[2, 2] = 0.80
+        mask = np.ones(5, dtype=bool)
+        painted = paint_horizon(probs, mask)
+        self.assertEqual(int((painted > 0).sum()), 1)
+        self.assertEqual(int(painted[2]), 2)
+        self.assertTrue(np.all(painted[:2] == 0))
+        card = _paint(
+            probs.reshape(1, 1, 5, 4),
+            np.zeros((1, 1, 5)),
+            [_Card(np.array([5, 6, 7, 8, 9]), mask.reshape(1, 5))],
+            [0],
+        )
+        self.assertEqual(int((card > 0).sum()), 1)
 
     def test_each_row_paints_its_own_count(self) -> None:
         probs = np.zeros((1, 2, 1, 4))

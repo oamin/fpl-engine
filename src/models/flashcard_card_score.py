@@ -10,9 +10,10 @@ only feature input. It is the square card: sixteen odds squares, one venue
 square, one opponent square, six minute squares of fifteen minutes, one
 position square, and one square per goal or assist. Concede, regulars, own
 history, opponent history, and the team scoring rate are absent. Minutes,
-position, club, and opponent are not passed again as numbers. Each row
-paints the count with the highest probability. A row holds three squares,
-and that is the only cap.
+position, club, and opponent are not passed again as numbers. The loss
+scores each hidden square and the bar count of the whole hidden window.
+The paint places that expected count on the squares most likely to hold a
+bar. A row holds three squares, and that is the only cap.
 """
 
 from __future__ import annotations
@@ -36,17 +37,17 @@ from src.models.flashcard_squad_trial import (
 ROOT_REPORTS = Path(__file__).resolve().parents[2] / "reports"
 KEYS = ("actual", "painted", "exact", "actual_within", "painted_within")
 
-# The locked painter after the numeric sidecar was removed, 12 Nov 2026.
-# Every hidden cell's highest class is zero, so the painted card is blank.
+# The flashcard painter with the horizon-window loss, 12 Nov 2026.
+# The paint places each card's expected bar count. The flashcard is the only input.
 GATE = {
-    ("goals", 0.2): {"actual": 730, "painted": 0, "exact": 0, "actual_within": 0, "painted_within": 0},
-    ("assists", 0.2): {"actual": 707, "painted": 0, "exact": 0, "actual_within": 0, "painted_within": 0},
-    ("goals", 0.4): {"actual": 544, "painted": 0, "exact": 0, "actual_within": 0, "painted_within": 0},
-    ("assists", 0.4): {"actual": 531, "painted": 0, "exact": 0, "actual_within": 0, "painted_within": 0},
-    ("goals", 0.6): {"actual": 360, "painted": 0, "exact": 0, "actual_within": 0, "painted_within": 0},
-    ("assists", 0.6): {"actual": 351, "painted": 0, "exact": 0, "actual_within": 0, "painted_within": 0},
-    ("goals", 0.8): {"actual": 199, "painted": 0, "exact": 0, "actual_within": 0, "painted_within": 0},
-    ("assists", 0.8): {"actual": 192, "painted": 0, "exact": 0, "actual_within": 0, "painted_within": 0},
+    ("goals", 0.2): {"actual": 730, "painted": 584, "exact": 66, "actual_within": 136, "painted_within": 124},
+    ("assists", 0.2): {"actual": 707, "painted": 698, "exact": 79, "actual_within": 169, "painted_within": 156},
+    ("goals", 0.4): {"actual": 544, "painted": 451, "exact": 49, "actual_within": 101, "painted_within": 94},
+    ("assists", 0.4): {"actual": 531, "painted": 537, "exact": 52, "actual_within": 119, "painted_within": 108},
+    ("goals", 0.6): {"actual": 360, "painted": 298, "exact": 32, "actual_within": 64, "painted_within": 59},
+    ("assists", 0.6): {"actual": 351, "painted": 353, "exact": 33, "actual_within": 82, "painted_within": 75},
+    ("goals", 0.8): {"actual": 199, "painted": 158, "exact": 17, "actual_within": 39, "painted_within": 33},
+    ("assists", 0.8): {"actual": 192, "painted": 191, "exact": 21, "actual_within": 47, "painted_within": 40},
 }
 
 
@@ -130,6 +131,40 @@ def tally_cards(
     return totals
 
 
+def window_count(probs: torch.Tensor, labels: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
+    """Squared relative error of one card's hidden bar count.
+
+    A window with no painted bars, or twice the bars, is a large error even
+    when zero is the most probable count in every square.
+    """
+    predicted = ((1.0 - probs[..., 0]) * mask).sum(dim=(1, 2))
+    actual = ((labels > 0).to(probs.dtype) * mask).sum(dim=(1, 2))
+    scale = actual.clamp_min(1.0)
+    return ((predicted - actual) / scale).square().mean()
+
+
+def paint_horizon(probs: np.ndarray, mask: np.ndarray) -> np.ndarray:
+    """Place the window's expected bars on its most likely squares.
+
+    The expected count is the sum of each square's chance of a bar. Each
+    chosen square is painted with its most likely positive count. A row is
+    three squares tall, and that is the only cap.
+    """
+    probs = np.asarray(probs, dtype=np.float64)
+    mask = np.asarray(mask, dtype=bool)
+    chance = np.where(mask, np.clip(1.0 - probs[..., 0], 0.0, None), -np.inf)
+    available = int(mask.sum())
+    expected = float(chance[mask].sum()) if available else 0.0
+    count = int(np.clip(np.rint(expected), 0, available))
+    painted = np.zeros(mask.shape, dtype=np.int64)
+    if count == 0:
+        return painted
+    chosen = np.argsort(-chance, axis=None, kind="stable")[:count]
+    height = 1 + np.argmax(probs[..., 1:], axis=-1)
+    painted.ravel()[chosen] = height.ravel()[chosen]
+    return np.where(mask, painted, 0)
+
+
 def paint_row(probs: np.ndarray, mask: np.ndarray) -> np.ndarray:
     """Paint the count with the highest probability.
 
@@ -146,7 +181,7 @@ def _paint(probs: np.ndarray, minutes: np.ndarray, cards: list, cuts: list[int])
     for index, card in enumerate(cards):
         hidden = (card.gw > cuts[index]) & (card.gw > 0)
         mask = card.present & hidden.reshape(1, -1)
-        painted[index] = paint_row(probs[index], mask)
+        painted[index] = paint_horizon(probs[index], mask)
     return painted
 
 
@@ -198,8 +233,9 @@ def main() -> None:
         "other squad is not an input. Concede, regulars, own history,",
         "opponent history, and the team scoring rate are absent. Minutes,",
         "position, club, and opponent are not passed again as numbers. Each",
-        "row paints the count with the highest probability. A row holds three",
-        "squares, and that is the only cap.",
+        "loss scores each hidden square and the bar count of the whole hidden",
+        "window. The paint places that expected count on the squares most",
+        "likely to hold a bar. A row holds three squares, and that is the only cap.",
         "",
         "A bar matches on the same row only. Within one gameweek includes the same",
         "appearance and either neighboring gameweek. The numbers are totals.",
@@ -224,9 +260,9 @@ def main() -> None:
     lines.extend(
         [
             "",
-            "This run replaces the 10 November 2026 gate. The numeric sidecar is gone.",
-            "The flashcard is the only feature input. Every hidden cell's highest",
-            "class is zero, so the painted card is blank.",
+            "The loss scores each hidden square and the bar count of that card's",
+            "hidden window. The paint places the expected number of bars on the",
+            "squares most likely to hold one. The flashcard is the only feature input.",
             "",
             f"Wall clock: {seconds:.0f} seconds on CPU.",
             "",
