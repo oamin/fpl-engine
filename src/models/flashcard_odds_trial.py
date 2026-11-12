@@ -45,7 +45,6 @@ from src.models.flashcard_squad_trial import (
     SquadVision,
     _hatch,
     _nll,
-    _opp_batch,
     _stack,
     apply_cut,
     build_cards,
@@ -164,21 +163,16 @@ class OddsVision(nn.Module):
 
     def __init__(self, dropout: float = 0.1, n_clubs: int = 1) -> None:
         super().__init__()
+        del n_clubs
         self.header = nn.Linear(3 * ODDS_H * CELL_W, 32)
         self.patch = nn.Linear(3 * PLAYER_H * CELL_W, 32)
-        self.couple = Coupler(dropout, n_clubs)
+        self.couple = Coupler(dropout)
 
     def forward(
         self,
         images: torch.Tensor,
         row_pad: torch.Tensor,
         column_on: torch.Tensor,
-        position: torch.Tensor,
-        minutes: torch.Tensor,
-        matchup: torch.Tensor,
-        club: torch.Tensor,
-        opponent: torch.Tensor,
-        opp: dict[str, torch.Tensor] | None = None,
     ) -> tuple[torch.Tensor, torch.Tensor]:
         batch = images.shape[0]
         header = images[:, :, :ODDS_H, :].reshape(batch, 3, ODDS_H, COLS, CELL_W)
@@ -187,9 +181,7 @@ class OddsVision(nn.Module):
         body = images[:, :, ODDS_H:, :].reshape(batch, 3, ROWS, PLAYER_H, COLS, CELL_W)
         body = body.permute(0, 4, 2, 1, 3, 5).reshape(batch, COLS, ROWS, -1)
         cells = self.patch(body).permute(0, 2, 1, 3) + header_tok[:, None, :, :]
-        return self.couple(
-            cells, row_pad, column_on < 0.5, position, minutes, matchup, club, opponent, opp
-        )
+        return self.couple(cells, row_pad, column_on < 0.5)
 
 
 def _optimizer(model: nn.Module) -> torch.optim.Optimizer:
@@ -197,12 +189,10 @@ def _optimizer(model: nn.Module) -> torch.optim.Optimizer:
     fast = [p for name, p in model.named_parameters() if any(token in name or name.startswith(token) for token in fast_name)]
     fast_ids = {id(p) for p in fast}
     rest = [p for p in model.parameters() if id(p) not in fast_ids]
-    return torch.optim.AdamW(
-        [
-            {"params": rest, "lr": LR, "weight_decay": 1e-4},
-            {"params": fast, "lr": LR * 10, "weight_decay": 0.0},
-        ]
-    )
+    groups = [{"params": rest, "lr": LR, "weight_decay": 1e-4}]
+    if fast:
+        groups.append({"params": fast, "lr": LR * 10, "weight_decay": 0.0})
+    return torch.optim.AdamW(groups)
 
 
 def _target_gw(card, rng: np.random.Generator) -> int:
@@ -226,10 +216,7 @@ def _run_batch(model: nn.Module, views: list[dict], images: np.ndarray | None, g
     batch = _stack(views, grey)
     if images is not None:
         batch["image"] = torch.from_numpy(images).permute(0, 3, 1, 2).float().div(255.0)
-    goal_logits, assist_logits = model(
-        batch["image"], batch["row_pad"], batch["column_on"], batch["position"], batch["minutes"],
-        batch["matchup"], batch["club"], batch["opponent"], _opp_batch(batch),
-    )
+    goal_logits, assist_logits = model(batch["image"], batch["row_pad"], batch["column_on"])
     return goal_logits, assist_logits, batch
 
 

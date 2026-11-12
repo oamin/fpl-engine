@@ -1,8 +1,7 @@
-"""Which input the square-card reader uses when it paints bars.
+"""Which part of the square card the reader uses when it paints bars.
 
-The full painter is trained as usual. Each signal is then removed at the
-test cut, and the painted card is scored again. A second check keeps the
-model's fixture budgets and changes only the ranking.
+The full painter is trained on the picture alone. Each painted band is then
+whitened at the test cut, and the card is scored again.
 """
 
 from __future__ import annotations
@@ -19,8 +18,6 @@ from src.models.flashcard_card_score import _paint, tally_cards
 from src.models.flashcard_odds_trial import load_odds
 from src.models.flashcard_squad_trial import (
     SEED,
-    _by_club,
-    _by_position,
     _stack,
     apply_cut,
     build_cards,
@@ -79,31 +76,7 @@ def place_ranked(key: np.ndarray, budgets: np.ndarray, mask: np.ndarray, minutes
 
 
 def _forward(model, batch: dict, images: torch.Tensor):
-    return model(
-        images,
-        batch["row_pad"],
-        batch["column_on"],
-        batch["position"],
-        batch["minutes"],
-        batch["matchup"],
-        batch["club"],
-        batch["opponent"],
-        None,
-    )
-
-
-def goal_parts(model: StripVision, batch: dict) -> dict[str, torch.Tensor]:
-    """Additive goal-logit terms that do not pass through the picture."""
-    couple = model.couple
-    pos = torch.where(batch["position"] < 0, torch.full_like(batch["position"], 4), batch["position"])
-    played = (batch["minutes"] / 90.0).unsqueeze(-1)
-    return {
-        "position": couple.pos_goal(pos)[:, :, None, :],
-        "minutes": couple.pos_goal_min(pos)[:, :, None, :] * played,
-        "club": _by_club(couple.club_goal, couple.club_goal_min, batch["club"], pos, played),
-        "opponent": _by_club(couple.opp_goal, couple.opp_goal_min, batch["opponent"], pos, played),
-        "form": _by_position(couple.form_goal, couple.form_goal_min, batch["matchup"], pos, played),
-    }
+    return model(images, batch["row_pad"], batch["column_on"])
 
 
 def _hidden(card, cut: int) -> np.ndarray:
@@ -161,11 +134,8 @@ def main() -> None:
         return goal_p, goal_logits, goals, assists
 
     rows = []
-    goal_p, goal_logits, goals, assists = score("intact", images, batch)
+    goal_p, _goal_logits, goals, assists = score("intact", images, batch)
     rows.append(("intact", goals, assists))
-    with torch.no_grad():
-        parts = {name: term.expand_as(goal_logits) for name, term in goal_parts(model, batch).items()}
-        parts["picture"] = goal_logits - sum(parts.values())
 
     def run(name: str, edit) -> None:
         images_now = images.clone()
@@ -181,10 +151,6 @@ def main() -> None:
     run("white assists", lambda img, _b: blank_player_band(img, ASSIST_BAND))
     run("white position color", lambda img, _b: blank_player_band(img, POS_BAND))
     run("white picture", lambda img, _b: img.fill_(1.0))
-    run("zero numeric minutes", lambda _img, b: b["minutes"].zero_())
-    run("zero position id", lambda _img, b: b["position"].fill_(-1))
-    run("zero matchup", lambda _img, b: b["matchup"].zero_())
-    run("zero opponent id", lambda _img, b: b["opponent"].zero_())
 
     budgets = []
     for i, (card, cut) in enumerate(zip(test, cuts)):
@@ -252,17 +218,6 @@ def main() -> None:
         by_pos.append((label, float(values.mean()) if chosen else 0.0, int(values.size if chosen else 0)))
     mean_chance = float(np.concatenate([c for c in chances if c.size]).mean())
 
-    term_size = {}
-    for name, term in parts.items():
-        values = []
-        for i, card in enumerate(test):
-            mask = torch.from_numpy(
-                card.present & _hidden(card, cuts[i]).reshape(1, -1) & (card.minutes > 0)
-            )
-            if bool(mask.any()):
-                values.append(term[i, mask, 0].abs().mean())
-        term_size[name] = float(torch.stack(values).mean()) if values else 0.0
-
     lines = [
         "# What the square card uses",
         "",
@@ -313,18 +268,6 @@ def main() -> None:
     )
     for label, rate, count in by_pos:
         lines.append(f"| {label} | {rate:.1%} | {count} |")
-    lines.extend(
-        [
-            "",
-            "Mean absolute contribution to the zero-class logit on those appearances.",
-            "The picture term is whatever remains after the additive terms.",
-            "",
-            "| term | mean absolute logit |",
-            "|---|---:|",
-        ]
-    )
-    for name, size in term_size.items():
-        lines.append(f"| {name} | {size:.3f} |")
     seconds = time.perf_counter() - started
     lines.extend(["", f"Wall clock: {seconds:.0f} seconds on CPU.", ""])
     path = ROOT_REPORTS / "flashcard_signal.md"

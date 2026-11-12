@@ -1,14 +1,15 @@
-"""The locked card is the square card. Four header rows are gone.
+"""The locked card is the square card. The picture is the only feature input.
 
-Concede, regulars, own history, and opponent history are absent from the
-picture and from the numeric match-up. The recent scoring rate stays.
-The odds row is sixteen squares: blue home, yellow draw, purple away, from
-the Shin de-vig. The venue mark is one square. The opponent is one square,
-a club symbol. Minutes are six squares of fifteen minutes. One goal or
-assist is one square, and those rows are three squares tall. The one-shot
-card paints the odds on every fixture, including a grey week. The stepped
-reader uses this same card: true past, the odds, the venue, the opponent,
-and the minutes on the next week, and every later column removed.
+Concede, regulars, own history, opponent history, and the team scoring rate
+are absent from the picture and from every tensor the reader sees. Minutes,
+position, club, and opponent are on the card as squares. They are not passed
+again as numbers. The odds row is sixteen squares: blue home, yellow draw,
+purple away, from the Shin de-vig. The venue mark is one square. The opponent
+is one square, a club symbol. Minutes are six squares of fifteen minutes. One
+goal or assist is one square, and those rows are three squares tall. The
+one-shot card paints the odds on every fixture, including a grey week. The
+stepped reader uses this same card: true past, the odds, the venue, the
+opponent, and the minutes on the next week, and every later column removed.
 The other squad is not an input.
 """
 
@@ -53,9 +54,6 @@ from src.models.flashcard_squad_trial import (
 from src.models.flashcard_trial import TEST_SEASON, TRAIN_SEASONS
 
 ROOT_REPORTS = Path(__file__).resolve().parents[2] / "reports"
-# own history, its missing flag, opponent history, its missing flag,
-# goals conceded, its missing flag. Slots 4 and 5 are the recent scoring rate.
-MATCHUP_DROP = (0, 1, 2, 3, 6, 7)
 FEATURE_KEYS = (
     "concede",
     "concede_missing",
@@ -69,11 +67,14 @@ FEATURE_KEYS = (
 
 
 def strip_features(view: dict[str, np.ndarray]) -> dict[str, np.ndarray]:
-    """Zero the four removed rows and the match-up slots that carry them."""
+    """Zero the removed header rows and the whole numeric match-up, including the rate."""
     for key in FEATURE_KEYS:
         view[key] = np.zeros_like(view[key])
+    if "own_form" in view:
+        view["own_form"] = np.zeros_like(view["own_form"])
+        view["own_form_missing"] = np.zeros_like(view["own_form_missing"])
     matchup = np.array(view["matchup"], copy=True)
-    matchup[:, list(MATCHUP_DROP)] = 0
+    matchup[:, :] = 0
     view["matchup"] = matchup
     return view
 
@@ -125,21 +126,16 @@ class StripVision(nn.Module):
         super().__init__()
         self.header_h = int(header_h)
         self.player_h = int(player_h)
+        del n_clubs
         self.header = nn.Linear(3 * self.header_h * CELL_W, D)
         self.patch = nn.Linear(3 * self.player_h * CELL_W, D)
-        self.couple = Coupler(dropout, n_clubs)
+        self.couple = Coupler(dropout)
 
     def forward(
         self,
         images: torch.Tensor,
         row_pad: torch.Tensor,
         column_on: torch.Tensor,
-        position: torch.Tensor,
-        minutes: torch.Tensor,
-        matchup: torch.Tensor,
-        club: torch.Tensor,
-        opponent: torch.Tensor,
-        opp: dict[str, torch.Tensor] | None = None,
     ) -> tuple[torch.Tensor, torch.Tensor]:
         batch = images.shape[0]
         header = images[:, :, : self.header_h, :].reshape(batch, 3, self.header_h, COLS, CELL_W)
@@ -148,10 +144,7 @@ class StripVision(nn.Module):
         body = images[:, :, self.header_h :, :].reshape(batch, 3, ROWS, self.player_h, COLS, CELL_W)
         body = body.permute(0, 4, 2, 1, 3, 5).reshape(batch, COLS, ROWS, -1)
         cells = self.patch(body).permute(0, 2, 1, 3) + header_tok[:, None, :, :]
-        del opp
-        return self.couple(
-            cells, row_pad, column_on < 0.5, position, minutes, matchup, club, opponent, None
-        )
+        return self.couple(cells, row_pad, column_on < 0.5)
 
 
 def _optimizer(model: nn.Module) -> torch.optim.Optimizer:
@@ -160,12 +153,10 @@ def _optimizer(model: nn.Module) -> torch.optim.Optimizer:
     fast = [param for name, param in named if any(token in name or name.startswith(token) for token in fast_name)]
     fast_ids = {id(param) for param in fast}
     rest = [param for _, param in named if id(param) not in fast_ids]
-    return torch.optim.AdamW(
-        [
-            {"params": rest, "lr": LR, "weight_decay": 1e-4},
-            {"params": fast, "lr": LR * 10, "weight_decay": 0.0},
-        ]
-    )
+    groups = [{"params": rest, "lr": LR, "weight_decay": 1e-4}]
+    if fast:
+        groups.append({"params": fast, "lr": LR * 10, "weight_decay": 0.0})
+    return torch.optim.AdamW(groups)
 
 
 def _paint_one(
@@ -216,10 +207,7 @@ def train_stripped(
             batch = _stack(views)
             batch["image"] = torch.from_numpy(_batch_images(views, pick, odds, compose)).permute(0, 3, 1, 2).float().div(255.0)
             opt.zero_grad()
-            goal_logits, assist_logits = model(
-                batch["image"], batch["row_pad"], batch["column_on"], batch["position"], batch["minutes"],
-                batch["matchup"], batch["club"], batch["opponent"], None,
-            )
+            goal_logits, assist_logits = model(batch["image"], batch["row_pad"], batch["column_on"])
             mask = batch["loss"]
             loss = 0.5 * (
                 _nll(goal_logits, batch["goal_label"], mask) + _nll(assist_logits, batch["assist_label"], mask)
@@ -248,10 +236,7 @@ def paint_stripped(
     batch["image"] = torch.from_numpy(_batch_images(views, cards, odds, compose)).permute(0, 3, 1, 2).float().div(255.0)
     model.eval()
     with torch.no_grad():
-        goal_logits, assist_logits = model(
-            batch["image"], batch["row_pad"], batch["column_on"], batch["position"], batch["minutes"],
-            batch["matchup"], batch["club"], batch["opponent"], None,
-        )
+        goal_logits, assist_logits = model(batch["image"], batch["row_pad"], batch["column_on"])
     return F.softmax(goal_logits, dim=-1).numpy(), F.softmax(assist_logits, dim=-1).numpy()
 
 
@@ -315,10 +300,7 @@ def train_stripped_steps(
             batch = _stack(views)
             batch["image"] = torch.from_numpy(np.stack(pictures)).permute(0, 3, 1, 2).float().div(255.0)
             opt.zero_grad()
-            goal_logits, assist_logits = model(
-                batch["image"], batch["row_pad"], batch["column_on"], batch["position"], batch["minutes"],
-                batch["matchup"], batch["club"], batch["opponent"], None,
-            )
+            goal_logits, assist_logits = model(batch["image"], batch["row_pad"], batch["column_on"])
             mask = batch["loss"]
             loss = 0.5 * (
                 _nll(goal_logits, batch["goal_label"], mask) + _nll(assist_logits, batch["assist_label"], mask)
@@ -356,10 +338,7 @@ def paint_stripped_steps(
         batch = _stack(views)
         batch["image"] = torch.from_numpy(np.stack(pictures)).permute(0, 3, 1, 2).float().div(255.0)
         with torch.no_grad():
-            goal_logits, assist_logits = model(
-                batch["image"], batch["row_pad"], batch["column_on"], batch["position"], batch["minutes"],
-                batch["matchup"], batch["club"], batch["opponent"], None,
-            )
+            goal_logits, assist_logits = model(batch["image"], batch["row_pad"], batch["column_on"])
         goal_p = F.softmax(goal_logits, dim=-1).numpy()
         assist_p = F.softmax(assist_logits, dim=-1).numpy()
         for slot, index in enumerate(indexes):
@@ -396,8 +375,8 @@ def main() -> None:
         "The default card is the square card. The odds row is sixteen squares,",
         "the venue is one square, and minutes are six squares of fifteen",
         "minutes. One event is one square. It drops concede, regulars, own",
-        "history, and opponent history from the picture and from the numeric",
-        "match-up. The recent scoring rate stays. The no-odds reader is the",
+        "history, opponent history, and the team scoring rate. The reader",
+        "sees the picture only. The no-odds reader is the",
         "comparison. The stepped reader uses the same square card, asks for",
         "one gameweek, and removes every later column.",
         "",

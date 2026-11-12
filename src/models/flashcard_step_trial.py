@@ -99,24 +99,7 @@ def paint_steps(model: torch.nn.Module, cards: list, league: dict, clubs: dict, 
             grey_columns.append(np.flatnonzero(card.gw == gw))
         batch = _stack(views, grey_columns)
         with torch.no_grad():
-            goal_logits, assist_logits = model(
-                batch["image"],
-                batch["row_pad"],
-                batch["column_on"],
-                batch["position"],
-                batch["minutes"],
-                batch["matchup"],
-                batch["club"],
-                batch["opponent"],
-                {
-                    "position": batch["opp_position"],
-                    "minutes": batch["opp_minutes"],
-                    "present": batch["opp_present"],
-                    "goal_token": batch["opp_goal_token"],
-                    "assist_token": batch["opp_assist_token"],
-                    "pad": batch["opp_pad"],
-                },
-            )
+            goal_logits, assist_logits = model(batch["image"], batch["row_pad"], batch["column_on"])
         goal_p = F.softmax(goal_logits, dim=-1).numpy()
         assist_p = F.softmax(assist_logits, dim=-1).numpy()
         for slot, index in enumerate(indexes):

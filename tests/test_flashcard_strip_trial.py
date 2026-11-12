@@ -104,8 +104,7 @@ class StripTests(unittest.TestCase):
         self.assertEqual(stripped.shape[0], BAND_H + ROWS * PLAYER_H)
         self.assertEqual(tuple(int(v) for v in stripped[0, 0]), HOME_C)
         self.assertNotEqual(tuple(int(v) for v in stripped[BAND_H, 0]), CONCEDE_C)
-        self.assertEqual(float(view["matchup"][:, list((0, 1, 2, 3, 6, 7))].sum()), 0.0)
-        self.assertAlmostEqual(float(view["matchup"][0, 4]), 0.4)
+        self.assertEqual(float(view["matchup"].sum()), 0.0)
         self.assertEqual(full.shape[0], HEADER_H + ROWS * PLAYER_H)
         self.assertEqual(stripped.shape[1], IMG_W)
 
@@ -129,17 +128,7 @@ class StripTests(unittest.TestCase):
         model = StripVision(BAND_H, n_clubs=2)
         image = torch.zeros(1, 3, BAND_H + ROWS * PLAYER_H, COLS * CELL_W)
         row_pad = torch.zeros(1, ROWS, dtype=torch.bool)
-        out, _assists = model(
-            image,
-            row_pad,
-            torch.ones(1, COLS),
-            torch.zeros(1, ROWS, dtype=torch.long),
-            torch.zeros(1, ROWS, COLS),
-            torch.zeros(1, COLS, 8),
-            torch.zeros(1, dtype=torch.long),
-            torch.zeros(1, COLS, dtype=torch.long),
-            None,
-        )
+        out, _assists = model(image, row_pad, torch.ones(1, COLS))
         self.assertEqual(tuple(out.shape), (1, ROWS, COLS, 4))
 
     def test_one_goal_is_several_pixels_and_three_goals_fill_the_band(self) -> None:
@@ -183,47 +172,18 @@ class StripTests(unittest.TestCase):
         self.assertEqual(tuple(int(v) for v in image[0, CELL_W]), HATCH_FG)
         model = StripVision(SQUARE_HEADER, n_clubs=2, player_h=SQUARE_PLAYER)
         tensor = torch.from_numpy(image).permute(2, 0, 1).unsqueeze(0).float()
-        out, _assists = model(
-            tensor,
-            torch.zeros(1, ROWS, dtype=torch.bool),
-            torch.ones(1, COLS),
-            torch.zeros(1, ROWS, dtype=torch.long),
-            torch.zeros(1, ROWS, COLS),
-            torch.zeros(1, COLS, 8),
-            torch.zeros(1, dtype=torch.long),
-            torch.zeros(1, COLS, dtype=torch.long),
-            None,
-        )
+        out, _assists = model(tensor, torch.zeros(1, ROWS, dtype=torch.bool), torch.ones(1, COLS))
         self.assertEqual(tuple(out.shape), (1, ROWS, COLS, 4))
         fresh = strip_features(_view())
         stepped = compose_card(fresh, card, _prices(card), target=1)
         self.assertEqual(tuple(int(v) for v in stepped[0, 0]), HOME_ODDS)
         self.assertEqual(tuple(int(v) for v in stepped[0, 2 * CELL_W]), HATCH_FG)
 
-    def test_the_locked_reader_drops_the_other_squad(self) -> None:
-        torch.manual_seed(0)
+    def test_the_locked_reader_has_no_numeric_sidecar(self) -> None:
         model = StripVision(BAND_H, n_clubs=2)
-        torch.nn.init.normal_(model.couple.cross.out_proj.weight, std=0.5)
+        names = [name for name, _param in model.named_parameters()]
+        banned = ("pos_goal", "club_vec", "opp_vec", "form_goal", "club_context", "club_goal", "cross")
+        self.assertFalse(any(any(token in name for token in banned) for name in names))
         image = torch.zeros(1, 3, BAND_H + ROWS * PLAYER_H, COLS * CELL_W)
-        common = (
-            image,
-            torch.zeros(1, ROWS, dtype=torch.bool),
-            torch.ones(1, COLS),
-            torch.zeros(1, ROWS, dtype=torch.long),
-            torch.ones(1, ROWS, COLS),
-            torch.zeros(1, COLS, 8),
-            torch.zeros(1, dtype=torch.long),
-            torch.zeros(1, COLS, dtype=torch.long),
-        )
-        opp = {
-            "position": torch.zeros(1, ROWS, COLS, dtype=torch.long),
-            "minutes": torch.full((1, ROWS, COLS), 90.0),
-            "present": torch.ones(1, ROWS, COLS),
-            "goal_token": torch.ones(1, ROWS, COLS, dtype=torch.long),
-            "assist_token": torch.ones(1, ROWS, COLS, dtype=torch.long),
-            "pad": torch.zeros(1, ROWS, COLS, dtype=torch.bool),
-        }
-        model.eval()
-        without, _assists = model(*common, None)
-        with_squad, _assists = model(*common, opp)
-        self.assertTrue(torch.equal(without, with_squad))
+        out, _assists = model(image, torch.zeros(1, ROWS, dtype=torch.bool), torch.ones(1, COLS))
+        self.assertEqual(tuple(out.shape), (1, ROWS, COLS, 4))
