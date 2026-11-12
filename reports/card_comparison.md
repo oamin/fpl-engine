@@ -11,57 +11,61 @@ symbol, home or away, then sixteen 1X2 squares. The
 other squad is not an input. Concede, regulars, own history,
 opponent history, and the team scoring rate are absent. Minutes,
 position, club, and opponent are not passed again as numbers.
-One reader trains on two views, and both losses update the same
-weights. The horizon view reveals the masked remainder in one shot.
-The column view keeps the true past, shows one next week, and scores
-only that week. Each loss scores each hidden square and each row's
-own hidden bar count. The paint keeps that count on the same row.
-A row holds three squares, and that is the only cap.
-
-Horizon, one shot. The test scores all four cuts of this view.
+Two readers see that card, and their weights stay separate. The
+horizon reader scores each hidden square and each row's own hidden
+bar count. The column reader scores each hidden week's bar count.
+The paint keeps each row's horizon count on that row and moves the
+bars toward the weeks the column reader scores highest. A row whose
+horizon count is zero stays empty. A row holds three squares, and
+that is the only cap.
 
 A bar matches on the same row only. Within one gameweek includes the same
 appearance and either neighboring gameweek. The numbers are totals.
 
-| revealed | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
-|---|---|---:|---:|---:|---:|---:|
-| 20% | goals | 730 | 482 | 103 | 204 | 174 |
-| 20% | assists | 707 | 455 | 75 | 138 | 129 |
-| 40% | goals | 544 | 360 | 78 | 160 | 137 |
-| 40% | assists | 531 | 340 | 57 | 101 | 94 |
-| 60% | goals | 360 | 200 | 50 | 93 | 77 |
-| 60% | assists | 351 | 189 | 36 | 58 | 54 |
-| 80% | goals | 199 | 89 | 23 | 42 | 36 |
-| 80% | assists | 192 | 82 | 14 | 29 | 25 |
-
-Goal and assist bars by position at the 20% cut.
-
-goals: actual/painted GKP 0/21, DEF 103/67, MID 394/217, FWD 233/177.
-assists: actual/painted GKP 4/16, DEF 181/87, MID 434/270, FWD 88/82.
-goal chance: GKP 0.021, DEF 0.014, MID 0.031, FWD 0.098.
-assist chance: GKP 0.016, DEF 0.017, MID 0.039, FWD 0.043.
-
-Next column. The same weights see the true past and one next week.
-Each hidden week below is painted from that week's own column.
+Horizon rows. This paint uses the horizon reader alone.
 
 | revealed | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
 |---|---|---:|---:|---:|---:|---:|
-| 20% | goals | 730 | 0 | 0 | 0 | 0 |
-| 20% | assists | 707 | 0 | 0 | 0 | 0 |
-| 40% | goals | 544 | 0 | 0 | 0 | 0 |
-| 40% | assists | 531 | 0 | 0 | 0 | 0 |
-| 60% | goals | 360 | 0 | 0 | 0 | 0 |
-| 60% | assists | 351 | 0 | 0 | 0 | 0 |
-| 80% | goals | 199 | 0 | 0 | 0 | 0 |
-| 80% | assists | 192 | 0 | 0 | 0 | 0 |
+| 20% | goals | 730 | 593 | 139 | 268 | 249 |
+| 20% | assists | 707 | 480 | 88 | 168 | 155 |
+| 40% | goals | 544 | 434 | 105 | 203 | 185 |
+| 40% | assists | 531 | 350 | 58 | 111 | 106 |
+| 60% | goals | 360 | 272 | 75 | 137 | 120 |
+| 60% | assists | 351 | 210 | 40 | 71 | 67 |
+| 80% | goals | 199 | 126 | 37 | 70 | 58 |
+| 80% | assists | 192 | 92 | 23 | 37 | 33 |
 
-Mean chance of a bar on the guessed column, on a real bar and on a blank: goals 0.106 / 0.041, assists 0.075 / 0.035.
+Horizon rows, by position at the 20% cut.
 
-Both losses update the same weights. Each scores a hidden square and
-each row's own hidden bar count.
-A matching card total with the bars on the empty rows is an error.
-The paint keeps each row's count on that row. The flashcard is the
-only feature input.
+goals: actual/painted GKP 0/0, DEF 103/53, MID 394/312, FWD 233/228.
+assists: actual/painted GKP 4/0, DEF 181/65, MID 434/336, FWD 88/79.
+goal chance: GKP 0.006, DEF 0.012, MID 0.044, FWD 0.126.
+assist chance: GKP 0.006, DEF 0.014, MID 0.047, FWD 0.045.
 
-Wall clock: 149 seconds on CPU.
+Fitted weeks. Each row keeps its horizon count. The bars move
+toward the weeks the column reader scores highest.
+
+| revealed | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
+|---|---|---:|---:|---:|---:|---:|
+| 20% | goals | 730 | 593 | 138 | 252 | 239 |
+| 20% | assists | 707 | 480 | 80 | 155 | 141 |
+| 40% | goals | 544 | 434 | 101 | 200 | 184 |
+| 40% | assists | 531 | 350 | 55 | 102 | 92 |
+| 60% | goals | 360 | 272 | 65 | 124 | 110 |
+| 60% | assists | 351 | 210 | 32 | 61 | 55 |
+| 80% | goals | 199 | 126 | 36 | 70 | 60 |
+| 80% | assists | 192 | 92 | 17 | 30 | 25 |
+
+Fitted weeks, by position at the 20% cut.
+
+goals: actual/painted GKP 0/0, DEF 103/53, MID 394/312, FWD 233/228.
+assists: actual/painted GKP 4/0, DEF 181/65, MID 434/336, FWD 88/79.
+
+Column reader at the 20% cut, mean predicted/actual count and correlation: goals 0.91/1.22 (0.21), assists 0.86/1.18 (0.23).
+
+The two readers keep separate weights. A row whose horizon count
+is zero stays empty. A matching card total with the bars on the
+empty rows is an error. The flashcard is the only feature input.
+
+Wall clock: 145 seconds on CPU.
 

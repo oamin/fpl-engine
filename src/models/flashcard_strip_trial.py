@@ -13,13 +13,12 @@ stepped reader uses this same card: true past, the club, the opponent, the
 venue, the odds, and the minutes on the next week, and every later column removed.
 The other squad is not an input. Minutes, goals, assists, and the position
 square each have their own embedding. One vector for the whole cell lets
-the minute block, which is most of the pixels, own the forecast. Training
-puts both views through one reader. The horizon loss and the next-column
-loss share the weights. The loss is the cross-entropy of each
-hidden square plus the squared relative error of each row's hidden bar
-count. Bars on an empty row are an
-error even when the card's total matches. The paint keeps each row's count
-on that row.
+the minute block, which is most of the pixels, own the forecast. The horizon reader and the column reader are separate. The horizon loss is
+the cross-entropy of each hidden square plus each row's hidden bar count.
+The column loss is the hidden bar count of each week. The paint keeps each
+row's horizon count and moves the bars toward the weeks the column reader
+scores highest. A row whose horizon count is zero stays empty. Bars on an
+empty row are an error even when the card's total matches.
 """
 
 from __future__ import annotations
@@ -32,7 +31,14 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from src.models.flashcard_card_score import _paint, paint_horizon, paint_row, tally_cards, window_count
+from src.models.flashcard_card_score import (
+    _paint,
+    column_count,
+    paint_horizon,
+    paint_row,
+    tally_cards,
+    window_count,
+)
 from src.models.flashcard_step_trial import chop_future
 from src.models.flashcard_odds_trial import load_odds, paint_odds_strip
 from src.models.flashcard_squad_trial import (
@@ -373,6 +379,52 @@ def train_stripped_steps(
             f"horizon {horizon_total / max(seen, 1.0):.3f}",
             flush=True,
         )
+
+
+def train_columns(
+    model: nn.Module,
+    cards: list,
+    league: dict,
+    rng: np.random.Generator,
+    clubs: dict,
+    odds: dict | None,
+    name: str,
+    compose=None,
+) -> None:
+    """Learn each hidden week's bar count. The weights stay off the horizon reader.
+
+    The picture is the same cut card. The loss is the column sum, so the
+    reader is scored on how many events the week holds.
+    """
+    opt = _optimizer(model)
+    squads = squad_index(cards)
+    model.train()
+    for epoch in range(EPOCHS):
+        total = 0.0
+        seen = 0.0
+        order = rng.permutation(len(cards))
+        for start in range(0, len(cards), BATCH):
+            pick = [cards[int(i)] for i in order[start : start + BATCH]]
+            cuts = [sample_cut(card, rng) for card in pick]
+            views = [
+                strip_features(apply_cut(card, league, cut, clubs, squads))
+                for card, cut in zip(pick, cuts, strict=True)
+            ]
+            batch = _stack(views)
+            batch["image"] = torch.from_numpy(_batch_images(views, pick, odds, compose)).permute(0, 3, 1, 2).float().div(255.0)
+            opt.zero_grad()
+            goal_logits, assist_logits = model(batch["image"], batch["row_pad"], batch["column_on"])
+            loss = 0.5 * (
+                column_count(goal_logits.softmax(-1), batch["goal_label"], batch["loss"])
+                + column_count(assist_logits.softmax(-1), batch["assist_label"], batch["loss"])
+            )
+            loss.backward()
+            nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+            opt.step()
+            weight = float((batch["loss"].sum(dim=1) > 0).sum().detach())
+            total += float(loss.detach()) * weight
+            seen += weight
+        print(f"{name} epoch {epoch + 1} column {total / max(seen, 1.0):.3f}", flush=True)
 
 
 def train_coupled(
