@@ -149,6 +149,7 @@ def train_picture(
     rng: np.random.Generator,
     device: torch.device,
     epochs: int = EPOCHS,
+    hide=apply_blank,
 ) -> None:
     targets = event_targets(cells)
     opt = torch.optim.AdamW(model.parameters(), lr=LR, weight_decay=1e-4)
@@ -163,7 +164,7 @@ def train_picture(
             batch_cards = [cards[int(i)] for i in indexes]
             hidden = hidden_events(batch_cards, cuts)
             blank = np.array(cells[indexes], copy=True)
-            apply_blank(blank, hidden)
+            hide(blank, hidden)
             opt.zero_grad()
             colors = model(patches_of(blank).to(device))
             target = torch.from_numpy(targets[indexes]).to(device)
@@ -184,12 +185,14 @@ def paint_picture(
     cuts: list[int],
     device: torch.device,
     keep: int | None = None,
+    hide=apply_blank,
+    read=ink_of,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray | None, np.ndarray, dict[str, int], float]:
     """One picture per card. Bars are read from the painted colors."""
     model.eval()
     images = np.stack([cells[i] for i in range(len(cards))])
     hidden = hidden_events(cards, cuts)
-    apply_blank(images, hidden)
+    hide(images, hidden)
     colors = np.zeros((len(cards), ROWS, EVENT_SLOTS, COLS, 3), dtype=np.float32)
     for start in range(0, len(cards), BATCH):
         stop = min(start + BATCH, len(cards))
@@ -197,7 +200,7 @@ def paint_picture(
         colors[start:stop] = pred.cpu().numpy()
     stamped = stamp_colors(images, colors, hidden)
     present = hidden[:, :, 0, :]
-    ink = ink_of(stamped, present) & hidden
+    ink = read(stamped, present) & hidden
     target = event_targets(cells)
     weight = hidden.astype(np.float32)
     per_square = np.abs(colors[:, :, :, :, None, None, :] - target).mean(axis=(-1, -2, -3))
