@@ -56,6 +56,7 @@ from src.models.flashcard_trial import TEST_SEASON, TRAIN_SEASONS
 
 ROOT_REPORTS = Path(__file__).resolve().parents[2] / "reports"
 OUT = ROOT_REPORTS / "intensity_trial.md"
+OUT_76 = ROOT_REPORTS / "intensity_trial_76.md"
 WIDE_HEADER = LEGACY_HEADER + CELL_W
 
 
@@ -223,28 +224,28 @@ def _copy_shifted_body(narrow: nn.Module, wide: nn.Module) -> int:
     return copied
 
 
-def build_reader(mode: str, shifted: bool) -> nn.Module:
+def build_reader(mode: str, shifted: bool, header_h: int) -> nn.Module:
     torch.manual_seed(SEED)
     if shifted:
-        wide = IntensityReader(WIDE_HEADER, mode=mode, player_h=PLAYER_H)
+        wide = IntensityReader(header_h + CELL_W, mode=mode, player_h=PLAYER_H)
         torch.manual_seed(SEED)
-        model = IntensityReader(LEGACY_HEADER, mode=mode, player_h=PLAYER_H)
+        model = IntensityReader(header_h, mode=mode, player_h=PLAYER_H)
         copied = _copy_shifted_body(model, wide)
-        print(f"{mode} shifted body copied {copied}", flush=True)
+        print(f"{mode} header {header_h} shifted body copied {copied}", flush=True)
         return model
-    return IntensityReader(LEGACY_HEADER, mode=mode, player_h=PLAYER_H)
+    return IntensityReader(header_h, mode=mode, player_h=PLAYER_H)
 
 
-def build_baseline(shifted: bool) -> nn.Module:
+def build_baseline(shifted: bool, header_h: int) -> nn.Module:
     torch.manual_seed(SEED)
     if shifted:
-        wide = StripVision(WIDE_HEADER, dropout=0.1, player_h=PLAYER_H)
+        wide = StripVision(header_h + CELL_W, dropout=0.1, player_h=PLAYER_H)
         torch.manual_seed(SEED)
-        model = StripVision(LEGACY_HEADER, dropout=0.1, player_h=PLAYER_H)
+        model = StripVision(header_h, dropout=0.1, player_h=PLAYER_H)
         copied = _copy_shifted_body(model, wide)
-        print(f"baseline shifted body copied {copied}", flush=True)
+        print(f"baseline header {header_h} shifted body copied {copied}", flush=True)
         return model
-    return StripVision(LEGACY_HEADER, dropout=0.1, player_h=PLAYER_H)
+    return StripVision(header_h, dropout=0.1, player_h=PLAYER_H)
 
 
 def train_intensity(
@@ -255,6 +256,7 @@ def train_intensity(
     clubs: dict,
     odds: dict,
     name: str,
+    compose,
 ) -> None:
     opt = _optimizer(model)
     squads = squad_index(cards)
@@ -274,7 +276,7 @@ def train_intensity(
             ]
             batch = _stack(views)
             batch["image"] = (
-                torch.from_numpy(_batch_images(views, pick, odds, compose_legacy))
+                torch.from_numpy(_batch_images(views, pick, odds, compose))
                 .permute(0, 3, 1, 2)
                 .float()
                 .div(255.0)
@@ -306,6 +308,7 @@ def paint_intensity(
     squads: dict,
     odds: dict,
     cuts: list[int],
+    compose,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     views = [
         strip_features(apply_cut(card, league, cut, clubs, squads))
@@ -313,7 +316,7 @@ def paint_intensity(
     ]
     batch = _stack(views)
     batch["image"] = (
-        torch.from_numpy(_batch_images(views, cards, odds, compose_legacy))
+        torch.from_numpy(_batch_images(views, cards, odds, compose))
         .permute(0, 3, 1, 2)
         .float()
         .div(255.0)
@@ -347,11 +350,12 @@ def score_run(
     clubs: dict,
     squads: dict,
     odds: dict,
+    compose,
 ) -> dict:
     cuts = [cut_at_fraction(card, 0.2) for card in test]
     labels = np.stack([card.goals for card in test])
     minutes = np.stack([card.minutes for card in test])
-    goal_p, _assist_p, row_mu = paint_intensity(model, test, league, clubs, squads, odds, cuts)
+    goal_p, _assist_p, row_mu = paint_intensity(model, test, league, clubs, squads, odds, cuts, compose)
     paint = _paint(goal_p, minutes, test, cuts)
     goals = tally_cards(test, labels, paint, 0, cuts)
     soft = 0.0
@@ -390,63 +394,13 @@ def pass_gate(native: dict, shifted: dict, actual: int = 730) -> bool:
     return gap <= 50 and near
 
 
-def main() -> None:
-    started = time.perf_counter()
-    print("loading intensity trial", flush=True)
-    league = build_league(TRAIN_SEASONS + (TEST_SEASON,))
-    train = build_cards(TRAIN_SEASONS, league)
-    test = build_cards((TEST_SEASON,), league)
-    clubs = fit_clubs(train)
-    squads = squad_index(train + test)
-    odds = load_odds()
-    rows: list[dict] = []
-
-    for shifted, tag in ((False, "native"), (True, "shifted")):
-        model = build_baseline(shifted)
-        train_stripped(
-            model,
-            train,
-            league,
-            np.random.default_rng(SEED),
-            clubs,
-            odds,
-            f"baseline-{tag}",
-            compose_legacy,
-        )
-        rows.append(score_run(model, f"baseline/{tag}", test, league, clubs, squads, odds))
-
-    modes = (
-        ("row", "1_row_intensity"),
-        ("fixture", "3_fixture_intensity"),
-        ("row_ste", "1plus4_row_ste"),
-    )
-    for mode, title in modes:
-        pair: list[dict] = []
-        for shifted, tag in ((False, "native"), (True, "shifted")):
-            model = build_reader(mode, shifted)
-            train_intensity(
-                model,
-                train,
-                league,
-                np.random.default_rng(SEED),
-                clubs,
-                odds,
-                f"{title}-{tag}",
-            )
-            result = score_run(model, f"{title}/{tag}", test, league, clubs, squads, odds)
-            rows.append(result)
-            pair.append(result)
-        print(
-            f"gate {title}: gap {abs(pair[0]['painted'] - pair[1]['painted'])} "
-            f"pass {pass_gate(pair[0], pair[1])}",
-            flush=True,
-        )
-
+def _write_table(path: Path, title: str, card_note: str, rows: list[dict], started: float) -> None:
     lines = [
-        "# Intensity allocation trial",
+        f"# {title}",
         "",
-        "Card: 72-pixel odds / venue / opponent. Goals only change head. Assists stay four-way.",
-        "Native init is seed 0. Shifted init copies the body from a 76-pixel header draw.",
+        card_note,
+        "Native init is seed 0. Shifted init copies the body from a header four pixels taller,",
+        "with the training dropout stream matched to the native run.",
         "Pass: painted gap ≤ 50 and both within 80 of 730 actual goals at the 20% cut.",
         "",
         "| method | init | soft Σ | painted | exact | rows in (0,0.5) | goal chance by position |",
@@ -458,17 +412,112 @@ def main() -> None:
             f"{row['painted']} | {row['exact']} | {row['rows_below_half']}/{row['live_rows']} | "
             f"{row['chance']} |"
         )
-    lines.extend(
-        [
-            "",
-            f"Wall clock: {time.perf_counter() - started:.0f} seconds on CPU.",
-            "",
-        ]
+    lines.extend(["", f"Wall clock: {time.perf_counter() - started:.0f} seconds on CPU.", ""])
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    path.with_suffix(".json").write_text(json.dumps(rows, indent=2) + "\n", encoding="utf-8")
+    print(f"wrote {path}", flush=True)
+
+
+def run_methods(
+    header_h: int,
+    compose,
+    methods: tuple[tuple[str, str], ...],
+    include_baseline: bool,
+) -> list[dict]:
+    league = build_league(TRAIN_SEASONS + (TEST_SEASON,))
+    train = build_cards(TRAIN_SEASONS, league)
+    test = build_cards((TEST_SEASON,), league)
+    clubs = fit_clubs(train)
+    squads = squad_index(train + test)
+    odds = load_odds()
+    rows: list[dict] = []
+    if include_baseline:
+        for shifted, tag in ((False, "native"), (True, "shifted")):
+            model = build_baseline(shifted, header_h)
+            train_stripped(
+                model,
+                train,
+                league,
+                np.random.default_rng(SEED),
+                clubs,
+                odds,
+                f"baseline-{header_h}-{tag}",
+                compose,
+            )
+            rows.append(
+                score_run(model, f"baseline/{tag}", test, league, clubs, squads, odds, compose)
+            )
+    for mode, title in methods:
+        pair: list[dict] = []
+        for shifted, tag in ((False, "native"), (True, "shifted")):
+            model = build_reader(mode, shifted, header_h)
+            train_intensity(
+                model,
+                train,
+                league,
+                np.random.default_rng(SEED),
+                clubs,
+                odds,
+                f"{title}-{header_h}-{tag}",
+                compose,
+            )
+            result = score_run(model, f"{title}/{tag}", test, league, clubs, squads, odds, compose)
+            rows.append(result)
+            pair.append(result)
+        print(
+            f"gate {title} header {header_h}: gap {abs(pair[0]['painted'] - pair[1]['painted'])} "
+            f"pass {pass_gate(pair[0], pair[1])}",
+            flush=True,
+        )
+    return rows
+
+
+def main() -> None:
+    started = time.perf_counter()
+    print("loading intensity trial", flush=True)
+    rows = run_methods(
+        LEGACY_HEADER,
+        compose_legacy,
+        (
+            ("row", "1_row_intensity"),
+            ("fixture", "3_fixture_intensity"),
+            ("row_ste", "1plus4_row_ste"),
+        ),
+        include_baseline=True,
     )
-    OUT.write_text("\n".join(lines) + "\n", encoding="utf-8")
-    (ROOT_REPORTS / "intensity_trial.json").write_text(json.dumps(rows, indent=2) + "\n", encoding="utf-8")
-    print(f"wrote {OUT}", flush=True)
+    _write_table(
+        OUT,
+        "Intensity allocation trial",
+        "Card: 72-pixel odds / venue / opponent. Goals only change head. Assists stay four-way.",
+        rows,
+        started,
+    )
+
+
+def main_76() -> None:
+    from src.models.flashcard_square_trial import HEADER_H as CURRENT_HEADER
+
+    started = time.perf_counter()
+    print("loading 76-pixel intensity trial", flush=True)
+    rows = run_methods(
+        CURRENT_HEADER,
+        None,
+        (("fixture", "3_fixture_intensity"),),
+        include_baseline=True,
+    )
+    _write_table(
+        OUT_76,
+        "Intensity trial on the 76-pixel card",
+        "Card: 76-pixel club / opponent / venue / 1X2. Baseline Poisson and fixture intensity only.",
+        rows,
+        started,
+    )
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+
+    if len(sys.argv) > 1 and sys.argv[1] == "76":
+        main_76()
+    else:
+        main()
