@@ -29,12 +29,15 @@ from src.models.flashcard_square_trial import (
     EVENT_H,
     GIVING,
     HEADER_H,
+    LINE_H,
     MINUTE_H,
     ODDS_Y,
     OPP_H,
+    OVER_C,
     PLAYER_H,
     RECEIVING,
     SQ,
+    UNDER_C,
     compose_binary,
     compose_square,
     minute_squares,
@@ -149,6 +152,10 @@ class SquareCardTests(unittest.TestCase):
         self.assertEqual(_pixel(image, ODDS_Y + 15 * SQ + 1, 1), RECEIVING)
         self.assertEqual(_pixel(image, ODDS_Y + 5 * SQ + 1, CELL_W + 1), GIVING)
         self.assertEqual(_pixel(image, ODDS_Y + 6 * SQ + 1, CELL_W + 1), RECEIVING)
+        total = ODDS_Y + LINE_H
+        self.assertEqual(_pixel(image, total + 1, 1), OVER_C)
+        self.assertEqual(_pixel(image, total + 5 * SQ + 1, 1), OVER_C)
+        self.assertEqual(_pixel(image, total + 6 * SQ + 1, 1), UNDER_C)
         self.assertEqual(_pixel(image, CLUB_H + OPP_H + 1, 1), HOME_C)
         self.assertEqual(_pixel(image, CLUB_H + OPP_H + 1, CELL_W + 1), AWAY_C)
         y = HEADER_H
@@ -216,6 +223,9 @@ class SquareCardTests(unittest.TestCase):
         self.assertEqual(_pixel(image, ODDS_Y + 13 * SQ, 0), (0, 0, 0))
         self.assertEqual(_pixel(image, ODDS_Y + 14 * SQ, 0), (255, 255, 255))
         self.assertEqual(_pixel(image, ODDS_Y + 15 * SQ, 0), (255, 255, 255))
+        self.assertEqual(_pixel(image, ODDS_Y + LINE_H, 0), (0, 0, 0))
+        self.assertEqual(_pixel(image, ODDS_Y + LINE_H + 5 * SQ, 0), (0, 0, 0))
+        self.assertEqual(_pixel(image, ODDS_Y + LINE_H + 6 * SQ, 0), (255, 255, 255))
         self.assertEqual(_pixel(image, CLUB_H + OPP_H, 0), (0, 0, 0))
         self.assertEqual(_pixel(image, CLUB_H + OPP_H, CELL_W), (255, 255, 255))
         y = HEADER_H + MINUTE_H + 2 * EVENT_H

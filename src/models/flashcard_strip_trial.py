@@ -4,9 +4,10 @@ Concede, regulars, own history, opponent history, and the team scoring rate
 are absent from the picture and from every tensor the reader sees. Minutes,
 position, club, and opponent are on the card as squares. They are not passed
 again as numbers. The match rows, from the top, are the assessed club's symbol, the opponent's
-symbol, home or away, then sixteen solid handicap squares. Red from the top
-means the club gives goals. Blue from the bottom means the club receives
-them. The club symbol repeats
+symbol, home or away, then sixteen solid handicap squares and eight solid
+2.5 squares. Red from the top means the club gives goals. Blue from the
+bottom means the club receives them. Orange from the top of the shorter
+bar is over 2.5. The club symbol repeats
 on every column.
 Minutes are six squares of fifteen minutes. One
 goal or assist is one square, and those rows are three squares tall. The

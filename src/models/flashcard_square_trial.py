@@ -1,11 +1,12 @@
 """The default card. One square is the column width.
 
 The match rows, from the top, are the assessed club's symbol, the opponent's
-symbol, home or away, then sixteen solid handicap squares. Red from the top
-means the club gives goals. Blue from the bottom means the club receives
-them. The scale runs from giving 2.75 to receiving 2.75, so a level match
-splits the bar in half. A missing price is hatched. The club symbol is the
-same mark on every column.
+symbol, home or away, then sixteen solid handicap squares and eight solid
+2.5 squares. Red from the top means the club gives goals. Blue from the
+bottom means the club receives them. The scale runs from giving 2.75 to
+receiving 2.75, so a level match splits the bar in half. Orange from the
+top of the shorter bar is over 2.5 and pale blue is under. A missing price
+is hatched. The club symbol is the same mark on every column.
 
 Minutes are six squares and each square is fifteen minutes, filled from the
 bottom: 1 to 15 minutes is the first square, 16 to 30 is the second, and 76
@@ -71,7 +72,7 @@ ODDS_Y = CLUB_H + OPP_H + VENUE_H
 BAR_N = 16
 LINE_SPAN = 2.75
 LINE_H = BAR_N * SQ
-PAINT_TOTAL = False
+PAINT_TOTAL = True
 OU_N = 8
 OU_H = OU_N * SQ if PAINT_TOTAL else 0
 ODDS_H = LINE_H + OU_H
@@ -386,7 +387,7 @@ def main() -> None:
         "# Square card",
         "",
         "Each column shows the club symbol, the opponent symbol, home or away,",
-        "then sixteen solid handicap squares. Minutes are six squares of",
+        "then sixteen solid handicap squares and eight solid 2.5 squares. Minutes are six squares of",
         "fifteen minutes,",
         "filled from the bottom. One goal or assist is one square, and those rows",
         "are three squares tall. The position color is one square. The full painter",
