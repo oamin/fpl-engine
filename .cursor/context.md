@@ -23,6 +23,8 @@ Schema slicing by place-in-chain is picture reading, not a numeric sidecar. Do n
 
 **Stepped single-GW FOV (2026-11-13, complementary, park as default):** same mixer/Tversky; paint only the next GW row, teacher-forced step on holdout (`reports/baudot_stepped_gw.md`). Mean **0.184** (Δ −0.034 vs full-remainder gate 0.218). DEF goals still **103/0/0**. Full-remainder one-shot remains the locked default; stepped stays a complementary diagnostic, not a replacement.
 
+**Gate DEF/assist autopsy (2026-11-13):** `reports/baudot_def_assist_autopsy.md`. DEF soft ink ~0.006 on event and blank; no DEF `g_max` ≥0.05. Minutes differ on true DEF goal weeks; the head does not. Assist gap = DEF blank + weaker MID + FWD assist overpaint (volume ≈ actual overall).
+
 **Superseded as the flashcard comparison gate:** square-card full painter / fixture-intensity stored readers (`GATE_SQUARE_2026_11_12`; `reports/cards/current/` RGB path). Keep those modules for archaeology; new flashcard screens compare to the Baudot gate.
 
 **Stepped RGB column path (parked relative to the gate):** `ColumnFlashcard` / `flashcard_column_picture_trial.py`. Not the default.
