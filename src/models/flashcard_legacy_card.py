@@ -219,7 +219,7 @@ def main() -> None:
         "",
         "Header, from the top: sixteen 1X2 squares, home or away, the opponent symbol.",
         "There is no club row. The header is 72 pixels. The weights are `horizon.pt`.",
-        "This fresh training painted 798 goals at the 20% cut, the same table as f3ecae4.",
+        "Poisson row rates. This run painted the holdout under the absolute count loss.",
         "",
         "| revealed | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |",
         "|---|---|---:|---:|---:|---:|---:|",

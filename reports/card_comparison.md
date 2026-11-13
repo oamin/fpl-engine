@@ -12,10 +12,11 @@ other squad is not an input. Concede, regulars, own history,
 opponent history, and the team scoring rate are absent. Minutes,
 position, club, and opponent are not passed again as numbers.
 Two readers see that card, and their weights stay separate. The
-horizon reader scores each hidden square and each row's own hidden
-bar count. The column reader scores each hidden week's bar count.
-The paint keeps each row's horizon count on that row and moves the
-bars toward the weeks the column reader scores highest. A row whose
+horizon reader scores each hidden square and a Poisson rate on each
+row's hidden bar count. The column reader scores a Poisson rate on
+each hidden week's bar count. Absolute rates pin the volume. The
+paint keeps each row's horizon count on that row and moves the bars
+toward the weeks the column reader scores highest. A row whose
 horizon count is zero stays empty. A row holds three squares, and
 that is the only cap.
 
@@ -26,48 +27,70 @@ Horizon rows. This paint uses the horizon reader alone.
 
 | revealed | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
 |---|---|---:|---:|---:|---:|---:|
-| 20% | goals | 730 | 593 | 139 | 268 | 249 |
-| 20% | assists | 707 | 480 | 88 | 168 | 155 |
-| 40% | goals | 544 | 434 | 105 | 203 | 185 |
-| 40% | assists | 531 | 350 | 58 | 111 | 106 |
-| 60% | goals | 360 | 272 | 75 | 137 | 120 |
-| 60% | assists | 351 | 210 | 40 | 71 | 67 |
-| 80% | goals | 199 | 126 | 37 | 70 | 58 |
-| 80% | assists | 192 | 92 | 23 | 37 | 33 |
+| 20% | goals | 730 | 907 | 170 | 341 | 321 |
+| 20% | assists | 707 | 884 | 144 | 265 | 256 |
+| 40% | goals | 544 | 680 | 125 | 256 | 237 |
+| 40% | assists | 531 | 671 | 111 | 203 | 193 |
+| 60% | goals | 360 | 445 | 92 | 170 | 157 |
+| 60% | assists | 351 | 430 | 75 | 124 | 121 |
+| 80% | goals | 199 | 206 | 47 | 86 | 77 |
+| 80% | assists | 192 | 219 | 40 | 72 | 64 |
 
 Horizon rows, by position at the 20% cut.
 
-goals: actual/painted GKP 0/0, DEF 103/53, MID 394/312, FWD 233/228.
-assists: actual/painted GKP 4/0, DEF 181/65, MID 434/336, FWD 88/79.
-goal chance: GKP 0.006, DEF 0.012, MID 0.044, FWD 0.126.
-assist chance: GKP 0.006, DEF 0.014, MID 0.047, FWD 0.045.
+goals: actual/painted GKP 0/2, DEF 103/132, MID 394/504, FWD 233/269.
+assists: actual/painted GKP 4/5, DEF 181/198, MID 434/544, FWD 88/137.
+goal chance: GKP 0.008, DEF 0.026, MID 0.069, FWD 0.146.
+assist chance: GKP 0.009, DEF 0.037, MID 0.076, FWD 0.073.
+
+Column weeks. This paint uses the column reader alone. Each row
+keeps that reader's own count, and each week is one count down the
+squad.
+
+| revealed | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
+|---|---|---:|---:|---:|---:|---:|
+| 20% | goals | 730 | 732 | 119 | 241 | 219 |
+| 20% | assists | 707 | 736 | 104 | 206 | 190 |
+| 40% | goals | 544 | 564 | 95 | 174 | 167 |
+| 40% | assists | 531 | 548 | 73 | 136 | 127 |
+| 60% | goals | 360 | 357 | 65 | 129 | 114 |
+| 60% | assists | 351 | 365 | 56 | 103 | 94 |
+| 80% | goals | 199 | 162 | 35 | 71 | 59 |
+| 80% | assists | 192 | 164 | 24 | 42 | 38 |
+
+Column weeks, by position at the 20% cut.
+
+goals: actual/painted GKP 0/60, DEF 103/116, MID 394/350, FWD 233/206.
+assists: actual/painted GKP 4/42, DEF 181/170, MID 434/439, FWD 88/85.
 
 Fitted weeks. Each row keeps its horizon count. The bars move
 toward the weeks the column reader scores highest.
 
 | revealed | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |
 |---|---|---:|---:|---:|---:|---:|
-| 20% | goals | 730 | 593 | 138 | 252 | 239 |
-| 20% | assists | 707 | 480 | 80 | 155 | 141 |
-| 40% | goals | 544 | 434 | 101 | 200 | 184 |
-| 40% | assists | 531 | 350 | 55 | 102 | 92 |
-| 60% | goals | 360 | 272 | 65 | 124 | 110 |
-| 60% | assists | 351 | 210 | 32 | 61 | 55 |
-| 80% | goals | 199 | 126 | 36 | 70 | 60 |
-| 80% | assists | 192 | 92 | 17 | 30 | 25 |
+| 20% | goals | 730 | 907 | 168 | 324 | 321 |
+| 20% | assists | 707 | 884 | 135 | 251 | 239 |
+| 40% | goals | 544 | 680 | 126 | 237 | 234 |
+| 40% | assists | 531 | 671 | 94 | 175 | 167 |
+| 60% | goals | 360 | 445 | 85 | 159 | 146 |
+| 60% | assists | 351 | 430 | 62 | 107 | 103 |
+| 80% | goals | 199 | 206 | 44 | 88 | 74 |
+| 80% | assists | 192 | 219 | 35 | 64 | 56 |
 
 Fitted weeks, by position at the 20% cut.
 
-goals: actual/painted GKP 0/0, DEF 103/53, MID 394/312, FWD 233/228.
-assists: actual/painted GKP 4/0, DEF 181/65, MID 434/336, FWD 88/79.
+goals: actual/painted GKP 0/2, DEF 103/132, MID 394/504, FWD 233/269.
+assists: actual/painted GKP 4/5, DEF 181/198, MID 434/544, FWD 88/137.
 
-Column reader at the 20% cut, mean predicted/actual count and correlation: goals 0.91/1.22 (0.21), assists 0.86/1.18 (0.23).
+Column reader at the 20% cut, mean predicted/actual count and correlation: goals 1.26/1.22 (0.18), assists 1.25/1.18 (0.24).
 
-The two readers keep separate weights. A row whose horizon count
-is zero stays empty. A matching card total with the bars on the
-empty rows is an error. The flashcard is the only feature input.
-The picture, the layout, and both state dicts are stored in
-`reports/cards/current/`. The table above is scored from those files.
+The two readers keep separate weights. Row and week counts are
+Poisson rates, so the volume is absolute. A row whose horizon
+count is zero stays empty. A matching card total with the bars
+on the empty rows is an error. The flashcard is the only feature
+input. The picture, the layout, and both state dicts are stored
+in `reports/cards/current/`. The table above is scored from those
+files.
 
-Wall clock: 149 seconds on CPU.
+Wall clock: 152 seconds on CPU.
 

@@ -14,11 +14,12 @@ venue, the odds, and the minutes on the next week, and every later column remove
 The other squad is not an input. Minutes, goals, assists, and the position
 square each have their own embedding. One vector for the whole cell lets
 the minute block, which is most of the pixels, own the forecast. The horizon reader and the column reader are separate. The horizon loss is
-the cross-entropy of each hidden square plus each row's hidden bar count.
-The column loss is the hidden bar count of each week. The paint keeps each
-row's horizon count and moves the bars toward the weeks the column reader
-scores highest. A row whose horizon count is zero stays empty. Bars on an
-empty row are an error even when the card's total matches.
+the cross-entropy of each hidden square plus a Poisson rate on each row's
+hidden bar count. The column loss is the same cell term, the same row rate,
+and a Poisson rate on each week's bar count. Absolute rates pin the volume.
+The paint keeps each row's horizon count and moves the bars toward the weeks
+the column reader scores highest. A row whose horizon count is zero stays
+empty. Bars on an empty row are an error even when the card's total matches.
 """
 
 from __future__ import annotations
@@ -381,6 +382,30 @@ def train_stripped_steps(
         )
 
 
+def _column_batch_loss(
+    goal_logits: torch.Tensor, assist_logits: torch.Tensor, batch: dict
+) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    """Cell cross-entropy plus Poisson rates on rows and on weeks.
+
+    The week rate alone can put the bars on the wrong rows. Scoring each
+    row's count as well keeps the position order while the week rate still
+    pins how many events the fixture holds.
+    """
+    mask = batch["loss"]
+    goal_p = goal_logits.softmax(-1)
+    assist_p = assist_logits.softmax(-1)
+    cell = 0.5 * (
+        _nll(goal_logits, batch["goal_label"], mask) + _nll(assist_logits, batch["assist_label"], mask)
+    )
+    rows = 0.5 * (
+        window_count(goal_p, batch["goal_label"], mask) + window_count(assist_p, batch["assist_label"], mask)
+    )
+    weeks = 0.5 * (
+        column_count(goal_p, batch["goal_label"], mask) + column_count(assist_p, batch["assist_label"], mask)
+    )
+    return cell + rows + weeks, cell.detach(), weeks.detach()
+
+
 def train_columns(
     model: nn.Module,
     cards: list,
@@ -393,14 +418,16 @@ def train_columns(
 ) -> None:
     """Learn each hidden week's bar count. The weights stay off the horizon reader.
 
-    The picture is the same cut card. The loss is the column sum, so the
-    reader is scored on how many events the week holds.
+    The picture is the same cut card. Each square is scored, and each week is
+    scored as a Poisson rate down the squad, so the reader cannot dump the
+    week's bars on one position.
     """
     opt = _optimizer(model)
     squads = squad_index(cards)
     model.train()
     for epoch in range(EPOCHS):
         total = 0.0
+        week_total = 0.0
         seen = 0.0
         order = rng.permutation(len(cards))
         for start in range(0, len(cards), BATCH):
@@ -414,17 +441,19 @@ def train_columns(
             batch["image"] = torch.from_numpy(_batch_images(views, pick, odds, compose)).permute(0, 3, 1, 2).float().div(255.0)
             opt.zero_grad()
             goal_logits, assist_logits = model(batch["image"], batch["row_pad"], batch["column_on"])
-            loss = 0.5 * (
-                column_count(goal_logits.softmax(-1), batch["goal_label"], batch["loss"])
-                + column_count(assist_logits.softmax(-1), batch["assist_label"], batch["loss"])
-            )
+            loss, cell, weeks = _column_batch_loss(goal_logits, assist_logits, batch)
             loss.backward()
             nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             opt.step()
-            weight = float((batch["loss"].sum(dim=1) > 0).sum().detach())
-            total += float(loss.detach()) * weight
+            weight = float(batch["loss"].sum().detach())
+            total += float(cell) * weight
+            week_total += float(weeks) * weight
             seen += weight
-        print(f"{name} epoch {epoch + 1} column {total / max(seen, 1.0):.3f}", flush=True)
+        print(
+            f"{name} epoch {epoch + 1} train nll {total / max(seen, 1.0):.3f} "
+            f"column {week_total / max(seen, 1.0):.3f}",
+            flush=True,
+        )
 
 
 def train_coupled(
