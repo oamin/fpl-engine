@@ -148,13 +148,14 @@ class IntensityReader(nn.Module):
         if self.mode == "fixture":
             pooled = header_tok
             live = column_on > 0.5
-            mu = F.softplus(self.goal_mu(pooled).squeeze(-1))
-            mu = mu * live.to(mu.dtype)
+            col_mu = F.softplus(self.goal_mu(pooled).squeeze(-1))
+            col_mu = col_mu * live.to(col_mu.dtype)
             logits = score.masked_fill(mask <= 0, -1e9)
             share = torch.softmax(logits.transpose(1, 2), dim=-1).transpose(1, 2)
             share = torch.where(mask > 0, share, torch.zeros_like(share))
-            presence = (mu[:, None, :] * share).clamp(0.0, 1.0)
+            presence = (col_mu[:, None, :] * share).clamp(0.0, 1.0)
             row_mu = presence.sum(dim=-1)
+            mu = col_mu
         else:
             live = mask.sum(dim=-1, keepdim=True).clamp_min(1.0)
             pooled = (out * mask.unsqueeze(-1)).sum(dim=2) / live
@@ -165,6 +166,7 @@ class IntensityReader(nn.Module):
             share = torch.where(mask > 0, share, torch.zeros_like(share))
             presence = (mu.unsqueeze(-1) * share).clamp(0.0, 1.0)
             row_mu = mu
+            col_mu = presence.sum(dim=1)
         height_p = torch.softmax(height, dim=-1)
         goal = torch.zeros(out.shape[0], ROWS, COLS, 4, device=out.device, dtype=out.dtype)
         goal[..., 0] = 1.0 - presence
@@ -174,6 +176,8 @@ class IntensityReader(nn.Module):
             "assist_logits": assist,
             "presence": presence,
             "row_mu": row_mu,
+            "col_mu": col_mu,
+            "share": share,
             "height_logits": height,
             "goal_probs": goal,
         }
@@ -209,6 +213,108 @@ def intensity_goal_loss(
     else:
         height_loss = presence.new_zeros(())
     return cell_loss + count_loss + height_loss, count_loss.detach()
+
+
+def assist_column_probs(assist_logits: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
+    """Build assist class probs from a column-owned rate and competitive share."""
+    score = assist_logits[..., 1:].logsumexp(dim=-1).masked_fill(mask <= 0, -1e9)
+    share = torch.softmax(score.transpose(1, 2), dim=-1).transpose(1, 2)
+    share = torch.where(mask > 0, share, torch.zeros_like(share))
+    live = mask.sum(dim=1) > 0
+    scale = F.softplus(score.masked_fill(mask <= 0, 0.0).sum(dim=1) / mask.sum(dim=1).clamp_min(1.0))
+    col_mu = scale * live.to(share.dtype)
+    presence = (col_mu[:, None, :] * share).clamp(0.0, 1.0)
+    height = torch.softmax(assist_logits[..., 1:], dim=-1)
+    probs = torch.zeros_like(assist_logits)
+    probs[..., 0] = 1.0 - presence
+    probs[..., 1:] = presence.unsqueeze(-1) * height
+    return probs
+
+
+def _column_share_loss(
+    share: torch.Tensor,
+    labels: torch.Tensor,
+    mask: torch.Tensor,
+    hit_col: torch.Tensor,
+) -> torch.Tensor:
+    """Listwise share for one column: scorers above blanks, mass on scorers.
+
+    Softmax CE alone can leave residual mass on one never-scoring row. A
+    one-bar week then paints that row. The column is one ranked list: every
+    scorer must outrank every blank, and blank mass is penalised.
+    """
+    target = (labels > 0).to(share.dtype) * mask
+    target = target / target.sum(dim=1, keepdim=True).clamp_min(1e-8)
+    alloc = -(target * share.clamp_min(1e-8).log()).sum(dim=1)
+    scorers = mask.bool() & (labels > 0)
+    blanks = mask.bool() & (labels <= 0)
+    blank_mass = (share * blanks.to(share.dtype)).sum(dim=1)
+    min_scorer = share.masked_fill(~scorers, 1e9).amin(dim=1)
+    max_blank = share.masked_fill(~blanks, -1e9).amax(dim=1)
+    active = hit_col & scorers.any(dim=1) & blanks.any(dim=1)
+    rank = F.relu(max_blank - min_scorer + 0.05)
+    if bool(active.any()):
+        return ((alloc + blank_mass + rank) * active).sum() / active.sum().clamp_min(1.0)
+    if bool(hit_col.any()):
+        return ((alloc + blank_mass) * hit_col).sum() / hit_col.sum().clamp_min(1.0)
+    return share.new_zeros(())
+
+
+def column_whole_goal_loss(
+    pack: dict[str, torch.Tensor],
+    labels: torch.Tensor,
+    mask: torch.Tensor,
+) -> tuple[torch.Tensor, torch.Tensor]:
+    """One live column is one object: week rate, then who in the squad.
+
+    Per-cell Bernoulli is the same trap as per-cell horizon zeros. The week
+    owns a Poisson rate. Rows compete for that mass with a single share, so a
+    position that never scores cannot keep the bars.
+    """
+    col_mu = pack["col_mu"]
+    share = pack["share"]
+    actual_col = ((labels > 0).to(col_mu.dtype) * mask).sum(dim=1)
+    live_col = mask.sum(dim=1) > 0
+    rate = col_mu.clamp_min(1e-8)
+    count_term = rate - actual_col * rate.log()
+    count_loss = (count_term * live_col).sum() / live_col.sum().clamp_min(1.0)
+    hit_col = actual_col > 0
+    alloc_loss = _column_share_loss(share, labels, mask, hit_col)
+    hit = mask.bool() & (labels > 0)
+    if bool(hit.any()):
+        height_target = labels.clamp(min=1, max=3).long() - 1
+        height_loss = F.cross_entropy(pack["height_logits"][hit], height_target[hit])
+    else:
+        height_loss = share.new_zeros(())
+    return count_loss + alloc_loss + height_loss, count_loss.detach()
+
+
+def column_whole_assist_loss(
+    assist_logits: torch.Tensor,
+    labels: torch.Tensor,
+    mask: torch.Tensor,
+) -> tuple[torch.Tensor, torch.Tensor]:
+    """Same whole-column object for assists: week rate, then who among the squad."""
+    score = assist_logits[..., 1:].logsumexp(dim=-1).masked_fill(mask <= 0, -1e9)
+    share = torch.softmax(score.transpose(1, 2), dim=-1).transpose(1, 2)
+    share = torch.where(mask > 0, share, torch.zeros_like(share))
+    actual_col = ((labels > 0).to(share.dtype) * mask).sum(dim=1)
+    live_col = mask.sum(dim=1) > 0
+    # Column-owned rate: competitive share times a softplus scale from the
+    # same scores, not a sum of independent cell Bernoullis.
+    scale = F.softplus(score.masked_fill(mask <= 0, 0.0).sum(dim=1) / mask.sum(dim=1).clamp_min(1.0))
+    col_mu = scale * live_col.to(share.dtype)
+    rate = col_mu.clamp_min(1e-8)
+    count_loss = ((rate - actual_col * rate.log()) * live_col).sum() / live_col.sum().clamp_min(1.0)
+    hit_col = actual_col > 0
+    alloc_loss = _column_share_loss(share, labels, mask, hit_col)
+    hit = mask.bool() & (labels > 0)
+    if bool(hit.any()):
+        height_target = labels.clamp(min=1, max=3).long()
+        height_loss = F.cross_entropy(assist_logits[hit], height_target[hit])
+    else:
+        height_loss = share.new_zeros(())
+    return count_loss + alloc_loss + height_loss, count_loss.detach()
 
 
 def _copy_shifted_body(narrow: nn.Module, wide: nn.Module) -> int:
