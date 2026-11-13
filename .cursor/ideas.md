@@ -16,6 +16,10 @@ Picture-only teaching still holds. The **locked default** is Baudot + learnable 
 
 Same card, FOV, learnable Tversky. `1_deeper_mixer` (depth-2 residual time/squad attn) mean **0.156** (Δ −0.062). `2_block_cnn` (schema 1D + temporal conv) mean **0.138** (Δ −0.080). Both overpaint (e.g. 20% goals 876 / 1320 vs gate 701) and lose every cell. Report: `reports/baudot_model_variants.md`. Do not promote; do not deepen further without a new pre-registered idea.
 
+## Parked — Baudot role paint / DEF-goal aux (2026-11-13)
+
+Targeted at gate DEF goals **103/0/0** and assist miss. `1_role_paint` and `2_role_paint_dual` still **DEF 0**. `3_def_goal_aux` (FN-heavy DEF goals, λ=0.35) paints **103/78/5** — volume without placement; mean **0.157**. DEF assists stay **181/0/0**. Report: `reports/baudot_role_paint.md`. Do not reopen equal per-pos or DEF-only loss weight without new dots on the card.
+
 ## Parked — cell-posterior column allocation (2026-11-13)
 
 Stepped column trials that score cells / shares / top-k paint (GKP residual on one-bar weeks). Parked in favor of whole-strip picture matching. Keep the reports for archaeology; do not extend the share/rank stack.
