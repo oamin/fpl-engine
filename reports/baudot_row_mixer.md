@@ -2,45 +2,24 @@
 
 Exploratory trial (not a gated score comparison).
 
-## Card format
+Train: 2022-23, 2023-24, 2024-25 (60 cards). Test: 2025-26 (20 cards).
+FOV: all past GW rows true; remainder G/A blank; one-shot paint of the remainder window.
+IDs: 1670 unique names, ID_BITS=11. Metrics match `tally_row` + `balanced_score`.
 
-- GW as **rows** (left→right bits).
-- Header: club 8 · opp 8 · odds 12 (assessed win ON · draw BLANK · opp win ON).
-- Player: role 4 + id **11** + mins 6 + G 3 + A 3.
-- Player IDs: unique by normalised name across closed seasons (1670 names; ID_BITS=11).
+| revealed | channel | actual events | painted events | hits | actual ±1 | painted ±1 | score |
+|---|---|---:|---:|---:|---:|---:|---:|
+| 20% | goals | 730 | 958 | 244 | 320 | 490 | 0.220 |
+| 20% | assists | 707 | 1014 | 172 | 213 | 343 | 0.139 |
+| 40% | goals | 544 | 905 | 219 | 281 | 443 | 0.182 |
+| 40% | assists | 531 | 941 | 153 | 177 | 287 | 0.117 |
+| 60% | goals | 360 | 658 | 157 | 197 | 316 | 0.169 |
+| 60% | assists | 351 | 687 | 116 | 136 | 217 | 0.114 |
+| 80% | goals | 199 | 381 | 90 | 111 | 170 | 0.162 |
+| 80% | assists | 192 | 402 | 64 | 79 | 117 | 0.103 |
 
-## Model / FOV
+Hits = same player-GW appearance. ±1 = event GW matched within one gameweek (actual→painted / painted→actual). Score = hit F1 × volume ratio (`balanced_score` in `flashcard_card_score.py`).
 
-Block-token mixer sees **all past GW rows** (true events). Remainder rows keep club/opp/odds/who/mins with **G/A blank**. One forward paints the **entire remainder event window**. Loss = Soft-Dice + 0.05 BCE on that window only. Cuts: 20%, 40%, 60%, 80%. No μ/share/argmax.
-
-Train seasons: 2022-23, 2023-24, 2024-25 (60 club cards). Test: 2025-26 (20 cards).
-
-## Holdout — volume
-
-| channel | actual bars | painted bars | paint ratio | GKP painted |
-|---|---:|---:|---:|---:|
-| goals | 2016 | 2902 | 1.44× | 0 |
-| assists | 1883 | 3044 | 1.62× | — |
-
-## Holdout — blanks vs real events (pooled cuts)
-
-| channel | blank cells | kept blank | false paint | event cells | exact on events | within ±1 on events |
-|---|---:|---:|---:|---:|---:|---:|
-| goals | 38284 | 36092 | 2192 | 1833 | 602 (0.33) | 1764 (0.96) |
-| assists | 38336 | 35797 | 2539 | 1781 | 454 (0.25) | 1730 (0.97) |
-
-## By cut
-
-| cut | channel | actual | painted | event exact rate | event within±1 |
-|---|---|---:|---:|---:|---:|
-| 20% | goals | 805 | 958 | 0.28 | 0.96 |
-| 20% | assists | 749 | 1014 | 0.22 | 0.96 |
-| 40% | goals | 598 | 905 | 0.34 | 0.97 |
-| 40% | assists | 558 | 941 | 0.26 | 0.98 |
-| 60% | goals | 394 | 658 | 0.38 | 0.96 |
-| 60% | assists | 372 | 687 | 0.30 | 0.97 |
-| 80% | goals | 219 | 381 | 0.39 | 0.96 |
-| 80% | assists | 204 | 402 | 0.29 | 0.98 |
+GKP painted goal events by cut: 20%=0, 40%=0, 60%=0, 80%=0.
 
 Final train loss: 0.7637.
 

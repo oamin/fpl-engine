@@ -29,6 +29,7 @@ import torch
 import torch.nn as nn
 from PIL import Image, ImageDraw, ImageFont
 
+from src.models.flashcard_card_score import balanced_score, tally_row
 from src.models.flashcard_odds_trial import column_odds, load_odds
 from src.models.flashcard_squad_trial import (
     SquadCard,
@@ -479,87 +480,66 @@ def train_mixer(
     return history
 
 
-def _empty_channel() -> dict:
-    return {
-        "cells": 0,
-        "actual_bars": 0,
-        "painted_bars": 0,
-        "blank_cells": 0,
-        "blank_kept_blank": 0,
-        "blank_false_paint": 0,
-        "event_cells": 0,
-        "event_exact": 0,
-        "event_within1": 0,
-        "gkp_painted": 0,
-    }
-
-
-def _add_channel(dst: dict, actual: int, painted: int, is_gkp: bool = False) -> None:
-    dst["cells"] += 1
-    dst["actual_bars"] += actual
-    dst["painted_bars"] += painted
-    if actual == 0:
-        dst["blank_cells"] += 1
-        if painted == 0:
-            dst["blank_kept_blank"] += 1
-        else:
-            dst["blank_false_paint"] += 1
-    else:
-        dst["event_cells"] += 1
-        if actual == painted:
-            dst["event_exact"] += 1
-        if abs(actual - painted) <= 1:
-            dst["event_within1"] += 1
-    if is_gkp:
-        dst["gkp_painted"] += painted
-
-
-def _finalize_channel(src: dict) -> dict:
-    ev = max(src["event_cells"], 1)
-    return {
-        **src,
-        "event_exact_rate": src["event_exact"] / ev,
-        "event_within1_rate": src["event_within1"] / ev,
-        "paint_ratio": src["painted_bars"] / max(src["actual_bars"], 1),
-    }
+def _channel_slice(channel: str) -> slice:
+    return slice(0, GOAL_BITS) if channel == "goals" else slice(GOAL_BITS, EVENT_BITS)
 
 
 @torch.no_grad()
 def evaluate_mixer(model: BlockTokenMixer, cards: list[BaudotCard], device: torch.device) -> dict:
-    """One-shot remainder paint at each cut fraction; split blanks vs real events."""
+    """One-shot remainder paint; familiar tally_row + balanced_score table."""
     model.eval()
-    by_cut: dict[str, dict] = {}
-    pooled_g, pooled_a = _empty_channel(), _empty_channel()
+    rows: list[dict] = []
+    gkp_by_cut: dict[str, int] = {}
     for frac in CUT_FRACS:
-        g_tot, a_tot = _empty_channel(), _empty_channel()
-        for card in cards:
-            cut = cut_at_fraction(card, frac)
-            view = remainder_view(card, cut)
-            pad = _player_pad(card)
-            pred = model(
-                torch.from_numpy(view["bits"][None]).to(device),
-                torch.from_numpy(view["row_on"][None]).to(device),
-                torch.from_numpy(pad[None]).to(device),
-            )[0].cpu().numpy()
-            for gw in range(cut, card.n_fixtures):
+        for channel in ("goals", "assists"):
+            totals = {key: 0 for key in ("actual", "painted", "exact", "actual_within", "painted_within")}
+            gkp_painted = 0
+            sl = _channel_slice(channel)
+            for card in cards:
+                cut = cut_at_fraction(card, frac)
+                view = remainder_view(card, cut)
+                pad = _player_pad(card)
+                pred = model(
+                    torch.from_numpy(view["bits"][None]).to(device),
+                    torch.from_numpy(view["row_on"][None]).to(device),
+                    torch.from_numpy(pad[None]).to(device),
+                )[0].cpu().numpy()
                 for row in range(card.n_players):
-                    if pad[row] or not view["present"][row, gw]:
+                    if pad[row]:
                         continue
-                    ag = int(view["target"][row, gw, :GOAL_BITS].sum())
-                    aa = int(view["target"][row, gw, GOAL_BITS:].sum())
-                    pg = int((pred[row, gw, :GOAL_BITS] >= 0.5).sum())
-                    pa = int((pred[row, gw, GOAL_BITS:] >= 0.5).sum())
-                    is_gkp = int(card.position[row]) == 0
-                    _add_channel(g_tot, ag, pg, is_gkp=is_gkp)
-                    _add_channel(a_tot, aa, pa, is_gkp=False)
-                    _add_channel(pooled_g, ag, pg, is_gkp=is_gkp)
-                    _add_channel(pooled_a, aa, pa, is_gkp=False)
-        by_cut[f"{frac:.0%}"] = {"goals": _finalize_channel(g_tot), "assists": _finalize_channel(a_tot)}
-    return {
-        "cuts": by_cut,
-        "pooled": {"goals": _finalize_channel(pooled_g), "assists": _finalize_channel(pooled_a)},
-        "gkp_painted_goals": pooled_g["gkp_painted"],
-    }
+                    cols = [gw for gw in range(cut, card.n_fixtures) if view["present"][row, gw]]
+                    if not cols:
+                        continue
+                    actual = np.array(
+                        [int(view["target"][row, gw, sl].sum()) for gw in cols], dtype=np.int64
+                    )
+                    painted = np.array(
+                        [int((pred[row, gw, sl] >= 0.5).sum()) for gw in cols], dtype=np.int64
+                    )
+                    part = tally_row(card.gw[cols], actual, painted)
+                    for key in totals:
+                        totals[key] += part[key]
+                    if channel == "goals" and int(card.position[row]) == 0:
+                        gkp_painted += int((painted > 0).sum())
+            score = balanced_score(totals)
+            row = {
+                "revealed": f"{frac:.0%}",
+                "channel": channel,
+                "actual": totals["actual"],
+                "painted": totals["painted"],
+                "hits": totals["exact"],
+                "actual_within_1": totals["actual_within"],
+                "painted_within_1": totals["painted_within"],
+                "hit_rate": score["hits"],
+                "volume": score["volume"],
+                "score": score["score"],
+                "gkp_painted_events": gkp_painted,
+            }
+            rows.append(row)
+        gkp_by_cut[f"{frac:.0%}"] = next(
+            r["gkp_painted_events"] for r in rows if r["revealed"] == f"{frac:.0%}" and r["channel"] == "goals"
+        )
+    return {"rows": rows, "gkp_painted_goals_by_cut": gkp_by_cut}
 
 
 def render_season_card(card: BaudotCard, path: Path, title: str | None = None) -> Path:
@@ -645,74 +625,33 @@ def render_teach_diagram(path: Path) -> Path:
 
 def write_report(stats: dict, train_n: int, test_n: int, history: list[float], name_n: int) -> Path:
     path = REPORTS / "baudot_row_mixer.md"
-    pooled = stats["pooled"]
     lines = [
         "# Baudot row-card block-token mixer (full past + one-shot remainder)",
         "",
         "Exploratory trial (not a gated score comparison).",
         "",
-        "## Card format",
+        f"Train: {', '.join(TRAIN_SEASONS)} ({train_n} cards). Test: {TEST_SEASON} ({test_n} cards).",
+        "FOV: all past GW rows true; remainder G/A blank; one-shot paint of the remainder window.",
+        f"IDs: {name_n} unique names, ID_BITS={ID_BITS}. Metrics match `tally_row` + `balanced_score`.",
         "",
-        f"- GW as **rows** (left→right bits).",
-        f"- Header: club {CLUB_BITS} · opp {OPP_BITS} · odds {ODDS_BITS} "
-        "(assessed win ON · draw BLANK · opp win ON).",
-        f"- Player: role {ROLE_BITS} + id **{ID_BITS}** + mins {MINS_BITS} + G {GOAL_BITS} + A {ASSIST_BITS}.",
-        f"- Player IDs: unique by normalised name across closed seasons "
-        f"({name_n} names; ID_BITS={ID_BITS}).",
-        "",
-        "## Model / FOV",
-        "",
-        "Block-token mixer sees **all past GW rows** (true events). Remainder rows "
-        "keep club/opp/odds/who/mins with **G/A blank**. One forward paints the "
-        "**entire remainder event window**. Loss = Soft-Dice + 0.05 BCE on that "
-        "window only. Cuts: 20%, 40%, 60%, 80%. No μ/share/argmax.",
-        "",
-        f"Train seasons: {', '.join(TRAIN_SEASONS)} ({train_n} club cards). "
-        f"Test: {TEST_SEASON} ({test_n} cards).",
-        "",
-        "## Holdout — volume",
-        "",
-        "| channel | actual bars | painted bars | paint ratio | GKP painted |",
-        "|---|---:|---:|---:|---:|",
-        (
-            f"| goals | {pooled['goals']['actual_bars']} | {pooled['goals']['painted_bars']} | "
-            f"{pooled['goals']['paint_ratio']:.2f}× | {stats['gkp_painted_goals']} |"
-        ),
-        (
-            f"| assists | {pooled['assists']['actual_bars']} | {pooled['assists']['painted_bars']} | "
-            f"{pooled['assists']['paint_ratio']:.2f}× | — |"
-        ),
-        "",
-        "## Holdout — blanks vs real events (pooled cuts)",
-        "",
-        "| channel | blank cells | kept blank | false paint | event cells | exact on events | within ±1 on events |",
-        "|---|---:|---:|---:|---:|---:|---:|",
+        "| revealed | channel | actual events | painted events | hits | actual ±1 | painted ±1 | score |",
+        "|---|---|---:|---:|---:|---:|---:|---:|",
     ]
-    for name in ("goals", "assists"):
-        c = pooled[name]
+    for row in stats["rows"]:
         lines.append(
-            f"| {name} | {c['blank_cells']} | {c['blank_kept_blank']} | {c['blank_false_paint']} | "
-            f"{c['event_cells']} | {c['event_exact']} ({c['event_exact_rate']:.2f}) | "
-            f"{c['event_within1']} ({c['event_within1_rate']:.2f}) |"
+            f"| {row['revealed']} | {row['channel']} | {row['actual']} | {row['painted']} | "
+            f"{row['hits']} | {row['actual_within_1']} | {row['painted_within_1']} | {row['score']:.3f} |"
         )
     lines.extend(
         [
             "",
-            "## By cut",
+            "Hits = same player-GW appearance. ±1 = event GW matched within one gameweek "
+            "(actual→painted / painted→actual). Score = hit F1 × volume ratio "
+            "(`balanced_score` in `flashcard_card_score.py`).",
             "",
-            "| cut | channel | actual | painted | event exact rate | event within±1 |",
-            "|---|---|---:|---:|---:|---:|",
-        ]
-    )
-    for cut, block in stats["cuts"].items():
-        for name in ("goals", "assists"):
-            c = block[name]
-            lines.append(
-                f"| {cut} | {name} | {c['actual_bars']} | {c['painted_bars']} | "
-                f"{c['event_exact_rate']:.2f} | {c['event_within1_rate']:.2f} |"
-            )
-    lines.extend(
-        [
+            "GKP painted goal events by cut: "
+            + ", ".join(f"{k}={v}" for k, v in stats["gkp_painted_goals_by_cut"].items())
+            + ".",
             "",
             f"Final train loss: {history[-1]:.4f}." if history else "",
             "",
