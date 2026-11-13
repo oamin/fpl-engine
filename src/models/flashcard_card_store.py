@@ -50,15 +50,23 @@ def save_reader(directory: Path, name: str, model: nn.Module, meta: dict) -> Non
 
 def load_reader(directory: Path, name: str) -> nn.Module:
     """Build the reader described by `name.json` and load `name.pt`."""
+    from src.models.flashcard_intensity_trial import IntensityReader
     from src.models.flashcard_strip_trial import StripVision
 
     directory = Path(directory)
     meta = json.loads((directory / f"{name}.json").read_text(encoding="utf-8"))
-    model = StripVision(
-        int(meta["header_h"]),
-        dropout=float(meta.get("dropout", 0.1)),
-        player_h=int(meta["player_h"]),
-    )
+    dropout = float(meta.get("dropout", 0.1))
+    header_h = int(meta["header_h"])
+    player_h = int(meta["player_h"])
+    if meta.get("arch") == "fixture_intensity":
+        model = IntensityReader(
+            header_h,
+            mode=str(meta.get("mode", "fixture")),
+            dropout=dropout,
+            player_h=player_h,
+        )
+    else:
+        model = StripVision(header_h, dropout=dropout, player_h=player_h)
     state = torch.load(directory / f"{name}.pt", map_location="cpu", weights_only=True)
     model.load_state_dict(state)
     model.eval()

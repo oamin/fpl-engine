@@ -11,16 +11,13 @@ symbol, home or away, sixteen odds squares, six minute squares of fifteen
 minutes, one
 position square, and one square per goal or assist. Concede, regulars, own
 history, opponent history, and the team scoring rate are absent. Minutes,
-position, club, and opponent are not passed again as numbers. Two readers
-see the card, and their weights stay separate. The horizon reader scores
-each hidden square and each row's own hidden bar count with a Poisson
-rate. The column reader scores each hidden week's bar count the same way.
-Absolute row rates pin the card's volume; a relative row scale does not.
-The paint keeps each row's horizon count on that row and moves the bars
-toward the weeks the column reader scores highest. A row whose horizon
-count is zero stays empty. A card whose total is right still fails when
-the bars sit on the empty rows. A row holds three squares, and that is
-the only cap.
+position, club, and opponent are not passed again as numbers. Goals use
+fixture intensity: the match header owns the week's expected bar total,
+then the squad shares it. Assists keep a four-way head. Two readers see
+the card, and their weights stay separate. The paint keeps each row's
+horizon count on that row and moves the bars toward the weeks the column
+reader scores highest. A row whose horizon count is zero stays empty. A
+row holds three squares, and that is the only cap.
 """
 
 from __future__ import annotations
@@ -439,14 +436,20 @@ def main() -> None:
     from src.models.flashcard_square_trial import CELL_W, CLUB_H, HEADER_H, ODDS_H, ODDS_Y, OPP_H, PLAYER_H, VENUE_H
     from src.models.flashcard_square_trial import compose_square
     from src.models.flashcard_squad_trial import EPOCHS, apply_cut
-    from src.models.flashcard_strip_trial import StripVision, paint_stripped, strip_features, train_columns, train_stripped
+    from src.models.flashcard_strip_trial import (
+        default_reader,
+        paint_stripped,
+        strip_features,
+        train_columns,
+        train_stripped,
+    )
 
     odds = load_odds()
     torch.manual_seed(SEED)
-    horizon = StripVision(HEADER_H, dropout=0.1, n_clubs=n_clubs, player_h=PLAYER_H)
+    horizon = default_reader(HEADER_H, dropout=0.1, n_clubs=n_clubs, player_h=PLAYER_H)
     train_stripped(horizon, train, league, np.random.default_rng(SEED), clubs, odds, "horizon")
     torch.manual_seed(SEED + 1)
-    weeks = StripVision(HEADER_H, dropout=0.1, n_clubs=n_clubs, player_h=PLAYER_H)
+    weeks = default_reader(HEADER_H, dropout=0.1, n_clubs=n_clubs, player_h=PLAYER_H)
     train_columns(weeks, train, league, np.random.default_rng(SEED + 1), clubs, odds, "column")
     layout = {
         "id": "club-opponent-venue-1x2",
@@ -461,14 +464,22 @@ def main() -> None:
         "column_seed": SEED + 1,
         "epochs": EPOCHS,
         "dropout": 0.1,
+        "arch": "fixture_intensity",
+        "mode": "fixture",
     }
     write_layout(CURRENT_DIR, layout)
-    save_reader(CURRENT_DIR, "horizon", horizon, {"role": "horizon", "layout": layout["id"], "dropout": 0.1, "seed": SEED})
+    reader_meta = {
+        "arch": "fixture_intensity",
+        "mode": "fixture",
+        "layout": layout["id"],
+        "dropout": 0.1,
+    }
+    save_reader(CURRENT_DIR, "horizon", horizon, {**reader_meta, "role": "horizon", "seed": SEED})
     save_reader(
         CURRENT_DIR,
         "column",
         weeks,
-        {"role": "column", "layout": layout["id"], "dropout": 0.1, "seed": SEED + 1},
+        {**reader_meta, "role": "column", "seed": SEED + 1},
     )
     horizon = load_reader(CURRENT_DIR, "horizon")
     weeks = load_reader(CURRENT_DIR, "column")
@@ -499,14 +510,13 @@ def main() -> None:
         "other squad is not an input. Concede, regulars, own history,",
         "opponent history, and the team scoring rate are absent. Minutes,",
         "position, club, and opponent are not passed again as numbers.",
-        "Two readers see that card, and their weights stay separate. The",
-        "horizon reader scores each hidden square and a Poisson rate on each",
-        "row's hidden bar count. The column reader scores each square, each",
-        "row's Poisson rate, and each week's Poisson rate. Absolute rates pin",
-        "the volume. The paint keeps each row's horizon count on that row and",
-        "moves the bars toward the weeks the column reader scores highest. A",
-        "row whose horizon count is zero stays empty. A row holds three",
-        "squares, and that is the only cap.",
+        "Two readers see that card, and their weights stay separate. Goals use",
+        "fixture intensity: the match header owns that week's expected bar",
+        "total, then the squad shares it. Assists keep a four-way head. The",
+        "paint keeps each row's horizon count on that row and moves the bars",
+        "toward the weeks the column reader scores highest. A row whose",
+        "horizon count is zero stays empty. A row holds three squares, and",
+        "that is the only cap.",
         "",
         "A bar matches on the same row only. Within one gameweek includes the same",
         "appearance and either neighboring gameweek. The numbers are totals.",

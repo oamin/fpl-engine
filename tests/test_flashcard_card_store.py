@@ -15,7 +15,6 @@ from src.models.flashcard_legacy_card import ODDS_H, paint_legacy
 from src.models.flashcard_odds_trial import HOME_ODDS
 from src.models.flashcard_squad_trial import CELL_W, COLS, HOME_C, ROWS
 from src.models.flashcard_square_trial import HEADER_H, PLAYER_H, paint_square
-from src.models.flashcard_strip_trial import StripVision
 
 
 def _view() -> dict[str, np.ndarray]:
@@ -56,13 +55,21 @@ class CardStoreTests(unittest.TestCase):
         self.assertEqual(current.shape[0] - legacy.shape[0], CELL_W)
 
     def test_a_saved_reader_loads_the_same_weights(self) -> None:
+        from src.models.flashcard_intensity_trial import IntensityReader
+
         torch.manual_seed(0)
-        model = StripVision(LEGACY_HEADER, dropout=0.1, player_h=PLAYER_H)
+        model = IntensityReader(LEGACY_HEADER, mode="fixture", dropout=0.1, player_h=PLAYER_H)
         with torch.no_grad():
             model.header.weight.add_(1.0)
         with tempfile.TemporaryDirectory() as tmp:
             directory = Path(tmp)
-            save_reader(directory, "horizon", model, {"role": "horizon", "dropout": 0.1})
+            save_reader(
+                directory,
+                "horizon",
+                model,
+                {"role": "horizon", "dropout": 0.1, "arch": "fixture_intensity", "mode": "fixture"},
+            )
             loaded = load_reader(directory, "horizon")
         self.assertTrue(torch.equal(loaded.header.weight, model.header.weight))
         self.assertEqual(loaded.header.in_features, 3 * LEGACY_HEADER * CELL_W)
+        self.assertEqual(type(loaded).__name__, "IntensityReader")

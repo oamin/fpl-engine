@@ -13,13 +13,12 @@ stepped reader uses this same card: true past, the club, the opponent, the
 venue, the odds, and the minutes on the next week, and every later column removed.
 The other squad is not an input. Minutes, goals, assists, and the position
 square each have their own embedding. One vector for the whole cell lets
-the minute block, which is most of the pixels, own the forecast. The horizon reader and the column reader are separate. The horizon loss is
-the cross-entropy of each hidden square plus a Poisson rate on each row's
-hidden bar count. The column loss is the same cell term, the same row rate,
-and a Poisson rate on each week's bar count. Absolute rates pin the volume.
-The paint keeps each row's horizon count and moves the bars toward the weeks
-the column reader scores highest. A row whose horizon count is zero stays
-empty. Bars on an empty row are an error even when the card's total matches.
+the minute block, which is most of the pixels, own the forecast. The locked goal head is fixture intensity: the match header owns the expected
+bar total for that week, then the squad shares it. Presence is separate from
+bar height. Assists keep a four-way head. The horizon reader and the column
+reader stay separate. Absolute rates pin the volume. The paint keeps each
+row's horizon count and moves the bars toward the weeks the column reader
+scores highest. A row whose horizon count is zero stays empty.
 """
 
 from __future__ import annotations
@@ -209,6 +208,29 @@ def _batch_loss(goal_logits: torch.Tensor, assist_logits: torch.Tensor, batch: d
     return cell + horizon, cell.detach(), horizon.detach()
 
 
+def _is_fixture(model: nn.Module) -> bool:
+    return type(model).__name__ == "IntensityReader"
+
+
+def _fixture_batch_loss(pack: dict, batch: dict) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    """Fixture-intensity goals plus assist NLL. Matches the locked trial."""
+    from src.models.flashcard_intensity_trial import intensity_goal_loss
+
+    mask = batch["loss"]
+    goal_loss, count_loss = intensity_goal_loss(pack, batch["goal_label"], mask, ste=False)
+    assist_loss = _nll(pack["assist_logits"], batch["assist_label"], mask)
+    loss = 0.5 * (goal_loss + assist_loss)
+    return loss, goal_loss.detach(), count_loss
+
+
+def default_reader(header_h: int, dropout: float = 0.1, n_clubs: int = 1, player_h: int = PLAYER_H) -> nn.Module:
+    """The locked square-card reader: fixture intensity for goals."""
+    del n_clubs
+    from src.models.flashcard_intensity_trial import IntensityReader
+
+    return IntensityReader(header_h, mode="fixture", dropout=dropout, player_h=player_h)
+
+
 def _optimizer(model: nn.Module) -> torch.optim.Optimizer:
     fast_name = ("pos_", "position", "club_", "opp_", "form_")
     named = [(name, param) for name, param in model.named_parameters() if param.requires_grad]
@@ -270,8 +292,12 @@ def train_stripped(
             batch = _stack(views)
             batch["image"] = torch.from_numpy(_batch_images(views, pick, odds, compose)).permute(0, 3, 1, 2).float().div(255.0)
             opt.zero_grad()
-            goal_logits, assist_logits = model(batch["image"], batch["row_pad"], batch["column_on"])
-            loss, cell, horizon = _batch_loss(goal_logits, assist_logits, batch)
+            if _is_fixture(model):
+                pack = model(batch["image"], batch["row_pad"], batch["column_on"], batch["loss"])
+                loss, cell, horizon = _fixture_batch_loss(pack, batch)
+            else:
+                goal_logits, assist_logits = model(batch["image"], batch["row_pad"], batch["column_on"])
+                loss, cell, horizon = _batch_loss(goal_logits, assist_logits, batch)
             loss.backward()
             nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             opt.step()
@@ -301,6 +327,9 @@ def paint_stripped(
     batch["image"] = torch.from_numpy(_batch_images(views, cards, odds, compose)).permute(0, 3, 1, 2).float().div(255.0)
     model.eval()
     with torch.no_grad():
+        if _is_fixture(model):
+            pack = model(batch["image"], batch["row_pad"], batch["column_on"], batch["loss"])
+            return pack["goal_probs"].cpu().numpy(), F.softmax(pack["assist_logits"], dim=-1).cpu().numpy()
         goal_logits, assist_logits = model(batch["image"], batch["row_pad"], batch["column_on"])
     return F.softmax(goal_logits, dim=-1).numpy(), F.softmax(assist_logits, dim=-1).numpy()
 
@@ -440,14 +469,23 @@ def train_columns(
             batch = _stack(views)
             batch["image"] = torch.from_numpy(_batch_images(views, pick, odds, compose)).permute(0, 3, 1, 2).float().div(255.0)
             opt.zero_grad()
-            goal_logits, assist_logits = model(batch["image"], batch["row_pad"], batch["column_on"])
-            loss, cell, weeks = _column_batch_loss(goal_logits, assist_logits, batch)
+            if _is_fixture(model):
+                pack = model(batch["image"], batch["row_pad"], batch["column_on"], batch["loss"])
+                goal_loss, cell, _count = _fixture_batch_loss(pack, batch)
+                weeks = 0.5 * (
+                    column_count(pack["goal_probs"], batch["goal_label"], batch["loss"])
+                    + column_count(pack["assist_logits"].softmax(-1), batch["assist_label"], batch["loss"])
+                )
+                loss = goal_loss + weeks
+            else:
+                goal_logits, assist_logits = model(batch["image"], batch["row_pad"], batch["column_on"])
+                loss, cell, weeks = _column_batch_loss(goal_logits, assist_logits, batch)
             loss.backward()
             nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             opt.step()
             weight = float(batch["loss"].sum().detach())
             total += float(cell) * weight
-            week_total += float(weeks) * weight
+            week_total += float(weeks.detach() if torch.is_tensor(weeks) else weeks) * weight
             seen += weight
         print(
             f"{name} epoch {epoch + 1} train nll {total / max(seen, 1.0):.3f} "
@@ -555,9 +593,14 @@ def paint_stripped_steps(
         batch = _stack(views)
         batch["image"] = torch.from_numpy(np.stack(pictures)).permute(0, 3, 1, 2).float().div(255.0)
         with torch.no_grad():
-            goal_logits, assist_logits = model(batch["image"], batch["row_pad"], batch["column_on"])
-        goal_p = F.softmax(goal_logits, dim=-1).numpy()
-        assist_p = F.softmax(assist_logits, dim=-1).numpy()
+            if _is_fixture(model):
+                pack = model(batch["image"], batch["row_pad"], batch["column_on"], batch["loss"])
+                goal_p = pack["goal_probs"].cpu().numpy()
+                assist_p = F.softmax(pack["assist_logits"], dim=-1).cpu().numpy()
+            else:
+                goal_logits, assist_logits = model(batch["image"], batch["row_pad"], batch["column_on"])
+                goal_p = F.softmax(goal_logits, dim=-1).numpy()
+                assist_p = F.softmax(assist_logits, dim=-1).numpy()
         for slot, index in enumerate(indexes):
             card = cards[index]
             mask = card.present & (card.gw == gw).reshape(1, -1)
@@ -599,9 +642,14 @@ def paint_stripped_columns(
         batch = _stack(views)
         batch["image"] = torch.from_numpy(np.stack(pictures)).permute(0, 3, 1, 2).float().div(255.0)
         with torch.no_grad():
-            goal_logits, assist_logits = model(batch["image"], batch["row_pad"], batch["column_on"])
-        goal_p = F.softmax(goal_logits, dim=-1).numpy()
-        assist_p = F.softmax(assist_logits, dim=-1).numpy()
+            if _is_fixture(model):
+                pack = model(batch["image"], batch["row_pad"], batch["column_on"], batch["loss"])
+                goal_p = pack["goal_probs"].cpu().numpy()
+                assist_p = F.softmax(pack["assist_logits"], dim=-1).cpu().numpy()
+            else:
+                goal_logits, assist_logits = model(batch["image"], batch["row_pad"], batch["column_on"])
+                goal_p = F.softmax(goal_logits, dim=-1).numpy()
+                assist_p = F.softmax(assist_logits, dim=-1).numpy()
         for slot, index in enumerate(indexes):
             card = cards[index]
             mask = card.present & (card.gw == gw).reshape(1, -1)
