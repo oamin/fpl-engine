@@ -4,12 +4,8 @@ Concede, regulars, own history, opponent history, and the team scoring rate
 are absent from the picture and from every tensor the reader sees. Minutes,
 position, club, and opponent are on the card as squares. They are not passed
 again as numbers. The match rows, from the top, are the assessed club's symbol, the opponent's
-symbol, home or away, then sixteen solid handicap squares and eight solid
-2.5 squares. Red from the top means the club gives goals. Blue from the
-bottom means the club receives them. The scale runs from giving 1.5 to
-receiving 1.5. Orange from the top of the shorter
-bar is over 2.5. The club symbol repeats
-on every column.
+symbol, home or away, then sixteen odds squares: blue home, yellow draw,
+purple away, from the Shin de-vig. The club symbol repeats on every column.
 Minutes are six squares of fifteen minutes. One
 goal or assist is one square, and those rows are three squares tall. The
 one-shot card paints the odds on every fixture, including a grey week. The
@@ -17,9 +13,11 @@ stepped reader uses this same card: true past, the club, the opponent, the
 venue, the odds, and the minutes on the next week, and every later column removed.
 The other squad is not an input. Minutes, goals, assists, and the position
 square each have their own embedding. One vector for the whole cell lets
-the minute block, which is most of the pixels, own the forecast. The
-training loss is the cross-entropy of each hidden square plus the squared
-relative error of each row's hidden bar count. Bars on an empty row are an
+the minute block, which is most of the pixels, own the forecast. Training
+puts both views through one reader. The horizon loss and the next-column
+loss share the weights. The loss is the cross-entropy of each
+hidden square plus the squared relative error of each row's hidden bar
+count. Bars on an empty row are an
 error even when the card's total matches. The paint keeps each row's count
 on that row.
 """
@@ -34,9 +32,9 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from src.models.flashcard_card_score import _paint, paint_row, tally_cards, window_count
+from src.models.flashcard_card_score import _paint, paint_horizon, paint_row, tally_cards, window_count
 from src.models.flashcard_step_trial import chop_future
-from src.models.flashcard_odds_trial import load_market, paint_odds_strip
+from src.models.flashcard_odds_trial import load_odds, paint_odds_strip
 from src.models.flashcard_squad_trial import (
     BAND_H,
     BATCH,
@@ -377,6 +375,81 @@ def train_stripped_steps(
         )
 
 
+def train_coupled(
+    model: nn.Module,
+    cards: list,
+    league: dict,
+    rng: np.random.Generator,
+    clubs: dict,
+    odds: dict,
+    name: str,
+    compose=None,
+) -> None:
+    """One reader, two views, one step.
+
+    The horizon view reveals the masked remainder in one shot. The column
+    view keeps the true past, shows one next week, and scores only that week.
+    The two losses are added and update the same weights.
+    """
+    opt = _optimizer(model)
+    squads = squad_index(cards)
+    model.train()
+    for epoch in range(EPOCHS):
+        horizon_cell = 0.0
+        horizon_window = 0.0
+        horizon_seen = 0.0
+        column_cell = 0.0
+        column_window = 0.0
+        column_seen = 0.0
+        order = rng.permutation(len(cards))
+        for start in range(0, len(cards), BATCH):
+            pick = [cards[int(i)] for i in order[start : start + BATCH]]
+            cuts = [sample_cut(card, rng) for card in pick]
+            horizon_views = [
+                strip_features(apply_cut(card, league, cut, clubs, squads))
+                for card, cut in zip(pick, cuts, strict=True)
+            ]
+            column_views = []
+            column_pictures = []
+            for card in pick:
+                target = _target_gw(card, rng)
+                view = _step_view(card, league, clubs, squads, target)
+                column_views.append(view)
+                column_pictures.append(_step_image(view, card, odds, target, compose))
+            horizon_batch = _stack(horizon_views)
+            horizon_batch["image"] = torch.from_numpy(_batch_images(horizon_views, pick, odds, compose)).permute(0, 3, 1, 2).float().div(255.0)
+            column_batch = _stack(column_views)
+            column_batch["image"] = torch.from_numpy(np.stack(column_pictures)).permute(0, 3, 1, 2).float().div(255.0)
+            opt.zero_grad()
+            horizon_goals, horizon_assists = model(
+                horizon_batch["image"], horizon_batch["row_pad"], horizon_batch["column_on"]
+            )
+            column_goals, column_assists = model(
+                column_batch["image"], column_batch["row_pad"], column_batch["column_on"]
+            )
+            horizon_loss, horizon_nll, horizon_count = _batch_loss(horizon_goals, horizon_assists, horizon_batch)
+            column_loss, column_nll, column_count = _batch_loss(column_goals, column_assists, column_batch)
+            (horizon_loss + column_loss).backward()
+            nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+            opt.step()
+            horizon_weight = float(horizon_batch["loss"].sum().detach())
+            column_weight = float(column_batch["loss"].sum().detach())
+            horizon_cell += float(horizon_nll) * horizon_weight
+            horizon_window += float(horizon_count) * horizon_weight
+            horizon_seen += horizon_weight
+            column_cell += float(column_nll) * column_weight
+            column_window += float(column_count) * column_weight
+            column_seen += column_weight
+        print(
+            f"{name} epoch {epoch + 1} "
+            f"horizon nll {horizon_cell / max(horizon_seen, 1.0):.3f} "
+            f"window {horizon_window / max(horizon_seen, 1.0):.3f} "
+            f"column nll {column_cell / max(column_seen, 1.0):.3f} "
+            f"window {column_window / max(column_seen, 1.0):.3f}",
+            flush=True,
+        )
+
+
 def paint_stripped_steps(
     model: nn.Module,
     cards: list,
@@ -412,6 +485,70 @@ def paint_stripped_steps(
     return goals, assists
 
 
+def paint_stripped_columns(
+    model: nn.Module,
+    cards: list,
+    league: dict,
+    clubs: dict,
+    squads: dict,
+    odds: dict,
+    compose=None,
+) -> tuple[np.ndarray, np.ndarray, dict[str, float]]:
+    """Walk every gameweek and place that column's expected bars.
+
+    The count on a row is the expected number of bars in that one column.
+    A single appearance rounds to a bar only when its chance reaches a half.
+    The returned rates are the mean chance on a real bar and on a blank.
+    """
+    goals = np.zeros((len(cards),) + cards[0].goals.shape, dtype=np.int64)
+    assists = np.zeros_like(goals)
+    on = np.zeros(2)
+    off = np.zeros(2)
+    on_n = np.zeros(2)
+    off_n = np.zeros(2)
+    model.eval()
+    for gw, indexes in sorted(_gameweeks(cards).items()):
+        views = []
+        pictures = []
+        for index in indexes:
+            card = cards[index]
+            view = _step_view(card, league, clubs, squads, gw)
+            views.append(view)
+            pictures.append(_step_image(view, card, odds, gw, compose))
+        batch = _stack(views)
+        batch["image"] = torch.from_numpy(np.stack(pictures)).permute(0, 3, 1, 2).float().div(255.0)
+        with torch.no_grad():
+            goal_logits, assist_logits = model(batch["image"], batch["row_pad"], batch["column_on"])
+        goal_p = F.softmax(goal_logits, dim=-1).numpy()
+        assist_p = F.softmax(assist_logits, dim=-1).numpy()
+        for slot, index in enumerate(indexes):
+            card = cards[index]
+            mask = card.present & (card.gw == gw).reshape(1, -1)
+            for row in range(mask.shape[0]):
+                goals[index, row] += paint_horizon(goal_p[slot, row], mask[row])
+                assists[index, row] += paint_horizon(assist_p[slot, row], mask[row])
+                for channel, probs, labels in (
+                    (0, goal_p, card.goals),
+                    (1, assist_p, card.assists),
+                ):
+                    cols = np.flatnonzero(mask[row])
+                    if len(cols) == 0:
+                        continue
+                    chance = 1.0 - probs[slot, row, cols, 0]
+                    hit = labels[row, cols] > 0
+                    on[channel] += float(chance[hit].sum())
+                    off[channel] += float(chance[~hit].sum())
+                    on_n[channel] += int(hit.sum())
+                    off_n[channel] += int((~hit).sum())
+    rates = {
+        "goal_on": on[0] / max(on_n[0], 1.0),
+        "goal_off": off[0] / max(off_n[0], 1.0),
+        "assist_on": on[1] / max(on_n[1], 1.0),
+        "assist_off": off[1] / max(off_n[1], 1.0),
+    }
+    return goals, assists, rates
+
+
 def _row(revealed: float, name: str, channel: str, totals: dict[str, int]) -> str:
     return (
         f"| {revealed:.0%} | {name} | {channel} | {totals['actual']} | {totals['painted']} | "
@@ -427,7 +564,7 @@ def main() -> None:
     test = build_cards((TEST_SEASON,), league)
     clubs = fit_clubs(train)
     squads = squad_index(train + test)
-    odds = load_market()
+    odds = load_odds()
     n_clubs = max(clubs.values(), default=0) + 1
     labels = np.stack([card.goals for card in test])
     assist_labels = np.stack([card.assists for card in test])

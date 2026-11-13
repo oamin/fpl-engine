@@ -7,15 +7,16 @@ rates.
 
 The painted card comes from the locked vision reader. The picture is the
 only feature input. It is the square card: the club symbol, the opponent
-symbol, home or away, sixteen solid handicap squares scaled from giving
-1.5 to receiving 1.5, eight solid 2.5
-squares, six minute
-squares of fifteen minutes, one
+symbol, home or away, sixteen odds squares, six minute squares of fifteen
+minutes, one
 position square, and one square per goal or assist. Concede, regulars, own
 history, opponent history, and the team scoring rate are absent. Minutes,
-position, club, and opponent are not passed again as numbers. The loss
-scores each hidden square and each row's own hidden bar count. A card
-whose total is right still fails when the bars sit on the empty rows.
+position, club, and opponent are not passed again as numbers. One reader is trained on two views, and both losses update the same
+weights. The horizon view reveals the masked remainder in one shot. The
+column view keeps the true past, shows one next week, and scores only
+that week. Each loss scores each hidden square and each row's own hidden
+bar count. A card whose total is right still fails when the bars sit on
+the empty rows.
 The paint keeps each row's count on that row. A row holds three squares,
 and that is the only cap.
 """
@@ -269,14 +270,19 @@ def main() -> None:
     test_squads = squad_index(train + test)
     n_clubs = max(clubs.values(), default=0) + 1
     print(f"train {len(train)} test {len(test)}", flush=True)
-    from src.models.flashcard_odds_trial import load_market
+    from src.models.flashcard_odds_trial import load_odds
     from src.models.flashcard_square_trial import HEADER_H, PLAYER_H
-    from src.models.flashcard_strip_trial import StripVision, paint_stripped, train_stripped
+    from src.models.flashcard_strip_trial import (
+        StripVision,
+        paint_stripped,
+        paint_stripped_columns,
+        train_coupled,
+    )
 
-    odds = load_market()
+    odds = load_odds()
     torch.manual_seed(SEED)
     vision = StripVision(HEADER_H, dropout=0.1, n_clubs=n_clubs, player_h=PLAYER_H)
-    train_stripped(vision, train, league, np.random.default_rng(SEED), clubs, odds, "square card")
+    train_coupled(vision, train, league, np.random.default_rng(SEED), clubs, odds, "square card")
     print("scoring", flush=True)
     labels = np.stack([card.goals for card in test])
     assist_labels = np.stack([card.assists for card in test])
@@ -291,14 +297,18 @@ def main() -> None:
         "",
         "The reader is squad vision on the square card. The flashcard is the",
         "only feature input. Each column shows the club symbol, the opponent",
-        "symbol, home or away, then sixteen solid handicap squares scaled from",
-        "giving 1.5 to receiving 1.5, and eight solid 2.5 squares. The",
+        "symbol, home or away, then sixteen 1X2 squares. The",
         "other squad is not an input. Concede, regulars, own history,",
         "opponent history, and the team scoring rate are absent. Minutes,",
-        "position, club, and opponent are not passed again as numbers. Each",
-        "loss scores each hidden square and each row's own hidden bar count.",
-        "The paint keeps that count on the same row. A row holds three",
-        "squares, and that is the only cap.",
+        "position, club, and opponent are not passed again as numbers.",
+        "One reader trains on two views, and both losses update the same",
+        "weights. The horizon view reveals the masked remainder in one shot.",
+        "The column view keeps the true past, shows one next week, and scores",
+        "only that week. Each loss scores each hidden square and each row's",
+        "own hidden bar count. The paint keeps that count on the same row.",
+        "A row holds three squares, and that is the only cap.",
+        "",
+        "Horizon, one shot. The test scores all four cuts of this view.",
         "",
         "A bar matches on the same row only. Within one gameweek includes the same",
         "appearance and either neighboring gameweek. The numbers are totals.",
@@ -326,12 +336,50 @@ def main() -> None:
             f"assists exact {assists['exact']} within {assists['actual_within']}",
             flush=True,
         )
-    seconds = time.perf_counter() - started
+    print("scoring columns", flush=True)
+    column_goals, column_assists, column_rates = paint_stripped_columns(
+        vision, test, league, clubs, test_squads, odds
+    )
+    print(
+        f"column chance goal on {column_rates['goal_on']:.3f} off {column_rates['goal_off']:.3f} "
+        f"assist on {column_rates['assist_on']:.3f} off {column_rates['assist_off']:.3f}",
+        flush=True,
+    )
     lines.extend(position_lines)
     lines.extend(
         [
             "",
-            "The loss scores each hidden square and each row's own hidden bar count.",
+            "Next column. The same weights see the true past and one next week.",
+            "Each hidden week below is painted from that week's own column.",
+            "",
+            "| revealed | channel | actual bars | painted bars | same appearance | actual within 1 GW | painted within 1 GW |",
+            "|---|---|---:|---:|---:|---:|---:|",
+        ]
+    )
+    for revealed in (0.2, 0.4, 0.6, 0.8):
+        cuts = [cut_at_fraction(card, revealed) for card in test]
+        goals = tally_cards(test, labels, column_goals, 0, cuts)
+        assists = tally_cards(test, assist_labels, column_assists, 0, cuts)
+        lines.append(_line(revealed, "goals", goals))
+        lines.append(_line(revealed, "assists", assists))
+        print(
+            f"column {revealed:.0%} goals {goals['actual']} painted {goals['painted']} "
+            f"exact {goals['exact']} within {goals['actual_within']} "
+            f"assists exact {assists['exact']} within {assists['actual_within']}",
+            flush=True,
+        )
+    lines.append("")
+    lines.append(
+        "Mean chance of a bar on the guessed column, on a real bar and on a blank: "
+        f"goals {column_rates['goal_on']:.3f} / {column_rates['goal_off']:.3f}, "
+        f"assists {column_rates['assist_on']:.3f} / {column_rates['assist_off']:.3f}."
+    )
+    seconds = time.perf_counter() - started
+    lines.extend(
+        [
+            "",
+            "Both losses update the same weights. Each scores a hidden square and",
+            "each row's own hidden bar count.",
             "A matching card total with the bars on the empty rows is an error.",
             "The paint keeps each row's count on that row. The flashcard is the",
             "only feature input.",
