@@ -389,9 +389,12 @@ def main() -> None:
     test_squads = squad_index(train + test)
     n_clubs = max(clubs.values(), default=0) + 1
     print(f"train {len(train)} test {len(test)}", flush=True)
+    from src.models.flashcard_card_store import CURRENT_DIR, load_reader, save_png, save_reader, write_layout
     from src.models.flashcard_odds_trial import load_odds
-    from src.models.flashcard_square_trial import HEADER_H, PLAYER_H
-    from src.models.flashcard_strip_trial import StripVision, paint_stripped, train_columns, train_stripped
+    from src.models.flashcard_square_trial import CELL_W, CLUB_H, HEADER_H, ODDS_H, ODDS_Y, OPP_H, PLAYER_H, VENUE_H
+    from src.models.flashcard_square_trial import compose_square
+    from src.models.flashcard_squad_trial import EPOCHS, apply_cut
+    from src.models.flashcard_strip_trial import StripVision, paint_stripped, strip_features, train_columns, train_stripped
 
     odds = load_odds()
     torch.manual_seed(SEED)
@@ -400,7 +403,40 @@ def main() -> None:
     torch.manual_seed(SEED + 1)
     weeks = StripVision(HEADER_H, dropout=0.1, n_clubs=n_clubs, player_h=PLAYER_H)
     train_columns(weeks, train, league, np.random.default_rng(SEED + 1), clubs, odds, "column")
-    print("scoring", flush=True)
+    layout = {
+        "id": "club-opponent-venue-1x2",
+        "rows": ["club", "opponent", "venue", "odds-1x2"],
+        "header_h": HEADER_H,
+        "club_h": CLUB_H,
+        "opponent_h": OPP_H,
+        "venue_h": VENUE_H,
+        "odds_y": ODDS_Y,
+        "odds_h": ODDS_H,
+        "seed": SEED,
+        "column_seed": SEED + 1,
+        "epochs": EPOCHS,
+        "dropout": 0.1,
+    }
+    write_layout(CURRENT_DIR, layout)
+    save_reader(CURRENT_DIR, "horizon", horizon, {"role": "horizon", "layout": layout["id"], "dropout": 0.1, "seed": SEED})
+    save_reader(
+        CURRENT_DIR,
+        "column",
+        weeks,
+        {"role": "column", "layout": layout["id"], "dropout": 0.1, "seed": SEED + 1},
+    )
+    horizon = load_reader(CURRENT_DIR, "horizon")
+    weeks = load_reader(CURRENT_DIR, "column")
+    shown = test[0]
+    shown_cut = cut_at_fraction(shown, 0.2)
+    picture = compose_square(
+        strip_features(apply_cut(shown, league, shown_cut, clubs, test_squads)),
+        shown,
+        odds,
+    )
+    save_png(CURRENT_DIR / "example.png", picture, 2)
+    save_png(CURRENT_DIR / "header.png", picture[:HEADER_H, : 8 * CELL_W], 8)
+    print("scoring stored weights", flush=True)
     labels = np.stack([card.goals for card in test])
     assist_labels = np.stack([card.assists for card in test])
     minutes = np.stack([card.minutes for card in test])
@@ -499,6 +535,8 @@ def main() -> None:
             "The two readers keep separate weights. A row whose horizon count",
             "is zero stays empty. A matching card total with the bars on the",
             "empty rows is an error. The flashcard is the only feature input.",
+            "The picture, the layout, and both state dicts are stored in",
+            "`reports/cards/current/`. The table above is scored from those files.",
             "",
             f"Wall clock: {seconds:.0f} seconds on CPU.",
             "",

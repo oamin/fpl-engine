@@ -16,6 +16,8 @@ The objective scores each hidden square and each row's own hidden bar count. A c
 
 Two readers see this card, and their weights stay separate. The horizon reader owns the row counts. The column reader scores each hidden week's bar count, so the odds can change how many events that week holds. The paint keeps each row's horizon count and moves the bars toward the weeks the column reader scores highest. A row whose horizon count is zero stays empty.
 
+The current card is stored in `reports/cards/current/`: `layout.json`, `example.png`, `header.png`, `horizon.pt`, and `column.pt`. The comparison table is scored from those files. Do not leave a table in place after the picture changes. The earlier card, odds then home or away then the opponent, with no club row, lives in `src/models/flashcard_legacy_card.py`. Its reader is stored separately in `reports/cards/legacy-odds-venue-opponent/`. Those weights do not load into the current header.
+
 `SquadSequence` is a separate numeric reader. It is not the gate. Do not connect it to the published painter, and do not put its numbers back onto `Coupler`.
 
 ## Repo freeze sequence (2026-10-20)

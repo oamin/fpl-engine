@@ -1,0 +1,19 @@
+{
+  "id": "club-opponent-venue-1x2",
+  "rows": [
+    "club",
+    "opponent",
+    "venue",
+    "odds-1x2"
+  ],
+  "header_h": 76,
+  "club_h": 4,
+  "opponent_h": 4,
+  "venue_h": 4,
+  "odds_y": 12,
+  "odds_h": 64,
+  "seed": 0,
+  "column_seed": 1,
+  "epochs": 30,
+  "dropout": 0.1
+}
