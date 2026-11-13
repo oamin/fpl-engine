@@ -147,11 +147,9 @@ class SquareCardTests(unittest.TestCase):
         image = paint_square(view, market, visible, club="Arsenal")
         self.assertEqual(image.shape[0], HEADER_H + ROWS * PLAYER_H)
         self.assertEqual(_pixel(image, ODDS_Y + 1, 1), GIVING)
-        self.assertEqual(_pixel(image, ODDS_Y + 13 * SQ + 1, 1), GIVING)
-        self.assertEqual(_pixel(image, ODDS_Y + 14 * SQ + 1, 1), RECEIVING)
-        self.assertEqual(_pixel(image, ODDS_Y + 15 * SQ + 1, 1), RECEIVING)
-        self.assertEqual(_pixel(image, ODDS_Y + 5 * SQ + 1, CELL_W + 1), GIVING)
-        self.assertEqual(_pixel(image, ODDS_Y + 6 * SQ + 1, CELL_W + 1), RECEIVING)
+        self.assertEqual(_pixel(image, ODDS_Y + 15 * SQ + 1, 1), GIVING)
+        self.assertEqual(_pixel(image, ODDS_Y + 3 * SQ + 1, CELL_W + 1), GIVING)
+        self.assertEqual(_pixel(image, ODDS_Y + 4 * SQ + 1, CELL_W + 1), RECEIVING)
         total = ODDS_Y + LINE_H
         self.assertEqual(_pixel(image, total + 1, 1), OVER_C)
         self.assertEqual(_pixel(image, total + 5 * SQ + 1, 1), OVER_C)
@@ -221,8 +219,8 @@ class SquareCardTests(unittest.TestCase):
         image = compose_binary(view, card, _prices(card))
         self.assertEqual(_pixel(image, ODDS_Y, 0), (0, 0, 0))
         self.assertEqual(_pixel(image, ODDS_Y + 13 * SQ, 0), (0, 0, 0))
-        self.assertEqual(_pixel(image, ODDS_Y + 14 * SQ, 0), (255, 255, 255))
-        self.assertEqual(_pixel(image, ODDS_Y + 15 * SQ, 0), (255, 255, 255))
+        self.assertEqual(_pixel(image, ODDS_Y + 14 * SQ, 0), (0, 0, 0))
+        self.assertEqual(_pixel(image, ODDS_Y + 15 * SQ, 0), (0, 0, 0))
         self.assertEqual(_pixel(image, ODDS_Y + LINE_H, 0), (0, 0, 0))
         self.assertEqual(_pixel(image, ODDS_Y + LINE_H + 5 * SQ, 0), (0, 0, 0))
         self.assertEqual(_pixel(image, ODDS_Y + LINE_H + 6 * SQ, 0), (255, 255, 255))
@@ -238,11 +236,14 @@ class SquareCardTests(unittest.TestCase):
         view = _view()
         market = np.full((COLS, 3), np.nan)
         market[0] = (0.0, 0.5, 0.5)
+        market[1] = (-0.5, 0.5, 0.5)
         visible = np.zeros(COLS, dtype=bool)
-        visible[0] = True
+        visible[:2] = True
         image = paint_square(view, market, visible, club="Arsenal")
         self.assertEqual(_pixel(image, ODDS_Y + 7 * SQ + 1, 1), GIVING)
         self.assertEqual(_pixel(image, ODDS_Y + 8 * SQ + 1, 1), RECEIVING)
+        self.assertEqual(_pixel(image, ODDS_Y + 10 * SQ + 1, CELL_W + 1), GIVING)
+        self.assertEqual(_pixel(image, ODDS_Y + 11 * SQ + 1, CELL_W + 1), RECEIVING)
 
 
 if __name__ == "__main__":

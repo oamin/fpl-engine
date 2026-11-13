@@ -7,7 +7,8 @@ rates.
 
 The painted card comes from the locked vision reader. The picture is the
 only feature input. It is the square card: the club symbol, the opponent
-symbol, home or away, sixteen solid handicap squares, eight solid 2.5
+symbol, home or away, sixteen solid handicap squares scaled from giving
+1.5 to receiving 1.5, eight solid 2.5
 squares, six minute
 squares of fifteen minutes, one
 position square, and one square per goal or assist. Concede, regulars, own
@@ -290,9 +291,9 @@ def main() -> None:
         "",
         "The reader is squad vision on the square card. The flashcard is the",
         "only feature input. Each column shows the club symbol, the opponent",
-        "symbol, home or away, then sixteen solid handicap squares and eight",
-        "solid 2.5 squares. The other squad is not an input. Concede,",
-        "regulars, own history,",
+        "symbol, home or away, then sixteen solid handicap squares scaled from",
+        "giving 1.5 to receiving 1.5, and eight solid 2.5 squares. The",
+        "other squad is not an input. Concede, regulars, own history,",
         "opponent history, and the team scoring rate are absent. Minutes,",
         "position, club, and opponent are not passed again as numbers. Each",
         "loss scores each hidden square and each row's own hidden bar count.",

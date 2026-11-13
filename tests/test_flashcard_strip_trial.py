@@ -28,7 +28,7 @@ from src.models.flashcard_squad_trial import (
     event_pixels,
     render_grid,
 )
-from src.models.flashcard_square_trial import GIVING, LINE_H, OVER_C, RECEIVING, SQ
+from src.models.flashcard_square_trial import GIVING, LINE_H, OVER_C, SQ
 from src.models.flashcard_square_trial import CLUB_H, EVENT_H as SQUARE_EVENT
 from src.models.flashcard_square_trial import HEADER_H as SQUARE_HEADER
 from src.models.flashcard_square_trial import MINUTE_H as SQUARE_MINUTE
@@ -161,7 +161,7 @@ class StripTests(unittest.TestCase):
         image = compose_card(view, card, _prices(card))
         self.assertEqual(image.shape[0], SQUARE_HEADER + ROWS * SQUARE_PLAYER)
         self.assertEqual(tuple(int(v) for v in image[ODDS_Y + 1, 1]), GIVING)
-        self.assertEqual(tuple(int(v) for v in image[ODDS_Y + 14 * SQ + 1, 1]), RECEIVING)
+        self.assertEqual(tuple(int(v) for v in image[ODDS_Y + 14 * SQ + 1, 1]), GIVING)
         self.assertEqual(tuple(int(v) for v in image[ODDS_Y + LINE_H + 1, 1]), OVER_C)
         self.assertEqual(tuple(int(v) for v in image[CLUB_H + OPP_H + 1, 1]), HOME_C)
         minute_y = SQUARE_HEADER
