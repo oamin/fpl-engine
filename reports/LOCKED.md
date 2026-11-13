@@ -91,7 +91,18 @@ Protocol: `cascade_short_generative`. Entry: `src/models/cascade_short.py` → `
 
 Modules: `short_horizon_generative`, `match_outcome`, `lineup_roll`, `attack_roll`, `defence_roll`, `player_attack`, `prop_shares`.
 
+## Flashcard painter (Baudot gate — locked 2026-11-13)
+
+| Lock | Path | Note |
+| --- | --- | --- |
+| **Default flashcard method** | `src/models/flashcard_baudot_row_trial.py` | GW-as-rows binary card; full past + one-shot remainder; learnable Tversky (β≥α) |
+| **Gate tallies / scores** | `flashcard_card_score.GATE` · [`baudot_gate.md`](baudot_gate.md) | 2025-26 cuts 20/40/60/80%; `tally_row` + `balanced_score` |
+| Card schema | club8 · opp8 · odds12 (win/blank-draw/loss) · role4+id11+mins6+G3+A3 | ID_BITS=11 |
+
+Supersedes square-card full-painter / fixture-intensity comparison gate (`GATE_SQUARE_2026_11_12`).
+
 ## Superseded
 
 - **Numagent 1.0** — `protocol.numagent_1_0` / `SUPERSEDED.md` / **[`ARCHIVE_NUMAGENT_1_0.md`](ARCHIVE_NUMAGENT_1_0.md)** (in-place keep-list)
 - **`score_xp`** — historical climbs and gate baseline only (same archive index)
+- **Square-card flashcard gate (2026-11-12)** — `GATE_SQUARE_2026_11_12`; replaced by Baudot learnable Tversky

@@ -4,13 +4,13 @@ Cursor chooses the next pre-registered comparison. The PI is not asked to pick. 
 
 **Numagent 2.0 is locked on main** — see `.cursor/context.md` and `reports/LOCKED.md` (`protocol.numagent_2_0`). Engine primary scorer is `score_xp_v2`. Numagent 1.0 and `score_xp` are **archived in-place** (`reports/ARCHIVE_NUMAGENT_1_0.md`). This file is the **park log**. Everything from “Procedure, locked 2026-10-07” downward is **Numagent 1.0 / stage archaeology** — not instructions for the live path.
 
-## Flashcard painter, locked 2026-11-12
+## Flashcard painter — see Baudot gate (2026-11-13)
 
-The published painter takes the rendered flashcard and nothing else. A numeric sidecar is not a candidate and is not a fallback. Minutes, position, the club symbol, the opponent symbol, and the team scoring rate stay on the card as squares, or they stay out. The match rows run club, opponent, home or away, then the opening 1X2. Embed the minute block, the goal squares, the assist squares, and the position square separately, and normalize each band before adding them. `SquadSequence` is not the gate. See `.cursor/context.md`.
+Picture-only teaching still holds. The **locked default** is Baudot + learnable Tversky (`reports/baudot_gate.md`), not the 2026-11-12 square-card painter. `SquadSequence` is not the gate.
 
-## Core idea — flashcard as one picture (restated 2026-11-13)
+## Baudot row-card + learnable Tversky — LOCKED GATE (2026-11-13)
 
-**Active design constraint.** Teach by matching pictures. A stepped column is one object: shown card (blank next-column events) → one column embedding → painted event strip → strip L1. Read bars from ink after. Do not “fix” GKP/volume with μ, share, rank margins, caps, or argmax paint as the learner. Those were a detour when cell posteriors failed; they are parked for stepped-column work (`flashcard_column_picture_trial.py`, `reports/column_picture_learner.md`). Horizon fixture-intensity remains the stored product path until the picture learner replaces it on the gate. Every train run should emit a simple process diagram so the idea stays visible.
+**Locked as the flashcard default.** Gate: `flashcard_card_score.GATE` / `reports/baudot_gate.md`. Method: `flashcard_baudot_row_trial.py`. Ablations stay in `flashcard_baudot_ablation.py`. Square-card / fixture-intensity gate superseded (`GATE_SQUARE_2026_11_12`). Do not reopen cell-posterior allocation or hand paint rules for this path.
 
 ## Parked — cell-posterior column allocation (2026-11-13)
 

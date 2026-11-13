@@ -2,19 +2,24 @@
 
 Updated: 2026-11-13. **Numagent 2.0** is the product on main (`protocol.numagent_2_0`) — **supersedes Numagent 1.0**. Parked hypotheses: `.cursor/ideas.md`. Stage archaeology: root `CONTEXT.md` and `reports/SUPERSEDED.md`. Canonical index: `reports/LOCKED.md`.
 
-## Flashcard painter — picture only (locked 2026-11-12; core idea restated 2026-11-13)
+## Flashcard painter — Baudot gate (locked 2026-11-13)
 
-The published flashcard painter reads one rendered card. That picture is the only feature input.
+The flashcard is one picture object. Teach by matching pictures. Do not bolt on μ/share heads, volume caps, or argmax paint rules.
 
-**Core idea (do not lose this):** the flashcard is one picture object. A stepped column is one picture object. The model is taught by matching pictures — shown card versus real event strip — not by scoring cells, inventing μ/share heads, volume caps, or argmax paint rules. Simple visual regularities (minutes lit → events possible; event ink low on the strip / blank at the top; header changes how busy the column looks) should fall out of picture matching. If a run starts bolting on Poisson rates, softmax shares, rank margins, or top-k paint to “fix” allocation, it has left this idea. Prefer `src/models/flashcard_column_picture_trial.py` for stepped-column work. Every training run should leave a simple diagram of how the card is processed and taught.
+**Default / gate (2026-11-13):** Baudot row-card + block-token mixer + **learnable Tversky (β≥α)**.
 
-Do not add a numeric sidecar. Do not pass minutes, a minutes/90 fraction, a position id, a club id, an opponent id, a match-up vector, a team scoring rate, concede, regulars, own history, opponent history, or the other squad into the reader. If a fact belongs in the forecast, draw it on the card. An attention mask for an empty row or an empty column is allowed. It carries no value.
+- Module: `src/models/flashcard_baudot_row_trial.py`
+- Gate scores: `flashcard_card_score.GATE` · report `reports/baudot_gate.md`
+- Card: each GW is one **row** of pure binary dots (`club8 · opp8 · odds12 · [role4+id11+mins6+G3+A3]×roster`). Odds = assessed win ON · draw BLANK · opp win ON. ID_BITS=11 (unique names).
+- FOV: **all past GW rows** true; remainder G/A blank; **one-shot** paint of the remainder event window (cuts 20/40/60/80%).
+- Loss: learnable Tversky α=0.5−δ, β=0.5+δ (δ learned; β≥α locked). Checkpoint α≈0.447, β≈0.553.
+- Metrics: `tally_row` + `balanced_score`. An attention mask for empty slots is allowed.
 
-Each column's match rows, from the top, are the assessed club's symbol, the opponent's symbol, home or away, and the opening 1X2. The club symbol is the same mark on every column. There is no club id and no player id.
+Schema slicing by place-in-chain is picture reading, not a numeric sidecar. Do not add a numeric sidecar of minutes/position/club ids.
 
-**Horizon product path (still on the stored card):** `default_reader()` → fixture-intensity `IntensityReader` in `src/models/flashcard_strip_trial.py`, with separate horizon and column weights under `reports/cards/current/`. Band embeddings stay normalized. That path remains the stored comparison table until a picture learner beats it on the same gate. It is not a licence to grow more allocation machinery for stepped columns.
+**Superseded as the flashcard comparison gate:** square-card full painter / fixture-intensity stored readers (`GATE_SQUARE_2026_11_12`; `reports/cards/current/` RGB path). Keep those modules for archaeology; new flashcard screens compare to the Baudot gate.
 
-**Stepped column path (active design):** `ColumnFlashcard` pools the next week into one column vector and paints that week's event strip in one pass. Loss is strip color error. Bars are read from ink afterwards. Report: `reports/column_picture_learner.md`. Parked: cell-Bernoulli column losses, listwise share penalties, and `paint_column` top-k as a teaching method.
+**Stepped RGB column path (parked relative to the gate):** `ColumnFlashcard` / `flashcard_column_picture_trial.py`. Not the default.
 
 `SquadSequence` is a separate numeric reader. It is not the gate. Do not connect it to the published painter, and do not put its numbers back onto `Coupler`.
 

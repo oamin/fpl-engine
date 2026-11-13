@@ -1,23 +1,74 @@
 {
-  "milestone": "cascade-short-generative-locked",
-  "status": "complete",
-  "summary": "cascade_short generative stack locked (protocol.cascade_short_generative): mean score_team_side; scenario k∼M → lineup cov → attack dice → CS/GC from rolled GA; soft priors via score_xp_v2 DefCon/bonus/cards/saves helpers. Firm XI and bonus-from-roll deferred. PR #96 green — mark ready / merge to main.",
-  "gemini": "",
-  "decisions": {
-    "cascade_short_generative": {
-      "locked": "2026-10-20",
-      "protocol": "cascade_short_generative",
-      "pr": 96,
-      "deferred": ["firm_xi", "bonus_from_roll"]
+  "trial": "baudot_gate_locked",
+  "locked": "2026-11-13",
+  "method": "baudot_row_mixer_learnable_tversky",
+  "alpha": 0.4474738538265228,
+  "beta": 0.5525261759757996,
+  "gate": {
+    "goals|0.2": {
+      "actual": 730,
+      "painted": 701,
+      "exact": 194,
+      "actual_within": 268,
+      "painted_within": 377,
+      "score": 0.2603677857231747
+    },
+    "assists|0.2": {
+      "actual": 707,
+      "painted": 693,
+      "exact": 114,
+      "actual_within": 153,
+      "painted_within": 232,
+      "score": 0.15963224893917963
+    },
+    "goals|0.4": {
+      "actual": 544,
+      "painted": 557,
+      "exact": 151,
+      "actual_within": 214,
+      "painted_within": 299,
+      "score": 0.26789421074688097
+    },
+    "assists|0.4": {
+      "actual": 531,
+      "painted": 551,
+      "exact": 89,
+      "actual_within": 123,
+      "painted_within": 174,
+      "score": 0.15853883545628683
+    },
+    "goals|0.6": {
+      "actual": 360,
+      "painted": 383,
+      "exact": 105,
+      "actual_within": 145,
+      "painted_within": 205,
+      "score": 0.2656649178230939
+    },
+    "assists|0.6": {
+      "actual": 351,
+      "painted": 377,
+      "exact": 66,
+      "actual_within": 90,
+      "painted_within": 126,
+      "score": 0.16881394467601363
+    },
+    "goals|0.8": {
+      "actual": 199,
+      "painted": 195,
+      "exact": 60,
+      "actual_within": 82,
+      "painted_within": 101,
+      "score": 0.29844654745810273
+    },
+    "assists|0.8": {
+      "actual": 192,
+      "painted": 191,
+      "exact": 32,
+      "actual_within": 45,
+      "painted_within": 59,
+      "score": 0.16623150565709313
     }
   },
-  "artifacts": [
-    "reports/LOCKED.md",
-    "reports/CASCADE_CONTRACT.md",
-    "experiments/protocol.json",
-    "src/markets/short_horizon_generative.py",
-    "src/markets/defence_roll.py",
-    "src/models/short_horizon_cascade.py",
-    "src/models/cascade_short.py"
-  ]
+  "report": "/agent/repos/fpl-engine/reports/baudot_gate.md"
 }
