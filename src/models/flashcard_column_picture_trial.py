@@ -474,7 +474,7 @@ def _flow_diagram(path: Path) -> Path:
         (340, 90, 580, 200, "Encode whole card\nband tokens + attention"),
         (640, 90, 880, 200, "One column vector\npool the next week"),
         (40, 250, 280, 360, "Decode event strip\nall rows, goals+assists"),
-        (340, 250, 580, 360, "Teach: strip L1\none object, one loss"),
+        (340, 250, 580, 360, "Teach: strip Dice\none object, one loss"),
         (640, 250, 880, 360, "Read bars from ink\ncloser to event color\nthan to white"),
     ]
     for x0, y0, x1, y1, text in boxes:
