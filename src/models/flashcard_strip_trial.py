@@ -416,6 +416,17 @@ def train_stripped_steps(
         )
 
 
+def _column_whole_batch_loss(pack: dict, batch: dict) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    """Goals and assists each as one column object: week rate, then who."""
+    from src.models.flashcard_intensity_trial import column_whole_assist_loss, column_whole_goal_loss
+
+    mask = batch["loss"]
+    goal_loss, goal_count = column_whole_goal_loss(pack, batch["goal_label"], mask)
+    assist_loss, assist_count = column_whole_assist_loss(pack["assist_logits"], batch["assist_label"], mask)
+    loss = 0.5 * (goal_loss + assist_loss)
+    return loss, goal_loss.detach(), (0.5 * (goal_count + assist_count)).detach()
+
+
 def train_column_steps(
     model: nn.Module,
     cards: list,
@@ -426,11 +437,11 @@ def train_column_steps(
     name: str = "column step",
     compose=None,
 ) -> None:
-    """One next week per card. The week is scored as one count down the squad.
+    """One next week per card, scored as one column object.
 
-    The picture keeps the true past and shows only that next column. Horizon
-    row totals are not in this loss. Fixture intensity owns the week's rate;
-    the column Poisson pins how many bars that week holds.
+    The picture keeps the true past and shows only that next column. The week
+    owns a rate; rows compete for that mass. Per-cell Bernoulli is not used:
+    a position that never scores cannot keep the bars by cell-rank default.
     """
     opt = _optimizer(model)
     squads = squad_index(cards)
@@ -454,12 +465,7 @@ def train_column_steps(
             opt.zero_grad()
             if _is_fixture(model):
                 pack = model(batch["image"], batch["row_pad"], batch["column_on"], batch["loss"])
-                goal_loss, cell, _count = _fixture_batch_loss(pack, batch)
-                weeks = 0.5 * (
-                    column_count(pack["goal_probs"], batch["goal_label"], batch["loss"])
-                    + column_count(pack["assist_logits"].softmax(-1), batch["assist_label"], batch["loss"])
-                )
-                loss = goal_loss + weeks
+                loss, cell, weeks = _column_whole_batch_loss(pack, batch)
             else:
                 goal_logits, assist_logits = model(batch["image"], batch["row_pad"], batch["column_on"])
                 loss, cell, weeks = _column_batch_loss(goal_logits, assist_logits, batch)
@@ -711,9 +717,11 @@ def paint_stripped_columns(
         batch["image"] = torch.from_numpy(np.stack(pictures)).permute(0, 3, 1, 2).float().div(255.0)
         with torch.no_grad():
             if _is_fixture(model):
+                from src.models.flashcard_intensity_trial import assist_column_probs
+
                 pack = model(batch["image"], batch["row_pad"], batch["column_on"], batch["loss"])
                 goal_p = pack["goal_probs"].cpu().numpy()
-                assist_p = F.softmax(pack["assist_logits"], dim=-1).cpu().numpy()
+                assist_p = assist_column_probs(pack["assist_logits"], batch["loss"]).cpu().numpy()
             else:
                 goal_logits, assist_logits = model(batch["image"], batch["row_pad"], batch["column_on"])
                 goal_p = F.softmax(goal_logits, dim=-1).numpy()
