@@ -11,8 +11,9 @@ Final card format (locked this run):
   Ten bits hold 1024 codes; 1670 distinct names need eleven bits, so ID_BITS=11.
 
 The preferred model is a schema-aligned block-token mixer: slice known offsets,
-mix across past gameweeks and across the squad, paint the next row's event bits
-as one soft binary picture, teach with channel Soft-Dice. No μ/share/argmax.
+see **all past GW rows**, and in one shot paint the **entire remaining masked
+event window**. Teach with channel Soft-Dice on that remainder picture.
+No μ/share/argmax.
 """
 
 from __future__ import annotations
@@ -24,7 +25,6 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np
-import pandas as pd
 import torch
 import torch.nn as nn
 from PIL import Image, ImageDraw, ImageFont
@@ -52,13 +52,14 @@ ID_BITS = 11
 MINS_BITS = 6
 GOAL_BITS = 3
 ASSIST_BITS = 3
+EVENT_BITS = GOAL_BITS + ASSIST_BITS
 WHO_BITS = ROLE_BITS + ID_BITS
-PLAYER_BITS = WHO_BITS + MINS_BITS + GOAL_BITS + ASSIST_BITS
+PLAYER_BITS = WHO_BITS + MINS_BITS + EVENT_BITS
 HEADER_BITS = CLUB_BITS + OPP_BITS + ODDS_BITS
 
 MAX_PLAYERS = 40
 MAX_GW = 40
-CONTEXT = 5  # past gameweeks shown before the target row
+CUT_FRACS = (0.2, 0.4, 0.6, 0.8)
 
 ROLE_CODE = {
     0: (1, 1, 1, 0),  # GKP
@@ -70,7 +71,7 @@ ROLE_CODE = {
 D = 48
 HEADS = 4
 EPOCHS = 20
-BATCH = 12
+BATCH = 8
 LR = 1e-3
 SEED = 0
 ON = (22, 22, 22)
@@ -279,8 +280,8 @@ def build_baudot_cards(
 
 
 def event_target(card: BaudotCard, gw_index: int) -> np.ndarray:
-    """Soft binary event mask for one GW row: (P, GOAL_BITS+ASSIST_BITS)."""
-    target = np.zeros((MAX_PLAYERS, GOAL_BITS + ASSIST_BITS), dtype=np.float32)
+    """Soft binary event mask for one GW row: (P, EVENT_BITS)."""
+    target = np.zeros((MAX_PLAYERS, EVENT_BITS), dtype=np.float32)
     for row in range(card.n_players):
         if not card.present[row, gw_index]:
             continue
@@ -289,35 +290,51 @@ def event_target(card: BaudotCard, gw_index: int) -> np.ndarray:
     return target
 
 
-def blank_events_in_row(bits: np.ndarray, n_players: int) -> np.ndarray:
+def blank_events_in_row(bits: np.ndarray) -> np.ndarray:
     """Copy a GW bit-row with G/A regions cleared for every player slot."""
     out = bits.copy()
     for row in range(MAX_PLAYERS):
         base = HEADER_BITS + row * PLAYER_BITS + WHO_BITS + MINS_BITS
-        out[base : base + GOAL_BITS + ASSIST_BITS] = 0.0
+        out[base : base + EVENT_BITS] = 0.0
     return out
 
 
-def window_tensor(card: BaudotCard, target_index: int) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """Past CONTEXT rows + blanked target row. Returns bits (T,W), row_on (T,), present (P,)."""
-    t_len = CONTEXT + 1
-    window = np.zeros((t_len, card.width), dtype=np.float32)
-    row_on = np.zeros(t_len, dtype=np.float32)
-    start = max(0, target_index - CONTEXT)
-    past = list(range(start, target_index))
-    # right-align past into the first CONTEXT slots
-    offset = CONTEXT - len(past)
-    for i, src in enumerate(past):
-        window[offset + i] = card.bits[src]
-        row_on[offset + i] = 1.0
-    window[CONTEXT] = blank_events_in_row(card.bits[target_index], card.n_players)
-    row_on[CONTEXT] = 1.0
-    present = card.present[:, target_index].astype(bool)
-    return window, row_on, present
+def cut_at_fraction(card: BaudotCard, frac: float) -> int:
+    """First remainder index. Keeps ≥1 past row and ≥1 masked remainder row."""
+    n = int(card.n_fixtures)
+    cut = int(round(float(frac) * n))
+    return int(max(1, min(n - 1, cut)))
+
+
+def remainder_view(card: BaudotCard, cut: int) -> dict[str, np.ndarray]:
+    """Full season FOV: all past rows true; remainder rows keep header/who/mins, blank G/A.
+
+    Returns tensors shaped for one-shot remainder painting:
+    bits (T,W), row_on (T,), rem_on (T,), target (P,T,E), present (P,T).
+    """
+    bits = card.bits.copy()
+    row_on = np.zeros(MAX_GW, dtype=np.float32)
+    rem_on = np.zeros(MAX_GW, dtype=np.float32)
+    target = np.zeros((MAX_PLAYERS, MAX_GW, EVENT_BITS), dtype=np.float32)
+    present = np.zeros((MAX_PLAYERS, MAX_GW), dtype=bool)
+    for gw in range(card.n_fixtures):
+        row_on[gw] = 1.0
+        if gw >= cut:
+            bits[gw] = blank_events_in_row(bits[gw])
+            rem_on[gw] = 1.0
+            target[:, gw] = event_target(card, gw)
+            present[:, gw] = card.present[:, gw]
+    return {
+        "bits": bits,
+        "row_on": row_on,
+        "rem_on": rem_on,
+        "target": target,
+        "present": present,
+    }
 
 
 class BlockTokenMixer(nn.Module):
-    """Schema-aligned column/row encoder + short temporal/squad mix → event ink."""
+    """Schema-aligned encoder: all GW rows in → remainder event window out in one shot."""
 
     def __init__(self, width: int, dropout: float = 0.1) -> None:
         super().__init__()
@@ -327,7 +344,7 @@ class BlockTokenMixer(nn.Module):
         self.odds = nn.Linear(ODDS_BITS, D)
         self.who = nn.Linear(WHO_BITS, D)
         self.mins = nn.Linear(MINS_BITS, D)
-        self.events = nn.Linear(GOAL_BITS + ASSIST_BITS, D)
+        self.events = nn.Linear(EVENT_BITS, D)
         self.header_mix = nn.Linear(3 * D, D)
         self.player_mix = nn.Linear(3 * D, D)
         self.norm_h = nn.LayerNorm(D)
@@ -336,9 +353,9 @@ class BlockTokenMixer(nn.Module):
         self.squad = nn.MultiheadAttention(D, HEADS, dropout=dropout, batch_first=True)
         self.norm_t = nn.LayerNorm(D)
         self.norm_s = nn.LayerNorm(D)
-        self.time_pos = nn.Parameter(torch.zeros(1, CONTEXT + 1, 1, D))
+        self.time_pos = nn.Parameter(torch.zeros(1, MAX_GW, 1, D))
         nn.init.normal_(self.time_pos, std=0.02)
-        self.paint = nn.Linear(D, GOAL_BITS + ASSIST_BITS)
+        self.paint = nn.Linear(D, EVENT_BITS)
         nn.init.zeros_(self.paint.weight)
         nn.init.constant_(self.paint.bias, -3.0)
 
@@ -357,32 +374,36 @@ class BlockTokenMixer(nn.Module):
         return players + header[:, :, None, :]
 
     def forward(self, bits: torch.Tensor, row_on: torch.Tensor, player_pad: torch.Tensor) -> torch.Tensor:
-        """Return soft event ink B,P,GOAL+ASSIST for the target (last) row."""
+        """Soft event ink for every GW row. Shape B, P, T, EVENT_BITS.
+
+        Past rows carry true event bits into the encoder; remainder rows enter
+        with G/A blank. The paint head writes the whole card's event channels;
+        the loss keeps only the remainder window.
+        """
         tokens = self._encode_rows(bits) + self.time_pos[:, : bits.shape[1]]
         b, t, p, d = tokens.shape
-        # temporal mix per player
         time_view = tokens.permute(0, 2, 1, 3).reshape(b * p, t, d)
         time_mask = (row_on < 0.5)[:, None, :].expand(b, p, t).reshape(b * p, t)
         mixed, _ = self.time(time_view, time_view, time_view, key_padding_mask=time_mask, need_weights=False)
         time_view = self.norm_t(time_view + mixed)
-        # take target timestep
-        target = time_view[:, -1, :].reshape(b, p, d)
-        # squad mix on target week
-        squad_mask = player_pad
-        mixed, _ = self.squad(target, target, target, key_padding_mask=squad_mask, need_weights=False)
-        target = self.norm_s(target + mixed)
-        return torch.sigmoid(self.paint(target))
+        tokens = time_view.reshape(b, p, t, d).permute(0, 2, 1, 3)  # B,T,P,D
+        squad_view = tokens.reshape(b * t, p, d)
+        squad_mask = player_pad[:, None, :].expand(b, t, p).reshape(b * t, p)
+        mixed, _ = self.squad(squad_view, squad_view, squad_view, key_padding_mask=squad_mask, need_weights=False)
+        tokens = self.norm_s(squad_view + mixed).reshape(b, t, p, d)
+        ink = torch.sigmoid(self.paint(tokens))  # B,T,P,E
+        return ink.permute(0, 2, 1, 3)  # B,P,T,E
 
 
 def soft_dice(pred: torch.Tensor, target: torch.Tensor, live: torch.Tensor) -> torch.Tensor:
-    """Channel Soft-Dice on goal bits and assist bits."""
+    """Channel Soft-Dice on goal bits and assist bits over the live remainder window."""
     live = live.to(pred.dtype)
     pred = pred * live
     target = target * live
     terms = []
-    for sl in (slice(0, GOAL_BITS), slice(GOAL_BITS, GOAL_BITS + ASSIST_BITS)):
-        p = pred[:, :, sl]
-        y = target[:, :, sl]
+    for sl in (slice(0, GOAL_BITS), slice(GOAL_BITS, EVENT_BITS)):
+        p = pred[..., sl]
+        y = target[..., sl]
         inter = (p * y).sum()
         denom = p.sum() + y.sum()
         terms.append(1.0 - (2.0 * inter + 1e-5) / (denom + 1e-5))
@@ -398,22 +419,20 @@ def _player_pad(card: BaudotCard) -> np.ndarray:
     return pad
 
 
-def _batch(model_cards: list[BaudotCard], indexes: list[int], device: torch.device):
-    windows = []
-    row_ons = []
-    presents = []
-    targets = []
-    pads = []
-    for card, idx in zip(model_cards, indexes, strict=True):
-        window, row_on, present = window_tensor(card, idx)
-        windows.append(window)
-        row_ons.append(row_on)
-        presents.append(present)
-        targets.append(event_target(card, idx))
+def _batch(model_cards: list[BaudotCard], cuts: list[int], device: torch.device):
+    bits_l, row_ons, rem_ons, presents, targets, pads = [], [], [], [], [], []
+    for card, cut in zip(model_cards, cuts, strict=True):
+        view = remainder_view(card, cut)
+        bits_l.append(view["bits"])
+        row_ons.append(view["row_on"])
+        rem_ons.append(view["rem_on"])
+        presents.append(view["present"])
+        targets.append(view["target"])
         pads.append(_player_pad(card))
     return (
-        torch.from_numpy(np.stack(windows)).to(device),
+        torch.from_numpy(np.stack(bits_l)).to(device),
         torch.from_numpy(np.stack(row_ons)).to(device),
+        torch.from_numpy(np.stack(rem_ons)).to(device),
         torch.from_numpy(np.stack(pads)).to(device),
         torch.from_numpy(np.stack(presents)).to(device),
         torch.from_numpy(np.stack(targets)).to(device),
@@ -435,13 +454,17 @@ def train_mixer(
         order = rng.permutation(len(cards))
         for start in range(0, len(cards), BATCH):
             pick = [cards[int(i)] for i in order[start : start + BATCH]]
-            indexes = [int(rng.integers(0, card.n_fixtures)) for card in pick]
-            bits, row_on, pad, present, target = _batch(pick, indexes, device)
-            live = present[:, :, None] & (~pad)[:, :, None]
+            fracs = [float(rng.choice(CUT_FRACS)) for _ in pick]
+            cuts = [cut_at_fraction(card, frac) for card, frac in zip(pick, fracs, strict=True)]
+            bits, row_on, rem_on, pad, present, target = _batch(pick, cuts, device)
+            live = (
+                present[:, :, :, None]
+                & rem_on[:, None, :, None].bool()
+                & (~pad)[:, :, None, None]
+            )
             opt.zero_grad()
             pred = model(bits, row_on, pad)
             loss = soft_dice(pred, target, live)
-            # tiny BCE inside event region so empty weeks still move
             bce = torch.nn.functional.binary_cross_entropy(pred, target, reduction="none")
             bce = (bce * live.to(pred.dtype)).sum() / live.to(pred.dtype).sum().clamp_min(1.0)
             loss = loss + 0.05 * bce
@@ -452,57 +475,90 @@ def train_mixer(
             seen += 1
         avg = total / max(seen, 1)
         history.append(avg)
-        print(f"baudot mixer epoch {epoch + 1} dice+ {avg:.4f}", flush=True)
+        print(f"baudot oneshot epoch {epoch + 1} dice+ {avg:.4f}", flush=True)
     return history
+
+
+def _empty_channel() -> dict:
+    return {
+        "cells": 0,
+        "actual_bars": 0,
+        "painted_bars": 0,
+        "blank_cells": 0,
+        "blank_kept_blank": 0,
+        "blank_false_paint": 0,
+        "event_cells": 0,
+        "event_exact": 0,
+        "event_within1": 0,
+        "gkp_painted": 0,
+    }
+
+
+def _add_channel(dst: dict, actual: int, painted: int, is_gkp: bool = False) -> None:
+    dst["cells"] += 1
+    dst["actual_bars"] += actual
+    dst["painted_bars"] += painted
+    if actual == 0:
+        dst["blank_cells"] += 1
+        if painted == 0:
+            dst["blank_kept_blank"] += 1
+        else:
+            dst["blank_false_paint"] += 1
+    else:
+        dst["event_cells"] += 1
+        if actual == painted:
+            dst["event_exact"] += 1
+        if abs(actual - painted) <= 1:
+            dst["event_within1"] += 1
+    if is_gkp:
+        dst["gkp_painted"] += painted
+
+
+def _finalize_channel(src: dict) -> dict:
+    ev = max(src["event_cells"], 1)
+    return {
+        **src,
+        "event_exact_rate": src["event_exact"] / ev,
+        "event_within1_rate": src["event_within1"] / ev,
+        "paint_ratio": src["painted_bars"] / max(src["actual_bars"], 1),
+    }
 
 
 @torch.no_grad()
 def evaluate_mixer(model: BlockTokenMixer, cards: list[BaudotCard], device: torch.device) -> dict:
-    """Walk every GW; threshold soft ink at 0.5; tally bars."""
+    """One-shot remainder paint at each cut fraction; split blanks vs real events."""
     model.eval()
-    actual_g = actual_a = pred_g = pred_a = exact_g = exact_a = 0
-    within_g = within_a = cells = 0
-    gkp_pred_goals = 0
-    for card in cards:
-        pad = _player_pad(card)
-        for idx in range(card.n_fixtures):
-            bits, row_on, present = window_tensor(card, idx)
-            target = event_target(card, idx)
-            bt = torch.from_numpy(bits[None]).to(device)
-            rt = torch.from_numpy(row_on[None]).to(device)
-            pt = torch.from_numpy(pad[None]).to(device)
-            pred = model(bt, rt, pt)[0].cpu().numpy()
-            for row in range(card.n_players):
-                if pad[row] or not present[row]:
-                    continue
-                cells += 1
-                ag = int(target[row, :GOAL_BITS].sum())
-                aa = int(target[row, GOAL_BITS:].sum())
-                pg = int((pred[row, :GOAL_BITS] >= 0.5).sum())
-                pa = int((pred[row, GOAL_BITS:] >= 0.5).sum())
-                actual_g += ag
-                actual_a += aa
-                pred_g += pg
-                pred_a += pa
-                exact_g += int(ag == pg)
-                exact_a += int(aa == pa)
-                within_g += int(abs(ag - pg) <= 1)
-                within_a += int(abs(aa - pa) <= 1)
-                if int(card.position[row]) == 0:
-                    gkp_pred_goals += pg
+    by_cut: dict[str, dict] = {}
+    pooled_g, pooled_a = _empty_channel(), _empty_channel()
+    for frac in CUT_FRACS:
+        g_tot, a_tot = _empty_channel(), _empty_channel()
+        for card in cards:
+            cut = cut_at_fraction(card, frac)
+            view = remainder_view(card, cut)
+            pad = _player_pad(card)
+            pred = model(
+                torch.from_numpy(view["bits"][None]).to(device),
+                torch.from_numpy(view["row_on"][None]).to(device),
+                torch.from_numpy(pad[None]).to(device),
+            )[0].cpu().numpy()
+            for gw in range(cut, card.n_fixtures):
+                for row in range(card.n_players):
+                    if pad[row] or not view["present"][row, gw]:
+                        continue
+                    ag = int(view["target"][row, gw, :GOAL_BITS].sum())
+                    aa = int(view["target"][row, gw, GOAL_BITS:].sum())
+                    pg = int((pred[row, gw, :GOAL_BITS] >= 0.5).sum())
+                    pa = int((pred[row, gw, GOAL_BITS:] >= 0.5).sum())
+                    is_gkp = int(card.position[row]) == 0
+                    _add_channel(g_tot, ag, pg, is_gkp=is_gkp)
+                    _add_channel(a_tot, aa, pa, is_gkp=False)
+                    _add_channel(pooled_g, ag, pg, is_gkp=is_gkp)
+                    _add_channel(pooled_a, aa, pa, is_gkp=False)
+        by_cut[f"{frac:.0%}"] = {"goals": _finalize_channel(g_tot), "assists": _finalize_channel(a_tot)}
     return {
-        "cells": cells,
-        "actual_goals": actual_g,
-        "painted_goals": pred_g,
-        "exact_goals": exact_g,
-        "within1_goals": within_g,
-        "actual_assists": actual_a,
-        "painted_assists": pred_a,
-        "exact_assists": exact_a,
-        "within1_assists": within_a,
-        "gkp_painted_goals": gkp_pred_goals,
-        "exact_goal_rate": exact_g / max(cells, 1),
-        "exact_assist_rate": exact_a / max(cells, 1),
+        "cuts": by_cut,
+        "pooled": {"goals": _finalize_channel(pooled_g), "assists": _finalize_channel(pooled_a)},
+        "gkp_painted_goals": pooled_g["gkp_painted"],
     }
 
 
@@ -555,24 +611,30 @@ def render_season_card(card: BaudotCard, path: Path, title: str | None = None) -
 
 def render_teach_diagram(path: Path) -> Path:
     """Simple process diagram for this trial."""
-    W, H = 900, 320
+    W, H = 940, 340
     img = Image.new("RGB", (W, H), BG)
     d = ImageDraw.Draw(img)
-    d.text((24, 16), "Baudot row mixer — how the flashcard is taught", fill=INK, font=_font(20))
+    d.text((24, 16), "Baudot row mixer — full past + one-shot remainder", fill=INK, font=_font(20))
     boxes = [
-        (30, 80, 200, 200, "1. Card\nGW rows of\nbinary dots"),
-        (240, 80, 410, 200, "2. Slice blocks\nclub/opp/odds\nwho·mins·G/A"),
-        (450, 80, 620, 200, "3. Mix\npast weeks\n+ squad"),
-        (660, 80, 860, 200, "4. Paint next\nrow events\nSoft-Dice match"),
+        (24, 70, 210, 210, "1. Full card\nall past GWs\ntrue bits"),
+        (230, 70, 420, 210, "2. Mask remainder\nG/A blank\nwho+mins kept"),
+        (440, 70, 640, 210, "3. Mix\nall past weeks\n+ squad"),
+        (660, 70, 910, 210, "4. One-shot paint\nentire remainder\nevent window"),
     ]
     for x0, y0, x1, y1, text in boxes:
         d.rounded_rectangle((x0, y0, x1, y1), radius=12, fill=PLATE, outline=GRID, width=2)
-        d.multiline_text((x0 + 16, y0 + 28), text, fill=INK, font=_font(14), spacing=4)
-    for x in (210, 420, 630):
-        d.polygon([(x, 135), (x + 20, 145), (x, 155)], fill=MUTED)
+        d.multiline_text((x0 + 14, y0 + 28), text, fill=INK, font=_font(14), spacing=4)
+    for x in (212, 422, 642):
+        d.polygon([(x, 130), (x + 16, 140), (x, 150)], fill=MUTED)
     d.text(
-        (30, 230),
-        "No cell shares · no argmax paint · events read from thresholded ink after.",
+        (24, 240),
+        "Teach Soft-Dice on the whole remainder picture · no cell shares · no argmax.",
+        fill=MUTED,
+        font=_font(12),
+    )
+    d.text(
+        (24, 268),
+        "Cuts 20/40/60/80% · past always fully visible · events read after threshold.",
         fill=MUTED,
         font=_font(12),
     )
@@ -583,8 +645,9 @@ def render_teach_diagram(path: Path) -> Path:
 
 def write_report(stats: dict, train_n: int, test_n: int, history: list[float], name_n: int) -> Path:
     path = REPORTS / "baudot_row_mixer.md"
+    pooled = stats["pooled"]
     lines = [
-        "# Baudot row-card block-token mixer",
+        "# Baudot row-card block-token mixer (full past + one-shot remainder)",
         "",
         "Exploratory trial (not a gated score comparison).",
         "",
@@ -595,38 +658,69 @@ def write_report(stats: dict, train_n: int, test_n: int, history: list[float], n
         "(assessed win ON · draw BLANK · opp win ON).",
         f"- Player: role {ROLE_BITS} + id **{ID_BITS}** + mins {MINS_BITS} + G {GOAL_BITS} + A {ASSIST_BITS}.",
         f"- Player IDs: unique by normalised name across closed seasons "
-        f"({name_n} names; 10 bits are not enough, so ID_BITS={ID_BITS}).",
+        f"({name_n} names; ID_BITS={ID_BITS}).",
         "",
-        "## Model",
+        "## Model / FOV",
         "",
-        "Block-token mixer: schema slices → temporal attention over past "
-        f"{CONTEXT} GWs → squad attention on the target week → soft event ink. "
-        "Loss = channel Soft-Dice + 0.05 BCE. No μ/share/argmax.",
+        "Block-token mixer sees **all past GW rows** (true events). Remainder rows "
+        "keep club/opp/odds/who/mins with **G/A blank**. One forward paints the "
+        "**entire remainder event window**. Loss = Soft-Dice + 0.05 BCE on that "
+        "window only. Cuts: 20%, 40%, 60%, 80%. No μ/share/argmax.",
         "",
         f"Train seasons: {', '.join(TRAIN_SEASONS)} ({train_n} club cards). "
         f"Test: {TEST_SEASON} ({test_n} cards).",
         "",
-        "## Holdout tallies (threshold 0.5)",
+        "## Holdout — volume",
         "",
-        "| channel | actual bars | painted bars | exact row-matches | within 1 | exact rate |",
-        "|---|---:|---:|---:|---:|---:|",
+        "| channel | actual bars | painted bars | paint ratio | GKP painted |",
+        "|---|---:|---:|---:|---:|",
         (
-            f"| goals | {stats['actual_goals']} | {stats['painted_goals']} | "
-            f"{stats['exact_goals']} | {stats['within1_goals']} | {stats['exact_goal_rate']:.3f} |"
+            f"| goals | {pooled['goals']['actual_bars']} | {pooled['goals']['painted_bars']} | "
+            f"{pooled['goals']['paint_ratio']:.2f}× | {stats['gkp_painted_goals']} |"
         ),
         (
-            f"| assists | {stats['actual_assists']} | {stats['painted_assists']} | "
-            f"{stats['exact_assists']} | {stats['within1_assists']} | {stats['exact_assist_rate']:.3f} |"
+            f"| assists | {pooled['assists']['actual_bars']} | {pooled['assists']['painted_bars']} | "
+            f"{pooled['assists']['paint_ratio']:.2f}× | — |"
         ),
         "",
-        f"GKP painted goals (should stay near 0): **{stats['gkp_painted_goals']}**.",
+        "## Holdout — blanks vs real events (pooled cuts)",
         "",
-        f"Final train loss: {history[-1]:.4f}." if history else "",
-        "",
-        "Artifacts: `/opt/cursor/artifacts/baudot_season_arsenal.png`, "
-        "`baudot_teach_diagram.png`.",
-        "",
+        "| channel | blank cells | kept blank | false paint | event cells | exact on events | within ±1 on events |",
+        "|---|---:|---:|---:|---:|---:|---:|",
     ]
+    for name in ("goals", "assists"):
+        c = pooled[name]
+        lines.append(
+            f"| {name} | {c['blank_cells']} | {c['blank_kept_blank']} | {c['blank_false_paint']} | "
+            f"{c['event_cells']} | {c['event_exact']} ({c['event_exact_rate']:.2f}) | "
+            f"{c['event_within1']} ({c['event_within1_rate']:.2f}) |"
+        )
+    lines.extend(
+        [
+            "",
+            "## By cut",
+            "",
+            "| cut | channel | actual | painted | event exact rate | event within±1 |",
+            "|---|---|---:|---:|---:|---:|",
+        ]
+    )
+    for cut, block in stats["cuts"].items():
+        for name in ("goals", "assists"):
+            c = block[name]
+            lines.append(
+                f"| {cut} | {name} | {c['actual_bars']} | {c['painted_bars']} | "
+                f"{c['event_exact_rate']:.2f} | {c['event_within1_rate']:.2f} |"
+            )
+    lines.extend(
+        [
+            "",
+            f"Final train loss: {history[-1]:.4f}." if history else "",
+            "",
+            "Artifacts: `/opt/cursor/artifacts/baudot_season_arsenal.png`, "
+            "`baudot_teach_diagram.png`.",
+            "",
+        ]
+    )
     path.write_text("\n".join(lines), encoding="utf-8")
     return path
 
@@ -677,15 +771,20 @@ def main() -> None:
     rng = np.random.default_rng(SEED)
     model = BlockTokenMixer(width=train[0].width).to(device)
     n_params = sum(p.numel() for p in model.parameters())
-    print(f"training BlockTokenMixer params={n_params} device={device}", flush=True)
+    print(
+        f"training BlockTokenMixer oneshot remainder params={n_params} device={device}",
+        flush=True,
+    )
     history = train_mixer(model, train, rng, device)
-    print("evaluating holdout", flush=True)
+    print("evaluating holdout (full past + one-shot remainder)", flush=True)
     stats = evaluate_mixer(model, test, device)
     stats["params"] = n_params
     stats["seconds"] = round(time.time() - t0, 1)
     report = write_report(stats, len(train), len(test), history, len(name_codes))
     state = {
-        "trial": "baudot_row_mixer",
+        "trial": "baudot_row_mixer_oneshot_remainder",
+        "fov": "all_past_gws + one_shot_remainder_events",
+        "cuts": list(CUT_FRACS),
         "id_bits": ID_BITS,
         "unique_names": len(name_codes),
         "width": train[0].width,

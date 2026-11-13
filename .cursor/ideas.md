@@ -14,7 +14,7 @@ The published painter takes the rendered flashcard and nothing else. A numeric s
 
 ## Baudot row-card + block-token mixer (active 2026-11-13)
 
-GW-as-rows binary tape; unique name IDs (11 bits); odds win/blank-draw/loss; preferred model = schema block tokens + short temporal/squad mix + Soft-Dice on next-row events (`flashcard_baudot_row_trial.py`). Do not revert to cell-posterior allocation for this path. Flat bit Transformers / ImageNet vision on the dots stay second-class.
+GW-as-rows binary tape; unique name IDs (11 bits); odds win/blank-draw/loss; preferred model = schema block tokens + mix over **all past GWs** + one-shot Soft-Dice paint of the **remainder event window** (`flashcard_baudot_row_trial.py`). The 5-GW single-target variant is superseded. Do not revert to cell-posterior allocation for this path. Flat bit Transformers / ImageNet vision on the dots stay second-class.
 
 ## Parked — cell-posterior column allocation (2026-11-13)
 

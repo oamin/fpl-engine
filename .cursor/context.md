@@ -18,7 +18,7 @@ Committed display: **each GW is one row** of pure binary dots (left→right), se
 
 Row schema: `club8 · opp8 · odds12 · [role4 + player_id + mins6 + G3 + A3] × roster`. Odds are **assessed win ON · draw BLANK · opponent win ON** (no separate home/away row). Player IDs are unique by normalised name across the four closed seasons; **10 bits are not enough** (1670 names), so the trial uses **ID_BITS=11**. Schema slicing by place-in-chain is picture reading, not a numeric sidecar.
 
-Preferred learner: `src/models/flashcard_baudot_row_trial.py` — block-token mixer (temporal + squad attention) paints the next row’s event bits; Soft-Dice teaching. Report: `reports/baudot_row_mixer.md`. Horizon fixture-intensity remains the stored product path until a picture/Baudot learner beats it on the gate.
+Preferred learner: `src/models/flashcard_baudot_row_trial.py` — block-token mixer sees **all past GW rows** and one-shot paints the **entire remaining masked event window** (cuts 20/40/60/80%); Soft-Dice on that remainder picture. Report: `reports/baudot_row_mixer.md`. Horizon fixture-intensity remains the stored product path until a picture/Baudot learner beats it on the gate.
 
 **Horizon product path (still on the stored card):** `default_reader()` → fixture-intensity `IntensityReader` in `src/models/flashcard_strip_trial.py`, with separate horizon and column weights under `reports/cards/current/`. Band embeddings stay normalized. That path remains the stored comparison table until a picture learner beats it on the same gate. It is not a licence to grow more allocation machinery for stepped columns.
 
