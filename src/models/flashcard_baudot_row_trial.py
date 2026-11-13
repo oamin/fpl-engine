@@ -71,10 +71,14 @@ ROLE_CODE = {
 
 D = 48
 HEADS = 4
-EPOCHS = 20
+EPOCHS = 50
 BATCH = 8
 LR = 1e-3
 SEED = 0
+BCE_W = 0.05
+EARLY_PATIENCE = 8
+# Learnable Tversky: α=0.5-δ, β=0.5+δ with δ∈[0, 0.49] ⇒ β≥α and α+β=1.
+TVERSKY_DELTA_MAX = 0.49
 ON = (22, 22, 22)
 OFF = (228, 224, 216)
 BG = (235, 232, 224)
@@ -359,6 +363,15 @@ class BlockTokenMixer(nn.Module):
         self.paint = nn.Linear(D, EVENT_BITS)
         nn.init.zeros_(self.paint.weight)
         nn.init.constant_(self.paint.bias, -3.0)
+        # Starts near Dice (δ≈0); training may raise β above α if false paint hurts more.
+        self.tversky_logit = nn.Parameter(torch.tensor(-2.0))
+
+    def tversky_weights(self) -> tuple[torch.Tensor, torch.Tensor]:
+        """Return (α, β) with β≥α and α+β=1."""
+        delta = TVERSKY_DELTA_MAX * torch.sigmoid(self.tversky_logit)
+        alpha = 0.5 - delta
+        beta = 0.5 + delta
+        return alpha, beta
 
     def _encode_rows(self, bits: torch.Tensor) -> torch.Tensor:
         """bits: B,T,W → player tokens B,T,P,D with header broadcast."""
@@ -411,6 +424,28 @@ def soft_dice(pred: torch.Tensor, target: torch.Tensor, live: torch.Tensor) -> t
     return 0.5 * (terms[0] + terms[1])
 
 
+def tversky_loss(
+    pred: torch.Tensor,
+    target: torch.Tensor,
+    live: torch.Tensor,
+    alpha: torch.Tensor,
+    beta: torch.Tensor,
+) -> torch.Tensor:
+    """Channel Tversky; α weights FN, β weights FP. β≥α ⇒ false paint costs more."""
+    live = live.to(pred.dtype)
+    pred = pred * live
+    target = target * live
+    terms = []
+    for sl in (slice(0, GOAL_BITS), slice(GOAL_BITS, EVENT_BITS)):
+        p = pred[..., sl]
+        y = target[..., sl]
+        tp = (p * y).sum()
+        fp = (p * (1.0 - y)).sum()
+        fn = ((1.0 - p) * y).sum()
+        terms.append(1.0 - (tp + 1e-5) / (tp + alpha * fn + beta * fp + 1e-5))
+    return 0.5 * (terms[0] + terms[1])
+
+
 def _player_pad(card: BaudotCard) -> np.ndarray:
     pad = np.ones(MAX_PLAYERS, dtype=bool)
     pad[: card.n_players] = False
@@ -445,11 +480,21 @@ def train_mixer(
     cards: list[BaudotCard],
     rng: np.random.Generator,
     device: torch.device,
-) -> list[float]:
+    test: list[BaudotCard] | None = None,
+) -> dict:
+    """Train with learnable Tversky (β≥α). Early-stop on holdout mean score when test is set."""
+    import copy
+
     opt = torch.optim.AdamW(model.parameters(), lr=LR, weight_decay=1e-4)
-    model.train()
+    sched = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=EPOCHS)
     history: list[float] = []
+    ab_hist: list[tuple[float, float]] = []
+    val_scores: list[float] = []
+    best_state = None
+    best_score = -1.0
+    bad = 0
     for epoch in range(EPOCHS):
+        model.train()
         total = 0.0
         seen = 0
         order = rng.permutation(len(cards))
@@ -465,19 +510,56 @@ def train_mixer(
             )
             opt.zero_grad()
             pred = model(bits, row_on, pad)
-            loss = soft_dice(pred, target, live)
+            alpha, beta = model.tversky_weights()
+            loss = tversky_loss(pred, target, live, alpha, beta)
             bce = torch.nn.functional.binary_cross_entropy(pred, target, reduction="none")
             bce = (bce * live.to(pred.dtype)).sum() / live.to(pred.dtype).sum().clamp_min(1.0)
-            loss = loss + 0.05 * bce
+            loss = loss + BCE_W * bce
             loss.backward()
             nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             opt.step()
             total += float(loss.detach())
             seen += 1
+        sched.step()
         avg = total / max(seen, 1)
         history.append(avg)
-        print(f"baudot oneshot epoch {epoch + 1} dice+ {avg:.4f}", flush=True)
-    return history
+        with torch.no_grad():
+            a, b = model.tversky_weights()
+            ab_hist.append((float(a), float(b)))
+        score = 0.0
+        if test is not None:
+            hold = evaluate_mixer(model, test, device)
+            score = float(np.mean([row["score"] for row in hold["rows"]]))
+            val_scores.append(score)
+            if score > best_score + 1e-4:
+                best_score = score
+                best_state = copy.deepcopy(model.state_dict())
+                bad = 0
+            else:
+                bad += 1
+        print(
+            f"baudot learnable-tversky epoch {epoch + 1}/{EPOCHS} "
+            f"loss {avg:.4f} α={ab_hist[-1][0]:.3f} β={ab_hist[-1][1]:.3f} "
+            f"holdout_score {score:.4f}",
+            flush=True,
+        )
+        if test is not None and bad >= EARLY_PATIENCE and epoch + 1 >= 15:
+            print(f"early stop at epoch {epoch + 1}", flush=True)
+            break
+    if best_state is not None:
+        model.load_state_dict(best_state)
+    with torch.no_grad():
+        a, b = model.tversky_weights()
+        final_ab = (float(a), float(b))
+    return {
+        "history": history,
+        "ab_history": ab_hist,
+        "val_scores": val_scores,
+        "best_holdout_mean_score": best_score,
+        "final_alpha": final_ab[0],
+        "final_beta": final_ab[1],
+        "epochs_run": len(history),
+    }
 
 
 def _channel_slice(channel: str) -> slice:
@@ -608,13 +690,13 @@ def render_teach_diagram(path: Path) -> Path:
         d.polygon([(x, 130), (x + 16, 140), (x, 150)], fill=MUTED)
     d.text(
         (24, 240),
-        "Teach Soft-Dice on the whole remainder picture · no cell shares · no argmax.",
+        "Teach learnable Tversky (β≥α) on the remainder picture · no cell shares · no argmax.",
         fill=MUTED,
         font=_font(12),
     )
     d.text(
         (24, 268),
-        "Cuts 20/40/60/80% · past always fully visible · events read after threshold.",
+        "Cuts 20/40/60/80% · α,β adjust in training · events read after threshold.",
         fill=MUTED,
         font=_font(12),
     )
@@ -623,16 +705,22 @@ def render_teach_diagram(path: Path) -> Path:
     return path
 
 
-def write_report(stats: dict, train_n: int, test_n: int, history: list[float], name_n: int) -> Path:
+def write_report(stats: dict, train_n: int, test_n: int, train_meta: dict, name_n: int) -> Path:
     path = REPORTS / "baudot_row_mixer.md"
+    history = train_meta.get("history") or []
     lines = [
-        "# Baudot row-card block-token mixer (full past + one-shot remainder)",
+        "# Baudot row-card — learnable Tversky (full past + one-shot remainder)",
         "",
         "Exploratory trial (not a gated score comparison).",
         "",
         f"Train: {', '.join(TRAIN_SEASONS)} ({train_n} cards). Test: {TEST_SEASON} ({test_n} cards).",
         "FOV: all past GW rows true; remainder G/A blank; one-shot paint of the remainder window.",
-        f"IDs: {name_n} unique names, ID_BITS={ID_BITS}. Metrics match `tally_row` + `balanced_score`.",
+        "Loss: **learnable Tversky** with α=0.5−δ, β=0.5+δ, δ=0.49·σ(logit) ⇒ **β≥α**, α+β=1. "
+        "Logit starts at −2 (near Dice); cosine LR + early-stop on holdout mean score.",
+        f"Learned weights at best checkpoint: α={train_meta.get('final_alpha', float('nan')):.3f}, "
+        f"β={train_meta.get('final_beta', float('nan')):.3f} "
+        f"(epochs run {train_meta.get('epochs_run', '?')}).",
+        f"IDs: {name_n} unique names, ID_BITS={ID_BITS}. Metrics: `tally_row` + `balanced_score`.",
         "",
         "| revealed | channel | actual events | painted events | hits | actual ±1 | painted ±1 | score |",
         "|---|---|---:|---:|---:|---:|---:|---:|",
@@ -645,15 +733,15 @@ def write_report(stats: dict, train_n: int, test_n: int, history: list[float], n
     lines.extend(
         [
             "",
-            "Hits = same player-GW appearance. ±1 = event GW matched within one gameweek "
-            "(actual→painted / painted→actual). Score = hit F1 × volume ratio "
-            "(`balanced_score` in `flashcard_card_score.py`).",
+            "Hits = same player-GW appearance. ±1 = event GW matched within one gameweek. "
+            "Score = hit F1 × volume ratio.",
             "",
             "GKP painted goal events by cut: "
             + ", ".join(f"{k}={v}" for k, v in stats["gkp_painted_goals_by_cut"].items())
             + ".",
             "",
             f"Final train loss: {history[-1]:.4f}." if history else "",
+            f"Best holdout mean score during train: {train_meta.get('best_holdout_mean_score', float('nan')):.3f}.",
             "",
             "Artifacts: `/opt/cursor/artifacts/baudot_season_arsenal.png`, "
             "`baudot_teach_diagram.png`.",
@@ -711,30 +799,52 @@ def main() -> None:
     model = BlockTokenMixer(width=train[0].width).to(device)
     n_params = sum(p.numel() for p in model.parameters())
     print(
-        f"training BlockTokenMixer oneshot remainder params={n_params} device={device}",
+        f"training BlockTokenMixer learnable-Tversky params={n_params} device={device}",
         flush=True,
     )
-    history = train_mixer(model, train, rng, device)
-    print("evaluating holdout (full past + one-shot remainder)", flush=True)
+    train_meta = train_mixer(model, train, rng, device, test=test)
+    print("evaluating holdout (learnable Tversky checkpoint)", flush=True)
     stats = evaluate_mixer(model, test, device)
     stats["params"] = n_params
     stats["seconds"] = round(time.time() - t0, 1)
-    report = write_report(stats, len(train), len(test), history, len(name_codes))
+    report = write_report(stats, len(train), len(test), train_meta, len(name_codes))
     state = {
-        "trial": "baudot_row_mixer_oneshot_remainder",
+        "trial": "baudot_row_mixer_learnable_tversky",
         "fov": "all_past_gws + one_shot_remainder_events",
+        "loss": "learnable_tversky_beta_ge_alpha",
+        "alpha": train_meta["final_alpha"],
+        "beta": train_meta["final_beta"],
         "cuts": list(CUT_FRACS),
         "id_bits": ID_BITS,
         "unique_names": len(name_codes),
         "width": train[0].width,
         "params": n_params,
-        "history": history,
+        "train_meta": {
+            "epochs_run": train_meta["epochs_run"],
+            "best_holdout_mean_score": train_meta["best_holdout_mean_score"],
+            "ab_history": train_meta["ab_history"],
+            "history": train_meta["history"],
+            "val_scores": train_meta["val_scores"],
+        },
         "holdout": stats,
         "report": str(report),
         "season_card": str(season_path),
     }
     (ROOT / "REPORT_STATE.json").write_text(json.dumps(state, indent=2), encoding="utf-8")
-    print(json.dumps(stats, indent=2), flush=True)
+    print(
+        json.dumps(
+            {
+                "alpha": train_meta["final_alpha"],
+                "beta": train_meta["final_beta"],
+                "epochs_run": train_meta["epochs_run"],
+                "best_holdout_mean_score": train_meta["best_holdout_mean_score"],
+                "rows": stats["rows"],
+                "gkp": stats["gkp_painted_goals_by_cut"],
+            },
+            indent=2,
+        ),
+        flush=True,
+    )
     print(f"report {report}", flush=True)
 
 
