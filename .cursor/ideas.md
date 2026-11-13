@@ -32,6 +32,10 @@ Event-volume header dots from football-data (no Odds API). `1_ou_only` mean **0.
 
 1D club-season block stream + tiny causal transformer; event-space loss on masked remainder. Mean **0.118** (Δ −0.101). DEF **103/85/6** (paint without hits). Report: `reports/baudot_causal_lm.md`. LLM-shaped backbone does not replace the gate mixer; do not scale the LM without a new rare-event objective.
 
+## Parked — Baudot loss replacements listwise / calib-θ (2026-11-13)
+
+Overnight proposals vs Tversky gate. `1_listwise_bal` mean **0.181**, DEF **103/0/0**. `2_calib_theta` mean **0.000** (blank paint). Report: `reports/baudot_loss_replacements.md`. Do not promote; rethink ranking grain (within-remainder / hard-negative) before another listwise global pool.
+
 ## Parked — cell-posterior column allocation (2026-11-13)
 
 Stepped column trials that score cells / shares / top-k paint (GKP residual on one-bar weeks). Parked in favor of whole-strip picture matching. Keep the reports for archaeology; do not extend the share/rank stack.
