@@ -1,0 +1,42 @@
+[
+  {
+    "label": "baseline/native",
+    "painted": 907,
+    "exact": 170,
+    "soft": 923.8,
+    "rows_below_half": 205,
+    "live_rows": 548,
+    "chance": "GKP 0.008, DEF 0.026, MID 0.069, FWD 0.146.",
+    "gkp": "GKP 0.008"
+  },
+  {
+    "label": "baseline/shifted",
+    "painted": 1046,
+    "exact": 191,
+    "soft": 1059.5,
+    "rows_below_half": 187,
+    "live_rows": 548,
+    "chance": "GKP 0.009, DEF 0.032, MID 0.079, FWD 0.161.",
+    "gkp": "GKP 0.009"
+  },
+  {
+    "label": "3_fixture_intensity/native",
+    "painted": 767,
+    "exact": 150,
+    "soft": 801.8,
+    "rows_below_half": 227,
+    "live_rows": 548,
+    "chance": "GKP 0.005, DEF 0.020, MID 0.054, FWD 0.159.",
+    "gkp": "GKP 0.005"
+  },
+  {
+    "label": "3_fixture_intensity/shifted",
+    "painted": 762,
+    "exact": 145,
+    "soft": 788.8,
+    "rows_below_half": 215,
+    "live_rows": 548,
+    "chance": "GKP 0.008, DEF 0.023, MID 0.051, FWD 0.151.",
+    "gkp": "GKP 0.008"
+  }
+]
