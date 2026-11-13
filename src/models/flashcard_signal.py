@@ -15,7 +15,7 @@ import torch.nn.functional as F
 
 from src.models.flashcard_calibrated_trial import integer_budgets
 from src.models.flashcard_card_score import _paint, tally_cards
-from src.models.flashcard_odds_trial import load_odds
+from src.models.flashcard_odds_trial import load_market
 from src.models.flashcard_squad_trial import (
     SEED,
     _stack,
@@ -103,7 +103,7 @@ def main() -> None:
     test = build_cards((TEST_SEASON,), league)
     clubs = fit_clubs(train)
     squads = squad_index(train + test)
-    odds = load_odds()
+    odds = load_market()
     n_clubs = max(clubs.values(), default=0) + 1
     torch.manual_seed(SEED)
     model = StripVision(HEADER_H, dropout=0.1, n_clubs=n_clubs, player_h=PLAYER_H)

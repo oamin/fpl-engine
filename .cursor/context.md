@@ -8,7 +8,7 @@ The published flashcard painter reads one rendered card. That picture is the onl
 
 Do not add a numeric sidecar. Do not pass minutes, a minutes/90 fraction, a position id, a club id, an opponent id, a match-up vector, a team scoring rate, concede, regulars, own history, opponent history, or the other squad into the reader. If a fact belongs in the forecast, draw it on the card. An attention mask for an empty row or an empty column is allowed. It carries no value.
 
-Each column's match rows, from the top, are the assessed club's symbol, the opponent's symbol, home or away, and the opening 1X2. The club symbol is the same mark on every column. There is no club id and no player id.
+Each column's match rows, from the top, are the assessed club's symbol, the opponent's symbol, home or away, the club's Asian handicap, and the 2.5-goal total. The club symbol is the same mark on every column. A faint outline is drawn on every square and is part of the picture. There is no club id and no player id.
 
 The reader is `StripVision` in `src/models/flashcard_strip_trial.py`. Its forward arguments are the image, the row mask, and the column mask. `Coupler` attends over those image tokens. It has no embedding for position, club, opponent, minutes, or rate. Minutes, goals, assists, and the position square are separate bands of the same picture. Each band has its own embedding, and each embedding is normalized before they are added. Do not flatten a cell into one vector, and do not add the raw band vectors. The minute embedding otherwise grows until it owns the forecast.
 
