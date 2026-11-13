@@ -1,23 +1,47 @@
 {
-  "milestone": "cascade-short-generative-locked",
-  "status": "complete",
-  "summary": "cascade_short generative stack locked (protocol.cascade_short_generative): mean score_team_side; scenario k∼M → lineup cov → attack dice → CS/GC from rolled GA; soft priors via score_xp_v2 DefCon/bonus/cards/saves helpers. Firm XI and bonus-from-roll deferred. PR #96 green — mark ready / merge to main.",
-  "gemini": "",
-  "decisions": {
-    "cascade_short_generative": {
-      "locked": "2026-10-20",
-      "protocol": "cascade_short_generative",
-      "pr": 96,
-      "deferred": ["firm_xi", "bonus_from_roll"]
-    }
+  "trial": "baudot_row_mixer",
+  "id_bits": 11,
+  "unique_names": 1670,
+  "width": 1108,
+  "params": 36630,
+  "history": [
+    1.0017615795135497,
+    0.9931607007980346,
+    0.9842711091041565,
+    0.9806519508361816,
+    0.9734511971473694,
+    0.9588770627975464,
+    0.9538237929344178,
+    0.9366518020629883,
+    0.9303009748458863,
+    0.9088708519935608,
+    0.888067626953125,
+    0.8849241256713867,
+    0.9031293272972107,
+    0.8777241826057434,
+    0.8896676063537597,
+    0.8761706709861755,
+    0.8414000511169434,
+    0.8301317811012268,
+    0.8108631014823914,
+    0.8009324193000793
+  ],
+  "holdout": {
+    "cells": 19576,
+    "actual_goals": 1005,
+    "painted_goals": 2928,
+    "exact_goals": 16698,
+    "within1_goals": 19549,
+    "actual_assists": 942,
+    "painted_assists": 2881,
+    "exact_assists": 16577,
+    "within1_assists": 19556,
+    "gkp_painted_goals": 0,
+    "exact_goal_rate": 0.8529832447895382,
+    "exact_assist_rate": 0.8468022067838169,
+    "params": 36630,
+    "seconds": 10.1
   },
-  "artifacts": [
-    "reports/LOCKED.md",
-    "reports/CASCADE_CONTRACT.md",
-    "experiments/protocol.json",
-    "src/markets/short_horizon_generative.py",
-    "src/markets/defence_roll.py",
-    "src/models/short_horizon_cascade.py",
-    "src/models/cascade_short.py"
-  ]
+  "report": "/agent/repos/fpl-engine/reports/baudot_row_mixer.md",
+  "season_card": "/opt/cursor/artifacts/baudot_season_arsenal.png"
 }

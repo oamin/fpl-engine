@@ -12,6 +12,14 @@ Do not add a numeric sidecar. Do not pass minutes, a minutes/90 fraction, a posi
 
 Each column's match rows, from the top, are the assessed club's symbol, the opponent's symbol, home or away, and the opening 1X2. The club symbol is the same mark on every column. There is no club id and no player id.
 
+## Baudot row-card (active format trial, 2026-11-13)
+
+Committed display: **each GW is one row** of pure binary dots (left→right), season stacked top→bottom. No RGB, no field delimiter lines on the spine.
+
+Row schema: `club8 · opp8 · odds12 · [role4 + player_id + mins6 + G3 + A3] × roster`. Odds are **assessed win ON · draw BLANK · opponent win ON** (no separate home/away row). Player IDs are unique by normalised name across the four closed seasons; **10 bits are not enough** (1670 names), so the trial uses **ID_BITS=11**. Schema slicing by place-in-chain is picture reading, not a numeric sidecar.
+
+Preferred learner: `src/models/flashcard_baudot_row_trial.py` — block-token mixer (temporal + squad attention) paints the next row’s event bits; Soft-Dice teaching. Report: `reports/baudot_row_mixer.md`. Horizon fixture-intensity remains the stored product path until a picture/Baudot learner beats it on the gate.
+
 **Horizon product path (still on the stored card):** `default_reader()` → fixture-intensity `IntensityReader` in `src/models/flashcard_strip_trial.py`, with separate horizon and column weights under `reports/cards/current/`. Band embeddings stay normalized. That path remains the stored comparison table until a picture learner beats it on the same gate. It is not a licence to grow more allocation machinery for stepped columns.
 
 **Stepped column path (active design):** `ColumnFlashcard` pools the next week into one column vector and paints that week's event strip in one pass. Loss is strip color error. Bars are read from ink afterwards. Report: `reports/column_picture_learner.md`. Parked: cell-Bernoulli column losses, listwise share penalties, and `paint_column` top-k as a teaching method.
