@@ -6,7 +6,15 @@ Cursor chooses the next pre-registered comparison. The PI is not asked to pick. 
 
 ## Flashcard painter, locked 2026-11-12
 
-The published painter takes the rendered flashcard and nothing else. A numeric sidecar is not a candidate and is not a fallback. Minutes, position, the club symbol, the opponent symbol, and the team scoring rate stay on the card as squares, or they stay out. The match rows run club, opponent, home or away, then the opening 1X2. Goals use fixture intensity: the header owns the week's expected total, then the squad shares it. Assists keep a four-way head. Two readers see the card and their weights stay separate. The paint keeps the row counts and moves the bars toward the high weeks. A zero row stays empty. Do not pass them again as tensors. Do not divide minutes by 90 on a side path. Do not keep a match-up slot “just in case.” Do not paint a square only because zero is its most likely count. Embed the minute block, the goal squares, the assist squares, and the position square separately, and normalize each band before adding them. A raw sum lets the minute embedding grow until it owns the forecast. `SquadSequence` is not the gate. See `.cursor/context.md`.
+The published painter takes the rendered flashcard and nothing else. A numeric sidecar is not a candidate and is not a fallback. Minutes, position, the club symbol, the opponent symbol, and the team scoring rate stay on the card as squares, or they stay out. The match rows run club, opponent, home or away, then the opening 1X2. Embed the minute block, the goal squares, the assist squares, and the position square separately, and normalize each band before adding them. `SquadSequence` is not the gate. See `.cursor/context.md`.
+
+## Core idea — flashcard as one picture (restated 2026-11-13)
+
+**Active design constraint.** Teach by matching pictures. A stepped column is one object: shown card (blank next-column events) → one column embedding → painted event strip → strip L1. Read bars from ink after. Do not “fix” GKP/volume with μ, share, rank margins, caps, or argmax paint as the learner. Those were a detour when cell posteriors failed; they are parked for stepped-column work (`flashcard_column_picture_trial.py`, `reports/column_picture_learner.md`). Horizon fixture-intensity remains the stored product path until the picture learner replaces it on the gate. Every train run should emit a simple process diagram so the idea stays visible.
+
+## Parked — cell-posterior column allocation (2026-11-13)
+
+Stepped column trials that score cells / shares / top-k paint (GKP residual on one-bar weeks). Parked in favor of whole-strip picture matching. Keep the reports for archaeology; do not extend the share/rank stack.
 
 ## Parked — cascade_short bonus-from-roll (2026-10-20)
 
