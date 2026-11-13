@@ -2,8 +2,10 @@
   "name": "horizon",
   "header_h": 76,
   "player_h": 52,
-  "role": "horizon",
+  "arch": "fixture_intensity",
+  "mode": "fixture",
   "layout": "club-opponent-venue-1x2",
   "dropout": 0.1,
+  "role": "horizon",
   "seed": 0
 }
