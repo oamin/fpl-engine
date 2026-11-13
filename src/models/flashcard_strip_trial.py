@@ -3,13 +3,14 @@
 Concede, regulars, own history, opponent history, and the team scoring rate
 are absent from the picture and from every tensor the reader sees. Minutes,
 position, club, and opponent are on the card as squares. They are not passed
-again as numbers. The odds row is sixteen squares: blue home, yellow draw,
-purple away, from the Shin de-vig. The venue mark is one square. The opponent
-is one square, a club symbol. Minutes are six squares of fifteen minutes. One
+again as numbers. The match rows, from the top, are the assessed club's symbol, the opponent's
+symbol, home or away, then sixteen odds squares: blue home, yellow draw,
+purple away, from the Shin de-vig. The club symbol repeats on every column.
+Minutes are six squares of fifteen minutes. One
 goal or assist is one square, and those rows are three squares tall. The
 one-shot card paints the odds on every fixture, including a grey week. The
-stepped reader uses this same card: true past, the odds, the venue, the
-opponent, and the minutes on the next week, and every later column removed.
+stepped reader uses this same card: true past, the club, the opponent, the
+venue, the odds, and the minutes on the next week, and every later column removed.
 The other squad is not an input. Minutes, goals, assists, and the position
 square each have their own embedding. One vector for the whole cell lets
 the minute block, which is most of the pixels, own the forecast. The
