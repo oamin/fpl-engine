@@ -12,9 +12,9 @@ The published painter takes the rendered flashcard and nothing else. A numeric s
 
 **Active design constraint.** Teach by matching pictures. A stepped column is one object: shown card (blank next-column events) → one column embedding → painted event strip → strip L1. Read bars from ink after. Do not “fix” GKP/volume with μ, share, rank margins, caps, or argmax paint as the learner. Those were a detour when cell posteriors failed; they are parked for stepped-column work (`flashcard_column_picture_trial.py`, `reports/column_picture_learner.md`). Horizon fixture-intensity remains the stored product path until the picture learner replaces it on the gate. Every train run should emit a simple process diagram so the idea stays visible.
 
-## Baudot row-card + block-token mixer (active 2026-11-13)
+## Baudot row-card + learnable Tversky — LOCKED GATE (2026-11-13)
 
-GW-as-rows binary tape; unique name IDs (11 bits); odds win/blank-draw/loss; preferred model = schema block tokens + mix over **all past GWs** + one-shot paint of the **remainder event window** with **learnable Tversky (β≥α)** (`flashcard_baudot_row_trial.py`). Fixed Soft-Dice / fixed-(0.3,0.7) Tversky / per-position equal terms are ablations in `flashcard_baudot_ablation.py`. The 5-GW single-target variant is superseded. Do not revert to cell-posterior allocation for this path.
+**Locked as the flashcard default.** Gate: `flashcard_card_score.GATE` / `reports/baudot_gate.md`. Method: `flashcard_baudot_row_trial.py`. Ablations stay in `flashcard_baudot_ablation.py`. Square-card / fixture-intensity gate superseded (`GATE_SQUARE_2026_11_12`). Do not reopen cell-posterior allocation or hand paint rules for this path.
 
 ## Parked — cell-posterior column allocation (2026-11-13)
 

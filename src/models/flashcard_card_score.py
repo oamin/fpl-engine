@@ -41,9 +41,24 @@ from src.models.flashcard_squad_trial import (
 ROOT_REPORTS = Path(__file__).resolve().parents[2] / "reports"
 KEYS = ("actual", "painted", "exact", "actual_within", "painted_within")
 
-# Flashcard painter, 12 Nov 2026. Each row's horizon is scored, and each band
-# of the cell is normalized before the bands are added. The flashcard is the only input.
+# Flashcard gate — Baudot row mixer + learnable Tversky, locked 2026-11-13.
+# Method: `src/models/flashcard_baudot_row_trial.py` (full past + one-shot remainder).
+# Card: GW-as-rows binary tape; odds win ON / draw BLANK / loss ON; ID_BITS=11.
+# Loss: learnable Tversky α=0.5−δ, β=0.5+δ (β≥α). Seed 0. Report: reports/baudot_gate.md.
+# Tallies use tally_row appearances (exact = hits). New flashcard trials compare here.
 GATE = {
+    ("goals", 0.2): {"actual": 730, "painted": 701, "exact": 194, "actual_within": 268, "painted_within": 377},
+    ("assists", 0.2): {"actual": 707, "painted": 693, "exact": 114, "actual_within": 153, "painted_within": 232},
+    ("goals", 0.4): {"actual": 544, "painted": 557, "exact": 151, "actual_within": 214, "painted_within": 299},
+    ("assists", 0.4): {"actual": 531, "painted": 551, "exact": 89, "actual_within": 123, "painted_within": 174},
+    ("goals", 0.6): {"actual": 360, "painted": 383, "exact": 105, "actual_within": 145, "painted_within": 205},
+    ("assists", 0.6): {"actual": 351, "painted": 377, "exact": 66, "actual_within": 90, "painted_within": 126},
+    ("goals", 0.8): {"actual": 199, "painted": 195, "exact": 60, "actual_within": 82, "painted_within": 101},
+    ("assists", 0.8): {"actual": 192, "painted": 191, "exact": 32, "actual_within": 45, "painted_within": 59},
+}
+
+# Prior square-card full painter (12 Nov 2026). Archaeology only — not the gate.
+GATE_SQUARE_2026_11_12 = {
     ("goals", 0.2): {"actual": 730, "painted": 798, "exact": 169, "actual_within": 322, "painted_within": 323},
     ("assists", 0.2): {"actual": 707, "painted": 664, "exact": 107, "actual_within": 215, "painted_within": 203},
     ("goals", 0.4): {"actual": 544, "painted": 594, "exact": 129, "actual_within": 241, "painted_within": 248},

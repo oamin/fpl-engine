@@ -1,265 +1,74 @@
 {
-  "trial": "baudot_row_mixer_learnable_tversky",
-  "fov": "all_past_gws + one_shot_remainder_events",
-  "loss": "learnable_tversky_beta_ge_alpha",
+  "trial": "baudot_gate_locked",
+  "locked": "2026-11-13",
+  "method": "baudot_row_mixer_learnable_tversky",
   "alpha": 0.4474738538265228,
   "beta": 0.5525261759757996,
-  "cuts": [
-    0.2,
-    0.4,
-    0.6,
-    0.8
-  ],
-  "id_bits": 11,
-  "unique_names": 1670,
-  "width": 1108,
-  "params": 38263,
-  "train_meta": {
-    "epochs_run": 20,
-    "best_holdout_mean_score": 0.2181987495599782,
-    "ab_history": [
-      [
-        0.44200292229652405,
-        0.5579971075057983
-      ],
-      [
-        0.4424266815185547,
-        0.5575733184814453
-      ],
-      [
-        0.44287410378456116,
-        0.5571259260177612
-      ],
-      [
-        0.44334733486175537,
-        0.5566526651382446
-      ],
-      [
-        0.44385626912117004,
-        0.5561437606811523
-      ],
-      [
-        0.4443914592266083,
-        0.5556085109710693
-      ],
-      [
-        0.4449278712272644,
-        0.5550721287727356
-      ],
-      [
-        0.44546377658843994,
-        0.5545362234115601
-      ],
-      [
-        0.4459947943687439,
-        0.5540052056312561
-      ],
-      [
-        0.44651541113853455,
-        0.5534845590591431
-      ],
-      [
-        0.4470093846321106,
-        0.5529906153678894
-      ],
-      [
-        0.4474738538265228,
-        0.5525261759757996
-      ],
-      [
-        0.4478687644004822,
-        0.5521312355995178
-      ],
-      [
-        0.44823646545410156,
-        0.5517635345458984
-      ],
-      [
-        0.44858697056770325,
-        0.5514130592346191
-      ],
-      [
-        0.44891825318336487,
-        0.5510817766189575
-      ],
-      [
-        0.4492418169975281,
-        0.5507581830024719
-      ],
-      [
-        0.4495260715484619,
-        0.5504739284515381
-      ],
-      [
-        0.4497818350791931,
-        0.5502181649208069
-      ],
-      [
-        0.4500250220298767,
-        0.5499749779701233
-      ]
-    ],
-    "history": [
-      1.0009674280881882,
-      0.9882837012410164,
-      0.9742632731795311,
-      0.9565453082323074,
-      0.9356178194284439,
-      0.915635384619236,
-      0.8905877023935318,
-      0.8672244176268578,
-      0.84205611795187,
-      0.828182153403759,
-      0.8149217516183853,
-      0.7992981970310211,
-      0.8035870119929314,
-      0.7984631955623627,
-      0.7855014801025391,
-      0.7711298316717148,
-      0.7813494056463242,
-      0.781046986579895,
-      0.7720289975404739,
-      0.77139912545681
-    ],
-    "val_scores": [
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.09082929940133565,
-      0.07228566212819032,
-      0.06471248598827013,
-      0.07316043486317801,
-      0.0815992904791076,
-      0.2181987495599782,
-      0.14028019701567068,
-      0.10744591330097134,
-      0.095969349806309,
-      0.08160332732341594,
-      0.18042713901412039,
-      0.13279779953088672,
-      0.11389273438942835,
-      0.1267043138559166
-    ]
-  },
-  "holdout": {
-    "rows": [
-      {
-        "revealed": "20%",
-        "channel": "goals",
-        "actual": 730,
-        "painted": 701,
-        "hits": 194,
-        "actual_within_1": 268,
-        "painted_within_1": 377,
-        "hit_rate": 0.27113906359189377,
-        "volume": 0.9602739726027397,
-        "score": 0.2603677857231747,
-        "gkp_painted_events": 0
-      },
-      {
-        "revealed": "20%",
-        "channel": "assists",
-        "actual": 707,
-        "painted": 693,
-        "hits": 114,
-        "actual_within_1": 153,
-        "painted_within_1": 232,
-        "hit_rate": 0.16285714285714287,
-        "volume": 0.9801980198019802,
-        "score": 0.15963224893917963,
-        "gkp_painted_events": 0
-      },
-      {
-        "revealed": "40%",
-        "channel": "goals",
-        "actual": 544,
-        "painted": 557,
-        "hits": 151,
-        "actual_within_1": 214,
-        "painted_within_1": 299,
-        "hit_rate": 0.2742960944595822,
-        "volume": 0.9766606822262118,
-        "score": 0.26789421074688097,
-        "gkp_painted_events": 0
-      },
-      {
-        "revealed": "40%",
-        "channel": "assists",
-        "actual": 531,
-        "painted": 551,
-        "hits": 89,
-        "actual_within_1": 123,
-        "painted_within_1": 174,
-        "hit_rate": 0.1645101663585952,
-        "volume": 0.9637023593466425,
-        "score": 0.15853883545628683,
-        "gkp_painted_events": 0
-      },
-      {
-        "revealed": "60%",
-        "channel": "goals",
-        "actual": 360,
-        "painted": 383,
-        "hits": 105,
-        "actual_within_1": 145,
-        "painted_within_1": 205,
-        "hit_rate": 0.28263795423956933,
-        "volume": 0.9399477806788512,
-        "score": 0.2656649178230939,
-        "gkp_painted_events": 0
-      },
-      {
-        "revealed": "60%",
-        "channel": "assists",
-        "actual": 351,
-        "painted": 377,
-        "hits": 66,
-        "actual_within_1": 90,
-        "painted_within_1": 126,
-        "hit_rate": 0.1813186813186813,
-        "volume": 0.9310344827586207,
-        "score": 0.16881394467601363,
-        "gkp_painted_events": 0
-      },
-      {
-        "revealed": "80%",
-        "channel": "goals",
-        "actual": 199,
-        "painted": 195,
-        "hits": 60,
-        "actual_within_1": 82,
-        "painted_within_1": 101,
-        "hit_rate": 0.30456852791878175,
-        "volume": 0.9798994974874372,
-        "score": 0.29844654745810273,
-        "gkp_painted_events": 0
-      },
-      {
-        "revealed": "80%",
-        "channel": "assists",
-        "actual": 192,
-        "painted": 191,
-        "hits": 32,
-        "actual_within_1": 45,
-        "painted_within_1": 59,
-        "hit_rate": 0.1671018276762402,
-        "volume": 0.9947916666666666,
-        "score": 0.16623150565709313,
-        "gkp_painted_events": 0
-      }
-    ],
-    "gkp_painted_goals_by_cut": {
-      "20%": 0,
-      "40%": 0,
-      "60%": 0,
-      "80%": 0
+  "gate": {
+    "goals|0.2": {
+      "actual": 730,
+      "painted": 701,
+      "exact": 194,
+      "actual_within": 268,
+      "painted_within": 377,
+      "score": 0.2603677857231747
     },
-    "params": 38263,
-    "seconds": 48.6
+    "assists|0.2": {
+      "actual": 707,
+      "painted": 693,
+      "exact": 114,
+      "actual_within": 153,
+      "painted_within": 232,
+      "score": 0.15963224893917963
+    },
+    "goals|0.4": {
+      "actual": 544,
+      "painted": 557,
+      "exact": 151,
+      "actual_within": 214,
+      "painted_within": 299,
+      "score": 0.26789421074688097
+    },
+    "assists|0.4": {
+      "actual": 531,
+      "painted": 551,
+      "exact": 89,
+      "actual_within": 123,
+      "painted_within": 174,
+      "score": 0.15853883545628683
+    },
+    "goals|0.6": {
+      "actual": 360,
+      "painted": 383,
+      "exact": 105,
+      "actual_within": 145,
+      "painted_within": 205,
+      "score": 0.2656649178230939
+    },
+    "assists|0.6": {
+      "actual": 351,
+      "painted": 377,
+      "exact": 66,
+      "actual_within": 90,
+      "painted_within": 126,
+      "score": 0.16881394467601363
+    },
+    "goals|0.8": {
+      "actual": 199,
+      "painted": 195,
+      "exact": 60,
+      "actual_within": 82,
+      "painted_within": 101,
+      "score": 0.29844654745810273
+    },
+    "assists|0.8": {
+      "actual": 192,
+      "painted": 191,
+      "exact": 32,
+      "actual_within": 45,
+      "painted_within": 59,
+      "score": 0.16623150565709313
+    }
   },
-  "report": "/agent/repos/fpl-engine/reports/baudot_row_mixer.md",
-  "season_card": "/opt/cursor/artifacts/baudot_season_arsenal.png"
+  "report": "/agent/repos/fpl-engine/reports/baudot_gate.md"
 }

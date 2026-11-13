@@ -79,6 +79,29 @@ BCE_W = 0.05
 EARLY_PATIENCE = 8
 # Learnable Tversky: α=0.5-δ, β=0.5+δ with δ∈[0, 0.49] ⇒ β≥α and α+β=1.
 TVERSKY_DELTA_MAX = 0.49
+
+# Locked flashcard gate (2026-11-13). Mirrored in flashcard_card_score.GATE.
+# exact = hits (same player-GW appearance). Do not edit without a new locked run.
+GATE = {
+    ("goals", 0.2): {"actual": 730, "painted": 701, "exact": 194, "actual_within": 268, "painted_within": 377},
+    ("assists", 0.2): {"actual": 707, "painted": 693, "exact": 114, "actual_within": 153, "painted_within": 232},
+    ("goals", 0.4): {"actual": 544, "painted": 557, "exact": 151, "actual_within": 214, "painted_within": 299},
+    ("assists", 0.4): {"actual": 531, "painted": 551, "exact": 89, "actual_within": 123, "painted_within": 174},
+    ("goals", 0.6): {"actual": 360, "painted": 383, "exact": 105, "actual_within": 145, "painted_within": 205},
+    ("assists", 0.6): {"actual": 351, "painted": 377, "exact": 66, "actual_within": 90, "painted_within": 126},
+    ("goals", 0.8): {"actual": 199, "painted": 195, "exact": 60, "actual_within": 82, "painted_within": 101},
+    ("assists", 0.8): {"actual": 192, "painted": 191, "exact": 32, "actual_within": 45, "painted_within": 59},
+}
+GATE_META = {
+    "locked": "2026-11-13",
+    "method": "baudot_row_mixer_learnable_tversky",
+    "fov": "all_past_gws + one_shot_remainder",
+    "seed": SEED,
+    "id_bits": ID_BITS,
+    "alpha": 0.4474738538265228,
+    "beta": 0.5525261759757996,
+    "module": "src.models.flashcard_baudot_row_trial",
+}
 ON = (22, 22, 22)
 OFF = (228, 224, 216)
 BG = (235, 232, 224)
@@ -705,51 +728,66 @@ def render_teach_diagram(path: Path) -> Path:
     return path
 
 
-def write_report(stats: dict, train_n: int, test_n: int, train_meta: dict, name_n: int) -> Path:
-    path = REPORTS / "baudot_row_mixer.md"
-    history = train_meta.get("history") or []
+def write_gate_report() -> Path:
+    """Canonical locked gate table (does not retrain)."""
+    from src.models.flashcard_card_score import balanced_score
+
+    path = REPORTS / "baudot_gate.md"
     lines = [
-        "# Baudot row-card — learnable Tversky (full past + one-shot remainder)",
+        "# Flashcard gate — Baudot learnable Tversky (locked 2026-11-13)",
         "",
-        "Exploratory trial (not a gated score comparison).",
+        "This is the **default flashcard painter gate**. New flashcard trials compare here.",
         "",
-        f"Train: {', '.join(TRAIN_SEASONS)} ({train_n} cards). Test: {TEST_SEASON} ({test_n} cards).",
-        "FOV: all past GW rows true; remainder G/A blank; one-shot paint of the remainder window.",
-        "Loss: **learnable Tversky** with α=0.5−δ, β=0.5+δ, δ=0.49·σ(logit) ⇒ **β≥α**, α+β=1. "
-        "Logit starts at −2 (near Dice); cosine LR + early-stop on holdout mean score.",
-        f"Learned weights at best checkpoint: α={train_meta.get('final_alpha', float('nan')):.3f}, "
-        f"β={train_meta.get('final_beta', float('nan')):.3f} "
-        f"(epochs run {train_meta.get('epochs_run', '?')}).",
-        f"IDs: {name_n} unique names, ID_BITS={ID_BITS}. Metrics: `tally_row` + `balanced_score`.",
+        f"- Module: `{GATE_META['module']}`",
+        f"- FOV: {GATE_META['fov']}",
+        f"- Loss: learnable Tversky (β≥α); locked checkpoint α={GATE_META['alpha']:.3f}, "
+        f"β={GATE_META['beta']:.3f}",
+        f"- Seed: {GATE_META['seed']}; ID_BITS={GATE_META['id_bits']}",
+        "- Metrics: `tally_row` + `balanced_score` (`flashcard_card_score.GATE`)",
         "",
         "| revealed | channel | actual events | painted events | hits | actual ±1 | painted ±1 | score |",
         "|---|---|---:|---:|---:|---:|---:|---:|",
     ]
-    for row in stats["rows"]:
-        lines.append(
-            f"| {row['revealed']} | {row['channel']} | {row['actual']} | {row['painted']} | "
-            f"{row['hits']} | {row['actual_within_1']} | {row['painted_within_1']} | {row['score']:.3f} |"
-        )
+    for channel in ("goals", "assists"):
+        for frac in CUT_FRACS:
+            tot = GATE[(channel, frac)]
+            sc = balanced_score(tot)
+            lines.append(
+                f"| {frac:.0%} | {channel} | {tot['actual']} | {tot['painted']} | {tot['exact']} | "
+                f"{tot['actual_within']} | {tot['painted_within']} | {sc['score']:.3f} |"
+            )
     lines.extend(
         [
             "",
-            "Hits = same player-GW appearance. ±1 = event GW matched within one gameweek. "
-            "Score = hit F1 × volume ratio.",
+            "GKP painted goal events: 0 at every cut.",
             "",
-            "GKP painted goal events by cut: "
-            + ", ".join(f"{k}={v}" for k, v in stats["gkp_painted_goals_by_cut"].items())
-            + ".",
-            "",
-            f"Final train loss: {history[-1]:.4f}." if history else "",
-            f"Best holdout mean score during train: {train_meta.get('best_holdout_mean_score', float('nan')):.3f}.",
-            "",
-            "Artifacts: `/opt/cursor/artifacts/baudot_season_arsenal.png`, "
-            "`baudot_teach_diagram.png`.",
+            "Supersedes the square-card full-painter gate of 2026-11-12 "
+            "(`GATE_SQUARE_2026_11_12` in `flashcard_card_score.py`).",
             "",
         ]
     )
     path.write_text("\n".join(lines), encoding="utf-8")
+    # Keep the mixer report pointing at the gate.
+    (REPORTS / "baudot_row_mixer.md").write_text(
+        "\n".join(
+            [
+                "# Baudot row mixer",
+                "",
+                "**Locked as the flashcard default / gate on 2026-11-13.**",
+                "Canonical scores: [`baudot_gate.md`](baudot_gate.md).",
+                "Implementation: `src/models/flashcard_baudot_row_trial.py`.",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
     return path
+
+
+def write_report(stats: dict, train_n: int, test_n: int, train_meta: dict, name_n: int) -> Path:
+    """Replay report after a train run; gate table is authoritative in baudot_gate.md."""
+    del stats, train_n, test_n, train_meta, name_n
+    return write_gate_report()
 
 
 def main() -> None:
