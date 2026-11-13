@@ -6,8 +6,7 @@ handicap is the club's own line. Red grows up from a black zero when the club
 gives goals, and blue grows down when the club receives them. Each square is
 a quarter of a goal, from 2.75 down to 2.75 up. Orange is over 2.5 and pale
 blue is under, eight squares. A missing price is hatched. The club symbol is
-the same mark on every column. A faint outline is drawn on every square, and
-that outline is part of the picture.
+the same mark on every column. There is no grid on the squares.
 
 Minutes are six squares and each square is fifteen minutes, filled from the
 bottom: 1 to 15 minutes is the first square, 16 to 30 is the second, and 76
@@ -81,8 +80,6 @@ RECEIVING = (28, 78, 166)
 ZERO = (24, 24, 24)
 OVER_C = (214, 96, 0)
 UNDER_C = (126, 176, 214)
-GRID_INK = (60, 60, 60)
-GRID_ALPHA = 0.14
 MINUTE_H = SQ * MINUTE_N
 EVENT_H = SQ * EVENT_N
 POS_H = SQ
@@ -186,19 +183,6 @@ def _total(img: np.ndarray, x0: int, y0: int, over: float, under: float, colors:
         y += pixels
 
 
-def overlay_grid(img: np.ndarray) -> None:
-    """Faint outline on every square. The outline is part of the picture."""
-    mask = np.zeros(img.shape[:2], dtype=bool)
-    mask[::SQ, :] = True
-    mask[SQ - 1 :: SQ, :] = True
-    mask[:, ::SQ] = True
-    mask[:, SQ - 1 :: SQ] = True
-    mixed = img.astype(np.float64)
-    ink = np.array(GRID_INK, dtype=np.float64)
-    mixed[mask] = mixed[mask] * (1.0 - GRID_ALPHA) + ink * GRID_ALPHA
-    img[mask] = np.rint(mixed[mask]).astype(np.uint8)
-
-
 def paint_square(
     view: dict[str, np.ndarray],
     market: np.ndarray,
@@ -250,7 +234,6 @@ def paint_square(
                         _squares(img, y + offset, x0, min(token, EVENT_N), color, EVENT_H)
             if grey[col]:
                 _hatch(img, y + MINUTE_H, x0, PLAYER_H - MINUTE_H)
-    overlay_grid(img)
     return img
 
 
@@ -404,8 +387,8 @@ def main() -> None:
         "# Square card",
         "",
         "Each column shows the club symbol, the opponent symbol, home or away,",
-        "the Asian handicap, and the 2.5-goal total. A faint grid outlines every",
-        "square. Minutes are six squares of fifteen minutes,",
+        "the Asian handicap, and the 2.5-goal total. Minutes are six squares of",
+        "fifteen minutes,",
         "filled from the bottom. One goal or assist is one square, and those rows",
         "are three squares tall. The position color is one square. The full painter",
         "shows this card across the remainder. The stepped painter keeps the club,",
