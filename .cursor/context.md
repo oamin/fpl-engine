@@ -17,6 +17,8 @@ The flashcard is one picture object. Teach by matching pictures. Do not bolt on 
 
 Schema slicing by place-in-chain is picture reading, not a numeric sidecar. Do not add a numeric sidecar of minutes/position/club ids.
 
+**Model-variant screen (2026-11-13, park):** same Baudot card / FOV / learnable Tversky; only the learner changed (`src/models/flashcard_baudot_model_variants.py`, `reports/baudot_model_variants.md`). Depth-2 block-token mixer mean score **0.156** (Δ −0.062). Schema-kernel block-CNN mean score **0.138** (Δ −0.080). Both overpaint volume and lose every cut/channel cell. Gate mixer stays default.
+
 **Superseded as the flashcard comparison gate:** square-card full painter / fixture-intensity stored readers (`GATE_SQUARE_2026_11_12`; `reports/cards/current/` RGB path). Keep those modules for archaeology; new flashcard screens compare to the Baudot gate.
 
 **Stepped RGB column path (parked relative to the gate):** `ColumnFlashcard` / `flashcard_column_picture_trial.py`. Not the default.
