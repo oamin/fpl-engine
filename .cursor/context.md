@@ -1,22 +1,20 @@
 # Architectural state
 
-Updated: 2026-11-12. **Numagent 2.0** is the product on main (`protocol.numagent_2_0`) — **supersedes Numagent 1.0**. Parked hypotheses: `.cursor/ideas.md`. Stage archaeology: root `CONTEXT.md` and `reports/SUPERSEDED.md`. Canonical index: `reports/LOCKED.md`.
+Updated: 2026-11-13. **Numagent 2.0** is the product on main (`protocol.numagent_2_0`) — **supersedes Numagent 1.0**. Parked hypotheses: `.cursor/ideas.md`. Stage archaeology: root `CONTEXT.md` and `reports/SUPERSEDED.md`. Canonical index: `reports/LOCKED.md`.
 
-## Flashcard painter — picture only (locked 2026-11-12)
+## Flashcard painter — picture only (locked 2026-11-12; core idea restated 2026-11-13)
 
 The published flashcard painter reads one rendered card. That picture is the only feature input.
+
+**Core idea (do not lose this):** the flashcard is one picture object. A stepped column is one picture object. The model is taught by matching pictures — shown card versus real event strip — not by scoring cells, inventing μ/share heads, volume caps, or argmax paint rules. Simple visual regularities (minutes lit → events possible; event ink low on the strip / blank at the top; header changes how busy the column looks) should fall out of picture matching. If a run starts bolting on Poisson rates, softmax shares, rank margins, or top-k paint to “fix” allocation, it has left this idea. Prefer `src/models/flashcard_column_picture_trial.py` for stepped-column work. Every training run should leave a simple diagram of how the card is processed and taught.
 
 Do not add a numeric sidecar. Do not pass minutes, a minutes/90 fraction, a position id, a club id, an opponent id, a match-up vector, a team scoring rate, concede, regulars, own history, opponent history, or the other squad into the reader. If a fact belongs in the forecast, draw it on the card. An attention mask for an empty row or an empty column is allowed. It carries no value.
 
 Each column's match rows, from the top, are the assessed club's symbol, the opponent's symbol, home or away, and the opening 1X2. The club symbol is the same mark on every column. There is no club id and no player id.
 
-The reader is `StripVision` in `src/models/flashcard_strip_trial.py`. Its forward arguments are the image, the row mask, and the column mask. `Coupler` attends over those image tokens. It has no embedding for position, club, opponent, minutes, or rate. Minutes, goals, assists, and the position square are separate bands of the same picture. Each band has its own embedding, and each embedding is normalized before they are added. Do not flatten a cell into one vector, and do not add the raw band vectors. The minute embedding otherwise grows until it owns the forecast.
+**Horizon product path (still on the stored card):** `default_reader()` → fixture-intensity `IntensityReader` in `src/models/flashcard_strip_trial.py`, with separate horizon and column weights under `reports/cards/current/`. Band embeddings stay normalized. That path remains the stored comparison table until a picture learner beats it on the same gate. It is not a licence to grow more allocation machinery for stepped columns.
 
-Goals use fixture intensity: the match header owns that week's expected bar total, then the squad shares it among players. Presence is separate from bar height. Assists keep a four-way head. Do not go back to an unconstrained cell softmax that invents volume as Σ(1−p₀). A card whose total matches still fails when the bars sit on the empty rows. The paint keeps each row's count on that row.
-
-Two readers see this card, and their weights stay separate. The horizon reader owns the row counts after fixture rates are shared. The column reader also uses fixture intensity and a week Poisson rate, so the odds can change how many events that week holds. Column-only paint fits that reader's own row and week margins. The fitted paint keeps each row's horizon count and moves the bars toward the weeks the column reader scores highest. A row whose horizon count is zero stays empty.
-
-The current card is stored in `reports/cards/current/`: `layout.json`, `example.png`, `header.png`, `horizon.pt`, and `column.pt`. The comparison table is scored from those files. Do not leave a table in place after the picture changes. The earlier card, odds then home or away then the opponent, with no club row, lives in `src/models/flashcard_legacy_card.py`. Its reader is stored separately in `reports/cards/legacy-odds-venue-opponent/`. Those weights do not load into the current header.
+**Stepped column path (active design):** `ColumnFlashcard` pools the next week into one column vector and paints that week's event strip in one pass. Loss is strip color error. Bars are read from ink afterwards. Report: `reports/column_picture_learner.md`. Parked: cell-Bernoulli column losses, listwise share penalties, and `paint_column` top-k as a teaching method.
 
 `SquadSequence` is a separate numeric reader. It is not the gate. Do not connect it to the published painter, and do not put its numbers back onto `Coupler`.
 
