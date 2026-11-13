@@ -34,6 +34,7 @@ import torch.nn.functional as F
 from src.models.flashcard_card_score import (
     _paint,
     column_count,
+    paint_column,
     paint_horizon,
     paint_row,
     tally_cards,
@@ -395,8 +396,12 @@ def train_stripped_steps(
             batch = _stack(views)
             batch["image"] = torch.from_numpy(np.stack(pictures)).permute(0, 3, 1, 2).float().div(255.0)
             opt.zero_grad()
-            goal_logits, assist_logits = model(batch["image"], batch["row_pad"], batch["column_on"])
-            loss, cell, horizon = _batch_loss(goal_logits, assist_logits, batch)
+            if _is_fixture(model):
+                pack = model(batch["image"], batch["row_pad"], batch["column_on"], batch["loss"])
+                loss, cell, horizon = _fixture_batch_loss(pack, batch)
+            else:
+                goal_logits, assist_logits = model(batch["image"], batch["row_pad"], batch["column_on"])
+                loss, cell, horizon = _batch_loss(goal_logits, assist_logits, batch)
             loss.backward()
             nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             opt.step()
@@ -407,6 +412,67 @@ def train_stripped_steps(
         print(
             f"stripped step epoch {epoch + 1} train nll {total / max(seen, 1.0):.3f} "
             f"horizon {horizon_total / max(seen, 1.0):.3f}",
+            flush=True,
+        )
+
+
+def train_column_steps(
+    model: nn.Module,
+    cards: list,
+    league: dict,
+    rng: np.random.Generator,
+    clubs: dict,
+    odds: dict,
+    name: str = "column step",
+    compose=None,
+) -> None:
+    """One next week per card. The week is scored as one count down the squad.
+
+    The picture keeps the true past and shows only that next column. Horizon
+    row totals are not in this loss. Fixture intensity owns the week's rate;
+    the column Poisson pins how many bars that week holds.
+    """
+    opt = _optimizer(model)
+    squads = squad_index(cards)
+    model.train()
+    for epoch in range(EPOCHS):
+        total = 0.0
+        week_total = 0.0
+        seen = 0.0
+        order = rng.permutation(len(cards))
+        for start in range(0, len(cards), BATCH):
+            pick = [cards[int(i)] for i in order[start : start + BATCH]]
+            views = []
+            pictures = []
+            for card in pick:
+                target = _target_gw(card, rng)
+                view = _step_view(card, league, clubs, squads, target)
+                views.append(view)
+                pictures.append(_step_image(view, card, odds, target, compose))
+            batch = _stack(views)
+            batch["image"] = torch.from_numpy(np.stack(pictures)).permute(0, 3, 1, 2).float().div(255.0)
+            opt.zero_grad()
+            if _is_fixture(model):
+                pack = model(batch["image"], batch["row_pad"], batch["column_on"], batch["loss"])
+                goal_loss, cell, _count = _fixture_batch_loss(pack, batch)
+                weeks = 0.5 * (
+                    column_count(pack["goal_probs"], batch["goal_label"], batch["loss"])
+                    + column_count(pack["assist_logits"].softmax(-1), batch["assist_label"], batch["loss"])
+                )
+                loss = goal_loss + weeks
+            else:
+                goal_logits, assist_logits = model(batch["image"], batch["row_pad"], batch["column_on"])
+                loss, cell, weeks = _column_batch_loss(goal_logits, assist_logits, batch)
+            loss.backward()
+            nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+            opt.step()
+            weight = float(batch["loss"].sum().detach())
+            total += float(cell) * weight
+            week_total += float(weeks.detach() if torch.is_tensor(weeks) else weeks) * weight
+            seen += weight
+        print(
+            f"{name} epoch {epoch + 1} train nll {total / max(seen, 1.0):.3f} "
+            f"column {week_total / max(seen, 1.0):.3f}",
             flush=True,
         )
 
@@ -618,11 +684,13 @@ def paint_stripped_columns(
     odds: dict,
     compose=None,
 ) -> tuple[np.ndarray, np.ndarray, dict[str, float]]:
-    """Walk every gameweek and place that column's expected bars.
+    """Walk every gameweek and place that week's bars as one squad count.
 
-    The count on a row is the expected number of bars in that one column.
-    A single appearance rounds to a bar only when its chance reaches a half.
-    The returned rates are the mean chance on a real bar and on a blank.
+    The week is scored as a whole: the expected bar count is the sum of
+    chances down the squad, then that many bars land on the most likely
+    squares. A single cell that rounds to zero does not empty a week that
+    still holds mass. The returned rates are the mean chance on a real bar
+    and on a blank.
     """
     goals = np.zeros((len(cards),) + cards[0].goals.shape, dtype=np.int64)
     assists = np.zeros_like(goals)
@@ -653,18 +721,19 @@ def paint_stripped_columns(
         for slot, index in enumerate(indexes):
             card = cards[index]
             mask = card.present & (card.gw == gw).reshape(1, -1)
-            for row in range(mask.shape[0]):
-                goals[index, row] += paint_horizon(goal_p[slot, row], mask[row])
-                assists[index, row] += paint_horizon(assist_p[slot, row], mask[row])
-                for channel, probs, labels in (
-                    (0, goal_p, card.goals),
-                    (1, assist_p, card.assists),
-                ):
-                    cols = np.flatnonzero(mask[row])
-                    if len(cols) == 0:
+            goals[index] += paint_column(goal_p[slot], mask)
+            assists[index] += paint_column(assist_p[slot], mask)
+            for channel, probs, labels in (
+                (0, goal_p, card.goals),
+                (1, assist_p, card.assists),
+            ):
+                cols = np.flatnonzero(mask.any(axis=0))
+                for col in cols:
+                    rows = np.flatnonzero(mask[:, col])
+                    if len(rows) == 0:
                         continue
-                    chance = 1.0 - probs[slot, row, cols, 0]
-                    hit = labels[row, cols] > 0
+                    chance = 1.0 - probs[slot, rows, col, 0]
+                    hit = labels[rows, col] > 0
                     on[channel] += float(chance[hit].sum())
                     off[channel] += float(chance[~hit].sum())
                     on_n[channel] += int(hit.sum())
