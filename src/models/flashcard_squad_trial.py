@@ -5,7 +5,7 @@ Minutes stay visible. Goals and assists after the cut are hidden. The original
 squad trial couples each fixture to the other squad. The locked card does not.
 The locked card is the
 square card. Each column shows the club symbol, the opponent symbol, home or
-away, the Asian handicap, and the 2.5-goal total. Minutes are six squares of
+away, then sixteen solid handicap squares. Minutes are six squares of
 fifteen minutes.
 One goal or assist is one
 square, and those rows are three squares tall. Concede, regulars, own

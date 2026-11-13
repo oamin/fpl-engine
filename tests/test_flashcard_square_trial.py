@@ -29,17 +29,12 @@ from src.models.flashcard_square_trial import (
     EVENT_H,
     GIVING,
     HEADER_H,
-    LINE_H,
-    LINE_STEPS,
     MINUTE_H,
     ODDS_Y,
     OPP_H,
-    OVER_C,
     PLAYER_H,
     RECEIVING,
     SQ,
-    UNDER_C,
-    ZERO,
     compose_binary,
     compose_square,
     minute_squares,
@@ -148,20 +143,12 @@ class SquareCardTests(unittest.TestCase):
         visible[:2] = True
         image = paint_square(view, market, visible, club="Arsenal")
         self.assertEqual(image.shape[0], HEADER_H + ROWS * PLAYER_H)
-        center = ODDS_Y + LINE_STEPS * SQ
-        self.assertEqual(_pixel(image, center + 1, 1), ZERO)
-        self.assertEqual(_pixel(image, center - SQ + 1, 1), GIVING)
-        self.assertEqual(_pixel(image, center - 8 * SQ + 1, 1), GIVING)
-        self.assertEqual(_pixel(image, center - 9 * SQ + 1, 1), (255, 255, 255))
-        self.assertEqual(_pixel(image, center + SQ + 1, 1), (255, 255, 255))
-        total = ODDS_Y + LINE_H
-        self.assertEqual(_pixel(image, total + 1, 1), OVER_C)
-        self.assertEqual(_pixel(image, total + 5 * SQ + 1, 1), OVER_C)
-        self.assertEqual(_pixel(image, total + 6 * SQ + 1, 1), UNDER_C)
-        self.assertEqual(_pixel(image, center + 1, CELL_W + 1), ZERO)
-        self.assertEqual(_pixel(image, center + SQ + 1, CELL_W + 1), RECEIVING)
-        self.assertEqual(_pixel(image, center + 3 * SQ + 1, CELL_W + 1), RECEIVING)
-        self.assertEqual(_pixel(image, center + 4 * SQ + 1, CELL_W + 1), (255, 255, 255))
+        self.assertEqual(_pixel(image, ODDS_Y + 1, 1), GIVING)
+        self.assertEqual(_pixel(image, ODDS_Y + 13 * SQ + 1, 1), GIVING)
+        self.assertEqual(_pixel(image, ODDS_Y + 14 * SQ + 1, 1), RECEIVING)
+        self.assertEqual(_pixel(image, ODDS_Y + 15 * SQ + 1, 1), RECEIVING)
+        self.assertEqual(_pixel(image, ODDS_Y + 5 * SQ + 1, CELL_W + 1), GIVING)
+        self.assertEqual(_pixel(image, ODDS_Y + 6 * SQ + 1, CELL_W + 1), RECEIVING)
         self.assertEqual(_pixel(image, CLUB_H + OPP_H + 1, 1), HOME_C)
         self.assertEqual(_pixel(image, CLUB_H + OPP_H + 1, CELL_W + 1), AWAY_C)
         y = HEADER_H
@@ -181,8 +168,7 @@ class SquareCardTests(unittest.TestCase):
         view["goal_token"][0, 0] = 2
         card = _card()
         image = compose_square(view, card, _prices(card), np.array([0]), target=1)
-        center = ODDS_Y + LINE_STEPS * SQ
-        self.assertEqual(_pixel(image, center - SQ + 1, 1), GIVING)
+        self.assertEqual(_pixel(image, ODDS_Y + 1, 1), GIVING)
         self.assertEqual(_pixel(image, CLUB_H + OPP_H + 1, 1), HOME_C)
         self.assertEqual(_pixel(image, HEADER_H + MINUTE_H - SQ + 1, 1), MINUTES_C)
         goal = _pixel(image, HEADER_H + MINUTE_H + 1, 1)
@@ -226,15 +212,10 @@ class SquareCardTests(unittest.TestCase):
         view["column_on"][1] = 1
         card = _card()
         image = compose_binary(view, card, _prices(card))
-        center = ODDS_Y + LINE_STEPS * SQ
-        self.assertEqual(_pixel(image, center - 9 * SQ, 0), (255, 255, 255))
-        self.assertEqual(_pixel(image, center - SQ, 0), (0, 0, 0))
-        self.assertEqual(_pixel(image, center, 0), (0, 0, 0))
-        self.assertEqual(_pixel(image, center + SQ, 0), (255, 255, 255))
-        total = ODDS_Y + LINE_H
-        self.assertEqual(_pixel(image, total, 0), (0, 0, 0))
-        self.assertEqual(_pixel(image, total + 5 * SQ, 0), (0, 0, 0))
-        self.assertEqual(_pixel(image, total + 6 * SQ, 0), (255, 255, 255))
+        self.assertEqual(_pixel(image, ODDS_Y, 0), (0, 0, 0))
+        self.assertEqual(_pixel(image, ODDS_Y + 13 * SQ, 0), (0, 0, 0))
+        self.assertEqual(_pixel(image, ODDS_Y + 14 * SQ, 0), (255, 255, 255))
+        self.assertEqual(_pixel(image, ODDS_Y + 15 * SQ, 0), (255, 255, 255))
         self.assertEqual(_pixel(image, CLUB_H + OPP_H, 0), (0, 0, 0))
         self.assertEqual(_pixel(image, CLUB_H + OPP_H, CELL_W), (255, 255, 255))
         y = HEADER_H + MINUTE_H + 2 * EVENT_H
@@ -250,11 +231,8 @@ class SquareCardTests(unittest.TestCase):
         visible = np.zeros(COLS, dtype=bool)
         visible[0] = True
         image = paint_square(view, market, visible, club="Arsenal")
-        center = ODDS_Y + LINE_STEPS * SQ
-        self.assertEqual(_pixel(image, center - SQ, 0), (255, 255, 255))
-        self.assertEqual(_pixel(image, center - SQ + 1, 1), (255, 255, 255))
-        self.assertEqual(_pixel(image, center, 0), ZERO)
-        self.assertEqual(_pixel(image, center + 1, 1), ZERO)
+        self.assertEqual(_pixel(image, ODDS_Y + 7 * SQ + 1, 1), GIVING)
+        self.assertEqual(_pixel(image, ODDS_Y + 8 * SQ + 1, 1), RECEIVING)
 
 
 if __name__ == "__main__":
