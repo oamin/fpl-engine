@@ -399,6 +399,40 @@ def write_report(arms: list[dict]) -> Path:
         )
         lines.append("")
     lines.extend(["## Call", ""])
+    by_name = {meta["name"]: meta for meta in arms}
+    margins = by_name.get("1_margins")
+    scoreline = by_name.get("2_gc_scoreline")
+    if margins is not None and _mean(margins["holdout"]["rows"]) < 1e-6:
+        lines.append(
+            "`1_margins` stays under the 0.5 threshold for every epoch (mean **0.000**). "
+            "The pool terms match soft counts, and a row total can match with every bit sat under 0.5. "
+            "Early stop keeps that blank picture."
+        )
+        lines.append("")
+    if scoreline is not None:
+        mean = _mean(scoreline["holdout"]["rows"])
+        g20 = next(r for r in scoreline["holdout"]["rows"] if r["revealed"] == "20%" and r["channel"] == "goals")
+        a20 = next(r for r in scoreline["holdout"]["rows"] if r["revealed"] == "20%" and r["channel"] == "assists")
+        fwd = scoreline["holdout"]["position_20"]["goals"]["FWD"]
+        mid = scoreline["holdout"]["position_20"]["goals"]["MID"]
+        def_g = scoreline["holdout"]["position_20"]["goals"]["DEF"]
+        def_a = scoreline["holdout"]["position_20"]["assists"]["DEF"]
+        gp = g20["hits"] / g20["painted"] if g20["painted"] else 0.0
+        gr = g20["hits"] / g20["actual"] if g20["actual"] else 0.0
+        fwd_r = fwd["hits"] / fwd["actual"] if fwd["actual"] else 0.0
+        mid_r = mid["hits"] / mid["actual"] if mid["actual"] else 0.0
+        lines.append(
+            f"`2_gc_scoreline` mean **{mean:.3f}** (Δ {mean - opp:+.3f} vs the opponent card, "
+            f"Δ {mean - gate:+.3f} vs the 2026-11-13 mixer). "
+            f"20% goals are {g20['actual']}/{g20['painted']}/{g20['hits']} (P {gp:.3f}, R {gr:.3f}). "
+            f"The share puts those goals on forwards ({fwd['actual']}/{fwd['painted']}/{fwd['hits']}, "
+            f"recall {fwd_r:.3f}) and almost none on midfielders "
+            f"({mid['actual']}/{mid['painted']}/{mid['hits']}, recall {mid_r:.3f}). "
+            f"Assists stay a free head and overpaint ({a20['actual']}/{a20['painted']}/{a20['hits']}). "
+            f"DEF goals and assists stay **{def_g['actual']}/{def_g['painted']}/{def_g['hits']}** and "
+            f"**{def_a['actual']}/{def_a['painted']}/{def_a['hits']}**."
+        )
+        lines.append("")
     best = max(arms, key=lambda m: _mean(m["holdout"]["rows"]))
     best_mean = _mean(best["holdout"]["rows"])
     if best_mean > opp + 1e-3:
@@ -407,10 +441,7 @@ def write_report(arms: list[dict]) -> Path:
             "The default stays the cell-Tversky opponent card until that arm is locked."
         )
     else:
-        lines.append(
-            "Neither added loss beats the opponent-card baseline. "
-            "Role pools, row/column sums, and the joint gc scoreline stay off the default."
-        )
+        lines.append("Neither arm replaces the cell-Tversky opponent card.")
     lines.append("")
     OUT.write_text("\n".join(lines), encoding="utf-8")
     return OUT

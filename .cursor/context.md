@@ -49,6 +49,8 @@ Schema slicing by place-in-chain is picture reading, not a numeric sidecar. Do n
 
 **Opponent-card cross-read (2026-11-14, default):** shared mixer attends the opponent card. Earlier opponent rows stay true. This fixture's minutes are revealed on the opponent card only. G/A and gc for the match stay blank on both cards. Holdout mean **0.192** (Δ −0.026 vs the 2026-11-13 mixer 0.218). 20% goals 730/770/197 (P 0.256, R 0.270). DEF goals **103/0/0**, DEF assists **181/0/0**. Report: `reports/baudot_opp_train.md`.
 
+**Margin pools and joint gc (2026-11-14, park):** on that default, weight-1 role/row/column pools score **0.000** (soft totals match under the 0.5 threshold). Joint gc, with the scoreline shared onto the XI and away fixtures filling both cards, scores **0.178**. Goals shift onto FWD (recall 0.730) and off MID (recall 0.028). DEF stays blank. Report: `reports/baudot_margin_gc.md`.
+
 **Superseded as the flashcard comparison gate:** square-card full painter / fixture-intensity stored readers (`GATE_SQUARE_2026_11_12`; `reports/cards/current/` RGB path). Keep those modules for archaeology. New flashcard screens start from the opponent-card default and still quote the 2026-11-13 mixer table.
 
 **Stepped RGB column path (parked relative to the gate):** `ColumnFlashcard` / `flashcard_column_picture_trial.py`. Not the default.
