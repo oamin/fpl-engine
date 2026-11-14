@@ -410,24 +410,47 @@ class BlockTokenMixer(nn.Module):
         players = self.norm_p(self.player_mix(torch.cat([who, mins, ev], dim=-1)))
         return players + header[:, :, None, :]
 
-    def forward(self, bits: torch.Tensor, row_on: torch.Tensor, player_pad: torch.Tensor) -> torch.Tensor:
+    def forward(
+        self,
+        bits: torch.Tensor,
+        row_on: torch.Tensor,
+        player_pad: torch.Tensor,
+        view: str = "both",
+    ) -> torch.Tensor:
         """Soft event ink for every GW row. Shape B, P, T, EVENT_BITS.
 
         Past rows carry true event bits into the encoder; remainder rows enter
         with G/A blank. The paint head writes the whole card's event channels;
         the loss keeps only the remainder window.
+
+        view="both" mixes a player's past weeks and the teammates in each week.
+        view="squad" keeps only the teammates in the week, so the paint is the
+        lineup. view="time" keeps only that player's sequence. The name and
+        position are cleared, so the paint has to come from the run of games
+        plus that week's minutes and opponent. The default is both.
         """
+        if view == "time":
+            bits = bits.clone()
+            batch, weeks, _ = bits.shape
+            body = bits[..., HEADER_BITS:].reshape(batch, weeks, MAX_PLAYERS, PLAYER_BITS).clone()
+            body[..., :WHO_BITS] = 0
+            bits = torch.cat(
+                [bits[..., :HEADER_BITS], body.reshape(batch, weeks, MAX_PLAYERS * PLAYER_BITS)],
+                dim=-1,
+            )
         tokens = self._encode_rows(bits) + self.time_pos[:, : bits.shape[1]]
         b, t, p, d = tokens.shape
-        time_view = tokens.permute(0, 2, 1, 3).reshape(b * p, t, d)
-        time_mask = (row_on < 0.5)[:, None, :].expand(b, p, t).reshape(b * p, t)
-        mixed, _ = self.time(time_view, time_view, time_view, key_padding_mask=time_mask, need_weights=False)
-        time_view = self.norm_t(time_view + mixed)
-        tokens = time_view.reshape(b, p, t, d).permute(0, 2, 1, 3)  # B,T,P,D
-        squad_view = tokens.reshape(b * t, p, d)
-        squad_mask = player_pad[:, None, :].expand(b, t, p).reshape(b * t, p)
-        mixed, _ = self.squad(squad_view, squad_view, squad_view, key_padding_mask=squad_mask, need_weights=False)
-        tokens = self.norm_s(squad_view + mixed).reshape(b, t, p, d)
+        if view != "squad":
+            time_view = tokens.permute(0, 2, 1, 3).reshape(b * p, t, d)
+            time_mask = (row_on < 0.5)[:, None, :].expand(b, p, t).reshape(b * p, t)
+            mixed, _ = self.time(time_view, time_view, time_view, key_padding_mask=time_mask, need_weights=False)
+            time_view = self.norm_t(time_view + mixed)
+            tokens = time_view.reshape(b, p, t, d).permute(0, 2, 1, 3)  # B,T,P,D
+        if view != "time":
+            squad_view = tokens.reshape(b * t, p, d)
+            squad_mask = player_pad[:, None, :].expand(b, t, p).reshape(b * t, p)
+            mixed, _ = self.squad(squad_view, squad_view, squad_view, key_padding_mask=squad_mask, need_weights=False)
+            tokens = self.norm_s(squad_view + mixed).reshape(b, t, p, d)
         ink = torch.sigmoid(self.paint(tokens))  # B,T,P,E
         return ink.permute(0, 2, 1, 3)  # B,P,T,E
 

@@ -1,9 +1,9 @@
 """Draw example opacity cards from the stepped per-dot models.
 
-The row card steps one week at a time, with the true past behind it. The column
-card paints the remaining weeks from one cut. Each week keeps its own minutes
-and opponent, so the gray moves with the match. A goalkeeper stays near the
-paper color. An attacker is a light gray, not a black square.
+The row card is the other names on the teamsheet. The player's own name and his
+past games are hidden. The column card is that player's earlier games, then
+this week's minutes and opponent. Teammates are hidden. A goalkeeper stays
+near the paper color.
 """
 
 from __future__ import annotations
@@ -15,7 +15,8 @@ import numpy as np
 import torch
 from PIL import Image, ImageDraw
 
-from src.models.flashcard_baudot_residual_card import blend, soft_events
+from src.models.flashcard_baudot_residual_card import blend
+from src.models.flashcard_baudot_stepped_overlap import FormNet, LineupNet, _paint_form, _paint_lineup
 from src.models.flashcard_baudot_row_trial import (
     ART,
     BG,
@@ -29,7 +30,6 @@ from src.models.flashcard_baudot_row_trial import (
     REPORTS,
     TEST_SEASON,
     TRAIN_SEASONS,
-    BlockTokenMixer,
     _font,
     _player_pad,
     build_baudot_cards,
@@ -62,20 +62,6 @@ def _regulars(card, n: int = 12) -> list[int]:
     picked = [int(i) for i in order if not pad[int(i)]]
     picked = picked[:n]
     return sorted(picked, key=lambda i: (int(card.position[i]), -float(minutes[i])))
-
-
-def column_weeks(model, card, cut: int, device) -> np.ndarray:
-    """One forward. Each future week keeps that week's minutes and opponent."""
-    return np.array(soft_events(model, card, cut, device)[:, : card.n_fixtures], copy=True)
-
-
-def stitch_steps(model, card, cut: int, device) -> np.ndarray:
-    """Each remainder week is the next step, with the true past behind it."""
-    soft = np.zeros((card.present.shape[0], card.n_fixtures, GOAL_BITS + GOAL_BITS), dtype=np.float32)
-    for gw in range(cut, card.n_fixtures):
-        one = soft_events(model, card, gw, device)
-        soft[:, gw] = one[:, gw]
-    return soft
 
 
 def _dot_levels(card, soft: np.ndarray, cut: int, players: list[int]) -> dict:
@@ -132,9 +118,9 @@ def render_card(card, soft: np.ndarray, cut: int, arm: str, levels: dict, path: 
     draw.text(
         (16, 38),
         (
-            f"Each week is its own step. "
+            f"Shared teamsheet. Same position and minutes, same gray. "
             if arm == "row"
-            else f"Each week keeps its minutes and opponent. "
+            else f"Earlier games, then this week's minutes and opponent. "
         )
         + f"Solid dots {levels['on_solid']:.2f} opaque, blank dots {levels['on_blank']:.2f}, "
         f"goalkeeper goals {levels['gkp']:.2f}. "
@@ -237,30 +223,58 @@ def main() -> None:
     pictures = []
     painted = {}
     for arm in ("row", "column"):
-        model = BlockTokenMixer(width=train[0].width).to(device)
         weights = ART / f"baudot_step_gap_{arm}.pt"
-        if not weights.exists():
-            raise FileNotFoundError(weights)
-        model.load_state_dict(torch.load(weights, map_location=device))
-        model.eval()
+        bundle = torch.load(weights, map_location=device)
+        lineup = LineupNet(int(bundle["n_ids"])).to(device)
+        form = FormNet().to(device)
+        if bundle.get("lineup"):
+            lineup.load_state_dict(bundle["lineup"])
+        if bundle.get("form"):
+            form.load_state_dict(bundle["form"])
+        lineup.eval()
+        form.eval()
         for club in CLUBS:
             card = next(c for c in test if c.team == club)
             cut = cut_at_fraction(card, 0.2)
-            soft = stitch_steps(model, card, cut, device) if arm == "row" else column_weeks(model, card, cut, device)
+            if arm == "row":
+                soft = _paint_lineup(lineup, card, device)
+            else:
+                soft = _paint_form(form, card, None, device)
+            soft = soft[:, : card.n_fixtures]
             painted[(arm, club)] = soft
             levels = _dot_levels(card, soft, cut, _regulars(card))
-            if arm == "column" and levels["spread"] < 0.02:
-                raise AssertionError(f"{club} column does not move with the week ({levels['spread']:.3f})")
             name = f"baudot_step_{arm}_{club.lower()}_2025-26.png"
             path = render_card(card, soft, cut, arm, levels, ART / name)
             render_card(card, soft, cut, arm, levels, REPORTS / name)
             pictures.append({"arm": arm, "club": club, **levels, "path": str(path)})
             print(f"wrote {path} {levels}", flush=True)
     for club in CLUBS:
-        gap = float(np.mean(np.abs(painted[("row", club)] - painted[("column", club)])))
-        print(f"{club} mean absolute gap between row and column paint {gap:.4f}", flush=True)
-        if gap < 1e-3:
-            raise AssertionError(f"{club} row and column cards still match")
+        card = next(c for c in test if c.team == club)
+        cut = cut_at_fraction(card, 0.2)
+        row_soft = painted[("row", club)]
+        col_soft = painted[("column", club)]
+        gap = float(np.mean(np.abs(row_soft - col_soft)))
+        row_p, col_p, row_std, col_std = [], [], [], []
+        for gw in range(cut, card.n_fixtures):
+            rr, cc = [], []
+            for p in _regulars(card):
+                if int(card.position[p]) < 2 or not card.present[p, gw]:
+                    continue
+                rr.append(float(row_soft[p, gw, 0]))
+                cc.append(float(col_soft[p, gw, 0]))
+            if len(rr) >= 3:
+                row_std.append(float(np.std(rr)))
+                col_std.append(float(np.std(cc)))
+                row_p.extend(rr)
+                col_p.extend(cc)
+        corr = float(np.corrcoef(row_p, col_p)[0, 1]) if len(row_p) > 2 else float("nan")
+        print(
+            f"{club} mean absolute gap {gap:.4f} attacker-goal correlation {corr:.3f} "
+            f"within-week spread row {np.mean(row_std):.3f} column {np.mean(col_std):.3f}",
+            flush=True,
+        )
+        if corr > 0.85 and gap < 0.02:
+            raise AssertionError(f"{club} row and column cards still match ({gap:.4f}, corr {corr:.3f})")
     (ART / "baudot_stepped_cards.json").write_text(json.dumps(pictures, indent=2), encoding="utf-8")
 
 

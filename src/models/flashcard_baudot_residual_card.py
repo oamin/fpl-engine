@@ -63,16 +63,17 @@ def blend(a: tuple[int, int, int], b: tuple[int, int, int], t: float) -> tuple[i
     return tuple(int(round((1.0 - t) * x + t * y)) for x, y in zip(a, b))
 
 
-def soft_events(model, card, cut: int, device: torch.device) -> np.ndarray:
+def soft_events(model, card, cut: int, device: torch.device, view: str = "both") -> np.ndarray:
     """P, T, E probabilities for one card at one cut."""
-    view = remainder_view(card, cut)
+    seen = remainder_view(card, cut)
     pad = _player_pad(card)
     model.eval()
     with torch.no_grad():
         return model(
-            torch.from_numpy(view["bits"][None]).to(device),
-            torch.from_numpy(view["row_on"][None]).to(device),
+            torch.from_numpy(seen["bits"][None]).to(device),
+            torch.from_numpy(seen["row_on"][None]).to(device),
             torch.from_numpy(pad[None]).to(device),
+            view=view,
         )[0].cpu().numpy()
 
 

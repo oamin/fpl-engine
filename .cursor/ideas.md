@@ -54,7 +54,7 @@ Overlap `2 * gray on solid / (all gray + solid)` filled attacker columns and, on
 
 ## Measured — stepped per-dot gap (2026-11-14)
 
-Squared gap `(opacity − truth)²`. The row is the next week. The column is each player's future weeks, scored week by week, so minutes and the opponent move the gray. One shared gray per player ignored the match and is withdrawn. Next-week gap **0.0168** row and **0.0168** column. Column gap **0.0142**. Goalkeeper goal opacity **0.021** / **0.015**. On the Arsenal column card a forward's goal dot runs from pixel 133 to 216; the goalkeeper stays at 215–221. Report: `reports/baudot_stepped_overlap.md`.
+Squared gap `(opacity − truth)²`. A shared mixer painted the same gray map for both questions, so the arms now see different inputs. The row is the shared teamsheet plus position and minutes. It does not see the opponent, the player's name, or his past games. Two players of the same position with the same minutes get the same gray. The column is that player's earlier games, then this week's minutes and opponent. Teammates stay hidden. History for a week eight ahead stops at the cut. Next-week gap row **0.0171**, column **0.0174**, combined **0.0170**. Goalkeeper goal opacity **0.007** / **0.049**. On the Arsenal card, goal grays for players who are on the pitch correlate at **0.42**: the row paints the striker dark because of his position, and the column paints him from his earlier games. One shared gray per player is withdrawn. Report: `reports/baudot_stepped_overlap.md`.
 
 ## LOCKED — opacity card is the default (2026-11-14)
 
