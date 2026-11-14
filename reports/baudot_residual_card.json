@@ -1,0 +1,43 @@
+{
+  "trial": "baudot_residual_card",
+  "model": "baudot_row_mixer_learnable_tversky",
+  "gate_mean_retrain": 0.2181987495599782,
+  "published_gate_mean": 0.2181987495599782,
+  "arsenal_20": {
+    "n": 4500,
+    "brier": 0.030859077349305153,
+    "log_loss": 0.1137450784444809,
+    "mae": 0.04498724639415741
+  },
+  "holdout": [
+    {
+      "n": 94134,
+      "brier": 0.019691726192831993,
+      "log_loss": 0.07942351698875427,
+      "mae": 0.03063645027577877,
+      "revealed": "20%"
+    },
+    {
+      "n": 72822,
+      "brier": 0.019398488104343414,
+      "log_loss": 0.07750938087701797,
+      "mae": 0.0303444005548954,
+      "revealed": "40%"
+    },
+    {
+      "n": 48066,
+      "brier": 0.019361218437552452,
+      "log_loss": 0.07718615978956223,
+      "mae": 0.030382143333554268,
+      "revealed": "60%"
+    },
+    {
+      "n": 25680,
+      "brier": 0.019409965723752975,
+      "log_loss": 0.07808905839920044,
+      "mae": 0.030261578038334846,
+      "revealed": "80%"
+    }
+  ],
+  "picture": "/opt/cursor/artifacts/baudot_residual_arsenal_2025-26.png"
+}
