@@ -56,7 +56,7 @@ Schema slicing by place-in-chain is picture reading, not a numeric sidecar. Do n
 
 **Residual card (2026-11-14):** gray of a dot is the mixer probability. Difference card is truth minus that probability on the remainder event bits. Tversky-trained holdout 20% Brier **0.020**, log loss **0.079**. Picture: `reports/baudot_residual_arsenal_2025-26.png`.
 
-**Opacity loss (2026-11-14):** same card, seed 0, trained on the residual. Log loss mean **0.0543** (Δ −0.0238 vs Tversky 0.0781). Brier arm mean squared residual **0.0141** (Δ −0.0053 vs 0.0195); its log loss is **0.0581**. The same rows carry the 0.5 events/hits/score tally: both arms score **0.000** against the Tversky table **0.218**, because the paint stays under 0.5. Report: `reports/baudot_opacity_loss.md`.
+**Opacity loss (2026-11-14):** same card, seed 0. The reading is sureness on the event dot, with no threshold. A solid dot predicted at 0.20 contributes 0.20. Precision = opacity on true dots / all opacity. Recall = average opacity on a true dot. Event-marker means: Tversky precision **0.184** recall **0.216**; log loss **0.141** / **0.147**; Brier **0.130** / **0.137**. At 20% the Tversky goal dot is 0.246 opaque on a true event and 0.043 on a blank. Training loss on every event bit stays log loss **0.0543**, Brier **0.0141**. Report: `reports/baudot_opacity_loss.md`.
 
 **Superseded as the flashcard comparison gate:** square-card full painter / fixture-intensity stored readers (`GATE_SQUARE_2026_11_12`; `reports/cards/current/` RGB path). Keep those modules for archaeology. New flashcard screens start from the opacity card and still quote the 2026-11-13 mixer table.
 

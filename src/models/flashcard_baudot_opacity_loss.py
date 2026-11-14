@@ -10,7 +10,10 @@ Two training losses, pre-registered, same FOV and seed:
 Early-stop each arm on its own holdout mean (lower is better).
 The Tversky-trained reading of this card is the baseline:
 holdout log loss about 0.078, Brier about 0.0195, from the residual-card run.
-The 0.5 tally is reported beside the residual. It is not the selection metric.
+The published reading is the opacity of the event dots. A solid true dot
+predicted at 0.20 contributes 0.20 of sureness and leaves a shortfall of 0.80.
+Precision is sureness on true dots over all sureness. Recall is sureness on
+true dots over the count of solid dots. There is no 0.5 cutoff.
 """
 
 from __future__ import annotations
@@ -25,13 +28,14 @@ import torch
 import torch.nn.functional as F
 
 from src.models.flashcard_baudot_residual_card import live_pairs, residual_scores, soft_events
-from src.models.flashcard_card_score import GATE, balanced_score
 from src.models.flashcard_baudot_row_trial import (
     ART,
     BATCH,
     CUT_FRACS,
     EARLY_PATIENCE,
     EPOCHS,
+    EVENT_BITS,
+    GOAL_BITS,
     LR,
     REPORTS,
     SEED,
@@ -39,25 +43,20 @@ from src.models.flashcard_baudot_row_trial import (
     TRAIN_SEASONS,
     BlockTokenMixer,
     _batch,
+    _player_pad,
     build_baudot_cards,
     build_cards,
     build_league,
     build_name_codes,
     cut_at_fraction,
-    evaluate_mixer,
+    event_target,
     fit_clubs,
     load_odds,
+    train_mixer,
 )
 ROOT = Path(__file__).resolve().parents[2]
 OUT = REPORTS / "baudot_opacity_loss.md"
 ARMS = ("log_loss", "brier")
-# Tversky-trained opacity reading, seed 0, reports/baudot_residual_card.json.
-TVERSKY_PROPER = (
-    {"revealed": "20%", "n": 94134, "brier": 0.019691726192831993, "log_loss": 0.07942351698875427, "mae": 0.03063645027577877},
-    {"revealed": "40%", "n": 72822, "brier": 0.019398488104343414, "log_loss": 0.07750938087701797, "mae": 0.0303444005548954},
-    {"revealed": "60%", "n": 48066, "brier": 0.019361218437552452, "log_loss": 0.07718615978956223, "mae": 0.030382143333554268},
-    {"revealed": "80%", "n": 25680, "brier": 0.019409965723752975, "log_loss": 0.07808905839920044, "mae": 0.030261578038334846},
-)
 
 
 def _mean_key(rows: list[dict], key: str) -> float:
@@ -78,6 +77,93 @@ def proper_table(model, cards, device) -> list[dict]:
         row["revealed"] = f"{frac:.0%}"
         rows.append(row)
     return rows
+
+
+def _sureness(y: np.ndarray, p: np.ndarray) -> dict:
+    """Precision and recall from opacity, with no threshold.
+
+    A true dot predicted at 0.20 adds 0.20 to sureness on true events and is
+    short of the solid 1 by 0.80. A blank dot predicted at 0.20 adds 0.20 to
+    sureness on false events. Precision = on_true / (on_true + on_false).
+    Recall = on_true / solid dots, the average opacity on the true dots.
+    """
+    y = np.asarray(y, dtype=np.float64)
+    p = np.asarray(p, dtype=np.float64)
+    solid = float(y.sum())
+    blank = float((1.0 - y).sum())
+    on_true = float((p * y).sum())
+    on_false = float((p * (1.0 - y)).sum())
+    painted = on_true + on_false
+    precision = on_true / painted if painted > 0 else 0.0
+    recall = on_true / solid if solid > 0 else 0.0
+    if solid + painted == 0:
+        score = 1.0
+    else:
+        f1 = (2.0 * on_true) / (solid + painted)
+        volume = 0.0 if solid == 0 or painted == 0 else min(solid, painted) / max(solid, painted)
+        score = f1 * volume
+    pc = np.clip(p, 1e-4, 1.0 - 1e-4)
+    log_loss = float(-np.mean(y * np.log(pc) + (1.0 - y) * np.log(1.0 - pc))) if len(y) else 0.0
+    brier = float(np.mean((y - p) ** 2)) if len(y) else 0.0
+    return {
+        "n": int(len(y)),
+        "solid": solid,
+        "blank": blank,
+        "on_true": on_true,
+        "on_false": on_false,
+        "precision": precision,
+        "recall": recall,
+        "score": score,
+        "log_loss": log_loss,
+        "brier": brier,
+        "mean_true": recall,
+        "mean_false": on_false / blank if blank > 0 else 0.0,
+    }
+
+
+def _dot_pairs(card, soft: np.ndarray, cut: int, index: int | slice) -> tuple[np.ndarray, np.ndarray]:
+    pad = _player_pad(card)
+    ys, ps = [], []
+    for gw in range(cut, card.n_fixtures):
+        target = event_target(card, gw)
+        for row in range(card.n_players):
+            if pad[row] or not card.present[row, gw]:
+                continue
+            ys.append(np.atleast_1d(target[row, index]))
+            ps.append(np.atleast_1d(soft[row, gw, index]))
+    if not ys:
+        return np.zeros(0), np.zeros(0)
+    return np.concatenate(ys), np.concatenate(ps)
+
+
+def opacity_tables(model, cards, device) -> dict[str, list[dict]]:
+    """Sureness on the event-marker dot, and on every unary event dot."""
+    marker, dots = [], []
+    for frac in CUT_FRACS:
+        revealed = f"{frac:.0%}"
+        for channel, mark, sl in (
+            ("goals", 0, slice(0, GOAL_BITS)),
+            ("assists", GOAL_BITS, slice(GOAL_BITS, EVENT_BITS)),
+        ):
+            my, mp, dy, dp = [], [], [], []
+            for card in cards:
+                cut = cut_at_fraction(card, frac)
+                soft = soft_events(model, card, cut, device)
+                y, p = _dot_pairs(card, soft, cut, mark)
+                my.append(y)
+                mp.append(p)
+                y, p = _dot_pairs(card, soft, cut, sl)
+                dy.append(y)
+                dp.append(p)
+            for bucket, ys, ps in (
+                (marker, my, mp),
+                (dots, dy, dp),
+            ):
+                row = _sureness(np.concatenate(ys), np.concatenate(ps))
+                row["revealed"] = revealed
+                row["channel"] = channel
+                bucket.append(row)
+    return {"marker": marker, "dots": dots}
 
 
 def arm_loss(name: str, pred: torch.Tensor, target: torch.Tensor, live: torch.Tensor) -> torch.Tensor:
@@ -140,101 +226,99 @@ def train_arm(name: str, model, cards, test, device) -> dict:
     if best_state is not None:
         model.load_state_dict(best_state)
     proper = proper_table(model, test, device)
-    tally = evaluate_mixer(model, test, device)
+    reading = opacity_tables(model, test, device)
     return {
         "name": name,
         "epochs_run": epochs_run,
         "best": best,
         "seconds": round(time.time() - t0, 1),
         "proper": proper,
-        "tally_mean": float(np.mean([r["score"] for r in tally["rows"]])),
-        "tally": tally["rows"],
+        "marker": reading["marker"],
+        "dots": reading["dots"],
     }
 
 
-def _eval_line(arm: str, revealed: str, channel: str, log_loss: float, brier: float, row: dict) -> str:
+def _fmt(row: dict) -> str:
     return (
-        f"| {arm} | {revealed} | {channel} | {log_loss:.4f} | {brier:.4f} | "
-        f"{row['actual']} | {row['painted']} | {row['hits']} | "
-        f"{row['actual_within_1']} | {row['painted_within_1']} | {row['score']:.3f} |"
+        f"| {row['arm']} | {row['revealed']} | {row['channel']} | {row['log_loss']:.4f} | {row['brier']:.4f} | "
+        f"{row['solid']:.0f} | {row['on_true']:.1f} | {row['on_false']:.1f} | "
+        f"{row['mean_false']:.3f} | {row['precision']:.3f} | {row['recall']:.3f} | {row['score']:.3f} |"
     )
 
 
-def _tversky_eval_rows() -> list[dict]:
-    rows = []
-    for channel in ("goals", "assists"):
-        for frac in CUT_FRACS:
-            revealed = f"{frac:.0%}"
-            proper = next(r for r in TVERSKY_PROPER if r["revealed"] == revealed)
-            tot = GATE[(channel, frac)]
-            score = balanced_score(tot)
-            rows.append(
-                {
-                    "revealed": revealed,
-                    "channel": channel,
-                    "log_loss": proper["log_loss"],
-                    "brier": proper["brier"],
-                    "actual": tot["actual"],
-                    "painted": tot["painted"],
-                    "hits": tot["exact"],
-                    "actual_within_1": tot["actual_within"],
-                    "painted_within_1": tot["painted_within"],
-                    "score": score["score"],
-                }
-            )
-    return rows
+def _ordered(rows: list[dict], arm: str) -> list[dict]:
+    out = []
+    for row in sorted(rows, key=lambda r: (r["channel"] != "goals", r["revealed"])):
+        item = dict(row)
+        item["arm"] = arm
+        out.append(item)
+    return out
 
 
 def write_report(arms: list[dict]) -> Path:
-    base_ll = _mean_key(list(TVERSKY_PROPER), "log_loss")
-    base_br = _mean_key(list(TVERSKY_PROPER), "brier")
     header = (
-        "| arm | revealed | channel | log loss | Brier | actual events | painted events | hits | "
-        "actual ±1 | painted ±1 | score |"
+        "| arm | revealed | channel | log loss | Brier | solid dots | on true | on false | "
+        "mean on false | precision | recall | score |"
     )
-    rule = "|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|"
+    rule = "|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|"
     lines = [
-        "# Opacity card — log loss and Brier",
+        "# Opacity card — sureness on the event dots",
         "",
-        "The default card is the Baudot row card. Event dots keep the probability. "
-        "Log loss and Brier are the residual on every remainder event bit at that cut. "
-        "Actual events, painted events, hits, the ±1 columns, and the score are the "
-        "0.5 tally used on the 2026-11-13 mixer table. "
-        "The Tversky event counts are that published table.",
+        "A true event is a solid dot. The model paints that dot with opacity equal to its probability. "
+        "Predicted opacity 0.20 on a solid 1 is 0.20 of the way there and 0.80 short. "
+        "On true is the sum of that opacity over solid dots. On false is the sum over blank dots. "
+        "Precision = on true / (on true + on false). Recall = on true / solid dots, "
+        "which is the average opacity on a true dot. Mean on false is the average opacity on a blank dot. "
+        "The score is the harmonic mean of precision and recall, times the ratio of the smaller "
+        "opacity mass to the larger of (solid dots, total opacity). No probability is thresholded.",
         "",
-        f"Mean log loss **{base_ll:.4f}** / Brier **{base_br:.4f}** on the Tversky reading. "
-        "Mean score of its eight tally cells is **0.218**.",
+        "The event marker is the first dot of the channel: solid when the player has at least one "
+        "goal or assist in that gameweek. Log loss and Brier on each row are that same dot.",
+        "",
+        "## Event marker",
         "",
         header,
         rule,
     ]
-    for row in _tversky_eval_rows():
-        lines.append(
-            _eval_line("tversky", row["revealed"], row["channel"], row["log_loss"], row["brier"], row)
-        )
     for meta in arms:
-        by_cut = {r["revealed"]: r for r in meta["proper"]}
-        ordered = sorted(meta["tally"], key=lambda r: (r["channel"] != "goals", r["revealed"]))
-        for row in ordered:
-            proper = by_cut[row["revealed"]]
-            lines.append(
-                _eval_line(meta["name"], row["revealed"], row["channel"], proper["log_loss"], proper["brier"], row)
-            )
+        for row in _ordered(meta["marker"], meta["name"]):
+            lines.append(_fmt(row))
+    lines.extend(
+        [
+            "",
+            "## Every event dot",
+            "",
+            "The other two dots in the channel are the unary squares for two and for three. "
+            "A brace is two solid goal dots. The same sureness sums cover every square the loss trains.",
+            "",
+            header,
+            rule,
+        ]
+    )
+    for meta in arms:
+        for row in _ordered(meta["dots"], meta["name"]):
+            lines.append(_fmt(row))
     lines.append("")
     log_arm = next(m for m in arms if m["name"] == "log_loss")
     brier_arm = next(m for m in arms if m["name"] == "brier")
-    ll = _mean_key(log_arm["proper"], "log_loss")
-    br = _mean_key(brier_arm["proper"], "brier")
+    tv = next(m for m in arms if m["name"] == "tversky")
+
+    def _mean_recall(meta: dict) -> float:
+        return _mean_key(meta["marker"], "recall")
+
+    def _mean_precision(meta: dict) -> float:
+        return _mean_key(meta["marker"], "precision")
+
     lines.extend(
         [
             "## Call",
             "",
-            f"Log loss holdout mean **{ll:.4f}** (Tversky {base_ll:.4f}). "
-            f"Brier arm mean squared residual **{br:.4f}** (Tversky {base_br:.4f}), "
-            f"with log loss **{_mean_key(brier_arm['proper'], 'log_loss'):.4f}**. "
-            f"On the 0.5 tally the log-loss arm scores **{log_arm['tally_mean']:.3f}** "
-            f"and the Brier arm **{brier_arm['tally_mean']:.3f}**, against the Tversky table **0.218**. "
-            "Both residual arms paint under the 0.5 line, so painted events and hits stay at zero.",
+            "Event-marker means. "
+            f"Tversky precision **{_mean_precision(tv):.3f}**, recall **{_mean_recall(tv):.3f}**. "
+            f"Log loss precision **{_mean_precision(log_arm):.3f}**, recall **{_mean_recall(log_arm):.3f}**. "
+            f"Brier precision **{_mean_precision(brier_arm):.3f}**, recall **{_mean_recall(brier_arm):.3f}**. "
+            f"Training loss on every remainder event bit: log loss **{_mean_key(log_arm['proper'], 'log_loss'):.4f}**, "
+            f"Brier arm **{_mean_key(brier_arm['proper'], 'brier'):.4f}**.",
             "",
         ]
     )
@@ -261,6 +345,22 @@ def main() -> None:
     test = [c for c in baudot if c.season == TEST_SEASON]
     print(f"cards train {len(train)} test {len(test)} device {device}", flush=True)
     results = []
+    torch.manual_seed(SEED)
+    model = BlockTokenMixer(width=train[0].width)
+    t0 = time.time()
+    trained = train_mixer(model, train, np.random.default_rng(SEED), device, test=test)
+    reading = opacity_tables(model, test, device)
+    proper = proper_table(model, test, device)
+    results.append(
+        {
+            "name": "tversky",
+            "epochs_run": trained["epochs_run"],
+            "seconds": round(time.time() - t0, 1),
+            "proper": proper,
+            "marker": reading["marker"],
+            "dots": reading["dots"],
+        }
+    )
     for name in ARMS:
         torch.manual_seed(SEED)
         model = BlockTokenMixer(width=train[0].width)
@@ -270,8 +370,7 @@ def main() -> None:
         "trial": "baudot_opacity_loss",
         "default_card": "opacity",
         "default_train_loss": "log_loss",
-        "tversky_mean_log_loss": _mean_key(list(TVERSKY_PROPER), "log_loss"),
-        "tversky_mean_brier": _mean_key(list(TVERSKY_PROPER), "brier"),
+        "reading": "sureness on event dots, no threshold",
         "arms": [
             {
                 "name": meta["name"],
@@ -279,9 +378,12 @@ def main() -> None:
                 "seconds": meta["seconds"],
                 "mean_log_loss": _mean_key(meta["proper"], "log_loss"),
                 "mean_brier": _mean_key(meta["proper"], "brier"),
-                "tally_mean": meta["tally_mean"],
+                "marker_precision": _mean_key(meta["marker"], "precision"),
+                "marker_recall": _mean_key(meta["marker"], "recall"),
+                "marker_score": _mean_key(meta["marker"], "score"),
                 "proper": meta["proper"],
-                "tally": meta["tally"],
+                "marker": meta["marker"],
+                "dots": meta["dots"],
             }
             for meta in results
         ],

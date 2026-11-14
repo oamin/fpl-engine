@@ -50,7 +50,7 @@ Two losses on the locked opponent card, cell Tversky kept, weight 1. `1_margins`
 
 ## LOCKED — opacity card is the default (2026-11-14)
 
-PI lock. The default flashcard is the Baudot row card with the event probability kept as the gray of the dot. The score is the residual on the remainder event bits. Training loss is the log loss (holdout mean **0.0543**, against Tversky-trained **0.0781**). The Brier arm reaches mean squared residual **0.0141** and log loss **0.0581**, so it does not beat log loss on the likelihood. Both arms stay under 0.5, so the thresholded tally is **0.000**. That tally is not the score. `GATE` (mean **0.218**) stays the published thresholded table. Report: `reports/baudot_opacity_loss.md`. Picture: `reports/baudot_residual_arsenal_2025-26.png`.
+PI lock. The default flashcard is the Baudot row card with the event probability kept as the gray of the dot. A solid dot predicted at 0.20 counts as 0.20 of an event. Precision is opacity on true dots over all opacity. Recall is the average opacity on a true dot. Event-marker means: Tversky precision **0.184** recall **0.216**; log loss **0.141** / **0.147**; Brier **0.130** / **0.137**. Likelihood on every event bit is still lower for log loss (**0.0543**) than for the Tversky reading (**0.0781**). Report: `reports/baudot_opacity_loss.md`. Picture: `reports/baudot_residual_arsenal_2025-26.png`.
 
 ## Screened — opponent-card cross-read (2026-11-14)
 
