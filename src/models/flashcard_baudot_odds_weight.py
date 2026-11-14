@@ -74,6 +74,7 @@ def blank_card(card: BaudotCard, kind: str) -> BaudotCard:
     return replace(card, bits=bits)
 
 
+@torch.no_grad()
 def pr_tables(model, cards, device, frac: float = 0.2) -> dict:
     """Presence-level precision/recall at one cut, overall and by position."""
     model.eval()
@@ -131,6 +132,7 @@ def pr_tables(model, cards, device, frac: float = 0.2) -> dict:
     return out
 
 
+@torch.no_grad()
 def role_rates(model, cards, device, frac: float = 0.2) -> dict:
     """Average positional appearance: event rate truth vs paint."""
     model.eval()
@@ -283,7 +285,12 @@ def write_report(arms: list[dict]) -> Path:
 def _mean_from_eval(model, cards, device) -> float:
     from src.models.flashcard_baudot_row_trial import evaluate_mixer
 
-    rows = evaluate_mixer(model, cards, device)["rows"]
+    was = model.training
+    model.eval()
+    with torch.no_grad():
+        rows = evaluate_mixer(model, cards, device)["rows"]
+    if was:
+        model.train()
     return float(np.mean([r["score"] for r in rows]))
 
 
