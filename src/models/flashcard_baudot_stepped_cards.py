@@ -1,9 +1,9 @@
 """Draw example opacity cards from the stepped per-dot models.
 
-The row card paints each week on its own: the true past is revealed and that
-week is blank. The column card paints one gray per player and repeats it down
-the future column. That is the gray the column loss scores. A goalkeeper stays
-near the paper color. An attacker is a light gray, not a black square.
+The row card steps one week at a time, with the true past behind it. The column
+card paints the remaining weeks from one cut. Each week keeps its own minutes
+and opponent, so the gray moves with the match. A goalkeeper stays near the
+paper color. An attacker is a light gray, not a black square.
 """
 
 from __future__ import annotations
@@ -64,18 +64,9 @@ def _regulars(card, n: int = 12) -> list[int]:
     return sorted(picked, key=lambda i: (int(card.position[i]), -float(minutes[i])))
 
 
-def shared_column(model, card, cut: int, device) -> np.ndarray:
-    """One forward. Each player's future weeks wear the mean gray of that column."""
-    soft = np.array(soft_events(model, card, cut, device)[:, : card.n_fixtures], copy=True)
-    pad = _player_pad(card)
-    for row in range(card.present.shape[0]):
-        if pad[row]:
-            continue
-        weeks = [gw for gw in range(cut, card.n_fixtures) if card.present[row, gw]]
-        if not weeks:
-            continue
-        soft[row, weeks] = soft[row, weeks].mean(axis=0)
-    return soft
+def column_weeks(model, card, cut: int, device) -> np.ndarray:
+    """One forward. Each future week keeps that week's minutes and opponent."""
+    return np.array(soft_events(model, card, cut, device)[:, : card.n_fixtures], copy=True)
 
 
 def stitch_steps(model, card, cut: int, device) -> np.ndarray:
@@ -101,10 +92,22 @@ def _dot_levels(card, soft: np.ndarray, cut: int, players: list[int]) -> dict:
                 (solid if y >= 0.5 else blank).append(p)
                 if int(card.position[row]) == 0 and bit == 0:
                     gkp.append(p)
+    spreads = []
+    for row in players:
+        if pad[row] or int(card.position[row]) < 2:
+            continue
+        series = [
+            float(soft[row, gw, 0])
+            for gw in range(cut, card.n_fixtures)
+            if card.present[row, gw]
+        ]
+        if len(series) >= 4:
+            spreads.append(float(np.std(series)))
     return {
         "on_solid": float(np.mean(solid)) if solid else 0.0,
         "on_blank": float(np.mean(blank)) if blank else 0.0,
         "gkp": float(np.mean(gkp)) if gkp else 0.0,
+        "spread": float(np.mean(spreads)) if spreads else 0.0,
     }
 
 
@@ -131,10 +134,11 @@ def render_card(card, soft: np.ndarray, cut: int, arm: str, levels: dict, path: 
         (
             f"Each week is its own step. "
             if arm == "row"
-            else f"One gray per player, shared down the column. "
+            else f"Each week keeps its minutes and opponent. "
         )
         + f"Solid dots {levels['on_solid']:.2f} opaque, blank dots {levels['on_blank']:.2f}, "
-        f"goalkeeper goals {levels['gkp']:.2f}.",
+        f"goalkeeper goals {levels['gkp']:.2f}. "
+        f"Week-to-week spread {levels['spread']:.2f}.",
         fill=MUTED,
         font=_font(11),
     )
@@ -242,9 +246,11 @@ def main() -> None:
         for club in CLUBS:
             card = next(c for c in test if c.team == club)
             cut = cut_at_fraction(card, 0.2)
-            soft = stitch_steps(model, card, cut, device) if arm == "row" else shared_column(model, card, cut, device)
+            soft = stitch_steps(model, card, cut, device) if arm == "row" else column_weeks(model, card, cut, device)
             painted[(arm, club)] = soft
             levels = _dot_levels(card, soft, cut, _regulars(card))
+            if arm == "column" and levels["spread"] < 0.02:
+                raise AssertionError(f"{club} column does not move with the week ({levels['spread']:.3f})")
             name = f"baudot_step_{arm}_{club.lower()}_2025-26.png"
             path = render_card(card, soft, cut, arm, levels, ART / name)
             render_card(card, soft, cut, arm, levels, REPORTS / name)

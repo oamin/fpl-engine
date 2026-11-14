@@ -10,12 +10,12 @@ does not score.
 Three arms, same mixer, same card, seed 0. Each step reveals the true past
 and blanks the week being painted.
 
-  row       — the next gameweek, a gray of its own for that week
-  column    — one gray per player, shared down that player's future
+  row       — the next gameweek, every player who plays it
+  column    — each player's future weeks, each week with its own minutes and opponent
   combined  — those two gaps with equal weight
 
-A column that gives every week its own gray is the row again. The holdout
-reads the next week, and the shared column gray, at 1, 2, 4 and 8 weeks.
+Each player counts once on the column, however many weeks they play. The gray
+on a week is that week's prediction. The holdout reads 1, 2, 4 and 8 weeks ahead.
 """
 
 from __future__ import annotations
@@ -82,19 +82,16 @@ def column_strip(
     present: torch.Tensor,
     pad: torch.Tensor,
 ) -> torch.Tensor:
-    """One gray per player, scored against every week in that player's future.
+    """Each player's future weeks, then the mean over players.
 
     pred/target are B, P, T, E. present is B, P, T and is already limited to
-    the weeks still blank. The gray is the mean opacity down the column, so a
-    goal and a blank in the same column pull the same dot. Each player counts
-    once. A separate gray for every week is the row, and that loss matches it.
+    the weeks still blank. Week t is scored with the paint at week t, which
+    sees that week's minutes and opponent. A goal in one week and a blank in
+    the next pull different dots. Each player counts once.
     """
     live = present & ~pad[..., None]
-    weight_t = live.to(pred.dtype)
-    pooled = (pred * weight_t[..., None]).sum(dim=2) / weight_t.sum(dim=2).clamp_min(1)[..., None]
-    painted = pooled[:, :, None, :].expand_as(pred)
-    err = (painted - target) ** 2
-    mask = weight_t[..., None].expand_as(pred)
+    err = (pred - target) ** 2
+    mask = live.to(pred.dtype)[..., None].expand_as(pred)
     per_player = (err * mask).sum(dim=(2, 3)) / mask.sum(dim=(2, 3)).clamp_min(1)
     weight = live.any(dim=-1).to(pred.dtype)
     return (per_player * weight).sum() / weight.sum().clamp_min(1)
@@ -159,8 +156,7 @@ def _numpy_strip(
     gaps, solid_ps, blank_ps, gkp_ps = [], [], [], []
     for i in players:
         weeks = np.flatnonzero(live[i])
-        pooled = pred[i, weeks].mean(axis=0)
-        dots_p = np.broadcast_to(pooled, (len(weeks), pooled.shape[0])).reshape(-1)
+        dots_p = pred[i, weeks].reshape(-1)
         dots_y = target[i, weeks].reshape(-1)
         gaps.append(float(((dots_p - dots_y) ** 2).mean()))
         solid = dots_y > 0.5
@@ -169,7 +165,7 @@ def _numpy_strip(
         if (~solid).any():
             blank_ps.append(float(dots_p[~solid].mean()))
         if int(position[i]) == 0:
-            gkp_ps.append(float(pooled[0]))
+            gkp_ps.append(float(pred[i, weeks, 0].mean()))
     return {
         "column": float(np.mean(gaps)),
         "on_solid": float(np.mean(solid_ps)) if solid_ps else 0.0,
@@ -360,12 +356,11 @@ def write_report(arms: list[dict]) -> Path:
         "The loss on a dot is the squared gap, (opacity − truth)². "
         "A solid dot at 0.20 costs 0.64. A blank dot at 0.20 costs 0.04.",
         "",
-        "The row step scores the next gameweek. Each player can take a different gray "
-        "that week, and the gray can change the week after. "
-        "The column step gives a player one gray for the whole future column and "
-        "scores that gray against every week in it. A goal and a blank pull the "
-        "same dot. Giving every week its own gray is the row again, which is why "
-        "the two cards matched.",
+        "The row step scores the next gameweek, every player who plays it. "
+        "The column step scores each player's future weeks, and each player counts once. "
+        "Week t is scored with the paint at week t. That paint sees the week's minutes "
+        "and opponent, so the gray moves with the match. "
+        "A single gray repeated down the player ignores the match. That version is withdrawn.",
         "",
         "Combined gives the next-week gap and the column gap equal weight.",
         "",
@@ -383,8 +378,8 @@ def write_report(arms: list[dict]) -> Path:
             "",
             "## Each player's future column",
             "",
-            "One gray per player, compared with every later week. "
-            "The weeks between the cut and that week stay blank.",
+            "Each future week is scored on its own. Minutes and the opponent stay on the card. "
+            "Goals and assists between the cut and that week stay blank.",
             "",
             "| arm | column gap | opacity on solid | opacity on blank | GKP goal opacity |",
             "|---|---:|---:|---:|---:|",
@@ -438,10 +433,9 @@ def write_report(arms: list[dict]) -> Path:
             f"row **{_mean_distance(row['reading'], 1, 'gkp'):.3f}**, "
             f"column **{_mean_distance(column['reading'], 1, 'gkp'):.3f}**, "
             f"combined **{_mean_distance(both['reading'], 1, 'gkp'):.3f}**. "
-            "The row card changes shade from week to week. "
-            "The column card repeats one shade down the player. "
-            "The average gap does not pick a winner: a week of its own and one gray for the column "
-            "miss by about the same amount.",
+            "On the column, each week keeps its own minutes and opponent. "
+            "Example cards: `reports/baudot_step_row_arsenal_2025-26.png`, "
+            "`reports/baudot_step_column_arsenal_2025-26.png`.",
             "",
         ]
     )
@@ -471,18 +465,19 @@ def _check_gap_formula() -> None:
     longer = torch.nn.Parameter(torch.zeros(1, 1, 2, EVENT_BITS))
     with torch.no_grad():
         longer[0, 0, 0, 0] = 0.2
+        longer[0, 0, 1, 0] = 0.8
     longer_y = torch.zeros(1, 1, 2, EVENT_BITS)
     longer_y[0, 0, 0, 0] = 1.0
     present2 = torch.ones(1, 1, 2, dtype=torch.bool)
     strip_t = column_strip(longer, longer_y, present2, pad)
-    # Mean gray on the solid bit is 0.1. Costs 0.81 on the goal week and 0.01 on the blank.
-    if abs(float(strip_t) - (0.82 / (2 * EVENT_BITS))) > 1e-5:
-        raise AssertionError(f"two-week column {float(strip_t)}")
-    if abs(float(strip_t) - got) < 1e-5:
-        raise AssertionError("the column still equals the row")
+    # Each week keeps its own paint: 0.64 on the goal week and 0.64 on the blank week.
+    if abs(float(strip_t.detach()) - (1.28 / (2 * EVENT_BITS))) > 1e-5:
+        raise AssertionError(f"two-week column {float(strip_t.detach())}")
     strip_t.backward()
-    if not torch.allclose(longer.grad[0, 0, 0, 0], longer.grad[0, 0, 1, 0]):
-        raise AssertionError("the two weeks of a column do not share a gray")
+    goal_grad = float(longer.grad[0, 0, 0, 0])
+    blank_grad = float(longer.grad[0, 0, 1, 0])
+    if goal_grad >= 0 or blank_grad <= 0:
+        raise AssertionError(f"weeks share a gray: goal {goal_grad} blank {blank_grad}")
 
 
 def main() -> None:
