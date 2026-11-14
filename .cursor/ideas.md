@@ -24,6 +24,10 @@ Targeted at gate DEF goals **103/0/0** and assist miss. `1_role_paint` and `2_ro
 
 Teacher-forced single-GW paint vs locked full-remainder one-shot. Mean **0.184** (Δ −0.034); DEF goals **103/0/0**. Does not replace the gate. Keep as a complementary FOV for next-week diagnostics; do not promote over full-remainder without a clear win. Report: `reports/baudot_stepped_gw.md`.
 
+## Parked — Baudot fixture dots +OU / +AH line (2026-11-13)
+
+Event-volume header dots from football-data (no Odds API). `1_ou_only` mean **0.176**, DEF **103/0/0**. `2_ou_ah` mean **0.152**, DEF **103/1/0**. AH line≠1X2 repeat (corr 0.21) but adds no DEF placement. Report: `reports/baudot_fixture_dots.md`. Do not stack more market strips without a DEF-specific picture idea.
+
 ## Parked — cell-posterior column allocation (2026-11-13)
 
 Stepped column trials that score cells / shares / top-k paint (GKP residual on one-bar weeks). Parked in favor of whole-strip picture matching. Keep the reports for archaeology; do not extend the share/rank stack.

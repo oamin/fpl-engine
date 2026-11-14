@@ -25,6 +25,8 @@ Schema slicing by place-in-chain is picture reading, not a numeric sidecar. Do n
 
 **Gate DEF/assist autopsy (2026-11-13):** `reports/baudot_def_assist_autopsy.md`. DEF soft ink ~0.006 on event and blank; no DEF `g_max` ≥0.05. Minutes differ on true DEF goal weeks; the head does not. Assist gap = DEF blank + weaker MID + FWD assist overpaint (volume ≈ actual overall).
 
+**Fixture-dot screen (2026-11-13, park):** +OU₈ and +OU₈+AH₈ line on Baudot header (`reports/baudot_fixture_dots.md`). AH line vs 1X2 left-fill corr only **0.21** (not a 1X2 repeat; tracks OU more, corr 0.51). Neither arm lifts DEF off 0 (ou_ah 103/1/0); means **0.176 / 0.152** lose the gate. Open-game dots alone do not reweight DEF events.
+
 **Superseded as the flashcard comparison gate:** square-card full painter / fixture-intensity stored readers (`GATE_SQUARE_2026_11_12`; `reports/cards/current/` RGB path). Keep those modules for archaeology; new flashcard screens compare to the Baudot gate.
 
 **Stepped RGB column path (parked relative to the gate):** `ColumnFlashcard` / `flashcard_column_picture_trial.py`. Not the default.
