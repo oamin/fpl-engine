@@ -1,16 +1,19 @@
 """Baudot stepped-GW RL screen vs locked full-remainder gate.
 
 Same card + BlockTokenMixer encoder. FOV = next-GW only (as in the parked
-stepped supervised arm). Training is self-critical REINFORCE:
+stepped supervised arm).
 
-  state  = past rows true, target GW G/A blank
-  action = Bernoulli sample of hard event bits on the live target cells
-  reward = mean channel balanced_score (hits × volume) on that step
-  baseline = greedy thr-0.5 action's reward (SCST)
+Protocol (pre-registered):
+  1. Warm-start: learnable Tversky on next-GW (same as stepped supervised)
+     for WARM_EPOCHS — pure SCST from scratch collapsed to entropy-max / blank.
+  2. RL fine-tune: self-critical REINFORCE
+       state  = past rows true, target GW G/A blank
+       action = Bernoulli sample of hard event bits on live target cells
+       reward = channel balanced_score on channels with actual>0
+       baseline = greedy thr-0.5 reward (SCST)
 
-Holdout uses the same teacher-forced stepped tally table as
-`flashcard_baudot_stepped_gw` / the locked GATE cells — deterministic thr 0.5
-paint, not sampled rollouts. Primary call: mean score vs gate 0.218.
+Holdout = teacher-forced stepped tally table (thr 0.5), same cells as GATE.
+Primary call: mean score vs gate 0.218.
 """
 
 from __future__ import annotations
@@ -27,6 +30,7 @@ import torch.nn as nn
 from src.models.flashcard_baudot_row_trial import (
     ART,
     BATCH,
+    BCE_W,
     CUT_FRACS,
     EARLY_PATIENCE,
     EPOCHS,
@@ -47,6 +51,7 @@ from src.models.flashcard_baudot_row_trial import (
     build_name_codes,
     fit_clubs,
     load_odds,
+    tversky_loss,
 )
 from src.models.flashcard_baudot_stepped_gw import (
     _batch_next,
@@ -64,18 +69,12 @@ OUT = REPORTS / "baudot_rl_stepped.md"
 # RL hyperparameters (pre-registered for this screen).
 ENTROPY_COEF = 0.01
 EPS = 1e-5
-# Milder paint bias so Bernoulli explores; architecture otherwise identical.
-PAINT_BIAS_INIT = -1.5
+WARM_EPOCHS = 15  # Tversky next-GW warm-start before SCST
 STEPPED_SUPERVISED_MEAN = 0.184  # parked report; not re-run
 
 
 class PolicyMixer(BlockTokenMixer):
-    """Gate mixer; expose logits for Bernoulli actions."""
-
-    def __init__(self, width: int, dropout: float = 0.1, paint_bias: float = PAINT_BIAS_INIT) -> None:
-        super().__init__(width=width, dropout=dropout)
-        nn.init.zeros_(self.paint.weight)
-        nn.init.constant_(self.paint.bias, paint_bias)
+    """Gate mixer; expose logits for Bernoulli actions. Same −3 paint bias as gate."""
 
     def forward_logits(
         self, bits: torch.Tensor, row_on: torch.Tensor, player_pad: torch.Tensor
@@ -209,11 +208,16 @@ def train_rl(
     history: list[float] = []
     val_scores: list[float] = []
     train_stats: list[dict] = []
+    phase_log: list[str] = []
     best_state = None
     best_score = -1.0
     bad = 0
     t0 = time.time()
     for epoch in range(EPOCHS):
+        phase = "warm_tversky" if epoch < WARM_EPOCHS else "scst"
+        if epoch == WARM_EPOCHS:
+            bad = 0  # fresh patience window for the RL phase
+            print(f"=== switch to SCST at epoch {epoch + 1} (warm best {best_score:.4f}) ===", flush=True)
         model.train()
         total = 0.0
         seen = 0
@@ -223,6 +227,7 @@ def train_rl(
             "advantage": 0.0,
             "entropy": 0.0,
             "frac_eventful": 0.0,
+            "phase": phase,
         }
         order = rng.permutation(len(train))
         for start in range(0, len(train), BATCH):
@@ -235,21 +240,38 @@ def train_rl(
                 & (~pad)[:, :, None, None]
             )
             opt.zero_grad()
-            logits = model.forward_logits(bits, row_on, pad)
-            loss, st = reinforce_loss(logits, target, live)
+            if phase == "warm_tversky":
+                pred = model(bits, row_on, pad)
+                alpha, beta = model.tversky_weights()
+                loss = tversky_loss(pred, target, live, alpha, beta)
+                bce = torch.nn.functional.binary_cross_entropy(pred, target, reduction="none")
+                loss = loss + BCE_W * (
+                    (bce * live.to(pred.dtype)).sum() / live.to(pred.dtype).sum().clamp_min(1.0)
+                )
+                st = {
+                    "r_sample": 0.0,
+                    "r_greedy": 0.0,
+                    "advantage": 0.0,
+                    "entropy": 0.0,
+                    "frac_eventful": 0.0,
+                }
+            else:
+                logits = model.forward_logits(bits, row_on, pad)
+                loss, st = reinforce_loss(logits, target, live)
             loss.backward()
             nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             opt.step()
             total += float(loss.detach())
             seen += 1
-            for k in epoch_stats:
+            for k in ("r_sample", "r_greedy", "advantage", "entropy", "frac_eventful"):
                 epoch_stats[k] += st[k]
         sched.step()
         avg = total / max(seen, 1)
         history.append(avg)
-        for k in epoch_stats:
+        for k in ("r_sample", "r_greedy", "advantage", "entropy", "frac_eventful"):
             epoch_stats[k] /= max(seen, 1)
         train_stats.append(epoch_stats)
+        phase_log.append(phase)
 
         hold = evaluate_stepped(model, test, device)
         score = _mean_score(hold["rows"])
@@ -261,32 +283,43 @@ def train_rl(
             bad = 0
         else:
             bad += 1
+        extra = ""
+        if phase == "scst":
+            extra = (
+                f" R_s={epoch_stats['r_sample']:.3f} R_g={epoch_stats['r_greedy']:.3f} "
+                f"H={epoch_stats['entropy']:.3f} evt={epoch_stats['frac_eventful']:.2f}"
+            )
         print(
-            f"rl_step_bal epoch {epoch + 1}/{EPOCHS} loss {avg:.4f} "
-            f"R_s={epoch_stats['r_sample']:.3f} R_g={epoch_stats['r_greedy']:.3f} "
-            f"H={epoch_stats['entropy']:.3f} evt={epoch_stats['frac_eventful']:.2f} "
+            f"rl_step_bal epoch {epoch + 1}/{EPOCHS} [{phase}] loss {avg:.4f}{extra} "
             f"holdout_score {score:.4f}"
             f"{' *' if improved else ''}",
             flush=True,
         )
-        if bad >= EARLY_PATIENCE and epoch + 1 >= 15:
+        # Early-stop only in the RL phase after a full patience window.
+        if phase == "scst" and bad >= EARLY_PATIENCE:
             print(f"rl_step_bal early stop at epoch {epoch + 1}", flush=True)
             break
     if best_state is not None:
         model.load_state_dict(best_state)
     holdout = evaluate_stepped(model, test, device)
+    with torch.no_grad():
+        a, b = model.tversky_weights()
+        final_ab = (float(a), float(b))
     return {
         "name": "rl_step_bal",
         "params": sum(p.numel() for p in model.parameters()),
         "epochs_run": len(history),
+        "warm_epochs": WARM_EPOCHS,
         "best_holdout_mean_score": best_score,
-        "paint_bias_init": PAINT_BIAS_INIT,
+        "final_alpha": final_ab[0],
+        "final_beta": final_ab[1],
         "entropy_coef": ENTROPY_COEF,
         "seconds": round(time.time() - t0, 1),
         "holdout": holdout,
         "history": history,
         "val_scores": val_scores,
         "train_stats": train_stats,
+        "phase_log": phase_log,
     }
 
 
@@ -310,18 +343,19 @@ def write_report(meta: dict) -> Path:
         f"- Gate: `{GATE_META['method']}` · mean **{gate_mean:.3f}**",
         f"- Parked stepped supervised (Tversky): mean **{STEPPED_SUPERVISED_MEAN:.3f}** "
         f"(Δ {_delta(STEPPED_SUPERVISED_MEAN, gate_mean)})",
-        f"- Paint bias init: {PAINT_BIAS_INIT} (milder than gate −3 for exploration)",
+        f"- Warm-start: {meta['warm_epochs']} epochs next-GW Tversky, then SCST",
         f"- Entropy coef: {ENTROPY_COEF}",
         "",
         "## Scoreboard",
         "",
-        "| arm | params | epochs | mean score | Δ gate | seconds |",
-        "|---|---:|---:|---:|---:|---:|",
-        f"| gate (full remainder one-shot) | — | — | {gate_mean:.3f} | +0.000 | — |",
-        f"| stepped_next_gw (supervised, parked) | — | — | {STEPPED_SUPERVISED_MEAN:.3f} | "
+        "| arm | params | epochs | α | β | mean score | Δ gate | seconds |",
+        "|---|---:|---:|---:|---:|---:|---:|---:|",
+        f"| gate (full remainder one-shot) | — | — | {GATE_META['alpha']:.3f} | "
+        f"{GATE_META['beta']:.3f} | {gate_mean:.3f} | +0.000 | — |",
+        f"| stepped_next_gw (supervised, parked) | — | — | — | — | {STEPPED_SUPERVISED_MEAN:.3f} | "
         f"{_delta(STEPPED_SUPERVISED_MEAN, gate_mean)} | — |",
-        f"| rl_step_bal | {meta['params']} | {meta['epochs_run']} | {mean:.3f} | "
-        f"{_delta(mean, gate_mean)} | {meta['seconds']} |",
+        f"| rl_step_bal | {meta['params']} | {meta['epochs_run']} | {meta['final_alpha']:.3f} | "
+        f"{meta['final_beta']:.3f} | {mean:.3f} | {_delta(mean, gate_mean)} | {meta['seconds']} |",
         "",
         "## Goals at 20% by position (actual / painted / hits)",
         "",
@@ -449,8 +483,10 @@ def main() -> None:
             "name": meta["name"],
             "params": meta["params"],
             "epochs_run": meta["epochs_run"],
+            "warm_epochs": meta["warm_epochs"],
             "best_holdout_mean_score": meta["best_holdout_mean_score"],
-            "paint_bias_init": meta["paint_bias_init"],
+            "final_alpha": meta["final_alpha"],
+            "final_beta": meta["final_beta"],
             "entropy_coef": meta["entropy_coef"],
             "seconds": meta["seconds"],
             "mean_score": mean,
@@ -461,6 +497,7 @@ def main() -> None:
             "assists_20_by_pos": meta["holdout"]["assists_20_by_pos"],
             "val_scores": meta["val_scores"],
             "train_stats": meta["train_stats"],
+            "phase_log": meta["phase_log"],
         },
         "report": str(path),
     }
