@@ -144,6 +144,9 @@ def reinforce_loss(
 ) -> tuple[torch.Tensor, dict[str, float]]:
     """Self-critical REINFORCE on Bernoulli event-bit actions."""
     probs = torch.sigmoid(logits).clamp(EPS, 1.0 - EPS)
+    # live may arrive as B,P,T,1 from the stepped batch — broadcast to EVENT_BITS.
+    if live.shape[-1] == 1:
+        live = live.expand(*live.shape[:-1], EVENT_BITS)
     live_f = live.to(probs.dtype)
     dist = torch.distributions.Bernoulli(probs=probs)
     sample = dist.sample()
