@@ -28,6 +28,10 @@ Teacher-forced single-GW paint vs locked full-remainder one-shot. Mean **0.184**
 
 Event-volume header dots from football-data (no Odds API). `1_ou_only` mean **0.176**, DEF **103/0/0**. `2_ou_ah` mean **0.152**, DEF **103/1/0**. AH line≠1X2 repeat (corr 0.21) but adds no DEF placement. Report: `reports/baudot_fixture_dots.md`. Do not stack more market strips without a DEF-specific picture idea.
 
+## Parked — Baudot causal block-LM (2026-11-13)
+
+1D club-season block stream + tiny causal transformer; event-space loss on masked remainder. Mean **0.118** (Δ −0.101). DEF **103/85/6** (paint without hits). Report: `reports/baudot_causal_lm.md`. LLM-shaped backbone does not replace the gate mixer; do not scale the LM without a new rare-event objective.
+
 ## Parked — cell-posterior column allocation (2026-11-13)
 
 Stepped column trials that score cells / shares / top-k paint (GKP residual on one-bar weeks). Parked in favor of whole-strip picture matching. Keep the reports for archaeology; do not extend the share/rank stack.

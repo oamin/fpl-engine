@@ -105,6 +105,7 @@ Supersedes square-card full-painter / fixture-intensity comparison gate (`GATE_S
 
 - **Numagent 1.0** — `protocol.numagent_1_0` / `SUPERSEDED.md` / **[`ARCHIVE_NUMAGENT_1_0.md`](ARCHIVE_NUMAGENT_1_0.md)** (in-place keep-list)
 - **`score_xp`** — historical climbs and gate baseline only (same archive index)
+- **Baudot causal block-LM (2026-11-13)** — mean 0.118; DEF 103/85/6; park (`reports/baudot_causal_lm.md`)
 - **Baudot fixture dots +OU/+AH line (2026-11-13)** — DEF stays ~0; means 0.176/0.152; AH≠1X2 (corr 0.21) but no lift; park (`reports/baudot_fixture_dots.md`)
 - **Baudot stepped next-GW FOV (2026-11-13)** — complementary to full-remainder gate; mean 0.184 (Δ −0.034), DEF still 0; keep diagnostic (`reports/baudot_stepped_gw.md`)
 - **Baudot role paint / DEF-goal aux (2026-11-13)** — DEF goals stay 0 under role heads; aux paints 103/78/5, mean 0.157; park (`reports/baudot_role_paint.md`)
