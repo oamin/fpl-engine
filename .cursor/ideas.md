@@ -40,6 +40,10 @@ Overnight proposals vs Tversky gate. `1_listwise_bal` mean **0.181**, DEF **103/
 
 Yes: positions can be trained/tested independently. Restricting the live window to DEF (or zeroing non-DEF blocks on the card) lifts soft ink off the ~0.006 floor and lands some thresholded hits (`1_def_loss_mask` goals 103/192/12). Placement stays weak (volume≫hits); full-roster gate mean is not the score. Keep as a rare-event diagnostic / possible specialist merge input — do not promote over the locked gate. Report: `reports/baudot_def_isolate.md`.
 
+## Parked — Baudot stepped-GW RL / SCST (2026-11-14)
+
+Self-critical REINFORCE on next-GW Bernoulli paint after Tversky warm-start; reward = channel `balanced_score`. Judged on the gate holdout table. Best **0.199** is warm-start, not SCST (SCST best 0.167). Does not beat full-remainder gate **0.218**; DEF stays blank. Do not reopen SCST on this FOV without a new action/reward grain (e.g. presence-level actions or DEF-budgeted reward). Report: `reports/baudot_rl_stepped.md`.
+
 ## Parked — cell-posterior column allocation (2026-11-13)
 
 Stepped column trials that score cells / shares / top-k paint (GKP residual on one-bar weeks). Parked in favor of whole-strip picture matching. Keep the reports for archaeology; do not extend the share/rank stack.
