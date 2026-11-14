@@ -35,6 +35,8 @@ Schema slicing by place-in-chain is picture reading, not a numeric sidecar. Do n
 
 **Stepped-GW RL screen (2026-11-14, park):** same mixer; next-GW FOV; 15-epoch Tversky warm-start then self-critical REINFORCE on Bernoulli paint with `balanced_score` reward. Best mean **0.199** is warm epoch 13 (SCST best **0.167**, declined). Δ gate **−0.019**. DEF goals/assists still **0**. SCST does not beat warm Tversky or the full-remainder gate. Report: `reports/baudot_rl_stepped.md`.
 
+**Odds / minutes weight (2026-11-14):** zeroing minutes drops goals P/R **0.277/0.266 → 0.209/0.175** (mean **0.115**). Zeroing 1X2 odds keeps precision (~0.275) but recall **0.266 → 0.211**, and the paint slides off MID (R 0.211→0.053) onto FWD. DEF stays **103/0/0** in every arm. Both strips carry weight; neither is the DEF fix. Report: `reports/baudot_odds_weight.md`.
+
 **Superseded as the flashcard comparison gate:** square-card full painter / fixture-intensity stored readers (`GATE_SQUARE_2026_11_12`; `reports/cards/current/` RGB path). Keep those modules for archaeology; new flashcard screens compare to the Baudot gate.
 
 **Stepped RGB column path (parked relative to the gate):** `ColumnFlashcard` / `flashcard_column_picture_trial.py`. Not the default.
