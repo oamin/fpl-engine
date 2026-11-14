@@ -25,6 +25,7 @@ import torch
 import torch.nn.functional as F
 
 from src.models.flashcard_baudot_residual_card import live_pairs, residual_scores, soft_events
+from src.models.flashcard_card_score import GATE, balanced_score
 from src.models.flashcard_baudot_row_trial import (
     ART,
     BATCH,
@@ -151,51 +152,75 @@ def train_arm(name: str, model, cards, test, device) -> dict:
     }
 
 
+def _eval_line(arm: str, revealed: str, channel: str, log_loss: float, brier: float, row: dict) -> str:
+    return (
+        f"| {arm} | {revealed} | {channel} | {log_loss:.4f} | {brier:.4f} | "
+        f"{row['actual']} | {row['painted']} | {row['hits']} | "
+        f"{row['actual_within_1']} | {row['painted_within_1']} | {row['score']:.3f} |"
+    )
+
+
+def _tversky_eval_rows() -> list[dict]:
+    rows = []
+    for channel in ("goals", "assists"):
+        for frac in CUT_FRACS:
+            revealed = f"{frac:.0%}"
+            proper = next(r for r in TVERSKY_PROPER if r["revealed"] == revealed)
+            tot = GATE[(channel, frac)]
+            score = balanced_score(tot)
+            rows.append(
+                {
+                    "revealed": revealed,
+                    "channel": channel,
+                    "log_loss": proper["log_loss"],
+                    "brier": proper["brier"],
+                    "actual": tot["actual"],
+                    "painted": tot["painted"],
+                    "hits": tot["exact"],
+                    "actual_within_1": tot["actual_within"],
+                    "painted_within_1": tot["painted_within"],
+                    "score": score["score"],
+                }
+            )
+    return rows
+
+
 def write_report(arms: list[dict]) -> Path:
     base_ll = _mean_key(list(TVERSKY_PROPER), "log_loss")
     base_br = _mean_key(list(TVERSKY_PROPER), "brier")
+    header = (
+        "| arm | revealed | channel | log loss | Brier | actual events | painted events | hits | "
+        "actual ±1 | painted ±1 | score |"
+    )
+    rule = "|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|"
     lines = [
         "# Opacity card — log loss and Brier",
         "",
         "The default card is the Baudot row card. Event dots keep the probability. "
-        "The training loss is the residual of those probabilities against the true bits. "
-        "Log loss is the likelihood. Brier is the mean squared residual. "
-        "The opponent-card cross-read is not in this run.",
+        "Log loss and Brier are the residual on every remainder event bit at that cut. "
+        "Actual events, painted events, hits, the ±1 columns, and the score are the "
+        "0.5 tally used on the 2026-11-13 mixer table. "
+        "The Tversky event counts are that published table.",
         "",
-        f"Tversky-trained baseline on this card: mean log loss **{base_ll:.4f}**, mean Brier **{base_br:.4f}**.",
+        f"Mean log loss **{base_ll:.4f}** / Brier **{base_br:.4f}** on the Tversky reading. "
+        "Mean score of its eight tally cells is **0.218**.",
         "",
-        "| arm | epochs | mean log loss | Δ log | mean Brier | Δ Brier | 0.5 tally | seconds |",
-        "|---|---:|---:|---:|---:|---:|---:|---:|",
-        f"| tversky | 20 | {base_ll:.4f} | +0.0000 | {base_br:.4f} | +0.0000 | 0.218 | — |",
+        header,
+        rule,
     ]
-    for meta in arms:
-        ll = _mean_key(meta["proper"], "log_loss")
-        br = _mean_key(meta["proper"], "brier")
+    for row in _tversky_eval_rows():
         lines.append(
-            f"| {meta['name']} | {meta['epochs_run']} | {ll:.4f} | {ll - base_ll:+.4f} | "
-            f"{br:.4f} | {br - base_br:+.4f} | {meta['tally_mean']:.3f} | {meta['seconds']} |"
-        )
-    lines.extend(["", "## Holdout residual", "", "| arm | revealed | bits | log loss | Brier | |residual| |", "|---|---|---:|---:|---:|---:|"])
-    for row in TVERSKY_PROPER:
-        lines.append(
-            f"| tversky | {row['revealed']} | {row['n']} | {row['log_loss']:.4f} | {row['brier']:.4f} | {row['mae']:.4f} |"
+            _eval_line("tversky", row["revealed"], row["channel"], row["log_loss"], row["brier"], row)
         )
     for meta in arms:
-        for row in meta["proper"]:
+        by_cut = {r["revealed"]: r for r in meta["proper"]}
+        ordered = sorted(meta["tally"], key=lambda r: (r["channel"] != "goals", r["revealed"]))
+        for row in ordered:
+            proper = by_cut[row["revealed"]]
             lines.append(
-                f"| {meta['name']} | {row['revealed']} | {row['n']} | {row['log_loss']:.4f} | {row['brier']:.4f} | {row['mae']:.4f} |"
+                _eval_line(meta["name"], row["revealed"], row["channel"], proper["log_loss"], proper["brier"], row)
             )
-    lines.extend(["", "## 0.5 tally (not the selection metric)", ""])
-    for meta in arms:
-        lines.append(f"### {meta['name']}  mean {meta['tally_mean']:.3f}")
-        lines.append("")
-        lines.append("| revealed | channel | actual | painted | hits | score |")
-        lines.append("|---|---|---:|---:|---:|---:|")
-        for row in meta["tally"]:
-            lines.append(
-                f"| {row['revealed']} | {row['channel']} | {row['actual']} | {row['painted']} | {row['hits']} | {row['score']:.3f} |"
-            )
-        lines.append("")
+    lines.append("")
     log_arm = next(m for m in arms if m["name"] == "log_loss")
     brier_arm = next(m for m in arms if m["name"] == "brier")
     ll = _mean_key(log_arm["proper"], "log_loss")
@@ -204,10 +229,12 @@ def write_report(arms: list[dict]) -> Path:
         [
             "## Call",
             "",
-            f"Log loss is the training loss of the opacity card. Its holdout mean is **{ll:.4f}** "
-            f"(Tversky-trained {base_ll:.4f}). "
-            f"The Brier arm's mean squared residual is **{br:.4f}** (Tversky-trained {base_br:.4f}). "
-            "The 0.5 tally is recorded beside those scores and does not choose the checkpoint.",
+            f"Log loss holdout mean **{ll:.4f}** (Tversky {base_ll:.4f}). "
+            f"Brier arm mean squared residual **{br:.4f}** (Tversky {base_br:.4f}), "
+            f"with log loss **{_mean_key(brier_arm['proper'], 'log_loss'):.4f}**. "
+            f"On the 0.5 tally the log-loss arm scores **{log_arm['tally_mean']:.3f}** "
+            f"and the Brier arm **{brier_arm['tally_mean']:.3f}**, against the Tversky table **0.218**. "
+            "Both residual arms paint under the 0.5 line, so painted events and hits stay at zero.",
             "",
         ]
     )
