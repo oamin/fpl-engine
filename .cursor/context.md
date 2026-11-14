@@ -51,6 +51,8 @@ Schema slicing by place-in-chain is picture reading, not a numeric sidecar. Do n
 
 **Margin pools and joint gc (2026-11-14, park):** on that default, weight-1 role/row/column pools score **0.000** (soft totals match under the 0.5 threshold). Joint gc, with the scoreline shared onto the XI and away fixtures filling both cards, scores **0.178**. Goals shift onto FWD (recall 0.730) and off MID (recall 0.028). DEF stays blank. Report: `reports/baudot_margin_gc.md`.
 
+**Residual card (2026-11-14, reading only):** gray of a dot is the mixer probability. Difference card is truth minus that probability on the remainder event bits. Mean squared residual is the Brier score; mean negative log likelihood of the same bits is the log score. Arsenal 2025-26 at 20% on the retrained mixer: Brier **0.031**, log loss **0.114**. Holdout 20% Brier **0.020**, log loss **0.079**. Picture: `reports/baudot_residual_arsenal_2025-26.png`. Not a new trained comparison.
+
 **Superseded as the flashcard comparison gate:** square-card full painter / fixture-intensity stored readers (`GATE_SQUARE_2026_11_12`; `reports/cards/current/` RGB path). Keep those modules for archaeology. New flashcard screens start from the opponent-card default and still quote the 2026-11-13 mixer table.
 
 **Stepped RGB column path (parked relative to the gate):** `ColumnFlashcard` / `flashcard_column_picture_trial.py`. Not the default.
