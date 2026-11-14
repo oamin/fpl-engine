@@ -12,6 +12,10 @@ Picture-only teaching still holds. The **locked default** is Baudot + learnable 
 
 **Locked as the flashcard default.** Gate: `flashcard_card_score.GATE` / `reports/baudot_gate.md`. Method: `flashcard_baudot_row_trial.py`. Ablations stay in `flashcard_baudot_ablation.py`. Square-card / fixture-intensity gate superseded (`GATE_SQUARE_2026_11_12`). Do not reopen cell-posterior allocation or hand paint rules for this path.
 
+## Parked — Baudot deeper mixer + block-CNN (2026-11-13)
+
+Same card, FOV, learnable Tversky. `1_deeper_mixer` (depth-2 residual time/squad attn) mean **0.156** (Δ −0.062). `2_block_cnn` (schema 1D + temporal conv) mean **0.138** (Δ −0.080). Both overpaint (e.g. 20% goals 876 / 1320 vs gate 701) and lose every cell. Report: `reports/baudot_model_variants.md`. Do not promote; do not deepen further without a new pre-registered idea.
+
 ## Parked — cell-posterior column allocation (2026-11-13)
 
 Stepped column trials that score cells / shares / top-k paint (GKP residual on one-bar weeks). Parked in favor of whole-strip picture matching. Keep the reports for archaeology; do not extend the share/rank stack.

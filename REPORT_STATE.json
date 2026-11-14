@@ -1,74 +1,262 @@
 {
-  "trial": "baudot_gate_locked",
-  "locked": "2026-11-13",
-  "method": "baudot_row_mixer_learnable_tversky",
-  "alpha": 0.4474738538265228,
-  "beta": 0.5525261759757996,
+  "trial": "baudot_model_variants",
   "gate": {
-    "goals|0.2": {
-      "actual": 730,
-      "painted": 701,
-      "exact": 194,
-      "actual_within": 268,
-      "painted_within": 377,
-      "score": 0.2603677857231747
-    },
-    "assists|0.2": {
-      "actual": 707,
-      "painted": 693,
-      "exact": 114,
-      "actual_within": 153,
-      "painted_within": 232,
-      "score": 0.15963224893917963
-    },
-    "goals|0.4": {
-      "actual": 544,
-      "painted": 557,
-      "exact": 151,
-      "actual_within": 214,
-      "painted_within": 299,
-      "score": 0.26789421074688097
-    },
-    "assists|0.4": {
-      "actual": 531,
-      "painted": 551,
-      "exact": 89,
-      "actual_within": 123,
-      "painted_within": 174,
-      "score": 0.15853883545628683
-    },
-    "goals|0.6": {
-      "actual": 360,
-      "painted": 383,
-      "exact": 105,
-      "actual_within": 145,
-      "painted_within": 205,
-      "score": 0.2656649178230939
-    },
-    "assists|0.6": {
-      "actual": 351,
-      "painted": 377,
-      "exact": 66,
-      "actual_within": 90,
-      "painted_within": 126,
-      "score": 0.16881394467601363
-    },
-    "goals|0.8": {
-      "actual": 199,
-      "painted": 195,
-      "exact": 60,
-      "actual_within": 82,
-      "painted_within": 101,
-      "score": 0.29844654745810273
-    },
-    "assists|0.8": {
-      "actual": 192,
-      "painted": 191,
-      "exact": 32,
-      "actual_within": 45,
-      "painted_within": 59,
-      "score": 0.16623150565709313
-    }
+    "locked": "2026-11-13",
+    "method": "baudot_row_mixer_learnable_tversky",
+    "fov": "all_past_gws + one_shot_remainder",
+    "seed": 0,
+    "id_bits": 11,
+    "alpha": 0.4474738538265228,
+    "beta": 0.5525261759757996,
+    "module": "src.models.flashcard_baudot_row_trial"
   },
-  "report": "/agent/repos/fpl-engine/reports/baudot_gate.md"
+  "arms": [
+    {
+      "name": "1_deeper_mixer",
+      "params": 76279,
+      "epochs_run": 27,
+      "best_holdout_mean_score": 0.15570773379787686,
+      "final_alpha": 0.44971269369125366,
+      "final_beta": 0.5502873063087463,
+      "seconds": 65.8,
+      "rows": [
+        {
+          "revealed": "20%",
+          "channel": "goals",
+          "actual": 730,
+          "painted": 876,
+          "hits": 216,
+          "actual_within_1": 283,
+          "painted_within_1": 438,
+          "hit_rate": 0.26899128268991285,
+          "volume": 0.8333333333333334,
+          "score": 0.22415940224159406,
+          "gkp_painted_events": 0
+        },
+        {
+          "revealed": "20%",
+          "channel": "assists",
+          "actual": 707,
+          "painted": 879,
+          "hits": 148,
+          "actual_within_1": 181,
+          "painted_within_1": 297,
+          "hit_rate": 0.18663303909205547,
+          "volume": 0.8043230944254836,
+          "score": 0.15011326352455429,
+          "gkp_painted_events": 0
+        },
+        {
+          "revealed": "40%",
+          "channel": "goals",
+          "actual": 544,
+          "painted": 847,
+          "hits": 202,
+          "actual_within_1": 267,
+          "painted_within_1": 410,
+          "hit_rate": 0.29043853342918763,
+          "volume": 0.6422668240850059,
+          "score": 0.18653903445747116,
+          "gkp_painted_events": 0
+        },
+        {
+          "revealed": "40%",
+          "channel": "assists",
+          "actual": 531,
+          "painted": 852,
+          "hits": 140,
+          "actual_within_1": 168,
+          "painted_within_1": 266,
+          "hit_rate": 0.2024584237165582,
+          "volume": 0.6232394366197183,
+          "score": 0.12618007393602393,
+          "gkp_painted_events": 0
+        },
+        {
+          "revealed": "60%",
+          "channel": "goals",
+          "actual": 360,
+          "painted": 648,
+          "hits": 147,
+          "actual_within_1": 194,
+          "painted_within_1": 308,
+          "hit_rate": 0.2916666666666667,
+          "volume": 0.5555555555555556,
+          "score": 0.16203703703703706,
+          "gkp_painted_events": 0
+        },
+        {
+          "revealed": "60%",
+          "channel": "assists",
+          "actual": 351,
+          "painted": 654,
+          "hits": 112,
+          "actual_within_1": 133,
+          "painted_within_1": 214,
+          "hit_rate": 0.2228855721393035,
+          "volume": 0.536697247706422,
+          "score": 0.11962207312063536,
+          "gkp_painted_events": 0
+        },
+        {
+          "revealed": "80%",
+          "channel": "goals",
+          "actual": 199,
+          "painted": 368,
+          "hits": 86,
+          "actual_within_1": 113,
+          "painted_within_1": 166,
+          "hit_rate": 0.30335097001763667,
+          "volume": 0.5407608695652174,
+          "score": 0.16404033433018939,
+          "gkp_painted_events": 0
+        },
+        {
+          "revealed": "80%",
+          "channel": "assists",
+          "actual": 192,
+          "painted": 373,
+          "hits": 62,
+          "actual_within_1": 79,
+          "painted_within_1": 115,
+          "hit_rate": 0.21946902654867256,
+          "volume": 0.514745308310992,
+          "score": 0.11297065173550974,
+          "gkp_painted_events": 0
+        }
+      ],
+      "gkp_by_cut": {
+        "20%": 0,
+        "40%": 0,
+        "60%": 0,
+        "80%": 0
+      },
+      "mean_score": 0.15570773379787686,
+      "delta_gate_mean": -0.06249101576210134
+    },
+    {
+      "name": "2_block_cnn",
+      "params": 44935,
+      "epochs_run": 23,
+      "best_holdout_mean_score": 0.13828695546316785,
+      "final_alpha": 0.44867587089538574,
+      "final_beta": 0.5513241291046143,
+      "seconds": 42.1,
+      "rows": [
+        {
+          "revealed": "20%",
+          "channel": "goals",
+          "actual": 730,
+          "painted": 1320,
+          "hits": 303,
+          "actual_within_1": 386,
+          "painted_within_1": 612,
+          "hit_rate": 0.29560975609756096,
+          "volume": 0.553030303030303,
+          "score": 0.1634811529933481,
+          "gkp_painted_events": 0
+        },
+        {
+          "revealed": "20%",
+          "channel": "assists",
+          "actual": 707,
+          "painted": 1322,
+          "hits": 209,
+          "actual_within_1": 259,
+          "painted_within_1": 436,
+          "hit_rate": 0.20601281419418432,
+          "volume": 0.5347957639939486,
+          "score": 0.11017478035952218,
+          "gkp_painted_events": 0
+        },
+        {
+          "revealed": "40%",
+          "channel": "goals",
+          "actual": 544,
+          "painted": 1003,
+          "hits": 227,
+          "actual_within_1": 293,
+          "painted_within_1": 463,
+          "hit_rate": 0.29347123464770525,
+          "volume": 0.5423728813559322,
+          "score": 0.15917083913095878,
+          "gkp_painted_events": 0
+        },
+        {
+          "revealed": "40%",
+          "channel": "assists",
+          "actual": 531,
+          "painted": 1005,
+          "hits": 160,
+          "actual_within_1": 198,
+          "painted_within_1": 322,
+          "hit_rate": 0.20833333333333334,
+          "volume": 0.5283582089552239,
+          "score": 0.11007462686567165,
+          "gkp_painted_events": 0
+        },
+        {
+          "revealed": "60%",
+          "channel": "goals",
+          "actual": 360,
+          "painted": 667,
+          "hits": 150,
+          "actual_within_1": 194,
+          "painted_within_1": 305,
+          "hit_rate": 0.2921129503407984,
+          "volume": 0.5397301349325337,
+          "score": 0.15766216210297967,
+          "gkp_painted_events": 0
+        },
+        {
+          "revealed": "60%",
+          "channel": "assists",
+          "actual": 351,
+          "painted": 669,
+          "hits": 111,
+          "actual_within_1": 132,
+          "painted_within_1": 210,
+          "hit_rate": 0.21764705882352942,
+          "volume": 0.5246636771300448,
+          "score": 0.11419150619889211,
+          "gkp_painted_events": 0
+        },
+        {
+          "revealed": "80%",
+          "channel": "goals",
+          "actual": 199,
+          "painted": 342,
+          "hits": 83,
+          "actual_within_1": 108,
+          "painted_within_1": 160,
+          "hit_rate": 0.3068391866913124,
+          "volume": 0.5818713450292398,
+          "score": 0.17854093026775195,
+          "gkp_painted_events": 0
+        },
+        {
+          "revealed": "80%",
+          "channel": "assists",
+          "actual": 192,
+          "painted": 343,
+          "hits": 54,
+          "actual_within_1": 69,
+          "painted_within_1": 101,
+          "hit_rate": 0.20186915887850468,
+          "volume": 0.5597667638483965,
+          "score": 0.11299964578621836,
+          "gkp_painted_events": 0
+        }
+      ],
+      "gkp_by_cut": {
+        "20%": 0,
+        "40%": 0,
+        "60%": 0,
+        "80%": 0
+      },
+      "mean_score": 0.13828695546316785,
+      "delta_gate_mean": -0.07991179409681035
+    }
+  ],
+  "report": "/agent/repos/fpl-engine/reports/baudot_model_variants.md"
 }
