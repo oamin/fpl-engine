@@ -1,5 +1,7 @@
 {
-  "trial": "baudot_def_isolate",
+  "trial": "baudot_rl_stepped",
+  "method": "self_critical_reinforce_next_gw_balanced_score",
+  "fov": "all_past_gws + one_shot_next_gw_stepped",
   "gate": {
     "locked": "2026-11-13",
     "method": "baudot_row_mixer_learnable_tversky",
@@ -10,672 +12,411 @@
     "beta": 0.5525261759757996,
     "module": "src.models.flashcard_baudot_row_trial"
   },
-  "arms": [
-    {
-      "name": "1_def_loss_mask",
-      "kind": "def_loss_mask",
-      "params": 38263,
-      "epochs_run": 28,
-      "final_alpha": 0.44998419284820557,
-      "final_beta": 0.5500158071517944,
-      "best_def_mean_score": 0.050875542681139196,
-      "def_mean_score": 0.050875542681139196,
-      "seconds": 264.3,
-      "history": [
-        1.0058935657143593,
-        0.9981781765818596,
-        0.9881363287568092,
-        0.9796557724475861,
-        0.9668801501393318,
-        0.9591090753674507,
-        0.9503086507320404,
-        0.9513471573591232,
-        0.9420920312404633,
-        0.9392345920205116,
-        0.9356749206781387,
-        0.9322787150740623,
-        0.9256912842392921,
-        0.9249938353896141,
-        0.925388365983963,
-        0.927843876183033,
-        0.9198813512921333,
-        0.9129521548748016,
-        0.9200119897723198,
-        0.9184542894363403,
-        0.9153108969330788,
-        0.908071979880333,
-        0.917182631790638,
-        0.9158997610211372,
-        0.9036111980676651,
-        0.9293631538748741,
-        0.9195948094129562,
-        0.9120194390416145
-      ],
-      "ab_history": [
-        [
-          0.44200193881988525,
-          0.5579980611801147
-        ],
-        [
-          0.4424254894256592,
-          0.5575745105743408
-        ],
-        [
-          0.44287198781967163,
-          0.5571280121803284
-        ],
-        [
-          0.4433463215827942,
-          0.5566536784172058
-        ],
-        [
-          0.44384586811065674,
-          0.5561541318893433
-        ],
-        [
-          0.4443676471710205,
-          0.5556323528289795
-        ],
-        [
-          0.4448903799057007,
-          0.5551096200942993
-        ],
-        [
-          0.44539162516593933,
-          0.5546083450317383
-        ],
-        [
-          0.44588160514831543,
-          0.5541183948516846
-        ],
-        [
-          0.4463502764701843,
-          0.5536497235298157
-        ],
-        [
-          0.446795791387558,
-          0.5532042384147644
-        ],
-        [
-          0.44721752405166626,
-          0.5527824759483337
-        ],
-        [
-          0.44762909412384033,
-          0.5523709058761597
-        ],
-        [
-          0.44802290201187134,
-          0.5519770979881287
-        ],
-        [
-          0.44839397072792053,
-          0.5516059994697571
-        ],
-        [
-          0.44874051213264465,
-          0.5512595176696777
-        ],
-        [
-          0.44907790422439575,
-          0.5509220957756042
-        ],
-        [
-          0.4493955075740814,
-          0.550604522228241
-        ],
-        [
-          0.44970354437828064,
-          0.5502964854240417
-        ],
-        [
-          0.44998419284820557,
-          0.5500158071517944
-        ],
-        [
-          0.45023635029792786,
-          0.5497636198997498
-        ],
-        [
-          0.4504833221435547,
-          0.5495166778564453
-        ],
-        [
-          0.4507156312465668,
-          0.5492843389511108
-        ],
-        [
-          0.45092546939849854,
-          0.5490745306015015
-        ],
-        [
-          0.451122909784317,
-          0.5488771200180054
-        ],
-        [
-          0.4512910544872284,
-          0.5487089157104492
-        ],
-        [
-          0.4514411985874176,
-          0.5485588312149048
-        ],
-        [
-          0.45159977674484253,
-          0.5484002232551575
-        ]
-      ],
-      "val_scores": [
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.02024335534498706,
-        0.027517887092717658,
-        0.015189718293056428,
-        0.02935959547617445,
-        0.02821924680243916,
-        0.024092773910827963,
-        0.04765172123151711,
-        0.015867055762069027,
-        0.032637468388978366,
-        0.02450990489918179,
-        0.020807752245984003,
-        0.050875542681139196,
-        0.03076094780021779,
-        0.03780181308618391,
-        0.033657974576663335,
-        0.035096219188028084,
-        0.03386400004408603,
-        0.036101735973005505,
-        0.02189620908230568,
-        0.049759916504075796
-      ],
-      "rows": [
-        {
-          "revealed": "20%",
-          "channel": "goals",
-          "actual": 103,
-          "painted": 192,
-          "hits": 12,
-          "actual_within_1": 21,
-          "painted_within_1": 32,
-          "hit_rate": 0.08135593220338982,
-          "volume": 0.5364583333333334,
-          "score": 0.04364406779661017
-        },
-        {
-          "revealed": "20%",
-          "channel": "assists",
-          "actual": 181,
-          "painted": 322,
-          "hits": 27,
-          "actual_within_1": 47,
-          "painted_within_1": 56,
-          "hit_rate": 0.1073558648111332,
-          "volume": 0.562111801242236,
-          "score": 0.06034599854290407
-        },
-        {
-          "revealed": "40%",
-          "channel": "goals",
-          "actual": 74,
-          "painted": 151,
-          "hits": 11,
-          "actual_within_1": 17,
-          "painted_within_1": 28,
-          "hit_rate": 0.09777777777777778,
-          "volume": 0.4900662251655629,
-          "score": 0.04791758646063282
-        },
-        {
-          "revealed": "40%",
-          "channel": "assists",
-          "actual": 140,
-          "painted": 250,
-          "hits": 23,
-          "actual_within_1": 38,
-          "painted_within_1": 46,
-          "hit_rate": 0.11794871794871795,
-          "volume": 0.56,
-          "score": 0.06605128205128205
-        },
-        {
-          "revealed": "60%",
-          "channel": "goals",
-          "actual": 49,
-          "painted": 104,
-          "hits": 8,
-          "actual_within_1": 10,
-          "painted_within_1": 18,
-          "hit_rate": 0.10457516339869281,
-          "volume": 0.47115384615384615,
-          "score": 0.049270990447461034
-        },
-        {
-          "revealed": "60%",
-          "channel": "assists",
-          "actual": 91,
-          "painted": 174,
-          "hits": 14,
-          "actual_within_1": 24,
-          "painted_within_1": 31,
-          "hit_rate": 0.10566037735849057,
-          "volume": 0.5229885057471264,
-          "score": 0.05525916287139449
-        },
-        {
-          "revealed": "80%",
-          "channel": "goals",
-          "actual": 27,
-          "painted": 59,
-          "hits": 4,
-          "actual_within_1": 5,
-          "painted_within_1": 10,
-          "hit_rate": 0.09302325581395349,
-          "volume": 0.4576271186440678,
-          "score": 0.04256996452502956
-        },
-        {
-          "revealed": "80%",
-          "channel": "assists",
-          "actual": 46,
-          "painted": 94,
-          "hits": 6,
-          "actual_within_1": 8,
-          "painted_within_1": 11,
-          "hit_rate": 0.08571428571428572,
-          "volume": 0.48936170212765956,
-          "score": 0.04194528875379939
-        }
-      ],
-      "position": {
-        "goals_20": {
-          "GKP": {
-            "actual": 0,
-            "painted": 108,
-            "hits": 0
-          },
-          "DEF": {
-            "actual": 103,
-            "painted": 192,
-            "hits": 12
-          },
-          "MID": {
-            "actual": 394,
-            "painted": 258,
-            "hits": 41
-          },
-          "FWD": {
-            "actual": 233,
-            "painted": 28,
-            "hits": 9
-          }
-        },
-        "assists_20": {
-          "GKP": {
-            "actual": 4,
-            "painted": 167,
-            "hits": 2
-          },
-          "DEF": {
-            "actual": 181,
-            "painted": 322,
-            "hits": 27
-          },
-          "MID": {
-            "actual": 434,
-            "painted": 357,
-            "hits": 63
-          },
-          "FWD": {
-            "actual": 88,
-            "painted": 52,
-            "hits": 9
-          }
-        }
+  "stepped_supervised_mean_parked": 0.184,
+  "arm": {
+    "name": "rl_step_bal",
+    "params": 38263,
+    "epochs_run": 23,
+    "warm_epochs": 15,
+    "best_holdout_mean_score": 0.1988710600968321,
+    "final_alpha": 0.4476924240589142,
+    "final_beta": 0.5523075461387634,
+    "entropy_coef": 0.01,
+    "seconds": 511.9,
+    "mean_score": 0.1988710600968321,
+    "delta_gate_mean": -0.019327689463146114,
+    "rows": [
+      {
+        "revealed": "20%",
+        "channel": "goals",
+        "actual": 730,
+        "painted": 796,
+        "hits": 191,
+        "actual_within_1": 253,
+        "painted_within_1": 420,
+        "hit_rate": 0.2503276539973788,
+        "volume": 0.9170854271356784,
+        "score": 0.22957184349005844,
+        "gkp_painted_events": 0
       },
-      "soft_ink_20": {
-        "goals": {
-          "n_event": 103,
-          "n_blank": 5310,
-          "mean_soft_event": 0.04711629426586035,
-          "mean_soft_blank": 0.017755539385950904,
-          "mean_max_event": 0.13943868082749106,
-          "pct_max_ge_0_5": 0.11650485436893204,
-          "n_max_ge_thr": {
-            "0.05": 35,
-            "0.1": 33,
-            "0.25": 26,
-            "0.5": 12
-          },
-          "painted_weeks": 192,
-          "hits": 12,
-          "actual_weeks": 103
-        },
-        "assists": {
-          "n_event": 181,
-          "n_blank": 5232,
-          "mean_soft_event": 0.051438897027433414,
-          "mean_soft_blank": 0.02077409568051729,
-          "mean_max_event": 0.15260813117171354,
-          "pct_max_ge_0_5": 0.14917127071823205,
-          "n_max_ge_thr": {
-            "0.05": 68,
-            "0.1": 55,
-            "0.25": 44,
-            "0.5": 27
-          },
-          "painted_weeks": 322,
-          "hits": 27,
-          "actual_weeks": 181
-        }
+      {
+        "revealed": "20%",
+        "channel": "assists",
+        "actual": 707,
+        "painted": 794,
+        "hits": 145,
+        "actual_within_1": 178,
+        "painted_within_1": 309,
+        "hit_rate": 0.1932045303131246,
+        "volume": 0.8904282115869018,
+        "score": 0.1720347643972029,
+        "gkp_painted_events": 0
+      },
+      {
+        "revealed": "40%",
+        "channel": "goals",
+        "actual": 544,
+        "painted": 618,
+        "hits": 142,
+        "actual_within_1": 191,
+        "painted_within_1": 317,
+        "hit_rate": 0.24440619621342513,
+        "volume": 0.8802588996763754,
+        "score": 0.21514072935291792,
+        "gkp_painted_events": 0
+      },
+      {
+        "revealed": "40%",
+        "channel": "assists",
+        "actual": 531,
+        "painted": 617,
+        "hits": 109,
+        "actual_within_1": 137,
+        "painted_within_1": 233,
+        "hit_rate": 0.18989547038327526,
+        "volume": 0.8606158833063209,
+        "score": 0.16342705797977172,
+        "gkp_painted_events": 0
+      },
+      {
+        "revealed": "60%",
+        "channel": "goals",
+        "actual": 360,
+        "painted": 397,
+        "hits": 91,
+        "actual_within_1": 119,
+        "painted_within_1": 201,
+        "hit_rate": 0.2404227212681638,
+        "volume": 0.906801007556675,
+        "score": 0.21801556588548857,
+        "gkp_painted_events": 0
+      },
+      {
+        "revealed": "60%",
+        "channel": "assists",
+        "actual": 351,
+        "painted": 396,
+        "hits": 73,
+        "actual_within_1": 91,
+        "painted_within_1": 152,
+        "hit_rate": 0.19544846050870146,
+        "volume": 0.8863636363636364,
+        "score": 0.1732384081781672,
+        "gkp_painted_events": 0
+      },
+      {
+        "revealed": "80%",
+        "channel": "goals",
+        "actual": 199,
+        "painted": 198,
+        "hits": 46,
+        "actual_within_1": 59,
+        "painted_within_1": 95,
+        "hit_rate": 0.23173803526448364,
+        "volume": 0.9949748743718593,
+        "score": 0.2305735225244611,
+        "gkp_painted_events": 0
+      },
+      {
+        "revealed": "80%",
+        "channel": "assists",
+        "actual": 192,
+        "painted": 198,
+        "hits": 38,
+        "actual_within_1": 46,
+        "painted_within_1": 75,
+        "hit_rate": 0.19487179487179487,
+        "volume": 0.9696969696969697,
+        "score": 0.18896658896658897,
+        "gkp_painted_events": 0
+      }
+    ],
+    "gkp_by_cut": {
+      "20%": 0,
+      "40%": 0,
+      "60%": 0,
+      "80%": 0
+    },
+    "goals_20_by_pos": {
+      "GKP": {
+        "actual": 0,
+        "painted": 0,
+        "hits": 0
+      },
+      "DEF": {
+        "actual": 103,
+        "painted": 0,
+        "hits": 0
+      },
+      "MID": {
+        "actual": 394,
+        "painted": 593,
+        "hits": 118
+      },
+      "FWD": {
+        "actual": 233,
+        "painted": 203,
+        "hits": 73
       }
     },
-    {
-      "name": "2_def_card_isolate",
-      "kind": "def_card_isolate",
-      "params": 38263,
-      "epochs_run": 17,
-      "final_alpha": 0.4458927512168884,
-      "final_beta": 0.5541072487831116,
-      "best_def_mean_score": 0.050604089200941456,
-      "def_mean_score": 0.050604089200941456,
-      "seconds": 161.6,
-      "history": [
-        1.005876012146473,
-        0.9978222250938416,
-        0.9872856959700584,
-        0.9783831685781479,
-        0.9651371315121651,
-        0.9572648853063583,
-        0.9476250484585762,
-        0.94522924721241,
-        0.9419800415635109,
-        0.9369307830929756,
-        0.9337775707244873,
-        0.9288012310862541,
-        0.9243146926164627,
-        0.9204115569591522,
-        0.9235453233122826,
-        0.9219935387372971,
-        0.9169849157333374
-      ],
-      "ab_history": [
-        [
-          0.4420018792152405,
-          0.5579981207847595
-        ],
-        [
-          0.442425400018692,
-          0.5575746297836304
-        ],
-        [
-          0.4428724944591522,
-          0.5571274757385254
-        ],
-        [
-          0.443347305059433,
-          0.5566526651382446
-        ],
-        [
-          0.44384706020355225,
-          0.5561529397964478
-        ],
-        [
-          0.44436874985694885,
-          0.5556312203407288
-        ],
-        [
-          0.44489315152168274,
-          0.5551068186759949
-        ],
-        [
-          0.4454071819782257,
-          0.5545928478240967
-        ],
-        [
-          0.4458927512168884,
-          0.5541072487831116
-        ],
-        [
-          0.4463539123535156,
-          0.5536460876464844
-        ],
-        [
-          0.44679582118988037,
-          0.5532041788101196
-        ],
-        [
-          0.44721150398254395,
-          0.552788496017456
-        ],
-        [
-          0.4476205110549927,
-          0.5523794889450073
-        ],
-        [
-          0.4480026066303253,
-          0.5519973635673523
-        ],
-        [
-          0.4483792185783386,
-          0.5516207814216614
-        ],
-        [
-          0.448727548122406,
-          0.551272451877594
-        ],
-        [
-          0.44905686378479004,
-          0.55094313621521
-        ]
-      ],
-      "val_scores": [
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.050604089200941456,
-        0.02601603629774139,
-        0.017833020150579762,
-        0.03493022808690138,
-        0.036948630265644364,
-        0.017801106591049817,
-        0.040347802227858824,
-        0.02226593943449993,
-        0.0334025138556482
-      ],
-      "rows": [
-        {
-          "revealed": "20%",
-          "channel": "goals",
-          "actual": 103,
-          "painted": 0,
-          "hits": 0,
-          "actual_within_1": 0,
-          "painted_within_1": 0,
-          "hit_rate": 0.0,
-          "volume": 0.0,
-          "score": 0.0
-        },
-        {
-          "revealed": "20%",
-          "channel": "assists",
-          "actual": 181,
-          "painted": 226,
-          "hits": 25,
-          "actual_within_1": 34,
-          "painted_within_1": 43,
-          "hit_rate": 0.12285012285012285,
-          "volume": 0.8008849557522124,
-          "score": 0.0983888152029745
-        },
-        {
-          "revealed": "40%",
-          "channel": "goals",
-          "actual": 74,
-          "painted": 0,
-          "hits": 0,
-          "actual_within_1": 0,
-          "painted_within_1": 0,
-          "hit_rate": 0.0,
-          "volume": 0.0,
-          "score": 0.0
-        },
-        {
-          "revealed": "40%",
-          "channel": "assists",
-          "actual": 140,
-          "painted": 173,
-          "hits": 20,
-          "actual_within_1": 27,
-          "painted_within_1": 36,
-          "hit_rate": 0.12779552715654952,
-          "volume": 0.8092485549132948,
-          "score": 0.10341834567582042
-        },
-        {
-          "revealed": "60%",
-          "channel": "goals",
-          "actual": 49,
-          "painted": 0,
-          "hits": 0,
-          "actual_within_1": 0,
-          "painted_within_1": 0,
-          "hit_rate": 0.0,
-          "volume": 0.0,
-          "score": 0.0
-        },
-        {
-          "revealed": "60%",
-          "channel": "assists",
-          "actual": 91,
-          "painted": 119,
-          "hits": 15,
-          "actual_within_1": 21,
-          "painted_within_1": 29,
-          "hit_rate": 0.14285714285714285,
-          "volume": 0.7647058823529411,
-          "score": 0.10924369747899158
-        },
-        {
-          "revealed": "80%",
-          "channel": "goals",
-          "actual": 27,
-          "painted": 0,
-          "hits": 0,
-          "actual_within_1": 0,
-          "painted_within_1": 0,
-          "hit_rate": 0.0,
-          "volume": 0.0,
-          "score": 0.0
-        },
-        {
-          "revealed": "80%",
-          "channel": "assists",
-          "actual": 46,
-          "painted": 63,
-          "hits": 7,
-          "actual_within_1": 10,
-          "painted_within_1": 12,
-          "hit_rate": 0.12844036697247707,
-          "volume": 0.7301587301587301,
-          "score": 0.09378185524974515
-        }
-      ],
-      "position": {
-        "goals_20": {
-          "GKP": {
-            "actual": 0,
-            "painted": 0,
-            "hits": 0
-          },
-          "DEF": {
-            "actual": 103,
-            "painted": 0,
-            "hits": 0
-          },
-          "MID": {
-            "actual": 394,
-            "painted": 0,
-            "hits": 0
-          },
-          "FWD": {
-            "actual": 233,
-            "painted": 0,
-            "hits": 0
-          }
-        },
-        "assists_20": {
-          "GKP": {
-            "actual": 4,
-            "painted": 0,
-            "hits": 0
-          },
-          "DEF": {
-            "actual": 181,
-            "painted": 226,
-            "hits": 25
-          },
-          "MID": {
-            "actual": 434,
-            "painted": 0,
-            "hits": 0
-          },
-          "FWD": {
-            "actual": 88,
-            "painted": 0,
-            "hits": 0
-          }
-        }
+    "assists_20_by_pos": {
+      "GKP": {
+        "actual": 4,
+        "painted": 0,
+        "hits": 0
       },
-      "soft_ink_20": {
-        "goals": {
-          "n_event": 103,
-          "n_blank": 5310,
-          "mean_soft_event": 0.07662305487681506,
-          "mean_soft_blank": 0.03495907562376191,
-          "mean_max_event": 0.22174817850831355,
-          "pct_max_ge_0_5": 0.0,
-          "n_max_ge_thr": {
-            "0.05": 77,
-            "0.1": 70,
-            "0.25": 48,
-            "0.5": 0
-          },
-          "painted_weeks": 0,
-          "hits": 0,
-          "actual_weeks": 103
-        },
-        "assists": {
-          "n_event": 181,
-          "n_blank": 5232,
-          "mean_soft_event": 0.09309306717349103,
-          "mean_soft_blank": 0.040819065942071575,
-          "mean_max_event": 0.271348947684862,
-          "pct_max_ge_0_5": 0.13812154696132597,
-          "n_max_ge_thr": {
-            "0.05": 146,
-            "0.1": 125,
-            "0.25": 98,
-            "0.5": 25
-          },
-          "painted_weeks": 226,
-          "hits": 25,
-          "actual_weeks": 181
-        }
+      "DEF": {
+        "actual": 181,
+        "painted": 0,
+        "hits": 0
+      },
+      "MID": {
+        "actual": 434,
+        "painted": 591,
+        "hits": 114
+      },
+      "FWD": {
+        "actual": 88,
+        "painted": 203,
+        "hits": 31
       }
-    }
-  ],
-  "seconds": 432.3,
-  "report": "/agent/repos/fpl-engine/reports/baudot_def_isolate.md"
+    },
+    "val_scores": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.08684371862878107,
+      0.0697509006086173,
+      0.05379954083051716,
+      0.1874438263239231,
+      0.0661716654445193,
+      0.1988710600968321,
+      0.07261189703185131,
+      0.1556116068498713,
+      0.15177160042648727,
+      0.1510601952899207,
+      0.15282755180037422,
+      0.16730522139703585,
+      0.16386387407254394,
+      0.1492029790847355,
+      0.1397424406896251,
+      0.1143572620118806
+    ],
+    "train_stats": [
+      {
+        "r_sample": 0.0,
+        "r_greedy": 0.0,
+        "advantage": 0.0,
+        "entropy": 0.0,
+        "frac_eventful": 0.0,
+        "phase": "warm_tversky"
+      },
+      {
+        "r_sample": 0.0,
+        "r_greedy": 0.0,
+        "advantage": 0.0,
+        "entropy": 0.0,
+        "frac_eventful": 0.0,
+        "phase": "warm_tversky"
+      },
+      {
+        "r_sample": 0.0,
+        "r_greedy": 0.0,
+        "advantage": 0.0,
+        "entropy": 0.0,
+        "frac_eventful": 0.0,
+        "phase": "warm_tversky"
+      },
+      {
+        "r_sample": 0.0,
+        "r_greedy": 0.0,
+        "advantage": 0.0,
+        "entropy": 0.0,
+        "frac_eventful": 0.0,
+        "phase": "warm_tversky"
+      },
+      {
+        "r_sample": 0.0,
+        "r_greedy": 0.0,
+        "advantage": 0.0,
+        "entropy": 0.0,
+        "frac_eventful": 0.0,
+        "phase": "warm_tversky"
+      },
+      {
+        "r_sample": 0.0,
+        "r_greedy": 0.0,
+        "advantage": 0.0,
+        "entropy": 0.0,
+        "frac_eventful": 0.0,
+        "phase": "warm_tversky"
+      },
+      {
+        "r_sample": 0.0,
+        "r_greedy": 0.0,
+        "advantage": 0.0,
+        "entropy": 0.0,
+        "frac_eventful": 0.0,
+        "phase": "warm_tversky"
+      },
+      {
+        "r_sample": 0.0,
+        "r_greedy": 0.0,
+        "advantage": 0.0,
+        "entropy": 0.0,
+        "frac_eventful": 0.0,
+        "phase": "warm_tversky"
+      },
+      {
+        "r_sample": 0.0,
+        "r_greedy": 0.0,
+        "advantage": 0.0,
+        "entropy": 0.0,
+        "frac_eventful": 0.0,
+        "phase": "warm_tversky"
+      },
+      {
+        "r_sample": 0.0,
+        "r_greedy": 0.0,
+        "advantage": 0.0,
+        "entropy": 0.0,
+        "frac_eventful": 0.0,
+        "phase": "warm_tversky"
+      },
+      {
+        "r_sample": 0.0,
+        "r_greedy": 0.0,
+        "advantage": 0.0,
+        "entropy": 0.0,
+        "frac_eventful": 0.0,
+        "phase": "warm_tversky"
+      },
+      {
+        "r_sample": 0.0,
+        "r_greedy": 0.0,
+        "advantage": 0.0,
+        "entropy": 0.0,
+        "frac_eventful": 0.0,
+        "phase": "warm_tversky"
+      },
+      {
+        "r_sample": 0.0,
+        "r_greedy": 0.0,
+        "advantage": 0.0,
+        "entropy": 0.0,
+        "frac_eventful": 0.0,
+        "phase": "warm_tversky"
+      },
+      {
+        "r_sample": 0.0,
+        "r_greedy": 0.0,
+        "advantage": 0.0,
+        "entropy": 0.0,
+        "frac_eventful": 0.0,
+        "phase": "warm_tversky"
+      },
+      {
+        "r_sample": 0.0,
+        "r_greedy": 0.0,
+        "advantage": 0.0,
+        "entropy": 0.0,
+        "frac_eventful": 0.0,
+        "phase": "warm_tversky"
+      },
+      {
+        "r_sample": 0.16181993018835783,
+        "r_greedy": 0.16261357767507434,
+        "advantage": -0.0007936469919513911,
+        "entropy": 0.05030271876603365,
+        "frac_eventful": 0.828125,
+        "phase": "scst"
+      },
+      {
+        "r_sample": 0.1690369388088584,
+        "r_greedy": 0.2146157780662179,
+        "advantage": -0.04557884542737156,
+        "entropy": 0.04766032984480262,
+        "frac_eventful": 0.765625,
+        "phase": "scst"
+      },
+      {
+        "r_sample": 0.12268660683184862,
+        "r_greedy": 0.14143738988786936,
+        "advantage": -0.0187507820664905,
+        "entropy": 0.04750166833400726,
+        "frac_eventful": 0.640625,
+        "phase": "scst"
+      },
+      {
+        "r_sample": 0.20043990411795676,
+        "r_greedy": 0.1719481407199055,
+        "advantage": 0.028491753269918263,
+        "entropy": 0.046484498772770166,
+        "frac_eventful": 0.703125,
+        "phase": "scst"
+      },
+      {
+        "r_sample": 0.1202427358366549,
+        "r_greedy": 0.15181652083992958,
+        "advantage": -0.03157378768082708,
+        "entropy": 0.04802135517820716,
+        "frac_eventful": 0.859375,
+        "phase": "scst"
+      },
+      {
+        "r_sample": 0.11324549932032824,
+        "r_greedy": 0.12681074161082506,
+        "advantage": -0.013565241490141489,
+        "entropy": 0.046248231548815966,
+        "frac_eventful": 0.71875,
+        "phase": "scst"
+      },
+      {
+        "r_sample": 0.16973895393311977,
+        "r_greedy": 0.18980403989553452,
+        "advantage": -0.02006507565965876,
+        "entropy": 0.04790643509477377,
+        "frac_eventful": 0.765625,
+        "phase": "scst"
+      },
+      {
+        "r_sample": 0.13465662579983473,
+        "r_greedy": 0.15628976747393608,
+        "advantage": -0.021633138763718307,
+        "entropy": 0.049871031660586596,
+        "frac_eventful": 0.71875,
+        "phase": "scst"
+      }
+    ],
+    "phase_log": [
+      "warm_tversky",
+      "warm_tversky",
+      "warm_tversky",
+      "warm_tversky",
+      "warm_tversky",
+      "warm_tversky",
+      "warm_tversky",
+      "warm_tversky",
+      "warm_tversky",
+      "warm_tversky",
+      "warm_tversky",
+      "warm_tversky",
+      "warm_tversky",
+      "warm_tversky",
+      "warm_tversky",
+      "scst",
+      "scst",
+      "scst",
+      "scst",
+      "scst",
+      "scst",
+      "scst",
+      "scst"
+    ]
+  },
+  "report": "/agent/repos/fpl-engine/reports/baudot_rl_stepped.md"
 }

@@ -33,6 +33,8 @@ Schema slicing by place-in-chain is picture reading, not a numeric sidecar. Do n
 
 **DEF isolate screen (2026-11-14, diagnostic keep):** positions *can* train independently. `1_def_loss_mask` (full card, DEF-only Tversky) DEF mean **0.051**, goals **103/192/12**, assists **181/322/27**; soft max off the autopsy floor (goals 0.14). `2_def_card_isolate` (zero+pad non-DEF) DEF mean **0.051**, goals still **103/0/0** at thr 0.5 (soft max 0.22, 77≥0.05) but assists **181/226/25**. Hits stay volume-poor. Not a gate replacement; specialist merge still open. Report: `reports/baudot_def_isolate.md`.
 
+**Stepped-GW RL screen (2026-11-14, park):** same mixer; next-GW FOV; 15-epoch Tversky warm-start then self-critical REINFORCE on Bernoulli paint with `balanced_score` reward. Best mean **0.199** is warm epoch 13 (SCST best **0.167**, declined). Δ gate **−0.019**. DEF goals/assists still **0**. SCST does not beat warm Tversky or the full-remainder gate. Report: `reports/baudot_rl_stepped.md`.
+
 **Superseded as the flashcard comparison gate:** square-card full painter / fixture-intensity stored readers (`GATE_SQUARE_2026_11_12`; `reports/cards/current/` RGB path). Keep those modules for archaeology; new flashcard screens compare to the Baudot gate.
 
 **Stepped RGB column path (parked relative to the gate):** `ColumnFlashcard` / `flashcard_column_picture_trial.py`. Not the default.

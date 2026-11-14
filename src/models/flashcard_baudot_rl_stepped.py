@@ -395,30 +395,45 @@ def write_report(meta: dict) -> Path:
             f"{row['score']:.3f} | {_delta(row['score'], gscore)} |"
         )
 
-    if mean > gate_mean + 1e-3:
+    phases = meta.get("phase_log") or []
+    val_scores = meta.get("val_scores") or []
+    best_i = int(max(range(len(val_scores)), key=lambda i: val_scores[i])) if val_scores else -1
+    best_phase = phases[best_i] if best_i >= 0 and best_i < len(phases) else "unknown"
+    scst_scores = [val_scores[i] for i, p in enumerate(phases) if p == "scst"]
+    scst_best = float(max(scst_scores)) if scst_scores else float("nan")
+    warm_scores = [val_scores[i] for i, p in enumerate(phases) if p == "warm_tversky"]
+    warm_best = float(max(warm_scores)) if warm_scores else float("nan")
+
+    if best_phase == "scst" and mean > gate_mean + 1e-3:
         verdict = (
-            f"**Promote candidate.** RL stepped mean {mean:.3f} beats gate {gate_mean:.3f}. "
+            f"**Promote candidate.** SCST checkpoint mean {mean:.3f} beats gate {gate_mean:.3f}. "
             "Re-check DEF/assist placement before any lock change."
         )
-        park = "open — beats gate on mean; needs DEF/assist audit before promote"
-    elif mean > STEPPED_SUPERVISED_MEAN + 1e-3:
+        park = "open — SCST beats gate on mean; needs DEF/assist audit before promote"
+    elif best_phase == "scst" and mean > warm_best + 1e-3:
         verdict = (
-            f"**Partial.** RL ({mean:.3f}) beats parked stepped supervised "
-            f"({STEPPED_SUPERVISED_MEAN:.3f}) but still trails the full-remainder gate "
-            f"({gate_mean:.3f}). Keep as FOV diagnostic; do not replace the gate."
+            f"**Partial.** SCST ({mean:.3f}) beats this run's warm Tversky ({warm_best:.3f}) "
+            f"but still trails the full-remainder gate ({gate_mean:.3f})."
         )
-        park = "park as default — better than stepped supervised, still below gate"
+        park = "park as default — SCST helps stepped FOV, still below gate"
     else:
         verdict = (
-            f"**Park.** RL stepped mean {mean:.3f} does not beat gate {gate_mean:.3f} "
-            f"(Δ {_delta(mean, gate_mean)}) and does not clearly beat stepped supervised "
-            f"{STEPPED_SUPERVISED_MEAN:.3f}. Self-critical paint reward on next-GW is not "
-            "enough to replace one-shot Tversky."
+            f"**Park.** Best holdout {mean:.3f} is from the **{best_phase}** phase "
+            f"(epoch {best_i + 1}), not a SCST win. Warm best {warm_best:.3f}; "
+            f"SCST best {scst_best:.3f}. SCST did not improve on next-GW Tversky and "
+            f"does not beat the full-remainder gate ({gate_mean:.3f}, "
+            f"Δ {_delta(mean, gate_mean)}). DEF goals/assists stay blank."
         )
-        park = "park — RL stepped loses the gate"
+        park = "park — SCST does not beat warm Tversky or the gate"
 
     lines.extend(
         [
+            "",
+            "## Phase note",
+            "",
+            f"- Best checkpoint phase: `{best_phase}` (epoch {best_i + 1})",
+            f"- Warm-start best: {warm_best:.3f}",
+            f"- SCST-phase best: {scst_best:.3f}",
             "",
             "## Morning call",
             "",
@@ -428,7 +443,7 @@ def write_report(meta: dict) -> Path:
             "",
             "Read order:",
             "1. Mean vs gate (primary).",
-            "2. Mean vs parked stepped supervised (is RL better than Tversky on the same FOV?).",
+            "2. Was the best checkpoint SCST or warm Tversky?",
             "3. DEF goals/assists a/p/h at 20%.",
             "4. Overpaint / GKP noise on the holdout table.",
             "",
