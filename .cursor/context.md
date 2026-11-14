@@ -29,6 +29,8 @@ Schema slicing by place-in-chain is picture reading, not a numeric sidecar. Do n
 
 **Causal block-LM screen (2026-11-13, park):** 1D GW-major HDR+player blocks, 4-layer causal transformer, event-space Tversky on masked remainder (`reports/baudot_causal_lm.md`). Mean **0.118** (Δ −0.101). DEF goals **103/85/6** — volume without placement; GKP noise; MID overpaint. Does not beat the bidirectional mixer.
 
+**Loss-replacement screen (2026-11-13, park):** same mixer/FOV; `1_listwise_bal` mean **0.181** (DEF still 0); `2_calib_theta` mean **0.000** (paints nothing, θ stuck ~2). Report: `reports/baudot_loss_replacements.md`. Tversky gate stays; listwise did not unfreeze DEF.
+
 **Superseded as the flashcard comparison gate:** square-card full painter / fixture-intensity stored readers (`GATE_SQUARE_2026_11_12`; `reports/cards/current/` RGB path). Keep those modules for archaeology; new flashcard screens compare to the Baudot gate.
 
 **Stepped RGB column path (parked relative to the gate):** `ColumnFlashcard` / `flashcard_column_picture_trial.py`. Not the default.
