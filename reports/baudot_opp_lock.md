@@ -1,6 +1,8 @@
 # Opponent-card lock (2026-11-14)
 
-The default flashcard card and method is the opponent cross-read.
+Superseded the same day. The default card is the opacity reading of the Baudot row card (`reports/LOCKED.md`). This note records the lock that was replaced.
+
+The default flashcard card and method, for this lock only, was the opponent cross-read.
 
 - Module: `src/models/flashcard_baudot_opp_train.py`
 - Table: `flashcard_card_score.GATE_OPP_2026_11_14`
