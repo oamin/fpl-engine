@@ -1,4 +1,7 @@
-"""Opponent-card cross-read. Default flashcard card and method from 2026-11-14.
+"""Opponent-card cross-read. Screened 2026-11-14; not the default card.
+
+The default card is the Baudot row card read as opacity
+(`flashcard_baudot_row_trial`, `DEFAULT_FLASHCARD_READING = opacity`).
 
 Trained against the 2026-11-13 mixer table. That table stays in `GATE`.
 This run's own tallies are `GATE_OPP_2026_11_14`.

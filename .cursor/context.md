@@ -2,19 +2,22 @@
 
 Updated: 2026-11-14. **Numagent 2.0** is the product on main (`protocol.numagent_2_0`) — **supersedes Numagent 1.0**. Parked hypotheses: `.cursor/ideas.md`. Stage archaeology: root `CONTEXT.md` and `reports/SUPERSEDED.md`. Canonical index: `reports/LOCKED.md`.
 
-## Flashcard painter — opponent-card default (locked 2026-11-14)
+## Flashcard painter — opacity card (default 2026-11-14)
 
 The flashcard is one picture object. Teach by matching pictures. Do not bolt on μ/share heads, volume caps, or argmax paint rules.
 
-**Default card / method (2026-11-14):** gc6 header + opponent-card cross-read + learnable Tversky on the assessed club's remainder.
+**Default card (2026-11-14):** the Baudot row card, read as opacity. The event dot keeps the model probability as its gray. The score is the residual of the true bit and that probability.
 
-- Module: `src/models/flashcard_baudot_opp_train.py`
-- Baseline: `flashcard_card_score.GATE_OPP_2026_11_14` · `reports/baudot_opp_train.md` · mean **0.192**
-- Card: `club8 · opp8 · odds12 · gc6 · [role4+id11+mins6+G3+A3]×roster`
-- Cross-read: earlier opponent rows true; this fixture's minutes revealed on the opponent card only; G/A and gc for the match blank on both cards; later kickoffs hidden
-- The 2026-11-13 mixer table stays in `GATE` (mean **0.218**). This lock changes the default card and the training read. It does not rewrite that published score.
+- Module: `src/models/flashcard_baudot_row_trial.py`
+- Card: `club8 · opp8 · odds12 · [role4+id11+mins6+G3+A3]×roster`. No opponent cross-read.
+- FOV: all past GW rows true; remainder G/A are the painted probabilities.
+- Training loss: **log loss** on the remainder event bits (the player-GW likelihood). Brier is the paired squared residual.
+- The 0.5 tally in `GATE` (mean **0.218**) stays the published thresholded table. It is not the default score.
+- Tversky-trained reading of this card: holdout 20% Brier **0.0197**, log loss **0.079**. Picture: `reports/baudot_residual_arsenal_2025-26.png`.
 
-**Previous numerical gate (2026-11-13):** Baudot row-card + block-token mixer + **learnable Tversky (β≥α)**.
+**Screened, not the default (2026-11-14):** gc6 header + opponent-card cross-read. Mean balanced_score **0.192**. `GATE_OPP_2026_11_14`, `reports/baudot_opp_train.md`.
+
+**Previous thresholded gate (2026-11-13):** Baudot row-card + block-token mixer + **learnable Tversky (β≥α)**.
 
 - Module: `src/models/flashcard_baudot_row_trial.py`
 - Gate scores: `flashcard_card_score.GATE` · report `reports/baudot_gate.md`
@@ -29,7 +32,7 @@ Schema slicing by place-in-chain is picture reading, not a numeric sidecar. Do n
 
 **DEF / assist role-paint screen (2026-11-13, park):** gate paints **DEF goals 103/0/0** and **DEF assists 181/0/0** at 20%. Role-specific paint heads and dual channel Tversky leave DEF at 0. FN-heavy DEF-goal aux reaches **103/78/5** but mean score **0.157** (Δ −0.061) with MID overpaint — same “volume without hits” failure as equal per-pos. Report: `reports/baudot_role_paint.md`. Gate stays; next squeeze needs new card information, not more role loss weight.
 
-**Stepped single-GW FOV (2026-11-13, complementary, park as default):** same mixer/Tversky; paint only the next GW row, teacher-forced step on holdout (`reports/baudot_stepped_gw.md`). Mean **0.184** (Δ −0.034 vs full-remainder mixer 0.218). DEF goals still **103/0/0**. Stepped stays a complementary diagnostic. The card default from 2026-11-14 is the opponent cross-read.
+**Stepped single-GW FOV (2026-11-13, complementary, park as default):** same mixer/Tversky; paint only the next GW row, teacher-forced step on holdout (`reports/baudot_stepped_gw.md`). Mean **0.184** (Δ −0.034 vs full-remainder mixer 0.218). DEF goals still **103/0/0**. Stepped stays a complementary diagnostic. The card default is the opacity reading of this row card.
 
 **Gate DEF/assist autopsy (2026-11-13):** `reports/baudot_def_assist_autopsy.md`. DEF soft ink ~0.006 on event and blank; no DEF `g_max` ≥0.05. Minutes differ on true DEF goal weeks; the head does not. Assist gap = DEF blank + weaker MID + FWD assist overpaint (volume ≈ actual overall).
 
@@ -51,9 +54,11 @@ Schema slicing by place-in-chain is picture reading, not a numeric sidecar. Do n
 
 **Margin pools and joint gc (2026-11-14, park):** on that default, weight-1 role/row/column pools score **0.000** (soft totals match under the 0.5 threshold). Joint gc, with the scoreline shared onto the XI and away fixtures filling both cards, scores **0.178**. Goals shift onto FWD (recall 0.730) and off MID (recall 0.028). DEF stays blank. Report: `reports/baudot_margin_gc.md`.
 
-**Residual card (2026-11-14, reading only):** gray of a dot is the mixer probability. Difference card is truth minus that probability on the remainder event bits. Mean squared residual is the Brier score; mean negative log likelihood of the same bits is the log score. Arsenal 2025-26 at 20% on the retrained mixer: Brier **0.031**, log loss **0.114**. Holdout 20% Brier **0.020**, log loss **0.079**. Picture: `reports/baudot_residual_arsenal_2025-26.png`. Not a new trained comparison.
+**Residual card (2026-11-14):** gray of a dot is the mixer probability. Difference card is truth minus that probability on the remainder event bits. Tversky-trained holdout 20% Brier **0.020**, log loss **0.079**. Picture: `reports/baudot_residual_arsenal_2025-26.png`.
 
-**Superseded as the flashcard comparison gate:** square-card full painter / fixture-intensity stored readers (`GATE_SQUARE_2026_11_12`; `reports/cards/current/` RGB path). Keep those modules for archaeology. New flashcard screens start from the opponent-card default and still quote the 2026-11-13 mixer table.
+**Opacity loss (2026-11-14):** same card, seed 0. The reading is sureness on the event dot, with no threshold. A solid dot predicted at 0.20 contributes 0.20. Precision = opacity on true dots / all opacity. Recall = average opacity on a true dot. Event-marker means: Tversky precision **0.184** recall **0.216**; log loss **0.141** / **0.147**; Brier **0.130** / **0.137**. At 20% the Tversky goal dot is 0.246 opaque on a true event and 0.043 on a blank. Training loss on every event bit stays log loss **0.0543**, Brier **0.0141**. Report: `reports/baudot_opacity_loss.md`.
+
+**Superseded as the flashcard comparison gate:** square-card full painter / fixture-intensity stored readers (`GATE_SQUARE_2026_11_12`; `reports/cards/current/` RGB path). Keep those modules for archaeology. New flashcard screens start from the opacity card and still quote the 2026-11-13 mixer table.
 
 **Stepped RGB column path (parked relative to the gate):** `ColumnFlashcard` / `flashcard_column_picture_trial.py`. Not the default.
 

@@ -48,9 +48,13 @@ Self-critical REINFORCE on next-GW Bernoulli paint after Tversky warm-start; rew
 
 Two losses on the locked opponent card, cell Tversky kept, weight 1. `1_margins` (role pools + row sums + column sums) never crosses 0.5: soft pool totals match with sub-threshold ink, mean **0.000**. `2_gc_scoreline` (gc on both clubs, scoreline shared onto the XI, away fills both cards) mean **0.178**. Goal volume tightens and lands on FWD (recall 0.730) while MID goal recall falls to 0.028; assists overpaint; DEF stays **103/0/0** and **181/0/0**. Report: `reports/baudot_margin_gc.md`. Do not promote. A later pool loss needs a term that pays for crossing the decision threshold.
 
-## LOCKED — opponent-card cross-read is the default card/method (2026-11-14)
+## LOCKED — opacity card is the default (2026-11-14)
 
-PI lock. The default flashcard is the gc6 header plus the opponent cross-read (`src/models/flashcard_baudot_opp_train.py`, `GATE_OPP_2026_11_14`). Earlier opponent rows true, this fixture's minutes on the opponent card only, G/A and gc blank on both sides. Mean **0.192**. DEF goals **103/0/0**, DEF assists **181/0/0**. The 2026-11-13 mixer table (`GATE`, mean **0.218**) stays the published mixer score and is not rewritten. Report: `reports/baudot_opp_train.md`.
+PI lock. The default flashcard is the Baudot row card with the event probability kept as the gray of the dot. A solid dot predicted at 0.20 counts as 0.20 of an event. Precision is opacity on true dots over all opacity. Recall is the average opacity on a true dot. Event-marker means: Tversky precision **0.184** recall **0.216**; log loss **0.141** / **0.147**; Brier **0.130** / **0.137**. Likelihood on every event bit is still lower for log loss (**0.0543**) than for the Tversky reading (**0.0781**). Report: `reports/baudot_opacity_loss.md`. Picture: `reports/baudot_residual_arsenal_2025-26.png`.
+
+## Screened — opponent-card cross-read (2026-11-14)
+
+Was the default for one step, then replaced by the opacity card. gc6 header plus opponent cross-read. Mean balanced_score **0.192**. DEF goals **103/0/0**, DEF assists **181/0/0**. Report: `reports/baudot_opp_train.md`. Do not treat it as the default card.
 
 ## Parked — card tensor factorisation (2026-11-14)
 
