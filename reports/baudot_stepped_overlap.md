@@ -52,6 +52,15 @@ The first goal dot and the first assist dot, one week ahead. Solid counts are th
 | combined | 60% | assists | 25 | 14.6 | 103.4 | 0.124 | 0.584 | 0.204 |
 | combined | 80% | assists | 25 | 18.8 | 104.1 | 0.153 | 0.753 | 0.255 |
 
+## Example cards
+
+Arsenal and Liverpool, 2025-26, cut after 20% of the season. The twelve regulars. G is at least one goal, A is at least one assist. Above the line the true card is shown. Below the line the model paints opacity.
+
+- `reports/baudot_step_row_arsenal_2025-26.png` — row step, overlap on these dots 0.259
+- `reports/baudot_step_column_arsenal_2025-26.png` — column step, overlap 0.199
+- `reports/baudot_step_row_liverpool_2025-26.png` — row step, overlap 0.279
+- `reports/baudot_step_column_liverpool_2025-26.png` — column step, overlap 0.205
+
 ## Call
 
 Next-week picture overlap: row **0.220**, column **0.166**, combined **0.214**. Eight weeks ahead, with the weeks between left blank: row **0.217**, column **0.163**, combined **0.208**. The overlap does not fade with distance. Each future row still carries its own opponent, odds and minutes, so the step does not have to pass the week through the blank rows. The column arm covers more of the true goal dots and puts more gray on the blank ones, and the picture overlap falls. Combined stays between the two and does not pass the row.
