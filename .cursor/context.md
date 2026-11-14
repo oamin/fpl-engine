@@ -58,6 +58,8 @@ Schema slicing by place-in-chain is picture reading, not a numeric sidecar. Do n
 
 **Opacity loss (2026-11-14):** same card, seed 0. The reading is sureness on the event dot, with no threshold. A solid dot predicted at 0.20 contributes 0.20. Precision = opacity on true dots / all opacity. Recall = average opacity on a true dot. Event-marker means: Tversky precision **0.184** recall **0.216**; log loss **0.141** / **0.147**; Brier **0.130** / **0.137**. At 20% the Tversky goal dot is 0.246 opaque on a true event and 0.043 on a blank. Training loss on every event bit stays log loss **0.0543**, Brier **0.0141**. Report: `reports/baudot_opacity_loss.md`.
 
+**Stepped overlap (2026-11-14):** loss is one minus the picture overlap, trained one week at a time. Next-week picture overlap: row **0.220**, column **0.166**, combined **0.214**. Eight weeks ahead, intervening rows blank: row **0.217**, column **0.163**, combined **0.208**. The overlap does not fade. Column covers more true goal dots and stains more blanks. Report: `reports/baudot_stepped_overlap.md`.
+
 **Superseded as the flashcard comparison gate:** square-card full painter / fixture-intensity stored readers (`GATE_SQUARE_2026_11_12`; `reports/cards/current/` RGB path). Keep those modules for archaeology. New flashcard screens start from the opacity card and still quote the 2026-11-13 mixer table.
 
 **Stepped RGB column path (parked relative to the gate):** `ColumnFlashcard` / `flashcard_column_picture_trial.py`. Not the default.
