@@ -21,6 +21,8 @@ Schema slicing by place-in-chain is picture reading, not a numeric sidecar. Do n
 
 **DEF / assist role-paint screen (2026-11-13, park):** gate paints **DEF goals 103/0/0** and **DEF assists 181/0/0** at 20%. Role-specific paint heads and dual channel Tversky leave DEF at 0. FN-heavy DEF-goal aux reaches **103/78/5** but mean score **0.157** (Δ −0.061) with MID overpaint — same “volume without hits” failure as equal per-pos. Report: `reports/baudot_role_paint.md`. Gate stays; next squeeze needs new card information, not more role loss weight.
 
+**Stepped single-GW FOV (2026-11-13, complementary, park as default):** same mixer/Tversky; paint only the next GW row, teacher-forced step on holdout (`reports/baudot_stepped_gw.md`). Mean **0.184** (Δ −0.034 vs full-remainder gate 0.218). DEF goals still **103/0/0**. Full-remainder one-shot remains the locked default; stepped stays a complementary diagnostic, not a replacement.
+
 **Superseded as the flashcard comparison gate:** square-card full painter / fixture-intensity stored readers (`GATE_SQUARE_2026_11_12`; `reports/cards/current/` RGB path). Keep those modules for archaeology; new flashcard screens compare to the Baudot gate.
 
 **Stepped RGB column path (parked relative to the gate):** `ColumnFlashcard` / `flashcard_column_picture_trial.py`. Not the default.

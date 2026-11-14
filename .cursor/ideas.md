@@ -20,6 +20,10 @@ Same card, FOV, learnable Tversky. `1_deeper_mixer` (depth-2 residual time/squad
 
 Targeted at gate DEF goals **103/0/0** and assist miss. `1_role_paint` and `2_role_paint_dual` still **DEF 0**. `3_def_goal_aux` (FN-heavy DEF goals, λ=0.35) paints **103/78/5** — volume without placement; mean **0.157**. DEF assists stay **181/0/0**. Report: `reports/baudot_role_paint.md`. Do not reopen equal per-pos or DEF-only loss weight without new dots on the card.
 
+## Complementary — Baudot stepped next-GW FOV (2026-11-13)
+
+Teacher-forced single-GW paint vs locked full-remainder one-shot. Mean **0.184** (Δ −0.034); DEF goals **103/0/0**. Does not replace the gate. Keep as a complementary FOV for next-week diagnostics; do not promote over full-remainder without a clear win. Report: `reports/baudot_stepped_gw.md`.
+
 ## Parked — cell-posterior column allocation (2026-11-13)
 
 Stepped column trials that score cells / shares / top-k paint (GKP residual on one-bar weeks). Parked in favor of whole-strip picture matching. Keep the reports for archaeology; do not extend the share/rank stack.
