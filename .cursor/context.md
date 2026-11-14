@@ -37,7 +37,9 @@ Schema slicing by place-in-chain is picture reading, not a numeric sidecar. Do n
 
 **Odds / minutes weight (2026-11-14):** zeroing minutes drops goals P/R **0.277/0.266 → 0.209/0.175** (mean **0.115**). Zeroing 1X2 odds keeps precision (~0.275) but recall **0.266 → 0.211**, and the paint slides off MID (R 0.211→0.053) onto FWD. DEF stays **103/0/0** in every arm. Both strips carry weight; neither is the DEF fix. Report: `reports/baudot_odds_weight.md`.
 
-**Goals-conceded header (2026-11-14, picture only):** truth card inserts unary `gc6` after the odds bits (`club8 · opp8 · odds12 · gc6`). Same-week gc is the scoreline, so a training remainder blanks it with G/A. Not wired into the locked mixer (`HEADER_BITS` unchanged). Example: `reports/baudot_gc_header_arsenal_2025-26.png`.
+**Goals-conceded header (2026-11-14, picture only on the locked card):** truth card inserts unary `gc6` after the odds bits (`club8 · opp8 · odds12 · gc6`). Same-week gc is the scoreline, so a training remainder blanks it with G/A. `HEADER_BITS` in the locked mixer is unchanged. Example: `reports/baudot_gc_header_arsenal_2025-26.png`.
+
+**Opponent-card cross-read (2026-11-14, park):** shared mixer attends the opponent card. Earlier opponent rows stay true. This fixture's minutes are revealed on the opponent card only. G/A and gc for the match stay blank on both cards. gc6 is in the header, so the arm changes header and attention together. Holdout mean **0.192** (Δ −0.026 vs gate 0.218). 20% goals 730/770/197 (P 0.256, R 0.270). DEF goals **103/0/0**, DEF assists **181/0/0**. Report: `reports/baudot_opp_train.md`. Gate stays.
 
 **Superseded as the flashcard comparison gate:** square-card full painter / fixture-intensity stored readers (`GATE_SQUARE_2026_11_12`; `reports/cards/current/` RGB path). Keep those modules for archaeology; new flashcard screens compare to the Baudot gate.
 
