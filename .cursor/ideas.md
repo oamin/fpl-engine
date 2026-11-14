@@ -36,6 +36,10 @@ Event-volume header dots from football-data (no Odds API). `1_ou_only` mean **0.
 
 Overnight proposals vs Tversky gate. `1_listwise_bal` mean **0.181**, DEF **103/0/0**. `2_calib_theta` mean **0.000** (blank paint). Report: `reports/baudot_loss_replacements.md`. Do not promote; rethink ranking grain (within-remainder / hard-negative) before another listwise global pool.
 
+## Diagnostic — Baudot DEF isolate (2026-11-14)
+
+Yes: positions can be trained/tested independently. Restricting the live window to DEF (or zeroing non-DEF blocks on the card) lifts soft ink off the ~0.006 floor and lands some thresholded hits (`1_def_loss_mask` goals 103/192/12). Placement stays weak (volume≫hits); full-roster gate mean is not the score. Keep as a rare-event diagnostic / possible specialist merge input — do not promote over the locked gate. Report: `reports/baudot_def_isolate.md`.
+
 ## Parked — cell-posterior column allocation (2026-11-13)
 
 Stepped column trials that score cells / shares / top-k paint (GKP residual on one-bar weeks). Parked in favor of whole-strip picture matching. Keep the reports for archaeology; do not extend the share/rank stack.
