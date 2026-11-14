@@ -1,9 +1,9 @@
 """Draw example opacity cards from the stepped per-dot models.
 
-Each row under the line is painted as its own step: the true past is revealed
-and that week is blank. The gray is the probability. A goalkeeper goal dot
-should be nearly the paper color. An attacker on an ordinary week should be
-a light gray, not a black square.
+The row card paints each week on its own: the true past is revealed and that
+week is blank. The column card paints one gray per player and repeats it down
+the future column. That is the gray the column loss scores. A goalkeeper stays
+near the paper color. An attacker is a light gray, not a black square.
 """
 
 from __future__ import annotations
@@ -64,6 +64,20 @@ def _regulars(card, n: int = 12) -> list[int]:
     return sorted(picked, key=lambda i: (int(card.position[i]), -float(minutes[i])))
 
 
+def shared_column(model, card, cut: int, device) -> np.ndarray:
+    """One forward. Each player's future weeks wear the mean gray of that column."""
+    soft = np.array(soft_events(model, card, cut, device)[:, : card.n_fixtures], copy=True)
+    pad = _player_pad(card)
+    for row in range(card.present.shape[0]):
+        if pad[row]:
+            continue
+        weeks = [gw for gw in range(cut, card.n_fixtures) if card.present[row, gw]]
+        if not weeks:
+            continue
+        soft[row, weeks] = soft[row, weeks].mean(axis=0)
+    return soft
+
+
 def stitch_steps(model, card, cut: int, device) -> np.ndarray:
     """Each remainder week is the next step, with the true past behind it."""
     soft = np.zeros((card.present.shape[0], card.n_fixtures, GOAL_BITS + GOAL_BITS), dtype=np.float32)
@@ -114,8 +128,12 @@ def render_card(card, soft: np.ndarray, cut: int, arm: str, levels: dict, path: 
     draw.text((16, 12), f"{card.team} {card.season}  ·  {arm} step", fill=INK, font=_font(18))
     draw.text(
         (16, 38),
-        f"Each row under the line is its own step. "
-        f"Solid dots {levels['on_solid']:.2f} opaque, blank dots {levels['on_blank']:.2f}, "
+        (
+            f"Each week is its own step. "
+            if arm == "row"
+            else f"One gray per player, shared down the column. "
+        )
+        + f"Solid dots {levels['on_solid']:.2f} opaque, blank dots {levels['on_blank']:.2f}, "
         f"goalkeeper goals {levels['gkp']:.2f}.",
         fill=MUTED,
         font=_font(11),
@@ -213,6 +231,7 @@ def _load():
 def main() -> None:
     device, train, test = _load()
     pictures = []
+    painted = {}
     for arm in ("row", "column"):
         model = BlockTokenMixer(width=train[0].width).to(device)
         weights = ART / f"baudot_step_gap_{arm}.pt"
@@ -223,13 +242,19 @@ def main() -> None:
         for club in CLUBS:
             card = next(c for c in test if c.team == club)
             cut = cut_at_fraction(card, 0.2)
-            soft = stitch_steps(model, card, cut, device)
+            soft = stitch_steps(model, card, cut, device) if arm == "row" else shared_column(model, card, cut, device)
+            painted[(arm, club)] = soft
             levels = _dot_levels(card, soft, cut, _regulars(card))
             name = f"baudot_step_{arm}_{club.lower()}_2025-26.png"
             path = render_card(card, soft, cut, arm, levels, ART / name)
             render_card(card, soft, cut, arm, levels, REPORTS / name)
             pictures.append({"arm": arm, "club": club, **levels, "path": str(path)})
             print(f"wrote {path} {levels}", flush=True)
+    for club in CLUBS:
+        gap = float(np.mean(np.abs(painted[("row", club)] - painted[("column", club)])))
+        print(f"{club} mean absolute gap between row and column paint {gap:.4f}", flush=True)
+        if gap < 1e-3:
+            raise AssertionError(f"{club} row and column cards still match")
     (ART / "baudot_stepped_cards.json").write_text(json.dumps(pictures, indent=2), encoding="utf-8")
 
 

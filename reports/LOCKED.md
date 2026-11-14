@@ -115,7 +115,7 @@ Supersedes the opponent-card cross-read as the default, and the square-card full
 - **Baudot fixture dots +OU/+AH line (2026-11-13)** — DEF stays ~0; means 0.176/0.152; AH≠1X2 (corr 0.21) but no lift; park (`reports/baudot_fixture_dots.md`)
 - **Baudot stepped next-GW FOV (2026-11-13)** — complementary to full-remainder gate; mean 0.184 (Δ −0.034), DEF still 0; keep diagnostic (`reports/baudot_stepped_gw.md`)
 - **Baudot stepped picture overlap (2026-11-14)** — withdrawn. The set-overlap loss painted likely scorers solid, including on blank weeks (`reports/baudot_stepped_overlap.md`)
-- **Baudot stepped per-dot gap (2026-11-14)** — squared gap on the next week **0.0168**; blank dots **0.020** opaque; goalkeeper goals **0.021**. Row and column coincide (`reports/baudot_stepped_overlap.md`)
+- **Baudot stepped per-dot gap (2026-11-14)** — row is the next week; column is one gray per player down the future. Next-week gap **0.0168** either way. Goalkeeper goals **0.021** / **0.015**. The cards are not the same picture (`reports/baudot_stepped_overlap.md`)
 - **Baudot role paint / DEF-goal aux (2026-11-13)** — DEF goals stay 0 under role heads; aux paints 103/78/5, mean 0.157; park (`reports/baudot_role_paint.md`)
 - **Baudot deeper mixer / block-CNN (2026-11-13)** — same card vs gate; mean 0.156 / 0.138 (Δ −0.062 / −0.080); park (`reports/baudot_model_variants.md`)
 - **Square-card flashcard gate (2026-11-12)** — `GATE_SQUARE_2026_11_12`; replaced by Baudot learnable Tversky

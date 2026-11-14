@@ -54,7 +54,7 @@ Overlap `2 * gray on solid / (all gray + solid)` filled attacker columns and, on
 
 ## Measured — stepped per-dot gap (2026-11-14)
 
-Squared gap `(opacity − truth)²` on the next week's event dots. Next-week gap **0.0168**. Blank dots **0.020** opaque, solid dots **0.101**, goalkeeper goals **0.021**. A true goal marker at the 20% cut is **0.124** and a blank goal marker is **0.047**. Row, column and combined match, because every player has six event dots, so a mean over dots and a mean over players are the same. Eight weeks ahead the gap is **0.0155**. Report: `reports/baudot_stepped_overlap.md`.
+Squared gap `(opacity − truth)²`. The row is the next week, a gray of its own. The column is one gray per player, shared down the future and scored against every week in it. Averaging the six dots inside one week made the two arms the same card; that reduction is withdrawn. Next-week gap **0.0168** for the row and **0.0168** for the column. Column gap (one gray versus the future) **0.0146**. Goalkeeper goal opacity **0.021** / **0.015**. The average does not pick a winner. The pictures differ: the row changes by week, the column is a stripe. Report: `reports/baudot_stepped_overlap.md`.
 
 ## LOCKED — opacity card is the default (2026-11-14)
 

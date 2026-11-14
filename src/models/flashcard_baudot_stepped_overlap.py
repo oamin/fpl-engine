@@ -10,11 +10,12 @@ does not score.
 Three arms, same mixer, same card, seed 0. Each step reveals the true past
 and blanks the week being painted.
 
-  row       — mean squared gap over the dots of that week
-  column    — each player's own mean squared gap, then the mean over players
-  combined  — the two gaps with equal weight
+  row       — the next gameweek, a gray of its own for that week
+  column    — one gray per player, shared down that player's future
+  combined  — those two gaps with equal weight
 
-The holdout reads the same gap 1, 2, 4 and 8 weeks ahead.
+A column that gives every week its own gray is the row again. The holdout
+reads the next week, and the shared column gray, at 1, 2, 4 and 8 weeks.
 """
 
 from __future__ import annotations
@@ -75,26 +76,28 @@ def row_gap(pred: torch.Tensor, target: torch.Tensor, live: torch.Tensor) -> tor
     return (err * mask).sum() / mask.sum().clamp_min(1)
 
 
-def column_gap(pred: torch.Tensor, target: torch.Tensor, live: torch.Tensor) -> torch.Tensor:
-    """Each player's mean squared gap, then the mean over the players who played.
+def column_strip(
+    pred: torch.Tensor,
+    target: torch.Tensor,
+    present: torch.Tensor,
+    pad: torch.Tensor,
+) -> torch.Tensor:
+    """One gray per player, scored against every week in that player's future.
 
-    A goalkeeper's six dots weigh the same as a forward's six. Filling a
-    goalkeeper's squares costs that player a full miss.
+    pred/target are B, P, T, E. present is B, P, T and is already limited to
+    the weeks still blank. The gray is the mean opacity down the column, so a
+    goal and a blank in the same column pull the same dot. Each player counts
+    once. A separate gray for every week is the row, and that loss matches it.
     """
-    err, mask = _square_mask(pred, target, live)
-    per_player = (err * mask).sum(dim=-1) / mask.sum(dim=-1).clamp_min(1)
-    weight = live.to(pred.dtype)
+    live = present & ~pad[..., None]
+    weight_t = live.to(pred.dtype)
+    pooled = (pred * weight_t[..., None]).sum(dim=2) / weight_t.sum(dim=2).clamp_min(1)[..., None]
+    painted = pooled[:, :, None, :].expand_as(pred)
+    err = (painted - target) ** 2
+    mask = weight_t[..., None].expand_as(pred)
+    per_player = (err * mask).sum(dim=(2, 3)) / mask.sum(dim=(2, 3)).clamp_min(1)
+    weight = live.any(dim=-1).to(pred.dtype)
     return (per_player * weight).sum() / weight.sum().clamp_min(1)
-
-
-def step_loss(name: str, pred: torch.Tensor, target: torch.Tensor, live: torch.Tensor) -> torch.Tensor:
-    row = row_gap(pred, target, live)
-    column = column_gap(pred, target, live)
-    if name == "row":
-        return row
-    if name == "column":
-        return column
-    return 0.5 * (row + column)
 
 
 def _take(pred, target, present, pad, cuts: list[int]):
@@ -124,21 +127,54 @@ def _numpy_gap(pred: np.ndarray, target: np.ndarray, live: np.ndarray, position:
     """Squared gap on one week. pred/target (P, E), live (P,)."""
     played = np.flatnonzero(live)
     if len(played) == 0:
-        return {"row": 0.0, "column": 0.0, "on_solid": 0.0, "on_blank": 0.0, "gkp": 0.0, "solid_n": 0}
+        return {"row": 0.0, "on_solid": 0.0, "on_blank": 0.0, "gkp": 0.0, "solid_n": 0}
     dots_p = pred[played].reshape(-1)
     dots_y = target[played].reshape(-1)
     gap = (dots_p - dots_y) ** 2
     solid = dots_y > 0.5
-    per_player = ((pred[played] - target[played]) ** 2).mean(axis=1)
     gkp = played[position[played] == 0]
     gkp_p = float(pred[gkp, 0].mean()) if len(gkp) else 0.0
     return {
         "row": float(gap.mean()),
-        "column": float(per_player.mean()),
         "on_solid": float(dots_p[solid].mean()) if solid.any() else 0.0,
         "on_blank": float(dots_p[~solid].mean()) if (~solid).any() else 0.0,
         "gkp": gkp_p,
         "solid_n": int(solid.sum()),
+    }
+
+
+def _numpy_strip(
+    pred: np.ndarray,
+    target: np.ndarray,
+    present: np.ndarray,
+    pad: np.ndarray,
+    position: np.ndarray,
+) -> dict:
+    """Player-equal squared gap down the future. pred/target (P, T, E), present (P, T)."""
+    live = present & ~pad[:, None]
+    players = np.flatnonzero(live.any(axis=1))
+    empty = {"column": 0.0, "on_solid": 0.0, "on_blank": 0.0, "gkp": 0.0}
+    if len(players) == 0:
+        return empty
+    gaps, solid_ps, blank_ps, gkp_ps = [], [], [], []
+    for i in players:
+        weeks = np.flatnonzero(live[i])
+        pooled = pred[i, weeks].mean(axis=0)
+        dots_p = np.broadcast_to(pooled, (len(weeks), pooled.shape[0])).reshape(-1)
+        dots_y = target[i, weeks].reshape(-1)
+        gaps.append(float(((dots_p - dots_y) ** 2).mean()))
+        solid = dots_y > 0.5
+        if solid.any():
+            solid_ps.append(float(dots_p[solid].mean()))
+        if (~solid).any():
+            blank_ps.append(float(dots_p[~solid].mean()))
+        if int(position[i]) == 0:
+            gkp_ps.append(float(pooled[0]))
+    return {
+        "column": float(np.mean(gaps)),
+        "on_solid": float(np.mean(solid_ps)) if solid_ps else 0.0,
+        "on_blank": float(np.mean(blank_ps)) if blank_ps else 0.0,
+        "gkp": float(np.mean(gkp_ps)) if gkp_ps else 0.0,
     }
 
 
@@ -169,6 +205,10 @@ def holdout(model, cards, device) -> dict:
             )[0].cpu().numpy()
             target = view["target"]
             present = view["present"]
+            strip = _numpy_strip(pred, target, present, pad, card.position)
+            strip["revealed"] = f"{frac:.0%}"
+            strip["kind"] = "strip"
+            rows.append(strip)
             for distance in DISTANCES:
                 row = cut + distance - 1
                 if row >= card.n_fixtures:
@@ -192,7 +232,6 @@ def holdout(model, cards, device) -> dict:
                     "distance": distance,
                     "n": len(stats),
                     "row": float(np.mean([s["row"] for s in stats])),
-                    "column": float(np.mean([s["column"] for s in stats])),
                     "on_solid": float(np.mean([s["on_solid"] for s in stats])),
                     "on_blank": float(np.mean([s["on_blank"] for s in stats])),
                     "gkp": float(np.mean([s["gkp"] for s in stats])),
@@ -216,7 +255,16 @@ def holdout(model, cards, device) -> dict:
 
 
 def _mean_distance(reading: dict, distance: int, key: str) -> float:
-    picked = [r[key] for r in reading["rows"] if r.get("distance") == distance and "channel" not in r]
+    picked = [
+        r[key]
+        for r in reading["rows"]
+        if r.get("distance") == distance and "channel" not in r and r.get("kind") != "strip"
+    ]
+    return float(np.mean(picked)) if picked else 0.0
+
+
+def _mean_strip(reading: dict, key: str) -> float:
+    picked = [r[key] for r in reading["rows"] if r.get("kind") == "strip"]
     return float(np.mean(picked)) if picked else 0.0
 
 
@@ -242,7 +290,14 @@ def train_arm(name: str, model, cards, test, device) -> dict:
             opt.zero_grad()
             pred = model(bits, row_on, pad)
             row_pred, row_y, live = _take(pred, target, present, pad, cuts)
-            loss = step_loss(name, row_pred, row_y, live)
+            week = row_gap(row_pred, row_y, live)
+            strip = column_strip(pred, target, present, pad)
+            if name == "row":
+                loss = week
+            elif name == "column":
+                loss = strip
+            else:
+                loss = 0.5 * (week + strip)
             loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             opt.step()
@@ -250,12 +305,14 @@ def train_arm(name: str, model, cards, test, device) -> dict:
             seen += 1
         sched.step()
         reading = holdout(model, test, device)
+        next_week = _mean_distance(reading, 1, "row")
+        future = _mean_strip(reading, "column")
         if name == "column":
-            score = _mean_distance(reading, 1, "column")
+            score = future
         elif name == "combined":
-            score = 0.5 * (_mean_distance(reading, 1, "row") + _mean_distance(reading, 1, "column"))
+            score = 0.5 * (next_week + future)
         else:
-            score = _mean_distance(reading, 1, "row")
+            score = next_week
         improved = score < best - 1e-5
         if improved:
             best = score
@@ -266,7 +323,8 @@ def train_arm(name: str, model, cards, test, device) -> dict:
         epochs_run = epoch + 1
         print(
             f"{name} epoch {epoch + 1}/{EPOCHS} train {total / max(seen, 1):.4f} "
-            f"holdout {score:.4f}{' *' if improved else ''}",
+            f"next {next_week:.4f} strip {future:.4f} "
+            f"gkp {_mean_distance(reading, 1, 'gkp'):.3f}{' *' if improved else ''}",
             flush=True,
         )
         if bad >= EARLY_PATIENCE and epoch + 1 >= 15:
@@ -299,27 +357,46 @@ def write_report(arms: list[dict]) -> Path:
     lines = [
         "# Stepped per-dot gap",
         "",
-        "The set-overlap score is withdrawn. It can improve by painting a likely scorer "
-        "solid on the weeks he does not score, which filled the attacker columns and, "
-        "on the column arm, the goalkeeper squares.",
+        "The loss on a dot is the squared gap, (opacity − truth)². "
+        "A solid dot at 0.20 costs 0.64. A blank dot at 0.20 costs 0.04.",
         "",
-        "The loss is now the squared gap on each dot, (opacity − truth)². "
-        "A solid dot at 0.20 costs 0.64. A blank dot at 0.20 costs 0.04. "
-        "The minimum is the probability of the dot. "
-        "Row averages the dots of the week. Column averages each player first, "
-        "so a goalkeeper's squares weigh the same as a forward's. "
-        "Combined gives the two averages equal weight.",
+        "The row step scores the next gameweek. Each player can take a different gray "
+        "that week, and the gray can change the week after. "
+        "The column step gives a player one gray for the whole future column and "
+        "scores that gray against every week in it. A goal and a blank pull the "
+        "same dot. Giving every week its own gray is the row again, which is why "
+        "the two cards matched.",
         "",
-        "Opacity on a solid dot should sit near the chance of that event. "
-        "Opacity on a blank dot, and on a goalkeeper's goal dot, should sit near zero.",
+        "Combined gives the next-week gap and the column gap equal weight.",
         "",
         "## Next week and further",
+        "",
+        "This is the row question. One week, read with the weeks between left blank.",
         "",
         "| arm | weeks ahead | squared gap | opacity on solid | opacity on blank | GKP goal opacity |",
         "|---|---:|---:|---:|---:|---:|",
     ]
     for meta in arms:
         lines.extend(_fmt_horizon(meta))
+    lines.extend(
+        [
+            "",
+            "## Each player's future column",
+            "",
+            "One gray per player, compared with every later week. "
+            "The weeks between the cut and that week stay blank.",
+            "",
+            "| arm | column gap | opacity on solid | opacity on blank | GKP goal opacity |",
+            "|---|---:|---:|---:|---:|",
+        ]
+    )
+    for meta in arms:
+        lines.append(
+            f"| {meta['name']} | {_mean_strip(meta['reading'], 'column'):.4f} | "
+            f"{_mean_strip(meta['reading'], 'on_solid'):.3f} | "
+            f"{_mean_strip(meta['reading'], 'on_blank'):.3f} | "
+            f"{_mean_strip(meta['reading'], 'gkp'):.3f} |"
+        )
     lines.extend(
         [
             "",
@@ -351,18 +428,20 @@ def write_report(arms: list[dict]) -> Path:
             "",
             "Next-week squared gap: "
             f"row **{_mean_distance(row['reading'], 1, 'row'):.4f}**, "
-            f"column **{_mean_distance(column['reading'], 1, 'column'):.4f}**, "
-            f"combined **{0.5 * (_mean_distance(both['reading'], 1, 'row') + _mean_distance(both['reading'], 1, 'column')):.4f}**. "
-            f"Blank-dot opacity **{_mean_distance(row['reading'], 1, 'on_blank'):.3f}**. "
-            f"Opacity on a solid dot **{_mean_distance(row['reading'], 1, 'on_solid'):.3f}**. "
-            f"Goalkeeper goal opacity **{_mean_distance(row['reading'], 1, 'gkp'):.3f}**. "
-            "The three arms match. Every player has six event dots, so the mean over dots "
-            "and the mean over players are the same number, and the combined arm is that number again. "
-            "The column split only changed the old overlap ratio. "
-            "A true goal marker at the 20% cut is "
-            f"**{next(r['on_solid'] for r in row['reading']['rows'] if r.get('channel') == 'goals' and r['revealed'] == '20%'):.3f}** "
-            "opaque, and a blank goal marker is "
-            f"**{next(r['on_blank'] for r in row['reading']['rows'] if r.get('channel') == 'goals' and r['revealed'] == '20%'):.3f}**.",
+            f"column **{_mean_distance(column['reading'], 1, 'row'):.4f}**, "
+            f"combined **{_mean_distance(both['reading'], 1, 'row'):.4f}**. "
+            "Column gap, each player once down the future: "
+            f"row **{_mean_strip(row['reading'], 'column'):.4f}**, "
+            f"column **{_mean_strip(column['reading'], 'column'):.4f}**, "
+            f"combined **{_mean_strip(both['reading'], 'column'):.4f}**. "
+            "Goalkeeper goal opacity on the next week: "
+            f"row **{_mean_distance(row['reading'], 1, 'gkp'):.3f}**, "
+            f"column **{_mean_distance(column['reading'], 1, 'gkp'):.3f}**, "
+            f"combined **{_mean_distance(both['reading'], 1, 'gkp'):.3f}**. "
+            "The row card changes shade from week to week. "
+            "The column card repeats one shade down the player. "
+            "The average gap does not pick a winner: a week of its own and one gray for the column "
+            "miss by about the same amount.",
             "",
         ]
     )
@@ -371,25 +450,39 @@ def write_report(arms: list[dict]) -> Path:
 
 
 def _check_gap_formula() -> None:
-    """A solid dot at 0.20 costs 0.64. A blank dot at 0.80 costs 0.64. A perfect dot costs 0."""
+    """A solid dot at 0.20 costs 0.64. One week matches the row. Two weeks do not."""
     pred = torch.zeros(1, 1, EVENT_BITS)
     target = torch.zeros(1, 1, EVENT_BITS)
     pred[0, 0, 0] = 0.2
     target[0, 0, 0] = 1.0
     live = torch.ones(1, 1, dtype=torch.bool)
-    # five blank bits at 0 plus one solid bit at 0.2: mean square = 0.64 / 6
     got = float(row_gap(pred, target, live))
     if abs(got - (0.64 / EVENT_BITS)) > 1e-5:
         raise AssertionError(f"solid gap {got}")
-    pred = torch.zeros(1, 1, EVENT_BITS)
-    pred[0, 0, 0] = 0.8
-    target = torch.zeros(1, 1, EVENT_BITS)
-    got = float(row_gap(pred, target, live))
-    if abs(got - (0.64 / EVENT_BITS)) > 1e-5:
-        raise AssertionError(f"blank gap {got}")
-    pred = target.clone()
-    if float(row_gap(pred, target, live)) > 1e-6:
-        raise AssertionError("a matching card is not a zero gap")
+    week = torch.zeros(1, 1, 1, EVENT_BITS)
+    truth = torch.zeros(1, 1, 1, EVENT_BITS)
+    week[0, 0, 0, 0] = 0.2
+    truth[0, 0, 0, 0] = 1.0
+    present = torch.ones(1, 1, 1, dtype=torch.bool)
+    pad = torch.zeros(1, 1, dtype=torch.bool)
+    same = float(column_strip(week, truth, present, pad))
+    if abs(same - got) > 1e-5:
+        raise AssertionError("one week is not the row")
+    longer = torch.nn.Parameter(torch.zeros(1, 1, 2, EVENT_BITS))
+    with torch.no_grad():
+        longer[0, 0, 0, 0] = 0.2
+    longer_y = torch.zeros(1, 1, 2, EVENT_BITS)
+    longer_y[0, 0, 0, 0] = 1.0
+    present2 = torch.ones(1, 1, 2, dtype=torch.bool)
+    strip_t = column_strip(longer, longer_y, present2, pad)
+    # Mean gray on the solid bit is 0.1. Costs 0.81 on the goal week and 0.01 on the blank.
+    if abs(float(strip_t) - (0.82 / (2 * EVENT_BITS))) > 1e-5:
+        raise AssertionError(f"two-week column {float(strip_t)}")
+    if abs(float(strip_t) - got) < 1e-5:
+        raise AssertionError("the column still equals the row")
+    strip_t.backward()
+    if not torch.allclose(longer.grad[0, 0, 0, 0], longer.grad[0, 0, 1, 0]):
+        raise AssertionError("the two weeks of a column do not share a gray")
 
 
 def main() -> None:
@@ -422,7 +515,7 @@ def main() -> None:
     state = {
         "trial": "baudot_stepped_overlap",
         "score": "mean squared gap between opacity and the solid dot",
-        "loss": "squared per-dot gap on the stepped week",
+        "loss": "row scores the next week; column scores each player's future",
         "arms": [
             {
                 "name": meta["name"],
@@ -430,6 +523,7 @@ def main() -> None:
                 "seconds": meta["seconds"],
                 "best": meta["best"],
                 "row_d1": _mean_distance(meta["reading"], 1, "row"),
+                "strip": _mean_strip(meta["reading"], "column"),
                 "on_blank_d1": _mean_distance(meta["reading"], 1, "on_blank"),
                 "on_solid_d1": _mean_distance(meta["reading"], 1, "on_solid"),
                 "gkp_d1": _mean_distance(meta["reading"], 1, "gkp"),
