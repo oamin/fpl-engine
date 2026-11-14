@@ -1,0 +1,138 @@
+{
+  "trial": "baudot_opp_train",
+  "mean_score": 0.1920335556859448,
+  "gate_mean": 0.2181987495599782,
+  "epochs_run": 20,
+  "seconds": 358.8,
+  "alpha": 0.4474189877510071,
+  "beta": 0.5525810122489929,
+  "rows": [
+    {
+      "revealed": "20%",
+      "channel": "goals",
+      "actual": 730,
+      "painted": 770,
+      "hits": 197,
+      "actual_within_1": 271,
+      "painted_within_1": 396,
+      "score": 0.249021645021645
+    },
+    {
+      "revealed": "20%",
+      "channel": "assists",
+      "actual": 707,
+      "painted": 767,
+      "hits": 131,
+      "actual_within_1": 172,
+      "painted_within_1": 269,
+      "score": 0.1638429872682339
+    },
+    {
+      "revealed": "40%",
+      "channel": "goals",
+      "actual": 544,
+      "painted": 644,
+      "hits": 155,
+      "actual_within_1": 218,
+      "painted_within_1": 326,
+      "score": 0.22042369868456824
+    },
+    {
+      "revealed": "40%",
+      "channel": "assists",
+      "actual": 531,
+      "painted": 640,
+      "hits": 108,
+      "actual_within_1": 142,
+      "painted_within_1": 209,
+      "score": 0.15304227156276687
+    },
+    {
+      "revealed": "60%",
+      "channel": "goals",
+      "actual": 360,
+      "painted": 451,
+      "hits": 106,
+      "actual_within_1": 150,
+      "painted_within_1": 228,
+      "score": 0.20866084683714228
+    },
+    {
+      "revealed": "60%",
+      "channel": "assists",
+      "actual": 351,
+      "painted": 449,
+      "hits": 84,
+      "actual_within_1": 108,
+      "painted_within_1": 157,
+      "score": 0.16416481069042316
+    },
+    {
+      "revealed": "80%",
+      "channel": "goals",
+      "actual": 199,
+      "painted": 238,
+      "hits": 57,
+      "actual_within_1": 79,
+      "painted_within_1": 114,
+      "score": 0.21812203142126416
+    },
+    {
+      "revealed": "80%",
+      "channel": "assists",
+      "actual": 192,
+      "painted": 233,
+      "hits": 41,
+      "actual_within_1": 56,
+      "painted_within_1": 76,
+      "score": 0.15899015400151476
+    }
+  ],
+  "position_20": {
+    "goals": {
+      "GKP": {
+        "actual": 0,
+        "painted": 0,
+        "hits": 0
+      },
+      "DEF": {
+        "actual": 103,
+        "painted": 0,
+        "hits": 0
+      },
+      "MID": {
+        "actual": 394,
+        "painted": 447,
+        "hits": 96
+      },
+      "FWD": {
+        "actual": 233,
+        "painted": 323,
+        "hits": 101
+      }
+    },
+    "assists": {
+      "GKP": {
+        "actual": 4,
+        "painted": 0,
+        "hits": 0
+      },
+      "DEF": {
+        "actual": 181,
+        "painted": 0,
+        "hits": 0
+      },
+      "MID": {
+        "actual": 434,
+        "painted": 447,
+        "hits": 86
+      },
+      "FWD": {
+        "actual": 88,
+        "painted": 320,
+        "hits": 45
+      }
+    }
+  },
+  "report": "/agent/repos/fpl-engine/reports/baudot_opp_train.md"
+}

@@ -1,458 +1,138 @@
 {
-  "trial": "baudot_odds_weight",
-  "gate": {
-    "locked": "2026-11-13",
-    "method": "baudot_row_mixer_learnable_tversky",
-    "fov": "all_past_gws + one_shot_remainder",
-    "seed": 0,
-    "id_bits": 11,
-    "alpha": 0.4474738538265228,
-    "beta": 0.5525261759757996,
-    "module": "src.models.flashcard_baudot_row_trial"
-  },
-  "seconds": 203.0,
-  "arms": [
+  "trial": "baudot_opp_train",
+  "mean_score": 0.1920335556859448,
+  "gate_mean": 0.2181987495599782,
+  "epochs_run": 20,
+  "seconds": 358.8,
+  "alpha": 0.4474189877510071,
+  "beta": 0.5525810122489929,
+  "rows": [
     {
-      "kind": "intact",
-      "epochs_run": 20,
-      "mean_score": 0.2181987495599782,
-      "final_alpha": 0.4474738538265228,
-      "final_beta": 0.5525261759757996,
-      "pr20": {
-        "goals": {
-          "ALL": {
-            "hit": 194,
-            "fp": 507,
-            "miss": 536,
-            "tn": 14452,
-            "actual": 730,
-            "painted": 701,
-            "precision": 0.2767475035663338,
-            "recall": 0.26575342465753427
-          },
-          "GKP": {
-            "hit": 0,
-            "fp": 0,
-            "miss": 0,
-            "tn": 1168,
-            "actual": 0,
-            "painted": 0,
-            "precision": null,
-            "recall": null
-          },
-          "DEF": {
-            "hit": 0,
-            "fp": 0,
-            "miss": 103,
-            "tn": 5310,
-            "actual": 103,
-            "painted": 0,
-            "precision": null,
-            "recall": 0.0
-          },
-          "MID": {
-            "hit": 83,
-            "fp": 287,
-            "miss": 311,
-            "tn": 6559,
-            "actual": 394,
-            "painted": 370,
-            "precision": 0.22432432432432434,
-            "recall": 0.21065989847715735
-          },
-          "FWD": {
-            "hit": 111,
-            "fp": 220,
-            "miss": 122,
-            "tn": 1415,
-            "actual": 233,
-            "painted": 331,
-            "precision": 0.33534743202416917,
-            "recall": 0.47639484978540775
-          }
-        },
-        "assists": {
-          "ALL": {
-            "hit": 114,
-            "fp": 579,
-            "miss": 593,
-            "tn": 14403,
-            "actual": 707,
-            "painted": 693,
-            "precision": 0.1645021645021645,
-            "recall": 0.16124469589816123
-          },
-          "GKP": {
-            "hit": 0,
-            "fp": 0,
-            "miss": 4,
-            "tn": 1164,
-            "actual": 4,
-            "painted": 0,
-            "precision": null,
-            "recall": 0.0
-          },
-          "DEF": {
-            "hit": 0,
-            "fp": 0,
-            "miss": 181,
-            "tn": 5232,
-            "actual": 181,
-            "painted": 0,
-            "precision": null,
-            "recall": 0.0
-          },
-          "MID": {
-            "hit": 65,
-            "fp": 298,
-            "miss": 369,
-            "tn": 6508,
-            "actual": 434,
-            "painted": 363,
-            "precision": 0.1790633608815427,
-            "recall": 0.1497695852534562
-          },
-          "FWD": {
-            "hit": 49,
-            "fp": 281,
-            "miss": 39,
-            "tn": 1499,
-            "actual": 88,
-            "painted": 330,
-            "precision": 0.1484848484848485,
-            "recall": 0.5568181818181818
-          }
-        }
-      },
-      "roles": {
-        "GKP": {
-          "n": 1168,
-          "mins": 46.230308219178085,
-          "goal_rate_actual": 0.0,
-          "goal_rate_painted": 0.0,
-          "assist_rate_actual": 0.003424657534246575,
-          "assist_rate_painted": 0.0
-        },
-        "DEF": {
-          "n": 5413,
-          "mins": 41.67134675780528,
-          "goal_rate_actual": 0.019028265287271383,
-          "goal_rate_painted": 0.0,
-          "assist_rate_actual": 0.03343801958248661,
-          "assist_rate_painted": 0.0
-        },
-        "MID": {
-          "n": 7240,
-          "mins": 34.5067679558011,
-          "goal_rate_actual": 0.05441988950276243,
-          "goal_rate_painted": 0.05110497237569061,
-          "assist_rate_actual": 0.059944751381215466,
-          "assist_rate_painted": 0.050138121546961324
-        },
-        "FWD": {
-          "n": 1868,
-          "mins": 33.021948608137045,
-          "goal_rate_actual": 0.1247323340471092,
-          "goal_rate_painted": 0.1771948608137045,
-          "assist_rate_actual": 0.047109207708779445,
-          "assist_rate_painted": 0.1766595289079229
-        }
-      }
+      "revealed": "20%",
+      "channel": "goals",
+      "actual": 730,
+      "painted": 770,
+      "hits": 197,
+      "actual_within_1": 271,
+      "painted_within_1": 396,
+      "score": 0.249021645021645
     },
     {
-      "kind": "no_odds",
-      "epochs_run": 26,
-      "mean_score": 0.18247428584317132,
-      "final_alpha": 0.44957417249679565,
-      "final_beta": 0.5504258275032043,
-      "pr20": {
-        "goals": {
-          "ALL": {
-            "hit": 154,
-            "fp": 405,
-            "miss": 576,
-            "tn": 14554,
-            "actual": 730,
-            "painted": 559,
-            "precision": 0.27549194991055453,
-            "recall": 0.21095890410958903
-          },
-          "GKP": {
-            "hit": 0,
-            "fp": 0,
-            "miss": 0,
-            "tn": 1168,
-            "actual": 0,
-            "painted": 0,
-            "precision": null,
-            "recall": null
-          },
-          "DEF": {
-            "hit": 0,
-            "fp": 0,
-            "miss": 103,
-            "tn": 5310,
-            "actual": 103,
-            "painted": 0,
-            "precision": null,
-            "recall": 0.0
-          },
-          "MID": {
-            "hit": 21,
-            "fp": 115,
-            "miss": 373,
-            "tn": 6731,
-            "actual": 394,
-            "painted": 136,
-            "precision": 0.15441176470588236,
-            "recall": 0.0532994923857868
-          },
-          "FWD": {
-            "hit": 133,
-            "fp": 290,
-            "miss": 100,
-            "tn": 1345,
-            "actual": 233,
-            "painted": 423,
-            "precision": 0.3144208037825059,
-            "recall": 0.5708154506437768
-          }
-        },
-        "assists": {
-          "ALL": {
-            "hit": 78,
-            "fp": 503,
-            "miss": 629,
-            "tn": 14479,
-            "actual": 707,
-            "painted": 581,
-            "precision": 0.1342512908777969,
-            "recall": 0.11032531824611033
-          },
-          "GKP": {
-            "hit": 0,
-            "fp": 0,
-            "miss": 4,
-            "tn": 1164,
-            "actual": 4,
-            "painted": 0,
-            "precision": null,
-            "recall": 0.0
-          },
-          "DEF": {
-            "hit": 0,
-            "fp": 0,
-            "miss": 181,
-            "tn": 5232,
-            "actual": 181,
-            "painted": 0,
-            "precision": null,
-            "recall": 0.0
-          },
-          "MID": {
-            "hit": 21,
-            "fp": 127,
-            "miss": 413,
-            "tn": 6679,
-            "actual": 434,
-            "painted": 148,
-            "precision": 0.14189189189189189,
-            "recall": 0.04838709677419355
-          },
-          "FWD": {
-            "hit": 57,
-            "fp": 376,
-            "miss": 31,
-            "tn": 1404,
-            "actual": 88,
-            "painted": 433,
-            "precision": 0.13163972286374134,
-            "recall": 0.6477272727272727
-          }
-        }
-      },
-      "roles": {
-        "GKP": {
-          "n": 1168,
-          "mins": 46.230308219178085,
-          "goal_rate_actual": 0.0,
-          "goal_rate_painted": 0.0,
-          "assist_rate_actual": 0.003424657534246575,
-          "assist_rate_painted": 0.0
-        },
-        "DEF": {
-          "n": 5413,
-          "mins": 41.67134675780528,
-          "goal_rate_actual": 0.019028265287271383,
-          "goal_rate_painted": 0.0,
-          "assist_rate_actual": 0.03343801958248661,
-          "assist_rate_painted": 0.0
-        },
-        "MID": {
-          "n": 7240,
-          "mins": 34.5067679558011,
-          "goal_rate_actual": 0.05441988950276243,
-          "goal_rate_painted": 0.01878453038674033,
-          "assist_rate_actual": 0.059944751381215466,
-          "assist_rate_painted": 0.020441988950276244
-        },
-        "FWD": {
-          "n": 1868,
-          "mins": 33.021948608137045,
-          "goal_rate_actual": 0.1247323340471092,
-          "goal_rate_painted": 0.22644539614561027,
-          "assist_rate_actual": 0.047109207708779445,
-          "assist_rate_painted": 0.23179871520342613
-        }
-      }
+      "revealed": "20%",
+      "channel": "assists",
+      "actual": 707,
+      "painted": 767,
+      "hits": 131,
+      "actual_within_1": 172,
+      "painted_within_1": 269,
+      "score": 0.1638429872682339
     },
     {
-      "kind": "no_mins",
-      "epochs_run": 48,
-      "mean_score": 0.11547421723182169,
-      "final_alpha": 0.45254749059677124,
-      "final_beta": 0.5474525094032288,
-      "pr20": {
-        "goals": {
-          "ALL": {
-            "hit": 128,
-            "fp": 485,
-            "miss": 602,
-            "tn": 14474,
-            "actual": 730,
-            "painted": 613,
-            "precision": 0.20880913539967375,
-            "recall": 0.17534246575342466
-          },
-          "GKP": {
-            "hit": 0,
-            "fp": 0,
-            "miss": 0,
-            "tn": 1168,
-            "actual": 0,
-            "painted": 0,
-            "precision": null,
-            "recall": null
-          },
-          "DEF": {
-            "hit": 0,
-            "fp": 1,
-            "miss": 103,
-            "tn": 5309,
-            "actual": 103,
-            "painted": 1,
-            "precision": 0.0,
-            "recall": 0.0
-          },
-          "MID": {
-            "hit": 60,
-            "fp": 343,
-            "miss": 334,
-            "tn": 6503,
-            "actual": 394,
-            "painted": 403,
-            "precision": 0.1488833746898263,
-            "recall": 0.15228426395939088
-          },
-          "FWD": {
-            "hit": 68,
-            "fp": 141,
-            "miss": 165,
-            "tn": 1494,
-            "actual": 233,
-            "painted": 209,
-            "precision": 0.3253588516746411,
-            "recall": 0.2918454935622318
-          }
-        },
-        "assists": {
-          "ALL": {
-            "hit": 76,
-            "fp": 539,
-            "miss": 631,
-            "tn": 14443,
-            "actual": 707,
-            "painted": 615,
-            "precision": 0.12357723577235773,
-            "recall": 0.1074964639321075
-          },
-          "GKP": {
-            "hit": 0,
-            "fp": 0,
-            "miss": 4,
-            "tn": 1164,
-            "actual": 4,
-            "painted": 0,
-            "precision": null,
-            "recall": 0.0
-          },
-          "DEF": {
-            "hit": 1,
-            "fp": 0,
-            "miss": 180,
-            "tn": 5232,
-            "actual": 181,
-            "painted": 1,
-            "precision": 1.0,
-            "recall": 0.0055248618784530384
-          },
-          "MID": {
-            "hit": 54,
-            "fp": 354,
-            "miss": 380,
-            "tn": 6452,
-            "actual": 434,
-            "painted": 408,
-            "precision": 0.1323529411764706,
-            "recall": 0.12442396313364056
-          },
-          "FWD": {
-            "hit": 21,
-            "fp": 185,
-            "miss": 67,
-            "tn": 1595,
-            "actual": 88,
-            "painted": 206,
-            "precision": 0.10194174757281553,
-            "recall": 0.23863636363636365
-          }
-        }
-      },
-      "roles": {
-        "GKP": {
-          "n": 1168,
-          "mins": 46.230308219178085,
-          "goal_rate_actual": 0.0,
-          "goal_rate_painted": 0.0,
-          "assist_rate_actual": 0.003424657534246575,
-          "assist_rate_painted": 0.0
-        },
-        "DEF": {
-          "n": 5413,
-          "mins": 41.67134675780528,
-          "goal_rate_actual": 0.019028265287271383,
-          "goal_rate_painted": 0.00018474043968224645,
-          "assist_rate_actual": 0.03343801958248661,
-          "assist_rate_painted": 0.00018474043968224645
-        },
-        "MID": {
-          "n": 7240,
-          "mins": 34.5067679558011,
-          "goal_rate_actual": 0.05441988950276243,
-          "goal_rate_painted": 0.05566298342541436,
-          "assist_rate_actual": 0.059944751381215466,
-          "assist_rate_painted": 0.056353591160221
-        },
-        "FWD": {
-          "n": 1868,
-          "mins": 33.021948608137045,
-          "goal_rate_actual": 0.1247323340471092,
-          "goal_rate_painted": 0.11188436830835118,
-          "assist_rate_actual": 0.047109207708779445,
-          "assist_rate_painted": 0.11027837259100642
-        }
-      }
+      "revealed": "40%",
+      "channel": "goals",
+      "actual": 544,
+      "painted": 644,
+      "hits": 155,
+      "actual_within_1": 218,
+      "painted_within_1": 326,
+      "score": 0.22042369868456824
+    },
+    {
+      "revealed": "40%",
+      "channel": "assists",
+      "actual": 531,
+      "painted": 640,
+      "hits": 108,
+      "actual_within_1": 142,
+      "painted_within_1": 209,
+      "score": 0.15304227156276687
+    },
+    {
+      "revealed": "60%",
+      "channel": "goals",
+      "actual": 360,
+      "painted": 451,
+      "hits": 106,
+      "actual_within_1": 150,
+      "painted_within_1": 228,
+      "score": 0.20866084683714228
+    },
+    {
+      "revealed": "60%",
+      "channel": "assists",
+      "actual": 351,
+      "painted": 449,
+      "hits": 84,
+      "actual_within_1": 108,
+      "painted_within_1": 157,
+      "score": 0.16416481069042316
+    },
+    {
+      "revealed": "80%",
+      "channel": "goals",
+      "actual": 199,
+      "painted": 238,
+      "hits": 57,
+      "actual_within_1": 79,
+      "painted_within_1": 114,
+      "score": 0.21812203142126416
+    },
+    {
+      "revealed": "80%",
+      "channel": "assists",
+      "actual": 192,
+      "painted": 233,
+      "hits": 41,
+      "actual_within_1": 56,
+      "painted_within_1": 76,
+      "score": 0.15899015400151476
     }
   ],
-  "report": "/agent/repos/fpl-engine/reports/baudot_odds_weight.md"
+  "position_20": {
+    "goals": {
+      "GKP": {
+        "actual": 0,
+        "painted": 0,
+        "hits": 0
+      },
+      "DEF": {
+        "actual": 103,
+        "painted": 0,
+        "hits": 0
+      },
+      "MID": {
+        "actual": 394,
+        "painted": 447,
+        "hits": 96
+      },
+      "FWD": {
+        "actual": 233,
+        "painted": 323,
+        "hits": 101
+      }
+    },
+    "assists": {
+      "GKP": {
+        "actual": 4,
+        "painted": 0,
+        "hits": 0
+      },
+      "DEF": {
+        "actual": 181,
+        "painted": 0,
+        "hits": 0
+      },
+      "MID": {
+        "actual": 434,
+        "painted": 447,
+        "hits": 86
+      },
+      "FWD": {
+        "actual": 88,
+        "painted": 320,
+        "hits": 45
+      }
+    }
+  },
+  "report": "/agent/repos/fpl-engine/reports/baudot_opp_train.md"
 }

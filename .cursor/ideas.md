@@ -44,6 +44,14 @@ Yes: positions can be trained/tested independently. Restricting the live window 
 
 Self-critical REINFORCE on next-GW Bernoulli paint after Tversky warm-start; reward = channel `balanced_score`. Judged on the gate holdout table. Best **0.199** is warm-start, not SCST (SCST best 0.167). Does not beat full-remainder gate **0.218**; DEF stays blank. Do not reopen SCST on this FOV without a new action/reward grain (e.g. presence-level actions or DEF-budgeted reward). Report: `reports/baudot_rl_stepped.md`.
 
+## Parked — Baudot opponent-card cross-read (2026-11-14)
+
+Shared encoder attends the opponent card: earlier rows true, this fixture's minutes revealed on that card only, G/A and gc blank on both sides, later kickoffs hidden. gc6 header included. Mean **0.192** (Δ −0.026). DEF goals **103/0/0**, DEF assists **181/0/0**. The coupling the odds ablation asked for does not place DEF events. Report: `reports/baudot_opp_train.md`. Do not promote.
+
+## Parked — card tensor factorisation (2026-11-14)
+
+Reformatting club cards into a dense tensor so team correlation, match-up, and positional trends fall out of the algebra. Parked before a run. Contractions of the same bits are base rates, and a full-tensor read of the match leaks the same-week scoreline. The opponent-card screen above is the comparison that was run.
+
 ## Measured — odds and minutes both move placement (2026-11-14)
 
 Ablation, not a new model. No-minutes mean **0.115** (goals P/R 0.209/0.175). No-odds mean **0.182** with MID goal recall **0.053** and FWD overpaint. DEF still 0. Do not drop the 1X2 strip. Opponent-card coupling has to add something these two strips do not. Report: `reports/baudot_odds_weight.md`.
