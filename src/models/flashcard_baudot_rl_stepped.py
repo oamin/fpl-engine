@@ -134,16 +134,23 @@ def _channel_balanced(
 def step_reward(
     action: torch.Tensor, target: torch.Tensor, live: torch.Tensor
 ) -> tuple[torch.Tensor, torch.Tensor]:
-    """Mean goals/assists balanced_score. Returns (score B, has_actual B).
+    """Mean goals/assists balanced_score over channels with actual>0.
 
-    Blank weeks (no actual event bits) are masked out of the policy gradient:
-    official balanced_score gives them 1.0 for painting nothing, which otherwise
-    makes never-paint a dominant SCST optimum.
+    Returns (score B, has_actual B). Blank cards and empty channels are
+    excluded: official both-zero→1 would otherwise make never-paint optimal
+    under SCST whenever one channel is quiet.
     """
     g, ag = _channel_balanced(action, target, live, slice(0, GOAL_BITS))
     a, aa = _channel_balanced(action, target, live, slice(GOAL_BITS, EVENT_BITS))
-    score = 0.5 * (g + a)
-    has_actual = (ag + aa) > 0
+    g_on = ag > 0
+    a_on = aa > 0
+    denom = g_on.to(g.dtype) + a_on.to(a.dtype)
+    score = torch.where(
+        denom > 0,
+        (g * g_on.to(g.dtype) + a * a_on.to(a.dtype)) / denom.clamp_min(1.0),
+        torch.zeros_like(g),
+    )
+    has_actual = denom > 0
     return score, has_actual
 
 
