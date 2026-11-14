@@ -44,6 +44,10 @@ Yes: positions can be trained/tested independently. Restricting the live window 
 
 Self-critical REINFORCE on next-GW Bernoulli paint after Tversky warm-start; reward = channel `balanced_score`. Judged on the gate holdout table. Best **0.199** is warm-start, not SCST (SCST best 0.167). Does not beat full-remainder gate **0.218**; DEF stays blank. Do not reopen SCST on this FOV without a new action/reward grain (e.g. presence-level actions or DEF-budgeted reward). Report: `reports/baudot_rl_stepped.md`.
 
+## Measured — odds and minutes both move placement (2026-11-14)
+
+Ablation, not a new model. No-minutes mean **0.115** (goals P/R 0.209/0.175). No-odds mean **0.182** with MID goal recall **0.053** and FWD overpaint. DEF still 0. Do not drop the 1X2 strip. Opponent-card coupling has to add something these two strips do not. Report: `reports/baudot_odds_weight.md`.
+
 ## Parked — cell-posterior column allocation (2026-11-13)
 
 Stepped column trials that score cells / shares / top-k paint (GKP residual on one-bar weeks). Parked in favor of whole-strip picture matching. Keep the reports for archaeology; do not extend the share/rank stack.
