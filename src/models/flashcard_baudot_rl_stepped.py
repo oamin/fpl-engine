@@ -102,39 +102,49 @@ def _channel_balanced(
     target: torch.Tensor,
     live: torch.Tensor,
     sl: slice,
-) -> torch.Tensor:
-    """Per-batch-item balanced_score for one channel (hits × volume). Shape B."""
+) -> tuple[torch.Tensor, torch.Tensor]:
+    """Per-batch-item balanced_score for one channel. Returns (score B, actual B)."""
     live_f = live[..., sl].to(action.dtype)
     a = action[..., sl] * live_f
     y = target[..., sl] * live_f
-    # Sum over players, GWs, bits → one scalar per card.
     dims = (1, 2, 3)
     actual = y.sum(dim=dims)
     painted = a.sum(dim=dims)
     exact = (a * y).sum(dim=dims)
+    # Match flashcard_card_score.balanced_score, including both-zero → 1.
+    both_zero = actual + painted <= 0
     hits = torch.where(
-        actual + painted > 0,
-        (2.0 * exact) / (actual + painted + EPS),
+        both_zero,
         torch.ones_like(actual),
+        (2.0 * exact) / (actual + painted + EPS),
     )
-    both = (actual > 0) & (painted > 0)
+    both_pos = (actual > 0) & (painted > 0)
     volume = torch.where(
-        both,
-        torch.minimum(actual, painted) / (torch.maximum(actual, painted) + EPS),
-        torch.zeros_like(actual),
+        both_zero,
+        torch.ones_like(actual),
+        torch.where(
+            both_pos,
+            torch.minimum(actual, painted) / (torch.maximum(actual, painted) + EPS),
+            torch.zeros_like(actual),
+        ),
     )
-    # Empty live window (no present DEF/etc.): treat as neutral 1 so it does not
-    # dominate the advantage with zeros.
-    empty = (live_f.sum(dim=dims) <= 0) | ((actual + painted) <= 0)
-    score = hits * volume
-    return torch.where(empty & (actual + painted <= 0), torch.ones_like(score), score)
+    return hits * volume, actual
 
 
-def step_reward(action: torch.Tensor, target: torch.Tensor, live: torch.Tensor) -> torch.Tensor:
-    """Mean of goals/assists balanced_score on the live step. Shape B."""
-    g = _channel_balanced(action, target, live, slice(0, GOAL_BITS))
-    a = _channel_balanced(action, target, live, slice(GOAL_BITS, EVENT_BITS))
-    return 0.5 * (g + a)
+def step_reward(
+    action: torch.Tensor, target: torch.Tensor, live: torch.Tensor
+) -> tuple[torch.Tensor, torch.Tensor]:
+    """Mean goals/assists balanced_score. Returns (score B, has_actual B).
+
+    Blank weeks (no actual event bits) are masked out of the policy gradient:
+    official balanced_score gives them 1.0 for painting nothing, which otherwise
+    makes never-paint a dominant SCST optimum.
+    """
+    g, ag = _channel_balanced(action, target, live, slice(0, GOAL_BITS))
+    a, aa = _channel_balanced(action, target, live, slice(GOAL_BITS, EVENT_BITS))
+    score = 0.5 * (g + a)
+    has_actual = (ag + aa) > 0
+    return score, has_actual
 
 
 def reinforce_loss(
@@ -149,31 +159,31 @@ def reinforce_loss(
         live = live.expand(*live.shape[:-1], EVENT_BITS)
     live_f = live.to(probs.dtype)
     dist = torch.distributions.Bernoulli(probs=probs)
-    sample = dist.sample()
-    # Mask non-live to 0 so they never contribute paint or log-prob mass we care about.
-    sample = sample * live_f
+    sample = dist.sample() * live_f
     greedy = ((probs >= 0.5).to(probs.dtype)) * live_f
 
-    r_sample = step_reward(sample, target, live)
+    r_sample, has_actual = step_reward(sample, target, live)
     with torch.no_grad():
-        r_greedy = step_reward(greedy, target, live)
-        advantage = r_sample - r_greedy
+        r_greedy, _ = step_reward(greedy, target, live)
+        advantage = (r_sample - r_greedy) * has_actual.to(r_sample.dtype)
 
-    # log π only on live bits
     log_p = dist.log_prob(sample) * live_f
     log_p = log_p.sum(dim=(1, 2, 3)) / live_f.sum(dim=(1, 2, 3)).clamp_min(1.0)
-    pg = -(advantage.detach() * log_p).mean()
+    # Average PG over eventful steps only (avoid diluting with blank-week zeros).
+    n_evt = has_actual.to(log_p.dtype).sum().clamp_min(1.0)
+    pg = -(advantage.detach() * log_p).sum() / n_evt
 
-    entropy = dist.entropy() * live_f
-    entropy = entropy.sum() / live_f.sum().clamp_min(1.0)
+    entropy = (dist.entropy() * live_f).sum() / live_f.sum().clamp_min(1.0)
     loss = pg - ENTROPY_COEF * entropy
 
+    evt = has_actual
     stats = {
-        "r_sample": float(r_sample.mean().detach()),
-        "r_greedy": float(r_greedy.mean().detach()),
-        "advantage": float(advantage.mean().detach()),
+        "r_sample": float(r_sample[evt].mean().detach()) if bool(evt.any()) else 0.0,
+        "r_greedy": float(r_greedy[evt].mean().detach()) if bool(evt.any()) else 0.0,
+        "advantage": float(advantage[evt].mean().detach()) if bool(evt.any()) else 0.0,
         "entropy": float(entropy.detach()),
         "pg": float(pg.detach()),
+        "frac_eventful": float(evt.float().mean().detach()),
     }
     return loss, stats
 
@@ -200,7 +210,13 @@ def train_rl(
         model.train()
         total = 0.0
         seen = 0
-        epoch_stats = {"r_sample": 0.0, "r_greedy": 0.0, "advantage": 0.0, "entropy": 0.0}
+        epoch_stats = {
+            "r_sample": 0.0,
+            "r_greedy": 0.0,
+            "advantage": 0.0,
+            "entropy": 0.0,
+            "frac_eventful": 0.0,
+        }
         order = rng.permutation(len(train))
         for start in range(0, len(train), BATCH):
             pick = [train[int(i)] for i in order[start : start + BATCH]]
@@ -241,7 +257,8 @@ def train_rl(
         print(
             f"rl_step_bal epoch {epoch + 1}/{EPOCHS} loss {avg:.4f} "
             f"R_s={epoch_stats['r_sample']:.3f} R_g={epoch_stats['r_greedy']:.3f} "
-            f"H={epoch_stats['entropy']:.3f} holdout_score {score:.4f}"
+            f"H={epoch_stats['entropy']:.3f} evt={epoch_stats['frac_eventful']:.2f} "
+            f"holdout_score {score:.4f}"
             f"{' *' if improved else ''}",
             flush=True,
         )
