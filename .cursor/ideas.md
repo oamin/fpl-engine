@@ -48,9 +48,13 @@ Self-critical REINFORCE on next-GW Bernoulli paint after Tversky warm-start; rew
 
 Two losses on the locked opponent card, cell Tversky kept, weight 1. `1_margins` (role pools + row sums + column sums) never crosses 0.5: soft pool totals match with sub-threshold ink, mean **0.000**. `2_gc_scoreline` (gc on both clubs, scoreline shared onto the XI, away fills both cards) mean **0.178**. Goal volume tightens and lands on FWD (recall 0.730) while MID goal recall falls to 0.028; assists overpaint; DEF stays **103/0/0** and **181/0/0**. Report: `reports/baudot_margin_gc.md`. Do not promote. A later pool loss needs a term that pays for crossing the decision threshold.
 
-## Measured — stepped overlap (2026-11-14)
+## Withdrawn — stepped picture overlap (2026-11-14)
 
-Picture overlap trained one week at a time on the opacity card. Next-week overlap: row **0.220**, column **0.166**, combined **0.214**. Eight weeks ahead the row is still **0.217**. The horizon does not fade, because each future row keeps its own opponent, odds and minutes. Column raises goal-dot recall and the gray on blank dots, and the overlap falls. Combined does not pass the row. Report: `reports/baudot_stepped_overlap.md`.
+Overlap `2 * gray on solid / (all gray + solid)` filled attacker columns and, on the column arm, goalkeeper squares. A likely scorer painted solid every week raised the ratio. Do not train that score. The replacement is the squared per-dot gap in the entry below.
+
+## Measured — stepped per-dot gap (2026-11-14)
+
+Squared gap `(opacity − truth)²` on the next week's event dots. Next-week gap **0.0168**. Blank dots **0.020** opaque, solid dots **0.101**, goalkeeper goals **0.021**. A true goal marker at the 20% cut is **0.124** and a blank goal marker is **0.047**. Row, column and combined match, because every player has six event dots, so a mean over dots and a mean over players are the same. Eight weeks ahead the gap is **0.0155**. Report: `reports/baudot_stepped_overlap.md`.
 
 ## LOCKED — opacity card is the default (2026-11-14)
 

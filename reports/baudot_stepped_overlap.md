@@ -1,66 +1,61 @@
-# Stepped overlap
+# Stepped per-dot gap
 
-The score is the overlap of the gray card with the solid card: `2 * opacity on solid dots / (all opacity + solid dots)`. The loss on a step is one minus that overlap. Row treats the next gameweek as one picture. Column gives the players who scored half the score and the blank players the other half. Inside each half every player weighs the same, so a defender who scored weighs the same as a forward who scored. A blank player scores one minus their mean opacity. Combined gives the row overlap and the column overlap equal weight.
+The set-overlap score is withdrawn. It can improve by painting a likely scorer solid on the weeks he does not score, which filled the attacker columns and, on the column arm, the goalkeeper squares.
 
-Training steps the next week, with the true past behind it. The table reads the same overlap 1, 2, 4 and 8 weeks ahead. The weeks in between stay blank.
+The loss is now the squared gap on each dot, (opacity − truth)². A solid dot at 0.20 costs 0.64. A blank dot at 0.20 costs 0.04. The minimum is the probability of the dot. Row averages the dots of the week. Column averages each player first, so a goalkeeper's squares weigh the same as a forward's. Combined gives the two averages equal weight.
+
+Opacity on a solid dot should sit near the chance of that event. Opacity on a blank dot, and on a goalkeeper's goal dot, should sit near zero.
 
 ## Next week and further
 
-| arm | weeks ahead | picture overlap | player overlap |
-|---|---:|---:|---:|
-| row | 1 | 0.220 | 0.747 |
-| row | 2 | 0.198 | 0.773 |
-| row | 4 | 0.169 | 0.751 |
-| row | 8 | 0.217 | 0.742 |
-| column | 1 | 0.166 | 0.767 |
-| column | 2 | 0.140 | 0.775 |
-| column | 4 | 0.136 | 0.776 |
-| column | 8 | 0.163 | 0.766 |
-| combined | 1 | 0.214 | 0.759 |
-| combined | 2 | 0.187 | 0.778 |
-| combined | 4 | 0.164 | 0.765 |
-| combined | 8 | 0.208 | 0.752 |
+| arm | weeks ahead | squared gap | opacity on solid | opacity on blank | GKP goal opacity |
+|---|---:|---:|---:|---:|---:|
+| row | 1 | 0.0168 | 0.101 | 0.020 | 0.021 |
+| row | 2 | 0.0137 | 0.106 | 0.020 | 0.020 |
+| row | 4 | 0.0137 | 0.088 | 0.020 | 0.021 |
+| row | 8 | 0.0155 | 0.100 | 0.019 | 0.021 |
+| column | 1 | 0.0168 | 0.101 | 0.020 | 0.021 |
+| column | 2 | 0.0137 | 0.106 | 0.020 | 0.020 |
+| column | 4 | 0.0137 | 0.088 | 0.020 | 0.021 |
+| column | 8 | 0.0155 | 0.100 | 0.019 | 0.021 |
+| combined | 1 | 0.0168 | 0.101 | 0.020 | 0.021 |
+| combined | 2 | 0.0137 | 0.106 | 0.020 | 0.020 |
+| combined | 4 | 0.0137 | 0.088 | 0.020 | 0.021 |
+| combined | 8 | 0.0155 | 0.100 | 0.019 | 0.021 |
 
 ## Event marker, one week ahead
 
-The first goal dot and the first assist dot, one week ahead. Solid counts are that week across the 20 holdout clubs.
+The first goal dot and the first assist dot.
 
-| arm | revealed | channel | solid | on true | on false | precision | recall | overlap |
-|---|---|---|---:|---:|---:|---:|---:|---:|
-| row | 20% | goals | 29 | 19.0 | 89.1 | 0.176 | 0.656 | 0.278 |
-| row | 40% | goals | 26 | 20.5 | 92.9 | 0.181 | 0.788 | 0.294 |
-| row | 60% | goals | 30 | 22.3 | 85.8 | 0.206 | 0.744 | 0.323 |
-| row | 80% | goals | 27 | 16.6 | 95.0 | 0.149 | 0.615 | 0.240 |
-| row | 20% | assists | 29 | 14.3 | 91.4 | 0.136 | 0.494 | 0.213 |
-| row | 40% | assists | 28 | 13.4 | 97.9 | 0.121 | 0.480 | 0.193 |
-| row | 60% | assists | 25 | 13.3 | 92.6 | 0.125 | 0.531 | 0.203 |
-| row | 80% | assists | 25 | 19.1 | 90.5 | 0.174 | 0.763 | 0.283 |
-| column | 20% | goals | 29 | 25.2 | 214.2 | 0.105 | 0.868 | 0.188 |
-| column | 40% | goals | 26 | 23.0 | 212.9 | 0.097 | 0.883 | 0.175 |
-| column | 60% | goals | 30 | 26.6 | 201.5 | 0.117 | 0.887 | 0.206 |
-| column | 80% | goals | 27 | 23.4 | 216.4 | 0.097 | 0.865 | 0.175 |
-| column | 20% | assists | 29 | 17.5 | 151.9 | 0.103 | 0.604 | 0.177 |
-| column | 40% | assists | 28 | 16.4 | 154.3 | 0.096 | 0.584 | 0.165 |
-| column | 60% | assists | 25 | 15.7 | 147.0 | 0.096 | 0.626 | 0.167 |
-| column | 80% | assists | 25 | 18.0 | 154.8 | 0.104 | 0.718 | 0.182 |
-| combined | 20% | goals | 29 | 20.4 | 115.6 | 0.150 | 0.704 | 0.247 |
-| combined | 40% | goals | 26 | 20.9 | 110.1 | 0.159 | 0.803 | 0.266 |
-| combined | 60% | goals | 30 | 24.4 | 103.9 | 0.190 | 0.813 | 0.308 |
-| combined | 80% | goals | 27 | 20.2 | 112.9 | 0.152 | 0.747 | 0.252 |
-| combined | 20% | assists | 29 | 14.8 | 109.6 | 0.119 | 0.510 | 0.193 |
-| combined | 40% | assists | 28 | 13.9 | 107.7 | 0.114 | 0.495 | 0.185 |
-| combined | 60% | assists | 25 | 14.6 | 103.4 | 0.124 | 0.584 | 0.204 |
-| combined | 80% | assists | 25 | 18.8 | 104.1 | 0.153 | 0.753 | 0.255 |
-
-## Example cards
-
-Arsenal and Liverpool, 2025-26, cut after 20% of the season. The twelve regulars. G is at least one goal, A is at least one assist. Above the line the true card is shown. Below the line the model paints opacity.
-
-- `reports/baudot_step_row_arsenal_2025-26.png` — row step, overlap on these dots 0.259
-- `reports/baudot_step_column_arsenal_2025-26.png` — column step, overlap 0.199
-- `reports/baudot_step_row_liverpool_2025-26.png` — row step, overlap 0.279
-- `reports/baudot_step_column_liverpool_2025-26.png` — column step, overlap 0.205
+| arm | revealed | channel | squared gap | opacity on solid | opacity on blank | GKP |
+|---|---|---|---:|---:|---:|---:|
+| row | 20% | goals | 0.0498 | 0.124 | 0.047 | 0.022 |
+| row | 40% | goals | 0.0411 | 0.203 | 0.047 | 0.020 |
+| row | 60% | goals | 0.0463 | 0.180 | 0.048 | 0.021 |
+| row | 80% | goals | 0.0429 | 0.195 | 0.050 | 0.019 |
+| row | 20% | assists | 0.0521 | 0.099 | 0.049 | 0.035 |
+| row | 40% | assists | 0.0495 | 0.094 | 0.049 | 0.033 |
+| row | 60% | assists | 0.0434 | 0.106 | 0.050 | 0.034 |
+| row | 80% | assists | 0.0411 | 0.131 | 0.050 | 0.032 |
+| column | 20% | goals | 0.0498 | 0.124 | 0.047 | 0.022 |
+| column | 40% | goals | 0.0411 | 0.203 | 0.047 | 0.020 |
+| column | 60% | goals | 0.0463 | 0.180 | 0.048 | 0.021 |
+| column | 80% | goals | 0.0429 | 0.195 | 0.050 | 0.019 |
+| column | 20% | assists | 0.0521 | 0.099 | 0.049 | 0.035 |
+| column | 40% | assists | 0.0495 | 0.094 | 0.049 | 0.033 |
+| column | 60% | assists | 0.0434 | 0.106 | 0.050 | 0.034 |
+| column | 80% | assists | 0.0411 | 0.131 | 0.050 | 0.032 |
+| combined | 20% | goals | 0.0498 | 0.124 | 0.047 | 0.022 |
+| combined | 40% | goals | 0.0411 | 0.203 | 0.047 | 0.020 |
+| combined | 60% | goals | 0.0463 | 0.180 | 0.048 | 0.021 |
+| combined | 80% | goals | 0.0429 | 0.195 | 0.050 | 0.019 |
+| combined | 20% | assists | 0.0521 | 0.099 | 0.049 | 0.035 |
+| combined | 40% | assists | 0.0495 | 0.094 | 0.049 | 0.033 |
+| combined | 60% | assists | 0.0434 | 0.106 | 0.050 | 0.034 |
+| combined | 80% | assists | 0.0411 | 0.131 | 0.050 | 0.032 |
 
 ## Call
 
-Next-week picture overlap: row **0.220**, column **0.166**, combined **0.214**. Eight weeks ahead, with the weeks between left blank: row **0.217**, column **0.163**, combined **0.208**. The overlap does not fade with distance. Each future row still carries its own opponent, odds and minutes, so the step does not have to pass the week through the blank rows. The column arm covers more of the true goal dots and puts more gray on the blank ones, and the picture overlap falls. Combined stays between the two and does not pass the row.
+Next-week squared gap: row **0.0168**, column **0.0168**, combined **0.0168**. Blank-dot opacity **0.020**. Opacity on a solid dot **0.101**. Goalkeeper goal opacity **0.021**. The three arms match. Every player has six event dots, so the mean over dots and the mean over players are the same number, and the combined arm is that number again. The column split only changed the old overlap ratio. A true goal marker at the 20% cut is **0.124** opaque, and a blank goal marker is **0.047**.
+
+Example cards, each remainder week painted as its own step: `reports/baudot_step_row_arsenal_2025-26.png`, `reports/baudot_step_column_arsenal_2025-26.png`, `reports/baudot_step_row_liverpool_2025-26.png`, `reports/baudot_step_column_liverpool_2025-26.png`. On the pictured Arsenal regulars the solid dots are 0.18 opaque, the blank dots 0.11, and the goalkeeper goal dots 0.04. The row card and the column card match.

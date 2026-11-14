@@ -1,9 +1,9 @@
-"""Draw example opacity cards from the stepped-overlap models.
+"""Draw example opacity cards from the stepped per-dot models.
 
-Each picture is one club-season at the 20% cut: the true card, the gray the
-model paints on the remainder, and truth minus that gray. The first row under
-the line is the week the step was trained to paint. Later rows are the same
-forward pass, with those weeks left blank in the input.
+Each row under the line is painted as its own step: the true past is revealed
+and that week is blank. The gray is the probability. A goalkeeper goal dot
+should be nearly the paper color. An attacker on an ordinary week should be
+a light gray, not a black square.
 """
 
 from __future__ import annotations
@@ -27,7 +27,6 @@ from src.models.flashcard_baudot_row_trial import (
     ON,
     PLATE,
     REPORTS,
-    SEED,
     TEST_SEASON,
     TRAIN_SEASONS,
     BlockTokenMixer,
@@ -42,7 +41,6 @@ from src.models.flashcard_baudot_row_trial import (
     fit_clubs,
     load_odds,
 )
-from src.models.flashcard_baudot_stepped_overlap import train_arm
 
 MISS = (176, 48, 42)
 FALSE = (36, 78, 168)
@@ -66,8 +64,17 @@ def _regulars(card, n: int = 12) -> list[int]:
     return sorted(picked, key=lambda i: (int(card.position[i]), -float(minutes[i])))
 
 
-def _remainder_overlap(card, soft: np.ndarray, cut: int, players: list[int]) -> float:
-    inter = ink = solid = 0.0
+def stitch_steps(model, card, cut: int, device) -> np.ndarray:
+    """Each remainder week is the next step, with the true past behind it."""
+    soft = np.zeros((card.present.shape[0], card.n_fixtures, GOAL_BITS + GOAL_BITS), dtype=np.float32)
+    for gw in range(cut, card.n_fixtures):
+        one = soft_events(model, card, gw, device)
+        soft[:, gw] = one[:, gw]
+    return soft
+
+
+def _dot_levels(card, soft: np.ndarray, cut: int, players: list[int]) -> dict:
+    solid, blank, gkp = [], [], []
     pad = _player_pad(card)
     for gw in range(cut, card.n_fixtures):
         target = event_target(card, gw)
@@ -77,14 +84,17 @@ def _remainder_overlap(card, soft: np.ndarray, cut: int, players: list[int]) -> 
             for bit in (0, GOAL_BITS):
                 y = float(target[row, bit])
                 p = float(soft[row, gw, bit])
-                inter += p * y
-                ink += p
-                solid += y
-    denom = ink + solid
-    return 1.0 if denom == 0 else (2 * inter) / denom
+                (solid if y >= 0.5 else blank).append(p)
+                if int(card.position[row]) == 0 and bit == 0:
+                    gkp.append(p)
+    return {
+        "on_solid": float(np.mean(solid)) if solid else 0.0,
+        "on_blank": float(np.mean(blank)) if blank else 0.0,
+        "gkp": float(np.mean(gkp)) if gkp else 0.0,
+    }
 
 
-def render_card(card, soft: np.ndarray, cut: int, arm: str, overlap: float, path: Path) -> Path:
+def render_card(card, soft: np.ndarray, cut: int, arm: str, levels: dict, path: Path) -> Path:
     n_g = card.n_fixtures
     players = _regulars(card)
     channels = (("G", 0), ("A", GOAL_BITS))
@@ -104,8 +114,9 @@ def render_card(card, soft: np.ndarray, cut: int, arm: str, overlap: float, path
     draw.text((16, 12), f"{card.team} {card.season}  ·  {arm} step", fill=INK, font=_font(18))
     draw.text(
         (16, 38),
-        f"G = at least one goal, A = at least one assist. Line is the 20% cut. "
-        f"The first row under the line is the trained week. Overlap on these dots {overlap:.3f}.",
+        f"Each row under the line is its own step. "
+        f"Solid dots {levels['on_solid']:.2f} opaque, blank dots {levels['on_blank']:.2f}, "
+        f"goalkeeper goals {levels['gkp']:.2f}.",
         fill=MUTED,
         font=_font(11),
     )
@@ -203,20 +214,22 @@ def main() -> None:
     device, train, test = _load()
     pictures = []
     for arm in ("row", "column"):
-        torch.manual_seed(SEED)
-        model = BlockTokenMixer(width=train[0].width)
-        print(f"training {arm}", flush=True)
-        train_arm(arm, model, train, test, device)
+        model = BlockTokenMixer(width=train[0].width).to(device)
+        weights = ART / f"baudot_step_gap_{arm}.pt"
+        if not weights.exists():
+            raise FileNotFoundError(weights)
+        model.load_state_dict(torch.load(weights, map_location=device))
+        model.eval()
         for club in CLUBS:
             card = next(c for c in test if c.team == club)
             cut = cut_at_fraction(card, 0.2)
-            soft = soft_events(model, card, cut, device)
-            overlap = _remainder_overlap(card, soft, cut, _regulars(card))
+            soft = stitch_steps(model, card, cut, device)
+            levels = _dot_levels(card, soft, cut, _regulars(card))
             name = f"baudot_step_{arm}_{club.lower()}_2025-26.png"
-            path = render_card(card, soft, cut, arm, overlap, ART / name)
-            render_card(card, soft, cut, arm, overlap, REPORTS / name)
-            pictures.append({"arm": arm, "club": club, "overlap": overlap, "path": str(path)})
-            print(f"wrote {path} overlap {overlap:.3f}", flush=True)
+            path = render_card(card, soft, cut, arm, levels, ART / name)
+            render_card(card, soft, cut, arm, levels, REPORTS / name)
+            pictures.append({"arm": arm, "club": club, **levels, "path": str(path)})
+            print(f"wrote {path} {levels}", flush=True)
     (ART / "baudot_stepped_cards.json").write_text(json.dumps(pictures, indent=2), encoding="utf-8")
 
 
