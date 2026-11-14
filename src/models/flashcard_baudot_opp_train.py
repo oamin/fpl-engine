@@ -1,4 +1,7 @@
-"""Opponent-card cross-read, trained against the locked gate table.
+"""Opponent-card cross-read. Default flashcard card and method from 2026-11-14.
+
+Trained against the 2026-11-13 mixer table. That table stays in `GATE`.
+This run's own tallies are `GATE_OPP_2026_11_14`.
 
 One club-season is painted. For each GW row the encoder attends to that
 fixture's opponent card:

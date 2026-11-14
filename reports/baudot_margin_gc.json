@@ -1,0 +1,281 @@
+{
+  "trial": "baudot_margin_gc",
+  "default": "src.models.flashcard_baudot_opp_train",
+  "opp_mean": 0.1920335556859448,
+  "mixer_mean": 0.2181987495599782,
+  "arms": [
+    {
+      "name": "1_margins",
+      "mean_score": 0.0,
+      "epochs_run": 15,
+      "seconds": 272.9,
+      "alpha": 0.4419972002506256,
+      "beta": 0.5580028295516968,
+      "rows": [
+        {
+          "revealed": "20%",
+          "channel": "goals",
+          "actual": 730,
+          "painted": 0,
+          "hits": 0,
+          "actual_within_1": 0,
+          "painted_within_1": 0,
+          "score": 0.0
+        },
+        {
+          "revealed": "20%",
+          "channel": "assists",
+          "actual": 707,
+          "painted": 0,
+          "hits": 0,
+          "actual_within_1": 0,
+          "painted_within_1": 0,
+          "score": 0.0
+        },
+        {
+          "revealed": "40%",
+          "channel": "goals",
+          "actual": 544,
+          "painted": 0,
+          "hits": 0,
+          "actual_within_1": 0,
+          "painted_within_1": 0,
+          "score": 0.0
+        },
+        {
+          "revealed": "40%",
+          "channel": "assists",
+          "actual": 531,
+          "painted": 0,
+          "hits": 0,
+          "actual_within_1": 0,
+          "painted_within_1": 0,
+          "score": 0.0
+        },
+        {
+          "revealed": "60%",
+          "channel": "goals",
+          "actual": 360,
+          "painted": 0,
+          "hits": 0,
+          "actual_within_1": 0,
+          "painted_within_1": 0,
+          "score": 0.0
+        },
+        {
+          "revealed": "60%",
+          "channel": "assists",
+          "actual": 351,
+          "painted": 0,
+          "hits": 0,
+          "actual_within_1": 0,
+          "painted_within_1": 0,
+          "score": 0.0
+        },
+        {
+          "revealed": "80%",
+          "channel": "goals",
+          "actual": 199,
+          "painted": 0,
+          "hits": 0,
+          "actual_within_1": 0,
+          "painted_within_1": 0,
+          "score": 0.0
+        },
+        {
+          "revealed": "80%",
+          "channel": "assists",
+          "actual": 192,
+          "painted": 0,
+          "hits": 0,
+          "actual_within_1": 0,
+          "painted_within_1": 0,
+          "score": 0.0
+        }
+      ],
+      "position_20": {
+        "goals": {
+          "GKP": {
+            "actual": 0,
+            "painted": 0,
+            "hits": 0
+          },
+          "DEF": {
+            "actual": 103,
+            "painted": 0,
+            "hits": 0
+          },
+          "MID": {
+            "actual": 394,
+            "painted": 0,
+            "hits": 0
+          },
+          "FWD": {
+            "actual": 233,
+            "painted": 0,
+            "hits": 0
+          }
+        },
+        "assists": {
+          "GKP": {
+            "actual": 4,
+            "painted": 0,
+            "hits": 0
+          },
+          "DEF": {
+            "actual": 181,
+            "painted": 0,
+            "hits": 0
+          },
+          "MID": {
+            "actual": 434,
+            "painted": 0,
+            "hits": 0
+          },
+          "FWD": {
+            "actual": 88,
+            "painted": 0,
+            "hits": 0
+          }
+        }
+      }
+    },
+    {
+      "name": "2_gc_scoreline",
+      "mean_score": 0.17796867709017447,
+      "epochs_run": 19,
+      "seconds": 355.8,
+      "alpha": 0.44685056805610657,
+      "beta": 0.553149402141571,
+      "rows": [
+        {
+          "revealed": "20%",
+          "channel": "goals",
+          "actual": 730,
+          "painted": 634,
+          "hits": 181,
+          "actual_within_1": 221,
+          "painted_within_1": 368,
+          "score": 0.2304945165307516
+        },
+        {
+          "revealed": "20%",
+          "channel": "assists",
+          "actual": 707,
+          "painted": 1255,
+          "hits": 185,
+          "actual_within_1": 222,
+          "painted_within_1": 389,
+          "score": 0.10623763864013873
+        },
+        {
+          "revealed": "40%",
+          "channel": "goals",
+          "actual": 544,
+          "painted": 492,
+          "hits": 142,
+          "actual_within_1": 174,
+          "painted_within_1": 288,
+          "score": 0.24792754939813763
+        },
+        {
+          "revealed": "40%",
+          "channel": "assists",
+          "actual": 531,
+          "painted": 983,
+          "hits": 146,
+          "actual_within_1": 175,
+          "painted_within_1": 297,
+          "score": 0.10418326880616449
+        },
+        {
+          "revealed": "60%",
+          "channel": "goals",
+          "actual": 360,
+          "painted": 325,
+          "hits": 94,
+          "actual_within_1": 119,
+          "painted_within_1": 189,
+          "score": 0.2477696674776967
+        },
+        {
+          "revealed": "60%",
+          "channel": "assists",
+          "actual": 351,
+          "painted": 665,
+          "hits": 103,
+          "actual_within_1": 121,
+          "painted_within_1": 198,
+          "score": 0.10701853057841454
+        },
+        {
+          "revealed": "80%",
+          "channel": "goals",
+          "actual": 199,
+          "painted": 178,
+          "hits": 57,
+          "actual_within_1": 68,
+          "painted_within_1": 102,
+          "score": 0.27047705370353087
+        },
+        {
+          "revealed": "80%",
+          "channel": "assists",
+          "actual": 192,
+          "painted": 361,
+          "hits": 57,
+          "actual_within_1": 72,
+          "painted_within_1": 103,
+          "score": 0.10964119158656134
+        }
+      ],
+      "position_20": {
+        "goals": {
+          "GKP": {
+            "actual": 0,
+            "painted": 0,
+            "hits": 0
+          },
+          "DEF": {
+            "actual": 103,
+            "painted": 0,
+            "hits": 0
+          },
+          "MID": {
+            "actual": 394,
+            "painted": 64,
+            "hits": 11
+          },
+          "FWD": {
+            "actual": 233,
+            "painted": 570,
+            "hits": 170
+          }
+        },
+        "assists": {
+          "GKP": {
+            "actual": 4,
+            "painted": 0,
+            "hits": 0
+          },
+          "DEF": {
+            "actual": 181,
+            "painted": 0,
+            "hits": 0
+          },
+          "MID": {
+            "actual": 434,
+            "painted": 660,
+            "hits": 118
+          },
+          "FWD": {
+            "actual": 88,
+            "painted": 595,
+            "hits": 67
+          }
+        }
+      }
+    }
+  ],
+  "report": "/agent/repos/fpl-engine/reports/baudot_margin_gc.md"
+}

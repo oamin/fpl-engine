@@ -41,11 +41,13 @@ from src.models.flashcard_squad_trial import (
 ROOT_REPORTS = Path(__file__).resolve().parents[2] / "reports"
 KEYS = ("actual", "painted", "exact", "actual_within", "painted_within")
 
-# Flashcard gate — Baudot row mixer + learnable Tversky, locked 2026-11-13.
+# Published mixer table — Baudot row mixer + learnable Tversky, locked 2026-11-13.
 # Method: `src/models/flashcard_baudot_row_trial.py` (full past + one-shot remainder).
 # Card: GW-as-rows binary tape; odds win ON / draw BLANK / loss ON; ID_BITS=11.
 # Loss: learnable Tversky α=0.5−δ, β=0.5+δ (β≥α). Seed 0. Report: reports/baudot_gate.md.
-# Tallies use tally_row appearances (exact = hits). New flashcard trials compare here.
+# Tallies use tally_row appearances (exact = hits).
+# The default card/method from 2026-11-14 is the opponent cross-read below.
+# This table stays the published 2026-11-13 mixer score. Do not rewrite it.
 GATE = {
     ("goals", 0.2): {"actual": 730, "painted": 701, "exact": 194, "actual_within": 268, "painted_within": 377},
     ("assists", 0.2): {"actual": 707, "painted": 693, "exact": 114, "actual_within": 153, "painted_within": 232},
@@ -56,6 +58,25 @@ GATE = {
     ("goals", 0.8): {"actual": 199, "painted": 195, "exact": 60, "actual_within": 82, "painted_within": 101},
     ("assists", 0.8): {"actual": 192, "painted": 191, "exact": 32, "actual_within": 45, "painted_within": 59},
 }
+
+# Default flashcard card/method, locked 2026-11-14.
+# Module: `src/models/flashcard_baudot_opp_train.py`.
+# Card: club8 · opp8 · odds12 · gc6 · player blocks. Cross-read of the opponent card:
+# earlier rows true, this fixture's minutes on the opponent card only, G/A and gc
+# blank on both cards, later kickoffs hidden. Cell Tversky on the assessed remainder.
+# Seed 0, early-stopped epoch 20 (best epoch 12). Report: reports/baudot_opp_train.md.
+# Mean balanced_score 0.192. Screens that change this method compare here and to GATE.
+GATE_OPP_2026_11_14 = {
+    ("goals", 0.2): {"actual": 730, "painted": 770, "exact": 197, "actual_within": 271, "painted_within": 396},
+    ("assists", 0.2): {"actual": 707, "painted": 767, "exact": 131, "actual_within": 172, "painted_within": 269},
+    ("goals", 0.4): {"actual": 544, "painted": 644, "exact": 155, "actual_within": 218, "painted_within": 326},
+    ("assists", 0.4): {"actual": 531, "painted": 640, "exact": 108, "actual_within": 142, "painted_within": 209},
+    ("goals", 0.6): {"actual": 360, "painted": 451, "exact": 106, "actual_within": 150, "painted_within": 228},
+    ("assists", 0.6): {"actual": 351, "painted": 449, "exact": 84, "actual_within": 108, "painted_within": 157},
+    ("goals", 0.8): {"actual": 199, "painted": 238, "exact": 57, "actual_within": 79, "painted_within": 114},
+    ("assists", 0.8): {"actual": 192, "painted": 233, "exact": 41, "actual_within": 56, "painted_within": 76},
+}
+DEFAULT_FLASHCARD = "src.models.flashcard_baudot_opp_train"
 
 # Prior square-card full painter (12 Nov 2026). Archaeology only — not the gate.
 GATE_SQUARE_2026_11_12 = {

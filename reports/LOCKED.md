@@ -91,15 +91,19 @@ Protocol: `cascade_short_generative`. Entry: `src/models/cascade_short.py` → `
 
 Modules: `short_horizon_generative`, `match_outcome`, `lineup_roll`, `attack_roll`, `defence_roll`, `player_attack`, `prop_shares`.
 
-## Flashcard painter (Baudot gate — locked 2026-11-13)
+## Flashcard painter (opponent-card default — locked 2026-11-14)
 
 | Lock | Path | Note |
 | --- | --- | --- |
-| **Default flashcard method** | `src/models/flashcard_baudot_row_trial.py` | GW-as-rows binary card; full past + one-shot remainder; learnable Tversky (β≥α) |
-| **Gate tallies / scores** | `flashcard_card_score.GATE` · [`baudot_gate.md`](baudot_gate.md) | 2025-26 cuts 20/40/60/80%; `tally_row` + `balanced_score` |
-| Card schema | club8 · opp8 · odds12 (win/blank-draw/loss) · role4+id11+mins6+G3+A3 | ID_BITS=11 |
+| **Default flashcard card / method** | `src/models/flashcard_baudot_opp_train.py` | gc6 header; opponent cross-read; cell Tversky on the assessed remainder |
+| **Default table** | `flashcard_card_score.GATE_OPP_2026_11_14` · [`baudot_opp_train.md`](baudot_opp_train.md) | mean **0.192**; seed 0; best epoch 12 |
+| Card schema | club8 · opp8 · odds12 · gc6 · role4+id11+mins6+G3+A3 | minutes of the match stay on the opponent card |
+| Cross-read | earlier opponent rows true; this fixture's G/A and gc blank both sides; later kickoffs hidden | |
+| **2026-11-13 mixer table** | `flashcard_card_score.GATE` · [`baudot_gate.md`](baudot_gate.md) | mean **0.218**; published mixer score, not rewritten |
 
-Supersedes square-card full-painter / fixture-intensity comparison gate (`GATE_SQUARE_2026_11_12`).
+The 2026-11-14 lock is the card and the read. It does not claim a higher score than the 2026-11-13 mixer.
+
+Supersedes square-card full-painter / fixture-intensity comparison gate (`GATE_SQUARE_2026_11_12`). The 2026-11-13 row mixer is the previous default.
 
 ## Superseded
 

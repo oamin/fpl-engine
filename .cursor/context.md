@@ -1,12 +1,20 @@
 # Architectural state
 
-Updated: 2026-11-13. **Numagent 2.0** is the product on main (`protocol.numagent_2_0`) — **supersedes Numagent 1.0**. Parked hypotheses: `.cursor/ideas.md`. Stage archaeology: root `CONTEXT.md` and `reports/SUPERSEDED.md`. Canonical index: `reports/LOCKED.md`.
+Updated: 2026-11-14. **Numagent 2.0** is the product on main (`protocol.numagent_2_0`) — **supersedes Numagent 1.0**. Parked hypotheses: `.cursor/ideas.md`. Stage archaeology: root `CONTEXT.md` and `reports/SUPERSEDED.md`. Canonical index: `reports/LOCKED.md`.
 
-## Flashcard painter — Baudot gate (locked 2026-11-13)
+## Flashcard painter — opponent-card default (locked 2026-11-14)
 
 The flashcard is one picture object. Teach by matching pictures. Do not bolt on μ/share heads, volume caps, or argmax paint rules.
 
-**Default / gate (2026-11-13):** Baudot row-card + block-token mixer + **learnable Tversky (β≥α)**.
+**Default card / method (2026-11-14):** gc6 header + opponent-card cross-read + learnable Tversky on the assessed club's remainder.
+
+- Module: `src/models/flashcard_baudot_opp_train.py`
+- Baseline: `flashcard_card_score.GATE_OPP_2026_11_14` · `reports/baudot_opp_train.md` · mean **0.192**
+- Card: `club8 · opp8 · odds12 · gc6 · [role4+id11+mins6+G3+A3]×roster`
+- Cross-read: earlier opponent rows true; this fixture's minutes revealed on the opponent card only; G/A and gc for the match blank on both cards; later kickoffs hidden
+- The 2026-11-13 mixer table stays in `GATE` (mean **0.218**). This lock changes the default card and the training read. It does not rewrite that published score.
+
+**Previous numerical gate (2026-11-13):** Baudot row-card + block-token mixer + **learnable Tversky (β≥α)**.
 
 - Module: `src/models/flashcard_baudot_row_trial.py`
 - Gate scores: `flashcard_card_score.GATE` · report `reports/baudot_gate.md`
@@ -21,7 +29,7 @@ Schema slicing by place-in-chain is picture reading, not a numeric sidecar. Do n
 
 **DEF / assist role-paint screen (2026-11-13, park):** gate paints **DEF goals 103/0/0** and **DEF assists 181/0/0** at 20%. Role-specific paint heads and dual channel Tversky leave DEF at 0. FN-heavy DEF-goal aux reaches **103/78/5** but mean score **0.157** (Δ −0.061) with MID overpaint — same “volume without hits” failure as equal per-pos. Report: `reports/baudot_role_paint.md`. Gate stays; next squeeze needs new card information, not more role loss weight.
 
-**Stepped single-GW FOV (2026-11-13, complementary, park as default):** same mixer/Tversky; paint only the next GW row, teacher-forced step on holdout (`reports/baudot_stepped_gw.md`). Mean **0.184** (Δ −0.034 vs full-remainder gate 0.218). DEF goals still **103/0/0**. Full-remainder one-shot remains the locked default; stepped stays a complementary diagnostic, not a replacement.
+**Stepped single-GW FOV (2026-11-13, complementary, park as default):** same mixer/Tversky; paint only the next GW row, teacher-forced step on holdout (`reports/baudot_stepped_gw.md`). Mean **0.184** (Δ −0.034 vs full-remainder mixer 0.218). DEF goals still **103/0/0**. Stepped stays a complementary diagnostic. The card default from 2026-11-14 is the opponent cross-read.
 
 **Gate DEF/assist autopsy (2026-11-13):** `reports/baudot_def_assist_autopsy.md`. DEF soft ink ~0.006 on event and blank; no DEF `g_max` ≥0.05. Minutes differ on true DEF goal weeks; the head does not. Assist gap = DEF blank + weaker MID + FWD assist overpaint (volume ≈ actual overall).
 
@@ -39,9 +47,11 @@ Schema slicing by place-in-chain is picture reading, not a numeric sidecar. Do n
 
 **Goals-conceded header (2026-11-14, picture only on the locked card):** truth card inserts unary `gc6` after the odds bits (`club8 · opp8 · odds12 · gc6`). Same-week gc is the scoreline, so a training remainder blanks it with G/A. `HEADER_BITS` in the locked mixer is unchanged. Example: `reports/baudot_gc_header_arsenal_2025-26.png`.
 
-**Opponent-card cross-read (2026-11-14, park):** shared mixer attends the opponent card. Earlier opponent rows stay true. This fixture's minutes are revealed on the opponent card only. G/A and gc for the match stay blank on both cards. gc6 is in the header, so the arm changes header and attention together. Holdout mean **0.192** (Δ −0.026 vs gate 0.218). 20% goals 730/770/197 (P 0.256, R 0.270). DEF goals **103/0/0**, DEF assists **181/0/0**. Report: `reports/baudot_opp_train.md`. Gate stays.
+**Opponent-card cross-read (2026-11-14, default):** shared mixer attends the opponent card. Earlier opponent rows stay true. This fixture's minutes are revealed on the opponent card only. G/A and gc for the match stay blank on both cards. Holdout mean **0.192** (Δ −0.026 vs the 2026-11-13 mixer 0.218). 20% goals 730/770/197 (P 0.256, R 0.270). DEF goals **103/0/0**, DEF assists **181/0/0**. Report: `reports/baudot_opp_train.md`.
 
-**Superseded as the flashcard comparison gate:** square-card full painter / fixture-intensity stored readers (`GATE_SQUARE_2026_11_12`; `reports/cards/current/` RGB path). Keep those modules for archaeology; new flashcard screens compare to the Baudot gate.
+**Margin pools and joint gc (2026-11-14, park):** on that default, weight-1 role/row/column pools score **0.000** (soft totals match under the 0.5 threshold). Joint gc, with the scoreline shared onto the XI and away fixtures filling both cards, scores **0.178**. Goals shift onto FWD (recall 0.730) and off MID (recall 0.028). DEF stays blank. Report: `reports/baudot_margin_gc.md`.
+
+**Superseded as the flashcard comparison gate:** square-card full painter / fixture-intensity stored readers (`GATE_SQUARE_2026_11_12`; `reports/cards/current/` RGB path). Keep those modules for archaeology. New flashcard screens start from the opponent-card default and still quote the 2026-11-13 mixer table.
 
 **Stepped RGB column path (parked relative to the gate):** `ColumnFlashcard` / `flashcard_column_picture_trial.py`. Not the default.
 
