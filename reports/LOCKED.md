@@ -105,5 +105,6 @@ Supersedes square-card full-painter / fixture-intensity comparison gate (`GATE_S
 
 - **Numagent 1.0** — `protocol.numagent_1_0` / `SUPERSEDED.md` / **[`ARCHIVE_NUMAGENT_1_0.md`](ARCHIVE_NUMAGENT_1_0.md)** (in-place keep-list)
 - **`score_xp`** — historical climbs and gate baseline only (same archive index)
+- **Baudot role paint / DEF-goal aux (2026-11-13)** — DEF goals stay 0 under role heads; aux paints 103/78/5, mean 0.157; park (`reports/baudot_role_paint.md`)
 - **Baudot deeper mixer / block-CNN (2026-11-13)** — same card vs gate; mean 0.156 / 0.138 (Δ −0.062 / −0.080); park (`reports/baudot_model_variants.md`)
 - **Square-card flashcard gate (2026-11-12)** — `GATE_SQUARE_2026_11_12`; replaced by Baudot learnable Tversky

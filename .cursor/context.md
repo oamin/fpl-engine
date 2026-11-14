@@ -19,6 +19,8 @@ Schema slicing by place-in-chain is picture reading, not a numeric sidecar. Do n
 
 **Model-variant screen (2026-11-13, park):** same Baudot card / FOV / learnable Tversky; only the learner changed (`src/models/flashcard_baudot_model_variants.py`, `reports/baudot_model_variants.md`). Depth-2 block-token mixer mean score **0.156** (Δ −0.062). Schema-kernel block-CNN mean score **0.138** (Δ −0.080). Both overpaint volume and lose every cut/channel cell. Gate mixer stays default.
 
+**DEF / assist role-paint screen (2026-11-13, park):** gate paints **DEF goals 103/0/0** and **DEF assists 181/0/0** at 20%. Role-specific paint heads and dual channel Tversky leave DEF at 0. FN-heavy DEF-goal aux reaches **103/78/5** but mean score **0.157** (Δ −0.061) with MID overpaint — same “volume without hits” failure as equal per-pos. Report: `reports/baudot_role_paint.md`. Gate stays; next squeeze needs new card information, not more role loss weight.
+
 **Superseded as the flashcard comparison gate:** square-card full painter / fixture-intensity stored readers (`GATE_SQUARE_2026_11_12`; `reports/cards/current/` RGB path). Keep those modules for archaeology; new flashcard screens compare to the Baudot gate.
 
 **Stepped RGB column path (parked relative to the gate):** `ColumnFlashcard` / `flashcard_column_picture_trial.py`. Not the default.
