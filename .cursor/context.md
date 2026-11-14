@@ -37,6 +37,8 @@ Schema slicing by place-in-chain is picture reading, not a numeric sidecar. Do n
 
 **Odds / minutes weight (2026-11-14):** zeroing minutes drops goals P/R **0.277/0.266 → 0.209/0.175** (mean **0.115**). Zeroing 1X2 odds keeps precision (~0.275) but recall **0.266 → 0.211**, and the paint slides off MID (R 0.211→0.053) onto FWD. DEF stays **103/0/0** in every arm. Both strips carry weight; neither is the DEF fix. Report: `reports/baudot_odds_weight.md`.
 
+**Goals-conceded header (2026-11-14, picture only):** truth card inserts unary `gc6` after the odds bits (`club8 · opp8 · odds12 · gc6`). Same-week gc is the scoreline, so a training remainder blanks it with G/A. Not wired into the locked mixer (`HEADER_BITS` unchanged). Example: `reports/baudot_gc_header_arsenal_2025-26.png`.
+
 **Superseded as the flashcard comparison gate:** square-card full painter / fixture-intensity stored readers (`GATE_SQUARE_2026_11_12`; `reports/cards/current/` RGB path). Keep those modules for archaeology; new flashcard screens compare to the Baudot gate.
 
 **Stepped RGB column path (parked relative to the gate):** `ColumnFlashcard` / `flashcard_column_picture_trial.py`. Not the default.
