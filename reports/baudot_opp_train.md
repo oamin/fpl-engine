@@ -1,5 +1,7 @@
 # Baudot opponent-card training
 
+Locked as the default flashcard card and method on 2026-11-14. The 2026-11-13 mixer table is unchanged.
+
 The painted club card keeps its own bits. Each GW row attends to the opponent card: earlier rows true, this fixture's minutes revealed, this fixture's G/A and gc blank, later kickoffs hidden. Minutes are not copied onto the painted card. gc6 sits in the header, so this arm changes the header and the attention together. Loss is the club's remainder events.
 
 Gate mean **0.218**. This arm mean **0.192** (Δ -0.026).

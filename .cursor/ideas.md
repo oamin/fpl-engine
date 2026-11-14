@@ -44,9 +44,9 @@ Yes: positions can be trained/tested independently. Restricting the live window 
 
 Self-critical REINFORCE on next-GW Bernoulli paint after Tversky warm-start; reward = channel `balanced_score`. Judged on the gate holdout table. Best **0.199** is warm-start, not SCST (SCST best 0.167). Does not beat full-remainder gate **0.218**; DEF stays blank. Do not reopen SCST on this FOV without a new action/reward grain (e.g. presence-level actions or DEF-budgeted reward). Report: `reports/baudot_rl_stepped.md`.
 
-## Parked — Baudot opponent-card cross-read (2026-11-14)
+## LOCKED — opponent-card cross-read is the default card/method (2026-11-14)
 
-Shared encoder attends the opponent card: earlier rows true, this fixture's minutes revealed on that card only, G/A and gc blank on both sides, later kickoffs hidden. gc6 header included. Mean **0.192** (Δ −0.026). DEF goals **103/0/0**, DEF assists **181/0/0**. The coupling the odds ablation asked for does not place DEF events. Report: `reports/baudot_opp_train.md`. Do not promote.
+PI lock. The default flashcard is the gc6 header plus the opponent cross-read (`src/models/flashcard_baudot_opp_train.py`, `GATE_OPP_2026_11_14`). Earlier opponent rows true, this fixture's minutes on the opponent card only, G/A and gc blank on both sides. Mean **0.192**. DEF goals **103/0/0**, DEF assists **181/0/0**. The 2026-11-13 mixer table (`GATE`, mean **0.218**) stays the published mixer score and is not rewritten. Report: `reports/baudot_opp_train.md`.
 
 ## Parked — card tensor factorisation (2026-11-14)
 
