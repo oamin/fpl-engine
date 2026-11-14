@@ -48,6 +48,14 @@ Self-critical REINFORCE on next-GW Bernoulli paint after Tversky warm-start; rew
 
 Two losses on the locked opponent card, cell Tversky kept, weight 1. `1_margins` (role pools + row sums + column sums) never crosses 0.5: soft pool totals match with sub-threshold ink, mean **0.000**. `2_gc_scoreline` (gc on both clubs, scoreline shared onto the XI, away fills both cards) mean **0.178**. Goal volume tightens and lands on FWD (recall 0.730) while MID goal recall falls to 0.028; assists overpaint; DEF stays **103/0/0** and **181/0/0**. Report: `reports/baudot_margin_gc.md`. Do not promote. A later pool loss needs a term that pays for crossing the decision threshold.
 
+## Withdrawn — stepped picture overlap (2026-11-14)
+
+Overlap `2 * gray on solid / (all gray + solid)` filled attacker columns and, on the column arm, goalkeeper squares. A likely scorer painted solid every week raised the ratio. Do not train that score. The replacement is the squared per-dot gap in the entry below.
+
+## Measured — stepped per-dot gap (2026-11-14)
+
+Squared gap `(opacity − truth)²`. The row is the next week. The column is each player's future weeks, scored week by week, so minutes and the opponent move the gray. One shared gray per player ignored the match and is withdrawn. Next-week gap **0.0168** row and **0.0168** column. Column gap **0.0142**. Goalkeeper goal opacity **0.021** / **0.015**. On the Arsenal column card a forward's goal dot runs from pixel 133 to 216; the goalkeeper stays at 215–221. Report: `reports/baudot_stepped_overlap.md`.
+
 ## LOCKED — opacity card is the default (2026-11-14)
 
 PI lock. The default flashcard is the Baudot row card with the event probability kept as the gray of the dot. A solid dot predicted at 0.20 counts as 0.20 of an event. Precision is opacity on true dots over all opacity. Recall is the average opacity on a true dot. Event-marker means: Tversky precision **0.184** recall **0.216**; log loss **0.141** / **0.147**; Brier **0.130** / **0.137**. Likelihood on every event bit is still lower for log loss (**0.0543**) than for the Tversky reading (**0.0781**). Report: `reports/baudot_opacity_loss.md`. Picture: `reports/baudot_residual_arsenal_2025-26.png`.
