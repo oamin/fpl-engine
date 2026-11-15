@@ -40,3 +40,8 @@ Deferred (not blocking cement): expected minutes on future inputs; richer opp-hi
 ## Baselines
 
 See [`typed_tensor_card_baselines.md`](typed_tensor_card_baselines.md).
+
+## Stepped FOV screen (2026-11-15)
+
+Full-card stepped painter: [`typed_tensor_stepped.md`](typed_tensor_stepped.md).
+Holdout d1 log 0.1689 vs sliced logistic 0.1497 — **screen loss**. Card design stays.

@@ -8,8 +8,13 @@ Typed tensor club-season card is cemented: `src/models/tensor_card.py`,
 [`reports/TYPED_TENSOR_CARD.md`](../reports/TYPED_TENSOR_CARD.md). Opacity is
 display-only \(P(\text{count}\ge 1)\). Minutes raw; G/A uint unclipped. Baudot
 binary training retired (`reports/FLASHCARD_GIT_CLEANUP.md`). Sliced baselines:
-`python -m src.models.tensor_card_baselines`. Next comparison: full-card stepped
-FOV painter on the same tensor (not a new artificial feature net).
+`python -m src.models.tensor_card_baselines` (logistic beats constant).
+
+**Stepped FOV painter** (`src/models/tensor_card_stepped.py`,
+[`typed_tensor_stepped.md`](../reports/typed_tensor_stepped.md)): full-card
+stepped, log+Brier, seat shuffle. Holdout d1 log **0.1689** vs sliced logistic
+**0.1497** — screen loss. Card stays; do not revive Baudot. Next: one follow-up
+only if pre-registered (horizon FOV or mixer change) — not a daily stage pile-on.
 
 ## Repo freeze sequence (2026-10-20)
 

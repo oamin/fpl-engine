@@ -101,6 +101,7 @@ Baudot binary planes are retired for training.
 | Schema | `src/models/tensor_card.py` |
 | Cement note | [`TYPED_TENSOR_CARD.md`](TYPED_TENSOR_CARD.md) |
 | Sliced baselines | [`typed_tensor_card_baselines.md`](typed_tensor_card_baselines.md) |
+| Stepped FOV screen | [`typed_tensor_stepped.md`](typed_tensor_stepped.md) — **lost** vs sliced logistic (d1 0.1689 vs 0.1497) |
 | Git cleanup note | [`FLASHCARD_GIT_CLEANUP.md`](FLASHCARD_GIT_CLEANUP.md) |
 
 ## Superseded

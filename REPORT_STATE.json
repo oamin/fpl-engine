@@ -1,21 +1,17 @@
 {
   "updated": "2026-11-15",
-  "branch": "cursor/typed-tensor-card-c985",
-  "batch": "typed_tensor_card_cement",
+  "branch": "cursor/typed-tensor-stepped-c985",
+  "batch": "typed_tensor_stepped_fov",
   "status": "complete",
-  "steps": {
-    "1_schema_and_cement": "done — src/models/tensor_card.py + reports/TYPED_TENSOR_CARD.md",
-    "2_git_cleanup_note": "done — reports/FLASHCARD_GIT_CLEANUP.md; Baudot binary retired; PR forest not mass-closed",
-    "3_sliced_baselines": "done — logistic beats constant on 2025-26 holdout (goal Δlog≈−0.043, assist Δlog≈−0.031)"
-  },
+  "result": "screen_loss",
+  "summary": "Stepped full-card painter on typed tensor: holdout d1 log 0.1689 vs sliced logistic 0.1497. Card remains cemented; painter not promoted.",
   "metrics": {
-    "n_train": 58751,
-    "n_test": 19127,
-    "goal_log_loss_logistic": 0.1456,
-    "goal_log_loss_constant": 0.1886,
-    "assist_log_loss_logistic": 0.1538,
-    "assist_log_loss_constant": 0.1848
+    "stepped_d1_log": 0.1689,
+    "stepped_d1_brier": 0.0457,
+    "slice_logistic_log": 0.1497,
+    "slice_logistic_brier": 0.0400,
+    "epochs_run": 24
   },
-  "next": "full-card stepped FOV painter on typed tensor (opacity=P(event); log/Brier)",
+  "next": "One pre-registered follow-up only (horizon FOV or single mixer change); no Baudot revival",
   "product_on_main": "numagent_2_0"
 }
