@@ -1,23 +1,21 @@
 {
-  "milestone": "cascade-short-generative-locked",
+  "updated": "2026-11-15",
+  "branch": "cursor/typed-tensor-card-c985",
+  "batch": "typed_tensor_card_cement",
   "status": "complete",
-  "summary": "cascade_short generative stack locked (protocol.cascade_short_generative): mean score_team_side; scenario k∼M → lineup cov → attack dice → CS/GC from rolled GA; soft priors via score_xp_v2 DefCon/bonus/cards/saves helpers. Firm XI and bonus-from-roll deferred. PR #96 green — mark ready / merge to main.",
-  "gemini": "",
-  "decisions": {
-    "cascade_short_generative": {
-      "locked": "2026-10-20",
-      "protocol": "cascade_short_generative",
-      "pr": 96,
-      "deferred": ["firm_xi", "bonus_from_roll"]
-    }
+  "steps": {
+    "1_schema_and_cement": "done — src/models/tensor_card.py + reports/TYPED_TENSOR_CARD.md",
+    "2_git_cleanup_note": "done — reports/FLASHCARD_GIT_CLEANUP.md; Baudot binary retired; PR forest not mass-closed",
+    "3_sliced_baselines": "done — logistic beats constant on 2025-26 holdout (goal Δlog≈−0.043, assist Δlog≈−0.031)"
   },
-  "artifacts": [
-    "reports/LOCKED.md",
-    "reports/CASCADE_CONTRACT.md",
-    "experiments/protocol.json",
-    "src/markets/short_horizon_generative.py",
-    "src/markets/defence_roll.py",
-    "src/models/short_horizon_cascade.py",
-    "src/models/cascade_short.py"
-  ]
+  "metrics": {
+    "n_train": 58751,
+    "n_test": 19127,
+    "goal_log_loss_logistic": 0.1456,
+    "goal_log_loss_constant": 0.1886,
+    "assist_log_loss_logistic": 0.1538,
+    "assist_log_loss_constant": 0.1848
+  },
+  "next": "full-card stepped FOV painter on typed tensor (opacity=P(event); log/Brier)",
+  "product_on_main": "numagent_2_0"
 }

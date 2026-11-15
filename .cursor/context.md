@@ -1,6 +1,15 @@
 # Architectural state
 
-Updated: 2026-10-20. **Numagent 2.0** is the product on main (`protocol.numagent_2_0`) — **supersedes Numagent 1.0**. Parked hypotheses: `.cursor/ideas.md`. Stage archaeology: root `CONTEXT.md` and `reports/SUPERSEDED.md`. Canonical index: `reports/LOCKED.md`.
+Updated: 2026-11-15. **Numagent 2.0** is the product on main (`protocol.numagent_2_0`) — **supersedes Numagent 1.0**. Parked hypotheses: `.cursor/ideas.md`. Stage archaeology: root `CONTEXT.md` and `reports/SUPERSEDED.md`. Canonical index: `reports/LOCKED.md`.
+
+## Flashcard research (2026-11-15)
+
+Typed tensor club-season card is cemented: `src/models/tensor_card.py`,
+[`reports/TYPED_TENSOR_CARD.md`](../reports/TYPED_TENSOR_CARD.md). Opacity is
+display-only \(P(\text{count}\ge 1)\). Minutes raw; G/A uint unclipped. Baudot
+binary training retired (`reports/FLASHCARD_GIT_CLEANUP.md`). Sliced baselines:
+`python -m src.models.tensor_card_baselines`. Next comparison: full-card stepped
+FOV painter on the same tensor (not a new artificial feature net).
 
 ## Repo freeze sequence (2026-10-20)
 

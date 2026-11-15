@@ -91,7 +91,20 @@ Protocol: `cascade_short_generative`. Entry: `src/models/cascade_short.py` → `
 
 Modules: `short_horizon_generative`, `match_outcome`, `lineup_roll`, `attack_roll`, `defence_roll`, `player_attack`, `prop_shares`.
 
+## Research track — typed tensor flashcard (not product)
+
+Cemented card for player–GW event painting. **Not** the live Numagent path.
+Baudot binary planes are retired for training.
+
+| | |
+| --- | --- |
+| Schema | `src/models/tensor_card.py` |
+| Cement note | [`TYPED_TENSOR_CARD.md`](TYPED_TENSOR_CARD.md) |
+| Sliced baselines | [`typed_tensor_card_baselines.md`](typed_tensor_card_baselines.md) |
+| Git cleanup note | [`FLASHCARD_GIT_CLEANUP.md`](FLASHCARD_GIT_CLEANUP.md) |
+
 ## Superseded
 
 - **Numagent 1.0** — `protocol.numagent_1_0` / `SUPERSEDED.md` / **[`ARCHIVE_NUMAGENT_1_0.md`](ARCHIVE_NUMAGENT_1_0.md)** (in-place keep-list)
 - **`score_xp`** — historical climbs and gate baseline only (same archive index)
+- **Baudot binary flashcard planes** — retired; typed tensor is the card (`TYPED_TENSOR_CARD.md`)
