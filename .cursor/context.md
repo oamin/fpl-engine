@@ -11,10 +11,11 @@ binary training retired (`reports/FLASHCARD_GIT_CLEANUP.md`). Sliced baselines:
 `python -m src.models.tensor_card_baselines` (logistic beats constant).
 
 **Stepped FOV painter** — screen loss. **Horizon FOV** — inconclusive hairline.
-**Slice×horizon mix** (`tensor_card_slice_horizon_mix.py`,
-[`typed_tensor_slice_horizon_mix.md`](../reports/typed_tensor_slice_horizon_mix.md)):
-blend/stack/residual on remainder; residual **0.1449** vs slice **0.1450** —
-inconclusive, not promoted. Card stays cemented.
+**Slice×horizon mix** — inconclusive, not promoted. Arms stay **separate**:
+slice = likelihood spine; horizon = full-card FOV. **Lag-1 minutes** on slice
+([`typed_tensor_lag1_minutes.md`](../reports/typed_tensor_lag1_minutes.md)):
+pooled Δlog **+0.012** vs actual minutes — loses as expected; actual minutes
+remain the conditional spine.
 
 ## Repo freeze sequence (2026-10-20)
 

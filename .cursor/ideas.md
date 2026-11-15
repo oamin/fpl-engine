@@ -15,7 +15,9 @@ parked as overkill until a path-V screen asks for it (`protocol.cascade_short_ge
 - Live shadow of locked L4 + `score_xp_v2` (no new strategiser arm without a protocol entry).
 - Layer 5 chips only if a pre-registered likelihood / priced-path comparison asks.
 - Objective-function search stays parked.
-- **Flashcard:** stepped lost; horizon inconclusive; slice×horizon mix inconclusive (residual Δ≈−0.0001). Stop FOV/mix pile-on unless a sharper pre-registered ask. Survival secondary. No Baudot.
+- **Flashcard:** slice vs horizon kept as separate arms (no mix). Lag-1 minutes
+  lost (+0.012 pooled log). Actual minutes stay slice spine. Rolling-K minutes
+  optional only if someone re-asks. Survival secondary. No Baudot.
 
 ## Parked — Baudot binary / artificial column nets (2026-11-15)
 
@@ -39,6 +41,12 @@ cell set; d1 still ~0.17. Inconclusive, not promoted.
 
 Blend (train α→1), logit stack, and residual σ(logit(slice)+δ_card) on remainder
 cells. Residual 0.1449 vs slice 0.1450 — inconclusive. `typed_tensor_slice_horizon_mix.md`.
+
+## Parked — lag-1 minutes as slice default (2026-11-15)
+
+Lag-1 predicted minutes vs actual on slice spine: pooled Δlog +0.012, MAE≈15 min.
+Honesty reference only; do not replace actual-minutes conditional spine.
+`reports/typed_tensor_lag1_minutes.md`.
 
 ## Procedure, locked 2026-10-07 (historical freeze notes)
 

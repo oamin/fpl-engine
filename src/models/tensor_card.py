@@ -278,8 +278,57 @@ def cut_at_fraction(card: TensorCard, frac: float) -> int:
     return int(max(1, min(n - 1, cut)))
 
 
-def asof_inputs(card: TensorCard, player: int, t: int) -> dict[str, float]:
-    """Features available before scoring week t. History is strictly before t."""
+def role_minutes_prior(cards: list[TensorCard]) -> dict[int, float]:
+    """Mean minutes by role over present cells (for lag-1 cold start)."""
+    sums = {0: 0.0, 1: 0.0, 2: 0.0, 3: 0.0}
+    counts = {0: 0, 1: 0, 2: 0, 3: 0}
+    for card in cards:
+        for p in range(card.n_players):
+            role = int(card.position[p])
+            if role < 0:
+                continue
+            for t in range(card.n_fixtures):
+                if not card.present[p, t]:
+                    continue
+                sums[role] += float(card.minutes[p, t])
+                counts[role] += 1
+    return {role: (sums[role] / counts[role] if counts[role] else 0.0) for role in sums}
+
+
+def lag1_minutes(
+    card: TensorCard,
+    player: int,
+    t: int,
+    role_prior: dict[int, float] | None = None,
+) -> float:
+    """Predicted minutes for week t: last week's minutes, else last present, else role prior."""
+    role = int(card.position[player])
+    prior = 0.0 if role_prior is None else float(role_prior.get(role, 0.0))
+    if t <= 0:
+        return prior
+    if card.present[player, t - 1]:
+        return float(card.minutes[player, t - 1])
+    hist = np.flatnonzero(card.present[player, :t])
+    if len(hist):
+        return float(card.minutes[player, hist[-1]])
+    return prior
+
+
+def asof_inputs(
+    card: TensorCard,
+    player: int,
+    t: int,
+    *,
+    minutes_mode: str = "actual",
+    role_prior: dict[int, float] | None = None,
+    include_mates: bool | None = None,
+) -> dict[str, float]:
+    """Features available before scoring week t. History is strictly before t.
+
+    minutes_mode:
+      actual — scored-week realised minutes (conditional-on-minutes spine)
+      lag1 — ̂m_t = m_{t-1} (else last present, else role prior); no same-week mate leak
+    """
     hist = np.flatnonzero(card.present[player, :t])
     minutes_hist = card.minutes[player, hist] if len(hist) else np.array([], np.float32)
     goals_hist = card.goals[player, hist].astype(np.float32) if len(hist) else np.array([], np.float32)
@@ -287,13 +336,23 @@ def asof_inputs(card: TensorCard, player: int, t: int) -> dict[str, float]:
     n = float(len(hist))
     role = int(card.position[player])
     odds = card.odds_1x2[t]
-    # Teammate shared-minutes context this week (full-card signal on a slice).
-    on = np.flatnonzero((card.minutes[:, t] > 0) & (card.position >= 0))
-    on = on[on < card.n_players]
-    mate_minutes = float(card.minutes[on, t].sum()) - float(card.minutes[player, t])
-    mate_n = float(max(len(on) - (1 if player in on else 0), 0))
+    if minutes_mode == "lag1":
+        minutes = lag1_minutes(card, player, t, role_prior=role_prior)
+        use_mates = False if include_mates is None else include_mates
+    elif minutes_mode == "actual":
+        minutes = float(card.minutes[player, t])
+        use_mates = True if include_mates is None else include_mates
+    else:
+        raise ValueError(f"unknown minutes_mode={minutes_mode!r}")
+    mate_minutes = 0.0
+    mate_n = 0.0
+    if use_mates:
+        on = np.flatnonzero((card.minutes[:, t] > 0) & (card.position >= 0))
+        on = on[on < card.n_players]
+        mate_minutes = float(card.minutes[on, t].sum()) - float(card.minutes[player, t])
+        mate_n = float(max(len(on) - (1 if player in on else 0), 0))
     return {
-        "minutes": float(card.minutes[player, t]),
+        "minutes": float(minutes),
         "home": float(card.home[t]),
         "role_gkp": 1.0 if role == 0 else 0.0,
         "role_def": 1.0 if role == 1 else 0.0,
@@ -337,8 +396,17 @@ FEATURE_NAMES = (
     "mate_n",
 )
 
+# Lag-1 arm drops same-week mate leak so the contrast is minutes policy only.
+FEATURE_NAMES_LAG1 = tuple(name for name in FEATURE_NAMES if name not in ("mate_minutes", "mate_n"))
 
-def iter_slices(card: TensorCard, min_history: int = 1):
+
+def iter_slices(
+    card: TensorCard,
+    min_history: int = 1,
+    *,
+    minutes_mode: str = "actual",
+    role_prior: dict[int, float] | None = None,
+):
     """Yield sliced player–GW observations with as-of features."""
     for p in range(card.n_players):
         if int(card.position[p]) < 0 or int(card.player_id[p]) <= 0:
@@ -358,7 +426,13 @@ def iter_slices(card: TensorCard, min_history: int = 1):
                 "assists": int(card.assists[p, t]),
                 "y_goal": 1 if int(card.goals[p, t]) >= 1 else 0,
                 "y_assist": 1 if int(card.assists[p, t]) >= 1 else 0,
-                "features": asof_inputs(card, p, t),
+                "features": asof_inputs(
+                    card,
+                    p,
+                    t,
+                    minutes_mode=minutes_mode,
+                    role_prior=role_prior,
+                ),
             }
 
 

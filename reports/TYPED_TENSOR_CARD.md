@@ -45,3 +45,10 @@ See [`typed_tensor_card_baselines.md`](typed_tensor_card_baselines.md).
 
 Full-card stepped painter: [`typed_tensor_stepped.md`](typed_tensor_stepped.md).
 Holdout d1 log 0.1689 vs sliced logistic 0.1497 — **screen loss**. Card design stays.
+
+## Arms (no mix)
+
+- **Slice** — player–GW likelihood spine (actual minutes conditional by default).
+- **Horizon** — full-card FOV display/exam; true minutes stay on the card.
+
+Lag-1 predicted minutes on slice: [`typed_tensor_lag1_minutes.md`](typed_tensor_lag1_minutes.md) — loses; honesty reference only.

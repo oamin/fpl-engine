@@ -1,18 +1,16 @@
 {
   "updated": "2026-11-15",
-  "branch": "cursor/typed-tensor-slice-horizon-mix-c985",
-  "batch": "typed_tensor_slice_horizon_mix",
+  "branch": "cursor/typed-tensor-lag1-minutes-c985",
+  "batch": "typed_tensor_lag1_minutes",
   "status": "complete",
-  "result": "inconclusive",
-  "summary": "Slice×horizon mix on remainder cells: residual≈slice 0.1450, horizon 0.1468; train blend α→1. Not promoted.",
+  "result": "screen_loss",
+  "summary": "Lag-1 minutes on slice spine loses to actual minutes (pooled Δlog +0.012, MAE 15.3). Actual minutes remain the conditional spine; horizon untouched.",
   "metrics": {
-    "slice_remainder_log": 0.1450,
-    "horizon_remainder_log": 0.1468,
-    "blend_remainder_log": 0.1468,
-    "stack_remainder_log": 0.1464,
-    "residual_remainder_log": 0.1450,
-    "train_best_alpha": 1.0
+    "actual_pooled_log": 0.1497,
+    "lag1_pooled_log": 0.1617,
+    "delta_pooled_log": 0.0120,
+    "lag1_minutes_mae": 15.31
   },
-  "next": "Stop FOV/mix pile-on unless PI pre-registers a sharper comparison",
+  "next": "Keep slice (actual minutes) and horizon as separate arms; no mix; no rolling-K unless re-asked",
   "product_on_main": "numagent_2_0"
 }
