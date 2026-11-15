@@ -54,7 +54,7 @@ Overlap `2 * gray on solid / (all gray + solid)` filled attacker columns and, on
 
 ## Measured — stepped per-dot gap (2026-11-14)
 
-Squared gap `(opacity − truth)²` on the card the mixer already reads. No hand-built form totals and no separate teamsheet features. The row is one gameweek, one shot, then a step: past rows stay true, and events from the painted week onward are blank. The column is one shot of every week beyond a cutoff, and the loss is each player's remaining column. Header and minutes stay on every row in both. Next-week gap row **0.0168**, column **0.0168**, combined **0.0169**. Remainder-column gap **0.0143** / **0.0142** / **0.0142**. Goalkeeper goal opacity **0.021** / **0.015**. One shared gray per player is withdrawn. Report: `reports/baudot_stepped_overlap.md`.
+Squared gap `(opacity − truth)²` on the card the mixer already reads. Both windows are rows. Stepped is one gameweek, one shot, then a step. Horizon is one shot of every week beyond a cutoff, and every live remainder dot counts equally — no per-player column isolation. Header and minutes stay. Player seats are shuffled each batch so the mixer has to read the ID bits. Next-week gap stepped **0.0168**, horizon **0.0169**, combined **0.0169**. Remainder gap **0.0145** / **0.0143** / **0.0144**. Goalkeeper goal opacity **0.041** / **0.013**. The product of the two opacities washes solids to ~0.03; contrast-stretching that product remaps ~0–0.15 onto 0–1 and restores readable bands. Report: `reports/baudot_stepped_overlap.md`.
 
 ## LOCKED — opacity card is the default (2026-11-14)
 

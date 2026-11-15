@@ -1,21 +1,18 @@
-"""Stepped per-dot gap on the opacity card.
+"""Stepped and horizon row opacity on the Baudot card.
 
 The gray of a dot is the model's probability. The loss on a dot is the
 squared gap between that gray and the solid truth, (opacity − truth)².
-A solid dot painted at 0.20 costs 0.64. A blank dot painted at 0.20 costs
-0.04. The probability itself is the minimum. Set overlap is not the loss:
-it can raise its score by painting a likely scorer solid on the weeks he
-does not score.
 
-Three arms, seed 0, same mixer, same card bits.
+Three arms, seed 0, same mixer, same card bits. Both windows are rows.
 
-  row       — one gameweek, one shot, then step. Past rows stay true.
-            Events from the painted week onward are blank.
-  column    — one shot of the weeks beyond a cutoff, scored as each
-            player's column.
+  stepped   — one gameweek, one shot, then step. Past rows stay true.
+              Events from the painted week onward are blank.
+  horizon   — one shot of every week beyond a cutoff. The loss is the
+              squared gap on every live remainder dot. No column isolation.
   combined  — the two squared gaps, equal weight
 
-Header and minutes stay on every row. The model reads the card as it is.
+Header and minutes stay on every row. During training the player slots are
+shuffled so the mixer has to read the player-ID bits, not the seat index.
 
 The holdout reads 1, 2, 4 and 8 weeks ahead.
 """
@@ -66,9 +63,8 @@ from src.models.flashcard_baudot_row_trial import (
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = REPORTS / "baudot_stepped_overlap.md"
-ARMS = ("row", "column", "combined")
+ARMS = ("stepped", "horizon", "combined")
 DISTANCES = (1, 2, 4, 8)
-VIEWS = {"row": "squad", "column": "time"}
 
 
 def _square_mask(pred: torch.Tensor, target: torch.Tensor, live: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
@@ -77,30 +73,20 @@ def _square_mask(pred: torch.Tensor, target: torch.Tensor, live: torch.Tensor) -
 
 
 def row_gap(pred: torch.Tensor, target: torch.Tensor, live: torch.Tensor) -> torch.Tensor:
-    """Mean squared gap over every live dot in the week."""
+    """Mean squared gap over every live dot in the scored window."""
     err, mask = _square_mask(pred, target, live)
     return (err * mask).sum() / mask.sum().clamp_min(1)
 
 
-def column_strip(
+def remainder_gap(
     pred: torch.Tensor,
     target: torch.Tensor,
     present: torch.Tensor,
     pad: torch.Tensor,
 ) -> torch.Tensor:
-    """Each player's future weeks, then the mean over players.
-
-    pred/target are B, P, T, E. present is B, P, T and is already limited to
-    the weeks still blank. Week t is scored with the paint at week t, which
-    sees that week's minutes and opponent. A goal in one week and a blank in
-    the next pull different dots. Each player counts once.
-    """
+    """All live remainder dots, equal weight. No per-player column isolation."""
     live = present & ~pad[..., None]
-    err = (pred - target) ** 2
-    mask = live.to(pred.dtype)[..., None].expand_as(pred)
-    per_player = (err * mask).sum(dim=(2, 3)) / mask.sum(dim=(2, 3)).clamp_min(1)
-    weight = live.any(dim=-1).to(pred.dtype)
-    return (per_player * weight).sum() / weight.sum().clamp_min(1)
+    return row_gap(pred, target, live)
 
 
 def _take(pred, target, present, pad, cuts: list[int]):
@@ -109,6 +95,30 @@ def _take(pred, target, present, pad, cuts: list[int]):
     choose = torch.tensor(cuts, device=pred.device, dtype=torch.long)
     live = present[index, :, choose] & ~pad
     return pred[index, :, choose], target[index, :, choose], live
+
+
+def shuffle_player_slots(
+    bits: torch.Tensor,
+    present: torch.Tensor,
+    target: torch.Tensor,
+    pad: torch.Tensor,
+    rng: np.random.Generator,
+) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
+    """Permute player seats on each card. The ID bits move with the player."""
+    batch = bits.shape[0]
+    out_bits = bits.clone()
+    out_present = present.clone()
+    out_target = target.clone()
+    out_pad = pad.clone()
+    for b in range(batch):
+        order = rng.permutation(MAX_PLAYERS)
+        body = bits[b, :, HEADER_BITS:].reshape(-1, MAX_PLAYERS, PLAYER_BITS)
+        shuffled = body[:, order, :]
+        out_bits[b, :, HEADER_BITS:] = shuffled.reshape(bits.shape[1], MAX_PLAYERS * PLAYER_BITS)
+        out_present[b] = present[b, order]
+        out_target[b] = target[b, order]
+        out_pad[b] = pad[b, order]
+    return out_bits, out_present, out_target, out_pad
 
 
 def step_row_view(card, target_gw: int) -> dict:
@@ -189,37 +199,27 @@ def _numpy_gap(pred: np.ndarray, target: np.ndarray, live: np.ndarray, position:
     }
 
 
-def _numpy_strip(
+def _numpy_window(
     pred: np.ndarray,
     target: np.ndarray,
     present: np.ndarray,
     pad: np.ndarray,
     position: np.ndarray,
 ) -> dict:
-    """Player-equal squared gap down the future. pred/target (P, T, E), present (P, T)."""
+    """Mean squared gap over every live remainder dot. pred/target (P, T, E)."""
     live = present & ~pad[:, None]
-    players = np.flatnonzero(live.any(axis=1))
-    empty = {"column": 0.0, "on_solid": 0.0, "on_blank": 0.0, "gkp": 0.0}
-    if len(players) == 0:
-        return empty
-    gaps, solid_ps, blank_ps, gkp_ps = [], [], [], []
-    for i in players:
-        weeks = np.flatnonzero(live[i])
-        dots_p = pred[i, weeks].reshape(-1)
-        dots_y = target[i, weeks].reshape(-1)
-        gaps.append(float(((dots_p - dots_y) ** 2).mean()))
-        solid = dots_y > 0.5
-        if solid.any():
-            solid_ps.append(float(dots_p[solid].mean()))
-        if (~solid).any():
-            blank_ps.append(float(dots_p[~solid].mean()))
-        if int(position[i]) == 0:
-            gkp_ps.append(float(pred[i, weeks, 0].mean()))
+    if not live.any():
+        return {"column": 0.0, "on_solid": 0.0, "on_blank": 0.0, "gkp": 0.0}
+    dots_p = pred[live].reshape(-1)
+    dots_y = target[live].reshape(-1)
+    solid = dots_y > 0.5
+    gkp_mask = live & (position[:, None] == 0)
+    gkp_p = float(pred[gkp_mask][:, 0].mean()) if gkp_mask.any() else 0.0
     return {
-        "column": float(np.mean(gaps)),
-        "on_solid": float(np.mean(solid_ps)) if solid_ps else 0.0,
-        "on_blank": float(np.mean(blank_ps)) if blank_ps else 0.0,
-        "gkp": float(np.mean(gkp_ps)) if gkp_ps else 0.0,
+        "column": float(((dots_p - dots_y) ** 2).mean()),
+        "on_solid": float(dots_p[solid].mean()) if solid.any() else 0.0,
+        "on_blank": float(dots_p[~solid].mean()) if (~solid).any() else 0.0,
+        "gkp": gkp_p,
     }
 
 
@@ -231,7 +231,6 @@ def _marker_slice(channel: str) -> slice:
     return slice(0, EVENT_BITS)
 
 
-@torch.no_grad()
 def _batch_step(cards, targets, device):
     bits_l, row_ons, presents, targets_a, pads = [], [], [], [], []
     for card, target_gw in zip(cards, targets, strict=True):
@@ -252,7 +251,7 @@ def _batch_step(cards, targets, device):
 
 @torch.no_grad()
 def read_arm(model, cards, device, kind: str, stitch: bool = True) -> dict:
-    """Row kind steps one week at a time. Column kind paints the remainder in one shot."""
+    """Stepped kind steps one week. Horizon kind paints the remainder in one shot."""
     model.eval()
     rows = []
     for frac in CUT_FRACS:
@@ -261,7 +260,7 @@ def read_arm(model, cards, device, kind: str, stitch: bool = True) -> dict:
         for card in cards:
             cut = cut_at_fraction(card, frac)
             pad = _player_pad(card)
-            if kind == "column":
+            if kind == "horizon":
                 seen = remainder_view(card, cut)
                 pred = _run(model, seen, pad, device)
                 target = seen["target"]
@@ -279,7 +278,7 @@ def read_arm(model, cards, device, kind: str, stitch: bool = True) -> dict:
                     pred[:, gw] = one[:, gw]
                     target[:, gw] = event_target(card, gw)
                     present[:, gw] = card.present[:, gw]
-            strip = _numpy_strip(pred, target, present, pad, card.position)
+            strip = _numpy_window(pred, target, present, pad, card.position)
             strip["revealed"] = f"{frac:.0%}"
             strip["kind"] = "strip"
             rows.append(strip)
@@ -343,20 +342,20 @@ def _mean_strip(reading: dict, key: str) -> float:
 
 
 def _score_pair(name, model, test, device, stitch: bool):
-    if name == "column":
-        reading = read_arm(model, test, device, "column", stitch=True)
+    if name == "horizon":
+        reading = read_arm(model, test, device, "horizon", stitch=True)
         form = reading
-    elif name == "row":
-        reading = read_arm(model, test, device, "row", stitch=stitch)
+    elif name == "stepped":
+        reading = read_arm(model, test, device, "stepped", stitch=stitch)
         form = reading
     else:
-        reading = read_arm(model, test, device, "row", stitch=stitch)
-        form = read_arm(model, test, device, "column", stitch=True)
+        reading = read_arm(model, test, device, "stepped", stitch=stitch)
+        form = read_arm(model, test, device, "horizon", stitch=True)
     next_week = _mean_distance(reading, 1, "row")
     future = _mean_strip(form, "column")
-    if name == "column":
+    if name == "horizon":
         score = future
-    elif name == "row":
+    elif name == "stepped":
         score = next_week
     else:
         score = 0.5 * (next_week + future)
@@ -364,7 +363,7 @@ def _score_pair(name, model, test, device, stitch: bool):
 
 
 def train_arm(name: str, model, cards, test, device) -> dict:
-    """Row steps one gameweek. Column paints the remainder beyond a cutoff in one shot."""
+    """Stepped paints one gameweek. Horizon paints the remainder as rows."""
     rng = np.random.default_rng(SEED)
     model = model.to(device)
     opt = torch.optim.AdamW(model.parameters(), lr=LR, weight_decay=1e-4)
@@ -384,16 +383,18 @@ def train_arm(name: str, model, cards, test, device) -> dict:
             cuts = [int(rng.integers(1, card.n_fixtures)) for card in pick]
             opt.zero_grad()
             loss = None
-            if name in ("row", "combined"):
+            if name in ("stepped", "combined"):
                 bits, row_on, pad, present, target = _batch_step(pick, cuts, device)
+                bits, present, target, pad = shuffle_player_slots(bits, present, target, pad, rng)
                 pred = model(bits, row_on, pad)
                 week_pred, week_y, week_live = _take(pred, target, present, pad, cuts)
                 loss = row_gap(week_pred, week_y, week_live)
-            if name in ("column", "combined"):
+            if name in ("horizon", "combined"):
                 bits, row_on, _rem, pad, present, target = _batch(pick, cuts, device)
+                bits, present, target, pad = shuffle_player_slots(bits, present, target, pad, rng)
                 pred = model(bits, row_on, pad)
-                column_loss = column_strip(pred, target, present, pad)
-                loss = column_loss if loss is None else 0.5 * (loss + column_loss)
+                horizon_loss = remainder_gap(pred, target, present, pad)
+                loss = horizon_loss if loss is None else 0.5 * (loss + horizon_loss)
             loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             opt.step()
@@ -411,7 +412,7 @@ def train_arm(name: str, model, cards, test, device) -> dict:
         epochs_run = epoch + 1
         print(
             f"{name} epoch {epoch + 1}/{EPOCHS} train {total / max(seen, 1):.4f} "
-            f"next {next_week:.4f} strip {future:.4f} "
+            f"next {next_week:.4f} horizon {future:.4f} "
             f"gkp {_mean_distance(reading, 1, 'gkp'):.3f}{' *' if improved else ''}",
             flush=True,
         )
@@ -445,21 +446,22 @@ def _fmt_horizon(meta: dict) -> list[str]:
 
 def write_report(arms: list[dict]) -> Path:
     lines = [
-        "# Stepped per-dot gap",
+        "# Stepped and horizon row opacity",
         "",
         "The loss on a dot is the squared gap, (opacity − truth)². "
         "A solid dot at 0.20 costs 0.64. A blank dot at 0.20 costs 0.04.",
         "",
-        "The row step paints one gameweek. Past rows stay true, and events from that week onward are blank. "
-        "The column step paints every week beyond a cutoff in one shot, and the loss is each player's column. "
-        "Header and minutes stay on every row. "
-        "Both score the squared gap between the gray and the true dots.",
+        "Both arms paint rows. The stepped arm paints one gameweek: past rows stay true, "
+        "and events from that week onward are blank. "
+        "The horizon arm paints every week beyond a cutoff in one shot, and scores every live "
+        "remainder dot equally. There is no column isolation. "
+        "Header and minutes stay on every row. Player seats are shuffled in training.",
         "",
-        "Combined gives the one-week gap and the remainder-column gap equal weight.",
+        "Combined gives the one-week gap and the remainder gap equal weight.",
         "",
         "## Next week and further",
         "",
-            "Row: one gameweek, stepped. Column: the remainder beyond the cutoff, one shot.",
+        "Stepped: one gameweek, stepped. Horizon: the remainder beyond the cutoff, one shot.",
         "",
         "| arm | weeks ahead | squared gap | opacity on solid | opacity on blank | GKP goal opacity |",
         "|---|---:|---:|---:|---:|---:|",
@@ -469,11 +471,11 @@ def write_report(arms: list[dict]) -> Path:
     lines.extend(
         [
             "",
-            "## Each player's future column",
+            "## Remainder window",
             "",
             "A week eight ahead is read from the one-shot remainder. Events between the cutoff and that week stay blank. Header and minutes of those weeks stay.",
             "",
-            "| arm | column gap | opacity on solid | opacity on blank | GKP goal opacity |",
+            "| arm | remainder gap | opacity on solid | opacity on blank | GKP goal opacity |",
             "|---|---:|---:|---:|---:|",
         ]
     )
@@ -508,28 +510,30 @@ def write_report(arms: list[dict]) -> Path:
     def _arm(name: str) -> dict:
         return next(m for m in arms if m["name"] == name)
 
-    row, column, both = _arm("row"), _arm("column"), _arm("combined")
+    stepped, horizon, both = _arm("stepped"), _arm("horizon"), _arm("combined")
     lines.extend(
         [
             "## Call",
             "",
             "Next-week squared gap: "
-            f"row **{_mean_distance(row['reading'], 1, 'row'):.4f}**, "
-            f"column **{_mean_distance(column['reading'], 1, 'row'):.4f}**, "
+            f"stepped **{_mean_distance(stepped['reading'], 1, 'row'):.4f}**, "
+            f"horizon **{_mean_distance(horizon['reading'], 1, 'row'):.4f}**, "
             f"combined **{_mean_distance(both['reading'], 1, 'row'):.4f}**. "
-            "Column gap, each player once down the future: "
-            f"row **{_mean_strip(row['form'], 'column'):.4f}**, "
-            f"column **{_mean_strip(column['form'], 'column'):.4f}**, "
+            "Remainder gap, every live dot: "
+            f"stepped **{_mean_strip(stepped['form'], 'column'):.4f}**, "
+            f"horizon **{_mean_strip(horizon['form'], 'column'):.4f}**, "
             f"combined **{_mean_strip(both['form'], 'column'):.4f}**. "
             "Goalkeeper goal opacity on the next week: "
-            f"row **{_mean_distance(row['reading'], 1, 'gkp'):.3f}**, "
-            f"column **{_mean_distance(column['reading'], 1, 'gkp'):.3f}**, "
+            f"stepped **{_mean_distance(stepped['reading'], 1, 'gkp'):.3f}**, "
+            f"horizon **{_mean_distance(horizon['reading'], 1, 'gkp'):.3f}**, "
             f"combined **{_mean_distance(both['reading'], 1, 'gkp'):.3f}**. "
-            "The row card steps one gameweek at a time. "
-            "The column card is one shot of the weeks beyond the cutoff.",
+            "The stepped card steps one gameweek at a time. "
+            "The horizon card is one shot of the weeks beyond the cutoff.",
             "",
-            "Example cards: `reports/baudot_step_row_arsenal_2025-26.png`, `reports/baudot_step_column_arsenal_2025-26.png`, "
-            "`reports/baudot_step_row_liverpool_2025-26.png`, `reports/baudot_step_column_liverpool_2025-26.png`.",
+            "Example cards: `reports/baudot_step_stepped_arsenal_2025-26.png`, "
+            "`reports/baudot_step_horizon_arsenal_2025-26.png`, "
+            "`reports/baudot_step_product_arsenal_2025-26.png`, "
+            "`reports/baudot_step_product_stretched_arsenal_2025-26.png`.",
             "",
         ]
     )
@@ -546,85 +550,63 @@ def _check_gap_formula() -> None:
     live = torch.ones(1, 1, dtype=torch.bool)
     got = float(row_gap(pred, target, live))
     if abs(got - (0.64 / EVENT_BITS)) > 1e-5:
-        raise AssertionError(f"solid gap {got}")
-    week = torch.zeros(1, 1, 1, EVENT_BITS)
-    truth = torch.zeros(1, 1, 1, EVENT_BITS)
+        raise AssertionError(f"one solid week {got}")
+    week = torch.zeros(1, 2, 2, EVENT_BITS)
+    truth = torch.zeros(1, 2, 2, EVENT_BITS)
+    present = torch.ones(1, 2, 2, dtype=torch.bool)
+    pad = torch.zeros(1, 2, dtype=torch.bool)
     week[0, 0, 0, 0] = 0.2
     truth[0, 0, 0, 0] = 1.0
-    present = torch.ones(1, 1, 1, dtype=torch.bool)
-    pad = torch.zeros(1, 1, dtype=torch.bool)
-    same = float(column_strip(week, truth, present, pad))
-    if abs(same - got) > 1e-5:
-        raise AssertionError("one week is not the row")
-    longer = torch.nn.Parameter(torch.zeros(1, 1, 2, EVENT_BITS))
-    with torch.no_grad():
-        longer[0, 0, 0, 0] = 0.2
-        longer[0, 0, 1, 0] = 0.8
-    longer_y = torch.zeros(1, 1, 2, EVENT_BITS)
+    same = float(remainder_gap(week[:, :, :1], truth[:, :, :1], present[:, :, :1], pad))
+    # two live players × one week × EVENT_BITS dots; one solid at 0.20 costs 0.64
+    if abs(same - (0.64 / (2 * EVENT_BITS))) > 1e-5:
+        raise AssertionError(f"one-week remainder {same}")
+    longer = torch.zeros(1, 2, 2, EVENT_BITS)
+    longer_y = torch.zeros(1, 2, 2, EVENT_BITS)
+    present2 = torch.ones(1, 2, 2, dtype=torch.bool)
+    longer[0, 0, 0, 0] = 0.2
     longer_y[0, 0, 0, 0] = 1.0
-    present2 = torch.ones(1, 1, 2, dtype=torch.bool)
-    strip_t = column_strip(longer, longer_y, present2, pad)
-    # Each week keeps its own paint: 0.64 on the goal week and 0.64 on the blank week.
-    if abs(float(strip_t.detach()) - (1.28 / (2 * EVENT_BITS))) > 1e-5:
-        raise AssertionError(f"two-week column {float(strip_t.detach())}")
-    strip_t.backward()
-    goal_grad = float(longer.grad[0, 0, 0, 0])
-    blank_grad = float(longer.grad[0, 0, 1, 0])
-    if goal_grad >= 0 or blank_grad <= 0:
-        raise AssertionError(f"weeks share a gray: goal {goal_grad} blank {blank_grad}")
+    longer[0, 0, 1, 0] = 0.8
+    strip_t = remainder_gap(longer, longer_y, present2, pad)
+    expected = (0.64 + 0.64) / (2 * 2 * EVENT_BITS)
+    if abs(float(strip_t.detach()) - expected) > 1e-5:
+        raise AssertionError(f"two-week remainder {float(strip_t.detach())}")
 
 
-def _check_views() -> None:
-    """The lineup view ignores past games. The form view ignores teammates."""
-    width = HEADER_BITS + MAX_PLAYERS * PLAYER_BITS
-    torch.manual_seed(1)
-    model = BlockTokenMixer(width=width).eval()
-    # The paint head starts at zero, so the check gives it a real readout.
-    with torch.no_grad():
-        model.paint.weight.normal_(0.0, 0.05)
-    bits = torch.rand(1, 6, width)
-    row_on = torch.ones(1, 6)
+def _check_shuffle() -> None:
+    bits = torch.zeros(1, 2, HEADER_BITS + MAX_PLAYERS * PLAYER_BITS)
+    present = torch.zeros(1, MAX_PLAYERS, 2, dtype=torch.bool)
+    target = torch.zeros(1, MAX_PLAYERS, 2, EVENT_BITS)
     pad = torch.ones(1, MAX_PLAYERS, dtype=torch.bool)
-    pad[:, :2] = False
+    pad[0, :2] = False
+    present[0, 0, :] = True
+    present[0, 1, :] = True
+    target[0, 0, 0, 0] = 1.0
+    bits[0, :, HEADER_BITS : HEADER_BITS + WHO_BITS] = 1.0
+    bits[0, :, HEADER_BITS + PLAYER_BITS : HEADER_BITS + PLAYER_BITS + WHO_BITS] = 0.5
+    # Force a swap of the two live seats.
+    class _Swap:
+        def permutation(self, n):
+            order = np.arange(n)
+            order[0], order[1] = 1, 0
+            return order
 
-    def events(player: int) -> slice:
-        start = HEADER_BITS + player * PLAYER_BITS + WHO_BITS + MINS_BITS
-        return slice(start, start + EVENT_BITS)
-
-    def who_mins(player: int) -> slice:
-        start = HEADER_BITS + player * PLAYER_BITS
-        return slice(start, start + WHO_BITS + MINS_BITS)
-
-    with torch.no_grad():
-        time_base = model(bits, row_on, pad, view="time")
-        teammate = bits.clone()
-        teammate[0, :5, events(1)] = 1.0
-        if not torch.allclose(time_base[0, 0], model(teammate, row_on, pad, view="time")[0, 0], atol=1e-5):
-            raise AssertionError("form view changed when a teammate's past changed")
-        own = bits.clone()
-        own[0, :5, events(0)] = 1.0
-        if torch.allclose(time_base[0, 0, -1], model(own, row_on, pad, view="time")[0, 0, -1], atol=1e-4):
-            raise AssertionError("form view ignored the player's own past")
-        squad_base = model(bits, row_on, pad, view="squad")
-        if not torch.allclose(squad_base[:, :, -1], model(own, row_on, pad, view="squad")[:, :, -1], atol=1e-5):
-            raise AssertionError("lineup view read a past game")
-        lineup = bits.clone()
-        lineup[0, -1, who_mins(1)] = 0.0
-        if torch.allclose(squad_base[0, 0, -1], model(lineup, row_on, pad, view="squad")[0, 0, -1], atol=1e-4):
-            raise AssertionError("lineup view ignored a teammate")
-        if not torch.allclose(time_base[0, 0], model(lineup, row_on, pad, view="time")[0, 0], atol=1e-5):
-            raise AssertionError("form view read a teammate")
-        named = bits.clone()
-        name_at = HEADER_BITS  # player 0's role and id
-        named[0, :, name_at : name_at + WHO_BITS] = 0.0
-        if not torch.allclose(time_base[0, 0], model(named, row_on, pad, view="time")[0, 0], atol=1e-5):
-            raise AssertionError("form view still sees the player's name")
-
+    out_bits, out_present, out_target, out_pad = shuffle_player_slots(bits, present, target, pad, _Swap())
+    who0 = out_bits[0, 0, HEADER_BITS : HEADER_BITS + WHO_BITS]
+    who1 = out_bits[0, 0, HEADER_BITS + PLAYER_BITS : HEADER_BITS + PLAYER_BITS + WHO_BITS]
+    if not torch.allclose(who0, torch.full_like(who0, 0.5)):
+        raise AssertionError("seat 0 did not receive the other player's ID bits")
+    if not torch.allclose(who1, torch.ones_like(who1)):
+        raise AssertionError("seat 1 did not receive the first player's ID bits")
+    if float(out_target[0, 0, 0, 0]) != 0.0 or float(out_target[0, 1, 0, 0]) != 1.0:
+        raise AssertionError("target did not follow the shuffled seat")
+    if bool(out_pad[0, 0]) or bool(out_pad[0, 1]):
+        raise AssertionError("pad did not follow the shuffled seat")
 
 
 def main() -> None:
     _check_gap_formula()
-    _check_views()
+    _check_shuffle()
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     seasons = TRAIN_SEASONS + (TEST_SEASON,)
     print("loading", flush=True)
@@ -653,7 +635,7 @@ def main() -> None:
     state = {
         "trial": "baudot_stepped_overlap",
         "score": "mean squared gap between opacity and the solid dot",
-        "loss": "squared gap; row is one stepped gameweek; column is the remainder beyond the cutoff",
+        "loss": "squared gap; stepped is one gameweek; horizon is the remainder as rows; seats shuffled",
         "arms": [
             {
                 "name": meta["name"],

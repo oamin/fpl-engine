@@ -1,7 +1,7 @@
-"""Draw example opacity cards from the stepped per-dot models.
+"""Draw stepped, horizon, product, and stretched product opacity cards.
 
-The row card steps one gameweek at a time. The column card is one shot of the
-weeks beyond the cutoff. Header and minutes stay visible on both.
+Stepped paints one gameweek at a time. Horizon paints the remainder beyond the
+cutoff in one shot. Both are rows. Header and minutes stay visible.
 """
 
 from __future__ import annotations
@@ -47,6 +47,7 @@ from src.models.flashcard_baudot_row_trial import (
 MISS = (176, 48, 42)
 FALSE = (36, 78, 168)
 CLUBS = ("Arsenal", "Liverpool")
+ARMS = ("stepped", "horizon")
 
 
 def _rot_name(text: str, size: int = 11) -> Image.Image:
@@ -99,7 +100,36 @@ def _dot_levels(card, soft: np.ndarray, cut: int, players: list[int]) -> dict:
     }
 
 
-def render_card(card, soft: np.ndarray, cut: int, arm: str, levels: dict, path: Path) -> Path:
+def _caption(arm: str, levels: dict, stretch: dict | None = None) -> str:
+    if arm == "stepped":
+        lead = "One gameweek, stepped. Header and minutes stay. "
+    elif arm == "horizon":
+        lead = "One shot of the weeks beyond the cutoff. Header and minutes stay. "
+    elif arm == "product":
+        lead = "Product of the stepped and horizon opacities. "
+    else:
+        lead = (
+            f"Product opacities remapped from {stretch['lo']:.3f}–{stretch['hi']:.3f} onto 0–1. "
+            if stretch
+            else "Contrast-stretched product. "
+        )
+    return (
+        lead
+        + f"Solid dots {levels['on_solid']:.2f} opaque, blank dots {levels['on_blank']:.2f}, "
+        f"goalkeeper goals {levels['gkp']:.2f}. "
+        f"Week-to-week spread {levels['spread']:.2f}."
+    )
+
+
+def render_card(
+    card,
+    soft: np.ndarray,
+    cut: int,
+    arm: str,
+    levels: dict,
+    path: Path,
+    stretch: dict | None = None,
+) -> Path:
     n_g = card.n_fixtures
     players = _regulars(card)
     channels = (("G", 0), ("A", GOAL_BITS))
@@ -116,25 +146,31 @@ def render_card(card, soft: np.ndarray, cut: int, arm: str, levels: dict, path: 
     height = paste_y + panel_h + 56
     img = Image.new("RGB", (width, height), BG)
     draw = ImageDraw.Draw(img)
-    draw.text((16, 12), f"{card.team} {card.season}  ·  {arm} step", fill=INK, font=_font(18))
-    draw.text(
-        (16, 38),
-        (
-            f"One gameweek, stepped. Header and minutes stay. "
-            if arm == "row"
-            else f"One shot of the weeks beyond the cutoff. Header and minutes stay. "
-        )
-        + f"Solid dots {levels['on_solid']:.2f} opaque, blank dots {levels['on_blank']:.2f}, "
-        f"goalkeeper goals {levels['gkp']:.2f}. "
-        f"Week-to-week spread {levels['spread']:.2f}.",
-        fill=MUTED,
-        font=_font(11),
-    )
+    title = {
+        "stepped": "stepped",
+        "horizon": "horizon",
+        "product": "stepped × horizon",
+        "product_stretched": "stepped × horizon, stretched",
+    }.get(arm, arm)
+    draw.text((16, 12), f"{card.team} {card.season}  ·  {title}", fill=INK, font=_font(18))
+    draw.text((16, 38), _caption(arm, levels, stretch), fill=MUTED, font=_font(11))
 
-    titles = ("True card", "Model card  ·  opacity = probability", "Difference  ·  truth − model")
+    if arm == "product":
+        mid_title = "Product card  ·  opacity = stepped × horizon"
+        mid_sub = "A dot stays dark only when both cards are dark."
+        right_title = "Difference  ·  truth − product"
+    elif arm == "product_stretched":
+        mid_title = "Stretched product  ·  contrast-mapped stepped × horizon"
+        mid_sub = "Darkest product week becomes black. Lightest becomes paper."
+        right_title = "Difference  ·  truth − stretched"
+    else:
+        mid_title = "Model card  ·  opacity = probability"
+        mid_sub = "Darker gray = a higher probability."
+        right_title = "Difference  ·  truth − model"
+    titles = ("True card", mid_title, right_title)
     subs = (
         "Black = event. Light = none.",
-        "Darker gray = a higher probability.",
+        mid_sub,
         "Red = missed event. Blue = extra ink. Light = the cards agree.",
     )
 
@@ -144,10 +180,10 @@ def render_card(card, soft: np.ndarray, cut: int, arm: str, levels: dict, path: 
         ImageDraw.Draw(panel).rectangle((x, y, x + dot - 1, y + dot - 1), fill=fill)
 
     panels = []
-    for title, sub in zip(titles, subs, strict=True):
+    for title_text, sub in zip(titles, subs, strict=True):
         panel = Image.new("RGB", (panel_w, panel_h), BG)
         pen = ImageDraw.Draw(panel)
-        pen.text((12, 8), title, fill=INK, font=_font(15))
+        pen.text((12, 8), title_text, fill=INK, font=_font(15))
         pen.text((12, 30), sub, fill=MUTED, font=_font(10))
         pen.rounded_rectangle(
             (left - 8, top - 8, left + cols * step + 4, top + n_g * step + 4),
@@ -220,27 +256,57 @@ def _load():
     return device, train, test
 
 
+def paint_arm(model, card, cut, arm: str, device) -> np.ndarray:
+    pad = _player_pad(card)
+    soft = np.zeros((MAX_PLAYERS, card.n_fixtures, EVENT_BITS), np.float32)
+    if arm == "stepped":
+        for gw in range(cut, card.n_fixtures):
+            one = _run(model, step_row_view(card, gw), pad, device)
+            soft[:, gw] = one[:, gw]
+    else:
+        soft = _run(model, remainder_view(card, cut), pad, device)[:, : card.n_fixtures]
+    return soft
+
+
+def stretch_product(card, prod: np.ndarray, cut: int) -> tuple[np.ndarray, dict]:
+    pad = _player_pad(card)
+    out = prod.copy()
+    vals = []
+    for gw in range(cut, card.n_fixtures):
+        for p in range(card.n_players):
+            if pad[p] or not card.present[p, gw]:
+                continue
+            vals.append(prod[p, gw])
+    if not vals:
+        return out, {"lo": 0.0, "hi": 1.0}
+    stack = np.concatenate(vals)
+    lo = float(stack.min())
+    hi = float(stack.max())
+    span = max(hi - lo, 1e-8)
+    for gw in range(cut, card.n_fixtures):
+        for p in range(card.n_players):
+            if pad[p] or not card.present[p, gw]:
+                out[p, gw] = 0.0
+                continue
+            out[p, gw] = (prod[p, gw] - lo) / span
+    return out, {"lo": lo, "hi": hi}
+
+
 def main() -> None:
     device, train, test = _load()
     pictures = []
     painted = {}
-    for arm in ("row", "column"):
+    models = {}
+    for arm in ARMS:
         weights = ART / f"baudot_step_gap_{arm}.pt"
         model = BlockTokenMixer(width=train[0].width).to(device)
         model.load_state_dict(torch.load(weights, map_location=device))
         model.eval()
+        models[arm] = model
         for club in CLUBS:
             card = next(c for c in test if c.team == club)
             cut = cut_at_fraction(card, 0.2)
-            pad = _player_pad(card)
-            soft = np.zeros((MAX_PLAYERS, card.n_fixtures, EVENT_BITS), np.float32)
-            if arm == "row":
-                for gw in range(cut, card.n_fixtures):
-                    one = _run(model, step_row_view(card, gw), pad, device)
-                    soft[:, gw] = one[:, gw]
-            else:
-                seen = remainder_view(card, cut)
-                soft = _run(model, seen, pad, device)[:, : card.n_fixtures]
+            soft = paint_arm(model, card, cut, arm, device)
             painted[(arm, club)] = soft
             levels = _dot_levels(card, soft, cut, _regulars(card))
             name = f"baudot_step_{arm}_{club.lower()}_2025-26.png"
@@ -248,31 +314,34 @@ def main() -> None:
             render_card(card, soft, cut, arm, levels, REPORTS / name)
             pictures.append({"arm": arm, "club": club, **levels, "path": str(path)})
             print(f"wrote {path} {levels}", flush=True)
+
     for club in CLUBS:
         card = next(c for c in test if c.team == club)
         cut = cut_at_fraction(card, 0.2)
-        row_soft = painted[("row", club)]
-        col_soft = painted[("column", club)]
-        gap = float(np.mean(np.abs(row_soft - col_soft)))
-        row_p, col_p, row_std, col_std = [], [], [], []
-        for gw in range(cut, card.n_fixtures):
-            rr, cc = [], []
-            for p in _regulars(card):
-                if int(card.position[p]) < 2 or not card.present[p, gw]:
-                    continue
-                rr.append(float(row_soft[p, gw, 0]))
-                cc.append(float(col_soft[p, gw, 0]))
-            if len(rr) >= 3:
-                row_std.append(float(np.std(rr)))
-                col_std.append(float(np.std(cc)))
-                row_p.extend(rr)
-                col_p.extend(cc)
-        corr = float(np.corrcoef(row_p, col_p)[0, 1]) if len(row_p) > 2 else float("nan")
-        print(
-            f"{club} mean absolute gap {gap:.4f} attacker-goal correlation {corr:.3f} "
-            f"within-week spread row {np.mean(row_std):.3f} column {np.mean(col_std):.3f}",
-            flush=True,
-        )
+        prod = painted[("stepped", club)] * painted[("horizon", club)]
+        stretched, stretch = stretch_product(card, prod, cut)
+        for arm, soft, stretch_meta in (
+            ("product", prod, None),
+            ("product_stretched", stretched, stretch),
+        ):
+            levels = _dot_levels(card, soft, cut, _regulars(card))
+            name = f"baudot_step_{arm}_{club.lower()}_2025-26.png"
+            path = render_card(card, soft, cut, arm, levels, ART / name, stretch=stretch_meta)
+            render_card(card, soft, cut, arm, levels, REPORTS / name, stretch=stretch_meta)
+            pictures.append(
+                {
+                    "arm": arm,
+                    "club": club,
+                    **levels,
+                    "path": str(path),
+                    **({"stretch": stretch_meta} if stretch_meta else {}),
+                }
+            )
+            print(f"wrote {path} {levels} stretch={stretch_meta}", flush=True)
+
+        gap = float(np.mean(np.abs(painted[("stepped", club)] - painted[("horizon", club)])))
+        print(f"{club} mean absolute gap stepped vs horizon {gap:.4f}", flush=True)
+
     (ART / "baudot_stepped_cards.json").write_text(json.dumps(pictures, indent=2), encoding="utf-8")
 
 
