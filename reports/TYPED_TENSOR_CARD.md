@@ -1,8 +1,10 @@
 # This is the card
 
-**Locked design (cemented).** The flashcard is a typed tensor for one club-season.
-Opacity is only a *display* of event probability — not the storage format.
-Baudot binary bit-planes are **retired for training**.
+**Locked design (cemented 2026-11-15).** Full freeze: [`FLASHCARD_CEMENT.md`](FLASHCARD_CEMENT.md).
+
+The flashcard is a typed tensor for one club-season. Opacity is only a *display*
+of event probability — not the storage format. Baudot binary bit-planes are
+**retired for training**.
 
 ## Schema (`src/models/tensor_card.py`)
 
@@ -17,38 +19,38 @@ Baudot binary bit-planes are **retired for training**.
 
 Paint / model output is **opacity** \(= P(\text{count} \ge 1)\). Numerals on the truth card show the uint counts.
 
-## Training FOVs (same tensor)
+## Two arms (no mix)
 
-1. **Sliced spine** — player–GW rows with strictly as-of history (`iter_slices` / `asof_inputs`). Baselines live here.
-2. **Full-card stepped** — past truth visible; blank events from the painted GW onward; score that week.
-3. **Full-card horizon** — blank G/A beyond the cut; one-shot remainder; score every live remainder cell equally (no per-player column strip).
+1. **Slice** — player–GW likelihood spine. Default: **actual** scored-week minutes
+   (+ mate minutes). Entry: `tensor_card_baselines.py` / `asof_inputs(..., minutes_mode="actual")`.
+2. **Horizon** — full-card FOV. Past true G/A; blank events from the cut; **true minutes
+   stay visible**. Entry: `tensor_card_horizon.py`.
 
-Seat shuffle each batch so identity is not a fixed row index. Header and minutes stay visible under FOV blanks.
+Stepped FOV exists as a screened (lost) variant. Slice×horizon mixes are parked evidence only.
 
-## Explicit as-of fields (current)
+## As-of fields
 
 - Opponent id + assessed odds in the header.
 - Player history means / last / last-5 from weeks `< t`.
-- Teammate shared-minutes on the scored week (`mate_minutes`, `mate_n`) as a slice-level shared-minutes signal.
-
-Deferred (not blocking cement): expected minutes on future inputs; richer opp-history tensor; optional count head; survival as experiment two.
+- Lag-1 predicted minutes helper exists (`minutes_mode="lag1"`) — **lost** vs actual on
+  the spine; keep as honesty reference, not the default.
 
 ## Prototype
 
 ![Typed tensor card prototype — Arsenal 2025-26](typed_tensor_card_prototype_arsenal_2025-26.png)
 
-## Baselines
+## Screen index
 
-See [`typed_tensor_card_baselines.md`](typed_tensor_card_baselines.md).
+| Report | Call |
+| --- | --- |
+| [`typed_tensor_card_baselines.md`](typed_tensor_card_baselines.md) | Slice logistic beats constant |
+| [`typed_tensor_stepped.md`](typed_tensor_stepped.md) | Stepped painter **lost** vs slice |
+| [`typed_tensor_horizon.md`](typed_tensor_horizon.md) | Horizon **inconclusive**; keep FOV arm |
+| [`typed_tensor_slice_horizon_mix.md`](typed_tensor_slice_horizon_mix.md) | Mix **rejected** |
+| [`typed_tensor_lag1_minutes.md`](typed_tensor_lag1_minutes.md) | Lag-1 **lost**; actual minutes stay |
 
-## Stepped FOV screen (2026-11-15)
+## Research continue (not Numagent yet)
 
-Full-card stepped painter: [`typed_tensor_stepped.md`](typed_tensor_stepped.md).
-Holdout d1 log 0.1689 vs sliced logistic 0.1497 — **screen loss**. Card design stays.
-
-## Arms (no mix)
-
-- **Slice** — player–GW likelihood spine (actual minutes conditional by default).
-- **Horizon** — full-card FOV display/exam; true minutes stay on the card.
-
-Lag-1 predicted minutes on slice: [`typed_tensor_lag1_minutes.md`](typed_tensor_lag1_minutes.md) — loses; honesty reference only.
+Optimise flashcard **model training** on this cemented card (slice and/or horizon as
+separate arms). Only after a clear likelihood win, consider a gated comparison to
+`score_xp_v2`. See [`FLASHCARD_CEMENT.md`](FLASHCARD_CEMENT.md).

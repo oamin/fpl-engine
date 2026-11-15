@@ -1,16 +1,15 @@
 {
   "updated": "2026-11-15",
-  "branch": "cursor/typed-tensor-lag1-minutes-c985",
-  "batch": "typed_tensor_lag1_minutes",
+  "branch": "cursor/flashcard-cement-c985",
+  "batch": "flashcard_cement_lock",
   "status": "complete",
-  "result": "screen_loss",
-  "summary": "Lag-1 minutes on slice spine loses to actual minutes (pooled Δlog +0.012, MAE 15.3). Actual minutes remain the conditional spine; horizon untouched.",
-  "metrics": {
-    "actual_pooled_log": 0.1497,
-    "lag1_pooled_log": 0.1617,
-    "delta_pooled_log": 0.0120,
-    "lag1_minutes_mae": 15.31
+  "result": "cemented",
+  "summary": "Flashcard typed-tensor track cemented for main: schema, slice/horizon arms (no mix), all screens documented. Baudot/old flashcard PRs to close; stack superseded. Next research: flashcard model training — not Numagent comparison yet.",
+  "cement": "reports/FLASHCARD_CEMENT.md",
+  "arms": {
+    "slice": "likelihood spine; actual minutes",
+    "horizon": "full-card FOV; true minutes on card"
   },
-  "next": "Keep slice (actual minutes) and horizon as separate arms; no mix; no rolling-K unless re-asked",
+  "next": "After cement lands on main: research branch for flashcard model training",
   "product_on_main": "numagent_2_0"
 }

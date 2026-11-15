@@ -2,20 +2,18 @@
 
 Updated: 2026-11-15. **Numagent 2.0** is the product on main (`protocol.numagent_2_0`) — **supersedes Numagent 1.0**. Parked hypotheses: `.cursor/ideas.md`. Stage archaeology: root `CONTEXT.md` and `reports/SUPERSEDED.md`. Canonical index: `reports/LOCKED.md`.
 
-## Flashcard research (2026-11-15)
+## Flashcard research (2026-11-15) — CEMENTED
 
-Typed tensor club-season card is cemented: `src/models/tensor_card.py`,
-[`reports/TYPED_TENSOR_CARD.md`](../reports/TYPED_TENSOR_CARD.md). Opacity is
-display-only \(P(\text{count}\ge 1)\). Minutes raw; G/A uint unclipped. Baudot
-binary training retired (`reports/FLASHCARD_GIT_CLEANUP.md`). Sliced baselines:
-`python -m src.models.tensor_card_baselines` (logistic beats constant).
+Full lock: [`reports/FLASHCARD_CEMENT.md`](../reports/FLASHCARD_CEMENT.md).
+Schema: `src/models/tensor_card.py`. Design: `reports/TYPED_TENSOR_CARD.md`.
+Git: `reports/FLASHCARD_GIT_CLEANUP.md` (Baudot / old flashcard PRs closed;
+typed-tensor stack superseded by cement PR into main).
 
-**Stepped FOV painter** — screen loss. **Horizon FOV** — inconclusive hairline.
-**Slice×horizon mix** — inconclusive, not promoted. Arms stay **separate**:
-slice = likelihood spine; horizon = full-card FOV. **Lag-1 minutes** on slice
-([`typed_tensor_lag1_minutes.md`](../reports/typed_tensor_lag1_minutes.md)):
-pooled Δlog **+0.012** vs actual minutes — loses as expected; actual minutes
-remain the conditional spine.
+**Arms (no mix):** slice = likelihood spine (actual minutes); horizon = full-card
+FOV (true minutes stay on the card). Stepped lost; mix rejected; lag-1 lost.
+
+**Continue:** research branch for flashcard **model training** on this card.
+Do **not** open a Numagent/`score_xp_v2` comparison until that training earns it.
 
 ## Repo freeze sequence (2026-10-20)
 

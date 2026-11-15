@@ -15,9 +15,9 @@ parked as overkill until a path-V screen asks for it (`protocol.cascade_short_ge
 - Live shadow of locked L4 + `score_xp_v2` (no new strategiser arm without a protocol entry).
 - Layer 5 chips only if a pre-registered likelihood / priced-path comparison asks.
 - Objective-function search stays parked.
-- **Flashcard:** slice vs horizon kept as separate arms (no mix). Lag-1 minutes
-  lost (+0.012 pooled log). Actual minutes stay slice spine. Rolling-K minutes
-  optional only if someone re-asks. Survival secondary. No Baudot.
+- **Flashcard (cemented):** continue **model training** research on the typed tensor
+  (`reports/FLASHCARD_CEMENT.md`). Slice and horizon stay separate arms. No mix.
+  No Numagent comparison until flashcard likelihood clearly earns it. No Baudot.
 
 ## Parked — Baudot binary / artificial column nets (2026-11-15)
 

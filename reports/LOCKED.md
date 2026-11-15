@@ -93,21 +93,22 @@ Modules: `short_horizon_generative`, `match_outcome`, `lineup_roll`, `attack_rol
 
 ## Research track — typed tensor flashcard (not product)
 
-Cemented card for player–GW event painting. **Not** the live Numagent path.
-Baudot binary planes are retired for training.
+**Cement locked 2026-11-15.** Full freeze: [`FLASHCARD_CEMENT.md`](FLASHCARD_CEMENT.md).
+Not the live Numagent path; Numagent comparison deferred until flashcard training
+clearly wins on likelihood. Baudot binary planes retired.
 
 | | |
 | --- | --- |
+| **Cement** | [`FLASHCARD_CEMENT.md`](FLASHCARD_CEMENT.md) |
 | Schema | `src/models/tensor_card.py` |
-| Cement note | [`TYPED_TENSOR_CARD.md`](TYPED_TENSOR_CARD.md) |
-| Sliced baselines | [`typed_tensor_card_baselines.md`](typed_tensor_card_baselines.md) |
-| Stepped FOV screen | [`typed_tensor_stepped.md`](typed_tensor_stepped.md) — **lost** vs sliced logistic (d1 0.1689 vs 0.1497) |
-| Horizon FOV screen | [`typed_tensor_horizon.md`](typed_tensor_horizon.md) — **inconclusive** (rem 0.1480 vs slice 0.1497) |
-| Slice×horizon mix | [`typed_tensor_slice_horizon_mix.md`](typed_tensor_slice_horizon_mix.md) — **inconclusive** (residual 0.1449 vs slice 0.1450) |
-| Lag-1 minutes (slice) | [`typed_tensor_lag1_minutes.md`](typed_tensor_lag1_minutes.md) — **lost** (pooled Δlog +0.012 vs actual) |
-| Stepped d1 card render | `typed_tensor_stepped_d1_arsenal_2025-26.png` |
-| Horizon card render | `typed_tensor_horizon_arsenal_2025-26.png` |
-| Git cleanup note | [`FLASHCARD_GIT_CLEANUP.md`](FLASHCARD_GIT_CLEANUP.md) |
+| Design | [`TYPED_TENSOR_CARD.md`](TYPED_TENSOR_CARD.md) |
+| Arms | **Slice** (spine, actual minutes) · **Horizon** (FOV; no mix) |
+| Slice baselines | [`typed_tensor_card_baselines.md`](typed_tensor_card_baselines.md) |
+| Stepped FOV | [`typed_tensor_stepped.md`](typed_tensor_stepped.md) — lost |
+| Horizon FOV | [`typed_tensor_horizon.md`](typed_tensor_horizon.md) — keep FOV arm |
+| Mix | [`typed_tensor_slice_horizon_mix.md`](typed_tensor_slice_horizon_mix.md) — rejected |
+| Lag-1 minutes | [`typed_tensor_lag1_minutes.md`](typed_tensor_lag1_minutes.md) — lost |
+| Git cleanup | [`FLASHCARD_GIT_CLEANUP.md`](FLASHCARD_GIT_CLEANUP.md) |
 
 ## Superseded
 

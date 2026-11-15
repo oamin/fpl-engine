@@ -1,34 +1,34 @@
-# Flashcard git cleanup (focused)
+# Flashcard git cleanup
 
-**Date:** 2026-11-15 (Europe/London).
+**Date:** 2026-11-15 (Europe/London). **Updated** with cement consolidation.
 
 ## Decision
 
-Product on main stays **Numagent 2.0**. Flashcard / Baudot work is a separate research track.
-The **typed tensor card** (`src/models/tensor_card.py`, [`TYPED_TENSOR_CARD.md`](TYPED_TENSOR_CARD.md)) is the source of truth going forward.
+Product on main stays **Numagent 2.0**. Flashcard research is a separate track whose
+source of truth is the **typed tensor card** ([`FLASHCARD_CEMENT.md`](FLASHCARD_CEMENT.md)).
 
-## What this cleanup does
+## Consolidation (this turn)
 
-- Puts the cemented schema + sliced baselines on a single branch into main (`cursor/typed-tensor-card-c985`).
-- Parks Baudot **binary** training: bits / Dice–overlap / Baudot planes are not the card.
-- Does **not** mass-close the historical Baudot PR stack. Those branches remain archaeological evidence; do not merge them onto main as the live path.
+1. Land typed-tensor modules + cement docs on `main` via `cursor/flashcard-cement-c985`.
+2. **Close** intermediate typed-tensor stack PRs (#185–#190) as superseded by that consolidation.
+3. **Close** historical Baudot / pre-tensor flashcard PRs (#139–#184 and kin) as archaeology.
+   Do not merge them. Branches may remain on the remote as read-only history; do not extend them.
+4. New work: branch from `main` after cement merges — `cursor/flashcard-<topic>-c985`.
 
-## What stays parked / retired
+## Retired
 
 | Item | Status |
 | --- | --- |
 | Baudot binary planes as training targets | retired |
-| Hand-built LineupNet / FormColumn means | rejected |
-| Reservoir / ZIP / SMOTE / SAE add-ons for this painter | parked |
-| Captain / chip simulators | deferred until a pre-registered likelihood ask |
-| 2026/27 live holdout fit | frozen — do not touch |
+| Hand-built LineupNet / FormColumn | rejected |
+| Slice × horizon mixing as a product path | rejected |
+| Lag-1 as default slice minutes | rejected (honesty reference only) |
+| Stepped FOV painter as default | parked (screen loss) |
+| Reservoir / ZIP / SMOTE / SAE for this painter | parked |
+| 2026/27 holdout fit | frozen |
 
-## What to open next (one comparison at a time)
+## Do not
 
-1. Full-card stepped FOV painter on the typed tensor (opacity = P(event); log / Brier).
-2. Horizon remainder FOV on the same mixer (sanity after stepped).
-3. Survival framing only as a secondary experiment after event probability is honest.
-
-## Note on the PR forest
-
-Dozens of `cursor/baudot-*-c985` / flashcard trial PRs exist off main. Consolidation means **stop extending them** and route new work through the typed tensor module — not a force-close of every historical PR in one turn.
+- Reopen Baudot bit training.
+- Mass-reopen closed archaeological PRs onto main.
+- Ship flashcard → Numagent comparison until a later pre-registered gate says so.
