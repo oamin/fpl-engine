@@ -15,7 +15,7 @@ parked as overkill until a path-V screen asks for it (`protocol.cascade_short_ge
 - Live shadow of locked L4 + `score_xp_v2` (no new strategiser arm without a protocol entry).
 - Layer 5 chips only if a pre-registered likelihood / priced-path comparison asks.
 - Objective-function search stays parked.
-- **Flashcard:** stepped FOV painter screened and lost to sliced logistic (2026-11-15). Optional next: horizon remainder FOV or a single mixer change — one comparison, pre-registered. Survival secondary. Do not revive Baudot bits or LineupNet/FormColumn.
+- **Flashcard:** stepped lost; horizon remainder inconclusive vs slice (Δ≈−0.0017). Optional next: one mixer change only if pre-registered. Survival secondary. No Baudot.
 
 ## Parked — Baudot binary / artificial column nets (2026-11-15)
 
@@ -28,6 +28,12 @@ rejected. Card is the typed tensor (`reports/TYPED_TENSOR_CARD.md`).
 First typed-card stepped mixer (time+squad attention, log+Brier) lost to sliced
 logistic on 2025-26 d1 log (0.1689 vs 0.1497). Keep as evidence; not promoted.
 See `reports/typed_tensor_stepped.md`.
+
+## Parked — typed horizon FOV (2026-11-15)
+
+Horizon remainder log 0.1480 vs sliced logistic 0.1497 — hairline only, different
+cell set; d1 still ~0.17. Inconclusive, not promoted.
+`reports/typed_tensor_horizon.md`.
 
 ## Procedure, locked 2026-10-07 (historical freeze notes)
 

@@ -11,10 +11,11 @@ binary training retired (`reports/FLASHCARD_GIT_CLEANUP.md`). Sliced baselines:
 `python -m src.models.tensor_card_baselines` (logistic beats constant).
 
 **Stepped FOV painter** (`src/models/tensor_card_stepped.py`,
-[`typed_tensor_stepped.md`](../reports/typed_tensor_stepped.md)): full-card
-stepped, log+Brier, seat shuffle. Holdout d1 log **0.1689** vs sliced logistic
-**0.1497** — screen loss. Card stays; do not revive Baudot. Next: one follow-up
-only if pre-registered (horizon FOV or mixer change) — not a daily stage pile-on.
+[`typed_tensor_stepped.md`](../reports/typed_tensor_stepped.md)): screen loss
+vs sliced logistic. **Horizon FOV** (`tensor_card_horizon.py`,
+[`typed_tensor_horizon.md`](../reports/typed_tensor_horizon.md)): remainder log
+**0.1480** vs slice **0.1497** — inconclusive hairline, not a clear win. Card
+stays cemented. Render: `typed_tensor_stepped_d1_*.png`, `typed_tensor_horizon_*.png`.
 
 ## Repo freeze sequence (2026-10-20)
 

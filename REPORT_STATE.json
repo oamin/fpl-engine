@@ -1,17 +1,20 @@
 {
   "updated": "2026-11-15",
-  "branch": "cursor/typed-tensor-stepped-c985",
-  "batch": "typed_tensor_stepped_fov",
+  "branch": "cursor/typed-tensor-horizon-c985",
+  "batch": "typed_tensor_horizon_fov",
   "status": "complete",
-  "result": "screen_loss",
-  "summary": "Stepped full-card painter on typed tensor: holdout d1 log 0.1689 vs sliced logistic 0.1497. Card remains cemented; painter not promoted.",
+  "result": "inconclusive",
+  "summary": "Horizon FOV remainder log 0.1480 vs sliced logistic 0.1497 (hairline). Stepped d1 card rendered. Neither FOV painter promoted.",
   "metrics": {
-    "stepped_d1_log": 0.1689,
-    "stepped_d1_brier": 0.0457,
-    "slice_logistic_log": 0.1497,
-    "slice_logistic_brier": 0.0400,
-    "epochs_run": 24
+    "horizon_remainder_log": 0.1480,
+    "horizon_d1_log": 0.1686,
+    "stepped_d1_log": 0.1696,
+    "slice_logistic_log": 0.1497
   },
-  "next": "One pre-registered follow-up only (horizon FOV or single mixer change); no Baudot revival",
+  "artifacts": [
+    "reports/typed_tensor_stepped_d1_arsenal_2025-26.png",
+    "reports/typed_tensor_horizon_arsenal_2025-26.png"
+  ],
+  "next": "Stop FOV pile-on unless a single pre-registered mixer change is justified",
   "product_on_main": "numagent_2_0"
 }
