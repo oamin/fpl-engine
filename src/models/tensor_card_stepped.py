@@ -123,8 +123,46 @@ class TypedCardMixer(nn.Module):
         squad_mask = player_pad[:, None, :].expand(b, t, p).reshape(b * t, p)
         mixed, _ = self.squad(squad_view, squad_view, squad_view, key_padding_mask=squad_mask, need_weights=False)
         tokens = self.norm_s(squad_view + mixed).reshape(b, t, p, D)
-        ink = torch.sigmoid(self.paint(tokens))  # B,T,P,2
+        logits = self.paint(tokens)  # B,T,P,2
+        ink = torch.sigmoid(logits)
         return ink.permute(0, 2, 1, 3)  # B,P,T,2
+
+    def forward_logits(
+        self,
+        club_id: torch.Tensor,
+        opp_id: torch.Tensor,
+        home: torch.Tensor,
+        odds: torch.Tensor,
+        player_code: torch.Tensor,
+        role: torch.Tensor,
+        minutes: torch.Tensor,
+        events_in: torch.Tensor,
+        row_on: torch.Tensor,
+        player_pad: torch.Tensor,
+    ) -> torch.Tensor:
+        """Same encode as forward; returns raw paint logits B,P,T,2."""
+        b, t = opp_id.shape
+        p = player_code.shape[1]
+        club = self.club(club_id)[:, None, :].expand(b, t, D)
+        opp = self.opp(opp_id)
+        odds_e = self.odds(odds)
+        home_e = self.home(home[..., None])
+        header = self.norm_h(self.header_mix(torch.cat([club, opp, odds_e, home_e], dim=-1)))
+        who = self.player(player_code)[:, None, :, :].expand(b, t, p, D)
+        role_e = self.role(role)[:, None, :, :].expand(b, t, p, D)
+        mins_e = self.mins((minutes / 90.0).clamp(0, 2)[..., None].permute(0, 2, 1, 3))
+        ev = self.events(events_in.permute(0, 2, 1, 3))
+        players = self.norm_p(self.player_mix(torch.cat([who, role_e, mins_e, ev], dim=-1)))
+        tokens = players + header[:, :, None, :] + self.time_pos[:, :t]
+        time_view = tokens.permute(0, 2, 1, 3).reshape(b * p, t, D)
+        time_mask = (row_on < 0.5)[:, None, :].expand(b, p, t).reshape(b * p, t)
+        mixed, _ = self.time(time_view, time_view, time_view, key_padding_mask=time_mask, need_weights=False)
+        tokens = self.norm_t(time_view + mixed).reshape(b, p, t, D).permute(0, 2, 1, 3)
+        squad_view = tokens.reshape(b * t, p, D)
+        squad_mask = player_pad[:, None, :].expand(b, t, p).reshape(b * t, p)
+        mixed, _ = self.squad(squad_view, squad_view, squad_view, key_padding_mask=squad_mask, need_weights=False)
+        tokens = self.norm_s(squad_view + mixed).reshape(b, t, p, D)
+        return self.paint(tokens).permute(0, 2, 1, 3)
 
 
 def _event_ink(card: TensorCard) -> np.ndarray:

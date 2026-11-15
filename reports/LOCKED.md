@@ -103,6 +103,7 @@ Baudot binary planes are retired for training.
 | Sliced baselines | [`typed_tensor_card_baselines.md`](typed_tensor_card_baselines.md) |
 | Stepped FOV screen | [`typed_tensor_stepped.md`](typed_tensor_stepped.md) — **lost** vs sliced logistic (d1 0.1689 vs 0.1497) |
 | Horizon FOV screen | [`typed_tensor_horizon.md`](typed_tensor_horizon.md) — **inconclusive** (rem 0.1480 vs slice 0.1497) |
+| Slice×horizon mix | [`typed_tensor_slice_horizon_mix.md`](typed_tensor_slice_horizon_mix.md) — **inconclusive** (residual 0.1449 vs slice 0.1450) |
 | Stepped d1 card render | `typed_tensor_stepped_d1_arsenal_2025-26.png` |
 | Horizon card render | `typed_tensor_horizon_arsenal_2025-26.png` |
 | Git cleanup note | [`FLASHCARD_GIT_CLEANUP.md`](FLASHCARD_GIT_CLEANUP.md) |

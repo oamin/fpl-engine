@@ -10,12 +10,11 @@ display-only \(P(\text{count}\ge 1)\). Minutes raw; G/A uint unclipped. Baudot
 binary training retired (`reports/FLASHCARD_GIT_CLEANUP.md`). Sliced baselines:
 `python -m src.models.tensor_card_baselines` (logistic beats constant).
 
-**Stepped FOV painter** (`src/models/tensor_card_stepped.py`,
-[`typed_tensor_stepped.md`](../reports/typed_tensor_stepped.md)): screen loss
-vs sliced logistic. **Horizon FOV** (`tensor_card_horizon.py`,
-[`typed_tensor_horizon.md`](../reports/typed_tensor_horizon.md)): remainder log
-**0.1480** vs slice **0.1497** — inconclusive hairline, not a clear win. Card
-stays cemented. Render: `typed_tensor_stepped_d1_*.png`, `typed_tensor_horizon_*.png`.
+**Stepped FOV painter** — screen loss. **Horizon FOV** — inconclusive hairline.
+**Slice×horizon mix** (`tensor_card_slice_horizon_mix.py`,
+[`typed_tensor_slice_horizon_mix.md`](../reports/typed_tensor_slice_horizon_mix.md)):
+blend/stack/residual on remainder; residual **0.1449** vs slice **0.1450** —
+inconclusive, not promoted. Card stays cemented.
 
 ## Repo freeze sequence (2026-10-20)
 

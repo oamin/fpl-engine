@@ -1,20 +1,18 @@
 {
   "updated": "2026-11-15",
-  "branch": "cursor/typed-tensor-horizon-c985",
-  "batch": "typed_tensor_horizon_fov",
+  "branch": "cursor/typed-tensor-slice-horizon-mix-c985",
+  "batch": "typed_tensor_slice_horizon_mix",
   "status": "complete",
   "result": "inconclusive",
-  "summary": "Horizon FOV remainder log 0.1480 vs sliced logistic 0.1497 (hairline). Stepped d1 card rendered. Neither FOV painter promoted.",
+  "summary": "Slice×horizon mix on remainder cells: residual≈slice 0.1450, horizon 0.1468; train blend α→1. Not promoted.",
   "metrics": {
-    "horizon_remainder_log": 0.1480,
-    "horizon_d1_log": 0.1686,
-    "stepped_d1_log": 0.1696,
-    "slice_logistic_log": 0.1497
+    "slice_remainder_log": 0.1450,
+    "horizon_remainder_log": 0.1468,
+    "blend_remainder_log": 0.1468,
+    "stack_remainder_log": 0.1464,
+    "residual_remainder_log": 0.1450,
+    "train_best_alpha": 1.0
   },
-  "artifacts": [
-    "reports/typed_tensor_stepped_d1_arsenal_2025-26.png",
-    "reports/typed_tensor_horizon_arsenal_2025-26.png"
-  ],
-  "next": "Stop FOV pile-on unless a single pre-registered mixer change is justified",
+  "next": "Stop FOV/mix pile-on unless PI pre-registers a sharper comparison",
   "product_on_main": "numagent_2_0"
 }
