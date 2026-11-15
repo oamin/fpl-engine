@@ -7,15 +7,15 @@ A solid dot painted at 0.20 costs 0.64. A blank dot painted at 0.20 costs
 it can raise its score by painting a likely scorer solid on the weeks he
 does not score.
 
-Three arms, seed 0. Each step reveals the true past and blanks the week
-being painted.
+Three arms, seed 0, same mixer, same card bits.
 
-  row       — the shared teamsheet, plus this player's position and minutes.
-            No opponent, no odds, no own name, no past games. Same position
-            and the same minutes get the same gray.
-  column    — that player's earlier games, then this week's minutes and opponent.
-            The name is hidden, and so are the teammates.
-  combined  — the two probabilities, equal weight
+  row       — one gameweek, one shot, then step. Past rows stay true.
+            Events from the painted week onward are blank.
+  column    — one shot of the weeks beyond a cutoff, scored as each
+            player's column.
+  combined  — the two squared gaps, equal weight
+
+Header and minutes stay on every row. The model reads the card as it is.
 
 The holdout reads 1, 2, 4 and 8 weeks ahead.
 """
@@ -40,6 +40,7 @@ from src.models.flashcard_baudot_row_trial import (
     GOAL_BITS,
     HEADER_BITS,
     LR,
+    MAX_GW,
     MAX_PLAYERS,
     PLAYER_BITS,
     REPORTS,
@@ -51,6 +52,7 @@ from src.models.flashcard_baudot_row_trial import (
     BlockTokenMixer,
     _batch,
     _player_pad,
+    blank_events_in_row,
     build_baudot_cards,
     build_cards,
     build_league,
@@ -109,6 +111,34 @@ def _take(pred, target, present, pad, cuts: list[int]):
     return pred[index, :, choose], target[index, :, choose], live
 
 
+def step_row_view(card, target_gw: int) -> dict:
+    """One row, one shot. Past rows stay true. Events from this week on are blank.
+
+    Header and minutes stay on every row, including the week being painted.
+    """
+    bits = card.bits.copy()
+    row_on = np.zeros(MAX_GW, dtype=np.float32)
+    target = np.zeros((MAX_PLAYERS, MAX_GW, EVENT_BITS), dtype=np.float32)
+    present = np.zeros((MAX_PLAYERS, MAX_GW), dtype=bool)
+    for gw in range(card.n_fixtures):
+        row_on[gw] = 1.0
+        if gw >= target_gw:
+            bits[gw] = blank_events_in_row(bits[gw])
+    target[:, target_gw] = event_target(card, target_gw)
+    present[:, target_gw] = card.present[:, target_gw]
+    return {"bits": bits, "row_on": row_on, "target": target, "present": present}
+
+
+@torch.no_grad()
+def _run(model, seen, pad, device) -> np.ndarray:
+    model.eval()
+    return model(
+        torch.from_numpy(seen["bits"][None]).to(device),
+        torch.from_numpy(seen["row_on"][None]).to(device),
+        torch.from_numpy(pad[None]).to(device),
+    )[0].detach().cpu().numpy()
+
+
 def assert_step_is_blank(card) -> None:
     """The painted row keeps its true labels off the input. The row before stays true."""
     cut = cut_at_fraction(card, 0.2)
@@ -122,6 +152,21 @@ def assert_step_is_blank(card) -> None:
             raise AssertionError("painted row still carries goals or assists")
     if int(view["target"][:, cut].sum()) <= 0:
         raise AssertionError("painted row has no event labels")
+    step = step_row_view(card, cut)
+    if not np.array_equal(step["bits"][cut - 1, :HEADER_BITS], card.bits[cut - 1, :HEADER_BITS]):
+        raise AssertionError("the step rewrote a past header")
+    painted = step["bits"][cut]
+    if not np.array_equal(painted[:HEADER_BITS], card.bits[cut, :HEADER_BITS]):
+        raise AssertionError("the painted week lost its header")
+    later = min(cut + 1, card.n_fixtures - 1)
+    for row in range(MAX_PLAYERS):
+        base = HEADER_BITS + row * PLAYER_BITS
+        mins = slice(base + WHO_BITS, base + WHO_BITS + MINS_BITS)
+        events = slice(base + WHO_BITS + MINS_BITS, base + PLAYER_BITS)
+        if not np.array_equal(painted[mins], card.bits[cut, mins]):
+            raise AssertionError("the painted week lost its minutes")
+        if float(step["bits"][later, events].sum()) != 0.0:
+            raise AssertionError("a later week still shows its goals")
 
 
 def _numpy_gap(pred: np.ndarray, target: np.ndarray, live: np.ndarray, position: np.ndarray) -> dict:
@@ -187,8 +232,27 @@ def _marker_slice(channel: str) -> slice:
 
 
 @torch.no_grad()
-def holdout(model, cards, device, view: str) -> dict:
-    """Overlap at each distance, with every in-between week left blank."""
+def _batch_step(cards, targets, device):
+    bits_l, row_ons, presents, targets_a, pads = [], [], [], [], []
+    for card, target_gw in zip(cards, targets, strict=True):
+        view = step_row_view(card, int(target_gw))
+        bits_l.append(view["bits"])
+        row_ons.append(view["row_on"])
+        presents.append(view["present"])
+        targets_a.append(view["target"])
+        pads.append(_player_pad(card))
+    return (
+        torch.from_numpy(np.stack(bits_l)).to(device),
+        torch.from_numpy(np.stack(row_ons)).to(device),
+        torch.from_numpy(np.stack(pads)).to(device),
+        torch.from_numpy(np.stack(presents)).to(device),
+        torch.from_numpy(np.stack(targets_a)).to(device),
+    )
+
+
+@torch.no_grad()
+def read_arm(model, cards, device, kind: str, stitch: bool = True) -> dict:
+    """Row kind steps one week at a time. Column kind paints the remainder in one shot."""
     model.eval()
     rows = []
     for frac in CUT_FRACS:
@@ -196,16 +260,25 @@ def holdout(model, cards, device, view: str) -> dict:
         markers = {channel: [] for channel in ("goals", "assists")}
         for card in cards:
             cut = cut_at_fraction(card, frac)
-            seen = remainder_view(card, cut)
             pad = _player_pad(card)
-            pred = model(
-                torch.from_numpy(seen["bits"][None]).to(device),
-                torch.from_numpy(seen["row_on"][None]).to(device),
-                torch.from_numpy(pad[None]).to(device),
-                view=view,
-            )[0].cpu().numpy()
-            target = seen["target"]
-            present = seen["present"]
+            if kind == "column":
+                seen = remainder_view(card, cut)
+                pred = _run(model, seen, pad, device)
+                target = seen["target"]
+                present = seen["present"]
+            else:
+                pred = np.zeros((MAX_PLAYERS, MAX_GW, EVENT_BITS), np.float32)
+                target = np.zeros((MAX_PLAYERS, MAX_GW, EVENT_BITS), np.float32)
+                present = np.zeros((MAX_PLAYERS, MAX_GW), dtype=bool)
+                if stitch:
+                    weeks = range(cut, card.n_fixtures)
+                else:
+                    weeks = [cut + d - 1 for d in DISTANCES if cut + d - 1 < card.n_fixtures]
+                for gw in weeks:
+                    one = _run(model, step_row_view(card, gw), pad, device)
+                    pred[:, gw] = one[:, gw]
+                    target[:, gw] = event_target(card, gw)
+                    present[:, gw] = card.present[:, gw]
             strip = _numpy_strip(pred, target, present, pad, card.position)
             strip["revealed"] = f"{frac:.0%}"
             strip["kind"] = "strip"
@@ -269,7 +342,29 @@ def _mean_strip(reading: dict, key: str) -> float:
     return float(np.mean(picked)) if picked else 0.0
 
 
+def _score_pair(name, model, test, device, stitch: bool):
+    if name == "column":
+        reading = read_arm(model, test, device, "column", stitch=True)
+        form = reading
+    elif name == "row":
+        reading = read_arm(model, test, device, "row", stitch=stitch)
+        form = reading
+    else:
+        reading = read_arm(model, test, device, "row", stitch=stitch)
+        form = read_arm(model, test, device, "column", stitch=True)
+    next_week = _mean_distance(reading, 1, "row")
+    future = _mean_strip(form, "column")
+    if name == "column":
+        score = future
+    elif name == "row":
+        score = next_week
+    else:
+        score = 0.5 * (next_week + future)
+    return reading, form, next_week, future, score
+
+
 def train_arm(name: str, model, cards, test, device) -> dict:
+    """Row steps one gameweek. Column paints the remainder beyond a cutoff in one shot."""
     rng = np.random.default_rng(SEED)
     model = model.to(device)
     opt = torch.optim.AdamW(model.parameters(), lr=LR, weight_decay=1e-4)
@@ -287,40 +382,25 @@ def train_arm(name: str, model, cards, test, device) -> dict:
         for start in range(0, len(cards), BATCH):
             pick = [cards[int(i)] for i in order[start : start + BATCH]]
             cuts = [int(rng.integers(1, card.n_fixtures)) for card in pick]
-            bits, row_on, _rem, pad, present, target = _batch(pick, cuts, device)
             opt.zero_grad()
-            if name == "combined":
-                squad_pred = model(bits, row_on, pad, view="squad")
-                form_pred = model(bits, row_on, pad, view="time")
-                week_pred, week_y, week_live = _take(squad_pred, target, present, pad, cuts)
-                loss = 0.5 * (
-                    row_gap(week_pred, week_y, week_live) + column_strip(form_pred, target, present, pad)
-                )
-            elif name == "row":
-                pred = model(bits, row_on, pad, view="squad")
+            loss = None
+            if name in ("row", "combined"):
+                bits, row_on, pad, present, target = _batch_step(pick, cuts, device)
+                pred = model(bits, row_on, pad)
                 week_pred, week_y, week_live = _take(pred, target, present, pad, cuts)
                 loss = row_gap(week_pred, week_y, week_live)
-            else:
-                pred = model(bits, row_on, pad, view="time")
-                loss = column_strip(pred, target, present, pad)
+            if name in ("column", "combined"):
+                bits, row_on, _rem, pad, present, target = _batch(pick, cuts, device)
+                pred = model(bits, row_on, pad)
+                column_loss = column_strip(pred, target, present, pad)
+                loss = column_loss if loss is None else 0.5 * (loss + column_loss)
             loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             opt.step()
             total += float(loss.detach())
             seen += 1
         sched.step()
-        if name == "combined":
-            reading = holdout(model, test, device, "squad")
-            form = holdout(model, test, device, "time")
-            next_week = _mean_distance(reading, 1, "row")
-            future = _mean_strip(form, "column")
-            score = 0.5 * (next_week + future)
-        else:
-            reading = holdout(model, test, device, VIEWS[name])
-            form = None
-            next_week = _mean_distance(reading, 1, "row")
-            future = _mean_strip(reading, "column")
-            score = next_week if name == "row" else future
+        reading, _form, next_week, future, score = _score_pair(name, model, test, device, stitch=False)
         improved = score < best - 1e-5
         if improved:
             best = score
@@ -335,23 +415,18 @@ def train_arm(name: str, model, cards, test, device) -> dict:
             f"gkp {_mean_distance(reading, 1, 'gkp'):.3f}{' *' if improved else ''}",
             flush=True,
         )
-        if bad >= EARLY_PATIENCE and epoch + 1 >= 15:
+        if bad >= EARLY_PATIENCE and epoch + 1 >= 12:
             print(f"{name} early stop at epoch {epoch + 1}", flush=True)
             break
     if best_state is not None:
         model.load_state_dict(best_state)
-    if name == "combined":
-        reading = holdout(model, test, device, "squad")
-        form = holdout(model, test, device, "time")
-    else:
-        reading = holdout(model, test, device, VIEWS[name])
-        form = reading
+    reading, form, _next, _future, _score = _score_pair(name, model, test, device, stitch=True)
     return {
         "name": name,
         "epochs_run": epochs_run,
         "best": best,
         "seconds": round(time.time() - t0, 1),
-        "view": "both" if name == "combined" else VIEWS[name],
+        "view": name,
         "reading": reading,
         "form": form,
     }
@@ -375,18 +450,16 @@ def write_report(arms: list[dict]) -> Path:
         "The loss on a dot is the squared gap, (opacity − truth)². "
         "A solid dot at 0.20 costs 0.64. A blank dot at 0.20 costs 0.04.",
         "",
-        "The row step looks at the shared teamsheet, plus this player's position and minutes. "
-        "It does not see the opponent. His own name is hidden, and his past games are hidden. "
-        "Two players of the same position with the same minutes get the same gray. "
-        "The column step looks at that player's earlier games, then this week's minutes and opponent. "
-        "The name is hidden, and the teammates are hidden. "
-        "Both score the squared gap on the week they paint.",
+        "The row step paints one gameweek. Past rows stay true, and events from that week onward are blank. "
+        "The column step paints every week beyond a cutoff in one shot, and the loss is each player's column. "
+        "Header and minutes stay on every row. "
+        "Both score the squared gap between the gray and the true dots.",
         "",
-        "Combined paints the mean of the two probabilities and scores the squared gap of that mean.",
+        "Combined gives the one-week gap and the remainder-column gap equal weight.",
         "",
         "## Next week and further",
         "",
-            "Row: the other names on the teamsheet. Column: the player's earlier games.",
+            "Row: one gameweek, stepped. Column: the remainder beyond the cutoff, one shot.",
         "",
         "| arm | weeks ahead | squared gap | opacity on solid | opacity on blank | GKP goal opacity |",
         "|---|---:|---:|---:|---:|---:|",
@@ -398,7 +471,7 @@ def write_report(arms: list[dict]) -> Path:
             "",
             "## Each player's future column",
             "",
-            "For a week eight ahead, the column still uses only the games played before the cut.",
+            "A week eight ahead is read from the one-shot remainder. Events between the cutoff and that week stay blank. Header and minutes of those weeks stay.",
             "",
             "| arm | column gap | opacity on solid | opacity on blank | GKP goal opacity |",
             "|---|---:|---:|---:|---:|",
@@ -452,10 +525,8 @@ def write_report(arms: list[dict]) -> Path:
             f"row **{_mean_distance(row['reading'], 1, 'gkp'):.3f}**, "
             f"column **{_mean_distance(column['reading'], 1, 'gkp'):.3f}**, "
             f"combined **{_mean_distance(both['reading'], 1, 'gkp'):.3f}**. "
-            "The row card is the teamsheet: same position and the same minutes share a gray, and the opponent is hidden. "
-            "The column card is that player's earlier games, then this week's minutes and opponent. "
-            "On the Arsenal card, where both are painting a player who is on the pitch, the goal grays correlate at 0.42. "
-            "The row paints the striker dark because of his position. The column paints him from his earlier games, so that column is lighter.",
+            "The row card steps one gameweek at a time. "
+            "The column card is one shot of the weeks beyond the cutoff.",
             "",
             "Example cards: `reports/baudot_step_row_arsenal_2025-26.png`, `reports/baudot_step_column_arsenal_2025-26.png`, "
             "`reports/baudot_step_row_liverpool_2025-26.png`, `reports/baudot_step_column_liverpool_2025-26.png`.",
@@ -550,432 +621,6 @@ def _check_views() -> None:
             raise AssertionError("form view still sees the player's name")
 
 
-MATE_K = 15
-EMB = 8
-N_LINE = 9
-N_FORM = HEADER_BITS + 7
-
-
-def _player_time(arr, n_fixtures: int) -> np.ndarray:
-    out = np.zeros((MAX_PLAYERS, n_fixtures), np.float32)
-    block = np.asarray(arr)
-    rows = min(block.shape[0], MAX_PLAYERS)
-    cols = min(block.shape[1], n_fixtures)
-    out[:rows, :cols] = block[:rows, :cols]
-    return out
-
-
-def form_cube(card, ends) -> np.ndarray:
-    """One feature row per week. ends[t] is the first game the column may not see."""
-    weeks = card.n_fixtures
-    ends = np.asarray(ends, np.int64)
-    features = np.zeros((weeks, MAX_PLAYERS, N_FORM), np.float32)
-    features[:, :, :HEADER_BITS] = card.bits[:weeks, :HEADER_BITS][:, None, :]
-    minutes = _player_time(card.minutes, weeks)
-    features[:, :, HEADER_BITS] = np.clip(minutes / 90.0, 0, 1.5).T
-    present = _player_time(card.present, weeks) > 0
-    goals = _player_time(card.goals, weeks)
-    assists = _player_time(card.assists, weeks)
-    hist = np.arange(weeks)[None, :] < ends[:, None]
-    played = present[None, :, :] & hist[:, None, :]
-    last = np.where(played, np.arange(weeks)[None, None, :], -1).max(axis=2)
-    last5 = np.flip((np.cumsum(played[:, :, ::-1], axis=2) <= 5) & played[:, :, ::-1], axis=2)
-    seen = last5.sum(axis=2).clip(min=1).astype(np.float32)
-    has = played.any(axis=2)
-    counts = played.sum(axis=2)
-    safe = np.clip(last, 0, weeks - 1)
-    players = np.arange(MAX_PLAYERS)[None, :]
-    block = np.stack(
-        [
-            np.where(has, goals[players, safe], 0.0),
-            np.where(has, assists[players, safe], 0.0),
-            np.where(has, (last5 * goals[None]).sum(axis=2) / seen, 0.0),
-            np.where(has, (last5 * assists[None]).sum(axis=2) / seen, 0.0),
-            np.where(has, (last5 * minutes[None]).sum(axis=2) / seen / 90.0, 0.0),
-            np.where(has, np.minimum(counts, 30) / 30.0, 0.0),
-        ],
-        axis=-1,
-    ).astype(np.float32)
-    features[:, :, HEADER_BITS + 1 : HEADER_BITS + 7] = block
-    return features
-
-
-def form_vector(card, t: int, history_end: int) -> np.ndarray:
-    """Earlier games only, plus this week's minutes and opponent. Shape P, F.
-
-    history_end is exclusive. Games at or after it stay out, and so does week t.
-    """
-    ends = np.full(card.n_fixtures, int(history_end), np.int64)
-    return form_cube(card, ends)[t]
-
-
-def lineup_inputs(card, t: int) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """The teamsheet, shared by the whole side. Own name is not singled out.
-
-    Two players of the same position with the same minutes get the same features.
-    Shape P, F / P, K / P, K.
-    """
-    floats = np.zeros((MAX_PLAYERS, N_LINE), np.float32)
-    ids = np.zeros((MAX_PLAYERS, MATE_K), np.int64)
-    mask = np.zeros((MAX_PLAYERS, MATE_K), np.float32)
-    if t >= card.n_fixtures:
-        return floats, ids, mask
-    floats[:, 0] = np.clip(card.minutes[:, t] / 90.0, 0, 1.5)
-    on = np.flatnonzero((card.minutes[:, t] > 0) & (card.position >= 0))
-    on = on[on < card.n_players]
-    counts = np.zeros(4, np.float32)
-    sheet = np.zeros(MATE_K, np.int64)
-    used = 0
-    for p in on:
-        role = int(card.position[p])
-        if 0 <= role <= 3:
-            counts[role] += 1.0
-        if used < MATE_K:
-            sheet[used] = int(card.player_id[p])
-            used += 1
-    for p in range(card.n_players):
-        role = int(card.position[p])
-        if 0 <= role <= 3:
-            floats[p, 1 + role] = 1.0
-            floats[p, 5:9] = counts / 5.0
-        ids[p] = sheet
-        mask[p, :used] = 1.0
-    return floats, ids, mask
-
-
-def _week_label(card, t: int) -> tuple[np.ndarray, np.ndarray]:
-    target = event_target(card, t)
-    live = card.present[:, t] & (card.position >= 0)
-    return target, live
-
-
-class FormNet(torch.nn.Module):
-    """Earlier games, this week's minutes, this week's opponent. No name, no teammates."""
-
-    def __init__(self) -> None:
-        super().__init__()
-        self.net = torch.nn.Sequential(torch.nn.Linear(N_FORM, 32), torch.nn.ReLU(), torch.nn.Linear(32, EVENT_BITS))
-        torch.nn.init.zeros_(self.net[-1].weight)
-        torch.nn.init.constant_(self.net[-1].bias, -3.0)
-
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        return torch.sigmoid(self.net(x))
-
-
-class LineupNet(torch.nn.Module):
-    """The shared teamsheet, plus position and minutes. No opponent, no own name, no past games."""
-
-    def __init__(self, n_ids: int) -> None:
-        super().__init__()
-        self.emb = torch.nn.Embedding(max(n_ids, 1), EMB)
-        self.net = torch.nn.Sequential(
-            torch.nn.Linear(N_LINE + EMB, 48),
-            torch.nn.ReLU(),
-            torch.nn.Linear(48, EVENT_BITS),
-        )
-        torch.nn.init.zeros_(self.net[-1].weight)
-        torch.nn.init.constant_(self.net[-1].bias, -3.0)
-
-    def forward(self, floats: torch.Tensor, mate_ids: torch.Tensor, mate_mask: torch.Tensor) -> torch.Tensor:
-        mate = self.emb(mate_ids.clamp(min=0, max=self.emb.num_embeddings - 1))
-        weight = mate_mask.to(dtype=mate.dtype).unsqueeze(-1)
-        pooled = (mate * weight).sum(dim=-2) / weight.sum(dim=-2).clamp_min(1)
-        return torch.sigmoid(self.net(torch.cat([floats, pooled], dim=-1)))
-
-
-def _check_questions(card) -> None:
-    t = min(8, card.n_fixtures - 1)
-    base = form_vector(card, t, t)
-    saved = card.goals[:, t:].copy()
-    card.goals[:, t:] = 9
-    try:
-        leaked = form_vector(card, t, t)
-    finally:
-        card.goals[:, t:] = saved
-    if not np.allclose(base, leaked):
-        raise AssertionError("form read the week it is scoring")
-    saved = card.goals[1:].copy()
-    card.goals[1:] = 0
-    try:
-        others = form_vector(card, t, t)
-    finally:
-        card.goals[1:] = saved
-    if not np.allclose(base[0], others[0]):
-        raise AssertionError("form read a teammate's games")
-    if t >= 2:
-        saved = card.goals[:, t - 1].copy()
-        card.goals[:, t - 1] = 9
-        try:
-            moved = form_vector(card, t, t)
-        finally:
-            card.goals[:, t - 1] = saved
-        if card.present[:, t - 1].any() and np.allclose(base, moved):
-            raise AssertionError("form ignored the previous game")
-    floats, ids, mate_mask = lineup_inputs(card, t)
-    if not np.array_equal(ids[0], ids[min(1, card.n_players - 1)]):
-        raise AssertionError("lineup gave two players different teamsheets")
-    same = None
-    same_week = t
-    for week in range(card.n_fixtures):
-        for a in range(card.n_players):
-            for b in range(a + 1, card.n_players):
-                if (
-                    int(card.position[a]) >= 0
-                    and int(card.position[a]) == int(card.position[b])
-                    and card.minutes[a, week] == card.minutes[b, week]
-                    and card.minutes[a, week] > 0
-                ):
-                    same = (a, b)
-                    same_week = week
-                    break
-            if same:
-                break
-        if same:
-            break
-    if same is None:
-        raise AssertionError("no two players share a position and minutes")
-    floats_s, ids_s, _mask_s = lineup_inputs(card, same_week)
-    a, b = same
-    if not (np.allclose(floats_s[a], floats_s[b]) and np.array_equal(ids_s[a], ids_s[b])):
-        raise AssertionError("same role and minutes still got different lineup features")
-    saved_goals = card.goals[:, :t].copy()
-    card.goals[:, :t] = 9
-    try:
-        floats3, ids3, mask3 = lineup_inputs(card, t)
-    finally:
-        card.goals[:, :t] = saved_goals
-    if not (np.allclose(floats, floats3) and np.array_equal(ids, ids3) and np.allclose(mate_mask, mask3)):
-        raise AssertionError("lineup read a past game")
-
-
-def lineup_cube(card) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    weeks = card.n_fixtures
-    floats = np.zeros((weeks, MAX_PLAYERS, N_LINE), np.float32)
-    ids = np.zeros((weeks, MAX_PLAYERS, MATE_K), np.int64)
-    mask = np.zeros((weeks, MAX_PLAYERS, MATE_K), np.float32)
-    for t in range(weeks):
-        floats[t], ids[t], mask[t] = lineup_inputs(card, t)
-    return floats, ids, mask
-
-
-def _paint_form(net, card, history_end, device) -> np.ndarray:
-    weeks = card.n_fixtures
-    if history_end is None:
-        ends = np.arange(weeks)
-    else:
-        ends = np.minimum(np.arange(weeks), int(history_end))
-    net.eval()
-    with torch.no_grad():
-        out = net(torch.from_numpy(form_cube(card, ends)).to(device))
-    return out.cpu().numpy().transpose(1, 0, 2)
-
-
-def _paint_lineup(net, card, device) -> np.ndarray:
-    floats, ids, mask = lineup_cube(card)
-    net.eval()
-    with torch.no_grad():
-        out = net(
-            torch.from_numpy(floats).to(device),
-            torch.from_numpy(ids).to(device),
-            torch.from_numpy(mask).to(device),
-        )
-    return out.cpu().numpy().transpose(1, 0, 2)
-
-
-def _reading_from_paint(cards, paint) -> dict:
-    rows = []
-    for frac in CUT_FRACS:
-        bucket = {d: [] for d in DISTANCES}
-        markers = {channel: [] for channel in ("goals", "assists")}
-        strips = []
-        for card in cards:
-            cut = cut_at_fraction(card, frac)
-            pred = paint(card, cut)
-            target = np.stack([event_target(card, t) for t in range(card.n_fixtures)], axis=1)
-            present = card.present.copy()
-            present[:, :cut] = False
-            pad = _player_pad(card)
-            strip = _numpy_strip(pred, target, present, pad, card.position)
-            strip["revealed"] = f"{frac:.0%}"
-            strip["kind"] = "strip"
-            strips.append(strip)
-            for distance in DISTANCES:
-                row = cut + distance - 1
-                if row >= card.n_fixtures:
-                    continue
-                live = card.present[:, row] & ~pad
-                stats = _numpy_gap(pred[:, row], target[:, row], live, card.position)
-                stats["distance"] = distance
-                bucket[distance].append(stats)
-                if distance == 1:
-                    for channel in ("goals", "assists"):
-                        sl = _marker_slice(channel)
-                        part = _numpy_gap(pred[:, row, sl], target[:, row, sl], live, card.position)
-                        part["channel"] = channel
-                        markers[channel].append(part)
-        rows.extend(strips)
-        for distance, stats in bucket.items():
-            if not stats:
-                continue
-            rows.append(
-                {
-                    "revealed": f"{frac:.0%}",
-                    "distance": distance,
-                    "n": len(stats),
-                    "row": float(np.mean([s["row"] for s in stats])),
-                    "on_solid": float(np.mean([s["on_solid"] for s in stats])),
-                    "on_blank": float(np.mean([s["on_blank"] for s in stats])),
-                    "gkp": float(np.mean([s["gkp"] for s in stats])),
-                }
-            )
-        for channel, stats in markers.items():
-            if not stats:
-                continue
-            rows.append(
-                {
-                    "revealed": f"{frac:.0%}",
-                    "distance": 1,
-                    "channel": channel,
-                    "row": float(np.mean([s["row"] for s in stats])),
-                    "on_solid": float(np.mean([s["on_solid"] for s in stats if s["solid_n"] > 0] or [0.0])),
-                    "on_blank": float(np.mean([s["on_blank"] for s in stats])),
-                    "gkp": float(np.mean([s["gkp"] for s in stats])),
-                }
-            )
-    return {"rows": rows}
-
-
-def _brier(pred: torch.Tensor, target: torch.Tensor, live: torch.Tensor) -> torch.Tensor:
-    err = (pred - target) ** 2
-    mask = live[..., None].to(dtype=pred.dtype).expand_as(pred)
-    return (err * mask).sum() / mask.sum().clamp_min(1)
-
-
-def _cache_questions(cards) -> list[dict]:
-    packed = []
-    for card in cards:
-        weeks = card.n_fixtures
-        ends = np.arange(weeks)
-        target = np.stack([event_target(card, t) for t in range(weeks)], axis=0)
-        live = np.stack(
-            [card.present[:, t] & (card.position >= 0) for t in range(weeks)],
-            axis=0,
-        )
-        floats, ids, mask = lineup_cube(card)
-        cuts = {}
-        for frac in CUT_FRACS:
-            cut = cut_at_fraction(card, frac)
-            frozen = form_cube(card, np.minimum(np.arange(weeks), cut))
-            cuts[frac] = torch.from_numpy(frozen)
-        packed.append(
-            {
-                "card": card,
-                "form": torch.from_numpy(form_cube(card, ends)),
-                "floats": torch.from_numpy(floats),
-                "ids": torch.from_numpy(ids),
-                "mask": torch.from_numpy(mask),
-                "target": torch.from_numpy(target),
-                "live": torch.from_numpy(live),
-                "frozen": cuts,
-            }
-        )
-    return packed
-
-
-def _fit_question(name, lineup, form, train_pack, test_pack, device) -> dict:
-    params = []
-    if name in ("row", "combined"):
-        params += list(lineup.parameters())
-    if name in ("column", "combined"):
-        params += list(form.parameters())
-    opt = torch.optim.AdamW(params, lr=LR, weight_decay=1e-4)
-    sched = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=EPOCHS)
-    best_state = None
-    best = float("inf")
-    bad = 0
-    t0 = time.time()
-    epochs_run = 0
-    by_card = {id(pack["card"]): pack for pack in test_pack}
-
-    def paint(card, cut):
-        pack = by_card[id(card)]
-        frac = next(key for key, frozen in pack["frozen"].items() if frozen.shape[0] >= 0 and cut == cut_at_fraction(card, key))
-        lineup.eval()
-        form.eval()
-        with torch.no_grad():
-            if name != "column":
-                row = lineup(pack["floats"].to(device), pack["ids"].to(device), pack["mask"].to(device))
-            if name != "row":
-                column = form(pack["frozen"][frac].to(device))
-            if name == "row":
-                out = row
-            elif name == "column":
-                out = column
-            else:
-                out = 0.5 * (row + column)
-        return out.cpu().numpy().transpose(1, 0, 2)
-
-    for epoch in range(EPOCHS):
-        lineup.train()
-        form.train()
-        total = 0.0
-        for pack in train_pack:
-            opt.zero_grad()
-            target = pack["target"].to(device)
-            live = pack["live"].to(device)
-            if name != "column":
-                row = lineup(pack["floats"].to(device), pack["ids"].to(device), pack["mask"].to(device))
-            if name != "row":
-                column = form(pack["form"].to(device))
-            if name == "row":
-                loss = _brier(row, target, live)
-            elif name == "column":
-                loss = _brier(column, target, live)
-            else:
-                loss = _brier(0.5 * (row + column), target, live)
-            loss.backward()
-            opt.step()
-            total += float(loss.detach())
-        sched.step()
-        reading = _reading_from_paint([pack["card"] for pack in test_pack], paint)
-        score = _mean_distance(reading, 1, "row")
-        improved = score < best - 1e-5
-        if improved:
-            best = score
-            packs = {}
-            if name in ("row", "combined"):
-                packs["lineup"] = copy.deepcopy(lineup.state_dict())
-            if name in ("column", "combined"):
-                packs["form"] = copy.deepcopy(form.state_dict())
-            best_state = packs
-            bad = 0
-        else:
-            bad += 1
-        epochs_run = epoch + 1
-        print(
-            f"{name} epoch {epoch + 1}/{EPOCHS} train {total / max(len(train_pack), 1):.4f} "
-            f"next {score:.4f} gkp {_mean_distance(reading, 1, 'gkp'):.3f}{' *' if improved else ''}",
-            flush=True,
-        )
-        if bad >= EARLY_PATIENCE and epoch + 1 >= 12:
-            print(f"{name} early stop at epoch {epoch + 1}", flush=True)
-            break
-    if best_state is not None:
-        if "lineup" in best_state:
-            lineup.load_state_dict(best_state["lineup"])
-        if "form" in best_state:
-            form.load_state_dict(best_state["form"])
-    reading = _reading_from_paint([pack["card"] for pack in test_pack], paint)
-    return {
-        "name": name,
-        "epochs_run": epochs_run,
-        "best": best,
-        "seconds": round(time.time() - t0, 1),
-        "view": name,
-        "reading": reading,
-        "form": reading,
-    }
-
 
 def main() -> None:
     _check_gap_formula()
@@ -997,27 +642,18 @@ def main() -> None:
     train = [c for c in baudot if c.season in TRAIN_SEASONS]
     test = [c for c in baudot if c.season == TEST_SEASON]
     assert_step_is_blank(test[0])
-    _check_questions(test[0])
-    n_ids = 1 + max(int(c.player_id.max()) for c in train + test)
-    print(f"cards train {len(train)} test {len(test)} ids {n_ids} device {device}", flush=True)
-    print("caching lineup and form features", flush=True)
-    train_pack = _cache_questions(train)
-    test_pack = _cache_questions(test)
+    print(f"cards train {len(train)} test {len(test)} device {device}", flush=True)
     results = []
     for name in ARMS:
         torch.manual_seed(SEED)
-        lineup = LineupNet(n_ids).to(device)
-        form = FormNet().to(device)
-        results.append(_fit_question(name, lineup, form, train_pack, test_pack, device))
-        torch.save(
-            {"arch": name, "n_ids": n_ids, "lineup": lineup.state_dict(), "form": form.state_dict()},
-            ART / f"baudot_step_gap_{name}.pt",
-        )
+        model = BlockTokenMixer(width=train[0].width)
+        results.append(train_arm(name, model, train, test, device))
+        torch.save(model.state_dict(), ART / f"baudot_step_gap_{name}.pt")
     path = write_report(results)
     state = {
         "trial": "baudot_stepped_overlap",
         "score": "mean squared gap between opacity and the solid dot",
-        "loss": "squared gap; row is the teamsheet, column is earlier games",
+        "loss": "squared gap; row is one stepped gameweek; column is the remainder beyond the cutoff",
         "arms": [
             {
                 "name": meta["name"],

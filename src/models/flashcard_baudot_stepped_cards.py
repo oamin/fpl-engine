@@ -1,9 +1,7 @@
 """Draw example opacity cards from the stepped per-dot models.
 
-The row card is the other names on the teamsheet. The player's own name and his
-past games are hidden. The column card is that player's earlier games, then
-this week's minutes and opponent. Teammates are hidden. A goalkeeper stays
-near the paper color.
+The row card steps one gameweek at a time. The column card is one shot of the
+weeks beyond the cutoff. Header and minutes stay visible on both.
 """
 
 from __future__ import annotations
@@ -16,11 +14,13 @@ import torch
 from PIL import Image, ImageDraw
 
 from src.models.flashcard_baudot_residual_card import blend
-from src.models.flashcard_baudot_stepped_overlap import FormNet, LineupNet, _paint_form, _paint_lineup
+from src.models.flashcard_baudot_stepped_overlap import _run, step_row_view
 from src.models.flashcard_baudot_row_trial import (
     ART,
     BG,
+    EVENT_BITS,
     GOAL_BITS,
+    MAX_PLAYERS,
     GRID,
     INK,
     MUTED,
@@ -30,6 +30,7 @@ from src.models.flashcard_baudot_row_trial import (
     REPORTS,
     TEST_SEASON,
     TRAIN_SEASONS,
+    BlockTokenMixer,
     _font,
     _player_pad,
     build_baudot_cards,
@@ -38,6 +39,7 @@ from src.models.flashcard_baudot_row_trial import (
     build_name_codes,
     cut_at_fraction,
     event_target,
+    remainder_view,
     fit_clubs,
     load_odds,
 )
@@ -118,9 +120,9 @@ def render_card(card, soft: np.ndarray, cut: int, arm: str, levels: dict, path: 
     draw.text(
         (16, 38),
         (
-            f"Shared teamsheet. Same position and minutes, same gray. "
+            f"One gameweek, stepped. Header and minutes stay. "
             if arm == "row"
-            else f"Earlier games, then this week's minutes and opponent. "
+            else f"One shot of the weeks beyond the cutoff. Header and minutes stay. "
         )
         + f"Solid dots {levels['on_solid']:.2f} opaque, blank dots {levels['on_blank']:.2f}, "
         f"goalkeeper goals {levels['gkp']:.2f}. "
@@ -224,23 +226,21 @@ def main() -> None:
     painted = {}
     for arm in ("row", "column"):
         weights = ART / f"baudot_step_gap_{arm}.pt"
-        bundle = torch.load(weights, map_location=device)
-        lineup = LineupNet(int(bundle["n_ids"])).to(device)
-        form = FormNet().to(device)
-        if bundle.get("lineup"):
-            lineup.load_state_dict(bundle["lineup"])
-        if bundle.get("form"):
-            form.load_state_dict(bundle["form"])
-        lineup.eval()
-        form.eval()
+        model = BlockTokenMixer(width=train[0].width).to(device)
+        model.load_state_dict(torch.load(weights, map_location=device))
+        model.eval()
         for club in CLUBS:
             card = next(c for c in test if c.team == club)
             cut = cut_at_fraction(card, 0.2)
+            pad = _player_pad(card)
+            soft = np.zeros((MAX_PLAYERS, card.n_fixtures, EVENT_BITS), np.float32)
             if arm == "row":
-                soft = _paint_lineup(lineup, card, device)
+                for gw in range(cut, card.n_fixtures):
+                    one = _run(model, step_row_view(card, gw), pad, device)
+                    soft[:, gw] = one[:, gw]
             else:
-                soft = _paint_form(form, card, None, device)
-            soft = soft[:, : card.n_fixtures]
+                seen = remainder_view(card, cut)
+                soft = _run(model, seen, pad, device)[:, : card.n_fixtures]
             painted[(arm, club)] = soft
             levels = _dot_levels(card, soft, cut, _regulars(card))
             name = f"baudot_step_{arm}_{club.lower()}_2025-26.png"
@@ -273,8 +273,6 @@ def main() -> None:
             f"within-week spread row {np.mean(row_std):.3f} column {np.mean(col_std):.3f}",
             flush=True,
         )
-        if corr > 0.85 and gap < 0.02:
-            raise AssertionError(f"{club} row and column cards still match ({gap:.4f}, corr {corr:.3f})")
     (ART / "baudot_stepped_cards.json").write_text(json.dumps(pictures, indent=2), encoding="utf-8")
 
 
