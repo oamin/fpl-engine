@@ -20,6 +20,12 @@ parked as overkill until a path-V screen asks for it (`protocol.cascade_short_ge
   Next only after tip on main. No mix. No Numagent until likelihood earns it.
   No Baudot / Poisson reopen without a new twist.
 
+## Parked — market pot / role× (2026-11-16)
+
+`ah_line_own` + Dixon–Coles `xg_own` + role×{log1p(m), xg_own, m0_rG/rA} on rich
+zero-gated spine. Δlog −0.00016 [−0.00035, +0.00004]; covers zero. Keep rich
+spine without market/role extras as default. Report: `typed_tensor_market_role.md`.
+
 ## Parked — appearance-clean history (2026-11-16)
 
 History/M0 on prior `m>0` only vs present-row dilution on rich zero-gated spine.

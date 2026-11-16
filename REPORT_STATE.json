@@ -1,16 +1,16 @@
 {
   "updated": "2026-11-16",
-  "branch": "cursor/flashcard-appearance-clean-c985",
-  "batch": "typed_tensor_appearance_clean",
+  "branch": "cursor/flashcard-market-role-c985",
+  "batch": "typed_tensor_market_role",
   "status": "complete",
-  "result": "inconclusive_keep_present_history",
-  "summary": "Appearance-clean history (m>0 prior weeks only) vs present-diluted rich zero-gated spine. Δlog ≈ +0.00001 [−0.00006, +0.00007]; active also covers zero. Keep present-row history. Not Numagent.",
-  "report": "reports/typed_tensor_appearance_clean.md",
-  "contrast": "appearance_clean_minus_present_history",
+  "result": "inconclusive_keep_rich_baseline",
+  "summary": "Market pot (ah_line_own, DC xg_own) + role× interactions vs rich zero-gated spine. Δlog −0.00016 [−0.00035, +0.00004]; active also covers zero. Keep rich spine. Not Numagent. No Odds API.",
+  "report": "reports/typed_tensor_market_role.md",
+  "contrast": "market_role_minus_rich",
   "interval": {
-    "mean": 9.680384100691829e-06,
-    "lo": -5.625740174766067e-05,
-    "hi": 6.868116763632693e-05
+    "mean": -0.00016197181399920947,
+    "lo": -0.0003531607145292352,
+    "hi": 3.775009781450855e-05
   },
   "product_on_main": "numagent_2_0"
 }
