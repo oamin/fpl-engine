@@ -20,6 +20,13 @@ parked as overkill until a path-V screen asks for it (`protocol.cascade_short_ge
   Next only after tip on main. No mix. No Numagent until likelihood earns it.
   No Baudot / Poisson reopen without a new twist.
 
+## Promoted — pre-match minutes head vs lag-1 (2026-11-16)
+
+Two-part as-of `ĥm=P(m>0)·E[m|m>0]` into locked rich zero-gated event head.
+Δlog **−0.03408** [−0.03818, −0.03041]; active −0.0707. MAE worse than lag-1
+(~18.5 vs ~15.5) but event LL wins — soft ĥm never hard-zeros (lag-1 zeros ~41%).
+Neural slice stays parked. Report: `typed_tensor_minutes_head.md`.
+
 ## Lost — horizon painter fixes vs rich (2026-11-16)
 
 Season-scoped player codes + present time-mask + m=0 zero-gate + pure log-loss +
