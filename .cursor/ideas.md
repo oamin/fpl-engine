@@ -20,11 +20,20 @@ parked as overkill until a path-V screen asks for it (`protocol.cascade_short_ge
   Next only after tip on main. No mix. No Numagent until likelihood earns it.
   No Baudot / Poisson reopen without a new twist.
 
-## Parked — market pot / role× (2026-11-16)
+## Lost — horizon painter fixes vs rich (2026-11-16)
+
+Season-scoped player codes + present time-mask + m=0 zero-gate + pure log-loss +
+train-val early-stop. Δlog **+0.01404** [+0.01304, +0.01512]; active +0.0245.
+Clear keep-rich. Horizon FOV stays exam-only. Report: `typed_tensor_horizon_fix.md`.
+
+## Parked — market pot / role× (2026-11-16) — CONFOUNDED
 
 `ah_line_own` + Dixon–Coles `xg_own` + role×{log1p(m), xg_own, m0_rG/rA} on rich
 zero-gated spine. Δlog −0.00016 [−0.00035, +0.00004]; covers zero. Keep rich
-spine without market/role extras as default. Report: `typed_tensor_market_role.md`.
+spine. **Co-PI:** published join keyed `(season,team,opp)` without venue → ~50%
+wrong-leg pots; also bundled 16 collinear role× with 2 market df. Not a clean
+`xg_own` falsification. Loader later fixed to include `is_home`; do not re-cite
+totals as clean. Park role× expansion. Report: `typed_tensor_market_role.md`.
 
 ## Parked — appearance-clean history (2026-11-16)
 

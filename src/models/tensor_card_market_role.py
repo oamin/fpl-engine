@@ -53,9 +53,16 @@ CANDIDATE_FEATURES_MR = CANDIDATE_FEATURES + MARKET_ROLE_EXTRA
 CONTRAST = "market_role_minus_rich"
 
 
-def load_market_pot_table(seasons: tuple[str, ...]) -> dict[tuple[str, str, str], dict[str, float]]:
-    """Map (season, team_norm, opp_norm) → {ah_line_own, xg_own} from FD moments."""
-    out: dict[tuple[str, str, str], dict[str, float]] = {}
+def load_market_pot_table(
+    seasons: tuple[str, ...],
+) -> dict[tuple[str, str, str, int], dict[str, float]]:
+    """Map (season, team_norm, opp_norm, is_home) → {ah_line_own, xg_own}.
+
+    ``is_home`` is required: each club meets each opponent twice, so a key
+    without venue silently overwrites the first leg (bug in the published
+    ``typed_tensor_market_role`` screen — see that report's confound note).
+    """
+    out: dict[tuple[str, str, str, int], dict[str, float]] = {}
     for season in seasons:
         stem = season.replace("-", "_")
         path = PROCESSED / f"scoreline_fd_moments_{stem}.csv"
@@ -65,14 +72,14 @@ def load_market_pot_table(seasons: tuple[str, ...]) -> dict[tuple[str, str, str]
         for row in frame.itertuples(index=False):
             team_n = norm_team(str(row.team))
             opp_n = norm_team(str(row.opp))
-            is_home = str(row.side).lower() == "home"
+            is_home = 1 if str(row.side).lower() == "home" else 0
             ah = float(row.ah_line)
             if not np.isfinite(ah):
                 ah = 0.0
             xg = float(row.xg)
             if not np.isfinite(xg):
                 xg = 1.3
-            out[(season, team_n, opp_n)] = {
+            out[(season, team_n, opp_n, is_home)] = {
                 "ah_line_own": float(ah if is_home else -ah),
                 "xg_own": float(xg),
             }
@@ -82,11 +89,12 @@ def load_market_pot_table(seasons: tuple[str, ...]) -> dict[tuple[str, str, str]
 def _fixture_market(
     card: TensorCard,
     t: int,
-    table: dict[tuple[str, str, str], dict[str, float]],
+    table: dict[tuple[str, str, str, int], dict[str, float]],
 ) -> dict[str, float]:
     team_n = norm_team(card.team)
     opp_n = norm_team(card.opponent[t]) if card.opponent[t] else ""
-    hit = table.get((card.season, team_n, opp_n))
+    is_home = 1 if int(card.home[t]) else 0
+    hit = table.get((card.season, team_n, opp_n, is_home))
     if hit is None:
         return {"ah_line_own": 0.0, "xg_own": 1.3}
     return {"ah_line_own": float(hit["ah_line_own"]), "xg_own": float(hit["xg_own"])}
@@ -313,7 +321,8 @@ def run(seed: int = SEED) -> dict:
                     continue
                 team_n = norm_team(card.team)
                 opp_n = norm_team(card.opponent[t]) if card.opponent[t] else ""
-                if (card.season, team_n, opp_n) in market_table:
+                is_home = 1 if int(card.home[t]) else 0
+                if (card.season, team_n, opp_n, is_home) in market_table:
                     n_market_hit += 1
                 else:
                     n_market_miss += 1

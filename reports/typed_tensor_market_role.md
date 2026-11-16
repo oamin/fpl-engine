@@ -66,4 +66,12 @@ Product as-of audit passed=True.
 
 **inconclusive_keep_rich_baseline.** Interval covers zero. Keep rich zero-gated spine without market/role extras as default.
 
+## Co-PI confound (post-screen)
+
+Do **not** cite this screen as a clean falsification of Dixon–Coles `xg_own` / AH.
+
+1. **Join bug (verified):** the published run keyed pots by `(season, team, opp)` without home/away. Each H2H rematch shares that key, so ~half of fixtures received the **other leg’s** `ah_line_own` / `xg_own`. Reported “3040 hit / 0 miss” only means the collided key existed (`n_market_keys=1520` vs 3038 moment rows). Loader fixed afterward to `(season, team, opp, is_home)`; totals above are **not** re-run.
+2. **Bundle packaging:** AH/`xg_own` (2 df) was jammed with 16 collinear `role×` terms — cannot attribute the hairline Δ.
+3. **Park:** keep rich spine; park the 16-term `role×` expansion. Do not soft-promote. A thinner clean market-only re-screen is optional hygiene only (unlikely to clear −0.001 on top of 1X2+`p_over25`).
+
 Reproduce: `PYTHONPATH=. python3 -m src.models.tensor_card_market_role`.
