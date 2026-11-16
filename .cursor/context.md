@@ -13,7 +13,8 @@ co-presence soft-parked; Poisson/lag-1/stepped/mix parked or lost. Horizon FOV
 arm kept separate (no mix).
 
 **Continue after tip lands on main:** new `cursor/flashcard-*-c985` only — opp
-history / horizon painter fixes, one comparison at a time. Do **not** open a
+history / horizon painter fixes, one comparison at a time. Appearance-clean and
+market/role× both inconclusive (keep rich present-row spine). Do **not** open a
 Numagent/`score_xp_v2` comparison until flashcard training earns it.
 
 ## Repo freeze sequence (2026-10-20)
