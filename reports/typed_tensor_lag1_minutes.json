@@ -1,0 +1,108 @@
+{
+  "train_seasons": [
+    "2022-23",
+    "2023-24",
+    "2024-25"
+  ],
+  "test_season": "2025-26",
+  "n_train": 58751,
+  "n_test": 19127,
+  "role_prior": {
+    "0": 45.86142154671435,
+    "1": 40.09807590806583,
+    "2": 35.46161089381428,
+    "3": 31.483017817371937
+  },
+  "lag1_minutes_mae": {
+    "mae": 15.312341164909453,
+    "n": 19127
+  },
+  "actual": {
+    "goal": {
+      "n": 19127,
+      "base_rate": 0.04663564594552204,
+      "log_loss": 0.14563342985761712,
+      "brier": 0.03948301085934912
+    },
+    "assist": {
+      "n": 19127,
+      "base_rate": 0.0454331573168819,
+      "log_loss": 0.15382119619216109,
+      "brier": 0.04052057891159751
+    },
+    "pooled": {
+      "n": 38254,
+      "base_rate": 0.04603440163120197,
+      "log_loss": 0.14972731302488912,
+      "brier": 0.04000179488547331
+    },
+    "features": [
+      "minutes",
+      "home",
+      "role_gkp",
+      "role_def",
+      "role_mid",
+      "role_fwd",
+      "odds_win",
+      "odds_draw",
+      "odds_lose",
+      "games_played",
+      "mean_minutes",
+      "mean_goals",
+      "mean_assists",
+      "last_goals",
+      "last_assists",
+      "last5_goals",
+      "last5_assists",
+      "mate_minutes",
+      "mate_n"
+    ]
+  },
+  "lag1": {
+    "goal": {
+      "n": 19127,
+      "base_rate": 0.04663564594552204,
+      "log_loss": 0.15682860406215768,
+      "brier": 0.04098983081644103
+    },
+    "assist": {
+      "n": 19127,
+      "base_rate": 0.0454331573168819,
+      "log_loss": 0.16664214017841483,
+      "brier": 0.041782673599245916
+    },
+    "pooled": {
+      "n": 38254,
+      "base_rate": 0.04603440163120197,
+      "log_loss": 0.16173537212028624,
+      "brier": 0.04138625220784347
+    },
+    "features": [
+      "minutes",
+      "home",
+      "role_gkp",
+      "role_def",
+      "role_mid",
+      "role_fwd",
+      "odds_win",
+      "odds_draw",
+      "odds_lose",
+      "games_played",
+      "mean_minutes",
+      "mean_goals",
+      "mean_assists",
+      "last_goals",
+      "last_assists",
+      "last5_goals",
+      "last5_assists"
+    ]
+  },
+  "delta_lag1_minus_actual": {
+    "goal_log": 0.011195174204540553,
+    "assist_log": 0.012820943986253747,
+    "pooled_log": 0.012008059095397122,
+    "goal_brier": 0.0015068199570919122,
+    "assist_brier": 0.0012620946876484088,
+    "pooled_brier": 0.001384457322370157
+  }
+}
