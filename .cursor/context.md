@@ -13,9 +13,10 @@ co-presence soft-parked; Poisson/lag-1/stepped/mix parked or lost. Horizon FOV
 arm kept separate (no mix).
 
 **Continue after tip lands on main:** new `cursor/flashcard-*-c985` only, one
-comparison at a time. Appearance-clean / market-role× inconclusive (latter
-confounded); fixed mixer **lost** vs rich. Keep rich present-row spine. Do
-**not** open a Numagent/`score_xp_v2` comparison until flashcard training earns it.
+comparison at a time. Rich present-row event spine locked; **pre-match minutes
+head promoted** vs lag-1. Fixed mixer lost; market-role× confounded. Next: harden
+minutes gate or counts/xP bridge — not oracle-minutes feature tweaks. Do **not**
+open a Numagent/`score_xp_v2` comparison until flashcard pre-match path earns it.
 
 ## Repo freeze sequence (2026-10-20)
 

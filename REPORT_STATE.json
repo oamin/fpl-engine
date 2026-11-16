@@ -1,17 +1,16 @@
 {
   "updated": "2026-11-16",
-  "branch": "cursor/flashcard-horizon-fix-c985",
-  "batch": "typed_tensor_horizon_fix",
+  "branch": "cursor/flashcard-minutes-head-c985",
+  "batch": "typed_tensor_minutes_head",
   "status": "complete",
-  "result": "keep_rich_baseline",
-  "summary": "Co-PI path: annotate market-role as confounded (venue-less join fixed in loader); screen fixed TypedCardMixer (season codes, present mask, m=0 gate, pure log, val early-stop) vs rich zero-gated spine. Clear loss Δlog +0.014 [+0.013, +0.015]. Keep rich. Not Numagent.",
-  "report": "reports/typed_tensor_horizon_fix.md",
-  "contrast": "horizon_fix_minus_rich",
+  "result": "promote_minutes_head",
+  "summary": "Pre-match two-part minutes head ĥm=P(play)·E[m|play] into rich zero-gated event spine vs lag-1 honesty. Δlog −0.03408 [−0.03818, −0.03041]; promote. MAE worse (~18.5 vs ~15.5); win partly from soft ĥm vs hard lag-1 zeros (~41%). Neural slice parked. Not Numagent.",
+  "report": "reports/typed_tensor_minutes_head.md",
+  "contrast": "minutes_head_minus_lag1",
   "interval": {
-    "mean": 0.01404265425053603,
-    "lo": 0.013038201754413095,
-    "hi": 0.015117528338890076
+    "mean": -0.03407864867132522,
+    "lo": -0.03817772370736788,
+    "hi": -0.030409909353933187
   },
-  "market_role_confound": "venue-less (season,team,opp) pot key; see typed_tensor_market_role.md",
   "product_on_main": "numagent_2_0"
 }
