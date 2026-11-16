@@ -1,16 +1,17 @@
 {
   "updated": "2026-11-16",
-  "branch": "cursor/flashcard-market-role-c985",
-  "batch": "typed_tensor_market_role",
+  "branch": "cursor/flashcard-horizon-fix-c985",
+  "batch": "typed_tensor_horizon_fix",
   "status": "complete",
-  "result": "inconclusive_keep_rich_baseline",
-  "summary": "Market pot (ah_line_own, DC xg_own) + role× interactions vs rich zero-gated spine. Δlog −0.00016 [−0.00035, +0.00004]; active also covers zero. Keep rich spine. Not Numagent. No Odds API.",
-  "report": "reports/typed_tensor_market_role.md",
-  "contrast": "market_role_minus_rich",
+  "result": "keep_rich_baseline",
+  "summary": "Co-PI path: annotate market-role as confounded (venue-less join fixed in loader); screen fixed TypedCardMixer (season codes, present mask, m=0 gate, pure log, val early-stop) vs rich zero-gated spine. Clear loss Δlog +0.014 [+0.013, +0.015]. Keep rich. Not Numagent.",
+  "report": "reports/typed_tensor_horizon_fix.md",
+  "contrast": "horizon_fix_minus_rich",
   "interval": {
-    "mean": -0.00016197181399920947,
-    "lo": -0.0003531607145292352,
-    "hi": 3.775009781450855e-05
+    "mean": 0.01404265425053603,
+    "lo": 0.013038201754413095,
+    "hi": 0.015117528338890076
   },
+  "market_role_confound": "venue-less (season,team,opp) pot key; see typed_tensor_market_role.md",
   "product_on_main": "numagent_2_0"
 }
