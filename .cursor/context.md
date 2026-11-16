@@ -2,21 +2,19 @@
 
 Updated: 2026-11-15. **Numagent 2.0** is the product on main (`protocol.numagent_2_0`) — **supersedes Numagent 1.0**. Parked hypotheses: `.cursor/ideas.md`. Stage archaeology: root `CONTEXT.md` and `reports/SUPERSEDED.md`. Canonical index: `reports/LOCKED.md`.
 
-## Flashcard research (2026-11-15) — CEMENTED
+## Flashcard research (2026-11-16) — CEMENTED
 
 Full lock: [`reports/FLASHCARD_CEMENT.md`](../reports/FLASHCARD_CEMENT.md).
 Schema: `src/models/tensor_card.py`. Design: `reports/TYPED_TENSOR_CARD.md`.
-Git: `reports/FLASHCARD_GIT_CLEANUP.md` (Baudot / old flashcard PRs closed;
-typed-tensor stack superseded by cement PR into main).
+Git: `reports/FLASHCARD_GIT_CLEANUP.md`; batch stack #191→#196 → tip on main.
 
-**Arms (no mix):** slice = likelihood spine (actual minutes; **zero-gated logistic**;
-rich baseline soft-promoted 2026-11-16; mate co-presence soft-parked); horizon =
-full-card FOV (true minutes stay on the card). Stepped lost; mix rejected; lag-1
-lost; Poisson GLM lost.
+**Locked spine:** zero-gated SliceLogistic; rich extras soft-promoted; mates off;
+co-presence soft-parked; Poisson/lag-1/stepped/mix parked or lost. Horizon FOV
+arm kept separate (no mix).
 
-**Continue:** research branch for flashcard **model training** on the rich
-zero-gated spine (mates off). Do **not** open a Numagent/`score_xp_v2` comparison
-until flashcard training earns it.
+**Continue after tip lands on main:** new `cursor/flashcard-*-c985` only — opp
+history / horizon painter fixes, one comparison at a time. Do **not** open a
+Numagent/`score_xp_v2` comparison until flashcard training earns it.
 
 ## Repo freeze sequence (2026-10-20)
 

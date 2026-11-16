@@ -1,6 +1,6 @@
 # This is the card
 
-**Locked design (cemented 2026-11-15).** Full freeze: [`FLASHCARD_CEMENT.md`](FLASHCARD_CEMENT.md).
+**Locked design (cemented 2026-11-16).** Full freeze: [`FLASHCARD_CEMENT.md`](FLASHCARD_CEMENT.md).
 
 The flashcard is a typed tensor for one club-season. Opacity is only a *display*
 of event probability — not the storage format. Baudot binary bit-planes are

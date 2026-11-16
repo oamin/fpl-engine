@@ -1,17 +1,19 @@
 {
   "updated": "2026-11-16",
-  "branch": "cursor/flashcard-rich-baseline-c985",
-  "batch": "typed_tensor_rich_baseline",
+  "branch": "cursor/flashcard-batch-lock-c985",
+  "batch": "flashcard_batch_lock_2026_11_16",
   "status": "complete",
-  "result": "soft_promote_rich_baseline",
-  "summary": "Co-PI call: soft-park mate co-presence; screen rich zero-gated baseline (NL minutes, p_over25, team as-of GA, M0 per-90) vs plain zero-gated. Δlog −0.00072 [−0.00103, −0.00045]; active −0.00125. Clears zero; all-row mean shy of −0.001 materiality → soft-promote. Prefer rich extras for further slice work. Not Numagent.",
-  "report": "reports/typed_tensor_rich_baseline.md",
-  "contrast": "rich_baseline_minus_zero_gated",
-  "interval": {
-    "mean": -0.0007176234398868629,
-    "lo": -0.0010300008496713362,
-    "hi": -0.0004538562052497381
+  "result": "cemented",
+  "summary": "Lock flashcard batch: typed tensor card; slice spine = zero-gated logistic with rich extras soft-promoted; co-presence soft-parked; Poisson/lag-1/stepped/mix parked or lost; horizon FOV arm kept separate. Not a Numagent comparison. Product remains numagent_2_0.",
+  "cement": "reports/FLASHCARD_CEMENT.md",
+  "spine": {
+    "gate": "zero_gated_logistic",
+    "rich_extras": "soft_promote",
+    "mates": "off",
+    "copresence": "soft_parked",
+    "poisson": "parked_lost"
   },
-  "copresence": "soft_parked",
-  "product_on_main": "numagent_2_0"
+  "horizon": "fov_arm_no_mix",
+  "product_on_main": "numagent_2_0",
+  "next": "After tip lands on main: new cursor/flashcard-*-c985 for opp history / horizon painter fixes — one comparison at a time"
 }

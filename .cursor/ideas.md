@@ -15,9 +15,10 @@ parked as overkill until a path-V screen asks for it (`protocol.cascade_short_ge
 - Live shadow of locked L4 + `score_xp_v2` (no new strategiser arm without a protocol entry).
 - Layer 5 chips only if a pre-registered likelihood / priced-path comparison asks.
 - Objective-function search stays parked.
-- **Flashcard (cemented):** continue **model training** research on the typed tensor
-  (`reports/FLASHCARD_CEMENT.md`). Slice and horizon stay separate arms. No mix.
-  No Numagent comparison until flashcard likelihood clearly earns it. No Baudot.
+- **Flashcard (cemented 2026-11-16):** spine locked — zero-gated logistic + rich
+  extras soft-promote; co-presence soft-parked (`reports/FLASHCARD_CEMENT.md`).
+  Next only after tip on main. No mix. No Numagent until likelihood earns it.
+  No Baudot / Poisson reopen without a new twist.
 
 ## Soft-promote — rich zero-gated baseline (2026-11-16)
 

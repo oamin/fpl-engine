@@ -93,7 +93,7 @@ Modules: `short_horizon_generative`, `match_outcome`, `lineup_roll`, `attack_rol
 
 ## Research track — typed tensor flashcard (not product)
 
-**Cement locked 2026-11-15.** Full freeze: [`FLASHCARD_CEMENT.md`](FLASHCARD_CEMENT.md).
+**Cement locked 2026-11-16.** Full freeze: [`FLASHCARD_CEMENT.md`](FLASHCARD_CEMENT.md).
 Not the live Numagent path; Numagent comparison deferred until flashcard training
 clearly wins on likelihood. Baudot binary planes retired.
 
@@ -102,13 +102,13 @@ clearly wins on likelihood. Baudot binary planes retired.
 | **Cement** | [`FLASHCARD_CEMENT.md`](FLASHCARD_CEMENT.md) |
 | Schema | `src/models/tensor_card.py` |
 | Design | [`TYPED_TENSOR_CARD.md`](TYPED_TENSOR_CARD.md) |
-| Arms | **Slice** (spine, actual minutes) · **Horizon** (FOV; no mix) |
+| Arms | **Slice** (zero-gated logistic; rich extras soft-promote; mates off) · **Horizon** (FOV; no mix) |
 | Slice baselines | [`typed_tensor_card_baselines.md`](typed_tensor_card_baselines.md) |
 | Stepped FOV | [`typed_tensor_stepped.md`](typed_tensor_stepped.md) — lost |
 | Horizon FOV | [`typed_tensor_horizon.md`](typed_tensor_horizon.md) — keep FOV arm |
 | Mix | [`typed_tensor_slice_horizon_mix.md`](typed_tensor_slice_horizon_mix.md) — rejected |
 | Lag-1 minutes | [`typed_tensor_lag1_minutes.md`](typed_tensor_lag1_minutes.md) — lost |
-| Poisson exposure GLM | [`typed_tensor_poisson_glm.md`](typed_tensor_poisson_glm.md) — lost; keep SliceLogistic |
+| Poisson exposure GLM | [`typed_tensor_poisson_glm.md`](typed_tensor_poisson_glm.md) — lost |
 | Zero-gated SliceLogistic | [`typed_tensor_zero_gate.md`](typed_tensor_zero_gate.md) — **promoted** |
 | Mate co-presence | [`typed_tensor_mate_copresence.md`](typed_tensor_mate_copresence.md) — soft-parked |
 | Rich zero-gated baseline | [`typed_tensor_rich_baseline.md`](typed_tensor_rich_baseline.md) — soft-promote |
