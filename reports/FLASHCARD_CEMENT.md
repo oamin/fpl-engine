@@ -24,7 +24,7 @@ header (club / opp / home / assessed 1X2). Opacity is **display only**
 
 | Arm | Role | Default |
 | --- | --- | --- |
-| **Slice** | Player–GW likelihood spine | Actual scored-week minutes; **zero-gated logistic** + **mate co-presence** (who shared the pitch + as-of mate history). Not aggregate `mate_minutes`. |
+| **Slice** | Player–GW likelihood spine | Actual scored-week minutes; **zero-gated logistic**. Prefer **rich baseline** extras (NL minutes / `p_over25` / team as-of G/A / M0 per-90) for further work (soft-promote). Mate co-presence **soft-parked**. |
 | **Horizon** | Full-card FOV exam / picture | Past true G/A; blank events from cut; **true minutes stay on the card**. |
 
 Do **not** blend slice and horizon into one predictor. They answer different questions.
@@ -40,7 +40,8 @@ Do **not** blend slice and horizon into one predictor. They answer different que
 | Lag-1 minutes on slice | `typed_tensor_lag1_minutes.md` | **Lost** (pooled Δlog +0.012); honesty reference only |
 | Zero-gated Poisson exposure GLM | `typed_tensor_poisson_glm.md` | **Lost** (Δlog +0.00508 [+0.00448, +0.00570]); keep SliceLogistic |
 | Zero-gated SliceLogistic | `typed_tensor_zero_gate.md` | **Promoted** (Δlog −0.00473 [−0.00507, −0.00437]; active also &lt; 0) |
-| Mate co-presence | `typed_tensor_mate_copresence.md` | **Promoted** (Δlog −0.00029 [−0.00049, −0.00007]; active also &lt; 0) |
+| Mate co-presence | `typed_tensor_mate_copresence.md` | Screened then **soft-parked** (Co-PI: wrong estimand / sub leak) |
+| Rich zero-gated baseline | `typed_tensor_rich_baseline.md` | **Soft-promote** (Δlog −0.00072 [−0.00103, −0.00045]; clears zero; shy of −0.001 all-row materiality) |
 
 ### Renders
 
@@ -62,7 +63,8 @@ Do **not** blend slice and horizon into one predictor. They answer different que
 | `tensor_card_lag1_minutes.py` | Lag-1 honesty screen |
 | `tensor_card_poisson_glm.py` | Zero-gated Poisson GLM screen (lost; parked) |
 | `tensor_card_zero_gate.py` | Zero-gated SliceLogistic screen (**promoted**) |
-| `tensor_card_mate_copresence.py` | Mate co-presence screen (**promoted**) |
+| `tensor_card_mate_copresence.py` | Mate co-presence screen (soft-parked) |
+| `tensor_card_rich_baseline.py` | Rich zero-gated baseline (**soft-promote**) |
 
 Tests under `tests/test_tensor_card*.py`.
 
@@ -72,7 +74,7 @@ PI intent: **more flashcard model training** before any Numagent gate.
 
 Open room (one pre-registered comparison at a time):
 
-- Richer as-of on the **zero-gated + co-presence** logistic spine (opp history, M0-shrunk per-90) — one comparison at a time, locked before totals.
+- Continue on **rich zero-gated** spine (mates off; co-presence parked). Opp history / starter masks as separate locked screens only.
 - Better horizon / full-card training **without** mixing into slice (fix element-ID collision / cut masks before scaling the mixer).
 - Poisson exposure GLM screened and **lost** — do not reopen without a new pre-registered twist.
 - Survival framing only as a secondary experiment.
