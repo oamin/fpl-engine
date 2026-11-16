@@ -322,14 +322,23 @@ def asof_inputs(
     minutes_mode: str = "actual",
     role_prior: dict[int, float] | None = None,
     include_mates: bool | None = None,
+    history_mode: str = "present",
 ) -> dict[str, float]:
     """Features available before scoring week t. History is strictly before t.
 
     minutes_mode:
       actual — scored-week realised minutes (conditional-on-minutes spine)
       lag1 — ̂m_t = m_{t-1} (else last present, else role prior); no same-week mate leak
+    history_mode:
+      present — average over prior present sheet rows (may include m=0 bench)
+      appearance — average only over prior weeks with minutes > 0
     """
-    hist = np.flatnonzero(card.present[player, :t])
+    if history_mode == "appearance":
+        hist = np.flatnonzero(card.present[player, :t] & (card.minutes[player, :t] > 0))
+    elif history_mode == "present":
+        hist = np.flatnonzero(card.present[player, :t])
+    else:
+        raise ValueError(f"unknown history_mode={history_mode!r}")
     minutes_hist = card.minutes[player, hist] if len(hist) else np.array([], np.float32)
     goals_hist = card.goals[player, hist].astype(np.float32) if len(hist) else np.array([], np.float32)
     assists_hist = card.assists[player, hist].astype(np.float32) if len(hist) else np.array([], np.float32)
@@ -458,6 +467,7 @@ def iter_slices(
     minutes_mode: str = "actual",
     role_prior: dict[int, float] | None = None,
     include_mates: bool | None = None,
+    history_mode: str = "present",
 ):
     """Yield sliced player–GW observations with as-of features."""
     for p in range(card.n_players):
@@ -485,6 +495,7 @@ def iter_slices(
                     minutes_mode=minutes_mode,
                     role_prior=role_prior,
                     include_mates=include_mates,
+                    history_mode=history_mode,
                 ),
             }
 

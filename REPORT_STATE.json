@@ -1,19 +1,16 @@
 {
   "updated": "2026-11-16",
-  "branch": "cursor/flashcard-batch-lock-c985",
-  "batch": "flashcard_batch_lock_2026_11_16",
+  "branch": "cursor/flashcard-appearance-clean-c985",
+  "batch": "typed_tensor_appearance_clean",
   "status": "complete",
-  "result": "cemented",
-  "summary": "Lock flashcard batch: typed tensor card; slice spine = zero-gated logistic with rich extras soft-promoted; co-presence soft-parked; Poisson/lag-1/stepped/mix parked or lost; horizon FOV arm kept separate. Not a Numagent comparison. Product remains numagent_2_0.",
-  "cement": "reports/FLASHCARD_CEMENT.md",
-  "spine": {
-    "gate": "zero_gated_logistic",
-    "rich_extras": "soft_promote",
-    "mates": "off",
-    "copresence": "soft_parked",
-    "poisson": "parked_lost"
+  "result": "inconclusive_keep_present_history",
+  "summary": "Appearance-clean history (m>0 prior weeks only) vs present-diluted rich zero-gated spine. Δlog ≈ +0.00001 [−0.00006, +0.00007]; active also covers zero. Keep present-row history. Not Numagent.",
+  "report": "reports/typed_tensor_appearance_clean.md",
+  "contrast": "appearance_clean_minus_present_history",
+  "interval": {
+    "mean": 9.680384100691829e-06,
+    "lo": -5.625740174766067e-05,
+    "hi": 6.868116763632693e-05
   },
-  "horizon": "fov_arm_no_mix",
-  "product_on_main": "numagent_2_0",
-  "next": "After tip lands on main: new cursor/flashcard-*-c985 for opp history / horizon painter fixes — one comparison at a time"
+  "product_on_main": "numagent_2_0"
 }

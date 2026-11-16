@@ -52,6 +52,7 @@ Do **not** blend into the slice predictor.
 | Zero-gated SliceLogistic | `typed_tensor_zero_gate.md` | **Promoted** (−0.00473 [−0.00507, −0.00437]) |
 | Mate co-presence | `typed_tensor_mate_copresence.md` | Screened then **soft-parked** |
 | Rich zero-gated baseline | `typed_tensor_rich_baseline.md` | **Soft-promote** (−0.00072 [−0.00103, −0.00045]) |
+| Appearance-clean history | `typed_tensor_appearance_clean.md` | **Inconclusive** (Δ ≈ 0; keep present-row history) |
 
 ### Renders
 
@@ -68,6 +69,7 @@ Do **not** blend into the slice predictor.
 | `tensor_card_baselines.py` | Slice logistic vs constant |
 | `tensor_card_zero_gate.py` | Zero-gated logistic (**promoted**) |
 | `tensor_card_rich_baseline.py` | Rich extras on zero-gated spine (**soft-promote**) |
+| `tensor_card_appearance_clean.py` | Appearance-clean history (inconclusive; keep present) |
 | `tensor_card_poisson_glm.py` | Poisson GLM (lost; parked) |
 | `tensor_card_mate_copresence.py` | Co-presence (soft-parked) |
 | `tensor_card_horizon.py` | Horizon FOV mixer |
@@ -89,9 +91,10 @@ Tests: `tests/test_tensor_card*.py`.
 
 One pre-registered comparison at a time, from this cement:
 
-- Opp history / starter-mask sensitivities on the **rich zero-gated** spine (mates off).
+- Market pot / role interactions (AH, Dixon-Coles `xg_own`, role×) on rich zero-gated spine.
+- Opp history / starter-mask sensitivities (mates off; kickoff-timestamp as-of).
 - Horizon painter fixes (element-ID collision, cut/`present` masks) — no mix into slice.
-- Do **not** reopen Baudot, Poisson (without new twist), co-presence-as-spine, or lag-1 as default.
+- Do **not** reopen Baudot, Poisson (without new twist), co-presence-as-spine, lag-1 as default, or appearance-clean as a material lever (screened ≈ 0).
 
 **Out of scope until flashcard likelihood clearly earns it:** flashcard-xP vs `score_xp_v2`, climbs, chips.
 
