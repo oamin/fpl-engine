@@ -28,7 +28,7 @@ Baudot binary planes are **retired**.
 | Piece | Lock |
 | --- | --- |
 | Minutes (oracle / research) | Actual scored-week minutes for conditional event training. Lag-1 **lost** as event minutes. |
-| Minutes (pre-match path) | **Two-part minutes head** `ĥm=P(m>0)·E[m\|m>0]` (**promoted** vs lag-1 on event LL). |
+| Minutes (pre-match path) | Two-part head **provisional**: plug-in `f(x(ĥm))` kept after compose screen; see notes. |
 | Event head | **Zero-gated SliceLogistic** — fit on `m>0` only; `m≤0 → p≈1e-6`. **Promoted.** |
 | Rich extras | Prefer for further work (**soft-promote**): `log1p(m)`, `I(m≥60)`, `I(m=90)`, `p_over25`, team as-of G/A, `M0=270` own per-90. |
 | Mates | Aggregate `mate_minutes` off. Mate **co-presence** screened then **soft-parked** (Co-PI: headcount/sub leak, not chemistry). |
@@ -57,7 +57,8 @@ Do **not** blend into the slice predictor.
 | Appearance-clean history | `typed_tensor_appearance_clean.md` | **Inconclusive** (Δ ≈ 0; keep present-row history) |
 | Market pot / role× | `typed_tensor_market_role.md` | **Inconclusive + confounded** (venue-less join; keep rich) |
 | Horizon painter fixes | `typed_tensor_horizon_fix.md` | **Lost** vs rich (+0.014; keep rich spine) |
-| Pre-match minutes head | `typed_tensor_minutes_head.md` | **Promoted** vs lag-1 (Δlog −0.034) |
+| Pre-match minutes head | `typed_tensor_minutes_head.md` | **Promoted** vs gated lag-1 (Δ −0.034; provisional) |
+| Minutes composition | `typed_tensor_minutes_compose.md` | **Inconclusive** keep plug-in (all-row win; active loss) |
 
 ### Renders
 
@@ -77,7 +78,8 @@ Do **not** blend into the slice predictor.
 | `tensor_card_appearance_clean.py` | Appearance-clean history (inconclusive; keep present) |
 | `tensor_card_market_role.py` | Market pot + role× (inconclusive + confounded; keep rich) |
 | `tensor_card_horizon_fix.py` | Fixed mixer LOSO vs rich (**lost**) |
-| `tensor_card_minutes_head.py` | Pre-match minutes head vs lag-1 (**promoted**) |
+| `tensor_card_minutes_head.py` | Pre-match minutes head vs lag-1 (**promoted**, provisional) |
+| `tensor_card_minutes_compose.py` | `p·f(μ)` vs `f(p·μ)` (inconclusive; keep plug-in) |
 | `tensor_card_poisson_glm.py` | Poisson GLM (lost; parked) |
 | `tensor_card_mate_copresence.py` | Co-presence (soft-parked) |
 | `tensor_card_horizon.py` | Horizon FOV mixer |
@@ -96,15 +98,16 @@ Tests: `tests/test_tensor_card*.py`.
 4. **Rich single-player baseline** before further mate or mixer work.
 5. **Market/role× screen confounded** by venue-less pot join; not a clean `xg_own` falsification.
 6. **Fixed mixer** (season codes + present mask + zero-gate + pure log + val early-stop) still **loses** vs rich on 4-season player–GW LOSO — keep rich spine.
-7. **Pre-match minutes head** beats lag-1 on event LL (Δ −0.034) even with worse MAE — soft `ĥm` vs hard lag-1 zeros; promote on likelihood estimand.
+7. **Pre-match minutes head** beats *gated* lag-1 (Δ −0.034) largely via soft `ĥm` vs hard lag-1 zeros — **provisional**, not a clean −0.034 vs ungated lag-1 (~0.001).
+8. **Composition** `p·f(μ)` vs plug-in `f(p·μ)`: all-row Δ −0.00177 (hi&lt;0) but **active loss** (+0.00345); keep plug-in. Do not hard-gate `p_play` with oracle `1e-6`.
 
 ## Open room (after this lock)
 
 One pre-registered comparison at a time, from this cement:
 
-- Harden minutes head (e.g. `p_play` hard-gate threshold) if sparse zeros are required for shipping.
+- Pre-match path: improve minutes model or a hybrid that keeps compose’s bench win without active loss — use **ungated lag-1** as diagnostic, never gated lag-1.
 - Count / rate expectation + team pot conservation toward a future Numagent bridge (only after pre-match path is solid).
-- Do **not** reopen Baudot, Poisson (without new twist), co-presence-as-spine, lag-1 as default minutes, appearance-clean, market/role× (confounded), fixed-mixer-as-slice (lost +0.014), or oracle-minutes feature tweaks (opp history / starter-mask).
+- Do **not** hard-gate `p_play` with oracle `1e-6`. Do **not** reopen Baudot, Poisson (without new twist), co-presence-as-spine, appearance-clean, market/role× (confounded), fixed-mixer-as-slice, or oracle-minutes feature tweaks.
 - Horizon FOV remains an exam arm only; do not mix into the slice predictor.
 
 **Out of scope until flashcard likelihood clearly earns it:** flashcard-xP vs `score_xp_v2`, climbs, chips.

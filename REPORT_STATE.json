@@ -1,16 +1,21 @@
 {
   "updated": "2026-11-16",
-  "branch": "cursor/flashcard-minutes-head-c985",
-  "batch": "typed_tensor_minutes_head",
+  "branch": "cursor/flashcard-minutes-compose-c985",
+  "batch": "typed_tensor_minutes_compose",
   "status": "complete",
-  "result": "promote_minutes_head",
-  "summary": "Pre-match two-part minutes head ĥm=P(play)·E[m|play] into rich zero-gated event spine vs lag-1 honesty. Δlog −0.03408 [−0.03818, −0.03041]; promote. MAE worse (~18.5 vs ~15.5); win partly from soft ĥm vs hard lag-1 zeros (~41%). Neural slice parked. Not Numagent.",
-  "report": "reports/typed_tensor_minutes_head.md",
-  "contrast": "minutes_head_minus_lag1",
+  "result": "inconclusive_keep_plugin",
+  "summary": "Compose p_play·f(μ) vs plug-in f(p·μ) on frozen minutes-head models. All-row Δ −0.00177 [−0.00205, −0.00148] but active +0.00345 (compose loses on players who played). Inactive LL improves. Keep plug-in. Reframe minutes_head promote as provisional vs gated lag-1.",
+  "report": "reports/typed_tensor_minutes_compose.md",
+  "contrast": "compose_minus_plugin",
   "interval": {
-    "mean": -0.03407864867132522,
-    "lo": -0.03817772370736788,
-    "hi": -0.030409909353933187
+    "mean": -0.0017713505564907854,
+    "lo": -0.002053656027759624,
+    "hi": -0.001477332166031358
+  },
+  "interval_active": {
+    "mean": 0.0034520423452799446,
+    "lo": 0.0029784440697514175,
+    "hi": 0.003918991913505215
   },
   "product_on_main": "numagent_2_0"
 }
