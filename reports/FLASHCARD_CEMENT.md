@@ -24,7 +24,7 @@ header (club / opp / home / assessed 1X2). Opacity is **display only**
 
 | Arm | Role | Default |
 | --- | --- | --- |
-| **Slice** | Player–GW likelihood spine | Actual scored-week minutes (+ mate minutes). Logistic baseline. |
+| **Slice** | Player–GW likelihood spine | Actual scored-week minutes; **zero-gated logistic** (fit `m>0` only; `m≤0 → p≈0`). Mates off in gated screens; mates on/off not re-decided. |
 | **Horizon** | Full-card FOV exam / picture | Past true G/A; blank events from cut; **true minutes stay on the card**. |
 
 Do **not** blend slice and horizon into one predictor. They answer different questions.
@@ -39,6 +39,7 @@ Do **not** blend slice and horizon into one predictor. They answer different que
 | Slice × horizon mix | `typed_tensor_slice_horizon_mix.md` | **Inconclusive**; **rejected as product path** (no mix) |
 | Lag-1 minutes on slice | `typed_tensor_lag1_minutes.md` | **Lost** (pooled Δlog +0.012); honesty reference only |
 | Zero-gated Poisson exposure GLM | `typed_tensor_poisson_glm.md` | **Lost** (Δlog +0.00508 [+0.00448, +0.00570]); keep SliceLogistic |
+| Zero-gated SliceLogistic | `typed_tensor_zero_gate.md` | **Promoted** (Δlog −0.00473 [−0.00507, −0.00437]; active also &lt; 0) |
 
 ### Renders
 
@@ -59,6 +60,7 @@ Do **not** blend slice and horizon into one predictor. They answer different que
 | `tensor_card_slice_horizon_mix.py` | Parked mix evidence (do not promote) |
 | `tensor_card_lag1_minutes.py` | Lag-1 honesty screen |
 | `tensor_card_poisson_glm.py` | Zero-gated Poisson GLM screen (lost; parked) |
+| `tensor_card_zero_gate.py` | Zero-gated SliceLogistic screen (**promoted**) |
 
 Tests under `tests/test_tensor_card*.py`.
 
@@ -68,9 +70,9 @@ PI intent: **more flashcard model training** before any Numagent gate.
 
 Open room (one pre-registered comparison at a time):
 
-- Better slice event model than logistic (still on the typed card; as-of clean). Poisson exposure GLM screened and **lost** — do not reopen without a new pre-registered twist.
+- Richer as-of on the **zero-gated** logistic spine (opp history, M0-shrunk per-90) — one comparison at a time, locked before totals.
 - Better horizon / full-card training **without** mixing into slice (fix element-ID collision / cut masks before scaling the mixer).
-- Richer as-of (opp history, M0-shrunk per-90) on the logistic spine — only if locked before totals are read.
+- Poisson exposure GLM screened and **lost** — do not reopen without a new pre-registered twist.
 - Survival framing only as a secondary experiment.
 
 **Out of scope until flashcard likelihood is clearly stronger:** wiring flashcard-xP vs `score_xp_v2`, climbs, chips.
