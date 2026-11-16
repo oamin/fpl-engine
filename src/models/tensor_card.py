@@ -399,6 +399,57 @@ FEATURE_NAMES = (
 # Lag-1 arm drops same-week mate leak so the contrast is minutes policy only.
 FEATURE_NAMES_LAG1 = tuple(name for name in FEATURE_NAMES if name not in ("mate_minutes", "mate_n"))
 
+# Same-week pitch-mates: who shared the pitch (not collinear total mate minutes).
+# Conditional-on-XI spine — parallel to conditioning on own realised minutes.
+COPRESENCE_FEATURE_NAMES = (
+    "mate_n_on",
+    "mate_def_on",
+    "mate_mid_on",
+    "mate_fwd_on",
+    "mate_sum_mean_goals",
+    "mate_sum_mean_assists",
+    "mate_max_mean_goals",
+)
+
+
+def mate_copresence_features(card: TensorCard, player: int, t: int) -> dict[str, float]:
+    """Teammate co-presence at week t, with as-of history for those who played.
+
+    Uses the scored week's who-played mask (like own minutes on the conditional
+    spine). Mate history means use only weeks strictly before t.
+    """
+    roles = card.position
+    mins = card.minutes[:, t]
+    seats = np.arange(card.n_players)
+    on = seats[(mins[: card.n_players] > 0) & (roles[: card.n_players] >= 0)]
+    on = on[on != player]
+    mate_n_on = float(len(on))
+    mate_def_on = float(np.sum(roles[on] == 1))
+    mate_mid_on = float(np.sum(roles[on] == 2))
+    mate_fwd_on = float(np.sum(roles[on] == 3))
+    sum_mg = 0.0
+    sum_ma = 0.0
+    max_mg = 0.0
+    for mate in on:
+        hist = np.flatnonzero(card.present[mate, :t])
+        if len(hist) == 0:
+            continue
+        mg = float(card.goals[mate, hist].mean())
+        ma = float(card.assists[mate, hist].mean())
+        sum_mg += mg
+        sum_ma += ma
+        if mg > max_mg:
+            max_mg = mg
+    return {
+        "mate_n_on": mate_n_on,
+        "mate_def_on": mate_def_on,
+        "mate_mid_on": mate_mid_on,
+        "mate_fwd_on": mate_fwd_on,
+        "mate_sum_mean_goals": sum_mg,
+        "mate_sum_mean_assists": sum_ma,
+        "mate_max_mean_goals": max_mg,
+    }
+
 
 def iter_slices(
     card: TensorCard,
