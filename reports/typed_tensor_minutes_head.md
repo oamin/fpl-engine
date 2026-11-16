@@ -62,11 +62,11 @@ Product as-of audit passed=True.
 
 ## Call
 
-**promote_minutes_head.** Pre-match minutes head beats lag-1 on the rich event spine (clears zero + materiality). Adopt as the pre-match minutes path into the locked rich event head.
+**promote_minutes_head** (reframe: **provisional**). Beats *gated* lag-1 on the rich event spine. Do **not** treat −0.034 as a clean minutes-model win vs ungated lag-1 (~0.001).
 
-### Mechanism note (not a demote)
+### Co-PI reframe (not a demote)
 
-Minutes **MAE is worse** than lag-1 (~18.5 vs ~15.5) while event log-loss is much better. Diagnosis: lag-1 is exactly 0 on ~41% of present rows → hard zero-gate; the head’s `ĥm = P(play)·E[m|play]` is **never** exactly 0 (soft minutes on benches / returners). Correlation with actual minutes is slightly higher for the head (~0.75 vs ~0.73). The promote is for the **event-likelihood** estimand under substituted minutes + zero-gate, not for MAE. A follow-up could threshold `p_play` into a hard gate if shipping requires sparse zeros.
+Minutes **MAE is worse** than lag-1 (~18.5 vs ~15.5). Lag-1 is exactly 0 on ~41% of rows → hard `1e-6` zero-gate (oracle gate misapplied to non-structural blanks). Soft `ĥm` avoids that trap. **Do not** threshold `p_play` into oracle `1e-6`. Composition follow-up: `typed_tensor_minutes_compose.md`.
 
 Neural slice / FOV mixer stays parked as a product path under oracle minutes.
 
