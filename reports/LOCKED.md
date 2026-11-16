@@ -108,6 +108,7 @@ clearly wins on likelihood. Baudot binary planes retired.
 | Horizon FOV | [`typed_tensor_horizon.md`](typed_tensor_horizon.md) — keep FOV arm |
 | Mix | [`typed_tensor_slice_horizon_mix.md`](typed_tensor_slice_horizon_mix.md) — rejected |
 | Lag-1 minutes | [`typed_tensor_lag1_minutes.md`](typed_tensor_lag1_minutes.md) — lost |
+| Poisson exposure GLM | [`typed_tensor_poisson_glm.md`](typed_tensor_poisson_glm.md) — lost; keep SliceLogistic |
 | Git cleanup | [`FLASHCARD_GIT_CLEANUP.md`](FLASHCARD_GIT_CLEANUP.md) |
 
 ## Superseded

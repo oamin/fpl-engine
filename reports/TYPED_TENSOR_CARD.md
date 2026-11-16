@@ -48,6 +48,7 @@ Stepped FOV exists as a screened (lost) variant. Slice×horizon mixes are parked
 | [`typed_tensor_horizon.md`](typed_tensor_horizon.md) | Horizon **inconclusive**; keep FOV arm |
 | [`typed_tensor_slice_horizon_mix.md`](typed_tensor_slice_horizon_mix.md) | Mix **rejected** |
 | [`typed_tensor_lag1_minutes.md`](typed_tensor_lag1_minutes.md) | Lag-1 **lost**; actual minutes stay |
+| [`typed_tensor_poisson_glm.md`](typed_tensor_poisson_glm.md) | Poisson exposure GLM **lost**; keep SliceLogistic |
 
 ## Research continue (not Numagent yet)
 
