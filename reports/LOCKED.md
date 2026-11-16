@@ -110,6 +110,7 @@ clearly wins on likelihood. Baudot binary planes retired.
 | Lag-1 minutes | [`typed_tensor_lag1_minutes.md`](typed_tensor_lag1_minutes.md) — lost |
 | Poisson exposure GLM | [`typed_tensor_poisson_glm.md`](typed_tensor_poisson_glm.md) — lost; keep SliceLogistic |
 | Zero-gated SliceLogistic | [`typed_tensor_zero_gate.md`](typed_tensor_zero_gate.md) — **promoted** |
+| Mate co-presence | [`typed_tensor_mate_copresence.md`](typed_tensor_mate_copresence.md) — **promoted** |
 | Git cleanup | [`FLASHCARD_GIT_CLEANUP.md`](FLASHCARD_GIT_CLEANUP.md) |
 
 ## Superseded
