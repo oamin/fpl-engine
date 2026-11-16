@@ -54,6 +54,7 @@ Stepped FOV exists as a screened (lost) variant. Slice×horizon mixes are parked
 | [`typed_tensor_zero_gate.md`](typed_tensor_zero_gate.md) | Zero-gated logistic **promoted** |
 | [`typed_tensor_mate_copresence.md`](typed_tensor_mate_copresence.md) | Mate co-presence soft-parked |
 | [`typed_tensor_rich_baseline.md`](typed_tensor_rich_baseline.md) | Rich baseline **soft-promote** |
+| [`typed_tensor_appearance_clean.md`](typed_tensor_appearance_clean.md) | Appearance-clean history **inconclusive** |
 
 ## Research continue (not Numagent yet)
 
