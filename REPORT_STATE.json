@@ -1,23 +1,15 @@
 {
-  "milestone": "cascade-short-generative-locked",
+  "updated": "2026-11-15",
+  "branch": "cursor/flashcard-cement-c985",
+  "batch": "flashcard_cement_lock",
   "status": "complete",
-  "summary": "cascade_short generative stack locked (protocol.cascade_short_generative): mean score_team_side; scenario k∼M → lineup cov → attack dice → CS/GC from rolled GA; soft priors via score_xp_v2 DefCon/bonus/cards/saves helpers. Firm XI and bonus-from-roll deferred. PR #96 green — mark ready / merge to main.",
-  "gemini": "",
-  "decisions": {
-    "cascade_short_generative": {
-      "locked": "2026-10-20",
-      "protocol": "cascade_short_generative",
-      "pr": 96,
-      "deferred": ["firm_xi", "bonus_from_roll"]
-    }
+  "result": "cemented",
+  "summary": "Flashcard typed-tensor track cemented for main: schema, slice/horizon arms (no mix), all screens documented. Baudot/old flashcard PRs to close; stack superseded. Next research: flashcard model training — not Numagent comparison yet.",
+  "cement": "reports/FLASHCARD_CEMENT.md",
+  "arms": {
+    "slice": "likelihood spine; actual minutes",
+    "horizon": "full-card FOV; true minutes on card"
   },
-  "artifacts": [
-    "reports/LOCKED.md",
-    "reports/CASCADE_CONTRACT.md",
-    "experiments/protocol.json",
-    "src/markets/short_horizon_generative.py",
-    "src/markets/defence_roll.py",
-    "src/models/short_horizon_cascade.py",
-    "src/models/cascade_short.py"
-  ]
+  "next": "After cement lands on main: research branch for flashcard model training",
+  "product_on_main": "numagent_2_0"
 }

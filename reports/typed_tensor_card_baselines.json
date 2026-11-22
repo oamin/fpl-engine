@@ -1,0 +1,72 @@
+{
+  "train_seasons": [
+    "2022-23",
+    "2023-24",
+    "2024-25"
+  ],
+  "test_season": "2025-26",
+  "n_train": 58751,
+  "n_test": 19127,
+  "n_cards": 80,
+  "features": [
+    "minutes",
+    "home",
+    "role_gkp",
+    "role_def",
+    "role_mid",
+    "role_fwd",
+    "odds_win",
+    "odds_draw",
+    "odds_lose",
+    "games_played",
+    "mean_minutes",
+    "mean_goals",
+    "mean_assists",
+    "last_goals",
+    "last_assists",
+    "last5_goals",
+    "last5_assists",
+    "mate_minutes",
+    "mate_n"
+  ],
+  "goal": {
+    "constant": {
+      "name": "constant",
+      "n": 19127,
+      "base_rate": 0.04663564594552204,
+      "log_loss": 0.18858446019619982,
+      "brier": 0.0444697477894834,
+      "cal_slope": null,
+      "cal_intercept": null
+    },
+    "logistic": {
+      "name": "logistic",
+      "n": 19127,
+      "base_rate": 0.04663564594552204,
+      "log_loss": 0.14563342985761712,
+      "brier": 0.03948301085934912,
+      "cal_slope": 0.9768705261204573,
+      "cal_intercept": -0.09981961841203643
+    }
+  },
+  "assist": {
+    "constant": {
+      "name": "constant",
+      "n": 19127,
+      "base_rate": 0.0454331573168819,
+      "log_loss": 0.1848423527148809,
+      "brier": 0.04336899208788068,
+      "cal_slope": null,
+      "cal_intercept": null
+    },
+    "logistic": {
+      "name": "logistic",
+      "n": 19127,
+      "base_rate": 0.0454331573168819,
+      "log_loss": 0.15382119619216109,
+      "brier": 0.04052057891159751,
+      "cal_slope": 0.9314429214011216,
+      "cal_intercept": -0.15196458710025423
+    }
+  }
+}
