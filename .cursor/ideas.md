@@ -19,6 +19,12 @@ parked as overkill until a path-V screen asks for it (`protocol.cascade_short_ge
   (`reports/FLASHCARD_CEMENT.md`). Slice and horizon stay separate arms. No mix.
   No Numagent comparison until flashcard likelihood clearly earns it. No Baudot.
 
+## Promoted — zero-gated SliceLogistic (2026-11-16)
+
+Fit logistic only on `m>0`; `m≤0 → p=1e-6`. Beats ungated SliceLogistic on
+4-season LOSO: Δlog −0.00473 [−0.00507, −0.00437]; active also &lt; 0.
+Report: `reports/typed_tensor_zero_gate.md`. Spine default for further slice work.
+
 ## Parked — zero-gated Poisson exposure GLM (2026-11-16)
 
 Co-PI next screen after cement: Poisson with `log(m/90)` offset + zero-gate vs

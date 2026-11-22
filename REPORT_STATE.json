@@ -1,16 +1,16 @@
 {
   "updated": "2026-11-16",
-  "branch": "cursor/flashcard-poisson-glm-c985",
-  "batch": "typed_tensor_poisson_glm",
+  "branch": "cursor/flashcard-zero-gate-c985",
+  "batch": "typed_tensor_zero_gate",
   "status": "complete",
-  "result": "keep_slice_logistic",
-  "summary": "Pre-registered zero-gated Poisson exposure GLM vs SliceLogistic (mates off), 4-season LOSO. Δlog +0.00508 [+0.00448, +0.00570]; active-minutes Δ +0.014. Park Poisson; keep logistic spine. Not a Numagent comparison.",
-  "report": "reports/typed_tensor_poisson_glm.md",
-  "contrast": "poisson_glm_minus_slice_logistic",
+  "result": "promote_zero_gated_logistic",
+  "summary": "Pre-registered zero-gated SliceLogistic vs ungated (mates off), 4-season LOSO. Δlog −0.00473 [−0.00507, −0.00437]; active Δ −0.00310 [−0.00369, −0.00250]. Promote gated logistic as slice spine default. Not a Numagent comparison.",
+  "report": "reports/typed_tensor_zero_gate.md",
+  "contrast": "zero_gate_minus_ungated_logistic",
   "interval": {
-    "mean": 0.005083939428512371,
-    "lo": 0.004476027501133147,
-    "hi": 0.005703747694869032
+    "mean": -0.004730817560658299,
+    "lo": -0.005067160373198986,
+    "hi": -0.0043737926637624535
   },
   "product_on_main": "numagent_2_0"
 }
