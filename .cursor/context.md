@@ -9,13 +9,14 @@ Schema: `src/models/tensor_card.py`. Design: `reports/TYPED_TENSOR_CARD.md`.
 Git: `reports/FLASHCARD_GIT_CLEANUP.md` (Baudot / old flashcard PRs closed;
 typed-tensor stack superseded by cement PR into main).
 
-**Arms (no mix):** slice = likelihood spine (actual minutes; **zero-gated logistic**
-+ **mate co-presence** promoted 2026-11-16); horizon = full-card FOV (true minutes
-stay on the card). Stepped lost; mix rejected; lag-1 lost; Poisson GLM lost.
+**Arms (no mix):** slice = likelihood spine (actual minutes; **zero-gated logistic**;
+rich baseline soft-promoted 2026-11-16; mate co-presence soft-parked); horizon =
+full-card FOV (true minutes stay on the card). Stepped lost; mix rejected; lag-1
+lost; Poisson GLM lost.
 
-**Continue:** research branch for flashcard **model training** on this card
-(next: richer as-of on the gated+copresence spine). Do **not** open a
-Numagent/`score_xp_v2` comparison until flashcard training earns it.
+**Continue:** research branch for flashcard **model training** on the rich
+zero-gated spine (mates off). Do **not** open a Numagent/`score_xp_v2` comparison
+until flashcard training earns it.
 
 ## Repo freeze sequence (2026-10-20)
 

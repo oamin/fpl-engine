@@ -1,16 +1,17 @@
 {
   "updated": "2026-11-16",
-  "branch": "cursor/flashcard-mate-copresence-c985",
-  "batch": "typed_tensor_mate_copresence",
+  "branch": "cursor/flashcard-rich-baseline-c985",
+  "batch": "typed_tensor_rich_baseline",
   "status": "complete",
-  "result": "promote_mate_copresence",
-  "summary": "PI mate cross-correlation question: co-presence (who shared the pitch + as-of mate history) vs zero-gated no-mates. Δlog −0.00029 [−0.00049, −0.00007]; active also < 0. Promote. Not aggregate mate_minutes; not Numagent.",
-  "report": "reports/typed_tensor_mate_copresence.md",
-  "contrast": "mate_copresence_minus_zero_gated",
+  "result": "soft_promote_rich_baseline",
+  "summary": "Co-PI call: soft-park mate co-presence; screen rich zero-gated baseline (NL minutes, p_over25, team as-of GA, M0 per-90) vs plain zero-gated. Δlog −0.00072 [−0.00103, −0.00045]; active −0.00125. Clears zero; all-row mean shy of −0.001 materiality → soft-promote. Prefer rich extras for further slice work. Not Numagent.",
+  "report": "reports/typed_tensor_rich_baseline.md",
+  "contrast": "rich_baseline_minus_zero_gated",
   "interval": {
-    "mean": -0.000288004813411131,
-    "lo": -0.000492856574571679,
-    "hi": -7.09534918969991e-05
+    "mean": -0.0007176234398868629,
+    "lo": -0.0010300008496713362,
+    "hi": -0.0004538562052497381
   },
+  "copresence": "soft_parked",
   "product_on_main": "numagent_2_0"
 }

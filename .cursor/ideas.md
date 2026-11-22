@@ -19,12 +19,17 @@ parked as overkill until a path-V screen asks for it (`protocol.cascade_short_ge
   (`reports/FLASHCARD_CEMENT.md`). Slice and horizon stay separate arms. No mix.
   No Numagent comparison until flashcard likelihood clearly earns it. No Baudot.
 
-## Promoted — mate co-presence (2026-11-16)
+## Soft-promote — rich zero-gated baseline (2026-11-16)
 
-Who-shared-the-pitch features (DEF/MID/FWD counts + as-of mate goal/assist
-history) on zero-gated spine. Beats no-mates control: Δlog −0.00029
-[−0.00049, −0.00007]; active also &lt; 0. Soft corr with own minutes (|r|≲0.15)
-vs old aggregate `mate_minutes` ≈ −0.97. Report: `typed_tensor_mate_copresence.md`.
+NL minutes + `p_over25` + team as-of G/A + M0=270 per-90 on zero-gated spine.
+Δlog −0.00072 [−0.00103, −0.00045]; active −0.00125. Clears zero; shy of −0.001
+all-row materiality → soft-promote. Report: `typed_tensor_rich_baseline.md`.
+
+## Soft-parked — mate co-presence (2026-11-16)
+
+Screened and briefly promoted, then Co-PI review: wrong estimand (headcount /
+sub leak, not chemistry). Soft-park; do not keep as spine default.
+Report: `typed_tensor_mate_copresence.md`.
 
 ## Promoted — zero-gated SliceLogistic (2026-11-16)
 
