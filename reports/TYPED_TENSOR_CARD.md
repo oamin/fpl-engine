@@ -22,8 +22,8 @@ Paint / model output is **opacity** \(= P(\text{count} \ge 1)\). Numerals on the
 ## Two arms (no mix)
 
 1. **Slice** — player–GW likelihood spine. Default: **actual** scored-week minutes,
-   **zero-gated logistic** (`m>0` fit; `m≤0 → p≈0`; see `typed_tensor_zero_gate.md`).
-   Entry: `tensor_card_zero_gate.py` / `asof_inputs(..., minutes_mode="actual")`.
+   **zero-gated logistic** + **mate co-presence** (`typed_tensor_zero_gate.md`,
+   `typed_tensor_mate_copresence.md`). Entry: `tensor_card_mate_copresence.py`.
 2. **Horizon** — full-card FOV. Past true G/A; blank events from the cut; **true minutes
    stay visible**. Entry: `tensor_card_horizon.py`.
 
@@ -51,6 +51,7 @@ Stepped FOV exists as a screened (lost) variant. Slice×horizon mixes are parked
 | [`typed_tensor_lag1_minutes.md`](typed_tensor_lag1_minutes.md) | Lag-1 **lost**; actual minutes stay |
 | [`typed_tensor_poisson_glm.md`](typed_tensor_poisson_glm.md) | Poisson exposure GLM **lost**; keep SliceLogistic |
 | [`typed_tensor_zero_gate.md`](typed_tensor_zero_gate.md) | Zero-gated logistic **promoted** |
+| [`typed_tensor_mate_copresence.md`](typed_tensor_mate_copresence.md) | Mate co-presence **promoted** |
 
 ## Research continue (not Numagent yet)
 

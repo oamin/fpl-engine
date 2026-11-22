@@ -10,12 +10,12 @@ Git: `reports/FLASHCARD_GIT_CLEANUP.md` (Baudot / old flashcard PRs closed;
 typed-tensor stack superseded by cement PR into main).
 
 **Arms (no mix):** slice = likelihood spine (actual minutes; **zero-gated logistic**
-promoted 2026-11-16); horizon = full-card FOV (true minutes stay on the card).
-Stepped lost; mix rejected; lag-1 lost; Poisson GLM lost.
++ **mate co-presence** promoted 2026-11-16); horizon = full-card FOV (true minutes
+stay on the card). Stepped lost; mix rejected; lag-1 lost; Poisson GLM lost.
 
 **Continue:** research branch for flashcard **model training** on this card
-(next: richer as-of on the gated spine). Do **not** open a Numagent/`score_xp_v2`
-comparison until flashcard training earns it.
+(next: richer as-of on the gated+copresence spine). Do **not** open a
+Numagent/`score_xp_v2` comparison until flashcard training earns it.
 
 ## Repo freeze sequence (2026-10-20)
 

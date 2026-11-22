@@ -19,6 +19,13 @@ parked as overkill until a path-V screen asks for it (`protocol.cascade_short_ge
   (`reports/FLASHCARD_CEMENT.md`). Slice and horizon stay separate arms. No mix.
   No Numagent comparison until flashcard likelihood clearly earns it. No Baudot.
 
+## Promoted — mate co-presence (2026-11-16)
+
+Who-shared-the-pitch features (DEF/MID/FWD counts + as-of mate goal/assist
+history) on zero-gated spine. Beats no-mates control: Δlog −0.00029
+[−0.00049, −0.00007]; active also &lt; 0. Soft corr with own minutes (|r|≲0.15)
+vs old aggregate `mate_minutes` ≈ −0.97. Report: `typed_tensor_mate_copresence.md`.
+
 ## Promoted — zero-gated SliceLogistic (2026-11-16)
 
 Fit logistic only on `m>0`; `m≤0 → p=1e-6`. Beats ungated SliceLogistic on

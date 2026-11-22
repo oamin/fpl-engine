@@ -1,16 +1,16 @@
 {
   "updated": "2026-11-16",
-  "branch": "cursor/flashcard-zero-gate-c985",
-  "batch": "typed_tensor_zero_gate",
+  "branch": "cursor/flashcard-mate-copresence-c985",
+  "batch": "typed_tensor_mate_copresence",
   "status": "complete",
-  "result": "promote_zero_gated_logistic",
-  "summary": "Pre-registered zero-gated SliceLogistic vs ungated (mates off), 4-season LOSO. Δlog −0.00473 [−0.00507, −0.00437]; active Δ −0.00310 [−0.00369, −0.00250]. Promote gated logistic as slice spine default. Not a Numagent comparison.",
-  "report": "reports/typed_tensor_zero_gate.md",
-  "contrast": "zero_gate_minus_ungated_logistic",
+  "result": "promote_mate_copresence",
+  "summary": "PI mate cross-correlation question: co-presence (who shared the pitch + as-of mate history) vs zero-gated no-mates. Δlog −0.00029 [−0.00049, −0.00007]; active also < 0. Promote. Not aggregate mate_minutes; not Numagent.",
+  "report": "reports/typed_tensor_mate_copresence.md",
+  "contrast": "mate_copresence_minus_zero_gated",
   "interval": {
-    "mean": -0.004730817560658299,
-    "lo": -0.005067160373198986,
-    "hi": -0.0043737926637624535
+    "mean": -0.000288004813411131,
+    "lo": -0.000492856574571679,
+    "hi": -7.09534918969991e-05
   },
   "product_on_main": "numagent_2_0"
 }
