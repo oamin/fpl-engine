@@ -16,7 +16,8 @@ from src.teams import norm_team
 
 def test_market_pot_table_loads_and_covers_arsenal():
     table = load_market_pot_table(("2025-26",))
-    assert len(table) > 300
+    # Venue-scoped keys: ~2 × fixtures (home and away sides), not collapsed H2H.
+    assert len(table) > 600
     cards = build_tensor_cards(("2025-26",))
     card = next(c for c in cards if c.team == "Arsenal")
     hit = 0
@@ -24,11 +25,23 @@ def test_market_pot_table_loads_and_covers_arsenal():
         m = _fixture_market(card, t, table)
         assert "ah_line_own" in m and "xg_own" in m
         assert m["xg_own"] > 0.0
-        key = (card.season, norm_team(card.team), norm_team(card.opponent[t]))
+        key = (
+            card.season,
+            norm_team(card.team),
+            norm_team(card.opponent[t]),
+            1 if int(card.home[t]) else 0,
+        )
         if key in table:
             hit += 1
             assert abs(m["xg_own"] - table[key]["xg_own"]) < 1e-12
     assert hit >= 30
+
+
+def test_home_away_legs_are_not_collapsed():
+    table = load_market_pot_table(("2022-23",))
+    home = table[("2022-23", "arsenal", "crystal palace", 1)]
+    away = table[("2022-23", "arsenal", "crystal palace", 0)]
+    assert home["xg_own"] != away["xg_own"] or home["ah_line_own"] != away["ah_line_own"]
 
 
 def test_market_role_extras_shape_and_role_mask():

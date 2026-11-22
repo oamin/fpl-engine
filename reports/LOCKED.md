@@ -113,7 +113,8 @@ clearly wins on likelihood. Baudot binary planes retired.
 | Mate co-presence | [`typed_tensor_mate_copresence.md`](typed_tensor_mate_copresence.md) — soft-parked |
 | Rich zero-gated baseline | [`typed_tensor_rich_baseline.md`](typed_tensor_rich_baseline.md) — soft-promote |
 | Appearance-clean history | [`typed_tensor_appearance_clean.md`](typed_tensor_appearance_clean.md) — inconclusive |
-| Market pot / role× | [`typed_tensor_market_role.md`](typed_tensor_market_role.md) — inconclusive; keep rich |
+| Market pot / role× | [`typed_tensor_market_role.md`](typed_tensor_market_role.md) — inconclusive + confounded; keep rich |
+| Horizon painter fixes | [`typed_tensor_horizon_fix.md`](typed_tensor_horizon_fix.md) — lost vs rich |
 | Git cleanup | [`FLASHCARD_GIT_CLEANUP.md`](FLASHCARD_GIT_CLEANUP.md) |
 
 ## Superseded

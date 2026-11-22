@@ -12,10 +12,10 @@ Git: `reports/FLASHCARD_GIT_CLEANUP.md`; batch stack #191→#196 → tip on main
 co-presence soft-parked; Poisson/lag-1/stepped/mix parked or lost. Horizon FOV
 arm kept separate (no mix).
 
-**Continue after tip lands on main:** new `cursor/flashcard-*-c985` only — opp
-history / horizon painter fixes, one comparison at a time. Appearance-clean and
-market/role× both inconclusive (keep rich present-row spine). Do **not** open a
-Numagent/`score_xp_v2` comparison until flashcard training earns it.
+**Continue after tip lands on main:** new `cursor/flashcard-*-c985` only, one
+comparison at a time. Appearance-clean / market-role× inconclusive (latter
+confounded); fixed mixer **lost** vs rich. Keep rich present-row spine. Do
+**not** open a Numagent/`score_xp_v2` comparison until flashcard training earns it.
 
 ## Repo freeze sequence (2026-10-20)
 
