@@ -13,7 +13,9 @@ typed-tensor stack superseded by cement PR into main).
 FOV (true minutes stay on the card). Stepped lost; mix rejected; lag-1 lost.
 
 **Continue:** research branch for flashcard **model training** on this card.
-Do **not** open a Numagent/`score_xp_v2` comparison until that training earns it.
+Poisson exposure GLM screened 2026-11-16 and **lost** (`typed_tensor_poisson_glm.md`);
+slice spine stays logistic. Do **not** open a Numagent/`score_xp_v2` comparison
+until flashcard training earns it.
 
 ## Repo freeze sequence (2026-10-20)
 

@@ -19,6 +19,13 @@ parked as overkill until a path-V screen asks for it (`protocol.cascade_short_ge
   (`reports/FLASHCARD_CEMENT.md`). Slice and horizon stay separate arms. No mix.
   No Numagent comparison until flashcard likelihood clearly earns it. No Baudot.
 
+## Parked — zero-gated Poisson exposure GLM (2026-11-16)
+
+Co-PI next screen after cement: Poisson with `log(m/90)` offset + zero-gate vs
+SliceLogistic (mates off), 4-season LOSO + `cluster_interval`. **Lost**
+(Δlog +0.00508 [+0.00448, +0.00570]; active subset worse). Keep logistic spine.
+Report: `reports/typed_tensor_poisson_glm.md`. Do not reopen without a new twist.
+
 ## Parked — Baudot binary / artificial column nets (2026-11-15)
 
 Binary Baudot planes, Dice/set-overlap as stepped primary, hand-built LineupNet /

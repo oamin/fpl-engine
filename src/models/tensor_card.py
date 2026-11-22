@@ -406,6 +406,7 @@ def iter_slices(
     *,
     minutes_mode: str = "actual",
     role_prior: dict[int, float] | None = None,
+    include_mates: bool | None = None,
 ):
     """Yield sliced player–GW observations with as-of features."""
     for p in range(card.n_players):
@@ -432,6 +433,7 @@ def iter_slices(
                     t,
                     minutes_mode=minutes_mode,
                     role_prior=role_prior,
+                    include_mates=include_mates,
                 ),
             }
 
