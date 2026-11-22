@@ -57,6 +57,7 @@ Stepped FOV exists as a screened (lost) variant. Slice×horizon mixes are parked
 | [`typed_tensor_appearance_clean.md`](typed_tensor_appearance_clean.md) | Appearance-clean history **inconclusive** |
 | [`typed_tensor_market_role.md`](typed_tensor_market_role.md) | Market pot / role× **inconclusive + confounded**; keep rich |
 | [`typed_tensor_horizon_fix.md`](typed_tensor_horizon_fix.md) | Fixed mixer **lost** vs rich (+0.014) |
+| [`typed_tensor_minutes_head.md`](typed_tensor_minutes_head.md) | Pre-match minutes head **promoted** vs lag-1 |
 
 ## Research continue (not Numagent yet)
 

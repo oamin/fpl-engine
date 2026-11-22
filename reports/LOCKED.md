@@ -115,6 +115,7 @@ clearly wins on likelihood. Baudot binary planes retired.
 | Appearance-clean history | [`typed_tensor_appearance_clean.md`](typed_tensor_appearance_clean.md) — inconclusive |
 | Market pot / role× | [`typed_tensor_market_role.md`](typed_tensor_market_role.md) — inconclusive + confounded; keep rich |
 | Horizon painter fixes | [`typed_tensor_horizon_fix.md`](typed_tensor_horizon_fix.md) — lost vs rich |
+| Pre-match minutes head | [`typed_tensor_minutes_head.md`](typed_tensor_minutes_head.md) — **promoted** vs lag-1 |
 | Git cleanup | [`FLASHCARD_GIT_CLEANUP.md`](FLASHCARD_GIT_CLEANUP.md) |
 
 ## Superseded
