@@ -1,23 +1,19 @@
 {
-  "milestone": "cascade-short-generative-locked",
+  "updated": "2026-11-16",
+  "branch": "cursor/flashcard-batch-lock-c985",
+  "batch": "flashcard_batch_lock_2026_11_16",
   "status": "complete",
-  "summary": "cascade_short generative stack locked (protocol.cascade_short_generative): mean score_team_side; scenario k∼M → lineup cov → attack dice → CS/GC from rolled GA; soft priors via score_xp_v2 DefCon/bonus/cards/saves helpers. Firm XI and bonus-from-roll deferred. PR #96 green — mark ready / merge to main.",
-  "gemini": "",
-  "decisions": {
-    "cascade_short_generative": {
-      "locked": "2026-10-20",
-      "protocol": "cascade_short_generative",
-      "pr": 96,
-      "deferred": ["firm_xi", "bonus_from_roll"]
-    }
+  "result": "cemented",
+  "summary": "Lock flashcard batch: typed tensor card; slice spine = zero-gated logistic with rich extras soft-promoted; co-presence soft-parked; Poisson/lag-1/stepped/mix parked or lost; horizon FOV arm kept separate. Not a Numagent comparison. Product remains numagent_2_0.",
+  "cement": "reports/FLASHCARD_CEMENT.md",
+  "spine": {
+    "gate": "zero_gated_logistic",
+    "rich_extras": "soft_promote",
+    "mates": "off",
+    "copresence": "soft_parked",
+    "poisson": "parked_lost"
   },
-  "artifacts": [
-    "reports/LOCKED.md",
-    "reports/CASCADE_CONTRACT.md",
-    "experiments/protocol.json",
-    "src/markets/short_horizon_generative.py",
-    "src/markets/defence_roll.py",
-    "src/models/short_horizon_cascade.py",
-    "src/models/cascade_short.py"
-  ]
+  "horizon": "fov_arm_no_mix",
+  "product_on_main": "numagent_2_0",
+  "next": "After tip lands on main: new cursor/flashcard-*-c985 for opp history / horizon painter fixes — one comparison at a time"
 }

@@ -15,6 +15,64 @@ parked as overkill until a path-V screen asks for it (`protocol.cascade_short_ge
 - Live shadow of locked L4 + `score_xp_v2` (no new strategiser arm without a protocol entry).
 - Layer 5 chips only if a pre-registered likelihood / priced-path comparison asks.
 - Objective-function search stays parked.
+- **Flashcard (cemented 2026-11-16):** spine locked — zero-gated logistic + rich
+  extras soft-promote; co-presence soft-parked (`reports/FLASHCARD_CEMENT.md`).
+  Next only after tip on main. No mix. No Numagent until likelihood earns it.
+  No Baudot / Poisson reopen without a new twist.
+
+## Soft-promote — rich zero-gated baseline (2026-11-16)
+
+NL minutes + `p_over25` + team as-of G/A + M0=270 per-90 on zero-gated spine.
+Δlog −0.00072 [−0.00103, −0.00045]; active −0.00125. Clears zero; shy of −0.001
+all-row materiality → soft-promote. Report: `typed_tensor_rich_baseline.md`.
+
+## Soft-parked — mate co-presence (2026-11-16)
+
+Screened and briefly promoted, then Co-PI review: wrong estimand (headcount /
+sub leak, not chemistry). Soft-park; do not keep as spine default.
+Report: `typed_tensor_mate_copresence.md`.
+
+## Promoted — zero-gated SliceLogistic (2026-11-16)
+
+Fit logistic only on `m>0`; `m≤0 → p=1e-6`. Beats ungated SliceLogistic on
+4-season LOSO: Δlog −0.00473 [−0.00507, −0.00437]; active also &lt; 0.
+Report: `reports/typed_tensor_zero_gate.md`. Spine default for further slice work.
+
+## Parked — zero-gated Poisson exposure GLM (2026-11-16)
+
+Co-PI next screen after cement: Poisson with `log(m/90)` offset + zero-gate vs
+SliceLogistic (mates off), 4-season LOSO + `cluster_interval`. **Lost**
+(Δlog +0.00508 [+0.00448, +0.00570]; active subset worse). Keep logistic spine.
+Report: `reports/typed_tensor_poisson_glm.md`. Do not reopen without a new twist.
+
+## Parked — Baudot binary / artificial column nets (2026-11-15)
+
+Binary Baudot planes, Dice/set-overlap as stepped primary, hand-built LineupNet /
+FormColumn last-5 means, reservoir/ZIP/SMOTE/SAE for this painter — parked or
+rejected. Card is the typed tensor (`reports/TYPED_TENSOR_CARD.md`).
+
+## Parked — typed stepped FOV painter default (2026-11-15)
+
+First typed-card stepped mixer (time+squad attention, log+Brier) lost to sliced
+logistic on 2025-26 d1 log (0.1689 vs 0.1497). Keep as evidence; not promoted.
+See `reports/typed_tensor_stepped.md`.
+
+## Parked — typed horizon FOV (2026-11-15)
+
+Horizon remainder log 0.1480 vs sliced logistic 0.1497 — hairline only, different
+cell set; d1 still ~0.17. Inconclusive, not promoted.
+`reports/typed_tensor_horizon.md`.
+
+## Parked — slice × horizon mix (2026-11-15)
+
+Blend (train α→1), logit stack, and residual σ(logit(slice)+δ_card) on remainder
+cells. Residual 0.1449 vs slice 0.1450 — inconclusive. `typed_tensor_slice_horizon_mix.md`.
+
+## Parked — lag-1 minutes as slice default (2026-11-15)
+
+Lag-1 predicted minutes vs actual on slice spine: pooled Δlog +0.012, MAE≈15 min.
+Honesty reference only; do not replace actual-minutes conditional spine.
+`reports/typed_tensor_lag1_minutes.md`.
 
 ## Procedure, locked 2026-10-07 (historical freeze notes)
 

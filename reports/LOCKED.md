@@ -91,7 +91,31 @@ Protocol: `cascade_short_generative`. Entry: `src/models/cascade_short.py` → `
 
 Modules: `short_horizon_generative`, `match_outcome`, `lineup_roll`, `attack_roll`, `defence_roll`, `player_attack`, `prop_shares`.
 
+## Research track — typed tensor flashcard (not product)
+
+**Cement locked 2026-11-16.** Full freeze: [`FLASHCARD_CEMENT.md`](FLASHCARD_CEMENT.md).
+Not the live Numagent path; Numagent comparison deferred until flashcard training
+clearly wins on likelihood. Baudot binary planes retired.
+
+| | |
+| --- | --- |
+| **Cement** | [`FLASHCARD_CEMENT.md`](FLASHCARD_CEMENT.md) |
+| Schema | `src/models/tensor_card.py` |
+| Design | [`TYPED_TENSOR_CARD.md`](TYPED_TENSOR_CARD.md) |
+| Arms | **Slice** (zero-gated logistic; rich extras soft-promote; mates off) · **Horizon** (FOV; no mix) |
+| Slice baselines | [`typed_tensor_card_baselines.md`](typed_tensor_card_baselines.md) |
+| Stepped FOV | [`typed_tensor_stepped.md`](typed_tensor_stepped.md) — lost |
+| Horizon FOV | [`typed_tensor_horizon.md`](typed_tensor_horizon.md) — keep FOV arm |
+| Mix | [`typed_tensor_slice_horizon_mix.md`](typed_tensor_slice_horizon_mix.md) — rejected |
+| Lag-1 minutes | [`typed_tensor_lag1_minutes.md`](typed_tensor_lag1_minutes.md) — lost |
+| Poisson exposure GLM | [`typed_tensor_poisson_glm.md`](typed_tensor_poisson_glm.md) — lost |
+| Zero-gated SliceLogistic | [`typed_tensor_zero_gate.md`](typed_tensor_zero_gate.md) — **promoted** |
+| Mate co-presence | [`typed_tensor_mate_copresence.md`](typed_tensor_mate_copresence.md) — soft-parked |
+| Rich zero-gated baseline | [`typed_tensor_rich_baseline.md`](typed_tensor_rich_baseline.md) — soft-promote |
+| Git cleanup | [`FLASHCARD_GIT_CLEANUP.md`](FLASHCARD_GIT_CLEANUP.md) |
+
 ## Superseded
 
 - **Numagent 1.0** — `protocol.numagent_1_0` / `SUPERSEDED.md` / **[`ARCHIVE_NUMAGENT_1_0.md`](ARCHIVE_NUMAGENT_1_0.md)** (in-place keep-list)
 - **`score_xp`** — historical climbs and gate baseline only (same archive index)
+- **Baudot binary flashcard planes** — retired; typed tensor is the card (`TYPED_TENSOR_CARD.md`)
