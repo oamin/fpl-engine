@@ -20,12 +20,17 @@ parked as overkill until a path-V screen asks for it (`protocol.cascade_short_ge
   Next only after tip on main. No mix. No Numagent until likelihood earns it.
   No Baudot / Poisson reopen without a new twist.
 
-## Promoted — pre-match minutes head vs lag-1 (2026-11-16)
+## Inconclusive — minutes composition p·f(μ) vs f(p·μ) (2026-11-16)
 
-Two-part as-of `ĥm=P(m>0)·E[m|m>0]` into locked rich zero-gated event head.
-Δlog **−0.03408** [−0.03818, −0.03041]; active −0.0707. MAE worse than lag-1
-(~18.5 vs ~15.5) but event LL wins — soft ĥm never hard-zeros (lag-1 zeros ~41%).
-Neural slice stays parked. Report: `typed_tensor_minutes_head.md`.
+Same frozen models. All-row Δ **−0.00177** [−0.00205, −0.00148] but active
+**+0.00345** [+0.00298, +0.00392]. Inactive LL improves (~0.027→0.018); keep
+plug-in. Ungated lag-1 ≈ plugin (~0.161). Report: `typed_tensor_minutes_compose.md`.
+
+## Promoted (provisional) — pre-match minutes head vs gated lag-1 (2026-11-16)
+
+Two-part as-of `ĥm` into rich event head. Δlog **−0.034** vs *gated* lag-1 was
+amplified by hard-zeroing lag-1 blanks; vs ungated lag-1 ≈ −0.001. MAE worse.
+Do not hard-gate `p_play`. Report: `typed_tensor_minutes_head.md`.
 
 ## Lost — horizon painter fixes vs rich (2026-11-16)
 
