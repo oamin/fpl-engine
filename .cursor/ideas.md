@@ -20,6 +20,11 @@ parked as overkill until a path-V screen asks for it (`protocol.cascade_short_ge
   Next only after tip on main. No mix. No Numagent until likelihood earns it.
   No Baudot / Poisson reopen without a new twist.
 
+## Parked — appearance-clean history (2026-11-16)
+
+History/M0 on prior `m>0` only vs present-row dilution on rich zero-gated spine.
+Δ ≈ 0 (covers zero). Keep present-row history. Report: `typed_tensor_appearance_clean.md`.
+
 ## Soft-promote — rich zero-gated baseline (2026-11-16)
 
 NL minutes + `p_over25` + team as-of G/A + M0=270 per-90 on zero-gated spine.
